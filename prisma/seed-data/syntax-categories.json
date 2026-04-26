@@ -1,0 +1,89 @@
+{
+  "nounClauses": [
+    "Subject",
+    "Direct Object",
+    "Indirect Object",
+    "Predicate Nominative",
+    "Predicate Accusative",
+    "Appositive"
+  ],
+  "genitiveUses": [
+    "Genitive of Possession",
+    "Genitive of Relationship",
+    "Partitive Genitive",
+    "Genitive of Source/Origin",
+    "Subjective Genitive",
+    "Objective Genitive",
+    "Genitive of Description/Quality",
+    "Genitive Absolute",
+    "Genitive of Time",
+    "Genitive of Price/Value",
+    "Genitive of Association",
+    "Plenary Genitive",
+    "Genitive of Direct Object"
+  ],
+  "dativeUses": [
+    "Dative of Indirect Object",
+    "Dative of Advantage",
+    "Dative of Disadvantage",
+    "Dative of Means/Instrument",
+    "Dative of Manner",
+    "Dative of Reference/Respect",
+    "Dative of Sphere",
+    "Dative of Possession",
+    "Dative of Time",
+    "Ethical Dative",
+    "Dative Absolute"
+  ],
+  "accusativeUses": [
+    "Accusative of Direct Object",
+    "Accusative of Reference/Respect",
+    "Accusative of Time",
+    "Accusative of Extent of Space",
+    "Accusative Subject of Infinitive",
+    "Double Accusative",
+    "Cognate Accusative"
+  ],
+  "participleUses": [
+    "Adverbial Participle (Temporal)",
+    "Adverbial Participle (Causal)",
+    "Adverbial Participle (Concessive)",
+    "Adverbial Participle (Conditional)",
+    "Adverbial Participle (Means)",
+    "Adverbial Participle (Manner)",
+    "Adverbial Participle (Purpose)",
+    "Substantival Participle",
+    "Attributive Participle",
+    "Predicate Participle",
+    "Genitive Absolute",
+    "Periphrastic Participle"
+  ],
+  "infinitiveUses": [
+    "Complementary Infinitive",
+    "Subject Infinitive",
+    "Direct Object Infinitive",
+    "Indirect Discourse Infinitive",
+    "Substantival Infinitive",
+    "Purpose Infinitive",
+    "Result Infinitive",
+    "Epexegetical Infinitive",
+    "Infinitive of Time (Antecedent)",
+    "Infinitive of Time (Contemporaneous)",
+    "Infinitive of Time (Subsequent)"
+  ],
+  "clauseTypes": [
+    "Result Clause",
+    "Purpose Clause",
+    "Conditional Clause (First Class)",
+    "Conditional Clause (Second Class)",
+    "Conditional Clause (Third Class)",
+    "Conditional Clause (Fourth Class)",
+    "Relative Clause",
+    "Temporal Clause",
+    "Causal Clause",
+    "Concessive Clause",
+    "Indirect Discourse",
+    "Indirect Question",
+    "Comparative Clause"
+  ]
+}

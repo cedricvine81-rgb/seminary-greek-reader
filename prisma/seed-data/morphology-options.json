@@ -1,0 +1,49 @@
+{
+  "partOfSpeech": [
+    "Noun", "Verb", "Adjective", "Adverb", "Pronoun",
+    "Preposition", "Conjunction", "Particle", "Article", "Interjection"
+  ],
+  "case": [
+    "Nominative", "Genitive", "Dative", "Accusative", "Vocative"
+  ],
+  "number": [
+    "Singular", "Plural"
+  ],
+  "gender": [
+    "Masculine", "Feminine", "Neuter"
+  ],
+  "tense": [
+    "Present", "Imperfect", "Future", "Aorist", "Perfect", "Pluperfect"
+  ],
+  "voice": [
+    "Active", "Middle", "Passive", "Middle/Passive"
+  ],
+  "mood": [
+    "Indicative", "Subjunctive", "Optative", "Imperative", "Infinitive", "Participle"
+  ],
+  "person": [
+    "1st", "2nd", "3rd"
+  ],
+  "participleType": [
+    "Adverbial Temporal", "Adverbial Causal", "Adverbial Concessive",
+    "Adverbial Conditional", "Adverbial Means", "Adverbial Manner",
+    "Substantival", "Attributive", "Predicate"
+  ],
+  "infinitiveType": [
+    "Complementary", "Subject", "Direct Object", "Indirect Discourse",
+    "Substantival", "Purpose", "Result", "Epexegetical"
+  ],
+  "pronounType": [
+    "Personal", "Reflexive", "Reciprocal", "Demonstrative",
+    "Relative", "Interrogative", "Indefinite", "Possessive"
+  ],
+  "articleUsage": [
+    "Generic", "Individualizing", "Anaphoric", "Kataphoric",
+    "Monadic", "Par Excellence", "Substantiver", "With Proper Names",
+    "With Abstract Nouns", "Granville Sharp"
+  ],
+  "prepositionFunction": [
+    "Spatial", "Temporal", "Logical/Causal", "Instrumental",
+    "Accompanying Circumstances", "Reference/Respect", "Distributive"
+  ]
+}

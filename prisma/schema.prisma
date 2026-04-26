@@ -1,0 +1,331 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Users & Auth ────────────────────────────────────────────────
+
+enum Role {
+  INSTRUCTOR
+  STUDENT
+}
+
+model User {
+  id          String   @id @default(cuid())
+  firstName   String
+  surname     String
+  email       String   @unique
+  password    String
+  role        Role
+  institution String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  instructorCourses Course[]     @relation("InstructorCourses")
+  enrollments       Enrollment[]
+  responses         Response[]
+  flashcardProgress FlashcardProgress[]
+  createdAssignments Assignment[] @relation("CreatedAssignments")
+
+  @@index([email])
+}
+
+// ─── Institutions ────────────────────────────────────────────────
+
+model Institution {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  courses Course[]
+}
+
+// ─── Courses ─────────────────────────────────────────────────────
+
+enum CourseLevel {
+  BEGINNING
+  INTERMEDIATE
+}
+
+model Course {
+  id            String      @id @default(cuid())
+  name          String
+  level         CourseLevel
+  startDate     DateTime
+  endDate       DateTime
+  institutionId String?
+  instructorId  String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  instructor  User         @relation("InstructorCourses", fields: [instructorId], references: [id])
+  institution Institution? @relation(fields: [institutionId], references: [id])
+  enrollments Enrollment[]
+  assignments Assignment[]
+
+  @@index([instructorId])
+}
+
+model Enrollment {
+  id        String   @id @default(cuid())
+  userId    String
+  courseId  String
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+// ─── Biblical Texts ───────────────────────────────────────────────
+
+enum Corpus {
+  LXX
+  GNT
+}
+
+model BiblicalBook {
+  id         String @id @default(cuid())
+  corpus     Corpus
+  osisId     String @unique
+  name       String
+  abbrev     String
+  totalChapters Int
+
+  verses BiblicalVerse[]
+
+  @@index([corpus])
+}
+
+model BiblicalVerse {
+  id        String @id @default(cuid())
+  bookId    String
+  chapter   Int
+  verse     Int
+  reference String
+  text      String
+
+  book  BiblicalBook @relation(fields: [bookId], references: [id])
+  words VerseWord[]
+
+  @@unique([bookId, chapter, verse])
+  @@index([reference])
+  @@index([bookId, chapter])
+}
+
+model VerseWord {
+  id          String @id @default(cuid())
+  verseId     String
+  position    Int
+  surface     String
+  lexemeId    String?
+
+  verse  BiblicalVerse @relation(fields: [verseId], references: [id])
+  lexeme LexicalEntry? @relation(fields: [lexemeId], references: [id])
+  parses MorphParse[]
+
+  @@index([verseId])
+  @@index([surface])
+}
+
+// ─── Lexicon ──────────────────────────────────────────────────────
+
+model LexicalEntry {
+  id           String  @id @default(cuid())
+  lexeme       String  @unique
+  strongs      String?
+  gloss        String
+  extendedGloss String?
+  partOfSpeech String
+  frequency    Int     @default(0)
+
+  words       VerseWord[]
+  parses      MorphParse[]
+  vocabItems  VocabularyItem[]
+  flashcards  Flashcard[]
+
+  @@index([lexeme])
+  @@index([frequency])
+}
+
+// ─── Morphology ───────────────────────────────────────────────────
+
+model MorphParse {
+  id          String  @id @default(cuid())
+  wordId      String
+  lexemeId    String
+  surface     String
+  partOfSpeech String
+  casus       String?
+  number      String?
+  gender      String?
+  tense       String?
+  voice       String?
+  mood        String?
+  person      String?
+  degree      String?
+  extraInfo   String?
+
+  word   VerseWord    @relation(fields: [wordId], references: [id])
+  lexeme LexicalEntry @relation(fields: [lexemeId], references: [id])
+
+  @@index([wordId])
+  @@index([lexemeId])
+}
+
+// ─── Vocabulary ───────────────────────────────────────────────────
+
+enum FrequencyLevel {
+  BEGINNING
+  INTERMEDIATE
+}
+
+model VocabularyItem {
+  id           String         @id @default(cuid())
+  lexemeId     String
+  level        FrequencyLevel
+  sortOrder    Int
+
+  lexeme     LexicalEntry @relation(fields: [lexemeId], references: [id])
+  flashcards Flashcard[]
+
+  @@unique([lexemeId, level])
+}
+
+// ─── Assignments ─────────────────────────────────────────────────
+
+enum AssignmentType {
+  VOCABULARY_QUIZ
+  MORPHOLOGY_QUIZ
+  TRANSLATION_EXERCISE
+}
+
+model Assignment {
+  id           String         @id @default(cuid())
+  courseId     String
+  createdById  String
+  title        String
+  type         AssignmentType
+  weekNumber   Int
+  dueDate      DateTime
+  level        CourseLevel
+  reference    String?
+  instructions String?
+  isPublished  Boolean        @default(false)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  course     Course     @relation(fields: [courseId], references: [id])
+  createdBy  User       @relation("CreatedAssignments", fields: [createdById], references: [id])
+  questions  Question[]
+  responses  Response[]
+
+  @@index([courseId])
+}
+
+// ─── Questions ────────────────────────────────────────────────────
+
+enum QuestionType {
+  GREEK_TO_ENGLISH
+  ENGLISH_TO_GREEK
+  MULTIPLE_CHOICE
+  MATCHING
+  MORPHOLOGY_IDENTIFY
+  TRANSLATION
+  SYNTAX_IDENTIFY
+}
+
+model Question {
+  id           String       @id @default(cuid())
+  assignmentId String
+  position     Int
+  type         QuestionType
+  prompt       String
+  correctAnswer String
+  options      String[]
+  points       Int          @default(1)
+  reference    String?
+
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  responses  Response[]
+
+  @@index([assignmentId])
+}
+
+// ─── Student Responses ────────────────────────────────────────────
+
+model Response {
+  id           String   @id @default(cuid())
+  userId       String
+  assignmentId String
+  questionId   String?
+  answer       String
+  isCorrect    Boolean?
+  score        Float?
+  submittedAt  DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id])
+  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  question   Question?  @relation(fields: [questionId], references: [id])
+
+  @@index([userId, assignmentId])
+}
+
+// ─── Flashcards ───────────────────────────────────────────────────
+
+model Flashcard {
+  id           String  @id @default(cuid())
+  lexemeId     String
+  vocabItemId  String?
+  level        FrequencyLevel
+  front        String
+  backLexeme   String
+  backGloss    String
+  backParsing  String?
+
+  lexeme    LexicalEntry   @relation(fields: [lexemeId], references: [id])
+  vocabItem VocabularyItem? @relation(fields: [vocabItemId], references: [id])
+  progress  FlashcardProgress[]
+
+  @@unique([lexemeId, level])
+}
+
+model FlashcardProgress {
+  id              String   @id @default(cuid())
+  userId          String
+  flashcardId     String
+  easeFactor      Float    @default(2.5)
+  interval        Int      @default(1)
+  repetitions     Int      @default(0)
+  nextReviewDate  DateTime @default(now())
+  lastReviewDate  DateTime?
+  knownCount      Int      @default(0)
+  unknownCount    Int      @default(0)
+
+  user      User      @relation(fields: [userId], references: [id])
+  flashcard Flashcard @relation(fields: [flashcardId], references: [id])
+
+  @@unique([userId, flashcardId])
+  @@index([userId, nextReviewDate])
+}
+
+// ─── Materials (instructor uploads) ──────────────────────────────
+
+model Material {
+  id          String   @id @default(cuid())
+  courseId    String
+  title       String
+  description String?
+  fileUrl     String?
+  content     String?
+  weekNumber  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([courseId])
+}

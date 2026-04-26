@@ -1,0 +1,30 @@
+export type CourseLevel = 'BEGINNING' | 'INTERMEDIATE'
+
+export interface Course {
+  id: string
+  name: string
+  level: CourseLevel
+  startDate: string
+  endDate: string
+  institutionId?: string
+  instructorId: string
+  createdAt: string
+  updatedAt: string
+  enrollmentCount?: number
+  assignmentCount?: number
+}
+
+export interface Enrollment {
+  id: string
+  userId: string
+  courseId: string
+  createdAt: string
+}
+
+export interface CourseFormData {
+  name: string
+  level: CourseLevel
+  startDate: string
+  endDate: string
+  institutionName?: string
+}
