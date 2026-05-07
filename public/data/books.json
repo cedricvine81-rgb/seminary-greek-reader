@@ -1,0 +1,574 @@
+{
+  "gnt": [
+    {
+      "id": "Matt",
+      "corpus": "GNT",
+      "osisId": "Matt",
+      "name": "Matthew",
+      "abbrev": "Matt",
+      "totalChapters": 28
+    },
+    {
+      "id": "Mark",
+      "corpus": "GNT",
+      "osisId": "Mark",
+      "name": "Mark",
+      "abbrev": "Mark",
+      "totalChapters": 16
+    },
+    {
+      "id": "Luke",
+      "corpus": "GNT",
+      "osisId": "Luke",
+      "name": "Luke",
+      "abbrev": "Luke",
+      "totalChapters": 24
+    },
+    {
+      "id": "John",
+      "corpus": "GNT",
+      "osisId": "John",
+      "name": "John",
+      "abbrev": "John",
+      "totalChapters": 21
+    },
+    {
+      "id": "Acts",
+      "corpus": "GNT",
+      "osisId": "Acts",
+      "name": "Acts",
+      "abbrev": "Acts",
+      "totalChapters": 28
+    },
+    {
+      "id": "Rom",
+      "corpus": "GNT",
+      "osisId": "Rom",
+      "name": "Romans",
+      "abbrev": "Rom",
+      "totalChapters": 16
+    },
+    {
+      "id": "1Cor",
+      "corpus": "GNT",
+      "osisId": "1Cor",
+      "name": "1 Corinthians",
+      "abbrev": "1Cor",
+      "totalChapters": 16
+    },
+    {
+      "id": "2Cor",
+      "corpus": "GNT",
+      "osisId": "2Cor",
+      "name": "2 Corinthians",
+      "abbrev": "2Cor",
+      "totalChapters": 13
+    },
+    {
+      "id": "Gal",
+      "corpus": "GNT",
+      "osisId": "Gal",
+      "name": "Galatians",
+      "abbrev": "Gal",
+      "totalChapters": 6
+    },
+    {
+      "id": "Eph",
+      "corpus": "GNT",
+      "osisId": "Eph",
+      "name": "Ephesians",
+      "abbrev": "Eph",
+      "totalChapters": 6
+    },
+    {
+      "id": "Phil",
+      "corpus": "GNT",
+      "osisId": "Phil",
+      "name": "Philippians",
+      "abbrev": "Phil",
+      "totalChapters": 4
+    },
+    {
+      "id": "Col",
+      "corpus": "GNT",
+      "osisId": "Col",
+      "name": "Colossians",
+      "abbrev": "Col",
+      "totalChapters": 4
+    },
+    {
+      "id": "1Thess",
+      "corpus": "GNT",
+      "osisId": "1Thess",
+      "name": "1 Thessalonians",
+      "abbrev": "1Th",
+      "totalChapters": 5
+    },
+    {
+      "id": "2Thess",
+      "corpus": "GNT",
+      "osisId": "2Thess",
+      "name": "2 Thessalonians",
+      "abbrev": "2Th",
+      "totalChapters": 3
+    },
+    {
+      "id": "1Tim",
+      "corpus": "GNT",
+      "osisId": "1Tim",
+      "name": "1 Timothy",
+      "abbrev": "1Tim",
+      "totalChapters": 6
+    },
+    {
+      "id": "2Tim",
+      "corpus": "GNT",
+      "osisId": "2Tim",
+      "name": "2 Timothy",
+      "abbrev": "2Tim",
+      "totalChapters": 4
+    },
+    {
+      "id": "Titus",
+      "corpus": "GNT",
+      "osisId": "Titus",
+      "name": "Titus",
+      "abbrev": "Tit",
+      "totalChapters": 3
+    },
+    {
+      "id": "Phlm",
+      "corpus": "GNT",
+      "osisId": "Phlm",
+      "name": "Philemon",
+      "abbrev": "Phm",
+      "totalChapters": 1
+    },
+    {
+      "id": "Heb",
+      "corpus": "GNT",
+      "osisId": "Heb",
+      "name": "Hebrews",
+      "abbrev": "Heb",
+      "totalChapters": 13
+    },
+    {
+      "id": "Jas",
+      "corpus": "GNT",
+      "osisId": "Jas",
+      "name": "James",
+      "abbrev": "Jas",
+      "totalChapters": 5
+    },
+    {
+      "id": "1Pet",
+      "corpus": "GNT",
+      "osisId": "1Pet",
+      "name": "1 Peter",
+      "abbrev": "1Pet",
+      "totalChapters": 5
+    },
+    {
+      "id": "2Pet",
+      "corpus": "GNT",
+      "osisId": "2Pet",
+      "name": "2 Peter",
+      "abbrev": "2Pet",
+      "totalChapters": 3
+    },
+    {
+      "id": "1John",
+      "corpus": "GNT",
+      "osisId": "1John",
+      "name": "1 John",
+      "abbrev": "1Jn",
+      "totalChapters": 5
+    },
+    {
+      "id": "2John",
+      "corpus": "GNT",
+      "osisId": "2John",
+      "name": "2 John",
+      "abbrev": "2Jn",
+      "totalChapters": 1
+    },
+    {
+      "id": "3John",
+      "corpus": "GNT",
+      "osisId": "3John",
+      "name": "3 John",
+      "abbrev": "3Jn",
+      "totalChapters": 1
+    },
+    {
+      "id": "Jude",
+      "corpus": "GNT",
+      "osisId": "Jude",
+      "name": "Jude",
+      "abbrev": "Jude",
+      "totalChapters": 1
+    },
+    {
+      "id": "Rev",
+      "corpus": "GNT",
+      "osisId": "Rev",
+      "name": "Revelation",
+      "abbrev": "Rev",
+      "totalChapters": 22
+    }
+  ],
+  "lxx": [
+    {
+      "id": "Gen",
+      "corpus": "LXX",
+      "osisId": "Gen",
+      "name": "Genesis",
+      "abbrev": "Gen",
+      "totalChapters": 50
+    },
+    {
+      "id": "Exod",
+      "corpus": "LXX",
+      "osisId": "Exod",
+      "name": "Exodus",
+      "abbrev": "Exod",
+      "totalChapters": 40
+    },
+    {
+      "id": "Lev",
+      "corpus": "LXX",
+      "osisId": "Lev",
+      "name": "Leviticus",
+      "abbrev": "Lev",
+      "totalChapters": 27
+    },
+    {
+      "id": "Num",
+      "corpus": "LXX",
+      "osisId": "Num",
+      "name": "Numbers",
+      "abbrev": "Num",
+      "totalChapters": 36
+    },
+    {
+      "id": "Deut",
+      "corpus": "LXX",
+      "osisId": "Deut",
+      "name": "Deuteronomy",
+      "abbrev": "Deut",
+      "totalChapters": 34
+    },
+    {
+      "id": "JoshB",
+      "corpus": "LXX",
+      "osisId": "JoshB",
+      "name": "Joshua",
+      "abbrev": "Josh",
+      "totalChapters": 24
+    },
+    {
+      "id": "JudgB",
+      "corpus": "LXX",
+      "osisId": "JudgB",
+      "name": "Judges",
+      "abbrev": "Judg",
+      "totalChapters": 21
+    },
+    {
+      "id": "Ruth",
+      "corpus": "LXX",
+      "osisId": "Ruth",
+      "name": "Ruth",
+      "abbrev": "Ruth",
+      "totalChapters": 4
+    },
+    {
+      "id": "1Sam",
+      "corpus": "LXX",
+      "osisId": "1Sam",
+      "name": "1 Samuel",
+      "abbrev": "1Sam",
+      "totalChapters": 31
+    },
+    {
+      "id": "2Sam",
+      "corpus": "LXX",
+      "osisId": "2Sam",
+      "name": "2 Samuel",
+      "abbrev": "2Sam",
+      "totalChapters": 24
+    },
+    {
+      "id": "1Kgs",
+      "corpus": "LXX",
+      "osisId": "1Kgs",
+      "name": "1 Kings",
+      "abbrev": "1Kgs",
+      "totalChapters": 22
+    },
+    {
+      "id": "2Kgs",
+      "corpus": "LXX",
+      "osisId": "2Kgs",
+      "name": "2 Kings",
+      "abbrev": "2Kgs",
+      "totalChapters": 25
+    },
+    {
+      "id": "1Chr",
+      "corpus": "LXX",
+      "osisId": "1Chr",
+      "name": "1 Chronicles",
+      "abbrev": "1Chr",
+      "totalChapters": 29
+    },
+    {
+      "id": "2Chr",
+      "corpus": "LXX",
+      "osisId": "2Chr",
+      "name": "2 Chronicles",
+      "abbrev": "2Chr",
+      "totalChapters": 36
+    },
+    {
+      "id": "Ezra",
+      "corpus": "LXX",
+      "osisId": "Ezra",
+      "name": "Ezra",
+      "abbrev": "Ezra",
+      "totalChapters": 9
+    },
+    {
+      "id": "Neh",
+      "corpus": "LXX",
+      "osisId": "Neh",
+      "name": "Nehemiah",
+      "abbrev": "Neh",
+      "totalChapters": 14
+    },
+    {
+      "id": "Jdt",
+      "corpus": "LXX",
+      "osisId": "Jdt",
+      "name": "Judith",
+      "abbrev": "Jdt",
+      "totalChapters": 16
+    },
+    {
+      "id": "EsthGr",
+      "corpus": "LXX",
+      "osisId": "EsthGr",
+      "name": "Esther (Greek)",
+      "abbrev": "Esth",
+      "totalChapters": 10
+    },
+    {
+      "id": "Job",
+      "corpus": "LXX",
+      "osisId": "Job",
+      "name": "Job",
+      "abbrev": "Job",
+      "totalChapters": 42
+    },
+    {
+      "id": "Ps",
+      "corpus": "LXX",
+      "osisId": "Ps",
+      "name": "Psalms",
+      "abbrev": "Ps",
+      "totalChapters": 151
+    },
+    {
+      "id": "Prov",
+      "corpus": "LXX",
+      "osisId": "Prov",
+      "name": "Proverbs",
+      "abbrev": "Prov",
+      "totalChapters": 31
+    },
+    {
+      "id": "Song",
+      "corpus": "LXX",
+      "osisId": "Song",
+      "name": "Song of Songs",
+      "abbrev": "Song",
+      "totalChapters": 12
+    },
+    {
+      "id": "Wis",
+      "corpus": "LXX",
+      "osisId": "Wis",
+      "name": "Wisdom of Solomon",
+      "abbrev": "Wis",
+      "totalChapters": 8
+    },
+    {
+      "id": "Sir",
+      "corpus": "LXX",
+      "osisId": "Sir",
+      "name": "Sirach",
+      "abbrev": "Sir",
+      "totalChapters": 19
+    },
+    {
+      "id": "Isa",
+      "corpus": "LXX",
+      "osisId": "Isa",
+      "name": "Isaiah",
+      "abbrev": "Isa",
+      "totalChapters": 66
+    },
+    {
+      "id": "Jer",
+      "corpus": "LXX",
+      "osisId": "Jer",
+      "name": "Jeremiah",
+      "abbrev": "Jer",
+      "totalChapters": 52
+    },
+    {
+      "id": "Lam",
+      "corpus": "LXX",
+      "osisId": "Lam",
+      "name": "Lamentations",
+      "abbrev": "Lam",
+      "totalChapters": 6
+    },
+    {
+      "id": "EpJer",
+      "corpus": "LXX",
+      "osisId": "EpJer",
+      "name": "Epistle of Jeremiah",
+      "abbrev": "EpJer",
+      "totalChapters": 1
+    },
+    {
+      "id": "Ezek",
+      "corpus": "LXX",
+      "osisId": "Ezek",
+      "name": "Ezekiel",
+      "abbrev": "Ezek",
+      "totalChapters": 5
+    },
+    {
+      "id": "DanLXX",
+      "corpus": "LXX",
+      "osisId": "DanLXX",
+      "name": "Daniel (LXX)",
+      "abbrev": "Dan",
+      "totalChapters": 1
+    },
+    {
+      "id": "Hos",
+      "corpus": "LXX",
+      "osisId": "Hos",
+      "name": "Hosea",
+      "abbrev": "Hos",
+      "totalChapters": 14
+    },
+    {
+      "id": "Joel",
+      "corpus": "LXX",
+      "osisId": "Joel",
+      "name": "Joel",
+      "abbrev": "Joel",
+      "totalChapters": 4
+    },
+    {
+      "id": "Amos",
+      "corpus": "LXX",
+      "osisId": "Amos",
+      "name": "Amos",
+      "abbrev": "Amos",
+      "totalChapters": 9
+    },
+    {
+      "id": "Jonah",
+      "corpus": "LXX",
+      "osisId": "Jonah",
+      "name": "Jonah",
+      "abbrev": "Jonah",
+      "totalChapters": 1
+    },
+    {
+      "id": "Mic",
+      "corpus": "LXX",
+      "osisId": "Mic",
+      "name": "Micah",
+      "abbrev": "Mic",
+      "totalChapters": 4
+    },
+    {
+      "id": "Hab",
+      "corpus": "LXX",
+      "osisId": "Hab",
+      "name": "Habakkuk",
+      "abbrev": "Hab",
+      "totalChapters": 7
+    },
+    {
+      "id": "Hag",
+      "corpus": "LXX",
+      "osisId": "Hag",
+      "name": "Haggai",
+      "abbrev": "Hag",
+      "totalChapters": 3
+    },
+    {
+      "id": "Zech",
+      "corpus": "LXX",
+      "osisId": "Zech",
+      "name": "Zechariah",
+      "abbrev": "Zech",
+      "totalChapters": 3
+    },
+    {
+      "id": "Mal",
+      "corpus": "LXX",
+      "osisId": "Mal",
+      "name": "Malachi",
+      "abbrev": "Mal",
+      "totalChapters": 3
+    },
+    {
+      "id": "1Macc",
+      "corpus": "LXX",
+      "osisId": "1Macc",
+      "name": "1 Maccabees",
+      "abbrev": "1Macc",
+      "totalChapters": 16
+    },
+    {
+      "id": "2Macc",
+      "corpus": "LXX",
+      "osisId": "2Macc",
+      "name": "2 Maccabees",
+      "abbrev": "2Macc",
+      "totalChapters": 15
+    },
+    {
+      "id": "3Macc",
+      "corpus": "LXX",
+      "osisId": "3Macc",
+      "name": "3 Maccabees",
+      "abbrev": "3Macc",
+      "totalChapters": 7
+    },
+    {
+      "id": "4Macc",
+      "corpus": "LXX",
+      "osisId": "4Macc",
+      "name": "4 Maccabees",
+      "abbrev": "4Macc",
+      "totalChapters": 18
+    },
+    {
+      "id": "Odes",
+      "corpus": "LXX",
+      "osisId": "Odes",
+      "name": "Odes",
+      "abbrev": "Odes",
+      "totalChapters": 14
+    }
+  ]
+}

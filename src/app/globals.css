@@ -17,10 +17,11 @@
     @apply bg-white text-ink-900 antialiased;
   }
 
-  /* Greek text passages */
+  /* Greek text passages — font-size driven by --greek-fs so the settings panel
+     can adjust it without touching every element. */
   .greek-text {
     font-family: 'Gentium Plus', 'GFS Didot', Georgia, serif;
-    font-size: 1.125rem;
+    font-size: var(--greek-fs, 1.125rem);
     line-height: 1.9;
     letter-spacing: 0.01em;
   }
@@ -87,6 +88,18 @@
   .greek-word.active {
     @apply bg-brand-100 text-brand-900;
   }
+
+  /* ── Syntax highlighting ──────────────────────────────────── */
+  .syntax-verb    { @apply text-blue-700; }
+  .syntax-ptc     { @apply text-indigo-600; }
+  .syntax-inf     { @apply text-sky-600; }
+  .syntax-noun    { @apply text-green-700; }
+  .syntax-adj     { @apply text-purple-700; }
+  .syntax-article { @apply text-gray-400; }
+  .syntax-pron    { @apply text-teal-600; }
+  .syntax-prep    { @apply text-orange-600; }
+  .syntax-conj    { @apply text-gray-500; }
+  .syntax-adv     { @apply text-amber-600; }
 
   /* ── Parsing panel ──────────────────────────────────────── */
   .parsing-panel {

@@ -28,6 +28,7 @@ export default async function InstructorCoursesPage() {
     createdAt: c.createdAt.toISOString(),
     updatedAt: c.updatedAt.toISOString(),
     enrollmentCount: c._count.enrollments,
+    institutionId: c.institutionId ?? undefined,
   }))
 
   return (

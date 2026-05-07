@@ -8,9 +8,18 @@ The seed files contain small representative samples for development. For product
 |--------|---------|-----|
 | MorphGNT | CC-BY-SA 3.0 | https://github.com/morphgnt/sblgnt |
 | Tischendorf 8th GNT | Public domain | https://github.com/morphgnt/tischendorf |
+| Nestle 1904 GNT | Public domain | https://github.com/biblicalhumanities/Nestle1904 |
 | LXX (Rahlfs, CATSS) | Public domain (text) | https://ccat.sas.upenn.edu/gopher/text/religion/biblical/ |
 | OpenGNT | CC0 | https://github.com/eliranwong/OpenGNT |
 | Berean Greek Bible | CC BY-SA 4.0 | https://berean.bible/downloads.htm |
+
+## Syntax Databases
+
+| Source | License | URL |
+|--------|---------|-----|
+| Lowfat SBLGNT treebank | CC BY 4.0 | https://github.com/biblicalhumanities/greek-new-testament |
+| Macula-Greek SBLGNT (GBI) | CC BY 4.0 | https://github.com/Clear-Bible/macula-greek |
+| ABS NT Syntax Database | © Asian Bible Society | https://www.abs.org.ph |
 
 ## Morphological Parsing
 

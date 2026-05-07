@@ -1,4 +1,4 @@
-export type Corpus = 'LXX' | 'GNT'
+export type Corpus = 'LXX' | 'GNT' | 'NA1904'
 
 export interface BiblicalBook {
   id: string

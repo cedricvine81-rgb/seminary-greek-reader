@@ -1,14 +1,14 @@
 'use client'
 import { clsx } from 'clsx'
 import type { Role } from '@/types/auth'
-import { GraduationCap, BookOpen } from 'lucide-react'
+import { GraduationCap, BookOpen, type LucideIcon } from 'lucide-react'
 
 interface RoleSelectorProps {
   value: Role
   onChange: (role: Role) => void
 }
 
-const roles: { value: Role; label: string; description: string; Icon: React.FC<{ size?: number }> }[] = [
+const roles: { value: Role; label: string; description: string; Icon: LucideIcon }[] = [
   {
     value: 'STUDENT',
     label: 'Student',

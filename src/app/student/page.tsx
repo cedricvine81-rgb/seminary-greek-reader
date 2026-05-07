@@ -34,6 +34,8 @@ export default async function StudentPage() {
           dueDate: a.dueDate.toISOString(),
           createdAt: a.createdAt.toISOString(),
           updatedAt: a.updatedAt.toISOString(),
+          reference: a.reference ?? undefined,
+          instructions: a.instructions ?? undefined,
         }))}
         stats={{
           enrolledCourses: enrollments.length,

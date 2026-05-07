@@ -4,18 +4,18 @@ import type { Corpus } from '@/types/biblical-text'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
-  const corpus = searchParams.get('corpus') as Corpus | null
+  const corpus    = searchParams.get('corpus') as Corpus | null
   const bookOsisId = searchParams.get('book')
-  const chapter = searchParams.get('chapter')
+  const chapter   = searchParams.get('chapter')
 
   try {
     if (corpus && !bookOsisId) {
-      const books = await getBooks(corpus)
+      const books = getBooks(corpus)
       return NextResponse.json({ books })
     }
 
     if (bookOsisId && chapter) {
-      const data = await getChapter(bookOsisId, Number(chapter))
+      const data = getChapter(bookOsisId, Number(chapter))
       if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 })
       return NextResponse.json(data)
     }

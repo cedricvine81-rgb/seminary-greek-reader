@@ -35,6 +35,8 @@ export default async function StudentAssignmentsPage() {
     dueDate: a.dueDate.toISOString(),
     createdAt: a.createdAt.toISOString(),
     updatedAt: a.updatedAt.toISOString(),
+    reference: a.reference ?? undefined,
+    instructions: a.instructions ?? undefined,
   }))
 
   return (

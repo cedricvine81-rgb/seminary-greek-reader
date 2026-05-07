@@ -22,15 +22,14 @@ export async function GET() {
     prisma.response.findMany({
       where: { userId: payload.sub },
       select: { assignmentId: true, questionId: true, isCorrect: true, score: true, submittedAt: true },
-      include: { assignment: { select: { title: true } } } as never,
     }),
   ])
 
-  const completedIds = new Set(responses.filter((r: never) => !(r as {questionId: unknown}).questionId).map((r: {assignmentId: string}) => r.assignmentId))
-  const qResponses = responses.filter((r: {questionId: unknown}) => r.questionId)
+  const completedIds = new Set(responses.filter(r => !r.questionId).map(r => r.assignmentId))
+  const qResponses = responses.filter(r => r.questionId)
 
   const byType: Record<string, { correct: number; total: number }> = {}
-  for (const r of qResponses as {assignmentId: string; isCorrect: boolean | null}[]) {
+  for (const r of qResponses) {
     const a = assignments.find(a => a.id === r.assignmentId)
     const type = a?.type ?? 'UNKNOWN'
     if (!byType[type]) byType[type] = { correct: 0, total: 0 }

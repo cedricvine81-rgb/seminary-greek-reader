@@ -35,7 +35,6 @@ export default async function FlashcardsPage() {
         <FlashcardDeck
           initialCards={serialize(beginningCards) as never}
           initialLevel="BEGINNING"
-          onLevelChange={async () => {}}
           deckCounts={{ BEGINNING: beginningCards.length, INTERMEDIATE: intermediateCards.length }}
         />
       </div>

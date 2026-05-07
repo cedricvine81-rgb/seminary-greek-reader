@@ -11,7 +11,7 @@ import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 interface FlashcardDeckProps {
   initialCards: FlashcardWithProgress[]
   initialLevel: FrequencyLevel
-  onLevelChange: (level: FrequencyLevel) => void
+  onLevelChange?: (level: FrequencyLevel) => void
   deckCounts: { BEGINNING: number; INTERMEDIATE: number }
 }
 
@@ -31,7 +31,7 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
   function handleLevelChange(newLevel: FrequencyLevel) {
     setLevel(newLevel)
-    onLevelChange(newLevel)
+    onLevelChange?.(newLevel)
     setIdx(0)
     setIsFlipped(false)
     setStats({ known: 0, unknown: 0 })

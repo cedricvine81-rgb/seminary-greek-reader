@@ -8,7 +8,7 @@ export async function getFlashcardDeck(level: FrequencyLevel, userId?: string) {
     orderBy: { lexeme: { frequency: 'desc' } },
   })
 
-  if (!userId) return cards
+  if (!userId) return cards.map(card => ({ ...card, progress: null }))
 
   const progress = await prisma.flashcardProgress.findMany({
     where: { userId, flashcardId: { in: cards.map(c => c.id) } },

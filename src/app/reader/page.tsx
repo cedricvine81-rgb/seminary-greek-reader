@@ -5,14 +5,11 @@ export const metadata: Metadata = { title: 'Greek Text Reader' }
 
 export default function ReaderPage() {
   return (
-    <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Greek Text Reader</h1>
-        <p className="text-sm text-gray-500 mt-0.5">
-          Read the Septuagint (LXX) and Greek New Testament. Hover any word to see parsing information.
-        </p>
-      </div>
+    <div
+      className="flex flex-col overflow-hidden px-4 sm:px-6 lg:px-8 pt-4 pb-4 max-w-5xl mx-auto w-full"
+      style={{ height: 'calc(100vh - 3.5rem)' }}
+    >
       <GreekReader />
-    </main>
+    </div>
   )
 }
