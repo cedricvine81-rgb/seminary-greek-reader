@@ -198,30 +198,26 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           </div>
         )}
 
-        {/* ABS · Asian Bible Society NT Syntax */}
+        {/* ABS · Asian Bible Society NT Syntax (Nestle 1904) */}
         {absOn && (
           abs ? (
             <div className="rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 space-y-1.5">
               <span className="text-[10px] font-bold tracking-widest text-violet-600 uppercase">ABS · NT Syntax</span>
-              {abs.clause && (
-                <div><span className="text-xs font-semibold text-violet-900">Clause: </span>
-                     <span className="text-xs text-violet-800">{abs.clause}</span></div>
-              )}
-              {abs.discourse && (
-                <div><span className="text-xs font-semibold text-violet-900">Discourse: </span>
-                     <span className="text-xs text-violet-800">{abs.discourse}</span></div>
+              {abs.function && (
+                <div><span className="text-xs font-semibold text-violet-900">Function: </span>
+                     <span className="text-xs text-violet-800">{abs.function}</span></div>
               )}
               {abs.phrase && (
                 <div><span className="text-xs font-semibold text-violet-900">Phrase: </span>
                      <span className="text-xs text-violet-800">{abs.phrase}</span></div>
               )}
-              {abs.function && (
-                <div><span className="text-xs font-semibold text-violet-900">Function: </span>
-                     <span className="text-xs text-violet-800">{abs.function}</span></div>
+              {abs.rule && (
+                <div><span className="text-xs font-semibold text-violet-900">Construction: </span>
+                     <span className="text-xs text-violet-800">{abs.rule}</span></div>
               )}
-              {abs.information && (
-                <div><span className="text-xs font-semibold text-violet-900">Information: </span>
-                     <span className="text-xs text-violet-800">{abs.information}</span></div>
+              {abs.clauseRule && (
+                <div><span className="text-xs font-semibold text-violet-900">Clause pattern: </span>
+                     <span className="text-xs text-violet-800">{abs.clauseRule}</span></div>
               )}
             </div>
           ) : (
