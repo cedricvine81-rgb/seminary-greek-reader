@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, User, LogIn, UserPlus, Settings, LogOut } from 'lucide-react'
+import { Menu, X, User, LogIn, UserPlus, LogOut } from 'lucide-react'
 
 interface AccountMenuProps {
   isAuthenticated: boolean
@@ -56,13 +56,6 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
               >
                 <User size={15} /> Dashboard
               </Link>
-              <Link
-                href="/settings"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                onClick={() => setOpen(false)}
-              >
-                <Settings size={15} /> Settings
-              </Link>
               <hr className="my-1 border-gray-100" />
               <button
                 onClick={handleSignOut}
@@ -88,13 +81,6 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
                 <UserPlus size={15} /> Sign Up
               </Link>
               <hr className="my-1 border-gray-100" />
-              <Link
-                href="/settings"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                onClick={() => setOpen(false)}
-              >
-                <Settings size={15} /> Settings
-              </Link>
             </>
           )}
         </div>

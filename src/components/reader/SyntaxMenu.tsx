@@ -7,6 +7,7 @@ import { getWallaceCategories } from '@/lib/wallace-categories'
 import { getProielRelation } from '@/lib/proiel-relations'
 import { buildGbiDisplay, type GbiEntry } from '@/lib/gbi-data'
 import { buildAbsDisplay, type AbsSyntaxEntry } from '@/lib/abs-syntax'
+import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-syntax'
 
 interface SyntaxMenuProps {
   word: VerseWord
@@ -129,6 +130,27 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
       {/* ── Body ── */}
       <div className="p-3 space-y-2 overflow-y-auto">
+
+        {/* Macula clause structure — shown when data is available */}
+        {(() => {
+          const ruleLabel = formatMaculaClauseRule(ctx.maculaClauseRule)
+          const roleLabel = getMaculaClauseRoleLabel(ctx.maculaClauseRole)
+          if (!ruleLabel && !roleLabel) return null
+          return (
+            <div className="rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 space-y-1">
+              <span className="text-[10px] font-bold tracking-widest text-gray-400 uppercase">Clause Structure · Macula</span>
+              {ruleLabel && (
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-xs font-mono text-gray-500 bg-gray-100 rounded px-1.5 py-0.5">{ctx.maculaClauseRule}</span>
+                  <span className="text-xs text-gray-600">{ruleLabel}</span>
+                </div>
+              )}
+              {roleLabel && (
+                <div className="text-xs text-gray-500 italic">{roleLabel}</div>
+              )}
+            </div>
+          )
+        })()}
 
         {/* Wallace categories — always at top, always all levels (Beginner + Intermediate) */}
         {cats.length > 0 && cats.map((cat, i) => (

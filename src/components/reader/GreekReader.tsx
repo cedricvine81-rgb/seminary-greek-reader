@@ -10,6 +10,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { SyntaxEntry, SyntaxContext } from '@/lib/wallace-categories'
 import { loadGbi, type GbiEntry } from '@/lib/gbi-data'
 import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
+import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
 import { normalizeGreek } from '@/lib/greek-utils'
 
@@ -442,9 +443,10 @@ export function GreekReader() {
   }
 
   function handleWordRightClick(word: VerseWord, x: number, y: number) {
-    Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax()]).then(([data, gbiData, absData]) => {
-      const gbiEntry = gbiData[word.id] ?? null
-      const absEntry = absData[word.id] ?? null
+    Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()]).then(([data, gbiData, absData, maculaData]) => {
+      const gbiEntry    = gbiData[word.id]    ?? null
+      const absEntry    = absData[word.id]    ?? null
+      const maculaEntry = maculaData[word.id] ?? null
       const syn = data[word.id] ?? null
 
       // Find the verse that contains this word
@@ -490,8 +492,15 @@ export function GreekReader() {
       // the genitive modifier προφήτου).
       const directlyInPP = kase !== 'Nominative' && (
         syn?.c === 'pp' ||
-        syn?.gc === 'pp' ||
-        (syn?.h === true && !!prevWords[0] && data[prevWords[0].id]?.gc === 'pp')
+        (syn?.gc === 'pp' && syn?.h === true) ||
+        // Articular NP head, 1 level of NP nesting inside the PP (article gc='pp')
+        (syn?.h === true && !!prevWords[0] && data[prevWords[0].id]?.gc === 'pp') ||
+        // Articular NP head, 2 levels of NP nesting (e.g. appositive in the NP creates
+        // an extra NP wrapper): PREP(c:pp) → NP → NP → head.
+        // Detected by: the word before the article is the preposition itself.
+        (syn?.h === true &&
+          prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article' &&
+          prevWords[1]?.parses?.[0]?.partOfSpeech === 'Preposition')
       )
       if (directlyInPP) {
         for (const pw of prevWords.slice(0, 6)) {
@@ -606,13 +615,19 @@ export function GreekReader() {
         }
       }
 
-      // 10. Apposition guard: the word before the preceding article must be a syntax head.
+      // 10. Apposition guard: the word before the preceding article must be a nominal syntax head.
       // When an article is at prevWords[0], prevWords[1] is the potential head noun.
       // If δέ or another particle intervenes (no article at prevWords[0]), prevHeadNounExists=false,
       // preventing false apposition for constructions like ἡ δὲ τροφή (Matt 3:4).
+      // Must be a nominal POS — verbs are clause heads (h:true) but are not apposition targets.
+      const NOMINAL_POS_SET = new Set(['Noun', 'Adjective', 'Demonstrative', 'Personal Pronoun',
+        'Reflexive Pronoun', 'Reciprocal Pronoun', 'Relative Pronoun', 'Indefinite Pronoun',
+        'Interrogative Pronoun', 'Pronoun'])
       let prevHeadNounExists = false
       if (prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article') {
-        prevHeadNounExists = data[prevWords[1]?.id ?? '']?.h === true
+        const pw1 = prevWords[1]
+        const pw1Pos = pw1?.parses?.[0]?.partOfSpeech ?? ''
+        prevHeadNounExists = NOMINAL_POS_SET.has(pw1Pos) && (data[pw1?.id ?? '']?.h === true)
       }
 
       // 11. Colwell's Rule: for nominative nouns with a nearby equative verb, whether this
@@ -622,7 +637,12 @@ export function GreekReader() {
         ? prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article'
         : false
 
-      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, nearbyConjunctionRole, prevHeadNounExists, isArticular }
+      const maculaRole        = maculaEntry?.role        ?? null
+      const maculaPhraseClass = maculaEntry?.phraseClass ?? null
+      const maculaClauseRule  = maculaEntry?.clauseRule  ?? null
+      const maculaClauseRole  = maculaEntry?.clauseRole  ?? null
+
+      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole }
 
       const menuW = 380, menuH = 520
       const nx = x + menuW > window.innerWidth  ? x - menuW : x
