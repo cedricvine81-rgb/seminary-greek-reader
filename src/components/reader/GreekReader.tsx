@@ -608,8 +608,16 @@ export function GreekReader() {
       let enclosingHeadPos: string | undefined
       let enclosingHeadLexeme: string | undefined
       if (kase === 'Genitive' && syn?.h === true && syn?.gc === 'np') {
-        const isArtPreceding = prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article'
-        const headWord = isArtPreceding ? prevWords[1] : prevWords[0]
+        let headWord: VerseWord | undefined
+        if (prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article') {
+          // Articular: article immediately precedes, head noun is one step further back
+          headWord = prevWords[1]
+        } else {
+          // Anarthrous: scan backward for the nearest word with h:true in the syntax
+          // data. This skips intervening modifiers (e.g. ἡμῶν in κυρίου ἡμῶν Ἰησοῦ)
+          // and finds the actual head noun that this genitive NP is attached to.
+          headWord = prevWords.find(w => data[w.id]?.h === true) ?? prevWords[0]
+        }
         if (headWord) {
           enclosingHeadCase   = headWord.parses?.[0]?.casus          ?? undefined
           enclosingHeadPos    = headWord.parses?.[0]?.partOfSpeech    ?? undefined
@@ -632,7 +640,26 @@ export function GreekReader() {
         prevHeadNounExists = NOMINAL_POS_SET.has(pw1Pos) && (data[pw1?.id ?? '']?.h === true)
       }
 
-      // 11. Colwell's Rule: for nominative nouns with a nearby equative verb, whether this
+      // 11. Attendant circumstance: find the nearest main clause verb to detect
+      // aorist participle + aorist verb pattern (GGBB pp. 640–645).
+      let mainVerbTense: string | null = null
+      if (mood === 'Participle' && kase === 'Nominative') {
+        const myPos = word.position
+        let closestDist = Infinity
+        for (const w of words) {
+          if (w.id === word.id) continue
+          const ws = data[w.id]
+          if (ws?.r === 'v' && ws?.c === 'cl') {
+            const dist = Math.abs(w.position - myPos)
+            if (dist < closestDist) {
+              closestDist = dist
+              mainVerbTense = w.parses?.[0]?.tense ?? null
+            }
+          }
+        }
+      }
+
+      // 12. Colwell's Rule: for nominative nouns with a nearby equative verb, whether this
       // word is immediately preceded by an article determines subject (articular) vs predicate
       // (anarthrous).
       const isArticular = kase === 'Nominative'
@@ -644,7 +671,7 @@ export function GreekReader() {
       const maculaClauseRule  = maculaEntry?.clauseRule  ?? null
       const maculaClauseRole  = maculaEntry?.clauseRole  ?? null
 
-      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole }
+      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole, mainVerbTense }
 
       const menuW = 380, menuH = 520
       const nx = x + menuW > window.innerWidth  ? x - menuW : x
