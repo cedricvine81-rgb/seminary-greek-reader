@@ -24,6 +24,8 @@ export interface SyntaxContext {
   precedingArticle?: boolean   // participle: the word immediately before is an article
   nounBeforeArticle?: boolean  // participle: the word before that article is a noun/pronoun (→ 2nd-position attributive)
   enclosingHeadCase?: string   // genitive: case of the head noun that contains this genitive (word before the article that precedes this word)
+  enclosingHeadPos?: string    // genitive: partOfSpeech of the enclosing head noun
+  enclosingHeadLexeme?: string // genitive: lemma of the enclosing head noun (for partitive detection)
   nearbyConjunctionRole?: string  // a coordinating conjunction with a clause role (pr) appears within ~4 preceding words — signals compound subject/object rather than apposition
   prevHeadNounExists?: boolean    // when the preceding word is an article, the word before that article is a syntax head (h:true) — required for apposition detection
   isArticular?: boolean           // the word immediately preceding this one is an article (used for Colwell's rule: articular nom = subject, anarthrous nom = predicate)
@@ -85,6 +87,22 @@ const PREP_GLOSSES: Record<string, string> = {
 }
 
 const FULL_CASES = new Set(['Nominative', 'Genitive', 'Dative', 'Accusative', 'Vocative'])
+
+// Lemmas and POS that typically govern a partitive genitive — the head noun denotes
+// a subset or individual drawn from the genitive group.
+const PARTITIVE_HEAD_LEMMAS = new Set([
+  // cardinal numerals
+  'εἷς', 'δύο', 'τρεῖς', 'τέσσαρες', 'πέντε', 'ἕξ', 'ἑπτά', 'ὀκτώ', 'ἐννέα', 'δέκα',
+  'ἕνδεκα', 'δώδεκα', 'ἑκατόν', 'χίλιοι', 'μύριοι',
+  // quantifiers and distributives
+  'πολύς', 'ὀλίγος', 'πᾶς', 'ἅπας', 'ἕκαστος', 'ἑκάτερος', 'ἀμφότεροι',
+  'οὐδείς', 'μηδείς',
+  // ordinals / superlatives frequently used partitively
+  'πρῶτος', 'ἔσχατος', 'μέγιστος', 'ἐλάχιστος', 'κράτιστος',
+  // indefinite pronoun lemmas sometimes classed as adjective in tagging
+  'τις',
+])
+const PARTITIVE_HEAD_POS = new Set(['Indefinite Pronoun', 'Interrogative Pronoun'])
 
 // ── Main function ─────────────────────────────────────────────────────────────
 
@@ -276,6 +294,11 @@ export function getWallaceCategories(
         nomCats.push({ name: 'Genitive Relative Pronoun', desc: 'In the GNT, a relative pronoun in the genitive (οὗ, ἧς, ὧν) either indicates possession within its relative clause — "whose" — or is governed by a preposition or verb that takes the genitive. Its gender and number agree with the antecedent in the main clause; its case is determined by its function within the relative clause itself (GGBB pp. 337–338).', level: 'intermediate' })
       else if (pos === 'Demonstrative')
         nomCats.push({ name: 'Demonstrative / Possessive Genitive', desc: 'In the GNT, a demonstrative pronoun in the genitive (τούτου, ταύτης, τούτων; ἐκείνου, ἐκείνης, ἐκείνων) functions possessively or as a partitive — "of this one," "of that one," "of these things." The demonstrative genitive often carries emphatic force compared to a simple personal pronoun possessive (GGBB pp. 325–334).', level: 'intermediate' })
+      else if (cls === 'np' && syn?.h && syn?.gc === 'np' && (
+        (ctx?.enclosingHeadLexeme && PARTITIVE_HEAD_LEMMAS.has(ctx.enclosingHeadLexeme)) ||
+        (ctx?.enclosingHeadPos && PARTITIVE_HEAD_POS.has(ctx.enclosingHeadPos))
+      ))
+        nomCats.push({ name: 'Partitive Genitive', desc: 'In the GNT, the partitive genitive identifies the larger group or whole from which the head noun singles out a part, a member, or an individual. The head noun names the part; the genitive names the whole.\n\nCommon patterns:\n• Numeral + genitive: ἕνα τῶν μικρῶν τούτων — "one of these little ones" (Matt 10:42); εἷς τῶν δώδεκα — "one of the twelve" (Mark 14:10).\n• Quantifier + genitive: πολλοὶ τῶν Ἰουδαίων — "many of the Jews" (John 11:19); οὐδεὶς τῶν ἀνδρῶν — "none of the men" (Luke 14:24).\n• Ordinal/superlative + genitive: πρώτη πασῶν ἐντολή — "first of all commandments" (Mark 12:28); ὁ ἐλάχιστος πάντων — "the least of all" (Eph 3:8).\n• Interrogative/indefinite pronoun + genitive: τίς ἐξ ὑμῶν — "which of you?" (Matt 6:27); τις τῶν Φαρισαίων — "a certain one of the Pharisees" (Luke 7:36).\n\nDiagnostic: can you insert "drawn from" or "belonging to the group of" between the head noun and the genitive? If yes, partitive is the best reading.\n\nDistinguish from Descriptive Genitive: the descriptive genitive qualifies or characterizes the head noun ("king of the Jews" = Jewish king), whereas the partitive genitive treats the head noun as a subset of the genitive group ("one of the Jews" = one member from that group). The partitive genitive often appears with articular plural genitives (τῶν + noun) in the GNT (GGBB pp. 84–86).', level: 'beginner' })
       else if (cls === 'np' && syn?.h && syn?.gc === 'np' && ctx?.enclosingHeadCase === 'Genitive')
         nomCats.push({ name: 'Genitive of Apposition', desc: 'In the GNT, the genitive of apposition follows a head noun and renames or identifies it — the genitive and its head noun refer to the same entity. The genitive specifies what the head noun *is*, rather than showing who owns it or where it comes from.\n\nTwo identifying marks:\n1. Both words refer to the same person or thing.\n2. You can substitute "namely," "that is," or "which is" between them: Ἡσαΐου τοῦ προφήτου — "through Isaiah, namely the prophet" (Matt 3:3); τὸ σημεῖον τῆς περιτομῆς — "the sign of circumcision [= circumcision itself as the sign]" (Rom 4:11).\n\nCommon patterns:\n• Proper name + descriptive title in genitive: a person named, then identified by role (prophet, apostle, king).\n• Abstract head noun + concrete genitive content: the abstraction is identified by what it consists of — "the hope of glory" = the glory that is the hope (Col 1:27).\n\nDistinguish from Descriptive Genitive: apposition renames the head noun so that both refer to the same entity (Ἡσαΐου = τοῦ προφήτου, the same person). A descriptive genitive qualifies the head noun without naming the same thing — "king of the Jews" (Ἰουδαίων ≠ βασιλεύς, different referents). Test: can you substitute "namely" or "that is"? If yes, the genitive is appositive (GGBB pp. 95–100).', level: 'intermediate' })
       else if (cls === 'np' && syn?.h && syn?.gc === 'np')

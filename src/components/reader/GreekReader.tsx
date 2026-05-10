@@ -601,17 +601,19 @@ export function GreekReader() {
         }
       }
 
-      // 9. Enclosing head case: for genitive nouns nested inside an NP, the case of
-      // the head noun they modify. Distinguishes Genitive of Apposition (head is genitive)
-      // from Descriptive Genitive (head is nominative, dative, accusative, etc.).
+      // 9. Enclosing head case/pos/lexeme: for genitive nouns nested inside an NP, properties
+      // of the head noun they modify. Case distinguishes Genitive of Apposition from Descriptive.
+      // POS and lexeme enable Partitive Genitive detection (numerals, quantifiers, pronouns).
       let enclosingHeadCase: string | undefined
+      let enclosingHeadPos: string | undefined
+      let enclosingHeadLexeme: string | undefined
       if (kase === 'Genitive' && syn?.h === true && syn?.gc === 'np') {
-        if (prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article') {
-          // Articular: article immediately precedes, head noun is one word further back
-          enclosingHeadCase = prevWords[1]?.parses?.[0]?.casus ?? undefined
-        } else {
-          // Anarthrous: the immediately preceding word is the enclosing head noun itself
-          enclosingHeadCase = prevWords[0]?.parses?.[0]?.casus ?? undefined
+        const isArtPreceding = prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article'
+        const headWord = isArtPreceding ? prevWords[1] : prevWords[0]
+        if (headWord) {
+          enclosingHeadCase   = headWord.parses?.[0]?.casus          ?? undefined
+          enclosingHeadPos    = headWord.parses?.[0]?.partOfSpeech    ?? undefined
+          enclosingHeadLexeme = headWord.lexeme?.lexeme               ?? undefined
         }
       }
 
@@ -642,7 +644,7 @@ export function GreekReader() {
       const maculaClauseRule  = maculaEntry?.clauseRule  ?? null
       const maculaClauseRole  = maculaEntry?.clauseRole  ?? null
 
-      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole }
+      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole }
 
       const menuW = 380, menuH = 520
       const nx = x + menuW > window.innerWidth  ? x - menuW : x
