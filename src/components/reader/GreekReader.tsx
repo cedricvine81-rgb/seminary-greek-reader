@@ -514,7 +514,7 @@ export function GreekReader() {
       // 2. Preceding conjunction (ἵνα, ἐάν, εἰ, ὥστε, πρίν, etc.) for verbs and infinitives
       let precedingConj: string | null = null
       if (mood === 'Subjunctive' || mood === 'Indicative' || mood === 'Infinitive') {
-        const CONJUNCTIONS = new Set(['ἵνα', 'ὅπως', 'ἐάν', 'εἰ', 'ὡς', 'ὅτε', 'ἄν', 'ὥστε', 'πρίν'])
+        const CONJUNCTIONS = new Set(['ἵνα', 'ὅπως', 'ἐάν', 'εἰ', 'ὡς', 'ὅτε', 'ὅταν', 'ἄν', 'ὥστε', 'πρίν'])
         for (const pw of prevWords.slice(0, 6)) {
           const lex = pw.lexeme?.lexeme ?? pw.surface
           if (CONJUNCTIONS.has(lex)) { precedingConj = lex; break }
