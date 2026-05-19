@@ -251,7 +251,7 @@ export function getWallaceCategories(
       // 1st/2nd person personal pronouns (μου, σου, ἡμῶν, ὑμῶν) store the
       // person number ('1', '2') in the casus field rather than 'Genitive'.
       // These forms are genitive by morphology and are virtually always possessive.
-      if (pos === 'Personal Pronoun' && (kase === '1' || kase === '2' || kase === '3')) {
+      if (pos === 'Personal Pronoun' && (kase === '1' || kase === '2' || kase === '3') && parse.number === 'G') {
         nomCats.push({ name: 'Possessive Genitive', desc: 'In the GNT, personal pronouns in the genitive (μου, σου, αὐτοῦ/αὐτῆς, ἡμῶν, ὑμῶν, αὐτῶν) are used almost exclusively as possessives — "my," "your," "his/her," "our," "their." Wallace identifies this as the most straightforward use of the genitive pronoun: the pronoun simply indicates the possessor of the head noun. No further contextual testing is needed in most cases (GGBB p. 81).', level: 'beginner' })
       }
       else if (role === 's')
