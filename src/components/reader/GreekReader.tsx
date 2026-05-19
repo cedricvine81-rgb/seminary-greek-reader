@@ -758,7 +758,7 @@ export function GreekReader() {
           </button>
 
           {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl shadow-xl p-4 space-y-5 overflow-y-auto max-h-[80vh]">
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl p-4 space-y-5 overflow-y-auto max-h-[80vh]">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-800">Reader Settings</span>
                 <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600">

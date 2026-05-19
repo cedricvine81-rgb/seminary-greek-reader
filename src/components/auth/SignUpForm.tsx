@@ -36,7 +36,7 @@ export function SignUpForm() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Sign-up failed')
-      router.push(role === 'INSTRUCTOR' ? '/instructor' : '/student')
+      router.push('/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-up failed')
     } finally {

@@ -20,25 +20,33 @@ const _chapterCache = new Map<string, { book: BiblicalBook; chapter: number; ver
 
 type GlossEntry = { gloss: string; partOfSpeech: string; strongs?: string }
 let _glossMap: Map<string, GlossEntry> | null = null
+let _strongsMap: Map<string, GlossEntry> | null = null
 
-function getGlossMap(): Map<string, GlossEntry> {
-  if (_glossMap) return _glossMap
+function buildGlossMaps() {
+  if (_glossMap && _strongsMap) return
   _glossMap = new Map()
+  _strongsMap = new Map()
   try {
+    // Full Strong's lexicon (STEPBible TBESG, CC BY 4.0) — covers NT + LXX
+    const strongs = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/lexicon-strongs-greek.json'), 'utf8')) as Record<string, { lexeme: string; gloss: string }>
+    for (const [strongsKey, entry] of Object.entries(strongs)) {
+      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: '', strongs: strongsKey }
+      if (!_strongsMap.has(strongsKey)) _strongsMap.set(strongsKey, ge)
+      if (entry.lexeme && !_glossMap.has(entry.lexeme)) _glossMap.set(entry.lexeme, ge)
+    }
+    // NT frequency vocabulary overlaid last — richer partOfSpeech + frequency data
     const v50 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-50-plus.json'), 'utf8'))
     const v30 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-30-plus.json'), 'utf8'))
     for (const entry of [...v50, ...v30]) {
-      if (!_glossMap.has(entry.lexeme)) {
-        _glossMap.set(entry.lexeme, {
-          gloss: entry.gloss,
-          partOfSpeech: entry.partOfSpeech,
-          strongs: entry.strongs,
-        })
-      }
+      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: entry.partOfSpeech, strongs: entry.strongs }
+      _glossMap.set(entry.lexeme, ge)
+      if (entry.strongs) _strongsMap.set(entry.strongs, ge)
     }
   } catch { /* seed files missing in production — glosses just won't show */ }
-  return _glossMap
 }
+
+function getGlossMap(): Map<string, GlossEntry> { buildGlossMaps(); return _glossMap! }
+function getStrongsMap(): Map<string, GlossEntry> { buildGlossMaps(); return _strongsMap! }
 
 // ─── Books index ──────────────────────────────────────────────────────────────
 
@@ -91,6 +99,7 @@ interface RawWord {
 
 function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
   const gloss = getGlossMap().get(raw.lemma)
+    ?? (raw.strongs ? getStrongsMap().get(`G${raw.strongs}`) : undefined)
   const fakeId = `lex-${raw.lemma}`
 
   const lexeme: LexicalEntry = {
