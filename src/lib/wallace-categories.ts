@@ -478,40 +478,40 @@ export function getWallaceCategories(
   // ══════════════════════════════════════════════════════════════════════════
   // STEP 7 — PARTICIPLE
   // ══════════════════════════════════════════════════════════════════════════
+  let isSubstantivalParticiple = false
   if (isVerb && mood === 'Participle') {
     if (syn?.periph && syn?.c === 'vp')
       cats.push({ name: 'Periphrastic Participle', desc: 'In the GNT, periphrastic constructions (εἰμί + participle) are relatively common, especially in Luke-Acts and the Johannine letters. A present periphrastic (ἦν + present participle) stresses ongoing action: "he was teaching" (ἦν διδάσκων, Luke 5:17). A perfect periphrastic (ἦν + perfect participle) emphasizes a past completed state persisting into the narrative present. Luke uses periphrastics more than any other GNT author, often for stylistic vividness (GGBB p. 647).', level: 'intermediate' })
     else if (kase === 'Genitive' && cls === 'cl') {
       if (ctx?.hasGenitiveAbsSubject)
         cats.push({ name: 'Genitive Absolute', desc: 'In the GNT, the genitive absolute consists of a genitive noun or pronoun (the subject) paired with this genitive participle, forming a clause that is grammatically independent of the main sentence. Neither the subject nor the participle is syntactically connected to any element in the main clause — this independence is the defining feature.\n\nIdentification steps:\n1. Both the participle and its subject are in the genitive.\n2. The subject of the participle is not the same as (or co-referential with) the subject of the main verb.\n3. The construction sets a circumstantial backdrop — most commonly temporal.\n\nTranslation: "while…", "when…", or "after…" depending on whether the action is simultaneous with or prior to the main verb. The genitive absolute is especially frequent in narrative sections of the Gospels and Acts (e.g., αὐτοῦ ἐνθυμηθέντος, Matt 1:20 — "while he was considering these things") (GGBB p. 654).', level: 'intermediate' })
-      else
+      else {
         cats.push({ name: 'Substantival Participle (Anarthrous)', desc: 'In the GNT, participles can function as nouns without the article, though the articular participle is far more common for this use. The anarthrous substantival participle typically fills a genitive slot — "the voice of one crying" (φωνὴ βοῶντος, Matt 3:3, citing Isa 40:3). Here the genitive participle names the actor or action that defines the head noun, equivalent to a genitive noun phrase.\n\nDistinguish from the genitive absolute: the absolute requires a genitive subject paired with the participle (a noun or pronoun that is not co-referential with the main clause subject). When no such genitive subject is present, the participle more likely functions substantivally — naming a person or action in the genitive case.\n\nAnarthrous substantival participles are more common in quotations from the LXX and in proverbial or general statements (GGBB pp. 619–620).', level: 'intermediate' })
+        isSubstantivalParticiple = true
+      }
     }
     else if (role === 'v' && cls === 'cl' && syn?.gc === 'np') {
-      if (syn?.gr)
-        // The participial clause has a grammatical role in its grandparent context → it functions as a noun
+      if (syn?.gr) {
         cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the articular substantival participle functions as a noun by using the article to nominalize an entire participial clause: τὸ ῥηθέν ("the thing spoken," Matt 1:22), τὸ γεγραμμένον ("what has been written"), τὰ ὑπάρχοντα ("one\'s possessions"). The article converts the clause into a nominal unit that can serve as subject, object, appositive, or any other nominal role in the sentence. This is distinct from the common ὁ πιστεύων ("the one who believes") pattern, which refers to a person; the neuter articular participle (τό + participle) typically refers to an action or content. The grandparent NP\'s role in the clause (gr) indicates how the nominalized unit functions (GGBB pp. 619–621).', level: 'beginner' })
-      else if ((ctx?.precedingArticle || ctx?.isArticular) && !ctx?.nounBeforeArticle)
-        // Article immediately before the participle, no noun/adj before that article →
-        // the article nominalizes the participle itself (substantival), not an attributed head noun.
-        // Covers patterns like πᾶς ὁ βλέπων (Matt 5:28) where an adjective precedes but no noun owns the article.
-        // Uses ctx.isArticular as a fallback since it is computed independently of the mood === 'Participle' gate.
+        isSubstantivalParticiple = true
+      }
+      else if ((ctx?.precedingArticle || ctx?.isArticular) && !ctx?.nounBeforeArticle) {
         cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the articular substantival participle functions as a noun: the article directly precedes the participle and nominalizes it, making the entire participial unit refer to a person or class — ὁ πιστεύων ("the one who believes"), πᾶς ὁ βλέπων ("everyone who looks," Matt 5:28). Any adjective that precedes the article (like πᾶς) modifies the nominalized participial clause rather than serving as its head noun.\n\nThis is one of the most productive constructions in the GNT, especially in John and the Synoptics, where it defines a class of persons by their relationship to an action (GGBB pp. 619–621).', level: 'beginner' })
+        isSubstantivalParticiple = true
+      }
       else
-        // The participial clause modifies a head noun → attributive/adjectival function
         cats.push({ name: 'Adjectival (Attributive) Participle', desc: 'In the GNT, the attributive participle is used with the article to modify a specific noun in the clause, functioning like a relative clause — "the one who is about to come" (ὁ μέλλων ἔρχεσθαι, Matt 11:14), "the scribes who came down from Jerusalem" (οἱ ἀπὸ Ἱεροσολύμων καταβάντες, Mark 3:22). It restricts or defines its head noun rather than asserting something independently.\n\nTwo attributive positions:\n1. Article + participle + noun: ὁ πιστὸς δοῦλος ("the faithful servant")\n2. Noun + article + participle: ὁ δοῦλος ὁ πιστός (same meaning, more emphatic)\n\nContrast with the adverbial (circumstantial) participle, which modifies the verb and stands without an article (GGBB p. 617).', level: 'beginner' })
     }
-    else if (role === 's' || role === 'o' || role === 'p')
+    else if (role === 's' || role === 'o' || role === 'p') {
       cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the substantival participle functions as a noun and is most commonly articular, referring to a class of persons defined by the verbal action: ὁ πιστεύων ("the one who believes"), οἱ σῳζόμενοι ("those who are being saved"). This construction is widespread in John, Paul, and the Synoptics and often carries theological definition — describing believers, those who obey, or those who belong to Christ (GGBB p. 619).', level: 'beginner' })
+      isSubstantivalParticiple = true
+    }
     else if (cls === 'np') {
-      if (ctx?.precedingArticle && !ctx?.nounBeforeArticle)
-        // Article immediately before the participle, no noun before that article →
-        // the article nominalizes the participle itself (substantival use).
-        // Any noun that follows stands in apposition to the substantival participle.
+      if (ctx?.precedingArticle && !ctx?.nounBeforeArticle) {
         cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the articular substantival participle functions as a noun: the article directly precedes the participle and nominalizes it, making the entire participial unit refer to a person or class — ὁ πιστεύων ("the one who believes"), ὁ τεχθεὶς ("the one who was born," Matt 2:2). Any noun that follows (e.g., βασιλεὺς τῶν Ἰουδαίων) stands in apposition to the substantival participle rather than as its head. This is one of the most productive constructions in the GNT: John uses it to define believers (ὁ πιστεύων), Paul uses it for theological description, and the Synoptics use it in narrative identification (GGBB pp. 619–621).', level: 'beginner' })
+        isSubstantivalParticiple = true
+      }
       else if (ctx?.precedingArticle && ctx?.nounBeforeArticle)
-        // Noun + Article + Participle (second attributive position): the noun
-        // owns its own article that also governs the following participle.
         cats.push({ name: 'Adjectival (Attributive) Participle', desc: 'In the GNT, the attributive participle in the second position follows the pattern Noun + Article + Participle, where the article and participle together modify the preceding noun — τὸ ὕδωρ τὸ ζῶν ("the living water," John 4:10), ὁ δοῦλος ὁ πιστός ("the faithful servant"). The noun and the article-participle group agree in case, number, and gender. This position is more emphatic than the first position (article + participle + noun) and draws attention to the attributive quality. It functions like a relative clause restricting the noun (GGBB p. 617).', level: 'beginner' })
       else
         cats.push({ name: 'Adjectival (Attributive) Participle', desc: 'In the GNT, the attributive participle most commonly appears in the articular position (article + participle qualifying a noun) and functions like a relative clause. It is common in Johannine and Pauline literature: τὸ ὕδωρ τὸ ζῶν ("the living water," John 4:10), τοῖς ἀγαπῶσιν τὸν θεόν ("to those who love God," Rom 8:28). It restricts or describes the noun rather than asserting something about it (GGBB p. 617).', level: 'beginner' })
@@ -524,9 +524,27 @@ export function getWallaceCategories(
       cats.push({ name: 'Adverbial (Circumstantial) Participle', desc: "In the GNT, the adverbial participle is the most common participle use. It is typically anarthrous and relates to the main verb by expressing the circumstance — time, cause, means, manner, condition, concession, or purpose — under which the main action occurs. Greek readers determine the specific relationship from context; the tense of the participle does not mechanically determine the relationship. Translation typically begins with 'while,' 'after,' 'because,' 'by,' or 'although' (GGBB p. 622).", level: 'beginner' })
       cats.push({ name: 'Adverbial Participle — Identifying the Use', desc: 'To determine which adverbial relationship this participle expresses, apply these tests in order:\n\n1. Temporal (most common): When does the main action occur? An aorist participle typically precedes the main verb in time ("after doing X, he did Y"); a present participle is typically contemporaneous ("while doing X, he did Y"). Translate: "after," "when," "while."\n\n2. Causal: Why does the main action occur? The participle gives the reason. Common when the participle precedes the main verb and explains it. Translate: "because," "since."\n\n3. Means: How is the main action accomplished? The participle names the instrument or method. Translate: "by doing X." Especially common in John and Acts for the means of a sign or action.\n\n4. Manner: In what way? The participle describes the style or quality of the action. Translate: "doing X" or as an adverb. Closely related to means; manner emphasizes the quality, means the method.\n\n5. Conditional: Under what condition? The participle functions like the protasis of a conditional sentence. Translate: "if." Identified when the action of the participle must precede or accompany the main verb as a condition.\n\n6. Concessive: Despite what? The action of the main verb is surprising in light of the participle. Translate: "although," "even though." Often indicated by context of contrast.\n\n7. Purpose: For what goal? The participle expresses intention, most naturally with future-oriented participles (rare in the GNT). Translate: "in order to."\n\nKey principle (Campbell / Wallace): the tense of the participle signals aspect — how the action is viewed — not its temporal relation to the main verb. Context is the decisive factor (GGBB pp. 622–640).', level: 'intermediate' })
     }
-    // Append case description after participle use — skip for genitive absolute
-    // participles (the case is already part of the construction label)
-    cats.push(...(kase === 'Genitive' && cls === 'cl' ? [] : partCaseCats))
+
+    // Append case-function description after the participle-use label.
+    // For substantival participles, replace the generic case label with a
+    // description of the clause role the participle fills by virtue of its case.
+    // Skip entirely for genitive absolute (case already embedded in the label).
+    if (kase === 'Genitive' && cls === 'cl') {
+      // genitive absolute — no case label needed
+    } else if (isSubstantivalParticiple) {
+      if (kase === 'Nominative')
+        cats.push({ name: 'Case Function — Subject', desc: 'In the GNT, a substantival participle in the nominative case functions as the subject of its clause. This is the most common case for the substantival participle: ὁ πιστεύων ("the one who believes") is the subject of whatever is predicated; πᾶς ὁ βλέπων γυναῖκα ("everyone who looks at a woman") is the subject of ἐμοίχευσεν (Matt 5:28). The nominative case marks the subject slot, and the article-participle unit fills it in place of a noun (GGBB p. 620).', level: 'beginner' })
+      else if (kase === 'Accusative')
+        cats.push({ name: 'Case Function — Direct Object', desc: 'In the GNT, a substantival participle in the accusative case functions as the direct object of a transitive verb. The article-participle unit receives the action of the governing verb in the same way a noun would: εἶδον τὸν ἐρχόμενον ("they saw the one who was coming"); βλέπω τοὺς ἀγαπῶντας τὸν θεόν ("I see those who love God"). The accusative case marks the object slot, and the participle clause fills it nominally (GGBB p. 620).', level: 'beginner' })
+      else if (kase === 'Genitive')
+        cats.push({ name: 'Case Function — Genitive Modifier', desc: 'In the GNT, a substantival participle in the genitive case functions as a modifier within a noun phrase — most commonly possessive or descriptive, identifying whose or what kind. The most frequent pattern is the anarthrous genitive participle: φωνὴ βοῶντος ("the voice of one crying," Matt 3:3). The genitive form fills the modifier slot of the enclosing noun phrase in the same way a genitive noun would. The genitive substantival participle is especially common in LXX-influenced texts and OT quotations (GGBB pp. 619–620).', level: 'beginner' })
+      else if (kase === 'Dative')
+        cats.push({ name: 'Case Function — Dative', desc: 'In the GNT, a substantival participle in the dative case fills a dative slot in its clause — most often as an indirect object or dative of interest. The article-participle unit names the person(s) to whom or for whom something pertains: τοῖς ἀγαπῶσιν τὸν θεόν ("to those who love God," Rom 8:28); τοῖς πιστεύουσιν ("for those who believe"). This dative pattern is especially productive in Paul and John for defining the community of faith (GGBB p. 620).', level: 'beginner' })
+      else
+        cats.push(...partCaseCats)
+    } else {
+      cats.push(...partCaseCats)
+    }
   }
 
   // ══════════════════════════════════════════════════════════════════════════
