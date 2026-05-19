@@ -491,10 +491,11 @@ export function getWallaceCategories(
       if (syn?.gr)
         // The participial clause has a grammatical role in its grandparent context → it functions as a noun
         cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the articular substantival participle functions as a noun by using the article to nominalize an entire participial clause: τὸ ῥηθέν ("the thing spoken," Matt 1:22), τὸ γεγραμμένον ("what has been written"), τὰ ὑπάρχοντα ("one\'s possessions"). The article converts the clause into a nominal unit that can serve as subject, object, appositive, or any other nominal role in the sentence. This is distinct from the common ὁ πιστεύων ("the one who believes") pattern, which refers to a person; the neuter articular participle (τό + participle) typically refers to an action or content. The grandparent NP\'s role in the clause (gr) indicates how the nominalized unit functions (GGBB pp. 619–621).', level: 'beginner' })
-      else if (ctx?.precedingArticle && !ctx?.nounBeforeArticle)
+      else if ((ctx?.precedingArticle || ctx?.isArticular) && !ctx?.nounBeforeArticle)
         // Article immediately before the participle, no noun/adj before that article →
         // the article nominalizes the participle itself (substantival), not an attributed head noun.
         // Covers patterns like πᾶς ὁ βλέπων (Matt 5:28) where an adjective precedes but no noun owns the article.
+        // Uses ctx.isArticular as a fallback since it is computed independently of the mood === 'Participle' gate.
         cats.push({ name: 'Substantival Participle', desc: 'In the GNT, the articular substantival participle functions as a noun: the article directly precedes the participle and nominalizes it, making the entire participial unit refer to a person or class — ὁ πιστεύων ("the one who believes"), πᾶς ὁ βλέπων ("everyone who looks," Matt 5:28). Any adjective that precedes the article (like πᾶς) modifies the nominalized participial clause rather than serving as its head noun.\n\nThis is one of the most productive constructions in the GNT, especially in John and the Synoptics, where it defines a class of persons by their relationship to an action (GGBB pp. 619–621).', level: 'beginner' })
       else
         // The participial clause modifies a head noun → attributive/adjectival function
