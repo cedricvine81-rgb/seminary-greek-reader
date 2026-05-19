@@ -510,6 +510,20 @@ export function GreekReader() {
           }
         }
       }
+      // Articular infinitive: PREP + τό + [μή/οὐ] + INFINITIVE
+      // The infinitive heads the articular clause, which is the PP object — so
+      // directlyInPP is false for the infinitive itself. Detect the pattern by
+      // scanning backwards through negation particles, then an article, then a preposition.
+      if (!governingPrep && mood === 'Infinitive') {
+        const NEGS = new Set(['μή', 'οὐ', 'οὐκ', 'οὐχ'])
+        let i = 0
+        while (i < prevWords.length && NEGS.has(prevWords[i].lexeme?.lexeme ?? prevWords[i].surface)) i++
+        if (i < prevWords.length && prevWords[i].parses?.[0]?.partOfSpeech === 'Article') {
+          i++
+          if (i < prevWords.length && prevWords[i].parses?.[0]?.partOfSpeech === 'Preposition')
+            governingPrep = prevWords[i].lexeme?.lexeme ?? prevWords[i].surface
+        }
+      }
 
       // 2. Preceding conjunction (ἵνα, ἐάν, εἰ, ὥστε, πρίν, etc.) for verbs and infinitives
       let precedingConj: string | null = null
@@ -666,12 +680,31 @@ export function GreekReader() {
         ? prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article'
         : false
 
+      // 13. Modal verb detection: for infinitives with role='o', check whether a
+      // modal/auxiliary verb governs it (→ Complementary Infinitive rather than
+      // Substantival Infinitive (Object)).
+      const MODAL_VERBS = new Set([
+        'δύναμαι', 'θέλω', 'ἐθέλω', 'βούλομαι', 'μέλλω', 'ἄρχομαι', 'ὀφείλω',
+        'δεῖ', 'ἔξεστιν', 'ζητέω', 'ἐπιτρέπω', 'ἀφίημι', 'πειράομαι',
+        'ἐπιχειρέω', 'τολμάω', 'δύνομαι',
+      ])
+      let nearbyModalVerb = false
+      if (mood === 'Infinitive') {
+        const NEGS = new Set(['μή', 'οὐ', 'οὐκ', 'οὐχ'])
+        for (const pw of prevWords.slice(0, 4)) {
+          const pwLex = pw.lexeme?.lexeme ?? pw.surface
+          if (MODAL_VERBS.has(pwLex)) { nearbyModalVerb = true; break }
+          if (NEGS.has(pwLex)) continue  // skip negations
+          if (pw.parses?.[0]?.partOfSpeech === 'Verb') break  // non-modal verb — stop
+        }
+      }
+
       const maculaRole        = maculaEntry?.role        ?? null
       const maculaPhraseClass = maculaEntry?.phraseClass ?? null
       const maculaClauseRule  = maculaEntry?.clauseRule  ?? null
       const maculaClauseRole  = maculaEntry?.clauseRole  ?? null
 
-      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole, mainVerbTense }
+      const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole, mainVerbTense, nearbyModalVerb }
 
       const menuW = 380, menuH = 520
       const nx = x + menuW > window.innerWidth  ? x - menuW : x
