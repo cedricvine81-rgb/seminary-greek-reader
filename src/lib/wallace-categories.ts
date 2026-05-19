@@ -248,7 +248,13 @@ export function getWallaceCategories(
     }
 
     if (!FULL_CASES.has(kase) && isNominal) {
-      if (role === 's')
+      // 1st/2nd person personal pronouns (μου, σου, ἡμῶν, ὑμῶν) store the
+      // person number ('1', '2') in the casus field rather than 'Genitive'.
+      // These forms are genitive by morphology and are virtually always possessive.
+      if (pos === 'Personal Pronoun' && (kase === '1' || kase === '2' || kase === '3')) {
+        nomCats.push({ name: 'Possessive Genitive', desc: 'In the GNT, personal pronouns in the genitive (μου, σου, αὐτοῦ/αὐτῆς, ἡμῶν, ὑμῶν, αὐτῶν) are used almost exclusively as possessives — "my," "your," "his/her," "our," "their." Wallace identifies this as the most straightforward use of the genitive pronoun: the pronoun simply indicates the possessor of the head noun. No further contextual testing is needed in most cases (GGBB p. 81).', level: 'beginner' })
+      }
+      else if (role === 's')
         nomCats.push({ name: 'Subject', desc: 'In the GNT, this indeclinable proper name functions as the subject — the nominative whose action or state the verb describes. Since it carries no case ending, the subject role is confirmed by verb agreement, word order, or a coreferential pronoun. The subject answers "who?" or "what?" before the verb (GGBB p. 38).', level: 'beginner' })
       else if (role === 'o')
         nomCats.push({ name: 'Direct Object', desc: 'In the GNT, indeclinable proper names serving as direct object are identified by clause structure rather than case ending. Word order and the transitivity of the verb confirm the object function (GGBB p. 179).', level: 'beginner' })
