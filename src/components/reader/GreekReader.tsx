@@ -121,10 +121,10 @@ export function GreekReader() {
   const [fontSize, setFontSize]             = useState<FontSize>('md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
   const [translationVerses, setTranslationVerses] = useState<Record<string, string>>({})
-  const [wallaceOn, setWallaceOn]           = useState(false)
-  const [proielOn,  setProielOn]            = useState(false)
-  const [gbiOn,     setGbiOn]              = useState(false)
-  const [absOn,     setAbsOn]              = useState(false)
+  const [wallaceOn, setWallaceOn]           = useState(true)
+  const [proielOn,  setProielOn]            = useState(true)
+  const [gbiOn,     setGbiOn]              = useState(true)
+  const [absOn,     setAbsOn]              = useState(true)
 
   type GntEdition = 'tischendorf' | 'nestle1904'
   const [gntEdition, setGntEdition]         = useState<GntEdition>('tischendorf')
