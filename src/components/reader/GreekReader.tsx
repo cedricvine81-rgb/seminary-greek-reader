@@ -776,11 +776,10 @@ export function GreekReader() {
   const parallelLangInfo = PARALLEL_LANGS.find(l => l.code === parallelLang)
 
   return (
-    <div className="flex flex-col h-full gap-3">
+    <div className="flex flex-col h-full gap-2">
 
-      {/* ── Heading row with settings ── */}
-      <div className="flex-none flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-900">Biblical Greek Reader</h1>
+      {/* ── Settings button row ── */}
+      <div className="flex-none flex items-center justify-end">
         <div ref={settingsRef} className="relative">
           <button
             title="Settings"
