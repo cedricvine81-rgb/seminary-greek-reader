@@ -16,7 +16,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
           <div className="w-10 h-8 bg-brand-800 rounded-lg flex items-center justify-center">
-            <span className="text-parchment-100 font-serif text-base font-bold tracking-tight">ΓΣ</span>
+            <span className="text-parchment-100 font-serif text-base font-bold tracking-tight">ΣΓ</span>
           </div>
           <span className="font-semibold text-gray-900 group-hover:text-brand-700 transition-colors hidden sm:block">
             Seminary Greek
