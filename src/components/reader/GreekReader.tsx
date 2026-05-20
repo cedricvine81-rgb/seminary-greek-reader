@@ -71,7 +71,8 @@ const FONT_SIZE_MAP: Record<FontSize, string> = {
 }
 
 const PARALLEL_LANGS = [
-  { code: 'en', label: 'English', sub: 'World English Bible' },
+  { code: 'en',  label: 'English', sub: 'World English Bible' },
+  { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible' },
   { code: 'es', label: 'Spanish', sub: 'Reina-Valera 1909' },
   { code: 'fr', label: 'French', sub: 'Louis Segond 1910' },
   { code: 'pt', label: 'Portuguese', sub: 'João Ferreira de Almeida (ARC)' },

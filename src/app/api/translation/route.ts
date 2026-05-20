@@ -46,11 +46,30 @@ export async function GET(req: NextRequest) {
   }
 
   const bookNr = OSIS_TO_BOOK[osisId]
-  const translation = LANG_TO_TRANSLATION[lang]
+  if (!bookNr) return NextResponse.json({ verses: {} })
 
-  if (!bookNr || !translation) {
-    return NextResponse.json({ verses: {} })
+  // ── Berean Standard Bible via bolls.life ────────────────────────────────────
+  if (lang === 'bsb') {
+    const cacheKey = `bsb.${bookNr}.${chapter}`
+    if (_cache.has(cacheKey)) return NextResponse.json({ verses: _cache.get(cacheKey) })
+    try {
+      const res = await fetch(`https://bolls.life/get-text/BSB/${bookNr}/${chapter}/`, { next: { revalidate: 86400 } })
+      if (!res.ok) return NextResponse.json({ verses: {} })
+      const data: Array<{ verse: number; text: string }> = await res.json()
+      const verses: Record<string, string> = {}
+      for (const v of data) {
+        verses[`${osisId}.${chapter}.${v.verse}`] = v.text.trim()
+      }
+      _cache.set(cacheKey, verses)
+      return NextResponse.json({ verses })
+    } catch {
+      return NextResponse.json({ verses: {} })
+    }
   }
+
+  // ── Other translations via getbible.net ─────────────────────────────────────
+  const translation = LANG_TO_TRANSLATION[lang]
+  if (!translation) return NextResponse.json({ verses: {} })
 
   const cacheKey = `${translation}.${bookNr}.${chapter}`
   if (_cache.has(cacheKey)) {
