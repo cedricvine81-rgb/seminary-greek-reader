@@ -434,12 +434,7 @@ export function GreekReader() {
   }
 
   function handleWordClick(info: LexicalInfoPanel | null) {
-    const locked = lockedRef.current
-    const isSame = locked &&
-      info?.surface   === locked.surface &&
-      info?.reference === locked.reference
-    if (isSame) { setLockedInfo(null); setParsingInfo(null) }
-    else        { setLockedInfo(info); setParsingInfo(info) }
+    if (!lockedRef.current) setParsingInfo(info)
   }
 
   function handleWordRightClick(word: VerseWord, x: number, y: number) {
