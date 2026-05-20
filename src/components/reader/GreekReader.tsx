@@ -14,6 +14,28 @@ import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
 import { normalizeGreek } from '@/lib/greek-utils'
 
+// ── BSB alignment loader ───────────────────────────────────────────────────────
+
+interface BsbAlignmentVerse {
+  text: string
+  g2t: Record<string, number[]>   // Greek word position (string key) → BSB token indices
+  t2g: (number | null)[]          // BSB token index → Greek word position
+}
+type BsbAlignmentData = Record<string, BsbAlignmentVerse>
+
+let _bsbAlignCache: BsbAlignmentData | null = null
+let _bsbAlignLoading: Promise<BsbAlignmentData> | null = null
+
+function loadBsbAlignment(): Promise<BsbAlignmentData> {
+  if (_bsbAlignCache) return Promise.resolve(_bsbAlignCache)
+  if (_bsbAlignLoading) return _bsbAlignLoading
+  _bsbAlignLoading = fetch('/data/bsb-alignment.json')
+    .then(r => r.json())
+    .then((d: BsbAlignmentData) => { _bsbAlignCache = d; return d })
+    .catch(() => { _bsbAlignCache = {}; return {} as BsbAlignmentData })
+  return _bsbAlignLoading
+}
+
 // ── Lazy syntax.json loader ────────────────────────────────────────────────────
 let _syntaxCache: Record<string, SyntaxEntry> | null = null
 let _syntaxLoading = false
@@ -132,6 +154,10 @@ export function GreekReader() {
 
   type GntEdition = 'tischendorf' | 'nestle1904'
   const [gntEdition, setGntEdition]         = useState<GntEdition>('tischendorf')
+
+  // ── BSB alignment ────────────────────────────────────────────────────────────
+  const [bsbAlignment, setBsbAlignment]       = useState<BsbAlignmentData | null>(null)
+  const [bsbHighlightWordId, setBsbHighlightWordId] = useState<string | null>(null)
 
   // ── Syntax right-click menu ────────────────────────────────────────────────
   const [syntaxMenu, setSyntaxMenu] = useState<{
@@ -323,12 +349,19 @@ export function GreekReader() {
     }
   }, [parallelLang])
 
+  // Load BSB alignment data when BSB is selected.
+  useEffect(() => {
+    if (parallelLang === 'bsb' && !bsbAlignment) {
+      loadBsbAlignment().then(data => setBsbAlignment(data))
+    }
+  }, [parallelLang, bsbAlignment])
+
   // Fetch translation for every newly loaded section when a language is active.
   // After each fetch (success or failure) mark every verse in the section with
   // '' if no translation came back — prevents "Loading…" showing indefinitely
   // for deuterocanonical books or any chapter the API doesn't cover.
   useEffect(() => {
-    if (!parallelLang) return
+    if (!parallelLang || parallelLang === 'bsb') return  // BSB uses alignment data
     const allSections = [...gnt.sections, ...lxx.sections]
     for (const sec of allSections) {
       const key = `${parallelLang}.${sec.key}`
@@ -356,7 +389,7 @@ export function GreekReader() {
   // Fetch translations for search results (they aren't in gnt/lxx sections so the
   // effect above never covers them). Group by book+chapter to minimise requests.
   useEffect(() => {
-    if (!parallelLang || !searchResults?.length) return
+    if (!parallelLang || parallelLang === 'bsb' || !searchResults?.length) return
     const groups: Record<string, { osisId: string; chapter: number; verseIds: string[] }> = {}
     for (const v of searchResults) {
       const secKey = `${v.bookId}-${v.chapter}`
@@ -720,11 +753,17 @@ export function GreekReader() {
   // ── Render helpers ─────────────────────────────────────────────────────────────
 
   function renderVerseRow(v: BiblicalVerse) {
+    // Which Greek word (if any) is highlighted because the user is hovering an English BSB token
+    const bsbHighlightPos = bsbHighlightWordId?.startsWith(v.id + '.')
+      ? parseInt(bsbHighlightWordId.split('.').pop() ?? '0', 10)
+      : null
+
     const greek = (
       <GreekVerse
         key={v.id}
         verse={v}
         activeWordId={activeWordId}
+        bsbHighlightPos={bsbHighlightPos}
         highlighted={v.id === highlightedVerse}
         searchWord={wordSearchTerm ?? undefined}
         onWordHover={handleWordHover}
@@ -736,6 +775,50 @@ export function GreekReader() {
 
     if (!parallelLang) return greek
 
+    // ── BSB: use alignment data ───────────────────────────────────────────────
+    if (parallelLang === 'bsb') {
+      const alignVerse = bsbAlignment?.[v.id]
+
+      // Compute which BSB token indices to highlight (from hovered Greek word)
+      const highlightIdxs = new Set<number>()
+      if (activeWordId?.startsWith(v.id + '.')) {
+        const pos = parseInt(activeWordId.split('.').pop() ?? '0', 10)
+        const idxs = alignVerse?.g2t[pos]
+        if (idxs) idxs.forEach(i => highlightIdxs.add(i))
+      }
+
+      const englishCol = !alignVerse ? (
+        <p className="leading-relaxed text-gray-400 italic text-xs pt-0.5">Loading…</p>
+      ) : (
+        <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+          <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
+          {alignVerse.text.split(' ').map((tok, i) => {
+            const gkPos = alignVerse.t2g[i]
+            return (
+              <span
+                key={i}
+                className={highlightIdxs.has(i) ? 'text-red-600 font-medium' : 'cursor-default'}
+                onMouseEnter={() => {
+                  if (gkPos != null) setBsbHighlightWordId(`${v.id}.${gkPos}`)
+                }}
+                onMouseLeave={() => setBsbHighlightWordId(null)}
+              >
+                {tok}{' '}
+              </span>
+            )
+          })}
+        </p>
+      )
+
+      return (
+        <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">
+          {greek}
+          {englishCol}
+        </div>
+      )
+    }
+
+    // ── Other translations: plain verse string ─────────────────────────────────
     const transTxt = translationVerses[v.id]
     return (
       <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">

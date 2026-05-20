@@ -9,13 +9,14 @@ interface GreekWordProps {
   word: VerseWord
   reference: string
   isActive: boolean
+  isBsbHighlight?: boolean  // highlighted because the corresponding BSB English token is hovered
   searchWord?: string   // normalized search term — word is highlighted if it matches
   onHover: (info: LexicalInfoPanel | null) => void
   onClick: (info: LexicalInfoPanel | null) => void
   onRightClick?: (word: VerseWord, x: number, y: number) => void
 }
 
-export function GreekWord({ word, reference, isActive, searchWord, onHover, onClick, onRightClick }: GreekWordProps) {
+export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWord, onHover, onClick, onRightClick }: GreekWordProps) {
   function buildInfo(): LexicalInfoPanel | null {
     if (!word.lexeme) return null
     const parse = word.parses?.[0]
@@ -39,6 +40,7 @@ export function GreekWord({ word, reference, isActive, searchWord, onHover, onCl
         'greek-word cursor-pointer',
         isActive && 'active',
         isMatch && 'text-red-600 font-semibold',
+        isBsbHighlight && !isMatch && 'text-red-600 font-medium',
       )}
       onMouseEnter={() => onHover(buildInfo())}
       onMouseLeave={() => onHover(null)}

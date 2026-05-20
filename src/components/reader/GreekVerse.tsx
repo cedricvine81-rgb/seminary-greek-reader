@@ -6,6 +6,7 @@ import { GreekWord } from './GreekWord'
 interface GreekVerseProps {
   verse: BiblicalVerse
   activeWordId: string | null
+  bsbHighlightPos?: number | null  // Greek word position highlighted from BSB English hover
   highlighted: boolean
   searchWord?: string      // normalized — passed to each GreekWord for red highlighting
   onWordHover: (wordId: string | null, info: LexicalInfoPanel | null) => void
@@ -28,7 +29,7 @@ function VerseRef({ verse }: { verse: BiblicalVerse }) {
 }
 
 export function GreekVerse({
-  verse, activeWordId, highlighted, searchWord, onWordHover, onWordClick, onWordRightClick, verseRefCallback
+  verse, activeWordId, bsbHighlightPos, highlighted, searchWord, onWordHover, onWordClick, onWordRightClick, verseRefCallback
 }: GreekVerseProps) {
   const baseClass = `greek-text mb-2 rounded px-1 transition-colors ${highlighted ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`
 
@@ -45,6 +46,7 @@ export function GreekVerse({
               isActive={w.id === activeWordId}
               searchWord={searchWord}
 
+              isBsbHighlight={bsbHighlightPos != null && w.position === bsbHighlightPos}
               onHover={info => onWordHover(info ? w.id : null, info)}
               onClick={onWordClick}
               onRightClick={onWordRightClick}
