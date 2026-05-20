@@ -9,8 +9,8 @@
  *   {
  *     "Matt.1.1": {
  *       "text": "This is the record of the genealogy ...",
- *       "g2t": { "1": [0,1,2,3], "2": [4,5], ... },  // Greek pos → BSB token indices
- *       "t2g": [1, 1, 1, 1, 2, 2, ...]               // BSB token index → Greek pos (null = added word)
+ *       "g2t": { "1": [0,1,2,3], "2": [4,5], ... },  // app word pos → BSB token indices
+ *       "t2g": [1, 1, 1, 1, 2, 2, ...]               // BSB token index → app word pos (null = added word)
  *     }
  *   }
  *
@@ -37,6 +37,8 @@ const BASE_PATH = arg('--base') ?? '/tmp/OpenGNT_version3_3.csv'
 const BSB_PATH  = arg('--bsb')  ?? '/tmp/bsb_align.csv'
 const OUT_PATH  = arg('--out')  ??
   path.join(__dirname, '..', 'public', 'data', 'bsb-alignment.json')
+const GNT_DIR   = arg('--gnt')  ??
+  path.join(__dirname, '..', 'public', 'data', 'gnt')
 
 // ── Book number → OSIS ID ─────────────────────────────────────────────────────
 
@@ -65,13 +67,67 @@ function stripBrackets(text) {
     .trim()
 }
 
+// Normalize Greek for surface-form matching: strip diacritics, lowercase
+function normalizeGreek(str) {
+  return str.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+}
+
+// ── App GNT JSON loader ───────────────────────────────────────────────────────
+
+// Cache: "bookOsis_chapter" → Map<verseKey, { surface: string, pos: number }[]>
+const _appCache = new Map()
+
+function loadAppVerse(bookOsis, chapter, verseNum) {
+  const fileKey = `${bookOsis}_${chapter}`
+  if (!_appCache.has(fileKey)) {
+    const filePath = path.join(GNT_DIR, `${fileKey}.json`)
+    const verseMap = new Map()
+    try {
+      const data = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+      for (const v of (data.verses || [])) {
+        const words = (v.words || []).map(w => ({
+          surface: normalizeGreek(w.surface || ''),
+          pos: w.position,
+        }))
+        verseMap.set(v.verse, words)
+      }
+    } catch {
+      // file missing or parse error — leave verseMap empty
+    }
+    _appCache.set(fileKey, verseMap)
+  }
+  return _appCache.get(fileKey).get(verseNum) ?? []
+}
+
+// Build ogntPos → appPos mapping for a verse using occurrence-order surface matching.
+// Returns Map<ogntPos, appPos | null>
+function buildPosMap(ogntWords, appWords) {
+  // Group app words by normalized surface, in position order
+  const appBySurface = new Map()
+  for (const w of appWords) {
+    if (!appBySurface.has(w.surface)) appBySurface.set(w.surface, [])
+    appBySurface.get(w.surface).push(w.pos)
+  }
+
+  // Track occurrence index per surface for OpenGNT words
+  const ogntOccurrence = new Map()
+  const result = new Map()
+  for (const w of ogntWords) {
+    const occ = ogntOccurrence.get(w.surface) ?? 0
+    ogntOccurrence.set(w.surface, occ + 1)
+    const appPositions = appBySurface.get(w.surface) ?? []
+    result.set(w.ogntPos, appPositions[occ] ?? null)
+  }
+  return result
+}
+
 // ── Step 1: parse base text ───────────────────────────────────────────────────
 
 console.log('Reading base text…')
 const baseRaw = fs.readFileSync(BASE_PATH, 'utf8')
 const baseLines = baseRaw.split('\n')
 
-// ogntSort → { bookOsis, chapter, verse, posInVerse }
+// bgbSort → { bookOsis, chapter, verse, ogntPos, surface }
 const baseMap = new Map()
 const verseCounts = new Map()  // verseKey → running count of words seen
 
@@ -80,7 +136,7 @@ for (let i = 1; i < baseLines.length; i++) {
   if (!line.trim()) continue
 
   const cols = line.split('\t')
-  if (cols.length < 7) continue
+  if (cols.length < 8) continue
 
   // Column 5: 〔BGBsortI｜LTsortI｜STsortI〕 — use BGBsortI as join key with BSB alignment file
   const sortGroup = parseGroup(cols[5])
@@ -95,11 +151,17 @@ for (let i = 1; i < baseLines.length; i++) {
   const bookOsis = BOOK_MAP[bookNum]
   if (!bookOsis) continue  // skip OT / apocrypha entries
 
-  const verseKey = `${bookOsis}.${chapter}.${verse}`
-  const pos = (verseCounts.get(verseKey) ?? 0) + 1
-  verseCounts.set(verseKey, pos)
+  // Column 7: 〔OGNTk｜OGNTu｜OGNTa｜lexeme｜rmac｜sn〕
+  // OGNTa (index 2) is the accented surface form — matches the app's Tischendorf forms closely
+  const ogntGroup = parseGroup(cols[7])
+  const surfaceRaw = ogntGroup[2] || ogntGroup[1] || ogntGroup[0] || ''
+  const surface = normalizeGreek(surfaceRaw)
 
-  baseMap.set(bgbSort, { bookOsis, chapter, verse, pos })
+  const verseKey = `${bookOsis}.${chapter}.${verse}`
+  const ogntPos = (verseCounts.get(verseKey) ?? 0) + 1
+  verseCounts.set(verseKey, ogntPos)
+
+  baseMap.set(bgbSort, { bookOsis, chapter, verse, ogntPos, surface })
 }
 
 console.log(`  ${baseMap.size} words parsed`)
@@ -110,7 +172,7 @@ console.log('Reading BSB alignment…')
 const bsbRaw = fs.readFileSync(BSB_PATH, 'utf8')
 const bsbLines = bsbRaw.split('\n')
 
-// ogntSort → { bsbSort, bsbText }
+// bgbSort → { bsbSort, bsbText }
 const bsbMap = new Map()
 
 for (let i = 1; i < bsbLines.length; i++) {
@@ -129,22 +191,26 @@ for (let i = 1; i < bsbLines.length; i++) {
 
 console.log(`  ${bsbMap.size} entries parsed`)
 
-// ── Step 3: group by verse ────────────────────────────────────────────────────
+// ── Step 3: group by verse (with ogntPos and surface) ────────────────────────
 
 console.log('Grouping by verse…')
 
-// verseKey → [ { pos, bsbSort, bsbText }, ... ]
+// verseKey → [ { ogntPos, surface, bsbSort, bsbText }, ... ]
 const verses = new Map()
 
-for (const [ogntSort, wordInfo] of baseMap) {
-  const bsbInfo = bsbMap.get(ogntSort)
+for (const [bgbSort, wordInfo] of baseMap) {
+  const bsbInfo = bsbMap.get(bgbSort)
   if (!bsbInfo) continue
 
   const verseKey = `${wordInfo.bookOsis}.${wordInfo.chapter}.${wordInfo.verse}`
   if (!verses.has(verseKey)) verses.set(verseKey, [])
 
   verses.get(verseKey).push({
-    pos:     wordInfo.pos,
+    ogntPos: wordInfo.ogntPos,
+    surface: wordInfo.surface,
+    bookOsis: wordInfo.bookOsis,
+    chapter: wordInfo.chapter,
+    verse: wordInfo.verse,
     bsbSort: bsbInfo.bsbSort,
     bsbText: bsbInfo.bsbText,
   })
@@ -152,25 +218,35 @@ for (const [ogntSort, wordInfo] of baseMap) {
 
 console.log(`  ${verses.size} verses`)
 
-// ── Step 4: build per-verse alignment ─────────────────────────────────────────
+// ── Step 4: build per-verse alignment using app position mapping ──────────────
 
 console.log('Building alignment…')
 const output = {}
+let unmatchedWords = 0
 
-for (const [verseKey, words] of verses) {
+for (const [verseKey, ogntWords] of verses) {
+  // Load app words for this verse
+  const sample = ogntWords[0]
+  const appWords = loadAppVerse(sample.bookOsis, sample.chapter, sample.verse)
+
+  // Build ogntPos → appPos mapping
+  const posMap = buildPosMap(ogntWords, appWords)
+
   // Sort by English word order to reconstruct the BSB verse text
-  const ordered = [...words].sort((a, b) => a.bsbSort - b.bsbSort)
+  const ordered = [...ogntWords].sort((a, b) => a.bsbSort - b.bsbSort)
 
-  // Tokenise each BSB entry and record which Greek position produced each token
-  const tokens   = []  // { text: string, pos: number | null }
+  const tokens = []  // { text: string, appPos: number | null }
 
   for (const w of ordered) {
     const stripped = stripBrackets(w.bsbText)
     if (!stripped || stripped === '-' || stripped === '...' || stripped === 'vvv') continue
 
+    const appPos = posMap.get(w.ogntPos) ?? null
+    if (appPos === null) unmatchedWords++
+
     const parts = stripped.split(/\s+/).filter(Boolean)
     for (const part of parts) {
-      tokens.push({ text: part, pos: w.pos })
+      tokens.push({ text: part, appPos })
     }
   }
 
@@ -178,13 +254,13 @@ for (const [verseKey, words] of verses) {
 
   const text = tokens.map(t => t.text).join(' ')
 
-  // t2g: token index → Greek word position (null for tokens with no direct source)
-  const t2g = tokens.map(t => t.pos ?? null)
+  // t2g: token index → app word position (null for tokens with no direct source)
+  const t2g = tokens.map(t => t.appPos ?? null)
 
-  // g2t: Greek word position → array of token indices
+  // g2t: app word position → array of token indices
   const g2t = {}
   for (let i = 0; i < tokens.length; i++) {
-    const p = tokens[i].pos
+    const p = tokens[i].appPos
     if (p != null) {
       if (!g2t[p]) g2t[p] = []
       g2t[p].push(i)
@@ -202,3 +278,4 @@ fs.writeFileSync(OUT_PATH, JSON.stringify(output))
 
 const stat = fs.statSync(OUT_PATH)
 console.log(`Done — ${Object.keys(output).length} verses, ${(stat.size / 1024 / 1024).toFixed(1)} MB`)
+console.log(`  (${unmatchedWords} BSB tokens had no matching app word — expected for textual variants)`)
