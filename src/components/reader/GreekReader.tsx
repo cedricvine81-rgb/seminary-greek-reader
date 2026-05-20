@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { MoreVertical, X } from 'lucide-react'
+import { MoreVertical, X, ChevronRight } from 'lucide-react'
 import { SearchBar } from './SearchBar'
 import { GreekVerse } from './GreekVerse'
 import { ParsingPanel } from './ParsingPanel'
@@ -118,6 +118,9 @@ export function GreekReader() {
 
   // ── Settings ─────────────────────────────────────────────────────────────────
   const [showSettings, setShowSettings]     = useState(false)
+  const [controlsOpen, setControlsOpen]     = useState(false)
+  type ControlsTab = 'parsing' | 'syntax' | 'search' | null
+  const [controlsTab, setControlsTab]       = useState<ControlsTab>(null)
   const [fontSize, setFontSize]             = useState<FontSize>('md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
   const [translationVerses, setTranslationVerses] = useState<Record<string, string>>({})
@@ -876,32 +879,64 @@ export function GreekReader() {
 
               {/* Controls */}
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Controls</p>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Word information panel</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
-                      <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word — useful when you want to keep reading while referring back to a word.</li>
-                      <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
-                    </ul>
+                <button
+                  onClick={() => { setControlsOpen(v => !v); setControlsTab(null) }}
+                  className="w-full flex items-center justify-between group"
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 group-hover:text-gray-700 transition-colors">Controls</p>
+                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${controlsOpen ? 'rotate-90' : ''}`} />
+                </button>
+
+                {controlsOpen && (
+                  <div className="mt-2 space-y-1">
+                    {/* Parsing Panel */}
+                    <button
+                      onClick={() => setControlsTab(t => t === 'parsing' ? null : 'parsing')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'parsing' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                      <span>Parsing Panel</span>
+                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'parsing' ? 'rotate-90' : ''}`} />
+                    </button>
+                    {controlsTab === 'parsing' && (
+                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                        <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
+                        <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word — useful when you want to keep reading while referring back to a word.</li>
+                        <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
+                      </ul>
+                    )}
+
+                    {/* Syntax */}
+                    <button
+                      onClick={() => setControlsTab(t => t === 'syntax' ? null : 'syntax')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'syntax' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                      <span>Syntax</span>
+                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'syntax' ? 'rotate-90' : ''}`} />
+                    </button>
+                    {controlsTab === 'syntax' && (
+                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                        <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
+                        <li>The menu shows grammatical categories from the sources you have turned on — Wallace, PROIEL, GBI, and ABS Syntax.</li>
+                        <li>Each category includes a description and a reference to the relevant section in a standard grammar.</li>
+                      </ul>
+                    )}
+
+                    {/* Search */}
+                    <button
+                      onClick={() => setControlsTab(t => t === 'search' ? null : 'search')}
+                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'search' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
+                    >
+                      <span>Search</span>
+                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'search' ? 'rotate-90' : ''}`} />
+                    </button>
+                    {controlsTab === 'search' && (
+                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                        <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
+                        <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
+                      </ul>
+                    )}
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Syntax analysis</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
-                      <li>The menu shows grammatical categories from the sources you have turned on — Wallace, PROIEL, GBI, and ABS Syntax.</li>
-                      <li>Each category includes a description and a reference to the relevant section in a standard grammar.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Search</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
-                      <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
-                    </ul>
-                  </div>
-                </div>
+                )}
               </div>
 
               {/* Translations */}
