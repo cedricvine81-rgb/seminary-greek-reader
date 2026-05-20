@@ -154,16 +154,18 @@ export function GreekReader() {
   const lxxRef      = useRef(lxx)
   const gntQueueRef = useRef(gntQueue)
   const lxxQueueRef = useRef(lxxQueue)
-  const parsingRef  = useRef(parsingInfo)
-  const lockedRef   = useRef(lockedInfo)
+  const parsingRef    = useRef(parsingInfo)
+  const lockedRef     = useRef(lockedInfo)
+  const syntaxMenuRef = useRef(false)
   const fetchedTransKeys = useRef<Set<string>>(new Set())
 
   useEffect(() => { gntRef.current      = gnt },        [gnt])
   useEffect(() => { lxxRef.current      = lxx },        [lxx])
   useEffect(() => { gntQueueRef.current = gntQueue },   [gntQueue])
   useEffect(() => { lxxQueueRef.current = lxxQueue },   [lxxQueue])
-  useEffect(() => { parsingRef.current  = parsingInfo }, [parsingInfo])
-  useEffect(() => { lockedRef.current   = lockedInfo },  [lockedInfo])
+  useEffect(() => { parsingRef.current    = parsingInfo }, [parsingInfo])
+  useEffect(() => { lockedRef.current     = lockedInfo },  [lockedInfo])
+  useEffect(() => { syntaxMenuRef.current = !!syntaxMenu }, [syntaxMenu])
 
   // ── Close settings on outside click ─────────────────────────────────────────
 
@@ -430,7 +432,10 @@ export function GreekReader() {
 
   function handleWordHover(wordId: string | null, info: LexicalInfoPanel | null) {
     setActiveWordId(wordId)
-    if (!lockedRef.current) setParsingInfo(info)
+    if (!lockedRef.current) {
+      // Don't clear the panel when the mouse leaves due to the syntax menu appearing on top
+      if (info !== null || !syntaxMenuRef.current) setParsingInfo(info)
+    }
   }
 
   function handleWordClick(info: LexicalInfoPanel | null) {
@@ -869,6 +874,36 @@ export function GreekReader() {
                 </div>
               </div>
 
+              {/* Controls */}
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Controls</p>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs font-semibold text-gray-700 mb-1">Word information panel</p>
+                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
+                      <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
+                      <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word — useful when you want to keep reading while referring back to a word.</li>
+                      <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-gray-700 mb-1">Syntax analysis</p>
+                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
+                      <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
+                      <li>The menu shows grammatical categories from the sources you have turned on — Wallace, PROIEL, GBI, and ABS Syntax.</li>
+                      <li>Each category includes a description and a reference to the relevant section in a standard grammar.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-gray-700 mb-1">Search</p>
+                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
+                      <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
+                      <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
               {/* Translations */}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Translations</p>
@@ -897,36 +932,6 @@ export function GreekReader() {
                       <span className="block text-xs text-gray-400">{l.sub}</span>
                     </button>
                   ))}
-                </div>
-              </div>
-
-              {/* Controls */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Controls</p>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Word information panel</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
-                      <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word — useful when you want to keep reading while referring back to a word.</li>
-                      <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Syntax analysis</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
-                      <li>The menu shows grammatical categories from the sources you have turned on — Wallace, PROIEL, GBI, and ABS Syntax.</li>
-                      <li>Each category includes a description and a reference to the relevant section in a standard grammar.</li>
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-gray-700 mb-1">Search</p>
-                    <ul className="space-y-1 text-xs text-gray-500 leading-relaxed">
-                      <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
-                      <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
-                    </ul>
-                  </div>
                 </div>
               </div>
 
