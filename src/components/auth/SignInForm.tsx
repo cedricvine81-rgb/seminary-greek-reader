@@ -23,7 +23,7 @@ export function SignInForm() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Sign-in failed')
-      router.push('/dashboard')
+      router.push(data.role === 'INSTRUCTOR' ? '/instructor' : '/student')
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-in failed')
