@@ -4,7 +4,6 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { AssignmentBuilder } from '@/components/instructor/AssignmentBuilder'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { Select } from '@/components/ui/Select'
 
 export const metadata: Metadata = { title: 'New Assignment' }
 
@@ -29,10 +28,7 @@ export default async function NewAssignmentPage() {
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="New Assignment">
-      <AssignmentBuilder
-        courseId={courses[0].id}
-        courseLevel={courses[0].level}
-      />
+      <AssignmentBuilder courses={courses} />
     </DashboardShell>
   )
 }
