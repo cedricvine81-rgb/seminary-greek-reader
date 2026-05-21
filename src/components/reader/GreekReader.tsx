@@ -939,12 +939,12 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
-                    className="absolute right-full top-0 mr-2 z-[51] w-80 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[340px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
-                    <div className="space-y-1.5">
+                    <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
+                    <div className="space-y-2">
                       {([
                         { label: 'Tischendorf 8th', value: 'tischendorf' as const },
                         { label: 'Nestle 1904',     value: 'nestle1904'  as const },
@@ -952,7 +952,7 @@ export function GreekReader() {
                         <button
                           key={value}
                           onClick={() => setGntEdition(value)}
-                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                          className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
                             gntEdition === value
                               ? 'bg-brand-50 text-brand-700 font-medium'
                               : 'text-gray-600 hover:bg-gray-50'
@@ -978,12 +978,12 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'syntax' && (
                   <div
-                    className="absolute right-full top-0 mr-2 z-[51] w-96 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
-                    <div className="space-y-2">
+                    <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
+                    <div className="space-y-3">
                       {([
                         { label: 'Wallace',     value: wallaceOn, set: setWallaceOn as React.Dispatch<React.SetStateAction<boolean>> },
                         { label: 'PROIEL',      value: proielOn,  set: setProielOn  as React.Dispatch<React.SetStateAction<boolean>> },
@@ -991,13 +991,13 @@ export function GreekReader() {
                         { label: 'ABS Syntax',  value: absOn,     set: setAbsOn     as React.Dispatch<React.SetStateAction<boolean>> },
                       ]).map(({ label, value, set }) => (
                         <div key={label} className="flex items-center justify-between">
-                          <span className="text-sm text-gray-700">{label}</span>
-                          <div className="flex rounded-md border border-gray-200 overflow-hidden text-xs">
+                          <span className="text-base text-gray-700">{label}</span>
+                          <div className="flex rounded-md border border-gray-200 overflow-hidden text-sm">
                             {([true, false] as const).map(on => (
                               <button
                                 key={String(on)}
                                 onClick={() => set(on)}
-                                className={`px-3 py-1.5 transition-colors ${
+                                className={`px-4 py-1.5 transition-colors ${
                                   value === on
                                     ? 'bg-brand-50 text-brand-700 font-medium'
                                     : 'text-gray-500 hover:bg-gray-50'
@@ -1085,13 +1085,13 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
-                    className="absolute right-full top-0 mr-2 z-[51] w-96 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
                     <button
                       onClick={() => setParallelLang(null)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                      className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
                         parallelLang === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
@@ -1101,12 +1101,12 @@ export function GreekReader() {
                       <button
                         key={l.code}
                         onClick={() => setParallelLang(l.code)}
-                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                        className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
                           parallelLang === l.code ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                         }`}
                       >
-                        <span className="text-sm">{l.label}</span>
-                        <span className="block text-xs text-gray-400">{l.sub}</span>
+                        <span className="text-base">{l.label}</span>
+                        <span className="block text-sm text-gray-400">{l.sub}</span>
                       </button>
                     ))}
                   </div>
