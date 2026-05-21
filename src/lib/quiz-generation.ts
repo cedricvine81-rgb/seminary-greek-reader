@@ -53,6 +53,59 @@ export async function generateVocabQuestions(
   })
 }
 
+/**
+ * Generate vocabulary questions from a specific rank range (sortOrder min/max inclusive).
+ * Falls back to a broader BEGINNING pool if there aren't enough words in range.
+ */
+export async function generateVocabQuestionsInRange(
+  rankMin: number,
+  rankMax: number,
+  type: QuestionType,
+  count: number
+) {
+  const rangeItems = await prisma.vocabularyItem.findMany({
+    where: { level: 'BEGINNING', sortOrder: { gte: rankMin, lte: rankMax } },
+    include: { lexeme: true },
+  })
+
+  // Fallback pool for distractors (broader level pool)
+  const pool = await prisma.vocabularyItem.findMany({
+    where: { level: 'BEGINNING' },
+    include: { lexeme: true },
+    take: 200,
+  })
+
+  const picked = shuffle(rangeItems.length >= count ? rangeItems : pool).slice(0, count)
+  const allGlosses = pool.map(i => i.lexeme.gloss)
+  const allLexemes = pool.map(i => i.lexeme.lexeme)
+
+  return picked.map((item, idx) => {
+    if (type === 'GREEK_TO_ENGLISH') {
+      const distractors = pickDistractors(item.lexeme.gloss, allGlosses)
+      const options = shuffle([item.lexeme.gloss, ...distractors])
+      return {
+        position: idx + 1,
+        type: 'MULTIPLE_CHOICE' as QuestionType,
+        prompt: item.lexeme.lexeme,
+        correctAnswer: item.lexeme.gloss,
+        options,
+        points: 1,
+      }
+    } else {
+      const distractors = pickDistractors(item.lexeme.lexeme, allLexemes)
+      const options = shuffle([item.lexeme.lexeme, ...distractors])
+      return {
+        position: idx + 1,
+        type: 'MULTIPLE_CHOICE' as QuestionType,
+        prompt: item.lexeme.gloss,
+        correctAnswer: item.lexeme.lexeme,
+        options,
+        points: 1,
+      }
+    }
+  })
+}
+
 export async function generateMorphologyQuestions(count: number) {
   const parses = await prisma.morphParse.findMany({
     include: { word: true, lexeme: true },

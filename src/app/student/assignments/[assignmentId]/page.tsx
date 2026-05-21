@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizPlayer } from '@/components/student/QuizPlayer'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
@@ -42,7 +43,18 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         </div>
 
         {assignment.instructions && (
-          <p className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4">{assignment.instructions}</p>
+          <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
+            <p>{assignment.instructions}</p>
+            {assignment.instructions.includes('Vocabulary Builder') && (
+              <Link
+                href="/downloads/BGVB-2024.pdf"
+                target="_blank"
+                className="inline-flex items-center gap-1.5 text-brand-700 hover:text-brand-900 hover:underline font-medium"
+              >
+                ↓ Download Biblical Greek Vocabulary Builder (PDF)
+              </Link>
+            )}
+          </div>
         )}
 
         {assignment.type === 'TRANSLATION_EXERCISE' ? (

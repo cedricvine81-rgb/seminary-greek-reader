@@ -2,12 +2,13 @@
 import { useState, useMemo, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { addDays, format, getDay, parseISO } from 'date-fns'
-import { CalendarDays, FileText, CheckCircle2 } from 'lucide-react'
+import { CalendarDays, FileText, CheckCircle2, Download } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
+import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -333,6 +334,18 @@ function SemesterForm({ courses }: { courses: Course[] }) {
         </div>
       </fieldset>
 
+      {/* BGVB download */}
+      {form.source === 'VOCAB_BUILDER' && (
+        <a
+          href="/downloads/BGVB-2024.pdf"
+          download
+          className="inline-flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 hover:underline transition-colors"
+        >
+          <Download size={14} />
+          Download Biblical Greek Vocabulary Builder (PDF)
+        </a>
+      )}
+
       {/* Schedule preview */}
       {schedule.length > 0 && (
         <div className="border border-brand-100 rounded-xl overflow-hidden">
@@ -345,15 +358,23 @@ function SemesterForm({ courses }: { courses: Course[] }) {
             </span>
           </div>
           <div className="max-h-56 overflow-y-auto divide-y divide-gray-100">
-            {schedule.map((s, i) => (
-              <div key={i} className="flex items-center justify-between px-4 py-2 text-sm">
-                <span className="text-gray-500 w-20 shrink-0">Week {s.week}</span>
-                <span className="text-gray-800 flex-1">{s.label}</span>
-                <span className="text-xs text-gray-400 ml-2">
-                  {QUIZ_SOURCES.find(q => q.value === form.source)?.label.split(' ').slice(0, 3).join(' ')}
-                </span>
-              </div>
-            ))}
+            {schedule.map((s, i) => {
+              const useLessonMap = form.source === 'VOCAB_BUILDER' && form.quizType === 'VOCABULARY_QUIZ'
+              const lesson = useLessonMap ? getLessonForWeek(s.week) : null
+              return (
+                <div key={i} className="flex items-center justify-between px-4 py-2 text-sm">
+                  <span className="text-gray-500 w-20 shrink-0">Week {s.week}</span>
+                  <span className="text-gray-800 flex-1">{s.label}</span>
+                  {lesson ? (
+                    <span className="text-xs text-brand-600 ml-2 shrink-0">{lesson.section} · {lesson.pages}</span>
+                  ) : (
+                    <span className="text-xs text-gray-400 ml-2 shrink-0">
+                      {QUIZ_SOURCES.find(q => q.value === form.source)?.label.split(' ').slice(0, 3).join(' ')}
+                    </span>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       )}

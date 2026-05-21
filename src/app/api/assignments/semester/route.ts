@@ -1,13 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { generateVocabQuestions, generateMorphologyQuestions } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateVocabQuestionsInRange, generateMorphologyQuestions } from '@/lib/quiz-generation'
+import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
-// Maps quiz source → the level passed to the question generator.
-// VOCAB_BUILDER uses the same vocabulary pool as BEGINNING since the Vocab
-// Builder covers the most-frequent GNT words.
 const SOURCE_LEVEL: Record<string, CourseLevel> = {
   VOCAB_BUILDER:      'BEGINNING',
   BEGINNING_VOCAB:    'BEGINNING',
@@ -58,18 +56,7 @@ export async function POST(req: NextRequest) {
 
   const resolvedLevel: CourseLevel = SOURCE_LEVEL[source] ?? (level as CourseLevel)
   const qCount = Math.min(Math.max(Number(numQuestions) || 10, 1), 50)
-
-  // Build one assignment per schedule entry, batching question generation.
-  // Generate a shared question pool then slice per assignment to avoid
-  // hitting the DB once per quiz.
-  const totalNeeded = schedule.length * qCount
-  let questionPool: Awaited<ReturnType<typeof generateVocabQuestions>> = []
-
-  if (quizType === 'VOCABULARY_QUIZ') {
-    questionPool = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', totalNeeded)
-  } else if (quizType === 'MORPHOLOGY_QUIZ') {
-    questionPool = await generateMorphologyQuestions(totalNeeded)
-  }
+  const useLessonMap = source === 'VOCAB_BUILDER' && resolvedLevel === 'BEGINNING'
 
   let created = 0
 
@@ -77,6 +64,11 @@ export async function POST(req: NextRequest) {
     const weekNum = Number(item.week)
     const dueDate = new Date(item.dueDate)
     const sourceLabel = QUIZ_SOURCES_LABEL[source] ?? source
+    const lesson = useLessonMap ? getLessonForWeek(weekNum) : null
+
+    const instructions = lesson
+      ? `Source: ${sourceLabel} · ${lesson.section} (${lesson.pages})`
+      : `Source: ${sourceLabel}`
 
     const assignment = await prisma.assignment.create({
       data: {
@@ -87,16 +79,26 @@ export async function POST(req: NextRequest) {
         weekNumber: weekNum,
         dueDate,
         level: resolvedLevel,
-        instructions: `Source: ${sourceLabel}`,
+        instructions,
         isPublished: false,
       },
     })
 
-    const slice = questionPool.slice(created * qCount, (created + 1) * qCount)
+    let questions: Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
-    if (slice.length > 0) {
+    if (quizType === 'VOCABULARY_QUIZ') {
+      if (lesson) {
+        questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', qCount)
+      } else {
+        questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount)
+      }
+    } else if (quizType === 'MORPHOLOGY_QUIZ') {
+      questions = await generateMorphologyQuestions(qCount)
+    }
+
+    if (questions.length > 0) {
       await prisma.question.createMany({
-        data: slice.map(q => ({ ...q, assignmentId: assignment.id })),
+        data: questions.map(q => ({ ...q, assignmentId: assignment.id })),
       })
     }
 
