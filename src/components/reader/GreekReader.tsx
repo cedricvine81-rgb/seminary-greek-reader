@@ -160,7 +160,7 @@ export function GreekReader() {
   const [bsbHighlightWordId, setBsbHighlightWordId] = useState<string | null>(null)
 
   // ── Settings flyout ───────────────────────────────────────────────────────────
-  const [settingsFlyout, setSettingsFlyout] = useState<'translations' | 'contents' | null>(null)
+  const [settingsFlyout, setSettingsFlyout] = useState<'translations' | 'contents' | 'syntax' | null>(null)
 
   // ── Syntax right-click menu ────────────────────────────────────────────────
   const [syntaxMenu, setSyntaxMenu] = useState<{
@@ -471,7 +471,7 @@ export function GreekReader() {
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
 
-  function openFlyout(name: 'translations' | 'contents') {
+  function openFlyout(name: 'translations' | 'contents' | 'syntax') {
     if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current)
     setSettingsFlyout(name)
   }
@@ -931,68 +931,84 @@ export function GreekReader() {
                 onMouseLeave={closeFlyout}
               >
                 <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Contents</p>
-                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500' : ''}`} />
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Contents
+                    {gntEdition !== 'tischendorf' && <span className="ml-1.5 normal-case font-normal text-brand-600">(Nestle 1904)</span>}
+                  </p>
+                  <ChevronRight size={14} className={`text-gray-400 ${settingsFlyout === 'contents' ? 'text-brand-500' : ''}`} />
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
-                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-4"
+                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
-                    {/* GNT Edition */}
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">GNT Edition</p>
-                      <div className="space-y-1.5">
-                        {([
-                          { label: 'Tischendorf 8th', value: 'tischendorf' as const },
-                          { label: 'Nestle 1904',     value: 'nestle1904'  as const },
-                        ]).map(({ label, value }) => (
-                          <button
-                            key={value}
-                            onClick={() => setGntEdition(value)}
-                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                              gntEdition === value
-                                ? 'bg-brand-50 text-brand-700 font-medium'
-                                : 'text-gray-600 hover:bg-gray-50'
-                            }`}
-                          >
-                            {label}
-                          </button>
-                        ))}
-                      </div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
+                    <div className="space-y-1.5">
+                      {([
+                        { label: 'Tischendorf 8th', value: 'tischendorf' as const },
+                        { label: 'Nestle 1904',     value: 'nestle1904'  as const },
+                      ]).map(({ label, value }) => (
+                        <button
+                          key={value}
+                          onClick={() => setGntEdition(value)}
+                          className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                            gntEdition === value
+                              ? 'bg-brand-50 text-brand-700 font-medium'
+                              : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          {label}
+                        </button>
+                      ))}
                     </div>
+                  </div>
+                )}
+              </div>
 
-                    {/* Syntax sources */}
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Syntax</p>
-                      <div className="space-y-1.5">
-                        {([
-                          { label: 'Wallace',     value: wallaceOn, set: setWallaceOn as React.Dispatch<React.SetStateAction<boolean>> },
-                          { label: 'PROIEL',      value: proielOn,  set: setProielOn  as React.Dispatch<React.SetStateAction<boolean>> },
-                          { label: 'GBI',         value: gbiOn,     set: setGbiOn     as React.Dispatch<React.SetStateAction<boolean>> },
-                          { label: 'ABS Syntax',  value: absOn,     set: setAbsOn     as React.Dispatch<React.SetStateAction<boolean>> },
-                        ]).map(({ label, value, set }) => (
-                          <div key={label} className="flex items-center justify-between">
-                            <span className="text-sm text-gray-700">{label}</span>
-                            <div className="flex rounded-md border border-gray-200 overflow-hidden text-xs">
-                              {([true, false] as const).map(on => (
-                                <button
-                                  key={String(on)}
-                                  onClick={() => set(on)}
-                                  className={`px-2.5 py-1 transition-colors ${
-                                    value === on
-                                      ? 'bg-brand-50 text-brand-700 font-medium'
-                                      : 'text-gray-500 hover:bg-gray-50'
-                                  }`}
-                                >
-                                  {on ? 'On' : 'Off'}
-                                </button>
-                              ))}
-                            </div>
+              {/* Syntax flyout trigger */}
+              <div
+                className="relative"
+                onMouseEnter={() => openFlyout('syntax')}
+                onMouseLeave={closeFlyout}
+              >
+                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Syntax</p>
+                  <ChevronRight size={14} className={`text-gray-400 ${settingsFlyout === 'syntax' ? 'text-brand-500' : ''}`} />
+                </button>
+                {settingsFlyout === 'syntax' && (
+                  <div
+                    className="absolute left-full top-0 ml-1 z-[51] w-80 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
+                    onMouseEnter={keepFlyout}
+                    onMouseLeave={closeFlyout}
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
+                    <div className="space-y-2">
+                      {([
+                        { label: 'Wallace',     value: wallaceOn, set: setWallaceOn as React.Dispatch<React.SetStateAction<boolean>> },
+                        { label: 'PROIEL',      value: proielOn,  set: setProielOn  as React.Dispatch<React.SetStateAction<boolean>> },
+                        { label: 'GBI',         value: gbiOn,     set: setGbiOn     as React.Dispatch<React.SetStateAction<boolean>> },
+                        { label: 'ABS Syntax',  value: absOn,     set: setAbsOn     as React.Dispatch<React.SetStateAction<boolean>> },
+                      ]).map(({ label, value, set }) => (
+                        <div key={label} className="flex items-center justify-between">
+                          <span className="text-sm text-gray-700">{label}</span>
+                          <div className="flex rounded-md border border-gray-200 overflow-hidden text-xs">
+                            {([true, false] as const).map(on => (
+                              <button
+                                key={String(on)}
+                                onClick={() => set(on)}
+                                className={`px-3 py-1.5 transition-colors ${
+                                  value === on
+                                    ? 'bg-brand-50 text-brand-700 font-medium'
+                                    : 'text-gray-500 hover:bg-gray-50'
+                                }`}
+                              >
+                                {on ? 'On' : 'Off'}
+                              </button>
+                            ))}
                           </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
@@ -1069,7 +1085,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
-                    className="absolute left-full top-0 ml-1 z-[51] w-64 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1 overflow-y-auto max-h-[70vh]"
+                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
