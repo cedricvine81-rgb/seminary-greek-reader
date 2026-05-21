@@ -191,7 +191,7 @@ export function GreekReader() {
   const lockedRef     = useRef(lockedInfo)
   const syntaxMenuRef = useRef(false)
   const fetchedTransKeys = useRef<Set<string>>(new Set())
-  const flyoutTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
+
 
   useEffect(() => { gntRef.current      = gnt },        [gnt])
   useEffect(() => { lxxRef.current      = lxx },        [lxx])
@@ -471,15 +471,8 @@ export function GreekReader() {
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
 
-  function openFlyout(name: 'translations' | 'contents' | 'syntax') {
-    if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current)
-    setSettingsFlyout(name)
-  }
-  function closeFlyout() {
-    flyoutTimerRef.current = setTimeout(() => setSettingsFlyout(null), 150)
-  }
-  function keepFlyout() {
-    if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current)
+  function toggleFlyout(name: 'translations' | 'contents' | 'syntax') {
+    setSettingsFlyout(prev => prev === name ? null : name)
   }
 
   // ── Word interaction ───────────────────────────────────────────────────────────
@@ -925,23 +918,20 @@ export function GreekReader() {
               </div>
 
               {/* Contents flyout trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => openFlyout('contents')}
-                onMouseLeave={closeFlyout}
-              >
-                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <div className="relative">
+                <button
+                  onClick={() => toggleFlyout('contents')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide">
                     Contents
                     {gntEdition !== 'tischendorf' && <span className="ml-1.5 normal-case font-normal text-brand-600">(Nestle 1904)</span>}
                   </p>
-                  <ChevronRight size={14} className={`text-gray-400 ${settingsFlyout === 'contents' ? 'text-brand-500' : ''}`} />
+                  <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
                     className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
-                    onMouseEnter={keepFlyout}
-                    onMouseLeave={closeFlyout}
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
@@ -967,20 +957,17 @@ export function GreekReader() {
               </div>
 
               {/* Syntax flyout trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => openFlyout('syntax')}
-                onMouseLeave={closeFlyout}
-              >
-                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Syntax</p>
-                  <ChevronRight size={14} className={`text-gray-400 ${settingsFlyout === 'syntax' ? 'text-brand-500' : ''}`} />
+              <div className="relative">
+                <button
+                  onClick={() => toggleFlyout('syntax')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'syntax' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide">Syntax</p>
+                  <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'syntax' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'syntax' && (
                   <div
                     className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
-                    onMouseEnter={keepFlyout}
-                    onMouseLeave={closeFlyout}
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
                     <div className="space-y-3">
@@ -1071,23 +1058,20 @@ export function GreekReader() {
               </div>
 
               {/* Translations flyout trigger */}
-              <div
-                className="relative"
-                onMouseEnter={() => openFlyout('translations')}
-                onMouseLeave={closeFlyout}
-              >
-                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+              <div className="relative">
+                <button
+                  onClick={() => toggleFlyout('translations')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                >
+                  <p className="text-xs font-semibold uppercase tracking-wide">
                     Translations
                     {parallelLang && <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLangInfo?.label})</span>}
                   </p>
-                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500' : ''}`} />
+                  <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
                     className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-[80vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
-                    onMouseEnter={keepFlyout}
-                    onMouseLeave={closeFlyout}
                   >
                     <button
                       onClick={() => setParallelLang(null)}
