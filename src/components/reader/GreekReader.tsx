@@ -1085,7 +1085,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
-                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-[80vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
