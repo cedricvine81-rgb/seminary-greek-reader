@@ -55,8 +55,9 @@ export function SignInForm() {
 
       <Button type="submit" loading={loading} className="w-full">Sign In</Button>
 
-      <p className="text-center text-xs text-gray-500">
-        Demo: <code className="bg-gray-100 px-1 rounded">instructor@demo.edu</code> / <code className="bg-gray-100 px-1 rounded">instructor123</code>
+      <p className="text-center text-xs text-gray-500 border-t border-parchment-100 pt-3 mt-1">
+        Demo: <code className="bg-parchment-100 text-brand-800 px-1 rounded font-medium">instructor@demo.edu</code>
+        {' '}/ <code className="bg-parchment-100 text-brand-800 px-1 rounded font-medium">instructor123</code>
       </p>
     </form>
   )
