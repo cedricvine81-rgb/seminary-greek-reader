@@ -29,7 +29,7 @@ let _bsbAlignLoading: Promise<BsbAlignmentData> | null = null
 function loadBsbAlignment(): Promise<BsbAlignmentData> {
   if (_bsbAlignCache) return Promise.resolve(_bsbAlignCache)
   if (_bsbAlignLoading) return _bsbAlignLoading
-  _bsbAlignLoading = fetch('/data/bsb-alignment.json')
+  _bsbAlignLoading = fetch('/data/bsb-alignment.json?v=3')
     .then(r => r.json())
     .then((d: BsbAlignmentData) => { _bsbAlignCache = d; return d })
     .catch(() => { _bsbAlignCache = {}; return {} as BsbAlignmentData })
@@ -159,6 +159,9 @@ export function GreekReader() {
   const [bsbAlignment, setBsbAlignment]       = useState<BsbAlignmentData | null>(null)
   const [bsbHighlightWordId, setBsbHighlightWordId] = useState<string | null>(null)
 
+  // ── Settings flyout ───────────────────────────────────────────────────────────
+  const [settingsFlyout, setSettingsFlyout] = useState<'translations' | 'contents' | null>(null)
+
   // ── Syntax right-click menu ────────────────────────────────────────────────
   const [syntaxMenu, setSyntaxMenu] = useState<{
     word: VerseWord
@@ -188,6 +191,7 @@ export function GreekReader() {
   const lockedRef     = useRef(lockedInfo)
   const syntaxMenuRef = useRef(false)
   const fetchedTransKeys = useRef<Set<string>>(new Set())
+  const flyoutTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => { gntRef.current      = gnt },        [gnt])
   useEffect(() => { lxxRef.current      = lxx },        [lxx])
@@ -463,6 +467,19 @@ export function GreekReader() {
       setSearchResults(data.results ?? [])
       setHighlightedVerse(null)
     } finally { setSearchLoading(false) }
+  }
+
+  // ── Settings flyout helpers ────────────────────────────────────────────────────
+
+  function openFlyout(name: 'translations' | 'contents') {
+    if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current)
+    setSettingsFlyout(name)
+  }
+  function closeFlyout() {
+    flyoutTimerRef.current = setTimeout(() => setSettingsFlyout(null), 150)
+  }
+  function keepFlyout() {
+    if (flyoutTimerRef.current) clearTimeout(flyoutTimerRef.current)
   }
 
   // ── Word interaction ───────────────────────────────────────────────────────────
@@ -794,10 +811,11 @@ export function GreekReader() {
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
           {alignVerse.text.split(' ').map((tok, i) => {
             const gkPos = alignVerse.t2g[i]
+            const isHlit = highlightIdxs.has(i)
             return (
               <span
                 key={i}
-                className={highlightIdxs.has(i) ? 'text-red-600 font-medium' : 'cursor-default'}
+                style={isHlit ? { color: 'rgb(220 38 38)', fontWeight: 500, cursor: 'default' } : { cursor: 'default' }}
                 onMouseEnter={() => {
                   if (gkPos != null) setBsbHighlightWordId(`${v.id}.${gkPos}`)
                 }}
@@ -877,15 +895,15 @@ export function GreekReader() {
           </button>
 
           {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl p-4 space-y-5 overflow-y-auto max-h-[80vh]">
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-800">Reader Settings</span>
-                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600">
+                <span className="text-sm font-semibold text-gray-800">Settings</span>
+                <button onClick={() => { setShowSettings(false); setSettingsFlyout(null) }} className="text-gray-400 hover:text-gray-600">
                   <X size={15} />
                 </button>
               </div>
 
-              {/* Font size */}
+              {/* Text Size */}
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
                 <div className="flex items-center gap-3">
@@ -906,74 +924,92 @@ export function GreekReader() {
                 </div>
               </div>
 
-              {/* GNT Edition */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">GNT Edition</p>
-                <div className="space-y-1.5">
-                  {([
-                    { label: 'Tischendorf 8th', value: 'tischendorf' as const },
-                    { label: 'Nestle 1904',     value: 'nestle1904'  as const },
-                  ]).map(({ label, value }) => (
-                    <button
-                      key={value}
-                      onClick={() => setGntEdition(value)}
-                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                        gntEdition === value
-                          ? 'bg-brand-50 text-brand-700 font-medium'
-                          : 'text-gray-600 hover:bg-gray-50'
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Syntax sources */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Syntax</p>
-                <div className="space-y-1.5">
-                  {([
-                    { label: 'Wallace',     value: wallaceOn, set: setWallaceOn as React.Dispatch<React.SetStateAction<boolean>> },
-                    { label: 'PROIEL',      value: proielOn,  set: setProielOn  as React.Dispatch<React.SetStateAction<boolean>> },
-                    { label: 'GBI',         value: gbiOn,     set: setGbiOn     as React.Dispatch<React.SetStateAction<boolean>> },
-                    { label: 'ABS Syntax',  value: absOn,     set: setAbsOn     as React.Dispatch<React.SetStateAction<boolean>> },
-                  ]).map(({ label, value, set }) => (
-                    <div key={label} className="flex items-center justify-between">
-                      <span className="text-sm text-gray-700">{label}</span>
-                      <div className="flex rounded-md border border-gray-200 overflow-hidden text-xs">
-                        {([true, false] as const).map(on => (
+              {/* Contents flyout trigger */}
+              <div
+                className="relative"
+                onMouseEnter={() => openFlyout('contents')}
+                onMouseLeave={closeFlyout}
+              >
+                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">Contents</p>
+                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500' : ''}`} />
+                </button>
+                {settingsFlyout === 'contents' && (
+                  <div
+                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-4"
+                    onMouseEnter={keepFlyout}
+                    onMouseLeave={closeFlyout}
+                  >
+                    {/* GNT Edition */}
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">GNT Edition</p>
+                      <div className="space-y-1.5">
+                        {([
+                          { label: 'Tischendorf 8th', value: 'tischendorf' as const },
+                          { label: 'Nestle 1904',     value: 'nestle1904'  as const },
+                        ]).map(({ label, value }) => (
                           <button
-                            key={String(on)}
-                            onClick={() => set(on)}
-                            className={`px-2.5 py-1 transition-colors ${
-                              value === on
+                            key={value}
+                            onClick={() => setGntEdition(value)}
+                            className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                              gntEdition === value
                                 ? 'bg-brand-50 text-brand-700 font-medium'
-                                : 'text-gray-500 hover:bg-gray-50'
+                                : 'text-gray-600 hover:bg-gray-50'
                             }`}
                           >
-                            {on ? 'On' : 'Off'}
+                            {label}
                           </button>
                         ))}
                       </div>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Syntax sources */}
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Syntax</p>
+                      <div className="space-y-1.5">
+                        {([
+                          { label: 'Wallace',     value: wallaceOn, set: setWallaceOn as React.Dispatch<React.SetStateAction<boolean>> },
+                          { label: 'PROIEL',      value: proielOn,  set: setProielOn  as React.Dispatch<React.SetStateAction<boolean>> },
+                          { label: 'GBI',         value: gbiOn,     set: setGbiOn     as React.Dispatch<React.SetStateAction<boolean>> },
+                          { label: 'ABS Syntax',  value: absOn,     set: setAbsOn     as React.Dispatch<React.SetStateAction<boolean>> },
+                        ]).map(({ label, value, set }) => (
+                          <div key={label} className="flex items-center justify-between">
+                            <span className="text-sm text-gray-700">{label}</span>
+                            <div className="flex rounded-md border border-gray-200 overflow-hidden text-xs">
+                              {([true, false] as const).map(on => (
+                                <button
+                                  key={String(on)}
+                                  onClick={() => set(on)}
+                                  className={`px-2.5 py-1 transition-colors ${
+                                    value === on
+                                      ? 'bg-brand-50 text-brand-700 font-medium'
+                                      : 'text-gray-500 hover:bg-gray-50'
+                                  }`}
+                                >
+                                  {on ? 'On' : 'Off'}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Controls */}
               <div>
                 <button
                   onClick={() => { setControlsOpen(v => !v); setControlsTab(null) }}
-                  className="w-full flex items-center justify-between group"
+                  className="w-full flex items-center justify-between group px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 group-hover:text-gray-700 transition-colors">Controls</p>
                   <ChevronRight size={14} className={`text-gray-400 transition-transform ${controlsOpen ? 'rotate-90' : ''}`} />
                 </button>
 
                 {controlsOpen && (
-                  <div className="mt-2 space-y-1">
-                    {/* Parsing Panel */}
+                  <div className="mt-1 space-y-1">
                     <button
                       onClick={() => setControlsTab(t => t === 'parsing' ? null : 'parsing')}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'parsing' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
@@ -984,12 +1020,10 @@ export function GreekReader() {
                     {controlsTab === 'parsing' && (
                       <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
-                        <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word — useful when you want to keep reading while referring back to a word.</li>
+                        <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word.</li>
                         <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
                       </ul>
                     )}
-
-                    {/* Syntax */}
                     <button
                       onClick={() => setControlsTab(t => t === 'syntax' ? null : 'syntax')}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'syntax' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
@@ -1000,12 +1034,9 @@ export function GreekReader() {
                     {controlsTab === 'syntax' && (
                       <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
-                        <li>The menu shows grammatical categories from the sources you have turned on — Wallace, PROIEL, GBI, and ABS Syntax.</li>
-                        <li>Each category includes a description and a reference to the relevant section in a standard grammar.</li>
+                        <li>The menu shows categories from Wallace, PROIEL, GBI, and ABS Syntax.</li>
                       </ul>
                     )}
-
-                    {/* Search */}
                     <button
                       onClick={() => setControlsTab(t => t === 'search' ? null : 'search')}
                       className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'search' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
@@ -1023,35 +1054,47 @@ export function GreekReader() {
                 )}
               </div>
 
-              {/* Translations */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Translations</p>
-                <div className="space-y-1">
-                  <button
-                    onClick={() => setParallelLang(null)}
-                    className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                      parallelLang === null
-                        ? 'bg-brand-50 text-brand-700 font-medium'
-                        : 'text-gray-600 hover:bg-gray-50'
-                    }`}
+              {/* Translations flyout trigger */}
+              <div
+                className="relative"
+                onMouseEnter={() => openFlyout('translations')}
+                onMouseLeave={closeFlyout}
+              >
+                <button className="w-full flex items-center justify-between px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    Translations
+                    {parallelLang && <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLangInfo?.label})</span>}
+                  </p>
+                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500' : ''}`} />
+                </button>
+                {settingsFlyout === 'translations' && (
+                  <div
+                    className="absolute left-full top-0 ml-1 z-[51] w-64 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1 overflow-y-auto max-h-[70vh]"
+                    onMouseEnter={keepFlyout}
+                    onMouseLeave={closeFlyout}
                   >
-                    None
-                  </button>
-                  {PARALLEL_LANGS.map(l => (
                     <button
-                      key={l.code}
-                      onClick={() => setParallelLang(l.code)}
-                      className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
-                        parallelLang === l.code
-                          ? 'bg-brand-50 text-brand-700 font-medium'
-                          : 'text-gray-600 hover:bg-gray-50'
+                      onClick={() => setParallelLang(null)}
+                      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
+                        parallelLang === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
-                      <span className="text-sm">{l.label}</span>
-                      <span className="block text-xs text-gray-400">{l.sub}</span>
+                      None
                     </button>
-                  ))}
-                </div>
+                    {PARALLEL_LANGS.map(l => (
+                      <button
+                        key={l.code}
+                        onClick={() => setParallelLang(l.code)}
+                        className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                          parallelLang === l.code ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
+                        }`}
+                      >
+                        <span className="text-sm">{l.label}</span>
+                        <span className="block text-xs text-gray-400">{l.sub}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Attribution */}

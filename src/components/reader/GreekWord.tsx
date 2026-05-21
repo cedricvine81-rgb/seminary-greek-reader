@@ -1,4 +1,5 @@
 'use client'
+import React from 'react'
 import { clsx } from 'clsx'
 import type { VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -34,14 +35,18 @@ export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWor
 
   const isMatch = searchWord ? normalizeGreek(word.surface).includes(searchWord) : false
 
+  const bsbStyle = isBsbHighlight && !isMatch
+    ? { color: 'rgb(220 38 38)', fontWeight: 500 } as React.CSSProperties
+    : undefined
+
   return (
     <span
       className={clsx(
         'greek-word cursor-pointer',
         isActive && 'active',
         isMatch && 'text-red-600 font-semibold',
-        isBsbHighlight && !isMatch && 'text-red-600 font-medium',
       )}
+      style={bsbStyle}
       onMouseEnter={() => onHover(buildInfo())}
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(buildInfo())}

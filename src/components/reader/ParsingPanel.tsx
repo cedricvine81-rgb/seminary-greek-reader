@@ -86,7 +86,7 @@ export function ParsingPanel({ info, locked }: ParsingPanelProps) {
 
   // Fixed outer container — height never changes, content scrolls inside
   return (
-    <div className={`h-44 bg-white rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}>
+    <div className={`h-64 bg-white rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}>
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
           Hover or click any Greek word to see lexical information.
