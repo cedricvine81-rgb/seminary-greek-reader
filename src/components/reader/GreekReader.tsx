@@ -160,7 +160,7 @@ export function GreekReader() {
   const [bsbHighlightWordId, setBsbHighlightWordId] = useState<string | null>(null)
 
   // ── Settings flyout ───────────────────────────────────────────────────────────
-  const [settingsFlyout, setSettingsFlyout] = useState<'translations' | 'contents' | 'syntax' | null>(null)
+  const [settingsFlyout, setSettingsFlyout] = useState<'translations' | 'contents' | 'syntax' | 'controls' | null>(null)
 
   // ── Syntax right-click menu ────────────────────────────────────────────────
   const [syntaxMenu, setSyntaxMenu] = useState<{
@@ -471,7 +471,7 @@ export function GreekReader() {
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
 
-  function toggleFlyout(name: 'translations' | 'contents' | 'syntax') {
+  function toggleFlyout(name: 'translations' | 'contents' | 'syntax' | 'controls') {
     setSettingsFlyout(prev => prev === name ? null : name)
   }
 
@@ -1001,58 +1001,39 @@ export function GreekReader() {
                 )}
               </div>
 
-              {/* Controls */}
-              <div>
+              {/* Controls flyout trigger */}
+              <div className="relative">
                 <button
-                  onClick={() => { setControlsOpen(v => !v); setControlsTab(null) }}
-                  className="w-full flex items-center justify-between group px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleFlyout('controls')}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'controls' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 group-hover:text-gray-700 transition-colors">Controls</p>
-                  <ChevronRight size={14} className={`text-gray-400 transition-transform ${controlsOpen ? 'rotate-90' : ''}`} />
+                  <p className="text-xs font-semibold uppercase tracking-wide">Controls</p>
+                  <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
-
-                {controlsOpen && (
-                  <div className="mt-1 space-y-1">
-                    <button
-                      onClick={() => setControlsTab(t => t === 'parsing' ? null : 'parsing')}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'parsing' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                    >
-                      <span>Parsing Panel</span>
-                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'parsing' ? 'rotate-90' : ''}`} />
-                    </button>
-                    {controlsTab === 'parsing' && (
-                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                {settingsFlyout === 'controls' && (
+                  <div className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
+                      <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Hover</span> over any word to see its lexical entry, parsing, and glosses.</li>
                         <li><span className="font-medium text-gray-600">Press Shift</span> to freeze the panel on the current word.</li>
                         <li><span className="font-medium text-gray-600">Press Shift again</span> to unfreeze and return to hover mode.</li>
                       </ul>
-                    )}
-                    <button
-                      onClick={() => setControlsTab(t => t === 'syntax' ? null : 'syntax')}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'syntax' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                    >
-                      <span>Syntax</span>
-                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'syntax' ? 'rotate-90' : ''}`} />
-                    </button>
-                    {controlsTab === 'syntax' && (
-                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">Syntax</p>
+                      <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li><span className="font-medium text-gray-600">Right-click</span> any word to open the syntax menu.</li>
                         <li>The menu shows categories from Wallace, PROIEL, GBI, and ABS Syntax.</li>
                       </ul>
-                    )}
-                    <button
-                      onClick={() => setControlsTab(t => t === 'search' ? null : 'search')}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-colors ${controlsTab === 'search' ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'}`}
-                    >
-                      <span>Search</span>
-                      <ChevronRight size={13} className={`text-gray-400 transition-transform ${controlsTab === 'search' ? 'rotate-90' : ''}`} />
-                    </button>
-                    {controlsTab === 'search' && (
-                      <ul className="px-3 pb-2 space-y-1.5 text-xs text-gray-500 leading-relaxed">
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-700 mb-1">Search</p>
+                      <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
                         <li>Type a <span className="font-medium text-gray-600">Greek word</span> to find every occurrence in the corpus.</li>
                         <li>Type a <span className="font-medium text-gray-600">reference</span> (e.g. Matt 5:3, Rom 8) to jump to a passage.</li>
                       </ul>
-                    )}
+                    </div>
                   </div>
                 )}
               </div>
