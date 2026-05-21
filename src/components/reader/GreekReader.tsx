@@ -141,9 +141,6 @@ export function GreekReader() {
 
   // ── Settings ─────────────────────────────────────────────────────────────────
   const [showSettings, setShowSettings]     = useState(false)
-  const [controlsOpen, setControlsOpen]     = useState(false)
-  type ControlsTab = 'parsing' | 'syntax' | 'search' | null
-  const [controlsTab, setControlsTab]       = useState<ControlsTab>(null)
   const [fontSize, setFontSize]             = useState<FontSize>('md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
   const [translationVerses, setTranslationVerses] = useState<Record<string, string>>({})
@@ -471,8 +468,21 @@ export function GreekReader() {
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
 
+  const flyoutCloseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   function toggleFlyout(name: 'translations' | 'contents' | 'syntax' | 'controls') {
     setSettingsFlyout(prev => prev === name ? null : name)
+  }
+
+  function scheduleFlyoutClose() {
+    flyoutCloseTimerRef.current = setTimeout(() => setSettingsFlyout(null), 150)
+  }
+
+  function cancelFlyoutClose() {
+    if (flyoutCloseTimerRef.current) {
+      clearTimeout(flyoutCloseTimerRef.current)
+      flyoutCloseTimerRef.current = null
+    }
   }
 
   // ── Word interaction ───────────────────────────────────────────────────────────
@@ -918,7 +928,7 @@ export function GreekReader() {
               </div>
 
               {/* Contents flyout trigger */}
-              <div className="relative">
+              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('contents')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
@@ -931,6 +941,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
+                    onMouseEnter={cancelFlyoutClose}
                     className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
@@ -957,7 +968,7 @@ export function GreekReader() {
               </div>
 
               {/* Syntax flyout trigger */}
-              <div className="relative">
+              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('syntax')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'syntax' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
@@ -967,6 +978,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'syntax' && (
                   <div
+                    onMouseEnter={cancelFlyoutClose}
                     className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
@@ -1002,7 +1014,7 @@ export function GreekReader() {
               </div>
 
               {/* Controls flyout trigger */}
-              <div className="relative">
+              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('controls')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'controls' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
@@ -1011,7 +1023,7 @@ export function GreekReader() {
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'controls' && (
-                  <div className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
+                  <div onMouseEnter={cancelFlyoutClose} className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
@@ -1039,7 +1051,7 @@ export function GreekReader() {
               </div>
 
               {/* Translations flyout trigger */}
-              <div className="relative">
+              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('translations')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
@@ -1052,7 +1064,8 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
-                    className="absolute right-full bottom-0 mr-2 z-[51] w-[400px] max-h-[80vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    onMouseEnter={cancelFlyoutClose}
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
                     <button
                       onClick={() => setParallelLang(null)}
