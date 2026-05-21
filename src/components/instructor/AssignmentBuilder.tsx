@@ -46,6 +46,7 @@ interface SemesterForm {
   source: string
   level: CourseLevel
   numQuestions: number
+  timePerQuestion: number  // 0 = untimed
 }
 
 interface ScheduledQuiz {
@@ -163,6 +164,15 @@ function SingleForm({ courses }: { courses: Course[] }) {
 
       <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
         onChange={e => set('numQuestions', Number(e.target.value))} />
+
+      <Input
+        label="Time per question (seconds, 0 = untimed)"
+        type="number"
+        min={0}
+        max={300}
+        value={form.timePerQuestion ?? 0}
+        onChange={e => set('timePerQuestion', Number(e.target.value) || undefined)}
+      />
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
@@ -296,14 +306,15 @@ function SemesterForm({ courses }: { courses: Course[] }) {
   const [sampleLoading, setSampleLoading] = useState(false)
 
   const [form, setForm] = useState<SemesterForm>({
-    courseId:     courses[0]?.id ?? '',
-    startDate:    '',
-    weeks:        16,
-    days:         [4],   // Thursday by default
-    quizType:     'VOCABULARY_QUIZ',
-    source:       'VOCAB_BUILDER',
-    level:        courses[0]?.level ?? 'BEGINNING',
-    numQuestions: 10,
+    courseId:        courses[0]?.id ?? '',
+    startDate:       '',
+    weeks:           16,
+    days:            [4],   // Thursday by default
+    quizType:        'VOCABULARY_QUIZ',
+    source:          'VOCAB_BUILDER',
+    level:           courses[0]?.level ?? 'BEGINNING',
+    numQuestions:    20,
+    timePerQuestion: 0,
   })
 
   function setF<K extends keyof SemesterForm>(key: K, val: SemesterForm[K]) {
@@ -477,6 +488,15 @@ function SemesterForm({ courses }: { courses: Course[] }) {
               onChange={e => setF('numQuestions', Number(e.target.value))}
             />
           </div>
+
+          <Input
+            label="Time per question (seconds, 0 = untimed)"
+            type="number"
+            min={0}
+            max={300}
+            value={form.timePerQuestion}
+            onChange={e => setF('timePerQuestion', Number(e.target.value))}
+          />
 
           <button
             type="button"

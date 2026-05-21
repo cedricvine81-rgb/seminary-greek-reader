@@ -7,29 +7,23 @@ import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
 
 interface TranslationExerciseBuilderProps {
   assignmentId: string
-  onAddQuestion: (question: {
-    prompt: string
-    type: 'TRANSLATION' | 'SYNTAX_IDENTIFY'
-    reference: string
-    correctAnswer: string
-    options: string[]
-  }) => void
 }
 
-export function TranslationExerciseBuilder({ onAddQuestion }: TranslationExerciseBuilderProps) {
+export function TranslationExerciseBuilder({ assignmentId }: TranslationExerciseBuilderProps) {
   const [qType, setQType] = useState<'TRANSLATION' | 'SYNTAX_IDENTIFY'>('TRANSLATION')
   const [prompt, setPrompt] = useState('')
   const [reference, setReference] = useState('')
   const [correctAnswer, setCorrectAnswer] = useState('')
 
-  function handleAdd() {
+  async function handleAdd() {
     if (!prompt.trim()) return
-    onAddQuestion({
-      prompt,
-      type: qType,
-      reference,
-      correctAnswer,
-      options: qType === 'SYNTAX_IDENTIFY' ? ALL_SYNTAX_OPTIONS : [],
+    await fetch(`/api/assignments/${assignmentId}/questions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt, type: qType, reference, correctAnswer,
+        options: qType === 'SYNTAX_IDENTIFY' ? ALL_SYNTAX_OPTIONS : [],
+      }),
     })
     setPrompt('')
     setCorrectAnswer('')

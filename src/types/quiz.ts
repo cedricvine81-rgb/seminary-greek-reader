@@ -14,6 +14,7 @@ export interface QuizQuestion {
   position: number
   type: QuestionType
   prompt: string
+  correctAnswer: string
   options?: string[]
   points: number
   reference?: string

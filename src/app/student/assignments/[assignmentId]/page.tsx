@@ -26,6 +26,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     position: q.position,
     type: q.type,
     prompt: q.prompt,
+    correctAnswer: q.correctAnswer,
     options: q.options,
     points: q.points,
     reference: q.reference ?? undefined,
@@ -64,6 +65,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             assignmentId={assignment.id}
             questions={quizQuestions}
             type={assignment.type as 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ'}
+            timePerQuestion={assignment.timePerQuestion}
           />
         )}
       </div>

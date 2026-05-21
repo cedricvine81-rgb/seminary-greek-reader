@@ -18,6 +18,9 @@ export async function POST(req: NextRequest) {
     responses: { questionId: string; answer: string }[]
   }
 
+  // Always replace previous submission so retakes record the latest attempt.
+  await prisma.response.deleteMany({ where: { userId: payload.sub, assignmentId } })
+
   const breakdown = []
   for (const r of responses) {
     const graded = await gradeResponse(r.questionId, r.answer)
@@ -45,18 +48,6 @@ export async function POST(req: NextRequest) {
   }
 
   const scoreData = await getAssignmentScore(payload.sub, assignmentId)
-
-  // Save summary score
-  if (scoreData) {
-    await prisma.response.create({
-      data: {
-        userId: payload.sub,
-        assignmentId,
-        answer: '',
-        score: scoreData.percentage,
-      },
-    })
-  }
 
   return NextResponse.json({
     result: {

@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion } = body
 
   const assignment = await prisma.assignment.create({
     data: {
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       dueDate: new Date(dueDate),
       level: level as CourseLevel,
       reference, instructions,
+      timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       createdById: payload.sub,
       isPublished: false,
     },

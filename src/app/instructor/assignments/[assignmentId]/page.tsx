@@ -36,14 +36,12 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           <QuizBuilder
             assignmentId={assignment.id}
             level={assignment.level}
-            onGenerate={async () => {}}
           />
         )}
 
         {assignment.type === 'TRANSLATION_EXERCISE' && (
           <TranslationExerciseBuilder
             assignmentId={assignment.id}
-            onAddQuestion={async () => {}}
           />
         )}
 

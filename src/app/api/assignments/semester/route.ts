@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
     source,
     level,
     numQuestions,
+    timePerQuestion,
     schedule,
   }: {
     courseId: string
@@ -38,6 +39,7 @@ export async function POST(req: NextRequest) {
     source: string
     level: CourseLevel
     numQuestions: number
+    timePerQuestion?: number
     schedule: ScheduleItem[]
   } = body
 
@@ -80,6 +82,7 @@ export async function POST(req: NextRequest) {
         dueDate,
         level: resolvedLevel,
         instructions,
+        timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
         isPublished: false,
       },
     })

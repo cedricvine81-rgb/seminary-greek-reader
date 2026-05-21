@@ -214,8 +214,9 @@ model Assignment {
   weekNumber   Int
   dueDate      DateTime
   level        CourseLevel
-  reference    String?
-  instructions String?
+  reference       String?
+  instructions    String?
+  timePerQuestion Int?           // seconds per question; null = untimed
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

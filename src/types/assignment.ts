@@ -61,4 +61,5 @@ export interface AssignmentFormData {
   reference?: string
   instructions?: string
   numQuestions: number
+  timePerQuestion?: number
 }
