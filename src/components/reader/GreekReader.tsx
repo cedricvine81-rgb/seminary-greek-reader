@@ -939,7 +939,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
-                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-80 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
@@ -978,7 +978,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'syntax' && (
                   <div
-                    className="absolute left-full top-0 ml-1 z-[51] w-80 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-96 bg-white border border-gray-200 rounded-xl p-4 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
@@ -1085,7 +1085,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
-                    className="absolute left-full top-0 ml-1 z-[51] w-72 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1"
+                    className="absolute right-full top-0 mr-2 z-[51] w-96 bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-1"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
