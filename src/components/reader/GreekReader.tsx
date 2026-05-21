@@ -939,7 +939,7 @@ export function GreekReader() {
                 </button>
                 {settingsFlyout === 'contents' && (
                   <div
-                    className="absolute right-full top-0 mr-2 z-[51] w-[340px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                     onMouseEnter={keepFlyout}
                     onMouseLeave={closeFlyout}
                   >
