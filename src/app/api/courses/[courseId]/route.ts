@@ -39,6 +39,18 @@ export async function DELETE(
     return NextResponse.json({ error: 'Incorrect password' }, { status: 403 })
   }
 
+  // Delete in dependency order to satisfy foreign key constraints
+  const assignments = await prisma.assignment.findMany({
+    where: { courseId: params.courseId },
+    select: { id: true },
+  })
+  const assignmentIds = assignments.map(a => a.id)
+
+  await prisma.response.deleteMany({ where: { assignmentId: { in: assignmentIds } } })
+  await prisma.question.deleteMany({ where: { assignmentId: { in: assignmentIds } } })
+  await prisma.assignment.deleteMany({ where: { courseId: params.courseId } })
+  await prisma.enrollment.deleteMany({ where: { courseId: params.courseId } })
   await prisma.course.delete({ where: { id: params.courseId } })
+
   return NextResponse.json({ ok: true })
 }
