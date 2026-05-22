@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
 import { CoInstructorManager } from '@/components/instructor/CoInstructorManager'
+import { DeleteCourseButton } from '@/components/instructor/DeleteCourseButton'
 import { Badge } from '@/components/ui/Badge'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -39,7 +40,14 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   const report = await getCourseReport(params.courseId)
 
   return (
-    <DashboardShell role="INSTRUCTOR" pageTitle={course.name}>
+    <DashboardShell
+      role="INSTRUCTOR"
+      pageTitle={course.name}
+      actions={isPrimaryInstructor
+        ? <DeleteCourseButton courseId={course.id} courseName={course.name} />
+        : undefined
+      }
+    >
       <div className="space-y-6">
         <div className="flex items-center gap-3">
           <Badge variant={COURSE_LEVEL_VARIANTS[course.level] ?? 'gray'}>
