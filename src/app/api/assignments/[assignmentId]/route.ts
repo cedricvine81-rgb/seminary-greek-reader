@@ -22,14 +22,20 @@ export async function PATCH(
   }
 
   const body = await req.json()
-  const { allowLate, lateDaysLimit } = body
+  const { allowLate, lateDaysLimit, isPublished } = body
+
+  const data: Record<string, unknown> = {}
+
+  if (isPublished !== undefined) {
+    data.isPublished = Boolean(isPublished)
+  } else {
+    data.allowLate = Boolean(allowLate)
+    data.lateDaysLimit = allowLate && lateDaysLimit != null ? Number(lateDaysLimit) : null
+  }
 
   const updated = await prisma.assignment.update({
     where: { id: params.assignmentId },
-    data: {
-      allowLate: Boolean(allowLate),
-      lateDaysLimit: allowLate && lateDaysLimit != null ? Number(lateDaysLimit) : null,
-    },
+    data,
   })
 
   return NextResponse.json({ assignment: updated })

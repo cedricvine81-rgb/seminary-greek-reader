@@ -17,7 +17,12 @@ export default async function NewAssignmentPage({
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
   const courses = await prisma.course.findMany({
-    where: { instructorId: payload.sub },
+    where: {
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
     select: { id: true, name: true, level: true },
     orderBy: { createdAt: 'desc' },
   })

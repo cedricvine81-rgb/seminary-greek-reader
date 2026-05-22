@@ -5,6 +5,7 @@ import { QuizBuilder } from '@/components/instructor/QuizBuilder'
 import { TranslationExerciseBuilder } from '@/components/instructor/TranslationExerciseBuilder'
 import { LatePolicyEditor } from '@/components/instructor/LatePolicyEditor'
 import { DeleteAssignmentButton } from '@/components/instructor/DeleteAssignmentButton'
+import { PublishButton } from '@/components/instructor/PublishButton'
 import { Badge } from '@/components/ui/Badge'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
@@ -30,20 +31,26 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
       role="INSTRUCTOR"
       pageTitle={assignment.title}
       actions={
-        <DeleteAssignmentButton
-          assignmentId={assignment.id}
-          assignmentTitle={assignment.title}
-          redirectOnDelete="/instructor/assignments"
-        />
+        <div className="flex items-center gap-2">
+          <PublishButton assignmentId={assignment.id} isPublished={assignment.isPublished} />
+          <DeleteAssignmentButton
+            assignmentId={assignment.id}
+            assignmentTitle={assignment.title}
+            redirectOnDelete="/instructor/assignments"
+          />
+        </div>
       }
     >
       <div className="space-y-6">
-        <div className="flex gap-2 flex-wrap">
+        <div className="flex gap-2 flex-wrap items-center">
           <Badge variant="gray">Week {assignment.weekNumber}</Badge>
           <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
             {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
           </Badge>
           <Badge variant="green">{assignment.questions.length} questions</Badge>
+          <Badge variant={assignment.isPublished ? 'green' : 'gray'}>
+            {assignment.isPublished ? 'Published' : 'Draft'}
+          </Badge>
         </div>
 
         {(assignment.type === 'VOCABULARY_QUIZ' || assignment.type === 'MORPHOLOGY_QUIZ') && (

@@ -12,6 +12,7 @@ interface Assignment {
   type: string
   weekNumber: number
   dueDate: Date | string
+  isPublished: boolean
   course: { name: string }
   _count: { questions: number }
 }
@@ -36,6 +37,10 @@ export function AssignmentTable({ assignments }: { assignments: Assignment[] }) 
         { key: 'week', header: 'Week', render: a => <span>Week {a.weekNumber}</span> },
         { key: 'dueDate', header: 'Due', render: a => <span className="text-xs text-gray-500">{format(new Date(a.dueDate), 'MMM d, yyyy')}</span> },
         { key: 'questions', header: 'Q', render: a => <span>{a._count.questions}</span> },
+        {
+          key: 'status', header: 'Status',
+          render: a => <Badge variant={a.isPublished ? 'green' : 'gray'}>{a.isPublished ? 'Published' : 'Draft'}</Badge>,
+        },
         {
           key: 'actions', header: '',
           render: a => (
