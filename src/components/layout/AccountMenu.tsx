@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, User, LogIn, UserPlus, LogOut } from 'lucide-react'
+import { Menu, X, User, LogIn, UserPlus, LogOut, KeyRound } from 'lucide-react'
 
 interface AccountMenuProps {
   isAuthenticated: boolean
@@ -58,6 +58,13 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
                 onClick={() => setOpen(false)}
               >
                 <User size={15} /> Dashboard
+              </Link>
+              <Link
+                href="/auth/change-password"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                onClick={() => setOpen(false)}
+              >
+                <KeyRound size={15} /> Change Password
               </Link>
               <hr className="my-1 border-gray-100" />
               <button

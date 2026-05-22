@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie } from '@/lib/auth'
+import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie, getTokenFromCookies, verifyToken } from '@/lib/auth'
 import type { Role } from '@/types/auth'
 
 export async function POST(req: NextRequest) {
@@ -48,6 +48,21 @@ export async function POST(req: NextRequest) {
     console.error(err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
+}
+
+export async function PATCH(req: NextRequest) {
+  const token = getTokenFromCookies()
+  const payload = token ? verifyToken(token) : null
+  if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const { password } = await req.json()
+  if (!password || password.length < 8) {
+    return NextResponse.json({ error: 'Password must be at least 8 characters.' }, { status: 400 })
+  }
+
+  const hashed = await hashPassword(password)
+  await prisma.user.update({ where: { id: payload.sub }, data: { password: hashed } })
+  return NextResponse.json({ ok: true })
 }
 
 export async function DELETE() {
