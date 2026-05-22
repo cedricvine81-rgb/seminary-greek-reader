@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { name, level, startDate, endDate, institutionName } = body
+  const { name, listing, level, startDate, endDate, institutionName } = body
 
   let institutionId: string | undefined
   if (institutionName) {
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
 
   const course = await prisma.course.create({
     data: {
-      name, level: level as CourseLevel,
+      name, listing: listing || null, level: level as CourseLevel,
       startDate: new Date(startDate),
       endDate: new Date(endDate),
       instructorId: payload.sub,
@@ -64,6 +64,7 @@ export async function PUT(req: NextRequest) {
     where: { id },
     data: {
       name: body.name,
+      listing: body.listing || null,
       level: body.level as CourseLevel,
       startDate: new Date(body.startDate),
       endDate: new Date(body.endDate),

@@ -17,6 +17,7 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
   const [error, setError] = useState('')
   const [form, setForm] = useState<CourseFormData>({
     name: initialData?.name ?? '',
+    listing: initialData?.listing ?? '',
     level: initialData?.level ?? 'BEGINNING',
     startDate: initialData?.startDate ?? '',
     endDate: initialData?.endDate ?? '',
@@ -53,6 +54,7 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
       <Input label="Course name" required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Beginning Greek" />
+      <Input label="Course listing" value={form.listing ?? ''} onChange={e => set('listing', e.target.value)} placeholder="SU2026-NTST-551" />
       <Input label="Institution" value={form.institutionName ?? ''} onChange={e => set('institutionName', e.target.value)} placeholder="Seminary name" />
       <Select
         label="Level"

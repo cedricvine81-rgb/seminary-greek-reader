@@ -59,6 +59,7 @@ enum CourseLevel {
 model Course {
   id            String      @id @default(cuid())
   name          String
+  listing       String?
   level         CourseLevel
   startDate     DateTime
   endDate       DateTime

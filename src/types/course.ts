@@ -3,6 +3,7 @@ export type CourseLevel = 'BEGINNING' | 'INTERMEDIATE' | 'ADVANCED' | 'GREEK_I' 
 export interface Course {
   id: string
   name: string
+  listing?: string | null
   level: CourseLevel
   startDate: string
   endDate: string
@@ -23,6 +24,7 @@ export interface Enrollment {
 
 export interface CourseFormData {
   name: string
+  listing?: string
   level: CourseLevel
   startDate: string
   endDate: string
