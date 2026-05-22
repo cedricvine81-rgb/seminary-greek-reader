@@ -35,7 +35,7 @@ async function main() {
     where: { email: 'instructor@demo.edu' },
     update: {},
     create: {
-      firstName: 'Dr. James',
+      firstName: 'James',
       surname: 'Mitchell',
       email: 'instructor@demo.edu',
       password: instructorPw,

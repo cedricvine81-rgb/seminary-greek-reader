@@ -24,8 +24,9 @@ export default async function StudentAssignmentsPage() {
       orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
     }),
     prisma.response.findMany({
-      where: { userId: payload.sub, questionId: null },
+      where: { userId: payload.sub, questionId: { not: null } },
       select: { assignmentId: true },
+      distinct: ['assignmentId'],
     }),
   ])
 

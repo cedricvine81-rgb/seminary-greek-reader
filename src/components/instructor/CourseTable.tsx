@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import type { Course } from '@/types/course'
 import { format } from 'date-fns'
+import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 
 interface CourseTableProps {
   courses: Course[]
@@ -27,8 +28,8 @@ export function CourseTable({ courses }: CourseTableProps) {
         {
           key: 'level', header: 'Level',
           render: c => (
-            <Badge variant={c.level === 'BEGINNING' ? 'blue' : 'purple'}>
-              {c.level === 'BEGINNING' ? 'Beginning' : 'Intermediate'}
+            <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
+              {COURSE_LEVEL_LABELS[c.level] ?? c.level}
             </Badge>
           ),
         },

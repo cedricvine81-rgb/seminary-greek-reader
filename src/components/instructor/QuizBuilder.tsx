@@ -8,7 +8,7 @@ import type { QuestionType } from '@/types/assignment'
 
 interface QuizBuilderProps {
   assignmentId: string
-  level: 'BEGINNING' | 'INTERMEDIATE'
+  level: string
 }
 
 export function QuizBuilder({ assignmentId, level }: QuizBuilderProps) {
@@ -36,7 +36,7 @@ export function QuizBuilder({ assignmentId, level }: QuizBuilderProps) {
       <div className="flex items-center gap-2">
         <h3 className="font-semibold text-gray-900 text-sm">Auto-generate Questions</h3>
         <Badge variant={level === 'BEGINNING' ? 'blue' : 'purple'}>
-          {level === 'BEGINNING' ? 'Beginning (50+)' : 'Intermediate (30+)'}
+          {level === 'BEGINNING' ? 'Beginning (50+ freq.)' : 'Intermediate (30+ freq.)'}
         </Badge>
       </div>
 

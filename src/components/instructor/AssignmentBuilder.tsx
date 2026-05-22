@@ -47,6 +47,55 @@ interface SemesterForm {
   level: CourseLevel
   numQuestions: number
   timePerQuestion: number  // 0 = untimed
+  allowLate: boolean
+  lateDaysLimit: number    // 0 = unlimited
+}
+
+// ── Late Policy Fields ────────────────────────────────────────────────────────
+
+function LatePolicyFields({
+  allowLate, lateDaysLimit,
+  onAllowLateChange, onLateDaysLimitChange,
+}: {
+  allowLate: boolean
+  lateDaysLimit: number
+  onAllowLateChange: (v: boolean) => void
+  onLateDaysLimitChange: (v: number) => void
+}) {
+  return (
+    <fieldset className="border border-gray-200 rounded-xl p-5 space-y-4">
+      <legend className="text-sm font-semibold text-gray-700 px-1">Late Submissions</legend>
+      <label className="flex items-center gap-3 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={allowLate}
+          onChange={e => onAllowLateChange(e.target.checked)}
+          className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+        />
+        <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
+      </label>
+      {allowLate && (
+        <div className="pl-7">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Deadline (days after due date)
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="number"
+              min={0}
+              max={365}
+              value={lateDaysLimit}
+              onChange={e => onLateDaysLimitChange(Number(e.target.value))}
+              className="input w-28"
+            />
+            <span className="text-sm text-gray-500">
+              {lateDaysLimit === 0 ? 'No time limit — accept indefinitely' : `days after due date`}
+            </span>
+          </div>
+        </div>
+      )}
+    </fieldset>
+  )
 }
 
 interface ScheduledQuiz {
@@ -76,16 +125,19 @@ function buildSchedule(startDate: string, weeks: number, days: number[]): Schedu
 
 // ── Single Assignment Form ────────────────────────────────────────────────────
 
-function SingleForm({ courses }: { courses: Course[] }) {
+function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [courseId, setCourseId] = useState(courses[0]?.id ?? '')
+  const [courseId, setCourseId] = useState(defaultCourseId ?? courses[0]?.id ?? '')
   const courseLevel = courses.find(c => c.id === courseId)?.level ?? 'BEGINNING'
   const [form, setForm] = useState<AssignmentFormData>({
     title: '', type: 'VOCABULARY_QUIZ', weekNumber: 1, dueDate: '',
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
+    allowLate: false, lateDaysLimit: 7,
   })
+  const [allowLate, setAllowLate] = useState(false)
+  const [lateDaysLimit, setLateDaysLimit] = useState(7)
 
   function set<K extends keyof AssignmentFormData>(key: K, val: AssignmentFormData[K]) {
     setForm(prev => ({ ...prev, [key]: val }))
@@ -99,7 +151,7 @@ function SingleForm({ courses }: { courses: Course[] }) {
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -150,6 +202,11 @@ function SingleForm({ courses }: { courses: Course[] }) {
         options={[
           { value: 'BEGINNING',    label: 'Beginning Greek' },
           { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
+          { value: 'ADVANCED',     label: 'Advanced Greek' },
+          { value: 'GREEK_I',      label: 'Greek I' },
+          { value: 'GREEK_II',     label: 'Greek II' },
+          { value: 'GREEK_III',    label: 'Greek III' },
+          { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
         ]}
       />
 
@@ -172,6 +229,13 @@ function SingleForm({ courses }: { courses: Course[] }) {
         max={300}
         value={form.timePerQuestion ?? 0}
         onChange={e => set('timePerQuestion', Number(e.target.value) || undefined)}
+      />
+
+      <LatePolicyFields
+        allowLate={allowLate}
+        lateDaysLimit={lateDaysLimit}
+        onAllowLateChange={setAllowLate}
+        onLateDaysLimitChange={setLateDaysLimit}
       />
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
@@ -296,7 +360,7 @@ function SampleQuizModal({
 
 // ── Semester Schedule Form ────────────────────────────────────────────────────
 
-function SemesterForm({ courses }: { courses: Course[] }) {
+function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -306,7 +370,7 @@ function SemesterForm({ courses }: { courses: Course[] }) {
   const [sampleLoading, setSampleLoading] = useState(false)
 
   const [form, setForm] = useState<SemesterForm>({
-    courseId:        courses[0]?.id ?? '',
+    courseId:        defaultCourseId ?? courses[0]?.id ?? '',
     startDate:       '',
     weeks:           16,
     days:            [4],   // Thursday by default
@@ -315,6 +379,8 @@ function SemesterForm({ courses }: { courses: Course[] }) {
     level:           courses[0]?.level ?? 'BEGINNING',
     numQuestions:    20,
     timePerQuestion: 0,
+    allowLate:       false,
+    lateDaysLimit:   7,
   })
 
   function setF<K extends keyof SemesterForm>(key: K, val: SemesterForm[K]) {
@@ -363,7 +429,11 @@ function SemesterForm({ courses }: { courses: Course[] }) {
       const res = await fetch('/api/assignments/semester', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })) }),
+        body: JSON.stringify({
+          ...form,
+          lateDaysLimit: form.allowLate ? form.lateDaysLimit : null,
+          schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })),
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create schedule')
@@ -477,6 +547,11 @@ function SemesterForm({ courses }: { courses: Course[] }) {
               options={[
                 { value: 'BEGINNING',    label: 'Beginning Greek' },
                 { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
+                { value: 'ADVANCED',     label: 'Advanced Greek' },
+                { value: 'GREEK_I',      label: 'Greek I' },
+                { value: 'GREEK_II',     label: 'Greek II' },
+                { value: 'GREEK_III',    label: 'Greek III' },
+                { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
               ]}
             />
             <Input
@@ -507,6 +582,13 @@ function SemesterForm({ courses }: { courses: Course[] }) {
             View sample quiz
           </button>
         </fieldset>
+
+        <LatePolicyFields
+          allowLate={form.allowLate}
+          lateDaysLimit={form.lateDaysLimit}
+          onAllowLateChange={v => setF('allowLate', v)}
+          onLateDaysLimitChange={v => setF('lateDaysLimit', v)}
+        />
 
         {/* BGVB download */}
         {form.source === 'VOCAB_BUILDER' && (
@@ -577,11 +659,12 @@ function SemesterForm({ courses }: { courses: Course[] }) {
 
 interface AssignmentBuilderProps {
   courses: Course[]
+  defaultCourseId?: string
 }
 
 type Mode = 'single' | 'semester'
 
-export function AssignmentBuilder({ courses }: AssignmentBuilderProps) {
+export function AssignmentBuilder({ courses, defaultCourseId }: AssignmentBuilderProps) {
   const [mode, setMode] = useState<Mode>('single')
 
   return (
@@ -609,8 +692,8 @@ export function AssignmentBuilder({ courses }: AssignmentBuilderProps) {
       </div>
 
       {mode === 'single'
-        ? <SingleForm courses={courses} />
-        : <SemesterForm courses={courses} />}
+        ? <SingleForm courses={courses} defaultCourseId={defaultCourseId} />
+        : <SemesterForm courses={courses} defaultCourseId={defaultCourseId} />}
     </div>
   )
 }

@@ -62,9 +62,34 @@ export const LXX_BOOKS = [
 ] as const
 
 export const COURSE_LEVELS = [
-  { value: 'BEGINNING', label: 'Beginning Greek' },
+  { value: 'BEGINNING',    label: 'Beginning Greek' },
   { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
+  { value: 'ADVANCED',     label: 'Advanced Greek' },
+  { value: 'GREEK_I',      label: 'Greek I' },
+  { value: 'GREEK_II',     label: 'Greek II' },
+  { value: 'GREEK_III',    label: 'Greek III' },
+  { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
 ] as const
+
+export const COURSE_LEVEL_LABELS: Record<string, string> = {
+  BEGINNING:    'Beginning Greek',
+  INTERMEDIATE: 'Intermediate Greek',
+  ADVANCED:     'Advanced Greek',
+  GREEK_I:      'Greek I',
+  GREEK_II:     'Greek II',
+  GREEK_III:    'Greek III',
+  SEPTUAGINT:   'Septuagint Greek',
+}
+
+export const COURSE_LEVEL_VARIANTS: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
+  BEGINNING:    'blue',
+  INTERMEDIATE: 'purple',
+  ADVANCED:     'green',
+  GREEK_I:      'blue',
+  GREEK_II:     'purple',
+  GREEK_III:    'green',
+  SEPTUAGINT:   'gray',
+}
 
 export const ASSIGNMENT_TYPES = [
   { value: 'VOCABULARY_QUIZ', label: 'Vocabulary Quiz' },

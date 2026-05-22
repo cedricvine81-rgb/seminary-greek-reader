@@ -29,7 +29,7 @@ export async function gradeResponse(
     }
   }
 
-  isCorrect = normalise(studentAnswer) === normalise(question.correctAnswer)
+  isCorrect = acceptsAnswer(studentAnswer, question.correctAnswer)
   return {
     isCorrect,
     score: isCorrect ? question.points : 0,
@@ -38,7 +38,14 @@ export async function gradeResponse(
 }
 
 function normalise(s: string) {
-  return s.trim().toLowerCase().replace(/[.,;:!?]/g, '')
+  return s.trim().toLowerCase().replace(/[.,;:!?]/g, '').trim()
+}
+
+// Accept any comma-separated alternative in the correct answer (mirrors client logic).
+function acceptsAnswer(studentAnswer: string, correctAnswer: string): boolean {
+  const student = normalise(studentAnswer)
+  if (!student) return false
+  return correctAnswer.split(',').map(a => normalise(a)).some(alt => alt === student)
 }
 
 export async function getAssignmentScore(userId: string, assignmentId: string) {

@@ -52,15 +52,16 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
-      <Input label="Course name" required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Beginning Greek I" />
+      <Input label="Course name" required value={form.name} onChange={e => set('name', e.target.value)} placeholder="Beginning Greek" />
       <Input label="Institution" value={form.institutionName ?? ''} onChange={e => set('institutionName', e.target.value)} placeholder="Seminary name" />
       <Select
         label="Level"
         value={form.level}
         onChange={e => set('level', e.target.value as CourseLevel)}
         options={[
-          { value: 'BEGINNING', label: 'Beginning Greek' },
-          { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
+          { value: 'BEGINNING',    label: 'Beginner' },
+          { value: 'INTERMEDIATE', label: 'Intermediate' },
+          { value: 'ADVANCED',     label: 'Advanced' },
         ]}
       />
       <div className="grid grid-cols-2 gap-4">

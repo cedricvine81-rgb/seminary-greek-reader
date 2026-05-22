@@ -32,6 +32,8 @@ export async function POST(req: NextRequest) {
     level,
     numQuestions,
     timePerQuestion,
+    allowLate,
+    lateDaysLimit,
     schedule,
   }: {
     courseId: string
@@ -40,6 +42,8 @@ export async function POST(req: NextRequest) {
     level: CourseLevel
     numQuestions: number
     timePerQuestion?: number
+    allowLate?: boolean
+    lateDaysLimit?: number
     schedule: ScheduleItem[]
   } = body
 
@@ -83,6 +87,8 @@ export async function POST(req: NextRequest) {
         level: resolvedLevel,
         instructions,
         timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
+        allowLate: Boolean(allowLate),
+        lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
         isPublished: false,
       },
     })

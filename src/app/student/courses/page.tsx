@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 
 export const metadata: Metadata = { title: 'My Courses' }
 
@@ -29,8 +30,8 @@ export default async function StudentCoursesPage() {
             <Card key={e.courseId} className="space-y-2">
               <div className="flex items-start justify-between">
                 <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
-                <Badge variant={e.course.level === 'BEGINNING' ? 'blue' : 'purple'}>
-                  {e.course.level === 'BEGINNING' ? 'Beginning' : 'Intermediate'}
+                <Badge variant={COURSE_LEVEL_VARIANTS[e.course.level] ?? 'gray'}>
+                  {COURSE_LEVEL_LABELS[e.course.level] ?? e.course.level}
                 </Badge>
               </div>
               <p className="text-xs text-gray-500">{e.course._count.assignments} assignments · {e.course._count.enrollments} students</p>

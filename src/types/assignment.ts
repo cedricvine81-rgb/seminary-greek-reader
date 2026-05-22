@@ -22,6 +22,9 @@ export interface Assignment {
   level: CourseLevel
   reference?: string
   instructions?: string
+  timePerQuestion?: number | null
+  allowLate: boolean
+  lateDaysLimit?: number | null
   isPublished: boolean
   createdAt: string
   updatedAt: string
@@ -62,4 +65,6 @@ export interface AssignmentFormData {
   instructions?: string
   numQuestions: number
   timePerQuestion?: number
+  allowLate?: boolean
+  lateDaysLimit?: number
 }

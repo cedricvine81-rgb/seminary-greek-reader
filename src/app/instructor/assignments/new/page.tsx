@@ -7,7 +7,11 @@ import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = { title: 'New Assignment' }
 
-export default async function NewAssignmentPage() {
+export default async function NewAssignmentPage({
+  searchParams,
+}: {
+  searchParams: { courseId?: string }
+}) {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
@@ -28,7 +32,7 @@ export default async function NewAssignmentPage() {
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="New Assignment">
-      <AssignmentBuilder courses={courses} />
+      <AssignmentBuilder courses={courses} defaultCourseId={searchParams.courseId} />
     </DashboardShell>
   )
 }

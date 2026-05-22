@@ -1,4 +1,4 @@
-export type CourseLevel = 'BEGINNING' | 'INTERMEDIATE'
+export type CourseLevel = 'BEGINNING' | 'INTERMEDIATE' | 'ADVANCED' | 'GREEK_I' | 'GREEK_II' | 'GREEK_III' | 'SEPTUAGINT'
 
 export interface Course {
   id: string

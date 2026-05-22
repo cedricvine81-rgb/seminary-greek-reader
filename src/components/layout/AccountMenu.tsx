@@ -31,7 +31,10 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
   }
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative flex items-center gap-2">
+      {isAuthenticated && userName && (
+        <span className="text-sm font-medium text-gray-700 hidden sm:block">{userName.split(' ')[0]}</span>
+      )}
       <button
         onClick={() => setOpen(v => !v)}
         className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"

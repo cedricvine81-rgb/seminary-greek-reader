@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Card, CardTitle, CardDescription } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { BookOpen, Users, ClipboardList, BarChart2, Plus, FileText } from 'lucide-react'
+import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 
 interface DashboardStats {
   totalCourses: number
@@ -86,8 +87,8 @@ export function InstructorDashboard({ stats, recentCourses, instructorName }: In
                   <p className="text-sm font-medium text-gray-900">{c.name}</p>
                   <p className="text-xs text-gray-500">{c.enrollmentCount} student{c.enrollmentCount !== 1 ? 's' : ''}</p>
                 </div>
-                <Badge variant={c.level === 'BEGINNING' ? 'blue' : 'purple'}>
-                  {c.level === 'BEGINNING' ? 'Beginning' : 'Intermediate'}
+                <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
+                  {COURSE_LEVEL_LABELS[c.level] ?? c.level}
                 </Badge>
               </Link>
             ))}

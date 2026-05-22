@@ -49,6 +49,11 @@ model Institution {
 enum CourseLevel {
   BEGINNING
   INTERMEDIATE
+  ADVANCED
+  GREEK_I
+  GREEK_II
+  GREEK_III
+  SEPTUAGINT
 }
 
 model Course {
@@ -217,6 +222,8 @@ model Assignment {
   reference       String?
   instructions    String?
   timePerQuestion Int?           // seconds per question; null = untimed
+  allowLate    Boolean        @default(false)
+  lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
