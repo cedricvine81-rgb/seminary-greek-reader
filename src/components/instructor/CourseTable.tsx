@@ -20,9 +20,18 @@ export function CourseTable({ courses }: CourseTableProps) {
         {
           key: 'name', header: 'Course',
           render: c => (
-            <Link href={`/instructor/courses/${c.id}`} className="font-medium text-brand-700 hover:underline">
-              {c.name}
+            <Link href={`/instructor/courses/${c.id}`} className="hover:underline">
+              <span className="font-medium text-brand-700">{c.name}</span>
+              {c.listing && (
+                <span className="block text-xs text-gray-400 font-normal">{c.listing}</span>
+              )}
             </Link>
+          ),
+        },
+        {
+          key: 'institution', header: 'Institution',
+          render: c => (
+            <span className="text-xs text-gray-500">{c.institutionName ?? '—'}</span>
           ),
         },
         {

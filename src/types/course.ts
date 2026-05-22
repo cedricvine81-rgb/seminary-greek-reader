@@ -5,6 +5,7 @@ export interface Course {
   name: string
   listing?: string | null
   level: CourseLevel
+  institutionName?: string | null
   startDate: string
   endDate: string
   institutionId?: string

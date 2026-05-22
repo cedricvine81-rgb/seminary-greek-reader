@@ -16,8 +16,16 @@ export default async function InstructorCoursesPage() {
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
   const courses = await prisma.course.findMany({
-    where: { instructorId: payload.sub },
-    include: { _count: { select: { enrollments: true } } },
+    where: {
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
+    include: {
+      _count: { select: { enrollments: true } },
+      institution: { select: { name: true } },
+    },
     orderBy: { createdAt: 'desc' },
   })
 
@@ -29,6 +37,7 @@ export default async function InstructorCoursesPage() {
     updatedAt: c.updatedAt.toISOString(),
     enrollmentCount: c._count.enrollments,
     institutionId: c.institutionId ?? undefined,
+    institutionName: c.institution?.name ?? null,
   }))
 
   return (
