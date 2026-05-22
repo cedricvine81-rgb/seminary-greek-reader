@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
 
   const courses = await prisma.course.findMany({
     where: payload.role === 'INSTRUCTOR'
-      ? { instructorId: payload.sub }
+      ? { OR: [{ instructorId: payload.sub }, { coInstructors: { some: { userId: payload.sub } } }] }
       : { enrollments: { some: { userId: payload.sub } } },
     include: { _count: { select: { enrollments: true } } },
     orderBy: { createdAt: 'desc' },

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { isAuthorizedForAssignment, isInstructorOfCourse } from '@/lib/course-auth'
 
 export async function POST(
   req: NextRequest,
@@ -12,22 +13,20 @@ export async function POST(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 })
+  }
+
   const source = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
     include: { questions: { orderBy: { position: 'asc' } } },
   })
-  if (!source || source.createdById !== payload.sub) {
-    return NextResponse.json({ error: 'Not found' }, { status: 404 })
-  }
+  if (!source) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   const body = await req.json()
   const { targetCourseId, weekNumber, dueDate } = body
 
-  const targetCourse = await prisma.course.findUnique({
-    where: { id: targetCourseId },
-    select: { id: true, instructorId: true },
-  })
-  if (!targetCourse || targetCourse.instructorId !== payload.sub) {
+  if (!await isInstructorOfCourse(targetCourseId, payload.sub)) {
     return NextResponse.json({ error: 'Target course not found' }, { status: 404 })
   }
 

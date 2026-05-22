@@ -15,7 +15,12 @@ export default async function InstructorAssignmentsPage() {
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
   const assignments = await prisma.assignment.findMany({
-    where: { createdById: payload.sub },
+    where: {
+      OR: [
+        { createdById: payload.sub },
+        { course: { coInstructors: { some: { userId: payload.sub } } } },
+      ],
+    },
     include: { course: { select: { name: true } }, _count: { select: { questions: true } } },
     orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
   })

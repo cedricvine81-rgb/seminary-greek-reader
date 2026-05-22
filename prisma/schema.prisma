@@ -25,11 +25,12 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  instructorCourses Course[]     @relation("InstructorCourses")
-  enrollments       Enrollment[]
-  responses         Response[]
-  flashcardProgress FlashcardProgress[]
-  createdAssignments Assignment[] @relation("CreatedAssignments")
+  instructorCourses  Course[]              @relation("InstructorCourses")
+  coInstructorOf     CourseCoInstructor[]
+  enrollments        Enrollment[]
+  responses          Response[]
+  flashcardProgress  FlashcardProgress[]
+  createdAssignments Assignment[]          @relation("CreatedAssignments")
 
   @@index([email])
 }
@@ -68,12 +69,26 @@ model Course {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
-  instructor  User         @relation("InstructorCourses", fields: [instructorId], references: [id])
-  institution Institution? @relation(fields: [institutionId], references: [id])
-  enrollments Enrollment[]
-  assignments Assignment[]
+  instructor     User                @relation("InstructorCourses", fields: [instructorId], references: [id])
+  institution    Institution?        @relation(fields: [institutionId], references: [id])
+  coInstructors  CourseCoInstructor[]
+  enrollments    Enrollment[]
+  assignments    Assignment[]
 
   @@index([instructorId])
+}
+
+model CourseCoInstructor {
+  id        String   @id @default(cuid())
+  courseId  String
+  userId    String
+  createdAt DateTime @default(now())
+
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([courseId, userId])
+  @@index([courseId])
 }
 
 model Enrollment {

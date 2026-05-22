@@ -51,12 +51,18 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'courseId and schedule are required.' }, { status: 400 })
   }
 
-  // Verify the course belongs to this instructor
-  const course = await prisma.course.findUnique({
-    where: { id: courseId },
-    select: { instructorId: true, name: true },
+  // Verify the instructor has access to this course (primary or co-instructor)
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
+    select: { name: true },
   })
-  if (!course || course.instructorId !== payload.sub) {
+  if (!course) {
     return NextResponse.json({ error: 'Course not found.' }, { status: 404 })
   }
 

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
+import { CoInstructorManager } from '@/components/instructor/CoInstructorManager'
 import { Badge } from '@/components/ui/Badge'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -19,11 +20,21 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
-  const course = await prisma.course.findUnique({
-    where: { id: params.courseId },
-    include: { assignments: { orderBy: { weekNumber: 'asc' } } },
+  const course = await prisma.course.findFirst({
+    where: {
+      id: params.courseId,
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
+    include: {
+      assignments: { orderBy: { weekNumber: 'asc' } },
+      coInstructors: { include: { user: { select: { id: true, firstName: true, surname: true, email: true } } } },
+    },
   })
-  if (!course || course.instructorId !== payload.sub) notFound()
+  if (!course) notFound()
+  const isPrimaryInstructor = course.instructorId === payload.sub
 
   const report = await getCourseReport(params.courseId)
 
@@ -69,6 +80,15 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
               ))}
             </ul>
           )}
+        </Card>
+
+        <Card>
+          <CardTitle>Co-Instructors</CardTitle>
+          <CoInstructorManager
+            courseId={course.id}
+            initialCoInstructors={course.coInstructors}
+            isPrimaryInstructor={isPrimaryInstructor}
+          />
         </Card>
 
         <Card>

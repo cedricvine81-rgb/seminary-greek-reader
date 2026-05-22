@@ -10,6 +10,7 @@ import { Card, CardTitle } from '@/components/ui/Card'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { isAuthorizedForAssignment } from '@/lib/course-auth'
 
 export const metadata: Metadata = { title: 'Edit Assignment' }
 
@@ -22,7 +23,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
     where: { id: params.assignmentId },
     include: { questions: { orderBy: { position: 'asc' } } },
   })
-  if (!assignment || assignment.createdById !== payload.sub) notFound()
+  if (!assignment || !await isAuthorizedForAssignment(params.assignmentId, payload.sub)) notFound()
 
   return (
     <DashboardShell

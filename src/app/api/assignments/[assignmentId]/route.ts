@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { isAuthorizedForAssignment } from '@/lib/course-auth'
 
 function getPayload() {
   const token = getTokenFromCookies()
@@ -16,11 +17,7 @@ export async function PATCH(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const assignment = await prisma.assignment.findUnique({
-    where: { id: params.assignmentId },
-    select: { createdById: true },
-  })
-  if (!assignment || assignment.createdById !== payload.sub) {
+  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
@@ -47,11 +44,7 @@ export async function DELETE(
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const assignment = await prisma.assignment.findUnique({
-    where: { id: params.assignmentId },
-    select: { createdById: true },
-  })
-  if (!assignment || assignment.createdById !== payload.sub) {
+  if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 

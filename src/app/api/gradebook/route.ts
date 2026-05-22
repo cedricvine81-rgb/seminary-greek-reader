@@ -12,12 +12,18 @@ export async function GET(req: NextRequest) {
   const courseId = req.nextUrl.searchParams.get('courseId')
   if (!courseId) return NextResponse.json({ error: 'Missing courseId' }, { status: 400 })
 
-  // Verify the course belongs to this instructor
-  const course = await prisma.course.findUnique({
-    where: { id: courseId },
-    select: { instructorId: true },
+  // Verify the instructor has access to this course (primary or co-instructor)
+  const course = await prisma.course.findFirst({
+    where: {
+      id: courseId,
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
+    select: { id: true },
   })
-  if (!course || course.instructorId !== payload.sub) {
+  if (!course) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
