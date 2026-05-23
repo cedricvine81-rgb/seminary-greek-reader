@@ -13,7 +13,7 @@ export async function GET() {
 
   const user = await prisma.user.findUnique({
     where: { id: payload.sub },
-    select: { firstName: true, surname: true, institution: true },
+    select: { firstName: true, surname: true, title: true, institution: true },
   })
   if (!user) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -24,7 +24,7 @@ export async function PUT(req: NextRequest) {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { firstName, surname, institution } = await req.json()
+  const { firstName, surname, title, institution } = await req.json()
 
   if (!firstName?.trim() || !surname?.trim()) {
     return NextResponse.json({ error: 'First name and surname are required.' }, { status: 400 })
@@ -34,10 +34,11 @@ export async function PUT(req: NextRequest) {
     where: { id: payload.sub },
     data: {
       firstName: firstName.trim(),
-      surname: surname.trim(),
+      surname:   surname.trim(),
+      title:     title?.trim() || null,
       institution: institution?.trim() || null,
     },
-    select: { firstName: true, surname: true, institution: true },
+    select: { firstName: true, surname: true, title: true, institution: true },
   })
 
   return NextResponse.json(updated)

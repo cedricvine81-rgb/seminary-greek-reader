@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, BookOpen, BookMarked, Users,
   ClipboardList, BarChart2, FileText, GraduationCap,
-  FlipHorizontal, TrendingUp
+  FlipHorizontal, TrendingUp, Settings,
 } from 'lucide-react'
 
 interface NavItem {
@@ -41,9 +41,12 @@ export function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname()
   const items = role === 'INSTRUCTOR' ? instructorNav : studentNav
 
+  const settingsActive = pathname === '/settings'
+
   return (
     <aside className="w-56 shrink-0 hidden lg:flex flex-col bg-white border-r border-gray-100 min-h-screen pt-6">
-      <nav className="flex flex-col gap-0.5 px-3">
+      {/* Main nav */}
+      <nav className="flex flex-col gap-0.5 px-3 flex-1">
         {items.map(item => {
           const active = pathname === item.href || (item.href !== '/instructor' && item.href !== '/student' && pathname.startsWith(item.href))
           return (
@@ -63,6 +66,22 @@ export function Sidebar({ role }: SidebarProps) {
           )
         })}
       </nav>
+
+      {/* Settings pinned at bottom */}
+      <div className="px-3 pb-6 border-t border-gray-100 pt-3">
+        <Link
+          href="/settings"
+          className={clsx(
+            'flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+            settingsActive
+              ? 'bg-brand-50 text-brand-700'
+              : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+          )}
+        >
+          <Settings size={16} />
+          Settings
+        </Link>
+      </div>
     </aside>
   )
 }

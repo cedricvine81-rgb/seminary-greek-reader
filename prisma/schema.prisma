@@ -18,6 +18,7 @@ model User {
   id          String   @id @default(cuid())
   firstName   String
   surname     String
+  title       String?
   email       String   @unique
   password    String
   role        Role
