@@ -1,0 +1,8290 @@
+[
+  {
+    "word": "γάρ",
+    "inflection": null,
+    "gloss": "for",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "καί",
+    "inflection": null,
+    "gloss": "and, also, likewise",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐν",
+    "inflection": null,
+    "gloss": "(with dat.) in",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὁ",
+    "inflection": "ἡ, τό",
+    "gloss": "the",
+    "pos": "Art",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐκ",
+    "inflection": null,
+    "gloss": "from out, from",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὐ",
+    "inflection": null,
+    "gloss": "no, not",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μή",
+    "inflection": null,
+    "gloss": "not, lest",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εἰμί",
+    "inflection": null,
+    "gloss": "am, exist",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "θεός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "god",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "αὐτός",
+    "inflection": "-ή, -ό",
+    "gloss": "he, she, it; same",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "κατά",
+    "inflection": null,
+    "gloss": "(with gen.) down, against; (with acc.) according to",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "γράφω",
+    "inflection": null,
+    "gloss": "write",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀποκρίνομαι",
+    "inflection": null,
+    "gloss": "answer, reply",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πνεῦμα",
+    "inflection": "-τος, τό",
+    "gloss": "wind, breath, spirit",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὐρανός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "sky, heaven",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "περί",
+    "inflection": null,
+    "gloss": "(with gen.) about, concerning; (with acc.) around",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "θέλω",
+    "inflection": null,
+    "gloss": "will, wish, desire",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δύναμαι",
+    "inflection": null,
+    "gloss": "am able, can",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀνήρ",
+    "inflection": "-ἀνδρός, ὁ",
+    "gloss": "man",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "υἱός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "son, descendent",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πόλις",
+    "inflection": "-εως, ἡ",
+    "gloss": "city",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εἰσέρχομαι",
+    "inflection": null,
+    "gloss": "go into, come in, enter",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μέν",
+    "inflection": null,
+    "gloss": "indeed, on the one hand",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "χείρ",
+    "inflection": "-χειρός, ἡ",
+    "gloss": "hand",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐξέρχομαι",
+    "inflection": null,
+    "gloss": "go out, come out",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εὑρίσκω",
+    "inflection": null,
+    "gloss": "find, discover",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἄγγελος",
+    "inflection": "-ου, ὁ",
+    "gloss": "angel, messenger",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Παῦλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Paul",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἔθνος",
+    "inflection": "-ους, τό",
+    "gloss": "nation, the Gentiles",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δόξα",
+    "inflection": "-ης, ἡ",
+    "gloss": "glory, splendor, brightness",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "παρά",
+    "inflection": null,
+    "gloss": "(with gen.) from; (with dat.) at, by; (with acc.) near",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "κόσμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "the world, universe",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "καρδία",
+    "inflection": "-ας, ἡ",
+    "gloss": "heart",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "καθώς",
+    "inflection": null,
+    "gloss": "just as, as",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἁμαρτία",
+    "inflection": "-ας, ἡ",
+    "gloss": "sin",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "τότε",
+    "inflection": null,
+    "gloss": "then",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὑπό",
+    "inflection": null,
+    "gloss": "(with gen.) by; (with acc.) under",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "γίνομαι",
+    "inflection": null,
+    "gloss": "am born, become, happen",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "λαμβάνω",
+    "inflection": null,
+    "gloss": "receive, take",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὖν",
+    "inflection": null,
+    "gloss": "therefore, then",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εἰ",
+    "inflection": null,
+    "gloss": "if",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "τέ",
+    "inflection": null,
+    "gloss": "and, both",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μετά",
+    "inflection": null,
+    "gloss": "(with gen.) with; (with acc.) after, behind",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πιστεύω",
+    "inflection": null,
+    "gloss": "believe in, have faith in, trust",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐκεῖνος",
+    "inflection": "-η, -ο",
+    "gloss": "that",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οἶδα",
+    "inflection": null,
+    "gloss": "know, remember",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "λόγος",
+    "inflection": "-ου, ὁ",
+    "gloss": "word, speech",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἅγιος",
+    "inflection": "-α, -ον",
+    "gloss": "holy, sacred",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὐδείς",
+    "inflection": "-δεμία, -δέν",
+    "gloss": "no one, nothing",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "γυνή",
+    "inflection": "-αικός, ἡ",
+    "gloss": "woman, wife",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "γινώσκω",
+    "inflection": null,
+    "gloss": "know, learn",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μαθητής",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "learner, disciple",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πίστις",
+    "inflection": "-εως, ἡ",
+    "gloss": "faith, belief, trust",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Ἰουδαῖος",
+    "inflection": "-α, -ον",
+    "gloss": "Jewish, Judean",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "γῆ",
+    "inflection": "-γῆς, ἡ",
+    "gloss": "earth, land",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πατήρ",
+    "inflection": "-πατρός, ὁ",
+    "gloss": "father, ancestor",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "νόμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "law",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μέγας",
+    "inflection": "-μεγάλη, -μέγα",
+    "gloss": "large, great",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὄνομα",
+    "inflection": "-τος, τό",
+    "gloss": "name",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "τίς",
+    "inflection": null,
+    "gloss": "who, which, what",
+    "pos": "Interrog",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "τὶς",
+    "inflection": null,
+    "gloss": "anyone, anything; someone, something",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εἷς",
+    "inflection": null,
+    "gloss": "one",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πᾶς",
+    "inflection": null,
+    "gloss": "all, every",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὗτος",
+    "inflection": null,
+    "gloss": "this, he, she, it",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅς",
+    "inflection": null,
+    "gloss": "who, which, what, that",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὕτω",
+    "inflection": null,
+    "gloss": "thus, so, in this manner",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἄλλος",
+    "inflection": null,
+    "gloss": "other, another",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅστις",
+    "inflection": null,
+    "gloss": "whosoever, whichsoever, whatsoever",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "σάρξ",
+    "inflection": "ἡ",
+    "gloss": "flesh, body",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅσος",
+    "inflection": null,
+    "gloss": "as great, as far, how far",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅλος",
+    "inflection": null,
+    "gloss": "entire, whole, complete",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀποθνῄσκω",
+    "inflection": null,
+    "gloss": "am dying, die",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "νῦν",
+    "inflection": null,
+    "gloss": "now, already",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐγείρω",
+    "inflection": null,
+    "gloss": "raise",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δοῦλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "slave",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "βάλλω",
+    "inflection": null,
+    "gloss": "throw, place",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "αἰών",
+    "inflection": "-ῶνος, ὁ",
+    "gloss": "age, eternity",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πορεύομαι",
+    "inflection": null,
+    "gloss": "go, proceed",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "λαός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "people, crowd",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀποστέλλω",
+    "inflection": null,
+    "gloss": "send away, dismiss, send out",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πῶς",
+    "inflection": null,
+    "gloss": "how, in what manner",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "σύν",
+    "inflection": null,
+    "gloss": "(with dat.) with",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐκκλησία",
+    "inflection": "-ας, ἡ",
+    "gloss": "assembly, congregation, church",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "παραδίδωμι",
+    "inflection": null,
+    "gloss": "hand over, hand down, entrust",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ζάω",
+    "inflection": null,
+    "gloss": "live",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅταν",
+    "inflection": null,
+    "gloss": "when, whenever",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "νεκρός",
+    "inflection": "-ά, -όν",
+    "gloss": "dead, a corpse",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "βασιλεύς",
+    "inflection": "-έως, ὁ",
+    "gloss": "king, ruler",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀλήθεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "truth, truthfulness",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "φωνή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "sound, voice",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐξουσία",
+    "inflection": "-ας, ἡ",
+    "gloss": "power, authority",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀγαθός",
+    "inflection": "-ή, -όν",
+    "gloss": "good",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μένω",
+    "inflection": null,
+    "gloss": "remain, abide, stay",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ζητέω",
+    "inflection": null,
+    "gloss": "seek, look for, ask",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ζωή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "life",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Ἰωάννης",
+    "inflection": "-ου, ὁ",
+    "gloss": "John",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "θάνατος",
+    "inflection": "-ου, ὁ",
+    "gloss": "death",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Πέτρος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Peter",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "βασιλεία",
+    "inflection": "-ας, ἡ",
+    "gloss": "kingdom, reign",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὄχλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "crowd, multitude",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἄν",
+    "inflection": null,
+    "gloss": "(an untranslatable conditional particle)",
+    "pos": "Particle",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀπέρχομαι",
+    "inflection": null,
+    "gloss": "depart, go away",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οὐδέ",
+    "inflection": null,
+    "gloss": "neither, nor, and not",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀγαπάω",
+    "inflection": null,
+    "gloss": "love",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πάλιν",
+    "inflection": null,
+    "gloss": "again, further",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "καλέω",
+    "inflection": null,
+    "gloss": "call, invite",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "προφήτης",
+    "inflection": "-ου, ὁ",
+    "gloss": "prophet",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "βλέπω",
+    "inflection": null,
+    "gloss": "look, see",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "χάρις",
+    "inflection": "-ιτος, ἡ",
+    "gloss": "grace, favor, kindness",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δεῖ",
+    "inflection": null,
+    "gloss": "it is necessary, one must",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἕως",
+    "inflection": null,
+    "gloss": "until, as far as",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀμήν",
+    "inflection": null,
+    "gloss": "truly, amen, so let it be",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὑπέρ",
+    "inflection": null,
+    "gloss": "(with gen.) on behalf of; (with acc.) above",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀφίημι",
+    "inflection": null,
+    "gloss": "leave, let go, pardon",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἵστημι",
+    "inflection": null,
+    "gloss": "cause to stand, place, set",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δύο",
+    "inflection": null,
+    "gloss": "two",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δύναμις",
+    "inflection": "-εως, ἡ",
+    "gloss": "power, strength",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀρχιερεύς",
+    "inflection": "-έως, ὁ",
+    "gloss": "high priest",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "σῶμα",
+    "inflection": "-τος, τό",
+    "gloss": "body, flesh",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "μέλλω",
+    "inflection": null,
+    "gloss": "am about to, intend",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "κρίνω",
+    "inflection": null,
+    "gloss": "judge, decide",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "σῴζω",
+    "inflection": null,
+    "gloss": "save, heal",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀνίστημι",
+    "inflection": null,
+    "gloss": "raise, rise, stand up",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀγάπη",
+    "inflection": "-ης, ἡ",
+    "gloss": "love",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ψυχή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "soul, life",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἔργον",
+    "inflection": "-ου, τό",
+    "gloss": "work, labor",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "οἶκος",
+    "inflection": "-ου, ὁ",
+    "gloss": "house, household, dwelling",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἴδιος",
+    "inflection": "-α, -ον",
+    "gloss": "one's own, personal",
+    "pos": "Adj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὥρα",
+    "inflection": "-ας, ἡ",
+    "gloss": "hour, season",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "παρακαλέω",
+    "inflection": null,
+    "gloss": "comfort, invite, exhort",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "λαλέω",
+    "inflection": null,
+    "gloss": "speak, say",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἤ",
+    "inflection": null,
+    "gloss": "or, either",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀκούω",
+    "inflection": null,
+    "gloss": "hear, listen",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἔχω",
+    "inflection": null,
+    "gloss": "have, hold",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἔρχομαι",
+    "inflection": null,
+    "gloss": "come, go",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἡμέρα",
+    "inflection": "-ας, ἡ",
+    "gloss": "day",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐάν",
+    "inflection": null,
+    "gloss": "if",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δίδωμι",
+    "inflection": null,
+    "gloss": "offer, give",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀδελφός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "brother",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἵνα",
+    "inflection": null,
+    "gloss": "in order that, so that",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "διά",
+    "inflection": null,
+    "gloss": "through (with gen.); on account of, because of (with acc.)",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἄνθρωπος",
+    "inflection": "-ου, ὁ",
+    "gloss": "man, human being, person",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀλλά",
+    "inflection": null,
+    "gloss": "but, rather, yet",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "πρός",
+    "inflection": null,
+    "gloss": "(with acc.) to, towards, with; (with dat.) near, at",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "κύριος",
+    "inflection": "-ου, ὁ",
+    "gloss": "lord, master, the Lord",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Χριστός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "the Anointed One, the Messiah, the Christ",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ποιέω",
+    "inflection": null,
+    "gloss": "do, make",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀπό",
+    "inflection": null,
+    "gloss": "(with gen.) from, away from",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "σύ",
+    "inflection": null,
+    "gloss": "you",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὡς",
+    "inflection": null,
+    "gloss": "as, like, so",
+    "pos": "Adv",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐπί",
+    "inflection": null,
+    "gloss": "(with gen.) over, upon; (with dat.) on, in; (with acc.) on, against",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὁράω",
+    "inflection": null,
+    "gloss": "see, look upon",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἐγώ",
+    "inflection": null,
+    "gloss": "I",
+    "pos": "Pron",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "Ἰησοῦς",
+    "inflection": null,
+    "gloss": "Jesus, Joshua",
+    "pos": "Noun",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "δέ",
+    "inflection": null,
+    "gloss": "but, and",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ὅτι",
+    "inflection": null,
+    "gloss": "that, since, because",
+    "pos": "Conj",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "λέγω",
+    "inflection": null,
+    "gloss": "say, tell",
+    "pos": "Verb",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "εἰς",
+    "inflection": null,
+    "gloss": "into, in",
+    "pos": "Prep",
+    "section": 1,
+    "freq": null
+  },
+  {
+    "word": "ἀνοίγω",
+    "inflection": null,
+    "gloss": "open",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 84
+  },
+  {
+    "word": "ἀναβαίνω",
+    "inflection": null,
+    "gloss": "go up, embark, ascend",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 84
+  },
+  {
+    "word": "ἀπόστολος",
+    "inflection": "-ου, ὁ",
+    "gloss": "apostle, messenger",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 83
+  },
+  {
+    "word": "ἄρχω",
+    "inflection": null,
+    "gloss": "rule, be first; (mid.) begin",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 83
+  },
+  {
+    "word": "ἕκαστος",
+    "inflection": "-η, -ον",
+    "gloss": "each, every one",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 82
+  },
+  {
+    "word": "δίκαιος",
+    "inflection": "-α, -ον",
+    "gloss": "just, righteous",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 82
+  },
+  {
+    "word": "ἐμός",
+    "inflection": "-ή, -όν",
+    "gloss": "mine, myself",
+    "pos": "pron-posses",
+    "section": 2,
+    "freq": 81
+  },
+  {
+    "word": "ἐκβάλλω",
+    "inflection": null,
+    "gloss": "throw out, expel, cast",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 81
+  },
+  {
+    "word": "κἀγώ",
+    "inflection": null,
+    "gloss": "and I, but I",
+    "pos": "Conj",
+    "section": 2,
+    "freq": 81
+  },
+  {
+    "word": "καταβαίνω",
+    "inflection": null,
+    "gloss": "go down, come down",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 80
+  },
+  {
+    "word": "μᾶλλον",
+    "inflection": null,
+    "gloss": "more, rather",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 80
+  },
+  {
+    "word": "Μωϋσῆς",
+    "inflection": "-έως, ὁ",
+    "gloss": "Moses",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 79
+  },
+  {
+    "word": "ὅπου",
+    "inflection": null,
+    "gloss": "where, since, insofar as",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 79
+  },
+  {
+    "word": "μήτηρ",
+    "inflection": "-τρος, ἡ",
+    "gloss": "mother",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 79
+  },
+  {
+    "word": "πέμπω",
+    "inflection": null,
+    "gloss": "send",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 78
+  },
+  {
+    "word": "πονηρός",
+    "inflection": "-ά, -όν",
+    "gloss": "evil, bad",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 78
+  },
+  {
+    "word": "ὑπάγω",
+    "inflection": null,
+    "gloss": "go away, depart",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 77
+  },
+  {
+    "word": "ὥστε",
+    "inflection": null,
+    "gloss": "so that, therefore",
+    "pos": "Conj",
+    "section": 2,
+    "freq": 77
+  },
+  {
+    "word": "στόμα",
+    "inflection": "-τος, τό",
+    "gloss": "mouth, speech",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 77
+  },
+  {
+    "word": "Ἀβραάμ",
+    "inflection": "ὁ",
+    "gloss": "Abraham",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 77
+  },
+  {
+    "word": "ἄγω",
+    "inflection": null,
+    "gloss": "lead",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 76
+  },
+  {
+    "word": "αἰτέω",
+    "inflection": null,
+    "gloss": "ask, request, ask for",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 76
+  },
+  {
+    "word": "ἀποκτείνω",
+    "inflection": null,
+    "gloss": "put to death, kill",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 75
+  },
+  {
+    "word": "αἰώνιος",
+    "inflection": "-ον",
+    "gloss": "eternal",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 75
+  },
+  {
+    "word": "δώδεκα",
+    "inflection": null,
+    "gloss": "twelve",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 74
+  },
+  {
+    "word": "βαπτίζω",
+    "inflection": null,
+    "gloss": "dip, baptize",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 74
+  },
+  {
+    "word": "εὐαγγέλιον",
+    "inflection": "-ου, τό",
+    "gloss": "gospel, the Good News",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 73
+  },
+  {
+    "word": "ἱερός",
+    "inflection": "-ά, -όν",
+    "gloss": "temple",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 73
+  },
+  {
+    "word": "κεφαλή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "head",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 72
+  },
+  {
+    "word": "Ἱεροσόλυμα",
+    "inflection": "τό",
+    "gloss": "Jerusalem",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 72
+  },
+  {
+    "word": "πίνω",
+    "inflection": null,
+    "gloss": "drink",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 71
+  },
+  {
+    "word": "μαρτυρέω",
+    "inflection": null,
+    "gloss": "testify, bear witness",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 71
+  },
+  {
+    "word": "σημεῖον",
+    "inflection": "-ου, τό",
+    "gloss": "sign, miracle",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 70
+  },
+  {
+    "word": "πρόσωπον",
+    "inflection": "-ου, τό",
+    "gloss": "face",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 70
+  },
+  {
+    "word": "πῦρ",
+    "inflection": "-ός, τό",
+    "gloss": "fire",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 70
+  },
+  {
+    "word": "χαίρω",
+    "inflection": null,
+    "gloss": "rejoice, am glad",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 69
+  },
+  {
+    "word": "Σίμων",
+    "inflection": "-ωνος, ὁ",
+    "gloss": "Simon",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 69
+  },
+  {
+    "word": "τηρέω",
+    "inflection": null,
+    "gloss": "keep, guard, observe",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 69
+  },
+  {
+    "word": "φῶς",
+    "inflection": "-φωτός, τό",
+    "gloss": "light, source of light",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 69
+  },
+  {
+    "word": "γραμματεύς",
+    "inflection": "-έως, ὁ",
+    "gloss": "scribe, man of learning",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 68
+  },
+  {
+    "word": "ἀπολύω",
+    "inflection": null,
+    "gloss": "let go, send away, set free",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 68
+  },
+  {
+    "word": "ἐντολή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "commandment, order",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 67
+  },
+  {
+    "word": "εἴτε",
+    "inflection": null,
+    "gloss": "and if, whether, if",
+    "pos": "Conj",
+    "section": 2,
+    "freq": 67
+  },
+  {
+    "word": "δαιμόνιον",
+    "inflection": "-ου, τό",
+    "gloss": "demon, evil spirit",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 67
+  },
+  {
+    "word": "ἐσθίω",
+    "inflection": null,
+    "gloss": "eat",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 66
+  },
+  {
+    "word": "ἐρωτάω",
+    "inflection": null,
+    "gloss": "ask, question, request",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 66
+  },
+  {
+    "word": "καρπός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "fruit, gain, crop",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 65
+  },
+  {
+    "word": "Ἰσραήλ",
+    "inflection": "ὁ",
+    "gloss": "Israel",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 65
+  },
+  {
+    "word": "πιστός",
+    "inflection": "-ή, -όν",
+    "gloss": "trustworthy, faithful, believing",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 64
+  },
+  {
+    "word": "ὄρος",
+    "inflection": "-ους, τό",
+    "gloss": "mountain, hill",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 64
+  },
+  {
+    "word": "πλοῖον",
+    "inflection": "-ου, τό",
+    "gloss": "ship, vessel, boat",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 64
+  },
+  {
+    "word": "φημί",
+    "inflection": null,
+    "gloss": "say",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "φέρω",
+    "inflection": null,
+    "gloss": "carry, bear",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "πρεσβύτερος",
+    "inflection": "-α, -ον",
+    "gloss": "old; (as noun) elder",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "τρεῖς",
+    "inflection": "-τρία",
+    "gloss": "three",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "σάββατον",
+    "inflection": "-ου, τό",
+    "gloss": "Sabbath, week",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "ῥῆμα",
+    "inflection": "-τος, τό",
+    "gloss": "word, saying; thing, matter",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 63
+  },
+  {
+    "word": "ἀσπάζομαι",
+    "inflection": null,
+    "gloss": "greet, salute",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 62
+  },
+  {
+    "word": "ἀγαπητός",
+    "inflection": "-ή, -όν",
+    "gloss": "beloved, dear",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 62
+  },
+  {
+    "word": "Γαλιλαία",
+    "inflection": "-ας, ἡ",
+    "gloss": "Galilee",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 62
+  },
+  {
+    "word": "Δαυίδ",
+    "inflection": "ὁ",
+    "gloss": "David",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 61
+  },
+  {
+    "word": "δοκέω",
+    "inflection": null,
+    "gloss": "think, seem, believe",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 61
+  },
+  {
+    "word": "δοξάζω",
+    "inflection": null,
+    "gloss": "glorify, honor, praise",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 61
+  },
+  {
+    "word": "διδάσκαλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "teacher",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 61
+  },
+  {
+    "word": "θρόνος",
+    "inflection": "-ου, ὁ",
+    "gloss": "throne",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 60
+  },
+  {
+    "word": "ἤδη",
+    "inflection": null,
+    "gloss": "now, already",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 60
+  },
+  {
+    "word": "ἔξω",
+    "inflection": null,
+    "gloss": "outside, out",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 60
+  },
+  {
+    "word": "θέλημα",
+    "inflection": "-τος, τό",
+    "gloss": "will, wish, desire",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 60
+  },
+  {
+    "word": "ἱμάτιον",
+    "inflection": "-ου, τό",
+    "gloss": "outer garment, garment",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 60
+  },
+  {
+    "word": "ὧδε",
+    "inflection": null,
+    "gloss": "here",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "νύξ",
+    "inflection": "-νυκτός, ἡ",
+    "gloss": "night, night-time",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "λίθος",
+    "inflection": "-ου, ὁ",
+    "gloss": "stone",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "κηρύσσω",
+    "inflection": null,
+    "gloss": "proclaim, herald, preach",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "προσκυνέω",
+    "inflection": null,
+    "gloss": "worship",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "ὑπάρχω",
+    "inflection": null,
+    "gloss": "am, exist, be present",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "χαρά",
+    "inflection": "-ᾶς, ἡ",
+    "gloss": "joy, gladness",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "συνάγω",
+    "inflection": null,
+    "gloss": "gather together",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 59
+  },
+  {
+    "word": "δεξιός",
+    "inflection": "-ά, -όν",
+    "gloss": "on the right hand, right",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 58
+  },
+  {
+    "word": "ἀρχή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "beginning; ruler, authority",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 58
+  },
+  {
+    "word": "δέχομαι",
+    "inflection": null,
+    "gloss": "take, receive",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 57
+  },
+  {
+    "word": "ἐλπίς",
+    "inflection": "-ίδος, ἡ",
+    "gloss": "hope, expectation",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 57
+  },
+  {
+    "word": "διό",
+    "inflection": null,
+    "gloss": "therefore, for this reason",
+    "pos": "Conj",
+    "section": 2,
+    "freq": 57
+  },
+  {
+    "word": "εὐαγγελίζω",
+    "inflection": null,
+    "gloss": "preach the Good News",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 56
+  },
+  {
+    "word": "ἐπερωτάω",
+    "inflection": null,
+    "gloss": "question, ask (a question)",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 56
+  },
+  {
+    "word": "ἔσχατος",
+    "inflection": "-η, -ον",
+    "gloss": "last, finally",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 56
+  },
+  {
+    "word": "Μαρία",
+    "inflection": "-ας",
+    "gloss": "Mary",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 55
+  },
+  {
+    "word": "κράζω",
+    "inflection": null,
+    "gloss": "cry out, cry, call out",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 55
+  },
+  {
+    "word": "θεωρέω",
+    "inflection": null,
+    "gloss": "see, perceive",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 55
+  },
+  {
+    "word": "μηδέ",
+    "inflection": null,
+    "gloss": "and not, but not",
+    "pos": "Conj",
+    "section": 2,
+    "freq": 54
+  },
+  {
+    "word": "μέσος",
+    "inflection": "-η, -ον",
+    "gloss": "middle, in the middle",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 54
+  },
+  {
+    "word": "Πιλᾶτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Pilate",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 54
+  },
+  {
+    "word": "σπείρω",
+    "inflection": null,
+    "gloss": "sow, spread, scatter",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "πολύς",
+    "inflection": null,
+    "gloss": "much, many, often",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ὅπως",
+    "inflection": null,
+    "gloss": "in order that, so that, that",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "σοφία",
+    "inflection": "-ας, ἡ",
+    "gloss": "wisdom",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "πείθω",
+    "inflection": null,
+    "gloss": "convince, persuade; trust in",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ἔμπροσθεν",
+    "inflection": null,
+    "gloss": "ahead; in front of, before",
+    "pos": "Prep",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ἀποδίδωμι",
+    "inflection": null,
+    "gloss": "give away, give up; render",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "τυφλός",
+    "inflection": "-ή, -όν",
+    "gloss": "blind",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "γλῶσσα",
+    "inflection": "-ης, ἡ",
+    "gloss": "tongue, language",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "παιδίον",
+    "inflection": "-ου, τό",
+    "gloss": "infant, young child",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ἄχρι",
+    "inflection": null,
+    "gloss": "as far as, up to, until",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "παραλαμβάνω",
+    "inflection": null,
+    "gloss": "take, receive, take with",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "κακός",
+    "inflection": "-ή, -όν",
+    "gloss": "bad, evil",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "γραφή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "writing",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "οὐχί",
+    "inflection": null,
+    "gloss": "by no means, not at all, not",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ἔτος",
+    "inflection": "-ους, τό",
+    "gloss": "year",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "ἐπαγγελία",
+    "inflection": "-ας, ἡ",
+    "gloss": "promise",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "μακάριος",
+    "inflection": "-α, -ον",
+    "gloss": "happy, blessed",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "χρεία",
+    "inflection": "-ας, ἡ",
+    "gloss": "need, necessity",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "τρίτος",
+    "inflection": "-η, -ον",
+    "gloss": "third",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "συναγωγή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "assembly, congregation, synagogue",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "πρῶτος",
+    "inflection": "-η, -ον",
+    "gloss": "first, before",
+    "pos": "Adv",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "τοιοῦτος",
+    "inflection": "-αύτη, -οῦτον",
+    "gloss": "of such a kind, such",
+    "pos": "Adj",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "φανερόω",
+    "inflection": null,
+    "gloss": "reveal, make known",
+    "pos": "Verb",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "χρόνος",
+    "inflection": "-ου, ὁ",
+    "gloss": "time, season",
+    "pos": "Noun",
+    "section": 2,
+    "freq": 53
+  },
+  {
+    "word": "δικαιοσύνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "justice, righteousness",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "τίθημι",
+    "inflection": null,
+    "gloss": "put, place",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "εἶπον",
+    "inflection": null,
+    "gloss": "say, speak",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "διδάσκω",
+    "inflection": null,
+    "gloss": "teach",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "προσέρχομαι",
+    "inflection": null,
+    "gloss": "come near, go to, approach",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἄρτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "bread",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἀκολουθέω",
+    "inflection": null,
+    "gloss": "accompany, follow",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ὅτε",
+    "inflection": null,
+    "gloss": "when",
+    "pos": "Adv",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἐκεῖ",
+    "inflection": null,
+    "gloss": "there, to that place",
+    "pos": "Adv",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "αἷμα",
+    "inflection": "-τος, τό",
+    "gloss": "blood",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "κάθημαι",
+    "inflection": null,
+    "gloss": "sit, sit down",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "περιπατέω",
+    "inflection": null,
+    "gloss": "go about, walk around",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "πίπτω",
+    "inflection": null,
+    "gloss": "fall",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "οὔτε",
+    "inflection": null,
+    "gloss": "and not, neither, nor",
+    "pos": "Conj",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "προσεύχομαι",
+    "inflection": null,
+    "gloss": "pray",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "αἴρω",
+    "inflection": null,
+    "gloss": "raise, lift up, take away",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἐνώπιον",
+    "inflection": null,
+    "gloss": "in the presence of, before",
+    "pos": "Prep",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἑπτά",
+    "inflection": null,
+    "gloss": "seven",
+    "pos": "Adj",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "φοβέομαι",
+    "inflection": null,
+    "gloss": "fear, am terrified",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "καλός",
+    "inflection": "-ή, -όν",
+    "gloss": "beautiful, good",
+    "pos": "Adj",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἀπόλλυμι",
+    "inflection": null,
+    "gloss": "destroy, ruin",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "τόπος",
+    "inflection": "-ου, ὁ",
+    "gloss": "place",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἀλλήλων",
+    "inflection": "-ων",
+    "gloss": "one another, each other",
+    "pos": "Pron",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "πληρόω",
+    "inflection": null,
+    "gloss": "fill, make full, finish",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "γεννάω",
+    "inflection": null,
+    "gloss": "bring forth, give birth to",
+    "pos": "Verb",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "εὐθέως",
+    "inflection": null,
+    "gloss": "immediately, soon",
+    "pos": "Adv",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ὁδός",
+    "inflection": "-οῦ, ἡ",
+    "gloss": "way, road, journey",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ἔτι",
+    "inflection": null,
+    "gloss": "still, yet, even now",
+    "pos": "Adv",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ὀφθαλμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "eye",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "Φαρισαῖος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Pharisee",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "εἰρήνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "peace",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "τέκνον",
+    "inflection": "-ου, τό",
+    "gloss": "child, descendent",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "οἰκία",
+    "inflection": "-ας, ἡ",
+    "gloss": "house, household",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "θάλασσα",
+    "inflection": "-ης, ἡ",
+    "gloss": "sea, lake",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "καιρός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "time, right time",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "πούς",
+    "inflection": "-ποδός, ὁ",
+    "gloss": "foot",
+    "pos": "Noun",
+    "section": 2,
+    "freq": null
+  },
+  {
+    "word": "ναός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "temple, shrine",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "οὐαί",
+    "inflection": null,
+    "gloss": "woe!, alas!",
+    "pos": "Interj",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "κρατέω",
+    "inflection": null,
+    "gloss": "take hold, hold fast",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "θηρίον",
+    "inflection": "-ου, τό",
+    "gloss": "wild beast, animal",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "ἔρημος",
+    "inflection": "-ου, ἡ",
+    "gloss": "deserted, empty; desert, wilderness",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "ἀπαγγέλλω",
+    "inflection": null,
+    "gloss": "report, announce, proclaim",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "καθίζω",
+    "inflection": null,
+    "gloss": "seat, sit down",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "προσφέρω",
+    "inflection": null,
+    "gloss": "bring to, offer",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "πρό",
+    "inflection": null,
+    "gloss": "(with gen.) before, in front of",
+    "pos": "Prep",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "κρίσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "judging, judgment",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "διώκω",
+    "inflection": null,
+    "gloss": "hasten; pursue, persecute",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "θλῖψις",
+    "inflection": "-εως, ἡ",
+    "gloss": "persecution, affliction, distress",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "μικρός",
+    "inflection": "-ά, -όν",
+    "gloss": "little, small",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "σωτηρία",
+    "inflection": "-ας, ἡ",
+    "gloss": "deliverance, salvation",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "φόβος",
+    "inflection": "-ου, ὁ",
+    "gloss": "fear",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "φυλακή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "guard, prison, watch",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "σταυρόω",
+    "inflection": null,
+    "gloss": "crucify",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "ἁμαρτωλός",
+    "inflection": "-όν",
+    "gloss": "sinful",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "μόνος",
+    "inflection": "-η, -ον",
+    "gloss": "alone, only",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "οὐκέτι",
+    "inflection": null,
+    "gloss": "no longer, no more",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 48
+  },
+  {
+    "word": "σπέρμα",
+    "inflection": "-τος, τό",
+    "gloss": "seed, offspring",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "κατοικέω",
+    "inflection": null,
+    "gloss": "dwell in, live",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "λύω",
+    "inflection": null,
+    "gloss": "loose, untie, set free",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "μέρος",
+    "inflection": "-ους, τό",
+    "gloss": "part, portion",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "καινός",
+    "inflection": "-ή, -όν",
+    "gloss": "fresh, new",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ποῦ",
+    "inflection": null,
+    "gloss": "where",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ὅμοιος",
+    "inflection": "-α, -ον",
+    "gloss": "like, similar to",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "Ἰουδαία",
+    "inflection": "-ας, ἡ",
+    "gloss": "Judea",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "Ἰάκωβος",
+    "inflection": "-ου, ὁ",
+    "gloss": "James",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "πότε",
+    "inflection": null,
+    "gloss": "when, at what time",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "θαυμάζω",
+    "inflection": null,
+    "gloss": "wonder, marvel",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "θεραπεύω",
+    "inflection": null,
+    "gloss": "care for, heal",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ἁμαρτάνω",
+    "inflection": null,
+    "gloss": "sin",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "δέομαι",
+    "inflection": null,
+    "gloss": "beseech, beg",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ἀνάστασις",
+    "inflection": "-εως, ἡ",
+    "gloss": "resurrection",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ἐπιγινώσκω",
+    "inflection": null,
+    "gloss": "come to know, recognize, understand",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "γενεά",
+    "inflection": "-ᾶς, ἡ",
+    "gloss": "generation, family",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "ἐγγίζω",
+    "inflection": null,
+    "gloss": "come near, approach",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "Ἡρῴδης",
+    "inflection": "-ου, ὁ",
+    "gloss": "Herod",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "δεύτερος",
+    "inflection": "-α, -ον",
+    "gloss": "second, in the second place",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 45
+  },
+  {
+    "word": "πάντοτε",
+    "inflection": null,
+    "gloss": "always, at all times",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "λογίζομαι",
+    "inflection": null,
+    "gloss": "reckon, count, think",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "φωνέω",
+    "inflection": null,
+    "gloss": "summon, call",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ἄξιος",
+    "inflection": "-α, -ον",
+    "gloss": "worthy, fit",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "διέρχομαι",
+    "inflection": null,
+    "gloss": "pass through, go through",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "σήμερον",
+    "inflection": null,
+    "gloss": "today, now",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "τιμή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "price, honor, value",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ἐπιτίθημι",
+    "inflection": null,
+    "gloss": "put, place upon, lay on",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "παρίστημι",
+    "inflection": null,
+    "gloss": "present, come up to and stand by",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "σεαυτοῦ",
+    "inflection": "-ῆς",
+    "gloss": "of yourself, yourself",
+    "pos": "pron-reflex",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ἑτοιμάζω",
+    "inflection": null,
+    "gloss": "make ready, prepare",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "χωρίς",
+    "inflection": null,
+    "gloss": "apart from, without",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ἱκανός",
+    "inflection": "-ή, -όν",
+    "gloss": "sufficient, large",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "τέλος",
+    "inflection": "-ους, τό",
+    "gloss": "end, purpose",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ὀλίγος",
+    "inflection": "-η, -ον",
+    "gloss": "few, little",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "τέσσαρες",
+    "inflection": null,
+    "gloss": "four",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "ἐργάζομαι",
+    "inflection": null,
+    "gloss": "work, do, accomplish",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "εὐλογέω",
+    "inflection": null,
+    "gloss": "bless",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "κλαίω",
+    "inflection": null,
+    "gloss": "weep, mourn, cry",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 42
+  },
+  {
+    "word": "πειράζω",
+    "inflection": null,
+    "gloss": "try, tempt, test",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "εὐχαριστέω",
+    "inflection": null,
+    "gloss": "thank, give thanks",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "δικαιόω",
+    "inflection": null,
+    "gloss": "make righteous, justify",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "ἄρχων",
+    "inflection": "-οντος, ὁ",
+    "gloss": "ruler, lord, authority",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "διακονέω",
+    "inflection": null,
+    "gloss": "wait at table, serve",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "περισσεύω",
+    "inflection": null,
+    "gloss": "have an abundance, rich",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "οἰκοδομέω",
+    "inflection": null,
+    "gloss": "build, build up, edify",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "πράσσω",
+    "inflection": null,
+    "gloss": "do, accomplish",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "ἐπιθυμία",
+    "inflection": "-ας, ἡ",
+    "gloss": "desire, lust, longing",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "πάσχω",
+    "inflection": null,
+    "gloss": "suffer, endure",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "μνημεῖον",
+    "inflection": "-ου, τό",
+    "gloss": "tomb, sepulcher, grave",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "διάβολος",
+    "inflection": "-ου, ὁ",
+    "gloss": "the Slanderer, the Devil",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "ὑποτάσσω",
+    "inflection": null,
+    "gloss": "subject, subordinate",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "Ἰούδας",
+    "inflection": "-α, ὁ",
+    "gloss": "Judas, Jude",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "πέντε",
+    "inflection": null,
+    "gloss": "five",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "ἐμαυτοῦ",
+    "inflection": "-ῆς",
+    "gloss": "of myself, myself",
+    "pos": "pron-reflex",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "μισέω",
+    "inflection": null,
+    "gloss": "hate, detest",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "πλανάω",
+    "inflection": null,
+    "gloss": "lead astray, deceive",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "θύρα",
+    "inflection": "-ας, ἡ",
+    "gloss": "door",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "βούλομαι",
+    "inflection": null,
+    "gloss": "will, desire, wish",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 40
+  },
+  {
+    "word": "πρόβατον",
+    "inflection": "-ου, τό",
+    "gloss": "sheep",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "Σατανᾶς",
+    "inflection": "-ᾶ, ὁ",
+    "gloss": "Satan, the Adversary",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ἅπτω",
+    "inflection": null,
+    "gloss": "touch; kindle; hold",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ἐπιστρέφω",
+    "inflection": null,
+    "gloss": "turn back to; turn, turn around",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "Ἰωσήφ",
+    "inflection": "ὁ",
+    "gloss": "Joseph",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "καυχάομαι",
+    "inflection": null,
+    "gloss": "boast, glory",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ἀγρός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "field, farm",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "μάρτυς",
+    "inflection": "-μάρτυρος, ὁ",
+    "gloss": "witness",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ὥσπερ",
+    "inflection": null,
+    "gloss": "just as, as",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ὀργή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "anger, indignation",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "οὖς",
+    "inflection": "-ὠτός, τό",
+    "gloss": "ear",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "μαρτυρία",
+    "inflection": "-ας, ἡ",
+    "gloss": "witness, testimony",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ὀφείλω",
+    "inflection": null,
+    "gloss": "owe, ought",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "Φίλιππος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Philip",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "καλῶς",
+    "inflection": null,
+    "gloss": "well, beautifully",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "προσευχή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "prayer",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "παραγίνομαι",
+    "inflection": null,
+    "gloss": "come; am present",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ἄρτι",
+    "inflection": null,
+    "gloss": "now, just now",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "περιτομή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "circumcision",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "ὀπίσω",
+    "inflection": null,
+    "gloss": "behind, back",
+    "pos": "Prep",
+    "section": 3,
+    "freq": 37
+  },
+  {
+    "word": "πτωχός",
+    "inflection": "-ή, -όν",
+    "gloss": "poor",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἐκπορεύομαι",
+    "inflection": null,
+    "gloss": "go out",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "μέλος",
+    "inflection": "-ους, τό",
+    "gloss": "member, part",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "διαθήκη",
+    "inflection": "-ης, ἡ",
+    "gloss": "covenant, will, testament",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "δείκνυμι",
+    "inflection": null,
+    "gloss": "point out, show",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἀσθενέω",
+    "inflection": null,
+    "gloss": "am weak, sick",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "βλασφημέω",
+    "inflection": null,
+    "gloss": "blaspheme",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "διακονία",
+    "inflection": "-ας, ἡ",
+    "gloss": "service",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "δυνατός",
+    "inflection": "-ή, -όν",
+    "gloss": "powerful, able, possible",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "μετανοέω",
+    "inflection": null,
+    "gloss": "repent, am converted",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "βιβλίον",
+    "inflection": "-ου, τό",
+    "gloss": "book, scroll",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἀρνέομαι",
+    "inflection": null,
+    "gloss": "deny",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ναί",
+    "inflection": null,
+    "gloss": "yes, indeed",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἄρα",
+    "inflection": null,
+    "gloss": "then, therefore, since, so",
+    "pos": "Conj",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "μήτε",
+    "inflection": null,
+    "gloss": "nor, neither, and not",
+    "pos": "Conj",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ποῖος",
+    "inflection": "-α, -ον",
+    "gloss": "of what kind? which? what?",
+    "pos": "Interrog",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ὑποστρέφω",
+    "inflection": null,
+    "gloss": "turn back, return",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἅπας",
+    "inflection": "-ασα, -αν",
+    "gloss": "all, every",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "οἶνος",
+    "inflection": "-ου, ὁ",
+    "gloss": "wine",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ἀναγινώσκω",
+    "inflection": null,
+    "gloss": "read",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 35
+  },
+  {
+    "word": "ποτήριον",
+    "inflection": "-ου, τό",
+    "gloss": "drinking cup, a drink",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἱερεύς",
+    "inflection": "-έως, ὁ",
+    "gloss": "priest",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "φαίνω",
+    "inflection": null,
+    "gloss": "shine, (mid.) appear, become visible",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ποτέ",
+    "inflection": null,
+    "gloss": "once, formerly",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "συνείδησις",
+    "inflection": "-εως, ἡ",
+    "gloss": "conscience",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ὑπομονή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "endurance, steadfastness, patience",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "πλῆθος",
+    "inflection": "-ους, τό",
+    "gloss": "multitude, crowd",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "φυλάσσω",
+    "inflection": null,
+    "gloss": "keep, guard, observe; watch",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "πλήν",
+    "inflection": null,
+    "gloss": "but, except",
+    "pos": "Conj",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "παρρησία",
+    "inflection": "-ας, ἡ",
+    "gloss": "confidence, openness",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἐλπίζω",
+    "inflection": null,
+    "gloss": "hope, expect",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "παραγγέλλω",
+    "inflection": null,
+    "gloss": "command, charge",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἄνεμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "wind",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἥλιος",
+    "inflection": "-ου, ὁ",
+    "gloss": "sun, sunlight",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ὁμοίως",
+    "inflection": null,
+    "gloss": "so, likewise, similarly",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἀκάθαρτος",
+    "inflection": "-ον",
+    "gloss": "unclean, impure",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἐχθρός",
+    "inflection": "-ή, -όν",
+    "gloss": "hostile; enemy",
+    "pos": "Adj",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "ἔξεστι(ν)",
+    "inflection": null,
+    "gloss": "it is permitted, lawful, possible",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "καθαρίζω",
+    "inflection": null,
+    "gloss": "make clean; purify",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "φυλή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "tribe, race, nation",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 32
+  },
+  {
+    "word": "γνῶσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "knowledge, wisdom",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "πάσχα",
+    "inflection": null,
+    "gloss": "the feast of Passover, the Passover lamb",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "παρέρχομαι",
+    "inflection": null,
+    "gloss": "pass by, (pass.) pass away",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "προσκαλέω",
+    "inflection": null,
+    "gloss": "call, invite",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "μισθός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "wages, reward",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "παράκλησις",
+    "inflection": "-εως, ἡ",
+    "gloss": "exhortation, entreaty",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "διάκονος",
+    "inflection": "-ου, ὁ",
+    "gloss": "waiter, servant, deacon",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "σκότος",
+    "inflection": "-ους, τό",
+    "gloss": "darkness",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἐγγύς",
+    "inflection": null,
+    "gloss": "near",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "συνέρχομαι",
+    "inflection": null,
+    "gloss": "come with, accompany",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "Ἠλίας",
+    "inflection": "-ου, ὁ",
+    "gloss": "Elijah",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "Καῖσαρ",
+    "inflection": "-ος, ὁ",
+    "gloss": "Caesar, emperor",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἀγοράζω",
+    "inflection": null,
+    "gloss": "buy",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "διδαχή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "teaching, doctrine",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἐπικαλέω",
+    "inflection": null,
+    "gloss": "name; (mid.) call upon",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἐλεέω",
+    "inflection": null,
+    "gloss": "pity, have mercy",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "πόθεν",
+    "inflection": null,
+    "gloss": "whence",
+    "pos": "Adv",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἐπιτιμάω",
+    "inflection": null,
+    "gloss": "rebuke, admonish",
+    "pos": "Verb",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "ἀρνίον",
+    "inflection": "-ου, τό",
+    "gloss": "lamb, sheep",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "μάχαιρα",
+    "inflection": "-ης, ἡ",
+    "gloss": "sword",
+    "pos": "Noun",
+    "section": 3,
+    "freq": 30
+  },
+  {
+    "word": "θυσία",
+    "inflection": "-ας, ἡ",
+    "gloss": "sacrifice, offering",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἐνδύω",
+    "inflection": null,
+    "gloss": "put on, clothe",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἰσχύω",
+    "inflection": null,
+    "gloss": "am strong, able; am powerful",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἁγιάζω",
+    "inflection": null,
+    "gloss": "make holy, sanctify",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "φίλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "beloved, loving; friend",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "θυγάτηρ",
+    "inflection": "-τρός, ἡ",
+    "gloss": "daughter",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "τελέω",
+    "inflection": null,
+    "gloss": "end, accomplish",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἡγέομαι",
+    "inflection": null,
+    "gloss": "lead, guide; think",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἀληθινός",
+    "inflection": "-ή, -όν",
+    "gloss": "true, real, genuine",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἀδικέω",
+    "inflection": null,
+    "gloss": "do wrong, treat unjustly",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "νικάω",
+    "inflection": null,
+    "gloss": "conquer, overcome",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "σκανδαλίζω",
+    "inflection": null,
+    "gloss": "cause to stumble",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "Βαρναβᾶς",
+    "inflection": "-ᾶ, ὁ",
+    "gloss": "Barnabas",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "γαμέω",
+    "inflection": null,
+    "gloss": "marry",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "φεύγω",
+    "inflection": null,
+    "gloss": "flee, escape",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "χώρα",
+    "inflection": "-ας, ἡ",
+    "gloss": "region, land, fields, country",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "προφητεύω",
+    "inflection": null,
+    "gloss": "foretell, prophesy",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "πλούσιος",
+    "inflection": "-α, -ον",
+    "gloss": "rich",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "βαστάζω",
+    "inflection": null,
+    "gloss": "carry, carry away, bear",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἰσχυρός",
+    "inflection": "-ά, -όν",
+    "gloss": "strong, mighty, powerful",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 29
+  },
+  {
+    "word": "ἀποκαλύπτω",
+    "inflection": null,
+    "gloss": "uncover, bring to light, reveal",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἀληθής",
+    "inflection": "-ές",
+    "gloss": "unconcealed, true",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "γνωρίζω",
+    "inflection": null,
+    "gloss": "make known, declare, reveal",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἐκχέω",
+    "inflection": null,
+    "gloss": "pour out, shed",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἔλεος",
+    "inflection": "-ους, τό",
+    "gloss": "pity, mercy, compassion",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "δέκα",
+    "inflection": null,
+    "gloss": "ten",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἕνεκα",
+    "inflection": null,
+    "gloss": "because of, on account of",
+    "pos": "Conj",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "Ἕλλην",
+    "inflection": "-ηνος, ὁ",
+    "gloss": "Hellene, a Greek",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἀδελφή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "sister",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "ἐκεῖθεν",
+    "inflection": null,
+    "gloss": "thence, from that place, from there",
+    "pos": "Adv",
+    "section": 4,
+    "freq": 27
+  },
+  {
+    "word": "καταργέω",
+    "inflection": null,
+    "gloss": "bring to naught, sever, abolish",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "κώμη",
+    "inflection": "-ης, ἡ",
+    "gloss": "village",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "σταυρός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "cross",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "μυστήριον",
+    "inflection": "-ου, τό",
+    "gloss": "mystery; secret rites",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "οὔπω",
+    "inflection": null,
+    "gloss": "not yet",
+    "pos": "Adv",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "ἐπεί",
+    "inflection": null,
+    "gloss": "because, since, for",
+    "pos": "Conj",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "Ἰακώβ",
+    "inflection": "ὁ",
+    "gloss": "Jacob",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "σός",
+    "inflection": "-σή, -σόν",
+    "gloss": "yours, thy, thine",
+    "pos": "Pron",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "κρίμα",
+    "inflection": "-τος, τό",
+    "gloss": "judgment, verdict, condemnation",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "πόσος",
+    "inflection": "-η, -ον",
+    "gloss": "how much, how great, how many?",
+    "pos": "Pron",
+    "section": 4,
+    "freq": 26
+  },
+  {
+    "word": "στρατιώτης",
+    "inflection": "-ου, ὁ",
+    "gloss": "soldier",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "λευκός",
+    "inflection": "-ή, -όν",
+    "gloss": "white, bright",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "δουλεύω",
+    "inflection": null,
+    "gloss": "am a slave, am subject to, serve",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ὀμνύω",
+    "inflection": null,
+    "gloss": "swear, take an oath",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἰάομαι",
+    "inflection": null,
+    "gloss": "heal",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ὁμολογέω",
+    "inflection": null,
+    "gloss": "confess, profess, acknowledge",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "λυπέω",
+    "inflection": null,
+    "gloss": "cause someone distress",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "κελεύω",
+    "inflection": null,
+    "gloss": "command, order, urge",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "δένδρον",
+    "inflection": "-ου, τό",
+    "gloss": "tree",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "καθαρός",
+    "inflection": "-ά, -όν",
+    "gloss": "clean, pure, unstained",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἀσθενής",
+    "inflection": "-ές",
+    "gloss": "weak, infirm, sick, powerless",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἀδικία",
+    "inflection": "-ας, ἡ",
+    "gloss": "unrighteousness, wrongdoing",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "φρονέω",
+    "inflection": null,
+    "gloss": "think, judge, observe",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἑορτή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "festival, feast",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἥκω",
+    "inflection": null,
+    "gloss": "have come, am present",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "ἀναβλέπω",
+    "inflection": null,
+    "gloss": "look up, recover my sight; gain sight",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "Αἴγυπτος",
+    "inflection": "-ου, ἡ",
+    "gloss": "Egypt",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "χήρα",
+    "inflection": "-ας, ἡ",
+    "gloss": "widow",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "συνίημι",
+    "inflection": null,
+    "gloss": "consider, understand; comprehend",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 25
+  },
+  {
+    "word": "παῖς",
+    "inflection": "-παιδός, ὁ/ἡ",
+    "gloss": "boy or girl child",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "πορνεία",
+    "inflection": "-ας, ἡ",
+    "gloss": "fornication, idolatry, prostitution",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "ἀναιρέω",
+    "inflection": null,
+    "gloss": "take up, abolish, murder",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "προσέχω",
+    "inflection": null,
+    "gloss": "pay attention to, devote myself to",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "παρουσία",
+    "inflection": "-ας, ἡ",
+    "gloss": "presence, coming, arrival, advent",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "πάρειμι",
+    "inflection": null,
+    "gloss": "am present, am near",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "ἀσθένεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "want of strength, weakness, illness",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "οὗ",
+    "inflection": null,
+    "gloss": "where, whither, when",
+    "pos": "Adv",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "διότι",
+    "inflection": null,
+    "gloss": "on this account, because, for",
+    "pos": "Conj",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "φιλέω",
+    "inflection": null,
+    "gloss": "love, like",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "ἀστήρ",
+    "inflection": "-έρος, ὁ",
+    "gloss": "star",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "ἀκοή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "hearing, ear, report",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "κεῖμαι",
+    "inflection": null,
+    "gloss": "lie, recline, am laid",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "ἐπιστολή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "letter, dispatch, epistle",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "νεφέλη",
+    "inflection": "-ης, ἡ",
+    "gloss": "cloud",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "νοῦς",
+    "inflection": "-νοός, ὁ",
+    "gloss": "mind, reasoning faculty, understanding",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "πίμπλημι",
+    "inflection": null,
+    "gloss": "fill, fulfill",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 24
+  },
+  {
+    "word": "πέραν",
+    "inflection": null,
+    "gloss": "over, beyond, across",
+    "pos": "Adv",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "Τιμόθεος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Timothy",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "ἀνάγω",
+    "inflection": null,
+    "gloss": "lead up, put to sea, set sail",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "εἰκών",
+    "inflection": "-όνος, ἡ",
+    "gloss": "image, likeness, bust",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "χαρίζομαι",
+    "inflection": null,
+    "gloss": "show favor to, forgive, give freely",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "περιβάλλω",
+    "inflection": null,
+    "gloss": "cast around, clothe; put on",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "σκεῦος",
+    "inflection": "-ους, τό",
+    "gloss": "vessel, utensil, jar",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "θυσιαστήριον",
+    "inflection": "-ου, τό",
+    "gloss": "altar",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "κοιλία",
+    "inflection": "-ας, ἡ",
+    "gloss": "belly, womb, inner man",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "κωλύω",
+    "inflection": null,
+    "gloss": "prevent, hinder, forbid",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "μιμνήσκω",
+    "inflection": null,
+    "gloss": "remember, recall",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "πεινάω",
+    "inflection": null,
+    "gloss": "am hungry, hunger",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "θεάομαι",
+    "inflection": null,
+    "gloss": "see, behold, contemplate; look at",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "ἄπιστος",
+    "inflection": "-ον",
+    "gloss": "unbelieving, incredulous, faithless",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "ἀμπελών",
+    "inflection": "-ῶνος, ὁ",
+    "gloss": "vineyard",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "κατηγορέω",
+    "inflection": null,
+    "gloss": "accuse, charge, prosecute",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "ἐλεύθερος",
+    "inflection": "-α, -ον",
+    "gloss": "free, delivered from obligation",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 23
+  },
+  {
+    "word": "γρηγορέω",
+    "inflection": null,
+    "gloss": "am awake, am vigilant, watch",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "Μακεδονία",
+    "inflection": "-ας, ἡ",
+    "gloss": "Macedonia",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "δοκιμάζω",
+    "inflection": null,
+    "gloss": "put to the test, prove, examine, approve",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "μηκέτι",
+    "inflection": null,
+    "gloss": "no longer",
+    "pos": "Adv",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "πληγή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "blow, stripe, wound",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "καθεύδω",
+    "inflection": null,
+    "gloss": "sleep, am sleeping",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "μετάνοια",
+    "inflection": "-ας, ἡ",
+    "gloss": "repentance, change of mind, conversion",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "κοπιάω",
+    "inflection": null,
+    "gloss": "grow weary, toil, work",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "ἐκλεκτός",
+    "inflection": "-ή, -όν",
+    "gloss": "chosen, elect",
+    "pos": "Adj",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "αὐξάνω",
+    "inflection": null,
+    "gloss": "cause to increase, become greater, grow",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "κἀκεῖνος",
+    "inflection": "-η, -ο",
+    "gloss": "and he, and that one",
+    "pos": "pron",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "χιλιάς",
+    "inflection": "-άδος, ἡ",
+    "gloss": "thousand; a group of a thousand",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "πωλέω",
+    "inflection": null,
+    "gloss": "sell",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "ἀντί",
+    "inflection": null,
+    "gloss": "in place of, for, instead of",
+    "pos": "Prep",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "κατεργάζομαι",
+    "inflection": null,
+    "gloss": "produce, accomplish, bring about",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "Ἠσαΐας",
+    "inflection": "-ου, ὁ",
+    "gloss": "Isaiah",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "ἀγνοέω",
+    "inflection": null,
+    "gloss": "do not know, am ignorant of",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "πλοῦτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "riches, wealth",
+    "pos": "Noun",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "ἐκλέγω",
+    "inflection": null,
+    "gloss": "choose, select, elect",
+    "pos": "Verb",
+    "section": 4,
+    "freq": 22
+  },
+  {
+    "word": "σκηνή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "tent, tabernacle, dwelling",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "συνέδριον",
+    "inflection": "-ου, τό",
+    "gloss": "council, Sanhedrin",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "θερίζω",
+    "inflection": null,
+    "gloss": "reap, gather; harvest",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "τρέχω",
+    "inflection": null,
+    "gloss": "run, exercise myself",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἐφίστημι",
+    "inflection": null,
+    "gloss": "stand by, am urgent, approach",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ξύλον",
+    "inflection": "-ου, τό",
+    "gloss": "staff, cross, wood, tree",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "νηστεύω",
+    "inflection": null,
+    "gloss": "fast",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἡγεμών",
+    "inflection": "-όνος, ὁ",
+    "gloss": "governor, procurator",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ὡσεί",
+    "inflection": null,
+    "gloss": "as if, as it were, like, about",
+    "pos": "Adv",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ὑπακούω",
+    "inflection": null,
+    "gloss": "listen, obey",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "μαρτύριον",
+    "inflection": "-ου, τό",
+    "gloss": "witness, evidence, testimony",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "προάγω",
+    "inflection": null,
+    "gloss": "lead forth, go before",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "Ἰσαάκ",
+    "inflection": "ὁ",
+    "gloss": "Isaac",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "τοσοῦτος",
+    "inflection": "-αύτη, -οῦτον",
+    "gloss": "so great, so far, so much",
+    "pos": "Adj",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἀκροβυστία",
+    "inflection": "-ας, ἡ",
+    "gloss": "foreskin; uncircumcision, the Gentiles",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἐπίγνωσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "knowledge, discernment, recognition",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "διδασκαλία",
+    "inflection": "-ας, ἡ",
+    "gloss": "instruction, teaching",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "στρέφω",
+    "inflection": null,
+    "gloss": "turn, change; am converted",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "σοφός",
+    "inflection": "-ή, -όν",
+    "gloss": "wise",
+    "pos": "Adj",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἀργύριον",
+    "inflection": "-ου, τό",
+    "gloss": "silver, shekel, money",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "τεσσεράκοντα",
+    "inflection": null,
+    "gloss": "forty",
+    "pos": "Adj",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "τιμάω",
+    "inflection": null,
+    "gloss": "value at a price, honor",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "βάπτισμα",
+    "inflection": "-τος, τό",
+    "gloss": "rite of baptism",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "εὐδοκέω",
+    "inflection": null,
+    "gloss": "am well-pleased, am pleased with",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "πειρασμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "trial, testing, temptation",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "ἑκατοντάρχης",
+    "inflection": "-ου, ὁ",
+    "gloss": "centurion, captain",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "καθίστημι",
+    "inflection": null,
+    "gloss": "set, constitute, establish, appoint",
+    "pos": "Verb",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "περισσός",
+    "inflection": "-ή, -όν",
+    "gloss": "abundant, greater, superfluous",
+    "pos": "Adj",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "χιλίαρχος",
+    "inflection": "-ου, ὁ",
+    "gloss": "military tribune; leader of a thousand",
+    "pos": "Noun",
+    "section": 4,
+    "freq": null
+  },
+  {
+    "word": "κοιμάομαι",
+    "inflection": null,
+    "gloss": "fall asleep, sleep, die",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "θυμός",
+    "inflection": "-ου, ὁ",
+    "gloss": "outburst of passion, wrath, anger",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπιβάλλω",
+    "inflection": null,
+    "gloss": "throw upon, lay, put around",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "δέησις",
+    "inflection": "-εως, ἡ",
+    "gloss": "supplication, prayer, entreaty",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "παρατίθημι",
+    "inflection": null,
+    "gloss": "set before, serve, entrust",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀνάγκη",
+    "inflection": "-ης, ἡ",
+    "gloss": "necessity, constraint, distress",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κληρονομέω",
+    "inflection": null,
+    "gloss": "inherit, acquire, obtain",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "οἰκοδομή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "act of building, building, edification",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μήν",
+    "inflection": "-μηνός, ὁ",
+    "gloss": "month",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "δεσμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "bond, chain, fetter",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πολλάκις",
+    "inflection": null,
+    "gloss": "many times, often",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "εἰσπορεύομαι",
+    "inflection": null,
+    "gloss": "journey into, go in",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "βλασφημία",
+    "inflection": "-ας, ἡ",
+    "gloss": "blasphemy",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "παραχρῆμα",
+    "inflection": null,
+    "gloss": "instantly, immediately",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "φανερός",
+    "inflection": "-ά, -όν",
+    "gloss": "apparent, clear, visible, manifest",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μέχρι",
+    "inflection": null,
+    "gloss": "as far as, until",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἄφεσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "deliverance, pardon, forgiveness",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κοινωνία",
+    "inflection": "-ας, ἡ",
+    "gloss": "participation, communion, fellowship",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπιτρέπω",
+    "inflection": null,
+    "gloss": "allow, permit, entrust",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐμβαίνω",
+    "inflection": null,
+    "gloss": "go in, embark",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀποκάλυψις",
+    "inflection": "-εως, ἡ",
+    "gloss": "unveiling, revelation",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἆρα",
+    "inflection": null,
+    "gloss": "a particle expecting a negative response",
+    "pos": "Particle",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀριθμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "number, total",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "νυνί",
+    "inflection": null,
+    "gloss": "now, already, at present",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "τίκτω",
+    "inflection": null,
+    "gloss": "bear, bring forth, give birth to",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κενός",
+    "inflection": "-ή, -όν",
+    "gloss": "empty, vain, hollow",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀρέσκω",
+    "inflection": null,
+    "gloss": "please, serve",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κόπος",
+    "inflection": "-ου, ὁ",
+    "gloss": "trouble, toil, labor",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κλείω",
+    "inflection": null,
+    "gloss": "shut, shut up, lock",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀνακρίνω",
+    "inflection": null,
+    "gloss": "question, examine, inquire into",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "νυμφίος",
+    "inflection": "-ου, ὁ",
+    "gloss": "bridegroom",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "δέσμιος",
+    "inflection": "-ου, ὁ",
+    "gloss": "prisoner",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ποταμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "river, torrent, stream",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ὑπομένω",
+    "inflection": null,
+    "gloss": "remain behind, remain, endure",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ὡσαύτως",
+    "inflection": null,
+    "gloss": "likewise",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπιθυμέω",
+    "inflection": null,
+    "gloss": "desire, long for, covet",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐκτείνω",
+    "inflection": null,
+    "gloss": "stretch out, cast forth, extend",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "διαλογίζομαι",
+    "inflection": null,
+    "gloss": "reason, debate, consider",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "δεῖπνον",
+    "inflection": "-ου, τό",
+    "gloss": "dinner, evening meal, supper",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "σκοτία",
+    "inflection": "-ας, ἡ",
+    "gloss": "darkness",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "οὐδέποτε",
+    "inflection": null,
+    "gloss": "never",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κἄν",
+    "inflection": null,
+    "gloss": "and if, even if, if only",
+    "pos": "Conj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐργάτης",
+    "inflection": "-ου, ὁ",
+    "gloss": "field-laborer, workman, doer",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "στέφανος",
+    "inflection": "-ου, ὁ",
+    "gloss": "crown, garland",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπιμένω",
+    "inflection": null,
+    "gloss": "remain, stay, tarry, persist in",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "χάρισμα",
+    "inflection": "-τος, τό",
+    "gloss": "undeserved favor, a gift",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κλέπτης",
+    "inflection": "-ου, ὁ",
+    "gloss": "thief",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "καθάπερ",
+    "inflection": null,
+    "gloss": "even as, as, just as",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἵππος",
+    "inflection": "-ου, ὁ",
+    "gloss": "horse",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Καισάρεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "Caesarea",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπαύριον",
+    "inflection": null,
+    "gloss": "tomorrow",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μήτι",
+    "inflection": null,
+    "gloss": "a particle expecting a negative answer",
+    "pos": "Particle",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἑκατόν",
+    "inflection": null,
+    "gloss": "one hundred",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἕτοιμος",
+    "inflection": "-η, -ον",
+    "gloss": "ready, prepared",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "θησαυρός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "treasure, store",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "καταλύω",
+    "inflection": null,
+    "gloss": "destroy, abolish, overthrow",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐξίστημι",
+    "inflection": null,
+    "gloss": "am amazed, am astonished",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κερδαίνω",
+    "inflection": null,
+    "gloss": "gain, win, avoid loss",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κρυπτός",
+    "inflection": "-ή, -όν",
+    "gloss": "hidden, secret",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπουράνιος",
+    "inflection": "-ον",
+    "gloss": "heavenly, celestial",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπάνω",
+    "inflection": null,
+    "gloss": "on the top, above, over",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπιλαμβάνομαι",
+    "inflection": null,
+    "gloss": "seize, take hold of, catch",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀπέχω",
+    "inflection": null,
+    "gloss": "have in full, am far; receive, abstain",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπαίρω",
+    "inflection": null,
+    "gloss": "raise, lift up, hold up",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πόλεμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "war, battle, strife",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "βρῶμα",
+    "inflection": "-τος, τό",
+    "gloss": "food of any kind",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Ἀσία",
+    "inflection": "-ας, ἡ",
+    "gloss": "roughly western Asia Minor, Asia",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "τέλειος",
+    "inflection": "-α, -ον",
+    "gloss": "perfect, full-grown, complete",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ποιμήν",
+    "inflection": "-ένος, ὁ",
+    "gloss": "shepherd",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀπώλεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "destruction, ruin, loss",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "χρυσοῦς",
+    "inflection": "-ῆ, -οῦν",
+    "gloss": "golden",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐλέγχω",
+    "inflection": null,
+    "gloss": "rebuke, expose, convict",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "προστίθημι",
+    "inflection": null,
+    "gloss": "put to, add, do again",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "καταγγέλλω",
+    "inflection": null,
+    "gloss": "declare openly, preach, proclaim",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κατέχω",
+    "inflection": null,
+    "gloss": "hold back, hold fast, bind, restrain",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "προφητεία",
+    "inflection": "-ας, ἡ",
+    "gloss": "prophecy",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κριτής",
+    "inflection": "-ου, ὁ",
+    "gloss": "judge",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "παράπτωμα",
+    "inflection": "-τος, τό",
+    "gloss": "falling away, sin, transgression",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μεριμνάω",
+    "inflection": null,
+    "gloss": "am anxious; care for",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κτίσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "creation, creature, institution",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πλήρωμα",
+    "inflection": "-τος, τό",
+    "gloss": "fullness, fulfillment",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γεωργός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "husbandman, vine-dresser, farmer",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μνημονεύω",
+    "inflection": null,
+    "gloss": "remember, mention",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀληθῶς",
+    "inflection": null,
+    "gloss": "truly, really, certainly",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Ἀντιόχεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "Antioch",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "διαμαρτύρομαι",
+    "inflection": null,
+    "gloss": "give solemn evidence, testify solemnly",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "εὐσέβεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "piety, godliness",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κακῶς",
+    "inflection": null,
+    "gloss": "badly, wickedly",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "περισσῶς",
+    "inflection": null,
+    "gloss": "greatly, exceedingly",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "τέρας",
+    "inflection": "-ατος, τό",
+    "gloss": "wonder, portent",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πάθημα",
+    "inflection": "-τος, τό",
+    "gloss": "suffering, passion",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γεύομαι",
+    "inflection": null,
+    "gloss": "taste, experience",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "προσδοκάω",
+    "inflection": null,
+    "gloss": "expect, await, wait for",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀνομία",
+    "inflection": "-ας, ἡ",
+    "gloss": "lawlessness, iniquity",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀνέχομαι",
+    "inflection": null,
+    "gloss": "endure, bear with",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "διψάω",
+    "inflection": null,
+    "gloss": "thirst for, desire earnestly, thirst",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γυμνός",
+    "inflection": "-ή, -όν",
+    "gloss": "wearing only under-garment, naked",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πλήρης",
+    "inflection": "-ες",
+    "gloss": "full, complete",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "παρέχω",
+    "inflection": null,
+    "gloss": "offer, provide, give, cause",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γνωστός",
+    "inflection": "-ή, -όν",
+    "gloss": "known, an acquaintance",
+    "pos": "Adj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γέ",
+    "inflection": null,
+    "gloss": "at least, indeed, really",
+    "pos": "Particle",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "συκῆ",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "fig tree",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "συνίστημι",
+    "inflection": null,
+    "gloss": "commend, prove, am composed of",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Δαμασκός",
+    "inflection": "-οῦ, ἡ",
+    "gloss": "Damascus",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "λύπη",
+    "inflection": "-ης, ἡ",
+    "gloss": "pain, grief, sorrow",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "πλησίον",
+    "inflection": null,
+    "gloss": "near, nearby, a neighbor",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ῥίζα",
+    "inflection": "-ης, ἡ",
+    "gloss": "root, that which comes from root",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ὦ",
+    "inflection": null,
+    "gloss": "O, an exclamation",
+    "pos": "Interj",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ζῆλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "eagerness, zeal, jealousy",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "περιτέμνω",
+    "inflection": null,
+    "gloss": "circumcise",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "διατάσσω",
+    "inflection": null,
+    "gloss": "give orders to, prescribe, order",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "εὐλογία",
+    "inflection": "-ας, ἡ",
+    "gloss": "adulation, praise, blessing",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Καφαρναούμ",
+    "inflection": null,
+    "gloss": "Capernaum",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἀθετέω",
+    "inflection": null,
+    "gloss": "reject, annul",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἔπειτα",
+    "inflection": null,
+    "gloss": "then, thereafter, afterwards",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "θεμέλιος",
+    "inflection": "-ου, ὁ",
+    "gloss": "foundation",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "λῃστής",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "robber, brigand, bandit",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ῥαββί",
+    "inflection": null,
+    "gloss": "Rabbi, my master, teacher",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "εὐχαριστία",
+    "inflection": "-ας, ἡ",
+    "gloss": "thankfulness, gratitude, thanksgiving",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπίσταμαι",
+    "inflection": null,
+    "gloss": "know, understand",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "δέρω",
+    "inflection": null,
+    "gloss": "flay, flog, scourge, beat",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κατέρχομαι",
+    "inflection": null,
+    "gloss": "come down",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "εἶτα",
+    "inflection": null,
+    "gloss": "then, thereafter, next",
+    "pos": "Adv",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "παρθένος",
+    "inflection": "-ου, ἡ",
+    "gloss": "virgin",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "μοιχεύω",
+    "inflection": null,
+    "gloss": "commit adultery",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "προλέγω",
+    "inflection": null,
+    "gloss": "forewarn, tell beforehand",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "κτίζω",
+    "inflection": null,
+    "gloss": "create, form, shape, make",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "θρίξ",
+    "inflection": "-τριχός, ἡ",
+    "gloss": "hair",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "τολμάω",
+    "inflection": null,
+    "gloss": "dare, endure, am bold",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Λάζαρος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Lazarus",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "καταλαμβάνω",
+    "inflection": null,
+    "gloss": "seize, overtake, comprehend, win",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ἐπαγγέλλομαι",
+    "inflection": null,
+    "gloss": "promise, profess",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "ὁμοιόω",
+    "inflection": null,
+    "gloss": "make like, liken, compare",
+    "pos": "Verb",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "αἰχμάλωτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "captive, prisoner of war",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "γάμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "marriage, wedding",
+    "pos": "Noun",
+    "section": 5,
+    "freq": null
+  },
+  {
+    "word": "Βηθανία",
+    "inflection": "-ας, ἡ",
+    "gloss": "Bethany",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "βαπτιστής",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "baptizer, Baptist",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σπουδή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "haste; diligence, eagerness",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κατακαίω",
+    "inflection": null,
+    "gloss": "burn up, consume entirely",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τρίς",
+    "inflection": null,
+    "gloss": "three times",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ταχύς",
+    "inflection": "-εῖα",
+    "gloss": "quickly, speedily, quick",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σπλαγχνίζομαι",
+    "inflection": null,
+    "gloss": "have pity on, feel sympathy for",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Σιλᾶς",
+    "inflection": "-α, ὁ",
+    "gloss": "Silas",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σαλπίζω",
+    "inflection": null,
+    "gloss": "sound a trumpet",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Μαγδαληνή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "Magdalene",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "λυχνία",
+    "inflection": "-ας, ἡ",
+    "gloss": "lamp-stand, lampstand",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "δεῦτε",
+    "inflection": null,
+    "gloss": "come hither!, come!",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "γόνυ",
+    "inflection": "-γόνατος, τό",
+    "gloss": "knee",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἔθος",
+    "inflection": "-ους, τό",
+    "gloss": "custom, law",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "δίκτυον",
+    "inflection": "-ου, τό",
+    "gloss": "fishing-net, net",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "αὐλή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "court-yard, palace, house",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "οἰκοδεσπότης",
+    "inflection": "-ου, ὁ",
+    "gloss": "master of the house",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "λίαν",
+    "inflection": null,
+    "gloss": "very, very much, exceedingly",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἔσωθεν",
+    "inflection": null,
+    "gloss": "inside, within; from within",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "βροντή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "thunder",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "προσλαμβάνομαι",
+    "inflection": null,
+    "gloss": "take to myself, welcome, receive",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μεταβαίνω",
+    "inflection": null,
+    "gloss": "leave, depart, remove, go over",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μάλιστα",
+    "inflection": null,
+    "gloss": "most of all, especially",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "γέεννα",
+    "inflection": "-ης, ἡ",
+    "gloss": "Gehenna, hell",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὅριον",
+    "inflection": "-ου, τό",
+    "gloss": "districts, territory, region",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "συνεργός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "a fellow worker, helper",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀπαρνέομαι",
+    "inflection": null,
+    "gloss": "deny, disown",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Ῥωμαῖος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Roman",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πληθύνω",
+    "inflection": null,
+    "gloss": "increase, multiply",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Σολομών",
+    "inflection": "-ῶνος, ὁ",
+    "gloss": "Solomon",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "συνέχω",
+    "inflection": null,
+    "gloss": "press together, confine, compel",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἔξωθεν",
+    "inflection": null,
+    "gloss": "from without, outside",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἄνωθεν",
+    "inflection": null,
+    "gloss": "from above, from the beginning, again",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "θερισμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "reaping, harvest",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "φύσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "nature, inherent nature",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἕξ",
+    "inflection": null,
+    "gloss": "six",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐκπλήσσομαι",
+    "inflection": null,
+    "gloss": "am astounded, am amazed",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Μάρθα",
+    "inflection": "-ας, ἡ",
+    "gloss": "Martha",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κλέπτω",
+    "inflection": null,
+    "gloss": "steal",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "δράκων",
+    "inflection": "-οντος, ὁ",
+    "gloss": "dragon or huge serpent",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "καταισχύνω",
+    "inflection": null,
+    "gloss": "shame, disgrace, put to shame",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐλάχιστος",
+    "inflection": "-η, -ον",
+    "gloss": "least, smallest, very little",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Φῆστος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Festus",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐπιζητέω",
+    "inflection": null,
+    "gloss": "seek after, desire, search for",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "χρυσίον",
+    "inflection": "-ου, τό",
+    "gloss": "golden ornament, gold",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "χωλός",
+    "inflection": "-ή, -όν",
+    "gloss": "lame",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "διαλέγομαι",
+    "inflection": null,
+    "gloss": "converse, address, preach, discuss",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τύπτω",
+    "inflection": null,
+    "gloss": "beat, strike, wound",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "παιδίσκη",
+    "inflection": "-ης, ἡ",
+    "gloss": "female slave, maidservant",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Ναζωραῖος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Nazarene",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "καταντάω",
+    "inflection": null,
+    "gloss": "come down, arrive at, reach",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "καταρτίζω",
+    "inflection": null,
+    "gloss": "fit together, prepare, mend, perfect",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Τίτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Titus",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τρόπος",
+    "inflection": "-ου, ὁ",
+    "gloss": "way, manner, character",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "λοιπός",
+    "inflection": "-ή, -όν",
+    "gloss": "remaining, left, the rest",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "παράδοσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "instruction, tradition",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐλεημοσύνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "alms-giving, charity, alms",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πρίν",
+    "inflection": null,
+    "gloss": "formerly, before",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τίμιος",
+    "inflection": "-α, -ον",
+    "gloss": "of great price, precious, honored",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὕψιστος",
+    "inflection": "-η, -ον",
+    "gloss": "highest, most high",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Ζεβεδαῖος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Zebedee",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "καίω",
+    "inflection": null,
+    "gloss": "ignite, light, burn",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πρωΐ",
+    "inflection": null,
+    "gloss": "early (in the morning), at dawn",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πῶλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "colt, young donkey",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πόρνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "prostitute",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐξάγω",
+    "inflection": null,
+    "gloss": "lead out",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πρόθεσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "show-bread, plan, presentation",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μωρός",
+    "inflection": "-ά, -όν",
+    "gloss": "stupid, foolish",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κολλάομαι",
+    "inflection": null,
+    "gloss": "glue, cleave, cling to, join",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "λιμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "hunger, famine",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Βαβυλών",
+    "inflection": "-ῶνος, ἡ",
+    "gloss": "Babylon",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ῥάβδος",
+    "inflection": "-ου, ἡ",
+    "gloss": "rod, staff",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πλουτέω",
+    "inflection": null,
+    "gloss": "become rich, am rich",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὀδούς",
+    "inflection": "-ὀδόντος, ὁ",
+    "gloss": "tooth",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κάλαμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "reed, reed-pen",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "παραιτέομαι",
+    "inflection": null,
+    "gloss": "make excuse, refuse, reject",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "βασανίζω",
+    "inflection": null,
+    "gloss": "torment, torture, buffet",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "βουλή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "counsel, wisdom, purpose",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κατάκειμαι",
+    "inflection": null,
+    "gloss": "recline, am lying ill",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κράτος",
+    "inflection": "-ους, τό",
+    "gloss": "dominion, strength, power",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "χωρίζω",
+    "inflection": null,
+    "gloss": "divide, separate, depart",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πιάζω",
+    "inflection": null,
+    "gloss": "lay hold of, seize, catch",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἄδικος",
+    "inflection": "-ον",
+    "gloss": "unjust, unrighteous",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀναπαύω",
+    "inflection": null,
+    "gloss": "make to rest, give rest to",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀναπίπτω",
+    "inflection": null,
+    "gloss": "lie down, recline",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀσκός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "wine-skin",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "δαιμονίζομαι",
+    "inflection": null,
+    "gloss": "am demon-possessed",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "παιδεύω",
+    "inflection": null,
+    "gloss": "discipline, educate, train, chastise",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "πετεινόν",
+    "inflection": "-ου, τό",
+    "gloss": "bird",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "συμφέρω",
+    "inflection": null,
+    "gloss": "collect, am profitable to, help",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σαλεύω",
+    "inflection": null,
+    "gloss": "shake, excite",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀνθίστημι",
+    "inflection": null,
+    "gloss": "take a stand against, oppose, resist",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀλλότριος",
+    "inflection": "-α, -ον",
+    "gloss": "belonging to another person, foreign",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Σαῦλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "Saul",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "διαλογισμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "calculation, reasoning, thought, doubt",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀτενίζω",
+    "inflection": null,
+    "gloss": "direct my gaze, look steadily",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὑπακοή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "obedience",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀφίστημι",
+    "inflection": null,
+    "gloss": "lead away, seduce, depart, go away",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀνάκειμαι",
+    "inflection": null,
+    "gloss": "recline at a dinner-table, lie",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀναχωρέω",
+    "inflection": null,
+    "gloss": "return, retreat, withdraw",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μακρόθεν",
+    "inflection": null,
+    "gloss": "from a distance, from far away",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀμφότεροι",
+    "inflection": "-αι, -α",
+    "gloss": "both of two, both, all",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἁρπάζω",
+    "inflection": null,
+    "gloss": "seize, snatch, obtain by robbery",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σφραγίζω",
+    "inflection": null,
+    "gloss": "set a seal upon, seal",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τράπεζα",
+    "inflection": "-ης, ἡ",
+    "gloss": "table for food or business",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "χορτάζω",
+    "inflection": null,
+    "gloss": "feed, satisfy, fill",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "χόρτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "grass, hay",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "αὔριον",
+    "inflection": null,
+    "gloss": "tomorrow",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἅπαξ",
+    "inflection": null,
+    "gloss": "once, once for all",
+    "pos": "Adv",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σκάνδαλον",
+    "inflection": "-ου, τό",
+    "gloss": "snare, stumbling-block, temptation to sin",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὠφελέω",
+    "inflection": null,
+    "gloss": "help, benefit, do good",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἄκανθα",
+    "inflection": "-ης, ἡ",
+    "gloss": "thorn-bush, thorn-plant",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀπειθέω",
+    "inflection": null,
+    "gloss": "disobey, rebel, am disobedient",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀπάγω",
+    "inflection": null,
+    "gloss": "lead, carry, take away",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "γράμμα",
+    "inflection": "-τος, τό",
+    "gloss": "letter (of the alphabet), writings",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τύπος",
+    "inflection": "-ου, ὁ",
+    "gloss": "figure, model, type, image, copy",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κρείττων",
+    "inflection": "-ον",
+    "gloss": "stronger, more excellent, better",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐνιαυτός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "year",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "φρόνιμος",
+    "inflection": "-ον",
+    "gloss": "prudent, wise, sensible",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "νοέω",
+    "inflection": null,
+    "gloss": "understand, consider, perceive",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "Ἀνδρέας",
+    "inflection": "-ου, ὁ",
+    "gloss": "Andrew",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀναστροφή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "behavior, manner of life, conduct",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἀνά",
+    "inflection": null,
+    "gloss": "(with numbers) each; (with acc.) up, through",
+    "pos": "Prep",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ταπεινόω",
+    "inflection": null,
+    "gloss": "humble, humiliate, make low",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "τάλαντον",
+    "inflection": "-ου, τό",
+    "gloss": "talent of silver or gold",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "σεισμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "earthquake, storm, shaking",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "προσδέχομαι",
+    "inflection": null,
+    "gloss": "welcome, accept, receive; wait for",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "λύχνος",
+    "inflection": "-ου, ὁ",
+    "gloss": "lamp",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μύρον",
+    "inflection": "-ου, τό",
+    "gloss": "anointing-oil, ointment, perfume",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "νήπιος",
+    "inflection": "-α, -ον",
+    "gloss": "an infant, child, a minor",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κωφός",
+    "inflection": "-ή, -όν",
+    "gloss": "dumb, deaf, mute",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μέτρον",
+    "inflection": "-ου, τό",
+    "gloss": "measure, measuring rod",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὄψιος",
+    "inflection": "-α, -ον",
+    "gloss": "late, evening",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἕκτος",
+    "inflection": "-η, -ον",
+    "gloss": "sixth",
+    "pos": "Adj",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κατεσθίω",
+    "inflection": null,
+    "gloss": "eat till it is finished, eat up, devour",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "μακροθυμία",
+    "inflection": "-ας, ἡ",
+    "gloss": "patience, forbearance, steadfastness",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ὄφις",
+    "inflection": "-εως, ὁ",
+    "gloss": "serpent, snake",
+    "pos": "Noun",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "εὐφραίνω",
+    "inflection": null,
+    "gloss": "gladden, cheer; (pass.) am glad",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "κλάω",
+    "inflection": null,
+    "gloss": "break",
+    "pos": "Verb",
+    "section": 6,
+    "freq": null
+  },
+  {
+    "word": "ἐνδείκνυμι",
+    "inflection": null,
+    "gloss": "show forth, show, demonstrate",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Γαλιλαῖος",
+    "inflection": "-α, -ον",
+    "gloss": "Galilean",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Βαραββᾶς",
+    "inflection": "-ᾶ, ὁ",
+    "gloss": "Barabbas",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἄφρων",
+    "inflection": "-ον",
+    "gloss": "senseless, foolish",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀγορά",
+    "inflection": "-ᾶς, ἡ",
+    "gloss": "market-place",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀγαλλιάω",
+    "inflection": null,
+    "gloss": "exult, am full of joy, am glad",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "βρῶσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "eating, food, meal, rust",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ψεύδομαι",
+    "inflection": null,
+    "gloss": "lie",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐάω",
+    "inflection": null,
+    "gloss": "allow, permit, leave",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "εἰσάγω",
+    "inflection": null,
+    "gloss": "lead in, bring in",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀπιστία",
+    "inflection": "-ας, ἡ",
+    "gloss": "unbelief, unfaithfulness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀντιλέγω",
+    "inflection": null,
+    "gloss": "speak against, oppose",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀλέκτωρ",
+    "inflection": "-ορος, ὁ",
+    "gloss": "cock, rooster",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐλευθερία",
+    "inflection": "-ας, ἡ",
+    "gloss": "freedom, liberty",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "δωρεά",
+    "inflection": "-ᾶς, ἡ",
+    "gloss": "free gift, gift",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑγιαίνω",
+    "inflection": null,
+    "gloss": "am well, am healthy",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀρχαῖος",
+    "inflection": "-α, -ον",
+    "gloss": "original, ancient, old",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀνατολή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "rising of sun, East",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἀγρίππας",
+    "inflection": "-α, ὁ",
+    "gloss": "Agrippa",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ζαχαρίας",
+    "inflection": "-ου, ὁ",
+    "gloss": "Zechariah",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπιπίπτω",
+    "inflection": null,
+    "gloss": "fall upon, press upon",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "φιάλη",
+    "inflection": "-ης, ἡ",
+    "gloss": "shallow bowl",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἔπαινος",
+    "inflection": "-ου, ὁ",
+    "gloss": "commendation, praise",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "τυγχάνω",
+    "inflection": null,
+    "gloss": "obtain, happen, meet",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "χοῖρος",
+    "inflection": "-ου, ὁ",
+    "gloss": "swine",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "διαμερίζω",
+    "inflection": null,
+    "gloss": "divide up, distribute",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπαισχύνομαι",
+    "inflection": null,
+    "gloss": "am ashamed",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπισκέπτομαι",
+    "inflection": null,
+    "gloss": "look upon, visit, oversee",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑγιής",
+    "inflection": "-ές",
+    "gloss": "sound, whole, healthy",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἁνανίας",
+    "inflection": "-ου, ὁ",
+    "gloss": "Ananias",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐμβλέπω",
+    "inflection": null,
+    "gloss": "look into, look upon",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἔνατος",
+    "inflection": "-η, -ον",
+    "gloss": "ninth",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐντεῦθεν",
+    "inflection": null,
+    "gloss": "hence, from this place",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "διωγμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "persecution",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀσπασμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "greeting, salutation",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κἀκεῖ",
+    "inflection": null,
+    "gloss": "and there, and yonder",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἔνοχος",
+    "inflection": "-ον",
+    "gloss": "involved in, liable, guilty",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "οἰκονόμος",
+    "inflection": "-ου, ὁ",
+    "gloss": "steward, house steward",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὅρκος",
+    "inflection": "-ου, ὁ",
+    "gloss": "oath",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐγκαταλείπω",
+    "inflection": null,
+    "gloss": "abandon, desert, leave behind",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "δεσπότης",
+    "inflection": "-ου, ὁ",
+    "gloss": "lord, master, prince",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κἀκεῖθεν",
+    "inflection": null,
+    "gloss": "and thence, and from there",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κοσμέω",
+    "inflection": null,
+    "gloss": "put into order, adorn, beautify",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐμφανίζω",
+    "inflection": null,
+    "gloss": "make visible, report against, reveal",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐκκόπτω",
+    "inflection": null,
+    "gloss": "cut out, cut off, cut down",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "παντοκράτωρ",
+    "inflection": "-ορος, ὁ",
+    "gloss": "ruler of universe, the Almighty",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὄντως",
+    "inflection": null,
+    "gloss": "really, truly",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ψευδοπροφήτης",
+    "inflection": "-ου, ὁ",
+    "gloss": "false prophet",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κλητός",
+    "inflection": "-ή, -όν",
+    "gloss": "called, summoned, invited",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "χράομαι",
+    "inflection": null,
+    "gloss": "use, make use of, deal with",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "θλίβω",
+    "inflection": null,
+    "gloss": "afflict, oppress, persecute",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἰσχύς",
+    "inflection": "-ύος, ἡ",
+    "gloss": "strength, power",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀφαιρέω",
+    "inflection": null,
+    "gloss": "take away, smite off",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "βίβλος",
+    "inflection": "-ου, ἡ",
+    "gloss": "written book, volume",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "δικαίωμα",
+    "inflection": "-τος, τό",
+    "gloss": "righteous deed",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπειδή",
+    "inflection": null,
+    "gloss": "when, since, because",
+    "pos": "Conj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κοινωνός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "partner, companion",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἀχαΐα",
+    "inflection": "-ας, ἡ",
+    "gloss": "Achaia",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "μέλει",
+    "inflection": null,
+    "gloss": "it is a care, it concerns",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ψεύστης",
+    "inflection": "-ου, ὁ",
+    "gloss": "liar, deceiver",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "προσκαρτερέω",
+    "inflection": null,
+    "gloss": "persist, hold fast",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πενθέω",
+    "inflection": null,
+    "gloss": "mourn, lament, grieve",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ψεῦδος",
+    "inflection": "-ους, τό",
+    "gloss": "lie",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑμέτερος",
+    "inflection": "-α, -ον",
+    "gloss": "your",
+    "pos": "pron-posses",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ταχέως",
+    "inflection": null,
+    "gloss": "soon, quickly, hastily",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σιγάω",
+    "inflection": null,
+    "gloss": "keep silent, am silent",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πόρνος",
+    "inflection": "-ου, ὁ",
+    "gloss": "fornicator",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "παραλυτικός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "paralytic",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "στρατηγός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "general, magistrate, captain",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑπαντάω",
+    "inflection": null,
+    "gloss": "meet, fight, oppose",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "τέταρτος",
+    "inflection": "-η, -ον",
+    "gloss": "fourth",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "συζητέω",
+    "inflection": null,
+    "gloss": "seek together, discuss",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πλεονεξία",
+    "inflection": "-ας, ἡ",
+    "gloss": "covetousness, greediness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑπόδημα",
+    "inflection": "-τος, τό",
+    "gloss": "sandal",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "φείδομαι",
+    "inflection": null,
+    "gloss": "spare, abstain",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "χρηστότης",
+    "inflection": "-ητος, ἡ",
+    "gloss": "goodness, kindness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀσέλγεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "lewdness, licentiousness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "παρεμβολή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "camp, barracks",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πατάσσω",
+    "inflection": null,
+    "gloss": "strike",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πύλη",
+    "inflection": "-ης, ἡ",
+    "gloss": "door, gate",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ποικίλος",
+    "inflection": "-η, -ον",
+    "gloss": "various, manifold",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "χωρέω",
+    "inflection": null,
+    "gloss": "make room, receive",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σιωπάω",
+    "inflection": null,
+    "gloss": "keep silence, am silent",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "περιστερά",
+    "inflection": "-ᾶς, ἡ",
+    "gloss": "dove, pigeon",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πλάνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "wandering, error, deceit",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "παράγω",
+    "inflection": null,
+    "gloss": "pass by, depart, pass away",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σύνδουλος",
+    "inflection": "-ου, ὁ",
+    "gloss": "fellow servant",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "χωρίον",
+    "inflection": "-ου, τό",
+    "gloss": "field, land",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "δάκρυον",
+    "inflection": "-ου, τό",
+    "gloss": "tear",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπιτάσσω",
+    "inflection": null,
+    "gloss": "give order, command",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "μνῆμα",
+    "inflection": "-τος, τό",
+    "gloss": "tomb, monument, grave",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀναφέρω",
+    "inflection": null,
+    "gloss": "carry up, lead up, offer up",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "συγγενής",
+    "inflection": "-οῦς, ὁ",
+    "gloss": "akin, a relative",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "μετρέω",
+    "inflection": null,
+    "gloss": "measure, estimate",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κέρας",
+    "inflection": "-ατος, τό",
+    "gloss": "horn",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "λίμνη",
+    "inflection": "-ης, ἡ",
+    "gloss": "lake",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σπουδάζω",
+    "inflection": null,
+    "gloss": "hasten; am eager",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σπλάγχνον",
+    "inflection": "-ου, τό",
+    "gloss": "bowels, compassion, heart",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πηγή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "fountain, spring, well",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κράβαττος",
+    "inflection": "-ου, ὁ",
+    "gloss": "bed, mattress, mat",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ζηλόω",
+    "inflection": null,
+    "gloss": "am jealous, am zealous",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "στήκω",
+    "inflection": null,
+    "gloss": "stand fast, persevere",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Τύρος",
+    "inflection": "-ου, ἡ",
+    "gloss": "Tyre",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σφόδρα",
+    "inflection": null,
+    "gloss": "exceedingly, greatly, very much",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "καύχησις",
+    "inflection": "-εως, ἡ",
+    "gloss": "boasting",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀδύνατος",
+    "inflection": "-ον",
+    "gloss": "incapable, impossible, powerless",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "νεανίσκος",
+    "inflection": "-ου, ὁ",
+    "gloss": "young man, youth",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κλῆρος",
+    "inflection": "-ου, ὁ",
+    "gloss": "lot, portion, share",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "καύχημα",
+    "inflection": "-τος, τό",
+    "gloss": "boasting, object of boasting",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ποιμαίνω",
+    "inflection": null,
+    "gloss": "shepherd, tend, pasture",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πρᾶγμα",
+    "inflection": "-τος, τό",
+    "gloss": "thing done, matter, deed",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἀπολλῶς",
+    "inflection": "-ωτος, ὁ",
+    "gloss": "Apollos",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἰσκαριώθ",
+    "inflection": null,
+    "gloss": "Iscariot",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀκαθαρσία",
+    "inflection": "-ας, ἡ",
+    "gloss": "uncleanness, impurity",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὅραμα",
+    "inflection": "-τος, τό",
+    "gloss": "spectacle, vision",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σχίζω",
+    "inflection": null,
+    "gloss": "rend, divide, split",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἁγιασμός",
+    "inflection": "-οῦ, ὁ",
+    "gloss": "sanctification, holiness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὁμοθυμαδόν",
+    "inflection": null,
+    "gloss": "with one mind, unanimously",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πραΰτης",
+    "inflection": "-ητος, ἡ",
+    "gloss": "mildness, gentleness, meekness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Σαμάρεια",
+    "inflection": "-ας, ἡ",
+    "gloss": "Samaria",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ᾅδης",
+    "inflection": "-ου, ὁ",
+    "gloss": "Hades",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "γέμω",
+    "inflection": null,
+    "gloss": "am full of",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "εἴδωλον",
+    "inflection": "-ου, τό",
+    "gloss": "idol, false god, image",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "φωτίζω",
+    "inflection": null,
+    "gloss": "illuminate, bring to light",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἅμα",
+    "inflection": null,
+    "gloss": "at the same time, together",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κομίζω",
+    "inflection": null,
+    "gloss": "bring, receive, recover",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κατασκευάζω",
+    "inflection": null,
+    "gloss": "build, prepare, make, furnish",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὕστερος",
+    "inflection": "-α, -ον",
+    "gloss": "lastly, afterward, later",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "φυτεύω",
+    "inflection": null,
+    "gloss": "plant",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "καταβολή",
+    "inflection": "-ῆς, ἡ",
+    "gloss": "foundation, sowing",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὑποκάτω",
+    "inflection": null,
+    "gloss": "underneath, under",
+    "pos": "Adv",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Ἰόππη",
+    "inflection": "-ης, ἡ",
+    "gloss": "Joppa",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐπιτελέω",
+    "inflection": null,
+    "gloss": "complete, accomplish, perfect",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀφορίζω",
+    "inflection": null,
+    "gloss": "separate, place apart",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἐκπίπτω",
+    "inflection": null,
+    "gloss": "fall out, fall off, fall away",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ὅδε",
+    "inflection": "-ἥδε, τόδε",
+    "gloss": "this here, this",
+    "pos": "Pron",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "εἴκοσι",
+    "inflection": null,
+    "gloss": "twenty",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀπολογέομαι",
+    "inflection": null,
+    "gloss": "give a defense, defend myself",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "Θωμᾶς",
+    "inflection": "-ᾶ, ὁ",
+    "gloss": "Thomas",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πυνθάνομαι",
+    "inflection": null,
+    "gloss": "ask, inquire",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ἀπολύτρωσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "redemption, deliverance",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "θανατόω",
+    "inflection": null,
+    "gloss": "put to death, kill",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "θάπτω",
+    "inflection": null,
+    "gloss": "bury",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κλῆσις",
+    "inflection": "-εως, ἡ",
+    "gloss": "calling, summons",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "νόσος",
+    "inflection": "-ου, ἡ",
+    "gloss": "disease, malady, illness",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "πρότερος",
+    "inflection": "-α, -ον",
+    "gloss": "formerly, before, earlier",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "σάλπιγξ",
+    "inflection": "-ιγγος, ἡ",
+    "gloss": "trumpet",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "ζῳοποιέω",
+    "inflection": null,
+    "gloss": "make to live, make alive",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κακία",
+    "inflection": "-ας, ἡ",
+    "gloss": "evil, wickedness, malice",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "κλάδος",
+    "inflection": "-ου, ὁ",
+    "gloss": "branch",
+    "pos": "Noun",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "τελευτάω",
+    "inflection": null,
+    "gloss": "end, finish, die",
+    "pos": "Verb",
+    "section": 7,
+    "freq": null
+  },
+  {
+    "word": "τριάκοντα",
+    "inflection": null,
+    "gloss": "thirty",
+    "pos": "Adj",
+    "section": 7,
+    "freq": null
+  }
+]
