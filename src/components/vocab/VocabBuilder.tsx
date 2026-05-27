@@ -29,9 +29,16 @@ type ProgressMap = Record<string, WordProgress>
 type Tab = 'dashboard' | 'study' | 'browse'
 type StudyMode = 'greek-to-english' | 'english-to-greek' | 'mixed'
 
+interface Subsection {
+  key: string      // e.g. "1-A"
+  label: string    // e.g. "A"
+  rankRange: string // e.g. "1–20" (position within section)
+  words: BgvbWord[]
+}
+
 interface StudyConfig {
   mode: StudyMode
-  sections: number[]
+  subsections: string[]  // selected subsection keys, e.g. ["1-A", "1-B", "2-A"]
   pos: string[]
   cardFilter: 'due' | 'all'
 }
@@ -53,9 +60,32 @@ const POS_LABELS: Record<string, string> = {
   Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
 }
 
+// Pre-compute subsections: 20-word chunks per section, sorted by freq desc
+// WORD_SUBSECTION maps each word → its subsection key (e.g. "1-A")
+const SECTION_SUBSECTIONS: Record<number, Subsection[]> = {}
+const WORD_SUBSECTION: Record<string, string> = {}
+
+ALL_SECTIONS.forEach(s => {
+  const sectionWords = [...WORDS.filter(w => w.section === s)]
+    .sort((a, b) => (b.freq ?? 0) - (a.freq ?? 0))
+  const subs: Subsection[] = []
+  for (let i = 0; i < sectionWords.length; i += 20) {
+    const chunk = sectionWords.slice(i, i + 20)
+    const label = String.fromCharCode(65 + subs.length) // A, B, C…
+    const start = i + 1
+    const end = Math.min(i + 20, sectionWords.length)
+    const key = `${s}-${label}`
+    subs.push({ key, label, rankRange: `${start}–${end}`, words: chunk })
+    chunk.forEach(w => { WORD_SUBSECTION[w.word] = key })
+  }
+  SECTION_SUBSECTIONS[s] = subs
+})
+
+const ALL_SUBSECTION_KEYS = ALL_SECTIONS.flatMap(s => SECTION_SUBSECTIONS[s].map(sub => sub.key))
+
 const DEFAULT_CONFIG: StudyConfig = {
   mode: 'greek-to-english',
-  sections: [...ALL_SECTIONS],
+  subsections: [...ALL_SUBSECTION_KEYS],
   pos: [...ALL_POS],
   cardFilter: 'due',
 }
@@ -80,8 +110,9 @@ function saveProgress(p: ProgressMap) {
 }
 
 function filterWords(words: BgvbWord[], config: StudyConfig, progress: ProgressMap, today: string): BgvbWord[] {
+  const subSet = new Set(config.subsections)
   return words.filter(w => {
-    if (!config.sections.includes(w.section)) return false
+    if (!subSet.has(WORD_SUBSECTION[w.word] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
     if (config.cardFilter === 'due') {
       const p = progress[w.word]
@@ -199,11 +230,10 @@ function Dashboard({
         <div className="space-y-2">
           {sectionProgress.map(({ section, total, mastered }) => {
             const pct = total > 0 ? Math.round((mastered / total) * 100) : 0
-            const coverage = SECTION_CUMULATIVE_COVERAGE[section]
             return (
               <div key={section} className="space-y-1">
                 <div className="flex justify-between text-xs text-gray-600">
-                  <span>§{section} — up to {coverage}% GNT</span>
+                  <span>§{section} — up to {SECTION_CUMULATIVE_COVERAGE[section]}% GNT</span>
                   <span>{mastered}/{total}</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -315,7 +345,7 @@ function StudyView({
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
         <p className="text-xl font-semibold text-brand-700">No cards match</p>
-        <p className="text-gray-500 text-sm">Try switching to "All words" or adjust your section/POS filters.</p>
+        <p className="text-gray-500 text-sm">Try switching to "All words" or adjust your filters.</p>
         <button onClick={goBack} className="btn btn-secondary text-sm mt-2">← Back to settings</button>
       </div>
     )
@@ -378,7 +408,6 @@ function StudyView({
 
   return (
     <div className="max-w-lg mx-auto space-y-5">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors mb-1 block">
@@ -389,7 +418,6 @@ function StudyView({
         <span className="text-xs bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full">§{word.section}</span>
       </div>
 
-      {/* Card */}
       <div
         className="cursor-pointer select-none"
         onClick={() => setFlipped(f => !f)}
@@ -440,7 +468,6 @@ function StudyView({
         )}
       </div>
 
-      {/* Controls */}
       {!flipped ? (
         <p className="text-center text-sm text-gray-400">Tap the card to reveal the answer</p>
       ) : (
@@ -455,23 +482,28 @@ function StudyView({
   )
 }
 
-// ── Study Settings ────────────────────────────────────────────────────────────
+// ── Shared checkbox ───────────────────────────────────────────────────────────
 
-function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
+function Checkbox({ checked, indeterminate = false, onChange }: { checked: boolean; indeterminate?: boolean; onChange: () => void }) {
   return (
     <button
       onClick={e => { e.stopPropagation(); onChange() }}
       className={clsx(
         'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
-        checked ? 'bg-brand-800 border-brand-800' : 'border-gray-300 hover:border-brand-400'
+        checked || indeterminate
+          ? 'bg-brand-800 border-brand-800'
+          : 'border-gray-300 hover:border-brand-400'
       )}
-      aria-checked={checked}
+      aria-checked={indeterminate ? 'mixed' : checked}
       role="checkbox"
     >
-      {checked && <Check size={11} className="text-white" strokeWidth={3} />}
+      {checked && !indeterminate && <Check size={11} className="text-white" strokeWidth={3} />}
+      {indeterminate && <span className="block w-2 h-0.5 bg-white rounded-full" />}
     </button>
   )
 }
+
+// ── Study Settings ────────────────────────────────────────────────────────────
 
 function StudySettings({
   config, onChange, cardCount, onStart, onShuffle,
@@ -482,13 +514,35 @@ function StudySettings({
   onStart: () => void
   onShuffle: () => void
 }) {
-  const [expandedSections, setExpandedSections] = useState<number[]>([])
+  const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
+
+  const subSet = useMemo(() => new Set(config.subsections), [config.subsections])
+
+  // Section-level selection state: 'all' | 'none' | 'partial'
+  const sectionState = (s: number): 'all' | 'none' | 'partial' => {
+    const keys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const selectedCount = keys.filter(k => subSet.has(k)).length
+    if (selectedCount === 0) return 'none'
+    if (selectedCount === keys.length) return 'all'
+    return 'partial'
+  }
 
   const toggleSection = (s: number) => {
-    const next = config.sections.includes(s)
-      ? config.sections.filter(x => x !== s)
-      : [...config.sections, s].sort((a, b) => a - b)
-    onChange({ ...config, sections: next })
+    const sectionKeys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const state = sectionState(s)
+    if (state === 'all') {
+      onChange({ ...config, subsections: config.subsections.filter(k => !sectionKeys.includes(k)) })
+    } else {
+      const next = Array.from(new Set([...config.subsections, ...sectionKeys]))
+      onChange({ ...config, subsections: next })
+    }
+  }
+
+  const toggleSubsection = (key: string) => {
+    const next = subSet.has(key)
+      ? config.subsections.filter(k => k !== key)
+      : [...config.subsections, key]
+    onChange({ ...config, subsections: next })
   }
 
   const togglePos = (p: string) => {
@@ -504,12 +558,7 @@ function StudySettings({
     )
   }
 
-  const sectionWordCounts = useMemo(
-    () => Object.fromEntries(ALL_SECTIONS.map(s => [s, WORDS.filter(w => w.section === s).length])),
-    []
-  )
-
-  const disabled = cardCount === 0 || config.sections.length === 0 || config.pos.length === 0
+  const disabled = cardCount === 0 || config.subsections.length === 0 || config.pos.length === 0
 
   return (
     <div className="max-w-lg mx-auto space-y-4">
@@ -573,46 +622,85 @@ function StudySettings({
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Frequency Sections</p>
             <div className="flex gap-3">
-              <button onClick={() => onChange({ ...config, sections: [...ALL_SECTIONS] })} className="text-xs text-brand-700 hover:underline font-medium">All</button>
-              <button onClick={() => onChange({ ...config, sections: [] })} className="text-xs text-gray-400 hover:text-gray-600">Clear</button>
+              <button
+                onClick={() => onChange({ ...config, subsections: [...ALL_SUBSECTION_KEYS] })}
+                className="text-xs text-brand-700 hover:underline font-medium"
+              >
+                All
+              </button>
+              <button
+                onClick={() => onChange({ ...config, subsections: [] })}
+                className="text-xs text-gray-400 hover:text-gray-600"
+              >
+                Clear
+              </button>
             </div>
           </div>
+
           <div className="space-y-1.5">
             {ALL_SECTIONS.map(s => {
-              const isSelected = config.sections.includes(s)
+              const state = sectionState(s)
               const isExpanded = expandedSections.includes(s)
+              const subs = SECTION_SUBSECTIONS[s]
               const coverage = SECTION_CUMULATIVE_COVERAGE[s]
-              const wordCount = sectionWordCounts[s]
+
               return (
                 <div
                   key={s}
                   className={clsx(
-                    'rounded-lg border transition-colors overflow-hidden',
-                    isSelected ? 'border-brand-200 bg-brand-50' : 'border-gray-200 bg-white'
+                    'rounded-lg border overflow-hidden transition-colors',
+                    state !== 'none' ? 'border-brand-200' : 'border-gray-200'
                   )}
                 >
-                  <div className="flex items-center px-3 py-2.5 gap-3">
-                    <Checkbox checked={isSelected} onChange={() => toggleSection(s)} />
+                  {/* Section row */}
+                  <div
+                    className={clsx(
+                      'flex items-center px-3 py-2.5 gap-3',
+                      state !== 'none' ? 'bg-brand-50' : 'bg-white'
+                    )}
+                  >
+                    <Checkbox
+                      checked={state === 'all'}
+                      indeterminate={state === 'partial'}
+                      onChange={() => toggleSection(s)}
+                    />
                     <div className="flex-1 min-w-0">
                       <span className="text-sm font-medium text-gray-900">Section §{s}</span>
-                      <span className="text-xs text-gray-400 ml-2">{wordCount} words · up to {coverage}% GNT</span>
+                      <span className="text-xs text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
                     </div>
                     <button
                       onClick={() => toggleExpand(s)}
                       className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label={isExpanded ? 'Collapse' : 'Expand'}
                     >
-                      {isExpanded
-                        ? <ChevronDown size={15} />
-                        : <ChevronRight size={15} />}
+                      {isExpanded ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
                     </button>
                   </div>
+
+                  {/* Sub-section chips */}
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-1 border-t border-gray-100 bg-white">
-                      <p className="text-xs text-gray-500 leading-relaxed">
-                        Covers <strong>{coverage}%</strong> of New Testament text cumulatively.
-                        This section contains <strong>{wordCount}</strong> vocabulary words.
-                      </p>
+                    <div className="px-3 pb-3 pt-2.5 border-t border-gray-100 bg-white">
+                      <div className="grid grid-cols-8 gap-1.5">
+                        {subs.map(sub => {
+                          const isSubSelected = subSet.has(sub.key)
+                          return (
+                            <button
+                              key={sub.key}
+                              onClick={() => toggleSubsection(sub.key)}
+                              className={clsx(
+                                'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
+                                isSubSelected
+                                  ? 'bg-brand-800 border-brand-800 text-white'
+                                  : 'bg-white border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-700'
+                              )}
+                            >
+                              <span className="text-sm font-semibold leading-none">{sub.label}</span>
+                              <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-300' : 'text-gray-400')}>
+                                {sub.rankRange}
+                              </span>
+                            </button>
+                          )
+                        })}
+                      </div>
                     </div>
                   )}
                 </div>
