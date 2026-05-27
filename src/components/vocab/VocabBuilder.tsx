@@ -421,12 +421,14 @@ function StudyView({
                 {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
                 <p className="text-lg text-gray-900 font-semibold text-center mt-1">{word.gloss}</p>
                 <p className="text-xs text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
+                {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             ) : (
               <>
                 <p className="text-base text-gray-500 text-center">{word.gloss}</p>
                 <p className="greek-text text-3xl text-brand-800 font-medium text-center mt-2">{word.word}</p>
                 {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
+                {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             )}
           </div>
