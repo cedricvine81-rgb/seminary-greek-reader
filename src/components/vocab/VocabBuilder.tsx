@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { BookOpen, Search, LayoutDashboard, GraduationCap, RotateCcw, ChevronRight } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
@@ -139,7 +139,7 @@ export function VocabBuilder() {
       )}
       {tab === 'study' && (
         <StudyView
-          words={studyWords}
+          allWords={WORDS}
           progress={progress}
           onProgress={setProgress}
         />
@@ -261,21 +261,174 @@ function ActionCard({ title, sub, icon, onClick }: { title: string; sub: string;
 // ── Study view ───────────────────────────────────────────────────────────────
 
 function StudyView({
-  words, progress, onProgress,
+  allWords, progress, onProgress,
 }: {
-  words: BgvbWord[]
+  allWords: BgvbWord[]
   progress: ProgressMap
   onProgress: (p: ProgressMap) => void
 }) {
+  const [selectedSection, setSelectedSection] = useState<number | 'all' | null>(null)
+  const [mode, setMode] = useState<'due' | 'all'>('due')
   const [idx, setIdx] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
   const [finished, setFinished] = useState(false)
 
-  const word = words[idx]
+  const today = todayStr()
 
-  const advance = useCallback((knew: boolean) => {
-    if (!word) return
+  const sectionStats = useMemo(() => {
+    const sections = [1, 2, 3, 4, 5, 6, 7].map(s => {
+      const words = allWords.filter(w => w.section === s)
+      const due = words.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
+      const mastered = words.filter(w => { const p = progress[w.word]; return p && p.repetitions >= 3 && !isDue(p) }).length
+      return { section: s, total: words.length, due, mastered }
+    })
+    const totalDue = allWords.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
+    const totalMastered = allWords.filter(w => { const p = progress[w.word]; return p && p.repetitions >= 3 && !isDue(p) }).length
+    return { sections, total: allWords.length, totalDue, totalMastered }
+  }, [allWords, progress, today])
+
+  const studyWords = useMemo(() => {
+    if (selectedSection === null) return []
+    const pool = selectedSection === 'all' ? allWords : allWords.filter(w => w.section === selectedSection)
+    return mode === 'due' ? pool.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }) : pool
+  }, [selectedSection, mode, allWords, progress, today])
+
+  const startStudying = (section: number | 'all') => {
+    setSelectedSection(section)
+    setIdx(0)
+    setFlipped(false)
+    setFinished(false)
+    setSessionStats({ correct: 0, total: 0 })
+  }
+
+  const goBack = () => setSelectedSection(null)
+
+  // ── Selection screen ──
+  if (selectedSection === null) {
+    return (
+      <div className="space-y-5 max-w-lg mx-auto">
+        <div>
+          <h2 className="text-xl font-bold text-gray-900">Choose what to study</h2>
+          <p className="text-sm text-gray-500 mt-1">Pick a section to start your flashcard session</p>
+        </div>
+
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setMode('due')}
+            className={clsx(
+              'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              mode === 'due' ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            Due for review
+          </button>
+          <button
+            onClick={() => setMode('all')}
+            className={clsx(
+              'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
+              mode === 'all' ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            All words
+          </button>
+        </div>
+
+        <div className="space-y-2">
+          <button
+            onClick={() => startStudying('all')}
+            className="w-full bg-brand-800 text-white rounded-xl p-4 flex items-center justify-between hover:bg-brand-700 transition-colors group"
+          >
+            <div className="text-left">
+              <p className="font-semibold">All Sections</p>
+              <p className="text-brand-300 text-xs mt-0.5">
+                {mode === 'due' ? `${sectionStats.totalDue} due` : `${sectionStats.total} words`}
+                {' · '}{sectionStats.totalMastered} mastered
+              </p>
+            </div>
+            <ChevronRight size={18} className="text-brand-300 group-hover:text-white transition-colors" />
+          </button>
+
+          {sectionStats.sections.map(({ section, total, due, mastered }) => {
+            const coverage = SECTION_CUMULATIVE_COVERAGE[section]
+            const count = mode === 'due' ? due : total
+            return (
+              <button
+                key={section}
+                onClick={() => startStudying(section)}
+                className={clsx(
+                  'w-full bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:border-brand-300 hover:bg-brand-50 transition-colors group',
+                  count === 0 && 'opacity-50'
+                )}
+              >
+                <div className="text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-gray-900">Section §{section}</span>
+                    <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">
+                      up to {coverage}% GNT
+                    </span>
+                  </div>
+                  <p className="text-gray-500 text-xs mt-0.5">
+                    {mode === 'due' ? `${due} due` : `${total} words`}
+                    {' · '}{mastered} mastered
+                  </p>
+                </div>
+                <ChevronRight size={16} className="text-gray-400 group-hover:text-brand-600 transition-colors" />
+              </button>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  // ── Empty deck ──
+  if (studyWords.length === 0) {
+    return (
+      <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
+        <p className="text-xl font-semibold text-brand-700">All caught up!</p>
+        <p className="text-gray-500 text-sm">
+          {mode === 'due'
+            ? 'No words due for review in this section. Try "All words" or pick another section.'
+            : 'No words found in this section.'}
+        </p>
+        <button onClick={goBack} className="btn btn-secondary text-sm mt-2">← Back to sections</button>
+      </div>
+    )
+  }
+
+  const word = studyWords[idx]
+
+  // ── Session complete ──
+  if (finished) {
+    return (
+      <div className="text-center py-16 space-y-4 max-w-lg mx-auto">
+        <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
+        <p className="text-gray-600">
+          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect
+          {' '}out of {sessionStats.total}
+        </p>
+        <div className="flex gap-3 justify-center">
+          <button
+            className="btn btn-secondary"
+            onClick={goBack}
+          >
+            ← Choose section
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
+          >
+            Review Again
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!word) return null
+
+  const advance = (knew: boolean) => {
     const prev = progress[word.word]
     const result = sm2({
       easeFactor: prev?.easeFactor ?? 2.5,
@@ -297,51 +450,27 @@ function StudyView({
     saveProgress(updated)
     onProgress(updated)
     setSessionStats(s => ({ correct: s.correct + (knew ? 1 : 0), total: s.total + 1 }))
-    if (idx + 1 >= words.length) {
+    if (idx + 1 >= studyWords.length) {
       setFinished(true)
     } else {
       setIdx(i => i + 1)
       setFlipped(false)
     }
-  }, [word, idx, words.length, progress, onProgress])
-
-  if (words.length === 0) {
-    return (
-      <div className="text-center py-16 space-y-3">
-        <p className="text-xl font-semibold text-brand-700">All caught up!</p>
-        <p className="text-gray-500 text-sm">No words due for review. Check back tomorrow.</p>
-      </div>
-    )
   }
 
-  if (finished) {
-    return (
-      <div className="text-center py-16 space-y-4">
-        <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
-        <p className="text-gray-600">
-          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect
-          {' '}out of {sessionStats.total}
-        </p>
-        <button
-          className="btn btn-primary"
-          onClick={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
-        >
-          Review Again
-        </button>
-      </div>
-    )
-  }
-
-  if (!word) return null
-
+  // ── Flashcard ──
   return (
     <div className="space-y-6 max-w-lg mx-auto">
       <div className="flex justify-between items-center text-sm text-gray-500">
-        <span>Card {idx + 1} of {words.length}</span>
-        <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">§{word.section}</span>
+        <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors">
+          ← {selectedSection === 'all' ? 'All Sections' : `Section §${selectedSection}`}
+        </button>
+        <div className="flex items-center gap-2">
+          <span>Card {idx + 1} of {studyWords.length}</span>
+          <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">§{word.section}</span>
+        </div>
       </div>
 
-      {/* Card */}
       <div
         className="cursor-pointer select-none"
         onClick={() => setFlipped(f => !f)}
@@ -374,7 +503,6 @@ function StudyView({
         )}
       </div>
 
-      {/* Controls */}
       {!flipped ? (
         <p className="text-center text-sm text-gray-400">Tap the card to reveal the definition</p>
       ) : (
