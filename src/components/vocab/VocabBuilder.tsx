@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { BookOpen, Search, LayoutDashboard, GraduationCap, RotateCcw, ChevronRight } from 'lucide-react'
+import { BookOpen, Search, LayoutDashboard, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -268,7 +268,7 @@ function StudyView({
 }) {
   const [config, setConfig] = useState<StudyConfig>(DEFAULT_CONFIG)
   const [sessionWords, setSessionWords] = useState<BgvbWord[] | null>(null)
-  const [directions, setDirections] = useState<boolean[]>([]) // true = greek-to-english
+  const [directions, setDirections] = useState<boolean[]>([])
   const [idx, setIdx] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
@@ -281,8 +281,9 @@ function StudyView({
     [allWords, config, progress, today]
   )
 
-  const startStudying = () => {
-    const words = filterWords(allWords, config, progress, today)
+  const startStudying = (shuffle = false) => {
+    let words = filterWords(allWords, config, progress, today)
+    if (shuffle) words = [...words].sort(() => Math.random() - 0.5)
     const dirs = words.map(() => {
       if (config.mode === 'greek-to-english') return true
       if (config.mode === 'english-to-greek') return false
@@ -298,19 +299,18 @@ function StudyView({
 
   const goBack = () => { setSessionWords(null); setFinished(false) }
 
-  // ── Settings screen ──
   if (sessionWords === null) {
     return (
       <StudySettings
         config={config}
         onChange={setConfig}
         cardCount={previewWords.length}
-        onStart={startStudying}
+        onStart={() => startStudying(false)}
+        onShuffle={() => startStudying(true)}
       />
     )
   }
 
-  // ── Empty deck ──
   if (sessionWords.length === 0) {
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
@@ -324,10 +324,9 @@ function StudyView({
   const word = sessionWords[idx]
   const greekFirst = directions[idx] ?? true
 
-  // ── Session complete ──
   if (finished) {
     return (
-      <div className="text-center py-16 space-y-4 max-w-lg mx-auto">
+      <div className="max-w-lg mx-auto text-center py-16 space-y-4">
         <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
         <p className="text-gray-600">
           {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
@@ -377,19 +376,20 @@ function StudyView({
     }
   }
 
-  // ── Flashcard ──
   return (
-    <div className="space-y-6 max-w-lg mx-auto">
-      <div className="flex justify-between items-center">
-        <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors">
-          ← Settings
-        </button>
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <span>Card {idx + 1} of {sessionWords.length}</span>
-          <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">§{word.section}</span>
+    <div className="max-w-lg mx-auto space-y-5">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors mb-1 block">
+            ← Settings
+          </button>
+          <p className="text-sm text-gray-500">Card {idx + 1} of {sessionWords.length}</p>
         </div>
+        <span className="text-xs bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full">§{word.section}</span>
       </div>
 
+      {/* Card */}
       <div
         className="cursor-pointer select-none"
         onClick={() => setFlipped(f => !f)}
@@ -399,42 +399,48 @@ function StudyView({
         aria-label="Flip card"
       >
         {!flipped ? (
-          <div className="bg-brand-800 rounded-2xl h-56 flex flex-col items-center justify-center p-8 shadow-lg">
+          <div className="bg-brand-800 rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md">
+            <p className="text-xs font-semibold tracking-widest text-brand-400 mb-4 uppercase">
+              {greekFirst ? 'Greek' : 'English'}
+            </p>
             {greekFirst ? (
               <>
-                <p className="greek-text text-4xl text-parchment-100 font-medium text-center leading-snug">{word.word}</p>
-                {word.inflection && <p className="greek-text text-sm text-brand-300 mt-2">{word.inflection}</p>}
+                <p className="greek-text text-5xl text-parchment-100 font-medium text-center leading-snug">{word.word}</p>
+                {word.inflection && <p className="greek-text text-base text-brand-300 mt-3">{word.inflection}</p>}
               </>
             ) : (
               <>
-                <p className="text-2xl text-parchment-100 font-semibold text-center">{word.gloss}</p>
-                <p className="text-brand-300 text-sm mt-2">{POS_LABELS[word.pos] ?? word.pos}</p>
+                <p className="text-3xl text-parchment-100 font-semibold text-center">{word.gloss}</p>
+                <p className="text-brand-300 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-brand-400 text-xs mt-5">Tap to reveal</p>
+            <p className="text-brand-500 text-xs mt-8">Tap to reveal</p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl h-56 border-2 border-brand-100 flex flex-col items-center justify-center p-8 shadow-lg gap-2">
+          <div className="bg-white rounded-2xl min-h-56 border border-gray-200 flex flex-col items-center justify-center p-10 shadow-md gap-1.5">
             {greekFirst ? (
               <>
                 <p className="greek-text text-2xl text-brand-800 font-medium text-center">{word.word}</p>
                 {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
-                <p className="text-lg text-gray-900 font-semibold text-center mt-1">{word.gloss}</p>
+                <div className="my-2 w-8 h-px bg-gray-200" />
+                <p className="text-2xl text-gray-900 font-semibold text-center">{word.gloss}</p>
                 <p className="text-xs text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
                 {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             ) : (
               <>
-                <p className="text-base text-gray-500 text-center">{word.gloss}</p>
-                <p className="greek-text text-3xl text-brand-800 font-medium text-center mt-2">{word.word}</p>
-                {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
-                {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
+                <p className="text-lg text-gray-500 font-medium text-center">{word.gloss}</p>
+                <div className="my-2 w-8 h-px bg-gray-200" />
+                <p className="greek-text text-4xl text-brand-800 font-medium text-center">{word.word}</p>
+                {word.inflection && <p className="greek-text text-sm text-gray-400 mt-1">{word.inflection}</p>}
+                {word.freq && <p className="text-xs text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             )}
           </div>
         )}
       </div>
 
+      {/* Controls */}
       {!flipped ? (
         <p className="text-center text-sm text-gray-400">Tap the card to reveal the answer</p>
       ) : (
@@ -449,16 +455,35 @@ function StudyView({
   )
 }
 
-// ── Study Settings panel ──────────────────────────────────────────────────────
+// ── Study Settings ────────────────────────────────────────────────────────────
+
+function Checkbox({ checked, onChange }: { checked: boolean; onChange: () => void }) {
+  return (
+    <button
+      onClick={e => { e.stopPropagation(); onChange() }}
+      className={clsx(
+        'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
+        checked ? 'bg-brand-800 border-brand-800' : 'border-gray-300 hover:border-brand-400'
+      )}
+      aria-checked={checked}
+      role="checkbox"
+    >
+      {checked && <Check size={11} className="text-white" strokeWidth={3} />}
+    </button>
+  )
+}
 
 function StudySettings({
-  config, onChange, cardCount, onStart,
+  config, onChange, cardCount, onStart, onShuffle,
 }: {
   config: StudyConfig
   onChange: (c: StudyConfig) => void
   cardCount: number
   onStart: () => void
+  onShuffle: () => void
 }) {
+  const [expandedSections, setExpandedSections] = useState<number[]>([])
+
   const toggleSection = (s: number) => {
     const next = config.sections.includes(s)
       ? config.sections.filter(x => x !== s)
@@ -473,111 +498,163 @@ function StudySettings({
     onChange({ ...config, pos: next })
   }
 
+  const toggleExpand = (s: number) => {
+    setExpandedSections(prev =>
+      prev.includes(s) ? prev.filter(x => x !== s) : [...prev, s]
+    )
+  }
+
+  const sectionWordCounts = useMemo(
+    () => Object.fromEntries(ALL_SECTIONS.map(s => [s, WORDS.filter(w => w.section === s).length])),
+    []
+  )
+
   const disabled = cardCount === 0 || config.sections.length === 0 || config.pos.length === 0
 
   return (
-    <div className="space-y-4 max-w-lg mx-auto">
-      <div>
-        <h2 className="text-xl font-bold text-gray-900">Study Settings</h2>
-        <p className="text-sm text-gray-500 mt-1">Configure your flashcard session</p>
-      </div>
-
-      {/* Study Mode */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-        <h3 className="text-sm font-semibold text-gray-800">Study Mode</h3>
-        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-          {(['greek-to-english', 'english-to-greek', 'mixed'] as StudyMode[]).map(m => (
-            <button
-              key={m}
-              onClick={() => onChange({ ...config, mode: m })}
-              className={clsx(
-                'flex-1 px-2 py-1.5 rounded-md text-xs font-medium transition-colors',
-                config.mode === m ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-              )}
-            >
-              {m === 'greek-to-english' ? 'Greek → English' : m === 'english-to-greek' ? 'English → Greek' : 'Mixed'}
-            </button>
-          ))}
+    <div className="max-w-lg mx-auto space-y-4">
+      {/* Page header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Study</h2>
+          <p className="text-sm text-gray-500 mt-0.5">{cardCount.toLocaleString()} cards in deck</p>
         </div>
+        <button
+          onClick={onShuffle}
+          disabled={disabled}
+          title="Shuffle and start"
+          className="p-2 rounded-lg text-gray-400 hover:text-brand-700 hover:bg-brand-50 transition-colors disabled:opacity-40"
+        >
+          <Shuffle size={18} />
+        </button>
       </div>
 
-      {/* Cards filter */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-        <h3 className="text-sm font-semibold text-gray-800">Cards</h3>
-        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-          {(['due', 'all'] as const).map(f => (
-            <button
-              key={f}
-              onClick={() => onChange({ ...config, cardFilter: f })}
-              className={clsx(
-                'flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
-                config.cardFilter === f ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-              )}
+      {/* Single settings panel */}
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+
+        {/* Study Mode */}
+        <div className="p-4">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Study Mode</p>
+          <div className="relative">
+            <select
+              value={config.mode}
+              onChange={e => onChange({ ...config, mode: e.target.value as StudyMode })}
+              className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-400 transition-colors cursor-pointer"
             >
-              {f === 'due' ? 'Due for review' : 'All words'}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Frequency Sections */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-800">Frequency Sections</h3>
-          <div className="flex gap-3">
-            <button onClick={() => onChange({ ...config, sections: [...ALL_SECTIONS] })} className="text-xs text-brand-600 hover:underline">All</button>
-            <button onClick={() => onChange({ ...config, sections: [] })} className="text-xs text-gray-400 hover:underline">Clear</button>
+              <option value="greek-to-english">Greek → English</option>
+              <option value="english-to-greek">English → Greek</option>
+              <option value="mixed">Mixed</option>
+            </select>
+            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
         </div>
-        <div className="grid grid-cols-7 gap-1.5">
-          {ALL_SECTIONS.map(s => (
-            <button
-              key={s}
-              onClick={() => toggleSection(s)}
-              className={clsx(
-                'py-2 rounded-lg text-sm font-medium border transition-colors',
-                config.sections.includes(s)
-                  ? 'bg-brand-800 text-white border-brand-800'
-                  : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
-              )}
-            >
-              §{s}
-            </button>
-          ))}
-        </div>
-        <p className="text-xs text-gray-400">
-          {config.sections.length === 0
-            ? 'No sections selected'
-            : config.sections.length === 7
-            ? `All sections — up to ${SECTION_CUMULATIVE_COVERAGE[7]}% GNT`
-            : `§${Math.min(...config.sections)}–§${Math.max(...config.sections)} — up to ${SECTION_CUMULATIVE_COVERAGE[Math.max(...config.sections)]}% GNT`}
-        </p>
-      </div>
 
-      {/* Part of Speech */}
-      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold text-gray-800">Part of Speech</h3>
-          <div className="flex gap-3">
-            <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-brand-600 hover:underline">All</button>
-            <button onClick={() => onChange({ ...config, pos: [] })} className="text-xs text-gray-400 hover:underline">Clear</button>
+        {/* Cards filter */}
+        <div className="p-4">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Cards</p>
+          <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+            {(['due', 'all'] as const).map(f => (
+              <button
+                key={f}
+                onClick={() => onChange({ ...config, cardFilter: f })}
+                className={clsx(
+                  'flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
+                  config.cardFilter === f ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                )}
+              >
+                {f === 'due' ? 'Due for review' : 'All words'}
+              </button>
+            ))}
           </div>
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {ALL_POS.map(p => (
-            <button
-              key={p}
-              onClick={() => togglePos(p)}
-              className={clsx(
-                'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors',
-                config.pos.includes(p)
-                  ? 'bg-brand-800 text-white border-brand-800'
-                  : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
-              )}
-            >
-              {POS_LABELS[p] ?? p}
-            </button>
-          ))}
+
+        {/* Frequency Sections */}
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Frequency Sections</p>
+            <div className="flex gap-3">
+              <button onClick={() => onChange({ ...config, sections: [...ALL_SECTIONS] })} className="text-xs text-brand-700 hover:underline font-medium">All</button>
+              <button onClick={() => onChange({ ...config, sections: [] })} className="text-xs text-gray-400 hover:text-gray-600">Clear</button>
+            </div>
+          </div>
+          <div className="space-y-1.5">
+            {ALL_SECTIONS.map(s => {
+              const isSelected = config.sections.includes(s)
+              const isExpanded = expandedSections.includes(s)
+              const coverage = SECTION_CUMULATIVE_COVERAGE[s]
+              const wordCount = sectionWordCounts[s]
+              return (
+                <div
+                  key={s}
+                  className={clsx(
+                    'rounded-lg border transition-colors overflow-hidden',
+                    isSelected ? 'border-brand-200 bg-brand-50' : 'border-gray-200 bg-white'
+                  )}
+                >
+                  <div className="flex items-center px-3 py-2.5 gap-3">
+                    <Checkbox checked={isSelected} onChange={() => toggleSection(s)} />
+                    <div className="flex-1 min-w-0">
+                      <span className="text-sm font-medium text-gray-900">Section §{s}</span>
+                      <span className="text-xs text-gray-400 ml-2">{wordCount} words · up to {coverage}% GNT</span>
+                    </div>
+                    <button
+                      onClick={() => toggleExpand(s)}
+                      className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
+                      aria-label={isExpanded ? 'Collapse' : 'Expand'}
+                    >
+                      {isExpanded
+                        ? <ChevronDown size={15} />
+                        : <ChevronRight size={15} />}
+                    </button>
+                  </div>
+                  {isExpanded && (
+                    <div className="px-3 pb-3 pt-1 border-t border-gray-100 bg-white">
+                      <p className="text-xs text-gray-500 leading-relaxed">
+                        Covers <strong>{coverage}%</strong> of New Testament text cumulatively.
+                        This section contains <strong>{wordCount}</strong> vocabulary words.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Part of Speech */}
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Part of Speech</p>
+            <div className="flex gap-3">
+              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-brand-700 hover:underline font-medium">All</button>
+              <button onClick={() => onChange({ ...config, pos: [] })} className="text-xs text-gray-400 hover:text-gray-600">Clear</button>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            {ALL_POS.map(p => {
+              const isSelected = config.pos.includes(p)
+              return (
+                <button
+                  key={p}
+                  onClick={() => togglePos(p)}
+                  className={clsx(
+                    'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm text-left transition-colors',
+                    isSelected
+                      ? 'border-brand-200 bg-brand-50 text-brand-900'
+                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                  )}
+                >
+                  <div className={clsx(
+                    'w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
+                    isSelected ? 'bg-brand-800 border-brand-800' : 'border-gray-300'
+                  )}>
+                    {isSelected && <Check size={9} className="text-white" strokeWidth={3} />}
+                  </div>
+                  <span className="text-xs font-medium">{POS_LABELS[p] ?? p}</span>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
@@ -587,7 +664,7 @@ function StudySettings({
         disabled={disabled}
         className="w-full btn btn-primary py-3 text-base justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount} card${cardCount !== 1 ? 's' : ''}`}
+        {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
       </button>
     </div>
   )
