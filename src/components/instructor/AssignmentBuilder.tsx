@@ -136,6 +136,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
     allowLate: false, lateDaysLimit: 7,
   })
+  const [source, setSource] = useState('VOCAB_BUILDER')
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
 
@@ -151,7 +152,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { source } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -187,6 +188,15 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
         ]}
       />
+
+      {form.type === 'VOCABULARY_QUIZ' && (
+        <Select
+          label="Quiz source"
+          value={source}
+          onChange={e => setSource(e.target.value)}
+          options={QUIZ_SOURCES}
+        />
+      )}
 
       <div className="grid grid-cols-2 gap-4">
         <Input label="Week number" type="number" min={1} required value={form.weekNumber}
@@ -532,12 +542,14 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             ]}
           />
 
-          <Select
-            label="Quiz source"
-            value={form.source}
-            onChange={e => setF('source', e.target.value)}
-            options={QUIZ_SOURCES}
-          />
+          {form.quizType === 'VOCABULARY_QUIZ' && (
+            <Select
+              label="Quiz source"
+              value={form.source}
+              onChange={e => setF('source', e.target.value)}
+              options={QUIZ_SOURCES}
+            />
+          )}
 
           <div className="grid grid-cols-2 gap-4">
             <Select
@@ -591,7 +603,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         />
 
         {/* BGVB download */}
-        {form.source === 'VOCAB_BUILDER' && (
+        {form.quizType === 'VOCABULARY_QUIZ' && form.source === 'VOCAB_BUILDER' && (
           <a
             href="/downloads/BGVB-2024.pdf"
             download
