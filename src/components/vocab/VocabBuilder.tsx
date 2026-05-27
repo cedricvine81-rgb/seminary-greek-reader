@@ -67,7 +67,7 @@ function saveProgress(p: ProgressMap) {
 // ── Main component ───────────────────────────────────────────────────────────
 
 export function VocabBuilder() {
-  const [tab, setTab] = useState<Tab>('dashboard')
+  const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
 
   useEffect(() => { setProgress(loadProgress()) }, [])
