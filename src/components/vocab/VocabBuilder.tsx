@@ -20,21 +20,29 @@ interface WordProgress {
   easeFactor: number
   interval: number
   repetitions: number
-  dueDate: string   // ISO date string
+  dueDate: string
   correct: number
   total: number
 }
 
 type ProgressMap = Record<string, WordProgress>
-
 type Tab = 'dashboard' | 'study' | 'browse'
+type StudyMode = 'greek-to-english' | 'english-to-greek' | 'mixed'
+
+interface StudyConfig {
+  mode: StudyMode
+  sections: number[]
+  pos: string[]
+  cardFilter: 'due' | 'all'
+}
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const WORDS = bgvbData as BgvbWord[]
 const STORAGE_KEY = 'bgvb-progress-v1'
+const ALL_SECTIONS = [1, 2, 3, 4, 5, 6, 7]
+const ALL_POS = Array.from(new Set(WORDS.map(w => w.pos))).sort()
 
-const SECTION_SIZES: Record<number, number> = { 1: 179, 2: 202, 3: 159, 4: 160, 5: 160, 6: 160, 7: 170 }
 const SECTION_CUMULATIVE_COVERAGE: Record<number, number> = {
   1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2,
 }
@@ -43,6 +51,13 @@ const POS_LABELS: Record<string, string> = {
   Verb: 'Verb', Noun: 'Noun', Adj: 'Adjective', Adv: 'Adverb',
   Prep: 'Preposition', Conj: 'Conjunction', Pron: 'Pronoun',
   Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
+}
+
+const DEFAULT_CONFIG: StudyConfig = {
+  mode: 'greek-to-english',
+  sections: [...ALL_SECTIONS],
+  pos: [...ALL_POS],
+  cardFilter: 'due',
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -64,6 +79,18 @@ function saveProgress(p: ProgressMap) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(p))
 }
 
+function filterWords(words: BgvbWord[], config: StudyConfig, progress: ProgressMap, today: string): BgvbWord[] {
+  return words.filter(w => {
+    if (!config.sections.includes(w.section)) return false
+    if (!config.pos.includes(w.pos)) return false
+    if (config.cardFilter === 'due') {
+      const p = progress[w.word]
+      return !p || p.dueDate <= today
+    }
+    return true
+  })
+}
+
 // ── Main component ───────────────────────────────────────────────────────────
 
 export function VocabBuilder() {
@@ -72,12 +99,9 @@ export function VocabBuilder() {
 
   useEffect(() => { setProgress(loadProgress()) }, [])
 
-  const studyWords = useMemo(() => {
+  const dueCount = useMemo(() => {
     const today = todayStr()
-    return WORDS.filter(w => {
-      const p = progress[w.word]
-      return !p || p.dueDate <= today
-    })
+    return WORDS.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
   }, [progress])
 
   const masteredCount = useMemo(
@@ -93,7 +117,7 @@ export function VocabBuilder() {
   }, [progress])
 
   const sectionProgress = useMemo(() => {
-    return [1, 2, 3, 4, 5, 6, 7].map(s => {
+    return ALL_SECTIONS.map(s => {
       const sectionWords = WORDS.filter(w => w.section === s)
       const mastered = sectionWords.filter(w => {
         const p = progress[w.word]
@@ -105,7 +129,6 @@ export function VocabBuilder() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-      {/* Tab bar */}
       <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
         {(['dashboard', 'study', 'browse'] as Tab[]).map(t => (
           <button
@@ -113,9 +136,7 @@ export function VocabBuilder() {
             onClick={() => setTab(t)}
             className={clsx(
               'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize',
-              tab === t
-                ? 'bg-white text-brand-800 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+              tab === t ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
             {t === 'dashboard' && <LayoutDashboard size={14} />}
@@ -129,7 +150,7 @@ export function VocabBuilder() {
       {tab === 'dashboard' && (
         <Dashboard
           masteredCount={masteredCount}
-          dueCount={studyWords.length}
+          dueCount={dueCount}
           accuracy={accuracyTotal}
           sectionProgress={sectionProgress}
           onStudy={() => setTab('study')}
@@ -138,11 +159,7 @@ export function VocabBuilder() {
         />
       )}
       {tab === 'study' && (
-        <StudyView
-          allWords={WORDS}
-          progress={progress}
-          onProgress={setProgress}
-        />
+        <StudyView allWords={WORDS} progress={progress} onProgress={setProgress} />
       )}
       {tab === 'browse' && <BrowseView progress={progress} />}
     </div>
@@ -162,8 +179,6 @@ function Dashboard({
   onBrowse: () => void
   onReset: () => void
 }) {
-  const maxMastered = Math.max(...sectionProgress.map(s => s.total))
-
   return (
     <div className="space-y-6">
       <div>
@@ -173,14 +188,12 @@ function Dashboard({
         </p>
       </div>
 
-      {/* Stats row */}
       <div className="grid grid-cols-3 gap-4">
         <StatCard label="Total Words" value={WORDS.length.toString()} />
         <StatCard label="Mastered" value={masteredCount.toString()} sub={`${Math.round((masteredCount / WORDS.length) * 100)}% of total`} />
         <StatCard label="Due Today" value={dueCount.toString()} sub={accuracy !== null ? `${accuracy}% accuracy` : 'No reviews yet'} />
       </div>
 
-      {/* NT Coverage */}
       <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
         <h2 className="font-semibold text-gray-800">NT Coverage by Section</h2>
         <div className="space-y-2">
@@ -194,10 +207,7 @@ function Dashboard({
                   <span>{mastered}/{total}</span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-brand-600 rounded-full transition-all"
-                    style={{ width: `${pct}%` }}
-                  />
+                  <div className="h-full bg-brand-600 rounded-full transition-all" style={{ width: `${pct}%` }} />
                 </div>
               </div>
             )
@@ -205,20 +215,9 @@ function Dashboard({
         </div>
       </div>
 
-      {/* Quick actions */}
       <div className="grid grid-cols-2 gap-4">
-        <ActionCard
-          title="Start Studying"
-          sub={`${dueCount} cards due for review`}
-          icon={<GraduationCap size={20} />}
-          onClick={onStudy}
-        />
-        <ActionCard
-          title="Browse Words"
-          sub="Search & filter vocabulary"
-          icon={<BookOpen size={20} />}
-          onClick={onBrowse}
-        />
+        <ActionCard title="Start Studying" sub={`${dueCount} cards due for review`} icon={<GraduationCap size={20} />} onClick={onStudy} />
+        <ActionCard title="Browse Words" sub="Search & filter vocabulary" icon={<BookOpen size={20} />} onClick={onBrowse} />
       </div>
 
       {masteredCount > 0 && (
@@ -267,8 +266,9 @@ function StudyView({
   progress: ProgressMap
   onProgress: (p: ProgressMap) => void
 }) {
-  const [selectedSection, setSelectedSection] = useState<number | 'all' | null>(null)
-  const [mode, setMode] = useState<'due' | 'all'>('due')
+  const [config, setConfig] = useState<StudyConfig>(DEFAULT_CONFIG)
+  const [sessionWords, setSessionWords] = useState<BgvbWord[] | null>(null)
+  const [directions, setDirections] = useState<boolean[]>([]) // true = greek-to-english
   const [idx, setIdx] = useState(0)
   const [flipped, setFlipped] = useState(false)
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
@@ -276,128 +276,53 @@ function StudyView({
 
   const today = todayStr()
 
-  const sectionStats = useMemo(() => {
-    const sections = [1, 2, 3, 4, 5, 6, 7].map(s => {
-      const words = allWords.filter(w => w.section === s)
-      const due = words.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
-      const mastered = words.filter(w => { const p = progress[w.word]; return p && p.repetitions >= 3 && !isDue(p) }).length
-      return { section: s, total: words.length, due, mastered }
+  const previewWords = useMemo(
+    () => filterWords(allWords, config, progress, today),
+    [allWords, config, progress, today]
+  )
+
+  const startStudying = () => {
+    const words = filterWords(allWords, config, progress, today)
+    const dirs = words.map(() => {
+      if (config.mode === 'greek-to-english') return true
+      if (config.mode === 'english-to-greek') return false
+      return Math.random() > 0.5
     })
-    const totalDue = allWords.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
-    const totalMastered = allWords.filter(w => { const p = progress[w.word]; return p && p.repetitions >= 3 && !isDue(p) }).length
-    return { sections, total: allWords.length, totalDue, totalMastered }
-  }, [allWords, progress, today])
-
-  const studyWords = useMemo(() => {
-    if (selectedSection === null) return []
-    const pool = selectedSection === 'all' ? allWords : allWords.filter(w => w.section === selectedSection)
-    return mode === 'due' ? pool.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }) : pool
-  }, [selectedSection, mode, allWords, progress, today])
-
-  const startStudying = (section: number | 'all') => {
-    setSelectedSection(section)
+    setSessionWords(words)
+    setDirections(dirs)
     setIdx(0)
     setFlipped(false)
     setFinished(false)
     setSessionStats({ correct: 0, total: 0 })
   }
 
-  const goBack = () => setSelectedSection(null)
+  const goBack = () => { setSessionWords(null); setFinished(false) }
 
-  // ── Selection screen ──
-  if (selectedSection === null) {
+  // ── Settings screen ──
+  if (sessionWords === null) {
     return (
-      <div className="space-y-5 max-w-lg mx-auto">
-        <div>
-          <h2 className="text-xl font-bold text-gray-900">Choose what to study</h2>
-          <p className="text-sm text-gray-500 mt-1">Pick a section to start your flashcard session</p>
-        </div>
-
-        <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-          <button
-            onClick={() => setMode('due')}
-            className={clsx(
-              'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-              mode === 'due' ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            Due for review
-          </button>
-          <button
-            onClick={() => setMode('all')}
-            className={clsx(
-              'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
-              mode === 'all' ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            All words
-          </button>
-        </div>
-
-        <div className="space-y-2">
-          <button
-            onClick={() => startStudying('all')}
-            className="w-full bg-brand-800 text-white rounded-xl p-4 flex items-center justify-between hover:bg-brand-700 transition-colors group"
-          >
-            <div className="text-left">
-              <p className="font-semibold">All Sections</p>
-              <p className="text-brand-300 text-xs mt-0.5">
-                {mode === 'due' ? `${sectionStats.totalDue} due` : `${sectionStats.total} words`}
-                {' · '}{sectionStats.totalMastered} mastered
-              </p>
-            </div>
-            <ChevronRight size={18} className="text-brand-300 group-hover:text-white transition-colors" />
-          </button>
-
-          {sectionStats.sections.map(({ section, total, due, mastered }) => {
-            const coverage = SECTION_CUMULATIVE_COVERAGE[section]
-            const count = mode === 'due' ? due : total
-            return (
-              <button
-                key={section}
-                onClick={() => startStudying(section)}
-                className={clsx(
-                  'w-full bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between hover:border-brand-300 hover:bg-brand-50 transition-colors group',
-                  count === 0 && 'opacity-50'
-                )}
-              >
-                <div className="text-left">
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-gray-900">Section §{section}</span>
-                    <span className="text-xs bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded-full">
-                      up to {coverage}% GNT
-                    </span>
-                  </div>
-                  <p className="text-gray-500 text-xs mt-0.5">
-                    {mode === 'due' ? `${due} due` : `${total} words`}
-                    {' · '}{mastered} mastered
-                  </p>
-                </div>
-                <ChevronRight size={16} className="text-gray-400 group-hover:text-brand-600 transition-colors" />
-              </button>
-            )
-          })}
-        </div>
-      </div>
+      <StudySettings
+        config={config}
+        onChange={setConfig}
+        cardCount={previewWords.length}
+        onStart={startStudying}
+      />
     )
   }
 
   // ── Empty deck ──
-  if (studyWords.length === 0) {
+  if (sessionWords.length === 0) {
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
-        <p className="text-xl font-semibold text-brand-700">All caught up!</p>
-        <p className="text-gray-500 text-sm">
-          {mode === 'due'
-            ? 'No words due for review in this section. Try "All words" or pick another section.'
-            : 'No words found in this section.'}
-        </p>
-        <button onClick={goBack} className="btn btn-secondary text-sm mt-2">← Back to sections</button>
+        <p className="text-xl font-semibold text-brand-700">No cards match</p>
+        <p className="text-gray-500 text-sm">Try switching to "All words" or adjust your section/POS filters.</p>
+        <button onClick={goBack} className="btn btn-secondary text-sm mt-2">← Back to settings</button>
       </div>
     )
   }
 
-  const word = studyWords[idx]
+  const word = sessionWords[idx]
+  const greekFirst = directions[idx] ?? true
 
   // ── Session complete ──
   if (finished) {
@@ -405,16 +330,10 @@ function StudyView({
       <div className="text-center py-16 space-y-4 max-w-lg mx-auto">
         <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
         <p className="text-gray-600">
-          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect
-          {' '}out of {sessionStats.total}
+          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
         </p>
         <div className="flex gap-3 justify-center">
-          <button
-            className="btn btn-secondary"
-            onClick={goBack}
-          >
-            ← Choose section
-          </button>
+          <button className="btn btn-secondary" onClick={goBack}>← Settings</button>
           <button
             className="btn btn-primary"
             onClick={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
@@ -450,7 +369,7 @@ function StudyView({
     saveProgress(updated)
     onProgress(updated)
     setSessionStats(s => ({ correct: s.correct + (knew ? 1 : 0), total: s.total + 1 }))
-    if (idx + 1 >= studyWords.length) {
+    if (idx + 1 >= sessionWords.length) {
       setFinished(true)
     } else {
       setIdx(i => i + 1)
@@ -461,12 +380,12 @@ function StudyView({
   // ── Flashcard ──
   return (
     <div className="space-y-6 max-w-lg mx-auto">
-      <div className="flex justify-between items-center text-sm text-gray-500">
+      <div className="flex justify-between items-center">
         <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors">
-          ← {selectedSection === 'all' ? 'All Sections' : `Section §${selectedSection}`}
+          ← Settings
         </button>
-        <div className="flex items-center gap-2">
-          <span>Card {idx + 1} of {studyWords.length}</span>
+        <div className="flex items-center gap-2 text-sm text-gray-500">
+          <span>Card {idx + 1} of {sessionWords.length}</span>
           <span className="text-xs bg-gray-100 px-2 py-0.5 rounded-full">§{word.section}</span>
         </div>
       </div>
@@ -481,46 +400,193 @@ function StudyView({
       >
         {!flipped ? (
           <div className="bg-brand-800 rounded-2xl h-56 flex flex-col items-center justify-center p-8 shadow-lg">
-            <p className="greek-text text-4xl text-parchment-100 font-medium text-center leading-snug">
-              {word.word}
-            </p>
-            {word.inflection && (
-              <p className="greek-text text-sm text-brand-300 mt-2">{word.inflection}</p>
+            {greekFirst ? (
+              <>
+                <p className="greek-text text-4xl text-parchment-100 font-medium text-center leading-snug">{word.word}</p>
+                {word.inflection && <p className="greek-text text-sm text-brand-300 mt-2">{word.inflection}</p>}
+              </>
+            ) : (
+              <>
+                <p className="text-2xl text-parchment-100 font-semibold text-center">{word.gloss}</p>
+                <p className="text-brand-300 text-sm mt-2">{POS_LABELS[word.pos] ?? word.pos}</p>
+              </>
             )}
             <p className="text-brand-400 text-xs mt-5">Tap to reveal</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl h-56 border-2 border-brand-100 flex flex-col items-center justify-center p-8 shadow-lg gap-2">
-            <p className="greek-text text-2xl text-brand-800 font-medium text-center">
-              {word.word}
-            </p>
-            {word.inflection && (
-              <p className="greek-text text-sm text-gray-400">{word.inflection}</p>
+            {greekFirst ? (
+              <>
+                <p className="greek-text text-2xl text-brand-800 font-medium text-center">{word.word}</p>
+                {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
+                <p className="text-lg text-gray-900 font-semibold text-center mt-1">{word.gloss}</p>
+                <p className="text-xs text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
+              </>
+            ) : (
+              <>
+                <p className="text-base text-gray-500 text-center">{word.gloss}</p>
+                <p className="greek-text text-3xl text-brand-800 font-medium text-center mt-2">{word.word}</p>
+                {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
+              </>
             )}
-            <p className="text-lg text-gray-900 font-semibold text-center mt-1">{word.gloss}</p>
-            <p className="text-xs text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
           </div>
         )}
       </div>
 
       {!flipped ? (
-        <p className="text-center text-sm text-gray-400">Tap the card to reveal the definition</p>
+        <p className="text-center text-sm text-gray-400">Tap the card to reveal the answer</p>
       ) : (
         <div className="grid grid-cols-2 gap-3">
-          <button
-            onClick={() => advance(false)}
-            className="btn btn-secondary border-red-200 text-red-600 hover:bg-red-50"
-          >
+          <button onClick={() => advance(false)} className="btn btn-secondary border-red-200 text-red-600 hover:bg-red-50">
             <RotateCcw size={14} /> Still learning
           </button>
-          <button
-            onClick={() => advance(true)}
-            className="btn btn-primary"
-          >
-            Got it!
-          </button>
+          <button onClick={() => advance(true)} className="btn btn-primary">Got it!</button>
         </div>
       )}
+    </div>
+  )
+}
+
+// ── Study Settings panel ──────────────────────────────────────────────────────
+
+function StudySettings({
+  config, onChange, cardCount, onStart,
+}: {
+  config: StudyConfig
+  onChange: (c: StudyConfig) => void
+  cardCount: number
+  onStart: () => void
+}) {
+  const toggleSection = (s: number) => {
+    const next = config.sections.includes(s)
+      ? config.sections.filter(x => x !== s)
+      : [...config.sections, s].sort((a, b) => a - b)
+    onChange({ ...config, sections: next })
+  }
+
+  const togglePos = (p: string) => {
+    const next = config.pos.includes(p)
+      ? config.pos.filter(x => x !== p)
+      : [...config.pos, p].sort()
+    onChange({ ...config, pos: next })
+  }
+
+  const disabled = cardCount === 0 || config.sections.length === 0 || config.pos.length === 0
+
+  return (
+    <div className="space-y-4 max-w-lg mx-auto">
+      <div>
+        <h2 className="text-xl font-bold text-gray-900">Study Settings</h2>
+        <p className="text-sm text-gray-500 mt-1">Configure your flashcard session</p>
+      </div>
+
+      {/* Study Mode */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+        <h3 className="text-sm font-semibold text-gray-800">Study Mode</h3>
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          {(['greek-to-english', 'english-to-greek', 'mixed'] as StudyMode[]).map(m => (
+            <button
+              key={m}
+              onClick={() => onChange({ ...config, mode: m })}
+              className={clsx(
+                'flex-1 px-2 py-1.5 rounded-md text-xs font-medium transition-colors',
+                config.mode === m ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {m === 'greek-to-english' ? 'Greek → English' : m === 'english-to-greek' ? 'English → Greek' : 'Mixed'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Cards filter */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+        <h3 className="text-sm font-semibold text-gray-800">Cards</h3>
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+          {(['due', 'all'] as const).map(f => (
+            <button
+              key={f}
+              onClick={() => onChange({ ...config, cardFilter: f })}
+              className={clsx(
+                'flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
+                config.cardFilter === f ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {f === 'due' ? 'Due for review' : 'All words'}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Frequency Sections */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800">Frequency Sections</h3>
+          <div className="flex gap-3">
+            <button onClick={() => onChange({ ...config, sections: [...ALL_SECTIONS] })} className="text-xs text-brand-600 hover:underline">All</button>
+            <button onClick={() => onChange({ ...config, sections: [] })} className="text-xs text-gray-400 hover:underline">Clear</button>
+          </div>
+        </div>
+        <div className="grid grid-cols-7 gap-1.5">
+          {ALL_SECTIONS.map(s => (
+            <button
+              key={s}
+              onClick={() => toggleSection(s)}
+              className={clsx(
+                'py-2 rounded-lg text-sm font-medium border transition-colors',
+                config.sections.includes(s)
+                  ? 'bg-brand-800 text-white border-brand-800'
+                  : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+              )}
+            >
+              §{s}
+            </button>
+          ))}
+        </div>
+        <p className="text-xs text-gray-400">
+          {config.sections.length === 0
+            ? 'No sections selected'
+            : config.sections.length === 7
+            ? `All sections — up to ${SECTION_CUMULATIVE_COVERAGE[7]}% GNT`
+            : `§${Math.min(...config.sections)}–§${Math.max(...config.sections)} — up to ${SECTION_CUMULATIVE_COVERAGE[Math.max(...config.sections)]}% GNT`}
+        </p>
+      </div>
+
+      {/* Part of Speech */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800">Part of Speech</h3>
+          <div className="flex gap-3">
+            <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-brand-600 hover:underline">All</button>
+            <button onClick={() => onChange({ ...config, pos: [] })} className="text-xs text-gray-400 hover:underline">Clear</button>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {ALL_POS.map(p => (
+            <button
+              key={p}
+              onClick={() => togglePos(p)}
+              className={clsx(
+                'px-3 py-1.5 rounded-full text-xs font-medium border transition-colors',
+                config.pos.includes(p)
+                  ? 'bg-brand-800 text-white border-brand-800'
+                  : 'bg-white text-gray-500 border-gray-200 hover:border-brand-300'
+              )}
+            >
+              {POS_LABELS[p] ?? p}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Start button */}
+      <button
+        onClick={onStart}
+        disabled={disabled}
+        className="w-full btn btn-primary py-3 text-base justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount} card${cardCount !== 1 ? 's' : ''}`}
+      </button>
     </div>
   )
 }
@@ -536,8 +602,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
     const q = query.toLowerCase()
     return WORDS.filter(w => {
       if (filterSection !== 'all' && w.section !== Number(filterSection)) return false
-      const posKey = filterPos !== 'all' ? filterPos : null
-      if (posKey && w.pos !== posKey) return false
+      if (filterPos !== 'all' && w.pos !== filterPos) return false
       if (!q) return true
       return (
         w.word.toLowerCase().includes(q) ||
@@ -547,14 +612,8 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
     })
   }, [query, filterSection, filterPos])
 
-  const posList = useMemo(() => {
-    const set = new Set(WORDS.map(w => w.pos))
-    return Array.from(set).sort()
-  }, [])
-
   return (
     <div className="space-y-4">
-      {/* Filters */}
       <div className="flex gap-2 flex-wrap">
         <div className="relative flex-1 min-w-48">
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -566,31 +625,18 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
             className="input pl-8 text-sm w-full"
           />
         </div>
-        <select
-          value={filterSection}
-          onChange={e => setFilterSection(e.target.value)}
-          className="input text-sm w-auto"
-        >
+        <select value={filterSection} onChange={e => setFilterSection(e.target.value)} className="input text-sm w-auto">
           <option value="all">All Sections</option>
-          {[1,2,3,4,5,6,7].map(s => (
-            <option key={s} value={s}>Section {s}</option>
-          ))}
+          {ALL_SECTIONS.map(s => <option key={s} value={s}>Section {s}</option>)}
         </select>
-        <select
-          value={filterPos}
-          onChange={e => setFilterPos(e.target.value)}
-          className="input text-sm w-auto"
-        >
+        <select value={filterPos} onChange={e => setFilterPos(e.target.value)} className="input text-sm w-auto">
           <option value="all">All Parts</option>
-          {posList.map(p => (
-            <option key={p} value={p}>{POS_LABELS[p] ?? p}</option>
-          ))}
+          {ALL_POS.map(p => <option key={p} value={p}>{POS_LABELS[p] ?? p}</option>)}
         </select>
       </div>
 
       <p className="text-xs text-gray-400">{filtered.length} word{filtered.length !== 1 ? 's' : ''}</p>
 
-      {/* Word grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {filtered.map(w => {
           const p = progress[w.word]
@@ -604,12 +650,8 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               )}
             >
               <div className="min-w-0">
-                <p className="greek-text text-base font-medium text-brand-800 leading-tight">
-                  {w.word}
-                </p>
-                {w.inflection && (
-                  <p className="greek-text text-xs text-gray-400">{w.inflection}</p>
-                )}
+                <p className="greek-text text-base font-medium text-brand-800 leading-tight">{w.word}</p>
+                {w.inflection && <p className="greek-text text-xs text-gray-400">{w.inflection}</p>}
                 <p className="text-sm text-gray-700 mt-0.5 leading-snug">{w.gloss}</p>
               </div>
               <div className="flex flex-col items-end gap-1 shrink-0">
