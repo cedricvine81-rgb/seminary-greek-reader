@@ -591,7 +591,7 @@ function StudySettings({
                                           : 'text-gray-400 hover:text-gray-600'
                                       )}
                                     >
-                                      {m === 'greek-english' ? 'Gk · En' : m === 'greek' ? 'Greek' : 'English'}
+                                      {m === 'greek-english' ? 'Greek-English' : m === 'greek' ? 'Greek' : 'English'}
                                     </button>
                                   ))}
                                 </div>
