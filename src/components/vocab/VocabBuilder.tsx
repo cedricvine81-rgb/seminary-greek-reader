@@ -27,7 +27,7 @@ interface WordProgress {
 
 type ProgressMap = Record<string, WordProgress>
 type Tab = 'study' | 'flashcards' | 'browse'
-type StudyMode = 'greek-to-english' | 'english-to-greek' | 'mixed'
+type StudyMode = 'greek-to-english' | 'english-to-greek'
 
 interface Subsection {
   key: string      // e.g. "1-A"
@@ -143,11 +143,7 @@ export function VocabBuilder() {
   const startStudying = (shuffle = false) => {
     let words = filterWords(WORDS, config)
     if (shuffle) words = [...words].sort(() => Math.random() - 0.5)
-    const dirs = words.map(() => {
-      if (config.mode === 'greek-to-english') return true
-      if (config.mode === 'english-to-greek') return false
-      return Math.random() > 0.5
-    })
+    const dirs = words.map(() => config.mode !== 'english-to-greek')
     setSessionWords(words)
     setDirections(dirs)
     setIdx(0)
@@ -385,9 +381,7 @@ function FlashcardPlayer({
   const word = sessionWords[idx]
   if (!word) return null
 
-  const greekFirst = config.mode === 'greek-to-english' ? true
-    : config.mode === 'english-to-greek' ? false
-    : (directions[idx] ?? true)
+  const greekFirst = config.mode !== 'english-to-greek'
 
   return (
     <div className="space-y-6">
@@ -492,7 +486,7 @@ function FlashcardPlayer({
 
       {/* Study mode selector */}
       <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-        {(['greek-to-english', 'english-to-greek', 'mixed'] as const).map(m => (
+        {(['greek-to-english', 'english-to-greek'] as const).map(m => (
           <button
             key={m}
             onClick={() => onConfigChange({ ...config, mode: m })}
@@ -501,7 +495,7 @@ function FlashcardPlayer({
               config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
-            {m === 'greek-to-english' ? 'Greek → English' : m === 'english-to-greek' ? 'English → Greek' : 'Mixed'}
+            {m === 'greek-to-english' ? 'Greek → English' : 'English → Greek'}
           </button>
         ))}
       </div>
