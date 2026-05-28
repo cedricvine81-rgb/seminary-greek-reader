@@ -87,7 +87,7 @@ const ALL_SUBSECTION_KEYS = ALL_SECTIONS.flatMap(s => SECTION_SUBSECTIONS[s].map
 
 const DEFAULT_CONFIG: StudyConfig = {
   mode: 'greek-to-english',
-  subsections: [...ALL_SUBSECTION_KEYS],
+  subsections: [],
   pos: [...ALL_POS],
   cardFilter: 'due',
 }
