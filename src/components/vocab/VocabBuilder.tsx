@@ -434,8 +434,7 @@ function StudySettings({
   return (
     <div className="space-y-5">
       {/* Page header */}
-      <div className="flex items-center justify-between">
-        <p className="text-base text-gray-500">{cardCount.toLocaleString()} cards in deck</p>
+      <div className="flex justify-end">
         <button
           onClick={onShuffle}
           disabled={disabled}
