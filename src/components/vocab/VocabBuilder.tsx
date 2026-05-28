@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { BookOpen, Search, LayoutDashboard, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle } from 'lucide-react'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -26,7 +26,7 @@ interface WordProgress {
 }
 
 type ProgressMap = Record<string, WordProgress>
-type Tab = 'dashboard' | 'study' | 'browse'
+type Tab = 'study' | 'browse'
 type StudyMode = 'greek-to-english' | 'english-to-greek' | 'mixed'
 
 interface Subsection {
@@ -130,38 +130,10 @@ export function VocabBuilder() {
 
   useEffect(() => { setProgress(loadProgress()) }, [])
 
-  const dueCount = useMemo(() => {
-    const today = todayStr()
-    return WORDS.filter(w => { const p = progress[w.word]; return !p || p.dueDate <= today }).length
-  }, [progress])
-
-  const masteredCount = useMemo(
-    () => Object.values(progress).filter(p => p.repetitions >= 3 && !isDue(p)).length,
-    [progress]
-  )
-
-  const accuracyTotal = useMemo(() => {
-    const vals = Object.values(progress)
-    const total = vals.reduce((s, p) => s + p.total, 0)
-    const correct = vals.reduce((s, p) => s + p.correct, 0)
-    return total > 0 ? Math.round((correct / total) * 100) : null
-  }, [progress])
-
-  const sectionProgress = useMemo(() => {
-    return ALL_SECTIONS.map(s => {
-      const sectionWords = WORDS.filter(w => w.section === s)
-      const mastered = sectionWords.filter(w => {
-        const p = progress[w.word]
-        return p && p.repetitions >= 3 && !isDue(p)
-      }).length
-      return { section: s, total: sectionWords.length, mastered }
-    })
-  }, [progress])
-
   return (
     <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
       <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
-        {(['dashboard', 'study', 'browse'] as Tab[]).map(t => (
+        {(['study', 'browse'] as Tab[]).map(t => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -170,7 +142,6 @@ export function VocabBuilder() {
               tab === t ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
-            {t === 'dashboard' && <LayoutDashboard size={14} />}
             {t === 'study' && <GraduationCap size={14} />}
             {t === 'browse' && <Search size={14} />}
             {t}
@@ -178,112 +149,11 @@ export function VocabBuilder() {
         ))}
       </div>
 
-      {tab === 'dashboard' && (
-        <Dashboard
-          masteredCount={masteredCount}
-          dueCount={dueCount}
-          accuracy={accuracyTotal}
-          sectionProgress={sectionProgress}
-          onStudy={() => setTab('study')}
-          onBrowse={() => setTab('browse')}
-          onReset={() => { saveProgress({}); setProgress({}) }}
-        />
-      )}
       {tab === 'study' && (
         <StudyView allWords={WORDS} progress={progress} onProgress={setProgress} />
       )}
       {tab === 'browse' && <BrowseView progress={progress} />}
     </div>
-  )
-}
-
-// ── Dashboard ────────────────────────────────────────────────────────────────
-
-function Dashboard({
-  masteredCount, dueCount, accuracy, sectionProgress, onStudy, onBrowse, onReset,
-}: {
-  masteredCount: number
-  dueCount: number
-  accuracy: number | null
-  sectionProgress: { section: number; total: number; mastered: number }[]
-  onStudy: () => void
-  onBrowse: () => void
-  onReset: () => void
-}) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Biblical Greek Vocabulary</h1>
-        <p className="text-sm text-gray-500 mt-1">
-          Master the 1,100+ most frequent words in the Greek New Testament
-        </p>
-      </div>
-
-      <div className="grid grid-cols-3 gap-4">
-        <StatCard label="Total Words" value={WORDS.length.toString()} />
-        <StatCard label="Mastered" value={masteredCount.toString()} sub={`${Math.round((masteredCount / WORDS.length) * 100)}% of total`} />
-        <StatCard label="Due Today" value={dueCount.toString()} sub={accuracy !== null ? `${accuracy}% accuracy` : 'No reviews yet'} />
-      </div>
-
-      <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-3">
-        <h2 className="font-semibold text-gray-800">NT Coverage by Section</h2>
-        <div className="space-y-2">
-          {sectionProgress.map(({ section, total, mastered }) => {
-            const pct = total > 0 ? Math.round((mastered / total) * 100) : 0
-            return (
-              <div key={section} className="space-y-1">
-                <div className="flex justify-between text-xs text-gray-600">
-                  <span>§{section} — up to {SECTION_CUMULATIVE_COVERAGE[section]}% GNT</span>
-                  <span>{mastered}/{total}</span>
-                </div>
-                <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-brand-600 rounded-full transition-all" style={{ width: `${pct}%` }} />
-                </div>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <ActionCard title="Start Studying" sub={`${dueCount} cards due for review`} icon={<GraduationCap size={20} />} onClick={onStudy} />
-        <ActionCard title="Browse Words" sub="Search & filter vocabulary" icon={<BookOpen size={20} />} onClick={onBrowse} />
-      </div>
-
-      {masteredCount > 0 && (
-        <div className="text-right">
-          <button onClick={onReset} className="text-xs text-gray-400 hover:text-red-500 transition-colors">
-            Reset all progress
-          </button>
-        </div>
-      )}
-    </div>
-  )
-}
-
-function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
-  return (
-    <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-      <p className="text-3xl font-bold text-brand-800">{value}</p>
-      <p className="text-xs font-medium text-gray-600 mt-1">{label}</p>
-      {sub && <p className="text-xs text-gray-400 mt-0.5">{sub}</p>}
-    </div>
-  )
-}
-
-function ActionCard({ title, sub, icon, onClick }: { title: string; sub: string; icon: React.ReactNode; onClick: () => void }) {
-  return (
-    <button
-      onClick={onClick}
-      className="bg-white border border-gray-200 rounded-xl p-5 text-left hover:border-brand-300 hover:bg-brand-50 transition-colors group"
-    >
-      <div className="flex items-center justify-between">
-        <div className="text-brand-700">{icon}</div>
-        <ChevronRight size={16} className="text-gray-400 group-hover:text-brand-600 transition-colors" />
-      </div>
-      <p className="font-semibold text-gray-900 mt-3">{title}</p>
-      <p className="text-xs text-gray-500 mt-0.5">{sub}</p>
-    </button>
   )
 }
 
@@ -427,22 +297,22 @@ function StudyView({
         aria-label="Flip card"
       >
         {!flipped ? (
-          <div className="bg-brand-800 rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md">
-            <p className="text-xs font-semibold tracking-widest text-brand-400 mb-4 uppercase">
+          <div className="bg-white rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md border-2 border-brand-700">
+            <p className="text-xs font-semibold tracking-widest text-brand-500 mb-4 uppercase">
               {greekFirst ? 'Greek' : 'English'}
             </p>
             {greekFirst ? (
               <>
-                <p className="greek-text text-5xl text-parchment-100 font-medium text-center leading-snug">{word.word}</p>
-                {word.inflection && <p className="greek-text text-base text-brand-300 mt-3">{word.inflection}</p>}
+                <p className="greek-text text-5xl text-brand-800 font-medium text-center leading-snug">{word.word}</p>
+                {word.inflection && <p className="greek-text text-base text-brand-500 mt-3">{word.inflection}</p>}
               </>
             ) : (
               <>
-                <p className="text-3xl text-parchment-100 font-semibold text-center">{word.gloss}</p>
-                <p className="text-brand-300 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
+                <p className="text-3xl text-brand-800 font-semibold text-center">{word.gloss}</p>
+                <p className="text-brand-500 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-brand-500 text-xs mt-8">Tap to reveal</p>
+            <p className="text-brand-400 text-xs mt-8">Tap to reveal</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl min-h-56 border border-gray-200 flex flex-col items-center justify-center p-10 shadow-md gap-1.5">
@@ -491,14 +361,14 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
       className={clsx(
         'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
         checked || indeterminate
-          ? 'bg-brand-800 border-brand-800'
+          ? 'bg-white border-brand-700'
           : 'border-gray-300 hover:border-brand-400'
       )}
       aria-checked={indeterminate ? 'mixed' : checked}
       role="checkbox"
     >
-      {checked && !indeterminate && <Check size={11} className="text-white" strokeWidth={3} />}
-      {indeterminate && <span className="block w-2 h-0.5 bg-white rounded-full" />}
+      {checked && !indeterminate && <Check size={11} className="text-brand-700" strokeWidth={3} />}
+      {indeterminate && <span className="block w-2 h-0.5 bg-brand-700 rounded-full" />}
     </button>
   )
 }
@@ -649,16 +519,11 @@ function StudySettings({
                   key={s}
                   className={clsx(
                     'rounded-lg border overflow-hidden transition-colors',
-                    state !== 'none' ? 'border-brand-200' : 'border-gray-200'
+                    state !== 'none' ? 'border-brand-600' : 'border-gray-200'
                   )}
                 >
                   {/* Section row */}
-                  <div
-                    className={clsx(
-                      'flex items-center px-3 py-2.5 gap-3',
-                      state !== 'none' ? 'bg-brand-50' : 'bg-white'
-                    )}
-                  >
+                  <div className="flex items-center px-3 py-2.5 gap-3 bg-white">
                     <Checkbox
                       checked={state === 'all'}
                       indeterminate={state === 'partial'}
@@ -689,12 +554,12 @@ function StudySettings({
                               className={clsx(
                                 'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
                                 isSubSelected
-                                  ? 'bg-brand-800 border-brand-800 text-white'
+                                  ? 'bg-white border-brand-700 text-brand-800'
                                   : 'bg-white border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-700'
                               )}
                             >
                               <span className="text-sm font-semibold leading-none">{sub.label}</span>
-                              <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-300' : 'text-gray-400')}>
+                              <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-500' : 'text-gray-400')}>
                                 {sub.rankRange}
                               </span>
                             </button>
@@ -728,15 +593,15 @@ function StudySettings({
                   className={clsx(
                     'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm text-left transition-colors',
                     isSelected
-                      ? 'border-brand-200 bg-brand-50 text-brand-900'
+                      ? 'border-brand-600 bg-white text-brand-700'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   )}
                 >
                   <div className={clsx(
                     'w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-brand-800 border-brand-800' : 'border-gray-300'
+                    isSelected ? 'bg-white border-brand-700' : 'border-gray-300'
                   )}>
-                    {isSelected && <Check size={9} className="text-white" strokeWidth={3} />}
+                    {isSelected && <Check size={9} className="text-brand-700" strokeWidth={3} />}
                   </div>
                   <span className="text-xs font-medium">{POS_LABELS[p] ?? p}</span>
                 </button>
