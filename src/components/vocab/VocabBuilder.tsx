@@ -277,15 +277,15 @@ function StudyView({
   }
 
   return (
-    <div className="max-w-lg mx-auto space-y-5">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <button onClick={goBack} className="text-xs text-gray-400 hover:text-gray-600 transition-colors mb-1 block">
+          <button onClick={goBack} className="text-sm text-gray-400 hover:text-gray-600 transition-colors mb-1 block">
             ← Settings
           </button>
-          <p className="text-sm text-gray-500">Card {idx + 1} of {sessionWords.length}</p>
+          <p className="text-base text-gray-500">Card {idx + 1} of {sessionWords.length}</p>
         </div>
-        <span className="text-xs bg-gray-100 text-gray-500 px-2.5 py-1 rounded-full">§{word.section}</span>
+        <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
       </div>
 
       <div
@@ -297,41 +297,41 @@ function StudyView({
         aria-label="Flip card"
       >
         {!flipped ? (
-          <div className="bg-white rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md border border-gray-200">
-            <p className="text-xs font-semibold tracking-widest text-gray-500 mb-4 uppercase">
+          <div className="bg-white rounded-2xl min-h-72 flex flex-col items-center justify-center p-12 shadow-md border border-gray-200">
+            <p className="text-sm font-semibold tracking-widest text-gray-500 mb-6 uppercase">
               {greekFirst ? 'Greek' : 'English'}
             </p>
             {greekFirst ? (
               <>
-                <p className="greek-text text-5xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
-                {word.inflection && <p className="greek-text text-base text-gray-500 mt-3">{word.inflection}</p>}
+                <p className="greek-text text-7xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
+                {word.inflection && <p className="greek-text text-xl text-gray-500 mt-4">{word.inflection}</p>}
               </>
             ) : (
               <>
-                <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                <p className="text-gray-500 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
+                <p className="text-5xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                <p className="text-gray-500 text-lg mt-4">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-gray-400 text-xs mt-8">Tap to reveal</p>
+            <p className="text-gray-400 text-sm mt-10">Tap to reveal</p>
           </div>
         ) : (
-          <div className="bg-white rounded-2xl min-h-56 border border-gray-200 flex flex-col items-center justify-center p-10 shadow-md gap-1.5">
+          <div className="bg-white rounded-2xl min-h-72 border border-gray-200 flex flex-col items-center justify-center p-12 shadow-md gap-2">
             {greekFirst ? (
               <>
-                <p className="greek-text text-2xl text-gray-900 font-medium text-center">{word.word}</p>
-                {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
-                <div className="my-2 w-8 h-px bg-gray-200" />
-                <p className="text-2xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                <p className="text-xs text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
-                {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
+                <p className="greek-text text-4xl text-gray-900 font-medium text-center">{word.word}</p>
+                {word.inflection && <p className="greek-text text-base text-gray-400">{word.inflection}</p>}
+                <div className="my-3 w-12 h-px bg-gray-200" />
+                <p className="text-4xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                <p className="text-sm text-gray-400">{POS_LABELS[word.pos] ?? word.pos}</p>
+                {word.freq && <p className="text-sm text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             ) : (
               <>
-                <p className="text-lg text-gray-500 font-medium text-center">{word.gloss}</p>
-                <div className="my-2 w-8 h-px bg-gray-200" />
-                <p className="greek-text text-4xl text-gray-900 font-medium text-center">{word.word}</p>
-                {word.inflection && <p className="greek-text text-sm text-gray-400 mt-1">{word.inflection}</p>}
-                {word.freq && <p className="text-xs text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
+                <p className="text-2xl text-gray-500 font-medium text-center">{word.gloss}</p>
+                <div className="my-3 w-12 h-px bg-gray-200" />
+                <p className="greek-text text-6xl text-gray-900 font-medium text-center">{word.word}</p>
+                {word.inflection && <p className="greek-text text-base text-gray-400 mt-1">{word.inflection}</p>}
+                {word.freq && <p className="text-sm text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
               </>
             )}
           </div>
@@ -339,13 +339,13 @@ function StudyView({
       </div>
 
       {!flipped ? (
-        <p className="text-center text-sm text-gray-400">Tap the card to reveal the answer</p>
+        <p className="text-center text-base text-gray-400">Tap the card to reveal the answer</p>
       ) : (
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => advance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50">
-            <RotateCcw size={14} /> Still learning
+          <button onClick={() => advance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50 py-3 text-base">
+            <RotateCcw size={16} /> Still learning
           </button>
-          <button onClick={() => advance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50">Got it!</button>
+          <button onClick={() => advance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 py-3 text-base">Got it!</button>
         </div>
       )}
     </div>
@@ -432,12 +432,12 @@ function StudySettings({
   const disabled = cardCount === 0 || config.subsections.length === 0 || config.pos.length === 0
 
   return (
-    <div className="max-w-lg mx-auto space-y-4">
+    <div className="space-y-5">
       {/* Page header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Study</h2>
-          <p className="text-sm text-gray-500 mt-0.5">{cardCount.toLocaleString()} cards in deck</p>
+          <h2 className="text-3xl font-bold text-gray-900">Study</h2>
+          <p className="text-base text-gray-500 mt-0.5">{cardCount.toLocaleString()} cards in deck</p>
         </div>
         <button
           onClick={onShuffle}
@@ -445,7 +445,7 @@ function StudySettings({
           title="Shuffle and start"
           className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-40"
         >
-          <Shuffle size={18} />
+          <Shuffle size={22} />
         </button>
       </div>
 
@@ -453,32 +453,32 @@ function StudySettings({
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
 
         {/* Study Mode */}
-        <div className="p-4">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Study Mode</p>
+        <div className="p-5">
+          <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Study Mode</p>
           <div className="relative">
             <select
               value={config.mode}
               onChange={e => onChange({ ...config, mode: e.target.value as StudyMode })}
-              className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-colors cursor-pointer"
+              className="w-full appearance-none border border-gray-200 rounded-lg px-4 py-3 text-base text-gray-800 bg-white pr-10 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-colors cursor-pointer"
             >
               <option value="greek-to-english">Greek → English</option>
               <option value="english-to-greek">English → Greek</option>
               <option value="mixed">Mixed</option>
             </select>
-            <ChevronDown size={14} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
           </div>
         </div>
 
         {/* Cards filter */}
-        <div className="p-4">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">Cards</p>
+        <div className="p-5">
+          <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cards</p>
           <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
             {(['due', 'all'] as const).map(f => (
               <button
                 key={f}
                 onClick={() => onChange({ ...config, cardFilter: f })}
                 className={clsx(
-                  'flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
+                  'flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors',
                   config.cardFilter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
@@ -489,19 +489,19 @@ function StudySettings({
         </div>
 
         {/* Frequency Sections */}
-        <div className="p-4">
+        <div className="p-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Frequency Sections</p>
+            <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Frequency Sections</p>
             <div className="flex gap-3">
               <button
                 onClick={() => onChange({ ...config, subsections: [...ALL_SUBSECTION_KEYS] })}
-                className="text-xs text-gray-700 hover:underline font-medium"
+                className="text-sm text-gray-700 hover:underline font-medium"
               >
                 All
               </button>
               <button
                 onClick={() => onChange({ ...config, subsections: [] })}
-                className="text-xs text-gray-400 hover:text-gray-600"
+                className="text-sm text-gray-400 hover:text-gray-600"
               >
                 Clear
               </button>
@@ -524,46 +524,46 @@ function StudySettings({
                   )}
                 >
                   {/* Section row */}
-                  <div className="flex items-center px-3 py-2.5 gap-3 bg-white">
+                  <div className="flex items-center px-4 py-3 gap-3 bg-white">
                     <Checkbox
                       checked={state === 'all'}
                       indeterminate={state === 'partial'}
                       onChange={() => toggleSection(s)}
                     />
                     <div className="flex-1 min-w-0">
-                      <span className="text-sm font-medium text-gray-900">Section §{s}</span>
-                      <span className="text-xs text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
+                      <span className="text-base font-medium text-gray-900">Section §{s}</span>
+                      <span className="text-sm text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
                     </div>
                     <button
                       onClick={() => toggleExpand(s)}
                       className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
                     >
-                      {isExpanded ? <ChevronDown size={15} /> : <ChevronRight size={15} />}
+                      {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                     </button>
                   </div>
 
                   {/* Sub-section chips + word list */}
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-2.5 border-t border-gray-100 bg-white space-y-2">
+                    <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-white space-y-3">
                       {/* Chip grid — each chip has a selection button + list toggle */}
-                      <div className="grid grid-cols-8 gap-1.5">
+                      <div className="grid grid-cols-8 gap-2">
                         {subs.map(sub => {
                           const isSubSelected = subSet.has(sub.key)
                           const isListed = listSubKey === sub.key
                           return (
-                            <div key={sub.key} className="flex flex-col gap-0.5">
+                            <div key={sub.key} className="flex flex-col gap-1">
                               {/* Selection chip */}
                               <button
                                 onClick={() => toggleSubsection(sub.key)}
                                 className={clsx(
-                                  'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
+                                  'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
                                   isSubSelected
                                     ? 'bg-white border-gray-200 text-gray-900'
                                     : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700'
                                 )}
                               >
-                                <span className="text-sm font-semibold leading-none">{sub.label}</span>
-                                <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-gray-500' : 'text-gray-400')}>
+                                <span className="text-base font-semibold leading-none">{sub.label}</span>
+                                <span className={clsx('text-xs mt-1 leading-none', isSubSelected ? 'text-gray-500' : 'text-gray-400')}>
                                   {sub.rankRange}
                                 </span>
                               </button>
@@ -578,7 +578,7 @@ function StudySettings({
                                     : 'border-gray-200 text-gray-400 hover:text-gray-500'
                                 )}
                               >
-                                <List size={9} />
+                                <List size={11} />
                               </button>
                             </div>
                           )
@@ -591,8 +591,8 @@ function StudySettings({
                         return (
                           <div className="rounded-lg border border-gray-200 overflow-hidden">
                             {/* List header */}
-                            <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-100">
-                              <p className="text-xs font-semibold text-gray-700">
+                            <div className="flex items-center justify-between px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+                              <p className="text-sm font-semibold text-gray-700">
                                 §{s}{sub.label} · Words {sub.rankRange}
                                 <span className="text-gray-400 font-normal ml-1.5">({sub.words.length} words)</span>
                               </p>
@@ -600,7 +600,7 @@ function StudySettings({
                                 onClick={() => setListSubKey(null)}
                                 className="text-gray-400 hover:text-gray-600 transition-colors"
                               >
-                                <X size={13} />
+                                <X size={15} />
                               </button>
                             </div>
                             {/* Word rows — 2 columns */}
@@ -609,20 +609,20 @@ function StudySettings({
                                 <div
                                   key={w.word}
                                   className={clsx(
-                                    'px-3 py-2 flex items-baseline justify-between gap-2',
+                                    'px-4 py-2.5 flex items-baseline justify-between gap-2',
                                     i % 2 === 0 ? 'border-r border-gray-100' : '',
                                     i < sub.words.length - 2 ? 'border-b border-gray-100' : ''
                                   )}
                                 >
                                   <div className="min-w-0 flex-1 truncate">
-                                    <span className="greek-text text-sm font-semibold text-gray-900">{w.word}</span>
+                                    <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
                                     {w.inflection && (
-                                      <span className="greek-text text-[10px] text-gray-400 ml-1">{w.inflection}</span>
+                                      <span className="greek-text text-xs text-gray-400 ml-1">{w.inflection}</span>
                                     )}
-                                    <span className="text-xs text-gray-600 ml-1.5">{w.gloss}</span>
+                                    <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
                                   </div>
                                   {w.freq && (
-                                    <span className="text-[10px] text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
+                                    <span className="text-xs text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
                                   )}
                                 </div>
                               ))}
@@ -639,15 +639,15 @@ function StudySettings({
         </div>
 
         {/* Part of Speech */}
-        <div className="p-4">
+        <div className="p-5">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Part of Speech</p>
+            <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide">Part of Speech</p>
             <div className="flex gap-3">
-              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-gray-700 hover:underline font-medium">All</button>
-              <button onClick={() => onChange({ ...config, pos: [] })} className="text-xs text-gray-400 hover:text-gray-600">Clear</button>
+              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-sm text-gray-700 hover:underline font-medium">All</button>
+              <button onClick={() => onChange({ ...config, pos: [] })} className="text-sm text-gray-400 hover:text-gray-600">Clear</button>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-1.5">
+          <div className="grid grid-cols-3 gap-2">
             {ALL_POS.map(p => {
               const isSelected = config.pos.includes(p)
               return (
@@ -655,19 +655,19 @@ function StudySettings({
                   key={p}
                   onClick={() => togglePos(p)}
                   className={clsx(
-                    'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm text-left transition-colors',
+                    'flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left transition-colors',
                     isSelected
                       ? 'border-gray-200 bg-white text-gray-700'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   )}
                 >
                   <div className={clsx(
-                    'w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
+                    'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
                     isSelected ? 'bg-white border-gray-300' : 'border-gray-300'
                   )}>
-                    {isSelected && <Check size={9} className="text-gray-700" strokeWidth={3} />}
+                    {isSelected && <Check size={11} className="text-gray-700" strokeWidth={3} />}
                   </div>
-                  <span className="text-xs font-medium">{POS_LABELS[p] ?? p}</span>
+                  <span className="text-sm font-medium">{POS_LABELS[p] ?? p}</span>
                 </button>
               )
             })}
@@ -679,7 +679,7 @@ function StudySettings({
       <button
         onClick={onStart}
         disabled={disabled}
-        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-3 text-base justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
       </button>
