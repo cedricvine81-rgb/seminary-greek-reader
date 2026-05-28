@@ -387,9 +387,25 @@ function FlashcardPlayer({
     <div className="space-y-6">
       {/* Header: back link + progress bar + counter */}
       <div className="space-y-2">
-        <div className="flex items-center justify-end gap-3">
-          <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
-          <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
+            <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
+          </div>
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
+            {(['greek-to-english', 'english-to-greek'] as const).map(m => (
+              <button
+                key={m}
+                onClick={() => onConfigChange({ ...config, mode: m })}
+                className={clsx(
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
+                  config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                )}
+              >
+                {m === 'greek-to-english' ? 'Gk → En' : 'En → Gk'}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
@@ -478,21 +494,6 @@ function FlashcardPlayer({
         </div>
       )}
 
-      {/* Study mode selector */}
-      <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-        {(['greek-to-english', 'english-to-greek'] as const).map(m => (
-          <button
-            key={m}
-            onClick={() => onConfigChange({ ...config, mode: m })}
-            className={clsx(
-              'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors',
-              config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            {m === 'greek-to-english' ? 'Greek → English' : 'English → Greek'}
-          </button>
-        ))}
-      </div>
     </div>
   )
 }
