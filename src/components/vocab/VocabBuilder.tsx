@@ -139,7 +139,7 @@ export function VocabBuilder() {
             onClick={() => setTab(t)}
             className={clsx(
               'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize',
-              tab === t ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              tab === t ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
             {t === 'study' && <GraduationCap size={14} />}
@@ -214,9 +214,9 @@ function StudyView({
   if (sessionWords.length === 0) {
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
-        <p className="text-xl font-semibold text-brand-700">No cards match</p>
+        <p className="text-xl font-semibold text-gray-700">No cards match</p>
         <p className="text-gray-500 text-sm">Try switching to "All words" or adjust your filters.</p>
-        <button onClick={goBack} className="btn btn-secondary text-sm mt-2">← Back to settings</button>
+        <button onClick={goBack} className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
       </div>
     )
   }
@@ -227,14 +227,14 @@ function StudyView({
   if (finished) {
     return (
       <div className="max-w-lg mx-auto text-center py-16 space-y-4">
-        <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
+        <p className="text-2xl font-bold text-gray-700">Session Complete!</p>
         <p className="text-gray-600">
           {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
         </p>
         <div className="flex gap-3 justify-center">
-          <button className="btn btn-secondary" onClick={goBack}>← Settings</button>
+          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={goBack}>← Settings</button>
           <button
-            className="btn btn-primary"
+            className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50"
             onClick={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
           >
             Review Again
@@ -280,7 +280,7 @@ function StudyView({
     <div className="max-w-lg mx-auto space-y-5">
       <div className="flex items-center justify-between">
         <div>
-          <button onClick={goBack} className="text-xs text-gray-400 hover:text-brand-600 transition-colors mb-1 block">
+          <button onClick={goBack} className="text-xs text-gray-400 hover:text-gray-600 transition-colors mb-1 block">
             ← Settings
           </button>
           <p className="text-sm text-gray-500">Card {idx + 1} of {sessionWords.length}</p>
@@ -297,28 +297,28 @@ function StudyView({
         aria-label="Flip card"
       >
         {!flipped ? (
-          <div className="bg-white rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md border-2 border-brand-700">
-            <p className="text-xs font-semibold tracking-widest text-brand-500 mb-4 uppercase">
+          <div className="bg-white rounded-2xl min-h-56 flex flex-col items-center justify-center p-10 shadow-md border border-gray-200">
+            <p className="text-xs font-semibold tracking-widest text-gray-500 mb-4 uppercase">
               {greekFirst ? 'Greek' : 'English'}
             </p>
             {greekFirst ? (
               <>
-                <p className="greek-text text-5xl text-brand-800 font-medium text-center leading-snug">{word.word}</p>
-                {word.inflection && <p className="greek-text text-base text-brand-500 mt-3">{word.inflection}</p>}
+                <p className="greek-text text-5xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
+                {word.inflection && <p className="greek-text text-base text-gray-500 mt-3">{word.inflection}</p>}
               </>
             ) : (
               <>
-                <p className="text-3xl text-brand-800 font-semibold text-center">{word.gloss}</p>
-                <p className="text-brand-500 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
+                <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                <p className="text-gray-500 text-sm mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-brand-400 text-xs mt-8">Tap to reveal</p>
+            <p className="text-gray-400 text-xs mt-8">Tap to reveal</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl min-h-56 border border-gray-200 flex flex-col items-center justify-center p-10 shadow-md gap-1.5">
             {greekFirst ? (
               <>
-                <p className="greek-text text-2xl text-brand-800 font-medium text-center">{word.word}</p>
+                <p className="greek-text text-2xl text-gray-900 font-medium text-center">{word.word}</p>
                 {word.inflection && <p className="greek-text text-sm text-gray-400">{word.inflection}</p>}
                 <div className="my-2 w-8 h-px bg-gray-200" />
                 <p className="text-2xl text-gray-900 font-semibold text-center">{word.gloss}</p>
@@ -329,7 +329,7 @@ function StudyView({
               <>
                 <p className="text-lg text-gray-500 font-medium text-center">{word.gloss}</p>
                 <div className="my-2 w-8 h-px bg-gray-200" />
-                <p className="greek-text text-4xl text-brand-800 font-medium text-center">{word.word}</p>
+                <p className="greek-text text-4xl text-gray-900 font-medium text-center">{word.word}</p>
                 {word.inflection && <p className="greek-text text-sm text-gray-400 mt-1">{word.inflection}</p>}
                 {word.freq && <p className="text-xs text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
               </>
@@ -342,10 +342,10 @@ function StudyView({
         <p className="text-center text-sm text-gray-400">Tap the card to reveal the answer</p>
       ) : (
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => advance(false)} className="btn btn-secondary border-red-200 text-red-600 hover:bg-red-50">
+          <button onClick={() => advance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50">
             <RotateCcw size={14} /> Still learning
           </button>
-          <button onClick={() => advance(true)} className="btn btn-primary">Got it!</button>
+          <button onClick={() => advance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50">Got it!</button>
         </div>
       )}
     </div>
@@ -367,8 +367,8 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
       aria-checked={indeterminate ? 'mixed' : checked}
       role="checkbox"
     >
-      {checked && !indeterminate && <Check size={11} className="text-brand-700" strokeWidth={3} />}
-      {indeterminate && <span className="block w-2 h-0.5 bg-brand-700 rounded-full" />}
+      {checked && !indeterminate && <Check size={11} className="text-gray-700" strokeWidth={3} />}
+      {indeterminate && <span className="block w-2 h-0.5 bg-gray-600 rounded-full" />}
     </button>
   )
 }
@@ -443,7 +443,7 @@ function StudySettings({
           onClick={onShuffle}
           disabled={disabled}
           title="Shuffle and start"
-          className="p-2 rounded-lg text-gray-400 hover:text-brand-700 hover:bg-brand-50 transition-colors disabled:opacity-40"
+          className="p-2 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-40"
         >
           <Shuffle size={18} />
         </button>
@@ -459,7 +459,7 @@ function StudySettings({
             <select
               value={config.mode}
               onChange={e => onChange({ ...config, mode: e.target.value as StudyMode })}
-              className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-brand-300 focus:border-brand-400 transition-colors cursor-pointer"
+              className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2.5 text-sm text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-colors cursor-pointer"
             >
               <option value="greek-to-english">Greek → English</option>
               <option value="english-to-greek">English → Greek</option>
@@ -479,7 +479,7 @@ function StudySettings({
                 onClick={() => onChange({ ...config, cardFilter: f })}
                 className={clsx(
                   'flex-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors',
-                  config.cardFilter === f ? 'bg-white text-brand-800 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                  config.cardFilter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
                 {f === 'due' ? 'Due for review' : 'All words'}
@@ -495,7 +495,7 @@ function StudySettings({
             <div className="flex gap-3">
               <button
                 onClick={() => onChange({ ...config, subsections: [...ALL_SUBSECTION_KEYS] })}
-                className="text-xs text-brand-700 hover:underline font-medium"
+                className="text-xs text-gray-700 hover:underline font-medium"
               >
                 All
               </button>
@@ -558,12 +558,12 @@ function StudySettings({
                                 className={clsx(
                                   'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
                                   isSubSelected
-                                    ? 'bg-white border-gray-200 text-brand-800'
-                                    : 'bg-white border-gray-200 text-gray-500 hover:text-brand-700'
+                                    ? 'bg-white border-gray-200 text-gray-900'
+                                    : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700'
                                 )}
                               >
                                 <span className="text-sm font-semibold leading-none">{sub.label}</span>
-                                <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-500' : 'text-gray-400')}>
+                                <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-gray-500' : 'text-gray-400')}>
                                   {sub.rankRange}
                                 </span>
                               </button>
@@ -574,8 +574,8 @@ function StudySettings({
                                 className={clsx(
                                   'flex items-center justify-center py-1 rounded border text-center transition-colors',
                                   isListed
-                                    ? 'border-gray-200 bg-brand-50 text-brand-600'
-                                    : 'border-gray-200 text-gray-400 hover:text-brand-500'
+                                    ? 'border-gray-200 bg-gray-50 text-gray-600'
+                                    : 'border-gray-200 text-gray-400 hover:text-gray-500'
                                 )}
                               >
                                 <List size={9} />
@@ -615,7 +615,7 @@ function StudySettings({
                                   )}
                                 >
                                   <div className="min-w-0 flex-1 truncate">
-                                    <span className="greek-text text-sm font-semibold text-brand-800">{w.word}</span>
+                                    <span className="greek-text text-sm font-semibold text-gray-900">{w.word}</span>
                                     {w.inflection && (
                                       <span className="greek-text text-[10px] text-gray-400 ml-1">{w.inflection}</span>
                                     )}
@@ -643,7 +643,7 @@ function StudySettings({
           <div className="flex items-center justify-between mb-3">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Part of Speech</p>
             <div className="flex gap-3">
-              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-brand-700 hover:underline font-medium">All</button>
+              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-xs text-gray-700 hover:underline font-medium">All</button>
               <button onClick={() => onChange({ ...config, pos: [] })} className="text-xs text-gray-400 hover:text-gray-600">Clear</button>
             </div>
           </div>
@@ -657,7 +657,7 @@ function StudySettings({
                   className={clsx(
                     'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm text-left transition-colors',
                     isSelected
-                      ? 'border-gray-200 bg-white text-brand-700'
+                      ? 'border-gray-200 bg-white text-gray-700'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   )}
                 >
@@ -665,7 +665,7 @@ function StudySettings({
                     'w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
                     isSelected ? 'bg-white border-gray-300' : 'border-gray-300'
                   )}>
-                    {isSelected && <Check size={9} className="text-brand-700" strokeWidth={3} />}
+                    {isSelected && <Check size={9} className="text-gray-700" strokeWidth={3} />}
                   </div>
                   <span className="text-xs font-medium">{POS_LABELS[p] ?? p}</span>
                 </button>
@@ -679,7 +679,7 @@ function StudySettings({
       <button
         onClick={onStart}
         disabled={disabled}
-        className="w-full btn btn-primary py-3 text-base justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-3 text-base justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
       </button>
@@ -746,7 +746,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               )}
             >
               <div className="min-w-0">
-                <p className="greek-text text-base font-medium text-brand-800 leading-tight">{w.word}</p>
+                <p className="greek-text text-base font-medium text-gray-900 leading-tight">{w.word}</p>
                 {w.inflection && <p className="greek-text text-xs text-gray-400">{w.inflection}</p>}
                 <p className="text-sm text-gray-700 mt-0.5 leading-snug">{w.gloss}</p>
               </div>
