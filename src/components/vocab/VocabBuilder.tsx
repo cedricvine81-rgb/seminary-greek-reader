@@ -224,7 +224,10 @@ function StudyView({
   }
 
   const word = sessionWords[idx]
-  const greekFirst = directions[idx] ?? true
+  // Derive direction from current mode; pre-computed random values only used for 'mixed'
+  const greekFirst = config.mode === 'greek-to-english' ? true
+    : config.mode === 'english-to-greek' ? false
+    : (directions[idx] ?? true)
 
   if (finished) {
     return (
@@ -350,6 +353,22 @@ function StudyView({
           <button onClick={() => advance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 py-3 text-base">Got it!</button>
         </div>
       )}
+
+      {/* Study mode selector */}
+      <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+        {(['greek-to-english', 'english-to-greek', 'mixed'] as const).map(m => (
+          <button
+            key={m}
+            onClick={() => setConfig(c => ({ ...c, mode: m }))}
+            className={clsx(
+              'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            {m === 'greek-to-english' ? 'Greek → English' : m === 'english-to-greek' ? 'English → Greek' : 'Mixed'}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -453,23 +472,6 @@ function StudySettings({
 
       {/* Single settings panel */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
-
-        {/* Study Mode */}
-        <div className="p-5">
-          <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Study Mode</p>
-          <div className="relative">
-            <select
-              value={config.mode}
-              onChange={e => onChange({ ...config, mode: e.target.value as StudyMode })}
-              className="w-full appearance-none border border-gray-200 rounded-lg px-4 py-3 text-base text-gray-800 bg-white pr-10 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-gray-400 transition-colors cursor-pointer"
-            >
-              <option value="greek-to-english">Greek → English</option>
-              <option value="english-to-greek">English → Greek</option>
-              <option value="mixed">Mixed</option>
-            </select>
-            <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-          </div>
-        </div>
 
         {/* Cards filter */}
         <div className="p-5">
