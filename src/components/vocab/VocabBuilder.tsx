@@ -554,12 +554,12 @@ function StudySettings({
                                 className={clsx(
                                   'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
                                   isSubSelected
-                                    ? 'bg-white border-gray-200 text-gray-900'
-                                    : 'bg-white border-gray-200 text-gray-500 hover:text-gray-700'
+                                    ? 'bg-gray-100 border-gray-300 text-gray-900'
+                                    : 'bg-white border-gray-200 text-gray-400 hover:text-gray-700'
                                 )}
                               >
                                 <span className="text-base font-semibold leading-none">{sub.label}</span>
-                                <span className={clsx('text-xs mt-1 leading-none', isSubSelected ? 'text-gray-500' : 'text-gray-400')}>
+                                <span className={clsx('text-xs mt-1 leading-none', isSubSelected ? 'text-gray-600' : 'text-gray-400')}>
                                   {sub.rankRange}
                                 </span>
                               </button>
@@ -653,8 +653,8 @@ function StudySettings({
                   className={clsx(
                     'flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left transition-colors',
                     isSelected
-                      ? 'border-gray-200 bg-white text-gray-700'
-                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
+                      ? 'border-gray-300 bg-gray-100 text-gray-900'
+                      : 'border-gray-200 bg-white text-gray-500 hover:border-gray-300'
                   )}
                 >
                   <div className={clsx(
