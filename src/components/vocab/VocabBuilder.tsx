@@ -36,6 +36,8 @@ interface Subsection {
   words: BgvbWord[]
 }
 
+type SectionListMode = 'greek-english' | 'greek' | 'english'
+
 interface StudyConfig {
   mode: StudyMode
   subsections: string[]  // selected subsection keys, e.g. ["1-A", "1-B", "2-A"]
@@ -386,6 +388,10 @@ function StudySettings({
 }) {
   const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
+  const [sectionListMode, setSectionListMode] = useState<Record<number, SectionListMode | null>>({})
+
+  const toggleSectionListMode = (s: number, mode: SectionListMode) =>
+    setSectionListMode(prev => ({ ...prev, [s]: prev[s] === mode ? null : mode }))
 
   const subSet = useMemo(() => new Set(config.subsections), [config.subsections])
 
@@ -530,6 +536,26 @@ function StudySettings({
                       <span className="text-base font-medium text-gray-900">Section §{s}</span>
                       <span className="text-sm text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
                     </div>
+                    {/* Vocab list mode buttons */}
+                    <div className="flex gap-1 shrink-0">
+                      {(['greek-english', 'greek', 'english'] as const).map(mode => {
+                        const isActive = sectionListMode[s] === mode
+                        return (
+                          <button
+                            key={mode}
+                            onClick={e => { e.stopPropagation(); toggleSectionListMode(s, mode) }}
+                            className={clsx(
+                              'px-2 py-1 text-xs rounded border transition-colors',
+                              isActive
+                                ? 'bg-gray-100 border-gray-300 text-gray-800 font-medium'
+                                : 'border-gray-200 text-gray-400 hover:text-gray-600 hover:border-gray-300'
+                            )}
+                          >
+                            {mode === 'greek-english' ? 'Gk · En' : mode === 'greek' ? 'Greek' : 'English'}
+                          </button>
+                        )
+                      })}
+                    </div>
                     <button
                       onClick={() => toggleExpand(s)}
                       className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
@@ -539,6 +565,45 @@ function StudySettings({
                   </div>
 
                   {/* Sub-section chips + word list */}
+                  {/* Section-wide vocab list (Greek-English / Greek / English) */}
+                  {sectionListMode[s] && (() => {
+                    const allWords = SECTION_SUBSECTIONS[s].flatMap(sub => sub.words)
+                    const mode = sectionListMode[s]!
+                    return (
+                      <div className="border-t border-gray-100 bg-white">
+                        <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
+                          {allWords.map((w, i) => {
+                            const cols = mode === 'greek-english' ? 2 : 3
+                            return (
+                              <div
+                                key={w.word}
+                                className={clsx(
+                                  'px-4 py-2.5',
+                                  i % cols !== cols - 1 ? 'border-r border-gray-100' : '',
+                                  i < allWords.length - cols ? 'border-b border-gray-100' : ''
+                                )}
+                              >
+                                {mode === 'greek-english' && (
+                                  <div className="flex items-baseline gap-2 min-w-0">
+                                    <span className="greek-text text-base font-semibold text-gray-900 shrink-0">{w.word}</span>
+                                    {w.inflection && <span className="greek-text text-xs text-gray-400 shrink-0">{w.inflection}</span>}
+                                    <span className="text-sm text-gray-500 truncate">{w.gloss}</span>
+                                  </div>
+                                )}
+                                {mode === 'greek' && (
+                                  <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                )}
+                                {mode === 'english' && (
+                                  <span className="text-sm text-gray-700">{w.gloss}</span>
+                                )}
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    )
+                  })()}
+
                   {isExpanded && (
                     <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-white space-y-3">
                       {/* Chip grid — each chip has a selection button + list toggle */}
