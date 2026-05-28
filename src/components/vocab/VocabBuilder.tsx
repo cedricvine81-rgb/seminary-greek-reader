@@ -42,7 +42,6 @@ interface StudyConfig {
   mode: StudyMode
   subsections: string[]  // selected subsection keys, e.g. ["1-A", "1-B", "2-A"]
   pos: string[]
-  cardFilter: 'due' | 'all'
 }
 
 // ── Constants ────────────────────────────────────────────────────────────────
@@ -89,7 +88,6 @@ const DEFAULT_CONFIG: StudyConfig = {
   mode: 'greek-to-english',
   subsections: [],
   pos: [...ALL_POS],
-  cardFilter: 'due',
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -111,19 +109,15 @@ function saveProgress(p: ProgressMap) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(p))
 }
 
-function filterWords(words: BgvbWord[], config: StudyConfig, progress: ProgressMap, today: string): BgvbWord[] {
-  // "All words" with no sections selected → treat as all sections selected
-  const effectiveSubSet = config.cardFilter === 'all' && config.subsections.length === 0
+function filterWords(words: BgvbWord[], config: StudyConfig): BgvbWord[] {
+  // No sections selected → treat as all sections selected
+  const effectiveSubSet = config.subsections.length === 0
     ? new Set(ALL_SUBSECTION_KEYS)
     : new Set(config.subsections)
 
   return words.filter(w => {
     if (!effectiveSubSet.has(WORD_SUBSECTION[w.word] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
-    if (config.cardFilter === 'due') {
-      const p = progress[w.word]
-      return !p || p.dueDate <= today
-    }
     return true
   })
 }
@@ -180,15 +174,13 @@ function StudyView({
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
   const [finished, setFinished] = useState(false)
 
-  const today = todayStr()
-
   const previewWords = useMemo(
-    () => filterWords(allWords, config, progress, today),
-    [allWords, config, progress, today]
+    () => filterWords(allWords, config),
+    [allWords, config]
   )
 
   const startStudying = (shuffle = false) => {
-    let words = filterWords(allWords, config, progress, today)
+    let words = filterWords(allWords, config)
     if (shuffle) words = [...words].sort(() => Math.random() - 0.5)
     const dirs = words.map(() => {
       if (config.mode === 'greek-to-english') return true
@@ -455,10 +447,7 @@ function StudySettings({
     )
   }
 
-  // "Due today" requires sections to be selected; "All words" works without any selection
-  const disabled = cardCount === 0 ||
-    (config.cardFilter === 'due' && config.subsections.length === 0) ||
-    config.pos.length === 0
+  const disabled = cardCount === 0 || config.pos.length === 0
 
   return (
     <div className="space-y-5">
@@ -476,25 +465,6 @@ function StudySettings({
 
       {/* Single settings panel */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
-
-        {/* Cards filter */}
-        <div className="p-5">
-          <p className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">Cards</p>
-          <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
-            {(['due', 'all'] as const).map(f => (
-              <button
-                key={f}
-                onClick={() => onChange({ ...config, cardFilter: f })}
-                className={clsx(
-                  'flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors',
-                  config.cardFilter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-                )}
-              >
-                {f === 'due' ? 'Due today' : 'All words'}
-              </button>
-            ))}
-          </div>
-        </div>
 
         {/* Frequency Sections */}
         <div className="p-5">
