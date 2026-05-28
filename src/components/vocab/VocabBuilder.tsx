@@ -429,7 +429,6 @@ function FlashcardPlayer({
                 <p className="text-gray-600 text-lg mt-4">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-gray-400 text-sm mt-10">Space to reveal</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl min-h-72 border border-gray-200 flex flex-col items-center justify-center p-12 shadow-md gap-2">
