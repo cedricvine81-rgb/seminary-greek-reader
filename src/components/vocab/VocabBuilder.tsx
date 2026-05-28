@@ -536,8 +536,8 @@ function StudySettings({
                       <span className="text-base font-medium text-gray-900">Section §{s}</span>
                       <span className="text-sm text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
                     </div>
-                    {/* Vocab list mode buttons */}
-                    <div className="flex gap-1 shrink-0">
+                    {/* Vocab list mode buttons — only shown when section is expanded */}
+                    {isExpanded && <div className="flex gap-1 shrink-0">
                       {(['greek-english', 'greek', 'english'] as const).map(mode => {
                         const isActive = sectionListMode[s] === mode
                         return (
@@ -555,7 +555,7 @@ function StudySettings({
                           </button>
                         )
                       })}
-                    </div>
+                    </div>}
                     <button
                       onClick={() => toggleExpand(s)}
                       className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
