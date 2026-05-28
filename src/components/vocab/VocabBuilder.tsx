@@ -2,7 +2,7 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
-import { sm2, responseToQuality } from '@/lib/spaced-repetition'
+import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -134,6 +134,7 @@ export function VocabBuilder() {
   const [flipped, setFlipped] = useState(false)
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
   const [finished, setFinished] = useState(false)
+  const [missedWordKeys, setMissedWordKeys] = useState<Set<string>>(new Set())
 
   useEffect(() => { setProgress(loadProgress()) }, [])
 
@@ -153,18 +154,34 @@ export function VocabBuilder() {
     setFlipped(false)
     setFinished(false)
     setSessionStats({ correct: 0, total: 0 })
+    setMissedWordKeys(new Set())
     setTab('flashcards')
   }
 
-  const advance = (knew: boolean) => {
+  // quality: 1 = Again, 3 = Hard (correct but difficult), 4 = Got it
+  const advance = (quality: 1 | 3 | 4) => {
     if (!sessionWords) return
     const word = sessionWords[idx]
+    const isAgain = quality === 1
+
+    // Re-queue this card 4 positions ahead when answered "Again"
+    if (isAgain) {
+      setMissedWordKeys(prev => { const s = new Set(prev); s.add(word.word); return s })
+      setSessionWords(prev => {
+        if (!prev) return prev
+        const next = [...prev]
+        next.splice(Math.min(idx + 4, next.length), 0, word)
+        return next
+      })
+    }
+
+    // Update SM-2 progress
     const prev = progress[word.word]
     const result = sm2({
       easeFactor: prev?.easeFactor ?? 2.5,
       interval: prev?.interval ?? 1,
       repetitions: prev?.repetitions ?? 0,
-      quality: responseToQuality(knew),
+      quality,
     })
     const updated: ProgressMap = {
       ...progress,
@@ -173,19 +190,46 @@ export function VocabBuilder() {
         interval: result.interval,
         repetitions: result.repetitions,
         dueDate: result.nextReviewDate.toISOString().slice(0, 10),
-        correct: (prev?.correct ?? 0) + (knew ? 1 : 0),
+        correct: (prev?.correct ?? 0) + (quality >= 3 ? 1 : 0),
         total: (prev?.total ?? 0) + 1,
       },
     }
     saveProgress(updated)
     setProgress(updated)
-    setSessionStats(s => ({ correct: s.correct + (knew ? 1 : 0), total: s.total + 1 }))
-    if (idx + 1 >= sessionWords.length) {
+    setSessionStats(s => ({ correct: s.correct + (quality >= 3 ? 1 : 0), total: s.total + 1 }))
+
+    // Only finish when not re-queuing and we've reached the end
+    if (!isAgain && idx + 1 >= sessionWords.length) {
       setFinished(true)
     } else {
       setIdx(i => i + 1)
       setFlipped(false)
     }
+  }
+
+  // Start a new session using only the words missed this session
+  const startMissed = () => {
+    if (!sessionWords) return
+    const seen = new Set<string>()
+    const missed = sessionWords.filter(w => {
+      if (!missedWordKeys.has(w.word) || seen.has(w.word)) return false
+      seen.add(w.word)
+      return true
+    })
+    if (missed.length === 0) return
+    const dirs = missed.map(() => {
+      if (config.mode === 'greek-to-english') return true
+      if (config.mode === 'english-to-greek') return false
+      return Math.random() > 0.5
+    })
+    setSessionWords(missed)
+    setDirections(dirs)
+    setIdx(0)
+    setFlipped(false)
+    setFinished(false)
+    setSessionStats({ correct: 0, total: 0 })
+    setMissedWordKeys(new Set())
+    setTab('flashcards')
   }
 
   const TABS = [
@@ -228,12 +272,14 @@ export function VocabBuilder() {
           flipped={flipped}
           finished={finished}
           sessionStats={sessionStats}
+          missedWordKeys={missedWordKeys}
           config={config}
           onConfigChange={setConfig}
           onFlip={() => setFlipped(f => !f)}
           onAdvance={advance}
           onGoBack={() => setTab('study')}
-          onRestart={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
+          onRestart={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }); setMissedWordKeys(new Set()) }}
+          onStudyMissed={startMissed}
         />
       )}
 
@@ -245,8 +291,8 @@ export function VocabBuilder() {
 // ── Flashcard player ──────────────────────────────────────────────────────────
 
 function FlashcardPlayer({
-  sessionWords, directions, idx, flipped, finished, sessionStats, config,
-  onConfigChange, onFlip, onAdvance, onGoBack, onRestart,
+  sessionWords, directions, idx, flipped, finished, sessionStats, missedWordKeys,
+  config, onConfigChange, onFlip, onAdvance, onGoBack, onRestart, onStudyMissed,
 }: {
   sessionWords: BgvbWord[]
   directions: boolean[]
@@ -254,13 +300,31 @@ function FlashcardPlayer({
   flipped: boolean
   finished: boolean
   sessionStats: { correct: number; total: number }
+  missedWordKeys: Set<string>
   config: StudyConfig
   onConfigChange: (c: StudyConfig) => void
   onFlip: () => void
-  onAdvance: (knew: boolean) => void
+  onAdvance: (quality: 1 | 3 | 4) => void
   onGoBack: () => void
   onRestart: () => void
+  onStudyMissed: () => void
 }) {
+  // Keyboard shortcuts: Space/Enter to flip; 1/2/3 to rate after flip
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
+      if (!flipped) {
+        if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); onFlip() }
+      } else {
+        if (e.key === '1') { e.preventDefault(); onAdvance(1) }
+        else if (e.key === '2') { e.preventDefault(); onAdvance(3) }
+        else if (e.key === '3') { e.preventDefault(); onAdvance(4) }
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [flipped, onFlip, onAdvance])
+
   if (sessionWords.length === 0) {
     return (
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
@@ -272,15 +336,47 @@ function FlashcardPlayer({
   }
 
   if (finished) {
+    const pct = sessionStats.total > 0 ? Math.round((sessionStats.correct / sessionStats.total) * 100) : 0
+    // Deduplicate missed words preserving order of first occurrence
+    const seen = new Set<string>()
+    const missedWords = sessionWords.filter(w => {
+      if (!missedWordKeys.has(w.word) || seen.has(w.word)) return false
+      seen.add(w.word); return true
+    })
     return (
-      <div className="max-w-lg mx-auto text-center py-16 space-y-4">
-        <p className="text-2xl font-bold text-gray-700">Session Complete!</p>
-        <p className="text-gray-600">
-          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
-        </p>
-        <div className="flex gap-3 justify-center">
+      <div className="max-w-lg mx-auto py-12 space-y-6">
+        <div className="text-center space-y-1">
+          <p className="text-2xl font-bold text-gray-700">Session Complete</p>
+          <p className="text-6xl font-bold text-gray-900 py-2">{pct}%</p>
+          <p className="text-gray-500 text-sm">
+            {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} missed · {sessionStats.total} attempts
+          </p>
+        </div>
+
+        {missedWords.length > 0 && (
+          <div className="border border-gray-200 rounded-xl overflow-hidden">
+            <div className="px-4 py-2.5 bg-gray-50 border-b border-gray-100">
+              <p className="text-sm font-semibold text-gray-700">Words to review ({missedWords.length})</p>
+            </div>
+            <div className="divide-y divide-gray-100 max-h-60 overflow-y-auto">
+              {missedWords.map(w => (
+                <div key={w.word} className="px-4 py-2.5 flex items-baseline justify-between gap-4">
+                  <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                  <span className="text-sm text-gray-600">{w.gloss}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="flex gap-2 flex-wrap">
           <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Settings</button>
-          <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50" onClick={onRestart}>Review Again</button>
+          <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>Review again</button>
+          {missedWords.length > 0 && (
+            <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
+              Study missed ({missedWords.length})
+            </button>
+          )}
         </div>
       </div>
     )
@@ -295,16 +391,26 @@ function FlashcardPlayer({
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <button onClick={onGoBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors mb-1 block">
+      {/* Header: back link + progress bar + counter */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <button onClick={onGoBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
             ← Settings
           </button>
-          <p className="text-base text-gray-600">Card {idx + 1} of {sessionWords.length}</p>
+          <div className="flex items-center gap-3">
+            <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
+            <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
+          </div>
         </div>
-        <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
+        <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div
+            className="h-full bg-gray-400 rounded-full transition-all duration-300"
+            style={{ width: `${(idx / sessionWords.length) * 100}%` }}
+          />
+        </div>
       </div>
 
+      {/* Card */}
       <div
         className="cursor-pointer select-none"
         onClick={onFlip}
@@ -329,7 +435,7 @@ function FlashcardPlayer({
                 <p className="text-gray-600 text-lg mt-4">{POS_LABELS[word.pos] ?? word.pos}</p>
               </>
             )}
-            <p className="text-gray-500 text-sm mt-10">Tap to reveal</p>
+            <p className="text-gray-400 text-sm mt-10">Space to reveal</p>
           </div>
         ) : (
           <div className="bg-white rounded-2xl min-h-72 border border-gray-200 flex flex-col items-center justify-center p-12 shadow-md gap-2">
@@ -355,14 +461,32 @@ function FlashcardPlayer({
         )}
       </div>
 
+      {/* Rating buttons */}
       {!flipped ? (
-        <p className="text-center text-base text-gray-500">Tap the card to reveal the answer</p>
+        <p className="text-center text-base text-gray-500">Tap the card or press Space to reveal</p>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => onAdvance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50 py-3 text-base">
-            <RotateCcw size={16} /> Still learning
+        <div className="grid grid-cols-3 gap-3">
+          <button
+            onClick={() => onAdvance(1)}
+            className="btn flex-col gap-0.5 bg-white border border-red-200 text-red-500 hover:bg-red-50 py-3"
+          >
+            <span className="text-base font-medium">Again</span>
+            <span className="text-xs text-gray-300 font-normal">[1]</span>
           </button>
-          <button onClick={() => onAdvance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 py-3 text-base">Got it!</button>
+          <button
+            onClick={() => onAdvance(3)}
+            className="btn flex-col gap-0.5 bg-white border border-amber-200 text-amber-600 hover:bg-amber-50 py-3"
+          >
+            <span className="text-base font-medium">Hard</span>
+            <span className="text-xs text-gray-300 font-normal">[2]</span>
+          </button>
+          <button
+            onClick={() => onAdvance(4)}
+            className="btn flex-col gap-0.5 bg-white border border-green-200 text-green-700 hover:bg-green-50 py-3"
+          >
+            <span className="text-base font-medium">Got it</span>
+            <span className="text-xs text-gray-300 font-normal">[3]</span>
+          </button>
         </div>
       )}
 
