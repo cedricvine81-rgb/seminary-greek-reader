@@ -361,8 +361,8 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
       className={clsx(
         'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
         checked || indeterminate
-          ? 'bg-white border-brand-700'
-          : 'border-gray-300 hover:border-brand-400'
+          ? 'bg-white border-gray-300'
+          : 'border-gray-300 hover:border-gray-400'
       )}
       aria-checked={indeterminate ? 'mixed' : checked}
       role="checkbox"
@@ -520,7 +520,7 @@ function StudySettings({
                   key={s}
                   className={clsx(
                     'rounded-lg border overflow-hidden transition-colors',
-                    state !== 'none' ? 'border-brand-600' : 'border-gray-200'
+                    'border-gray-200'
                   )}
                 >
                   {/* Section row */}
@@ -558,8 +558,8 @@ function StudySettings({
                                 className={clsx(
                                   'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
                                   isSubSelected
-                                    ? 'bg-white border-brand-700 text-brand-800'
-                                    : 'bg-white border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-700'
+                                    ? 'bg-white border-gray-200 text-brand-800'
+                                    : 'bg-white border-gray-200 text-gray-500 hover:text-brand-700'
                                 )}
                               >
                                 <span className="text-sm font-semibold leading-none">{sub.label}</span>
@@ -574,8 +574,8 @@ function StudySettings({
                                 className={clsx(
                                   'flex items-center justify-center py-1 rounded border text-center transition-colors',
                                   isListed
-                                    ? 'border-brand-400 bg-brand-50 text-brand-600'
-                                    : 'border-gray-100 text-gray-400 hover:border-brand-200 hover:text-brand-500'
+                                    ? 'border-gray-200 bg-brand-50 text-brand-600'
+                                    : 'border-gray-200 text-gray-400 hover:text-brand-500'
                                 )}
                               >
                                 <List size={9} />
@@ -657,13 +657,13 @@ function StudySettings({
                   className={clsx(
                     'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-sm text-left transition-colors',
                     isSelected
-                      ? 'border-brand-600 bg-white text-brand-700'
+                      ? 'border-gray-200 bg-white text-brand-700'
                       : 'border-gray-200 bg-white text-gray-600 hover:border-gray-300'
                   )}
                 >
                   <div className={clsx(
                     'w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-white border-brand-700' : 'border-gray-300'
+                    isSelected ? 'bg-white border-gray-300' : 'border-gray-300'
                   )}>
                     {isSelected && <Check size={9} className="text-brand-700" strokeWidth={3} />}
                   </div>
