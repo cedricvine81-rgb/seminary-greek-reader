@@ -474,7 +474,7 @@ function StudySettings({
           disabled={disabled}
           className="flex-1 btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {disabled ? 'No cards match — adjust filters' : `Flashcards — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
+          {disabled ? 'No cards match — adjust filters' : 'Flashcards'}
         </button>
         <button
           onClick={onShuffle}
