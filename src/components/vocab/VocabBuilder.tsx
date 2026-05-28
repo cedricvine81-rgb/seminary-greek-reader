@@ -407,10 +407,7 @@ function StudySettings({
 }) {
   const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
-  const [sectionListMode, setSectionListMode] = useState<Record<number, SectionListMode | null>>({})
-
-  const toggleSectionListMode = (s: number, mode: SectionListMode) =>
-    setSectionListMode(prev => ({ ...prev, [s]: prev[s] === mode ? null : mode }))
+  const [subListMode, setSubListMode] = useState<Record<string, SectionListMode>>({})
 
   const subSet = useMemo(() => new Set(config.subsections), [config.subsections])
 
@@ -538,26 +535,6 @@ function StudySettings({
                       <span className="text-base font-medium text-gray-900">Section §{s}</span>
                       <span className="text-sm text-gray-400 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
                     </div>
-                    {/* Vocab list mode buttons — only shown when section is expanded */}
-                    {isExpanded && <div className="flex gap-1 shrink-0">
-                      {(['greek-english', 'greek', 'english'] as const).map(mode => {
-                        const isActive = sectionListMode[s] === mode
-                        return (
-                          <button
-                            key={mode}
-                            onClick={e => { e.stopPropagation(); toggleSectionListMode(s, mode) }}
-                            className={clsx(
-                              'px-2 py-1 text-xs rounded border transition-colors',
-                              isActive
-                                ? 'bg-gray-100 border-gray-300 text-gray-800 font-medium'
-                                : 'border-gray-200 text-gray-400 hover:text-gray-600 hover:border-gray-300'
-                            )}
-                          >
-                            {mode === 'greek-english' ? 'Gk · En' : mode === 'greek' ? 'Greek' : 'English'}
-                          </button>
-                        )
-                      })}
-                    </div>}
                     <button
                       onClick={() => toggleExpand(s)}
                       className="p-0.5 text-gray-400 hover:text-gray-600 transition-colors"
@@ -565,46 +542,6 @@ function StudySettings({
                       {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                     </button>
                   </div>
-
-                  {/* Sub-section chips + word list */}
-                  {/* Section-wide vocab list (Greek-English / Greek / English) */}
-                  {sectionListMode[s] && (() => {
-                    const allWords = SECTION_SUBSECTIONS[s].flatMap(sub => sub.words)
-                    const mode = sectionListMode[s]!
-                    return (
-                      <div className="border-t border-gray-100 bg-white">
-                        <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
-                          {allWords.map((w, i) => {
-                            const cols = mode === 'greek-english' ? 2 : 3
-                            return (
-                              <div
-                                key={w.word}
-                                className={clsx(
-                                  'px-4 py-2.5',
-                                  i % cols !== cols - 1 ? 'border-r border-gray-100' : '',
-                                  i < allWords.length - cols ? 'border-b border-gray-100' : ''
-                                )}
-                              >
-                                {mode === 'greek-english' && (
-                                  <div className="flex items-baseline gap-2 min-w-0">
-                                    <span className="greek-text text-base font-semibold text-gray-900 shrink-0">{w.word}</span>
-                                    {w.inflection && <span className="greek-text text-xs text-gray-400 shrink-0">{w.inflection}</span>}
-                                    <span className="text-sm text-gray-500 truncate">{w.gloss}</span>
-                                  </div>
-                                )}
-                                {mode === 'greek' && (
-                                  <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
-                                )}
-                                {mode === 'english' && (
-                                  <span className="text-sm text-gray-700">{w.gloss}</span>
-                                )}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    )
-                  })()}
 
                   {isExpanded && (
                     <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-white space-y-3">
@@ -651,6 +588,10 @@ function StudySettings({
                       {/* Inline word list for the active subsection in this section */}
                       {listSubKey && subs.some(sub => sub.key === listSubKey) && (() => {
                         const sub = subs.find(sub => sub.key === listSubKey)!
+                        const mode: SectionListMode = subListMode[sub.key] ?? 'greek-english'
+                        const setMode = (m: SectionListMode) =>
+                          setSubListMode(prev => ({ ...prev, [sub.key]: m }))
+                        const cols = mode === 'greek-english' ? 2 : 3
                         return (
                           <div className="rounded-lg border border-gray-200 overflow-hidden">
                             {/* List header */}
@@ -659,33 +600,67 @@ function StudySettings({
                                 §{s}{sub.label} · Words {sub.rankRange}
                                 <span className="text-gray-400 font-normal ml-1.5">({sub.words.length} words)</span>
                               </p>
-                              <button
-                                onClick={() => setListSubKey(null)}
-                                className="text-gray-400 hover:text-gray-600 transition-colors"
-                              >
-                                <X size={15} />
-                              </button>
+                              <div className="flex items-center gap-2">
+                                {/* Mode toggle */}
+                                <div className="flex gap-0.5 bg-gray-100 rounded-md p-0.5">
+                                  {(['greek-english', 'greek', 'english'] as const).map(m => (
+                                    <button
+                                      key={m}
+                                      onClick={() => setMode(m)}
+                                      className={clsx(
+                                        'px-2 py-0.5 rounded text-xs font-medium transition-colors',
+                                        mode === m
+                                          ? 'bg-white text-gray-900 shadow-sm'
+                                          : 'text-gray-400 hover:text-gray-600'
+                                      )}
+                                    >
+                                      {m === 'greek-english' ? 'Gk · En' : m === 'greek' ? 'Greek' : 'English'}
+                                    </button>
+                                  ))}
+                                </div>
+                                <button
+                                  onClick={() => setListSubKey(null)}
+                                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                                >
+                                  <X size={15} />
+                                </button>
+                              </div>
                             </div>
-                            {/* Word rows — 2 columns */}
-                            <div className="grid grid-cols-2">
+                            {/* Word rows */}
+                            <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
                               {sub.words.map((w, i) => (
                                 <div
                                   key={w.word}
                                   className={clsx(
-                                    'px-4 py-2.5 flex items-baseline justify-between gap-2',
-                                    i % 2 === 0 ? 'border-r border-gray-100' : '',
-                                    i < sub.words.length - 2 ? 'border-b border-gray-100' : ''
+                                    'px-4 py-2.5',
+                                    i % cols !== cols - 1 ? 'border-r border-gray-100' : '',
+                                    i < sub.words.length - cols ? 'border-b border-gray-100' : ''
                                   )}
                                 >
-                                  <div className="min-w-0 flex-1 truncate">
-                                    <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
-                                    {w.inflection && (
-                                      <span className="greek-text text-xs text-gray-400 ml-1">{w.inflection}</span>
-                                    )}
-                                    <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
-                                  </div>
-                                  {w.freq && (
-                                    <span className="text-xs text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
+                                  {mode === 'greek-english' && (
+                                    <div className="flex items-baseline justify-between gap-2 min-w-0">
+                                      <div className="min-w-0 flex-1 truncate">
+                                        <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                        {w.inflection && (
+                                          <span className="greek-text text-xs text-gray-400 ml-1">{w.inflection}</span>
+                                        )}
+                                        <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
+                                      </div>
+                                      {w.freq && (
+                                        <span className="text-xs text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {mode === 'greek' && (
+                                    <div className="flex items-baseline gap-1.5 min-w-0">
+                                      <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                      {w.inflection && (
+                                        <span className="greek-text text-xs text-gray-400">{w.inflection}</span>
+                                      )}
+                                    </div>
+                                  )}
+                                  {mode === 'english' && (
+                                    <span className="text-sm text-gray-700">{w.gloss}</span>
                                   )}
                                 </div>
                               ))}
