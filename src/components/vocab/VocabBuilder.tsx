@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X } from 'lucide-react'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -256,7 +256,6 @@ export function VocabBuilder() {
           onChange={setConfig}
           cardCount={previewWords.length}
           onStart={() => startStudying(false)}
-          onShuffle={() => startStudying(true)}
         />
       )}
 
@@ -519,13 +518,12 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
 // ── Study Settings ────────────────────────────────────────────────────────────
 
 function StudySettings({
-  config, onChange, cardCount, onStart, onShuffle,
+  config, onChange, cardCount, onStart,
 }: {
   config: StudyConfig
   onChange: (c: StudyConfig) => void
   cardCount: number
   onStart: () => void
-  onShuffle: () => void
 }) {
   const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
@@ -577,24 +575,14 @@ function StudySettings({
 
   return (
     <div className="space-y-5">
-      {/* Flashcards + Shuffle buttons */}
-      <div className="flex gap-2">
-        <button
-          onClick={onStart}
-          disabled={disabled}
-          className="flex-1 btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {disabled ? 'No cards match — adjust filters' : 'Flashcards'}
-        </button>
-        <button
-          onClick={onShuffle}
-          disabled={disabled}
-          title="Shuffle and start"
-          className="btn bg-white border border-gray-300 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-4 py-4 disabled:opacity-40"
-        >
-          <Shuffle size={20} />
-        </button>
-      </div>
+      {/* Flashcards button */}
+      <button
+        onClick={onStart}
+        disabled={disabled}
+        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {disabled ? 'No cards match — adjust filters' : 'Flashcards'}
+      </button>
 
       {/* Single settings panel */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
