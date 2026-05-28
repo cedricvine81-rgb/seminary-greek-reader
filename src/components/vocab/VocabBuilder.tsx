@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X, BookOpen } from 'lucide-react'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -188,19 +188,9 @@ export function VocabBuilder() {
     }
   }
 
-  // Clicking Flashcards tab resumes an in-progress session; otherwise starts fresh
-  const goToFlashcards = () => {
-    if (sessionWords !== null && !finished) {
-      setTab('flashcards')
-    } else {
-      startStudying(false)
-    }
-  }
-
   const TABS = [
-    { id: 'study' as Tab,      icon: <GraduationCap size={14} />, label: 'Study',      action: () => setTab('study') },
-    { id: 'flashcards' as Tab, icon: <BookOpen size={14} />,      label: 'Flashcards', action: goToFlashcards },
-    { id: 'browse' as Tab,     icon: <Search size={14} />,        label: 'Browse',     action: () => setTab('browse') },
+    { id: 'study' as Tab,  icon: <GraduationCap size={14} />, label: 'Study',  action: () => setTab('study') },
+    { id: 'browse' as Tab, icon: <Search size={14} />,        label: 'Browse', action: () => setTab('browse') },
   ]
 
   return (
@@ -477,6 +467,25 @@ function StudySettings({
 
   return (
     <div className="space-y-5">
+      {/* Flashcards + Shuffle buttons */}
+      <div className="flex gap-2">
+        <button
+          onClick={onStart}
+          disabled={disabled}
+          className="flex-1 btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {disabled ? 'No cards match — adjust filters' : `Flashcards — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
+        </button>
+        <button
+          onClick={onShuffle}
+          disabled={disabled}
+          title="Shuffle and start"
+          className="btn bg-white border border-gray-300 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-4 py-4 disabled:opacity-40"
+        >
+          <Shuffle size={20} />
+        </button>
+      </div>
+
       {/* Single settings panel */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
 
@@ -704,24 +713,6 @@ function StudySettings({
         </div>
       </div>
 
-      {/* Start / Shuffle buttons */}
-      <div className="flex gap-2">
-        <button
-          onClick={onStart}
-          disabled={disabled}
-          className="flex-1 btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
-        </button>
-        <button
-          onClick={onShuffle}
-          disabled={disabled}
-          title="Shuffle and start"
-          className="btn bg-white border border-gray-300 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-4 py-4 disabled:opacity-40"
-        >
-          <Shuffle size={20} />
-        </button>
-      </div>
     </div>
   )
 }
