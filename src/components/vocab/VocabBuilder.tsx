@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle } from 'lucide-react'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -385,6 +385,7 @@ function StudySettings({
   onShuffle: () => void
 }) {
   const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
+  const [listSubKey, setListSubKey] = useState<string | null>(null)
 
   const subSet = useMemo(() => new Set(config.subsections), [config.subsections])
 
@@ -541,31 +542,94 @@ function StudySettings({
                     </button>
                   </div>
 
-                  {/* Sub-section chips */}
+                  {/* Sub-section chips + word list */}
                   {isExpanded && (
-                    <div className="px-3 pb-3 pt-2.5 border-t border-gray-100 bg-white">
+                    <div className="px-3 pb-3 pt-2.5 border-t border-gray-100 bg-white space-y-2">
+                      {/* Chip grid — each chip has a selection button + list toggle */}
                       <div className="grid grid-cols-8 gap-1.5">
                         {subs.map(sub => {
                           const isSubSelected = subSet.has(sub.key)
+                          const isListed = listSubKey === sub.key
                           return (
-                            <button
-                              key={sub.key}
-                              onClick={() => toggleSubsection(sub.key)}
-                              className={clsx(
-                                'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
-                                isSubSelected
-                                  ? 'bg-white border-brand-700 text-brand-800'
-                                  : 'bg-white border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-700'
-                              )}
-                            >
-                              <span className="text-sm font-semibold leading-none">{sub.label}</span>
-                              <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-500' : 'text-gray-400')}>
-                                {sub.rankRange}
-                              </span>
-                            </button>
+                            <div key={sub.key} className="flex flex-col gap-0.5">
+                              {/* Selection chip */}
+                              <button
+                                onClick={() => toggleSubsection(sub.key)}
+                                className={clsx(
+                                  'flex flex-col items-center justify-center py-2 rounded-lg border text-center transition-colors',
+                                  isSubSelected
+                                    ? 'bg-white border-brand-700 text-brand-800'
+                                    : 'bg-white border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-700'
+                                )}
+                              >
+                                <span className="text-sm font-semibold leading-none">{sub.label}</span>
+                                <span className={clsx('text-[9px] mt-1 leading-none', isSubSelected ? 'text-brand-500' : 'text-gray-400')}>
+                                  {sub.rankRange}
+                                </span>
+                              </button>
+                              {/* Word-list toggle */}
+                              <button
+                                onClick={() => setListSubKey(isListed ? null : sub.key)}
+                                title={`View ${sub.label} word list`}
+                                className={clsx(
+                                  'flex items-center justify-center py-1 rounded border text-center transition-colors',
+                                  isListed
+                                    ? 'border-brand-400 bg-brand-50 text-brand-600'
+                                    : 'border-gray-100 text-gray-400 hover:border-brand-200 hover:text-brand-500'
+                                )}
+                              >
+                                <List size={9} />
+                              </button>
+                            </div>
                           )
                         })}
                       </div>
+
+                      {/* Inline word list for the active subsection in this section */}
+                      {listSubKey && subs.some(sub => sub.key === listSubKey) && (() => {
+                        const sub = subs.find(sub => sub.key === listSubKey)!
+                        return (
+                          <div className="rounded-lg border border-gray-200 overflow-hidden">
+                            {/* List header */}
+                            <div className="flex items-center justify-between px-3 py-2 bg-gray-50 border-b border-gray-100">
+                              <p className="text-xs font-semibold text-gray-700">
+                                §{s}{sub.label} · Words {sub.rankRange}
+                                <span className="text-gray-400 font-normal ml-1.5">({sub.words.length} words)</span>
+                              </p>
+                              <button
+                                onClick={() => setListSubKey(null)}
+                                className="text-gray-400 hover:text-gray-600 transition-colors"
+                              >
+                                <X size={13} />
+                              </button>
+                            </div>
+                            {/* Word rows — 2 columns */}
+                            <div className="grid grid-cols-2">
+                              {sub.words.map((w, i) => (
+                                <div
+                                  key={w.word}
+                                  className={clsx(
+                                    'px-3 py-2 flex items-baseline justify-between gap-2',
+                                    i % 2 === 0 ? 'border-r border-gray-100' : '',
+                                    i < sub.words.length - 2 ? 'border-b border-gray-100' : ''
+                                  )}
+                                >
+                                  <div className="min-w-0 flex-1 truncate">
+                                    <span className="greek-text text-sm font-semibold text-brand-800">{w.word}</span>
+                                    {w.inflection && (
+                                      <span className="greek-text text-[10px] text-gray-400 ml-1">{w.inflection}</span>
+                                    )}
+                                    <span className="text-xs text-gray-600 ml-1.5">{w.gloss}</span>
+                                  </div>
+                                  {w.freq && (
+                                    <span className="text-[10px] text-gray-300 shrink-0">×{w.freq.toLocaleString()}</span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )
+                      })()}
                     </div>
                   )}
                 </div>
