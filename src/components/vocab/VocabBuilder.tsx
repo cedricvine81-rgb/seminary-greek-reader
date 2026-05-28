@@ -370,7 +370,7 @@ function FlashcardPlayer({
         )}
 
         <div className="flex gap-2 flex-wrap">
-          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Settings</button>
+          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Return</button>
           <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>Review again</button>
           {missedWords.length > 0 && (
             <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
@@ -395,7 +395,7 @@ function FlashcardPlayer({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <button onClick={onGoBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-            ← Settings
+            ← Return
           </button>
           <div className="flex items-center gap-3">
             <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
