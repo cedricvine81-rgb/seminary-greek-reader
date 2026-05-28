@@ -112,9 +112,13 @@ function saveProgress(p: ProgressMap) {
 }
 
 function filterWords(words: BgvbWord[], config: StudyConfig, progress: ProgressMap, today: string): BgvbWord[] {
-  const subSet = new Set(config.subsections)
+  // "All words" with no sections selected → treat as all sections selected
+  const effectiveSubSet = config.cardFilter === 'all' && config.subsections.length === 0
+    ? new Set(ALL_SUBSECTION_KEYS)
+    : new Set(config.subsections)
+
   return words.filter(w => {
-    if (!subSet.has(WORD_SUBSECTION[w.word] ?? '')) return false
+    if (!effectiveSubSet.has(WORD_SUBSECTION[w.word] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
     if (config.cardFilter === 'due') {
       const p = progress[w.word]
@@ -451,7 +455,10 @@ function StudySettings({
     )
   }
 
-  const disabled = cardCount === 0 || config.subsections.length === 0 || config.pos.length === 0
+  // "Due today" requires sections to be selected; "All words" works without any selection
+  const disabled = cardCount === 0 ||
+    (config.cardFilter === 'due' && config.subsections.length === 0) ||
+    config.pos.length === 0
 
   return (
     <div className="space-y-5">
@@ -483,7 +490,7 @@ function StudySettings({
                   config.cardFilter === f ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
-                {f === 'due' ? 'Due for review' : 'All words'}
+                {f === 'due' ? 'Due today' : 'All words'}
               </button>
             ))}
           </div>
