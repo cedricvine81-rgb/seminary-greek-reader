@@ -387,14 +387,9 @@ function FlashcardPlayer({
     <div className="space-y-6">
       {/* Header: back link + progress bar + counter */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <button onClick={onGoBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors">
-            ← Return
-          </button>
-          <div className="flex items-center gap-3">
-            <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
-            <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
-          </div>
+        <div className="flex items-center justify-end gap-3">
+          <span className="text-sm bg-gray-100 text-gray-500 px-3 py-1 rounded-full">§{word.section}</span>
+          <span className="text-sm text-gray-500">{idx + 1} / {sessionWords.length}</span>
         </div>
         <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
