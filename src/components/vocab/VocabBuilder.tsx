@@ -426,10 +426,7 @@ function FlashcardPlayer({
       >
         {!flipped ? (
           <div className="bg-white rounded-2xl min-h-72 flex flex-col items-center justify-center p-12 shadow-md border border-gray-200">
-            <p className="text-sm font-semibold tracking-widest text-gray-600 mb-6 uppercase">
-              {greekFirst ? 'Greek' : 'English'}
-            </p>
-            {greekFirst ? (
+{greekFirst ? (
               <>
                 <p className="greek-text text-7xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
                 {word.inflection && <p className="greek-text text-xl text-gray-500 mt-4">{word.inflection}</p>}
