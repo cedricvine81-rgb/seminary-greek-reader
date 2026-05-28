@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X } from 'lucide-react'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, Shuffle, List, X, BookOpen } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -26,7 +26,7 @@ interface WordProgress {
 }
 
 type ProgressMap = Record<string, WordProgress>
-type Tab = 'study' | 'browse'
+type Tab = 'study' | 'flashcards' | 'browse'
 type StudyMode = 'greek-to-english' | 'english-to-greek' | 'mixed'
 
 interface Subsection {
@@ -127,45 +127,6 @@ function filterWords(words: BgvbWord[], config: StudyConfig): BgvbWord[] {
 export function VocabBuilder() {
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
-
-  useEffect(() => { setProgress(loadProgress()) }, [])
-
-  return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
-        {(['study', 'browse'] as Tab[]).map(t => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={clsx(
-              'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors capitalize',
-              tab === t ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            {t === 'study' && <GraduationCap size={14} />}
-            {t === 'browse' && <Search size={14} />}
-            {t}
-          </button>
-        ))}
-      </div>
-
-      {tab === 'study' && (
-        <StudyView allWords={WORDS} progress={progress} onProgress={setProgress} />
-      )}
-      {tab === 'browse' && <BrowseView progress={progress} />}
-    </div>
-  )
-}
-
-// ── Study view ───────────────────────────────────────────────────────────────
-
-function StudyView({
-  allWords, progress, onProgress,
-}: {
-  allWords: BgvbWord[]
-  progress: ProgressMap
-  onProgress: (p: ProgressMap) => void
-}) {
   const [config, setConfig] = useState<StudyConfig>(DEFAULT_CONFIG)
   const [sessionWords, setSessionWords] = useState<BgvbWord[] | null>(null)
   const [directions, setDirections] = useState<boolean[]>([])
@@ -174,13 +135,12 @@ function StudyView({
   const [sessionStats, setSessionStats] = useState({ correct: 0, total: 0 })
   const [finished, setFinished] = useState(false)
 
-  const previewWords = useMemo(
-    () => filterWords(allWords, config),
-    [allWords, config]
-  )
+  useEffect(() => { setProgress(loadProgress()) }, [])
+
+  const previewWords = useMemo(() => filterWords(WORDS, config), [config])
 
   const startStudying = (shuffle = false) => {
-    let words = filterWords(allWords, config)
+    let words = filterWords(WORDS, config)
     if (shuffle) words = [...words].sort(() => Math.random() - 0.5)
     const dirs = words.map(() => {
       if (config.mode === 'greek-to-english') return true
@@ -193,61 +153,12 @@ function StudyView({
     setFlipped(false)
     setFinished(false)
     setSessionStats({ correct: 0, total: 0 })
+    setTab('flashcards')
   }
-
-  const goBack = () => { setSessionWords(null); setFinished(false) }
-
-  if (sessionWords === null) {
-    return (
-      <StudySettings
-        config={config}
-        onChange={setConfig}
-        cardCount={previewWords.length}
-        onStart={() => startStudying(false)}
-        onShuffle={() => startStudying(true)}
-      />
-    )
-  }
-
-  if (sessionWords.length === 0) {
-    return (
-      <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
-        <p className="text-xl font-semibold text-gray-700">No cards match</p>
-        <p className="text-gray-600 text-sm">Try selecting different sections or parts of speech.</p>
-        <button onClick={goBack} className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
-      </div>
-    )
-  }
-
-  const word = sessionWords[idx]
-  // Derive direction from current mode; pre-computed random values only used for 'mixed'
-  const greekFirst = config.mode === 'greek-to-english' ? true
-    : config.mode === 'english-to-greek' ? false
-    : (directions[idx] ?? true)
-
-  if (finished) {
-    return (
-      <div className="max-w-lg mx-auto text-center py-16 space-y-4">
-        <p className="text-2xl font-bold text-gray-700">Session Complete!</p>
-        <p className="text-gray-600">
-          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
-        </p>
-        <div className="flex gap-3 justify-center">
-          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={goBack}>← Settings</button>
-          <button
-            className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50"
-            onClick={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
-          >
-            Review Again
-          </button>
-        </div>
-      </div>
-    )
-  }
-
-  if (!word) return null
 
   const advance = (knew: boolean) => {
+    if (!sessionWords) return
+    const word = sessionWords[idx]
     const prev = progress[word.word]
     const result = sm2({
       easeFactor: prev?.easeFactor ?? 2.5,
@@ -267,7 +178,7 @@ function StudyView({
       },
     }
     saveProgress(updated)
-    onProgress(updated)
+    setProgress(updated)
     setSessionStats(s => ({ correct: s.correct + (knew ? 1 : 0), total: s.total + 1 }))
     if (idx + 1 >= sessionWords.length) {
       setFinished(true)
@@ -277,11 +188,126 @@ function StudyView({
     }
   }
 
+  // Clicking Flashcards tab resumes an in-progress session; otherwise starts fresh
+  const goToFlashcards = () => {
+    if (sessionWords !== null && !finished) {
+      setTab('flashcards')
+    } else {
+      startStudying(false)
+    }
+  }
+
+  const TABS = [
+    { id: 'study' as Tab,      icon: <GraduationCap size={14} />, label: 'Study',      action: () => setTab('study') },
+    { id: 'flashcards' as Tab, icon: <BookOpen size={14} />,      label: 'Flashcards', action: goToFlashcards },
+    { id: 'browse' as Tab,     icon: <Search size={14} />,        label: 'Browse',     action: () => setTab('browse') },
+  ]
+
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+        {TABS.map(({ id, icon, label, action }) => (
+          <button
+            key={id}
+            onClick={action}
+            className={clsx(
+              'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+              tab === id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+            )}
+          >
+            {icon}{label}
+          </button>
+        ))}
+      </div>
+
+      {tab === 'study' && (
+        <StudySettings
+          config={config}
+          onChange={setConfig}
+          cardCount={previewWords.length}
+          onStart={() => startStudying(false)}
+          onShuffle={() => startStudying(true)}
+        />
+      )}
+
+      {tab === 'flashcards' && (
+        <FlashcardPlayer
+          sessionWords={sessionWords ?? []}
+          directions={directions}
+          idx={idx}
+          flipped={flipped}
+          finished={finished}
+          sessionStats={sessionStats}
+          config={config}
+          onConfigChange={setConfig}
+          onFlip={() => setFlipped(f => !f)}
+          onAdvance={advance}
+          onGoBack={() => setTab('study')}
+          onRestart={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }) }}
+        />
+      )}
+
+      {tab === 'browse' && <BrowseView progress={progress} />}
+    </div>
+  )
+}
+
+// ── Flashcard player ──────────────────────────────────────────────────────────
+
+function FlashcardPlayer({
+  sessionWords, directions, idx, flipped, finished, sessionStats, config,
+  onConfigChange, onFlip, onAdvance, onGoBack, onRestart,
+}: {
+  sessionWords: BgvbWord[]
+  directions: boolean[]
+  idx: number
+  flipped: boolean
+  finished: boolean
+  sessionStats: { correct: number; total: number }
+  config: StudyConfig
+  onConfigChange: (c: StudyConfig) => void
+  onFlip: () => void
+  onAdvance: (knew: boolean) => void
+  onGoBack: () => void
+  onRestart: () => void
+}) {
+  if (sessionWords.length === 0) {
+    return (
+      <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
+        <p className="text-xl font-semibold text-gray-700">No cards match</p>
+        <p className="text-gray-600 text-sm">Try selecting different sections or parts of speech.</p>
+        <button onClick={onGoBack} className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
+      </div>
+    )
+  }
+
+  if (finished) {
+    return (
+      <div className="max-w-lg mx-auto text-center py-16 space-y-4">
+        <p className="text-2xl font-bold text-gray-700">Session Complete!</p>
+        <p className="text-gray-600">
+          {sessionStats.correct} correct · {sessionStats.total - sessionStats.correct} incorrect out of {sessionStats.total}
+        </p>
+        <div className="flex gap-3 justify-center">
+          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Settings</button>
+          <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50" onClick={onRestart}>Review Again</button>
+        </div>
+      </div>
+    )
+  }
+
+  const word = sessionWords[idx]
+  if (!word) return null
+
+  const greekFirst = config.mode === 'greek-to-english' ? true
+    : config.mode === 'english-to-greek' ? false
+    : (directions[idx] ?? true)
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <button onClick={goBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors mb-1 block">
+          <button onClick={onGoBack} className="text-sm text-gray-500 hover:text-gray-700 transition-colors mb-1 block">
             ← Settings
           </button>
           <p className="text-base text-gray-600">Card {idx + 1} of {sessionWords.length}</p>
@@ -291,10 +317,10 @@ function StudyView({
 
       <div
         className="cursor-pointer select-none"
-        onClick={() => setFlipped(f => !f)}
+        onClick={onFlip}
         role="button"
         tabIndex={0}
-        onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && setFlipped(f => !f)}
+        onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onFlip()}
         aria-label="Flip card"
       >
         {!flipped ? (
@@ -343,10 +369,10 @@ function StudyView({
         <p className="text-center text-base text-gray-500">Tap the card to reveal the answer</p>
       ) : (
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={() => advance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50 py-3 text-base">
+          <button onClick={() => onAdvance(false)} className="btn bg-white border border-gray-300 text-red-500 hover:bg-red-50 py-3 text-base">
             <RotateCcw size={16} /> Still learning
           </button>
-          <button onClick={() => advance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 py-3 text-base">Got it!</button>
+          <button onClick={() => onAdvance(true)} className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 py-3 text-base">Got it!</button>
         </div>
       )}
 
@@ -355,7 +381,7 @@ function StudyView({
         {(['greek-to-english', 'english-to-greek', 'mixed'] as const).map(m => (
           <button
             key={m}
-            onClick={() => setConfig(c => ({ ...c, mode: m }))}
+            onClick={() => onConfigChange({ ...config, mode: m })}
             className={clsx(
               'flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors',
               config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
@@ -451,18 +477,6 @@ function StudySettings({
 
   return (
     <div className="space-y-5">
-      {/* Page header */}
-      <div className="flex justify-end">
-        <button
-          onClick={onShuffle}
-          disabled={disabled}
-          title="Shuffle and start"
-          className="p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-40"
-        >
-          <Shuffle size={22} />
-        </button>
-      </div>
-
       {/* Single settings panel */}
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
 
@@ -690,14 +704,24 @@ function StudySettings({
         </div>
       </div>
 
-      {/* Start button */}
-      <button
-        onClick={onStart}
-        disabled={disabled}
-        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
-      </button>
+      {/* Start / Shuffle buttons */}
+      <div className="flex gap-2">
+        <button
+          onClick={onStart}
+          disabled={disabled}
+          className="flex-1 btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {disabled ? 'No cards match — adjust filters' : `Start Studying — ${cardCount.toLocaleString()} card${cardCount !== 1 ? 's' : ''}`}
+        </button>
+        <button
+          onClick={onShuffle}
+          disabled={disabled}
+          title="Shuffle and start"
+          className="btn bg-white border border-gray-300 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-4 py-4 disabled:opacity-40"
+        >
+          <Shuffle size={20} />
+        </button>
+      </div>
     </div>
   )
 }
