@@ -131,7 +131,7 @@ export function VocabBuilder() {
   useEffect(() => { setProgress(loadProgress()) }, [])
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
         {(['study', 'browse'] as Tab[]).map(t => (
           <button
@@ -434,11 +434,8 @@ function StudySettings({
   return (
     <div className="space-y-5">
       {/* Page header */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-900">Study</h2>
-          <p className="text-base text-gray-500 mt-0.5">{cardCount.toLocaleString()} cards in deck</p>
-        </div>
+      <div className="flex items-center justify-between">
+        <p className="text-base text-gray-500">{cardCount.toLocaleString()} cards in deck</p>
         <button
           onClick={onShuffle}
           disabled={disabled}
