@@ -99,13 +99,13 @@ const ESS_SECTIONS: EssSection[] = [
       <MorphTable headers={['', 'Masculine', 'Neuter', 'Feminine']} dividerRows={[0, 5]}
         rows={[
           ['Singular','','',''],
-          ['Nom.','‒ος','‒ον','‒η'],['Gen.','‒ου','','‒ης'],
-          ['Dat.','‒ῳ','','‒ῃ'],['Acc.','‒ον','','‒ην'],
+          ['Nom.','‒ος','‒ον','‒η'],['Gen.','‒ου →','‒ου','‒ης'],
+          ['Dat.','‒ῳ →','‒ῳ','‒ῃ'],['Acc.','‒ον','= Nom.','‒ην'],
           ['Plural','','',''],
-          ['Nom.','‒οι','‒α','‒αι'],['Gen.','‒ων','','‒ων'],
-          ['Dat.','‒οις','','‒αις'],['Acc.','‒ους','','‒ας'],
+          ['Nom.','‒οι','‒α','‒αι'],['Gen.','‒ων →','‒ων','‒ων'],
+          ['Dat.','‒οις →','‒οις','‒αις'],['Acc.','‒ους','= Nom.','‒ας'],
         ]}
-        note="Empty neuter cells share the masculine ending."
+        note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
       />
     ),
   },
@@ -115,13 +115,13 @@ const ESS_SECTIONS: EssSection[] = [
       <MorphTable headers={['', 'Masc / Fem', 'Neuter']} dividerRows={[0, 5]}
         rows={[
           ['Singular','',''],
-          ['Nom.','‒ς  or  ‒(none)','‒(none)'],['Gen.','‒ος',''],
-          ['Dat.','‒ι',''],['Acc.','‒α  or  ‒ν',''],
+          ['Nom.','‒ς  or  ‒(none)','‒(none)'],['Gen.','‒ος →','‒ος'],
+          ['Dat.','‒ι →','‒ι'],['Acc.','‒α  or  ‒ν','= Nom.'],
           ['Plural','',''],
-          ['Nom.','‒ες','‒α'],['Gen.','‒ων',''],
-          ['Dat.','‒σι',''],['Acc.','‒ας',''],
+          ['Nom.','‒ες','‒α'],['Gen.','‒ων →','‒ων'],
+          ['Dat.','‒σι →','‒σι'],['Acc.','‒ας','= Nom.'],
         ]}
-        note="Empty neuter cells share the Masc/Fem ending."
+        note="→ neuter takes the same ending as Masc/Fem  ·  Neuter Acc. = Neuter Nom."
       />
     ),
   },
@@ -183,18 +183,18 @@ const ESS_SECTIONS: EssSection[] = [
     content: (
       <>
         <MorphTable title="6-A  ·  Present Participle of εἰμί  (ὤν, οὔσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
-          rows={[['Singular','','',''],['Nom.','ὤν','ὄν','οὔσα'],['Gen.','ὄντος','','οὔσης'],
-                 ['Dat.','ὄντι','','οὔσῃ'],['Acc.','ὄντα','','οὖσαν'],['Plural','','',''],
-                 ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων','','οὐσῶν'],
-                 ['Dat.','ὄντσι','','οὔσαις'],['Acc.','ὄντας','','οὔσας']]}
-          note="Empty neuter cells share the masculine ending."
+          rows={[['Singular','','',''],['Nom.','ὤν','ὄν','οὔσα'],['Gen.','ὄντος →','ὄντος','οὔσης'],
+                 ['Dat.','ὄντι →','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],['Plural','','',''],
+                 ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων →','ὄντων','οὐσῶν'],
+                 ['Dat.','οὖσι →','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας']]}
+          note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
         />
         <MorphTable title="6-B  ·  Middle / Passive Participle Endings  (‒μεν‒)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
-          rows={[['Singular','','',''],['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','','‒μενης'],
-                 ['Dat.','‒μενῳ','','‒μενῃ'],['Acc.','‒μενον','','‒μενην'],['Plural','','',''],
-                 ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων','','‒μενων'],
-                 ['Dat.','‒μενοις','','‒μεναις'],['Acc.','‒μενους','','‒μενας']]}
-          note="Empty neuter cells share the masculine ending."
+          rows={[['Singular','','',''],['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου →','‒μενου','‒μενης'],
+                 ['Dat.','‒μενῳ →','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],['Plural','','',''],
+                 ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων →','‒μενων','‒μενων'],
+                 ['Dat.','‒μενοις →','‒μενοις','‒μεναις'],['Acc.','‒μενους','= Nom.','‒μενας']]}
+          note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
         />
       </>
     ),
@@ -248,6 +248,12 @@ const ESS_SECTIONS: EssSection[] = [
         </InfoBox>
         <InfoBox title="2. Iota reduplication">
           <p className="text-xs text-gray-500">Occurs <span className="font-semibold text-gray-700">only</span> in the present and imperfect tenses. The initial consonant is reduplicated with an iota (e.g., δι‒δω‒μι, τι‒θη‒μι, ἵ‒στη‒μι).</p>
+        </InfoBox>
+        <InfoBox title="3. All other tenses follow ω conjugation">
+          <p className="text-xs text-gray-500">All other tenses (future, perfect, etc.) do <span className="font-semibold text-gray-700">not</span> have iota reduplication and follow the regular ω conjugation (like λύω).</p>
+        </InfoBox>
+        <InfoBox title="4. Aorist tense identifier is ‒κα">
+          <p className="text-xs text-gray-500">The aorist tense identifier for ‒μι verbs is <span className="font-semibold text-gray-700">‒κα</span> instead of the usual ‒σα (e.g., ἔδωκα, ἔθηκα, ἔστησα).</p>
         </InfoBox>
       </div>
     ),
