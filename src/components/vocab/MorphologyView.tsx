@@ -269,13 +269,13 @@ const NOUNS_CONTENT = (
     <MorphTable title="1st & 2nd Declension Endings" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
       rows={[
         ['Singular','','',''],
-        ['Nom.','‒ος','‒ον','‒η'],['Gen.','‒ου','','‒ης'],
-        ['Dat.','‒ῳ','','‒ῃ'],['Acc.','‒ον','','‒ην'],
+        ['Nom.','‒ος','‒ον','‒η'],['Gen.','‒ου →','‒ου','‒ης'],
+        ['Dat.','‒ῳ →','‒ῳ','‒ῃ'],['Acc.','‒ον','= Nom.','‒ην'],
         ['Plural','','',''],
-        ['Nom.','‒οι','‒α','‒αι'],['Gen.','‒ων','','‒ων'],
-        ['Dat.','‒οις','','‒αις'],['Acc.','‒ους','','‒ας'],
+        ['Nom.','‒οι','‒α','‒αι'],['Gen.','‒ων →','‒ων','‒ων'],
+        ['Dat.','‒οις →','‒οις','‒αις'],['Acc.','‒ους','= Nom.','‒ας'],
       ]}
-      note="Empty neuter cells share the masculine ending."
+      note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
     />
     <MorphTable title="Article & Noun Paradigm" headers={['','','Art.','Noun','Art.','Noun','Art.','Noun']}
       rows={[
@@ -293,12 +293,12 @@ const NOUNS_CONTENT = (
     <MorphTable title="3rd Declension Endings" headers={['','Masc./Fem.','Neuter']} dividerRows={[0,5]}
       rows={[
         ['Singular','',''],
-        ['Nom.','‒ς  or  ‒(none)','‒(none)'],['Gen.','‒ος',''],
-        ['Dat.','‒ι',''],['Acc.','‒α  or  ‒ν',''],
+        ['Nom.','‒ς  or  ‒(none)','‒(none)'],['Gen.','‒ος →','‒ος'],
+        ['Dat.','‒ι →','‒ι'],['Acc.','‒α  or  ‒ν','= Nom.'],
         ['Plural','',''],
-        ['Nom.','‒ες','‒α'],['Gen.','‒ων',''],['Dat.','‒σι',''],['Acc.','‒ας',''],
+        ['Nom.','‒ες','‒α'],['Gen.','‒ων →','‒ων'],['Dat.','‒σι →','‒σι'],['Acc.','‒ας','= Nom.'],
       ]}
-      note="Empty neuter cells share the Masc./Fem. ending."
+      note="→ neuter takes the same ending as Masc./Fem.  ·  Neuter Acc. = Neuter Nom."
     />
     <MorphTable title="πᾶς, πᾶσα, πᾶν  (all, every)" headers={['','','Masc. (3rd)','Fem. (1st)','Neut. (3rd)']}
       rows={[
