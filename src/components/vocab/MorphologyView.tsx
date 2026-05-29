@@ -408,16 +408,21 @@ const PREPOSITIONS_CONTENT = (
         ['',     '+ accusative','according to, along'],
         ['μετά', '+ genitive',  'with'],
         ['',     '+ accusative','after'],
-        ['περί', '+ genitive',  'about, concerning'],
-        ['',     '+ accusative','around'],
         ['ὑπό',  '+ genitive',  'by (agent)'],
         ['',     '+ accusative','under'],
       ]}
     />
-    <MorphTable title="Three-case Prepositions" headers={['', '+ Genitive', '+ Dative', '+ Accusative']} firstColIsData
+    <MorphTable title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
       rows={[
-        ['ἐπί', 'on, over', 'on, at', 'on, against'],
-        ['παρά', 'from beside', 'beside, with', 'alongside'],
+        ['ἐπί',  '+ genitive',  'on, over'],
+        ['',     '+ dative',    'on, at'],
+        ['',     '+ accusative','on, against'],
+        ['παρά', '+ genitive',  'from beside'],
+        ['',     '+ dative',    'beside, with'],
+        ['',     '+ accusative','alongside'],
+        ['περί', '+ genitive',  'about, concerning'],
+        ['',     '+ dative',    'around, near'],
+        ['',     '+ accusative','around'],
       ]}
     />
   </>
