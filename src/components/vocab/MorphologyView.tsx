@@ -25,8 +25,8 @@ function MorphTable({ title, headers, rows, dividerRows = [], note }: MorphTable
           {title}
         </p>
       )}
-      <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
-        <table className="w-full text-sm border-collapse">
+      <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+        <table className="text-sm border-collapse">
           <thead>
             <tr className="bg-gray-100 border-b border-gray-200">
               {headers.map((h, i) => (
