@@ -701,11 +701,6 @@ export function MorphologyView() {
 
   return (
     <div className="flex flex-col min-h-0">
-      {/* Page heading */}
-      <div className="px-4 pt-4 pb-2">
-        <h1 className="text-2xl font-bold text-gray-900">Essential Endings</h1>
-      </div>
-
       {/* Main tab bar */}
       <div className="overflow-x-auto">
         <div className="flex gap-1.5 px-4 py-2 border-b border-gray-100 bg-white min-w-max">
