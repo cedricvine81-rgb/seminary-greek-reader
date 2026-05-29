@@ -68,6 +68,25 @@ function InfoBox({ title, children }: { title?: string; children: React.ReactNod
   )
 }
 
+/**
+ * Wrap runs of Greek characters in a normal-case span so the section-title
+ * CSS `uppercase` transform does not capitalise Greek text.
+ * Covers Basic Greek (U+0370–U+03FF) and Greek Extended (U+1F00–U+1FFF).
+ */
+function gt(text: string): React.ReactNode {
+  const re = /[Ͱ-Ͽἀ-῿]+/g
+  const parts: React.ReactNode[] = []
+  let last = 0
+  let m: RegExpExecArray | null
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index))
+    parts.push(<span key={m.index} className="normal-case">{m[0]}</span>)
+    last = m.index + m[0].length
+  }
+  if (last < text.length) parts.push(text.slice(last))
+  return parts.length <= 1 && typeof parts[0] === 'string' ? parts[0] ?? text : <>{parts}</>
+}
+
 /* ─────────────────────────────────────────────
    Top-level tab definitions
 ───────────────────────────────────────────── */
@@ -185,14 +204,14 @@ const ESS_SECTIONS: EssSection[] = [
     id: 6, label: 'Ess. 6', title: 'Participle Endings',
     content: (
       <>
-        <MorphTable title="6-A  ·  Present Participle of εἰμί  (ὤν, οὔσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
+        <MorphTable title={gt("6-A  ·  Present Participle of εἰμί  (ὤν, οὔσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
           rows={[['Singular','','',''],['Nom.','ὤν','ὄν','οὔσα'],['Gen.','ὄντος →','ὄντος','οὔσης'],
                  ['Dat.','ὄντι →','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],['Plural','','',''],
                  ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων →','ὄντων','οὐσῶν'],
                  ['Dat.','οὖσι →','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας']]}
           note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
         />
-        <MorphTable title="6-B  ·  Middle / Passive Participle Endings  (‒μεν‒)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
+        <MorphTable title={gt("6-B  ·  Middle / Passive Participle Endings  (‒μεν‒)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
           rows={[['Singular','','',''],['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου →','‒μενου','‒μενης'],
                  ['Dat.','‒μενῳ →','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],['Plural','','',''],
                  ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων →','‒μενων','‒μενων'],
@@ -214,7 +233,7 @@ const ESS_SECTIONS: EssSection[] = [
           <span className="font-semibold">Key endings to memorize — </span>
           3rd Singular: <span className="font-semibold">‒τω</span>&nbsp;&nbsp;|&nbsp;&nbsp;3rd Plural: <span className="font-semibold">‒τωσαν</span>
         </div>
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">7-B  ·  Imperative Paradigms  (λύω)</p>
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">{gt("7-B  ·  Imperative Paradigms  (λύω)")}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <MorphTable title="Present Active" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λῦε'],['','3','λυέτω'],['PL','2','λύετε'],['','3','λυέτωσαν']]}
@@ -303,7 +322,7 @@ const NOUNS_CONTENT = (
       ]}
       note="→ neuter takes the same ending as Masc./Fem.  ·  Neuter Acc. = Neuter Nom."
     />
-    <MorphTable title="πᾶς, πᾶσα, πᾶν  (all, every)" headers={['','','Masc. (3rd)','Fem. (1st)','Neut. (3rd)']}
+    <MorphTable title={gt("πᾶς, πᾶσα, πᾶν  (all, every)")} headers={['','','Masc. (3rd)','Fem. (1st)','Neut. (3rd)']}
       rows={[
         ['Sg.','Nom.','πᾶς','πᾶσα','πᾶν'],['','Gen.','παντός','πάσης','παντός'],
         ['','Dat.','παντί','πάσῃ','παντί'],['','Acc.','πάντα','πᾶσαν','πᾶν'],
@@ -316,7 +335,7 @@ const NOUNS_CONTENT = (
 
 const PRONOUNS_CONTENT = (
   <>
-    <MorphTable title="3rd Person Pronoun — αὐτός (he, she, it)" headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
+    <MorphTable title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
       rows={[
         ['Sg.','Nom.','αὐτός','he','αὐτή','she','αὐτό','it'],
         ['','Gen.','αὐτοῦ','his','αὐτῆς','her','αὐτοῦ','its'],
@@ -337,7 +356,7 @@ const PRONOUNS_CONTENT = (
       ]}
     />
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <MorphTable title="οὐδείς — no one, nothing" headers={['','Masc.','Fem.','Neut.']}
+      <MorphTable title={gt("οὐδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
         rows={[
           ['Nom.','οὐδείς','οὐδεμία','οὐδέν'],
           ['Gen.','οὐδενός','οὐδεμιᾶς','οὐδενός'],
@@ -346,7 +365,7 @@ const PRONOUNS_CONTENT = (
         ]}
         note="Used with indicative mood."
       />
-      <MorphTable title="μηδείς — no one, nothing" headers={['','Masc.','Fem.','Neut.']}
+      <MorphTable title={gt("μηδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
         rows={[
           ['Nom.','μηδείς','μηδεμία','μηδέν'],
           ['Gen.','μηδενός','μηδεμιᾶς','μηδενός'],
@@ -356,7 +375,7 @@ const PRONOUNS_CONTENT = (
         note="Used with non-indicative moods."
       />
     </div>
-    <MorphTable title="τις — Indefinite Pronoun (someone, anyone)" headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+    <MorphTable title={gt("τις — Indefinite Pronoun (someone, anyone)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
       rows={[
         ['Sg. Nom.','τις','someone','τι','something'],
         ['Gen.','τινος','of someone','τινος','of something'],
@@ -369,7 +388,7 @@ const PRONOUNS_CONTENT = (
       ]}
       note="Enclitic — no accent on first syllable."
     />
-    <MorphTable title="τίς — Interrogative Pronoun (who? what?)" headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+    <MorphTable title={gt("τίς — Interrogative Pronoun (who? what?)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
       rows={[
         ['Sg. Nom.','τίς','who?','τί','which? what? why?'],
         ['Gen.','τίνος','whose?','τίνος','of which? what?'],
@@ -444,7 +463,7 @@ const CONJUNCTIONS_CONTENT = (
 
 const INDICATIVES_CONTENT = (
   <>
-    <MorphTable title="Present Tense — λύω (I loose, I am loosing)" headers={['Person','Greek','Translation']}
+    <MorphTable title={gt("Present Tense — λύω (I loose, I am loosing)")} headers={['Person','Greek','Translation']}
       rows={[
         ['1st sg.','λύω','I am untying / I untie'],
         ['2nd sg.','λύεις','You are untying / you untie'],
@@ -454,7 +473,7 @@ const INDICATIVES_CONTENT = (
         ['3rd pl.','λύουσι(ν)','They are untying / they untie'],
       ]}
     />
-    <MorphTable title="Present & Imperfect Full Paradigm — λύω" headers={['','','Imp. Active','Imp. Mid/Pass','Pres. Active','Pres. Mid/Pass']}
+    <MorphTable title={gt("Present & Imperfect Full Paradigm — λύω")} headers={['','','Imp. Active','Imp. Mid/Pass','Pres. Active','Pres. Mid/Pass']}
       rows={[
         ['SG','1','ἔλυον','ἐλυόμην','λύω','λύομαι'],
         ['','2','ἔλυες','ἐλύου','λύεις','λύῃ (σαι)'],
@@ -464,7 +483,7 @@ const INDICATIVES_CONTENT = (
         ['','3','ἔλυον','ἐλύοντο','λύουσι(ν)','λύονται'],
       ]}
     />
-    <MorphTable title="εἰμί — Present, Future & Imperfect Indicative" headers={['Person','Present','Future','Imperfect']}
+    <MorphTable title={gt("εἰμί — Present, Future & Imperfect Indicative")} headers={['Person','Present','Future','Imperfect']}
       rows={[
         ['I','εἰμί','ἔσομαι','ἦμην'],
         ['You (sg.)','εἶ','ἔσῃ','ἦς (or ἦσθα)'],
@@ -475,7 +494,7 @@ const INDICATIVES_CONTENT = (
       ]}
       note="Present Infinitive: εἶναι · Present Participle (Masc. Nom. Sg./Pl.): ὤν / ὄντες"
     />
-    <MorphTable title="Perfect & Pluperfect — λύω" headers={['Tense','Voice','Form','Translation']}
+    <MorphTable title={gt("Perfect & Pluperfect — λύω")} headers={['Tense','Voice','Form','Translation']}
       rows={[
         ['Perfect','Active','λέλυκα','I have loosed'],
         ['','Middle','λέλυμαι','I have loosed myself'],
@@ -485,7 +504,7 @@ const INDICATIVES_CONTENT = (
         ['','Passive','ἐλελύμην','I had been loosed'],
       ]}
     />
-    <MorphTable title="Full Tense & Voice Paradigm — λύω (1st sg.)" headers={['Tense','Voice','Form','Translation']}
+    <MorphTable title={gt("Full Tense & Voice Paradigm — λύω (1st sg.)")} headers={['Tense','Voice','Form','Translation']}
       rows={[
         ['Present','Active','λύω','I loose'],
         ['','Middle','λύομαι','I loose myself'],
@@ -520,14 +539,14 @@ const INDICATIVES_CONTENT = (
         ['Perfect mid/pass','Delete connecting vowel  →  use Present endings'],
       ]}
     />
-    <MorphTable title="Consonant + σ Combinations" headers={['Stem ends in','+ σ','Result']}
+    <MorphTable title={gt("Consonant + σ Combinations")} headers={['Stem ends in','+ σ','Result']}
       rows={[
         ['π, β, φ','+ σ','ψ'],
         ['τ, δ, θ, ζ','+ σ','σ'],
         ['κ, γ, χ, σ','+ σ','ξ'],
       ]}
     />
-    <MorphTable title="Tense Stem Structure — λύ‒" headers={['Tense','Active','Middle','Passive']}
+    <MorphTable title={gt("Tense Stem Structure — λύ‒")} headers={['Tense','Active','Middle','Passive']}
       rows={[
         ['Present','λυ','λυ','λυ'],
         ['Future','λυ‒σ','λυ‒σ','λυ‒θησ'],
@@ -541,7 +560,7 @@ const INDICATIVES_CONTENT = (
 
 const INFINITIVES_CONTENT = (
   <>
-    <MorphTable title="Most Common Infinitive Forms — λύω" headers={['','Present Active','Aorist Active']}
+    <MorphTable title={gt("Most Common Infinitive Forms — λύω")} headers={['','Present Active','Aorist Active']}
       rows={[['Infinitive','λύειν','λύσαι']]}
     />
     <InfoBox title="Notes">
@@ -556,7 +575,7 @@ const INFINITIVES_CONTENT = (
 
 const IMPERATIVES_CONTENT = (
   <>
-    <MorphTable title="Most Common Imperative Forms — λύω" headers={['','Present Active','Aorist Active']}
+    <MorphTable title={gt("Most Common Imperative Forms — λύω")} headers={['','Present Active','Aorist Active']}
       rows={[
         ['2nd Person Singular','λῦε','λύσον'],
         ['2nd Person Plural','λύετε','λύσατε'],
@@ -576,17 +595,18 @@ const IMPERATIVES_CONTENT = (
 
 const PARTICIPLES_CONTENT = (
   <>
-    <MorphTable title="Present Participle of εἰμί (ὤν, οὖσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+    <MorphTable title={gt("Present Participle of εἰμί (ὤν, οὖσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
       rows={[
         ['Singular','','',''],
-        ['Nom.','ὤν','ὄν','οὖσα'],['Gen.','ὄντος','','οὔσης'],
-        ['Dat.','ὄντι','','οὔσῃ'],['Acc.','ὄντα','','οὖσαν'],
+        ['Nom.','ὤν','ὄν','οὖσα'],['Gen.','ὄντος','ὄντος','οὔσης'],
+        ['Dat.','ὄντι','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],
         ['Plural','','',''],
-        ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων','','οὐσῶν'],
-        ['Dat.','οὖσι','','οὔσαις'],['Acc.','ὄντας','','οὔσας'],
+        ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων','ὄντων','οὐσῶν'],
+        ['Dat.','οὖσι','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας'],
       ]}
+      note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
     />
-    <MorphTable title="Present Active Participle — λύων, λύουσα, λύον" headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+    <MorphTable title={gt("Present Active Participle — λύων, λύουσα, λύον")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
       rows={[
         ['Singular','','',''],
         ['Nom.','λύων','λύουσα','λύον'],['Gen.','λύοντος','λυούσης','λύοντος'],
@@ -596,7 +616,7 @@ const PARTICIPLES_CONTENT = (
         ['Dat.','λύουσιν','λυούσαις','λύουσιν'],['Acc.','λύοντας','λυούσας','λύοντα'],
       ]}
     />
-    <MorphTable title="Aorist Active Participle — λύσας, λύσασα, λύσαν" headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+    <MorphTable title={gt("Aorist Active Participle — λύσας, λύσασα, λύσαν")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
       rows={[
         ['Singular','','',''],
         ['Nom.','λύσας','λύσασα','λύσαν'],['Gen.','λύσαντος','λυσάσης','λύσαντος'],
@@ -606,17 +626,18 @@ const PARTICIPLES_CONTENT = (
         ['Dat.','λύσασιν','λυσάσαις','λύσασιν'],['Acc.','λύσαντας','λυσάσας','λύσαντα'],
       ]}
     />
-    <MorphTable title="Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+    <MorphTable title={gt("Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
       rows={[
         ['Singular','','',''],
-        ['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','','‒μενης'],
-        ['Dat.','‒μενῳ','','‒μενῃ'],['Acc.','‒μενον','','‒μενην'],
+        ['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','‒μενου','‒μενης'],
+        ['Dat.','‒μενῳ','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],
         ['Plural','','',''],
-        ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων','','‒μενων'],
-        ['Dat.','‒μενοις','','‒μεναις'],['Acc.','‒μενους','','‒μενας'],
+        ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων','‒μενων','‒μενων'],
+        ['Dat.','‒μενοις','‒μενοις','‒μεναις'],['Acc.','‒μενους','= Nom.','‒μενας'],
       ]}
+      note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
     />
-    <MorphTable title="Middle/Passive Participle — Tense Identifier + ‒μεν‒" headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
+    <MorphTable title={gt("Middle/Passive Participle — Tense Identifier + ‒μεν‒")} headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
       rows={[
         ['Present m/p','‒ο‒μεν','λυόμενος'],
         ['Aorist middle','‒σα‒μεν','λυσάμενος'],
@@ -635,14 +656,14 @@ const PARTICIPLES_CONTENT = (
 
 const SUBJUNCTIVES_CONTENT = (
   <>
-    <MorphTable title="Present Subjunctive — λύω" headers={['','Pers.','Active','Mid./Pass.']}
+    <MorphTable title={gt("Present Subjunctive — λύω")} headers={['','Pers.','Active','Mid./Pass.']}
       rows={[
         ['SG','1','λύω','λύωμαι'],['','2','λύῃς','λύῃ'],['','3','λύῃ','λύηται'],
         ['PL','1','λύωμεν','λυώμεθα'],['','2','λύητε','λύησθε'],['','3','λύωσιν','λύωνται'],
       ]}
       note="I may (might) be loosing / I may be loosed"
     />
-    <MorphTable title="Aorist Subjunctive — λύω" headers={['','Pers.','Active','Middle','Passive']}
+    <MorphTable title={gt("Aorist Subjunctive — λύω")} headers={['','Pers.','Active','Middle','Passive']}
       rows={[
         ['SG','1','λύσω','λύσωμαι','λυθῶ'],['','2','λύσῃς','λύσῃ','λυθῇς'],['','3','λύσῃ','λύσηται','λυθῇ'],
         ['PL','1','λύσωμεν','λυσώμεθα','λυθῶμεν'],['','2','λύσητε','λύσησθε','λυθῆτε'],['','3','λύσωσιν','λύσωνται','λυθῶσιν'],
@@ -664,7 +685,7 @@ const SUBJUNCTIVES_CONTENT = (
 
 const MI_VERBS_CONTENT = (
   <>
-    <MorphTable title="‒μι Verb Stems" headers={['-μι verb','Verb stem','Present stem']}
+    <MorphTable title={gt("‒μι Verb Stems")} headers={['-μι verb','Verb stem','Present stem']}
       rows={[
         ['δίδωμι','δο / δω','διδο / διδω'],
         ['τίθημι','θε / θη','τιθε / τιθη'],
