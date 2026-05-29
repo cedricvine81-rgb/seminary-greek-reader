@@ -130,8 +130,8 @@ const ESS_SECTIONS: EssSection[] = [
     content: (
       <>
         <div className="mb-3 grid grid-cols-2 gap-2 text-xs font-semibold text-center">
-          <div className="rounded-md bg-amber-50 border border-amber-200 text-amber-700 px-2 py-1">Secondary · Past Tenses (+ ε augment)</div>
-          <div className="rounded-md bg-blue-50 border border-blue-200 text-blue-700 px-2 py-1">Primary · Non-past Tenses</div>
+          <div className="rounded-md bg-gray-200 border border-gray-300 text-gray-700 px-2 py-1">Secondary · Past Tenses (+ ε augment)</div>
+          <div className="rounded-md bg-gray-50 border border-gray-200 text-gray-600 px-2 py-1">Primary · Non-past Tenses</div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']}
