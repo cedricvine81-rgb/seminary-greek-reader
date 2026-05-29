@@ -406,19 +406,15 @@ const PRONOUNS_CONTENT = (
 
 const PREPOSITIONS_CONTENT = (
   <>
-    <MorphTable title="One-case Prepositions" headers={['', 'Meaning']} firstColIsData
-      dividerRows={[0, 4, 7]}
+    <MorphTable title="One-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
       rows={[
-        ['Genitive', ''],
-        ['ἀντί', 'instead of, in place of'],
-        ['ἀπό', 'from, away from'],
-        ['ἐκ / ἐξ', 'out of, from'],
-        ['Accusative', ''],
-        ['εἰς', 'into, to'],
-        ['πρός', 'to, toward'],
-        ['Dative', ''],
-        ['ἐν', 'in, among'],
-        ['σύν', 'with'],
+        ['ἀντί',    '+ genitive',   'instead of, in place of'],
+        ['ἀπό',     '+ genitive',   'from, away from'],
+        ['ἐκ / ἐξ', '+ genitive',   'out of, from'],
+        ['εἰς',     '+ accusative', 'into, to'],
+        ['πρός',    '+ accusative', 'to, toward'],
+        ['ἐν',      '+ dative',     'in, among'],
+        ['σύν',     '+ dative',     'with'],
       ]}
     />
     <MorphTable title="Two-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
