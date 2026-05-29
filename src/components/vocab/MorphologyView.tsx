@@ -62,7 +62,7 @@ function MorphTable({ title, headers, rows, dividerRows = [], note }: MorphTable
                           ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide'
                           : ci === 0
                           ? 'text-left text-xs font-medium text-gray-500'
-                          : 'text-center text-gray-900 text-sm'
+                          : 'text-center text-gray-900 text-base'
                       )}
                     >
                       {cell ?? ''}
