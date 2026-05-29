@@ -85,8 +85,8 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'imperatives',  label: 'Imperatives'     },
   { id: 'participles',  label: 'Participles'     },
   { id: 'subjunctives', label: 'Subjunctives'    },
-  { id: 'essentials',   label: 'Essentials'      },
   { id: 'mi-verbs',     label: 'μι-Verbs'        },
+  { id: 'essentials',   label: 'Essentials'      },
 ]
 
 /* ─────────────────────────────────────────────
