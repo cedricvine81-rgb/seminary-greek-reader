@@ -13,9 +13,10 @@ interface MorphTableProps {
   rows: (string | null | undefined)[][]
   dividerRows?: number[]
   note?: string
+  firstColIsData?: boolean
 }
 
-function MorphTable({ title, headers, rows, dividerRows = [], note }: MorphTableProps) {
+function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   return (
     <div className="mb-5">
@@ -41,7 +42,7 @@ function MorphTable({ title, headers, rows, dividerRows = [], note }: MorphTable
               return (
                 <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-white', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : ci === 0 ? 'text-left text-xs font-medium text-gray-500 whitespace-nowrap' : 'text-center text-gray-900 text-base')}>
+                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-xs font-medium text-gray-500 whitespace-nowrap' : 'text-center text-gray-900 text-base')}>
                       {cell ?? ''}
                     </td>
                   ))}
@@ -149,7 +150,7 @@ const ESS_SECTIONS: EssSection[] = [
   {
     id: 4, label: 'Ess. 4', title: 'Tense Identifiers',
     content: (
-      <MorphTable headers={['Identifier', 'Tense']}
+      <MorphTable headers={['Identifier', 'Tense']} firstColIsData
         rows={[
           ['‒σ','Future (active and middle)'],['‒θησ','Future (passive)'],
           ['‒σα','1 Aorist (active and middle)'],['‒θη / ‒θε / ‒θ','1 Aorist (passive)'],
