@@ -384,25 +384,38 @@ const PRONOUNS_CONTENT = (
 )
 
 const PREPOSITIONS_CONTENT = (
-  <MorphTable title="Common Prepositions" headers={['Greek','Meaning']}
-    rows={[
-      ['ἀπό','from'],
-      ['ἐπί','on, upon'],
-      ['διά','through'],
-      ['πρός','to, toward'],
-      ['ἐκ / ἐξ','out of'],
-      ['εἰς','into'],
-      ['ἐν','in'],
-      ['μετά','with; after (+ gen./acc.)'],
-      ['σύν','with'],
-      ['περί','around, about'],
-      ['κατά','against; down from (+ gen./acc.)'],
-      ['παρά','beside, from (+ gen./dat./acc.)'],
-      ['ἐπί','on, over, at (+ gen./dat./acc.)'],
-      ['ὑπό','by, under (+ gen./acc.)'],
-      ['ἀντί','instead of, in place of'],
-    ]}
-  />
+  <>
+    <MorphTable title="One-case Prepositions" headers={['', 'Meaning']} firstColIsData
+      dividerRows={[0, 4, 7]}
+      rows={[
+        ['Genitive', ''],
+        ['ἀντί', 'instead of, in place of'],
+        ['ἀπό', 'from, away from'],
+        ['ἐκ / ἐξ', 'out of, from'],
+        ['Accusative', ''],
+        ['εἰς', 'into, to'],
+        ['πρός', 'to, toward'],
+        ['Dative', ''],
+        ['ἐν', 'in, among'],
+        ['σύν', 'with'],
+      ]}
+    />
+    <MorphTable title="Two-case Prepositions" headers={['', '+ Genitive', '+ Accusative']} firstColIsData
+      rows={[
+        ['διά', 'through', 'because of'],
+        ['κατά', 'against, down from', 'according to, along'],
+        ['μετά', 'with', 'after'],
+        ['περί', 'about, concerning', 'around'],
+        ['ὑπό', 'by (agent)', 'under'],
+      ]}
+    />
+    <MorphTable title="Three-case Prepositions" headers={['', '+ Genitive', '+ Dative', '+ Accusative']} firstColIsData
+      rows={[
+        ['ἐπί', 'on, over', 'on, at', 'on, against'],
+        ['παρά', 'from beside', 'beside, with', 'alongside'],
+      ]}
+    />
+  </>
 )
 
 const CONJUNCTIONS_CONTENT = (
