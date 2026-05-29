@@ -106,7 +106,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKey}
           placeholder={type === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
-          className={`w-full pl-9 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${type === 'word' ? 'pr-10' : 'pr-3'}`}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${type === 'word' ? 'pr-10' : 'pr-3'}`}
         />
         {type === 'word' && (
           <button
