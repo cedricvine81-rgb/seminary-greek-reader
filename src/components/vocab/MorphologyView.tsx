@@ -8,7 +8,7 @@ import clsx from 'clsx'
 ───────────────────────────────────────────── */
 
 interface MorphTableProps {
-  title?: string
+  title?: React.ReactNode
   headers: string[]
   rows: (string | null | undefined)[][]
   dividerRows?: number[]
@@ -204,11 +204,11 @@ const ESS_SECTIONS: EssSection[] = [
     id: 7, label: 'Ess. 7', title: 'Subjunctive & Imperative',
     content: (
       <>
-        <MorphTable title="7-A  ·  Subjunctive of εἰμί" headers={['','Pers.','Form']}
+        <MorphTable title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']}
           rows={[['SG','1','ὦ'],['','2','ᾖς'],['','3','ᾖ'],
                  ['PL','1','ὦμεν'],['','2','ἦτε'],['','3','ὦσι(ν)']]}
         />
-        <div className="mb-3 rounded-md bg-indigo-50 border border-indigo-200 px-3 py-2 text-xs text-indigo-800">
+        <div className="mb-3 rounded-md bg-gray-100 border border-gray-200 px-3 py-2 text-xs text-gray-700">
           <span className="font-semibold">Key endings to memorize — </span>
           3rd Singular: <span className="font-semibold">‒τω</span>&nbsp;&nbsp;|&nbsp;&nbsp;3rd Plural: <span className="font-semibold">‒τωσαν</span>
         </div>
