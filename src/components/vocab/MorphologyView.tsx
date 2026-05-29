@@ -14,9 +14,11 @@ interface MorphTableProps {
   dividerRows?: number[]
   note?: string
   firstColIsData?: boolean
+  highlight?: string
+  highlightCols?: number[]
 }
 
-function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false }: MorphTableProps) {
+function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   return (
     <div className="mb-5">
@@ -42,7 +44,7 @@ function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsDa
               return (
                 <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-white', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : 'text-center text-gray-900 text-sm')}>
+                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ?? ''}
                     </td>
                   ))}
@@ -74,7 +76,6 @@ type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'prepositions' | 'conjuncti
                'indicatives' | 'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs'
 
 const MAIN_TABS: { id: MainTab; label: string }[] = [
-  { id: 'essentials',   label: 'Essentials'      },
   { id: 'nouns',        label: 'Nouns/Adj.'      },
   { id: 'pronouns',     label: 'Pronouns'        },
   { id: 'prepositions', label: 'Prepositions'    },
@@ -84,6 +85,7 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'imperatives',  label: 'Imperatives'     },
   { id: 'participles',  label: 'Participles'     },
   { id: 'subjunctives', label: 'Subjunctives'    },
+  { id: 'essentials',   label: 'Essentials'      },
   { id: 'mi-verbs',     label: 'μι-Verbs'        },
 ]
 
@@ -97,7 +99,7 @@ const ESS_SECTIONS: EssSection[] = [
   {
     id: 1, label: 'Ess. 1', title: '1st & 2nd Declension Endings',
     content: (
-      <MorphTable headers={['', 'Masculine', 'Neuter', 'Feminine']} dividerRows={[0, 5]}
+      <MorphTable headers={['', 'Masculine', 'Neuter', 'Feminine']} dividerRows={[0, 5]} highlight="text-red-600"
         rows={[
           ['Singular','','',''],
           ['Nom.','‒ος','‒ον','‒η'],['Gen.','‒ου →','‒ου','‒ης'],
@@ -113,7 +115,7 @@ const ESS_SECTIONS: EssSection[] = [
   {
     id: 2, label: 'Ess. 2', title: '3rd Declension Endings',
     content: (
-      <MorphTable headers={['', 'Masc / Fem', 'Neuter']} dividerRows={[0, 5]}
+      <MorphTable headers={['', 'Masc / Fem', 'Neuter']} dividerRows={[0, 5]} highlight="text-red-600"
         rows={[
           ['Singular','',''],
           ['Nom.','‒ς  or  ‒(none)','‒(none)'],['Gen.','‒ος →','‒ος'],
@@ -135,11 +137,11 @@ const ESS_SECTIONS: EssSection[] = [
           <div className="rounded-md bg-gray-50 border border-gray-200 text-gray-600 px-2 py-1">Primary · Non-past Tenses</div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']}
+          <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600"
             rows={[['SG','1','‒ον','‒ομην'],['','2','‒ες','‒ου'],['','3','‒ε(ν)','‒ετο'],
                    ['PL','1','‒ομεν','‒ομεθα'],['','2','‒ετε','‒εσθε'],['','3','‒ον','‒οντο']]}
           />
-          <MorphTable title="Present Endings" headers={['','','Active','Mid/Pass']}
+          <MorphTable title="Present Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600"
             rows={[['SG','1','‒ω','‒ομαι'],['','2','‒εις','‒ῃ (σαι)'],['','3','‒ει','‒εται'],
                    ['PL','1','‒ομεν','‒ομεθα'],['','2','‒ετε','‒εσθε'],['','3','‒ουσι(ν)','‒ονται']]}
           />
@@ -150,7 +152,7 @@ const ESS_SECTIONS: EssSection[] = [
   {
     id: 4, label: 'Ess. 4', title: 'Tense Identifiers',
     content: (
-      <MorphTable headers={['Identifier', 'Tense']} firstColIsData
+      <MorphTable headers={['Identifier', 'Tense']} firstColIsData highlight="text-red-600" highlightCols={[0]}
         rows={[
           ['‒σ','Future (active and middle)'],['‒θησ','Future (passive)'],
           ['‒σα','1 Aorist (active and middle)'],['‒θη / ‒θε / ‒θ','1 Aorist (passive)'],
@@ -183,14 +185,14 @@ const ESS_SECTIONS: EssSection[] = [
     id: 6, label: 'Ess. 6', title: 'Participle Endings',
     content: (
       <>
-        <MorphTable title="6-A  ·  Present Participle of εἰμί  (ὤν, οὔσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+        <MorphTable title="6-A  ·  Present Participle of εἰμί  (ὤν, οὔσα, ὄν)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
           rows={[['Singular','','',''],['Nom.','ὤν','ὄν','οὔσα'],['Gen.','ὄντος →','ὄντος','οὔσης'],
                  ['Dat.','ὄντι →','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],['Plural','','',''],
                  ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων →','ὄντων','οὐσῶν'],
                  ['Dat.','οὖσι →','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας']]}
           note="→ neuter takes the same ending as masculine  ·  Neuter Acc. = Neuter Nom."
         />
-        <MorphTable title="6-B  ·  Middle / Passive Participle Endings  (‒μεν‒)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+        <MorphTable title="6-B  ·  Middle / Passive Participle Endings  (‒μεν‒)" headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]} highlight="text-red-600"
           rows={[['Singular','','',''],['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου →','‒μενου','‒μενης'],
                  ['Dat.','‒μενῳ →','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],['Plural','','',''],
                  ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων →','‒μενων','‒μενων'],
@@ -204,7 +206,7 @@ const ESS_SECTIONS: EssSection[] = [
     id: 7, label: 'Ess. 7', title: 'Subjunctive & Imperative',
     content: (
       <>
-        <MorphTable title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']}
+        <MorphTable title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']} highlight="text-red-600"
           rows={[['SG','1','ὦ'],['','2','ᾖς'],['','3','ᾖ'],
                  ['PL','1','ὦμεν'],['','2','ἦτε'],['','3','ὦσι(ν)']]}
         />
@@ -214,19 +216,19 @@ const ESS_SECTIONS: EssSection[] = [
         </div>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">7-B  ·  Imperative Paradigms  (λύω)</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <MorphTable title="Present Active" headers={['','Pers.','Form']}
+          <MorphTable title="Present Active" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λῦε'],['','3','λυέτω'],['PL','2','λύετε'],['','3','λυέτωσαν']]}
           />
-          <MorphTable title="Aorist Active" headers={['','Pers.','Form']}
+          <MorphTable title="Aorist Active" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λύσον'],['','3','λυσάτω'],['PL','2','λύσατε'],['','3','λυσάτωσαν']]}
           />
-          <MorphTable title="Aorist Passive" headers={['','Pers.','Form']}
+          <MorphTable title="Aorist Passive" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λύθητι'],['','3','λυθήτω'],['PL','2','λύθητε'],['','3','λυθήτωσαν']]}
           />
-          <MorphTable title="Present Middle / Passive" headers={['','Pers.','Form']}
+          <MorphTable title="Present Middle / Passive" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λύου'],['','3','λυέσθω'],['PL','2','λύεσθε'],['','3','λυέσθωσαν']]}
           />
-          <MorphTable title="Aorist Middle" headers={['','Pers.','Form']}
+          <MorphTable title="Aorist Middle" headers={['','Pers.','Form']} highlight="text-red-600"
             rows={[['SG','2','λύσαι'],['','3','λυσάσθω'],['PL','2','λύσασθε'],['','3','λυσάσθωσαν']]}
           />
         </div>
