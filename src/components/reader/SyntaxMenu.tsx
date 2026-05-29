@@ -144,8 +144,12 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             </span>
           )}
         </div>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 mt-0.5 shrink-0">
-          <X size={14} />
+        <button
+          onClick={onClose}
+          className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-lg hover:bg-gray-100 touch-manipulation"
+          aria-label="Close"
+        >
+          <X size={isMobile ? 22 : 16} />
         </button>
       </div>
 

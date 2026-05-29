@@ -107,6 +107,14 @@
            shadow-sm text-sm;
   }
 
+  /* ── Reader page: stable height on mobile ──────────────── */
+  /* svh = small viewport height (address bar always counted), so the
+     reader container never grows/shrinks as the browser chrome hides. */
+  .reader-container-h {
+    height: calc(100vh  - 3.5rem); /* fallback for older browsers */
+    height: calc(100svh - 3.5rem); /* locks to stable viewport height */
+  }
+
   /* ── Dashboard layout ───────────────────────────────────── */
   .dashboard-grid {
     @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;

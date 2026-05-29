@@ -517,8 +517,8 @@ export function GreekReader() {
             item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
           )
           if (targetIdx !== -1) {
-            // Pre-load target + up to 2 preceding chapters so the user can scroll up immediately.
-            const PRE = 2
+            // Load only the target chapter (backward scroll loads earlier chapters lazily).
+            const PRE = 0
             const preloadStart = Math.max(0, targetIdx - PRE)
             const idxsToFetch  = Array.from({ length: targetIdx - preloadStart + 1 }, (_, i) => preloadStart + i)
 

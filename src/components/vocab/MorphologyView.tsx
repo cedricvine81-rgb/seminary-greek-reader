@@ -156,11 +156,11 @@ const ESS_SECTIONS: EssSection[] = [
           <div className="rounded-md bg-gray-50 border border-gray-200 text-gray-600 px-2 py-1">Primary · Non-past Tenses</div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600"
+          <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600" highlightCols={[2,3]}
             rows={[['SG','1','‒ον','‒ομην'],['','2','‒ες','‒ου'],['','3','‒ε(ν)','‒ετο'],
                    ['PL','1','‒ομεν','‒ομεθα'],['','2','‒ετε','‒εσθε'],['','3','‒ον','‒οντο']]}
           />
-          <MorphTable title="Present Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600"
+          <MorphTable title="Present Endings" headers={['','','Active','Mid/Pass']} highlight="text-red-600" highlightCols={[2,3]}
             rows={[['SG','1','‒ω','‒ομαι'],['','2','‒εις','‒ῃ (σαι)'],['','3','‒ει','‒εται'],
                    ['PL','1','‒ομεν','‒ομεθα'],['','2','‒ετε','‒εσθε'],['','3','‒ουσι(ν)','‒ονται']]}
           />
@@ -225,7 +225,7 @@ const ESS_SECTIONS: EssSection[] = [
     id: 7, label: 'Ess. 7', title: 'Subjunctive & Imperative',
     content: (
       <>
-        <MorphTable title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']} highlight="text-red-600"
+        <MorphTable title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
           rows={[['SG','1','ὦ'],['','2','ᾖς'],['','3','ᾖ'],
                  ['PL','1','ὦμεν'],['','2','ἦτε'],['','3','ὦσι(ν)']]}
         />
@@ -235,19 +235,19 @@ const ESS_SECTIONS: EssSection[] = [
         </div>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">{gt("7-B  ·  Imperative Paradigms  (λύω)")}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <MorphTable title="Present Active" headers={['','Pers.','Form']} highlight="text-red-600"
+          <MorphTable title="Present Active" headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
             rows={[['SG','2','λῦε'],['','3','λυέτω'],['PL','2','λύετε'],['','3','λυέτωσαν']]}
           />
-          <MorphTable title="Aorist Active" headers={['','Pers.','Form']} highlight="text-red-600"
+          <MorphTable title="Aorist Active" headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
             rows={[['SG','2','λύσον'],['','3','λυσάτω'],['PL','2','λύσατε'],['','3','λυσάτωσαν']]}
           />
-          <MorphTable title="Aorist Passive" headers={['','Pers.','Form']} highlight="text-red-600"
+          <MorphTable title="Aorist Passive" headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
             rows={[['SG','2','λύθητι'],['','3','λυθήτω'],['PL','2','λύθητε'],['','3','λυθήτωσαν']]}
           />
-          <MorphTable title="Present Middle / Passive" headers={['','Pers.','Form']} highlight="text-red-600"
+          <MorphTable title="Present Middle / Passive" headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
             rows={[['SG','2','λύου'],['','3','λυέσθω'],['PL','2','λύεσθε'],['','3','λυέσθωσαν']]}
           />
-          <MorphTable title="Aorist Middle" headers={['','Pers.','Form']} highlight="text-red-600"
+          <MorphTable title="Aorist Middle" headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
             rows={[['SG','2','λύσαι'],['','3','λυσάσθω'],['PL','2','λύσασθε'],['','3','λυσάσθωσαν']]}
           />
         </div>
