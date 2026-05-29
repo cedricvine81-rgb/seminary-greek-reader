@@ -437,18 +437,40 @@ export function GreekReader() {
       const ref = parseReference(trimmed, booksFromQueues)
       if (ref) {
         setSearchLoading(true)
-        setSearchResults(null)
-        setSearchType('reference')
+        setSearchResults(null)   // stay in scrolling mode
+        setSearchType(null)
         setWordSearchTerm(null)
         try {
-          const res  = await fetch(`/api/reader?book=${ref.book.osisId}&chapter=${ref.chapter}`)
-          const data = await res.json()
-          if (data.verses?.length) {
-            setSearchResults(data.verses)
-            const vId = ref.verse
-              ? (data.verses.find((v: BiblicalVerse) => v.verse === ref.verse)?.id ?? null)
-              : null
-            setHighlightedVerse(vId)
+          const isLxx     = ref.book.corpus === 'LXX'
+          const queue     = isLxx ? lxxQueueRef.current : gntQueueRef.current
+          const targetIdx = queue.findIndex(
+            item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
+          )
+          if (targetIdx !== -1) {
+            // Hold the loading lock so scroll-sentinels don't race with us
+            if (isLxx) lxxLoading.current = true
+            else       gntLoading.current = true
+
+            const section = await fetchChapter(queue[targetIdx])
+
+            if (isLxx) lxxLoading.current = false
+            else       gntLoading.current = false
+
+            if (section) {
+              const newQueueIdx = targetIdx + 1
+              const isDone      = newQueueIdx >= queue.length
+              // Reset the corpus to this chapter; queueIdx means the sentinel
+              // will continue loading from the *next* chapter on scroll.
+              if (isLxx) setLxx({ sections: [section], queueIdx: newQueueIdx, done: isDone })
+              else       setGnt({ sections: [section], queueIdx: newQueueIdx, done: isDone })
+
+              // Scroll to specific verse if given, otherwise to chapter top
+              const vId = ref.verse
+                ? (section.verses.find((v: BiblicalVerse) => v.verse === ref.verse)?.id ?? null)
+                : null
+              setHighlightedVerse(vId)
+              if (textPanelRef.current) textPanelRef.current.scrollTop = 0
+            }
           }
         } finally { setSearchLoading(false) }
         return
