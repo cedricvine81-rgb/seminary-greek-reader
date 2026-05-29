@@ -42,7 +42,7 @@ function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsDa
               return (
                 <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-white', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-xs font-medium text-gray-500 whitespace-nowrap' : 'text-center text-gray-900 text-base')}>
+                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-xs font-medium text-gray-500 whitespace-nowrap' : 'text-center text-gray-900 text-sm')}>
                       {cell ?? ''}
                     </td>
                   ))}
@@ -134,7 +134,7 @@ const ESS_SECTIONS: EssSection[] = [
           <div className="rounded-md bg-gray-200 border border-gray-300 text-gray-700 px-2 py-1">Secondary · Past Tenses (+ ε augment)</div>
           <div className="rounded-md bg-gray-50 border border-gray-200 text-gray-600 px-2 py-1">Primary · Non-past Tenses</div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <MorphTable title="Imperfect Endings" headers={['','','Active','Mid/Pass']}
             rows={[['SG','1','‒ον','‒ομην'],['','2','‒ες','‒ου'],['','3','‒ε(ν)','‒ετο'],
                    ['PL','1','‒ομεν','‒ομεθα'],['','2','‒ετε','‒εσθε'],['','3','‒ον','‒οντο']]}
@@ -165,7 +165,7 @@ const ESS_SECTIONS: EssSection[] = [
     content: (
       <>
         <p className="text-xs text-gray-500 mb-3">All other tenses use the Present or Imperfect endings as a base. The tense identifier modifies the connecting vowel as follows:</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <MorphTable title="Secondary (Past) — use Imperfect endings" headers={['Tense','Modification']}
             rows={[['Aorist active','replace c.v. with σα'],['Aorist middle','replace c.v. with σα'],
                    ['Aorist passive','replace c.v. with θη'],['Perfect active','replace c.v. with κα']]}
@@ -213,7 +213,7 @@ const ESS_SECTIONS: EssSection[] = [
           3rd Singular: <span className="font-semibold">‒τω</span>&nbsp;&nbsp;|&nbsp;&nbsp;3rd Plural: <span className="font-semibold">‒τωσαν</span>
         </div>
         <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">7-B  ·  Imperative Paradigms  (λύω)</p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <MorphTable title="Present Active" headers={['','Pers.','Form']}
             rows={[['SG','2','λῦε'],['','3','λυέτω'],['PL','2','λύετε'],['','3','λυέτωσαν']]}
           />
@@ -239,7 +239,7 @@ const ESS_SECTIONS: EssSection[] = [
       <div className="space-y-3 mb-5">
         <InfoBox title="1. Stem vowel alternates (short / long)">
           <p className="text-gray-500 text-xs mb-2">The stem vowel may appear in either its short or long form depending on the form.</p>
-          <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-xs">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 text-sm">
             <span className="text-gray-500">Short / Long</span><span className="text-gray-500">Verb</span>
             <span className="font-medium">δο / δω</span><span>δίδωμι</span>
             <span className="font-medium">θε / θη</span><span>τίθημι</span>
