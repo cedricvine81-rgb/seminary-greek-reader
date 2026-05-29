@@ -72,8 +72,10 @@ interface TextSection {
 
 interface CorpusSeries {
   sections: TextSection[]
-  queueIdx: number
-  done: boolean
+  queueIdx: number   // index of next chapter to load going forward
+  backIdx:  number   // index of next chapter to load going backward (-1 = none)
+  done:     boolean
+  backDone: boolean  // nothing left to load upward
 }
 
 interface ChapterItem {
@@ -124,8 +126,8 @@ export function GreekReader() {
   // ── Corpus queues & loaded sections ─────────────────────────────────────────
   const [gntQueue, setGntQueue] = useState<ChapterItem[]>([])
   const [lxxQueue, setLxxQueue] = useState<ChapterItem[]>([])
-  const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, done: false })
-  const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, done: false })
+  const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
+  const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
 
   // ── Word interaction ─────────────────────────────────────────────────────────
   const [activeWordId, setActiveWordId]   = useState<string | null>(null)
@@ -173,12 +175,16 @@ export function GreekReader() {
   // ── Refs ─────────────────────────────────────────────────────────────────────
   const textPanelRef  = useRef<HTMLDivElement>(null)
   const settingsRef   = useRef<HTMLDivElement>(null)
-  const gntSentinel   = useRef<HTMLDivElement>(null)
-  const lxxSentinel   = useRef<HTMLDivElement>(null)
+  const gntSentinel      = useRef<HTMLDivElement>(null)
+  const lxxSentinel      = useRef<HTMLDivElement>(null)
+  const gntTopSentinel   = useRef<HTMLDivElement>(null)
+  const lxxTopSentinel   = useRef<HTMLDivElement>(null)
   const verseRefs     = useRef<Record<string, HTMLElement>>({})
 
-  const gntLoading  = useRef(false)
-  const lxxLoading  = useRef(false)
+  const gntLoading     = useRef(false)
+  const lxxLoading     = useRef(false)
+  const gntBackLoading = useRef(false)
+  const lxxBackLoading = useRef(false)
 
   const gntRef      = useRef(gnt)
   const lxxRef      = useRef(lxx)
@@ -230,6 +236,7 @@ export function GreekReader() {
     gntLoading.current = true
     const section = await fetchChapter(item)
     setGnt(s => ({
+      ...s,
       sections: section ? [...s.sections, section] : s.sections,
       queueIdx: s.queueIdx + 1,
       done: s.queueIdx + 1 >= queue.length,
@@ -246,11 +253,64 @@ export function GreekReader() {
     lxxLoading.current = true
     const section = await fetchChapter(item)
     setLxx(s => ({
+      ...s,
       sections: section ? [...s.sections, section] : s.sections,
       queueIdx: s.queueIdx + 1,
       done: s.queueIdx + 1 >= queue.length,
     }))
     lxxLoading.current = false
+  }, [fetchChapter])
+
+  // ── Backward (upward) chapter loading ────────────────────────────────────────
+
+  const loadPrevGnt = useCallback(async () => {
+    const series = gntRef.current
+    const queue  = gntQueueRef.current
+    if (gntBackLoading.current || series.backDone || series.backIdx < 0 || !queue.length) return
+    const item = queue[series.backIdx]
+    if (!item) { setGnt(s => ({ ...s, backDone: true })); return }
+
+    gntBackLoading.current = true
+    const panel            = textPanelRef.current
+    const prevScrollHeight = panel?.scrollHeight ?? 0
+    const prevScrollTop    = panel?.scrollTop    ?? 0
+
+    const section = await fetchChapter(item)
+    setGnt(s => ({
+      ...s,
+      sections: section ? [section, ...s.sections] : s.sections,
+      backIdx:  s.backIdx - 1,
+      backDone: s.backIdx - 1 < 0,
+    }))
+    requestAnimationFrame(() => {
+      if (panel) panel.scrollTop = prevScrollTop + (panel.scrollHeight - prevScrollHeight)
+      gntBackLoading.current = false
+    })
+  }, [fetchChapter])
+
+  const loadPrevLxx = useCallback(async () => {
+    const series = lxxRef.current
+    const queue  = lxxQueueRef.current
+    if (lxxBackLoading.current || series.backDone || series.backIdx < 0 || !queue.length) return
+    const item = queue[series.backIdx]
+    if (!item) { setLxx(s => ({ ...s, backDone: true })); return }
+
+    lxxBackLoading.current = true
+    const panel            = textPanelRef.current
+    const prevScrollHeight = panel?.scrollHeight ?? 0
+    const prevScrollTop    = panel?.scrollTop    ?? 0
+
+    const section = await fetchChapter(item)
+    setLxx(s => ({
+      ...s,
+      sections: section ? [section, ...s.sections] : s.sections,
+      backIdx:  s.backIdx - 1,
+      backDone: s.backIdx - 1 < 0,
+    }))
+    requestAnimationFrame(() => {
+      if (panel) panel.scrollTop = prevScrollTop + (panel.scrollHeight - prevScrollHeight)
+      lxxBackLoading.current = false
+    })
   }, [fetchChapter])
 
   // ── Mount: seed LXX corpus ───────────────────────────────────────────────────
@@ -264,7 +324,7 @@ export function GreekReader() {
         if (lxxQ[0]) {
           lxxLoading.current = true
           fetchChapter(lxxQ[0]).then(section => {
-            setLxx({ sections: section ? [section] : [], queueIdx: 1, done: 1 >= lxxQ.length })
+            setLxx({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= lxxQ.length, backDone: true })
             lxxLoading.current = false
           })
         }
@@ -276,7 +336,7 @@ export function GreekReader() {
   // Also runs on mount (initial value 'tischendorf') to seed the first GNT chapter.
 
   useEffect(() => {
-    setGnt({ sections: [], queueIdx: 0, done: false })
+    setGnt({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
     gntLoading.current = false
     const corpus = gntEdition === 'nestle1904' ? 'NA1904' : 'GNT'
     fetch(`/api/reader?corpus=${corpus}`)
@@ -287,7 +347,7 @@ export function GreekReader() {
         if (q[0]) {
           gntLoading.current = true
           fetchChapter(q[0]).then(section => {
-            setGnt({ sections: section ? [section] : [], queueIdx: 1, done: 1 >= q.length })
+            setGnt({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
             gntLoading.current = false
           })
         }
@@ -302,19 +362,29 @@ export function GreekReader() {
     if (!panel) return
 
     function onScroll() {
-      const panelBottom = panel!.getBoundingClientRect().bottom
+      const rect        = panel!.getBoundingClientRect()
+      const panelTop    = rect.top
+      const panelBottom = rect.bottom
+      // Forward (downward) loading
       if (gntSentinel.current && !gntRef.current.done) {
         if (gntSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreGnt()
       }
       if (lxxSentinel.current && !lxxRef.current.done) {
         if (lxxSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreLxx()
       }
+      // Backward (upward) loading
+      if (gntTopSentinel.current && !gntRef.current.backDone) {
+        if (gntTopSentinel.current.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevGnt()
+      }
+      if (lxxTopSentinel.current && !lxxRef.current.backDone) {
+        if (lxxTopSentinel.current.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevLxx()
+      }
     }
 
     panel.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => panel.removeEventListener('scroll', onScroll)
-  }, [loadMoreGnt, loadMoreLxx])
+  }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
 
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
 
@@ -447,28 +517,37 @@ export function GreekReader() {
             item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
           )
           if (targetIdx !== -1) {
-            // Hold the loading lock so scroll-sentinels don't race with us
+            // Pre-load target + up to 2 preceding chapters so the user can scroll up immediately.
+            const PRE = 2
+            const preloadStart = Math.max(0, targetIdx - PRE)
+            const idxsToFetch  = Array.from({ length: targetIdx - preloadStart + 1 }, (_, i) => preloadStart + i)
+
             if (isLxx) lxxLoading.current = true
             else       gntLoading.current = true
 
-            const section = await fetchChapter(queue[targetIdx])
+            const fetched = await Promise.all(idxsToFetch.map(i => fetchChapter(queue[i])))
 
             if (isLxx) lxxLoading.current = false
             else       gntLoading.current = false
 
-            if (section) {
+            const validSections = fetched.filter((s): s is TextSection => s !== null)
+            if (validSections.length > 0) {
               const newQueueIdx = targetIdx + 1
               const isDone      = newQueueIdx >= queue.length
-              // Reset the corpus to this chapter; queueIdx means the sentinel
-              // will continue loading from the *next* chapter on scroll.
-              if (isLxx) setLxx({ sections: [section], queueIdx: newQueueIdx, done: isDone })
-              else       setGnt({ sections: [section], queueIdx: newQueueIdx, done: isDone })
+              const newBackIdx  = preloadStart - 1   // next chapter to prepend when scrolling up
+              const backDone    = newBackIdx < 0
 
-              // Scroll to specific verse if given, otherwise to chapter top
+              if (isLxx) setLxx({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
+              else       setGnt({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
+
+              // Always scroll to target chapter's first verse (or the specific verse).
+              const targetSection = validSections[validSections.length - 1]
               const vId = ref.verse
-                ? (section.verses.find((v: BiblicalVerse) => v.verse === ref.verse)?.id ?? null)
-                : null
+                ? (targetSection.verses.find((v: BiblicalVerse) => v.verse === ref.verse)?.id ?? targetSection.verses[0]?.id ?? null)
+                : targetSection.verses[0]?.id ?? null
               setHighlightedVerse(vId)
+              // Reset scroll so the scrollIntoView from the highlightedVerse effect can
+              // position correctly; the effect fires after the DOM is updated.
               if (textPanelRef.current) textPanelRef.current.scrollTop = 0
             }
           }
@@ -1166,10 +1245,12 @@ export function GreekReader() {
             : <div>{searchResults.map(v => renderVerseRow(v))}</div>
         ) : (
           <div>
+            {!gnt.backDone && <div ref={gntTopSentinel} className="h-1" aria-hidden />}
             {renderSections(gnt.sections)}
             {!gnt.done && <div ref={gntSentinel} className="h-1" aria-hidden />}
 
             <div className="mt-10">
+              {!lxx.backDone && <div ref={lxxTopSentinel} className="h-1" aria-hidden />}
               {renderSections(lxx.sections)}
               {!lxx.done && <div ref={lxxSentinel} className="h-1" aria-hidden />}
             </div>
