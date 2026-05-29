@@ -94,7 +94,7 @@ const sections: Section[] = [
   /* ── MIN 1: 1st & 2nd Declension ─────────── */
   {
     id: 1,
-    label: 'Min. 1',
+    label: 'Ess. 1',
     title: '1st & 2nd Declension Endings',
     content: (
       <MorphTable
@@ -120,7 +120,7 @@ const sections: Section[] = [
   /* ── MIN 2: 3rd Declension ────────────────── */
   {
     id: 2,
-    label: 'Min. 2',
+    label: 'Ess. 2',
     title: '3rd Declension Endings',
     content: (
       <MorphTable
@@ -146,7 +146,7 @@ const sections: Section[] = [
   /* ── MIN 3: Present & Imperfect Endings ───── */
   {
     id: 3,
-    label: 'Min. 3',
+    label: 'Ess. 3',
     title: 'Present & Imperfect Tense Endings',
     content: (
       <>
@@ -191,7 +191,7 @@ const sections: Section[] = [
   /* ── MIN 4: Tense Identifiers ──────────────── */
   {
     id: 4,
-    label: 'Min. 4',
+    label: 'Ess. 4',
     title: 'Tense Identifiers',
     content: (
       <MorphTable
@@ -212,7 +212,7 @@ const sections: Section[] = [
   /* ── MIN 5: Applying Tense Identifiers ──────── */
   {
     id: 5,
-    label: 'Min. 5',
+    label: 'Ess. 5',
     title: 'Applying Tense Identifiers',
     content: (
       <>
@@ -250,7 +250,7 @@ const sections: Section[] = [
   /* ── MIN 6: Participles ───────────────────── */
   {
     id: 6,
-    label: 'Min. 6',
+    label: 'Ess. 6',
     title: 'Participle Endings',
     content: (
       <>
@@ -297,7 +297,7 @@ const sections: Section[] = [
   /* ── MIN 7: Subjunctive & Imperative ─────── */
   {
     id: 7,
-    label: 'Min. 7',
+    label: 'Ess. 7',
     title: 'Subjunctive & Imperative',
     content: (
       <>
@@ -383,7 +383,7 @@ const sections: Section[] = [
   /* ── MIN 8: ‒μι Verbs ──────────────────────── */
   {
     id: 8,
-    label: 'Min. 8',
+    label: 'Ess. 8',
     title: '‒μι Verbs',
     content: (
       <>
@@ -434,6 +434,11 @@ export function MorphologyView() {
 
   return (
     <div className="flex flex-col min-h-0">
+      {/* Page heading */}
+      <div className="px-4 pt-4 pb-3">
+        <h1 className="text-2xl font-bold text-gray-900">Essential Endings</h1>
+      </div>
+
       {/* Section selector */}
       <div className="flex gap-1.5 flex-wrap px-4 py-3 border-b border-gray-100 bg-white">
         {sections.map(s => (
