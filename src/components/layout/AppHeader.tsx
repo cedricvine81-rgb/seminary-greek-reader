@@ -23,24 +23,24 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </span>
         </Link>
 
-        {/* Center nav */}
-        <nav className="hidden md:flex items-center gap-1">
-          <Link href="/reader" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookOpen size={15} /> Reader
+        {/* Center nav — icons only on mobile, icons + text on md+ */}
+        <nav className="flex items-center gap-0.5">
+          <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <BookOpen size={18} /> <span className="hidden md:inline">Reader</span>
           </Link>
-          <Link href="/vocab" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookMarked size={15} /> Vocab
+          <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <BookMarked size={18} /> <span className="hidden md:inline">Vocab</span>
           </Link>
-          <Link href="/morphology" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Table2 size={15} /> Morphology
+          <Link href="/morphology" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <Table2 size={18} /> <span className="hidden md:inline">Morphology</span>
           </Link>
           {isAuthenticated && userRole === 'INSTRUCTOR' && (
-            <Link href="/instructor" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
+            <Link href="/instructor" className="hidden md:flex px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
               Dashboard
             </Link>
           )}
           {isAuthenticated && userRole === 'STUDENT' && (
-            <Link href="/student" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
+            <Link href="/student" className="hidden md:flex px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
               Dashboard
             </Link>
           )}
