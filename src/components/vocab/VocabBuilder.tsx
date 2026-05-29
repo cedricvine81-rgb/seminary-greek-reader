@@ -1,7 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, List, X, BookOpen } from 'lucide-react'
-import { MorphologyView } from './MorphologyView'
+import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -27,7 +26,7 @@ interface WordProgress {
 }
 
 type ProgressMap = Record<string, WordProgress>
-type Tab = 'study' | 'flashcards' | 'browse' | 'morphology'
+type Tab = 'study' | 'flashcards' | 'browse'
 type StudyMode = 'greek-to-english' | 'english-to-greek'
 
 interface Subsection {
@@ -230,9 +229,8 @@ export function VocabBuilder() {
   }
 
   const TABS = [
-    { id: 'study'      as Tab, icon: <GraduationCap size={14} />, label: 'Study',      action: () => setTab('study') },
-    { id: 'browse'     as Tab, icon: <Search size={14} />,        label: 'Browse',     action: () => setTab('browse') },
-    { id: 'morphology' as Tab, icon: <BookOpen size={14} />,      label: 'Morphology', action: () => setTab('morphology') },
+    { id: 'study'  as Tab, icon: <GraduationCap size={14} />, label: 'Study',  action: () => setTab('study') },
+    { id: 'browse' as Tab, icon: <Search size={14} />,        label: 'Browse', action: () => setTab('browse') },
   ]
 
   return (
@@ -281,12 +279,6 @@ export function VocabBuilder() {
       )}
 
       {tab === 'browse' && <BrowseView progress={progress} />}
-
-      {tab === 'morphology' && (
-        <div className="-mx-4 sm:-mx-6 lg:-mx-8">
-          <MorphologyView />
-        </div>
-      )}
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
-import { BookOpen, BookMarked } from 'lucide-react'
+import { BookOpen, BookMarked, Table2 } from 'lucide-react'
 
 interface AppHeaderProps {
   isAuthenticated?: boolean
@@ -30,6 +30,9 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </Link>
           <Link href="/vocab" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <BookMarked size={15} /> Vocab
+          </Link>
+          <Link href="/morphology" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <Table2 size={15} /> Morphology
           </Link>
           {isAuthenticated && userRole === 'INSTRUCTOR' && (
             <Link href="/instructor" className="px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
