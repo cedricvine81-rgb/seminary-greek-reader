@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, User, LogIn, UserPlus, LogOut, Settings } from 'lucide-react'
+import { Menu, X, User, LogIn, UserPlus, LogOut, Settings, BookOpen, BookMarked, Table2 } from 'lucide-react'
 
 interface AccountMenuProps {
   isAuthenticated: boolean
@@ -45,6 +45,20 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
 
       {open && (
         <div className="absolute right-0 top-11 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
+
+          {/* Page navigation — only shown on mobile (hidden on md+, where the top bar handles it) */}
+          <div className="md:hidden border-b border-gray-100 pb-1 mb-1">
+            <Link href="/reader" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
+              <BookOpen size={15} /> Reader
+            </Link>
+            <Link href="/vocab" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
+              <BookMarked size={15} /> Vocab
+            </Link>
+            <Link href="/morphology" className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setOpen(false)}>
+              <Table2 size={15} /> Morphology
+            </Link>
+          </div>
+
           {isAuthenticated ? (
             <>
               <div className="px-4 py-2 border-b border-gray-100">
