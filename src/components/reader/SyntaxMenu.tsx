@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { X, Info } from 'lucide-react'
 import type { VerseWord } from '@/types/biblical-text'
 import type { SyntaxEntry, SyntaxContext, WallaceCategory } from '@/lib/wallace-categories'
@@ -60,17 +60,23 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
   const [selectedPrep, setSelectedPrep] = useState<string>(ctx.governingPrep ?? 'none')
   const [showPrepTooltip, setShowPrepTooltip] = useState(false)
+  // Lazy-init so SSR never touches window
+  const [isMobile] = useState<boolean>(() =>
+    typeof window !== 'undefined' && window.innerWidth < 640
+  )
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
-    function onMouse(e: MouseEvent) {
+    function onOutside(e: MouseEvent | TouchEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) onClose()
     }
     document.addEventListener('keydown', onKey)
-    document.addEventListener('mousedown', onMouse)
+    document.addEventListener('mousedown', onOutside)
+    document.addEventListener('touchstart', onOutside)
     return () => {
       document.removeEventListener('keydown', onKey)
-      document.removeEventListener('mousedown', onMouse)
+      document.removeEventListener('mousedown', onOutside)
+      document.removeEventListener('touchstart', onOutside)
     }
   }, [onClose])
 
@@ -95,12 +101,27 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
   const hasContent = cats.length > 0 || proiel !== null || gbi !== null || abs !== null
 
+  const menuStyle: React.CSSProperties = isMobile
+    ? { position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000, maxHeight: '75vh' }
+    : { position: 'fixed', top: y, left: Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 396), zIndex: 1000, width: 380, maxHeight: '75vh' }
+
+  const menuClass = isMobile
+    ? 'bg-white border-t border-gray-200 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden'
+    : 'bg-white border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden'
+
   return (
     <div
       ref={ref}
-      style={{ position: 'fixed', top: y, left: x, zIndex: 1000, width: 380, maxHeight: '75vh' }}
-      className="bg-white border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden"
+      style={menuStyle}
+      className={menuClass}
     >
+      {/* ── Drag indicator (mobile only) ── */}
+      {isMobile && (
+        <div className="flex justify-center pt-2.5 pb-1 shrink-0">
+          <div className="w-10 h-1 rounded-full bg-gray-300" />
+        </div>
+      )}
+
       {/* ── Header ── */}
       <div className="flex items-start justify-between gap-2 px-4 pt-3 pb-2 border-b border-gray-100 shrink-0">
         <div>

@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useRef } from 'react'
 import { clsx } from 'clsx'
 import type { VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -18,6 +18,31 @@ interface GreekWordProps {
 }
 
 export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWord, onHover, onClick, onRightClick }: GreekWordProps) {
+  // Long-press state for touch devices (fires the same handler as desktop right-click)
+  const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const longPressCoords = useRef<{ x: number; y: number } | null>(null)
+
+  function handleTouchStart(e: React.TouchEvent) {
+    if (!onRightClick) return
+    const touch = e.touches[0]
+    longPressCoords.current = { x: touch.clientX, y: touch.clientY }
+    longPressTimer.current = setTimeout(() => {
+      if (longPressCoords.current) {
+        onRightClick(word, longPressCoords.current.x, longPressCoords.current.y)
+      }
+      longPressTimer.current  = null
+      longPressCoords.current = null
+    }, 500)
+  }
+
+  function cancelLongPress() {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current)
+      longPressTimer.current = null
+    }
+    longPressCoords.current = null
+  }
+
   function buildInfo(): LexicalInfoPanel | null {
     if (!word.lexeme) return null
     const parse = word.parses?.[0]
@@ -42,7 +67,7 @@ export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWor
   return (
     <span
       className={clsx(
-        'greek-word cursor-pointer',
+        'greek-word cursor-pointer select-none',
         isActive && 'active',
         isMatch && 'text-red-600 font-semibold',
       )}
@@ -51,6 +76,9 @@ export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWor
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(buildInfo())}
       onContextMenu={onRightClick ? e => { e.preventDefault(); onRightClick(word, e.clientX, e.clientY) } : undefined}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={cancelLongPress}
+      onTouchMove={cancelLongPress}
     >
       {word.surface}
     </span>
