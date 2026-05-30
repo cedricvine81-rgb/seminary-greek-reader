@@ -90,6 +90,8 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
     ...ctx,
     governingPrep: selectedPrep,
     wordLexeme: word.lexeme?.lexeme ?? word.surface,
+    // When ABS identifies an accusative as a direct object, align Wallace to it.
+    absFunction: absEntry?.function ?? null,
   }
 
   const cats = wallaceOn ? getWallaceCategories(syntax, parse, effectiveCtx) : []
