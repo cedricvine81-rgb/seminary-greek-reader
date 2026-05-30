@@ -468,26 +468,26 @@ function FlashcardPlayer({
           )}
         </div>
 
-        {/* Got it → Proceed column: appears when card is flipped, stays fixed so
-            cursor barely moves between the two clicks */}
+        {/* Got it → Proceed column: zero gap so Proceed appears directly under
+            Got it — cursor doesn't need to move between the two clicks */}
         {flipped && (
-          <div className="flex flex-col gap-2 justify-center">
+          <div className="flex flex-col justify-center">
             <button
               onClick={() => setGotItClicked(true)}
               disabled={gotItClicked}
-              className={`btn flex-col gap-0.5 py-3 px-4 w-24 border ${
+              className={`flex flex-col items-center gap-0.5 py-3 px-4 w-24 border font-medium transition-colors ${
                 gotItClicked
-                  ? 'bg-green-50 border-green-300 text-green-600 cursor-default'
-                  : 'bg-white border-green-200 text-green-700 hover:bg-green-50'
+                  ? 'bg-green-50 border-green-300 text-green-600 cursor-default rounded-t-lg rounded-b-none'
+                  : 'bg-white border-green-200 text-green-700 hover:bg-green-50 rounded-lg'
               }`}
             >
-              <span className="text-base font-medium">{gotItClicked ? '✓ Got it' : 'Got it'}</span>
+              <span className="text-base">{gotItClicked ? '✓ Got it' : 'Got it'}</span>
               <span className="text-xs text-gray-300 font-normal">[3]</span>
             </button>
             {gotItClicked && (
               <button
                 onClick={() => onAdvance(4)}
-                className="btn flex-col gap-0.5 bg-green-600 hover:bg-green-700 text-white py-3 px-4 w-24 border border-green-600"
+                className="flex flex-col items-center gap-0.5 bg-green-600 hover:bg-green-700 text-white py-3 px-4 w-24 border border-green-600 rounded-t-none rounded-b-lg transition-colors"
               >
                 <span className="text-base font-medium">Proceed</span>
                 <span className="text-xs text-green-200 font-normal">→</span>
