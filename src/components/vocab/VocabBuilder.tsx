@@ -14,6 +14,7 @@ interface BgvbWord {
   pos: string
   section: number
   freq: number | null
+  order?: number  // PDF frequency rank (1 = most frequent); used for subsection sorting
 }
 
 interface WordProgress {
@@ -61,14 +62,23 @@ const POS_LABELS: Record<string, string> = {
   Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
 }
 
-// Pre-compute subsections: 20-word chunks per section, sorted by freq desc
+// Pre-compute subsections: 20-word chunks per section, sorted by PDF frequency rank
+// Words with an `order` field (1 = most frequent) are sorted ascending by order.
+// Words without order fall after ranked words, sorted by freq desc as fallback.
 // WORD_SUBSECTION maps each word → its subsection key (e.g. "1-A")
 const SECTION_SUBSECTIONS: Record<number, Subsection[]> = {}
 const WORD_SUBSECTION: Record<string, string> = {}
 
 ALL_SECTIONS.forEach(s => {
   const sectionWords = [...WORDS.filter(w => w.section === s)]
-    .sort((a, b) => (b.freq ?? 0) - (a.freq ?? 0))
+    .sort((a, b) => {
+      // Primary: order field (ascending: lower order = more frequent = first)
+      if (a.order !== undefined && b.order !== undefined) return a.order - b.order
+      if (a.order !== undefined) return -1   // a has order, comes first
+      if (b.order !== undefined) return 1    // b has order, comes first
+      // Fallback: freq descending
+      return (b.freq ?? 0) - (a.freq ?? 0)
+    })
   const subs: Subsection[] = []
   for (let i = 0; i < sectionWords.length; i += 20) {
     const chunk = sectionWords.slice(i, i + 20)

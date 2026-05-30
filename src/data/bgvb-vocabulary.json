@@ -5,7 +5,8 @@
     "gloss": "for",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 2
   },
   {
     "word": "καί",
@@ -13,7 +14,8 @@
     "gloss": "and, also, likewise",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 11
   },
   {
     "word": "ἐν",
@@ -21,7 +23,8 @@
     "gloss": "(with dat.) in",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 8
   },
   {
     "word": "ὁ",
@@ -29,7 +32,8 @@
     "gloss": "the",
     "pos": "Art",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 14
   },
   {
     "word": "ἐκ",
@@ -37,7 +41,8 @@
     "gloss": "from out, from",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 7
   },
   {
     "word": "οὐ",
@@ -45,7 +50,8 @@
     "gloss": "no, not",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 17
   },
   {
     "word": "μή",
@@ -53,7 +59,8 @@
     "gloss": "not, lest",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 13
   },
   {
     "word": "εἰμί",
@@ -61,7 +68,8 @@
     "gloss": "am, exist",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 5
   },
   {
     "word": "θεός",
@@ -69,7 +77,8 @@
     "gloss": "god",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 9
   },
   {
     "word": "αὐτός",
@@ -77,7 +86,8 @@
     "gloss": "he, she, it; same",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 1
   },
   {
     "word": "κατά",
@@ -85,7 +95,8 @@
     "gloss": "(with gen.) down, against; (with acc.) according to",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 32
   },
   {
     "word": "γράφω",
@@ -93,7 +104,8 @@
     "gloss": "write",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 88
   },
   {
     "word": "ἀποκρίνομαι",
@@ -101,7 +113,8 @@
     "gloss": "answer, reply",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 64
   },
   {
     "word": "πνεῦμα",
@@ -109,7 +122,8 @@
     "gloss": "wind, breath, spirit",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 59
   },
   {
     "word": "οὐρανός",
@@ -117,7 +131,8 @@
     "gloss": "sky, heaven",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 56
   },
   {
     "word": "περί",
@@ -125,7 +140,8 @@
     "gloss": "(with gen.) about, concerning; (with acc.) around",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 58
   },
   {
     "word": "θέλω",
@@ -133,7 +149,8 @@
     "gloss": "will, wish, desire",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 71
   },
   {
     "word": "δύναμαι",
@@ -141,7 +158,8 @@
     "gloss": "am able, can",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 68
   },
   {
     "word": "ἀνήρ",
@@ -149,7 +167,8 @@
     "gloss": "man",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 63
   },
   {
     "word": "υἱός",
@@ -157,7 +176,8 @@
     "gloss": "son, descendent",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 61
   },
   {
     "word": "πόλις",
@@ -165,7 +185,8 @@
     "gloss": "city",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 101
   },
   {
     "word": "εἰσέρχομαι",
@@ -173,7 +194,8 @@
     "gloss": "go into, come in, enter",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 91
   },
   {
     "word": "μέν",
@@ -181,7 +203,8 @@
     "gloss": "indeed, on the one hand",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 97
   },
   {
     "word": "χείρ",
@@ -189,7 +212,8 @@
     "gloss": "hand",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 103
   },
   {
     "word": "ἐξέρχομαι",
@@ -197,7 +221,8 @@
     "gloss": "go out, come out",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 70
   },
   {
     "word": "εὑρίσκω",
@@ -205,7 +230,8 @@
     "gloss": "find, discover",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 93
   },
   {
     "word": "ἄγγελος",
@@ -213,7 +239,8 @@
     "gloss": "angel, messenger",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 84
   },
   {
     "word": "Παῦλος",
@@ -221,7 +248,8 @@
     "gloss": "Paul",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 100
   },
   {
     "word": "ἔθνος",
@@ -229,7 +257,8 @@
     "gloss": "nation, the Gentiles",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 90
   },
   {
     "word": "δόξα",
@@ -237,7 +266,8 @@
     "gloss": "glory, splendor, brightness",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 89
   },
   {
     "word": "παρά",
@@ -245,7 +275,8 @@
     "gloss": "(with gen.) from; (with dat.) at, by; (with acc.) near",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 99
   },
   {
     "word": "κόσμος",
@@ -253,7 +284,8 @@
     "gloss": "the world, universe",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 96
   },
   {
     "word": "καρδία",
@@ -261,7 +293,8 @@
     "gloss": "heart",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 95
   },
   {
     "word": "καθώς",
@@ -269,7 +302,8 @@
     "gloss": "just as, as",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 94
   },
   {
     "word": "ἁμαρτία",
@@ -277,7 +311,8 @@
     "gloss": "sin",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 85
   },
   {
     "word": "τότε",
@@ -285,7 +320,8 @@
     "gloss": "then",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 102
   },
   {
     "word": "ὑπό",
@@ -293,7 +329,8 @@
     "gloss": "(with gen.) by; (with acc.) under",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 83
   },
   {
     "word": "γίνομαι",
@@ -301,7 +338,8 @@
     "gloss": "am born, become, happen",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 25
   },
   {
     "word": "λαμβάνω",
@@ -309,7 +347,8 @@
     "gloss": "receive, take",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 51
   },
   {
     "word": "οὖν",
@@ -317,7 +356,8 @@
     "gloss": "therefore, then",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 35
   },
   {
     "word": "εἰ",
@@ -325,7 +365,8 @@
     "gloss": "if",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 27
   },
   {
     "word": "τέ",
@@ -333,7 +374,8 @@
     "gloss": "and, both",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 82
   },
   {
     "word": "μετά",
@@ -341,7 +383,8 @@
     "gloss": "(with gen.) with; (with acc.) after, behind",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 54
   },
   {
     "word": "πιστεύω",
@@ -349,7 +392,8 @@
     "gloss": "believe in, have faith in, trust",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 80
   },
   {
     "word": "ἐκεῖνος",
@@ -357,7 +401,8 @@
     "gloss": "that",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 69
   },
   {
     "word": "οἶδα",
@@ -365,7 +410,8 @@
     "gloss": "know, remember",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 55
   },
   {
     "word": "λόγος",
@@ -373,7 +419,8 @@
     "gloss": "word, speech",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 52
   },
   {
     "word": "ἅγιος",
@@ -381,7 +428,8 @@
     "gloss": "holy, sacred",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 62
   },
   {
     "word": "οὐδείς",
@@ -389,7 +437,8 @@
     "gloss": "no one, nothing",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 77
   },
   {
     "word": "γυνή",
@@ -397,7 +446,8 @@
     "gloss": "woman, wife",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 67
   },
   {
     "word": "γινώσκω",
@@ -405,7 +455,8 @@
     "gloss": "know, learn",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 66
   },
   {
     "word": "μαθητής",
@@ -413,7 +464,8 @@
     "gloss": "learner, disciple",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 53
   },
   {
     "word": "πίστις",
@@ -421,7 +473,8 @@
     "gloss": "faith, belief, trust",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 81
   },
   {
     "word": "Ἰουδαῖος",
@@ -429,7 +482,8 @@
     "gloss": "Jewish, Judean",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 72
   },
   {
     "word": "γῆ",
@@ -437,7 +491,8 @@
     "gloss": "earth, land",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 65
   },
   {
     "word": "πατήρ",
@@ -445,7 +500,8 @@
     "gloss": "father, ancestor",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 57
   },
   {
     "word": "νόμος",
@@ -453,7 +509,8 @@
     "gloss": "law",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 75
   },
   {
     "word": "μέγας",
@@ -461,7 +518,8 @@
     "gloss": "large, great",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 73
   },
   {
     "word": "ὄνομα",
@@ -469,7 +527,8 @@
     "gloss": "name",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 76
   },
   {
     "word": "τίς",
@@ -477,7 +536,8 @@
     "gloss": "who, which, what",
     "pos": "Interrog",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 38
   },
   {
     "word": "τὶς",
@@ -485,7 +545,8 @@
     "gloss": "anyone, anything; someone, something",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 39
   },
   {
     "word": "εἷς",
@@ -493,7 +554,8 @@
     "gloss": "one",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 47
   },
   {
     "word": "πᾶς",
@@ -501,7 +563,8 @@
     "gloss": "all, every",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 20
   },
   {
     "word": "οὗτος",
@@ -509,7 +572,8 @@
     "gloss": "this, he, she, it",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 18
   },
   {
     "word": "ὅς",
@@ -517,7 +581,8 @@
     "gloss": "who, which, what, that",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 15
   },
   {
     "word": "οὕτω",
@@ -525,7 +590,8 @@
     "gloss": "thus, so, in this manner",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 79
   },
   {
     "word": "ἄλλος",
@@ -533,7 +599,8 @@
     "gloss": "other, another",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 105
   },
   {
     "word": "ὅστις",
@@ -541,7 +608,8 @@
     "gloss": "whosoever, whichsoever, whatsoever",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 114
   },
   {
     "word": "σάρξ",
@@ -549,7 +617,8 @@
     "gloss": "flesh, body",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 120
   },
   {
     "word": "ὅσος",
@@ -557,7 +626,8 @@
     "gloss": "as great, as far, how far",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 159
   },
   {
     "word": "ὅλος",
@@ -565,7 +635,8 @@
     "gloss": "entire, whole, complete",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 158
   },
   {
     "word": "ἀποθνῄσκω",
@@ -573,7 +644,8 @@
     "gloss": "am dying, die",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 148
   },
   {
     "word": "νῦν",
@@ -581,7 +653,8 @@
     "gloss": "now, already",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 113
   },
   {
     "word": "ἐγείρω",
@@ -589,7 +662,8 @@
     "gloss": "raise",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 107
   },
   {
     "word": "δοῦλος",
@@ -597,7 +671,8 @@
     "gloss": "slave",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 131
   },
   {
     "word": "βάλλω",
@@ -605,7 +680,8 @@
     "gloss": "throw, place",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 129
   },
   {
     "word": "αἰών",
@@ -613,7 +689,8 @@
     "gloss": "age, eternity",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 124
   },
   {
     "word": "πορεύομαι",
@@ -621,7 +698,8 @@
     "gloss": "go, proceed",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 118
   },
   {
     "word": "λαός",
@@ -629,7 +707,8 @@
     "gloss": "people, crowd",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 112
   },
   {
     "word": "ἀποστέλλω",
@@ -637,7 +716,8 @@
     "gloss": "send away, dismiss, send out",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 127
   },
   {
     "word": "πῶς",
@@ -645,7 +725,8 @@
     "gloss": "how, in what manner",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 141
   },
   {
     "word": "σύν",
@@ -653,7 +734,8 @@
     "gloss": "(with dat.) with",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 142
   },
   {
     "word": "ἐκκλησία",
@@ -661,7 +743,8 @@
     "gloss": "assembly, congregation, church",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 151
   },
   {
     "word": "παραδίδωμι",
@@ -669,7 +752,8 @@
     "gloss": "hand over, hand down, entrust",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 140
   },
   {
     "word": "ζάω",
@@ -677,7 +761,8 @@
     "gloss": "live",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 109
   },
   {
     "word": "ὅταν",
@@ -685,7 +770,8 @@
     "gloss": "when, whenever",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 139
   },
   {
     "word": "νεκρός",
@@ -693,7 +779,8 @@
     "gloss": "dead, a corpse",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 138
   },
   {
     "word": "βασιλεύς",
@@ -701,7 +788,8 @@
     "gloss": "king, ruler",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 149
   },
   {
     "word": "ἀλήθεια",
@@ -709,7 +797,8 @@
     "gloss": "truth, truthfulness",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 146
   },
   {
     "word": "φωνή",
@@ -717,7 +806,8 @@
     "gloss": "sound, voice",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 143
   },
   {
     "word": "ἐξουσία",
@@ -725,7 +815,8 @@
     "gloss": "power, authority",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 152
   },
   {
     "word": "ἀγαθός",
@@ -733,7 +824,8 @@
     "gloss": "good",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 144
   },
   {
     "word": "μένω",
@@ -741,7 +833,8 @@
     "gloss": "remain, abide, stay",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 137
   },
   {
     "word": "ζητέω",
@@ -749,7 +842,8 @@
     "gloss": "seek, look for, ask",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 153
   },
   {
     "word": "ζωή",
@@ -757,7 +851,8 @@
     "gloss": "life",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 134
   },
   {
     "word": "Ἰωάννης",
@@ -765,7 +860,8 @@
     "gloss": "John",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 136
   },
   {
     "word": "θάνατος",
@@ -773,7 +869,8 @@
     "gloss": "death",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 135
   },
   {
     "word": "Πέτρος",
@@ -781,7 +878,8 @@
     "gloss": "Peter",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 117
   },
   {
     "word": "βασιλεία",
@@ -789,7 +887,8 @@
     "gloss": "kingdom, reign",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 87
   },
   {
     "word": "ὄχλος",
@@ -797,7 +896,8 @@
     "gloss": "crowd, multitude",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 98
   },
   {
     "word": "ἄν",
@@ -805,7 +905,8 @@
     "gloss": "(an untranslatable conditional particle)",
     "pos": "Particle",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 86
   },
   {
     "word": "ἀπέρχομαι",
@@ -813,7 +914,8 @@
     "gloss": "depart, go away",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 126
   },
   {
     "word": "οὐδέ",
@@ -821,7 +923,8 @@
     "gloss": "neither, nor, and not",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 115
   },
   {
     "word": "ἀγαπάω",
@@ -829,7 +932,8 @@
     "gloss": "love",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 104
   },
   {
     "word": "πάλιν",
@@ -837,7 +941,8 @@
     "gloss": "again, further",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 116
   },
   {
     "word": "καλέω",
@@ -845,7 +950,8 @@
     "gloss": "call, invite",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 111
   },
   {
     "word": "προφήτης",
@@ -853,7 +959,8 @@
     "gloss": "prophet",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 119
   },
   {
     "word": "βλέπω",
@@ -861,7 +968,8 @@
     "gloss": "look, see",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 130
   },
   {
     "word": "χάρις",
@@ -869,7 +977,8 @@
     "gloss": "grace, favor, kindness",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 123
   },
   {
     "word": "δεῖ",
@@ -877,7 +986,8 @@
     "gloss": "it is necessary, one must",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 150
   },
   {
     "word": "ἕως",
@@ -885,7 +995,8 @@
     "gloss": "until, as far as",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 108
   },
   {
     "word": "ἀμήν",
@@ -893,7 +1004,8 @@
     "gloss": "truly, amen, so let it be",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 125
   },
   {
     "word": "ὑπέρ",
@@ -901,7 +1013,8 @@
     "gloss": "(with gen.) on behalf of; (with acc.) above",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 122
   },
   {
     "word": "ἀφίημι",
@@ -909,7 +1022,8 @@
     "gloss": "leave, let go, pardon",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 106
   },
   {
     "word": "ἵστημι",
@@ -917,7 +1031,8 @@
     "gloss": "cause to stand, place, set",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 110
   },
   {
     "word": "δύο",
@@ -925,7 +1040,8 @@
     "gloss": "two",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 133
   },
   {
     "word": "δύναμις",
@@ -933,7 +1049,8 @@
     "gloss": "power, strength",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 132
   },
   {
     "word": "ἀρχιερεύς",
@@ -941,7 +1058,8 @@
     "gloss": "high priest",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 128
   },
   {
     "word": "σῶμα",
@@ -949,7 +1067,8 @@
     "gloss": "body, flesh",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 121
   },
   {
     "word": "μέλλω",
@@ -957,7 +1076,8 @@
     "gloss": "am about to, intend",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 156
   },
   {
     "word": "κρίνω",
@@ -965,7 +1085,8 @@
     "gloss": "judge, decide",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 155
   },
   {
     "word": "σῴζω",
@@ -973,7 +1094,8 @@
     "gloss": "save, heal",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 161
   },
   {
     "word": "ἀνίστημι",
@@ -981,7 +1103,8 @@
     "gloss": "raise, rise, stand up",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 147
   },
   {
     "word": "ἀγάπη",
@@ -989,7 +1112,8 @@
     "gloss": "love",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 145
   },
   {
     "word": "ψυχή",
@@ -997,7 +1121,8 @@
     "gloss": "soul, life",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 162
   },
   {
     "word": "ἔργον",
@@ -1005,7 +1130,8 @@
     "gloss": "work, labor",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 92
   },
   {
     "word": "οἶκος",
@@ -1013,7 +1139,8 @@
     "gloss": "house, household, dwelling",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 157
   },
   {
     "word": "ἴδιος",
@@ -1021,7 +1148,8 @@
     "gloss": "one's own, personal",
     "pos": "Adj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 154
   },
   {
     "word": "ὥρα",
@@ -1029,7 +1157,8 @@
     "gloss": "hour, season",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 163
   },
   {
     "word": "παρακαλέω",
@@ -1037,7 +1166,8 @@
     "gloss": "comfort, invite, exhort",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 160
   },
   {
     "word": "λαλέω",
@@ -1045,7 +1175,8 @@
     "gloss": "speak, say",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 50
   },
   {
     "word": "ἤ",
@@ -1053,7 +1184,8 @@
     "gloss": "or, either",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 48
   },
   {
     "word": "ἀκούω",
@@ -1061,7 +1193,8 @@
     "gloss": "hear, listen",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 43
   },
   {
     "word": "ἔχω",
@@ -1069,7 +1202,8 @@
     "gloss": "have, hold",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 30
   },
   {
     "word": "ἔρχομαι",
@@ -1077,7 +1211,8 @@
     "gloss": "come, go",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 29
   },
   {
     "word": "ἡμέρα",
@@ -1085,7 +1220,8 @@
     "gloss": "day",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 49
   },
   {
     "word": "ἐάν",
@@ -1093,7 +1229,8 @@
     "gloss": "if",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 45
   },
   {
     "word": "δίδωμι",
@@ -1101,7 +1238,8 @@
     "gloss": "offer, give",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 44
   },
   {
     "word": "ἀδελφός",
@@ -1109,7 +1247,8 @@
     "gloss": "brother",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 42
   },
   {
     "word": "ἵνα",
@@ -1117,7 +1256,8 @@
     "gloss": "in order that, so that",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 31
   },
   {
     "word": "διά",
@@ -1125,7 +1265,8 @@
     "gloss": "through (with gen.); on account of, because of (with acc.)",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 26
   },
   {
     "word": "ἄνθρωπος",
@@ -1133,7 +1274,8 @@
     "gloss": "man, human being, person",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 23
   },
   {
     "word": "ἀλλά",
@@ -1141,7 +1283,8 @@
     "gloss": "but, rather, yet",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 22
   },
   {
     "word": "πρός",
@@ -1149,7 +1292,8 @@
     "gloss": "(with acc.) to, towards, with; (with dat.) near, at",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 37
   },
   {
     "word": "κύριος",
@@ -1157,7 +1301,8 @@
     "gloss": "lord, master, the Lord",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 33
   },
   {
     "word": "Χριστός",
@@ -1165,7 +1310,8 @@
     "gloss": "the Anointed One, the Messiah, the Christ",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 40
   },
   {
     "word": "ποιέω",
@@ -1173,7 +1319,8 @@
     "gloss": "do, make",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 36
   },
   {
     "word": "ἀπό",
@@ -1181,7 +1328,8 @@
     "gloss": "(with gen.) from, away from",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 24
   },
   {
     "word": "σύ",
@@ -1189,7 +1337,8 @@
     "gloss": "you",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 21
   },
   {
     "word": "ὡς",
@@ -1197,7 +1346,8 @@
     "gloss": "as, like, so",
     "pos": "Adv",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 41
   },
   {
     "word": "ἐπί",
@@ -1205,7 +1355,8 @@
     "gloss": "(with gen.) over, upon; (with dat.) on, in; (with acc.) on, against",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 28
   },
   {
     "word": "ὁράω",
@@ -1213,7 +1364,8 @@
     "gloss": "see, look upon",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 34
   },
   {
     "word": "ἐγώ",
@@ -1221,7 +1373,8 @@
     "gloss": "I",
     "pos": "Pron",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 4
   },
   {
     "word": "Ἰησοῦς",
@@ -1229,7 +1382,8 @@
     "gloss": "Jesus, Joshua",
     "pos": "Noun",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 10
   },
   {
     "word": "δέ",
@@ -1237,7 +1391,8 @@
     "gloss": "but, and",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 3
   },
   {
     "word": "ὅτι",
@@ -1245,7 +1400,8 @@
     "gloss": "that, since, because",
     "pos": "Conj",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 16
   },
   {
     "word": "λέγω",
@@ -1253,7 +1409,8 @@
     "gloss": "say, tell",
     "pos": "Verb",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 12
   },
   {
     "word": "εἰς",
@@ -1261,7 +1418,8 @@
     "gloss": "into, in",
     "pos": "Prep",
     "section": 1,
-    "freq": null
+    "freq": null,
+    "order": 6
   },
   {
     "word": "ἀνοίγω",
@@ -1269,7 +1427,8 @@
     "gloss": "open",
     "pos": "Verb",
     "section": 2,
-    "freq": 84
+    "freq": null,
+    "order": 206
   },
   {
     "word": "ἀναβαίνω",
@@ -1277,7 +1436,8 @@
     "gloss": "go up, embark, ascend",
     "pos": "Verb",
     "section": 2,
-    "freq": 84
+    "freq": null,
+    "order": 205
   },
   {
     "word": "ἀπόστολος",
@@ -1285,7 +1445,8 @@
     "gloss": "apostle, messenger",
     "pos": "Noun",
     "section": 2,
-    "freq": 83
+    "freq": null,
+    "order": 207
   },
   {
     "word": "ἄρχω",
@@ -1293,7 +1454,8 @@
     "gloss": "rule, be first; (mid.) begin",
     "pos": "Verb",
     "section": 2,
-    "freq": 83
+    "freq": null,
+    "order": 208
   },
   {
     "word": "ἕκαστος",
@@ -1301,7 +1463,8 @@
     "gloss": "each, every one",
     "pos": "Adj",
     "section": 2,
-    "freq": 82
+    "freq": null,
+    "order": 210
   },
   {
     "word": "δίκαιος",
@@ -1309,7 +1472,8 @@
     "gloss": "just, righteous",
     "pos": "Adj",
     "section": 2,
-    "freq": 82
+    "freq": null,
+    "order": 209
   },
   {
     "word": "ἐμός",
@@ -1317,7 +1481,8 @@
     "gloss": "mine, myself",
     "pos": "pron-posses",
     "section": 2,
-    "freq": 81
+    "freq": null,
+    "order": 212
   },
   {
     "word": "ἐκβάλλω",
@@ -1325,7 +1490,8 @@
     "gloss": "throw out, expel, cast",
     "pos": "Verb",
     "section": 2,
-    "freq": 81
+    "freq": null,
+    "order": 211
   },
   {
     "word": "κἀγώ",
@@ -1333,7 +1499,8 @@
     "gloss": "and I, but I",
     "pos": "Conj",
     "section": 2,
-    "freq": 81
+    "freq": null,
+    "order": 213
   },
   {
     "word": "καταβαίνω",
@@ -1341,7 +1508,8 @@
     "gloss": "go down, come down",
     "pos": "Verb",
     "section": 2,
-    "freq": 80
+    "freq": null,
+    "order": 214
   },
   {
     "word": "μᾶλλον",
@@ -1349,7 +1517,8 @@
     "gloss": "more, rather",
     "pos": "Adv",
     "section": 2,
-    "freq": 80
+    "freq": null,
+    "order": 215
   },
   {
     "word": "Μωϋσῆς",
@@ -1357,7 +1526,8 @@
     "gloss": "Moses",
     "pos": "Noun",
     "section": 2,
-    "freq": 79
+    "freq": null,
+    "order": 217
   },
   {
     "word": "ὅπου",
@@ -1365,7 +1535,8 @@
     "gloss": "where, since, insofar as",
     "pos": "Adv",
     "section": 2,
-    "freq": 79
+    "freq": null,
+    "order": 218
   },
   {
     "word": "μήτηρ",
@@ -1373,7 +1544,8 @@
     "gloss": "mother",
     "pos": "Noun",
     "section": 2,
-    "freq": 79
+    "freq": null,
+    "order": 216
   },
   {
     "word": "πέμπω",
@@ -1381,7 +1553,8 @@
     "gloss": "send",
     "pos": "Verb",
     "section": 2,
-    "freq": 78
+    "freq": null,
+    "order": 219
   },
   {
     "word": "πονηρός",
@@ -1389,7 +1562,8 @@
     "gloss": "evil, bad",
     "pos": "Adj",
     "section": 2,
-    "freq": 78
+    "freq": null,
+    "order": 220
   },
   {
     "word": "ὑπάγω",
@@ -1397,7 +1571,8 @@
     "gloss": "go away, depart",
     "pos": "Verb",
     "section": 2,
-    "freq": 77
+    "freq": null,
+    "order": 223
   },
   {
     "word": "ὥστε",
@@ -1405,7 +1580,8 @@
     "gloss": "so that, therefore",
     "pos": "Conj",
     "section": 2,
-    "freq": 77
+    "freq": null,
+    "order": 224
   },
   {
     "word": "στόμα",
@@ -1413,7 +1589,8 @@
     "gloss": "mouth, speech",
     "pos": "Noun",
     "section": 2,
-    "freq": 77
+    "freq": null,
+    "order": 221
   },
   {
     "word": "Ἀβραάμ",
@@ -1421,7 +1598,8 @@
     "gloss": "Abraham",
     "pos": "Noun",
     "section": 2,
-    "freq": 77
+    "freq": null,
+    "order": 225
   },
   {
     "word": "ἄγω",
@@ -1429,7 +1607,8 @@
     "gloss": "lead",
     "pos": "Verb",
     "section": 2,
-    "freq": 76
+    "freq": null,
+    "order": 226
   },
   {
     "word": "αἰτέω",
@@ -1437,7 +1616,8 @@
     "gloss": "ask, request, ask for",
     "pos": "Verb",
     "section": 2,
-    "freq": 76
+    "freq": null,
+    "order": 227
   },
   {
     "word": "ἀποκτείνω",
@@ -1445,7 +1625,8 @@
     "gloss": "put to death, kill",
     "pos": "Verb",
     "section": 2,
-    "freq": 75
+    "freq": null,
+    "order": 229
   },
   {
     "word": "αἰώνιος",
@@ -1453,7 +1634,8 @@
     "gloss": "eternal",
     "pos": "Adj",
     "section": 2,
-    "freq": 75
+    "freq": null,
+    "order": 228
   },
   {
     "word": "δώδεκα",
@@ -1461,7 +1643,8 @@
     "gloss": "twelve",
     "pos": "Adj",
     "section": 2,
-    "freq": 74
+    "freq": null,
+    "order": 231
   },
   {
     "word": "βαπτίζω",
@@ -1469,7 +1652,8 @@
     "gloss": "dip, baptize",
     "pos": "Verb",
     "section": 2,
-    "freq": 74
+    "freq": null,
+    "order": 230
   },
   {
     "word": "εὐαγγέλιον",
@@ -1477,7 +1661,8 @@
     "gloss": "gospel, the Good News",
     "pos": "Noun",
     "section": 2,
-    "freq": 73
+    "freq": null,
+    "order": 232
   },
   {
     "word": "ἱερός",
@@ -1485,7 +1670,8 @@
     "gloss": "temple",
     "pos": "Noun",
     "section": 2,
-    "freq": 73
+    "freq": null,
+    "order": 233
   },
   {
     "word": "κεφαλή",
@@ -1493,7 +1679,8 @@
     "gloss": "head",
     "pos": "Noun",
     "section": 2,
-    "freq": 72
+    "freq": null,
+    "order": 235
   },
   {
     "word": "Ἱεροσόλυμα",
@@ -1501,7 +1688,8 @@
     "gloss": "Jerusalem",
     "pos": "Noun",
     "section": 2,
-    "freq": 72
+    "freq": null,
+    "order": 252
   },
   {
     "word": "πίνω",
@@ -1509,7 +1697,8 @@
     "gloss": "drink",
     "pos": "Verb",
     "section": 2,
-    "freq": 71
+    "freq": null,
+    "order": 237
   },
   {
     "word": "μαρτυρέω",
@@ -1517,7 +1706,8 @@
     "gloss": "testify, bear witness",
     "pos": "Verb",
     "section": 2,
-    "freq": 71
+    "freq": null,
+    "order": 236
   },
   {
     "word": "σημεῖον",
@@ -1525,7 +1715,8 @@
     "gloss": "sign, miracle",
     "pos": "Noun",
     "section": 2,
-    "freq": 70
+    "freq": null,
+    "order": 240
   },
   {
     "word": "πρόσωπον",
@@ -1533,7 +1724,8 @@
     "gloss": "face",
     "pos": "Noun",
     "section": 2,
-    "freq": 70
+    "freq": null,
+    "order": 238
   },
   {
     "word": "πῦρ",
@@ -1541,7 +1733,8 @@
     "gloss": "fire",
     "pos": "Noun",
     "section": 2,
-    "freq": 70
+    "freq": null,
+    "order": 239
   },
   {
     "word": "χαίρω",
@@ -1549,7 +1742,8 @@
     "gloss": "rejoice, am glad",
     "pos": "Verb",
     "section": 2,
-    "freq": 69
+    "freq": null,
+    "order": 244
   },
   {
     "word": "Σίμων",
@@ -1557,7 +1751,8 @@
     "gloss": "Simon",
     "pos": "Noun",
     "section": 2,
-    "freq": 69
+    "freq": null,
+    "order": 241
   },
   {
     "word": "τηρέω",
@@ -1565,7 +1760,8 @@
     "gloss": "keep, guard, observe",
     "pos": "Verb",
     "section": 2,
-    "freq": 69
+    "freq": null,
+    "order": 242
   },
   {
     "word": "φῶς",
@@ -1573,7 +1769,8 @@
     "gloss": "light, source of light",
     "pos": "Noun",
     "section": 2,
-    "freq": 69
+    "freq": null,
+    "order": 243
   },
   {
     "word": "γραμματεύς",
@@ -1581,7 +1778,8 @@
     "gloss": "scribe, man of learning",
     "pos": "Noun",
     "section": 2,
-    "freq": 68
+    "freq": null,
+    "order": 246
   },
   {
     "word": "ἀπολύω",
@@ -1589,7 +1787,8 @@
     "gloss": "let go, send away, set free",
     "pos": "Verb",
     "section": 2,
-    "freq": 68
+    "freq": null,
+    "order": 245
   },
   {
     "word": "ἐντολή",
@@ -1597,7 +1796,8 @@
     "gloss": "commandment, order",
     "pos": "Noun",
     "section": 2,
-    "freq": 67
+    "freq": null,
+    "order": 249
   },
   {
     "word": "εἴτε",
@@ -1605,7 +1805,8 @@
     "gloss": "and if, whether, if",
     "pos": "Conj",
     "section": 2,
-    "freq": 67
+    "freq": null,
+    "order": 248
   },
   {
     "word": "δαιμόνιον",
@@ -1613,7 +1814,8 @@
     "gloss": "demon, evil spirit",
     "pos": "Noun",
     "section": 2,
-    "freq": 67
+    "freq": null,
+    "order": 247
   },
   {
     "word": "ἐσθίω",
@@ -1621,7 +1823,8 @@
     "gloss": "eat",
     "pos": "Verb",
     "section": 2,
-    "freq": 66
+    "freq": null,
+    "order": 251
   },
   {
     "word": "ἐρωτάω",
@@ -1629,7 +1832,8 @@
     "gloss": "ask, question, request",
     "pos": "Verb",
     "section": 2,
-    "freq": 66
+    "freq": null,
+    "order": 250
   },
   {
     "word": "καρπός",
@@ -1637,7 +1841,8 @@
     "gloss": "fruit, gain, crop",
     "pos": "Noun",
     "section": 2,
-    "freq": 65
+    "freq": null,
+    "order": 254
   },
   {
     "word": "Ἰσραήλ",
@@ -1645,7 +1850,8 @@
     "gloss": "Israel",
     "pos": "Noun",
     "section": 2,
-    "freq": 65
+    "freq": null,
+    "order": 253
   },
   {
     "word": "πιστός",
@@ -1653,7 +1859,8 @@
     "gloss": "trustworthy, faithful, believing",
     "pos": "Adj",
     "section": 2,
-    "freq": 64
+    "freq": null,
+    "order": 257
   },
   {
     "word": "ὄρος",
@@ -1661,7 +1868,8 @@
     "gloss": "mountain, hill",
     "pos": "Noun",
     "section": 2,
-    "freq": 64
+    "freq": null,
+    "order": 256
   },
   {
     "word": "πλοῖον",
@@ -1669,7 +1877,8 @@
     "gloss": "ship, vessel, boat",
     "pos": "Noun",
     "section": 2,
-    "freq": 64
+    "freq": null,
+    "order": 258
   },
   {
     "word": "φημί",
@@ -1677,7 +1886,8 @@
     "gloss": "say",
     "pos": "Verb",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 264
   },
   {
     "word": "φέρω",
@@ -1685,7 +1895,8 @@
     "gloss": "carry, bear",
     "pos": "Verb",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 263
   },
   {
     "word": "πρεσβύτερος",
@@ -1693,7 +1904,8 @@
     "gloss": "old; (as noun) elder",
     "pos": "Adj",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 259
   },
   {
     "word": "τρεῖς",
@@ -1701,7 +1913,8 @@
     "gloss": "three",
     "pos": "Adj",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 262
   },
   {
     "word": "σάββατον",
@@ -1709,7 +1922,8 @@
     "gloss": "Sabbath, week",
     "pos": "Noun",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 261
   },
   {
     "word": "ῥῆμα",
@@ -1717,7 +1931,8 @@
     "gloss": "word, saying; thing, matter",
     "pos": "Noun",
     "section": 2,
-    "freq": 63
+    "freq": null,
+    "order": 260
   },
   {
     "word": "ἀσπάζομαι",
@@ -1725,7 +1940,8 @@
     "gloss": "greet, salute",
     "pos": "Verb",
     "section": 2,
-    "freq": 62
+    "freq": null,
+    "order": 266
   },
   {
     "word": "ἀγαπητός",
@@ -1733,7 +1949,8 @@
     "gloss": "beloved, dear",
     "pos": "Adj",
     "section": 2,
-    "freq": 62
+    "freq": null,
+    "order": 265
   },
   {
     "word": "Γαλιλαία",
@@ -1741,7 +1958,8 @@
     "gloss": "Galilee",
     "pos": "Noun",
     "section": 2,
-    "freq": 62
+    "freq": null,
+    "order": 267
   },
   {
     "word": "Δαυίδ",
@@ -1749,7 +1967,8 @@
     "gloss": "David",
     "pos": "Noun",
     "section": 2,
-    "freq": 61
+    "freq": null,
+    "order": 268
   },
   {
     "word": "δοκέω",
@@ -1757,7 +1976,8 @@
     "gloss": "think, seem, believe",
     "pos": "Verb",
     "section": 2,
-    "freq": 61
+    "freq": null,
+    "order": 270
   },
   {
     "word": "δοξάζω",
@@ -1765,7 +1985,8 @@
     "gloss": "glorify, honor, praise",
     "pos": "Verb",
     "section": 2,
-    "freq": 61
+    "freq": null,
+    "order": 271
   },
   {
     "word": "διδάσκαλος",
@@ -1773,7 +1994,8 @@
     "gloss": "teacher",
     "pos": "Noun",
     "section": 2,
-    "freq": 61
+    "freq": null,
+    "order": 269
   },
   {
     "word": "θρόνος",
@@ -1781,7 +2003,8 @@
     "gloss": "throne",
     "pos": "Noun",
     "section": 2,
-    "freq": 60
+    "freq": null,
+    "order": 275
   },
   {
     "word": "ἤδη",
@@ -1789,7 +2012,8 @@
     "gloss": "now, already",
     "pos": "Adv",
     "section": 2,
-    "freq": 60
+    "freq": null,
+    "order": 273
   },
   {
     "word": "ἔξω",
@@ -1797,7 +2021,8 @@
     "gloss": "outside, out",
     "pos": "Adv",
     "section": 2,
-    "freq": 60
+    "freq": null,
+    "order": 272
   },
   {
     "word": "θέλημα",
@@ -1805,7 +2030,8 @@
     "gloss": "will, wish, desire",
     "pos": "Noun",
     "section": 2,
-    "freq": 60
+    "freq": null,
+    "order": 274
   },
   {
     "word": "ἱμάτιον",
@@ -1813,7 +2039,8 @@
     "gloss": "outer garment, garment",
     "pos": "Noun",
     "section": 2,
-    "freq": 60
+    "freq": null,
+    "order": 276
   },
   {
     "word": "ὧδε",
@@ -1821,7 +2048,8 @@
     "gloss": "here",
     "pos": "Adv",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 284
   },
   {
     "word": "νύξ",
@@ -1829,7 +2057,8 @@
     "gloss": "night, night-time",
     "pos": "Noun",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 279
   },
   {
     "word": "λίθος",
@@ -1837,7 +2066,8 @@
     "gloss": "stone",
     "pos": "Noun",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 278
   },
   {
     "word": "κηρύσσω",
@@ -1845,7 +2075,8 @@
     "gloss": "proclaim, herald, preach",
     "pos": "Verb",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 277
   },
   {
     "word": "προσκυνέω",
@@ -1853,7 +2084,8 @@
     "gloss": "worship",
     "pos": "Verb",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 280
   },
   {
     "word": "ὑπάρχω",
@@ -1861,7 +2093,8 @@
     "gloss": "am, exist, be present",
     "pos": "Verb",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 282
   },
   {
     "word": "χαρά",
@@ -1869,7 +2102,8 @@
     "gloss": "joy, gladness",
     "pos": "Noun",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 283
   },
   {
     "word": "συνάγω",
@@ -1877,7 +2111,8 @@
     "gloss": "gather together",
     "pos": "Verb",
     "section": 2,
-    "freq": 59
+    "freq": null,
+    "order": 281
   },
   {
     "word": "δεξιός",
@@ -1885,7 +2120,8 @@
     "gloss": "on the right hand, right",
     "pos": "Adj",
     "section": 2,
-    "freq": 58
+    "freq": null,
+    "order": 286
   },
   {
     "word": "ἀρχή",
@@ -1893,7 +2129,8 @@
     "gloss": "beginning; ruler, authority",
     "pos": "Noun",
     "section": 2,
-    "freq": 58
+    "freq": null,
+    "order": 285
   },
   {
     "word": "δέχομαι",
@@ -1901,7 +2138,8 @@
     "gloss": "take, receive",
     "pos": "Verb",
     "section": 2,
-    "freq": 57
+    "freq": null,
+    "order": 287
   },
   {
     "word": "ἐλπίς",
@@ -1909,7 +2147,8 @@
     "gloss": "hope, expectation",
     "pos": "Noun",
     "section": 2,
-    "freq": 57
+    "freq": null,
+    "order": 289
   },
   {
     "word": "διό",
@@ -1917,7 +2156,8 @@
     "gloss": "therefore, for this reason",
     "pos": "Conj",
     "section": 2,
-    "freq": 57
+    "freq": null,
+    "order": 288
   },
   {
     "word": "εὐαγγελίζω",
@@ -1925,7 +2165,8 @@
     "gloss": "preach the Good News",
     "pos": "Verb",
     "section": 2,
-    "freq": 56
+    "freq": null,
+    "order": 292
   },
   {
     "word": "ἐπερωτάω",
@@ -1933,7 +2174,8 @@
     "gloss": "question, ask (a question)",
     "pos": "Verb",
     "section": 2,
-    "freq": 56
+    "freq": null,
+    "order": 290
   },
   {
     "word": "ἔσχατος",
@@ -1941,7 +2183,8 @@
     "gloss": "last, finally",
     "pos": "Adj",
     "section": 2,
-    "freq": 56
+    "freq": null,
+    "order": 291
   },
   {
     "word": "Μαρία",
@@ -1949,7 +2192,8 @@
     "gloss": "Mary",
     "pos": "Noun",
     "section": 2,
-    "freq": 55
+    "freq": null,
+    "order": 295
   },
   {
     "word": "κράζω",
@@ -1957,7 +2201,8 @@
     "gloss": "cry out, cry, call out",
     "pos": "Verb",
     "section": 2,
-    "freq": 55
+    "freq": null,
+    "order": 294
   },
   {
     "word": "θεωρέω",
@@ -1965,7 +2210,8 @@
     "gloss": "see, perceive",
     "pos": "Verb",
     "section": 2,
-    "freq": 55
+    "freq": null,
+    "order": 293
   },
   {
     "word": "μηδέ",
@@ -1973,7 +2219,8 @@
     "gloss": "and not, but not",
     "pos": "Conj",
     "section": 2,
-    "freq": 54
+    "freq": null,
+    "order": 297
   },
   {
     "word": "μέσος",
@@ -1981,7 +2228,8 @@
     "gloss": "middle, in the middle",
     "pos": "Adj",
     "section": 2,
-    "freq": 54
+    "freq": null,
+    "order": 296
   },
   {
     "word": "Πιλᾶτος",
@@ -1989,7 +2237,8 @@
     "gloss": "Pilate",
     "pos": "Noun",
     "section": 2,
-    "freq": 54
+    "freq": null,
+    "order": 298
   },
   {
     "word": "σπείρω",
@@ -1997,7 +2246,8 @@
     "gloss": "sow, spread, scatter",
     "pos": "Verb",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 321
   },
   {
     "word": "πολύς",
@@ -2005,7 +2255,8 @@
     "gloss": "much, many, often",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 299
   },
   {
     "word": "ὅπως",
@@ -2013,7 +2264,8 @@
     "gloss": "in order that, so that, that",
     "pos": "Adv",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 314
   },
   {
     "word": "σοφία",
@@ -2021,7 +2273,8 @@
     "gloss": "wisdom",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 320
   },
   {
     "word": "πείθω",
@@ -2029,7 +2282,8 @@
     "gloss": "convince, persuade; trust in",
     "pos": "Verb",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 319
   },
   {
     "word": "ἔμπροσθεν",
@@ -2037,7 +2291,8 @@
     "gloss": "ahead; in front of, before",
     "pos": "Prep",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 309
   },
   {
     "word": "ἀποδίδωμι",
@@ -2045,7 +2300,8 @@
     "gloss": "give away, give up; render",
     "pos": "Verb",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 305
   },
   {
     "word": "τυφλός",
@@ -2053,7 +2309,8 @@
     "gloss": "blind",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 322
   },
   {
     "word": "γλῶσσα",
@@ -2061,7 +2318,8 @@
     "gloss": "tongue, language",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 307
   },
   {
     "word": "παιδίον",
@@ -2069,7 +2327,8 @@
     "gloss": "infant, young child",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 316
   },
   {
     "word": "ἄχρι",
@@ -2077,7 +2336,8 @@
     "gloss": "as far as, up to, until",
     "pos": "Adv",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 306
   },
   {
     "word": "παραλαμβάνω",
@@ -2085,7 +2345,8 @@
     "gloss": "take, receive, take with",
     "pos": "Verb",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 318
   },
   {
     "word": "κακός",
@@ -2093,7 +2354,8 @@
     "gloss": "bad, evil",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 312
   },
   {
     "word": "γραφή",
@@ -2101,7 +2363,8 @@
     "gloss": "writing",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 308
   },
   {
     "word": "οὐχί",
@@ -2109,7 +2372,8 @@
     "gloss": "by no means, not at all, not",
     "pos": "Adv",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 315
   },
   {
     "word": "ἔτος",
@@ -2117,7 +2381,8 @@
     "gloss": "year",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 311
   },
   {
     "word": "ἐπαγγελία",
@@ -2125,7 +2390,8 @@
     "gloss": "promise",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 310
   },
   {
     "word": "μακάριος",
@@ -2133,7 +2399,8 @@
     "gloss": "happy, blessed",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 313
   },
   {
     "word": "χρεία",
@@ -2141,7 +2408,8 @@
     "gloss": "need, necessity",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 324
   },
   {
     "word": "τρίτος",
@@ -2149,7 +2417,8 @@
     "gloss": "third",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 303
   },
   {
     "word": "συναγωγή",
@@ -2157,7 +2426,8 @@
     "gloss": "assembly, congregation, synagogue",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 301
   },
   {
     "word": "πρῶτος",
@@ -2165,7 +2435,8 @@
     "gloss": "first, before",
     "pos": "Adv",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 300
   },
   {
     "word": "τοιοῦτος",
@@ -2173,7 +2444,8 @@
     "gloss": "of such a kind, such",
     "pos": "Adj",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 302
   },
   {
     "word": "φανερόω",
@@ -2181,7 +2453,8 @@
     "gloss": "reveal, make known",
     "pos": "Verb",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 323
   },
   {
     "word": "χρόνος",
@@ -2189,7 +2462,8 @@
     "gloss": "time, season",
     "pos": "Noun",
     "section": 2,
-    "freq": 53
+    "freq": null,
+    "order": 304
   },
   {
     "word": "δικαιοσύνη",
@@ -2197,7 +2471,8 @@
     "gloss": "justice, righteousness",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 186
   },
   {
     "word": "τίθημι",
@@ -2205,7 +2480,8 @@
     "gloss": "put, place",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 180
   },
   {
     "word": "εἶπον",
@@ -2213,7 +2489,8 @@
     "gloss": "say, speak",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 170
   },
   {
     "word": "διδάσκω",
@@ -2221,7 +2498,8 @@
     "gloss": "teach",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 169
   },
   {
     "word": "προσέρχομαι",
@@ -2229,7 +2507,8 @@
     "gloss": "come near, go to, approach",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 203
   },
   {
     "word": "ἄρτος",
@@ -2237,7 +2516,8 @@
     "gloss": "bread",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 167
   },
   {
     "word": "ἀκολουθέω",
@@ -2245,7 +2525,8 @@
     "gloss": "accompany, follow",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 184
   },
   {
     "word": "ὅτε",
@@ -2253,7 +2534,8 @@
     "gloss": "when",
     "pos": "Adv",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 175
   },
   {
     "word": "ἐκεῖ",
@@ -2261,7 +2543,8 @@
     "gloss": "there, to that place",
     "pos": "Adv",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 171
   },
   {
     "word": "αἷμα",
@@ -2269,7 +2552,8 @@
     "gloss": "blood",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 164
   },
   {
     "word": "κάθημαι",
@@ -2277,7 +2561,8 @@
     "gloss": "sit, sit down",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 194
   },
   {
     "word": "περιπατέω",
@@ -2285,7 +2570,8 @@
     "gloss": "go about, walk around",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 177
   },
   {
     "word": "πίπτω",
@@ -2293,7 +2579,8 @@
     "gloss": "fall",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 200
   },
   {
     "word": "οὔτε",
@@ -2301,7 +2588,8 @@
     "gloss": "and not, neither, nor",
     "pos": "Conj",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 199
   },
   {
     "word": "προσεύχομαι",
@@ -2309,7 +2597,8 @@
     "gloss": "pray",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 204
   },
   {
     "word": "αἴρω",
@@ -2317,7 +2606,8 @@
     "gloss": "raise, lift up, take away",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 165
   },
   {
     "word": "ἐνώπιον",
@@ -2325,7 +2615,8 @@
     "gloss": "in the presence of, before",
     "pos": "Prep",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 188
   },
   {
     "word": "ἑπτά",
@@ -2333,7 +2624,8 @@
     "gloss": "seven",
     "pos": "Adj",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 189
   },
   {
     "word": "φοβέομαι",
@@ -2341,7 +2633,8 @@
     "gloss": "fear, am terrified",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 183
   },
   {
     "word": "καλός",
@@ -2349,7 +2642,8 @@
     "gloss": "beautiful, good",
     "pos": "Adj",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 173
   },
   {
     "word": "ἀπόλλυμι",
@@ -2357,7 +2651,8 @@
     "gloss": "destroy, ruin",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 185
   },
   {
     "word": "τόπος",
@@ -2365,7 +2660,8 @@
     "gloss": "place",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 181
   },
   {
     "word": "ἀλλήλων",
@@ -2373,7 +2669,8 @@
     "gloss": "one another, each other",
     "pos": "Pron",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 166
   },
   {
     "word": "πληρόω",
@@ -2381,7 +2678,8 @@
     "gloss": "fill, make full, finish",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 201
   },
   {
     "word": "γεννάω",
@@ -2389,7 +2687,8 @@
     "gloss": "bring forth, give birth to",
     "pos": "Verb",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 168
   },
   {
     "word": "εὐθέως",
@@ -2397,7 +2696,8 @@
     "gloss": "immediately, soon",
     "pos": "Adv",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 192
   },
   {
     "word": "ὁδός",
@@ -2405,7 +2705,8 @@
     "gloss": "way, road, journey",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 174
   },
   {
     "word": "ἔτι",
@@ -2413,7 +2714,8 @@
     "gloss": "still, yet, even now",
     "pos": "Adv",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 191
   },
   {
     "word": "ὀφθαλμός",
@@ -2421,7 +2723,8 @@
     "gloss": "eye",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 176
   },
   {
     "word": "Φαρισαῖος",
@@ -2429,7 +2732,8 @@
     "gloss": "Pharisee",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 182
   },
   {
     "word": "εἰρήνη",
@@ -2437,7 +2741,8 @@
     "gloss": "peace",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 187
   },
   {
     "word": "τέκνον",
@@ -2445,7 +2750,8 @@
     "gloss": "child, descendent",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 179
   },
   {
     "word": "οἰκία",
@@ -2453,7 +2759,8 @@
     "gloss": "house, household",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 198
   },
   {
     "word": "θάλασσα",
@@ -2461,7 +2768,8 @@
     "gloss": "sea, lake",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 193
   },
   {
     "word": "καιρός",
@@ -2469,7 +2777,8 @@
     "gloss": "time, right time",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 195
   },
   {
     "word": "πούς",
@@ -2477,7 +2786,8 @@
     "gloss": "foot",
     "pos": "Noun",
     "section": 2,
-    "freq": null
+    "freq": null,
+    "order": 202
   },
   {
     "word": "ναός",
@@ -2485,7 +2795,8 @@
     "gloss": "temple, shrine",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 336
   },
   {
     "word": "οὐαί",
@@ -2493,7 +2804,8 @@
     "gloss": "woe!, alas!",
     "pos": "Interj",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 337
   },
   {
     "word": "κρατέω",
@@ -2501,7 +2813,8 @@
     "gloss": "take hold, hold fast",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 332
   },
   {
     "word": "θηρίον",
@@ -2509,7 +2822,8 @@
     "gloss": "wild beast, animal",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 329
   },
   {
     "word": "ἔρημος",
@@ -2517,7 +2831,8 @@
     "gloss": "deserted, empty; desert, wilderness",
     "pos": "Adj",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 328
   },
   {
     "word": "ἀπαγγέλλω",
@@ -2525,7 +2840,8 @@
     "gloss": "report, announce, proclaim",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 326
   },
   {
     "word": "καθίζω",
@@ -2533,7 +2849,8 @@
     "gloss": "seat, sit down",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 331
   },
   {
     "word": "προσφέρω",
@@ -2541,7 +2858,8 @@
     "gloss": "bring to, offer",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 340
   },
   {
     "word": "πρό",
@@ -2549,7 +2867,8 @@
     "gloss": "(with gen.) before, in front of",
     "pos": "Prep",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 339
   },
   {
     "word": "κρίσις",
@@ -2557,7 +2876,8 @@
     "gloss": "judging, judgment",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 333
   },
   {
     "word": "διώκω",
@@ -2565,7 +2885,8 @@
     "gloss": "hasten; pursue, persecute",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 327
   },
   {
     "word": "θλῖψις",
@@ -2573,7 +2894,8 @@
     "gloss": "persecution, affliction, distress",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 330
   },
   {
     "word": "μικρός",
@@ -2581,7 +2903,8 @@
     "gloss": "little, small",
     "pos": "Adj",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 334
   },
   {
     "word": "σωτηρία",
@@ -2589,7 +2912,8 @@
     "gloss": "deliverance, salvation",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 342
   },
   {
     "word": "φόβος",
@@ -2597,7 +2921,8 @@
     "gloss": "fear",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 343
   },
   {
     "word": "φυλακή",
@@ -2605,7 +2930,8 @@
     "gloss": "guard, prison, watch",
     "pos": "Noun",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 344
   },
   {
     "word": "σταυρόω",
@@ -2613,7 +2939,8 @@
     "gloss": "crucify",
     "pos": "Verb",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 341
   },
   {
     "word": "ἁμαρτωλός",
@@ -2621,7 +2948,8 @@
     "gloss": "sinful",
     "pos": "Adj",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 325
   },
   {
     "word": "μόνος",
@@ -2629,7 +2957,8 @@
     "gloss": "alone, only",
     "pos": "Adj",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 335
   },
   {
     "word": "οὐκέτι",
@@ -2637,7 +2966,8 @@
     "gloss": "no longer, no more",
     "pos": "Adv",
     "section": 3,
-    "freq": 48
+    "freq": null,
+    "order": 338
   },
   {
     "word": "σπέρμα",
@@ -2645,7 +2975,8 @@
     "gloss": "seed, offspring",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 364
   },
   {
     "word": "κατοικέω",
@@ -2653,7 +2984,8 @@
     "gloss": "dwell in, live",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 358
   },
   {
     "word": "λύω",
@@ -2661,7 +2993,8 @@
     "gloss": "loose, untie, set free",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 359
   },
   {
     "word": "μέρος",
@@ -2669,7 +3002,8 @@
     "gloss": "part, portion",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 360
   },
   {
     "word": "καινός",
@@ -2677,7 +3011,8 @@
     "gloss": "fresh, new",
     "pos": "Adj",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 357
   },
   {
     "word": "ποῦ",
@@ -2685,7 +3020,8 @@
     "gloss": "where",
     "pos": "Adv",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 363
   },
   {
     "word": "ὅμοιος",
@@ -2693,7 +3029,8 @@
     "gloss": "like, similar to",
     "pos": "Adj",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 361
   },
   {
     "word": "Ἰουδαία",
@@ -2701,7 +3038,8 @@
     "gloss": "Judea",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 356
   },
   {
     "word": "Ἰάκωβος",
@@ -2709,7 +3047,8 @@
     "gloss": "James",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 355
   },
   {
     "word": "πότε",
@@ -2717,7 +3056,8 @@
     "gloss": "when, at what time",
     "pos": "Adv",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 362
   },
   {
     "word": "θαυμάζω",
@@ -2725,7 +3065,8 @@
     "gloss": "wonder, marvel",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 353
   },
   {
     "word": "θεραπεύω",
@@ -2733,7 +3074,8 @@
     "gloss": "care for, heal",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 354
   },
   {
     "word": "ἁμαρτάνω",
@@ -2741,15 +3083,17 @@
     "gloss": "sin",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 345
   },
   {
     "word": "δέομαι",
     "inflection": null,
     "gloss": "beseech, beg",
     "pos": "Verb",
-    "section": 3,
-    "freq": 45
+    "section": 4,
+    "freq": null,
+    "order": 589
   },
   {
     "word": "ἀνάστασις",
@@ -2757,7 +3101,8 @@
     "gloss": "resurrection",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 346
   },
   {
     "word": "ἐπιγινώσκω",
@@ -2765,7 +3110,8 @@
     "gloss": "come to know, recognize, understand",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 351
   },
   {
     "word": "γενεά",
@@ -2773,7 +3119,8 @@
     "gloss": "generation, family",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 347
   },
   {
     "word": "ἐγγίζω",
@@ -2781,7 +3128,8 @@
     "gloss": "come near, approach",
     "pos": "Verb",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 350
   },
   {
     "word": "Ἡρῴδης",
@@ -2789,7 +3137,8 @@
     "gloss": "Herod",
     "pos": "Noun",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 352
   },
   {
     "word": "δεύτερος",
@@ -2797,7 +3146,8 @@
     "gloss": "second, in the second place",
     "pos": "Adj",
     "section": 3,
-    "freq": 45
+    "freq": null,
+    "order": 348
   },
   {
     "word": "πάντοτε",
@@ -2805,7 +3155,8 @@
     "gloss": "always, at all times",
     "pos": "Adv",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 376
   },
   {
     "word": "λογίζομαι",
@@ -2813,7 +3164,8 @@
     "gloss": "reckon, count, think",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 373
   },
   {
     "word": "φωνέω",
@@ -2821,7 +3173,8 @@
     "gloss": "summon, call",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 383
   },
   {
     "word": "ἄξιος",
@@ -2829,7 +3182,8 @@
     "gloss": "worthy, fit",
     "pos": "Adj",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 365
   },
   {
     "word": "διέρχομαι",
@@ -2837,7 +3191,8 @@
     "gloss": "pass through, go through",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 366
   },
   {
     "word": "σήμερον",
@@ -2845,7 +3200,8 @@
     "gloss": "today, now",
     "pos": "Adv",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 379
   },
   {
     "word": "τιμή",
@@ -2853,7 +3209,8 @@
     "gloss": "price, honor, value",
     "pos": "Noun",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 382
   },
   {
     "word": "ἐπιτίθημι",
@@ -2861,7 +3218,8 @@
     "gloss": "put, place upon, lay on",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 367
   },
   {
     "word": "παρίστημι",
@@ -2869,7 +3227,8 @@
     "gloss": "present, come up to and stand by",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 377
   },
   {
     "word": "σεαυτοῦ",
@@ -2877,7 +3236,8 @@
     "gloss": "of yourself, yourself",
     "pos": "pron-reflex",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 378
   },
   {
     "word": "ἑτοιμάζω",
@@ -2885,7 +3245,8 @@
     "gloss": "make ready, prepare",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 369
   },
   {
     "word": "χωρίς",
@@ -2893,7 +3254,8 @@
     "gloss": "apart from, without",
     "pos": "Adv",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 384
   },
   {
     "word": "ἱκανός",
@@ -2901,7 +3263,8 @@
     "gloss": "sufficient, large",
     "pos": "Adj",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 371
   },
   {
     "word": "τέλος",
@@ -2909,7 +3272,8 @@
     "gloss": "end, purpose",
     "pos": "Noun",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 380
   },
   {
     "word": "ὀλίγος",
@@ -2917,7 +3281,8 @@
     "gloss": "few, little",
     "pos": "Adj",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 375
   },
   {
     "word": "τέσσαρες",
@@ -2925,7 +3290,8 @@
     "gloss": "four",
     "pos": "Adj",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 381
   },
   {
     "word": "ἐργάζομαι",
@@ -2933,7 +3299,8 @@
     "gloss": "work, do, accomplish",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 368
   },
   {
     "word": "εὐλογέω",
@@ -2941,7 +3308,8 @@
     "gloss": "bless",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 370
   },
   {
     "word": "κλαίω",
@@ -2949,7 +3317,8 @@
     "gloss": "weep, mourn, cry",
     "pos": "Verb",
     "section": 3,
-    "freq": 42
+    "freq": null,
+    "order": 372
   },
   {
     "word": "πειράζω",
@@ -2957,7 +3326,8 @@
     "gloss": "try, tempt, test",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 399
   },
   {
     "word": "εὐχαριστέω",
@@ -2965,7 +3335,8 @@
     "gloss": "thank, give thanks",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 392
   },
   {
     "word": "δικαιόω",
@@ -2973,7 +3344,8 @@
     "gloss": "make righteous, justify",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 389
   },
   {
     "word": "ἄρχων",
@@ -2981,7 +3353,8 @@
     "gloss": "ruler, lord, authority",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 385
   },
   {
     "word": "διακονέω",
@@ -2989,7 +3362,8 @@
     "gloss": "wait at table, serve",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 388
   },
   {
     "word": "περισσεύω",
@@ -2997,7 +3371,8 @@
     "gloss": "have an abundance, rich",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 401
   },
   {
     "word": "οἰκοδομέω",
@@ -3005,7 +3380,8 @@
     "gloss": "build, build up, edify",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 397
   },
   {
     "word": "πράσσω",
@@ -3013,7 +3389,8 @@
     "gloss": "do, accomplish",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 403
   },
   {
     "word": "ἐπιθυμία",
@@ -3021,7 +3398,8 @@
     "gloss": "desire, lust, longing",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 391
   },
   {
     "word": "πάσχω",
@@ -3029,7 +3407,8 @@
     "gloss": "suffer, endure",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 398
   },
   {
     "word": "μνημεῖον",
@@ -3037,7 +3416,8 @@
     "gloss": "tomb, sepulcher, grave",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 396
   },
   {
     "word": "διάβολος",
@@ -3045,7 +3425,8 @@
     "gloss": "the Slanderer, the Devil",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 387
   },
   {
     "word": "ὑποτάσσω",
@@ -3053,7 +3434,8 @@
     "gloss": "subject, subordinate",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 404
   },
   {
     "word": "Ἰούδας",
@@ -3061,7 +3443,8 @@
     "gloss": "Judas, Jude",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 394
   },
   {
     "word": "πέντε",
@@ -3069,7 +3452,8 @@
     "gloss": "five",
     "pos": "Adj",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 400
   },
   {
     "word": "ἐμαυτοῦ",
@@ -3077,7 +3461,8 @@
     "gloss": "of myself, myself",
     "pos": "pron-reflex",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 390
   },
   {
     "word": "μισέω",
@@ -3085,7 +3470,8 @@
     "gloss": "hate, detest",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 395
   },
   {
     "word": "πλανάω",
@@ -3093,7 +3479,8 @@
     "gloss": "lead astray, deceive",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 402
   },
   {
     "word": "θύρα",
@@ -3101,7 +3488,8 @@
     "gloss": "door",
     "pos": "Noun",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 393
   },
   {
     "word": "βούλομαι",
@@ -3109,7 +3497,8 @@
     "gloss": "will, desire, wish",
     "pos": "Verb",
     "section": 3,
-    "freq": 40
+    "freq": null,
+    "order": 386
   },
   {
     "word": "πρόβατον",
@@ -3117,7 +3506,8 @@
     "gloss": "sheep",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 420
   },
   {
     "word": "Σατανᾶς",
@@ -3125,7 +3515,8 @@
     "gloss": "Satan, the Adversary",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 422
   },
   {
     "word": "ἅπτω",
@@ -3133,7 +3524,8 @@
     "gloss": "touch; kindle; hold",
     "pos": "Verb",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 406
   },
   {
     "word": "ἐπιστρέφω",
@@ -3141,7 +3533,8 @@
     "gloss": "turn back to; turn, turn around",
     "pos": "Verb",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 408
   },
   {
     "word": "Ἰωσήφ",
@@ -3149,7 +3542,8 @@
     "gloss": "Joseph",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 409
   },
   {
     "word": "καυχάομαι",
@@ -3157,7 +3551,8 @@
     "gloss": "boast, glory",
     "pos": "Verb",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 411
   },
   {
     "word": "ἀγρός",
@@ -3165,7 +3560,8 @@
     "gloss": "field, farm",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 405
   },
   {
     "word": "μάρτυς",
@@ -3173,7 +3569,8 @@
     "gloss": "witness",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 413
   },
   {
     "word": "ὥσπερ",
@@ -3181,7 +3578,8 @@
     "gloss": "just as, as",
     "pos": "Adv",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 424
   },
   {
     "word": "ὀργή",
@@ -3189,7 +3587,8 @@
     "gloss": "anger, indignation",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 415
   },
   {
     "word": "οὖς",
@@ -3197,7 +3596,8 @@
     "gloss": "ear",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 416
   },
   {
     "word": "μαρτυρία",
@@ -3205,7 +3605,8 @@
     "gloss": "witness, testimony",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 412
   },
   {
     "word": "ὀφείλω",
@@ -3213,7 +3614,8 @@
     "gloss": "owe, ought",
     "pos": "Verb",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 417
   },
   {
     "word": "Φίλιππος",
@@ -3221,7 +3623,8 @@
     "gloss": "Philip",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 423
   },
   {
     "word": "καλῶς",
@@ -3229,7 +3632,8 @@
     "gloss": "well, beautifully",
     "pos": "Adv",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 410
   },
   {
     "word": "προσευχή",
@@ -3237,7 +3641,8 @@
     "gloss": "prayer",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 421
   },
   {
     "word": "παραγίνομαι",
@@ -3245,7 +3650,8 @@
     "gloss": "come; am present",
     "pos": "Verb",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 418
   },
   {
     "word": "ἄρτι",
@@ -3253,7 +3659,8 @@
     "gloss": "now, just now",
     "pos": "Adv",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 407
   },
   {
     "word": "περιτομή",
@@ -3261,7 +3668,8 @@
     "gloss": "circumcision",
     "pos": "Noun",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 419
   },
   {
     "word": "ὀπίσω",
@@ -3269,7 +3677,8 @@
     "gloss": "behind, back",
     "pos": "Prep",
     "section": 3,
-    "freq": 37
+    "freq": null,
+    "order": 414
   },
   {
     "word": "πτωχός",
@@ -3277,7 +3686,8 @@
     "gloss": "poor",
     "pos": "Adj",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 443
   },
   {
     "word": "ἐκπορεύομαι",
@@ -3285,7 +3695,8 @@
     "gloss": "go out",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 436
   },
   {
     "word": "μέλος",
@@ -3293,7 +3704,8 @@
     "gloss": "member, part",
     "pos": "Noun",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 437
   },
   {
     "word": "διαθήκη",
@@ -3301,7 +3713,8 @@
     "gloss": "covenant, will, testament",
     "pos": "Noun",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 433
   },
   {
     "word": "δείκνυμι",
@@ -3309,7 +3722,8 @@
     "gloss": "point out, show",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 432
   },
   {
     "word": "ἀσθενέω",
@@ -3317,7 +3731,8 @@
     "gloss": "am weak, sick",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 429
   },
   {
     "word": "βλασφημέω",
@@ -3325,7 +3740,8 @@
     "gloss": "blaspheme",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 431
   },
   {
     "word": "διακονία",
@@ -3333,7 +3749,8 @@
     "gloss": "service",
     "pos": "Noun",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 434
   },
   {
     "word": "δυνατός",
@@ -3341,7 +3758,8 @@
     "gloss": "powerful, able, possible",
     "pos": "Adj",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 435
   },
   {
     "word": "μετανοέω",
@@ -3349,7 +3767,8 @@
     "gloss": "repent, am converted",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 438
   },
   {
     "word": "βιβλίον",
@@ -3357,7 +3776,8 @@
     "gloss": "book, scroll",
     "pos": "Noun",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 430
   },
   {
     "word": "ἀρνέομαι",
@@ -3365,7 +3785,8 @@
     "gloss": "deny",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 428
   },
   {
     "word": "ναί",
@@ -3373,7 +3794,8 @@
     "gloss": "yes, indeed",
     "pos": "Adv",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 440
   },
   {
     "word": "ἄρα",
@@ -3381,7 +3803,8 @@
     "gloss": "then, therefore, since, so",
     "pos": "Conj",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 427
   },
   {
     "word": "μήτε",
@@ -3389,7 +3812,8 @@
     "gloss": "nor, neither, and not",
     "pos": "Conj",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 439
   },
   {
     "word": "ποῖος",
@@ -3397,7 +3821,8 @@
     "gloss": "of what kind? which? what?",
     "pos": "Interrog",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 442
   },
   {
     "word": "ὑποστρέφω",
@@ -3405,7 +3830,8 @@
     "gloss": "turn back, return",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 444
   },
   {
     "word": "ἅπας",
@@ -3413,7 +3839,8 @@
     "gloss": "all, every",
     "pos": "Adj",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 426
   },
   {
     "word": "οἶνος",
@@ -3421,7 +3848,8 @@
     "gloss": "wine",
     "pos": "Noun",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 441
   },
   {
     "word": "ἀναγινώσκω",
@@ -3429,7 +3857,8 @@
     "gloss": "read",
     "pos": "Verb",
     "section": 3,
-    "freq": 35
+    "freq": null,
+    "order": 425
   },
   {
     "word": "ποτήριον",
@@ -3437,7 +3866,8 @@
     "gloss": "drinking cup, a drink",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 459
   },
   {
     "word": "ἱερεύς",
@@ -3445,7 +3875,8 @@
     "gloss": "priest",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 451
   },
   {
     "word": "φαίνω",
@@ -3453,7 +3884,8 @@
     "gloss": "shine, (mid.) appear, become visible",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 462
   },
   {
     "word": "ποτέ",
@@ -3461,7 +3893,8 @@
     "gloss": "once, formerly",
     "pos": "Adv",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 458
   },
   {
     "word": "συνείδησις",
@@ -3469,7 +3902,8 @@
     "gloss": "conscience",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 460
   },
   {
     "word": "ὑπομονή",
@@ -3477,7 +3911,8 @@
     "gloss": "endurance, steadfastness, patience",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 461
   },
   {
     "word": "πλῆθος",
@@ -3485,7 +3920,8 @@
     "gloss": "multitude, crowd",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 456
   },
   {
     "word": "φυλάσσω",
@@ -3493,7 +3929,8 @@
     "gloss": "keep, guard, observe; watch",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 463
   },
   {
     "word": "πλήν",
@@ -3501,7 +3938,8 @@
     "gloss": "but, except",
     "pos": "Conj",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 457
   },
   {
     "word": "παρρησία",
@@ -3509,7 +3947,8 @@
     "gloss": "confidence, openness",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 455
   },
   {
     "word": "ἐλπίζω",
@@ -3517,7 +3956,8 @@
     "gloss": "hope, expect",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 447
   },
   {
     "word": "παραγγέλλω",
@@ -3525,7 +3965,8 @@
     "gloss": "command, charge",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 454
   },
   {
     "word": "ἄνεμος",
@@ -3533,7 +3974,8 @@
     "gloss": "wind",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 446
   },
   {
     "word": "ἥλιος",
@@ -3541,7 +3983,8 @@
     "gloss": "sun, sunlight",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 450
   },
   {
     "word": "ὁμοίως",
@@ -3549,7 +3992,8 @@
     "gloss": "so, likewise, similarly",
     "pos": "Adv",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 453
   },
   {
     "word": "ἀκάθαρτος",
@@ -3557,7 +4001,8 @@
     "gloss": "unclean, impure",
     "pos": "Adj",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 445
   },
   {
     "word": "ἐχθρός",
@@ -3565,7 +4010,8 @@
     "gloss": "hostile; enemy",
     "pos": "Adj",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 449
   },
   {
     "word": "ἔξεστι(ν)",
@@ -3573,7 +4019,8 @@
     "gloss": "it is permitted, lawful, possible",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 448
   },
   {
     "word": "καθαρίζω",
@@ -3581,7 +4028,8 @@
     "gloss": "make clean; purify",
     "pos": "Verb",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 452
   },
   {
     "word": "φυλή",
@@ -3589,7 +4037,8 @@
     "gloss": "tribe, race, nation",
     "pos": "Noun",
     "section": 3,
-    "freq": 32
+    "freq": null,
+    "order": 464
   },
   {
     "word": "γνῶσις",
@@ -3597,7 +4046,8 @@
     "gloss": "knowledge, wisdom",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 467
   },
   {
     "word": "πάσχα",
@@ -3605,7 +4055,8 @@
     "gloss": "the feast of Passover, the Passover lamb",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 480
   },
   {
     "word": "παρέρχομαι",
@@ -3613,7 +4064,8 @@
     "gloss": "pass by, (pass.) pass away",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 479
   },
   {
     "word": "προσκαλέω",
@@ -3621,7 +4073,8 @@
     "gloss": "call, invite",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 482
   },
   {
     "word": "μισθός",
@@ -3629,7 +4082,8 @@
     "gloss": "wages, reward",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 477
   },
   {
     "word": "παράκλησις",
@@ -3637,7 +4091,8 @@
     "gloss": "exhortation, entreaty",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 478
   },
   {
     "word": "διάκονος",
@@ -3645,7 +4100,8 @@
     "gloss": "waiter, servant, deacon",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 468
   },
   {
     "word": "σκότος",
@@ -3653,7 +4109,8 @@
     "gloss": "darkness",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 483
   },
   {
     "word": "ἐγγύς",
@@ -3661,7 +4118,8 @@
     "gloss": "near",
     "pos": "Adv",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 470
   },
   {
     "word": "συνέρχομαι",
@@ -3669,7 +4127,8 @@
     "gloss": "come with, accompany",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 484
   },
   {
     "word": "Ἠλίας",
@@ -3677,7 +4136,8 @@
     "gloss": "Elijah",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 474
   },
   {
     "word": "Καῖσαρ",
@@ -3685,7 +4145,8 @@
     "gloss": "Caesar, emperor",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 475
   },
   {
     "word": "ἀγοράζω",
@@ -3693,7 +4154,8 @@
     "gloss": "buy",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 465
   },
   {
     "word": "διδαχή",
@@ -3701,7 +4163,8 @@
     "gloss": "teaching, doctrine",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 469
   },
   {
     "word": "ἐπικαλέω",
@@ -3709,7 +4172,8 @@
     "gloss": "name; (mid.) call upon",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 472
   },
   {
     "word": "ἐλεέω",
@@ -3717,7 +4181,8 @@
     "gloss": "pity, have mercy",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 471
   },
   {
     "word": "πόθεν",
@@ -3725,7 +4190,8 @@
     "gloss": "whence",
     "pos": "Adv",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 481
   },
   {
     "word": "ἐπιτιμάω",
@@ -3733,7 +4199,8 @@
     "gloss": "rebuke, admonish",
     "pos": "Verb",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 473
   },
   {
     "word": "ἀρνίον",
@@ -3741,7 +4208,8 @@
     "gloss": "lamb, sheep",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 466
   },
   {
     "word": "μάχαιρα",
@@ -3749,7 +4217,8 @@
     "gloss": "sword",
     "pos": "Noun",
     "section": 3,
-    "freq": 30
+    "freq": null,
+    "order": 476
   },
   {
     "word": "θυσία",
@@ -3757,7 +4226,8 @@
     "gloss": "sacrifice, offering",
     "pos": "Noun",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 494
   },
   {
     "word": "ἐνδύω",
@@ -3765,7 +4235,8 @@
     "gloss": "put on, clothe",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 491
   },
   {
     "word": "ἰσχύω",
@@ -3773,7 +4244,8 @@
     "gloss": "am strong, able; am powerful",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 496
   },
   {
     "word": "ἁγιάζω",
@@ -3781,7 +4253,8 @@
     "gloss": "make holy, sanctify",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 485
   },
   {
     "word": "φίλος",
@@ -3789,7 +4262,8 @@
     "gloss": "beloved, loving; friend",
     "pos": "Adj",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 503
   },
   {
     "word": "θυγάτηρ",
@@ -3797,7 +4271,8 @@
     "gloss": "daughter",
     "pos": "Noun",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 493
   },
   {
     "word": "τελέω",
@@ -3805,7 +4280,8 @@
     "gloss": "end, accomplish",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 501
   },
   {
     "word": "ἡγέομαι",
@@ -3813,7 +4289,8 @@
     "gloss": "lead, guide; think",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 492
   },
   {
     "word": "ἀληθινός",
@@ -3821,7 +4298,8 @@
     "gloss": "true, real, genuine",
     "pos": "Adj",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 487
   },
   {
     "word": "ἀδικέω",
@@ -3829,7 +4307,8 @@
     "gloss": "do wrong, treat unjustly",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 486
   },
   {
     "word": "νικάω",
@@ -3837,7 +4316,8 @@
     "gloss": "conquer, overcome",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 497
   },
   {
     "word": "σκανδαλίζω",
@@ -3845,7 +4325,8 @@
     "gloss": "cause to stumble",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 500
   },
   {
     "word": "Βαρναβᾶς",
@@ -3853,7 +4334,8 @@
     "gloss": "Barnabas",
     "pos": "Noun",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 488
   },
   {
     "word": "γαμέω",
@@ -3861,7 +4343,8 @@
     "gloss": "marry",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 490
   },
   {
     "word": "φεύγω",
@@ -3869,7 +4352,8 @@
     "gloss": "flee, escape",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 502
   },
   {
     "word": "χώρα",
@@ -3877,7 +4361,8 @@
     "gloss": "region, land, fields, country",
     "pos": "Noun",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 504
   },
   {
     "word": "προφητεύω",
@@ -3885,7 +4370,8 @@
     "gloss": "foretell, prophesy",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 499
   },
   {
     "word": "πλούσιος",
@@ -3893,7 +4379,8 @@
     "gloss": "rich",
     "pos": "Adj",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 498
   },
   {
     "word": "βαστάζω",
@@ -3901,7 +4388,8 @@
     "gloss": "carry, carry away, bear",
     "pos": "Verb",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 489
   },
   {
     "word": "ἰσχυρός",
@@ -3909,7 +4397,8 @@
     "gloss": "strong, mighty, powerful",
     "pos": "Adj",
     "section": 4,
-    "freq": 29
+    "freq": null,
+    "order": 495
   },
   {
     "word": "ἀποκαλύπτω",
@@ -3917,7 +4406,8 @@
     "gloss": "uncover, bring to light, reveal",
     "pos": "Verb",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 507
   },
   {
     "word": "ἀληθής",
@@ -3925,7 +4415,8 @@
     "gloss": "unconcealed, true",
     "pos": "Adj",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 506
   },
   {
     "word": "γνωρίζω",
@@ -3933,7 +4424,8 @@
     "gloss": "make known, declare, reveal",
     "pos": "Verb",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 508
   },
   {
     "word": "ἐκχέω",
@@ -3941,7 +4433,8 @@
     "gloss": "pour out, shed",
     "pos": "Verb",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 511
   },
   {
     "word": "ἔλεος",
@@ -3949,7 +4442,8 @@
     "gloss": "pity, mercy, compassion",
     "pos": "Noun",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 512
   },
   {
     "word": "δέκα",
@@ -3957,7 +4451,8 @@
     "gloss": "ten",
     "pos": "Adj",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 509
   },
   {
     "word": "ἕνεκα",
@@ -3965,7 +4460,8 @@
     "gloss": "because of, on account of",
     "pos": "Conj",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 514
   },
   {
     "word": "Ἕλλην",
@@ -3973,7 +4469,8 @@
     "gloss": "Hellene, a Greek",
     "pos": "Noun",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 513
   },
   {
     "word": "ἀδελφή",
@@ -3981,7 +4478,8 @@
     "gloss": "sister",
     "pos": "Noun",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 505
   },
   {
     "word": "ἐκεῖθεν",
@@ -3989,7 +4487,8 @@
     "gloss": "thence, from that place, from there",
     "pos": "Adv",
     "section": 4,
-    "freq": 27
+    "freq": null,
+    "order": 510
   },
   {
     "word": "καταργέω",
@@ -3997,7 +4496,8 @@
     "gloss": "bring to naught, sever, abolish",
     "pos": "Verb",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 517
   },
   {
     "word": "κώμη",
@@ -4005,7 +4505,8 @@
     "gloss": "village",
     "pos": "Noun",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 519
   },
   {
     "word": "σταυρός",
@@ -4013,7 +4514,8 @@
     "gloss": "cross",
     "pos": "Noun",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 524
   },
   {
     "word": "μυστήριον",
@@ -4021,7 +4523,8 @@
     "gloss": "mystery; secret rites",
     "pos": "Noun",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 520
   },
   {
     "word": "οὔπω",
@@ -4029,7 +4532,8 @@
     "gloss": "not yet",
     "pos": "Adv",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 521
   },
   {
     "word": "ἐπεί",
@@ -4037,7 +4541,8 @@
     "gloss": "because, since, for",
     "pos": "Conj",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 515
   },
   {
     "word": "Ἰακώβ",
@@ -4045,7 +4550,8 @@
     "gloss": "Jacob",
     "pos": "Noun",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 516
   },
   {
     "word": "σός",
@@ -4053,7 +4559,8 @@
     "gloss": "yours, thy, thine",
     "pos": "Pron",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 523
   },
   {
     "word": "κρίμα",
@@ -4061,7 +4568,8 @@
     "gloss": "judgment, verdict, condemnation",
     "pos": "Noun",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 518
   },
   {
     "word": "πόσος",
@@ -4069,7 +4577,8 @@
     "gloss": "how much, how great, how many?",
     "pos": "Pron",
     "section": 4,
-    "freq": 26
+    "freq": null,
+    "order": 522
   },
   {
     "word": "στρατιώτης",
@@ -4077,7 +4586,8 @@
     "gloss": "soldier",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 541
   },
   {
     "word": "λευκός",
@@ -4085,7 +4595,8 @@
     "gloss": "white, bright",
     "pos": "Adj",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 536
   },
   {
     "word": "δουλεύω",
@@ -4093,7 +4604,8 @@
     "gloss": "am a slave, am subject to, serve",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 530
   },
   {
     "word": "ὀμνύω",
@@ -4101,7 +4613,8 @@
     "gloss": "swear, take an oath",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 538
   },
   {
     "word": "ἰάομαι",
@@ -4109,7 +4622,8 @@
     "gloss": "heal",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 533
   },
   {
     "word": "ὁμολογέω",
@@ -4117,7 +4631,8 @@
     "gloss": "confess, profess, acknowledge",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 539
   },
   {
     "word": "λυπέω",
@@ -4125,7 +4640,8 @@
     "gloss": "cause someone distress",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 537
   },
   {
     "word": "κελεύω",
@@ -4133,7 +4649,8 @@
     "gloss": "command, order, urge",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 535
   },
   {
     "word": "δένδρον",
@@ -4141,7 +4658,8 @@
     "gloss": "tree",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 529
   },
   {
     "word": "καθαρός",
@@ -4149,7 +4667,8 @@
     "gloss": "clean, pure, unstained",
     "pos": "Adj",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 534
   },
   {
     "word": "ἀσθενής",
@@ -4157,7 +4676,8 @@
     "gloss": "weak, infirm, sick, powerless",
     "pos": "Adj",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 528
   },
   {
     "word": "ἀδικία",
@@ -4165,7 +4685,8 @@
     "gloss": "unrighteousness, wrongdoing",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 525
   },
   {
     "word": "φρονέω",
@@ -4173,7 +4694,8 @@
     "gloss": "think, judge, observe",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 543
   },
   {
     "word": "ἑορτή",
@@ -4181,7 +4703,8 @@
     "gloss": "festival, feast",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 531
   },
   {
     "word": "ἥκω",
@@ -4189,7 +4712,8 @@
     "gloss": "have come, am present",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 532
   },
   {
     "word": "ἀναβλέπω",
@@ -4197,7 +4721,8 @@
     "gloss": "look up, recover my sight; gain sight",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 527
   },
   {
     "word": "Αἴγυπτος",
@@ -4205,7 +4730,8 @@
     "gloss": "Egypt",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 526
   },
   {
     "word": "χήρα",
@@ -4213,7 +4739,8 @@
     "gloss": "widow",
     "pos": "Noun",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 544
   },
   {
     "word": "συνίημι",
@@ -4221,7 +4748,8 @@
     "gloss": "consider, understand; comprehend",
     "pos": "Verb",
     "section": 4,
-    "freq": 25
+    "freq": null,
+    "order": 542
   },
   {
     "word": "παῖς",
@@ -4229,7 +4757,8 @@
     "gloss": "boy or girl child",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 558
   },
   {
     "word": "πορνεία",
@@ -4237,7 +4766,8 @@
     "gloss": "fornication, idolatry, prostitution",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 562
   },
   {
     "word": "ἀναιρέω",
@@ -4245,7 +4775,8 @@
     "gloss": "take up, abolish, murder",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 546
   },
   {
     "word": "προσέχω",
@@ -4253,7 +4784,8 @@
     "gloss": "pay attention to, devote myself to",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 563
   },
   {
     "word": "παρουσία",
@@ -4261,7 +4793,8 @@
     "gloss": "presence, coming, arrival, advent",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 560
   },
   {
     "word": "πάρειμι",
@@ -4269,7 +4802,8 @@
     "gloss": "am present, am near",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 559
   },
   {
     "word": "ἀσθένεια",
@@ -4277,7 +4811,8 @@
     "gloss": "want of strength, weakness, illness",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 547
   },
   {
     "word": "οὗ",
@@ -4285,7 +4820,8 @@
     "gloss": "where, whither, when",
     "pos": "Adv",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 557
   },
   {
     "word": "διότι",
@@ -4293,7 +4829,8 @@
     "gloss": "on this account, because, for",
     "pos": "Conj",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 549
   },
   {
     "word": "φιλέω",
@@ -4301,7 +4838,8 @@
     "gloss": "love, like",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 564
   },
   {
     "word": "ἀστήρ",
@@ -4309,7 +4847,8 @@
     "gloss": "star",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 548
   },
   {
     "word": "ἀκοή",
@@ -4317,7 +4856,8 @@
     "gloss": "hearing, ear, report",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 545
   },
   {
     "word": "κεῖμαι",
@@ -4325,7 +4865,8 @@
     "gloss": "lie, recline, am laid",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 552
   },
   {
     "word": "ἐπιστολή",
@@ -4333,7 +4874,8 @@
     "gloss": "letter, dispatch, epistle",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 550
   },
   {
     "word": "νεφέλη",
@@ -4341,7 +4883,8 @@
     "gloss": "cloud",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 555
   },
   {
     "word": "νοῦς",
@@ -4349,7 +4892,8 @@
     "gloss": "mind, reasoning faculty, understanding",
     "pos": "Noun",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 556
   },
   {
     "word": "πίμπλημι",
@@ -4357,7 +4901,8 @@
     "gloss": "fill, fulfill",
     "pos": "Verb",
     "section": 4,
-    "freq": 24
+    "freq": null,
+    "order": 561
   },
   {
     "word": "πέραν",
@@ -4365,7 +4910,8 @@
     "gloss": "over, beyond, across",
     "pos": "Adv",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 578
   },
   {
     "word": "Τιμόθεος",
@@ -4373,7 +4919,8 @@
     "gloss": "Timothy",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 583
   },
   {
     "word": "ἀνάγω",
@@ -4381,7 +4928,8 @@
     "gloss": "lead up, put to sea, set sail",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 566
   },
   {
     "word": "εἰκών",
@@ -4389,7 +4937,8 @@
     "gloss": "image, likeness, bust",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 568
   },
   {
     "word": "χαρίζομαι",
@@ -4397,7 +4946,8 @@
     "gloss": "show favor to, forgive, give freely",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 584
   },
   {
     "word": "περιβάλλω",
@@ -4405,7 +4955,8 @@
     "gloss": "cast around, clothe; put on",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 579
   },
   {
     "word": "σκεῦος",
@@ -4413,7 +4964,8 @@
     "gloss": "vessel, utensil, jar",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 580
   },
   {
     "word": "θυσιαστήριον",
@@ -4421,7 +4973,8 @@
     "gloss": "altar",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 572
   },
   {
     "word": "κοιλία",
@@ -4429,7 +4982,8 @@
     "gloss": "belly, womb, inner man",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 574
   },
   {
     "word": "κωλύω",
@@ -4437,7 +4991,8 @@
     "gloss": "prevent, hinder, forbid",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 575
   },
   {
     "word": "μιμνήσκω",
@@ -4445,7 +5000,8 @@
     "gloss": "remember, recall",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 576
   },
   {
     "word": "πεινάω",
@@ -4453,7 +5009,8 @@
     "gloss": "am hungry, hunger",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 577
   },
   {
     "word": "θεάομαι",
@@ -4461,7 +5018,8 @@
     "gloss": "see, behold, contemplate; look at",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 571
   },
   {
     "word": "ἄπιστος",
@@ -4469,7 +5027,8 @@
     "gloss": "unbelieving, incredulous, faithless",
     "pos": "Adj",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 567
   },
   {
     "word": "ἀμπελών",
@@ -4477,7 +5036,8 @@
     "gloss": "vineyard",
     "pos": "Noun",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 565
   },
   {
     "word": "κατηγορέω",
@@ -4485,7 +5045,8 @@
     "gloss": "accuse, charge, prosecute",
     "pos": "Verb",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 573
   },
   {
     "word": "ἐλεύθερος",
@@ -4493,7 +5054,8 @@
     "gloss": "free, delivered from obligation",
     "pos": "Adj",
     "section": 4,
-    "freq": 23
+    "freq": null,
+    "order": 569
   },
   {
     "word": "γρηγορέω",
@@ -4501,7 +5063,8 @@
     "gloss": "am awake, am vigilant, watch",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 588
   },
   {
     "word": "Μακεδονία",
@@ -4509,7 +5072,8 @@
     "gloss": "Macedonia",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 598
   },
   {
     "word": "δοκιμάζω",
@@ -4517,7 +5081,8 @@
     "gloss": "put to the test, prove, examine, approve",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 590
   },
   {
     "word": "μηκέτι",
@@ -4525,7 +5090,8 @@
     "gloss": "no longer",
     "pos": "Adv",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 600
   },
   {
     "word": "πληγή",
@@ -4533,7 +5099,8 @@
     "gloss": "blow, stripe, wound",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 601
   },
   {
     "word": "καθεύδω",
@@ -4541,7 +5108,8 @@
     "gloss": "sleep, am sleeping",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 594
   },
   {
     "word": "μετάνοια",
@@ -4549,7 +5117,8 @@
     "gloss": "repentance, change of mind, conversion",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 599
   },
   {
     "word": "κοπιάω",
@@ -4557,7 +5126,8 @@
     "gloss": "grow weary, toil, work",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 597
   },
   {
     "word": "ἐκλεκτός",
@@ -4565,7 +5135,8 @@
     "gloss": "chosen, elect",
     "pos": "Adj",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 592
   },
   {
     "word": "αὐξάνω",
@@ -4573,7 +5144,8 @@
     "gloss": "cause to increase, become greater, grow",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 587
   },
   {
     "word": "κἀκεῖνος",
@@ -4581,7 +5153,8 @@
     "gloss": "and he, and that one",
     "pos": "pron",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 595
   },
   {
     "word": "χιλιάς",
@@ -4589,7 +5162,8 @@
     "gloss": "thousand; a group of a thousand",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 604
   },
   {
     "word": "πωλέω",
@@ -4597,7 +5171,8 @@
     "gloss": "sell",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 603
   },
   {
     "word": "ἀντί",
@@ -4605,7 +5180,8 @@
     "gloss": "in place of, for, instead of",
     "pos": "Prep",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 586
   },
   {
     "word": "κατεργάζομαι",
@@ -4613,7 +5189,8 @@
     "gloss": "produce, accomplish, bring about",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 596
   },
   {
     "word": "Ἠσαΐας",
@@ -4621,7 +5198,8 @@
     "gloss": "Isaiah",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 593
   },
   {
     "word": "ἀγνοέω",
@@ -4629,7 +5207,8 @@
     "gloss": "do not know, am ignorant of",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 585
   },
   {
     "word": "πλοῦτος",
@@ -4637,7 +5216,8 @@
     "gloss": "riches, wealth",
     "pos": "Noun",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 602
   },
   {
     "word": "ἐκλέγω",
@@ -4645,7 +5225,8 @@
     "gloss": "choose, select, elect",
     "pos": "Verb",
     "section": 4,
-    "freq": 22
+    "freq": null,
+    "order": 591
   },
   {
     "word": "σκηνή",
@@ -4653,7 +5234,8 @@
     "gloss": "tent, tabernacle, dwelling",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 639
   },
   {
     "word": "συνέδριον",
@@ -4661,7 +5243,8 @@
     "gloss": "council, Sanhedrin",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 618
   },
   {
     "word": "θερίζω",
@@ -4669,7 +5252,8 @@
     "gloss": "reap, gather; harvest",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 611
   },
   {
     "word": "τρέχω",
@@ -4677,7 +5261,8 @@
     "gloss": "run, exercise myself",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 642
   },
   {
     "word": "ἐφίστημι",
@@ -4685,7 +5270,8 @@
     "gloss": "stand by, am urgent, approach",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 631
   },
   {
     "word": "ξύλον",
@@ -4693,7 +5279,8 @@
     "gloss": "staff, cross, wood, tree",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 637
   },
   {
     "word": "νηστεύω",
@@ -4701,7 +5288,8 @@
     "gloss": "fast",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 636
   },
   {
     "word": "ἡγεμών",
@@ -4709,7 +5297,8 @@
     "gloss": "governor, procurator",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 632
   },
   {
     "word": "ὡσεί",
@@ -4717,7 +5306,8 @@
     "gloss": "as if, as it were, like, about",
     "pos": "Adv",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 624
   },
   {
     "word": "ὑπακούω",
@@ -4725,7 +5315,8 @@
     "gloss": "listen, obey",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 622
   },
   {
     "word": "μαρτύριον",
@@ -4733,7 +5324,8 @@
     "gloss": "witness, evidence, testimony",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 635
   },
   {
     "word": "προάγω",
@@ -4741,7 +5333,8 @@
     "gloss": "lead forth, go before",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 638
   },
   {
     "word": "Ἰσαάκ",
@@ -4749,7 +5342,8 @@
     "gloss": "Isaac",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 633
   },
   {
     "word": "τοσοῦτος",
@@ -4757,7 +5351,8 @@
     "gloss": "so great, so far, so much",
     "pos": "Adj",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 641
   },
   {
     "word": "ἀκροβυστία",
@@ -4765,7 +5360,8 @@
     "gloss": "foreskin; uncircumcision, the Gentiles",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 625
   },
   {
     "word": "ἐπίγνωσις",
@@ -4773,7 +5369,8 @@
     "gloss": "knowledge, discernment, recognition",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 630
   },
   {
     "word": "διδασκαλία",
@@ -4781,7 +5378,8 @@
     "gloss": "instruction, teaching",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 608
   },
   {
     "word": "στρέφω",
@@ -4789,7 +5387,8 @@
     "gloss": "turn, change; am converted",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 617
   },
   {
     "word": "σοφός",
@@ -4797,7 +5396,8 @@
     "gloss": "wise",
     "pos": "Adj",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 640
   },
   {
     "word": "ἀργύριον",
@@ -4805,7 +5405,8 @@
     "gloss": "silver, shekel, money",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 606
   },
   {
     "word": "τεσσεράκοντα",
@@ -4813,7 +5414,8 @@
     "gloss": "forty",
     "pos": "Adj",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 620
   },
   {
     "word": "τιμάω",
@@ -4821,7 +5423,8 @@
     "gloss": "value at a price, honor",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 621
   },
   {
     "word": "βάπτισμα",
@@ -4829,7 +5432,8 @@
     "gloss": "rite of baptism",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 626
   },
   {
     "word": "εὐδοκέω",
@@ -4837,7 +5441,8 @@
     "gloss": "am well-pleased, am pleased with",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 610
   },
   {
     "word": "πειρασμός",
@@ -4845,7 +5450,8 @@
     "gloss": "trial, testing, temptation",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 615
   },
   {
     "word": "ἑκατοντάρχης",
@@ -4853,7 +5459,8 @@
     "gloss": "centurion, captain",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 629
   },
   {
     "word": "καθίστημι",
@@ -4861,7 +5468,8 @@
     "gloss": "set, constitute, establish, appoint",
     "pos": "Verb",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 612
   },
   {
     "word": "περισσός",
@@ -4869,7 +5477,8 @@
     "gloss": "abundant, greater, superfluous",
     "pos": "Adj",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 616
   },
   {
     "word": "χιλίαρχος",
@@ -4877,7 +5486,8 @@
     "gloss": "military tribune; leader of a thousand",
     "pos": "Noun",
     "section": 4,
-    "freq": null
+    "freq": null,
+    "order": 623
   },
   {
     "word": "κοιμάομαι",
@@ -4885,7 +5495,8 @@
     "gloss": "fall asleep, sleep, die",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 684
   },
   {
     "word": "θυμός",
@@ -4893,7 +5504,8 @@
     "gloss": "outburst of passion, wrath, anger",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 678
   },
   {
     "word": "ἐπιβάλλω",
@@ -4901,7 +5513,8 @@
     "gloss": "throw upon, lay, put around",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 676
   },
   {
     "word": "δέησις",
@@ -4909,7 +5522,8 @@
     "gloss": "supplication, prayer, entreaty",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 671
   },
   {
     "word": "παρατίθημι",
@@ -4917,7 +5531,8 @@
     "gloss": "set before, serve, entrust",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 662
   },
   {
     "word": "ἀνάγκη",
@@ -4925,7 +5540,8 @@
     "gloss": "necessity, constraint, distress",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 685
   },
   {
     "word": "κληρονομέω",
@@ -4933,7 +5549,8 @@
     "gloss": "inherit, acquire, obtain",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 683
   },
   {
     "word": "οἰκοδομή",
@@ -4941,7 +5558,8 @@
     "gloss": "act of building, building, edification",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 693
   },
   {
     "word": "μήν",
@@ -4949,7 +5567,8 @@
     "gloss": "month",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 691
   },
   {
     "word": "δεσμός",
@@ -4957,7 +5576,8 @@
     "gloss": "bond, chain, fetter",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 672
   },
   {
     "word": "πολλάκις",
@@ -4965,7 +5585,8 @@
     "gloss": "many times, often",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 697
   },
   {
     "word": "εἰσπορεύομαι",
@@ -4973,7 +5594,8 @@
     "gloss": "journey into, go in",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 673
   },
   {
     "word": "βλασφημία",
@@ -4981,7 +5603,8 @@
     "gloss": "blasphemy",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 670
   },
   {
     "word": "παραχρῆμα",
@@ -4989,7 +5612,8 @@
     "gloss": "instantly, immediately",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 694
   },
   {
     "word": "φανερός",
@@ -4997,7 +5621,8 @@
     "gloss": "apparent, clear, visible, manifest",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 703
   },
   {
     "word": "μέχρι",
@@ -5005,7 +5630,8 @@
     "gloss": "as far as, until",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 690
   },
   {
     "word": "ἄφεσις",
@@ -5013,7 +5639,8 @@
     "gloss": "deliverance, pardon, forgiveness",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 687
   },
   {
     "word": "κοινωνία",
@@ -5021,7 +5648,8 @@
     "gloss": "participation, communion, fellowship",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 655
   },
   {
     "word": "ἐπιτρέπω",
@@ -5029,7 +5657,8 @@
     "gloss": "allow, permit, entrust",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 677
   },
   {
     "word": "ἐμβαίνω",
@@ -5037,7 +5666,8 @@
     "gloss": "go in, embark",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 675
   },
   {
     "word": "ἀποκάλυψις",
@@ -5045,7 +5675,8 @@
     "gloss": "unveiling, revelation",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 665
   },
   {
     "word": "ἆρα",
@@ -5053,7 +5684,8 @@
     "gloss": "a particle expecting a negative response",
     "pos": "Particle",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 667
   },
   {
     "word": "ἀριθμός",
@@ -5061,7 +5693,8 @@
     "gloss": "number, total",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 668
   },
   {
     "word": "νυνί",
@@ -5069,7 +5702,8 @@
     "gloss": "now, already, at present",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 692
   },
   {
     "word": "τίκτω",
@@ -5077,7 +5711,8 @@
     "gloss": "bear, bring forth, give birth to",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 702
   },
   {
     "word": "κενός",
@@ -5085,7 +5720,8 @@
     "gloss": "empty, vain, hollow",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 682
   },
   {
     "word": "ἀρέσκω",
@@ -5093,7 +5729,8 @@
     "gloss": "please, serve",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 686
   },
   {
     "word": "κόπος",
@@ -5101,7 +5738,8 @@
     "gloss": "trouble, toil, labor",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 689
   },
   {
     "word": "κλείω",
@@ -5109,7 +5747,8 @@
     "gloss": "shut, shut up, lock",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 750
   },
   {
     "word": "ἀνακρίνω",
@@ -5117,7 +5756,8 @@
     "gloss": "question, examine, inquire into",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 726
   },
   {
     "word": "νυμφίος",
@@ -5125,7 +5765,8 @@
     "gloss": "bridegroom",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 753
   },
   {
     "word": "δέσμιος",
@@ -5133,7 +5774,8 @@
     "gloss": "prisoner",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 728
   },
   {
     "word": "ποταμός",
@@ -5141,7 +5783,8 @@
     "gloss": "river, torrent, stream",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 721
   },
   {
     "word": "ὑπομένω",
@@ -5149,7 +5792,8 @@
     "gloss": "remain behind, remain, endure",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 741
   },
   {
     "word": "ὡσαύτως",
@@ -5157,7 +5801,8 @@
     "gloss": "likewise",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 744
   },
   {
     "word": "ἐπιθυμέω",
@@ -5165,7 +5810,8 @@
     "gloss": "desire, long for, covet",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 735
   },
   {
     "word": "ἐκτείνω",
@@ -5173,7 +5819,8 @@
     "gloss": "stretch out, cast forth, extend",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 733
   },
   {
     "word": "διαλογίζομαι",
@@ -5181,7 +5828,8 @@
     "gloss": "reason, debate, consider",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 730
   },
   {
     "word": "δεῖπνον",
@@ -5189,7 +5837,8 @@
     "gloss": "dinner, evening meal, supper",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 727
   },
   {
     "word": "σκοτία",
@@ -5197,7 +5846,8 @@
     "gloss": "darkness",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 724
   },
   {
     "word": "οὐδέποτε",
@@ -5205,7 +5855,8 @@
     "gloss": "never",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 754
   },
   {
     "word": "κἄν",
@@ -5213,7 +5864,8 @@
     "gloss": "and if, even if, if only",
     "pos": "Conj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 748
   },
   {
     "word": "ἐργάτης",
@@ -5221,7 +5873,8 @@
     "gloss": "field-laborer, workman, doer",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 737
   },
   {
     "word": "στέφανος",
@@ -5229,7 +5882,8 @@
     "gloss": "crown, garland",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 700
   },
   {
     "word": "ἐπιμένω",
@@ -5237,7 +5891,8 @@
     "gloss": "remain, stay, tarry, persist in",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 736
   },
   {
     "word": "χάρισμα",
@@ -5245,7 +5900,8 @@
     "gloss": "undeserved favor, a gift",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 742
   },
   {
     "word": "κλέπτης",
@@ -5253,7 +5909,8 @@
     "gloss": "thief",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 751
   },
   {
     "word": "καθάπερ",
@@ -5261,7 +5918,8 @@
     "gloss": "even as, as, just as",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 711
   },
   {
     "word": "ἵππος",
@@ -5269,7 +5927,8 @@
     "gloss": "horse",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 710
   },
   {
     "word": "Καισάρεια",
@@ -5277,7 +5936,8 @@
     "gloss": "Caesarea",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 712
   },
   {
     "word": "ἐπαύριον",
@@ -5285,7 +5945,8 @@
     "gloss": "tomorrow",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 707
   },
   {
     "word": "μήτι",
@@ -5293,7 +5954,8 @@
     "gloss": "a particle expecting a negative answer",
     "pos": "Particle",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 716
   },
   {
     "word": "ἑκατόν",
@@ -5301,7 +5963,8 @@
     "gloss": "one hundred",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 705
   },
   {
     "word": "ἕτοιμος",
@@ -5309,7 +5972,8 @@
     "gloss": "ready, prepared",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 708
   },
   {
     "word": "θησαυρός",
@@ -5317,7 +5981,8 @@
     "gloss": "treasure, store",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 709
   },
   {
     "word": "καταλύω",
@@ -5325,7 +5990,8 @@
     "gloss": "destroy, abolish, overthrow",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 713
   },
   {
     "word": "ἐξίστημι",
@@ -5333,7 +5999,8 @@
     "gloss": "am amazed, am astonished",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 706
   },
   {
     "word": "κερδαίνω",
@@ -5341,7 +6008,8 @@
     "gloss": "gain, win, avoid loss",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 714
   },
   {
     "word": "κρυπτός",
@@ -5349,7 +6017,8 @@
     "gloss": "hidden, secret",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 715
   },
   {
     "word": "ἐπουράνιος",
@@ -5357,7 +6026,8 @@
     "gloss": "heavenly, celestial",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 654
   },
   {
     "word": "ἐπάνω",
@@ -5365,7 +6035,8 @@
     "gloss": "on the top, above, over",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 652
   },
   {
     "word": "ἐπιλαμβάνομαι",
@@ -5373,7 +6044,8 @@
     "gloss": "seize, take hold of, catch",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 653
   },
   {
     "word": "ἀπέχω",
@@ -5381,7 +6053,8 @@
     "gloss": "have in full, am far; receive, abstain",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 647
   },
   {
     "word": "ἐπαίρω",
@@ -5389,7 +6062,8 @@
     "gloss": "raise, lift up, hold up",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 651
   },
   {
     "word": "πόλεμος",
@@ -5397,7 +6071,8 @@
     "gloss": "war, battle, strife",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 696
   },
   {
     "word": "βρῶμα",
@@ -5405,7 +6080,8 @@
     "gloss": "food of any kind",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 688
   },
   {
     "word": "Ἀσία",
@@ -5413,7 +6089,8 @@
     "gloss": "roughly western Asia Minor, Asia",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 669
   },
   {
     "word": "τέλειος",
@@ -5421,7 +6098,8 @@
     "gloss": "perfect, full-grown, complete",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 664
   },
   {
     "word": "ποιμήν",
@@ -5429,7 +6107,8 @@
     "gloss": "shepherd",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 695
   },
   {
     "word": "ἀπώλεια",
@@ -5437,7 +6116,8 @@
     "gloss": "destruction, ruin, loss",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 666
   },
   {
     "word": "χρυσοῦς",
@@ -5445,7 +6125,8 @@
     "gloss": "golden",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 704
   },
   {
     "word": "ἐλέγχω",
@@ -5453,7 +6134,8 @@
     "gloss": "rebuke, expose, convict",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 674
   },
   {
     "word": "προστίθημι",
@@ -5461,7 +6143,8 @@
     "gloss": "put to, add, do again",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 698
   },
   {
     "word": "καταγγέλλω",
@@ -5469,7 +6152,8 @@
     "gloss": "declare openly, preach, proclaim",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 679
   },
   {
     "word": "κατέχω",
@@ -5477,7 +6161,8 @@
     "gloss": "hold back, hold fast, bind, restrain",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 681
   },
   {
     "word": "προφητεία",
@@ -5485,7 +6170,8 @@
     "gloss": "prophecy",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 663
   },
   {
     "word": "κριτής",
@@ -5493,7 +6179,8 @@
     "gloss": "judge",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 656
   },
   {
     "word": "παράπτωμα",
@@ -5501,7 +6188,8 @@
     "gloss": "falling away, sin, transgression",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 661
   },
   {
     "word": "μεριμνάω",
@@ -5509,7 +6197,8 @@
     "gloss": "am anxious; care for",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 659
   },
   {
     "word": "κτίσις",
@@ -5517,7 +6206,8 @@
     "gloss": "creation, creature, institution",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 658
   },
   {
     "word": "πλήρωμα",
@@ -5525,7 +6215,8 @@
     "gloss": "fullness, fulfillment",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 719
   },
   {
     "word": "γεωργός",
@@ -5533,15 +6224,17 @@
     "gloss": "husbandman, vine-dresser, farmer",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 648
   },
   {
     "word": "μνημονεύω",
     "inflection": null,
     "gloss": "remember, mention",
     "pos": "Verb",
-    "section": 5,
-    "freq": null
+    "section": 4,
+    "freq": null,
+    "order": 614
   },
   {
     "word": "ἀληθῶς",
@@ -5549,7 +6242,8 @@
     "gloss": "truly, really, certainly",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 645
   },
   {
     "word": "Ἀντιόχεια",
@@ -5557,7 +6251,8 @@
     "gloss": "Antioch",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 646
   },
   {
     "word": "διαμαρτύρομαι",
@@ -5565,7 +6260,8 @@
     "gloss": "give solemn evidence, testify solemnly",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 774
   },
   {
     "word": "εὐσέβεια",
@@ -5573,7 +6269,8 @@
     "gloss": "piety, godliness",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 780
   },
   {
     "word": "κακῶς",
@@ -5581,7 +6278,8 @@
     "gloss": "badly, wickedly",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 747
   },
   {
     "word": "περισσῶς",
@@ -5589,7 +6287,8 @@
     "gloss": "greatly, exceedingly",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 757
   },
   {
     "word": "τέρας",
@@ -5597,7 +6296,8 @@
     "gloss": "wonder, portent",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 764
   },
   {
     "word": "πάθημα",
@@ -5605,7 +6305,8 @@
     "gloss": "suffering, passion",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 755
   },
   {
     "word": "γεύομαι",
@@ -5613,7 +6314,8 @@
     "gloss": "taste, experience",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 769
   },
   {
     "word": "προσδοκάω",
@@ -5621,7 +6323,8 @@
     "gloss": "expect, await, wait for",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 759
   },
   {
     "word": "ἀνομία",
@@ -5629,7 +6332,8 @@
     "gloss": "lawlessness, iniquity",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 766
   },
   {
     "word": "ἀνέχομαι",
@@ -5637,7 +6341,8 @@
     "gloss": "endure, bear with",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 765
   },
   {
     "word": "διψάω",
@@ -5645,7 +6350,8 @@
     "gloss": "thirst for, desire earnestly, thirst",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 732
   },
   {
     "word": "γυμνός",
@@ -5653,7 +6359,8 @@
     "gloss": "wearing only under-garment, naked",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 771
   },
   {
     "word": "πλήρης",
@@ -5661,7 +6368,8 @@
     "gloss": "full, complete",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 758
   },
   {
     "word": "παρέχω",
@@ -5669,7 +6377,8 @@
     "gloss": "offer, provide, give, cause",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 756
   },
   {
     "word": "γνωστός",
@@ -5677,7 +6386,8 @@
     "gloss": "known, an acquaintance",
     "pos": "Adj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 770
   },
   {
     "word": "γέ",
@@ -5685,7 +6395,8 @@
     "gloss": "at least, indeed, really",
     "pos": "Particle",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 768
   },
   {
     "word": "συκῆ",
@@ -5693,7 +6404,8 @@
     "gloss": "fig tree",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 760
   },
   {
     "word": "συνίστημι",
@@ -5701,7 +6413,8 @@
     "gloss": "commend, prove, am composed of",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 762
   },
   {
     "word": "Δαμασκός",
@@ -5709,7 +6422,8 @@
     "gloss": "Damascus",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 772
   },
   {
     "word": "λύπη",
@@ -5717,7 +6431,8 @@
     "gloss": "pain, grief, sorrow",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 752
   },
   {
     "word": "πλησίον",
@@ -5725,7 +6440,8 @@
     "gloss": "near, nearby, a neighbor",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 720
   },
   {
     "word": "ῥίζα",
@@ -5733,7 +6449,8 @@
     "gloss": "root, that which comes from root",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 722
   },
   {
     "word": "ὦ",
@@ -5741,7 +6458,8 @@
     "gloss": "O, an exclamation",
     "pos": "Interj",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 743
   },
   {
     "word": "ζῆλος",
@@ -5749,7 +6467,8 @@
     "gloss": "eagerness, zeal, jealousy",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 745
   },
   {
     "word": "περιτέμνω",
@@ -5757,7 +6476,8 @@
     "gloss": "circumcise",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 718
   },
   {
     "word": "διατάσσω",
@@ -5765,7 +6485,8 @@
     "gloss": "give orders to, prescribe, order",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 731
   },
   {
     "word": "εὐλογία",
@@ -5773,7 +6494,8 @@
     "gloss": "adulation, praise, blessing",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 738
   },
   {
     "word": "Καφαρναούμ",
@@ -5781,7 +6503,8 @@
     "gloss": "Capernaum",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 749
   },
   {
     "word": "ἀθετέω",
@@ -5789,7 +6512,8 @@
     "gloss": "reject, annul",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 725
   },
   {
     "word": "ἔπειτα",
@@ -5797,7 +6521,8 @@
     "gloss": "then, thereafter, afterwards",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 734
   },
   {
     "word": "θεμέλιος",
@@ -5805,7 +6530,8 @@
     "gloss": "foundation",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 746
   },
   {
     "word": "λῃστής",
@@ -5813,7 +6539,8 @@
     "gloss": "robber, brigand, bandit",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 792
   },
   {
     "word": "ῥαββί",
@@ -5821,7 +6548,8 @@
     "gloss": "Rabbi, my master, teacher",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 804
   },
   {
     "word": "εὐχαριστία",
@@ -5829,7 +6557,8 @@
     "gloss": "thankfulness, gratitude, thanksgiving",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 781
   },
   {
     "word": "ἐπίσταμαι",
@@ -5837,7 +6566,8 @@
     "gloss": "know, understand",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 779
   },
   {
     "word": "δέρω",
@@ -5845,7 +6575,8 @@
     "gloss": "flay, flog, scourge, beat",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 773
   },
   {
     "word": "κατέρχομαι",
@@ -5853,7 +6584,8 @@
     "gloss": "come down",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 788
   },
   {
     "word": "εἶτα",
@@ -5861,7 +6593,8 @@
     "gloss": "then, thereafter, next",
     "pos": "Adv",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 775
   },
   {
     "word": "παρθένος",
@@ -5869,7 +6602,8 @@
     "gloss": "virgin",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 799
   },
   {
     "word": "μοιχεύω",
@@ -5877,7 +6611,8 @@
     "gloss": "commit adultery",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 793
   },
   {
     "word": "προλέγω",
@@ -5885,7 +6620,8 @@
     "gloss": "forewarn, tell beforehand",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 803
   },
   {
     "word": "κτίζω",
@@ -5893,7 +6629,8 @@
     "gloss": "create, form, shape, make",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 790
   },
   {
     "word": "θρίξ",
@@ -5901,7 +6638,8 @@
     "gloss": "hair",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 785
   },
   {
     "word": "τολμάω",
@@ -5909,7 +6647,8 @@
     "gloss": "dare, endure, am bold",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 782
   },
   {
     "word": "Λάζαρος",
@@ -5917,7 +6656,8 @@
     "gloss": "Lazarus",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 791
   },
   {
     "word": "καταλαμβάνω",
@@ -5925,7 +6665,8 @@
     "gloss": "seize, overtake, comprehend, win",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 787
   },
   {
     "word": "ἐπαγγέλλομαι",
@@ -5933,7 +6674,8 @@
     "gloss": "promise, profess",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 778
   },
   {
     "word": "ὁμοιόω",
@@ -5941,7 +6683,8 @@
     "gloss": "make like, liken, compare",
     "pos": "Verb",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 798
   },
   {
     "word": "αἰχμάλωτος",
@@ -5949,7 +6692,8 @@
     "gloss": "captive, prisoner of war",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 1135
   },
   {
     "word": "γάμος",
@@ -5957,7 +6701,8 @@
     "gloss": "marriage, wedding",
     "pos": "Noun",
     "section": 5,
-    "freq": null
+    "freq": null,
+    "order": 767
   },
   {
     "word": "Βηθανία",
@@ -5965,7 +6710,8 @@
     "gloss": "Bethany",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 913
   },
   {
     "word": "βαπτιστής",
@@ -5973,7 +6719,8 @@
     "gloss": "baptizer, Baptist",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 911
   },
   {
     "word": "σπουδή",
@@ -5981,7 +6728,8 @@
     "gloss": "haste; diligence, eagerness",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 960
   },
   {
     "word": "κατακαίω",
@@ -5989,7 +6737,8 @@
     "gloss": "burn up, consume entirely",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 930
   },
   {
     "word": "τρίς",
@@ -5997,7 +6746,8 @@
     "gloss": "three times",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 964
   },
   {
     "word": "ταχύς",
@@ -6005,7 +6755,8 @@
     "gloss": "quickly, speedily, quick",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 963
   },
   {
     "word": "σπλαγχνίζομαι",
@@ -6013,7 +6764,8 @@
     "gloss": "have pity on, feel sympathy for",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 959
   },
   {
     "word": "Σιλᾶς",
@@ -6021,7 +6773,8 @@
     "gloss": "Silas",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 957
   },
   {
     "word": "σαλπίζω",
@@ -6029,7 +6782,8 @@
     "gloss": "sound a trumpet",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 956
   },
   {
     "word": "Μαγδαληνή",
@@ -6037,7 +6791,8 @@
     "gloss": "Magdalene",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 937
   },
   {
     "word": "λυχνία",
@@ -6045,7 +6800,8 @@
     "gloss": "lamp-stand, lampstand",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 936
   },
   {
     "word": "δεῦτε",
@@ -6053,7 +6809,8 @@
     "gloss": "come hither!, come!",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 920
   },
   {
     "word": "γόνυ",
@@ -6061,7 +6818,8 @@
     "gloss": "knee",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 919
   },
   {
     "word": "ἔθος",
@@ -6069,7 +6827,8 @@
     "gloss": "custom, law",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 923
   },
   {
     "word": "δίκτυον",
@@ -6077,7 +6836,8 @@
     "gloss": "fishing-net, net",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 922
   },
   {
     "word": "αὐλή",
@@ -6085,7 +6845,8 @@
     "gloss": "court-yard, palace, house",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 909
   },
   {
     "word": "οἰκοδεσπότης",
@@ -6093,7 +6854,8 @@
     "gloss": "master of the house",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 943
   },
   {
     "word": "λίαν",
@@ -6101,7 +6863,8 @@
     "gloss": "very, very much, exceedingly",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 934
   },
   {
     "word": "ἔσωθεν",
@@ -6109,7 +6872,8 @@
     "gloss": "inside, within; from within",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 926
   },
   {
     "word": "βροντή",
@@ -6117,7 +6881,8 @@
     "gloss": "thunder",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 917
   },
   {
     "word": "προσλαμβάνομαι",
@@ -6125,7 +6890,8 @@
     "gloss": "take to myself, welcome, receive",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 951
   },
   {
     "word": "μεταβαίνω",
@@ -6133,7 +6899,8 @@
     "gloss": "leave, depart, remove, go over",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 939
   },
   {
     "word": "μάλιστα",
@@ -6141,7 +6908,8 @@
     "gloss": "most of all, especially",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 938
   },
   {
     "word": "γέεννα",
@@ -6149,7 +6917,8 @@
     "gloss": "Gehenna, hell",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 918
   },
   {
     "word": "ὅριον",
@@ -6157,7 +6926,8 @@
     "gloss": "districts, territory, region",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 944
   },
   {
     "word": "συνεργός",
@@ -6165,15 +6935,17 @@
     "gloss": "a fellow worker, helper",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 961
   },
   {
     "word": "ἀπαρνέομαι",
     "inflection": null,
     "gloss": "deny, disown",
     "pos": "Verb",
-    "section": 6,
-    "freq": null
+    "section": 7,
+    "freq": null,
+    "order": 973
   },
   {
     "word": "Ῥωμαῖος",
@@ -6181,7 +6953,8 @@
     "gloss": "Roman",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 955
   },
   {
     "word": "πληθύνω",
@@ -6189,7 +6962,8 @@
     "gloss": "increase, multiply",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 947
   },
   {
     "word": "Σολομών",
@@ -6197,7 +6971,8 @@
     "gloss": "Solomon",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 958
   },
   {
     "word": "συνέχω",
@@ -6205,7 +6980,8 @@
     "gloss": "press together, confine, compel",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 962
   },
   {
     "word": "ἔξωθεν",
@@ -6213,7 +6989,8 @@
     "gloss": "from without, outside",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 880
   },
   {
     "word": "ἄνωθεν",
@@ -6221,7 +6998,8 @@
     "gloss": "from above, from the beginning, again",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 870
   },
   {
     "word": "θερισμός",
@@ -6229,7 +7007,8 @@
     "gloss": "reaping, harvest",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 885
   },
   {
     "word": "φύσις",
@@ -6237,7 +7016,8 @@
     "gloss": "nature, inherent nature",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 883
   },
   {
     "word": "ἕξ",
@@ -6245,7 +7025,8 @@
     "gloss": "six",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 879
   },
   {
     "word": "ἐκπλήσσομαι",
@@ -6253,7 +7034,8 @@
     "gloss": "am astounded, am amazed",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 875
   },
   {
     "word": "Μάρθα",
@@ -6261,7 +7043,8 @@
     "gloss": "Martha",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 892
   },
   {
     "word": "κλέπτω",
@@ -6269,7 +7052,8 @@
     "gloss": "steal",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 890
   },
   {
     "word": "δράκων",
@@ -6277,7 +7061,8 @@
     "gloss": "dragon or huge serpent",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 874
   },
   {
     "word": "καταισχύνω",
@@ -6285,7 +7070,8 @@
     "gloss": "shame, disgrace, put to shame",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 887
   },
   {
     "word": "ἐλάχιστος",
@@ -6293,7 +7079,8 @@
     "gloss": "least, smallest, very little",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 876
   },
   {
     "word": "Φῆστος",
@@ -6301,7 +7088,8 @@
     "gloss": "Festus",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 903
   },
   {
     "word": "ἐπιζητέω",
@@ -6309,7 +7097,8 @@
     "gloss": "seek after, desire, search for",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 881
   },
   {
     "word": "χρυσίον",
@@ -6317,7 +7106,8 @@
     "gloss": "golden ornament, gold",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 904
   },
   {
     "word": "χωλός",
@@ -6325,7 +7115,8 @@
     "gloss": "lame",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 884
   },
   {
     "word": "διαλέγομαι",
@@ -6333,7 +7124,8 @@
     "gloss": "converse, address, preach, discuss",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 872
   },
   {
     "word": "τύπτω",
@@ -6341,7 +7133,8 @@
     "gloss": "beat, strike, wound",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 901
   },
   {
     "word": "παιδίσκη",
@@ -6349,7 +7142,8 @@
     "gloss": "female slave, maidservant",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 895
   },
   {
     "word": "Ναζωραῖος",
@@ -6357,7 +7151,8 @@
     "gloss": "Nazarene",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 893
   },
   {
     "word": "καταντάω",
@@ -6365,7 +7160,8 @@
     "gloss": "come down, arrive at, reach",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 888
   },
   {
     "word": "καταρτίζω",
@@ -6373,7 +7169,8 @@
     "gloss": "fit together, prepare, mend, perfect",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 889
   },
   {
     "word": "Τίτος",
@@ -6381,7 +7178,8 @@
     "gloss": "Titus",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 899
   },
   {
     "word": "τρόπος",
@@ -6389,7 +7187,8 @@
     "gloss": "way, manner, character",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 900
   },
   {
     "word": "λοιπός",
@@ -6397,7 +7196,8 @@
     "gloss": "remaining, left, the rest",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 891
   },
   {
     "word": "παράδοσις",
@@ -6405,7 +7205,8 @@
     "gloss": "instruction, tradition",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 896
   },
   {
     "word": "ἐλεημοσύνη",
@@ -6413,7 +7214,8 @@
     "gloss": "alms-giving, charity, alms",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 877
   },
   {
     "word": "πρίν",
@@ -6421,7 +7223,8 @@
     "gloss": "formerly, before",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 897
   },
   {
     "word": "τίμιος",
@@ -6429,7 +7232,8 @@
     "gloss": "of great price, precious, honored",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 898
   },
   {
     "word": "ὕψιστος",
@@ -6437,7 +7241,8 @@
     "gloss": "highest, most high",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 902
   },
   {
     "word": "Ζεβεδαῖος",
@@ -6445,7 +7250,8 @@
     "gloss": "Zebedee",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 927
   },
   {
     "word": "καίω",
@@ -6453,7 +7259,8 @@
     "gloss": "ignite, light, burn",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 928
   },
   {
     "word": "πρωΐ",
@@ -6461,7 +7268,8 @@
     "gloss": "early (in the morning), at dawn",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 952
   },
   {
     "word": "πῶλος",
@@ -6469,7 +7277,8 @@
     "gloss": "colt, young donkey",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 953
   },
   {
     "word": "πόρνη",
@@ -6477,7 +7286,8 @@
     "gloss": "prostitute",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 949
   },
   {
     "word": "ἐξάγω",
@@ -6485,7 +7295,8 @@
     "gloss": "lead out",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 925
   },
   {
     "word": "πρόθεσις",
@@ -6493,7 +7304,8 @@
     "gloss": "show-bread, plan, presentation",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 950
   },
   {
     "word": "μωρός",
@@ -6501,7 +7313,8 @@
     "gloss": "stupid, foolish",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 940
   },
   {
     "word": "κολλάομαι",
@@ -6509,7 +7322,8 @@
     "gloss": "glue, cleave, cling to, join",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 932
   },
   {
     "word": "λιμός",
@@ -6517,7 +7331,8 @@
     "gloss": "hunger, famine",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 935
   },
   {
     "word": "Βαβυλών",
@@ -6525,7 +7340,8 @@
     "gloss": "Babylon",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 910
   },
   {
     "word": "ῥάβδος",
@@ -6533,7 +7349,8 @@
     "gloss": "rod, staff",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 954
   },
   {
     "word": "πλουτέω",
@@ -6541,7 +7358,8 @@
     "gloss": "become rich, am rich",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 948
   },
   {
     "word": "ὀδούς",
@@ -6549,7 +7367,8 @@
     "gloss": "tooth",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 942
   },
   {
     "word": "κάλαμος",
@@ -6557,7 +7376,8 @@
     "gloss": "reed, reed-pen",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 929
   },
   {
     "word": "παραιτέομαι",
@@ -6565,7 +7385,8 @@
     "gloss": "make excuse, refuse, reject",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 945
   },
   {
     "word": "βασανίζω",
@@ -6573,7 +7394,8 @@
     "gloss": "torment, torture, buffet",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 912
   },
   {
     "word": "βουλή",
@@ -6581,7 +7403,8 @@
     "gloss": "counsel, wisdom, purpose",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 916
   },
   {
     "word": "κατάκειμαι",
@@ -6589,7 +7412,8 @@
     "gloss": "recline, am lying ill",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 931
   },
   {
     "word": "κράτος",
@@ -6597,7 +7421,8 @@
     "gloss": "dominion, strength, power",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 933
   },
   {
     "word": "χωρίζω",
@@ -6605,7 +7430,8 @@
     "gloss": "divide, separate, depart",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 924
   },
   {
     "word": "πιάζω",
@@ -6613,7 +7439,8 @@
     "gloss": "lay hold of, seize, catch",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 946
   },
   {
     "word": "ἄδικος",
@@ -6621,7 +7448,8 @@
     "gloss": "unjust, unrighteous",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 905
   },
   {
     "word": "ἀναπαύω",
@@ -6629,7 +7457,8 @@
     "gloss": "make to rest, give rest to",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 906
   },
   {
     "word": "ἀναπίπτω",
@@ -6637,7 +7466,8 @@
     "gloss": "lie down, recline",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 907
   },
   {
     "word": "ἀσκός",
@@ -6645,7 +7475,8 @@
     "gloss": "wine-skin",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 908
   },
   {
     "word": "δαιμονίζομαι",
@@ -6653,7 +7484,8 @@
     "gloss": "am demon-possessed",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 871
   },
   {
     "word": "παιδεύω",
@@ -6661,7 +7493,8 @@
     "gloss": "discipline, educate, train, chastise",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 894
   },
   {
     "word": "πετεινόν",
@@ -6669,7 +7502,8 @@
     "gloss": "bird",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 855
   },
   {
     "word": "συμφέρω",
@@ -6677,7 +7511,8 @@
     "gloss": "collect, am profitable to, help",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 818
   },
   {
     "word": "σαλεύω",
@@ -6685,7 +7520,8 @@
     "gloss": "shake, excite",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 815
   },
   {
     "word": "ἀνθίστημι",
@@ -6693,7 +7529,8 @@
     "gloss": "take a stand against, oppose, resist",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 810
   },
   {
     "word": "ἀλλότριος",
@@ -6701,7 +7538,8 @@
     "gloss": "belonging to another person, foreign",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 806
   },
   {
     "word": "Σαῦλος",
@@ -6709,7 +7547,8 @@
     "gloss": "Saul",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 816
   },
   {
     "word": "διαλογισμός",
@@ -6717,7 +7556,8 @@
     "gloss": "calculation, reasoning, thought, doubt",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 829
   },
   {
     "word": "ἀτενίζω",
@@ -6725,7 +7565,8 @@
     "gloss": "direct my gaze, look steadily",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 825
   },
   {
     "word": "ὑπακοή",
@@ -6733,7 +7574,8 @@
     "gloss": "obedience",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 821
   },
   {
     "word": "ἀφίστημι",
@@ -6741,7 +7583,8 @@
     "gloss": "lead away, seduce, depart, go away",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 827
   },
   {
     "word": "ἀνάκειμαι",
@@ -6749,7 +7592,8 @@
     "gloss": "recline at a dinner-table, lie",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 808
   },
   {
     "word": "ἀναχωρέω",
@@ -6757,7 +7601,8 @@
     "gloss": "return, retreat, withdraw",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 809
   },
   {
     "word": "μακρόθεν",
@@ -6765,7 +7610,8 @@
     "gloss": "from a distance, from far away",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 844
   },
   {
     "word": "ἀμφότεροι",
@@ -6773,7 +7619,8 @@
     "gloss": "both of two, both, all",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 807
   },
   {
     "word": "ἁρπάζω",
@@ -6781,7 +7628,8 @@
     "gloss": "seize, snatch, obtain by robbery",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 814
   },
   {
     "word": "σφραγίζω",
@@ -6789,7 +7637,8 @@
     "gloss": "set a seal upon, seal",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 819
   },
   {
     "word": "τράπεζα",
@@ -6797,7 +7646,8 @@
     "gloss": "table for food or business",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 820
   },
   {
     "word": "χορτάζω",
@@ -6805,7 +7655,8 @@
     "gloss": "feed, satisfy, fill",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 822
   },
   {
     "word": "χόρτος",
@@ -6813,7 +7664,8 @@
     "gloss": "grass, hay",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 823
   },
   {
     "word": "αὔριον",
@@ -6821,7 +7673,8 @@
     "gloss": "tomorrow",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 826
   },
   {
     "word": "ἅπαξ",
@@ -6829,7 +7682,8 @@
     "gloss": "once, once for all",
     "pos": "Adv",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 812
   },
   {
     "word": "σκάνδαλον",
@@ -6837,7 +7691,8 @@
     "gloss": "snare, stumbling-block, temptation to sin",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 817
   },
   {
     "word": "ὠφελέω",
@@ -6845,7 +7700,8 @@
     "gloss": "help, benefit, do good",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 824
   },
   {
     "word": "ἄκανθα",
@@ -6853,7 +7709,8 @@
     "gloss": "thorn-bush, thorn-plant",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 805
   },
   {
     "word": "ἀπειθέω",
@@ -6861,7 +7718,8 @@
     "gloss": "disobey, rebel, am disobedient",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 813
   },
   {
     "word": "ἀπάγω",
@@ -6869,7 +7727,8 @@
     "gloss": "lead, carry, take away",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 811
   },
   {
     "word": "γράμμα",
@@ -6877,7 +7736,8 @@
     "gloss": "letter (of the alphabet), writings",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 828
   },
   {
     "word": "τύπος",
@@ -6885,7 +7745,8 @@
     "gloss": "figure, model, type, image, copy",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 863
   },
   {
     "word": "κρείττων",
@@ -6893,7 +7754,8 @@
     "gloss": "stronger, more excellent, better",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 841
   },
   {
     "word": "ἐνιαυτός",
@@ -6901,7 +7763,8 @@
     "gloss": "year",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 831
   },
   {
     "word": "φρόνιμος",
@@ -6909,7 +7772,8 @@
     "gloss": "prudent, wise, sensible",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 864
   },
   {
     "word": "νοέω",
@@ -6917,7 +7781,8 @@
     "gloss": "understand, consider, perceive",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 850
   },
   {
     "word": "Ἀνδρέας",
@@ -6925,7 +7790,8 @@
     "gloss": "Andrew",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 869
   },
   {
     "word": "ἀναστροφή",
@@ -6933,7 +7799,8 @@
     "gloss": "behavior, manner of life, conduct",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 868
   },
   {
     "word": "ἀνά",
@@ -6941,7 +7808,8 @@
     "gloss": "(with numbers) each; (with acc.) up, through",
     "pos": "Prep",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 865
   },
   {
     "word": "ταπεινόω",
@@ -6949,7 +7817,8 @@
     "gloss": "humble, humiliate, make low",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 862
   },
   {
     "word": "τάλαντον",
@@ -6957,7 +7826,8 @@
     "gloss": "talent of silver or gold",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 861
   },
   {
     "word": "σεισμός",
@@ -6965,7 +7835,8 @@
     "gloss": "earthquake, storm, shaking",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 858
   },
   {
     "word": "προσδέχομαι",
@@ -6973,7 +7844,8 @@
     "gloss": "welcome, accept, receive; wait for",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 856
   },
   {
     "word": "λύχνος",
@@ -6981,7 +7853,8 @@
     "gloss": "lamp",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 843
   },
   {
     "word": "μύρον",
@@ -6989,7 +7862,8 @@
     "gloss": "anointing-oil, ointment, perfume",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 848
   },
   {
     "word": "νήπιος",
@@ -6997,7 +7871,8 @@
     "gloss": "an infant, child, a minor",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 849
   },
   {
     "word": "κωφός",
@@ -7005,7 +7880,8 @@
     "gloss": "dumb, deaf, mute",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 842
   },
   {
     "word": "μέτρον",
@@ -7013,7 +7889,8 @@
     "gloss": "measure, measuring rod",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 847
   },
   {
     "word": "ὄψιος",
@@ -7021,7 +7898,8 @@
     "gloss": "late, evening",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 854
   },
   {
     "word": "ἕκτος",
@@ -7029,7 +7907,8 @@
     "gloss": "sixth",
     "pos": "Adj",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 830
   },
   {
     "word": "κατεσθίω",
@@ -7037,7 +7916,8 @@
     "gloss": "eat till it is finished, eat up, devour",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 836
   },
   {
     "word": "μακροθυμία",
@@ -7045,7 +7925,8 @@
     "gloss": "patience, forbearance, steadfastness",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 845
   },
   {
     "word": "ὄφις",
@@ -7053,7 +7934,8 @@
     "gloss": "serpent, snake",
     "pos": "Noun",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 853
   },
   {
     "word": "εὐφραίνω",
@@ -7061,7 +7943,8 @@
     "gloss": "gladden, cheer; (pass.) am glad",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 833
   },
   {
     "word": "κλάω",
@@ -7069,7 +7952,8 @@
     "gloss": "break",
     "pos": "Verb",
     "section": 6,
-    "freq": null
+    "freq": null,
+    "order": 837
   },
   {
     "word": "ἐνδείκνυμι",
@@ -7077,7 +7961,8 @@
     "gloss": "show forth, show, demonstrate",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 998
   },
   {
     "word": "Γαλιλαῖος",
@@ -7085,7 +7970,8 @@
     "gloss": "Galilean",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 986
   },
   {
     "word": "Βαραββᾶς",
@@ -7093,7 +7979,8 @@
     "gloss": "Barabbas",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 977
   },
   {
     "word": "ἄφρων",
@@ -7101,7 +7988,8 @@
     "gloss": "senseless, foolish",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 976
   },
   {
     "word": "ἀγορά",
@@ -7109,7 +7997,8 @@
     "gloss": "market-place",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 966
   },
   {
     "word": "ἀγαλλιάω",
@@ -7117,7 +8006,8 @@
     "gloss": "exult, am full of joy, am glad",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 965
   },
   {
     "word": "βρῶσις",
@@ -7125,7 +8015,8 @@
     "gloss": "eating, food, meal, rust",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 985
   },
   {
     "word": "ψεύδομαι",
@@ -7133,7 +8024,8 @@
     "gloss": "lie",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 984
   },
   {
     "word": "ἐάω",
@@ -7141,7 +8033,8 @@
     "gloss": "allow, permit, leave",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 992
   },
   {
     "word": "εἰσάγω",
@@ -7149,7 +8042,8 @@
     "gloss": "lead in, bring in",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 994
   },
   {
     "word": "ἀπιστία",
@@ -7157,7 +8051,8 @@
     "gloss": "unbelief, unfaithfulness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 974
   },
   {
     "word": "ἀντιλέγω",
@@ -7165,7 +8060,8 @@
     "gloss": "speak against, oppose",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 972
   },
   {
     "word": "ἀλέκτωρ",
@@ -7173,7 +8069,8 @@
     "gloss": "cock, rooster",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 968
   },
   {
     "word": "ἐλευθερία",
@@ -7181,7 +8078,8 @@
     "gloss": "freedom, liberty",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 996
   },
   {
     "word": "δωρεά",
@@ -7189,7 +8087,8 @@
     "gloss": "free gift, gift",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 990
   },
   {
     "word": "ὑγιαίνω",
@@ -7197,7 +8096,8 @@
     "gloss": "am well, am healthy",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 979
   },
   {
     "word": "ἀρχαῖος",
@@ -7205,7 +8105,8 @@
     "gloss": "original, ancient, old",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 975
   },
   {
     "word": "ἀνατολή",
@@ -7213,7 +8114,8 @@
     "gloss": "rising of sun, East",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 971
   },
   {
     "word": "Ἀγρίππας",
@@ -7221,7 +8123,8 @@
     "gloss": "Agrippa",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 967
   },
   {
     "word": "Ζαχαρίας",
@@ -7229,7 +8132,8 @@
     "gloss": "Zechariah",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1004
   },
   {
     "word": "ἐπιπίπτω",
@@ -7237,7 +8141,8 @@
     "gloss": "fall upon, press upon",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1002
   },
   {
     "word": "φιάλη",
@@ -7245,7 +8150,8 @@
     "gloss": "shallow bowl",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 981
   },
   {
     "word": "ἔπαινος",
@@ -7253,7 +8159,8 @@
     "gloss": "commendation, praise",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1000
   },
   {
     "word": "τυγχάνω",
@@ -7261,7 +8168,8 @@
     "gloss": "obtain, happen, meet",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 978
   },
   {
     "word": "χοῖρος",
@@ -7269,7 +8177,8 @@
     "gloss": "swine",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 983
   },
   {
     "word": "διαμερίζω",
@@ -7277,7 +8186,8 @@
     "gloss": "divide up, distribute",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 988
   },
   {
     "word": "ἐπαισχύνομαι",
@@ -7285,7 +8195,8 @@
     "gloss": "am ashamed",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1001
   },
   {
     "word": "ἐπισκέπτομαι",
@@ -7293,7 +8204,8 @@
     "gloss": "look upon, visit, oversee",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1003
   },
   {
     "word": "ὑγιής",
@@ -7301,7 +8213,8 @@
     "gloss": "sound, whole, healthy",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 980
   },
   {
     "word": "Ἁνανίας",
@@ -7309,7 +8222,8 @@
     "gloss": "Ananias",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 970
   },
   {
     "word": "ἐμβλέπω",
@@ -7317,7 +8231,8 @@
     "gloss": "look into, look upon",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 997
   },
   {
     "word": "ἔνατος",
@@ -7325,7 +8240,8 @@
     "gloss": "ninth",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1080
   },
   {
     "word": "ἐντεῦθεν",
@@ -7333,7 +8249,8 @@
     "gloss": "hence, from this place",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1082
   },
   {
     "word": "διωγμός",
@@ -7341,7 +8258,8 @@
     "gloss": "persecution",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1074
   },
   {
     "word": "ἀσπασμός",
@@ -7349,7 +8267,8 @@
     "gloss": "greeting, salutation",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1066
   },
   {
     "word": "κἀκεῖ",
@@ -7357,7 +8276,8 @@
     "gloss": "and there, and yonder",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1090
   },
   {
     "word": "ἔνοχος",
@@ -7365,7 +8285,8 @@
     "gloss": "involved in, liable, guilty",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1081
   },
   {
     "word": "οἰκονόμος",
@@ -7373,7 +8294,8 @@
     "gloss": "steward, house steward",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1100
   },
   {
     "word": "ὅρκος",
@@ -7381,7 +8303,8 @@
     "gloss": "oath",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1103
   },
   {
     "word": "ἐγκαταλείπω",
@@ -7389,7 +8312,8 @@
     "gloss": "abandon, desert, leave behind",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1075
   },
   {
     "word": "δεσπότης",
@@ -7397,7 +8321,8 @@
     "gloss": "lord, master, prince",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1072
   },
   {
     "word": "κἀκεῖθεν",
@@ -7405,7 +8330,8 @@
     "gloss": "and thence, and from there",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1091
   },
   {
     "word": "κοσμέω",
@@ -7413,7 +8339,8 @@
     "gloss": "put into order, adorn, beautify",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1094
   },
   {
     "word": "ἐμφανίζω",
@@ -7421,7 +8348,8 @@
     "gloss": "make visible, report against, reveal",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1079
   },
   {
     "word": "ἐκκόπτω",
@@ -7429,7 +8357,8 @@
     "gloss": "cut out, cut off, cut down",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1077
   },
   {
     "word": "παντοκράτωρ",
@@ -7437,7 +8366,8 @@
     "gloss": "ruler of universe, the Almighty",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1104
   },
   {
     "word": "ὄντως",
@@ -7445,7 +8375,8 @@
     "gloss": "really, truly",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1102
   },
   {
     "word": "ψευδοπροφήτης",
@@ -7453,7 +8384,8 @@
     "gloss": "false prophet",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1064
   },
   {
     "word": "κλητός",
@@ -7461,7 +8393,8 @@
     "gloss": "called, summoned, invited",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1092
   },
   {
     "word": "χράομαι",
@@ -7469,7 +8402,8 @@
     "gloss": "use, make use of, deal with",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1063
   },
   {
     "word": "θλίβω",
@@ -7477,7 +8411,8 @@
     "gloss": "afflict, oppress, persecute",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1087
   },
   {
     "word": "ἰσχύς",
@@ -7485,7 +8420,8 @@
     "gloss": "strength, power",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1089
   },
   {
     "word": "ἀφαιρέω",
@@ -7493,7 +8429,8 @@
     "gloss": "take away, smite off",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1067
   },
   {
     "word": "βίβλος",
@@ -7501,7 +8438,8 @@
     "gloss": "written book, volume",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1070
   },
   {
     "word": "δικαίωμα",
@@ -7509,7 +8447,8 @@
     "gloss": "righteous deed",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1073
   },
   {
     "word": "ἐπειδή",
@@ -7517,7 +8456,8 @@
     "gloss": "when, since, because",
     "pos": "Conj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1084
   },
   {
     "word": "κοινωνός",
@@ -7525,7 +8465,8 @@
     "gloss": "partner, companion",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1093
   },
   {
     "word": "Ἀχαΐα",
@@ -7533,7 +8474,8 @@
     "gloss": "Achaia",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1069
   },
   {
     "word": "μέλει",
@@ -7541,7 +8483,8 @@
     "gloss": "it is a care, it concerns",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1096
   },
   {
     "word": "ψεύστης",
@@ -7549,7 +8492,8 @@
     "gloss": "liar, deceiver",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1114
   },
   {
     "word": "προσκαρτερέω",
@@ -7557,7 +8501,8 @@
     "gloss": "persist, hold fast",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1125
   },
   {
     "word": "πενθέω",
@@ -7565,7 +8510,8 @@
     "gloss": "mourn, lament, grieve",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1119
   },
   {
     "word": "ψεῦδος",
@@ -7573,7 +8519,8 @@
     "gloss": "lie",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1113
   },
   {
     "word": "ὑμέτερος",
@@ -7581,7 +8528,8 @@
     "gloss": "your",
     "pos": "pron-posses",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1106
   },
   {
     "word": "ταχέως",
@@ -7589,7 +8537,8 @@
     "gloss": "soon, quickly, hastily",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1134
   },
   {
     "word": "σιγάω",
@@ -7597,7 +8546,8 @@
     "gloss": "keep silent, am silent",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1128
   },
   {
     "word": "πόρνος",
@@ -7605,7 +8555,8 @@
     "gloss": "fornicator",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1124
   },
   {
     "word": "παραλυτικός",
@@ -7613,7 +8564,8 @@
     "gloss": "paralytic",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1116
   },
   {
     "word": "στρατηγός",
@@ -7621,7 +8573,8 @@
     "gloss": "general, magistrate, captain",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1130
   },
   {
     "word": "ὑπαντάω",
@@ -7629,7 +8582,8 @@
     "gloss": "meet, fight, oppose",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1107
   },
   {
     "word": "τέταρτος",
@@ -7637,7 +8591,8 @@
     "gloss": "fourth",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1105
   },
   {
     "word": "συζητέω",
@@ -7645,7 +8600,8 @@
     "gloss": "seek together, discuss",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1131
   },
   {
     "word": "πλεονεξία",
@@ -7653,7 +8609,8 @@
     "gloss": "covetousness, greediness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1122
   },
   {
     "word": "ὑπόδημα",
@@ -7661,7 +8618,8 @@
     "gloss": "sandal",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1108
   },
   {
     "word": "φείδομαι",
@@ -7669,7 +8627,8 @@
     "gloss": "spare, abstain",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1109
   },
   {
     "word": "χρηστότης",
@@ -7677,7 +8636,8 @@
     "gloss": "goodness, kindness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1110
   },
   {
     "word": "ἀσέλγεια",
@@ -7685,7 +8645,8 @@
     "gloss": "lewdness, licentiousness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1065
   },
   {
     "word": "παρεμβολή",
@@ -7693,7 +8654,8 @@
     "gloss": "camp, barracks",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1117
   },
   {
     "word": "πατάσσω",
@@ -7701,7 +8663,8 @@
     "gloss": "strike",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1118
   },
   {
     "word": "πύλη",
@@ -7709,7 +8672,8 @@
     "gloss": "door, gate",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1126
   },
   {
     "word": "ποικίλος",
@@ -7717,7 +8681,8 @@
     "gloss": "various, manifold",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1123
   },
   {
     "word": "χωρέω",
@@ -7725,7 +8690,8 @@
     "gloss": "make room, receive",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1111
   },
   {
     "word": "σιωπάω",
@@ -7733,7 +8699,8 @@
     "gloss": "keep silence, am silent",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1129
   },
   {
     "word": "περιστερά",
@@ -7741,7 +8708,8 @@
     "gloss": "dove, pigeon",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1120
   },
   {
     "word": "πλάνη",
@@ -7749,7 +8717,8 @@
     "gloss": "wandering, error, deceit",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1121
   },
   {
     "word": "παράγω",
@@ -7757,7 +8726,8 @@
     "gloss": "pass by, depart, pass away",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1115
   },
   {
     "word": "σύνδουλος",
@@ -7765,7 +8735,8 @@
     "gloss": "fellow servant",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1132
   },
   {
     "word": "χωρίον",
@@ -7773,7 +8744,8 @@
     "gloss": "field, land",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1112
   },
   {
     "word": "δάκρυον",
@@ -7781,7 +8753,8 @@
     "gloss": "tear",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1071
   },
   {
     "word": "ἐπιτάσσω",
@@ -7789,7 +8762,8 @@
     "gloss": "give order, command",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1085
   },
   {
     "word": "μνῆμα",
@@ -7797,7 +8771,8 @@
     "gloss": "tomb, monument, grave",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1097
   },
   {
     "word": "ἀναφέρω",
@@ -7805,7 +8780,8 @@
     "gloss": "carry up, lead up, offer up",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1050
   },
   {
     "word": "συγγενής",
@@ -7813,7 +8789,8 @@
     "gloss": "akin, a relative",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1040
   },
   {
     "word": "μετρέω",
@@ -7821,7 +8798,8 @@
     "gloss": "measure, estimate",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1024
   },
   {
     "word": "κέρας",
@@ -7829,7 +8807,8 @@
     "gloss": "horn",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1017
   },
   {
     "word": "λίμνη",
@@ -7837,7 +8816,8 @@
     "gloss": "lake",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1023
   },
   {
     "word": "σπουδάζω",
@@ -7845,7 +8825,8 @@
     "gloss": "hasten; am eager",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1038
   },
   {
     "word": "σπλάγχνον",
@@ -7853,7 +8834,8 @@
     "gloss": "bowels, compassion, heart",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1037
   },
   {
     "word": "πηγή",
@@ -7861,7 +8843,8 @@
     "gloss": "fountain, spring, well",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1029
   },
   {
     "word": "κράβαττος",
@@ -7869,7 +8852,8 @@
     "gloss": "bed, mattress, mat",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1022
   },
   {
     "word": "ζηλόω",
@@ -7877,7 +8861,8 @@
     "gloss": "am jealous, am zealous",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1005
   },
   {
     "word": "στήκω",
@@ -7885,7 +8870,8 @@
     "gloss": "stand fast, persevere",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1039
   },
   {
     "word": "Τύρος",
@@ -7893,7 +8879,8 @@
     "gloss": "Tyre",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1054
   },
   {
     "word": "σφόδρα",
@@ -7901,7 +8888,8 @@
     "gloss": "exceedingly, greatly, very much",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1041
   },
   {
     "word": "καύχησις",
@@ -7909,7 +8897,8 @@
     "gloss": "boasting",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1016
   },
   {
     "word": "ἀδύνατος",
@@ -7917,7 +8906,8 @@
     "gloss": "incapable, impossible, powerless",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1047
   },
   {
     "word": "νεανίσκος",
@@ -7925,7 +8915,8 @@
     "gloss": "young man, youth",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1025
   },
   {
     "word": "κλῆρος",
@@ -7933,7 +8924,8 @@
     "gloss": "lot, portion, share",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1019
   },
   {
     "word": "καύχημα",
@@ -7941,7 +8933,8 @@
     "gloss": "boasting, object of boasting",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1015
   },
   {
     "word": "ποιμαίνω",
@@ -7949,7 +8942,8 @@
     "gloss": "shepherd, tend, pasture",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1030
   },
   {
     "word": "πρᾶγμα",
@@ -7957,7 +8951,8 @@
     "gloss": "thing done, matter, deed",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1031
   },
   {
     "word": "Ἀπολλῶς",
@@ -7965,7 +8960,8 @@
     "gloss": "Apollos",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1051
   },
   {
     "word": "Ἰσκαριώθ",
@@ -7973,7 +8969,8 @@
     "gloss": "Iscariot",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1010
   },
   {
     "word": "ἀκαθαρσία",
@@ -7981,7 +8978,8 @@
     "gloss": "uncleanness, impurity",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1048
   },
   {
     "word": "ὅραμα",
@@ -7989,7 +8987,8 @@
     "gloss": "spectacle, vision",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1028
   },
   {
     "word": "σχίζω",
@@ -7997,7 +8996,8 @@
     "gloss": "rend, divide, split",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1042
   },
   {
     "word": "ἁγιασμός",
@@ -8005,7 +9005,8 @@
     "gloss": "sanctification, holiness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1045
   },
   {
     "word": "ὁμοθυμαδόν",
@@ -8013,7 +9014,8 @@
     "gloss": "with one mind, unanimously",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1027
   },
   {
     "word": "πραΰτης",
@@ -8021,7 +9023,8 @@
     "gloss": "mildness, gentleness, meekness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1032
   },
   {
     "word": "Σαμάρεια",
@@ -8029,7 +9032,8 @@
     "gloss": "Samaria",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1036
   },
   {
     "word": "ᾅδης",
@@ -8037,7 +9041,8 @@
     "gloss": "Hades",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1046
   },
   {
     "word": "γέμω",
@@ -8045,7 +9050,8 @@
     "gloss": "am full of",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 987
   },
   {
     "word": "εἴδωλον",
@@ -8053,7 +9059,8 @@
     "gloss": "idol, false god, image",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 993
   },
   {
     "word": "φωτίζω",
@@ -8061,7 +9068,8 @@
     "gloss": "illuminate, bring to light",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1059
   },
   {
     "word": "ἅμα",
@@ -8069,7 +9077,8 @@
     "gloss": "at the same time, together",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1049
   },
   {
     "word": "κομίζω",
@@ -8077,7 +9086,8 @@
     "gloss": "bring, receive, recover",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1021
   },
   {
     "word": "κατασκευάζω",
@@ -8085,7 +9095,8 @@
     "gloss": "build, prepare, make, furnish",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1013
   },
   {
     "word": "ὕστερος",
@@ -8093,7 +9104,8 @@
     "gloss": "lastly, afterward, later",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1056
   },
   {
     "word": "φυτεύω",
@@ -8101,7 +9113,8 @@
     "gloss": "plant",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1058
   },
   {
     "word": "καταβολή",
@@ -8109,7 +9122,8 @@
     "gloss": "foundation, sowing",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1012
   },
   {
     "word": "ὑποκάτω",
@@ -8117,7 +9131,8 @@
     "gloss": "underneath, under",
     "pos": "Adv",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1055
   },
   {
     "word": "Ἰόππη",
@@ -8125,7 +9140,8 @@
     "gloss": "Joppa",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1088
   },
   {
     "word": "ἐπιτελέω",
@@ -8133,7 +9149,8 @@
     "gloss": "complete, accomplish, perfect",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1086
   },
   {
     "word": "ἀφορίζω",
@@ -8141,7 +9158,8 @@
     "gloss": "separate, place apart",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1068
   },
   {
     "word": "ἐκπίπτω",
@@ -8149,7 +9167,8 @@
     "gloss": "fall out, fall off, fall away",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1078
   },
   {
     "word": "ὅδε",
@@ -8157,7 +9176,8 @@
     "gloss": "this here, this",
     "pos": "Pron",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1099
   },
   {
     "word": "εἴκοσι",
@@ -8165,7 +9185,8 @@
     "gloss": "twenty",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1076
   },
   {
     "word": "ἀπολογέομαι",
@@ -8173,7 +9194,8 @@
     "gloss": "give a defense, defend myself",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1052
   },
   {
     "word": "Θωμᾶς",
@@ -8181,7 +9203,8 @@
     "gloss": "Thomas",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1009
   },
   {
     "word": "πυνθάνομαι",
@@ -8189,7 +9212,8 @@
     "gloss": "ask, inquire",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1034
   },
   {
     "word": "ἀπολύτρωσις",
@@ -8197,7 +9221,8 @@
     "gloss": "redemption, deliverance",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1053
   },
   {
     "word": "θανατόω",
@@ -8205,7 +9230,8 @@
     "gloss": "put to death, kill",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1007
   },
   {
     "word": "θάπτω",
@@ -8213,7 +9239,8 @@
     "gloss": "bury",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1008
   },
   {
     "word": "κλῆσις",
@@ -8221,7 +9248,8 @@
     "gloss": "calling, summons",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1020
   },
   {
     "word": "νόσος",
@@ -8229,7 +9257,8 @@
     "gloss": "disease, malady, illness",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1026
   },
   {
     "word": "πρότερος",
@@ -8237,7 +9266,8 @@
     "gloss": "formerly, before, earlier",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1033
   },
   {
     "word": "σάλπιγξ",
@@ -8245,7 +9275,8 @@
     "gloss": "trumpet",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1035
   },
   {
     "word": "ζῳοποιέω",
@@ -8253,7 +9284,8 @@
     "gloss": "make to live, make alive",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1006
   },
   {
     "word": "κακία",
@@ -8261,7 +9293,8 @@
     "gloss": "evil, wickedness, malice",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1011
   },
   {
     "word": "κλάδος",
@@ -8269,7 +9302,8 @@
     "gloss": "branch",
     "pos": "Noun",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1018
   },
   {
     "word": "τελευτάω",
@@ -8277,7 +9311,8 @@
     "gloss": "end, finish, die",
     "pos": "Verb",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1043
   },
   {
     "word": "τριάκοντα",
@@ -8285,6 +9320,7 @@
     "gloss": "thirty",
     "pos": "Adj",
     "section": 7,
-    "freq": null
+    "freq": null,
+    "order": 1044
   }
 ]
