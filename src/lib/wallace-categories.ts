@@ -129,7 +129,16 @@ export function getWallaceCategories(
   // Only inherit gr for the head (h:true) to avoid non-head modifiers
   // (genitive NPs, adjectives) picking up their parent NP's clause role.
   // Fall back to Macula phrase role when lowfat data is absent.
-  const role  = syn?.r
+  //
+  // Text-edition guard: the syntax data was built from the SBLGNT, but the
+  // chapter text uses a slightly different edition in a handful of verses
+  // (e.g. John 3:36 omits δέ, shifting all subsequent word IDs by 1).
+  // When PROIEL assigns r:'v' (predicate/verb role) to a word whose
+  // morphology is nominal (Noun, Adjective, Pronoun — never Verb),
+  // the data entry belongs to a neighbouring word from the other edition.
+  // Discard it and track the mismatch for the downstream heuristic.
+  const synRoleMisaligned = syn?.r === 'v' && pos !== 'Verb'
+  const role  = (synRoleMisaligned ? undefined : syn?.r)
              ?? (syn?.c === 'np' ? (syn?.pr ?? (syn?.h ? syn?.gr : undefined)) : undefined)
              ?? (ctx?.maculaRole ?? undefined)
 
@@ -356,6 +365,13 @@ export function getWallaceCategories(
       else if (cls === 'np' && syn?.h && syn?.gc === 'np' && ctx?.prevHeadNounExists)
         nomCats.push({ name: 'Accusative in Apposition', desc: 'In the GNT, an accusative appositive renames or further identifies a preceding accusative noun, agreeing with it in case. The appositive refers to the same entity as its head noun — it adds a title, name, or descriptive clarification without introducing a new participant.\n\nThe attributive apposition pattern (article + appositive + article + title) is very common for identifying persons by role: τὸν Δαυεὶδ τὸν βασιλέα — "David the king" (Matt 1:6); Ἰησοῦν τὸν Ναζωραῖον — "Jesus the Nazarene." The second article signals that the appositive is in close apposition, further identifying the same person.\n\nTest: insert "namely" or "that is" between the head noun and this word. If both refer to the same person or thing, the relationship is appositive. No coordinating conjunction (καί, ἤ) stands between the head noun and the appositive.\n\nDistinguish from Compound Direct Object: a conjunction (καί, ἤ) between two accusatives signals a compound (two different entities); its absence signals apposition (same entity, further identified) (GGBB pp. 48–50).', level: 'intermediate' })
       else if (role === 'o' || ctx?.absFunction === 'O')
+        nomCats.push({ name: 'Accusative Direct Object', desc: 'In the GNT, the accusative direct object is the most frequent use of the accusative, receiving the action of a transitive verb. It answers "whom?" or "what?" Verbs that take accusative objects include ἀγαπάω, βλέπω, λαμβάνω, and ποιέω. This is the default reading for an accusative when other uses cannot be confirmed (GGBB p. 179).', level: 'beginner' })
+      // Heuristic fallback for text-edition mismatch: if PROIEL assigned r:'v' to this
+      // nominal word (misaligned data from a different text edition), confirm via the
+      // Macula clause-structure rule that the enclosing clause actually has a direct
+      // object slot, then classify this accusative as the direct object.
+      else if (synRoleMisaligned && !inPP &&
+               ctx?.maculaClauseRule?.split('-').includes('O'))
         nomCats.push({ name: 'Accusative Direct Object', desc: 'In the GNT, the accusative direct object is the most frequent use of the accusative, receiving the action of a transitive verb. It answers "whom?" or "what?" Verbs that take accusative objects include ἀγαπάω, βλέπω, λαμβάνω, and ποιέω. This is the default reading for an accusative when other uses cannot be confirmed (GGBB p. 179).', level: 'beginner' })
       else if (role === 'vc')
         nomCats.push({ name: 'Predicate Accusative', desc: 'In the GNT, the predicate accusative occurs in a double-accusative construction with verbs of naming (καλέω), making (ποιέω), appointing (τίθημι), or considering (ἡγέομαι). One accusative is the direct object; the other predicates something of it — "he appointed them apostles" (Mark 3:14) (GGBB p. 182).', level: 'intermediate' })
