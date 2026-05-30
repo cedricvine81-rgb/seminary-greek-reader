@@ -304,6 +304,11 @@ function FlashcardPlayer({
   onRestart: () => void
   onStudyMissed: () => void
 }) {
+  // Two-step "Got it" flow: clicking the button arms it, then Proceed advances.
+  // Reset whenever a new card appears.
+  const [gotItClicked, setGotItClicked] = useState(false)
+  useEffect(() => { setGotItClicked(false) }, [idx])
+
   // Keyboard shortcuts: Space/Enter to flip; 1/2/3 to rate after flip
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -414,58 +419,89 @@ function FlashcardPlayer({
         </div>
       </div>
 
-      {/* Card */}
-      <div
-        className="cursor-pointer select-none"
-        onClick={onFlip}
-        role="button"
-        tabIndex={0}
-        onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onFlip()}
-        aria-label="Flip card"
-      >
-        {!flipped ? (
-          <div className="bg-white rounded-2xl min-h-72 flex flex-col items-center justify-center p-12 shadow-md border border-gray-200">
-{greekFirst ? (
-              <>
-                <p className="greek-text text-7xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
-                {word.inflection && <p className="greek-text text-xl text-gray-500 mt-4">{word.inflection}</p>}
-              </>
-            ) : (
-              <>
-                <p className="text-5xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                <p className="text-gray-600 text-lg mt-4">{POS_LABELS[word.pos] ?? word.pos}</p>
-              </>
-            )}
-          </div>
-        ) : (
-          <div className="bg-white rounded-2xl min-h-72 border border-gray-200 flex flex-col items-center justify-center p-12 shadow-md gap-2">
-            {greekFirst ? (
-              <>
-                <p className="greek-text text-4xl text-gray-900 font-medium text-center">{word.word}</p>
-                {word.inflection && <p className="greek-text text-base text-gray-500">{word.inflection}</p>}
-                <div className="my-3 w-12 h-px bg-gray-200" />
-                <p className="text-4xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
-                {word.freq && <p className="text-sm text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
-              </>
-            ) : (
-              <>
-                <p className="text-2xl text-gray-500 font-medium text-center">{word.gloss}</p>
-                <div className="my-3 w-12 h-px bg-gray-200" />
-                <p className="greek-text text-6xl text-gray-900 font-medium text-center">{word.word}</p>
-                {word.inflection && <p className="greek-text text-base text-gray-500 mt-1">{word.inflection}</p>}
-                {word.freq && <p className="text-sm text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
-              </>
+      {/* Card + Got it column */}
+      <div className="flex gap-3 items-stretch">
+        {/* Card (clickable to flip) */}
+        <div
+          className="flex-1 cursor-pointer select-none"
+          onClick={onFlip}
+          role="button"
+          tabIndex={0}
+          onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onFlip()}
+          aria-label="Flip card"
+        >
+          {!flipped ? (
+            <div className="bg-white rounded-2xl min-h-72 flex flex-col items-center justify-center p-12 shadow-md border border-gray-200">
+              {greekFirst ? (
+                <>
+                  <p className="greek-text text-7xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
+                  {word.inflection && <p className="greek-text text-xl text-gray-500 mt-4">{word.inflection}</p>}
+                </>
+              ) : (
+                <>
+                  <p className="text-5xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                  <p className="text-gray-600 text-lg mt-4">{POS_LABELS[word.pos] ?? word.pos}</p>
+                </>
+              )}
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl min-h-72 border border-gray-200 flex flex-col items-center justify-center p-12 shadow-md gap-2">
+              {greekFirst ? (
+                <>
+                  <p className="greek-text text-4xl text-gray-900 font-medium text-center">{word.word}</p>
+                  {word.inflection && <p className="greek-text text-base text-gray-500">{word.inflection}</p>}
+                  <div className="my-3 w-12 h-px bg-gray-200" />
+                  <p className="text-4xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                  <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
+                  {word.freq && <p className="text-sm text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
+                </>
+              ) : (
+                <>
+                  <p className="text-2xl text-gray-500 font-medium text-center">{word.gloss}</p>
+                  <div className="my-3 w-12 h-px bg-gray-200" />
+                  <p className="greek-text text-6xl text-gray-900 font-medium text-center">{word.word}</p>
+                  {word.inflection && <p className="greek-text text-base text-gray-500 mt-1">{word.inflection}</p>}
+                  {word.freq && <p className="text-sm text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Got it → Proceed column: appears when card is flipped, stays fixed so
+            cursor barely moves between the two clicks */}
+        {flipped && (
+          <div className="flex flex-col gap-2 justify-center">
+            <button
+              onClick={() => setGotItClicked(true)}
+              disabled={gotItClicked}
+              className={`btn flex-col gap-0.5 py-3 px-4 w-24 border ${
+                gotItClicked
+                  ? 'bg-green-50 border-green-300 text-green-600 cursor-default'
+                  : 'bg-white border-green-200 text-green-700 hover:bg-green-50'
+              }`}
+            >
+              <span className="text-base font-medium">{gotItClicked ? '✓ Got it' : 'Got it'}</span>
+              <span className="text-xs text-gray-300 font-normal">[3]</span>
+            </button>
+            {gotItClicked && (
+              <button
+                onClick={() => onAdvance(4)}
+                className="btn flex-col gap-0.5 bg-green-600 hover:bg-green-700 text-white py-3 px-4 w-24 border border-green-600"
+              >
+                <span className="text-base font-medium">Proceed</span>
+                <span className="text-xs text-green-200 font-normal">→</span>
+              </button>
             )}
           </div>
         )}
       </div>
 
-      {/* Rating buttons */}
+      {/* Again / Hard buttons */}
       {!flipped ? (
         <p className="text-center text-base text-gray-500">Tap the card or press Space to reveal</p>
       ) : (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => onAdvance(1)}
             className="btn flex-col gap-0.5 bg-white border border-red-200 text-red-500 hover:bg-red-50 py-3"
@@ -479,13 +515,6 @@ function FlashcardPlayer({
           >
             <span className="text-base font-medium">Hard</span>
             <span className="text-xs text-gray-300 font-normal">[2]</span>
-          </button>
-          <button
-            onClick={() => onAdvance(4)}
-            className="btn flex-col gap-0.5 bg-white border border-green-200 text-green-700 hover:bg-green-50 py-3"
-          >
-            <span className="text-base font-medium">Got it</span>
-            <span className="text-xs text-gray-300 font-normal">[3]</span>
           </button>
         </div>
       )}
