@@ -223,6 +223,7 @@ model VocabularyItem {
 
 enum AssignmentType {
   VOCABULARY_QUIZ
+  PASSAGE_VOCABULARY
   MORPHOLOGY_QUIZ
   TRANSLATION_EXERCISE
 }

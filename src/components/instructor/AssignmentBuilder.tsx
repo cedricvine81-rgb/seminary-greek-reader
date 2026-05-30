@@ -179,6 +179,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         onChange={e => set('type', e.target.value as AssignmentType)}
         options={[
           { value: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quiz' },
+          { value: 'PASSAGE_VOCABULARY',   label: 'Passage Vocabulary' },
           { value: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quiz' },
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
         ]}
@@ -530,6 +531,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             onChange={e => setF('quizType', e.target.value as AssignmentType)}
             options={[
               { value: 'VOCABULARY_QUIZ',  label: 'Vocabulary Quiz' },
+              { value: 'PASSAGE_VOCABULARY', label: 'Passage Vocabulary' },
               { value: 'MORPHOLOGY_QUIZ',  label: 'Morphology Quiz' },
             ]}
           />
