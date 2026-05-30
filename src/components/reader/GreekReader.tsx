@@ -107,7 +107,9 @@ const PARALLEL_LANGS = [
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
-const LOOKAHEAD = 800
+const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
+const NAV_PRE   = 3      // chapters to preload before the search target
+const NAV_FWD   = 2      // chapters to preload after the search target
 
 function buildQueue(books: BiblicalBook[]): ChapterItem[] {
   return books.flatMap(b =>
@@ -139,6 +141,7 @@ export function GreekReader() {
   const [searchType, setSearchType]         = useState<'word' | 'reference' | null>(null)
   const [wordSearchTerm, setWordSearchTerm] = useState<string | null>(null)   // normalized
   const [highlightedVerse, setHighlightedVerse] = useState<string | null>(null)
+  const [navKey, setNavKey] = useState(0)   // incremented on every reference search to force scroll
   const [searchLoading, setSearchLoading]   = useState(false)
 
   // ── Settings ─────────────────────────────────────────────────────────────────
@@ -400,13 +403,14 @@ export function GreekReader() {
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [])
 
-  // ── Scroll to highlighted verse ───────────────────────────────────────────────
+  // ── Scroll to highlighted verse (instant; navKey forces re-fire for same verse) ──
 
   useEffect(() => {
     if (highlightedVerse && verseRefs.current[highlightedVerse]) {
-      verseRefs.current[highlightedVerse].scrollIntoView({ behavior: 'smooth', block: 'center' })
+      verseRefs.current[highlightedVerse].scrollIntoView({ behavior: 'instant', block: 'start' })
     }
-  }, [highlightedVerse])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [highlightedVerse, navKey])
 
   // ── Parallel translation fetching ─────────────────────────────────────────────
   // Reset cached keys and verse map whenever the selected language changes.
@@ -517,39 +521,47 @@ export function GreekReader() {
             item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
           )
           if (targetIdx !== -1) {
-            // Load only the target chapter (backward scroll loads earlier chapters lazily).
-            const PRE = 0
-            const preloadStart = Math.max(0, targetIdx - PRE)
-            const idxsToFetch  = Array.from({ length: targetIdx - preloadStart + 1 }, (_, i) => preloadStart + i)
+            // Pre-load chapters around the target so the user can scroll in either
+            // direction immediately without a network delay.
+            const preloadStart = Math.max(0, targetIdx - NAV_PRE)
+            const preloadEnd   = Math.min(queue.length - 1, targetIdx + NAV_FWD)
+            const idxsToFetch  = Array.from(
+              { length: preloadEnd - preloadStart + 1 },
+              (_, i) => preloadStart + i,
+            )
 
             if (isLxx) lxxLoading.current = true
             else       gntLoading.current = true
 
             const fetched = await Promise.all(idxsToFetch.map(i => fetchChapter(queue[i])))
 
-            if (isLxx) lxxLoading.current = false
-            else       gntLoading.current = false
-
             const validSections = fetched.filter((s): s is TextSection => s !== null)
             if (validSections.length > 0) {
-              const newQueueIdx = targetIdx + 1
+              const newQueueIdx = preloadEnd + 1          // next chapter to append going forward
               const isDone      = newQueueIdx >= queue.length
-              const newBackIdx  = preloadStart - 1   // next chapter to prepend when scrolling up
+              const newBackIdx  = preloadStart - 1        // next chapter to prepend going backward
               const backDone    = newBackIdx < 0
 
               if (isLxx) setLxx({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
               else       setGnt({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
 
-              // Always scroll to target chapter's first verse (or the specific verse).
-              const targetSection = validSections[validSections.length - 1]
+              // Identify the target section by key (not by position in validSections).
+              const targetKey     = `${queue[targetIdx].osisId}-${queue[targetIdx].chapter}`
+              const targetSection = validSections.find(s => s.key === targetKey) ?? validSections[0]
               const vId = ref.verse
                 ? (targetSection.verses.find((v: BiblicalVerse) => v.verse === ref.verse)?.id ?? targetSection.verses[0]?.id ?? null)
                 : targetSection.verses[0]?.id ?? null
+
+              // navKey always increments so the scroll effect fires even when vId is
+              // unchanged (e.g. re-searching the same reference).
               setHighlightedVerse(vId)
-              // Reset scroll so the scrollIntoView from the highlightedVerse effect can
-              // position correctly; the effect fires after the DOM is updated.
-              if (textPanelRef.current) textPanelRef.current.scrollTop = 0
+              setNavKey(k => k + 1)
             }
+
+            // Release loading lock only after state has been set so loadMoreGnt/Lxx
+            // cannot fire with a stale queueIdx during the re-render window.
+            if (isLxx) lxxLoading.current = false
+            else       gntLoading.current = false
           }
         } finally { setSearchLoading(false) }
         return
