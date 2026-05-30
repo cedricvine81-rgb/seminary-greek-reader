@@ -108,6 +108,78 @@ const PARTITIVE_HEAD_LEMMAS = new Set([
 ])
 const PARTITIVE_HEAD_POS = new Set(['Indefinite Pronoun', 'Interrogative Pronoun'])
 
+// Lemmas of GNT nouns that carry an implied verbal idea — they are deverbal nouns
+// (derived from, or closely cognate with, a Greek verb) and therefore can take a
+// subjective genitive (genitive performs the action) or objective genitive
+// (genitive receives the action).  The check is applied to the ENCLOSING HEAD NOUN,
+// not the genitive word itself.
+const ACTION_NOUN_LEMMAS = new Set([
+  // ── Love / Faith / Hope / Joy / Peace ────────────────────────────────────────
+  'ἀγάπη',        // love (← ἀγαπάω)
+  'πίστις',       // faith, faithfulness (← πιστεύω)
+  'ἐλπίς',        // hope (← ἐλπίζω)
+  'χαρά',         // joy (← χαίρω)
+  'εἰρήνη',       // peace (← εἰρηνεύω)
+  'χάρις',        // grace, favour
+  // ── Knowledge / Wisdom ───────────────────────────────────────────────────────
+  'γνῶσις',       // knowledge (← γινώσκω)
+  'ἐπίγνωσις',    // full knowledge (← ἐπιγινώσκω)
+  'σοφία',        // wisdom (← σοφίζω)
+  'συνέσις',      // understanding (← συνίημι)
+  'φρόνησις',     // prudence, insight (← φρονέω)
+  // ── Righteousness / Judgment / Sin ───────────────────────────────────────────
+  'δικαιοσύνη',   // righteousness (← δικαιόω)
+  'ἁμαρτία',      // sin (← ἁμαρτάνω)
+  'κρίσις',       // judgment (← κρίνω)
+  'κρίμα',        // judgment, verdict (← κρίνω)
+  'ὀργή',         // wrath (← ὀργίζομαι)
+  // ── Salvation / Redemption / Life / Death ────────────────────────────────────
+  'σωτηρία',      // salvation (← σώζω)
+  'ζωή',          // life (← ζάω)
+  'θάνατος',      // death (← θνήσκω)
+  'ἀνάστασις',    // resurrection (← ἀνίστημι)
+  'ἀπολύτρωσις',  // redemption (← ἀπολυτρόω)
+  'λύτρωσις',     // redemption (← λυτρόω)
+  'λύτρον',       // ransom (← λυτρόω)
+  'ἀφέσις',       // forgiveness, release (← ἀφίημι)
+  'καταλλαγή',    // reconciliation (← καταλλάσσω)
+  // ── Glory / Testimony / Revelation ───────────────────────────────────────────
+  'δόξα',         // glory (← δοξάζω)
+  'μαρτυρία',     // testimony, witness (← μαρτυρέω)
+  'μαρτύριον',    // testimony, evidence (← μαρτυρέω)
+  'ἀποκάλυψις',   // revelation (← ἀποκαλύπτω)
+  'φανέρωσις',    // manifestation (← φανερόω)
+  // ── Gospel / Word / Hearing ──────────────────────────────────────────────────
+  'εὐαγγέλιον',   // gospel (← εὐαγγελίζω)
+  'λόγος',        // word, message (← λέγω)
+  'ἀκοή',         // hearing, report (← ἀκούω)
+  // ── Calling / Promise / Obedience ────────────────────────────────────────────
+  'κλῆσις',       // calling (← καλέω)
+  'ἐπαγγελία',    // promise (← ἐπαγγέλλω)
+  'ὑπακοή',       // obedience (← ὑπακούω)
+  'παρακοή',      // disobedience (← παρακούω)
+  // ── Prayer / Worship / Sacrifice ─────────────────────────────────────────────
+  'προσευχή',     // prayer (← προσεύχομαι)
+  'δέησις',       // petition, prayer (← δέομαι)
+  'εὐχαριστία',   // thanksgiving (← εὐχαριστέω)
+  'θυσία',        // sacrifice (← θύω)
+  'λατρεία',      // worship, service (← λατρεύω)
+  'προσκύνησις',  // worship (← προσκυνέω)
+  // ── Exhortation / Comfort / Confession ───────────────────────────────────────
+  'παράκλησις',   // comfort, exhortation (← παρακαλέω)
+  'ὁμολογία',     // confession (← ὁμολογέω)
+  'εὐχή',         // prayer, vow (← εὔχομαι)
+  // ── Desire / Fear / Grief ────────────────────────────────────────────────────
+  'ἐπιθυμία',     // desire, craving (← ἐπιθυμέω)
+  'φόβος',        // fear (← φοβέομαι)
+  'λύπη',         // grief, sorrow (← λυπέω)
+  'πένθος',       // mourning (← πενθέω)
+  // ── Baptism / Sanctification ─────────────────────────────────────────────────
+  'βάπτισμα',     // baptism (← βαπτίζω)
+  'βαπτισμός',    // baptism, washing (← βαπτίζω)
+  'ἁγιασμός',     // sanctification (← ἁγιάζω)
+])
+
 // ── Main function ─────────────────────────────────────────────────────────────
 
 export function getWallaceCategories(
@@ -320,6 +392,9 @@ export function getWallaceCategories(
         nomCats.push({ name: 'Partitive Genitive', desc: 'In the GNT, the partitive genitive identifies the larger group or whole from which the head noun singles out a part, a member, or an individual. The head noun names the part; the genitive names the whole.\n\nCommon patterns:\n• Numeral + genitive: ἕνα τῶν μικρῶν τούτων — "one of these little ones" (Matt 10:42); εἷς τῶν δώδεκα — "one of the twelve" (Mark 14:10).\n• Quantifier + genitive: πολλοὶ τῶν Ἰουδαίων — "many of the Jews" (John 11:19); οὐδεὶς τῶν ἀνδρῶν — "none of the men" (Luke 14:24).\n• Ordinal/superlative + genitive: πρώτη πασῶν ἐντολή — "first of all commandments" (Mark 12:28); ὁ ἐλάχιστος πάντων — "the least of all" (Eph 3:8).\n• Interrogative/indefinite pronoun + genitive: τίς ἐξ ὑμῶν — "which of you?" (Matt 6:27); τις τῶν Φαρισαίων — "a certain one of the Pharisees" (Luke 7:36).\n\nDiagnostic: can you insert "drawn from" or "belonging to the group of" between the head noun and the genitive? If yes, partitive is the best reading.\n\nDistinguish from Descriptive Genitive: the descriptive genitive qualifies or characterizes the head noun ("king of the Jews" = Jewish king), whereas the partitive genitive treats the head noun as a subset of the genitive group ("one of the Jews" = one member from that group). The partitive genitive often appears with articular plural genitives (τῶν + noun) in the GNT (GGBB pp. 84–86).', level: 'beginner' })
       else if (cls === 'np' && syn?.h && syn?.gc === 'np' && ctx?.enclosingHeadCase === 'Genitive')
         nomCats.push({ name: 'Genitive of Apposition', desc: 'In the GNT, the genitive of apposition follows a head noun and renames or identifies it — the genitive and its head noun refer to the same entity. The genitive specifies what the head noun *is*, rather than showing who owns it or where it comes from.\n\nTwo identifying marks:\n1. Both words refer to the same person or thing.\n2. You can substitute "namely," "that is," or "which is" between them: Ἡσαΐου τοῦ προφήτου — "through Isaiah, namely the prophet" (Matt 3:3); τὸ σημεῖον τῆς περιτομῆς — "the sign of circumcision [= circumcision itself as the sign]" (Rom 4:11).\n\nCommon patterns:\n• Proper name + descriptive title in genitive: a person named, then identified by role (prophet, apostle, king).\n• Abstract head noun + concrete genitive content: the abstraction is identified by what it consists of — "the hope of glory" = the glory that is the hope (Col 1:27).\n\nDistinguish from Descriptive Genitive: apposition renames the head noun so that both refer to the same entity (Ἡσαΐου = τοῦ προφήτου, the same person). A descriptive genitive qualifies the head noun without naming the same thing — "king of the Jews" (Ἰουδαίων ≠ βασιλεύς, different referents). Test: can you substitute "namely" or "that is"? If yes, the genitive is appositive (GGBB pp. 95–100).', level: 'intermediate' })
+      else if (cls === 'np' && syn?.h && syn?.gc === 'np' &&
+               ctx?.enclosingHeadLexeme && ACTION_NOUN_LEMMAS.has(ctx.enclosingHeadLexeme))
+        nomCats.push({ name: 'Subjective or Objective Genitive', desc: 'In the GNT, a genitive that modifies an action noun — one that has a cognate verb and expresses an action or process — is either a subjective genitive or an objective genitive.\n\nDiagnostic test: mentally replace the head noun with its cognate verb and ask whether the genitive would become the subject or the object of that verb.\n\nSubjective Genitive — the genitive noun performs the action the head noun implies:\n• ἡ ἀγάπη τοῦ Χριστοῦ (2 Cor 5:14) — "the love Christ exercises" (Christ is the one who loves us)\n• ἡ κρίσις τοῦ θεοῦ (Rom 2:2) — "the judgment God renders" (God does the judging)\n• ἡ πίστις Ἰησοῦ Χριστοῦ (Gal 2:16, one reading) — "the faithfulness Christ himself demonstrates"\n\nObjective Genitive — the genitive noun receives the action the head noun implies:\n• ἡ ἀγάπη τοῦ κόσμου (1 John 2:15) — "love for the world" (the world is what is loved)\n• ἡ πίστις τοῦ εὐαγγελίου (Phil 1:27) — "faith in the gospel" (the gospel is what is believed)\n• ὁ φόβος τοῦ κυρίου (Acts 9:31) — "fear of the Lord" (the Lord is the one feared)\n\nBoth readings are grammatically possible with the same Greek phrase; context, parallel passages, and theology determine which is intended. The πίστις Χριστοῦ construction is among the most disputed in Pauline scholarship: is Christ the one who is faithful (subjective) or the one in whom we place faith (objective)? Apply the verb-substitution test and weigh the surrounding argument before committing to one reading (GGBB pp. 113–119).', level: 'intermediate' })
       else if (cls === 'np' && syn?.h && syn?.gc === 'np')
         nomCats.push({ name: 'Descriptive Genitive', desc: 'In the GNT, the descriptive genitive (also called the attributive or qualitative genitive) characterizes or qualifies the head noun by specifying its kind, nature, or sphere — functioning like an adjective. The genitive and the head noun refer to different things; the genitive describes what kind.\n\nTwo identifying marks:\n1. The head noun and the genitive are different referents — they do not name the same person or thing.\n2. You can rephrase the genitive as an adjective: "king of the Jews" = "Jewish king"; "Bethlehem of Judea" = "Judean Bethlehem."\n\nCommon patterns:\n• Geographical/ethnic qualifier: Βηθλέεμ τῆς Ἰουδαίας — "Bethlehem of Judea" (Matt 2:1); βασιλεὺς τῶν Ἰουδαίων — "king of the Jews" (Matt 2:2).\n• Genitive of quality or attribute: "body of sin" (σῶμα τῆς ἁμαρτίας, Rom 6:6); "works of the law" (ἔργα νόμου).\n\nDistinguish from Genitive of Apposition: apposition renames (head = genitive, same referent; test: "namely"); descriptive qualifies (head ≠ genitive, different referents; test: adjective paraphrase). Distinguish from Possessive Genitive: possession answers "whose?" while descriptive answers "what kind?" (GGBB pp. 79–86).', level: 'beginner' })
       else if (syn?.c === 'np' && !syn?.h)
