@@ -761,15 +761,28 @@ export function GreekReader() {
       }
 
       // 7. Participle article context: detect substantival (article + participle,
-      // no preceding noun) vs. 2nd-position attributive (noun + article + participle)
+      // no preceding noun) vs. 2nd-position attributive (noun + article + participle).
+      //
+      // Greek postpositive particles (δέ, γάρ, οὖν, etc.) can stand between an
+      // article and its head — e.g. ὁ δὲ ἀπειθῶν (John 3:36). Skip exactly one
+      // postpositive before looking for the article so these are not misidentified
+      // as adjectival/attributive participles.
       let precedingArticle = false
       let nounBeforeArticle = false
       if (mood === 'Participle') {
-        if (prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article') {
+        const NOMINAL_POS = new Set(['Noun', 'Pronoun', 'Demonstrative',
+          'Personal pronoun', 'Reflexive pronoun', 'Relative pronoun'])
+        // Postpositive particles that commonly intervene between article and head
+        const POSTPOSITIVES = new Set([
+          'δέ', 'δὲ', 'δ᾽', 'δ᾿', 'γάρ', 'γὰρ', 'οὖν', 'δή', 'δὴ',
+          'μέν', 'μὲν', 'τε', 'γε', 'ἄρα', 'ἄν',
+        ])
+        const p0 = prevWords[0]
+        const isPostpositive = !!p0 && POSTPOSITIVES.has(p0.lexeme?.lexeme ?? p0.surface ?? '')
+        const artIdx = isPostpositive ? 1 : 0   // skip one postpositive if present
+        if (prevWords[artIdx]?.parses?.[0]?.partOfSpeech === 'Article') {
           precedingArticle = true
-          const NOMINAL_POS = new Set(['Noun', 'Pronoun', 'Demonstrative',
-            'Personal pronoun', 'Reflexive pronoun', 'Relative pronoun'])
-          nounBeforeArticle = NOMINAL_POS.has(prevWords[1]?.parses?.[0]?.partOfSpeech ?? '')
+          nounBeforeArticle = NOMINAL_POS.has(prevWords[artIdx + 1]?.parses?.[0]?.partOfSpeech ?? '')
         }
       }
 
@@ -845,10 +858,17 @@ export function GreekReader() {
 
       // 12. Colwell's Rule: for nominative nouns with a nearby equative verb, whether this
       // word is immediately preceded by an article determines subject (articular) vs predicate
-      // (anarthrous).
-      const isArticular = kase === 'Nominative'
-        ? prevWords[0]?.parses?.[0]?.partOfSpeech === 'Article'
-        : false
+      // (anarthrous). Skip a postpositive particle (δέ, γάρ, etc.) when checking.
+      const isArticular = (() => {
+        if (kase !== 'Nominative') return false
+        const POSTPOSITIVES_ART = new Set([
+          'δέ', 'δὲ', 'δ᾽', 'δ᾿', 'γάρ', 'γὰρ', 'οὖν', 'δή', 'δὴ',
+          'μέν', 'μὲν', 'τε', 'γε', 'ἄρα', 'ἄν',
+        ])
+        const p0 = prevWords[0]
+        const skip = p0 && POSTPOSITIVES_ART.has(p0.lexeme?.lexeme ?? p0.surface ?? '') ? 1 : 0
+        return prevWords[skip]?.parses?.[0]?.partOfSpeech === 'Article'
+      })()
 
       // 13. Modal verb detection: for infinitives with role='o', check whether a
       // modal/auxiliary verb governs it (→ Complementary Infinitive rather than
