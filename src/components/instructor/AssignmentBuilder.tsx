@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
+import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 import { getLessonForWeek, type VocabLesson } from '@/lib/vocab-lesson-map'
@@ -23,12 +24,6 @@ const DAYS_OF_WEEK = [
   { value: 6, label: 'Sat' },
 ]
 
-const QUIZ_SOURCES = [
-  { value: 'VOCAB_BUILDER',       label: 'Biblical Greek Vocabulary Builder (Glanz, Kostyu & Vine)' },
-  { value: 'BEGINNING_VOCAB',     label: 'Beginning Greek Vocabulary (50+ occurrences)' },
-  { value: 'INTERMEDIATE_VOCAB',  label: 'Intermediate Greek Vocabulary (30+ occurrences)' },
-]
-
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 interface Course {
@@ -43,7 +38,7 @@ interface SemesterForm {
   weeks: number
   days: number[]          // 0=Sun … 6=Sat
   quizType: AssignmentType
-  source: string
+  vocabSubsections: string[]  // selected subsection keys when quizType is VOCABULARY_QUIZ
   level: CourseLevel
   numQuestions: number
   timePerQuestion: number  // 0 = untimed
@@ -136,7 +131,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
     allowLate: false, lateDaysLimit: 7,
   })
-  const [source, setSource] = useState('VOCAB_BUILDER')
+  const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
 
@@ -152,7 +147,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { source } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -190,11 +185,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       />
 
       {form.type === 'VOCABULARY_QUIZ' && (
-        <Select
-          label="Quiz source"
-          value={source}
-          onChange={e => setSource(e.target.value)}
-          options={QUIZ_SOURCES}
+        <FrequencySectionPicker
+          selectedSubsections={vocabSubsections}
+          onChange={setVocabSubsections}
         />
       )}
 
@@ -380,17 +373,17 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   const [sampleLoading, setSampleLoading] = useState(false)
 
   const [form, setForm] = useState<SemesterForm>({
-    courseId:        defaultCourseId ?? courses[0]?.id ?? '',
-    startDate:       '',
-    weeks:           16,
-    days:            [4],   // Thursday by default
-    quizType:        'VOCABULARY_QUIZ',
-    source:          'VOCAB_BUILDER',
-    level:           courses[0]?.level ?? 'BEGINNING',
-    numQuestions:    20,
-    timePerQuestion: 0,
-    allowLate:       false,
-    lateDaysLimit:   7,
+    courseId:         defaultCourseId ?? courses[0]?.id ?? '',
+    startDate:        '',
+    weeks:            16,
+    days:             [4],   // Thursday by default
+    quizType:         'VOCABULARY_QUIZ',
+    vocabSubsections: [],
+    level:            courses[0]?.level ?? 'BEGINNING',
+    numQuestions:     20,
+    timePerQuestion:  0,
+    allowLate:        false,
+    lateDaysLimit:    7,
   })
 
   function setF<K extends keyof SemesterForm>(key: K, val: SemesterForm[K]) {
@@ -415,7 +408,6 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     try {
       const params = new URLSearchParams({
         quizType: form.quizType,
-        source:   form.source,
         level:    form.level,
         count:    '5',
         week:     '1',
@@ -428,7 +420,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     } finally {
       setSampleLoading(false)
     }
-  }, [form.quizType, form.source, form.level])
+  }, [form.quizType, form.level])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -543,11 +535,9 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           />
 
           {form.quizType === 'VOCABULARY_QUIZ' && (
-            <Select
-              label="Quiz source"
-              value={form.source}
-              onChange={e => setF('source', e.target.value)}
-              options={QUIZ_SOURCES}
+            <FrequencySectionPicker
+              selectedSubsections={form.vocabSubsections}
+              onChange={keys => setF('vocabSubsections', keys)}
             />
           )}
 
@@ -603,7 +593,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         />
 
         {/* BGVB download */}
-        {form.quizType === 'VOCABULARY_QUIZ' && form.source === 'VOCAB_BUILDER' && (
+        {form.quizType === 'VOCABULARY_QUIZ' && (
           <a
             href="/downloads/BGVB-2024.pdf"
             download
@@ -627,18 +617,13 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             </div>
             <div className="max-h-56 overflow-y-auto divide-y divide-gray-100">
               {schedule.map((s, i) => {
-                const useLessonMap = form.source === 'VOCAB_BUILDER' && form.quizType === 'VOCABULARY_QUIZ'
-                const lesson = useLessonMap ? getLessonForWeek(s.week) : null
+                const lesson = form.quizType === 'VOCABULARY_QUIZ' ? getLessonForWeek(s.week) : null
                 return (
                   <div key={i} className="flex items-center justify-between px-4 py-2 text-sm">
                     <span className="text-gray-500 w-20 shrink-0">Week {s.week}</span>
                     <span className="text-gray-800 flex-1">{s.label}</span>
-                    {lesson ? (
+                    {lesson && (
                       <span className="text-xs text-brand-600 ml-2 shrink-0">{lesson.section} · {lesson.pages}</span>
-                    ) : (
-                      <span className="text-xs text-gray-400 ml-2 shrink-0">
-                        {QUIZ_SOURCES.find(q => q.value === form.source)?.label.split(' ').slice(0, 3).join(' ')}
-                      </span>
                     )}
                   </div>
                 )
