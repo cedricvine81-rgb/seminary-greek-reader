@@ -178,6 +178,24 @@ const ACTION_NOUN_LEMMAS = new Set([
   'βάπτισμα',     // baptism (← βαπτίζω)
   'βαπτισμός',    // baptism, washing (← βαπτίζω)
   'ἁγιασμός',     // sanctification (← ἁγιάζω)
+  // ── Rule / Judgment / Service (agent/action nouns with cognate verbs) ─────────
+  'ἄρχων',        // ruler, leader (← ἄρχω — to rule, to lead); e.g. ἄρχων τῶν Ἰουδαίων
+  'ἀρχή',         // rule, beginning (← ἄρχω)
+  'ἡγεμών',       // governor, leader (← ἡγέομαι — to lead, to consider)
+  'κριτής',       // judge (← κρίνω — to judge)
+  'διδάσκαλος',   // teacher (← διδάσκω — to teach)
+  'διδαχή',       // teaching (← διδάσκω)
+  'διδασκαλία',   // teaching, doctrine (← διδάσκω)
+  'ἀπόστολος',    // apostle, one sent (← ἀποστέλλω — to send)
+  'ποιητής',      // doer, maker (← ποιέω — to do, to make)
+  'ἐργάτης',      // worker (← ἐργάζομαι — to work)
+  'ἔργον',        // work, deed (← ἐργάζομαι)
+  'πρεσβεία',     // embassy, representation (← πρεσβεύω — to be an ambassador)
+  'ἐντολή',       // commandment (← ἐντέλλομαι — to command)
+  'κήρυγμα',      // proclamation (← κηρύσσω — to proclaim)
+  'κῆρυξ',        // herald (← κηρύσσω)
+  'νίκη',         // victory (← νικάω — to conquer)
+  'νῖκος',        // victory (← νικάω)
 ])
 
 // ── Main function ─────────────────────────────────────────────────────────────
