@@ -4,8 +4,8 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizBuilder } from '@/components/instructor/QuizBuilder'
 import { QuizPreview } from '@/components/instructor/QuizPreview'
 import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
+import { AssignmentSettingsEditor } from '@/components/instructor/AssignmentSettingsEditor'
 import { TranslationExerciseBuilder } from '@/components/instructor/TranslationExerciseBuilder'
-import { LatePolicyEditor } from '@/components/instructor/LatePolicyEditor'
 import { DeleteAssignmentButton } from '@/components/instructor/DeleteAssignmentButton'
 import { PublishButton } from '@/components/instructor/PublishButton'
 import { Badge } from '@/components/ui/Badge'
@@ -67,14 +67,21 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           />
         )}
 
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
-          <h2 className="text-sm font-semibold text-gray-800">Late Submission Policy</h2>
-          <LatePolicyEditor
-            assignmentId={assignment.id}
-            initialAllowLate={assignment.allowLate}
-            initialLateDaysLimit={assignment.lateDaysLimit}
-          />
-        </div>
+        <AssignmentSettingsEditor
+          assignmentId={assignment.id}
+          isVocabQuiz={assignment.type === 'VOCABULARY_QUIZ'}
+          initial={{
+            title: assignment.title,
+            weekNumber: assignment.weekNumber,
+            dueDate: assignment.dueDate.toISOString(),
+            instructions: assignment.instructions,
+            timePerQuestion: assignment.timePerQuestion,
+            provideDefinition: assignment.provideDefinition,
+            maxRetakes: assignment.maxRetakes,
+            allowLate: assignment.allowLate,
+            lateDaysLimit: assignment.lateDaysLimit,
+          }}
+        />
 
         <QuizPreview
           questions={assignment.questions.map(q => ({
