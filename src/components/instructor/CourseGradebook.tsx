@@ -88,7 +88,18 @@ export async function CourseGradebook({ courseId }: Props) {
 
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200">
-      <table className="text-xs border-collapse min-w-full">
+      <table className="text-xs border-collapse min-w-full table-fixed">
+        <colgroup>
+          {/* Student name column */}
+          <col className="w-44" />
+          {/* One col per quiz + avg col per group + overall col */}
+          {GROUPS.flatMap(({ type }) => {
+            const cols = assignments.filter(a => a.type === type)
+            if (cols.length === 0) return []
+            return [...cols.map(a => <col key={a.id} className="w-16" />), <col key={`${type}-avg`} className="w-16" />]
+          })}
+          <col className="w-16" />
+        </colgroup>
         <thead>
           {/* Group headers */}
           <tr className="border-b border-gray-200">
