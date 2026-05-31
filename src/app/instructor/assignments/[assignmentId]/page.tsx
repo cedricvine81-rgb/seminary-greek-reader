@@ -2,12 +2,13 @@ import { redirect, notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizBuilder } from '@/components/instructor/QuizBuilder'
+import { QuizPreview } from '@/components/instructor/QuizPreview'
+import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
 import { TranslationExerciseBuilder } from '@/components/instructor/TranslationExerciseBuilder'
 import { LatePolicyEditor } from '@/components/instructor/LatePolicyEditor'
 import { DeleteAssignmentButton } from '@/components/instructor/DeleteAssignmentButton'
 import { PublishButton } from '@/components/instructor/PublishButton'
 import { Badge } from '@/components/ui/Badge'
-import { Card, CardTitle } from '@/components/ui/Card'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
@@ -66,34 +67,29 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           />
         )}
 
-        <Card>
-          <CardTitle>Late Submission Policy</CardTitle>
-          <div className="mt-4">
-            <LatePolicyEditor
-              assignmentId={assignment.id}
-              initialAllowLate={assignment.allowLate}
-              initialLateDaysLimit={assignment.lateDaysLimit}
-            />
-          </div>
-        </Card>
+        <div className="bg-white rounded-2xl border border-gray-100 p-6 space-y-4">
+          <h2 className="text-sm font-semibold text-gray-800">Late Submission Policy</h2>
+          <LatePolicyEditor
+            assignmentId={assignment.id}
+            initialAllowLate={assignment.allowLate}
+            initialLateDaysLimit={assignment.lateDaysLimit}
+          />
+        </div>
 
-        <Card>
-          <CardTitle>Questions ({assignment.questions.length})</CardTitle>
-          {assignment.questions.length === 0 ? (
-            <p className="text-sm text-gray-400 italic mt-2">No questions yet. Use the builder above to add questions.</p>
-          ) : (
-            <ol className="mt-3 space-y-2 list-decimal list-inside">
-              {assignment.questions.map(q => (
-                <li key={q.id} className="text-sm text-gray-700">
-                  <span className="greek-text">{q.prompt}</span>
-                  {q.options.length > 0 && (
-                    <span className="text-gray-400 text-xs ml-2">({q.options.length} options)</span>
-                  )}
-                </li>
-              ))}
-            </ol>
-          )}
-        </Card>
+        <QuizPreview
+          questions={assignment.questions.map(q => ({
+            id: q.id,
+            position: q.position,
+            type: q.type,
+            prompt: q.prompt,
+            correctAnswer: q.correctAnswer,
+            options: q.options,
+            points: q.points,
+          }))}
+          provideDefinition={assignment.provideDefinition}
+        />
+
+        <AssignmentResultsGrid assignmentId={assignment.id} />
       </div>
     </DashboardShell>
   )
