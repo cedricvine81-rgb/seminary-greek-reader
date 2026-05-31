@@ -216,7 +216,7 @@ export default async function InstructorPage() {
                 <details>
                   <summary className="flex items-center justify-between cursor-pointer list-none">
                     <CardTitle>Assignments ({courseAssignments.length})</CardTitle>
-                    <div className="flex gap-2" onClick={e => e.stopPropagation()}>
+                    <div className="flex gap-2">
                       <Link href={`/instructor/assignments/new?courseId=${course.id}`}>
                         <Button size="sm" variant="secondary"><Plus size={13} /> Create</Button>
                       </Link>
