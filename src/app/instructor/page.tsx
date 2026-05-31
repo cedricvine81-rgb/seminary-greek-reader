@@ -3,7 +3,6 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { format } from 'date-fns'
 import { DashboardShell } from '@/components/layout/DashboardShell'
-import { CourseGradebook } from '@/components/instructor/CourseGradebook'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -32,28 +31,39 @@ export default async function InstructorPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
-  const [user, courses] = await Promise.all([
-    prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
-    prisma.course.findMany({
-      where: {
-        OR: [
-          { instructorId: payload.sub },
-          { coInstructors: { some: { userId: payload.sub } } },
-        ],
+  const courseQuery = prisma.course.findMany({
+    where: {
+      OR: [
+        { instructorId: payload.sub },
+        { coInstructors: { some: { userId: payload.sub } } },
+      ],
+    },
+    include: {
+      assignments: {
+        orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
+        select: { id: true, title: true, type: true, weekNumber: true, dueDate: true, instructions: true, isPublished: true, _count: { select: { questions: true } } },
       },
-      include: {
-        assignments: {
-          orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
-          select: { id: true, title: true, type: true, weekNumber: true, dueDate: true, instructions: true, isPublished: true, _count: { select: { questions: true } } },
-        },
-        enrollments: {
-          include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
-          orderBy: { createdAt: 'asc' },
-        },
+      enrollments: {
+        include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
+        orderBy: { createdAt: 'asc' },
       },
-      orderBy: { startDate: 'asc' },
-    }),
-  ])
+    },
+    orderBy: { startDate: 'asc' },
+  })
+
+  type CoursesType = Awaited<typeof courseQuery>
+  let user: { firstName: string; surname: string } | null = null
+  let courses: CoursesType = []
+  let dbError: string | null = null
+
+  try {
+    ;[user, courses] = await Promise.all([
+      prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
+      courseQuery,
+    ])
+  } catch (e) {
+    dbError = e instanceof Error ? e.message : String(e)
+  }
 
   const instructorName = user ? `${user.firstName} ${user.surname}`.trim() : 'Instructor'
   const totalStudents = courses.reduce((s, c) => s + c.enrollments.length, 0)
@@ -61,6 +71,11 @@ export default async function InstructorPage() {
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="Dashboard">
+      {dbError && (
+        <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4 text-sm text-red-800 font-mono break-all">
+          DB ERROR: {dbError}
+        </div>
+      )}
       <div className="space-y-8">
 
         {/* Welcome + stats strip */}
