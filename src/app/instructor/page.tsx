@@ -210,12 +210,11 @@ export default async function InstructorPage() {
             )}
 
             {/* Gradebook */}
-            {course.assignments.length > 0 && course.enrollments.length > 0 && (
-              <Card>
-                <CardTitle className="mb-4">Grade Book</CardTitle>
-                <CourseGradebook courseId={course.id} />
-              </Card>
-            )}
+            <Card>
+              <CardTitle className="mb-4">Grade Book</CardTitle>
+              <p className="text-xs text-gray-400 mb-2">assignments: {course.assignments.length}, enrollments: {course.enrollments.length}</p>
+              <CourseGradebook courseId={course.id} />
+            </Card>
 
             <hr className="border-gray-100" />
           </div>
