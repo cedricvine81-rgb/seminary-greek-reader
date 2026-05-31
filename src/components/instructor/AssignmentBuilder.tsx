@@ -296,13 +296,14 @@ interface SampleData {
 // ── Sample Quiz Modal ─────────────────────────────────────────────────────────
 
 function SampleQuizModal({
-  open, onClose, data, loading, quizType,
+  open, onClose, data, loading, quizType, provideDefinition,
 }: {
   open: boolean
   onClose: () => void
   data: SampleData | null
   loading: boolean
   quizType: AssignmentType
+  provideDefinition: boolean
 }) {
   const [revealed, setRevealed] = useState<Set<number>>(new Set())
 
@@ -345,7 +346,14 @@ function SampleQuizModal({
                   }
                 </p>
 
-                {q.options.length > 0 && (
+                {quizType === 'VOCABULARY_QUIZ' && provideDefinition ? (
+                  <div className="mt-2">
+                    <div className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
+                      Student types their answer here…
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">Fuzzy matching accepts minor spelling variations.</p>
+                  </div>
+                ) : q.options.length > 0 && (
                   <ul className="grid grid-cols-2 gap-1.5 mt-2">
                     {q.options.map((opt, i) => (
                       <li
@@ -486,6 +494,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         data={sampleData}
         loading={sampleLoading}
         quizType={form.quizType}
+        provideDefinition={form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false}
       />
 
       <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
