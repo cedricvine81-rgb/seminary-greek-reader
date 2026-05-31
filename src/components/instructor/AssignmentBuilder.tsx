@@ -45,6 +45,7 @@ interface SemesterForm {
   allowLate: boolean
   lateDaysLimit: number    // 0 = unlimited
   prevSectionsPct: number  // 0–100: % of questions drawn from previous vocab sections
+  quizStylePct: number     // 0 = Choose Definition, 100 = Provide Definition
 }
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
@@ -134,6 +135,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   })
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
   const [prevSectionsPct, setPrevSectionsPct] = useState(0)
+  const [quizStylePct, setQuizStylePct] = useState(0)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
 
@@ -149,7 +151,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -208,6 +210,22 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             <div className="flex justify-between text-xs text-gray-400 mt-0.5">
               <span>0% (current section only)</span>
               <span>100% (all previous)</span>
+            </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Type of Quiz
+            </label>
+            <input
+              type="range"
+              min={0} max={100} step={50}
+              value={quizStylePct}
+              onChange={e => setQuizStylePct(Number(e.target.value))}
+              className="w-full accent-brand-600"
+            />
+            <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+              <span>Choose Definition</span>
+              <span>Provide Definition</span>
             </div>
           </div>
         </>
@@ -390,6 +408,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     vocabSubsections: [],
     level:            courses[0]?.level ?? 'BEGINNING',
     prevSectionsPct:  0,
+    quizStylePct:     0,
     numQuestions:     20,
     timePerQuestion:  0,
     allowLate:        false,
@@ -566,6 +585,22 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                   <span>0% (current section only)</span>
                   <span>100% (all previous)</span>
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Type of Quiz
+                </label>
+                <input
+                  type="range"
+                  min={0} max={100} step={50}
+                  value={form.quizStylePct}
+                  onChange={e => setF('quizStylePct', Number(e.target.value))}
+                  className="w-full accent-brand-600"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+                  <span>Choose Definition</span>
+                  <span>Provide Definition</span>
                 </div>
               </div>
             </>
