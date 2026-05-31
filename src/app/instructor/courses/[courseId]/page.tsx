@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
+import { CourseGradebook } from '@/components/instructor/CourseGradebook'
 import { CoInstructorManager } from '@/components/instructor/CoInstructorManager'
 import { DeleteCourseButton } from '@/components/instructor/DeleteCourseButton'
 import { Badge } from '@/components/ui/Badge'
@@ -103,6 +104,13 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           <CardTitle>Student Progress</CardTitle>
           <div className="mt-3">
             <StudentProgressTable students={report?.studentStats ?? []} />
+          </div>
+        </Card>
+
+        <Card>
+          <CardTitle>Grade Book</CardTitle>
+          <div className="mt-4">
+            <CourseGradebook courseId={course.id} />
           </div>
         </Card>
       </div>
