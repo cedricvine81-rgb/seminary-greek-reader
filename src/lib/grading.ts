@@ -29,7 +29,12 @@ export async function gradeResponse(
     }
   }
 
-  isCorrect = acceptsAnswer(studentAnswer, question.correctAnswer)
+  const assignment = await prisma.assignment.findUnique({
+    where: { id: question.assignmentId },
+    select: { provideDefinition: true },
+  })
+  const fuzzy = assignment?.provideDefinition ?? false
+  isCorrect = acceptsAnswer(studentAnswer, question.correctAnswer, fuzzy)
   return {
     isCorrect,
     score: isCorrect ? question.points : 0,
@@ -41,12 +46,38 @@ function normalise(s: string) {
   return s.trim().toLowerCase().replace(/[.,;:!?]/g, '').trim()
 }
 
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length
+  const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  )
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+  return dp[m][n]
+}
+
+function fuzzyMatch(student: string, expected: string): boolean {
+  if (student === expected) return true
+  const maxLen = Math.max(student.length, expected.length)
+  if (maxLen === 0) return true
+  const allowed = maxLen <= 3 ? 0 : maxLen <= 6 ? 1 : 2
+  return levenshtein(student, expected) <= allowed
+}
+
 // Accept any comma-separated alternative in the correct answer (mirrors client logic).
-function acceptsAnswer(studentAnswer: string, correctAnswer: string): boolean {
+function acceptsAnswer(studentAnswer: string, correctAnswer: string, fuzzy = false): boolean {
   const student = normalise(studentAnswer)
   if (!student) return false
-  return correctAnswer.split(',').map(a => normalise(a)).some(alt => alt === student)
+  const alts = correctAnswer.split(',').map(a => normalise(a))
+  return fuzzy
+    ? alts.some(alt => fuzzyMatch(student, alt))
+    : alts.some(alt => alt === student)
 }
+
+export { fuzzyMatch, normalise }
 
 export async function getAssignmentScore(userId: string, assignmentId: string) {
   const responses = await prisma.response.findMany({

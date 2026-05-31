@@ -12,19 +12,39 @@ interface QuizPlayerProps {
   questions: QuizQuestion[]
   type: 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ'
   timePerQuestion?: number | null
+  provideDefinition?: boolean
 }
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'submitted'
 
-// Accept any comma-separated alternative in the correct answer.
-function isAnswerCorrect(studentAnswer: string, correctAnswer: string): boolean {
+function levenshtein(a: string, b: string): number {
+  const m = a.length, n = b.length
+  const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
+    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  )
+  for (let i = 1; i <= m; i++)
+    for (let j = 1; j <= n; j++)
+      dp[i][j] = a[i - 1] === b[j - 1]
+        ? dp[i - 1][j - 1]
+        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
+  return dp[m][n]
+}
+
+function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fuzzy = false): boolean {
   const norm = (s: string) => s.trim().toLowerCase().replace(/[.,;:!?]/g, '').trim()
   const student = norm(studentAnswer)
   if (!student) return false
-  return correctAnswer.split(',').map(a => norm(a)).some(alt => alt === student)
+  const alts = correctAnswer.split(',').map(a => norm(a))
+  if (!fuzzy) return alts.some(alt => alt === student)
+  return alts.some(alt => {
+    if (alt === student) return true
+    const maxLen = Math.max(student.length, alt.length)
+    const allowed = maxLen <= 3 ? 0 : maxLen <= 6 ? 1 : 2
+    return levenshtein(student, alt) <= allowed
+  })
 }
 
-export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: QuizPlayerProps) {
+export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false }: QuizPlayerProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -69,12 +89,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: Q
     return () => clearTimeout(id)
   }, [timeLeft, phase])
 
-  const handleCheck = useCallback((expired = false) => {
+  const handleCheck = useCallback((expired = false, override?: string) => {
     const answer = expired
       ? ''
       : type === 'MORPHOLOGY_QUIZ'
         ? JSON.stringify(morphDraft)
-        : draft
+        : (override ?? draft)
 
     let correct = false
     if (!expired && answer) {
@@ -88,7 +108,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: Q
           )
         } catch { correct = false }
       } else {
-        correct = isAnswerCorrect(answer, q.correctAnswer ?? '')
+        correct = isAnswerCorrect(answer, q.correctAnswer ?? '', provideDefinition)
       }
     }
 
@@ -277,13 +297,17 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: Q
 
         <div>
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
-            {type === 'MORPHOLOGY_QUIZ' ? 'Identify the morphology' : 'Type the English meaning'}
+            {type === 'MORPHOLOGY_QUIZ'
+              ? 'Identify the morphology'
+              : provideDefinition
+                ? 'Write the English meaning'
+                : 'Choose the correct definition'}
           </p>
           <p className="font-greek text-3xl text-ink-900 leading-relaxed">{q?.prompt}</p>
         </div>
 
-        {/* Vocabulary text input */}
-        {type === 'VOCABULARY_QUIZ' && phase === 'answering' && (
+        {/* Vocabulary: provide-definition text input */}
+        {type === 'VOCABULARY_QUIZ' && provideDefinition && phase === 'answering' && (
           <input
             ref={inputRef}
             type="text"
@@ -296,6 +320,21 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: Q
             autoCorrect="off"
             spellCheck={false}
           />
+        )}
+
+        {/* Vocabulary: choose-definition multiple choice */}
+        {type === 'VOCABULARY_QUIZ' && !provideDefinition && phase === 'answering' && (
+          <div className="grid grid-cols-1 gap-2">
+            {q.options.map(opt => (
+              <button
+                key={opt}
+                onClick={() => { setDraft(opt); handleCheck(false, opt) }}
+                className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
         )}
 
         {/* Morphology selects */}
@@ -349,12 +388,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion }: Q
         {phase === 'answering' ? (
           <>
             <span /> {/* spacer */}
-            <Button
-              onClick={() => handleCheck()}
-              disabled={type === 'VOCABULARY_QUIZ' ? !draft.trim() : Object.keys(morphDraft).length === 0}
-            >
-              Check Answer
-            </Button>
+            {(type !== 'VOCABULARY_QUIZ' || provideDefinition) && (
+              <Button
+                onClick={() => handleCheck()}
+                disabled={type === 'VOCABULARY_QUIZ' ? !draft.trim() : Object.keys(morphDraft).length === 0}
+              >
+                Check Answer
+              </Button>
+            )}
           </>
         ) : (
           <>

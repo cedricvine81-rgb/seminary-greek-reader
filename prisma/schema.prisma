@@ -242,6 +242,7 @@ model Assignment {
   timePerQuestion Int?           // seconds per question; null = untimed
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
+  provideDefinition Boolean   @default(false)
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

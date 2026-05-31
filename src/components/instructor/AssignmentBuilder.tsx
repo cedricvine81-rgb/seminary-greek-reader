@@ -151,7 +151,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -463,6 +463,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         body: JSON.stringify({
           ...form,
           lateDaysLimit: form.allowLate ? form.lateDaysLimit : null,
+          provideDefinition: form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false,
           schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })),
         }),
       })

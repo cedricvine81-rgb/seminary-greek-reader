@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
     timePerQuestion,
     allowLate,
     lateDaysLimit,
+    provideDefinition,
     schedule,
   }: {
     courseId: string
@@ -44,6 +45,7 @@ export async function POST(req: NextRequest) {
     timePerQuestion?: number
     allowLate?: boolean
     lateDaysLimit?: number
+    provideDefinition?: boolean
     schedule: ScheduleItem[]
   } = body
 
@@ -95,6 +97,7 @@ export async function POST(req: NextRequest) {
         timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
         allowLate: Boolean(allowLate),
         lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
+        provideDefinition: Boolean(provideDefinition),
         isPublished: false,
       },
     })
