@@ -13,6 +13,9 @@ interface QuizPlayerProps {
   type: 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ'
   timePerQuestion?: number | null
   provideDefinition?: boolean
+  maxRetakes?: number | null
+  attemptCount?: number
+  bestPct?: number | null
 }
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'submitted'
@@ -44,9 +47,17 @@ function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fuzzy = f
   })
 }
 
-export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false }: QuizPlayerProps) {
+export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const [attemptCount, setAttemptCount] = useState(initialAttemptCount)
+  const [bestPct, setBestPct] = useState(initialBestPct)
+
+  const maxAllowed = maxRetakes === null ? null : maxRetakes + 1
+  const retakesUsed = Math.max(0, attemptCount - 1)
+  const retakesRemaining = maxRetakes === null ? null : Math.max(0, maxRetakes - retakesUsed)
+  const canRetake = maxAllowed === null || attemptCount < maxAllowed
 
   const [idx, setIdx] = useState(0)
   const [draft, setDraft] = useState('')
@@ -147,6 +158,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       const data = await res.json()
       setResult(data.result)
       setPhase('submitted')
+      setAttemptCount(data.result.attemptNumber)
+      if (data.result.isNewBest) setBestPct(data.result.percentage)
     } finally {
       setSubmitting(false)
     }
@@ -170,6 +183,28 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     : null
 
   const timerColour = timerPct === null ? '' : timerPct > 50 ? 'bg-brand-500' : timerPct > 20 ? 'bg-amber-500' : 'bg-red-500'
+
+  // ── Attempts indicator ────────────────────────────────────────────────────
+  function AttemptsIndicator() {
+    if (attemptCount === 0 && maxRetakes === null) return null
+    return (
+      <div className="flex items-center justify-between text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
+        <span>
+          {attemptCount === 0
+            ? 'First attempt'
+            : `Attempt ${attemptCount + 1} of ${maxAllowed ?? '∞'}`}
+          {bestPct !== null && (
+            <span className="ml-2 text-brand-700 font-semibold">Best: {bestPct}%</span>
+          )}
+        </span>
+        {maxRetakes !== null && (
+          <span className={retakesRemaining === 0 ? 'text-red-500 font-medium' : 'text-gray-500'}>
+            {retakesRemaining === 0 ? 'No retakes remaining' : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
+          </span>
+        )}
+      </div>
+    )
+  }
 
   // ── Running score chip ─────────────────────────────────────────────────────
   function RunningScore() {
@@ -224,10 +259,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             <Send size={15} />
             Submit for Grading
           </Button>
-          <Button variant="ghost" onClick={handleRetake} className="flex items-center gap-2">
-            <RotateCcw size={15} />
-            Retake Quiz
-          </Button>
+          {canRetake && (
+            <Button variant="ghost" onClick={handleRetake} className="flex items-center gap-2">
+              <RotateCcw size={15} />
+              Retake Quiz
+            </Button>
+          )}
         </div>
       </div>
     )
@@ -241,12 +278,25 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <CheckCircle2 size={40} className="text-green-500 mx-auto mb-2" />
           <p className="text-4xl font-bold text-brand-700">{result.percentage}%</p>
           <p className="text-gray-600 mt-1">{result.correctAnswers} / {result.totalQuestions} correct — submitted for grading</p>
+          {result.isNewBest ? (
+            <p className="text-xs text-green-600 mt-1 font-medium">New best score!</p>
+          ) : (
+            <p className="text-xs text-gray-400 mt-1">Best score: {bestPct}%</p>
+          )}
+          {maxRetakes !== null && (
+            <p className="text-xs text-gray-500 mt-2">
+              Attempt {attemptCount} of {maxAllowed} ·{' '}
+              {retakesRemaining === 0 ? 'No retakes remaining' : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
+            </p>
+          )}
         </div>
         <div className="flex gap-3">
-          <Button onClick={handleRetake} variant="ghost" className="flex items-center gap-2">
-            <RotateCcw size={15} />
-            Retake Quiz
-          </Button>
+          {canRetake && (
+            <Button onClick={handleRetake} variant="ghost" className="flex items-center gap-2">
+              <RotateCcw size={15} />
+              Retake Quiz
+            </Button>
+          )}
           <Button variant="ghost" onClick={() => router.push('/student/assignments')}>
             Back to Assignments
           </Button>
@@ -260,6 +310,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   return (
     <div className="space-y-5 max-w-2xl">
+
+      <AttemptsIndicator />
 
       {/* Progress + running score */}
       <div className="space-y-1">

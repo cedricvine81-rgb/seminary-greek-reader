@@ -30,6 +30,7 @@ model User {
   coInstructorOf     CourseCoInstructor[]
   enrollments        Enrollment[]
   responses          Response[]
+  quizAttempts       QuizAttempt[]
   flashcardProgress  FlashcardProgress[]
   createdAssignments Assignment[]          @relation("CreatedAssignments")
 
@@ -243,14 +244,16 @@ model Assignment {
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   provideDefinition Boolean   @default(false)
+  maxRetakes   Int?
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
-  course     Course     @relation(fields: [courseId], references: [id])
-  createdBy  User       @relation("CreatedAssignments", fields: [createdById], references: [id])
+  course     Course        @relation(fields: [courseId], references: [id])
+  createdBy  User          @relation("CreatedAssignments", fields: [createdById], references: [id])
   questions  Question[]
   responses  Response[]
+  attempts   QuizAttempt[]
 
   @@index([courseId])
 }
@@ -282,6 +285,25 @@ model Question {
   responses  Response[]
 
   @@index([assignmentId])
+}
+
+// ─── Quiz Attempts ────────────────────────────────────────────────
+
+model QuizAttempt {
+  id            String   @id @default(cuid())
+  userId        String
+  assignmentId  String
+  attemptNumber Int
+  earnedPoints  Float
+  totalPoints   Float
+  percentage    Int
+  isBest        Boolean  @default(false)
+  completedAt   DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id])
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@index([userId, assignmentId])
 }
 
 // ─── Student Responses ────────────────────────────────────────────

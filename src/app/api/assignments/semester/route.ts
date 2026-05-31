@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
     allowLate,
     lateDaysLimit,
     provideDefinition,
+    maxRetakes,
     schedule,
   }: {
     courseId: string
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
     allowLate?: boolean
     lateDaysLimit?: number
     provideDefinition?: boolean
+    maxRetakes?: number | null
     schedule: ScheduleItem[]
   } = body
 
@@ -98,6 +100,7 @@ export async function POST(req: NextRequest) {
         allowLate: Boolean(allowLate),
         lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
         provideDefinition: Boolean(provideDefinition),
+        maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
         isPublished: false,
       },
     })

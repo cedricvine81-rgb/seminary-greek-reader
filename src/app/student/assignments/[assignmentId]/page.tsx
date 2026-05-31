@@ -17,10 +17,17 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
 
-  const assignment = await prisma.assignment.findUnique({
-    where: { id: params.assignmentId },
-    include: { questions: { orderBy: { position: 'asc' } } },
-  })
+  const [assignment, attemptCount, bestAttempt] = await Promise.all([
+    prisma.assignment.findUnique({
+      where: { id: params.assignmentId },
+      include: { questions: { orderBy: { position: 'asc' } } },
+    }),
+    prisma.quizAttempt.count({ where: { assignmentId: params.assignmentId, userId: payload.sub } }),
+    prisma.quizAttempt.findFirst({
+      where: { assignmentId: params.assignmentId, userId: payload.sub, isBest: true },
+      select: { percentage: true },
+    }),
+  ])
   if (!assignment) notFound()
 
   // Determine submission window
@@ -95,6 +102,9 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             type={assignment.type as 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ'}
             timePerQuestion={assignment.timePerQuestion}
             provideDefinition={assignment.provideDefinition}
+            maxRetakes={assignment.maxRetakes}
+            attemptCount={attemptCount}
+            bestPct={bestAttempt?.percentage ?? null}
           />
         ))}
       </div>

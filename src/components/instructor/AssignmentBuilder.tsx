@@ -46,6 +46,7 @@ interface SemesterForm {
   lateDaysLimit: number    // 0 = unlimited
   prevSectionsPct: number  // 0–100: % of questions drawn from previous vocab sections
   quizStylePct: number     // 0 = Choose Definition, 100 = Provide Definition
+  maxRetakes: number | null
 }
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
@@ -138,6 +139,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [quizStylePct, setQuizStylePct] = useState(0)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
+  const [maxRetakes, setMaxRetakes] = useState<number | null>(null)
 
   function set<K extends keyof AssignmentFormData>(key: K, val: AssignmentFormData[K]) {
     setForm(prev => ({ ...prev, [key]: val }))
@@ -151,7 +153,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -259,6 +261,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         max={300}
         value={form.timePerQuestion ?? 0}
         onChange={e => set('timePerQuestion', Number(e.target.value) || undefined)}
+      />
+
+      <Select
+        label="Quiz retakes allowed"
+        value={maxRetakes === null ? '' : String(maxRetakes)}
+        onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
+        options={[
+          { value: '0', label: 'No retakes (1 attempt only)' },
+          { value: '1', label: '1 retake (2 attempts total)' },
+          { value: '2', label: '2 retakes (3 attempts total)' },
+          { value: '3', label: '3 retakes (4 attempts total)' },
+          { value: '5', label: '5 retakes (6 attempts total)' },
+        ]}
+        placeholder="Unlimited retakes"
       />
 
       <LatePolicyFields
@@ -421,6 +437,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     timePerQuestion:  0,
     allowLate:        false,
     lateDaysLimit:    7,
+    maxRetakes:       null,
   })
 
   function setF<K extends keyof SemesterForm>(key: K, val: SemesterForm[K]) {
@@ -643,6 +660,20 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             View sample quiz
           </button>
         </fieldset>
+
+        <Select
+          label="Quiz retakes allowed"
+          value={form.maxRetakes === null ? '' : String(form.maxRetakes)}
+          onChange={e => setF('maxRetakes', e.target.value === '' ? null : Number(e.target.value))}
+          options={[
+            { value: '0', label: 'No retakes (1 attempt only)' },
+            { value: '1', label: '1 retake (2 attempts total)' },
+            { value: '2', label: '2 retakes (3 attempts total)' },
+            { value: '3', label: '3 retakes (4 attempts total)' },
+            { value: '5', label: '5 retakes (6 attempts total)' },
+          ]}
+          placeholder="Unlimited retakes"
+        />
 
         <LatePolicyFields
           allowLate={form.allowLate}
