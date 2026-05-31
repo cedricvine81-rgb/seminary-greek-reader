@@ -220,8 +220,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           onChange={e => set('dueDate', e.target.value)} />
       </div>
 
-      <Input label="Text reference (optional)" value={form.reference ?? ''}
-        onChange={e => set('reference', e.target.value)} placeholder="John 1:1–5" />
+      {form.type === 'TRANSLATION_EXERCISE' && (
+        <Input label="Text reference (optional)" value={form.reference ?? ''}
+          onChange={e => set('reference', e.target.value)} placeholder="John 1:1–5" />
+      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Instructions (optional)</label>
