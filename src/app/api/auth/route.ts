@@ -45,8 +45,10 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ error: 'Unknown action.' }, { status: 400 })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+    const message = err instanceof Error ? err.message : String(err)
+    console.error('[auth] sign-in error:', message)
+    const detail = process.env.NODE_ENV !== 'production' ? message : undefined
+    return NextResponse.json({ error: 'Server error.', detail }, { status: 500 })
   }
 }
 
