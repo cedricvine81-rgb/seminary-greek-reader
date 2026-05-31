@@ -94,7 +94,7 @@ export async function CourseGradebook({ courseId }: Props) {
   })).filter(g => g.cols.length > 0)
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200">
+    <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
       <table className="text-xs border-collapse min-w-full table-fixed">
         <colgroup>
           <col style={{ width: '176px' }} />
@@ -106,10 +106,10 @@ export async function CourseGradebook({ courseId }: Props) {
           ))}
           <col style={{ width: '64px' }} />
         </colgroup>
-        <thead>
+        <thead className="sticky top-0 z-20">
           {/* Row 1: group headers */}
           <tr className="border-b border-gray-200">
-            <th className="sticky left-0 z-10 bg-gray-50 px-4 py-2" rowSpan={2} />
+            <th className="sticky left-0 z-30 bg-gray-50 px-4 py-2" rowSpan={2} />
             {activeGroups.map(g => (
               <th
                 key={g.type}
@@ -154,7 +154,7 @@ export async function CourseGradebook({ courseId }: Props) {
 
             return (
               <tr key={student.id} className="hover:bg-gray-50">
-                <td className="sticky left-0 z-10 bg-white px-4 py-2.5 border-r border-gray-100">
+                <td className="sticky left-0 z-10 bg-white px-4 py-2.5 border-r border-gray-100 shadow-[1px_0_0_0_#e5e7eb]">
                   <p className="font-medium text-gray-800 whitespace-nowrap truncate">
                     {[student.firstName, student.surname].filter(Boolean).join(' ') || student.email}
                   </p>
@@ -181,7 +181,7 @@ export async function CourseGradebook({ courseId }: Props) {
         {/* Class averages footer */}
         <tfoot>
           <tr className="border-t-2 border-gray-200 bg-gray-50">
-            <td className="sticky left-0 bg-gray-50 px-4 py-2.5 font-semibold text-gray-600 text-xs border-r border-gray-100">
+            <td className="sticky left-0 z-10 bg-gray-50 px-4 py-2.5 font-semibold text-gray-600 text-xs shadow-[1px_0_0_0_#e5e7eb]">
               Class average
             </td>
             {(() => {
