@@ -205,7 +205,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               min={0} max={100} step={5}
               value={prevSectionsPct}
               onChange={e => setPrevSectionsPct(Number(e.target.value))}
-              className="w-full accent-brand-600"
+              className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-0.5">
               <span>0% (current section only)</span>
@@ -221,7 +221,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               min={0} max={100} step={50}
               value={quizStylePct}
               onChange={e => setQuizStylePct(Number(e.target.value))}
-              className="w-full accent-brand-600"
+              className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
             />
             <div className="flex justify-between text-xs text-gray-400 mt-0.5">
               <span>Choose Definition</span>
@@ -580,7 +580,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                   min={0} max={100} step={5}
                   value={form.prevSectionsPct}
                   onChange={e => setF('prevSectionsPct', Number(e.target.value))}
-                  className="w-full accent-brand-600"
+                  className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                   <span>0% (current section only)</span>
@@ -596,7 +596,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                   min={0} max={100} step={50}
                   value={form.quizStylePct}
                   onChange={e => setF('quizStylePct', Number(e.target.value))}
-                  className="w-full accent-brand-600"
+                  className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
                 />
                 <div className="flex justify-between text-xs text-gray-400 mt-0.5">
                   <span>Choose Definition</span>
