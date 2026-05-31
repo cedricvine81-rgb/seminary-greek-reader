@@ -47,9 +47,7 @@ export async function CourseGradebook({ courseId }: Props) {
     }),
   ])
 
-  if (enrollments.length === 0 || assignments.length === 0) {
-    return <p className="text-sm text-gray-400 italic py-2">No data yet (enrollments: {enrollments.length}, assignments: {assignments.length}).</p>
-  }
+  if (enrollments.length === 0 || assignments.length === 0) return null
 
   const assignmentIds = assignments.map(a => a.id)
   const translationIds = assignments.filter(a => a.type === 'TRANSLATION_EXERCISE').map(a => a.id)
@@ -95,9 +93,7 @@ export async function CourseGradebook({ courseId }: Props) {
     cols: assignments.filter(a => a.type === type),
   })).filter(g => g.cols.length > 0)
 
-  if (activeGroups.length === 0) {
-    return <p className="text-sm text-gray-400 italic py-2">No gradeable assignments found (types present: {Array.from(new Set(assignments.map(a => a.type))).join(', ')}).</p>
-  }
+  if (activeGroups.length === 0) return null
 
   return (
     <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
