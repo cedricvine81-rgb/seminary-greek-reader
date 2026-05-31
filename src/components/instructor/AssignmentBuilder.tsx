@@ -44,6 +44,7 @@ interface SemesterForm {
   timePerQuestion: number  // 0 = untimed
   allowLate: boolean
   lateDaysLimit: number    // 0 = unlimited
+  prevSectionsPct: number  // 0–100: % of questions drawn from previous vocab sections
 }
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
@@ -132,6 +133,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     allowLate: false, lateDaysLimit: 7,
   })
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
+  const [prevSectionsPct, setPrevSectionsPct] = useState(0)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
 
@@ -147,7 +149,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -186,10 +188,29 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       />
 
       {form.type === 'VOCABULARY_QUIZ' && (
-        <FrequencySectionPicker
-          selectedSubsections={vocabSubsections}
-          onChange={setVocabSubsections}
-        />
+        <>
+          <FrequencySectionPicker
+            selectedSubsections={vocabSubsections}
+            onChange={setVocabSubsections}
+          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Questions from previous sections:{' '}
+              <span className="text-brand-700 font-semibold">{prevSectionsPct}%</span>
+            </label>
+            <input
+              type="range"
+              min={0} max={100} step={5}
+              value={prevSectionsPct}
+              onChange={e => setPrevSectionsPct(Number(e.target.value))}
+              className="w-full accent-brand-600"
+            />
+            <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+              <span>0% (current section only)</span>
+              <span>100% (all previous)</span>
+            </div>
+          </div>
+        </>
       )}
 
       <div className="grid grid-cols-2 gap-4">
@@ -198,21 +219,6 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         <Input label="Due date" type="date" required value={form.dueDate}
           onChange={e => set('dueDate', e.target.value)} />
       </div>
-
-      <Select
-        label="Level"
-        value={form.level}
-        onChange={e => set('level', e.target.value as CourseLevel)}
-        options={[
-          { value: 'BEGINNING',    label: 'Beginning Greek' },
-          { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
-          { value: 'ADVANCED',     label: 'Advanced Greek' },
-          { value: 'GREEK_I',      label: 'Greek I' },
-          { value: 'GREEK_II',     label: 'Greek II' },
-          { value: 'GREEK_III',    label: 'Greek III' },
-          { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
-        ]}
-      />
 
       <Input label="Text reference (optional)" value={form.reference ?? ''}
         onChange={e => set('reference', e.target.value)} placeholder="John 1:1–5" />
@@ -381,6 +387,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     quizType:         'VOCABULARY_QUIZ',
     vocabSubsections: [],
     level:            courses[0]?.level ?? 'BEGINNING',
+    prevSectionsPct:  0,
     numQuestions:     20,
     timePerQuestion:  0,
     allowLate:        false,
@@ -537,36 +544,39 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           />
 
           {form.quizType === 'VOCABULARY_QUIZ' && (
-            <FrequencySectionPicker
-              selectedSubsections={form.vocabSubsections}
-              onChange={keys => setF('vocabSubsections', keys)}
-            />
+            <>
+              <FrequencySectionPicker
+                selectedSubsections={form.vocabSubsections}
+                onChange={keys => setF('vocabSubsections', keys)}
+              />
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Questions from previous sections:{' '}
+                  <span className="text-brand-700 font-semibold">{form.prevSectionsPct}%</span>
+                </label>
+                <input
+                  type="range"
+                  min={0} max={100} step={5}
+                  value={form.prevSectionsPct}
+                  onChange={e => setF('prevSectionsPct', Number(e.target.value))}
+                  className="w-full accent-brand-600"
+                />
+                <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+                  <span>0% (current section only)</span>
+                  <span>100% (all previous)</span>
+                </div>
+              </div>
+            </>
           )}
 
-          <div className="grid grid-cols-2 gap-4">
-            <Select
-              label="Level"
-              value={form.level}
-              onChange={e => setF('level', e.target.value as CourseLevel)}
-              options={[
-                { value: 'BEGINNING',    label: 'Beginning Greek' },
-                { value: 'INTERMEDIATE', label: 'Intermediate Greek' },
-                { value: 'ADVANCED',     label: 'Advanced Greek' },
-                { value: 'GREEK_I',      label: 'Greek I' },
-                { value: 'GREEK_II',     label: 'Greek II' },
-                { value: 'GREEK_III',    label: 'Greek III' },
-                { value: 'SEPTUAGINT',   label: 'Septuagint Greek' },
-              ]}
-            />
-            <Input
-              label="Questions per quiz"
-              type="number"
-              min={1}
-              max={50}
-              value={form.numQuestions}
-              onChange={e => setF('numQuestions', Number(e.target.value))}
-            />
-          </div>
+          <Input
+            label="Questions per quiz"
+            type="number"
+            min={1}
+            max={50}
+            value={form.numQuestions}
+            onChange={e => setF('numQuestions', Number(e.target.value))}
+          />
 
           <Input
             label="Time per question (seconds, 0 = untimed)"
@@ -620,13 +630,14 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             <div className="max-h-56 overflow-y-auto divide-y divide-gray-100">
               {schedule.map((s, i) => {
                 const lesson = form.quizType === 'VOCABULARY_QUIZ' ? getLessonForWeek(s.week) : null
+                const sectionLabel = lesson ? lesson.section.replace('-', ':') : null
                 return (
-                  <div key={i} className="flex items-center justify-between px-4 py-2 text-sm">
+                  <div key={i} className="flex items-center gap-4 px-4 py-2 text-sm">
                     <span className="text-gray-500 w-20 shrink-0">Week {s.week}</span>
-                    <span className="text-gray-800 flex-1">{s.label}</span>
-                    {lesson && (
-                      <span className="text-xs text-brand-600 ml-2 shrink-0">{lesson.section} · {lesson.pages}</span>
+                    {sectionLabel && (
+                      <span className="text-xs font-medium text-brand-600 shrink-0">{sectionLabel}</span>
                     )}
+                    <span className="text-gray-800">{s.label}</span>
                   </div>
                 )
               })}
