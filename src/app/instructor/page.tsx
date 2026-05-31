@@ -212,8 +212,7 @@ export default async function InstructorPage() {
             {/* Gradebook */}
             <Card>
               <CardTitle className="mb-4">Grade Book</CardTitle>
-              <p className="text-xs text-gray-400 mb-2">assignments: {course.assignments.length}, enrollments: {course.enrollments.length}</p>
-              <CourseGradebook courseId={course.id} />
+              <p className="text-xs text-gray-400 mb-2">DEBUG — assignments: {course.assignments.length}, enrollments: {course.enrollments.length}, courseId: {course.id}</p>
             </Card>
 
             <hr className="border-gray-100" />
