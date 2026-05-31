@@ -1,3 +1,4 @@
+import { Fragment } from 'react'
 import type { ReactNode } from 'react'
 import { prisma } from '@/lib/db'
 
@@ -86,66 +87,64 @@ export async function CourseGradebook({ courseId }: Props) {
     return m ? m[1].replace('-', ':') : null
   }
 
+  // Pre-compute groups so every render section uses identical structure
+  const activeGroups = GROUPS.map(({ type, label }) => ({
+    type, label,
+    cols: assignments.filter(a => a.type === type),
+  })).filter(g => g.cols.length > 0)
+
   return (
     <div className="overflow-x-auto rounded-xl border border-gray-200">
       <table className="text-xs border-collapse min-w-full table-fixed">
         <colgroup>
-          {/* Student name column */}
-          <col className="w-44" />
-          {/* One col per quiz + avg col per group + overall col */}
-          {GROUPS.flatMap(({ type }) => {
-            const cols = assignments.filter(a => a.type === type)
-            if (cols.length === 0) return []
-            return [...cols.map(a => <col key={a.id} className="w-16" />), <col key={`${type}-avg`} className="w-16" />]
-          })}
-          <col className="w-16" />
+          <col style={{ width: '176px' }} />
+          {activeGroups.map(g => (
+            <Fragment key={g.type}>
+              {g.cols.map(a => <col key={a.id} style={{ width: '64px' }} />)}
+              <col style={{ width: '64px' }} />
+            </Fragment>
+          ))}
+          <col style={{ width: '64px' }} />
         </colgroup>
         <thead>
-          {/* Group headers */}
+          {/* Row 1: group headers */}
           <tr className="border-b border-gray-200">
-            <th className="sticky left-0 z-10 bg-gray-50 px-4 py-2 min-w-[160px]" rowSpan={2} />
-            {GROUPS.map(({ type, label }) => {
-              const cols = assignments.filter(a => a.type === type)
-              if (cols.length === 0) return null
-              return (
-                <th
-                  key={type}
-                  colSpan={cols.length + 1}
-                  className="px-3 py-2 text-center font-semibold text-gray-700 bg-gray-50 border-l border-gray-200"
-                >
-                  {label}
-                </th>
-              )
-            })}
-            <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l border-gray-200 whitespace-nowrap">
+            <th className="sticky left-0 z-10 bg-gray-50 px-4 py-2" rowSpan={2} />
+            {activeGroups.map(g => (
+              <th
+                key={g.type}
+                colSpan={g.cols.length + 1}
+                className="px-3 py-2 text-center font-semibold text-gray-700 bg-gray-50 border-l-2 border-gray-300"
+              >
+                {g.label}
+              </th>
+            ))}
+            <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l-2 border-gray-300 whitespace-nowrap">
               Overall
             </th>
           </tr>
 
-          {/* Column labels */}
+          {/* Row 2: individual column labels */}
           <tr className="border-b border-gray-200 bg-gray-50">
-            {GROUPS.map(({ type }) => {
-              const cols = assignments.filter(a => a.type === type)
-              if (cols.length === 0) return null
-              return [
-                ...cols.map(a => {
+            {activeGroups.map(g => (
+              <Fragment key={g.type}>
+                {g.cols.map(a => {
                   const section = extractSection(a.instructions)
                   return (
-                    <th key={a.id} className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 whitespace-nowrap">
-                      {section ? (
-                        <span className="block text-brand-600 font-semibold">{section}</span>
-                      ) : (
-                        <span className="block">Wk {a.weekNumber}</span>
-                      )}
+                    <th key={a.id} className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 overflow-hidden">
+                      {section
+                        ? <span className="block text-brand-600 font-semibold truncate">{section}</span>
+                        : <span className="block">Wk {a.weekNumber}</span>
+                      }
                     </th>
                   )
-                }),
-                <th key={`${type}-avg`} className="px-3 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200 whitespace-nowrap">
+                })}
+                <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">
                   Avg
-                </th>,
-              ]
-            })}
-            <th className="px-3 py-2 bg-brand-50 border-l border-gray-200" />
+                </th>
+              </Fragment>
+            ))}
+            <th className="px-2 py-2 bg-brand-50 border-l border-gray-200" />
           </tr>
         </thead>
 
@@ -155,27 +154,22 @@ export async function CourseGradebook({ courseId }: Props) {
 
             return (
               <tr key={student.id} className="hover:bg-gray-50">
-                {/* Student name */}
                 <td className="sticky left-0 z-10 bg-white px-4 py-2.5 border-r border-gray-100">
-                  <p className="font-medium text-gray-800 whitespace-nowrap">
+                  <p className="font-medium text-gray-800 whitespace-nowrap truncate">
                     {[student.firstName, student.surname].filter(Boolean).join(' ') || student.email}
                   </p>
-                  <p className="text-gray-400 text-xs">{student.email}</p>
+                  <p className="text-gray-400 text-xs truncate">{student.email}</p>
                 </td>
 
-                {GROUPS.map(({ type }) => {
-                  const cols = assignments.filter(a => a.type === type)
-                  if (cols.length === 0) return null
-                  const groupScores = cols.map(a => getScore(student.id, a))
+                {activeGroups.map(g => {
+                  const groupScores = g.cols.map(a => getScore(student.id, a))
                   groupScores.forEach(s => allScores.push(s))
-                  const groupAvg = avg(groupScores)
-
-                  return [
-                    ...cols.map(a => (
-                      <PctCell key={a.id} pct={getScore(student.id, a)} />
-                    )),
-                    <PctCell key={`${type}-avg`} pct={groupAvg} muted />,
-                  ]
+                  return (
+                    <Fragment key={g.type}>
+                      {g.cols.map(a => <PctCell key={a.id} pct={getScore(student.id, a)} />)}
+                      <PctCell key={`${g.type}-avg`} pct={avg(groupScores)} muted />
+                    </Fragment>
+                  )
                 })}
 
                 <PctCell pct={avg(allScores)} muted />
@@ -194,18 +188,13 @@ export async function CourseGradebook({ courseId }: Props) {
               const cells: ReactNode[] = []
               const allColAvgs: (number | null)[] = []
 
-              GROUPS.forEach(({ type }) => {
-                const cols = assignments.filter(a => a.type === type)
-                if (cols.length === 0) return
-                const groupColAvgs = cols.map(a => {
-                  const scores = students.map(s => getScore(s.id, a))
-                  return avg(scores)
-                })
+              activeGroups.forEach(g => {
+                const groupColAvgs = g.cols.map(a => avg(students.map(s => getScore(s.id, a))))
                 groupColAvgs.forEach(v => allColAvgs.push(v))
                 const groupAvg = avg(groupColAvgs)
 
-                cols.forEach((a, i) => cells.push(<PctCell key={a.id} pct={groupColAvgs[i]} />))
-                cells.push(<PctCell key={`${type}-avg`} pct={groupAvg} muted />)
+                g.cols.forEach((a, i) => cells.push(<PctCell key={a.id} pct={groupColAvgs[i]} />))
+                cells.push(<PctCell key={`${g.type}-avg`} pct={groupAvg} muted />)
               })
 
               cells.push(<PctCell key="overall" pct={avg(allColAvgs)} muted />)
