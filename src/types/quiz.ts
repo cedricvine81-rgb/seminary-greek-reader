@@ -27,6 +27,9 @@ export interface QuizResult {
   score: number
   percentage: number
   breakdown: QuizResultItem[]
+  isNewBest?: boolean
+  attemptNumber?: number
+  retakesRemaining?: number | null
 }
 
 export interface QuizResultItem {

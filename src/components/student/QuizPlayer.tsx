@@ -377,7 +377,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         {/* Vocabulary: choose-definition multiple choice */}
         {type === 'VOCABULARY_QUIZ' && !provideDefinition && phase === 'answering' && (
           <div className="grid grid-cols-1 gap-2">
-            {q.options.map(opt => (
+            {(q.options ?? []).map(opt => (
               <button
                 key={opt}
                 onClick={() => { setDraft(opt); handleCheck(false, opt) }}

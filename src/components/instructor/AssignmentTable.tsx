@@ -61,7 +61,7 @@ export function AssignmentTable({
   }
 
   // Group by course for cleaner display when instructor has multiple courses
-  const courses = [...new Map(assignments.map(a => [a.course.id, a.course.name])).entries()]
+  const courses = Array.from(new Map(assignments.map(a => [a.course.id, a.course.name])).entries())
   const grouped = courses.length > 1
 
   return (

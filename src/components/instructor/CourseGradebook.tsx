@@ -96,7 +96,7 @@ export async function CourseGradebook({ courseId }: Props) {
   })).filter(g => g.cols.length > 0)
 
   if (activeGroups.length === 0) {
-    return <p className="text-sm text-gray-400 italic py-2">No gradeable assignments found (types present: {[...new Set(assignments.map(a => a.type))].join(', ')}).</p>
+    return <p className="text-sm text-gray-400 italic py-2">No gradeable assignments found (types present: {Array.from(new Set(assignments.map(a => a.type))).join(', ')}).</p>
   }
 
   return (

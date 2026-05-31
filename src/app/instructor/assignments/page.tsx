@@ -32,7 +32,7 @@ export default async function InstructorAssignmentsPage() {
 
   // Fetch best-attempt stats per assignment and enrollment counts per course
   const assignmentIds = assignments.map(a => a.id)
-  const courseIds = [...new Set(assignments.map(a => a.course.id))]
+  const courseIds = Array.from(new Set(assignments.map(a => a.course.id)))
 
   const [bestAttempts, enrollmentCounts] = await Promise.all([
     prisma.quizAttempt.findMany({
