@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct } = body
 
   const assignment = await prisma.assignment.create({
     data: {
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
   }> = []
 
   if (type === 'VOCABULARY_QUIZ') {
-    questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10))
+    questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), Number(quizStylePct ?? 0))
   } else if (type === 'MORPHOLOGY_QUIZ') {
     questions = await generateMorphologyQuestions(Number(numQuestions ?? 10))
   }

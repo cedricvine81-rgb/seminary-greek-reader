@@ -37,6 +37,7 @@ export async function POST(req: NextRequest) {
     provideDefinition,
     maxRetakes,
     isPublished,
+    quizStylePct,
     schedule,
   }: {
     courseId: string
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest) {
     provideDefinition?: boolean
     maxRetakes?: number | null
     isPublished?: boolean
+    quizStylePct?: number
     schedule: ScheduleItem[]
   } = body
 
@@ -110,10 +112,11 @@ export async function POST(req: NextRequest) {
     let questions: Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
     if (quizType === 'VOCABULARY_QUIZ') {
+      const pct = Number(quizStylePct ?? 0)
       if (lesson) {
-        questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', qCount)
+        questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', qCount, pct)
       } else {
-        questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount)
+        questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }
     } else if (quizType === 'MORPHOLOGY_QUIZ') {
       questions = await generateMorphologyQuestions(qCount)

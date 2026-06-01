@@ -218,11 +218,16 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Type of Quiz
+              Type of Quiz —{' '}
+              <span className="text-brand-700 font-semibold">
+                {quizStylePct === 0 ? 'All multiple-choice'
+                  : quizStylePct === 100 ? 'All open-ended'
+                  : `${100 - quizStylePct}% multiple-choice / ${quizStylePct}% open-ended`}
+              </span>
             </label>
             <input
               type="range"
-              min={0} max={100} step={50}
+              min={0} max={100} step={1}
               value={quizStylePct}
               onChange={e => setQuizStylePct(Number(e.target.value))}
               className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
@@ -622,11 +627,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Type of Quiz
+                  Type of Quiz —{' '}
+                  <span className="text-brand-700 font-semibold">
+                    {form.quizStylePct === 0 ? 'All multiple-choice'
+                      : form.quizStylePct === 100 ? 'All open-ended'
+                      : `${100 - form.quizStylePct}% multiple-choice / ${form.quizStylePct}% open-ended`}
+                  </span>
                 </label>
                 <input
                   type="range"
-                  min={0} max={100} step={50}
+                  min={0} max={100} step={1}
                   value={form.quizStylePct}
                   onChange={e => setF('quizStylePct', Number(e.target.value))}
                   className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
