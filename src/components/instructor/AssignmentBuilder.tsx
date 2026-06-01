@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, FormEvent, useCallback } from 'react'
+import { useState, useMemo, useRef, FormEvent, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { addDays, format, getDay, parseISO } from 'date-fns'
 import { CalendarDays, FileText, CheckCircle2, Download, Eye } from 'lucide-react'
@@ -127,6 +127,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const publishRef = useRef(false)
   const [courseId, setCourseId] = useState(defaultCourseId ?? courses[0]?.id ?? '')
   const courseLevel = courses.find(c => c.id === courseId)?.level ?? 'BEGINNING'
   const [form, setForm] = useState<AssignmentFormData>({
@@ -153,7 +154,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -162,6 +163,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error creating assignment')
     } finally {
+      publishRef.current = false
       setLoading(false)
     }
   }
@@ -287,7 +289,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       <div className="flex gap-3">
-        <Button type="submit" loading={loading}>Create Assignment</Button>
+        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Save Draft</Button>
+        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
       </div>
     </form>
@@ -419,6 +422,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState<number | null>(null)
+  const publishRef = useRef(false)
   const [sampleOpen, setSampleOpen] = useState(false)
   const [sampleData, setSampleData] = useState<SampleData | null>(null)
   const [sampleLoading, setSampleLoading] = useState(false)
@@ -489,6 +493,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           ...form,
           lateDaysLimit: form.allowLate ? form.lateDaysLimit : null,
           provideDefinition: form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false,
+          isPublished: publishRef.current,
           schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })),
         }),
       })
@@ -499,6 +504,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error creating schedule')
     } finally {
+      publishRef.current = false
       setLoading(false)
     }
   }
@@ -733,8 +739,22 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         )}
 
         <div className="flex gap-3">
-          <Button type="submit" loading={loading} disabled={schedule.length === 0 || form.days.length === 0}>
-            Create {schedule.length > 0 ? `${schedule.length} Assignments` : 'Schedule'}
+          <Button
+            type="submit"
+            loading={loading}
+            variant="secondary"
+            disabled={schedule.length === 0 || form.days.length === 0}
+            onClick={() => { publishRef.current = false }}
+          >
+            Save Draft{schedule.length > 0 ? ` (${schedule.length})` : ''}
+          </Button>
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={schedule.length === 0 || form.days.length === 0}
+            onClick={() => { publishRef.current = true }}
+          >
+            Save &amp; Post{schedule.length > 0 ? ` (${schedule.length})` : ''}
           </Button>
           <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
         </div>

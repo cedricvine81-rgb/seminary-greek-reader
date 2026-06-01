@@ -230,48 +230,27 @@ export default async function InstructorPage() {
                       <p className="text-sm text-gray-400 italic">No assignments yet.</p>
                     ) : (
                       <div className="overflow-x-auto">
-                        <table className="w-full text-sm">
-                          <thead>
-                            <tr className="border-b border-gray-100 text-xs text-gray-500">
-                              <th className="pb-2 text-left font-medium">Wk</th>
-                              <th className="pb-2 text-left font-medium">Date</th>
-                              <th className="pb-2 text-left font-medium">Quiz</th>
-                              <th className="pb-2 text-center font-medium">Type</th>
-                              <th className="pb-2 text-center font-medium">Qs</th>
-                              <th className="pb-2 text-center font-medium">Status</th>
-                              <th className="pb-2" />
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-gray-50">
-                            {courseAssignments.map(a => {
-                              const section = extractSection(a.instructions)
-                              return (
-                                <tr key={a.id} className="hover:bg-gray-50">
-                                  <td className="py-2 pr-3 text-gray-600">{a.weekNumber}</td>
-                                  <td className="py-2 pr-3 text-gray-500 whitespace-nowrap">{format(new Date(a.dueDate), 'MMM d')}</td>
-                                  <td className="py-2 pr-3">
-                                    <Link href={`/instructor/assignments/${a.id}`} className="hover:text-brand-700">
-                                      {section && <span className="block text-xs text-brand-600 font-semibold">{section}</span>}
-                                      <span className="font-medium text-gray-800">{a.title}</span>
-                                    </Link>
-                                  </td>
-                                  <td className="py-2 pr-3 text-center">
-                                    <Badge variant={typeVariant[a.type] ?? 'gray'}>{typeLabel[a.type] ?? a.type}</Badge>
-                                  </td>
-                                  <td className="py-2 pr-3 text-center text-gray-500">{a._count.questions}</td>
-                                  <td className="py-2 pr-3 text-center">
-                                    <Badge variant={a.isPublished ? 'green' : 'gray'}>{a.isPublished ? 'Published' : 'Draft'}</Badge>
-                                  </td>
-                                  <td className="py-2">
-                                    <Link href={`/instructor/assignments/${a.id}`}>
-                                      <Button size="sm" variant="secondary">Edit</Button>
-                                    </Link>
-                                  </td>
-                                </tr>
-                              )
-                            })}
-                          </tbody>
-                        </table>
+                        <div className="divide-y divide-gray-50">
+                          {courseAssignments.map(a => {
+                            const section = extractSection(a.instructions)
+                            return (
+                              <div key={a.id} className="flex items-center gap-4 px-1 py-2.5 text-sm hover:bg-gray-50 rounded-lg">
+                                <span className="text-gray-500 w-16 shrink-0">Week {a.weekNumber}</span>
+                                <span className="text-xs font-medium text-brand-600 w-16 shrink-0">{section ?? ''}</span>
+                                <span className="text-gray-500 w-20 shrink-0 whitespace-nowrap">{format(new Date(a.dueDate), 'EEE, MMM d')}</span>
+                                <Link href={`/instructor/assignments/${a.id}`} className="flex-1 min-w-0 font-medium text-gray-800 truncate hover:text-brand-700">
+                                  {a.title}
+                                </Link>
+                                <Badge variant={typeVariant[a.type] ?? 'gray'} className="shrink-0">{typeLabel[a.type] ?? a.type}</Badge>
+                                <span className="text-gray-400 text-xs shrink-0">{a._count.questions}q</span>
+                                <Badge variant={a.isPublished ? 'green' : 'gray'} className="shrink-0">{a.isPublished ? 'Published' : 'Draft'}</Badge>
+                                <Link href={`/instructor/assignments/${a.id}`} className="shrink-0">
+                                  <Button size="sm" variant="secondary">Edit</Button>
+                                </Link>
+                              </div>
+                            )
+                          })}
+                        </div>
                       </div>
                     )}
                   </div>
