@@ -299,7 +299,11 @@ export default async function InstructorPage() {
               {/* Gradebook */}
               {activeGroups.length > 0 && students.length > 0 && (
                 <Card>
-                  <CardTitle className="mb-4">Grade Book</CardTitle>
+                  <details open>
+                  <summary className="flex items-center justify-between cursor-pointer list-none mb-4">
+                    <CardTitle>Grade Book</CardTitle>
+                    <span className="text-xs text-gray-400">{students.length} student{students.length !== 1 ? 's' : ''}</span>
+                  </summary>
                   <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
                     <table className="text-xs border-collapse min-w-full table-fixed">
                       <colgroup>
@@ -391,6 +395,7 @@ export default async function InstructorPage() {
                       </tfoot>
                     </table>
                   </div>
+                  </details>
                 </Card>
               )}
 
