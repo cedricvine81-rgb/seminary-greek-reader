@@ -294,7 +294,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       <div className="flex gap-3">
-        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Save Draft</Button>
+        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Update</Button>
         <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
       </div>
@@ -428,6 +428,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
   const [error, setError] = useState('')
   const [success, setSuccess] = useState<number | null>(null)
   const publishRef = useRef(false)
+  const [previewFlash, setPreviewFlash] = useState(false)
+  const previewRef = useRef<HTMLDivElement>(null)
   const [sampleOpen, setSampleOpen] = useState(false)
   const [sampleData, setSampleData] = useState<SampleData | null>(null)
   const [sampleLoading, setSampleLoading] = useState(false)
@@ -457,6 +459,12 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     setF('days', form.days.includes(day)
       ? form.days.filter(d => d !== day)
       : [...form.days, day].sort((a, b) => a - b))
+  }
+
+  function handleUpdate() {
+    previewRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    setPreviewFlash(true)
+    setTimeout(() => setPreviewFlash(false), 800)
   }
 
   const schedule = useMemo(
@@ -712,7 +720,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
         {/* Schedule preview */}
         {schedule.length > 0 && (
-          <div className="border border-brand-100 rounded-xl overflow-hidden">
+          <div ref={previewRef} className={`border rounded-xl overflow-hidden transition-colors duration-300 ${previewFlash ? 'border-brand-400 ring-2 ring-brand-300' : 'border-brand-100'}`}>
             <div className="bg-brand-50 px-4 py-2.5 flex items-center justify-between">
               <span className="text-sm font-semibold text-brand-800">
                 Schedule preview — {schedule.length} quiz{schedule.length !== 1 ? 'zes' : ''}
@@ -750,13 +758,12 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
         <div className="flex gap-3">
           <Button
-            type="submit"
-            loading={loading}
+            type="button"
             variant="secondary"
             disabled={schedule.length === 0 || form.days.length === 0}
-            onClick={() => { publishRef.current = false }}
+            onClick={handleUpdate}
           >
-            Save Draft{schedule.length > 0 ? ` (${schedule.length})` : ''}
+            Update Preview{schedule.length > 0 ? ` (${schedule.length})` : ''}
           </Button>
           <Button
             type="submit"
