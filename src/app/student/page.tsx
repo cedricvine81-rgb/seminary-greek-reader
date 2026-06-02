@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentDashboard } from '@/components/student/StudentDashboard'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import type { Assignment } from '@/types/assignment'
 
@@ -11,7 +12,8 @@ export const metadata: Metadata = { title: 'Student Dashboard' }
 export default async function StudentPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!payload) redirect('/auth/sign-in')
 
   const [user, enrollments, completedResponses, allResponses, recentAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),

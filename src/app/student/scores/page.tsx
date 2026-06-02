@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { format } from 'date-fns'
 
@@ -17,7 +18,8 @@ function pctBadge(pct: number) {
 export default async function StudentScoresPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!payload) redirect('/auth/sign-in')
 
   // All enrolled courses with their published assignments + questions
   const enrollments = await prisma.enrollment.findMany({

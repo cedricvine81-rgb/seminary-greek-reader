@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { CalendarGrid, type CalendarEvent } from '@/components/calendar/CalendarGrid'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 
 export const metadata: Metadata = { title: 'Calendar' }
@@ -10,7 +11,8 @@ export const metadata: Metadata = { title: 'Calendar' }
 export default async function StudentCalendarPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!payload) redirect('/auth/sign-in')
 
   // All approved enrollments → published assignments
   const enrollments = await prisma.enrollment.findMany({

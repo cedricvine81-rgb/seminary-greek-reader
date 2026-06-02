@@ -5,6 +5,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { CourseEnrollment } from '@/components/student/CourseEnrollment'
@@ -20,7 +21,8 @@ const courseIncludes = {
 export default async function StudentCoursesPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!payload) redirect('/auth/sign-in')
 
   const student = await prisma.user.findUnique({
     where: { id: payload.sub },

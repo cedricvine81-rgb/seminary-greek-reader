@@ -7,6 +7,7 @@ import { QuizPlayer } from '@/components/student/QuizPlayer'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 
@@ -15,7 +16,8 @@ export const metadata: Metadata = { title: 'Assignment' }
 export default async function StudentAssignmentPage({ params }: { params: { assignmentId: string } }) {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
-  if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
+  if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
+  if (!payload) redirect('/auth/sign-in')
 
   const [assignment, attemptCount, bestAttempt] = await Promise.all([
     prisma.assignment.findUnique({
