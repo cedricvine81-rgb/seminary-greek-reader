@@ -329,7 +329,7 @@ export default async function InstructorPage() {
                     <CardTitle>Grade Book</CardTitle>
                     <span className="text-xs text-gray-400">{students.length === 0 ? 'No students enrolled yet' : `${students.length} student${students.length !== 1 ? 's' : ''}`}</span>
                   </summary>
-                  <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
+                  <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-100">
                     <table className="text-xs border-collapse min-w-full table-fixed">
                       <colgroup>
                         <col style={{ width: '176px' }} />

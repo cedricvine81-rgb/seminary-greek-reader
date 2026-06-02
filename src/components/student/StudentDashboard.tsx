@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, FlipHorizontal, TrendingUp, BookOpen } from 'lucide-react'
+import { ClipboardList, FlipHorizontal, TrendingUp, BookOpen, Calendar } from 'lucide-react'
 import type { Assignment } from '@/types/assignment'
+import { differenceInCalendarDays } from 'date-fns'
 
 interface RecentScore {
   assignmentId: string
@@ -28,34 +29,60 @@ function ScoreBadge({ pct }: { pct: number }) {
   return <Badge variant={variant}>{pct}%</Badge>
 }
 
+function DueBadge({ dueDate }: { dueDate: string }) {
+  const days = differenceInCalendarDays(new Date(dueDate), new Date())
+  if (days < 0) return <span className="text-xs text-red-500 font-medium">Overdue</span>
+  if (days === 0) return <span className="text-xs text-red-500 font-semibold">Due today</span>
+  if (days === 1) return <span className="text-xs text-amber-600 font-medium">Due tomorrow</span>
+  if (days <= 3) return <span className="text-xs text-amber-500 font-medium">Due in {days} days</span>
+  return <span className="text-xs text-gray-400">Due {new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+}
+
+const TYPE_COLORS: Record<string, string> = {
+  VOCABULARY_QUIZ:      'bg-blue-50 text-blue-700 border-blue-100',
+  MORPHOLOGY_QUIZ:      'bg-purple-50 text-purple-700 border-purple-100',
+  TRANSLATION_EXERCISE: 'bg-green-50 text-green-700 border-green-100',
+  PASSAGE_VOCABULARY:   'bg-indigo-50 text-indigo-700 border-indigo-100',
+}
+const TYPE_LABELS: Record<string, string> = {
+  VOCABULARY_QUIZ:      'Vocab',
+  MORPHOLOGY_QUIZ:      'Morphology',
+  TRANSLATION_EXERCISE: 'Translation',
+  PASSAGE_VOCABULARY:   'Passage',
+}
+
 export function StudentDashboard({ studentName, pendingAssignments, recentScores, stats }: StudentDashboardProps) {
   const statCards = [
-    { label: 'Enrolled courses', value: stats.enrolledCourses, icon: <BookOpen size={20} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
-    { label: 'Pending', value: stats.pendingAssignments, icon: <ClipboardList size={20} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
-    { label: 'Completed', value: stats.completedAssignments, icon: <TrendingUp size={20} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
-    { label: 'Grades', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <FlipHorizontal size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
+    { label: 'Enrolled', value: stats.enrolledCourses, icon: <BookOpen size={18} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
+    { label: 'Pending', value: stats.pendingAssignments, icon: <ClipboardList size={18} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
+    { label: 'Completed', value: stats.completedAssignments, icon: <TrendingUp size={18} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
+    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <FlipHorizontal size={18} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
   ]
 
-  const assignmentTypeLabel: Record<string, string> = {
-    VOCABULARY_QUIZ: 'Vocabulary',
-    MORPHOLOGY_QUIZ: 'Morphology',
-    TRANSLATION_EXERCISE: 'Translation',
-  }
+  const urgent = pendingAssignments.filter(a =>
+    differenceInCalendarDays(new Date(a.dueDate), new Date()) <= 3
+  ).length
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
+      {/* Header */}
       <div>
         <h2 className="text-lg font-semibold text-gray-900">Welcome back, {studentName}</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Keep up your Greek studies.</p>
+        <p className="text-sm text-gray-500 mt-0.5">
+          {urgent > 0
+            ? <span className="text-amber-600 font-medium">{urgent} assignment{urgent > 1 ? 's' : ''} due soon — keep going!</span>
+            : 'Keep up your Greek studies.'}
+        </p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {statCards.map(s => (
           <Link key={s.label} href={s.href}>
-            <Card hover className="flex items-center gap-3 p-5">
-              <div className={`p-2.5 rounded-lg ${s.color}`}>{s.icon}</div>
+            <Card hover className="flex items-center gap-3 p-4">
+              <div className={`p-2 rounded-lg shrink-0 ${s.color}`}>{s.icon}</div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
+                <p className="text-xl font-bold text-gray-900">{s.value}</p>
                 <p className="text-xs text-gray-500">{s.label}</p>
               </div>
             </Card>
@@ -63,44 +90,58 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         ))}
       </div>
 
-      {/* Quick links */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <Link href="/student/flashcards" className="btn-primary flex items-center justify-center gap-2 py-3 text-sm">
-          <FlipHorizontal size={16} /> Study Flashcards
+      {/* Quick links — contextual */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <Link href="/student/flashcards"
+          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
+          <FlipHorizontal size={18} className="text-brand-600" />
+          <span className="text-xs font-medium text-gray-700">Flashcards</span>
         </Link>
-        <Link href="/student/assignments" className="btn-secondary flex items-center justify-center gap-2 py-3 text-sm">
-          <ClipboardList size={16} /> My Assignments
+        <Link href="/student/calendar"
+          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
+          <Calendar size={18} className="text-brand-600" />
+          <span className="text-xs font-medium text-gray-700">Calendar</span>
         </Link>
-        <Link href="/reader" className="btn-secondary flex items-center justify-center gap-2 py-3 text-sm">
-          <BookOpen size={16} /> Open Reader
+        <Link href="/reader"
+          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
+          <BookOpen size={18} className="text-brand-600" />
+          <span className="text-xs font-medium text-gray-700">Reader</span>
+        </Link>
+        <Link href="/student/scores"
+          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
+          <TrendingUp size={18} className="text-brand-600" />
+          <span className="text-xs font-medium text-gray-700">My Grades</span>
         </Link>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      {/* Upcoming + Recent side by side */}
+      <div className="grid lg:grid-cols-2 gap-4">
         {/* Upcoming assignments */}
-        <Card>
-          <div className="flex items-center justify-between mb-4">
-            <CardTitle>Upcoming Assignments</CardTitle>
-            <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">View all</Link>
+        <Card className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <CardTitle className="mb-0">Upcoming Assignments</CardTitle>
+            <Link href="/student/assignments" className="text-xs text-brand-600 hover:underline">View all</Link>
           </div>
           {pendingAssignments.length === 0 ? (
-            <div className="text-center py-4 space-y-1">
-              <p className="text-sm text-green-600 font-medium">You're all caught up! 🎉</p>
+            <div className="text-center py-6 space-y-1">
+              <p className="text-sm text-green-600 font-medium">You&apos;re all caught up! 🎉</p>
               <Link href="/student/courses" className="text-xs text-brand-600 hover:underline">Browse courses →</Link>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {pendingAssignments.slice(0, 5).map(a => (
                 <Link
                   key={a.id}
                   href={`/student/assignments/${a.id}`}
-                  className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                  className="flex items-center justify-between px-3 py-2.5 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3"
                 >
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{a.title}</p>
-                    <p className="text-xs text-gray-500">Due {new Date(a.dueDate).toLocaleDateString()}</p>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{a.title}</p>
+                    <DueBadge dueDate={a.dueDate} />
                   </div>
-                  <Badge variant="amber">{assignmentTypeLabel[a.type] ?? a.type}</Badge>
+                  <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full border ${TYPE_COLORS[a.type] ?? 'bg-gray-50 text-gray-600 border-gray-100'}`}>
+                    {TYPE_LABELS[a.type] ?? a.type}
+                  </span>
                 </Link>
               ))}
             </div>
@@ -108,23 +149,25 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         </Card>
 
         {/* Recent scores */}
-        <Card>
-          <div className="flex items-center justify-between mb-4">
-            <CardTitle>Recent Scores</CardTitle>
-            <Link href="/student/scores" className="text-sm text-brand-600 hover:underline">View all</Link>
+        <Card className="p-4">
+          <div className="flex items-center justify-between mb-3">
+            <CardTitle className="mb-0">Recent Scores</CardTitle>
+            <Link href="/student/scores" className="text-xs text-brand-600 hover:underline">View all</Link>
           </div>
           {recentScores.length === 0 ? (
-            <div className="text-center py-4 space-y-1">
-              <p className="text-sm text-gray-400 italic">No scores yet.</p>
+            <div className="text-center py-6 space-y-1">
+              <p className="text-sm text-gray-400">No scores yet.</p>
               <Link href="/student/assignments" className="text-xs text-brand-600 hover:underline">Start an assignment →</Link>
             </div>
           ) : (
-            <div className="space-y-2">
+            <div className="space-y-1.5">
               {recentScores.map(s => (
-                <div key={s.assignmentId} className="flex items-center justify-between p-3 rounded-lg border border-gray-100">
-                  <div>
-                    <p className="text-sm font-medium text-gray-900">{s.title}</p>
-                    <p className="text-xs text-gray-400">{new Date(s.completedAt).toLocaleDateString()}</p>
+                <div key={s.assignmentId} className="flex items-center justify-between px-3 py-2.5 rounded-lg border border-gray-100 gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{s.title}</p>
+                    <p className="text-xs text-gray-400">
+                      {new Date(s.completedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </p>
                   </div>
                   <ScoreBadge pct={s.percentage} />
                 </div>

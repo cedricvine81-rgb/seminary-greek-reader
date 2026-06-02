@@ -82,7 +82,7 @@ export default async function InstructorAssignmentsPage() {
 
           <Link
             href="/instructor/assignments/use-existing"
-            className="flex items-start gap-4 rounded-2xl border border-gray-200 bg-gray-50 p-5 hover:bg-gray-100 transition-colors group"
+            className="flex items-start gap-4 rounded-2xl border border-gray-100 bg-gray-50 p-5 hover:bg-gray-100 transition-colors group"
           >
             <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gray-700 text-white group-hover:bg-gray-800 transition-colors">
               <Copy size={18} />
