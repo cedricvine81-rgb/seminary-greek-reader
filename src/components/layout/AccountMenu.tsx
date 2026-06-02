@@ -17,7 +17,6 @@ interface AppMenuProps {
 
 const INSTRUCTOR_NAV = [
   { href: '/instructor',            label: 'Dashboard',    icon: LayoutDashboard },
-  { href: '/instructor/calendar',   label: 'Calendar',     icon: Calendar },
   { href: '/instructor/assignments',label: 'Assignments',  icon: ClipboardList },
   { href: '/instructor/materials',  label: 'Materials',    icon: FileText },
   { href: '/instructor/reports',    label: 'Reports',      icon: BarChart2 },

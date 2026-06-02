@@ -15,6 +15,7 @@ import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye } from 'lucid
 import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
 import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 import { ArchiveCourseButton } from '@/components/instructor/ArchiveCourseButton'
+import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
@@ -302,6 +303,31 @@ export default async function InstructorPage() {
                   </div>
                 </details>
               </Card>
+
+              {/* Schedule calendar — collapsed by default */}
+              {courseAssignments.length > 0 && (
+                <Card>
+                  <details>
+                    <summary className="flex items-center justify-between cursor-pointer list-none mb-0">
+                      <CardTitle>Schedule</CardTitle>
+                      <span className="text-xs text-gray-400">{courseAssignments.length} assignment{courseAssignments.length !== 1 ? 's' : ''}</span>
+                    </summary>
+                    <div className="mt-4">
+                      <CalendarGrid
+                        events={courseAssignments.map(a => ({
+                          id: a.id,
+                          title: a.title,
+                          type: a.type,
+                          dueDate: a.dueDate.toISOString(),
+                          href: `/instructor/assignments/${a.id}`,
+                          isPublished: a.isPublished,
+                        }))}
+                        initialDate={courseAssignments[0]?.dueDate.toISOString()}
+                      />
+                    </div>
+                  </details>
+                </Card>
+              )}
 
               {/* Students — collapsed by default */}
               {courseEnrollments.length > 0 && (

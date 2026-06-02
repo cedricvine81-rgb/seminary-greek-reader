@@ -16,7 +16,6 @@ interface NavItem {
 
 const instructorNav: NavItem[] = [
   { label: 'Dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
-  { label: 'Calendar',    href: '/instructor/calendar',      icon: <Calendar size={16} /> },
   { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
   { label: 'Reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
