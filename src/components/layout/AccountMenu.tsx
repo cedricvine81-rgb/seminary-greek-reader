@@ -2,15 +2,40 @@
 import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Menu, X, User, LogIn, UserPlus, LogOut, Settings } from 'lucide-react'
+import {
+  Menu, X, LogIn, UserPlus, LogOut, Settings,
+  LayoutDashboard, Calendar, ClipboardList, FileText,
+  BarChart2, GraduationCap, FlipHorizontal, TrendingUp,
+  BookMarked, Archive,
+} from 'lucide-react'
 
-interface AccountMenuProps {
+interface AppMenuProps {
   isAuthenticated: boolean
   userRole?: 'INSTRUCTOR' | 'STUDENT'
   userName?: string
 }
 
-export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenuProps) {
+const INSTRUCTOR_NAV = [
+  { href: '/instructor',            label: 'Dashboard',    icon: LayoutDashboard },
+  { href: '/instructor/calendar',   label: 'Calendar',     icon: Calendar },
+  { href: '/instructor/assignments',label: 'Assignments',  icon: ClipboardList },
+  { href: '/instructor/materials',  label: 'Materials',    icon: FileText },
+  { href: '/instructor/reports',    label: 'Reports',      icon: BarChart2 },
+  { href: '/instructor/archive',    label: 'Archive',      icon: Archive },
+]
+
+const STUDENT_NAV = [
+  { href: '/student',               label: 'Dashboard',    icon: LayoutDashboard },
+  { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
+  { href: '/student/courses',       label: 'Courses',      icon: GraduationCap },
+  { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
+  { href: '/student/flashcards',    label: 'Flashcards',   icon: FlipHorizontal },
+  { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
+  { href: '/student/scores',        label: 'Grades',       icon: BarChart2 },
+  { href: '/student/materials',     label: 'Materials',    icon: BookMarked },
+]
+
+export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProps) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
   const router = useRouter()
@@ -30,6 +55,8 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
     setOpen(false)
   }
 
+  const nav = userRole === 'INSTRUCTOR' ? INSTRUCTOR_NAV : userRole === 'STUDENT' ? STUDENT_NAV : []
+
   return (
     <div ref={ref} className="relative flex items-center gap-2">
       {isAuthenticated && userName && (
@@ -44,35 +71,52 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 w-52 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50">
-
+        <div className="absolute right-0 top-11 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
           {isAuthenticated ? (
             <>
-              <div className="px-4 py-2 border-b border-gray-100">
-                <p className="text-xs text-gray-500">Signed in as</p>
-                <p className="text-sm font-medium text-gray-900 truncate">{userName}</p>
+              {/* User info */}
+              <div className="px-4 py-2.5 border-b border-gray-100">
+                <p className="text-xs text-gray-400">Signed in as</p>
+                <p className="text-sm font-semibold text-gray-900 truncate">{userName}</p>
                 <p className="text-xs text-brand-600 capitalize">{userRole?.toLowerCase()}</p>
               </div>
-              <Link
-                href={userRole === 'INSTRUCTOR' ? '/instructor' : '/student'}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                onClick={() => setOpen(false)}
-              >
-                <User size={15} /> Dashboard
-              </Link>
+
+              {/* Full navigation — shown on all screen sizes, essential on mobile */}
+              {nav.length > 0 && (
+                <>
+                  <div className="px-4 pt-2 pb-1">
+                    <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Navigation</p>
+                  </div>
+                  {nav.map(({ href, label, icon: Icon }) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => setOpen(false)}
+                    >
+                      <Icon size={15} className="text-gray-400 shrink-0" />
+                      {label}
+                    </Link>
+                  ))}
+                  <hr className="my-1 border-gray-100" />
+                </>
+              )}
+
+              {/* Settings + sign out */}
               <Link
                 href="/settings"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+                className="flex items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                 onClick={() => setOpen(false)}
               >
-                <Settings size={15} /> Settings
+                <Settings size={15} className="text-gray-400 shrink-0" />
+                Settings
               </Link>
-              <hr className="my-1 border-gray-100" />
               <button
                 onClick={handleSignOut}
-                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                className="flex w-full items-center gap-2.5 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
               >
-                <LogOut size={15} /> Sign Out
+                <LogOut size={15} className="shrink-0" />
+                Sign Out
               </button>
             </>
           ) : (
@@ -91,7 +135,6 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AccountMenu
               >
                 <UserPlus size={15} /> Sign Up
               </Link>
-              <hr className="my-1 border-gray-100" />
             </>
           )}
         </div>
