@@ -82,14 +82,14 @@ export function Flashcard({ card, isFlipped, onFlip, onKnow, onDontKnow }: Flash
           <div className="flex border-t border-gray-100">
             <button
               onClick={e => { e.stopPropagation(); onDontKnow() }}
-              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-red-500 hover:bg-red-50 active:bg-red-100 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-gray-500 hover:bg-gray-50 active:bg-gray-100 transition-colors"
             >
               <XCircle size={18} /> Don&apos;t Know
             </button>
             <div className="w-px bg-gray-100" />
             <button
               onClick={e => { e.stopPropagation(); onKnow() }}
-              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-green-600 hover:bg-green-50 active:bg-green-100 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-white bg-brand-700 hover:bg-brand-800 active:bg-brand-900 transition-colors"
             >
               <CheckCircle size={18} /> Know It
             </button>
