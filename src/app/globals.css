@@ -158,28 +158,11 @@
   .badge-gray   { @apply badge bg-gray-100 text-gray-700; }
 
   /* ── Flashcard ──────────────────────────────────────────── */
-  .flashcard-container {
-    perspective: 1200px;
+  .flashcard-flip {
+    transition: transform 0.18s ease-in, opacity 0.18s ease-in;
   }
-
-  .flashcard-inner {
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.45s ease;
-  }
-
-  .flashcard-inner.flipped {
-    transform: rotateY(180deg);
-  }
-
-  .flashcard-face {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  .flashcard-back {
-    transform: rotateY(180deg);
+  .flashcard-flip.flipping {
+    transform: scaleX(0);
+    opacity: 0;
   }
 }
