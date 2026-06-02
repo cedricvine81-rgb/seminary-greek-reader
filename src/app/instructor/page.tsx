@@ -276,12 +276,12 @@ export default async function InstructorPage() {
               )}
 
               {/* Gradebook */}
-              {activeGroups.length > 0 && students.length > 0 && (
+              {activeGroups.length > 0 && (
                 <Card>
                   <details open>
                   <summary className="flex items-center justify-between cursor-pointer list-none mb-4">
                     <CardTitle>Grade Book</CardTitle>
-                    <span className="text-xs text-gray-400">{students.length} student{students.length !== 1 ? 's' : ''}</span>
+                    <span className="text-xs text-gray-400">{students.length === 0 ? 'No students enrolled yet' : `${students.length} student${students.length !== 1 ? 's' : ''}`}</span>
                   </summary>
                   <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
                     <table className="text-xs border-collapse min-w-full table-fixed">
@@ -352,6 +352,13 @@ export default async function InstructorPage() {
                             </tr>
                           )
                         })}
+                        {students.length === 0 && (
+                          <tr>
+                            <td colSpan={999} className="px-4 py-6 text-center text-xs text-gray-400 italic">
+                              No students enrolled yet — grades will appear here once students join.
+                            </td>
+                          </tr>
+                        )}
                       </tbody>
                       <tfoot>
                         <tr className="border-t-2 border-gray-200 bg-gray-50">
