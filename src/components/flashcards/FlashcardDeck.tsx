@@ -1,11 +1,10 @@
 'use client'
 import { useState, useCallback } from 'react'
 import { Flashcard } from './Flashcard'
-import { SpacedRepetitionControls } from './SpacedRepetitionControls'
 import { DeckSelector } from './DeckSelector'
 import { Button } from '@/components/ui/Button'
-import { Shuffle } from 'lucide-react'
-import type { FlashcardWithProgress, FrequencyLevel, FlashcardResponse } from '@/types/flashcard'
+import { Shuffle, CheckCircle, XCircle } from 'lucide-react'
+import type { FlashcardWithProgress, FrequencyLevel } from '@/types/flashcard'
 import { sm2, responseToQuality } from '@/lib/spaced-repetition'
 
 interface FlashcardDeckProps {
@@ -59,7 +58,6 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
     setStats(s => ({ ...s, known: s.known + (knew ? 1 : 0), unknown: s.unknown + (knew ? 0 : 1) }))
 
-    // Persist to backend (fire-and-forget)
     fetch('/api/flashcards', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -83,14 +81,15 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
           <Button onClick={() => { setIdx(0); setIsFlipped(false); setFinished(false); setStats({ known: 0, unknown: 0 }) }}>
             Review Again
           </Button>
-          <Button variant="secondary" onClick={handleShuffle}>Shuffle & Restart</Button>
+          <Button variant="secondary" onClick={handleShuffle}>Shuffle &amp; Restart</Button>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
+      {/* Deck selector + shuffle */}
       <div className="flex items-center justify-between gap-4">
         <DeckSelector value={level} onChange={handleLevelChange} counts={deckCounts} />
         <Button variant="ghost" size="sm" onClick={handleShuffle} className="shrink-0">
@@ -100,19 +99,35 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
       {card ? (
         <>
-          <div className="flex justify-between text-xs text-gray-400 px-1">
-            <span>Card {idx + 1} of {cards.length}</span>
-            {card.progress && (
-              <span>Next review in {card.progress.interval} day{card.progress.interval !== 1 ? 's' : ''}</span>
-            )}
+          {/* Progress strip */}
+          <div className="flex items-center justify-between text-xs text-gray-400 px-1">
+            <span className="flex items-center gap-3">
+              <span className="flex items-center gap-1 text-green-600 font-medium">
+                <CheckCircle size={12} /> {stats.known}
+              </span>
+              <span className="flex items-center gap-1 text-red-400 font-medium">
+                <XCircle size={12} /> {stats.unknown}
+              </span>
+            </span>
+            <span>{idx + 1} / {cards.length}</span>
           </div>
-          <Flashcard card={card} isFlipped={isFlipped} onClick={() => setIsFlipped(f => !f)} />
-          <SpacedRepetitionControls
+
+          {/* Card with embedded controls */}
+          <Flashcard
+            card={card}
             isFlipped={isFlipped}
+            onFlip={() => setIsFlipped(f => !f)}
             onKnow={() => advance(true)}
             onDontKnow={() => advance(false)}
-            sessionStats={stats}
           />
+
+          {/* Hint under card */}
+          {!isFlipped && (
+            <p className="text-center text-xs text-gray-400">Tap the card to reveal the answer</p>
+          )}
+          {isFlipped && (
+            <p className="text-center text-xs text-gray-400">Tap the card to flip back · use the buttons to mark your answer</p>
+          )}
         </>
       ) : (
         <p className="text-gray-400 italic text-sm text-center py-8">No cards in this deck.</p>
