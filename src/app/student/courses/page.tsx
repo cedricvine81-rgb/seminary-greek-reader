@@ -11,6 +11,12 @@ import { CourseEnrollment } from '@/components/student/CourseEnrollment'
 
 export const metadata: Metadata = { title: 'My Courses' }
 
+const courseIncludes = {
+  instructor: { select: { firstName: true, surname: true, title: true } },
+  institution: { select: { name: true } },
+  _count: { select: { enrollments: { where: { status: 'APPROVED' as const } }, assignments: true } },
+} as const
+
 export default async function StudentCoursesPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
@@ -21,12 +27,11 @@ export default async function StudentCoursesPage() {
     select: { institution: true },
   })
 
-  const institutionFilter = student?.institution
-    ? { institution: { name: student.institution } }
-    : {}
+  const hasInstitution = Boolean(student?.institution)
+  const notEnrolled = { enrollments: { none: { userId: payload.sub } } }
 
-  const [approvedEnrollments, pendingEnrollments, availableCourses] = await Promise.all([
-    // Approved: courses the student is in
+  const [approvedEnrollments, pendingEnrollments, openCourses, institutionCourses] = await Promise.all([
+    // Approved enrollments
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
       include: {
@@ -38,37 +43,48 @@ export default async function StudentCoursesPage() {
         },
       },
     }),
-    // Pending: requests awaiting instructor approval
+
+    // Pending requests
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'PENDING' },
       include: {
         course: {
-          include: {
-            instructor: { select: { firstName: true, surname: true, title: true } },
-          },
+          include: { instructor: { select: { firstName: true, surname: true, title: true } } },
         },
       },
     }),
-    // Available: same institution, not yet requested or enrolled
+
+    // Open courses (no institution attached) — available to everyone
     prisma.course.findMany({
-      where: {
-        ...institutionFilter,
-        enrollments: { none: { userId: payload.sub } },
-      },
-      include: {
-        instructor: { select: { firstName: true, surname: true, title: true } },
-        institution: { select: { name: true } },
-        _count: { select: { enrollments: { where: { status: 'APPROVED' } }, assignments: true } },
-      },
+      where: { institutionId: null, ...notEnrolled },
+      include: courseIncludes,
       orderBy: { startDate: 'desc' },
     }),
+
+    // Institution courses — filtered by student's institution if they have one,
+    // otherwise ALL institution courses (shown as "Request Access")
+    hasInstitution
+      ? prisma.course.findMany({
+          where: {
+            institutionId: { not: null },
+            institution: { name: student!.institution! },
+            ...notEnrolled,
+          },
+          include: courseIncludes,
+          orderBy: { startDate: 'desc' },
+        })
+      : prisma.course.findMany({
+          where: { institutionId: { not: null }, ...notEnrolled },
+          include: courseIncludes,
+          orderBy: [{ institution: { name: 'asc' } }, { startDate: 'desc' }],
+        }),
   ])
 
   return (
     <DashboardShell role="STUDENT" pageTitle="My Courses">
       <div className="space-y-10">
 
-        {/* Enrolled courses */}
+        {/* ── Enrolled courses ── */}
         <div className="space-y-4">
           <h2 className="text-base font-semibold text-gray-900">Enrolled Courses</h2>
           {approvedEnrollments.length === 0 ? (
@@ -76,7 +92,11 @@ export default async function StudentCoursesPage() {
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {approvedEnrollments.map(e => {
-                const instructorName = [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' ')
+                const instructorName = [
+                  e.course.instructor.title,
+                  e.course.instructor.firstName,
+                  e.course.instructor.surname,
+                ].filter(Boolean).join(' ')
                 return (
                   <Card key={e.courseId} className="space-y-2">
                     <div className="flex items-start justify-between">
@@ -99,13 +119,17 @@ export default async function StudentCoursesPage() {
           )}
         </div>
 
-        {/* Pending requests */}
+        {/* ── Pending requests ── */}
         {pendingEnrollments.length > 0 && (
           <div className="space-y-4">
             <h2 className="text-base font-semibold text-gray-900">Pending Requests</h2>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {pendingEnrollments.map(e => {
-                const instructorName = [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' ')
+                const instructorName = [
+                  e.course.instructor.title,
+                  e.course.instructor.firstName,
+                  e.course.instructor.surname,
+                ].filter(Boolean).join(' ')
                 return (
                   <Card key={e.courseId} className="space-y-2 border-amber-200 bg-amber-50">
                     <div className="flex items-start justify-between">
@@ -121,11 +145,32 @@ export default async function StudentCoursesPage() {
           </div>
         )}
 
-        {/* Available courses */}
+        {/* ── Open courses (no institution) ── */}
         <CourseEnrollment
-          initialCourses={availableCourses}
-          institutionName={student?.institution ?? null}
+          initialCourses={openCourses}
+          sectionTitle="Available Courses"
+          sectionDescription="Open courses you can request to join. Your instructor will confirm your place."
+          buttonLabel="Request to Join"
         />
+
+        {/* ── Institution courses ── */}
+        {hasInstitution ? (
+          <CourseEnrollment
+            initialCourses={institutionCourses}
+            sectionTitle={`Courses at ${student!.institution}`}
+            sectionDescription="Courses run by your institution. Request to join and your instructor will approve."
+            buttonLabel="Request to Join"
+          />
+        ) : (
+          <CourseEnrollment
+            initialCourses={institutionCourses}
+            sectionTitle="Institutional Courses"
+            sectionDescription="These courses are run by specific institutions. You can request access — the instructor will review your application."
+            buttonLabel="Request Access"
+            showInstitution
+          />
+        )}
+
       </div>
     </DashboardShell>
   )

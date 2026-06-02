@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { BookOpen } from 'lucide-react'
+import { BookOpen, Building2 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
@@ -21,16 +21,25 @@ interface AvailableCourse {
 
 interface Props {
   initialCourses: AvailableCourse[]
-  institutionName: string | null
+  sectionTitle: string
+  sectionDescription: string
+  buttonLabel: string
+  showInstitution?: boolean
 }
 
-export function CourseEnrollment({ initialCourses, institutionName }: Props) {
+export function CourseEnrollment({
+  initialCourses,
+  sectionTitle,
+  sectionDescription,
+  buttonLabel,
+  showInstitution = false,
+}: Props) {
   const router = useRouter()
   const [courses, setCourses] = useState(initialCourses)
   const [requesting, setRequesting] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  async function requestEnroll(courseId: string) {
+  async function request(courseId: string) {
     setRequesting(courseId)
     setErrors(prev => ({ ...prev, [courseId]: '' }))
     try {
@@ -56,12 +65,8 @@ export function CourseEnrollment({ initialCourses, institutionName }: Props) {
   return (
     <div className="space-y-4">
       <div>
-        <h2 className="text-base font-semibold text-gray-900">Available Courses</h2>
-        <p className="text-sm text-gray-500 mt-0.5">
-          {institutionName
-            ? <>Courses at <span className="font-medium">{institutionName}</span>. Your instructor will approve your request.</>
-            : 'Browse available courses. Your instructor will approve your request.'}
-        </p>
+        <h2 className="text-base font-semibold text-gray-900">{sectionTitle}</h2>
+        <p className="text-sm text-gray-500 mt-0.5">{sectionDescription}</p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {courses.map(course => {
@@ -89,8 +94,11 @@ export function CourseEnrollment({ initialCourses, institutionName }: Props) {
                   <BookOpen size={12} className="shrink-0" />
                   {instructorName}
                 </p>
-                {course.institution && (
-                  <p>{course.institution.name}</p>
+                {showInstitution && course.institution && (
+                  <p className="flex items-center gap-1.5">
+                    <Building2 size={12} className="shrink-0" />
+                    {course.institution.name}
+                  </p>
                 )}
                 <p>{start} – {end} · {course._count.assignments} assignments · {course._count.enrollments} students</p>
               </div>
@@ -102,11 +110,11 @@ export function CourseEnrollment({ initialCourses, institutionName }: Props) {
               <Button
                 size="sm"
                 variant="secondary"
-                onClick={() => requestEnroll(course.id)}
+                onClick={() => request(course.id)}
                 loading={requesting === course.id}
                 className="w-full"
               >
-                Request to Join
+                {buttonLabel}
               </Button>
             </Card>
           )
