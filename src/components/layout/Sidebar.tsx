@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import {
-  LayoutDashboard, BookOpen, BookMarked, Users,
+  LayoutDashboard, BookMarked, Users,
   ClipboardList, BarChart2, FileText, GraduationCap,
   FlipHorizontal, TrendingUp, Settings,
 } from 'lucide-react'
@@ -16,7 +16,6 @@ interface NavItem {
 
 const instructorNav: NavItem[] = [
   { label: 'Dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
-  { label: 'Courses',     href: '/instructor/courses',       icon: <BookOpen size={16} /> },
   { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
   { label: 'Students',    href: '/instructor/students',      icon: <Users size={16} /> },
