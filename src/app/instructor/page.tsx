@@ -12,6 +12,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { BookOpen, Users, ClipboardList, Plus, Copy, FileText } from 'lucide-react'
+import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
 
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
@@ -205,9 +206,14 @@ export default async function InstructorPage() {
                     {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
                   </span>
                 </div>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <Users size={14} />
-                  <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2 text-sm text-gray-500">
+                    <Users size={14} />
+                    <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
+                  </div>
+                  {activeGroups.length > 0 && (
+                    <GradebookToggleButton detailsId={`gradebook-${course.id}`} />
+                  )}
                 </div>
               </div>
 
@@ -278,7 +284,7 @@ export default async function InstructorPage() {
               {/* Gradebook */}
               {activeGroups.length > 0 && (
                 <Card>
-                  <details open>
+                  <details id={`gradebook-${course.id}`}>
                   <summary className="flex items-center justify-between cursor-pointer list-none mb-4">
                     <CardTitle>Grade Book</CardTitle>
                     <span className="text-xs text-gray-400">{students.length === 0 ? 'No students enrolled yet' : `${students.length} student${students.length !== 1 ? 's' : ''}`}</span>
