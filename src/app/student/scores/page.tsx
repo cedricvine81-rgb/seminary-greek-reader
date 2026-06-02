@@ -21,7 +21,7 @@ export default async function StudentScoresPage() {
 
   // All enrolled courses with their published assignments + questions
   const enrollments = await prisma.enrollment.findMany({
-    where: { userId: payload.sub },
+    where: { userId: payload.sub, status: 'APPROVED' },
     include: {
       course: {
         select: { id: true, name: true },

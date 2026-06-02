@@ -15,7 +15,7 @@ export default async function StudentPage() {
 
   const [user, enrollments, completedResponses, allResponses, recentAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
-    prisma.enrollment.findMany({ where: { userId: payload.sub }, include: { course: { include: { assignments: true } } } }),
+    prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, include: { course: { include: { assignments: true } } } }),
     prisma.response.findMany({
       where: { userId: payload.sub, questionId: { not: null } },
       select: { assignmentId: true },

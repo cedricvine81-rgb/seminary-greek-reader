@@ -12,7 +12,7 @@ export default async function StudentMaterialsPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
 
-  const enrollments = await prisma.enrollment.findMany({ where: { userId: payload.sub }, select: { courseId: true } })
+  const enrollments = await prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, select: { courseId: true } })
   const materials = await prisma.material.findMany({
     where: { courseId: { in: enrollments.map(e => e.courseId) } },
     orderBy: [{ weekNumber: 'asc' }, { createdAt: 'desc' }],

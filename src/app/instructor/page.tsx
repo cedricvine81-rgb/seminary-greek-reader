@@ -13,6 +13,7 @@ import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { BookOpen, Users, ClipboardList, Plus, Copy, FileText } from 'lucide-react'
 import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
+import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
@@ -67,7 +68,7 @@ export default async function InstructorPage() {
 
   const courseIds = rawCourses.map(c => c.id)
 
-  const [user, assignments, enrollments] = await Promise.all([
+  const [user, assignments, enrollments, pendingEnrollments] = await Promise.all([
     prisma.user.findUnique({
       where: { id: payload.sub },
       select: { firstName: true, surname: true },
@@ -84,10 +85,20 @@ export default async function InstructorPage() {
       orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
     }),
     prisma.enrollment.findMany({
-      where: { courseId: { in: courseIds } },
+      where: { courseId: { in: courseIds }, status: 'APPROVED' },
       select: {
         courseId: true,
         user: { select: { id: true, firstName: true, surname: true, email: true } },
+      },
+      orderBy: { createdAt: 'asc' },
+    }),
+    prisma.enrollment.findMany({
+      where: { courseId: { in: courseIds }, status: 'PENDING' },
+      select: {
+        id: true,
+        createdAt: true,
+        user: { select: { firstName: true, surname: true, email: true } },
+        course: { select: { id: true, name: true } },
       },
       orderBy: { createdAt: 'asc' },
     }),
@@ -137,6 +148,8 @@ export default async function InstructorPage() {
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="Dashboard">
       <div className="space-y-8">
+
+        <EnrollmentRequests pending={pendingEnrollments.map(e => ({ ...e, createdAt: e.createdAt.toISOString() }))} />
 
         <div className="space-y-4">
           <div>

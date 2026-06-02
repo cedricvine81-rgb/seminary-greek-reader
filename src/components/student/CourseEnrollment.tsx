@@ -21,16 +21,17 @@ interface AvailableCourse {
 
 interface Props {
   initialCourses: AvailableCourse[]
+  institutionName: string | null
 }
 
-export function CourseEnrollment({ initialCourses }: Props) {
+export function CourseEnrollment({ initialCourses, institutionName }: Props) {
   const router = useRouter()
   const [courses, setCourses] = useState(initialCourses)
-  const [enrolling, setEnrolling] = useState<string | null>(null)
+  const [requesting, setRequesting] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
-  async function enroll(courseId: string) {
-    setEnrolling(courseId)
+  async function requestEnroll(courseId: string) {
+    setRequesting(courseId)
     setErrors(prev => ({ ...prev, [courseId]: '' }))
     try {
       const res = await fetch('/api/enrollments', {
@@ -40,14 +41,13 @@ export function CourseEnrollment({ initialCourses }: Props) {
       })
       if (!res.ok) {
         const data = await res.json()
-        setErrors(prev => ({ ...prev, [courseId]: data.error ?? 'Failed to enroll' }))
+        setErrors(prev => ({ ...prev, [courseId]: data.error ?? 'Failed to submit request' }))
         return
       }
-      // Remove from available list and refresh enrolled courses
       setCourses(prev => prev.filter(c => c.id !== courseId))
       router.refresh()
     } finally {
-      setEnrolling(null)
+      setRequesting(null)
     }
   }
 
@@ -57,7 +57,11 @@ export function CourseEnrollment({ initialCourses }: Props) {
     <div className="space-y-4">
       <div>
         <h2 className="text-base font-semibold text-gray-900">Available Courses</h2>
-        <p className="text-sm text-gray-500 mt-0.5">Browse courses set up by your instructors and enroll.</p>
+        <p className="text-sm text-gray-500 mt-0.5">
+          {institutionName
+            ? <>Courses at <span className="font-medium">{institutionName}</span>. Your instructor will approve your request.</>
+            : 'Browse available courses. Your instructor will approve your request.'}
+        </p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {courses.map(course => {
@@ -97,11 +101,12 @@ export function CourseEnrollment({ initialCourses }: Props) {
 
               <Button
                 size="sm"
-                onClick={() => enroll(course.id)}
-                loading={enrolling === course.id}
+                variant="secondary"
+                onClick={() => requestEnroll(course.id)}
+                loading={requesting === course.id}
                 className="w-full"
               >
-                Enroll
+                Request to Join
               </Button>
             </Card>
           )

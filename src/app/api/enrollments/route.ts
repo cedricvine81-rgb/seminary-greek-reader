@@ -7,21 +7,32 @@ function getPayload() {
   return token ? verifyToken(token) : null
 }
 
-// GET /api/enrollments/available — courses the student can enroll in
+// GET /api/enrollments — available courses (for students, filtered by institution)
 export async function GET() {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  const student = await prisma.user.findUnique({
+    where: { id: payload.sub },
+    select: { institution: true },
+  })
+
+  // Build filter: same institution as student (if set), or all courses if no institution
+  const institutionFilter = student?.institution
+    ? { institution: { name: student.institution } }
+    : {}
+
   const courses = await prisma.course.findMany({
     where: {
+      ...institutionFilter,
       enrollments: { none: { userId: payload.sub } },
     },
     include: {
       instructor: { select: { firstName: true, surname: true, title: true } },
       institution: { select: { name: true } },
-      _count: { select: { enrollments: true, assignments: true } },
+      _count: { select: { enrollments: { where: { status: 'APPROVED' } }, assignments: true } },
     },
     orderBy: { startDate: 'desc' },
   })
@@ -29,7 +40,7 @@ export async function GET() {
   return NextResponse.json({ courses })
 }
 
-// POST /api/enrollments — enroll the current student in a course
+// POST /api/enrollments — student requests to join a course (PENDING)
 export async function POST(req: NextRequest) {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
@@ -44,16 +55,15 @@ export async function POST(req: NextRequest) {
 
   try {
     const enrollment = await prisma.enrollment.create({
-      data: { userId: payload.sub, courseId },
+      data: { userId: payload.sub, courseId, status: 'PENDING' },
     })
     return NextResponse.json({ enrollment }, { status: 201 })
   } catch {
-    // unique constraint = already enrolled
-    return NextResponse.json({ error: 'Already enrolled' }, { status: 409 })
+    return NextResponse.json({ error: 'Already requested or enrolled' }, { status: 409 })
   }
 }
 
-// DELETE /api/enrollments — unenroll the current student from a course
+// DELETE /api/enrollments — student withdraws enrollment request
 export async function DELETE(req: NextRequest) {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {

@@ -13,24 +13,28 @@ export default async function StudentProgressPage() {
   if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
 
   const enrollments = await prisma.enrollment.findMany({
-    where: { userId: payload.sub },
+    where: { userId: payload.sub, status: 'APPROVED' },
     select: { courseId: true },
   })
   const courseIds = enrollments.map(e => e.courseId)
 
   const [assignments, responses] = await Promise.all([
-    prisma.assignment.findMany({ where: { courseId: { in: courseIds } }, select: { id: true, type: true } }),
+    prisma.assignment.findMany({
+      where: { courseId: { in: courseIds } },
+      select: { id: true, type: true, title: true },
+    }),
     prisma.response.findMany({
       where: { userId: payload.sub },
-      include: { assignment: { select: { title: true } } },
+      select: { assignmentId: true, questionId: true, isCorrect: true, score: true, submittedAt: true },
     }),
   ])
 
+  const assignmentMap = Object.fromEntries(assignments.map(a => [a.id, a]))
   const completedIds = new Set(responses.filter(r => !r.questionId).map(r => r.assignmentId))
 
   const byType: Record<string, { correct: number; total: number }> = {}
   for (const r of responses.filter(r => r.questionId)) {
-    const assignment = assignments.find(a => a.id === r.assignmentId)
+    const assignment = assignmentMap[r.assignmentId]
     const type = assignment?.type ?? 'UNKNOWN'
     if (!byType[type]) byType[type] = { correct: 0, total: 0 }
     byType[type].total++
@@ -50,7 +54,7 @@ export default async function StudentProgressPage() {
     .slice(0, 5)
     .map(r => ({
       assignmentId: r.assignmentId,
-      assignmentTitle: r.assignment.title,
+      assignmentTitle: assignmentMap[r.assignmentId]?.title ?? 'Unknown',
       completedAt: r.submittedAt.toISOString(),
       score: r.score as number,
       percentage: r.score as number,
