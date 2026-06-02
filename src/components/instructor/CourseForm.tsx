@@ -73,9 +73,9 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-      <div className="flex gap-3">
-        <Button type="submit" loading={loading}>{courseId ? 'Save Changes' : 'Create Course'}</Button>
+      <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
+        <Button type="submit" loading={loading}>{courseId ? 'Save Changes' : 'Create Course'}</Button>
       </div>
     </form>
   )

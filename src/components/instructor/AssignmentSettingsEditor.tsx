@@ -194,7 +194,7 @@ export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }:
 
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 justify-end">
           <Button onClick={handleSave} loading={saving}>Save settings</Button>
           {saved && (
             <span className="flex items-center gap-1.5 text-sm text-green-600">

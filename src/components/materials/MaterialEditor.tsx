@@ -48,9 +48,9 @@ export function MaterialEditor({ materialId, initialData }: MaterialEditorProps)
         <label className="label">Content</label>
         <textarea rows={6} className="input" value={form.content} onChange={set('content')} />
       </div>
-      <div className="flex gap-3">
-        <Button type="submit" loading={loading}>Save Changes</Button>
+      <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
+        <Button type="submit" loading={loading}>Save Changes</Button>
       </div>
     </form>
   )

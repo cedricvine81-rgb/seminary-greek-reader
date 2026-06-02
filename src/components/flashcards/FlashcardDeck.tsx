@@ -77,7 +77,7 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
       <div className="text-center py-12 space-y-4">
         <p className="text-2xl font-bold text-brand-700">Session Complete!</p>
         <p className="text-gray-600">{stats.known} known · {stats.unknown} unknown out of {cards.length}</p>
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-end gap-3">
           <Button onClick={() => { setIdx(0); setIsFlipped(false); setFinished(false); setStats({ known: 0, unknown: 0 }) }}>
             Review Again
           </Button>

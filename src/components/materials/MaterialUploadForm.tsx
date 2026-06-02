@@ -51,9 +51,9 @@ export function MaterialUploadForm({ courseId }: MaterialUploadFormProps) {
         <textarea rows={5} className="input" value={form.content} onChange={set('content')} placeholder="Paste notes or content here…" />
       </div>
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
-      <div className="flex gap-3">
-        <Button type="submit" loading={loading}>Save Material</Button>
+      <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
+        <Button type="submit" loading={loading}>Save Material</Button>
       </div>
     </form>
   )

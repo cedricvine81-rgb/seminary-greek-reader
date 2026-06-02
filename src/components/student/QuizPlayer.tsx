@@ -263,7 +263,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           })}
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-end">
           <Button onClick={handleSubmit} loading={submitting} className="flex items-center gap-2">
             <Send size={15} />
             Submit for Grading
@@ -299,7 +299,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             </p>
           )}
         </div>
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-end">
           {canRetake && (
             <Button onClick={handleRetake} variant="ghost" className="flex items-center gap-2">
               <RotateCcw size={15} />

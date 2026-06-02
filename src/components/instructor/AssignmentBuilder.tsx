@@ -293,10 +293,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-      <div className="flex gap-3">
+      <div className="flex gap-3 justify-end">
+        <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
         <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Update</Button>
         <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
-        <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
       </div>
     </form>
   )
@@ -756,7 +756,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-end">
+          <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
           <Button
             type="button"
             variant="secondary"
@@ -773,7 +774,6 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           >
             Save &amp; Post{schedule.length > 0 ? ` (${schedule.length})` : ''}
           </Button>
-          <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
         </div>
       </form>
     </>
