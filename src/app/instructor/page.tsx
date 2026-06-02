@@ -35,7 +35,7 @@ const GRADEBOOK_GROUPS = [
 function extractSection(instructions: string | null): string | null {
   if (!instructions) return null
   const m = instructions.match(/Section\s+([\w\-:]+)/i)
-  return m ? m[1].replace('-', ':') : null
+  return m ? `Section ${m[1].replace('-', ':')}` : null
 }
 
 function avg(nums: (number | null)[]): number | null {
@@ -283,7 +283,7 @@ export default async function InstructorPage() {
                             return (
                               <div key={a.id} className="flex items-center gap-4 px-1 py-2.5 text-sm hover:bg-gray-50 rounded-lg">
                                 <span className="text-gray-500 w-16 shrink-0">Week {a.weekNumber}</span>
-                                <span className="text-xs font-medium text-brand-600 w-16 shrink-0">{section ?? ''}</span>
+                                <span className="text-xs font-medium text-brand-600 w-28 shrink-0">{section ?? ''}</span>
                                 <span className="text-gray-500 w-20 shrink-0 whitespace-nowrap">{format(new Date(a.dueDate), 'EEE, MMM d')}</span>
                                 <Link href={`/instructor/assignments/${a.id}`} className="flex-1 min-w-0 font-medium text-gray-800 truncate hover:text-brand-700">
                                   {a.title}
