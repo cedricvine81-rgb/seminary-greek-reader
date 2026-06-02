@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import {
-  LayoutDashboard, BookMarked,
+  LayoutDashboard, BookMarked, Calendar,
   ClipboardList, BarChart2, FileText, GraduationCap,
   FlipHorizontal, TrendingUp, Settings,
 } from 'lucide-react'
@@ -16,6 +16,7 @@ interface NavItem {
 
 const instructorNav: NavItem[] = [
   { label: 'Dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
+  { label: 'Calendar',    href: '/instructor/calendar',      icon: <Calendar size={16} /> },
   { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
   { label: 'Reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
@@ -23,6 +24,7 @@ const instructorNav: NavItem[] = [
 
 const studentNav: NavItem[] = [
   { label: 'Dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} /> },
+  { label: 'Calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
   { label: 'Courses',     href: '/student/courses',          icon: <GraduationCap size={16} /> },
   { label: 'Assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
   { label: 'Flashcards',  href: '/student/flashcards',       icon: <FlipHorizontal size={16} /> },
