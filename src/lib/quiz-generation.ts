@@ -23,6 +23,8 @@ export async function generateVocabQuestions(
     take: count * 4,
   })
 
+  if (items.length === 0) return [] // vocabulary table not yet loaded
+
   const picked = shuffle(items).slice(0, count)
   const allGlosses = items.map(i => i.lexeme.gloss)
   const allLexemes = items.map(i => i.lexeme.lexeme)
@@ -75,6 +77,8 @@ export async function generateVocabQuestionsInRange(
     include: { lexeme: true },
     take: 200,
   })
+
+  if (pool.length === 0) return [] // vocabulary table not yet loaded
 
   const picked = shuffle(rangeItems.length >= count ? rangeItems : pool).slice(0, count)
   const allGlosses = pool.map(i => i.lexeme.gloss)

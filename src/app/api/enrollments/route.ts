@@ -53,14 +53,24 @@ export async function POST(req: NextRequest) {
   const course = await prisma.course.findUnique({ where: { id: courseId } })
   if (!course) return NextResponse.json({ error: 'Course not found' }, { status: 404 })
 
-  try {
-    const enrollment = await prisma.enrollment.create({
-      data: { userId: payload.sub, courseId, status: 'PENDING' },
-    })
-    return NextResponse.json({ enrollment }, { status: 201 })
-  } catch {
-    return NextResponse.json({ error: 'Already requested or enrolled' }, { status: 409 })
+  // Check for existing enrollment before attempting create
+  const existing = await prisma.enrollment.findUnique({
+    where: { userId_courseId: { userId: payload.sub, courseId } },
+    select: { status: true },
+  })
+  if (existing) {
+    const msg = existing.status === 'PENDING'
+      ? 'You already have a pending request for this course'
+      : existing.status === 'APPROVED'
+      ? 'You are already enrolled in this course'
+      : 'Your previous request was rejected — contact your instructor'
+    return NextResponse.json({ error: msg }, { status: 409 })
   }
+
+  const enrollment = await prisma.enrollment.create({
+    data: { userId: payload.sub, courseId, status: 'PENDING' },
+  })
+  return NextResponse.json({ enrollment }, { status: 201 })
 }
 
 // DELETE /api/enrollments — student withdraws enrollment request

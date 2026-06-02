@@ -84,7 +84,10 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
             <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">View all</Link>
           </div>
           {pendingAssignments.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">No pending assignments.</p>
+            <div className="text-center py-4 space-y-1">
+              <p className="text-sm text-green-600 font-medium">You're all caught up! 🎉</p>
+              <Link href="/student/courses" className="text-xs text-brand-600 hover:underline">Browse courses →</Link>
+            </div>
           ) : (
             <div className="space-y-2">
               {pendingAssignments.slice(0, 5).map(a => (
@@ -111,7 +114,10 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
             <Link href="/student/scores" className="text-sm text-brand-600 hover:underline">View all</Link>
           </div>
           {recentScores.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">No completed assignments yet.</p>
+            <div className="text-center py-4 space-y-1">
+              <p className="text-sm text-gray-400 italic">No scores yet.</p>
+              <Link href="/student/assignments" className="text-xs text-brand-600 hover:underline">Start an assignment →</Link>
+            </div>
           ) : (
             <div className="space-y-2">
               {recentScores.map(s => (

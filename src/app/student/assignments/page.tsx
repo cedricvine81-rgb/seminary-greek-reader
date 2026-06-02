@@ -13,7 +13,7 @@ export default async function StudentAssignmentsPage() {
   if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
 
   const enrollments = await prisma.enrollment.findMany({
-    where: { userId: payload.sub },
+    where: { userId: payload.sub, status: 'APPROVED' },
     select: { courseId: true },
   })
   const courseIds = enrollments.map(e => e.courseId)

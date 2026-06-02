@@ -237,10 +237,10 @@ export function SignUpForm() {
 
       {/* Institution (optional) */}
       <Input
-        label={<span>Institution <span className="text-gray-400 font-normal">(optional)</span></span> as unknown as string}
+        label="Institution (optional)"
         value={form.institution}
         onChange={set('institution')}
-        placeholder="Dallas Theological Seminary"
+        placeholder="e.g. Dallas Theological Seminary — helps match you to courses"
       />
 
       {/* Password */}

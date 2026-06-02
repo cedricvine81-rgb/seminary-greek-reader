@@ -18,13 +18,33 @@ export async function POST(req: NextRequest) {
     responses: { questionId: string; answer: string }[]
   }
 
-  // Load assignment for retake limit
+  if (!assignmentId || !Array.isArray(responses) || responses.length === 0) {
+    return NextResponse.json({ error: 'assignmentId and responses are required' }, { status: 400 })
+  }
+
+  // Load assignment — include questions (prompt + points) to avoid N+1
   const assignment = await prisma.assignment.findUnique({
     where: { id: assignmentId },
-    select: { maxRetakes: true, questions: { select: { points: true } } },
+    select: {
+      courseId: true,
+      maxRetakes: true,
+      isPublished: true,
+      questions: { select: { id: true, prompt: true, points: true } },
+    },
   })
   if (!assignment) return NextResponse.json({ error: 'Assignment not found' }, { status: 404 })
+  if (!assignment.isPublished) return NextResponse.json({ error: 'Assignment not available' }, { status: 403 })
 
+  // ── SECURITY: verify the student has an APPROVED enrollment in this course ──
+  const enrollment = await prisma.enrollment.findFirst({
+    where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+    select: { id: true },
+  })
+  if (!enrollment) {
+    return NextResponse.json({ error: 'Not enrolled in this course' }, { status: 403 })
+  }
+
+  const questionMap = Object.fromEntries(assignment.questions.map(q => [q.id, q]))
   const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
 
   // Count previous attempts
@@ -34,21 +54,22 @@ export async function POST(req: NextRequest) {
   })
 
   const attemptNumber = previousAttempts.length + 1
-  const maxAllowed = assignment.maxRetakes === null ? null : assignment.maxRetakes + 1 // retakes + initial
+  const maxAllowed = assignment.maxRetakes === null ? null : assignment.maxRetakes + 1
   if (maxAllowed !== null && previousAttempts.length >= maxAllowed) {
     return NextResponse.json({ error: 'No retakes remaining.' }, { status: 403 })
   }
 
-  // Grade the new attempt
+  // Grade — question data already loaded, no extra DB calls in loop
   const breakdown = []
   let earnedPoints = 0
   for (const r of responses) {
+    const question = questionMap[r.questionId]
+    if (!question) continue // skip unknown question IDs
     const graded = await gradeResponse(r.questionId, r.answer)
-    const question = await prisma.question.findUnique({ where: { id: r.questionId } })
     earnedPoints += graded.score
     breakdown.push({
       questionId: r.questionId,
-      prompt: question?.prompt ?? '',
+      prompt: question.prompt,
       yourAnswer: r.answer,
       correctAnswer: graded.correctAnswer,
       isCorrect: graded.isCorrect,
@@ -58,27 +79,23 @@ export async function POST(req: NextRequest) {
 
   const percentage = totalPoints > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 0
 
-  // Find the current best attempt
+  // Determine if this is the new best attempt
   const bestPrevious = previousAttempts.find(a => a.isBest)
   const isNewBest = !bestPrevious || earnedPoints >= bestPrevious.earnedPoints
 
-  // If this is the new best, replace Response records and update isBest flags
+  // Replace Response records if this is the new best
   if (isNewBest) {
     await prisma.response.deleteMany({ where: { userId: payload.sub, assignmentId } })
-    for (const r of responses) {
-      const graded = breakdown.find(b => b.questionId === r.questionId)!
-      await prisma.response.create({
-        data: {
-          userId: payload.sub,
-          assignmentId,
-          questionId: r.questionId,
-          answer: r.answer,
-          isCorrect: graded.isCorrect,
-          score: graded.points,
-        },
-      })
-    }
-    // Clear isBest on all previous attempts
+    await prisma.response.createMany({
+      data: breakdown.map(b => ({
+        userId: payload.sub,
+        assignmentId,
+        questionId: b.questionId,
+        answer: b.yourAnswer,
+        isCorrect: b.isCorrect,
+        score: b.points,
+      })),
+    })
     if (bestPrevious) {
       await prisma.quizAttempt.updateMany({
         where: { userId: payload.sub, assignmentId },
@@ -87,7 +104,6 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Record this attempt
   await prisma.quizAttempt.create({
     data: {
       userId: payload.sub,

@@ -22,7 +22,15 @@ const typeLabels: Record<string, string> = {
 
 export function AssignmentList({ assignments, completedIds = new Set() }: AssignmentListProps) {
   if (assignments.length === 0) {
-    return <p className="text-sm text-gray-400 italic py-4">No assignments yet.</p>
+    return (
+      <div className="text-center py-10 space-y-2">
+        <p className="text-sm text-gray-400">No assignments yet.</p>
+        <p className="text-sm text-gray-400">
+          Your instructor hasn't published any assignments.{' '}
+          <Link href="/student/courses" className="text-brand-600 hover:underline">Check your courses →</Link>
+        </p>
+      </div>
+    )
   }
 
   return (
