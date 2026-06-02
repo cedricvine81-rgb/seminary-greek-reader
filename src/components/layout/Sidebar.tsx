@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import {
-  LayoutDashboard, BookMarked, Calendar,
+  LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText, GraduationCap,
   FlipHorizontal, TrendingUp, Settings,
 } from 'lucide-react'
@@ -20,6 +20,7 @@ const instructorNav: NavItem[] = [
   { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
   { label: 'Reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
+  { label: 'Archive',     href: '/instructor/archive',       icon: <Archive size={16} /> },
 ]
 
 const studentNav: NavItem[] = [

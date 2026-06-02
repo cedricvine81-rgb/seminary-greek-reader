@@ -60,6 +60,21 @@ export async function PUT(req: NextRequest) {
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
 
   const body = await req.json()
+
+  // Archive/unarchive shortcut — only requires instructorId ownership
+  if ('isArchived' in body) {
+    const existing = await prisma.course.findFirst({
+      where: { id, instructorId: payload.sub },
+      select: { id: true },
+    })
+    if (!existing) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    const course = await prisma.course.update({
+      where: { id },
+      data: { isArchived: Boolean(body.isArchived) },
+    })
+    return NextResponse.json({ course })
+  }
+
   const course = await prisma.course.update({
     where: { id },
     data: {

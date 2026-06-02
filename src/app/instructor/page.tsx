@@ -14,6 +14,7 @@ import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye } from 'lucide-react'
 import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
 import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
+import { ArchiveCourseButton } from '@/components/instructor/ArchiveCourseButton'
 
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
 
@@ -56,15 +57,27 @@ export default async function InstructorPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
-  const rawCourses = await prisma.course.findMany({
-    where: {
-      OR: [
-        { instructorId: payload.sub },
-        { coInstructors: { some: { userId: payload.sub } } },
-      ],
-    },
-    orderBy: { startDate: 'asc' },
-  })
+  const [rawCourses, archivedCount] = await Promise.all([
+    prisma.course.findMany({
+      where: {
+        isArchived: false,
+        OR: [
+          { instructorId: payload.sub },
+          { coInstructors: { some: { userId: payload.sub } } },
+        ],
+      },
+      orderBy: { startDate: 'asc' },
+    }),
+    prisma.course.count({
+      where: {
+        isArchived: true,
+        OR: [
+          { instructorId: payload.sub },
+          { coInstructors: { some: { userId: payload.sub } } },
+        ],
+      },
+    }),
+  ])
 
   const courseIds = rawCourses.map(c => c.id)
 
@@ -189,6 +202,13 @@ export default async function InstructorPage() {
             <Link href="/api/preview?mode=enter">
               <Button size="sm" variant="ghost" className="flex items-center gap-1.5 text-amber-700 hover:bg-amber-50"><Eye size={14} />Preview Student View</Button>
             </Link>
+            {archivedCount > 0 && (
+              <Link href="/instructor/archive">
+                <Button size="sm" variant="ghost" className="flex items-center gap-1.5 text-gray-500 hover:bg-gray-100">
+                  <span>📦</span> Archive ({archivedCount})
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 
@@ -233,6 +253,7 @@ export default async function InstructorPage() {
                   <Link href={`/instructor/courses/${course.id}`}>
                     <Button size="sm" variant="secondary">Manage Course</Button>
                   </Link>
+                  <ArchiveCourseButton courseId={course.id} isArchived={course.isArchived} />
                 </div>
               </div>
 
