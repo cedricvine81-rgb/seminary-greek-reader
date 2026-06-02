@@ -82,6 +82,15 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     }
   }, [idx, phase])
 
+  // Auto-advance after feedback for multiple-choice vocab quizzes
+  useEffect(() => {
+    if (phase !== 'feedback') return
+    if (type === 'MORPHOLOGY_QUIZ' || provideDefinition) return // keep button for typed answers
+    const t = setTimeout(() => handleNext(), 1200)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase])
+
   // Reset timer when entering a new question
   useEffect(() => {
     if (phase === 'answering' && timePerQuestion) {
@@ -454,9 +463,16 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             <span className="text-sm text-gray-500">
               {correctCount} / {answeredSoFar} correct
             </span>
-            <Button onClick={handleNext}>
-              {idx < total - 1 ? 'Next Question' : 'Finish Quiz'}
-            </Button>
+            {/* Only show the Next button for typed/morphology answers; multiple-choice auto-advances */}
+            {(type === 'MORPHOLOGY_QUIZ' || provideDefinition) ? (
+              <Button onClick={handleNext}>
+                {idx < total - 1 ? 'Next Question' : 'Finish Quiz'}
+              </Button>
+            ) : (
+              <span className="text-xs text-gray-400 animate-pulse">
+                {idx < total - 1 ? 'Next…' : 'Finishing…'}
+              </span>
+            )}
           </>
         )}
       </div>
