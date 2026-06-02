@@ -57,17 +57,10 @@ export function Flashcard({ card, isFlipped, onFlip, onKnow, onDontKnow }: Flash
           <p className="text-brand-300 text-xs tracking-wide mt-4">Tap to reveal</p>
         </div>
       ) : (
-        /* ── Back ── */
-        <div className="bg-white flex flex-col min-h-[14rem]">
-          {/* Answer — tap to flip back */}
-          <div
-            className="flex-1 flex flex-col items-center justify-center px-8 py-6 cursor-pointer"
-            onClick={handleFlip}
-            role="button"
-            tabIndex={0}
-            aria-label="Flip back"
-            onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleFlip()}
-          >
+        /* ── Back — entire card is split into two tap zones ── */
+        <div className="bg-white flex min-h-[14rem] relative">
+          {/* Word content — centred overlay, pointer-events-none so taps pass through */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center px-8 pointer-events-none z-10">
             <p className="greek-text text-2xl text-brand-800 font-semibold text-center mb-1">
               {card.backLexeme}
             </p>
@@ -75,25 +68,30 @@ export function Flashcard({ card, isFlipped, onFlip, onKnow, onDontKnow }: Flash
             {card.backParsing && (
               <p className="text-sm text-gray-500 text-center mt-2">{card.backParsing}</p>
             )}
-            <p className="text-xs text-gray-300 mt-3">Tap to flip back</p>
           </div>
 
-          {/* Controls pinned to the bottom of the card */}
-          <div className="flex border-t border-gray-100">
-            <button
-              onClick={e => { e.stopPropagation(); onDontKnow() }}
-              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-gray-500 hover:bg-gray-50 active:bg-gray-100 transition-colors"
-            >
-              <XCircle size={18} /> Don&apos;t Know
-            </button>
-            <div className="w-px bg-gray-100" />
-            <button
-              onClick={e => { e.stopPropagation(); onKnow() }}
-              className="flex-1 flex items-center justify-center gap-2 py-4 text-sm font-semibold text-white bg-brand-700 hover:bg-brand-800 active:bg-brand-900 transition-colors"
-            >
-              <CheckCircle size={18} /> Know It
-            </button>
-          </div>
+          {/* Left half — Don't Know */}
+          <button
+            onClick={e => { e.stopPropagation(); onDontKnow() }}
+            className="flex-1 flex flex-col items-center justify-end pb-4 gap-1 hover:bg-gray-50 active:bg-gray-100 transition-colors rounded-l-2xl"
+            aria-label="Don't know"
+          >
+            <XCircle size={20} className="text-gray-400" />
+            <span className="text-xs font-medium text-gray-400">Don&apos;t Know</span>
+          </button>
+
+          {/* Divider */}
+          <div className="w-px bg-gray-100 self-stretch" />
+
+          {/* Right half — Know It */}
+          <button
+            onClick={e => { e.stopPropagation(); onKnow() }}
+            className="flex-1 flex flex-col items-center justify-end pb-4 gap-1 hover:bg-brand-50 active:bg-brand-100 transition-colors rounded-r-2xl"
+            aria-label="Know it"
+          >
+            <CheckCircle size={20} className="text-brand-600" />
+            <span className="text-xs font-medium text-brand-600">Know It</span>
+          </button>
         </div>
       )}
     </div>
