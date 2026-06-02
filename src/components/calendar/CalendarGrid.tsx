@@ -68,7 +68,9 @@ function EventChip({ event }: { event: CalendarEvent }) {
         ${event.isPublished === false ? 'ring-1 ring-dashed ring-gray-400' : ''}
       `}
     >
-      {label}
+      {/* On very narrow screens show just the type label (shorter); full title on wider */}
+      <span className="hidden sm:inline">{label}</span>
+      <span className="sm:hidden">{s.label}</span>
     </Link>
   )
 }
@@ -99,10 +101,10 @@ export function CalendarGrid({ events, initialDate }: Props) {
     weeks.push(week)
   }
 
-  // Index events by date string
+  // Index events by date string — slice ISO string to avoid timezone shift
   const byDate: Record<string, CalendarEvent[]> = {}
   for (const e of events) {
-    const key = format(new Date(e.dueDate), 'yyyy-MM-dd')
+    const key = e.dueDate.substring(0, 10)  // "YYYY-MM-DD" — no timezone conversion
     if (!byDate[key]) byDate[key] = []
     byDate[key].push(e)
   }

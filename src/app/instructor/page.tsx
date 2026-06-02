@@ -156,7 +156,7 @@ export default async function InstructorPage() {
             <h2 className="text-lg font-semibold text-gray-900">Welcome back, {instructorName}</h2>
             <p className="text-sm text-gray-500 mt-0.5">Here's a full view of your courses and student grades.</p>
           </div>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
               { label: 'Courses', value: rawCourses.length, icon: <BookOpen size={18} />, color: 'text-blue-600 bg-blue-50', href: '/instructor' },
               { label: 'Unique Students', value: new Set(enrollments.map(e => e.user.id)).size, icon: <Users size={18} />, color: 'text-green-600 bg-green-50', href: '/instructor' },
