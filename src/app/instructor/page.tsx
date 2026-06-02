@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/Button'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
-import { BookOpen, Users, ClipboardList, Plus, Copy, FileText } from 'lucide-react'
+import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye } from 'lucide-react'
 import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
 import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 
@@ -185,6 +185,9 @@ export default async function InstructorPage() {
             </Link>
             <Link href="/instructor/materials/new">
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5"><FileText size={14} />Upload Material</Button>
+            </Link>
+            <Link href="/api/preview?mode=enter">
+              <Button size="sm" variant="ghost" className="flex items-center gap-1.5 text-amber-700 hover:bg-amber-50"><Eye size={14} />Preview Student View</Button>
             </Link>
           </div>
         </div>

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
+import { PreviewBanner } from '@/components/layout/PreviewBanner'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
@@ -48,6 +49,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className={inter.className}>
         <div className="min-h-screen flex flex-col">
+          <PreviewBanner />
           <AppHeader {...headerProps} />
           <div className="flex flex-1 flex-col">
             {children}
