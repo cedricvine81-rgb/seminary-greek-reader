@@ -145,8 +145,8 @@ export default async function InstructorPage() {
           </div>
           <div className="grid grid-cols-3 gap-4">
             {[
-              { label: 'Courses', value: rawCourses.length, icon: <BookOpen size={18} />, color: 'text-blue-600 bg-blue-50', href: '/instructor/courses' },
-              { label: 'Students', value: enrollments.length, icon: <Users size={18} />, color: 'text-green-600 bg-green-50', href: '/instructor/students' },
+              { label: 'Courses', value: rawCourses.length, icon: <BookOpen size={18} />, color: 'text-blue-600 bg-blue-50', href: '/instructor' },
+              { label: 'Unique Students', value: new Set(enrollments.map(e => e.user.id)).size, icon: <Users size={18} />, color: 'text-green-600 bg-green-50', href: '/instructor' },
               { label: 'Assignments', value: assignments.length, icon: <ClipboardList size={18} />, color: 'text-purple-600 bg-purple-50', href: '/instructor/assignments' },
             ].map(s => (
               <Link key={s.label} href={s.href}>
@@ -214,6 +214,9 @@ export default async function InstructorPage() {
                   {activeGroups.length > 0 && (
                     <GradebookToggleButton detailsId={`gradebook-${course.id}`} />
                   )}
+                  <Link href={`/instructor/courses/${course.id}`}>
+                    <Button size="sm" variant="secondary">Manage Course</Button>
+                  </Link>
                 </div>
               </div>
 

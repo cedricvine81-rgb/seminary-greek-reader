@@ -26,8 +26,8 @@ const studentNav: NavItem[] = [
   { label: 'Courses',     href: '/student/courses',          icon: <GraduationCap size={16} /> },
   { label: 'Assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
   { label: 'Flashcards',  href: '/student/flashcards',       icon: <FlipHorizontal size={16} /> },
-  { label: 'Progress',    href: '/student/progress',         icon: <TrendingUp size={16} /> },
-  { label: 'Scores',      href: '/student/scores',           icon: <BarChart2 size={16} /> },
+  { label: 'Accuracy',    href: '/student/progress',         icon: <TrendingUp size={16} /> },
+  { label: 'Grades',      href: '/student/scores',           icon: <BarChart2 size={16} /> },
   { label: 'Materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
 ]
 

@@ -5,7 +5,7 @@ import { ProgressSummary } from '@/components/student/ProgressSummary'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
-export const metadata: Metadata = { title: 'Progress' }
+export const metadata: Metadata = { title: 'Accuracy' }
 
 export default async function StudentProgressPage() {
   const token = getTokenFromCookies()
@@ -57,7 +57,7 @@ export default async function StudentProgressPage() {
     }))
 
   return (
-    <DashboardShell role="STUDENT" pageTitle="My Progress">
+    <DashboardShell role="STUDENT" pageTitle="Accuracy">
       <ProgressSummary
         stats={{
           totalAssignments: assignments.length,

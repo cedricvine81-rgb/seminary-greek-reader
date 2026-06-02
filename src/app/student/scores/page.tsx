@@ -7,7 +7,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { format } from 'date-fns'
 
-export const metadata: Metadata = { title: 'My Scores' }
+export const metadata: Metadata = { title: 'Grades' }
 
 function pctBadge(pct: number) {
   const variant = pct >= 90 ? 'green' : pct >= 70 ? 'amber' : 'red'
@@ -31,7 +31,7 @@ export default async function StudentScoresPage() {
 
   if (enrollments.length === 0) {
     return (
-      <DashboardShell role="STUDENT" pageTitle="My Scores">
+      <DashboardShell role="STUDENT" pageTitle="Grades">
         <p className="text-sm text-gray-500">You are not enrolled in any courses yet.</p>
       </DashboardShell>
     )
@@ -104,7 +104,7 @@ export default async function StudentScoresPage() {
   const multipleCourses = new Set(rows.map(r => r.courseTitle)).size > 1
 
   return (
-    <DashboardShell role="STUDENT" pageTitle="My Scores">
+    <DashboardShell role="STUDENT" pageTitle="Grades">
       <div className="space-y-8 max-w-4xl">
 
         {/* Summary cards */}

@@ -15,14 +15,22 @@ export default async function InstructorMaterialsPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
-  const courses = await prisma.course.findMany({ where: { instructorId: payload.sub }, select: { id: true } })
+  const courses = await prisma.course.findMany({
+    where: { instructorId: payload.sub },
+    select: { id: true, name: true },
+    orderBy: { startDate: 'asc' },
+  })
+
   const materials = await prisma.material.findMany({
     where: { courseId: { in: courses.map(c => c.id) } },
-    orderBy: [{ weekNumber: 'asc' }, { createdAt: 'desc' }],
+    orderBy: [{ courseId: 'asc' }, { weekNumber: 'asc' }, { createdAt: 'desc' }],
   })
+
+  const courseMap = Object.fromEntries(courses.map(c => [c.id, c.name]))
 
   const serialized = materials.map(m => ({
     ...m,
+    courseName: courseMap[m.courseId] ?? 'Unknown Course',
     createdAt: m.createdAt.toISOString(),
     updatedAt: m.updatedAt.toISOString(),
   }))
@@ -33,7 +41,7 @@ export default async function InstructorMaterialsPage() {
       pageTitle="Materials"
       actions={<Link href="/instructor/materials/new"><Button size="sm"><Plus size={14} /> Upload</Button></Link>}
     >
-      <MaterialList materials={serialized} canEdit />
+      <MaterialList materials={serialized} canEdit groupByCourse={courses.length > 1} />
     </DashboardShell>
   )
 }

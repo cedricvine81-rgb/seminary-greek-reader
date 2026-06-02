@@ -13,19 +13,24 @@ export default async function StudentPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'STUDENT') redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, allResponses] = await Promise.all([
+  const [user, enrollments, completedResponses, allResponses, recentAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({ where: { userId: payload.sub }, include: { course: { include: { assignments: true } } } }),
-    // distinct assignmentIds for completion detection
     prisma.response.findMany({
       where: { userId: payload.sub, questionId: { not: null } },
       select: { assignmentId: true },
       distinct: ['assignmentId'],
     }),
-    // all responses for score computation
     prisma.response.findMany({
       where: { userId: payload.sub, questionId: { not: null } },
       select: { assignmentId: true, score: true },
+    }),
+    // Recent best quiz attempts for score feed
+    prisma.quizAttempt.findMany({
+      where: { userId: payload.sub, isBest: true },
+      orderBy: { completedAt: 'desc' },
+      take: 5,
+      include: { assignment: { select: { title: true } } },
     }),
   ])
 
@@ -33,17 +38,15 @@ export default async function StudentPage() {
   const completedIds = new Set(completedResponses.map(r => r.assignmentId))
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
 
-  // Compute running average % — earned / possible across completed assignments
+  // Compute running average %
   let avgScore: number | null = null
   if (completedIds.size > 0) {
     const completedAssignmentIds = Array.from(completedIds)
-    const [questionTotals] = await Promise.all([
-      prisma.question.groupBy({
-        by: ['assignmentId'],
-        where: { assignmentId: { in: completedAssignmentIds } },
-        _sum: { points: true },
-      }),
-    ])
+    const questionTotals = await prisma.question.groupBy({
+      by: ['assignmentId'],
+      where: { assignmentId: { in: completedAssignmentIds } },
+      _sum: { points: true },
+    })
     const totalPossible = questionTotals.reduce((s, g) => s + (g._sum.points ?? 0), 0)
     const totalEarned = allResponses
       .filter(r => completedIds.has(r.assignmentId))
@@ -70,11 +73,19 @@ export default async function StudentPage() {
     updatedAt: a.updatedAt.toISOString(),
   }))
 
+  const recentScores = recentAttempts.map(a => ({
+    assignmentId: a.assignmentId,
+    title: a.assignment.title,
+    percentage: a.percentage,
+    completedAt: a.completedAt.toISOString(),
+  }))
+
   return (
     <DashboardShell role="STUDENT" pageTitle="Dashboard">
       <StudentDashboard
         studentName={user?.firstName ?? 'Student'}
         pendingAssignments={serializedPending}
+        recentScores={recentScores}
         stats={{
           enrolledCourses: enrollments.length,
           pendingAssignments: pending.length,

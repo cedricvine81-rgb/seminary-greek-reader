@@ -4,9 +4,17 @@ import { Badge } from '@/components/ui/Badge'
 import { ClipboardList, FlipHorizontal, TrendingUp, BookOpen } from 'lucide-react'
 import type { Assignment } from '@/types/assignment'
 
+interface RecentScore {
+  assignmentId: string
+  title: string
+  percentage: number
+  completedAt: string
+}
+
 interface StudentDashboardProps {
   studentName: string
   pendingAssignments: Assignment[]
+  recentScores: RecentScore[]
   stats: {
     enrolledCourses: number
     pendingAssignments: number
@@ -15,12 +23,17 @@ interface StudentDashboardProps {
   }
 }
 
-export function StudentDashboard({ studentName, pendingAssignments, stats }: StudentDashboardProps) {
+function ScoreBadge({ pct }: { pct: number }) {
+  const variant = pct >= 90 ? 'green' : pct >= 70 ? 'amber' : 'red'
+  return <Badge variant={variant}>{pct}%</Badge>
+}
+
+export function StudentDashboard({ studentName, pendingAssignments, recentScores, stats }: StudentDashboardProps) {
   const statCards = [
     { label: 'Enrolled courses', value: stats.enrolledCourses, icon: <BookOpen size={20} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
     { label: 'Pending', value: stats.pendingAssignments, icon: <ClipboardList size={20} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
     { label: 'Completed', value: stats.completedAssignments, icon: <TrendingUp size={20} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
-    { label: 'Avg. score', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <FlipHorizontal size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
+    { label: 'Grades', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <FlipHorizontal size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
   ]
 
   const assignmentTypeLabel: Record<string, string> = {
@@ -63,32 +76,57 @@ export function StudentDashboard({ studentName, pendingAssignments, stats }: Stu
         </Link>
       </div>
 
-      {/* Upcoming assignments */}
-      <Card>
-        <div className="flex items-center justify-between mb-4">
-          <CardTitle>Upcoming Assignments</CardTitle>
-          <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">View all</Link>
-        </div>
-        {pendingAssignments.length === 0 ? (
-          <p className="text-sm text-gray-400 italic">No pending assignments.</p>
-        ) : (
-          <div className="space-y-2">
-            {pendingAssignments.slice(0, 5).map(a => (
-              <Link
-                key={a.id}
-                href={`/student/assignments/${a.id}`}
-                className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
-              >
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{a.title}</p>
-                  <p className="text-xs text-gray-500">Due {new Date(a.dueDate).toLocaleDateString()}</p>
-                </div>
-                <Badge variant="amber">{assignmentTypeLabel[a.type] ?? a.type}</Badge>
-              </Link>
-            ))}
+      <div className="grid lg:grid-cols-2 gap-6">
+        {/* Upcoming assignments */}
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <CardTitle>Upcoming Assignments</CardTitle>
+            <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">View all</Link>
           </div>
-        )}
-      </Card>
+          {pendingAssignments.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">No pending assignments.</p>
+          ) : (
+            <div className="space-y-2">
+              {pendingAssignments.slice(0, 5).map(a => (
+                <Link
+                  key={a.id}
+                  href={`/student/assignments/${a.id}`}
+                  className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{a.title}</p>
+                    <p className="text-xs text-gray-500">Due {new Date(a.dueDate).toLocaleDateString()}</p>
+                  </div>
+                  <Badge variant="amber">{assignmentTypeLabel[a.type] ?? a.type}</Badge>
+                </Link>
+              ))}
+            </div>
+          )}
+        </Card>
+
+        {/* Recent scores */}
+        <Card>
+          <div className="flex items-center justify-between mb-4">
+            <CardTitle>Recent Scores</CardTitle>
+            <Link href="/student/scores" className="text-sm text-brand-600 hover:underline">View all</Link>
+          </div>
+          {recentScores.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">No completed assignments yet.</p>
+          ) : (
+            <div className="space-y-2">
+              {recentScores.map(s => (
+                <div key={s.assignmentId} className="flex items-center justify-between p-3 rounded-lg border border-gray-100">
+                  <div>
+                    <p className="text-sm font-medium text-gray-900">{s.title}</p>
+                    <p className="text-xs text-gray-400">{new Date(s.completedAt).toLocaleDateString()}</p>
+                  </div>
+                  <ScoreBadge pct={s.percentage} />
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
   )
 }
