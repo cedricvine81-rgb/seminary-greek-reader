@@ -33,7 +33,7 @@ export default async function FlashcardsPage() {
 
   return (
     <DashboardShell role="STUDENT" pageTitle="Flashcards" pageDescription="Study Greek vocabulary with spaced repetition.">
-      <div className="max-w-lg mx-auto">
+      <div className="max-w-2xl mx-auto">
         <FlashcardDeck
           initialCards={serialize(beginningCards) as never}
           initialLevel="BEGINNING"
