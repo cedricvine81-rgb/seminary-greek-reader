@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { Sidebar } from './Sidebar'
+import { MobileNav } from './MobileNav'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 
@@ -45,7 +46,7 @@ export async function DashboardShell({
   return (
     <div className="flex flex-1 min-h-0">
       <Sidebar role={role} pendingRequests={role === 'INSTRUCTOR' ? pendingRequests : 0} />
-      <main className="flex-1 min-w-0 p-6 lg:p-8 bg-gray-50">
+      <main className="flex-1 min-w-0 p-4 lg:p-8 bg-gray-50 pb-20 lg:pb-8">
         {(pageTitle || actions) && (
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <div>
@@ -61,6 +62,7 @@ export async function DashboardShell({
         )}
         {children}
       </main>
+      <MobileNav role={role} pendingRequests={role === 'INSTRUCTOR' ? pendingRequests : 0} />
     </div>
   )
 }

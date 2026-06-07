@@ -121,8 +121,8 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
             <span>{idx + 1} / {cards.length}</span>
           </div>
 
-          {/* Card + response buttons side by side */}
-          <div className="flex items-center gap-4">
+          {/* Card + response buttons: stacked on mobile, side-by-side on sm+ */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
             <div className="flex-1 min-w-0">
               <Flashcard
                 card={card}
@@ -132,28 +132,26 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
             </div>
 
             {/* Response buttons — only visible after flip */}
-            <div className="flex flex-col items-stretch gap-2 w-24 shrink-0">
+            <div className={`flex sm:flex-col gap-2 sm:w-28 shrink-0 transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
               <Button
                 onClick={() => advance('know')}
                 disabled={!isFlipped}
-                className={`py-3 text-sm font-semibold transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}
+                className="flex-1 sm:flex-none py-3 text-sm font-semibold"
               >
                 Got it
               </Button>
-              <div className={`flex gap-1.5 transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
-                <button
-                  onClick={() => advance('again')}
-                  className="flex-1 py-2 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
-                >
-                  Again
-                </button>
-                <button
-                  onClick={() => advance('hard')}
-                  className="flex-1 py-2 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
-                >
-                  Hard
-                </button>
-              </div>
+              <button
+                onClick={() => advance('again')}
+                className="flex-1 sm:flex-none py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
+              >
+                Again
+              </button>
+              <button
+                onClick={() => advance('hard')}
+                className="flex-1 sm:flex-none py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
+              >
+                Hard
+              </button>
             </div>
           </div>
 

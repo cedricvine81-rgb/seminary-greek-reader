@@ -270,11 +270,11 @@ export default async function InstructorPage() {
                       <ChevronRight size={12} className="group-open:hidden" />
                       <ChevronDown size={12} className="hidden group-open:inline" />
                     </span>
-                    <span className="text-sm text-gray-400">
+                    <span className="hidden sm:inline text-sm text-gray-400">
                       {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
                     </span>
                   </div>
-                  <div className="flex items-center gap-4" onClick={e => e.stopPropagation()}>
+                  <div className="flex items-center gap-2 sm:gap-4" onClick={e => e.stopPropagation()}>
                     <div className="flex items-center gap-2 text-sm text-gray-500">
                       <Users size={14} />
                       <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
