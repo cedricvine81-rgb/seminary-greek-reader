@@ -138,24 +138,15 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
             {/* Response buttons — permanently visible to the right of the card */}
             <div className="flex flex-col gap-2 w-28 shrink-0">
-              <button
-                onClick={() => advance('know')}
-                className="py-3 text-sm font-semibold rounded-lg bg-brand-400 text-white hover:bg-brand-500 active:bg-brand-600 transition-colors"
-              >
+              <Button onClick={() => advance('know')} variant="primary" size="sm" className="w-full py-3 text-sm font-semibold">
                 Got it
-              </button>
-              <button
-                onClick={() => advance('again')}
-                className="py-2.5 text-xs font-medium rounded-lg bg-red-400 text-white hover:bg-red-500 active:bg-red-600 transition-colors"
-              >
+              </Button>
+              <Button onClick={() => advance('again')} variant="danger" size="sm" className="w-full">
                 Again
-              </button>
-              <button
-                onClick={() => advance('hard')}
-                className="py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
-              >
+              </Button>
+              <Button onClick={() => advance('hard')} variant="secondary" size="sm" className="w-full">
                 Hard
-              </button>
+              </Button>
             </div>
           </div>
         </>
