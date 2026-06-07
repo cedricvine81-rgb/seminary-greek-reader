@@ -477,13 +477,13 @@ function FlashcardPlayer({
         <div className="flex flex-col gap-2 w-28 shrink-0">
           <button
             onClick={() => onAdvance(4)}
-            className="py-3 text-sm font-semibold rounded-lg bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
+            className="py-3 text-sm font-semibold rounded-lg bg-brand-400 text-white hover:bg-brand-500 active:bg-brand-600 transition-colors"
           >
             Got it
           </button>
           <button
             onClick={() => onAdvance(1)}
-            className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
+            className="py-2.5 text-xs font-medium rounded-lg bg-red-400 text-white hover:bg-red-500 active:bg-red-600 transition-colors"
           >
             Again
           </button>
