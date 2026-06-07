@@ -3,6 +3,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { getCourseReport, exportCourseResultsCSV } from '@/lib/reports'
 
 export async function GET(req: NextRequest) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -21,4 +22,9 @@ export async function GET(req: NextRequest) {
   const report = await getCourseReport(courseId)
   if (!report) return NextResponse.json({ error: 'Course not found' }, { status: 404 })
   return NextResponse.json(report)
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

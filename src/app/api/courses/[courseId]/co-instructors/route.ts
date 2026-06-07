@@ -19,6 +19,7 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: { courseId: string } }
 ) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -31,12 +32,18 @@ export async function GET(
   })
 
   return NextResponse.json({ coInstructors })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function POST(
   req: NextRequest,
   { params }: { params: { courseId: string } }
 ) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -73,12 +80,18 @@ export async function POST(
   })
 
   return NextResponse.json({ coInstructor }, { status: 201 })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { courseId: string } }
 ) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -97,4 +110,9 @@ export async function DELETE(
   })
 
   return NextResponse.json({ ok: true })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

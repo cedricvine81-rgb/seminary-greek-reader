@@ -8,6 +8,7 @@ function getPayload() {
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -16,18 +17,30 @@ export async function GET(req: NextRequest) {
 
   const materials = await getMaterialsByCourse(courseId)
   return NextResponse.json({ materials })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
   const material = await createMaterial(body)
   return NextResponse.json({ material }, { status: 201 })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function PUT(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -37,9 +50,15 @@ export async function PUT(req: NextRequest) {
   const body = await req.json()
   const material = await updateMaterial(id, body)
   return NextResponse.json({ material })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function DELETE(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -48,4 +67,9 @@ export async function DELETE(req: NextRequest) {
 
   await deleteMaterial(id)
   return NextResponse.json({ ok: true })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

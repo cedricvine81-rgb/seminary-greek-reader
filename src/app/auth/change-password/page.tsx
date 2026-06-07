@@ -1,10 +1,15 @@
+import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ChangePasswordForm } from '@/components/auth/ChangePasswordForm'
+import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export const metadata: Metadata = { title: 'Change Password' }
 
 export default function ChangePasswordPage() {
+  const token = getTokenFromCookies()
+  const payload = token ? verifyToken(token) : null
+  if (!payload) redirect('/auth/sign-in')
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
       <div className="w-full max-w-md">

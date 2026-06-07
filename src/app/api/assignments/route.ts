@@ -11,6 +11,7 @@ function getPayload() {
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -23,9 +24,15 @@ export async function GET(req: NextRequest) {
     orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
   })
   return NextResponse.json({ assignments })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -69,4 +76,9 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ assignment }, { status: 201 })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

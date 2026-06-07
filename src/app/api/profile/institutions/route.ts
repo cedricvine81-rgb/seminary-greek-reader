@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export async function GET() {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -29,4 +30,9 @@ export async function GET() {
   const merged = Array.from(new Set([...fromInstitutions, ...fromUsers])).sort()
 
   return NextResponse.json({ institutions: merged })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

@@ -9,6 +9,7 @@ function getPayload() {
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -132,4 +133,9 @@ export async function POST(req: NextRequest) {
       isNewBest,
     },
   })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

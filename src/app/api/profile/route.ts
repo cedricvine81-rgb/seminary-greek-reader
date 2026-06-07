@@ -8,6 +8,7 @@ function getPayload() {
 }
 
 export async function GET() {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -18,9 +19,15 @@ export async function GET() {
   if (!user) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   return NextResponse.json(user)
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function PUT(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -42,4 +49,9 @@ export async function PUT(req: NextRequest) {
   })
 
   return NextResponse.json(updated)
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

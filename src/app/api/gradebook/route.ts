@@ -3,6 +3,7 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export async function GET(req: NextRequest) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
@@ -110,4 +111,9 @@ export async function GET(req: NextRequest) {
     assignments: assignments.map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber })),
     rows,
   })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

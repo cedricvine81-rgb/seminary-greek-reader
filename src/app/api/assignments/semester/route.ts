@@ -18,6 +18,7 @@ interface ScheduleItem {
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
@@ -132,6 +133,11 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ count: created }, { status: 201 })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 const QUIZ_SOURCES_LABEL: Record<string, string> = {

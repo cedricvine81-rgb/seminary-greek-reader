@@ -7,6 +7,7 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { assignmentId: string } }
 ) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
@@ -60,4 +61,9 @@ export async function POST(
   })
 
   return NextResponse.json({ assignment: copy })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

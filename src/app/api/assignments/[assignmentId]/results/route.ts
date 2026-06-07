@@ -7,6 +7,7 @@ export async function GET(
   _req: NextRequest,
   { params }: { params: { assignmentId: string } }
 ) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
@@ -67,4 +68,9 @@ export async function GET(
     : null
 
   return NextResponse.json({ rows, totalPoints, runningPct, overallPct })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

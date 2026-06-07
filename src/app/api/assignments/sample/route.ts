@@ -12,6 +12,7 @@ const SOURCE_LEVEL: Record<string, CourseLevel> = {
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') {
@@ -43,4 +44,9 @@ export async function GET(req: NextRequest) {
   }
 
   return NextResponse.json({ questions, lesson })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

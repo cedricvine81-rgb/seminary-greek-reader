@@ -9,6 +9,7 @@ function getPayload() {
 
 // GET /api/enrollments — available courses (for students, filtered by institution)
 export async function GET() {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -38,10 +39,16 @@ export async function GET() {
   })
 
   return NextResponse.json({ courses })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 // POST /api/enrollments — student requests to join a course (PENDING)
 export async function POST(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -71,10 +78,16 @@ export async function POST(req: NextRequest) {
     data: { userId: payload.sub, courseId, status: 'PENDING' },
   })
   return NextResponse.json({ enrollment }, { status: 201 })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 // DELETE /api/enrollments — student withdraws enrollment request
 export async function DELETE(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -88,4 +101,9 @@ export async function DELETE(req: NextRequest) {
   })
 
   return NextResponse.json({ ok: true })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

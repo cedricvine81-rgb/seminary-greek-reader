@@ -9,15 +9,22 @@ function getPayload() {
 }
 
 export async function GET(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const level = (req.nextUrl.searchParams.get('level') ?? 'BEGINNING') as FrequencyLevel
   const cards = await getFlashcardDeck(level, payload.sub)
   return NextResponse.json({ cards })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
 
 export async function POST(req: NextRequest) {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -35,4 +42,9 @@ export async function POST(req: NextRequest) {
   })
 
   return NextResponse.json({ progress })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

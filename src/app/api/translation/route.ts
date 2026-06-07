@@ -36,6 +36,7 @@ const LANG_TO_TRANSLATION: Record<string, string> = {
 const _cache = new Map<string, Record<string, string>>()
 
 export async function GET(req: NextRequest) {
+  try {
   const { searchParams } = req.nextUrl
   const osisId  = searchParams.get('book')
   const chapter = parseInt(searchParams.get('chapter') ?? '', 10)
@@ -96,5 +97,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ verses })
   } catch {
     return NextResponse.json({ verses: {} })
+  }
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

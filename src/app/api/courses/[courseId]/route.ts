@@ -11,6 +11,7 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: { courseId: string } }
 ) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -53,4 +54,9 @@ export async function DELETE(
   await prisma.course.delete({ where: { id: params.courseId } })
 
   return NextResponse.json({ ok: true })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

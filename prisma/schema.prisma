@@ -310,7 +310,7 @@ model QuizAttempt {
   isBest        Boolean  @default(false)
   completedAt   DateTime @default(now())
 
-  user       User       @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
 
   @@index([userId, assignmentId])
@@ -328,7 +328,7 @@ model Response {
   score        Float?
   submittedAt  DateTime @default(now())
 
-  user       User       @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignment Assignment @relation(fields: [assignmentId], references: [id])
   question   Question?  @relation(fields: [questionId], references: [id])
 
@@ -366,7 +366,7 @@ model FlashcardProgress {
   knownCount      Int      @default(0)
   unknownCount    Int      @default(0)
 
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   flashcard Flashcard @relation(fields: [flashcardId], references: [id])
 
   @@unique([userId, flashcardId])

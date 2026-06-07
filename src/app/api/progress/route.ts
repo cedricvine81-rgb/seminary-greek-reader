@@ -8,6 +8,7 @@ function getPayload() {
 }
 
 export async function GET() {
+  try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -44,4 +45,9 @@ export async function GET() {
       Object.entries(byType).map(([k, v]) => [k, v.total > 0 ? (v.correct / v.total) * 100 : 0])
     ),
   })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }

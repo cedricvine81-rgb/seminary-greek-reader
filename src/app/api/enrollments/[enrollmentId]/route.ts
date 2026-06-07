@@ -12,6 +12,7 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: { enrollmentId: string } }
 ) {
+  try {
   const payload = getPayload()
   if (!payload || payload.role !== 'INSTRUCTOR') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -41,4 +42,9 @@ export async function PATCH(
   })
 
   return NextResponse.json({ enrollment: updated })
+
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
 }
