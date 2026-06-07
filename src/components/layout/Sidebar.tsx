@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText, GraduationCap,
-  FlipHorizontal, TrendingUp, Settings,
+  FlipHorizontal, TrendingUp, Settings, Bell,
 } from 'lucide-react'
 
 interface NavItem {
@@ -16,6 +16,7 @@ interface NavItem {
 
 const instructorNav: NavItem[] = [
   { label: 'Dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
+  { label: 'Requests',    href: '/instructor/requests',      icon: <Bell size={16} /> },
   { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
   { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
   { label: 'Reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
@@ -35,9 +36,10 @@ const studentNav: NavItem[] = [
 
 interface SidebarProps {
   role: 'INSTRUCTOR' | 'STUDENT'
+  pendingRequests?: number
 }
 
-export function Sidebar({ role }: SidebarProps) {
+export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
   const pathname = usePathname()
   const items = role === 'INSTRUCTOR' ? instructorNav : studentNav
 
@@ -45,10 +47,10 @@ export function Sidebar({ role }: SidebarProps) {
 
   return (
     <aside className="w-56 shrink-0 hidden lg:flex flex-col bg-white border-r border-gray-100 min-h-screen pt-6">
-      {/* Main nav */}
       <nav className="flex flex-col gap-0.5 px-3 flex-1">
         {items.map(item => {
           const active = pathname === item.href || (item.href !== '/instructor' && item.href !== '/student' && pathname.startsWith(item.href))
+          const isRequests = item.href === '/instructor/requests'
           return (
             <Link
               key={item.href}
@@ -61,7 +63,12 @@ export function Sidebar({ role }: SidebarProps) {
               )}
             >
               {item.icon}
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {isRequests && pendingRequests > 0 && (
+                <span className="ml-auto flex items-center justify-center h-5 min-w-[1.25rem] rounded-full bg-amber-500 text-white text-xs font-bold px-1">
+                  {pendingRequests}
+                </span>
+              )}
             </Link>
           )
         })}
