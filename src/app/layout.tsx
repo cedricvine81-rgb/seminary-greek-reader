@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
-import { PreviewBanner } from '@/components/layout/PreviewBanner'
+import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { cookies } from 'next/headers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,6 +38,12 @@ async function getHeaderProps() {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const headerProps = await getHeaderProps()
 
+  const token = getTokenFromCookies()
+  const payload = token ? verifyToken(token) : null
+  const isInstructorPreview =
+    payload?.role === 'INSTRUCTOR' &&
+    cookies().get('instructor_preview')?.value === '1'
+
   return (
     <html lang="en">
       <head>
@@ -49,7 +56,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className={inter.className}>
         <div className="min-h-screen flex flex-col">
-          <PreviewBanner />
+          <PreviewBannerInner show={isInstructorPreview} />
           <AppHeader {...headerProps} />
           <div className="flex flex-1 flex-col">
             {children}

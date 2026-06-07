@@ -200,9 +200,9 @@ export default async function InstructorPage() {
             <Link href="/instructor/materials/new">
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5"><FileText size={14} />Upload Material</Button>
             </Link>
-            <Link href="/api/preview?mode=enter">
+            <a href="/api/preview?mode=enter">
               <Button size="sm" variant="ghost" className="flex items-center gap-1.5 text-amber-700 hover:bg-amber-50"><Eye size={14} />Preview Student View</Button>
-            </Link>
+            </a>
             {archivedCount > 0 && (
               <Link href="/instructor/archive">
                 <Button size="sm" variant="ghost" className="flex items-center gap-1.5 text-gray-500 hover:bg-gray-100">
