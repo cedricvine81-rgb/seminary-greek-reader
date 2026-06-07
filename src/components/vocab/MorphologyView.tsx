@@ -99,7 +99,7 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'nouns',        label: 'Nouns/Adj.'      },
   { id: 'pronouns',     label: 'Pronouns'        },
   { id: 'prepositions', label: 'Prepositions'    },
-  { id: 'conjunctions', label: 'Conjunctions'    },
+  { id: 'conjunctions', label: 'Conditionals'    },
   { id: 'indicatives',  label: 'Indicatives'     },
   { id: 'infinitives',  label: 'Infinitives'     },
   { id: 'imperatives',  label: 'Imperatives'     },
