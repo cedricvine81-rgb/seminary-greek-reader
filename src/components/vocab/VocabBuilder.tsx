@@ -425,9 +425,9 @@ function FlashcardPlayer({
 
       {/* Card + response buttons side by side */}
       <div className="flex items-center gap-4">
-        {/* Card (clickable to flip) */}
+        {/* Card (clickable to flip) — fixed height so buttons never shift */}
         <div
-          className="flex-1 cursor-pointer select-none"
+          className="flex-1 cursor-pointer select-none h-40"
           onClick={onFlip}
           role="button"
           tabIndex={0}
@@ -435,7 +435,7 @@ function FlashcardPlayer({
           aria-label="Flip card"
         >
           {!flipped ? (
-            <div className="bg-white rounded-2xl min-h-[10rem] flex flex-col items-center justify-center p-8 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-2xl h-full flex flex-col items-center justify-center p-8 shadow-sm border border-gray-100 overflow-hidden">
               {greekFirst ? (
                 <>
                   <p className="greek-text text-6xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
@@ -450,7 +450,7 @@ function FlashcardPlayer({
               <p className="text-gray-400 text-xs tracking-wide mt-4">Tap to reveal</p>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl min-h-[10rem] border border-gray-100 flex flex-col items-center justify-center p-8 shadow-sm gap-2">
+            <div className="bg-white rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-center p-8 shadow-sm gap-2 overflow-hidden">
               {greekFirst ? (
                 <>
                   <p className="greek-text text-3xl text-gray-900 font-medium text-center">{word.word}</p>

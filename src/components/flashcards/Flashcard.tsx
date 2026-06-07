@@ -37,10 +37,10 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
   }
 
   return (
-    <div className={`flashcard-flip rounded-2xl shadow-md overflow-hidden select-none ${flipping ? 'flipping' : ''}`}>
+    <div className={`flashcard-flip rounded-2xl shadow-md overflow-hidden select-none h-40 ${flipping ? 'flipping' : ''}`}>
       {showing === 'front' ? (
         <div
-          className="bg-white flex flex-col items-center justify-between p-6 cursor-pointer min-h-[10rem] border border-gray-100"
+          className="bg-white flex flex-col items-center justify-between p-6 cursor-pointer h-full border border-gray-100"
           onClick={handleFlip}
           role="button"
           tabIndex={0}
@@ -56,7 +56,7 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
         </div>
       ) : (
         <div
-          className="bg-white flex flex-col items-center justify-center px-8 min-h-[10rem] cursor-pointer"
+          className="bg-white flex flex-col items-center justify-center px-8 h-full cursor-pointer"
           onClick={handleFlip}
           role="button"
           tabIndex={0}
