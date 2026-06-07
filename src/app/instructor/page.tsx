@@ -298,13 +298,13 @@ export default async function InstructorPage() {
                         <div className="divide-y divide-gray-50">
                           {sortedAssignments(courseAssignments).map(a => {
                             const section = extractSection(a.instructions)
+                            const displayName = (a.type === 'VOCABULARY_QUIZ' && section) ? section : a.title
                             return (
                               <div key={a.id} className="flex items-center gap-4 px-1 py-2.5 text-sm hover:bg-gray-50 rounded-lg">
                                 <span className="text-gray-500 w-16 shrink-0">Week {a.weekNumber}</span>
-                                <span className="text-xs font-medium text-brand-600 w-28 shrink-0">{section ?? ''}</span>
                                 <span className="text-gray-500 w-20 shrink-0 whitespace-nowrap">{format(new Date(a.dueDate), 'EEE, MMM d')}</span>
                                 <Link href={`/instructor/assignments/${a.id}`} className="flex-1 min-w-0 font-medium text-gray-800 truncate hover:text-brand-700">
-                                  {a.title}
+                                  {displayName}
                                 </Link>
                                 <Badge variant={typeVariant[a.type] ?? 'gray'} className="shrink-0">{typeLabel[a.type] ?? a.type}</Badge>
                                 <span className="text-gray-400 text-xs shrink-0">{a._count.questions}q</span>
