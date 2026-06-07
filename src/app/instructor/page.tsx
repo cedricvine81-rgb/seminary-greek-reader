@@ -38,11 +38,16 @@ function extractSection(instructions: string | null): string | null {
   return m ? `Section ${m[1].replace('-', ':')}` : null
 }
 
+const ROMAN: Record<string, number> = { I: 1, II: 2, III: 3, IV: 4, V: 5, VI: 6, VII: 7, VIII: 8, IX: 9, X: 10 }
+
 function parseSectionKey(instructions: string | null): [number, string] {
   const s = extractSection(instructions)
   if (!s) return [Infinity, '']
-  const m = s.match(/Section\s+(\d+)[:\-]?([A-Za-z]?)/)
-  return m ? [parseInt(m[1], 10), (m[2] ?? '').toUpperCase()] : [Infinity, '']
+  // Match either Arabic (1, 2) or Roman (I, II, III) numerals followed by optional subsection letter
+  const m = s.match(/Section\s+([IVXLCDM]+|\d+)[:\-]?([A-Za-z]?)/i)
+  if (!m) return [Infinity, '']
+  const num = ROMAN[m[1].toUpperCase()] ?? parseInt(m[1], 10)
+  return [isNaN(num) ? Infinity : num, (m[2] ?? '').toUpperCase()]
 }
 
 function sortedAssignments<T extends { type: string; instructions: string | null; weekNumber: number; dueDate: Date }>(list: T[]): T[] {
