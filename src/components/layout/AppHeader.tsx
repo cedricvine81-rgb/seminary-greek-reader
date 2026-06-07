@@ -28,7 +28,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <BookOpen size={18} /> <span className="hidden md:inline">Reader</span>
           </Link>
-          <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+          <Link href={isAuthenticated && userRole === 'STUDENT' ? '/student/flashcards' : '/vocab'} className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <BookMarked size={18} /> <span className="hidden md:inline">Vocab</span>
           </Link>
           <Link href="/morphology" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
