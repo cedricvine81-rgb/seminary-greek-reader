@@ -40,7 +40,7 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
     <div className={`flashcard-flip rounded-2xl shadow-md overflow-hidden select-none ${flipping ? 'flipping' : ''}`}>
       {showing === 'front' ? (
         <div
-          className="bg-brand-800 flex flex-col items-center justify-between p-6 cursor-pointer min-h-[10rem]"
+          className="bg-white flex flex-col items-center justify-between p-6 cursor-pointer min-h-[10rem] border border-gray-100"
           onClick={handleFlip}
           role="button"
           tabIndex={0}
@@ -48,11 +48,11 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleFlip()}
         >
           <div className="flex-1 flex flex-col items-center justify-center w-full">
-            <p className="greek-text text-5xl text-parchment-100 font-medium text-center leading-tight">
+            <p className="greek-text text-5xl text-brand-800 font-medium text-center leading-tight">
               {card.front}
             </p>
           </div>
-          <p className="text-brand-300 text-xs tracking-wide mt-4">Tap to reveal</p>
+          <p className="text-gray-400 text-xs tracking-wide mt-4">Tap to reveal</p>
         </div>
       ) : (
         <div
