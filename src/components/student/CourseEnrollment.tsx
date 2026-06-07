@@ -25,6 +25,7 @@ interface Props {
   sectionDescription: string
   buttonLabel: string
   showInstitution?: boolean
+  isPreview?: boolean
 }
 
 export function CourseEnrollment({
@@ -33,6 +34,7 @@ export function CourseEnrollment({
   sectionDescription,
   buttonLabel,
   showInstitution = false,
+  isPreview = false,
 }: Props) {
   const router = useRouter()
   const [courses, setCourses] = useState(initialCourses)
@@ -102,15 +104,21 @@ export function CourseEnrollment({
                 <p className="text-xs text-red-600">{errors[course.id]}</p>
               )}
 
-              <Button
-                size="sm"
-                variant="secondary"
-                onClick={() => request(course.id)}
-                loading={requesting === course.id}
-                className="w-full"
-              >
-                {buttonLabel}
-              </Button>
+              {isPreview ? (
+                <p className="text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 text-center">
+                  Enrollment disabled in preview mode
+                </p>
+              ) : (
+                <Button
+                  size="sm"
+                  variant="secondary"
+                  onClick={() => request(course.id)}
+                  loading={requesting === course.id}
+                  className="w-full"
+                >
+                  {buttonLabel}
+                </Button>
+              )}
             </Card>
           )
         })}

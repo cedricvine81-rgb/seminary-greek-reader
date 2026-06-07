@@ -9,6 +9,7 @@ import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { CourseEnrollment } from '@/components/student/CourseEnrollment'
+import { isPreviewMode } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'My Courses' }
 
@@ -31,6 +32,8 @@ export default async function StudentCoursesPage() {
 
   const hasInstitution = Boolean(student?.institution)
   const notEnrolled = { enrollments: { none: { userId: payload.sub } } }
+
+  const preview = isPreviewMode()
 
   const [approvedEnrollments, pendingEnrollments, openCourses, institutionCourses] = await Promise.all([
     // Approved enrollments
@@ -149,6 +152,7 @@ export default async function StudentCoursesPage() {
           sectionTitle="Available Courses"
           sectionDescription="Open courses you can request to join. Your instructor will confirm your place."
           buttonLabel="Request to Join"
+          isPreview={preview}
         />
 
         {/* ── Institution courses ── */}
@@ -158,6 +162,7 @@ export default async function StudentCoursesPage() {
             sectionTitle={`Courses at ${student!.institution}`}
             sectionDescription="Courses run by your institution. Request to join and your instructor will approve."
             buttonLabel="Request to Join"
+            isPreview={preview}
           />
         ) : (
           <CourseEnrollment
@@ -166,6 +171,7 @@ export default async function StudentCoursesPage() {
             sectionDescription="These courses are run by specific institutions. You can request access — the instructor will review your application."
             buttonLabel="Request Access"
             showInstitution
+            isPreview={preview}
           />
         )}
 
