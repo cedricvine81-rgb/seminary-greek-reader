@@ -38,6 +38,26 @@ function extractSection(instructions: string | null): string | null {
   return m ? `Section ${m[1].replace('-', ':')}` : null
 }
 
+function parseSectionKey(instructions: string | null): [number, string] {
+  const s = extractSection(instructions)
+  if (!s) return [Infinity, '']
+  const m = s.match(/Section\s+(\d+)[:\-]?([A-Za-z]?)/)
+  return m ? [parseInt(m[1], 10), (m[2] ?? '').toUpperCase()] : [Infinity, '']
+}
+
+function sortedAssignments<T extends { type: string; instructions: string | null; weekNumber: number; dueDate: Date }>(list: T[]): T[] {
+  return [...list].sort((a, b) => {
+    if (a.type === 'VOCABULARY_QUIZ' && b.type === 'VOCABULARY_QUIZ') {
+      const [an, al] = parseSectionKey(a.instructions)
+      const [bn, bl] = parseSectionKey(b.instructions)
+      if (an !== bn) return an - bn
+      return al.localeCompare(bl)
+    }
+    if (a.type === b.type) return a.weekNumber - b.weekNumber || a.dueDate.getTime() - b.dueDate.getTime()
+    return 0
+  })
+}
+
 function avg(nums: (number | null)[]): number | null {
   const vals = nums.filter((n): n is number => n !== null)
   return vals.length > 0 ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null
@@ -278,7 +298,7 @@ export default async function InstructorPage() {
                     ) : (
                       <div className="overflow-x-auto">
                         <div className="divide-y divide-gray-50">
-                          {courseAssignments.map(a => {
+                          {sortedAssignments(courseAssignments).map(a => {
                             const section = extractSection(a.instructions)
                             return (
                               <div key={a.id} className="flex items-center gap-4 px-1 py-2.5 text-sm hover:bg-gray-50 rounded-lg">
