@@ -131,35 +131,28 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
               />
             </div>
 
-            {/* Response buttons — always visible, to the right of the card */}
-            <div className="flex flex-col gap-2 w-24 shrink-0">
+            {/* Response buttons — permanently visible to the right of the card */}
+            <div className="flex flex-col gap-2 w-28 shrink-0">
               <Button
                 onClick={() => advance('know')}
-                disabled={!isFlipped}
                 className="py-3 text-sm font-semibold"
               >
                 Got it
               </Button>
               <button
                 onClick={() => advance('again')}
-                disabled={!isFlipped}
-                className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
               >
                 Again
               </button>
               <button
                 onClick={() => advance('hard')}
-                disabled={!isFlipped}
-                className="py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                className="py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
               >
                 Hard
               </button>
             </div>
           </div>
-
-          {!isFlipped && (
-            <p className="text-center text-xs text-gray-400">Tap the card to reveal the answer</p>
-          )}
         </>
       ) : (
         <p className="text-gray-400 italic text-sm text-center py-8">No cards in this deck.</p>
