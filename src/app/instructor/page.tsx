@@ -14,6 +14,7 @@ import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye, ChevronRight, ChevronDown } from 'lucide-react'
 import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 import { ArchiveCourseButton } from '@/components/instructor/ArchiveCourseButton'
+import { CourseHeaderActions } from '@/components/instructor/CourseHeaderActions'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 
 export const metadata: Metadata = { title: 'Instructor Dashboard' }
@@ -256,34 +257,21 @@ export default async function InstructorPage() {
           return (
             <details key={course.id} className="group">
               <summary className="list-none cursor-pointer">
-                <div className="flex items-center justify-between flex-wrap gap-3 py-1">
-                  <div className="flex items-center gap-3">
-                    <Link
-                      href={`/instructor/courses/${course.id}`}
-                      className="text-xl font-bold text-gray-900 hover:text-brand-700"
-                      onClick={e => e.stopPropagation()}
-                    >
-                      {course.name}
-                    </Link>
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 border border-brand-200 hover:bg-brand-50 px-2 py-1 rounded-lg select-none transition-colors">
-                      Course Details
-                      <ChevronRight size={12} className="group-open:hidden" />
-                      <ChevronDown size={12} className="hidden group-open:inline" />
-                    </span>
-                    <span className="hidden sm:inline text-sm text-gray-400">
-                      {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2 sm:gap-4" onClick={e => e.stopPropagation()}>
-                    <div className="flex items-center gap-2 text-sm text-gray-500">
-                      <Users size={14} />
-                      <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
-                    </div>
-                    <Link href={`/instructor/courses/${course.id}`}>
-                      <Button size="sm" variant="secondary">Manage Course</Button>
-                    </Link>
-                    <ArchiveCourseButton courseId={course.id} isArchived={course.isArchived} />
-                  </div>
+                <div className="flex items-center flex-wrap gap-3 py-1">
+                  <CourseHeaderActions
+                    courseId={course.id}
+                    courseName={course.name}
+                    studentCount={courseEnrollments.length}
+                    isArchived={course.isArchived}
+                  />
+                  <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 border border-brand-200 hover:bg-brand-50 px-2 py-1 rounded-lg select-none transition-colors">
+                    Course Details
+                    <ChevronRight size={12} className="group-open:hidden" />
+                    <ChevronDown size={12} className="hidden group-open:inline" />
+                  </span>
+                  <span className="hidden sm:inline text-sm text-gray-400">
+                    {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
+                  </span>
                 </div>
               </summary>
 
