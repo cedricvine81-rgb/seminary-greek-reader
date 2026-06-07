@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import type { Assignment } from '@/types/assignment'
 import { format } from 'date-fns'
+import { ChevronRight } from 'lucide-react'
 
 interface AssignmentListProps {
   assignments: Assignment[]
@@ -42,20 +43,30 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
           <Link
             key={a.id}
             href={`/student/assignments/${a.id}`}
-            className="flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:shadow-sm transition-shadow"
+            className="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 bg-white hover:border-brand-200 hover:shadow-sm transition-all group"
           >
-            <div className="flex flex-col gap-0.5">
-              <p className="text-sm font-medium text-gray-900">{a.title}</p>
-              <p className="text-xs text-gray-500">Week {a.weekNumber} · Due {format(new Date(a.dueDate), 'MMM d, yyyy')}</p>
+            <div className="flex flex-col gap-1 min-w-0">
+              <p className="text-sm font-semibold text-gray-900 truncate">{a.title}</p>
+              <div className="flex items-center gap-2 flex-wrap">
+                <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
+                <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(a.dueDate), 'MMM d, yyyy')}</span>
+              </div>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
               {done ? (
-                <Badge variant="green">Done</Badge>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                  Done
+                </span>
               ) : overdue ? (
-                <Badge variant="red">Overdue</Badge>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-red-600 text-white">
+                  Overdue — Submit
+                  <ChevronRight size={13} />
+                </span>
               ) : (
-                <Badge variant="amber">Pending</Badge>
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-brand-700 text-white group-hover:bg-brand-800 transition-colors">
+                  Start
+                  <ChevronRight size={13} />
+                </span>
               )}
             </div>
           </Link>
