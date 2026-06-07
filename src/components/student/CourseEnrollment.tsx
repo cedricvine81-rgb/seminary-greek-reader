@@ -77,16 +77,11 @@ export function CourseEnrollment({
 
           return (
             <Card key={course.id} className="space-y-3">
-              <div className="flex items-start justify-between gap-2">
-                <div>
-                  <h3 className="font-semibold text-gray-900 leading-snug">{course.name}</h3>
-                  {course.listing && (
-                    <p className="text-xs text-gray-400 mt-0.5">{course.listing}</p>
-                  )}
-                </div>
-                <Badge variant={COURSE_LEVEL_VARIANTS[course.level] ?? 'gray'} className="shrink-0">
-                  {COURSE_LEVEL_LABELS[course.level] ?? course.level}
-                </Badge>
+              <div>
+                <h3 className="font-semibold text-gray-900 leading-snug">{course.name}</h3>
+                {course.listing && (
+                  <p className="text-xs text-gray-400 mt-0.5">{course.listing}</p>
+                )}
               </div>
 
               <div className="space-y-1 text-xs text-gray-500">

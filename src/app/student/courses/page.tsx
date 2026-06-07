@@ -103,9 +103,6 @@ export default async function StudentCoursesPage() {
                   <Card key={e.courseId} className="space-y-2">
                     <div className="flex items-start justify-between">
                       <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
-                      <Badge variant={COURSE_LEVEL_VARIANTS[e.course.level] ?? 'gray'}>
-                        {COURSE_LEVEL_LABELS[e.course.level] ?? e.course.level}
-                      </Badge>
                     </div>
                     <p className="text-xs text-gray-500">{instructorName}</p>
                     <p className="text-xs text-gray-400">
@@ -136,7 +133,6 @@ export default async function StudentCoursesPage() {
                   <Card key={e.courseId} className="space-y-2 border-amber-200 bg-amber-50">
                     <div className="flex items-start justify-between">
                       <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
-                      <Badge variant="amber">Pending</Badge>
                     </div>
                     <p className="text-xs text-gray-500">{instructorName}</p>
                     <p className="text-xs text-amber-700">Awaiting instructor approval</p>
