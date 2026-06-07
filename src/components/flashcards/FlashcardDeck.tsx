@@ -143,13 +143,13 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
               <div className={`flex gap-1.5 transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
                 <button
                   onClick={() => advance('again')}
-                  className="flex-1 py-2 text-xs font-medium rounded-lg border border-red-200 text-red-600 hover:bg-red-50 active:bg-red-100 transition-colors"
+                  className="flex-1 py-2 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
                 >
                   Again
                 </button>
                 <button
                   onClick={() => advance('hard')}
-                  className="flex-1 py-2 text-xs font-medium rounded-lg border border-amber-200 text-amber-600 hover:bg-amber-50 active:bg-amber-100 transition-colors"
+                  className="flex-1 py-2 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
                 >
                   Hard
                 </button>
