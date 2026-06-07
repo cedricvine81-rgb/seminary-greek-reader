@@ -5,7 +5,7 @@ import { DeckSelector } from './DeckSelector'
 import { Button } from '@/components/ui/Button'
 import { Shuffle, CheckCircle, XCircle } from 'lucide-react'
 import type { FlashcardWithProgress, FrequencyLevel } from '@/types/flashcard'
-import { sm2, responseToQuality } from '@/lib/spaced-repetition'
+import { sm2 } from '@/lib/spaced-repetition'
 
 interface FlashcardDeckProps {
   initialCards: FlashcardWithProgress[]
@@ -16,6 +16,14 @@ interface FlashcardDeckProps {
 
 function shuffle<T>(arr: T[]): T[] {
   return [...arr].sort(() => Math.random() - 0.5)
+}
+
+type Response = 'know' | 'hard' | 'again'
+
+const QUALITY: Record<Response, 0 | 1 | 2 | 3 | 4 | 5> = {
+  know:  4,
+  hard:  3,
+  again: 1,
 }
 
 export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckCounts }: FlashcardDeckProps) {
@@ -44,10 +52,11 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
     setFinished(false)
   }
 
-  const advance = useCallback(async (knew: boolean) => {
+  const advance = useCallback(async (response: Response) => {
     if (!card) return
 
-    const quality = responseToQuality(knew)
+    const quality = QUALITY[response]
+    const knew = response !== 'again'
     const prev = card.progress
     const updated = sm2({
       easeFactor: prev?.easeFactor ?? 2.5,
@@ -112,21 +121,44 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
             <span>{idx + 1} / {cards.length}</span>
           </div>
 
-          {/* Card with embedded controls */}
-          <Flashcard
-            card={card}
-            isFlipped={isFlipped}
-            onFlip={() => setIsFlipped(f => !f)}
-            onKnow={() => advance(true)}
-            onDontKnow={() => advance(false)}
-          />
+          {/* Card + response buttons side by side */}
+          <div className="flex items-center gap-4">
+            <div className="flex-1 min-w-0">
+              <Flashcard
+                card={card}
+                isFlipped={isFlipped}
+                onFlip={() => setIsFlipped(f => !f)}
+              />
+            </div>
 
-          {/* Hint under card */}
+            {/* Response buttons — only visible after flip */}
+            <div className="flex flex-col items-stretch gap-2 w-24 shrink-0">
+              <Button
+                onClick={() => advance('know')}
+                disabled={!isFlipped}
+                className={`py-3 text-sm font-semibold transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}
+              >
+                Got it
+              </Button>
+              <div className={`flex gap-1.5 transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
+                <button
+                  onClick={() => advance('again')}
+                  className="flex-1 py-2 text-xs font-medium rounded-lg border border-red-200 text-red-600 hover:bg-red-50 active:bg-red-100 transition-colors"
+                >
+                  Again
+                </button>
+                <button
+                  onClick={() => advance('hard')}
+                  className="flex-1 py-2 text-xs font-medium rounded-lg border border-amber-200 text-amber-600 hover:bg-amber-50 active:bg-amber-100 transition-colors"
+                >
+                  Hard
+                </button>
+              </div>
+            </div>
+          </div>
+
           {!isFlipped && (
             <p className="text-center text-xs text-gray-400">Tap the card to reveal the answer</p>
-          )}
-          {isFlipped && (
-            <p className="text-center text-xs text-gray-400">Tap the card to flip back · use the buttons to mark your answer</p>
           )}
         </>
       ) : (
