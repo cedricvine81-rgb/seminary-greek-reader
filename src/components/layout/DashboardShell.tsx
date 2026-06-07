@@ -10,6 +10,8 @@ interface DashboardShellProps {
   pageTitle?: string
   pageDescription?: string
   actions?: ReactNode
+  /** Pass from the page if already known — skips the extra DB query */
+  pendingCount?: number
 }
 
 async function getPendingRequestCount(instructorId: string): Promise<number> {
@@ -32,10 +34,12 @@ async function getPendingRequestCount(instructorId: string): Promise<number> {
 }
 
 export async function DashboardShell({
-  role, children, pageTitle, pageDescription, actions
+  role, children, pageTitle, pageDescription, actions, pendingCount,
 }: DashboardShellProps) {
-  let pendingRequests = 0
-  if (role === 'INSTRUCTOR') {
+  let pendingRequests = pendingCount ?? 0
+
+  // Only query if the page didn't supply the count
+  if (role === 'INSTRUCTOR' && pendingCount === undefined) {
     const token = getTokenFromCookies()
     const payload = token ? verifyToken(token) : null
     if (payload?.role === 'INSTRUCTOR') {

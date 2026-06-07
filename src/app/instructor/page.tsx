@@ -83,7 +83,7 @@ export default async function InstructorPage() {
   const payload = token ? verifyToken(token) : null
   if (!payload || payload.role !== 'INSTRUCTOR') redirect('/auth/sign-in')
 
-  const [rawCourses, archivedCount] = await Promise.all([
+  const [rawCourses, archivedCount, user] = await Promise.all([
     prisma.course.findMany({
       where: {
         isArchived: false,
@@ -103,15 +103,15 @@ export default async function InstructorPage() {
         ],
       },
     }),
-  ])
-
-  const courseIds = rawCourses.map(c => c.id)
-
-  const [user, assignments, enrollments, pendingEnrollments] = await Promise.all([
     prisma.user.findUnique({
       where: { id: payload.sub },
       select: { firstName: true, surname: true },
     }),
+  ])
+
+  const courseIds = rawCourses.map(c => c.id)
+
+  const [assignments, enrollments, pendingEnrollments] = await Promise.all([
     prisma.assignment.findMany({
       where: { courseId: { in: courseIds } },
       select: {
@@ -185,7 +185,7 @@ export default async function InstructorPage() {
   const instructorName = user ? `${user.firstName} ${user.surname}`.trim() : 'Instructor'
 
   return (
-    <DashboardShell role="INSTRUCTOR" pageTitle="Dashboard">
+    <DashboardShell role="INSTRUCTOR" pageTitle="Dashboard" pendingCount={pendingEnrollments.length}>
       <div className="space-y-8">
 
         <EnrollmentRequests pending={pendingEnrollments.map(e => ({ ...e, createdAt: e.createdAt.toISOString() }))} />
