@@ -13,6 +13,11 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
   const [showing, setShowing] = useState<'front' | 'back'>('front')
 
   useEffect(() => {
+    if (isFlipped && showing === 'front') {
+      setFlipping(true)
+      const t = setTimeout(() => { setShowing('back'); setFlipping(false) }, 180)
+      return () => clearTimeout(t)
+    }
     if (!isFlipped && showing === 'back') {
       setFlipping(true)
       const t = setTimeout(() => { setShowing('front'); setFlipping(false) }, 180)
@@ -35,7 +40,7 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
     <div className={`flashcard-flip rounded-2xl shadow-md overflow-hidden select-none ${flipping ? 'flipping' : ''}`}>
       {showing === 'front' ? (
         <div
-          className="bg-brand-800 flex flex-col items-center justify-between p-8 cursor-pointer min-h-[14rem]"
+          className="bg-brand-800 flex flex-col items-center justify-between p-6 cursor-pointer min-h-[10rem]"
           onClick={handleFlip}
           role="button"
           tabIndex={0}
@@ -51,7 +56,7 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
         </div>
       ) : (
         <div
-          className="bg-white flex flex-col items-center justify-center px-8 min-h-[14rem] cursor-pointer"
+          className="bg-white flex flex-col items-center justify-center px-8 min-h-[10rem] cursor-pointer"
           onClick={handleFlip}
           role="button"
           tabIndex={0}

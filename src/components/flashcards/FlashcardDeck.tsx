@@ -54,6 +54,11 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
   const advance = useCallback(async (response: Response) => {
     if (!card) return
+    // If the card hasn't been revealed yet, flip it first instead of advancing
+    if (!isFlipped) {
+      setIsFlipped(true)
+      return
+    }
 
     const quality = QUALITY[response]
     const knew = response !== 'again'
@@ -79,7 +84,7 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
       setIdx(i => i + 1)
       setIsFlipped(false)
     }
-  }, [card, idx, cards.length])
+  }, [card, idx, cards.length, isFlipped])
 
   if (finished) {
     return (
