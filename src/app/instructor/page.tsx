@@ -261,9 +261,6 @@ export default async function InstructorPage() {
                   <Link href={`/instructor/courses/${course.id}`} className="text-xl font-bold text-gray-900 hover:text-brand-700">
                     {course.name}
                   </Link>
-                  <Badge variant={COURSE_LEVEL_VARIANTS[course.level] ?? 'gray'}>
-                    {COURSE_LEVEL_LABELS[course.level] ?? course.level}
-                  </Badge>
                   <span className="text-sm text-gray-400">
                     {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
                   </span>
