@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/Button'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
-import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye } from 'lucide-react'
-import { GradebookToggleButton } from '@/components/instructor/GradebookToggleButton'
+import { BookOpen, Users, ClipboardList, Plus, Copy, FileText, Eye, ChevronRight, ChevronDown } from 'lucide-react'
 import { EnrollmentRequests } from '@/components/instructor/EnrollmentRequests'
 import { ArchiveCourseButton } from '@/components/instructor/ArchiveCourseButton'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
@@ -255,32 +254,41 @@ export default async function InstructorPage() {
           })).filter(g => g.cols.length > 0)
 
           return (
-            <div key={course.id} className="space-y-4">
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <div className="flex items-center gap-3">
-                  <Link href={`/instructor/courses/${course.id}`} className="text-xl font-bold text-gray-900 hover:text-brand-700">
-                    {course.name}
-                  </Link>
-                  <span className="text-sm text-gray-400">
-                    {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
-                  </span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Users size={14} />
-                    <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
+            <details key={course.id} className="group">
+              <summary className="list-none cursor-pointer">
+                <div className="flex items-center justify-between flex-wrap gap-3 py-1">
+                  <div className="flex items-center gap-3">
+                    <Link
+                      href={`/instructor/courses/${course.id}`}
+                      className="text-xl font-bold text-gray-900 hover:text-brand-700"
+                      onClick={e => e.stopPropagation()}
+                    >
+                      {course.name}
+                    </Link>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 border border-brand-200 hover:bg-brand-50 px-2 py-1 rounded-lg select-none transition-colors">
+                      Course Details
+                      <ChevronRight size={12} className="group-open:hidden" />
+                      <ChevronDown size={12} className="hidden group-open:inline" />
+                    </span>
+                    <span className="text-sm text-gray-400">
+                      {format(new Date(course.startDate), 'MMM d, yyyy')} – {format(new Date(course.endDate), 'MMM d, yyyy')}
+                    </span>
                   </div>
-                  {activeGroups.length > 0 && (
-                    <GradebookToggleButton detailsId={`gradebook-${course.id}`} />
-                  )}
-                  <Link href={`/instructor/courses/${course.id}`}>
-                    <Button size="sm" variant="secondary">Manage Course</Button>
-                  </Link>
-                  <ArchiveCourseButton courseId={course.id} isArchived={course.isArchived} />
+                  <div className="flex items-center gap-4" onClick={e => e.stopPropagation()}>
+                    <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <Users size={14} />
+                      <span>{courseEnrollments.length} student{courseEnrollments.length !== 1 ? 's' : ''}</span>
+                    </div>
+                    <Link href={`/instructor/courses/${course.id}`}>
+                      <Button size="sm" variant="secondary">Manage Course</Button>
+                    </Link>
+                    <ArchiveCourseButton courseId={course.id} isArchived={course.isArchived} />
+                  </div>
                 </div>
-              </div>
+              </summary>
 
-              {/* Assignments — collapsed by default */}
+              <div className="space-y-4 mt-4">
+              {/* Assignments */}
               <Card>
                 <details>
                   <summary className="flex items-center justify-between cursor-pointer list-none">
@@ -479,8 +487,9 @@ export default async function InstructorPage() {
                 </Card>
               )}
 
-              <hr className="border-gray-100" />
-            </div>
+              </div>{/* end collapsible subsections */}
+              <hr className="border-gray-100 mt-3" />
+            </details>
           )
         })}
       </div>
