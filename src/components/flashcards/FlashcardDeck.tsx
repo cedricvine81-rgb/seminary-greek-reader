@@ -121,8 +121,8 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
             <span>{idx + 1} / {cards.length}</span>
           </div>
 
-          {/* Card + response buttons: stacked on mobile, side-by-side on sm+ */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          {/* Card + response buttons side by side */}
+          <div className="flex items-center gap-4">
             <div className="flex-1 min-w-0">
               <Flashcard
                 card={card}
@@ -131,24 +131,26 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
               />
             </div>
 
-            {/* Response buttons — only visible after flip */}
-            <div className={`flex sm:flex-col gap-2 sm:w-28 shrink-0 transition-opacity ${!isFlipped ? 'opacity-0 pointer-events-none' : ''}`}>
+            {/* Response buttons — always visible, to the right of the card */}
+            <div className="flex flex-col gap-2 w-24 shrink-0">
               <Button
                 onClick={() => advance('know')}
                 disabled={!isFlipped}
-                className="flex-1 sm:flex-none py-3 text-sm font-semibold"
+                className="py-3 text-sm font-semibold"
               >
                 Got it
               </Button>
               <button
                 onClick={() => advance('again')}
-                className="flex-1 sm:flex-none py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
+                disabled={!isFlipped}
+                className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors disabled:opacity-40 disabled:pointer-events-none"
               >
                 Again
               </button>
               <button
                 onClick={() => advance('hard')}
-                className="flex-1 sm:flex-none py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
+                disabled={!isFlipped}
+                className="py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors disabled:opacity-40 disabled:pointer-events-none"
               >
                 Hard
               </button>
