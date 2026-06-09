@@ -67,7 +67,8 @@ export async function POST(req: NextRequest) {
     questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), Number(quizStylePct ?? 0))
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
-    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null)
+    const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
+    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields)
   }
 
   if (questions.length > 0) {

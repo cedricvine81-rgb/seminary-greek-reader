@@ -10,6 +10,7 @@ import { Modal } from '@/components/ui/Modal'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig } from '@/lib/quiz-generation'
+import { SUBTYPE_FIELD_OPTIONS } from '@/lib/quiz-generation'
 import type { CourseLevel } from '@/types/course'
 import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
@@ -72,7 +73,12 @@ interface SemesterForm {
   maxRetakes: number | null
 }
 
-const DEFAULT_MORPH_TEST: MorphTestConfig = { subtype: 'VERB_PARSING', numQuestions: 20, vocabThruLesson: null }
+const DEFAULT_MORPH_TEST: MorphTestConfig = {
+  subtype: 'VERB_PARSING',
+  numQuestions: 20,
+  vocabThruLesson: null,
+  fields: SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key),
+}
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
 
@@ -199,6 +205,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [prevSectionsPct, setPrevSectionsPct] = useState(0)
   const [quizStylePct, setQuizStylePct] = useState(0)
   const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
+  const [morphologyFields, setMorphologyFields] = useState<string[]>(
+    SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key)
+  )
   const [vocabThruLesson, setVocabThruLesson] = useState<number | null>(null)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
@@ -216,7 +225,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -257,7 +266,48 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'MORPHOLOGY_QUIZ' && (
         <>
-          <MorphologySubtypePicker value={morphologySubtype} onChange={setMorphologySubtype} />
+          <MorphologySubtypePicker
+            value={morphologySubtype}
+            onChange={v => {
+              setMorphologySubtype(v)
+              setMorphologyFields(SUBTYPE_FIELD_OPTIONS[v].map(f => f.key))
+            }}
+          />
+          {SUBTYPE_FIELD_OPTIONS[morphologySubtype].length > 0 && (
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-1.5">Fields to identify</p>
+              <div className="flex flex-wrap gap-2">
+                {SUBTYPE_FIELD_OPTIONS[morphologySubtype].map(opt => {
+                  const checked = morphologyFields.includes(opt.key)
+                  return (
+                    <label
+                      key={opt.key}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border text-sm cursor-pointer select-none transition-colors ${
+                        checked
+                          ? 'bg-brand-50 border-brand-400 text-brand-800'
+                          : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        className="sr-only"
+                        checked={checked}
+                        onChange={e => {
+                          setMorphologyFields(prev =>
+                            e.target.checked ? [...prev, opt.key] : prev.filter(f => f !== opt.key)
+                          )
+                        }}
+                      />
+                      {opt.label}
+                    </label>
+                  )
+                })}
+              </div>
+              {morphologyFields.length === 0 && (
+                <p className="text-xs text-red-500 mt-1">Select at least one field.</p>
+              )}
+            </div>
+          )}
           <VocabLessonFilter value={vocabThruLesson} onChange={setVocabThruLesson} />
         </>
       )}
@@ -511,7 +561,10 @@ function MorphSeriesBuilder({
                 <button
                   key={opt.value}
                   type="button"
-                  onClick={() => updateTest(i, { subtype: opt.value })}
+                  onClick={() => updateTest(i, {
+                    subtype: opt.value,
+                    fields: SUBTYPE_FIELD_OPTIONS[opt.value].map(f => f.key),
+                  })}
                   className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
                     test.subtype === opt.value
                       ? 'bg-brand-50 border-brand-400 text-brand-800 font-medium'
@@ -522,6 +575,44 @@ function MorphSeriesBuilder({
                 </button>
               ))}
             </div>
+
+            {/* Field checkboxes — shown when the subtype has configurable fields */}
+            {SUBTYPE_FIELD_OPTIONS[test.subtype].length > 0 && (
+              <div>
+                <p className="text-xs font-medium text-gray-600 mb-1.5">Fields to identify</p>
+                <div className="flex flex-wrap gap-2">
+                  {SUBTYPE_FIELD_OPTIONS[test.subtype].map(opt => {
+                    const checked = test.fields.includes(opt.key)
+                    return (
+                      <label
+                        key={opt.key}
+                        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs cursor-pointer select-none transition-colors ${
+                          checked
+                            ? 'bg-brand-50 border-brand-400 text-brand-800'
+                            : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          className="sr-only"
+                          checked={checked}
+                          onChange={e => {
+                            const next = e.target.checked
+                              ? [...test.fields, opt.key]
+                              : test.fields.filter(f => f !== opt.key)
+                            updateTest(i, { fields: next })
+                          }}
+                        />
+                        {opt.label}
+                      </label>
+                    )
+                  })}
+                </div>
+                {test.fields.length === 0 && (
+                  <p className="text-xs text-red-500 mt-1">Select at least one field.</p>
+                )}
+              </div>
+            )}
 
             {/* Questions + vocab row */}
             <div className="flex flex-wrap items-end gap-4">

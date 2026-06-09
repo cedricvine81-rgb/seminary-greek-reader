@@ -118,7 +118,7 @@ export async function POST(req: NextRequest) {
     const testConfig: MorphTestConfig | null = isMorphSeries
       ? morphologySeries![i]
       : quizType === 'MORPHOLOGY_QUIZ'
-        ? { subtype: morphologySubtype ?? 'VERB_PARSING', numQuestions: Number(numQuestions) || 10, vocabThruLesson: vocabThruLesson ?? null }
+        ? { subtype: morphologySubtype ?? 'VERB_PARSING', numQuestions: Number(numQuestions) || 10, vocabThruLesson: vocabThruLesson ?? null, fields: [] }
         : null
 
     const qCount = testConfig
@@ -171,7 +171,8 @@ export async function POST(req: NextRequest) {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }
     } else if (testConfig) {
-      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, testConfig.vocabThruLesson)
+      const fields = testConfig.fields?.length ? testConfig.fields : undefined
+      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, testConfig.vocabThruLesson, fields)
     }
 
     if (questions.length > 0) {

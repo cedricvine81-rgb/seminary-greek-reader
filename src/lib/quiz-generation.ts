@@ -152,19 +152,60 @@ export type MorphologySubtype =
   | 'SUBJUNCTIVES'
   | 'MIXED'
 
+export interface MorphFieldOption {
+  key: string
+  label: string
+}
+
+/** Which parse fields are available for each subtype. */
+export const SUBTYPE_FIELD_OPTIONS: Record<MorphologySubtype, MorphFieldOption[]> = {
+  VERB_PARSING: [
+    { key: 'tense',  label: 'Tense'  },
+    { key: 'voice',  label: 'Voice'  },
+    { key: 'mood',   label: 'Mood'   },
+    { key: 'person', label: 'Person' },
+    { key: 'number', label: 'Number' },
+  ],
+  NOUN_PARSING: [
+    { key: 'casus',  label: 'Case'   },
+    { key: 'gender', label: 'Gender' },
+    { key: 'number', label: 'Number' },
+  ],
+  ADJECTIVE_PARSING: [
+    { key: 'casus',  label: 'Case'   },
+    { key: 'gender', label: 'Gender' },
+    { key: 'number', label: 'Number' },
+  ],
+  PRONOUN_PARSING: [
+    { key: 'casus',  label: 'Case'   },
+    { key: 'gender', label: 'Gender' },
+    { key: 'number', label: 'Number' },
+  ],
+  MIXED: [
+    { key: 'partOfSpeech', label: 'Part of Speech' },
+    { key: 'tense',        label: 'Tense'          },
+    { key: 'voice',        label: 'Voice'          },
+    { key: 'mood',         label: 'Mood'           },
+    { key: 'person',       label: 'Person'         },
+    { key: 'number',       label: 'Number'         },
+    { key: 'casus',        label: 'Case'           },
+    { key: 'gender',       label: 'Gender'         },
+  ],
+  CONDITIONALS:  [],
+  SUBJUNCTIVES:  [],
+}
+
 /** One test in a morphology series. */
 export interface MorphTestConfig {
   subtype: MorphologySubtype
   numQuestions: number
   vocabThruLesson: number | null  // null = no vocabulary filter
+  fields: string[]                // which parse fields students must identify
 }
 
-function parseEntriesToQuestions(entries: GreekParseEntry[], count: number) {
-  return shuffle(entries).slice(0, count).map((entry, idx) => ({
-    position: idx + 1,
-    type: 'MORPHOLOGY_IDENTIFY' as QuestionType,
-    prompt: `${entry.surface}  (${entry.lexeme} — ${entry.gloss})`,
-    correctAnswer: JSON.stringify({
+function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fields?: string[]) {
+  return shuffle(entries).slice(0, count).map((entry, idx) => {
+    const full: Record<string, string | null> = {
       partOfSpeech: entry.partOfSpeech,
       tense:  entry.tense  ?? null,
       voice:  entry.voice  ?? null,
@@ -173,11 +214,28 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number) {
       number: entry.number ?? null,
       casus:  entry.casus  ?? null,
       gender: entry.gender ?? null,
-    }),
-    options: [],
-    points: 5,
-    reference: entry.reference ?? null,
-  }))
+    }
+    // Filter to only the instructor-selected fields; always keep partOfSpeech
+    // so the QuizPlayer can show "Parse this Verb:" even when it's not tested.
+    const answer: Record<string, string | null> = {}
+    if (fields && fields.length > 0) {
+      answer.partOfSpeech = full.partOfSpeech
+      for (const f of fields) answer[f] = full[f] ?? null
+    } else {
+      Object.assign(answer, full)
+    }
+    // Points scale with how many fields are being tested
+    const testedCount = fields && fields.length > 0 ? fields.length : Object.values(full).filter(v => v).length - 1
+    return {
+      position: idx + 1,
+      type: 'MORPHOLOGY_IDENTIFY' as QuestionType,
+      prompt: `${entry.surface}  (${entry.lexeme} — ${entry.gloss})`,
+      correctAnswer: JSON.stringify(answer),
+      options: [],
+      points: Math.max(1, testedCount),
+      reference: entry.reference ?? null,
+    }
+  })
 }
 
 function getEntriesForSubtype(subtype: MorphologySubtype): GreekParseEntry[] {
@@ -195,6 +253,7 @@ export async function generateMorphologyQuestionsBySubtype(
   subtype: MorphologySubtype,
   count: number,
   vocabThruLesson?: number | null,
+  fields?: string[],
 ) {
   // Conditional/subjunctive questions use full example sentences — vocab filter doesn't apply
   if (subtype === 'CONDITIONALS') return generateConditionalQuestions(count)
@@ -212,7 +271,6 @@ export async function generateMorphologyQuestionsBySubtype(
         })
         const knownLexemes = new Set(vocabItems.map(v => v.lexeme.lexeme))
         const filtered = entries.filter(e => knownLexemes.has(e.lexeme))
-        // Only apply filter if it leaves enough entries; otherwise use the full pool
         if (filtered.length >= Math.min(count, 3)) entries = filtered
       } catch {
         // DB unavailable — fall back to unfiltered pool
@@ -220,7 +278,7 @@ export async function generateMorphologyQuestionsBySubtype(
     }
   }
 
-  return parseEntriesToQuestions(entries, count)
+  return parseEntriesToQuestions(entries, count, fields)
 }
 
 export function generateVerbParseQuestions(count: number) {
