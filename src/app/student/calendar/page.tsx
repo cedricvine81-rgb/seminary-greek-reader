@@ -27,10 +27,11 @@ export default async function StudentCalendarPage() {
       select: { id: true, title: true, type: true, dueDate: true },
       orderBy: { dueDate: 'asc' },
     }),
-    // Best attempts — to mark completed quizzes
-    prisma.quizAttempt.findMany({
-      where: { userId: payload.sub, isBest: true },
+    // Completed assignments — use Response table so Translation Exercises are included
+    prisma.response.findMany({
+      where: { userId: payload.sub },
       select: { assignmentId: true },
+      distinct: ['assignmentId'],
     }),
   ])
 

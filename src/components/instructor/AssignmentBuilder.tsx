@@ -260,7 +260,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
-      router.push('/instructor/assignments')
+      // If launched from a specific course page, return there so the new
+      // assignment is immediately visible in the course's assignment list.
+      if (defaultCourseId) {
+        router.push(`/instructor/courses/${defaultCourseId}`)
+      } else {
+        router.push('/instructor/assignments')
+      }
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error creating assignment')
@@ -513,7 +519,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
         <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Save Draft</Button>
-        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Publish</Button>
+        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
       </div>
     </form>
   )
