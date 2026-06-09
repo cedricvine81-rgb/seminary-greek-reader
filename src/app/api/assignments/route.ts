@@ -39,6 +39,14 @@ export async function POST(req: NextRequest) {
   const body = await req.json()
   const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
 
+  // Validate required fields
+  if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
+    return NextResponse.json({ error: 'courseId, title, type, weekNumber, dueDate, and level are required.' }, { status: 400 })
+  }
+  if (type === 'TRANSLATION_EXERCISE' && !reference?.trim()) {
+    return NextResponse.json({ error: 'A passage reference is required for Translation Exercise assignments.' }, { status: 400 })
+  }
+
   const assignment = await prisma.assignment.create({
     data: {
       courseId, title,

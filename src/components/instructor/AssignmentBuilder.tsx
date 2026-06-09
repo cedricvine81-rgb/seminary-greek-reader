@@ -244,6 +244,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
+
+    // Client-side validation for Translation Exercise
+    if (form.type === 'TRANSLATION_EXERCISE' && !form.reference?.trim()) {
+      setError('A passage reference is required for Translation Exercise assignments (e.g. "John 1:1–18").')
+      return
+    }
+
     setLoading(true)
     try {
       const res = await fetch('/api/assignments', {
@@ -488,8 +495,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       <div className="flex gap-3 justify-end">
         <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
-        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Update</Button>
-        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Save &amp; Post</Button>
+        <Button type="submit" loading={loading} variant="secondary" onClick={() => { publishRef.current = false }}>Save Draft</Button>
+        <Button type="submit" loading={loading} onClick={() => { publishRef.current = true }}>Publish</Button>
       </div>
     </form>
   )
