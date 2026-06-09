@@ -66,16 +66,11 @@ function formatParse(word: VerseWord): string {
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
+/** Normal annotation panel used during the timed phase */
 function AnnotationPanel({
-  word,
-  verseNum,
-  annotations,
-  onChange,
-  locked,
+  word, verseNum, annotations, onChange, locked,
 }: {
-  word: VerseWord
-  verseNum: number
-  annotations: AnnotationMap
+  word: VerseWord; verseNum: number; annotations: AnnotationMap
   onChange: (key: string, field: keyof WordAnnotation, value: string) => void
   locked?: boolean
 }) {
@@ -85,7 +80,6 @@ function AnnotationPanel({
 
   return (
     <div className="flex flex-col gap-3">
-      {/* Word header */}
       <div className="flex items-baseline gap-3">
         <span className="text-3xl font-greek text-indigo-700">{word.surface}</span>
         <span className="text-sm text-gray-500 italic">{word.lexeme?.lexeme}</span>
@@ -94,59 +88,270 @@ function AnnotationPanel({
         )}
       </div>
 
-      {/* Parsing */}
+      {(['parsing', 'syntax', 'translation'] as const).map(field => (
+        <div key={field}>
+          <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
+            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Translation Contribution'}
+          </label>
+          <input
+            type="text"
+            value={ann[field]}
+            placeholder={
+              field === 'parsing' ? (autoparse || 'e.g. Verb, Present Active Indicative 3sg')
+              : field === 'syntax' ? 'e.g. Subject, Direct object, Temporal ptc.'
+              : 'e.g. he believed / the love of God'
+            }
+            disabled={locked}
+            onChange={e => onChange(key, field, e.target.value)}
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+          />
+          {field === 'parsing' && autoparse && !locked && (
+            <button type="button" onClick={() => onChange(key, 'parsing', autoparse)}
+              className="mt-1 text-xs text-indigo-500 hover:text-indigo-700 underline">
+              Use auto-parsed: {autoparse}
+            </button>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/** Review-mode annotation panel — shown after timer expires.
+ *  Displays the original (read-only), the correct parse, and a red correction input. */
+function ReviewAnnotationPanel({
+  word, verseNum, annotations, corrections, onCorrection,
+}: {
+  word: VerseWord; verseNum: number
+  annotations: AnnotationMap; corrections: AnnotationMap
+  onCorrection: (key: string, field: keyof WordAnnotation, value: string) => void
+}) {
+  const key = wordKey(verseNum, word.id)
+  const original = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
+  const corr = corrections[key] ?? { parsing: '', syntax: '', translation: '' }
+  const autoparse = formatParse(word)
+
+  const parse = word.parses?.[0]
+  const parseDetails = parse ? [
+    parse.partOfSpeech,
+    parse.tense, parse.voice, parse.mood,
+    parse.person, parse.number, parse.casus, parse.gender,
+  ].filter(Boolean) : []
+
+  return (
+    <div className="flex flex-col gap-4">
+      {/* Word header */}
       <div>
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-          Parsing
-        </label>
-        <input
-          type="text"
-          value={ann.parsing}
-          placeholder={autoparse || 'e.g. Verb, Present Active Indicative 3sg'}
-          disabled={locked}
-          onChange={e => onChange(key, 'parsing', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-        />
-        {autoparse && !locked && (
-          <button
-            type="button"
-            onClick={() => onChange(key, 'parsing', autoparse)}
-            className="mt-1 text-xs text-indigo-500 hover:text-indigo-700 underline"
-          >
-            Use auto-parsed: {autoparse}
-          </button>
+        <div className="flex items-baseline gap-3 mb-1">
+          <span className="text-3xl font-greek text-indigo-700">{word.surface}</span>
+          <span className="text-sm text-gray-500 italic">{word.lexeme?.lexeme}</span>
+        </div>
+        {word.lexeme?.gloss && (
+          <p className="text-sm text-gray-500">&ldquo;{word.lexeme.gloss}&rdquo;</p>
+        )}
+        {/* Parse chips */}
+        {parseDetails.length > 0 && (
+          <div className="flex flex-wrap gap-1 mt-2">
+            {parseDetails.map((d, i) => (
+              <span key={i} className="px-1.5 py-0.5 rounded text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 font-medium">
+                {d}
+              </span>
+            ))}
+          </div>
         )}
       </div>
 
+      {/* Parsing */}
+      <ReviewField
+        label="Parsing"
+        correct={autoparse}
+        original={original.parsing}
+        correction={corr.parsing}
+        placeholder="e.g. Verb, Present Active Indicative 3sg"
+        onUseCorrect={() => onCorrection(key, 'parsing', autoparse)}
+        onChange={v => onCorrection(key, 'parsing', v)}
+      />
+
       {/* Syntax */}
-      <div>
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-          Syntax / Function
-        </label>
-        <input
-          type="text"
-          value={ann.syntax}
-          placeholder="e.g. Subject, Direct object, Temporal ptc."
-          disabled={locked}
-          onChange={e => onChange(key, 'syntax', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
-        />
-      </div>
+      <ReviewField
+        label="Syntax / Function"
+        correct={null}
+        original={original.syntax}
+        correction={corr.syntax}
+        placeholder="e.g. Subject, Direct object, Temporal ptc."
+        onChange={v => onCorrection(key, 'syntax', v)}
+      />
 
       {/* Translation */}
-      <div>
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-          Translation Contribution
-        </label>
+      <ReviewField
+        label="Translation Contribution"
+        correct={null}
+        original={original.translation}
+        correction={corr.translation}
+        placeholder="e.g. he believed / the love of God"
+        onChange={v => onCorrection(key, 'translation', v)}
+      />
+    </div>
+  )
+}
+
+function ReviewField({
+  label, correct, original, correction, placeholder, onChange, onUseCorrect,
+}: {
+  label: string; correct: string | null; original: string; correction: string
+  placeholder: string; onChange: (v: string) => void; onUseCorrect?: () => void
+}) {
+  return (
+    <div className="space-y-1.5">
+      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">{label}</p>
+
+      {/* Original answer */}
+      <div className="flex items-start gap-2">
+        <span className="text-xs text-gray-400 w-14 shrink-0 pt-1">Original</span>
+        <span className={`text-sm flex-1 px-2 py-1 rounded bg-gray-50 border border-gray-200 min-h-[2rem] ${original ? 'text-gray-600' : 'text-gray-300 italic'}`}>
+          {original || '—'}
+        </span>
+      </div>
+
+      {/* Correct answer (only for parsing, where we have auto-morph) */}
+      {correct !== null && (
+        <div className="flex items-start gap-2">
+          <span className="text-xs text-emerald-600 w-14 shrink-0 pt-1 font-medium">Correct</span>
+          <div className="flex-1 flex items-start gap-1.5">
+            <span className={`text-sm flex-1 px-2 py-1 rounded border min-h-[2rem]
+              ${correct ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
+              {correct || '—'}
+            </span>
+            {correct && onUseCorrect && (
+              <button onClick={onUseCorrect}
+                className="shrink-0 text-xs px-2 py-1 rounded border border-emerald-300 text-emerald-700 hover:bg-emerald-50 transition whitespace-nowrap">
+                Use ↑
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Correction input */}
+      <div className="flex items-start gap-2">
+        <span className="text-xs text-red-500 w-14 shrink-0 pt-2 font-medium">Edit</span>
         <input
           type="text"
-          value={ann.translation}
-          placeholder="e.g. he believed / the love of God"
-          disabled={locked}
-          onChange={e => onChange(key, 'translation', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+          value={correction}
+          placeholder={placeholder}
+          onChange={e => onChange(e.target.value)}
+          className="flex-1 border-2 border-red-300 rounded-lg px-3 py-1.5 text-sm text-red-700 placeholder-red-200 focus:outline-none focus:ring-2 focus:ring-red-400 bg-red-50"
         />
       </div>
+    </div>
+  )
+}
+
+/** Right-side passage reader shown during review mode.
+ *  Renders the passage with morphological details visible on word click. */
+function ReviewPassagePanel({
+  verses, selectedWordKey, onWordClick,
+}: {
+  verses: LoadedVerse[]
+  selectedWordKey: string | null
+  onWordClick: (word: VerseWord, verse: number) => void
+}) {
+  const [hoveredKey, setHoveredKey] = useState<string | null>(null)
+  const [popupWord, setPopupWord] = useState<{ word: VerseWord; verse: number } | null>(null)
+
+  function handleClick(word: VerseWord, verse: number) {
+    const key = wordKey(verse, word.id)
+    setPopupWord(prev => prev && wordKey(prev.verse, prev.word.id) === key ? null : { word, verse })
+    onWordClick(word, verse)
+  }
+
+  const pw = popupWord?.word
+  const parse = pw?.parses?.[0]
+
+  return (
+    <div className="flex flex-col h-full overflow-hidden border-l border-gray-200">
+      {/* Header */}
+      <div className="shrink-0 px-4 py-2 bg-indigo-50 border-b border-indigo-200 flex items-center gap-2">
+        <svg className="w-4 h-4 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+        </svg>
+        <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Passage Reader</p>
+        <p className="text-xs text-indigo-500 ml-1">Click any word for morphology</p>
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+        {verses.map(v => (
+          <div key={v.id}>
+            <p className="text-xs text-gray-400 font-medium mb-1">{v.reference}</p>
+            <div className="flex flex-wrap gap-1 leading-loose">
+              {v.words.map(w => {
+                const key = wordKey(v.verse, w.id)
+                const isActive = selectedWordKey === key
+                const isPopup = popupWord && wordKey(popupWord.verse, popupWord.word.id) === key
+                return (
+                  <button
+                    key={w.id}
+                    onClick={() => handleClick(w, v.verse)}
+                    onMouseEnter={() => setHoveredKey(key)}
+                    onMouseLeave={() => setHoveredKey(null)}
+                    className={[
+                      'px-1.5 py-0.5 rounded text-xl font-greek transition-colors',
+                      isPopup ? 'bg-amber-100 text-amber-900 ring-2 ring-amber-400'
+                        : isActive ? 'bg-indigo-100 text-indigo-800'
+                        : hoveredKey === key ? 'bg-gray-100 text-gray-900'
+                        : 'text-gray-800 hover:bg-gray-100',
+                    ].join(' ')}
+                  >
+                    {w.surface}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Word detail popup */}
+      {popupWord && (
+        <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3 max-h-64 overflow-y-auto">
+          <div className="flex items-baseline justify-between gap-2">
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-greek text-indigo-700">{pw!.surface}</span>
+              <span className="text-sm text-gray-500 italic">{pw!.lexeme?.lexeme}</span>
+            </div>
+            <button onClick={() => setPopupWord(null)}
+              className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
+          </div>
+
+          {pw!.lexeme?.gloss && (
+            <p className="text-sm text-gray-700 font-medium">&ldquo;{pw!.lexeme.gloss}&rdquo;</p>
+          )}
+
+          {parse && (
+            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+              {[
+                ['Part of speech', parse.partOfSpeech],
+                ['Tense', parse.tense],
+                ['Voice', parse.voice],
+                ['Mood', parse.mood],
+                ['Person', parse.person],
+                ['Number', parse.number],
+                ['Case', parse.casus],
+                ['Gender', parse.gender],
+              ].filter(([, v]) => v).map(([label, value]) => (
+                <div key={label} className="flex gap-1">
+                  <span className="text-gray-400 w-24 shrink-0">{label}</span>
+                  <span className="font-medium text-gray-800">{value}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {pw!.lexeme?.strongs && (
+            <p className="text-xs text-gray-400">Strong&apos;s {pw!.lexeme.strongs}</p>
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -190,6 +395,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
   // ── Annotation state ──
   const [annotations, setAnnotations] = useState<AnnotationMap>({})
+  const [corrections, setCorrections] = useState<AnnotationMap>({})
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
 
@@ -253,6 +459,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           setVerseStart(sess.verseStart)
           setVerseEnd(sess.verseEnd)
           setAnnotations(sess.annotations ?? {})
+          setCorrections(sess.corrections ?? {})
           setSessionId(sess.id)
           setSessionTitle(sess.title)
           const alreadySubmitted = !!sess.submittedAt
@@ -399,6 +606,19 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     }
   }
 
+  // ── Correction change (review mode) ──
+  function handleCorrectionChange(key: string, field: keyof WordAnnotation, value: string) {
+    setCorrections(prev => ({
+      ...prev,
+      [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
+    }))
+    // Auto-save corrections
+    if (sessionId) {
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+      autoSaveTimer.current = setTimeout(() => autoSaveCorrections(), 2000)
+    }
+  }
+
   // ── Word click ──
   function handleWordClick(word: VerseWord, verseNum: number) {
     const key = wordKey(verseNum, word.id)
@@ -430,6 +650,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             annotations,
+            corrections,
             title: resolvedTitle,
             // Persist startedAt if not yet stored (first save of a timed session)
             ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
@@ -476,11 +697,19 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
   async function autoSave() {
     if (!sessionId) return
-    const payload = { annotations }
     await fetch(`/api/exegesis/${sessionId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ annotations }),
+    }).catch(() => {})
+  }
+
+  async function autoSaveCorrections() {
+    if (!sessionId) return
+    await fetch(`/api/exegesis/${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ corrections }),
     }).catch(() => {})
   }
 
@@ -497,6 +726,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     setVerseStart(sess.verseStart)
     setVerseEnd(sess.verseEnd)
     setAnnotations((sess.annotations as AnnotationMap) ?? {})
+    setCorrections((sess.corrections as AnnotationMap) ?? {})
     setSessionId(sess.id)
     setSessionTitle(sess.title)
     setShowSessionList(false)
@@ -540,11 +770,15 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     parsing: string
     syntax: string
     translation: string
+    corrParsing: string
+    corrSyntax: string
+    corrTranslation: string
   }> = []
   for (const v of loadedVerses) {
     for (const w of v.words) {
       const key = wordKey(v.verse, w.id)
       const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
+      const corr = corrections[key]
       summaryRows.push({
         ref: v.reference,
         surface: w.surface,
@@ -552,12 +786,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         parsing: ann.parsing,
         syntax: ann.syntax,
         translation: ann.translation,
+        corrParsing: corr?.parsing ?? '',
+        corrSyntax: corr?.syntax ?? '',
+        corrTranslation: corr?.translation ?? '',
       })
     }
   }
 
   // ── Timer display helpers ──
-  const isLocked = timerExpired || submitted  // no further edits allowed
+  const isLocked = timerExpired || submitted  // no further timed edits allowed
+  const reviewMode = timerExpired  // show reader + correction panel
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60)
     const s = secs % 60
@@ -806,38 +1044,48 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
       )}
 
       {loadedVerses.length > 0 && (
-        <div className="flex flex-col lg:flex-row gap-0 print:block min-h-0">
+        <div className={`flex gap-0 print:block min-h-0 ${reviewMode ? 'flex-row' : 'flex-col lg:flex-row'}`}>
 
           {/* ── Greek text pane ── */}
-          <div className="flex-1 overflow-y-auto p-4 lg:p-6 print:overflow-visible">
+          <div className={`overflow-y-auto p-4 lg:p-6 print:overflow-visible ${reviewMode ? 'w-72 shrink-0 border-r border-gray-200' : 'flex-1'}`}>
 
             {/* Print: passage header */}
             <div className="hidden print:block mb-4">
               <h2 className="text-xl font-semibold">{passageTitle}</h2>
             </div>
 
+            {/* Review mode banner */}
+            {reviewMode && (
+              <div className="mb-3 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800 font-medium">
+                ⏰ Time expired — review mode. Click a word to see corrections.
+              </div>
+            )}
+
             {loadedVerses.map(v => (
               <div key={v.id} className="mb-6 print:mb-4">
-                {/* Verse reference */}
                 <p className="text-xs text-gray-400 font-medium mb-2 print:mb-1">{v.reference}</p>
-                {/* Words */}
                 <div className="flex flex-wrap gap-1.5 leading-loose">
                   {v.words.map(w => {
                     const key = wordKey(v.verse, w.id)
                     const hasAnn = annotations[key] &&
                       (annotations[key].parsing || annotations[key].syntax || annotations[key].translation)
+                    const hasCorr = corrections[key] &&
+                      (corrections[key].parsing || corrections[key].syntax || corrections[key].translation)
                     const isSelected = selectedWordKey === key
                     return (
                       <button
                         key={w.id}
                         onClick={() => handleWordClick(w, v.verse)}
                         className={[
-                          'px-1.5 py-0.5 rounded text-xl font-greek transition print:cursor-default print:border-b print:border-dotted print:border-gray-400',
+                          'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:border-b print:border-dotted print:border-gray-400',
+                          reviewMode ? 'text-lg' : 'text-xl',
                           isSelected
                             ? 'bg-indigo-100 text-indigo-800 ring-2 ring-indigo-400 print:bg-transparent print:ring-0'
-                            : hasAnn
-                              ? 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 print:bg-transparent'
-                              : 'text-gray-800 hover:bg-gray-100 print:text-black',
+                            : hasCorr
+                              ? 'bg-red-50 text-red-700 hover:bg-red-100 print:bg-transparent'
+                              : hasAnn
+                                ? 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 print:bg-transparent'
+                                : 'text-gray-800 hover:bg-gray-100 print:text-black',
                         ].join(' ')}
                       >
                         {w.surface}
@@ -849,31 +1097,54 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             ))}
           </div>
 
-          {/* ── Annotation panel (screen only) ── */}
-          <div className="print:hidden lg:w-96 border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3">
-            {timerExpired && (
+          {/* ── Annotation / Review panel (screen only) ── */}
+          <div className={`print:hidden border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3 ${reviewMode ? 'flex-1' : 'lg:w-96'}`}>
+            {!reviewMode && timerExpired && (
               <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 font-medium text-center">
                 ⏰ Time is up — annotations are locked
               </div>
             )}
             {selectedWord ? (
-              <AnnotationPanel
-                word={selectedWord.word}
-                verseNum={selectedWord.verse}
-                annotations={annotations}
-                onChange={handleAnnotationChange}
-                locked={isLocked}
-              />
+              reviewMode ? (
+                <ReviewAnnotationPanel
+                  word={selectedWord.word}
+                  verseNum={selectedWord.verse}
+                  annotations={annotations}
+                  corrections={corrections}
+                  onCorrection={handleCorrectionChange}
+                />
+              ) : (
+                <AnnotationPanel
+                  word={selectedWord.word}
+                  verseNum={selectedWord.verse}
+                  annotations={annotations}
+                  onChange={handleAnnotationChange}
+                  locked={isLocked}
+                />
+              )
             ) : (
               <div className="flex flex-col items-center justify-center flex-1 text-gray-400 py-12">
                 <svg className="w-10 h-10 mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                     d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" />
                 </svg>
-                <p className="text-sm text-center">Click a word in the text<br />to annotate it</p>
+                <p className="text-sm text-center">
+                  {reviewMode ? 'Click a word to review and correct your analysis' : 'Click a word in the text\nto annotate it'}
+                </p>
               </div>
             )}
           </div>
+
+          {/* ── Passage Reader (review mode only, screen only) ── */}
+          {reviewMode && (
+            <div className="print:hidden w-80 shrink-0">
+              <ReviewPassagePanel
+                verses={loadedVerses}
+                selectedWordKey={selectedWordKey}
+                onWordClick={handleWordClick}
+              />
+            </div>
+          )}
 
           {/* ── Print table ── */}
           <div className="hidden print:block w-full mt-6">
@@ -894,9 +1165,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                     <td className="py-1 pr-2 text-gray-500 text-xs align-top">{row.ref}</td>
                     <td className="py-1 pr-2 font-greek text-base align-top">{row.surface}</td>
                     <td className="py-1 pr-2 font-greek text-xs text-gray-600 align-top">{row.lemma}</td>
-                    <td className="py-1 pr-2 text-xs align-top">{row.parsing}</td>
-                    <td className="py-1 pr-2 text-xs align-top">{row.syntax}</td>
-                    <td className="py-1 text-xs align-top">{row.translation}</td>
+                    <td className="py-1 pr-2 text-xs align-top">
+                      {row.parsing}
+                      {row.corrParsing && <div className="text-red-600 font-medium">→ {row.corrParsing}</div>}
+                    </td>
+                    <td className="py-1 pr-2 text-xs align-top">
+                      {row.syntax}
+                      {row.corrSyntax && <div className="text-red-600 font-medium">→ {row.corrSyntax}</div>}
+                    </td>
+                    <td className="py-1 text-xs align-top">
+                      {row.translation}
+                      {row.corrTranslation && <div className="text-red-600 font-medium">→ {row.corrTranslation}</div>}
+                    </td>
                   </tr>
                 ))}
               </tbody>

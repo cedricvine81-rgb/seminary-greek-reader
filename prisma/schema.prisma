@@ -407,6 +407,7 @@ model ExegesisSession {
   // JSON map: { [wordKey]: { parsing: string, syntax: string, translation: string } }
   // wordKey = "verseNum-wordId"
   annotations  Json      @default("{}")
+  corrections  Json      @default("{}")   // post-timer review edits; tracked separately, shown in red
   startedAt    DateTime?
   submittedAt  DateTime?
   createdAt    DateTime  @default(now())
