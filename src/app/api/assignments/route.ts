@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { generateVocabQuestions, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
@@ -85,6 +86,10 @@ export async function POST(req: NextRequest) {
       data: questions.map(q => ({ ...q, assignmentId: assignment.id })),
     })
   }
+
+  // Bust the Router Cache so the course page shows the new assignment immediately
+  revalidatePath(`/instructor/courses/${courseId}`)
+  revalidatePath('/instructor/assignments')
 
   return NextResponse.json({ assignment }, { status: 201 })
 
