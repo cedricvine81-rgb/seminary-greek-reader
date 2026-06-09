@@ -9,6 +9,7 @@ import { Card, CardTitle } from '@/components/ui/Card'
 
 interface Props {
   assignmentId: string
+  assignmentType: string
   isVocabQuiz: boolean
   initial: {
     title: string
@@ -16,6 +17,7 @@ interface Props {
     dueDate: string         // ISO string
     instructions: string | null
     timePerQuestion: number | null
+    reviewTimeSeconds: number | null
     provideDefinition: boolean
     maxRetakes: number | null
     allowLate: boolean
@@ -23,17 +25,27 @@ interface Props {
   }
 }
 
-export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }: Props) {
+export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocabQuiz, initial }: Props) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
 
+  const isTranslation = assignmentType === 'TRANSLATION_EXERCISE'
+
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
   const [dueDate, setDueDate] = useState(initial.dueDate.slice(0, 10))
   const [instructions, setInstructions] = useState(initial.instructions ?? '')
-  const [timePerQuestion, setTimePerQuestion] = useState(initial.timePerQuestion ?? 0)
+  // For translation: timePerQuestion stores stage-1 seconds; display as minutes
+  const [timePerQuestion, setTimePerQuestion] = useState(
+    isTranslation
+      ? Math.round((initial.timePerQuestion ?? 0) / 60)   // display minutes
+      : (initial.timePerQuestion ?? 0)                      // display seconds
+  )
+  const [reviewTimeSeconds, setReviewTimeSeconds] = useState(
+    Math.round((initial.reviewTimeSeconds ?? 0) / 60)      // display minutes
+  )
   const [provideDefinition, setProvideDefinition] = useState(initial.provideDefinition)
   const [maxRetakes, setMaxRetakes] = useState<number | null>(initial.maxRetakes)
   const [allowLate, setAllowLate] = useState(initial.allowLate)
@@ -52,7 +64,9 @@ export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }:
           weekNumber,
           dueDate,
           instructions,
-          timePerQuestion,
+          // Convert back to seconds for storage
+          timePerQuestion: isTranslation ? timePerQuestion * 60 || 0 : timePerQuestion,
+          reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
           provideDefinition,
           maxRetakes,
           allowLate,
@@ -75,7 +89,7 @@ export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }:
 
   return (
     <Card>
-      <CardTitle>Quiz Settings</CardTitle>
+      <CardTitle>{isTranslation ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -111,14 +125,45 @@ export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }:
           />
         </div>
 
-        <Input
-          label="Time per question (seconds, 0 = untimed)"
-          type="number"
-          min={0}
-          max={300}
-          value={timePerQuestion}
-          onChange={e => setTimePerQuestion(Number(e.target.value))}
-        />
+        {isTranslation ? (
+          /* Translation Exercise: two-phase timers, displayed in minutes */
+          <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-4">
+            <p className="text-sm font-semibold text-brand-800">Timer settings</p>
+            <Input
+              label="Stage 1 — annotation phase (minutes, 0 = no limit)"
+              type="number"
+              min={0}
+              max={180}
+              value={timePerQuestion}
+              onChange={e => setTimePerQuestion(Number(e.target.value))}
+            />
+            <p className="text-xs text-brand-600 -mt-2">
+              Students annotate each word. When the timer reaches zero, annotations lock and review mode begins.
+            </p>
+            <Input
+              label="Stage 2 — review & correction phase (minutes, 0 = no limit)"
+              type="number"
+              min={0}
+              max={60}
+              value={reviewTimeSeconds}
+              onChange={e => setReviewTimeSeconds(Number(e.target.value))}
+            />
+            <p className="text-xs text-brand-600 -mt-2">
+              After Stage 1 ends, students can make red corrections and see the passage reader.
+              When this timer expires, all edits lock and the exercise auto-submits.
+              Set to 0 for unlimited review time (student must click Submit manually).
+            </p>
+          </div>
+        ) : (
+          <Input
+            label="Time per question (seconds, 0 = untimed)"
+            type="number"
+            min={0}
+            max={300}
+            value={timePerQuestion}
+            onChange={e => setTimePerQuestion(Number(e.target.value))}
+          />
+        )}
 
         {isVocabQuiz && (
           <div>
@@ -150,47 +195,51 @@ export function AssignmentSettingsEditor({ assignmentId, isVocabQuiz, initial }:
           </div>
         )}
 
-        <Select
-          label="Quiz retakes allowed"
-          value={maxRetakes === null ? '' : String(maxRetakes)}
-          onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
-          options={[
-            { value: '0', label: 'No retakes (1 attempt only)' },
-            { value: '1', label: '1 retake (2 attempts total)' },
-            { value: '2', label: '2 retakes (3 attempts total)' },
-            { value: '3', label: '3 retakes (4 attempts total)' },
-            { value: '5', label: '5 retakes (6 attempts total)' },
-          ]}
-          placeholder="Unlimited retakes"
-        />
+        {!isTranslation && (
+          <Select
+            label="Quiz retakes allowed"
+            value={maxRetakes === null ? '' : String(maxRetakes)}
+            onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
+            options={[
+              { value: '0', label: 'No retakes (1 attempt only)' },
+              { value: '1', label: '1 retake (2 attempts total)' },
+              { value: '2', label: '2 retakes (3 attempts total)' },
+              { value: '3', label: '3 retakes (4 attempts total)' },
+              { value: '5', label: '5 retakes (6 attempts total)' },
+            ]}
+            placeholder="Unlimited retakes"
+          />
+        )}
 
-        <div className="space-y-3">
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={allowLate}
-              onChange={e => setAllowLate(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
-            />
-            <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
-          </label>
-
-          {allowLate && (
-            <div className="ml-7 flex items-center gap-3">
+        {!isTranslation && (
+          <div className="space-y-3">
+            <label className="flex items-center gap-3 cursor-pointer">
               <input
-                type="number"
-                min={0}
-                max={30}
-                value={lateDaysLimit}
-                onChange={e => setLateDaysLimit(Number(e.target.value))}
-                className="input w-20 text-center"
+                type="checkbox"
+                checked={allowLate}
+                onChange={e => setAllowLate(e.target.checked)}
+                className="w-4 h-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
               />
-              <span className="text-sm text-gray-600">
-                {lateDaysLimit === 0 ? 'No time limit — accept indefinitely' : 'days after due date'}
-              </span>
-            </div>
-          )}
-        </div>
+              <span className="text-sm text-gray-700">Allow students to submit after the due date</span>
+            </label>
+
+            {allowLate && (
+              <div className="ml-7 flex items-center gap-3">
+                <input
+                  type="number"
+                  min={0}
+                  max={30}
+                  value={lateDaysLimit}
+                  onChange={e => setLateDaysLimit(Number(e.target.value))}
+                  className="input w-20 text-center"
+                />
+                <span className="text-sm text-gray-600">
+                  {lateDaysLimit === 0 ? 'No time limit — accept indefinitely' : 'days after due date'}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
 
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 

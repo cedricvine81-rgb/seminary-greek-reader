@@ -447,7 +447,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           </div>
           <div>
             <Input
-              label="Stage 2 time limit — review &amp; correction phase (minutes, 0 = no limit)"
+              label="Stage 2 time limit — review & correction phase (minutes, 0 = no limit)"
               type="number"
               min={0}
               max={60}
@@ -483,26 +483,30 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      <Select
-        label="Quiz retakes allowed"
-        value={maxRetakes === null ? '' : String(maxRetakes)}
-        onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
-        options={[
-          { value: '0', label: 'No retakes (1 attempt only)' },
-          { value: '1', label: '1 retake (2 attempts total)' },
-          { value: '2', label: '2 retakes (3 attempts total)' },
-          { value: '3', label: '3 retakes (4 attempts total)' },
-          { value: '5', label: '5 retakes (6 attempts total)' },
-        ]}
-        placeholder="Unlimited retakes"
-      />
+      {form.type !== 'TRANSLATION_EXERCISE' && (
+        <Select
+          label="Quiz retakes allowed"
+          value={maxRetakes === null ? '' : String(maxRetakes)}
+          onChange={e => setMaxRetakes(e.target.value === '' ? null : Number(e.target.value))}
+          options={[
+            { value: '0', label: 'No retakes (1 attempt only)' },
+            { value: '1', label: '1 retake (2 attempts total)' },
+            { value: '2', label: '2 retakes (3 attempts total)' },
+            { value: '3', label: '3 retakes (4 attempts total)' },
+            { value: '5', label: '5 retakes (6 attempts total)' },
+          ]}
+          placeholder="Unlimited retakes"
+        />
+      )}
 
-      <LatePolicyFields
-        allowLate={allowLate}
-        lateDaysLimit={lateDaysLimit}
-        onAllowLateChange={setAllowLate}
-        onLateDaysLimitChange={setLateDaysLimit}
-      />
+      {form.type !== 'TRANSLATION_EXERCISE' && (
+        <LatePolicyFields
+          allowLate={allowLate}
+          lateDaysLimit={lateDaysLimit}
+          onAllowLateChange={setAllowLate}
+          onLateDaysLimitChange={setLateDaysLimit}
+        />
+      )}
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 

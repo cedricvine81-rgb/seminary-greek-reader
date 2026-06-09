@@ -48,7 +48,13 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
             {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
           </Badge>
-          <Badge variant="green">{assignment.questions.length} questions</Badge>
+          {assignment.type === 'TRANSLATION_EXERCISE' ? (
+            assignment.reference && (
+              <Badge variant="blue">{assignment.reference}</Badge>
+            )
+          ) : (
+            <Badge variant="green">{assignment.questions.length} questions</Badge>
+          )}
           <Badge variant={assignment.isPublished ? 'green' : 'gray'}>
             {assignment.isPublished ? 'Published' : 'Draft'}
           </Badge>
@@ -69,6 +75,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
 
         <AssignmentSettingsEditor
           assignmentId={assignment.id}
+          assignmentType={assignment.type}
           isVocabQuiz={assignment.type === 'VOCABULARY_QUIZ'}
           initial={{
             title: assignment.title,
@@ -76,6 +83,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             dueDate: assignment.dueDate.toISOString(),
             instructions: assignment.instructions,
             timePerQuestion: assignment.timePerQuestion,
+            reviewTimeSeconds: assignment.reviewTimeSeconds,
             provideDefinition: assignment.provideDefinition,
             maxRetakes: assignment.maxRetakes,
             allowLate: assignment.allowLate,
@@ -83,18 +91,20 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           }}
         />
 
-        <QuizPreview
-          questions={assignment.questions.map(q => ({
-            id: q.id,
-            position: q.position,
-            type: q.type,
-            prompt: q.prompt,
-            correctAnswer: q.correctAnswer,
-            options: q.options,
-            points: q.points,
-          }))}
-          provideDefinition={assignment.provideDefinition}
-        />
+        {assignment.type !== 'TRANSLATION_EXERCISE' && (
+          <QuizPreview
+            questions={assignment.questions.map(q => ({
+              id: q.id,
+              position: q.position,
+              type: q.type,
+              prompt: q.prompt,
+              correctAnswer: q.correctAnswer,
+              options: q.options,
+              points: q.points,
+            }))}
+            provideDefinition={assignment.provideDefinition}
+          />
+        )}
 
         <AssignmentResultsGrid assignmentId={assignment.id} />
       </div>

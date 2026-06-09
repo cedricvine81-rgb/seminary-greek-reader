@@ -484,12 +484,25 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           if (alreadySubmitted) setSubmitted(true)
           // Initialise timer from stored startedAt
           if (timeLimitSeconds && sess.startedAt && !alreadySubmitted) {
-            const elapsed = Math.floor((Date.now() - new Date(sess.startedAt).getTime()) / 1000)
+            const startedAtMs = new Date(sess.startedAt).getTime()
+            const elapsed = Math.floor((Date.now() - startedAtMs) / 1000)
             const remaining = timeLimitSeconds - elapsed
             startedAtRef.current = new Date(sess.startedAt)
             if (remaining <= 0) {
+              // Stage 1 already expired — enter review mode and restore stage 2 timer
               setTimerExpired(true)
               setSecondsLeft(0)
+              if (reviewTimeLimitSeconds) {
+                const reviewStartedAtMs = startedAtMs + timeLimitSeconds * 1000
+                const reviewElapsed = Math.floor((Date.now() - reviewStartedAtMs) / 1000)
+                const reviewRemaining = reviewTimeLimitSeconds - reviewElapsed
+                if (reviewRemaining <= 0) {
+                  setReviewTimerExpired(true)
+                  setReviewSecondsLeft(0)
+                } else {
+                  setReviewSecondsLeft(reviewRemaining)
+                }
+              }
             } else {
               setSecondsLeft(remaining)
             }
@@ -568,8 +581,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   }, [secondsLeft !== null && secondsLeft > 0, submitted]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── When stage 1 timer expires: start stage 2 review timer (if set) ──
+  // Only starts if reviewSecondsLeft hasn't already been restored from a saved session.
   useEffect(() => {
-    if (timerExpired && !submitted && assignment?.reviewTimeLimitSeconds) {
+    if (timerExpired && !submitted && assignment?.reviewTimeLimitSeconds && reviewSecondsLeft === null) {
       setReviewSecondsLeft(assignment.reviewTimeLimitSeconds)
     }
   }, [timerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -703,7 +717,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         const r = await fetch('/api/exegesis', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify({
+            ...payload,
+            // Persist the actual timer-start time so server stores the correct value
+            ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
+          }),
         })
         const d = await r.json()
         sid = d.session?.id ?? null
@@ -1122,8 +1140,17 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
               d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
           </svg>
-          <p className="text-lg font-medium">Select a passage and click &ldquo;Load Passage&rdquo;</p>
-          <p className="text-sm mt-1">Then click any Greek word to begin annotating</p>
+          {propAssignmentId ? (
+            <>
+              <p className="text-lg font-medium">Loading your passage…</p>
+              <p className="text-sm mt-1">If the passage doesn&apos;t appear, try refreshing the page.</p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg font-medium">Select a passage and click &ldquo;Load Passage&rdquo;</p>
+              <p className="text-sm mt-1">Then click any Greek word to begin annotating</p>
+            </>
+          )}
         </div>
       )}
 

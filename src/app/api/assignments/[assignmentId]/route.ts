@@ -63,7 +63,7 @@ export async function PATCH(
   const {
     isPublished,
     title, weekNumber, dueDate, instructions,
-    timePerQuestion, provideDefinition, maxRetakes,
+    timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit,
   } = body
 
@@ -78,6 +78,8 @@ export async function PATCH(
     if (instructions !== undefined) data.instructions = instructions || null
     if (timePerQuestion !== undefined)
       data.timePerQuestion = Number(timePerQuestion) > 0 ? Number(timePerQuestion) : null
+    if (reviewTimeSeconds !== undefined)
+      data.reviewTimeSeconds = Number(reviewTimeSeconds) > 0 ? Number(reviewTimeSeconds) : null
     if (provideDefinition !== undefined) data.provideDefinition = Boolean(provideDefinition)
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null

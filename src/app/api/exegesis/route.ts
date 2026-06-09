@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json()
-    const { title, bookOsisId, bookName, chapter, verseStart, verseEnd, annotations, assignmentId } = body
+    const { title, bookOsisId, bookName, chapter, verseStart, verseEnd, annotations, assignmentId, startedAt: clientStartedAt } = body
 
     if (!bookOsisId || !chapter || !verseStart || !verseEnd) {
       return NextResponse.json({ error: 'bookOsisId, chapter, verseStart, verseEnd required' }, { status: 400 })
@@ -64,7 +64,10 @@ export async function POST(req: NextRequest) {
         verseStart: Number(verseStart),
         verseEnd: Number(verseEnd),
         annotations: annotations ?? {},
-        ...(assignmentId ? { assignmentId, startedAt: new Date() } : {}),
+        ...(assignmentId ? {
+          assignmentId,
+          startedAt: clientStartedAt ? new Date(clientStartedAt) : new Date(),
+        } : {}),
       },
     })
     return NextResponse.json({ session }, { status: 201 })
