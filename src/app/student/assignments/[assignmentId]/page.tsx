@@ -1,4 +1,4 @@
-import { redirect, notFound } from 'next/navigation'
+import { redirect, notFound, permanentRedirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { addDays, format } from 'date-fns'
@@ -31,6 +31,11 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     }),
   ])
   if (!assignment) notFound()
+
+  // Translation exercises open directly in the Exegesis Workspace
+  if (assignment.type === 'TRANSLATION_EXERCISE') {
+    redirect(`/student/exegesis?assignmentId=${params.assignmentId}`)
+  }
 
   // Determine submission window
   const now = new Date()
@@ -95,9 +100,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {!isClosed && (assignment.type === 'TRANSLATION_EXERCISE' ? (
-          <TranslationExercise assignmentId={assignment.id} questions={quizQuestions} />
-        ) : (
+        {!isClosed && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}
@@ -108,7 +111,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             attemptCount={attemptCount}
             bestPct={bestAttempt?.percentage ?? null}
           />
-        ))}
+        )}
       </div>
     </DashboardShell>
   )

@@ -413,8 +413,19 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       </div>
 
       {form.type === 'TRANSLATION_EXERCISE' && (
-        <Input label="Text reference (optional)" value={form.reference ?? ''}
-          onChange={e => set('reference', e.target.value)} placeholder="John 1:1–5" />
+        <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-indigo-800">📜 Exegesis Workspace Exercise</p>
+          <p className="text-xs text-indigo-700">
+            Students will open the Exegesis Workspace with this passage pre-loaded. They can annotate
+            each word (Parsing · Syntax · Translation) and submit their analysis.
+          </p>
+          <Input
+            label="Passage reference (required)"
+            value={form.reference ?? ''}
+            onChange={e => set('reference', e.target.value)}
+            placeholder="e.g. John 1:1–18"
+          />
+        </div>
       )}
 
       <div>
@@ -423,17 +434,21 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           rows={3} className="input" placeholder="Additional instructions for students…" />
       </div>
 
-      <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
-        onChange={e => set('numQuestions', Number(e.target.value))} />
+      {form.type !== 'TRANSLATION_EXERCISE' && (
+        <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
+          onChange={e => set('numQuestions', Number(e.target.value))} />
+      )}
 
-      <Input
-        label="Time per question (seconds, 0 = untimed)"
-        type="number"
-        min={0}
-        max={300}
-        value={form.timePerQuestion ?? 0}
-        onChange={e => set('timePerQuestion', Number(e.target.value) || undefined)}
-      />
+      {form.type !== 'TRANSLATION_EXERCISE' && (
+        <Input
+          label="Time per question (seconds, 0 = untimed)"
+          type="number"
+          min={0}
+          max={300}
+          value={form.timePerQuestion ?? 0}
+          onChange={e => set('timePerQuestion', Number(e.target.value) || undefined)}
+        />
+      )}
 
       <Select
         label="Quiz retakes allowed"

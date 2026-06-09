@@ -7,7 +7,11 @@ import { canViewStudentPages } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'Exegesis Workspace' }
 
-export default function ExegesisPage() {
+export default function ExegesisPage({
+  searchParams,
+}: {
+  searchParams: { assignmentId?: string }
+}) {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -15,7 +19,7 @@ export default function ExegesisPage() {
   return (
     <DashboardShell role="STUDENT" pageTitle="Exegesis Workspace">
       <div className="flex flex-col h-full print:h-auto overflow-hidden print:overflow-visible">
-        <ExegesisWorkspace />
+        <ExegesisWorkspace assignmentId={searchParams.assignmentId} />
       </div>
     </DashboardShell>
   )

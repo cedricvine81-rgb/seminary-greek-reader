@@ -8,6 +8,43 @@ function getPayload() {
   return token ? verifyToken(token) : null
 }
 
+// GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { assignmentId: string } }
+) {
+  try {
+    const payload = getPayload()
+    if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const assignment = await prisma.assignment.findUnique({
+      where: { id: params.assignmentId },
+      select: {
+        id: true, title: true, type: true, weekNumber: true,
+        dueDate: true, reference: true, instructions: true,
+        isPublished: true, courseId: true,
+      },
+    })
+    if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+    // Students can only see published assignments they are enrolled in
+    if (payload.role === 'STUDENT') {
+      const enrollment = await prisma.enrollment.findFirst({
+        where: { userId: payload.sub, courseId: assignment.courseId, status: 'APPROVED' },
+      })
+      if (!enrollment && !assignment.isPublished) {
+        return NextResponse.json({ error: 'Not found' }, { status: 404 })
+      }
+    }
+
+    return NextResponse.json({ assignment })
+  } catch (err) {
+    console.error(err)
+    return NextResponse.json({ error: 'Server error' }, { status: 500 })
+  }
+}
+
+
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { assignmentId: string } }

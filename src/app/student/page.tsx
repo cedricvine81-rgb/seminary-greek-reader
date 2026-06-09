@@ -19,7 +19,7 @@ export default async function StudentPage() {
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, include: { course: { include: { assignments: true } } } }),
     prisma.response.findMany({
-      where: { userId: payload.sub, questionId: { not: null } },
+      where: { userId: payload.sub },
       select: { assignmentId: true },
       distinct: ['assignmentId'],
     }),
