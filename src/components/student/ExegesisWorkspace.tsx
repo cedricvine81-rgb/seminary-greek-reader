@@ -81,7 +81,7 @@ function AnnotationPanel({
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-baseline gap-3">
-        <span className="text-3xl font-greek text-indigo-700">{word.surface}</span>
+        <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
         <span className="text-sm text-gray-500 italic">{word.lexeme?.lexeme}</span>
         {word.lexeme?.gloss && (
           <span className="text-sm text-gray-400">&ldquo;{word.lexeme.gloss}&rdquo;</span>
@@ -103,11 +103,11 @@ function AnnotationPanel({
             }
             disabled={locked}
             onChange={e => onChange(key, field, e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
           />
           {field === 'parsing' && autoparse && !locked && (
             <button type="button" onClick={() => onChange(key, 'parsing', autoparse)}
-              className="mt-1 text-xs text-indigo-500 hover:text-indigo-700 underline">
+              className="mt-1 text-xs text-brand-500 hover:text-brand-700 underline">
               Use auto-parsed: {autoparse}
             </button>
           )}
@@ -143,7 +143,7 @@ function ReviewAnnotationPanel({
       {/* Word header */}
       <div>
         <div className="flex items-baseline gap-3 mb-1">
-          <span className="text-3xl font-greek text-indigo-700">{word.surface}</span>
+          <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
           <span className="text-sm text-gray-500 italic">{word.lexeme?.lexeme}</span>
         </div>
         {word.lexeme?.gloss && (
@@ -153,7 +153,7 @@ function ReviewAnnotationPanel({
         {parseDetails.length > 0 && (
           <div className="flex flex-wrap gap-1 mt-2">
             {parseDetails.map((d, i) => (
-              <span key={i} className="px-1.5 py-0.5 rounded text-xs bg-indigo-50 text-indigo-700 border border-indigo-200 font-medium">
+              <span key={i} className="px-1.5 py-0.5 rounded text-xs bg-brand-50 text-brand-700 border border-brand-200 font-medium">
                 {d}
               </span>
             ))}
@@ -271,12 +271,12 @@ function ReviewPassagePanel({
   return (
     <div className="flex flex-col h-full overflow-hidden border-l border-gray-200">
       {/* Header */}
-      <div className="shrink-0 px-4 py-2 bg-indigo-50 border-b border-indigo-200 flex items-center gap-2">
-        <svg className="w-4 h-4 text-indigo-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="shrink-0 px-4 py-2 bg-brand-50 border-b border-brand-200 flex items-center gap-2">
+        <svg className="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
-        <p className="text-xs font-semibold text-indigo-700 uppercase tracking-wide">Passage Reader</p>
-        <p className="text-xs text-indigo-500 ml-1">Click any word for morphology</p>
+        <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide">Passage Reader</p>
+        <p className="text-xs text-brand-500 ml-1">Click any word for morphology</p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
@@ -297,7 +297,7 @@ function ReviewPassagePanel({
                     className={[
                       'px-1.5 py-0.5 rounded text-xl font-greek transition-colors',
                       isPopup ? 'bg-amber-100 text-amber-900 ring-2 ring-amber-400'
-                        : isActive ? 'bg-indigo-100 text-indigo-800'
+                        : isActive ? 'bg-brand-100 text-brand-800'
                         : hoveredKey === key ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-800 hover:bg-gray-100',
                     ].join(' ')}
@@ -316,7 +316,7 @@ function ReviewPassagePanel({
         <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3 max-h-64 overflow-y-auto">
           <div className="flex items-baseline justify-between gap-2">
             <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-greek text-indigo-700">{pw!.surface}</span>
+              <span className="text-2xl font-greek text-brand-700">{pw!.surface}</span>
               <span className="text-sm text-gray-500 italic">{pw!.lexeme?.lexeme}</span>
             </div>
             <button onClick={() => setPopupWord(null)}
@@ -802,7 +802,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     return `${m}:${s.toString().padStart(2, '0')}`
   }
   const timerColor = secondsLeft !== null
-    ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-amber-600' : 'text-indigo-700'
+    ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-amber-600' : 'text-brand-700'
     : ''
 
   const passageTitle = selectedBook && loadedVerses.length > 0
@@ -822,12 +822,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
       {/* ── Assignment banner ── */}
       {assignment && (
-        <div className="print:hidden bg-indigo-50 border-b border-indigo-200 px-4 py-3 flex items-start gap-3">
+        <div className="print:hidden bg-brand-50 border-b border-brand-200 px-4 py-3 flex items-start gap-3">
           <span className="text-2xl mt-0.5">📜</span>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-indigo-900">{assignment.title}</p>
+            <p className="text-sm font-semibold text-brand-900">{assignment.title}</p>
             {assignment.reference && (
-              <p className="text-xs text-indigo-700 mt-0.5">Passage: {assignment.reference}</p>
+              <p className="text-xs text-brand-700 mt-0.5">Passage: {assignment.reference}</p>
             )}
             {assignment.instructions && (
               <p className="text-xs text-gray-600 mt-0.5">{assignment.instructions}</p>
@@ -859,7 +859,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   setVerseStart(1)
                   setVerseEnd(1)
                 }}
-                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
               >
                 {books.map(b => (
                   <option key={b.osisId} value={b.osisId}>{b.name}</option>
@@ -876,7 +876,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                 max={selectedBook?.totalChapters ?? 1}
                 value={chapter}
                 onChange={e => { setChapter(Number(e.target.value)); setVerseStart(1); setVerseEnd(1) }}
-                className="w-16 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                className="w-16 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
               />
             </div>
 
@@ -890,7 +890,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   max={maxVerse}
                   value={verseStart}
                   onChange={e => setVerseStart(Number(e.target.value))}
-                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                 />
                 <span className="text-gray-400 text-sm">–</span>
                 <input
@@ -899,7 +899,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   max={maxVerse}
                   value={verseEnd}
                   onChange={e => setVerseEnd(Number(e.target.value))}
-                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                 />
               </div>
             </div>
@@ -907,7 +907,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             <button
               onClick={loadPassage}
               disabled={isLoading || !selectedBook}
-              className="self-end px-4 py-1.5 bg-indigo-600 text-white rounded-md text-sm font-medium hover:bg-indigo-700 disabled:opacity-50 transition"
+              className="self-end px-4 py-1.5 bg-brand-600 text-white rounded-md text-sm font-medium hover:bg-brand-700 disabled:opacity-50 transition"
             >
               {isLoading ? 'Loading…' : 'Load Passage'}
             </button>
@@ -930,7 +930,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                 ? 'bg-red-50 border-red-200 animate-pulse ' + timerColor
                 : secondsLeft <= 180
                   ? 'bg-amber-50 border-amber-200 ' + timerColor
-                  : 'bg-indigo-50 border-indigo-200 ' + timerColor
+                  : 'bg-brand-50 border-brand-200 ' + timerColor
             }`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -948,7 +948,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             value={sessionTitle}
             onChange={e => setSessionTitle(e.target.value)}
             placeholder={passageTitle || 'Session title…'}
-            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-brand-400"
           />
         )}
 
@@ -1016,7 +1016,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           <button
             onClick={submitAssignment}
             disabled={isSubmitting || isSaving}
-            className="self-end px-5 py-1.5 bg-indigo-600 text-white rounded-md text-sm font-semibold hover:bg-indigo-700 disabled:opacity-50 transition"
+            className="self-end px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
           >
             {isSubmitting ? 'Submitting…' : '✓ Submit Assignment'}
           </button>
@@ -1024,7 +1024,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         {propAssignmentId && submitted && (
           <button
             onClick={() => router.push('/student/assignments')}
-            className="self-end px-4 py-1.5 border border-indigo-300 text-indigo-700 rounded-md text-sm font-medium hover:bg-indigo-50 transition"
+            className="self-end px-4 py-1.5 border border-brand-300 text-brand-700 rounded-md text-sm font-medium hover:bg-brand-50 transition"
           >
             ← Back to Assignments
           </button>
@@ -1080,7 +1080,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                           'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:border-b print:border-dotted print:border-gray-400',
                           reviewMode ? 'text-lg' : 'text-xl',
                           isSelected
-                            ? 'bg-indigo-100 text-indigo-800 ring-2 ring-indigo-400 print:bg-transparent print:ring-0'
+                            ? 'bg-brand-100 text-brand-800 ring-2 ring-brand-400 print:bg-transparent print:ring-0'
                             : hasCorr
                               ? 'bg-red-50 text-red-700 hover:bg-red-100 print:bg-transparent'
                               : hasAnn

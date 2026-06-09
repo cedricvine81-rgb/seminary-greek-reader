@@ -413,9 +413,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       </div>
 
       {form.type === 'TRANSLATION_EXERCISE' && (
-        <div className="rounded-xl border border-indigo-200 bg-indigo-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-indigo-800">📜 Exegesis Workspace Exercise</p>
-          <p className="text-xs text-indigo-700">
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-brand-800">📜 Exegesis Workspace Exercise</p>
+          <p className="text-xs text-brand-700">
             Students will open the Exegesis Workspace with this passage pre-loaded. They can annotate
             each word (Parsing · Syntax · Translation) and submit their analysis.
           </p>
@@ -434,7 +434,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               value={form.timePerQuestion ? Math.round(form.timePerQuestion / 60) : 0}
               onChange={e => set('timePerQuestion', Number(e.target.value) * 60 || undefined)}
             />
-            <p className="mt-1 text-xs text-indigo-600">
+            <p className="mt-1 text-xs text-brand-600">
               Students will see a countdown timer. When it reaches zero, annotations are locked and the exercise auto-submits.
             </p>
           </div>
