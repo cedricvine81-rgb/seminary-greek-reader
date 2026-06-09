@@ -411,6 +411,8 @@ model ExegesisSession {
   corrections  Json      @default("{}")   // post-timer review edits; tracked separately, shown in red
   startedAt    DateTime?
   submittedAt  DateTime?
+  grade        Int?      // instructor-entered score 0-100
+  gradeNote    String?   // instructor feedback
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 

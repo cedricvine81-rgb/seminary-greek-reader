@@ -1,23 +1,32 @@
 'use client'
 import { useState } from 'react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { ExternalLink } from 'lucide-react'
 
 interface StudentResult {
   userId: string
   name: string
   email: string
   attempted: boolean
-  earned: number
-  totalPoints: number
+  // Quiz fields
+  earned: number | null
+  totalPoints: number | null
   pct: number | null
+  // Translation Exercise fields
+  sessionId: string | null
+  submittedAt: string | null
+  grade: number | null
+  gradeNote: string | null
 }
 
 interface ResultsData {
   rows: StudentResult[]
-  totalPoints: number
+  totalPoints: number | null
   runningPct: number | null
   overallPct: number | null
+  isTranslation: boolean
 }
 
 function PctBadge({ pct }: { pct: number | null }) {
@@ -49,6 +58,8 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
     }
   }
 
+  const isTranslation = data?.isTranslation ?? false
+
   return (
     <Card>
       <div className="flex items-center justify-between mb-4">
@@ -59,7 +70,7 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
       </div>
 
       {!loaded && !loading && (
-        <p className="text-sm text-gray-400 italic">Click "Load results" to see student scores.</p>
+        <p className="text-sm text-gray-400 italic">Click "Load results" to see student submissions.</p>
       )}
 
       {loaded && data && data.rows.length === 0 && (
@@ -71,23 +82,23 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
           {/* Summary row */}
           <div className="flex gap-6 text-sm px-1">
             <div>
-              <span className="text-gray-500">Attempted: </span>
+              <span className="text-gray-500">Submitted: </span>
               <span className="font-semibold text-gray-800">
                 {data.rows.filter(r => r.attempted).length} / {data.rows.length}
               </span>
             </div>
-            <div>
-              <span className="text-gray-500">Running avg: </span>
-              <span className="font-semibold text-brand-700">
-                {data.runningPct !== null ? `${data.runningPct}%` : '—'}
-              </span>
-            </div>
-            <div>
-              <span className="text-gray-500">Overall avg: </span>
-              <span className="font-semibold text-brand-700">
-                {data.overallPct !== null ? `${data.overallPct}%` : '—'}
-              </span>
-            </div>
+            {data.runningPct !== null && (
+              <div>
+                <span className="text-gray-500">{isTranslation ? 'Avg grade (graded)' : 'Running avg'}: </span>
+                <span className="font-semibold text-brand-700">{data.runningPct}%</span>
+              </div>
+            )}
+            {!isTranslation && data.overallPct !== null && (
+              <div>
+                <span className="text-gray-500">Overall avg: </span>
+                <span className="font-semibold text-brand-700">{data.overallPct}%</span>
+              </div>
+            )}
           </div>
 
           {/* Results table */}
@@ -97,8 +108,18 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
                 <tr className="bg-gray-50 border-b border-gray-200">
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600">Student</th>
                   <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Status</th>
-                  <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Score</th>
-                  <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
+                  {isTranslation ? (
+                    <>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Submitted</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">View work</th>
+                    </>
+                  ) : (
+                    <>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Score</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
+                    </>
+                  )}
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -111,31 +132,53 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
                     <td className="px-3 py-2 text-center">
                       {row.attempted
                         ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">Submitted</span>
-                        : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not attempted</span>
+                        : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>
                       }
                     </td>
-                    <td className="px-3 py-2 text-center text-xs text-gray-600">
-                      {row.attempted ? `${row.earned} / ${row.totalPoints}` : '—'}
-                    </td>
-                    <td className="px-3 py-2 text-center bg-brand-50/30">
-                      <PctBadge pct={row.pct} />
-                    </td>
+                    {isTranslation ? (
+                      <>
+                        <td className="px-3 py-2 text-center text-xs text-gray-500">
+                          {row.submittedAt ? new Date(row.submittedAt).toLocaleDateString() : '—'}
+                        </td>
+                        <td className="px-3 py-2 text-center bg-brand-50/30">
+                          <PctBadge pct={row.grade} />
+                        </td>
+                        <td className="px-3 py-2 text-center">
+                          {row.sessionId ? (
+                            <Link
+                              href={`/instructor/assignments/${assignmentId}/submissions/${row.sessionId}`}
+                              className="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-800 font-medium"
+                            >
+                              View <ExternalLink size={11} />
+                            </Link>
+                          ) : (
+                            <span className="text-xs text-gray-300">—</span>
+                          )}
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="px-3 py-2 text-center text-xs text-gray-600">
+                          {row.attempted ? `${row.earned} / ${row.totalPoints}` : '—'}
+                        </td>
+                        <td className="px-3 py-2 text-center bg-brand-50/30">
+                          <PctBadge pct={row.pct} />
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
 
-              {/* Class average footer */}
               <tfoot>
                 <tr className="border-t-2 border-gray-200 bg-gray-50">
-                  <td className="px-4 py-2.5 text-xs font-semibold text-gray-600" colSpan={2}>
-                    Class average (attempted only)
-                  </td>
-                  <td className="px-3 py-2 text-center text-xs text-gray-500">
-                    {data.runningPct !== null ? `${data.runningPct}%` : '—'}
+                  <td className="px-4 py-2.5 text-xs font-semibold text-gray-600" colSpan={isTranslation ? 3 : 2}>
+                    {isTranslation ? 'Average grade (graded only)' : 'Class average (attempted only)'}
                   </td>
                   <td className="px-3 py-2 text-center bg-brand-50/30">
                     <PctBadge pct={data.runningPct} />
                   </td>
+                  {isTranslation && <td />}
                 </tr>
               </tfoot>
             </table>
