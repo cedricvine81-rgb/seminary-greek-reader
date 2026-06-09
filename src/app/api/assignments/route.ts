@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { generateVocabQuestions, generateMorphologyQuestions } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
 
   const assignment = await prisma.assignment.create({
     data: {
@@ -66,7 +66,8 @@ export async function POST(req: NextRequest) {
   if (type === 'VOCABULARY_QUIZ') {
     questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), Number(quizStylePct ?? 0))
   } else if (type === 'MORPHOLOGY_QUIZ') {
-    questions = await generateMorphologyQuestions(Number(numQuestions ?? 10))
+    const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
+    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null)
   }
 
   if (questions.length > 0) {

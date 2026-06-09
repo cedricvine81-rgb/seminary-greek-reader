@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { generateVocabQuestions, generateVocabQuestionsInRange, generateMorphologyQuestions } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateVocabQuestionsInRange, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -23,6 +23,9 @@ export async function GET(req: NextRequest) {
   const quizType = (searchParams.get('quizType') ?? 'VOCABULARY_QUIZ') as AssignmentType
   const source   = searchParams.get('source') ?? 'VOCAB_BUILDER'
   const level    = (searchParams.get('level') ?? 'BEGINNING') as CourseLevel
+  const morphologySubtype = (searchParams.get('morphologySubtype') ?? 'VERB_PARSING') as MorphologySubtype
+  const vocabThruLessonRaw = searchParams.get('vocabThruLesson')
+  const vocabThruLesson = vocabThruLessonRaw ? Number(vocabThruLessonRaw) : null
   const count    = Math.min(Math.max(Number(searchParams.get('count') ?? '5'), 1), 10)
   // week param lets us preview the actual lesson for a specific week
   const week     = Number(searchParams.get('week') ?? '1')
@@ -40,7 +43,7 @@ export async function GET(req: NextRequest) {
       questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', count)
     }
   } else if (quizType === 'MORPHOLOGY_QUIZ') {
-    questions = await generateMorphologyQuestions(count)
+    questions = await generateMorphologyQuestionsBySubtype(morphologySubtype, count, vocabThruLesson)
   }
 
   return NextResponse.json({ questions, lesson })

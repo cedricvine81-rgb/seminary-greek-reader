@@ -9,10 +9,31 @@ import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
+import type { MorphologySubtype, MorphTestConfig } from '@/lib/quiz-generation'
 import type { CourseLevel } from '@/types/course'
-import { getLessonForWeek, type VocabLesson } from '@/lib/vocab-lesson-map'
+import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
+
+const MORPH_SUBTYPE_SHORT: Record<MorphologySubtype, string> = {
+  VERB_PARSING:      'Verb Parsing',
+  NOUN_PARSING:      'Noun Parsing',
+  ADJECTIVE_PARSING: 'Adjective Parsing',
+  PRONOUN_PARSING:   'Pronoun Parsing',
+  CONDITIONALS:      'Conditionals',
+  SUBJUNCTIVES:      'Subjunctives',
+  MIXED:             'Mixed',
+}
+
+const MORPHOLOGY_SUBTYPES: { value: MorphologySubtype; label: string; description: string }[] = [
+  { value: 'VERB_PARSING',      label: 'Verb Parsing',       description: 'Identify tense, voice, mood, person, number' },
+  { value: 'NOUN_PARSING',      label: 'Noun Parsing',       description: 'Identify case, number, gender' },
+  { value: 'ADJECTIVE_PARSING', label: 'Adjective Parsing',  description: 'Identify case, number, gender of adjectives' },
+  { value: 'PRONOUN_PARSING',   label: 'Pronoun Parsing',    description: 'Identify case, number, gender of pronouns' },
+  { value: 'CONDITIONALS',      label: 'Conditional Sentences', description: 'Identify conditional sentence class from NT examples' },
+  { value: 'SUBJUNCTIVES',      label: 'Subjunctive Uses',   description: 'Identify the use of the subjunctive mood' },
+  { value: 'MIXED',             label: 'Mixed Parsing',      description: 'Verbs, nouns, adjectives, and pronouns combined' },
+]
 
 const DAYS_OF_WEEK = [
   { value: 0, label: 'Sun' },
@@ -39,6 +60,8 @@ interface SemesterForm {
   days: number[]          // 0=Sun … 6=Sat
   quizType: AssignmentType
   vocabSubsections: string[]  // selected subsection keys when quizType is VOCABULARY_QUIZ
+  morphologySubtype: MorphologySubtype   // used when not in series mode
+  morphologySeries: MorphTestConfig[]    // per-test configs in series mode
   level: CourseLevel
   numQuestions: number
   timePerQuestion: number  // 0 = untimed
@@ -48,6 +71,8 @@ interface SemesterForm {
   quizStylePct: number     // 0 = Choose Definition, 100 = Provide Definition
   maxRetakes: number | null
 }
+
+const DEFAULT_MORPH_TEST: MorphTestConfig = { subtype: 'VERB_PARSING', numQuestions: 20, vocabThruLesson: null }
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
 
@@ -121,6 +146,41 @@ function buildSchedule(startDate: string, weeks: number, days: number[]): Schedu
   return result
 }
 
+// ── Morphology Subtype Picker ─────────────────────────────────────────────────
+
+function MorphologySubtypePicker({
+  value,
+  onChange,
+}: {
+  value: MorphologySubtype
+  onChange: (v: MorphologySubtype) => void
+}) {
+  return (
+    <div>
+      <p className="block text-sm font-medium text-gray-700 mb-2">Morphology focus</p>
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {MORPHOLOGY_SUBTYPES.map(opt => (
+          <button
+            key={opt.value}
+            type="button"
+            onClick={() => onChange(opt.value)}
+            className={`text-left px-3 py-2.5 rounded-xl border transition-colors ${
+              value === opt.value
+                ? 'bg-brand-50 border-brand-400 ring-1 ring-brand-300'
+                : 'bg-white border-gray-200 hover:border-brand-300'
+            }`}
+          >
+            <span className={`block text-sm font-medium ${value === opt.value ? 'text-brand-800' : 'text-gray-800'}`}>
+              {opt.label}
+            </span>
+            <span className="block text-xs text-gray-500 mt-0.5">{opt.description}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ── Single Assignment Form ────────────────────────────────────────────────────
 
 function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
@@ -138,6 +198,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
   const [prevSectionsPct, setPrevSectionsPct] = useState(0)
   const [quizStylePct, setQuizStylePct] = useState(0)
+  const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
+  const [vocabThruLesson, setVocabThruLesson] = useState<number | null>(null)
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
   const [maxRetakes, setMaxRetakes] = useState<number | null>(null)
@@ -154,7 +216,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}) }),
+        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -192,6 +254,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
         ]}
       />
+
+      {form.type === 'MORPHOLOGY_QUIZ' && (
+        <>
+          <MorphologySubtypePicker value={morphologySubtype} onChange={setMorphologySubtype} />
+          <VocabLessonFilter value={vocabThruLesson} onChange={setVocabThruLesson} />
+        </>
+      )}
 
       {form.type === 'VOCABULARY_QUIZ' && (
         <>
@@ -317,6 +386,208 @@ interface SampleData {
   lesson: VocabLesson | null
 }
 
+// ── Vocab Lesson Filter ───────────────────────────────────────────────────────
+
+function VocabLessonFilter({
+  value,
+  onChange,
+}: {
+  value: number | null
+  onChange: (v: number | null) => void
+}) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-gray-700 mb-1">
+        Limit words to vocabulary already learned
+      </label>
+      <div className="flex items-center gap-3">
+        <select
+          value={value ?? ''}
+          onChange={e => onChange(e.target.value === '' ? null : Number(e.target.value))}
+          className="input w-64"
+        >
+          <option value="">No limit — use all parsing examples</option>
+          {VOCAB_LESSONS.map(l => (
+            <option key={l.lesson} value={l.lesson}>
+              Through Lesson {l.lesson} ({l.section}, ≥{l.occMin} occ.)
+            </option>
+          ))}
+        </select>
+      </div>
+      {value && (
+        <p className="text-xs text-amber-700 mt-1">
+          Only parsing examples whose lexeme appears in vocab lessons 1–{value} will be used.
+        </p>
+      )}
+    </div>
+  )
+}
+
+// ── Morph Series Builder ──────────────────────────────────────────────────────
+
+function MorphSeriesBuilder({
+  series,
+  onChange,
+  availableDates,
+}: {
+  series: MorphTestConfig[]
+  onChange: (s: MorphTestConfig[]) => void
+  availableDates: number
+}) {
+  function updateTest(i: number, patch: Partial<MorphTestConfig>) {
+    const next = series.map((t, idx) => idx === i ? { ...t, ...patch } : t)
+    onChange(next)
+  }
+
+  function addTest() {
+    onChange([...series, { ...DEFAULT_MORPH_TEST }])
+  }
+
+  function removeTest(i: number) {
+    onChange(series.filter((_, idx) => idx !== i))
+  }
+
+  function setCount(n: number) {
+    const clamped = Math.max(1, Math.min(n, 20))
+    if (clamped > series.length) {
+      onChange([...series, ...Array.from({ length: clamped - series.length }, () => ({ ...DEFAULT_MORPH_TEST }))])
+    } else {
+      onChange(series.slice(0, clamped))
+    }
+  }
+
+  const tooFewDates = availableDates > 0 && series.length > availableDates
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium text-gray-700">Tests in series</label>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCount(series.length - 1)}
+            disabled={series.length <= 1}
+            className="w-7 h-7 rounded-lg border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
+          >−</button>
+          <span className="text-sm font-semibold text-gray-900 w-6 text-center">{series.length}</span>
+          <button
+            type="button"
+            onClick={() => setCount(series.length + 1)}
+            disabled={series.length >= 20}
+            className="w-7 h-7 rounded-lg border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
+          >+</button>
+        </div>
+      </div>
+
+      {tooFewDates && (
+        <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+          {series.length} tests configured but only {availableDates} date{availableDates !== 1 ? 's' : ''} in the schedule.
+          Update semester dates above or reduce the number of tests.
+        </p>
+      )}
+
+      <div className="space-y-2">
+        {series.map((test, i) => (
+          <div key={i} className="border border-gray-200 rounded-xl p-3 bg-gray-50 space-y-3">
+            {/* Header row */}
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold text-purple-700 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-full">
+                Test {i + 1}
+              </span>
+              {series.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeTest(i)}
+                  className="text-xs text-gray-400 hover:text-red-500 transition-colors"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+
+            {/* Subtype selector */}
+            <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-4">
+              {MORPHOLOGY_SUBTYPES.map(opt => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => updateTest(i, { subtype: opt.value })}
+                  className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
+                    test.subtype === opt.value
+                      ? 'bg-brand-50 border-brand-400 text-brand-800 font-medium'
+                      : 'bg-white border-gray-200 text-gray-700 hover:border-brand-300'
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Questions + vocab row */}
+            <div className="flex flex-wrap items-end gap-4">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Questions</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={50}
+                  value={test.numQuestions}
+                  onChange={e => updateTest(i, { numQuestions: Math.max(1, Math.min(50, Number(e.target.value))) })}
+                  className="input w-20 text-sm"
+                />
+              </div>
+              <div className="flex-1 min-w-48">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
+                  Vocab filter
+                </label>
+                <select
+                  value={test.vocabThruLesson ?? ''}
+                  onChange={e => updateTest(i, { vocabThruLesson: e.target.value === '' ? null : Number(e.target.value) })}
+                  className="input text-sm w-full"
+                >
+                  <option value="">All parsing examples</option>
+                  {VOCAB_LESSONS.map(l => (
+                    <option key={l.lesson} value={l.lesson}>
+                      Words through Lesson {l.lesson} ({l.section})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={addTest}
+        disabled={series.length >= 20}
+        className="text-sm text-brand-700 hover:text-brand-900 hover:underline font-medium disabled:opacity-40"
+      >
+        + Add another test
+      </button>
+    </div>
+  )
+}
+
+// ── Morphology Answer Display ─────────────────────────────────────────────────
+
+function MorphAnswerDisplay({ raw }: { raw: string }) {
+  let parsed: Record<string, string | null> = {}
+  try { parsed = JSON.parse(raw) } catch { return <p className="text-xs text-green-700 mt-1">{raw}</p> }
+  const fields = Object.entries(parsed).filter(([, v]) => v != null && v !== '')
+  return (
+    <div className="flex flex-wrap gap-1.5 mt-1">
+      {fields.map(([k, v]) => (
+        <span key={k} className="inline-flex items-center gap-1 text-xs bg-green-50 border border-green-200 text-green-800 px-2 py-0.5 rounded-full">
+          <span className="text-green-500 font-medium capitalize">{k === 'casus' ? 'case' : k}:</span>
+          {v}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 // ── Sample Quiz Modal ─────────────────────────────────────────────────────────
 
 function SampleQuizModal({
@@ -364,13 +635,22 @@ function SampleQuizModal({
               <li key={q.position} className="border border-gray-100 rounded-xl p-4 space-y-2">
                 <p className="text-sm font-medium text-gray-700">
                   <span className="text-gray-400 mr-2">{q.position}.</span>
-                  {quizType === 'VOCABULARY_QUIZ'
-                    ? <span className="font-greek text-lg text-ink-900">{q.prompt}</span>
-                    : <span className="font-greek text-ink-900">{q.prompt}</span>
-                  }
+                  {quizType === 'MORPHOLOGY_QUIZ' && q.type === 'MORPHOLOGY_IDENTIFY' ? (
+                    <span className="font-greek text-xl text-ink-900">{q.prompt}</span>
+                  ) : quizType === 'MORPHOLOGY_QUIZ' ? (
+                    <span className="whitespace-pre-line text-gray-900">{q.prompt}</span>
+                  ) : quizType === 'VOCABULARY_QUIZ' ? (
+                    <span className="font-greek text-lg text-ink-900">{q.prompt}</span>
+                  ) : (
+                    <span className="font-greek text-ink-900">{q.prompt}</span>
+                  )}
                 </p>
 
-                {quizType === 'VOCABULARY_QUIZ' && provideDefinition ? (
+                {quizType === 'MORPHOLOGY_QUIZ' && q.type === 'MORPHOLOGY_IDENTIFY' ? (
+                  <div className="mt-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
+                    Student selects each parse category (part of speech, tense, voice, mood…)
+                  </div>
+                ) : quizType === 'VOCABULARY_QUIZ' && provideDefinition ? (
                   <div className="mt-2">
                     <div className="w-full px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-400 italic">
                       Student types their answer here…
@@ -403,9 +683,13 @@ function SampleQuizModal({
                 </button>
 
                 {revealed.has(q.position) && (
-                  <p className="text-xs text-green-700 mt-1">
-                    Answer: <span className="font-medium">{q.correctAnswer}</span>
-                  </p>
+                  quizType === 'MORPHOLOGY_QUIZ' && q.type === 'MORPHOLOGY_IDENTIFY' ? (
+                    <MorphAnswerDisplay raw={q.correctAnswer} />
+                  ) : (
+                    <p className="text-xs text-green-700 mt-1">
+                      Answer: <span className="font-medium">{q.correctAnswer}</span>
+                    </p>
+                  )
                 )}
               </li>
             ))}
@@ -439,9 +723,11 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     startDate:        '',
     weeks:            16,
     days:             [4],   // Thursday by default
-    quizType:         'VOCABULARY_QUIZ',
-    vocabSubsections: [],
-    level:            courses[0]?.level ?? 'BEGINNING',
+    quizType:          'VOCABULARY_QUIZ',
+    vocabSubsections:  [],
+    morphologySubtype: 'VERB_PARSING' as MorphologySubtype,
+    morphologySeries:  [{ ...DEFAULT_MORPH_TEST }],
+    level:             courses[0]?.level ?? 'BEGINNING',
     prevSectionsPct:  0,
     quizStylePct:     0,
     numQuestions:     20,
@@ -477,11 +763,20 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     setSampleData(null)
     setSampleLoading(true)
     try {
+      const firstTest = form.morphologySeries[0]
+      const previewSubtype = form.quizType === 'MORPHOLOGY_QUIZ'
+        ? (firstTest?.subtype ?? form.morphologySubtype)
+        : form.morphologySubtype
+      const previewVocab = form.quizType === 'MORPHOLOGY_QUIZ' && firstTest?.vocabThruLesson
+        ? String(firstTest.vocabThruLesson)
+        : undefined
       const params = new URLSearchParams({
         quizType: form.quizType,
         level:    form.level,
         count:    '5',
         week:     '1',
+        ...(form.quizType === 'MORPHOLOGY_QUIZ' ? { morphologySubtype: previewSubtype } : {}),
+        ...(previewVocab ? { vocabThruLesson: previewVocab } : {}),
       })
       const res = await fetch(`/api/assignments/sample?${params}`)
       const data = await res.json()
@@ -491,7 +786,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     } finally {
       setSampleLoading(false)
     }
-  }, [form.quizType, form.level])
+  }, [form.quizType, form.level, form.morphologySubtype, form.morphologySeries])
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
@@ -508,6 +803,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           provideDefinition: form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false,
           isPublished: publishRef.current,
           schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })),
+          ...(form.quizType === 'MORPHOLOGY_QUIZ' ? { morphologySeries: form.morphologySeries } : {}),
         }),
       })
       const data = await res.json()
@@ -610,6 +906,14 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             ]}
           />
 
+          {form.quizType === 'MORPHOLOGY_QUIZ' && (
+            <MorphSeriesBuilder
+              series={form.morphologySeries}
+              onChange={s => setF('morphologySeries', s)}
+              availableDates={schedule.length}
+            />
+          )}
+
           {form.quizType === 'VOCABULARY_QUIZ' && (
             <>
               <FrequencySectionPicker
@@ -657,14 +961,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             </>
           )}
 
-          <Input
-            label="Questions per quiz"
-            type="number"
-            min={1}
-            max={50}
-            value={form.numQuestions}
-            onChange={e => setF('numQuestions', Number(e.target.value))}
-          />
+          {form.quizType !== 'MORPHOLOGY_QUIZ' && (
+            <Input
+              label="Questions per quiz"
+              type="number"
+              min={1}
+              max={50}
+              value={form.numQuestions}
+              onChange={e => setF('numQuestions', Number(e.target.value))}
+            />
+          )}
 
           <Input
             label="Time per question (seconds, 0 = untimed)"
@@ -723,23 +1029,41 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           <div ref={previewRef} className={`border rounded-xl overflow-hidden transition-colors duration-300 ${previewFlash ? 'border-brand-400 ring-2 ring-brand-300' : 'border-brand-100'}`}>
             <div className="bg-brand-50 px-4 py-2.5 flex items-center justify-between">
               <span className="text-sm font-semibold text-brand-800">
-                Schedule preview — {schedule.length} quiz{schedule.length !== 1 ? 'zes' : ''}
+                {form.quizType === 'MORPHOLOGY_QUIZ'
+                  ? `Schedule preview — ${form.morphologySeries.length} test${form.morphologySeries.length !== 1 ? 's' : ''} (using first ${form.morphologySeries.length} date${form.morphologySeries.length !== 1 ? 's' : ''})`
+                  : `Schedule preview — ${schedule.length} quiz${schedule.length !== 1 ? 'zes' : ''}`}
               </span>
               <span className="text-xs text-brand-600">
                 {form.weeks} week{form.weeks !== 1 ? 's' : ''} · {form.days.length} day{form.days.length !== 1 ? 's' : ''}/week
               </span>
             </div>
-            <div className="max-h-56 overflow-y-auto divide-y divide-gray-100">
-              {schedule.map((s, i) => {
+            <div className="max-h-64 overflow-y-auto divide-y divide-gray-100">
+              {(form.quizType === 'MORPHOLOGY_QUIZ' ? schedule.slice(0, form.morphologySeries.length) : schedule).map((s, i) => {
                 const lesson = form.quizType === 'VOCABULARY_QUIZ' ? getLessonForWeek(s.week) : null
                 const sectionLabel = lesson ? lesson.section.replace('-', ':') : null
+                const morphTest = form.quizType === 'MORPHOLOGY_QUIZ' ? form.morphologySeries[i] : null
+                const morphLabel = morphTest ? MORPH_SUBTYPE_SHORT[morphTest.subtype] : null
+                const vocabLabel = morphTest?.vocabThruLesson
+                  ? `vocab ≤ L${morphTest.vocabThruLesson}`
+                  : null
                 return (
-                  <div key={i} className="flex items-center gap-4 px-4 py-2 text-sm">
-                    <span className="text-gray-500 w-20 shrink-0">Week {s.week}</span>
+                  <div key={i} className="flex items-center gap-3 px-4 py-2 text-sm">
+                    <span className="text-gray-400 w-16 shrink-0 text-xs">Wk {s.week}</span>
+                    {morphTest && (
+                      <span className="shrink-0 text-xs font-semibold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full">
+                        Test {i + 1}
+                      </span>
+                    )}
+                    {morphLabel && (
+                      <span className="shrink-0 text-xs text-brand-700">{morphLabel}</span>
+                    )}
+                    {vocabLabel && (
+                      <span className="shrink-0 text-xs text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded">{vocabLabel}</span>
+                    )}
                     {sectionLabel && (
                       <span className="text-xs font-medium text-brand-600 shrink-0">{sectionLabel}</span>
                     )}
-                    <span className="text-gray-800">{s.label}</span>
+                    <span className="text-gray-700 truncate">{s.label}</span>
                   </div>
                 )
               })}
@@ -756,25 +1080,34 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           </div>
         )}
 
-        <div className="flex gap-3 justify-end">
-          <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
-          <Button
-            type="button"
-            variant="secondary"
-            disabled={schedule.length === 0 || form.days.length === 0}
-            onClick={handleUpdate}
-          >
-            Update Preview{schedule.length > 0 ? ` (${schedule.length})` : ''}
-          </Button>
-          <Button
-            type="submit"
-            loading={loading}
-            disabled={schedule.length === 0 || form.days.length === 0}
-            onClick={() => { publishRef.current = true }}
-          >
-            Save &amp; Post{schedule.length > 0 ? ` (${schedule.length})` : ''}
-          </Button>
-        </div>
+        {(() => {
+          const effectiveCount = form.quizType === 'MORPHOLOGY_QUIZ'
+            ? Math.min(form.morphologySeries.length, schedule.length)
+            : schedule.length
+          const disabled = schedule.length === 0 || form.days.length === 0 ||
+            (form.quizType === 'MORPHOLOGY_QUIZ' && form.morphologySeries.length === 0)
+          return (
+            <div className="flex gap-3 justify-end">
+              <Button type="button" variant="ghost" onClick={() => router.back()}>Cancel</Button>
+              <Button
+                type="button"
+                variant="secondary"
+                disabled={disabled}
+                onClick={handleUpdate}
+              >
+                Update Preview{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
+              </Button>
+              <Button
+                type="submit"
+                loading={loading}
+                disabled={disabled}
+                onClick={() => { publishRef.current = true }}
+              >
+                Save &amp; Post{effectiveCount > 0 ? ` (${effectiveCount})` : ''}
+              </Button>
+            </div>
+          )
+        })()}
       </form>
     </>
   )
