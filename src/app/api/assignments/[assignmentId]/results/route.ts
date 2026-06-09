@@ -27,7 +27,7 @@ export async function GET(
   const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
 
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId: assignment.courseId },
+    where: { courseId: assignment.courseId, status: 'APPROVED' },
     include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
     orderBy: { createdAt: 'asc' },
   })

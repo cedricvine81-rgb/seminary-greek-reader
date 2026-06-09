@@ -11,12 +11,14 @@ interface AssignmentListProps {
 
 const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   VOCABULARY_QUIZ: 'blue',
+  PASSAGE_VOCABULARY: 'blue',
   MORPHOLOGY_QUIZ: 'purple',
   TRANSLATION_EXERCISE: 'green',
 }
 
 const typeLabels: Record<string, string> = {
   VOCABULARY_QUIZ: 'Vocabulary',
+  PASSAGE_VOCABULARY: 'Passage Vocab',
   MORPHOLOGY_QUIZ: 'Morphology',
   TRANSLATION_EXERCISE: 'Translation',
 }

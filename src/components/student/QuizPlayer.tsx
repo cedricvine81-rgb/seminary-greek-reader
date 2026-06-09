@@ -20,6 +20,17 @@ interface QuizPlayerProps {
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'submitted'
 
+/** Parse a correctAnswer string — handles plain text and JSON morphology objects */
+function formatCorrectAnswer(ca: string): string {
+  try {
+    const obj = JSON.parse(ca)
+    if (obj && typeof obj === 'object') {
+      return Object.values(obj).filter(Boolean).join(', ')
+    }
+  } catch { /* not JSON — fall through */ }
+  return ca
+}
+
 function levenshtein(a: string, b: string): number {
   const m = a.length, n = b.length
   const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
@@ -196,6 +207,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     setResult(null)
   }
 
+  // ── Auto-submit when all questions are answered ──
+  // Prevents work from being lost if the student closes the tab before clicking Submit.
+  useEffect(() => {
+    if (phase === 'complete') {
+      handleSubmit()
+    }
+  }, [phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Timer bar ──────────────────────────────────────────────────────────────
   const timerPct = timePerQuestion && timeLeft !== null
     ? Math.round((timeLeft / timePerQuestion) * 100)
@@ -265,7 +284,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                     ) : (
                       <p className="mt-0.5 text-gray-400 italic">No answer</p>
                     )}
-                    {!ok && <p>Correct: <span className="text-green-700 font-medium">{question.correctAnswer}</span></p>}
+                    {!ok && <p>Correct: <span className="text-green-700 font-medium">{formatCorrectAnswer(question.correctAnswer ?? '')}</span></p>}
                   </div>
                 </div>
               </div>
@@ -273,15 +292,19 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           })}
         </div>
 
-        <div className="flex gap-3 justify-end">
-          <Button onClick={handleSubmit} loading={submitting} className="flex items-center gap-2">
-            <Send size={15} />
-            Submit for Grading
-          </Button>
-          {canRetake && (
-            <Button variant="ghost" onClick={handleRetake} className="flex items-center gap-2">
-              <RotateCcw size={15} />
-              Retake Quiz
+        <div className="flex gap-3 justify-end items-center">
+          {submitting ? (
+            <span className="text-sm text-gray-500 flex items-center gap-2">
+              <svg className="animate-spin w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+              </svg>
+              Submitting…
+            </span>
+          ) : (
+            <Button onClick={handleSubmit} loading={submitting} className="flex items-center gap-2">
+              <Send size={15} />
+              Submit for Grading
             </Button>
           )}
         </div>
@@ -497,7 +520,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             )}
             {!clientCorrect[q.id] && (
               <p className="text-sm text-gray-600">
-                Correct answer: <span className="text-green-700 font-medium">{q.correctAnswer}</span>
+                Correct answer: <span className="text-green-700 font-medium">{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
               </p>
             )}
           </div>
