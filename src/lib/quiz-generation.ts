@@ -195,12 +195,29 @@ export const SUBTYPE_FIELD_OPTIONS: Record<MorphologySubtype, MorphFieldOption[]
   SUBJUNCTIVES:  [],
 }
 
+/**
+ * Restrict which inflected forms appear in the question pool.
+ * Each array is a whitelist; omit (or empty) means "all values allowed".
+ */
+export interface MorphParseFilter {
+  // Verb
+  tenses?:  string[]   // e.g. ['Present', 'Aorist']
+  voices?:  string[]   // e.g. ['Active', 'Passive']
+  moods?:   string[]   // e.g. ['Indicative', 'Subjunctive']
+  persons?: string[]   // e.g. ['1st', '3rd']  — non-participle/infinitive moods
+  numbers?: string[]   // e.g. ['Singular']
+  // Participle / Noun / Adjective / Pronoun
+  cases?:   string[]   // e.g. ['Nominative', 'Genitive']
+  genders?: string[]   // e.g. ['Masculine']
+}
+
 /** One test in a morphology series. */
 export interface MorphTestConfig {
   subtype: MorphologySubtype
   numQuestions: number
   vocabThruLesson: number | null  // null = no vocabulary filter
   fields: string[]                // which parse fields students must identify
+  parseFilter?: MorphParseFilter  // restrict question pool to specific forms
 }
 
 function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fields?: string[]) {
@@ -238,6 +255,21 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
   })
 }
 
+function applyParseFilter(entries: GreekParseEntry[], filter?: MorphParseFilter): GreekParseEntry[] {
+  if (!filter) return entries
+  const has = (list: string[] | undefined, val: string | undefined) =>
+    !list?.length || (val != null && list.includes(val))
+  return entries.filter(e =>
+    has(filter.tenses,  e.tense)  &&
+    has(filter.voices,  e.voice)  &&
+    has(filter.moods,   e.mood)   &&
+    has(filter.persons, e.person) &&
+    has(filter.numbers, e.number) &&
+    has(filter.cases,   e.casus)  &&
+    has(filter.genders, e.gender)
+  )
+}
+
 function getEntriesForSubtype(subtype: MorphologySubtype): GreekParseEntry[] {
   switch (subtype) {
     case 'VERB_PARSING':      return VERB_PARSES
@@ -254,13 +286,21 @@ export async function generateMorphologyQuestionsBySubtype(
   count: number,
   vocabThruLesson?: number | null,
   fields?: string[],
+  parseFilter?: MorphParseFilter,
 ) {
-  // Conditional/subjunctive questions use full example sentences — vocab filter doesn't apply
+  // Conditional/subjunctive questions use full example sentences — filters don't apply
   if (subtype === 'CONDITIONALS') return generateConditionalQuestions(count)
   if (subtype === 'SUBJUNCTIVES') return generateSubjunctiveQuestions(count)
 
   let entries = getEntriesForSubtype(subtype)
 
+  // Apply parse-value filter (restrict to selected tenses/voices/moods/etc.)
+  if (parseFilter) {
+    const filtered = applyParseFilter(entries, parseFilter)
+    if (filtered.length >= Math.min(count, 3)) entries = filtered
+  }
+
+  // Apply vocab filter (restrict to lexemes already learned)
   if (vocabThruLesson != null && vocabThruLesson > 0) {
     const lesson = VOCAB_LESSONS.find(l => l.lesson === vocabThruLesson)
     if (lesson) {
@@ -273,7 +313,7 @@ export async function generateMorphologyQuestionsBySubtype(
         const filtered = entries.filter(e => knownLexemes.has(e.lexeme))
         if (filtered.length >= Math.min(count, 3)) entries = filtered
       } catch {
-        // DB unavailable — fall back to unfiltered pool
+        // DB unavailable — fall back to current pool
       }
     }
   }

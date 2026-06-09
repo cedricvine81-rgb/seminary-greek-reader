@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
-    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields)
+    questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)
   }
 
   if (questions.length > 0) {

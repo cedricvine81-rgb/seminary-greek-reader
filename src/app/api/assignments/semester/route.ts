@@ -172,7 +172,7 @@ export async function POST(req: NextRequest) {
       }
     } else if (testConfig) {
       const fields = testConfig.fields?.length ? testConfig.fields : undefined
-      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, testConfig.vocabThruLesson, fields)
+      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, testConfig.vocabThruLesson, fields, testConfig.parseFilter ?? undefined)
     }
 
     if (questions.length > 0) {
