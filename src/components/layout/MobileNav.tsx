@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, Calendar, GraduationCap, ClipboardList,
   FlipHorizontal, TrendingUp, BarChart2, BookMarked,
-  Archive, FileText, Bell,
+  Archive, FileText, Bell, Scroll,
 } from 'lucide-react'
 
 const instructorTabs = [
@@ -20,6 +20,7 @@ const studentTabs = [
   { label: 'Dashboard',   href: '/student',                icon: LayoutDashboard },
   { label: 'Courses',     href: '/student/courses',        icon: GraduationCap },
   { label: 'Assignments', href: '/student/assignments',    icon: ClipboardList },
+  { label: 'Exegesis',    href: '/student/exegesis',       icon: Scroll },
   { label: 'Flashcards',  href: '/student/flashcards',     icon: FlipHorizontal },
   { label: 'Grades',      href: '/student/scores',         icon: BarChart2 },
 ]

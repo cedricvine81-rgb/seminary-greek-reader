@@ -157,6 +157,27 @@
   .badge-purple { @apply badge bg-purple-100 text-purple-800; }
   .badge-gray   { @apply badge bg-gray-100 text-gray-700; }
 
+  /* ── Print styles for Exegesis Workspace ───────────────── */
+  @media print {
+    /* Hide everything except the exegesis content */
+    header, nav, aside, footer,
+    [data-print-hide="true"] {
+      display: none !important;
+    }
+    body {
+      background: white !important;
+    }
+    .print\:block { display: block !important; }
+    .print\:hidden { display: none !important; }
+    table { page-break-inside: auto; }
+    tr { page-break-inside: avoid; }
+  }
+
+  /* ── Greek font utility (for exegesis workspace) ──────── */
+  .font-greek {
+    font-family: 'Gentium Plus', 'GFS Didot', Georgia, serif;
+  }
+
   /* ── Flashcard ──────────────────────────────────────────── */
   .flashcard-flip {
     transition: transform 0.18s ease-in, opacity 0.18s ease-in;

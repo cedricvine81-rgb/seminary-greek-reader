@@ -6,7 +6,7 @@ import {
   Menu, X, LogIn, UserPlus, LogOut, Settings,
   LayoutDashboard, Calendar, ClipboardList, FileText,
   BarChart2, GraduationCap, FlipHorizontal, TrendingUp,
-  BookMarked, Archive,
+  BookMarked, Archive, Scroll,
 } from 'lucide-react'
 
 interface AppMenuProps {
@@ -28,6 +28,7 @@ const STUDENT_NAV = [
   { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
   { href: '/student/courses',       label: 'Courses',      icon: GraduationCap },
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
+  { href: '/student/exegesis',       label: 'Exegesis',     icon: Scroll },
   { href: '/student/flashcards',    label: 'Flashcards',   icon: FlipHorizontal },
   { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
   { href: '/student/scores',        label: 'Grades',       icon: BarChart2 },

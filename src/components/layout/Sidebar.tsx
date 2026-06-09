@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText, GraduationCap,
-  FlipHorizontal, TrendingUp, Settings, Bell,
+  FlipHorizontal, TrendingUp, Settings, Bell, Scroll,
 } from 'lucide-react'
 
 interface NavItem {
@@ -28,6 +28,7 @@ const studentNav: NavItem[] = [
   { label: 'Calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
   { label: 'Courses',     href: '/student/courses',          icon: <GraduationCap size={16} /> },
   { label: 'Assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
+  { label: 'Exegesis',    href: '/student/exegesis',         icon: <Scroll size={16} /> },
   { label: 'Flashcards',  href: '/student/flashcards',       icon: <FlipHorizontal size={16} /> },
   { label: 'Accuracy',    href: '/student/progress',         icon: <TrendingUp size={16} /> },
   { label: 'Grades',      href: '/student/scores',           icon: <BarChart2 size={16} /> },

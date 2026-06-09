@@ -34,6 +34,7 @@ model User {
   quizAttempts       QuizAttempt[]
   flashcardProgress  FlashcardProgress[]
   createdAssignments Assignment[]          @relation("CreatedAssignments")
+  exegesisSessions   ExegesisSession[]
 
   @@index([email])
 }
@@ -388,4 +389,25 @@ model Material {
   updatedAt   DateTime @updatedAt
 
   @@index([courseId])
+}
+
+// ─── Exegesis Workspace ───────────────────────────────────────────
+
+model ExegesisSession {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  bookOsisId  String
+  bookName    String
+  chapter     Int
+  verseStart  Int
+  verseEnd    Int
+  // JSON map: { [wordKey]: { parsing: string, syntax: string, translation: string } }
+  // wordKey = "verseNum-wordId"
+  annotations Json     @default("{}")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
 }
