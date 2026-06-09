@@ -31,7 +31,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const body = await req.json()
-    const { annotations, title } = body
+    const { annotations, title, startedAt } = body
 
     const existing = await prisma.exegesisSession.findFirst({
       where: { id: params.id, userId: payload.sub },
@@ -43,6 +43,8 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       data: {
         ...(annotations !== undefined && { annotations }),
         ...(title && { title }),
+        // Only set startedAt once (never overwrite)
+        ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),
       },
     })
     return NextResponse.json({ session: updated })

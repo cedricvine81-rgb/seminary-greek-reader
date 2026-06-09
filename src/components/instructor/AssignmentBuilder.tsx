@@ -425,6 +425,19 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             onChange={e => set('reference', e.target.value)}
             placeholder="e.g. John 1:1–18"
           />
+          <div>
+            <Input
+              label="Time limit (minutes, 0 = no limit)"
+              type="number"
+              min={0}
+              max={180}
+              value={form.timePerQuestion ? Math.round(form.timePerQuestion / 60) : 0}
+              onChange={e => set('timePerQuestion', Number(e.target.value) * 60 || undefined)}
+            />
+            <p className="mt-1 text-xs text-indigo-600">
+              Students will see a countdown timer. When it reaches zero, annotations are locked and the exercise auto-submits.
+            </p>
+          </div>
         </div>
       )}
 

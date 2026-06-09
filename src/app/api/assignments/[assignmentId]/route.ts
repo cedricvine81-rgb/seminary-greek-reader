@@ -22,7 +22,7 @@ export async function GET(
       select: {
         id: true, title: true, type: true, weekNumber: true,
         dueDate: true, reference: true, instructions: true,
-        isPublished: true, courseId: true,
+        isPublished: true, courseId: true, timePerQuestion: true,
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })

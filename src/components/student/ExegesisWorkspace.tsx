@@ -40,6 +40,7 @@ interface AssignmentInfo {
   title: string
   reference: string | null
   instructions: string | null
+  timeLimitSeconds: number | null   // null = untimed; timePerQuestion repurposed as total session time
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -70,11 +71,13 @@ function AnnotationPanel({
   verseNum,
   annotations,
   onChange,
+  locked,
 }: {
   word: VerseWord
   verseNum: number
   annotations: AnnotationMap
   onChange: (key: string, field: keyof WordAnnotation, value: string) => void
+  locked?: boolean
 }) {
   const key = wordKey(verseNum, word.id)
   const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
@@ -100,10 +103,11 @@ function AnnotationPanel({
           type="text"
           value={ann.parsing}
           placeholder={autoparse || 'e.g. Verb, Present Active Indicative 3sg'}
+          disabled={locked}
           onChange={e => onChange(key, 'parsing', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
         />
-        {autoparse && (
+        {autoparse && !locked && (
           <button
             type="button"
             onClick={() => onChange(key, 'parsing', autoparse)}
@@ -123,8 +127,9 @@ function AnnotationPanel({
           type="text"
           value={ann.syntax}
           placeholder="e.g. Subject, Direct object, Temporal ptc."
+          disabled={locked}
           onChange={e => onChange(key, 'syntax', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -137,8 +142,9 @@ function AnnotationPanel({
           type="text"
           value={ann.translation}
           placeholder="e.g. he believed / the love of God"
+          disabled={locked}
           onChange={e => onChange(key, 'translation', e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
         />
       </div>
     </div>
@@ -201,6 +207,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
+  // ── Timer ──
+  const [secondsLeft, setSecondsLeft] = useState<number | null>(null)  // null = untimed
+  const [timerExpired, setTimerExpired] = useState(false)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const startedAtRef = useRef<Date | null>(null)
+
   // ── Load books list ──
   useEffect(() => {
     fetch('/api/reader?corpus=GNT')
@@ -221,7 +233,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
       .then(async (d) => {
         const a = d.assignment
         if (!a) return
-        setAssignment({ id: a.id, title: a.title, reference: a.reference ?? null, instructions: a.instructions ?? null })
+        const timeLimitSeconds = a.timePerQuestion ?? null
+        const assignmentInfo: AssignmentInfo = {
+          id: a.id, title: a.title, reference: a.reference ?? null,
+          instructions: a.instructions ?? null, timeLimitSeconds,
+        }
+        setAssignment(assignmentInfo)
 
         // Look for an existing session for this assignment
         const sr = await fetch(`/api/exegesis?assignmentId=${propAssignmentId}`)
@@ -238,7 +255,20 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           setAnnotations(sess.annotations ?? {})
           setSessionId(sess.id)
           setSessionTitle(sess.title)
-          if (sess.submittedAt) setSubmitted(true)
+          const alreadySubmitted = !!sess.submittedAt
+          if (alreadySubmitted) setSubmitted(true)
+          // Initialise timer from stored startedAt
+          if (timeLimitSeconds && sess.startedAt && !alreadySubmitted) {
+            const elapsed = Math.floor((Date.now() - new Date(sess.startedAt).getTime()) / 1000)
+            const remaining = timeLimitSeconds - elapsed
+            startedAtRef.current = new Date(sess.startedAt)
+            if (remaining <= 0) {
+              setTimerExpired(true)
+              setSecondsLeft(0)
+            } else {
+              setSecondsLeft(remaining)
+            }
+          }
           // Load passage
           if (book) {
             setIsLoading(true)
@@ -261,6 +291,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             setVerseStart(parsed.verseStart)
             setVerseEnd(parsed.verseEnd)
             setSessionTitle(a.title)
+            // Start timer immediately for new timed sessions
+            if (timeLimitSeconds) {
+              startedAtRef.current = new Date()
+              setSecondsLeft(timeLimitSeconds)
+            }
             // Load the passage
             setIsLoading(true)
             fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}`)
@@ -289,6 +324,30 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   }, [])
 
   useEffect(() => { loadSessionList() }, [loadSessionList])
+
+  // ── Countdown timer ──
+  useEffect(() => {
+    if (secondsLeft === null || secondsLeft <= 0 || submitted) return
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setSecondsLeft(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(timerRef.current!)
+          setTimerExpired(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [secondsLeft !== null && secondsLeft > 0, submitted]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Auto-submit when timer expires ──
+  useEffect(() => {
+    if (timerExpired && !submitted && propAssignmentId) {
+      submitAssignment()
+    }
+  }, [timerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Load passage ──
   async function loadPassage() {
@@ -328,6 +387,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
   // ── Annotation change ──
   function handleAnnotationChange(key: string, field: keyof WordAnnotation, value: string) {
+    if (isLocked) return
     setAnnotations(prev => ({
       ...prev,
       [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
@@ -368,7 +428,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         await fetch(`/api/exegesis/${sid}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ annotations, title: resolvedTitle }),
+          body: JSON.stringify({
+            annotations,
+            title: resolvedTitle,
+            // Persist startedAt if not yet stored (first save of a timed session)
+            ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
+          }),
         })
       } else {
         const r = await fetch('/api/exegesis', {
@@ -491,6 +556,17 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     }
   }
 
+  // ── Timer display helpers ──
+  const isLocked = timerExpired || submitted  // no further edits allowed
+  function formatTime(secs: number): string {
+    const m = Math.floor(secs / 60)
+    const s = secs % 60
+    return `${m}:${s.toString().padStart(2, '0')}`
+  }
+  const timerColor = secondsLeft !== null
+    ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-amber-600' : 'text-indigo-700'
+    : ''
+
   const passageTitle = selectedBook && loadedVerses.length > 0
     ? `${selectedBook.name} ${chapter}:${verseStart}${verseEnd !== verseStart ? `–${verseEnd}` : ''}`
     : ''
@@ -606,6 +682,26 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         )}
 
         <div className="flex-1" />
+
+        {/* ── Countdown timer ── */}
+        {secondsLeft !== null && !submitted && (
+          <div className={`self-end flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-sm font-semibold
+            ${timerExpired
+              ? 'bg-red-100 border-red-300 text-red-700'
+              : secondsLeft <= 60
+                ? 'bg-red-50 border-red-200 animate-pulse ' + timerColor
+                : secondsLeft <= 180
+                  ? 'bg-amber-50 border-amber-200 ' + timerColor
+                  : 'bg-indigo-50 border-indigo-200 ' + timerColor
+            }`}
+          >
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {timerExpired ? 'Time up' : formatTime(secondsLeft)}
+          </div>
+        )}
 
         {/* Session title — hide in assignment mode (title comes from assignment) */}
         {!propAssignmentId && loadedVerses.length > 0 && (
@@ -754,16 +850,22 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           </div>
 
           {/* ── Annotation panel (screen only) ── */}
-          <div className="print:hidden lg:w-96 border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto">
+          <div className="print:hidden lg:w-96 border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto flex flex-col gap-3">
+            {timerExpired && (
+              <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 font-medium text-center">
+                ⏰ Time is up — annotations are locked
+              </div>
+            )}
             {selectedWord ? (
               <AnnotationPanel
                 word={selectedWord.word}
                 verseNum={selectedWord.verse}
                 annotations={annotations}
                 onChange={handleAnnotationChange}
+                locked={isLocked}
               />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-gray-400 py-12">
+              <div className="flex flex-col items-center justify-center flex-1 text-gray-400 py-12">
                 <svg className="w-10 h-10 mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                     d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" />

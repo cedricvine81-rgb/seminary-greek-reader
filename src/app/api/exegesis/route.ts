@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
         verseStart: Number(verseStart),
         verseEnd: Number(verseEnd),
         annotations: annotations ?? {},
-        ...(assignmentId ? { assignmentId } : {}),
+        ...(assignmentId ? { assignmentId, startedAt: new Date() } : {}),
       },
     })
     return NextResponse.json({ session }, { status: 201 })
