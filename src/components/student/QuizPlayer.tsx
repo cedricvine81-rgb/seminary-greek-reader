@@ -110,10 +110,20 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   }, [timeLeft, phase])
 
   const handleCheck = useCallback((expired = false, override?: string) => {
+    let morphAnswer = morphDraft
+    // Auto-include partOfSpeech from correct answer for focused parse questions
+    if (!expired && type === 'MORPHOLOGY_QUIZ' && q.type !== 'MULTIPLE_CHOICE') {
+      try {
+        const correctObj = JSON.parse(q.correctAnswer ?? '{}')
+        if (correctObj.partOfSpeech && !morphDraft.partOfSpeech) {
+          morphAnswer = { ...morphDraft, partOfSpeech: correctObj.partOfSpeech }
+        }
+      } catch {}
+    }
     const answer = expired
       ? ''
       : type === 'MORPHOLOGY_QUIZ'
-        ? JSON.stringify(morphDraft)
+        ? JSON.stringify(morphAnswer)
         : (override ?? draft)
 
     let correct = false
@@ -398,25 +408,75 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           </div>
         )}
 
-        {/* Morphology selects */}
-        {type === 'MORPHOLOGY_QUIZ' && phase === 'answering' && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            {(['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'case', 'gender'] as const).map(field => {
-              const opts = field === 'case' ? MORPH_OPTIONS.case : MORPH_OPTIONS[field as keyof typeof MORPH_OPTIONS]
-              if (!Array.isArray(opts) || opts.length === 0) return null
-              return (
-                <Select
-                  key={field}
-                  label={field.charAt(0).toUpperCase() + field.slice(1)}
-                  value={morphDraft[field] ?? ''}
-                  onChange={e => setMorphDraft(prev => ({ ...prev, [field]: e.target.value }))}
-                  placeholder="—"
-                  options={(opts as string[]).map(o => ({ value: o, label: o }))}
-                />
-              )
-            })}
+        {/* Morphology: multiple-choice (Conditionals / Subjunctive uses) */}
+        {type === 'MORPHOLOGY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && phase === 'answering' && (
+          <div className="grid grid-cols-1 gap-2">
+            {(q.options ?? []).map(opt => (
+              <button
+                key={opt}
+                onClick={() => { setDraft(opt); handleCheck(false, opt) }}
+                className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
+              >
+                {opt}
+              </button>
+            ))}
           </div>
         )}
+
+        {/* Morphology: parsing dropdowns (Verbs / Nouns / Adjectives / Pronouns) */}
+        {type === 'MORPHOLOGY_QUIZ' && q.type !== 'MULTIPLE_CHOICE' && phase === 'answering' && (() => {
+          // Determine which fields are required from the correct answer
+          let correctObj: Record<string, string | null> = {}
+          try { correctObj = JSON.parse(q.correctAnswer ?? '{}') } catch {}
+          const pos = correctObj.partOfSpeech
+          // Fields to show as dropdowns (non-null fields except partOfSpeech which is shown as label)
+          const FIELD_MAP: Record<string, { label: string; optsKey: keyof typeof MORPH_OPTIONS | 'case' }> = {
+            tense:  { label: 'Tense',  optsKey: 'tense'  },
+            voice:  { label: 'Voice',  optsKey: 'voice'  },
+            mood:   { label: 'Mood',   optsKey: 'mood'   },
+            person: { label: 'Person', optsKey: 'person' },
+            number: { label: 'Number', optsKey: 'number' },
+            casus:  { label: 'Case',   optsKey: 'case'   },
+            gender: { label: 'Gender', optsKey: 'gender' },
+          }
+          const activeFields = Object.keys(FIELD_MAP).filter(f => correctObj[f])
+          const requiredFilled = activeFields.every(f => morphDraft[f])
+          return (
+            <div className="space-y-4">
+              {pos && (
+                <p className="text-sm text-gray-500">
+                  Parse this <span className="font-semibold text-brand-700">{pos}</span>:
+                </p>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {activeFields.map(field => {
+                  const { label, optsKey } = FIELD_MAP[field]
+                  const opts = optsKey === 'case' ? MORPH_OPTIONS.case : MORPH_OPTIONS[optsKey as keyof typeof MORPH_OPTIONS]
+                  if (!Array.isArray(opts)) return null
+                  return (
+                    <Select
+                      key={field}
+                      label={label}
+                      value={morphDraft[field] ?? ''}
+                      onChange={e => setMorphDraft(prev => ({ ...prev, [field]: e.target.value }))}
+                      placeholder="—"
+                      options={(opts as string[]).map(o => ({ value: o, label: o }))}
+                    />
+                  )
+                })}
+              </div>
+              <div className="flex justify-end">
+                <Button onClick={() => {
+                  // Merge partOfSpeech into draft before checking
+                  if (pos) setMorphDraft(prev => ({ ...prev, partOfSpeech: pos }))
+                  handleCheck()
+                }} disabled={!requiredFilled}>
+                  Check Answer
+                </Button>
+              </div>
+            </div>
+          )
+        })()}
 
         {/* Feedback */}
         {phase === 'feedback' && (

@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { generateVocabQuestions, generateMorphologyQuestions } from '@/lib/quiz-generation'
+import {
+  generateVocabQuestions, generateMorphologyQuestions,
+  generateVerbParseQuestions, generateNounParseQuestions,
+  generateAdjectiveParseQuestions, generatePronounParseQuestions,
+  generateConditionalQuestions, generateSubjunctiveQuestions,
+} from '@/lib/quiz-generation'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import type { QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -25,20 +30,29 @@ export async function POST(
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { type: true, level: true },
+    select: { type: true, level: true, morphSubtype: true },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   const qType = (type as QuestionType) ?? 'GREEK_TO_ENGLISH'
   const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)
   const qLevel = (level as CourseLevel) ?? assignment.level
+  const morphSubtype = assignment.morphSubtype ?? 'ALL'
 
-  let questions: Awaited<ReturnType<typeof generateVocabQuestions>> = []
+  let questions: ReturnType<typeof generateVerbParseQuestions> | Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
     questions = await generateVocabQuestions(qLevel, qType, qCount)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
-    questions = await generateMorphologyQuestions(qCount)
+    switch (morphSubtype) {
+      case 'VERB':        questions = generateVerbParseQuestions(qCount);       break
+      case 'NOUN':        questions = generateNounParseQuestions(qCount);       break
+      case 'ADJECTIVE':   questions = generateAdjectiveParseQuestions(qCount);  break
+      case 'PRONOUN':     questions = generatePronounParseQuestions(qCount);    break
+      case 'CONDITIONAL': questions = generateConditionalQuestions(qCount);     break
+      case 'SUBJUNCTIVE': questions = generateSubjunctiveQuestions(qCount);     break
+      default:            questions = await generateMorphologyQuestions(qCount); break
+    }
   }
 
   // Replace all existing questions
