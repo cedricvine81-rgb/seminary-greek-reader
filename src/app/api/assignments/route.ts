@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
 
   // Validate required fields
   if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
@@ -56,6 +56,7 @@ export async function POST(req: NextRequest) {
       level: level as CourseLevel,
       reference, instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
+      reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
       allowLate: Boolean(allowLate),
       lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
       provideDefinition: Boolean(provideDefinition),

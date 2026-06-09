@@ -65,6 +65,7 @@ export interface AssignmentFormData {
   instructions?: string
   numQuestions: number
   timePerQuestion?: number
+  reviewTimeSeconds?: number
   allowLate?: boolean
   lateDaysLimit?: number
 }

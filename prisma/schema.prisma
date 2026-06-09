@@ -252,6 +252,7 @@ model Assignment {
   reference       String?
   instructions    String?
   timePerQuestion Int?           // seconds per question; null = untimed
+  reviewTimeSeconds Int?         // stage-2 review/correction time limit (seconds); null = unlimited
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   provideDefinition Boolean   @default(false)

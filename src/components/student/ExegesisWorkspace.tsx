@@ -40,7 +40,8 @@ interface AssignmentInfo {
   title: string
   reference: string | null
   instructions: string | null
-  timeLimitSeconds: number | null   // null = untimed; timePerQuestion repurposed as total session time
+  timeLimitSeconds: number | null         // stage 1: annotation phase
+  reviewTimeLimitSeconds: number | null   // stage 2: review/correction phase; null = unlimited
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -120,11 +121,12 @@ function AnnotationPanel({
 /** Review-mode annotation panel — shown after timer expires.
  *  Displays the original (read-only), the correct parse, and a red correction input. */
 function ReviewAnnotationPanel({
-  word, verseNum, annotations, corrections, onCorrection,
+  word, verseNum, annotations, corrections, onCorrection, locked,
 }: {
   word: VerseWord; verseNum: number
   annotations: AnnotationMap; corrections: AnnotationMap
   onCorrection: (key: string, field: keyof WordAnnotation, value: string) => void
+  locked?: boolean
 }) {
   const key = wordKey(verseNum, word.id)
   const original = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
@@ -170,6 +172,7 @@ function ReviewAnnotationPanel({
         placeholder="e.g. Verb, Present Active Indicative 3sg"
         onUseCorrect={() => onCorrection(key, 'parsing', autoparse)}
         onChange={v => onCorrection(key, 'parsing', v)}
+        locked={locked}
       />
 
       {/* Syntax */}
@@ -180,6 +183,7 @@ function ReviewAnnotationPanel({
         correction={corr.syntax}
         placeholder="e.g. Subject, Direct object, Temporal ptc."
         onChange={v => onCorrection(key, 'syntax', v)}
+        locked={locked}
       />
 
       {/* Translation */}
@@ -190,16 +194,17 @@ function ReviewAnnotationPanel({
         correction={corr.translation}
         placeholder="e.g. he believed / the love of God"
         onChange={v => onCorrection(key, 'translation', v)}
+        locked={locked}
       />
     </div>
   )
 }
 
 function ReviewField({
-  label, correct, original, correction, placeholder, onChange, onUseCorrect,
+  label, correct, original, correction, placeholder, onChange, onUseCorrect, locked,
 }: {
   label: string; correct: string | null; original: string; correction: string
-  placeholder: string; onChange: (v: string) => void; onUseCorrect?: () => void
+  placeholder: string; onChange: (v: string) => void; onUseCorrect?: () => void; locked?: boolean
 }) {
   return (
     <div className="space-y-1.5">
@@ -234,13 +239,20 @@ function ReviewField({
 
       {/* Correction input */}
       <div className="flex items-start gap-2">
-        <span className="text-xs text-red-500 w-14 shrink-0 pt-2 font-medium">Edit</span>
+        <span className={`text-xs w-14 shrink-0 pt-2 font-medium ${locked ? 'text-gray-400' : 'text-red-500'}`}>
+          {locked ? 'Locked' : 'Edit'}
+        </span>
         <input
           type="text"
           value={correction}
-          placeholder={placeholder}
+          placeholder={locked ? '' : placeholder}
+          disabled={locked}
           onChange={e => onChange(e.target.value)}
-          className="flex-1 border-2 border-red-300 rounded-lg px-3 py-1.5 text-sm text-red-700 placeholder-red-200 focus:outline-none focus:ring-2 focus:ring-red-400 bg-red-50"
+          className={`flex-1 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 ${
+            locked
+              ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
+              : 'border-2 border-red-300 text-red-700 placeholder-red-200 focus:ring-red-400 bg-red-50'
+          }`}
         />
       </div>
     </div>
@@ -413,11 +425,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
 
-  // ── Timer ──
+  // ── Stage 1 Timer (annotation phase) ──
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null)  // null = untimed
   const [timerExpired, setTimerExpired] = useState(false)
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startedAtRef = useRef<Date | null>(null)
+
+  // ── Stage 2 Timer (review/correction phase) ──
+  const [reviewSecondsLeft, setReviewSecondsLeft] = useState<number | null>(null)
+  const [reviewTimerExpired, setReviewTimerExpired] = useState(false)
+  const reviewTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
   // ── Load books list ──
   useEffect(() => {
@@ -440,9 +457,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         const a = d.assignment
         if (!a) return
         const timeLimitSeconds = a.timePerQuestion ?? null
+        const reviewTimeLimitSeconds = a.reviewTimeSeconds ?? null
         const assignmentInfo: AssignmentInfo = {
           id: a.id, title: a.title, reference: a.reference ?? null,
-          instructions: a.instructions ?? null, timeLimitSeconds,
+          instructions: a.instructions ?? null, timeLimitSeconds, reviewTimeLimitSeconds,
         }
         setAssignment(assignmentInfo)
 
@@ -549,12 +567,36 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [secondsLeft !== null && secondsLeft > 0, submitted]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Auto-submit when timer expires ──
+  // ── When stage 1 timer expires: start stage 2 review timer (if set) ──
   useEffect(() => {
-    if (timerExpired && !submitted && propAssignmentId) {
-      submitAssignment()
+    if (timerExpired && !submitted && assignment?.reviewTimeLimitSeconds) {
+      setReviewSecondsLeft(assignment.reviewTimeLimitSeconds)
     }
   }, [timerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Stage 2 countdown ──
+  useEffect(() => {
+    if (reviewSecondsLeft === null || reviewSecondsLeft <= 0 || submitted) return
+    if (reviewTimerRef.current) clearInterval(reviewTimerRef.current)
+    reviewTimerRef.current = setInterval(() => {
+      setReviewSecondsLeft(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(reviewTimerRef.current!)
+          setReviewTimerExpired(true)
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (reviewTimerRef.current) clearInterval(reviewTimerRef.current) }
+  }, [reviewSecondsLeft !== null && reviewSecondsLeft > 0, submitted]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Auto-submit when stage 2 timer expires ──
+  useEffect(() => {
+    if (reviewTimerExpired && !submitted && propAssignmentId) {
+      submitAssignment()
+    }
+  }, [reviewTimerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Load passage ──
   async function loadPassage() {
@@ -608,6 +650,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
   // ── Correction change (review mode) ──
   function handleCorrectionChange(key: string, field: keyof WordAnnotation, value: string) {
+    if (reviewTimerExpired || submitted) return   // corrections locked
     setCorrections(prev => ({
       ...prev,
       [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
@@ -793,9 +836,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     }
   }
 
-  // ── Timer display helpers ──
-  const isLocked = timerExpired || submitted  // no further timed edits allowed
-  const reviewMode = timerExpired  // show reader + correction panel
+  // ── Lock / mode flags ──
+  const isLocked = timerExpired || submitted              // stage 1 annotations locked
+  const correctionLocked = reviewTimerExpired || submitted // stage 2 corrections locked
+  const reviewMode = timerExpired                         // show 3-column reader layout
+
+  // Show submit button when:
+  // - in assignment mode and passage is loaded
+  // - AND not yet submitted
+  // - AND (there is no stage 1 timer, OR stage 1 has expired)
+  const showSubmitButton = !!(propAssignmentId && loadedVerses.length > 0 && !submitted &&
+    (!assignment?.timeLimitSeconds || timerExpired))
+
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60)
     const s = secs % 60
@@ -921,23 +973,47 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
         <div className="flex-1" />
 
-        {/* ── Countdown timer ── */}
-        {secondsLeft !== null && !submitted && (
+        {/* ── Stage 1 Countdown timer ── */}
+        {secondsLeft !== null && !submitted && !timerExpired && (
           <div className={`self-end flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-sm font-semibold
-            ${timerExpired
-              ? 'bg-red-100 border-red-300 text-red-700'
-              : secondsLeft <= 60
-                ? 'bg-red-50 border-red-200 animate-pulse ' + timerColor
-                : secondsLeft <= 180
-                  ? 'bg-amber-50 border-amber-200 ' + timerColor
-                  : 'bg-brand-50 border-brand-200 ' + timerColor
+            ${secondsLeft <= 60
+              ? 'bg-red-50 border-red-200 animate-pulse text-red-600'
+              : secondsLeft <= 180
+                ? 'bg-amber-50 border-amber-200 text-amber-600'
+                : 'bg-brand-50 border-brand-200 text-brand-700'
             }`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            {timerExpired ? 'Time up' : formatTime(secondsLeft)}
+            <span className="text-xs font-normal mr-0.5 opacity-70">Stage 1</span>
+            {formatTime(secondsLeft)}
+          </div>
+        )}
+
+        {/* ── Stage 2 Review timer ── */}
+        {reviewMode && !submitted && (
+          <div className={`self-end flex items-center gap-2 px-3 py-1.5 rounded-lg border font-mono text-sm font-semibold
+            ${reviewTimerExpired
+              ? 'bg-red-100 border-red-300 text-red-700'
+              : reviewSecondsLeft !== null && reviewSecondsLeft <= 60
+                ? 'bg-red-50 border-red-200 animate-pulse text-red-600'
+                : reviewSecondsLeft !== null && reviewSecondsLeft <= 180
+                  ? 'bg-amber-50 border-amber-200 text-amber-600'
+                  : 'bg-amber-50 border-amber-200 text-amber-700'
+            }`}
+          >
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            <span className="text-xs font-normal mr-0.5 opacity-70">Review</span>
+            {reviewTimerExpired
+              ? 'Locked'
+              : reviewSecondsLeft !== null
+                ? formatTime(reviewSecondsLeft)
+                : 'Open'}
           </div>
         )}
 
@@ -1005,20 +1081,28 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         {loadedVerses.length > 0 && (
           <button
             onClick={exportPDF}
-            className="self-end px-4 py-1.5 bg-gray-700 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
+            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-700 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
           >
-            🖨 Export PDF
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Download as PDF
           </button>
         )}
 
-        {/* Submit assignment button */}
-        {propAssignmentId && loadedVerses.length > 0 && !submitted && (
+        {/* Submit assignment button — visible in review phase or when untimed */}
+        {showSubmitButton && (
           <button
             onClick={submitAssignment}
-            disabled={isSubmitting || isSaving}
-            className="self-end px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
+            disabled={isSubmitting || isSaving || correctionLocked}
+            className="self-end flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
           >
-            {isSubmitting ? 'Submitting…' : '✓ Submit Assignment'}
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
           </button>
         )}
         {propAssignmentId && submitted && (
@@ -1055,9 +1139,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             </div>
 
             {/* Review mode banner */}
-            {reviewMode && (
+            {reviewMode && !correctionLocked && (
               <div className="mb-3 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800 font-medium">
-                ⏰ Time expired — review mode. Click a word to see corrections.
+                ✏️ Review phase — click any word to compare your analysis and add corrections in red.
+              </div>
+            )}
+            {correctionLocked && (
+              <div className="mb-3 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-800 font-medium">
+                🔒 Review phase ended — all annotations are locked. Download your PDF or submit for grading.
               </div>
             )}
 
@@ -1112,6 +1201,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   annotations={annotations}
                   corrections={corrections}
                   onCorrection={handleCorrectionChange}
+                  locked={correctionLocked}
                 />
               ) : (
                 <AnnotationPanel

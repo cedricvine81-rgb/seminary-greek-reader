@@ -434,7 +434,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           />
           <div>
             <Input
-              label="Time limit (minutes, 0 = no limit)"
+              label="Stage 1 time limit — annotation phase (minutes, 0 = no limit)"
               type="number"
               min={0}
               max={180}
@@ -442,7 +442,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               onChange={e => set('timePerQuestion', Number(e.target.value) * 60 || undefined)}
             />
             <p className="mt-1 text-xs text-brand-600">
-              Students will see a countdown timer. When it reaches zero, annotations are locked and the exercise auto-submits.
+              Students annotate each word (Parsing · Syntax · Translation). When the timer reaches zero, annotations lock and review mode begins.
+            </p>
+          </div>
+          <div>
+            <Input
+              label="Stage 2 time limit — review &amp; correction phase (minutes, 0 = no limit)"
+              type="number"
+              min={0}
+              max={60}
+              value={form.reviewTimeSeconds ? Math.round(form.reviewTimeSeconds / 60) : 0}
+              onChange={e => set('reviewTimeSeconds', Number(e.target.value) * 60 || undefined)}
+            />
+            <p className="mt-1 text-xs text-brand-600">
+              After Stage 1 ends, students see the passage reader and can make corrections in red. When this timer expires, all edits lock and the exercise is submitted for grading.
             </p>
           </div>
         </div>
