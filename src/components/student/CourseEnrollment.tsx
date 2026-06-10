@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { BookOpen, Building2 } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
@@ -40,6 +40,11 @@ export function CourseEnrollment({
   const [courses, setCourses] = useState(initialCourses)
   const [requesting, setRequesting] = useState<string | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Sync with server-rendered prop whenever the list changes (e.g. after router.refresh()
+  // adds newly created courses or removes ones the student just enrolled in).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { setCourses(initialCourses) }, [JSON.stringify(initialCourses)])
 
   async function request(courseId: string) {
     setRequesting(courseId)
