@@ -50,21 +50,6 @@ function wordKey(verse: number, wordId: string) {
   return `${verse}-${wordId}`
 }
 
-function formatParse(word: VerseWord): string {
-  const p = word.parses?.[0]
-  if (!p) return ''
-  const parts: string[] = []
-  if (p.partOfSpeech) parts.push(p.partOfSpeech)
-  if (p.tense) parts.push(p.tense)
-  if (p.voice) parts.push(p.voice)
-  if (p.mood) parts.push(p.mood)
-  if (p.person) parts.push(p.person)
-  if (p.number) parts.push(p.number)
-  if (p.casus) parts.push(p.casus)
-  if (p.gender) parts.push(p.gender)
-  return parts.join(' ')
-}
-
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
 /** Normal annotation panel used during the timed phase */
@@ -115,46 +100,21 @@ function ReviewAnnotationPanel({
   const key = wordKey(verseNum, word.id)
   const original = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
   const corr = corrections[key] ?? { parsing: '', syntax: '', translation: '' }
-  const autoparse = formatParse(word)
-
-  const parse = word.parses?.[0]
-  const parseDetails = parse ? [
-    parse.partOfSpeech,
-    parse.tense, parse.voice, parse.mood,
-    parse.person, parse.number, parse.casus, parse.gender,
-  ].filter(Boolean) : []
 
   return (
     <div className="flex flex-col gap-4">
       {/* Word header */}
-      <div>
-        <div className="flex items-baseline gap-3 mb-1">
-          <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
-          <span className="text-sm text-gray-500 italic">{word.lexeme?.lexeme}</span>
-        </div>
-        {word.lexeme?.gloss && (
-          <p className="text-sm text-gray-500">&ldquo;{word.lexeme.gloss}&rdquo;</p>
-        )}
-        {/* Parse chips */}
-        {parseDetails.length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-2">
-            {parseDetails.map((d, i) => (
-              <span key={i} className="px-1.5 py-0.5 rounded text-xs bg-brand-50 text-brand-700 border border-brand-200 font-medium">
-                {d}
-              </span>
-            ))}
-          </div>
-        )}
+      <div className="flex items-baseline gap-3">
+        <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
       </div>
 
       {/* Parsing */}
       <ReviewField
         label="Parsing"
-        correct={autoparse}
+        correct={null}
         original={original.parsing}
         correction={corr.parsing}
         placeholder=""
-        onUseCorrect={() => onCorrection(key, 'parsing', autoparse)}
         onChange={v => onCorrection(key, 'parsing', v)}
         locked={locked}
       />
@@ -243,8 +203,7 @@ function ReviewField({
   )
 }
 
-/** Right-side passage reader shown during review mode.
- *  Renders the passage with morphological details visible on word click. */
+/** Right-side passage reader shown during review mode. */
 function ReviewPassagePanel({
   verses, selectedWordKey, onWordClick,
 }: {
@@ -253,16 +212,6 @@ function ReviewPassagePanel({
   onWordClick: (word: VerseWord, verse: number) => void
 }) {
   const [hoveredKey, setHoveredKey] = useState<string | null>(null)
-  const [popupWord, setPopupWord] = useState<{ word: VerseWord; verse: number } | null>(null)
-
-  function handleClick(word: VerseWord, verse: number) {
-    const key = wordKey(verse, word.id)
-    setPopupWord(prev => prev && wordKey(prev.verse, prev.word.id) === key ? null : { word, verse })
-    onWordClick(word, verse)
-  }
-
-  const pw = popupWord?.word
-  const parse = pw?.parses?.[0]
 
   return (
     <div className="flex flex-col h-full overflow-hidden border-l border-gray-200">
@@ -272,7 +221,7 @@ function ReviewPassagePanel({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
         </svg>
         <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide">Passage Reader</p>
-        <p className="text-xs text-brand-500 ml-1">Click any word for morphology</p>
+        <p className="text-xs text-brand-500 ml-1">Click any word to annotate</p>
       </div>
 
       <div className="flex-1 overflow-y-auto p-4 space-y-6">
@@ -283,17 +232,15 @@ function ReviewPassagePanel({
               {v.words.map(w => {
                 const key = wordKey(v.verse, w.id)
                 const isActive = selectedWordKey === key
-                const isPopup = popupWord && wordKey(popupWord.verse, popupWord.word.id) === key
                 return (
                   <button
                     key={w.id}
-                    onClick={() => handleClick(w, v.verse)}
+                    onClick={() => onWordClick(w, v.verse)}
                     onMouseEnter={() => setHoveredKey(key)}
                     onMouseLeave={() => setHoveredKey(null)}
                     className={[
                       'px-1.5 py-0.5 rounded text-xl font-greek transition-colors',
-                      isPopup ? 'bg-amber-100 text-amber-900 ring-2 ring-amber-400'
-                        : isActive ? 'bg-brand-100 text-brand-800'
+                      isActive ? 'bg-brand-100 text-brand-800'
                         : hoveredKey === key ? 'bg-gray-100 text-gray-900'
                         : 'text-gray-800 hover:bg-gray-100',
                     ].join(' ')}
@@ -306,48 +253,6 @@ function ReviewPassagePanel({
           </div>
         ))}
       </div>
-
-      {/* Word detail popup */}
-      {popupWord && (
-        <div className="shrink-0 border-t border-gray-200 bg-white p-4 space-y-3 max-h-64 overflow-y-auto">
-          <div className="flex items-baseline justify-between gap-2">
-            <div className="flex items-baseline gap-2">
-              <span className="text-2xl font-greek text-brand-700">{pw!.surface}</span>
-              <span className="text-sm text-gray-500 italic">{pw!.lexeme?.lexeme}</span>
-            </div>
-            <button onClick={() => setPopupWord(null)}
-              className="text-gray-400 hover:text-gray-600 text-lg leading-none">×</button>
-          </div>
-
-          {pw!.lexeme?.gloss && (
-            <p className="text-sm text-gray-700 font-medium">&ldquo;{pw!.lexeme.gloss}&rdquo;</p>
-          )}
-
-          {parse && (
-            <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
-              {[
-                ['Part of speech', parse.partOfSpeech],
-                ['Tense', parse.tense],
-                ['Voice', parse.voice],
-                ['Mood', parse.mood],
-                ['Person', parse.person],
-                ['Number', parse.number],
-                ['Case', parse.casus],
-                ['Gender', parse.gender],
-              ].filter(([, v]) => v).map(([label, value]) => (
-                <div key={label} className="flex gap-1">
-                  <span className="text-gray-400 w-24 shrink-0">{label}</span>
-                  <span className="font-medium text-gray-800">{value}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {pw!.lexeme?.strongs && (
-            <p className="text-xs text-gray-400">Strong&apos;s {pw!.lexeme.strongs}</p>
-          )}
-        </div>
-      )}
     </div>
   )
 }
