@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, XCircle, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -23,6 +23,29 @@ export function EnrollmentRequests({ pending: initial }: Props) {
   const [acting, setActing] = useState<string | null>(null)
   const [messageOpen, setMessageOpen] = useState<string | null>(null)
   const [messageText, setMessageText] = useState('')
+
+  // Poll for new enrollment requests every 15 seconds
+  useEffect(() => {
+    const poll = async () => {
+      try {
+        const res = await fetch('/api/enrollments/pending')
+        if (!res.ok) return
+        const data = await res.json()
+        setPending((prev: PendingEnrollment[]) => {
+          const incoming: PendingEnrollment[] = data.pending ?? []
+          // Only update state (and avoid flicker) if something actually changed
+          const prevIds = prev.map(e => e.id).sort().join(',')
+          const nextIds = incoming.map((e: PendingEnrollment) => e.id).sort().join(',')
+          return prevIds === nextIds ? prev : incoming
+        })
+      } catch {
+        // silently ignore network errors
+      }
+    }
+
+    const id = setInterval(poll, 15_000)
+    return () => clearInterval(id)
+  }, [])
 
   if (pending.length === 0) return null
 
