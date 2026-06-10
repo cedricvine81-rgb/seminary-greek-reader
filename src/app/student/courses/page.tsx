@@ -3,12 +3,12 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card } from '@/components/ui/Card'
-import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { CourseEnrollment } from '@/components/student/CourseEnrollment'
+import { PendingEnrollments } from '@/components/student/PendingEnrollments'
 import { isPreviewMode } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'My Courses' }
@@ -121,30 +121,11 @@ export default async function StudentCoursesPage() {
           )}
         </div>
 
-        {/* ── Pending requests ── */}
-        {pendingEnrollments.length > 0 && (
-          <div className="space-y-4">
-            <h2 className="text-base font-semibold text-gray-900">Pending Requests</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {pendingEnrollments.map(e => {
-                const instructorName = [
-                  e.course.instructor.title,
-                  e.course.instructor.firstName,
-                  e.course.instructor.surname,
-                ].filter(Boolean).join(' ')
-                return (
-                  <Card key={e.courseId} className="space-y-2 border-amber-200 bg-amber-50">
-                    <div className="flex items-start justify-between">
-                      <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
-                    </div>
-                    <p className="text-xs text-gray-500">{instructorName}</p>
-                    <p className="text-xs text-amber-700">Awaiting instructor approval</p>
-                  </Card>
-                )
-              })}
-            </div>
-          </div>
-        )}
+        {/* ── Pending requests — polls every 10 s and refreshes when approved ── */}
+        <PendingEnrollments pending={pendingEnrollments.map(e => ({
+          courseId: e.courseId,
+          course: { name: e.course.name, instructor: e.course.instructor },
+        }))} />
 
         {/* ── Open courses (no institution) ── */}
         <CourseEnrollment
