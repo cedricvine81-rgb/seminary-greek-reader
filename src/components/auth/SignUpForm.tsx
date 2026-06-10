@@ -1,7 +1,7 @@
 'use client'
-import { useState, FormEvent } from 'react'
+import { useState, useEffect, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Eye, EyeOff, Check, X } from 'lucide-react'
+import { Eye, EyeOff, Check, X, ChevronDown } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { RoleSelector } from './RoleSelector'
@@ -153,6 +153,14 @@ export function SignUpForm() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [terms, setTerms] = useState(false)
   const [touched, setTouched] = useState<Partial<Record<keyof typeof INITIAL_FORM, boolean>>>({})
+  const [institutions, setInstitutions] = useState<string[]>([])
+
+  useEffect(() => {
+    fetch('/api/profile/institutions')
+      .then(r => r.json())
+      .then(d => setInstitutions(d.institutions ?? []))
+      .catch(() => {})
+  }, [])
 
   function set(field: keyof typeof INITIAL_FORM) {
     return (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -235,13 +243,30 @@ export function SignUpForm() {
         error={touched.email ? fieldErrors.email : undefined}
       />
 
-      {/* Institution (optional) */}
-      <Input
-        label="Institution (optional)"
-        value={form.institution}
-        onChange={set('institution')}
-        placeholder="e.g. Dallas Theological Seminary — helps match you to courses"
-      />
+      {/* Institution — pick from instructor-created list only */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Institution <span className="text-gray-400 font-normal">(optional)</span>
+        </label>
+        <div className="relative">
+          <select
+            value={form.institution}
+            onChange={e => setForm(prev => ({ ...prev, institution: e.target.value }))}
+            className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 pr-9 text-sm
+              focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+          >
+            <option value="">No institution</option>
+            {institutions.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+          <ChevronDown
+            size={15}
+            className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+          />
+        </div>
+        <p className="mt-1 text-xs text-gray-400">Helps match you to your instructor's courses</p>
+      </div>
 
       {/* Password */}
       <PasswordField

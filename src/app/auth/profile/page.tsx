@@ -12,15 +12,10 @@ export default async function ProfilePage() {
   const payload = token ? verifyToken(token) : null
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, userInstitutions, institutionRecords] = await Promise.all([
+  const [user, institutionRecords] = await Promise.all([
     prisma.user.findUnique({
       where: { id: payload.sub },
       select: { firstName: true, surname: true, institution: true },
-    }),
-    prisma.user.findMany({
-      where: { institution: { not: null } },
-      select: { institution: true },
-      distinct: ['institution'],
     }),
     prisma.institution.findMany({
       select: { name: true },
@@ -30,12 +25,7 @@ export default async function ProfilePage() {
 
   if (!user) redirect('/auth/sign-in')
 
-  const institutions = Array.from(
-    new Set([
-      ...institutionRecords.map(i => i.name),
-      ...userInstitutions.map(u => u.institution as string).filter(Boolean),
-    ])
-  ).sort()
+  const institutions = institutionRecords.map(i => i.name)
 
   return (
     <main className="flex min-h-[calc(100vh-3.5rem)] items-center justify-center p-4 bg-parchment-50">
