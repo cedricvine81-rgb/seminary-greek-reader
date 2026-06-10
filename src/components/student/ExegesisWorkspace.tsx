@@ -92,11 +92,6 @@ function AnnotationPanel({
           <input
             type="text"
             value={ann[field]}
-            placeholder={
-              field === 'parsing' ? 'e.g. Verb, Present Active Indicative 3sg'
-              : field === 'syntax' ? 'e.g. Subject, Direct object, Temporal ptc.'
-              : 'e.g. he believed / the love of God'
-            }
             disabled={locked}
             onChange={e => onChange(key, field, e.target.value)}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
@@ -158,7 +153,7 @@ function ReviewAnnotationPanel({
         correct={autoparse}
         original={original.parsing}
         correction={corr.parsing}
-        placeholder="e.g. Verb, Present Active Indicative 3sg"
+        placeholder=""
         onUseCorrect={() => onCorrection(key, 'parsing', autoparse)}
         onChange={v => onCorrection(key, 'parsing', v)}
         locked={locked}
@@ -170,7 +165,7 @@ function ReviewAnnotationPanel({
         correct={null}
         original={original.syntax}
         correction={corr.syntax}
-        placeholder="e.g. Subject, Direct object, Temporal ptc."
+        placeholder=""
         onChange={v => onCorrection(key, 'syntax', v)}
         locked={locked}
       />
@@ -181,7 +176,7 @@ function ReviewAnnotationPanel({
         correct={null}
         original={original.translation}
         correction={corr.translation}
-        placeholder="e.g. he believed / the love of God"
+        placeholder=""
         onChange={v => onCorrection(key, 'translation', v)}
         locked={locked}
       />
