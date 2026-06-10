@@ -5,6 +5,7 @@ import { addDays, format } from 'date-fns'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizPlayer } from '@/components/student/QuizPlayer'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
+import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
@@ -32,13 +33,6 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   ])
   if (!assignment) notFound()
 
-  // Passage-based translation exercises (no questions, just a reference) open in the
-  // Exegesis Workspace.  Question-based exercises (built with TranslationExerciseBuilder)
-  // stay on this page and are rendered by the TranslationExercise component below.
-  if (assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0) {
-    redirect(`/student/exegesis?assignmentId=${params.assignmentId}`)
-  }
-
   // Determine submission window
   const now = new Date()
   const isPastDue = now > assignment.dueDate
@@ -60,30 +54,39 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     reference: q.reference ?? undefined,
   }))
 
+  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
+
   return (
     <DashboardShell role="STUDENT" pageTitle={assignment.title}>
-      <div className="max-w-2xl space-y-6">
-        <div className="flex gap-2 flex-wrap">
-          <Badge variant="gray">Week {assignment.weekNumber}</Badge>
-          <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
-            {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
-          </Badge>
-          {assignment.reference && <Badge variant="gray">{assignment.reference}</Badge>}
-        </div>
+      {/* Passage-based exegesis exercises need full width */}
+      <div className={isPassageExercise ? 'flex flex-col h-full print:h-auto overflow-hidden print:overflow-visible' : 'max-w-2xl space-y-6'}>
 
-        {assignment.instructions && (
-          <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
-            <p>{assignment.instructions}</p>
-            {assignment.instructions.includes('Vocabulary Builder') && (
-              <Link
-                href="/downloads/BGVB-2024.pdf"
-                target="_blank"
-                className="inline-flex items-center gap-1.5 text-brand-700 hover:text-brand-900 hover:underline font-medium"
-              >
-                ↓ Download Biblical Greek Vocabulary Builder (PDF)
-              </Link>
+        {/* Header badges + instructions — shown for non-passage exercises */}
+        {!isPassageExercise && (
+          <>
+            <div className="flex gap-2 flex-wrap">
+              <Badge variant="gray">Week {assignment.weekNumber}</Badge>
+              <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
+                {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
+              </Badge>
+              {assignment.reference && <Badge variant="gray">{assignment.reference}</Badge>}
+            </div>
+
+            {assignment.instructions && (
+              <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
+                <p>{assignment.instructions}</p>
+                {assignment.instructions.includes('Vocabulary Builder') && (
+                  <Link
+                    href="/downloads/BGVB-2024.pdf"
+                    target="_blank"
+                    className="inline-flex items-center gap-1.5 text-brand-700 hover:text-brand-900 hover:underline font-medium"
+                  >
+                    ↓ Download Biblical Greek Vocabulary Builder (PDF)
+                  </Link>
+                )}
+              </div>
             )}
-          </div>
+          </>
         )}
 
         {isClosed && (
@@ -102,7 +105,11 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {!isClosed && assignment.type === 'TRANSLATION_EXERCISE' && (
+        {!isClosed && isPassageExercise && (
+          <ExegesisWorkspace assignmentId={assignment.id} />
+        )}
+
+        {!isClosed && !isPassageExercise && assignment.type === 'TRANSLATION_EXERCISE' && (
           <TranslationExercise
             assignmentId={assignment.id}
             questions={quizQuestions}
