@@ -32,8 +32,10 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   ])
   if (!assignment) notFound()
 
-  // Translation exercises open directly in the Exegesis Workspace
-  if (assignment.type === 'TRANSLATION_EXERCISE') {
+  // Passage-based translation exercises (no questions, just a reference) open in the
+  // Exegesis Workspace.  Question-based exercises (built with TranslationExerciseBuilder)
+  // stay on this page and are rendered by the TranslationExercise component below.
+  if (assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0) {
     redirect(`/student/exegesis?assignmentId=${params.assignmentId}`)
   }
 
@@ -100,7 +102,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {!isClosed && (
+        {!isClosed && assignment.type === 'TRANSLATION_EXERCISE' && (
+          <TranslationExercise
+            assignmentId={assignment.id}
+            questions={quizQuestions}
+          />
+        )}
+
+        {!isClosed && assignment.type !== 'TRANSLATION_EXERCISE' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}
