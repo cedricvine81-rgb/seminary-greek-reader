@@ -9,8 +9,8 @@ export function ChangePasswordForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   // The forced first-sign-in flow appends ?required=1; in that case we
-  // must NOT use router.back() (which would go to sign-in) — route to root
-  // and let the role-based pages take it from there.
+  // must NOT use router.back() (which would go to sign-in) — route to the
+  // user's role dashboard (NOT "/", which renders the Reader).
   const required = searchParams?.get('required') === '1'
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
@@ -43,8 +43,11 @@ export function ChangePasswordForm() {
       setSuccess(true)
       setTimeout(() => {
         if (required) {
-          // Go to root — the role-aware redirects take it from there
-          router.push('/')
+          // Land on the role dashboard, not "/" (which is the Reader).
+          const dest = data.role === 'ADMIN' ? '/admin'
+            : data.role === 'INSTRUCTOR' ? '/instructor'
+            : '/student'
+          router.push(dest)
           router.refresh()
         } else {
           router.back()

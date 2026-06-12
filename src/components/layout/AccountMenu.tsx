@@ -11,7 +11,7 @@ import {
 
 interface AppMenuProps {
   isAuthenticated: boolean
-  userRole?: 'INSTRUCTOR' | 'STUDENT'
+  userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
   userName?: string
 }
 
@@ -55,7 +55,10 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
     setOpen(false)
   }
 
-  const nav = userRole === 'INSTRUCTOR' ? INSTRUCTOR_NAV : userRole === 'STUDENT' ? STUDENT_NAV : []
+  const nav = userRole === 'INSTRUCTOR' ? INSTRUCTOR_NAV
+    : userRole === 'STUDENT' ? STUDENT_NAV
+    : userRole === 'ADMIN' ? [{ href: '/admin', label: 'Dashboard', icon: LayoutDashboard }]
+    : []
 
   return (
     <div ref={ref} className="relative flex items-center gap-2">

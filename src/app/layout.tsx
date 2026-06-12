@@ -35,7 +35,7 @@ async function getHeaderProps() {
     if (!user || user.deletedAt) return { isAuthenticated: false }
     return {
       isAuthenticated: true,
-      userRole: user.role as 'INSTRUCTOR' | 'STUDENT',
+      userRole: user.role as 'INSTRUCTOR' | 'STUDENT' | 'ADMIN',
       userName: `${user.firstName} ${user.surname}`,
     }
   } catch {

@@ -137,7 +137,9 @@ export async function PATCH(req: NextRequest) {
       where: { id: payload.sub },
       data: { password: hashed, mustChangePassword: false },
     })
-    return NextResponse.json({ ok: true })
+    // Return the role so the client can land the user on the right dashboard
+    // (the forced-change flow redirects by role rather than to the Reader at "/").
+    return NextResponse.json({ ok: true, role: payload.role })
   } catch (err) {
     console.error('[auth] password change error:', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
