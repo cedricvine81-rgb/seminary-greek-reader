@@ -103,17 +103,15 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
 
   return (
     <div className="space-y-4">
-      {/* Deck selector + shuffle */}
-      <div className="flex items-center justify-between gap-4">
+      {/* Frequency deck selector — own full-width row so it's always visible */}
+      <div className="space-y-1.5">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Choose a deck</p>
         <DeckSelector value={level} onChange={handleLevelChange} counts={deckCounts} />
-        <Button variant="ghost" size="sm" onClick={handleShuffle} className="shrink-0">
-          <Shuffle size={15} /> Shuffle
-        </Button>
       </div>
 
       {card ? (
         <>
-          {/* Progress strip */}
+          {/* Progress strip + shuffle */}
           <div className="flex items-center justify-between text-xs text-gray-400 px-1">
             <span className="flex items-center gap-3">
               <span className="flex items-center gap-1 text-green-600 font-medium">
@@ -123,7 +121,15 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
                 <XCircle size={12} /> {stats.unknown}
               </span>
             </span>
-            <span>{idx + 1} / {cards.length}</span>
+            <span className="flex items-center gap-3">
+              <span>{idx + 1} / {cards.length}</span>
+              <button
+                onClick={handleShuffle}
+                className="inline-flex items-center gap-1 text-gray-500 hover:text-brand-700 font-medium"
+              >
+                <Shuffle size={13} /> Shuffle
+              </button>
+            </span>
           </div>
 
           {/* Card + response buttons side by side */}
