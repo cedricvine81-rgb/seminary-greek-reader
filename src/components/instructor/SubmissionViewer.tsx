@@ -26,6 +26,7 @@ interface Session {
   // Whole-verse fields, keyed by verse number (as string)
   verseTranslations: Record<string, string> | null
   verseCorrections: Record<string, string> | null
+  notes: string | null
   submittedAnnotations: Annotations | null
   submittedAt: string | null
   grade: number | null
@@ -167,6 +168,16 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
           <span>Submitted: <strong className="text-gray-800">{session.submittedAt ? new Date(session.submittedAt).toLocaleString() : 'Not yet submitted'}</strong></span>
         </div>
       </div>
+
+      {/* Student's Notes & Questions (live scratchpad they kept during Round 1 & 2) */}
+      {session.notes?.trim() && (
+        <Card>
+          <CardTitle>📝 Notes &amp; Questions from {studentName || 'the student'}</CardTitle>
+          <p className="mt-3 whitespace-pre-wrap text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            {session.notes}
+          </p>
+        </Card>
+      )}
 
       {/* Grade entry */}
       <Card>

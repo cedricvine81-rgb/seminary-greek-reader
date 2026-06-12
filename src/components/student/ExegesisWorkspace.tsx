@@ -375,6 +375,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [verseTranslations, setVerseTranslations] = useState<Record<string, string>>({})
   // Round 2 whole-verse notes/corrections, keyed by verse number (as string)
   const [verseCorrections, setVerseCorrections] = useState<Record<string, string>>({})
+  // Free-form "Notes & Questions" scratchpad — live across Round 1 & 2, locked at submit
+  const [notes, setNotes] = useState('')
+  const [notesOpen, setNotesOpen] = useState(true)
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
 
@@ -465,6 +468,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           setCorrections(sess.corrections ?? {})
           setVerseTranslations(sess.verseTranslations ?? {})
           setVerseCorrections(sess.verseCorrections ?? {})
+          setNotes(sess.notes ?? '')
           setSessionId(sess.id)
           setSessionTitle(sess.title)
           const alreadySubmitted = !!sess.submittedAt
@@ -548,6 +552,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                       setCorrections(sess.corrections ?? {})
                       setVerseTranslations(sess.verseTranslations ?? {})
                       setVerseCorrections(sess.verseCorrections ?? {})
+                      setNotes(sess.notes ?? '')
                       setSessionId(sess.id)
                       setSessionTitle(sess.title || a.title)
                       if (sess.submittedAt) setSubmitted(true)
@@ -822,6 +827,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             corrections,
             verseTranslations,
             verseCorrections,
+            notes,
             title: resolvedTitle,
             // Persist startedAt if not yet stored (first save of a timed session)
             ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
@@ -894,6 +900,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     latestCorrections: AnnotationMap,
     latestVerseTranslations: Record<string, string> = verseTranslations,
     latestVerseCorrections: Record<string, string> = verseCorrections,
+    latestNotes: string = notes,
   ) {
     if (!sessionId) return
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
@@ -906,6 +913,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           corrections: latestCorrections,
           verseTranslations: latestVerseTranslations,
           verseCorrections: latestVerseCorrections,
+          notes: latestNotes,
         }),
       }).catch(() => {})
     }, 2500)
@@ -927,6 +935,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     setCorrections((sess.corrections as AnnotationMap) ?? {})
     setVerseTranslations((sess.verseTranslations as Record<string, string>) ?? {})
     setVerseCorrections((sess.verseCorrections as Record<string, string>) ?? {})
+    setNotes((sess.notes as string) ?? '')
     setSessionId(sess.id)
     setSessionTitle(sess.title)
     setShowSessionList(false)
@@ -1066,6 +1075,44 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
               Deadline passed — editing only
             </span>
+          )}
+        </div>
+      )}
+
+      {/* ── Notes & Questions — live scratchpad across Round 1 & 2, locked at submit ── */}
+      {assignment && loadedVerses.length > 0 && (
+        <div className="print:hidden border-b border-amber-200 bg-amber-50/60">
+          <button
+            type="button"
+            onClick={() => setNotesOpen(o => !o)}
+            className="w-full flex items-center justify-between px-4 py-2 text-left"
+          >
+            <span className="text-sm font-semibold text-amber-900 flex items-center gap-1.5">
+              📝 Notes &amp; Questions
+              {notes.trim() && <span className="text-xs font-normal text-amber-700">· {notes.trim().length} chars</span>}
+            </span>
+            <span className="text-xs text-amber-700">{notesOpen ? 'Hide' : 'Show'}</span>
+          </button>
+          {notesOpen && (
+            <div className="px-4 pb-3">
+              <p className="text-xs text-amber-700 mb-1.5">
+                Jot down your thoughts and any questions for your instructor as you work through Round 1 and Round 2.
+                Saved automatically{submitted ? '' : ' and editable until you submit'}.
+                {submitted && ' This is now locked because you have submitted.'}
+              </p>
+              <textarea
+                value={notes}
+                onChange={e => {
+                  const next = e.target.value
+                  setNotes(next)
+                  scheduleAutoSave(annotations, corrections, verseTranslations, verseCorrections, next)
+                }}
+                disabled={submitted}
+                rows={4}
+                placeholder="e.g. Unsure whether this participle is causal or temporal — want to ask in class…"
+                className="w-full rounded-lg border border-amber-300 bg-white px-3 py-2 text-sm placeholder:text-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              />
+            </div>
           )}
         </div>
       )}

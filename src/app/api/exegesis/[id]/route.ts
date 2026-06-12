@@ -89,7 +89,9 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     // Student — can only patch their own session
     if (existing.userId !== payload.sub) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, assignmentId: patchAssignmentId } = body
+    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId } = body
+    // Notes & Questions scratchpad: only writable until submission (locks afterwards).
+    const acceptNotes = notes !== undefined && !existing.submittedAt
     const updated = await prisma.exegesisSession.update({
       where: { id: params.id },
       data: {
@@ -97,6 +99,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         ...(corrections !== undefined && { corrections }),
         ...(verseTranslations !== undefined && { verseTranslations }),
         ...(verseCorrections !== undefined && { verseCorrections }),
+        ...(acceptNotes && { notes: String(notes) }),
         ...(title && { title }),
         // Only set startedAt once (never overwrite)
         ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),

@@ -444,6 +444,9 @@ model ExegesisSession {
   verseTranslations     Json      @default("{}")   // Round 1 whole-verse translations: { [verseNumber]: string }
   verseCorrections      Json      @default("{}")   // Round 2 whole-verse notes/corrections: { [verseNumber]: string }
   submittedAnnotations  Json?                      // snapshot of annotations at submit time; post-deadline edits show as diff
+  // Free-form "Notes & Questions" scratchpad the student fills in across Round 1 & 2.
+  // Live until submission, then locked; shown to the instructor in the submission viewer.
+  notes        String    @default("")
   startedAt    DateTime?
   submittedAt  DateTime?
   grade        Int?      // instructor-entered score 0-100
