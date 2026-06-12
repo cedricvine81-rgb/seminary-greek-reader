@@ -44,8 +44,15 @@ export async function POST(
       reference:      source.reference,
       instructions:   source.instructions,
       timePerQuestion: source.timePerQuestion,
+      reviewTimeSeconds: source.reviewTimeSeconds,
       allowLate:      source.allowLate,
       lateDaysLimit:  source.lateDaysLimit,
+      // Carry quiz config so the copy behaves and edits like the original:
+      provideDefinition: source.provideDefinition,   // grading mode for typed answers
+      maxRetakes:     source.maxRetakes,
+      maxAppeals:     source.maxAppeals,
+      morphSubtype:   source.morphSubtype,           // morphology regenerate
+      vocabSelection: source.vocabSelection ?? undefined,  // vocab frequency-section choice
       isPublished:    false,
       questions: {
         create: source.questions.map(q => ({

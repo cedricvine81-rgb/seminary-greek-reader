@@ -5,6 +5,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
   generateVocabQuestions,
   generateVocabQuestionsInRange,
+  generateVocabQuestionsFromSelection,
   generateMorphologyQuestionsBySubtype,
   type MorphologySubtype,
   type MorphTestConfig,
@@ -61,6 +62,7 @@ export async function POST(req: NextRequest) {
     morphologySeries,
     morphologySubtype,
     vocabThruLesson,
+    vocabSubsections,
     schedule,
   }: {
     courseId: string
@@ -79,8 +81,16 @@ export async function POST(req: NextRequest) {
     morphologySeries?: MorphTestConfig[]
     morphologySubtype?: MorphologySubtype
     vocabThruLesson?: number | null
+    vocabSubsections?: string[]
     schedule: ScheduleItem[]
   } = body
+
+  // If the instructor picked frequency sections, that selection overrides the
+  // per-week lesson rank-range distribution for vocab quizzes (same words pool
+  // each week) and is saved on each created quiz so it can be edited later.
+  const vocabSel = quizType === 'VOCABULARY_QUIZ' && Array.isArray(vocabSubsections) && vocabSubsections.length > 0
+    ? { subsections: vocabSubsections, pos: [] as string[] }
+    : null
 
   if (!courseId || !schedule?.length) {
     return NextResponse.json({ error: 'courseId and schedule are required.' }, { status: 400 })
@@ -164,6 +174,7 @@ export async function POST(req: NextRequest) {
         maxAppeals: quizType === 'VOCABULARY_QUIZ' && maxAppeals != null && Number(maxAppeals) > 0
           ? Number(maxAppeals)
           : null,
+        vocabSelection: vocabSel ?? undefined,
         isPublished: Boolean(isPublished),
       },
     })
@@ -172,7 +183,10 @@ export async function POST(req: NextRequest) {
 
     if (quizType === 'VOCABULARY_QUIZ') {
       const pct = Number(quizStylePct ?? 0)
-      if (lesson) {
+      if (vocabSel) {
+        // Instructor picked sections → draw every week's quiz from those words.
+        questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct)
+      } else if (lesson) {
         questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', qCount, pct)
       } else {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
