@@ -125,6 +125,28 @@ describe('gradeResponse — morphology', () => {
   })
 })
 
+describe('gradeResponse — mixed quiz (MC + typed in one quiz)', () => {
+  // Regression: when the Type-of-Quiz slider produces a mix, provideDefinition is
+  // stored true (any open-ended portion). A MULTIPLE_CHOICE question must still be
+  // graded as a whole-option match — NOT fuzzily / comma-split — even with the
+  // quiz-level provideDefinition override on.
+  it('grades a MULTIPLE_CHOICE question by whole-option match even when provideDefinition=true', async () => {
+    mockQuestion({ type: 'MULTIPLE_CHOICE', prompt: 'ἐλπίς', correctAnswer: 'hope, expectation', points: 1 })
+    const whole = await gradeResponse('q1', 'hope, expectation', true)
+    expect(whole.isCorrect).toBe(true)
+
+    mockQuestion({ type: 'MULTIPLE_CHOICE', prompt: 'ἐλπίς', correctAnswer: 'hope, expectation', points: 1 })
+    const partial = await gradeResponse('q1', 'hope', true) // a single comma-part is NOT the option
+    expect(partial.isCorrect).toBe(false)
+  })
+
+  it('grades a typed question fuzzily when provideDefinition=true (same quiz)', async () => {
+    mockQuestion({ type: 'GREEK_TO_ENGLISH', prompt: 'λόγος', correctAnswer: 'word', points: 1 })
+    const r = await gradeResponse('q1', 'worx', true) // 1 substitution typo (within tolerance)
+    expect(r.isCorrect).toBe(true)
+  })
+})
+
 describe('gradeResponse — provideDefinition override', () => {
   it('uses the supplied override instead of querying the assignment', async () => {
     mockQuestion({ correctAnswer: 'grace', points: 1 })

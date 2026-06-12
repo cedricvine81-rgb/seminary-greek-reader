@@ -95,10 +95,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     }
   }, [idx, phase])
 
-  // Auto-advance after feedback for multiple-choice questions only (not when provideDefinition is on)
+  // Auto-advance after feedback for multiple-choice questions only (per-question, so
+  // MC items in a mixed quiz still auto-advance; typed items keep the Next button)
   useEffect(() => {
     if (phase !== 'feedback') return
-    const isMultipleChoice = !provideDefinition && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
+    const isMultipleChoice = q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
     if (!isMultipleChoice) return // keep "Next" button for typed answers
     const t = setTimeout(() => handleNext(), 1200)
     return () => clearTimeout(t)
@@ -520,12 +521,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <p className={`${hasGreek(q?.prompt) ? 'font-greek' : ''} text-3xl text-ink-900 leading-relaxed`}>{q?.prompt}</p>
         </div>
 
-        {/* Vocabulary questions — provideDefinition overrides to text input; otherwise use question type */}
+        {/* Vocabulary questions — rendering is per-question so MIXED quizzes work:
+            a question is multiple-choice iff its own type is MULTIPLE_CHOICE and it
+            carries options. Open-ended (typed) questions are generated with no
+            options, so they always render as a text box regardless of the quiz-level
+            provideDefinition flag. */}
         {type === 'VOCABULARY_QUIZ' && phase === 'answering' && (() => {
           const hasOptions = Array.isArray(q.options) && q.options.length > 0
-          // provideDefinition = true means students must type their answer regardless of how
-          // the question was stored (handles assignments generated before this fix).
-          const isMultipleChoice = !provideDefinition && q.type === 'MULTIPLE_CHOICE' && hasOptions
+          const isMultipleChoice = q.type === 'MULTIPLE_CHOICE' && hasOptions
 
           if (isMultipleChoice) {
             // Multiple-choice: tap a button
@@ -705,7 +708,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             <span /> {/* spacer */}
             {/* Show "Check Answer" for open-ended vocab (not multiple choice) and morphology (non-MC) */}
             {(() => {
-              const isVocabMC = !provideDefinition && type === 'VOCABULARY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
+              const isVocabMC = type === 'VOCABULARY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
               const isMorphMC = type === 'MORPHOLOGY_QUIZ' && q.type === 'MULTIPLE_CHOICE'
               // Multiple-choice questions self-submit on click — no button needed
               if (isVocabMC || isMorphMC) return null
@@ -724,8 +727,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             <span className="text-sm text-gray-500">
               {correctCount} / {answeredSoFar} correct
             </span>
-            {/* Only show the Next button for typed/open-ended answers; multiple-choice auto-advances */}
-            {(provideDefinition || q.type !== 'MULTIPLE_CHOICE' || !(Array.isArray(q.options) && q.options.length > 0)) ? (
+            {/* Only show the Next button for typed/open-ended answers; multiple-choice auto-advances (per-question) */}
+            {(q.type !== 'MULTIPLE_CHOICE' || !(Array.isArray(q.options) && q.options.length > 0)) ? (
               <Button onClick={handleNext}>
                 {idx < total - 1 ? 'Next Question' : 'Finish Quiz'}
               </Button>
