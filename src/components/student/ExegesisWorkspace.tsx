@@ -1439,6 +1439,30 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   />
                 )}
 
+                {/* Round 1 annotation — inline under the word on mobile. On desktop
+                    the inputs live in the right sidebar; on a phone that sidebar would
+                    stack far below the passage, so tapping a word would seem to do
+                    nothing. Showing it inline puts the inputs right where you tapped. */}
+                {!reviewMode && selectedWord && selectedWord.verse === v.verse && (
+                  <div className="lg:hidden mt-2 rounded-lg border border-brand-200 bg-brand-50/60 p-3">
+                    <AnnotationPanel
+                      word={selectedWord.word}
+                      verseNum={selectedWord.verse}
+                      annotations={annotations}
+                      onChange={handleAnnotationChange}
+                      locked={isLocked}
+                    />
+                    <div className="mt-2 flex justify-end">
+                      <button
+                        onClick={() => { setSelectedWord(null); setSelectedWordKey(null) }}
+                        className="text-xs font-medium text-gray-500 hover:text-gray-700"
+                      >
+                        Done
+                      </button>
+                    </div>
+                  </div>
+                )}
+
                 {/* Whole-verse translation (Round 1) */}
                 <div className="mt-2">
                   <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
@@ -1482,7 +1506,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           {/* Right-side annotation sidebar: only used in Round 1. In Round 2 the
               inputs live in the inline word popover below each word. */}
           {!reviewMode && (
-          <div className="print:hidden border-t lg:border-t-0 lg:border-l border-gray-200 bg-gray-50 flex flex-col lg:w-96">
+          <div className="hidden lg:flex print:hidden lg:border-l border-gray-200 bg-gray-50 lg:flex-col lg:w-96">
             {/* Scrollable annotation content */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
               {!reviewMode && timerExpired && (
