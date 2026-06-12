@@ -864,9 +864,13 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     setIsSubmitting(true)
     setSubmitError('')
     try {
-      // Ensure session is saved first
-      let sid = sessionId
-      if (!sid) sid = await saveSession()
+      // Cancel any pending debounced autosave and flush ALL fields (annotations,
+      // corrections, verse fields, and notes) synchronously before submitting — so
+      // anything typed in the last couple of seconds isn't lost, and no late autosave
+      // fires after submittedAt is set (which the server would reject).
+      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+      let sid = await saveSession()
+      if (!sid) sid = sessionId
       if (!sid) { setSubmitError('Could not save your work. Please try again.'); return }
 
       // If the session exists but was created without an assignmentId (e.g. via old /student/exegesis
