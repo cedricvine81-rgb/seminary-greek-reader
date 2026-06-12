@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { CourseGradebook } from '@/components/instructor/CourseGradebook'
 import { MessageClassPanel } from '@/components/instructor/MessageClassPanel'
+import { EmailClassButton } from '@/components/instructor/EmailClassButton'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { Card, CardTitle } from '@/components/ui/Card'
@@ -54,7 +55,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
       },
       enrollments: {
         where: { status: 'APPROVED' },
-        include: { user: { select: { id: true, firstName: true, surname: true } } },
+        include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
         orderBy: { createdAt: 'asc' },
       },
     },
@@ -64,6 +65,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   const students = course.enrollments.map(e => ({
     id: e.user.id,
     name: [e.user.firstName, e.user.surname].filter(Boolean).join(' ') || 'Student',
+    email: e.user.email,
   }))
 
   const report = await getCourseReport(params.courseId)
@@ -89,6 +91,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           </div>
           <div className="flex items-center gap-2">
             <MessageClassPanel courseId={course.id} students={students} />
+            <EmailClassButton courseName={course.name} students={students} />
             <Link href={`/instructor/courses/${course.id}/edit`}>
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5">
                 <Settings size={14} /> Edit Course

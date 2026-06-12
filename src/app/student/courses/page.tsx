@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { AtSign } from 'lucide-react'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card } from '@/components/ui/Card'
@@ -43,7 +44,7 @@ export default async function StudentCoursesPage() {
       include: {
         course: {
           include: {
-            instructor: { select: { firstName: true, surname: true, title: true } },
+            instructor: { select: { firstName: true, surname: true, title: true, email: true } },
             _count: { select: { assignments: true, enrollments: { where: { status: 'APPROVED' } } } },
           },
         },
@@ -116,11 +117,22 @@ export default async function StudentCoursesPage() {
                       <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
                         View assignments →
                       </Link>
-                      <MessageInstructorButton
-                        courseId={e.courseId}
-                        courseName={e.course.name}
-                        instructorName={instructorName}
-                      />
+                      <div className="flex items-center gap-3">
+                        <MessageInstructorButton
+                          courseId={e.courseId}
+                          courseName={e.course.name}
+                          instructorName={instructorName}
+                        />
+                        {e.course.instructor.email && (
+                          <a
+                            href={`mailto:${encodeURIComponent(e.course.instructor.email)}?subject=${encodeURIComponent(`[${e.course.name}] `)}`}
+                            className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
+                            title={`Email ${instructorName} via your mail program`}
+                          >
+                            <AtSign size={14} /> Email
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </Card>
                 )
