@@ -54,7 +54,7 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
             key={href}
             href={href}
             className={clsx(
-              'flex-1 flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition-colors relative',
+              'flex-1 min-w-0 flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-medium transition-colors relative',
               active ? 'text-brand-700' : 'text-gray-500'
             )}
           >
@@ -66,7 +66,8 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
                 </span>
               )}
             </div>
-            <span>{label}</span>
+            {/* truncate within the equal-width cell so long labels never wrap/misalign */}
+            <span className="max-w-full truncate px-0.5">{label}</span>
           </Link>
         )
       })}

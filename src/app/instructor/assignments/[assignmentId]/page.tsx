@@ -34,7 +34,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
       role="INSTRUCTOR"
       pageTitle={assignment.title}
       actions={
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Link
             href={`/api/preview?mode=enter&redirect=/student/assignments/${assignment.id}`}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border border-brand-300 bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors"

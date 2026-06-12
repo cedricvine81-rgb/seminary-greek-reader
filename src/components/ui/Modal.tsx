@@ -42,7 +42,9 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
       <div
         className={clsx(
-          'relative w-full bg-white rounded-2xl shadow-xl p-6',
+          // Cap height and scroll internally so tall dialogs stay usable on short
+          // (phone) screens — the page body is scroll-locked while a modal is open.
+          'relative w-full bg-white rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto',
           sizeClasses[size]
         )}
       >

@@ -89,7 +89,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <MessageClassPanel courseId={course.id} students={students} />
             <EmailClassButton courseName={course.name} students={students} />
             <Link href={`/instructor/courses/${course.id}/edit`}>
