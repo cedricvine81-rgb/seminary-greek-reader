@@ -92,6 +92,7 @@ interface SemesterForm {
   prevSectionsPct: number  // 0–100: % of questions drawn from previous vocab sections
   quizStylePct: number     // 0 = Choose Definition, 100 = Provide Definition
   maxRetakes: number | null
+  maxAppeals: number       // vocab quizzes only; 0 = appeals off
 }
 
 const DEFAULT_MORPH_TEST: MorphTestConfig = {
@@ -236,6 +237,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [allowLate, setAllowLate] = useState(false)
   const [lateDaysLimit, setLateDaysLimit] = useState(7)
   const [maxRetakes, setMaxRetakes] = useState<number | null>(null)
+  // Wrong-answer appeals per attempt (vocab quizzes only). 0 = appeals off.
+  const [maxAppeals, setMaxAppeals] = useState<number>(0)
 
   function set<K extends keyof AssignmentFormData>(key: K, val: AssignmentFormData[K]) {
     setForm(prev => ({ ...prev, [key]: val }))
@@ -250,13 +253,25 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       setError('A passage reference is required for Translation Exercise assignments (e.g. "John 1:1–18").')
       return
     }
+    if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
+      setError('The Round 2 deadline must be after the Round 1 deadline.')
+      return
+    }
 
     setLoading(true)
     try {
       const res = await fetch('/api/assignments', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, ...form, allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes, isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
+        body: JSON.stringify({ courseId, ...form,
+          // Convert datetime-local (instructor's local wall time) to a real UTC instant on the client,
+          // so the stored deadline isn't shifted by the server's (UTC) timezone.
+          round1Deadline: form.round1Deadline ? new Date(form.round1Deadline).toISOString() : undefined,
+          round2Deadline: form.round2Deadline ? new Date(form.round2Deadline).toISOString() : undefined,
+          allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes,
+          // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
+          maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -377,23 +392,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             selectedSubsections={vocabSubsections}
             onChange={setVocabSubsections}
           />
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Questions from previous sections:{' '}
-              <span className="text-brand-700 font-semibold">{prevSectionsPct}%</span>
-            </label>
-            <input
-              type="range"
-              min={0} max={100} step={5}
-              value={prevSectionsPct}
-              onChange={e => setPrevSectionsPct(Number(e.target.value))}
-              className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
-            />
-            <div className="flex justify-between text-xs text-gray-400 mt-0.5">
-              <span>0% (current section only)</span>
-              <span>100% (all previous)</span>
-            </div>
-          </div>
+          {/* Removed: "Questions from previous sections %" slider.
+              The backend doesn't yet support drawing from previous sections — the
+              slider was UI-only. Re-introduce once generateVocabQuestions supports it. */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Type of Quiz —{' '}
@@ -464,6 +465,49 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               After Stage 1 ends, students see the passage reader and can make corrections in red. When this timer expires, all edits lock and the exercise is submitted for grading.
             </p>
           </div>
+
+          <div className="border-t border-brand-200 pt-3 space-y-3">
+            <p className="text-sm font-semibold text-brand-800">Absolute deadlines (optional)</p>
+            <p className="text-xs text-brand-700">
+              Set a fixed date &amp; time (to the minute) after which students can no longer edit. These apply
+              regardless of when a student starts, and work alongside the per-session timers above.
+            </p>
+            <div>
+              <Input
+                label="Round 1 deadline — annotations lock after this time"
+                type="datetime-local"
+                value={form.round1Deadline ?? ''}
+                onChange={e => set('round1Deadline', e.target.value || undefined)}
+              />
+              <p className="mt-1 text-xs text-brand-600">Leave blank for no fixed Round 1 deadline.</p>
+            </div>
+            <div>
+              <Input
+                label="Round 2 deadline — corrections lock after this time"
+                type="datetime-local"
+                value={form.round2Deadline ?? ''}
+                onChange={e => set('round2Deadline', e.target.value || undefined)}
+              />
+              <p className="mt-1 text-xs text-brand-600">Leave blank for no fixed Round 2 deadline.</p>
+            </div>
+
+            <div className="border-t border-brand-200 pt-3">
+              <label className="flex items-start gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={form.allowReaderInRound2 ?? false}
+                  onChange={e => set('allowReaderInRound2', e.target.checked)}
+                  className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                />
+                <div>
+                  <span className="text-sm font-medium text-brand-800">Allow Reader tools in Round 2</span>
+                  <p className="text-xs text-brand-600 mt-0.5">
+                    When on, students clicking a word in Round 2 can see the Reader's parsing, gloss, and lexicon entry alongside their correction box. Off by default.
+                  </p>
+                </div>
+              </label>
+            </div>
+          </div>
         </div>
       )}
 
@@ -503,6 +547,28 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           ]}
           placeholder="Unlimited retakes"
         />
+      )}
+
+      {form.type === 'VOCABULARY_QUIZ' && (
+        <div>
+          <Select
+            label="Wrong-answer appeals per attempt"
+            value={String(maxAppeals)}
+            onChange={e => setMaxAppeals(Number(e.target.value))}
+            options={[
+              { value: '0', label: 'Off — students cannot appeal' },
+              { value: '1', label: '1 appeal per attempt' },
+              { value: '2', label: '2 appeals per attempt' },
+              { value: '3', label: '3 appeals per attempt' },
+              { value: '5', label: '5 appeals per attempt' },
+            ]}
+          />
+          <p className="mt-1 text-xs text-gray-500">
+            When enabled, students see an &ldquo;Appeal this answer&rdquo; link beside each wrong answer on the results screen.
+            You review pending appeals on the Appeals page. Accepting updates the student&rsquo;s score; the admin separately
+            decides whether to add the answer to the global lexicon.
+          </p>
+        </div>
       )}
 
       {form.type !== 'TRANSLATION_EXERCISE' && (
@@ -1054,6 +1120,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     allowLate:        false,
     lateDaysLimit:    7,
     maxRetakes:       null,
+    maxAppeals:       0,
   })
 
   function setF<K extends keyof SemesterForm>(key: K, val: SemesterForm[K]) {
@@ -1239,23 +1306,8 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 selectedSubsections={form.vocabSubsections}
                 onChange={keys => setF('vocabSubsections', keys)}
               />
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Questions from previous sections:{' '}
-                  <span className="text-brand-700 font-semibold">{form.prevSectionsPct}%</span>
-                </label>
-                <input
-                  type="range"
-                  min={0} max={100} step={5}
-                  value={form.prevSectionsPct}
-                  onChange={e => setF('prevSectionsPct', Number(e.target.value))}
-                  className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
-                />
-                <div className="flex justify-between text-xs text-gray-400 mt-0.5">
-                  <span>0% (current section only)</span>
-                  <span>100% (all previous)</span>
-                </div>
-              </div>
+              {/* Removed: "Questions from previous sections %" slider — backend
+                  doesn't yet honour the value, so it was UI-only. */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Type of Quiz —{' '}
@@ -1323,6 +1375,27 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           ]}
           placeholder="Unlimited retakes"
         />
+
+        {form.quizType === 'VOCABULARY_QUIZ' && (
+          <div>
+            <Select
+              label="Wrong-answer appeals per attempt"
+              value={String(form.maxAppeals)}
+              onChange={e => setF('maxAppeals', Number(e.target.value))}
+              options={[
+                { value: '0', label: 'Off — students cannot appeal' },
+                { value: '1', label: '1 appeal per attempt' },
+                { value: '2', label: '2 appeals per attempt' },
+                { value: '3', label: '3 appeals per attempt' },
+                { value: '5', label: '5 appeals per attempt' },
+              ]}
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              Applied to <strong>every</strong> quiz created in this schedule. You can still adjust each one
+              afterwards in its individual settings.
+            </p>
+          </div>
+        )}
 
         <LatePolicyFields
           allowLate={form.allowLate}

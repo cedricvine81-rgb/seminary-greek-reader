@@ -1,17 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { getPayload } from '@/lib/auth'
 import { gradeResponse, getAssignmentScore } from '@/lib/grading'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { rateLimit } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+  // Throttle quiz submissions per user (guards against rapid duplicate submits)
+  const rl = rateLimit(`quiz-submit:${payload.sub}`, 10, 60_000)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many submissions — please wait a moment and try again.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    )
+  }
 
   const body = await req.json()
   const { assignmentId, responses } = body as {
@@ -30,6 +37,7 @@ export async function POST(req: NextRequest) {
       courseId: true,
       maxRetakes: true,
       isPublished: true,
+      provideDefinition: true,
       questions: { select: { id: true, prompt: true, points: true } },
     },
   })
@@ -60,13 +68,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No retakes remaining.' }, { status: 403 })
   }
 
-  // Grade — question data already loaded, no extra DB calls in loop
-  const breakdown = []
+  // Grade — pass provideDefinition to avoid N+1 (one DB query per question otherwise)
+  const breakdown: { questionId: string; prompt: string; yourAnswer: string; correctAnswer: string; isCorrect: boolean; points: number; responseId?: string }[] = []
   let earnedPoints = 0
   for (const r of responses) {
     const question = questionMap[r.questionId]
     if (!question) continue // skip unknown question IDs
-    const graded = await gradeResponse(r.questionId, r.answer)
+    const graded = await gradeResponse(r.questionId, r.answer, assignment.provideDefinition)
     earnedPoints += graded.score
     breakdown.push({
       questionId: r.questionId,
@@ -84,38 +92,63 @@ export async function POST(req: NextRequest) {
   const bestPrevious = previousAttempts.find(a => a.isBest)
   const isNewBest = !bestPrevious || earnedPoints >= bestPrevious.earnedPoints
 
-  // Replace Response records if this is the new best
-  if (isNewBest) {
-    await prisma.response.deleteMany({ where: { userId: payload.sub, assignmentId } })
-    await prisma.response.createMany({
-      data: breakdown.map(b => ({
+  // Persist results atomically — response records + attempt record in one transaction
+  // so a mid-flight crash never leaves partial data.
+  await prisma.$transaction(async tx => {
+    if (isNewBest) {
+      await tx.response.deleteMany({ where: { userId: payload.sub, assignmentId } })
+      // Create one at a time so we can capture the new ids and feed them into
+      // the breakdown — the client uses responseId to anchor appeals.
+      for (const b of breakdown) {
+        const created = await tx.response.create({
+          data: {
+            userId: payload.sub,
+            assignmentId,
+            questionId: b.questionId,
+            answer: b.yourAnswer,
+            isCorrect: b.isCorrect,
+            score: b.points,
+          },
+          select: { id: true },
+        })
+        b.responseId = created.id
+      }
+      if (bestPrevious) {
+        await tx.quizAttempt.updateMany({
+          where: { userId: payload.sub, assignmentId },
+          data: { isBest: false },
+        })
+      }
+    } else {
+      // Not a new best — no new Response rows. Look up the existing best-attempt
+      // Response ids so the breakdown still carries them for the appeal button.
+      const existing = await tx.response.findMany({
+        where: { userId: payload.sub, assignmentId, questionId: { not: null } },
+        select: { id: true, questionId: true },
+      })
+      const idByQuestion = new Map(existing.map(r => [r.questionId, r.id]))
+      for (const b of breakdown) {
+        const rid = idByQuestion.get(b.questionId)
+        if (rid) b.responseId = rid
+      }
+    }
+    await tx.quizAttempt.create({
+      data: {
         userId: payload.sub,
         assignmentId,
-        questionId: b.questionId,
-        answer: b.yourAnswer,
-        isCorrect: b.isCorrect,
-        score: b.points,
-      })),
+        attemptNumber,
+        earnedPoints,
+        totalPoints,
+        percentage,
+        isBest: isNewBest,
+      },
     })
-    if (bestPrevious) {
-      await prisma.quizAttempt.updateMany({
-        where: { userId: payload.sub, assignmentId },
-        data: { isBest: false },
-      })
-    }
-  }
-
-  await prisma.quizAttempt.create({
-    data: {
-      userId: payload.sub,
-      assignmentId,
-      attemptNumber,
-      earnedPoints,
-      totalPoints,
-      percentage,
-      isBest: isNewBest,
-    },
   })
+
+  // Bust Router Cache so instructor gradebook and student assignment list reflect the new score
+  revalidatePath(`/instructor/courses/${assignment.courseId}`)
+  revalidatePath(`/student/assignments`)
+  revalidatePath(`/student/assignments/${assignmentId}`)
 
   const scoreData = await getAssignmentScore(payload.sub, assignmentId)
   const retakesRemaining = maxAllowed === null ? null : Math.max(0, maxAllowed - attemptNumber)
@@ -135,7 +168,7 @@ export async function POST(req: NextRequest) {
   })
 
   } catch (err) {
-    console.error(err)
+    logError('api/quizzes', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

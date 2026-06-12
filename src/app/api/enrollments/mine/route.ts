@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
@@ -18,7 +19,7 @@ export async function GET() {
 
     return NextResponse.json({ enrollments })
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments/mine', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }

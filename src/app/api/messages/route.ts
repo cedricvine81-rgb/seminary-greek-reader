@@ -1,0 +1,183 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { prisma } from '@/lib/db'
+import { getPayload } from '@/lib/auth'
+import { isInstructorOfCourse } from '@/lib/course-auth'
+import { rateLimit } from '@/lib/rate-limit'
+import { logError } from '@/lib/logger'
+
+type Participant = { id: string; firstName: string; surname: string; title: string | null }
+
+// GET /api/messages — conversation threads the current user is part of (either role).
+// Each thread is a 1:1 conversation between an instructor and a student.
+export async function GET(_req: NextRequest) {
+  try {
+    const payload = getPayload()
+    if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const me = payload.sub
+    const messages = await prisma.message.findMany({
+      where: { OR: [{ senderId: me }, { recipientId: me }] },
+      orderBy: { createdAt: 'asc' },
+      select: {
+        id: true, subject: true, body: true, threadId: true, readAt: true, createdAt: true,
+        senderId: true, recipientId: true,
+        course: { select: { id: true, name: true } },
+        sender: { select: { id: true, firstName: true, surname: true, title: true } },
+        recipient: { select: { id: true, firstName: true, surname: true, title: true } },
+      },
+    })
+
+    // Group into threads keyed by (threadId ?? id). Roots have threadId null.
+    const threads = new Map<string, {
+      rootId: string
+      subject: string
+      course: { id: string; name: string }
+      other: Participant
+      lastBody: string
+      lastAt: Date
+      unread: number
+      count: number
+    }>()
+
+    for (const m of messages) {
+      const key = m.threadId ?? m.id
+      const other = m.senderId === me ? m.recipient : m.sender
+      const existing = threads.get(key)
+      const isUnread = m.recipientId === me && m.readAt === null
+      if (!existing) {
+        threads.set(key, {
+          rootId: key,
+          subject: m.subject,
+          course: m.course,
+          other,
+          lastBody: m.body,
+          lastAt: m.createdAt,
+          unread: isUnread ? 1 : 0,
+          count: 1,
+        })
+      } else {
+        existing.lastBody = m.body
+        existing.lastAt = m.createdAt
+        existing.unread += isUnread ? 1 : 0
+        existing.count += 1
+      }
+    }
+
+    const list = Array.from(threads.values()).sort((a, b) => b.lastAt.getTime() - a.lastAt.getTime())
+    return NextResponse.json({ threads: list })
+  } catch (err) {
+    logError('api/messages', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}
+
+// POST /api/messages — instructor sends to a whole class or an individual student
+// Body: { courseId, recipientId?: string | null, subject, body }
+//   recipientId omitted/null → broadcast to all APPROVED students in the course
+export async function POST(req: NextRequest) {
+  try {
+    const payload = getPayload()
+    if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    // Throttle to prevent accidental/abusive bulk sends
+    const rl = rateLimit(`messages-send:${payload.sub}`, 30, 60_000)
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: 'Too many messages — please wait a moment and try again.' },
+        { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+      )
+    }
+
+    const { courseId, recipientId, subject, body } = await req.json()
+    if (!courseId || !subject?.trim() || !body?.trim()) {
+      return NextResponse.json({ error: 'courseId, subject, and body are required.' }, { status: 400 })
+    }
+    if (subject.length > 200) {
+      return NextResponse.json({ error: 'Subject must be 200 characters or fewer.' }, { status: 400 })
+    }
+
+    // ── Student-initiated message → goes to the course's instructor only ──
+    if (payload.role === 'STUDENT') {
+      const enrollment = await prisma.enrollment.findFirst({
+        where: { courseId, userId: payload.sub, status: 'APPROVED' },
+        select: { id: true },
+      })
+      if (!enrollment) return NextResponse.json({ error: 'You are not enrolled in this course.' }, { status: 403 })
+
+      const course = await prisma.course.findUnique({
+        where: { id: courseId },
+        select: { instructorId: true },
+      })
+      if (!course) return NextResponse.json({ error: 'Course not found.' }, { status: 404 })
+
+      await prisma.message.create({
+        data: {
+          courseId,
+          senderId: payload.sub,
+          recipientId: course.instructorId,
+          subject: subject.trim(),
+          body: body.trim(),
+        },
+      })
+
+      revalidatePath('/instructor/messages')
+      revalidatePath('/student/messages')
+      return NextResponse.json({ ok: true, sent: 1 }, { status: 201 })
+    }
+
+    // ── Instructor-initiated message (individual or whole-class broadcast) ──
+    if (payload.role !== 'INSTRUCTOR') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    // Authorize: the sender must own or co-teach this course
+    if (!await isInstructorOfCourse(courseId, payload.sub)) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+
+    // Resolve recipients
+    let recipientIds: string[]
+    let broadcastId: string | null = null
+    if (recipientId) {
+      // Verify the target is an approved student in this course
+      const enrollment = await prisma.enrollment.findFirst({
+        where: { courseId, userId: recipientId, status: 'APPROVED' },
+        select: { id: true },
+      })
+      if (!enrollment) return NextResponse.json({ error: 'Recipient is not enrolled in this course.' }, { status: 400 })
+      recipientIds = [recipientId]
+    } else {
+      const enrollments = await prisma.enrollment.findMany({
+        where: { courseId, status: 'APPROVED' },
+        select: { userId: true },
+      })
+      recipientIds = enrollments.map(e => e.userId)
+      if (recipientIds.length === 0) {
+        return NextResponse.json({ error: 'This course has no enrolled students yet.' }, { status: 400 })
+      }
+      broadcastId = crypto.randomUUID()
+    }
+
+    await prisma.message.createMany({
+      data: recipientIds.map(rid => ({
+        courseId,
+        senderId: payload.sub,
+        recipientId: rid,
+        subject: subject.trim(),
+        body: body.trim(),
+        broadcastId,
+      })),
+    })
+
+    // Recipients see the new message immediately on next navigation/focus
+    revalidatePath('/student/messages')
+    revalidatePath('/student')
+    revalidatePath('/instructor/messages')
+
+    return NextResponse.json({ ok: true, sent: recipientIds.length }, { status: 201 })
+  } catch (err) {
+    logError('api/messages', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}

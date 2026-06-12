@@ -1,0 +1,20 @@
+import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/db'
+import { getPayload } from '@/lib/auth'
+import { logError } from '@/lib/logger'
+
+// GET /api/messages/unread — count of unread messages for the current user (for nav badge)
+export async function GET() {
+  try {
+    const payload = getPayload()
+    if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const count = await prisma.message.count({
+      where: { recipientId: payload.sub, readAt: null },
+    })
+    return NextResponse.json({ count })
+  } catch (err) {
+    logError('api/messages/unread', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}

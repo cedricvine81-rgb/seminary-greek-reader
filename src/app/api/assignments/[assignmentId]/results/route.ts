@@ -1,7 +1,36 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+
+/** Parse an assignment reference string (e.g. "John 1:1-5", "1 Cor 13:4–7")
+ *  into a passage filter suitable for querying ExegesisSession. */
+async function parseAssignmentReference(ref: string): Promise<{
+  bookOsisId: string; chapter: number; verseStart: number; verseEnd: number
+} | null> {
+  const q = ref.trim().replace(/[–—]/g, '-')
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  if (!m) return null
+  const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
+  const chapter = parseInt(m[2])
+  const verseStart = m[3] ? parseInt(m[3]) : 1
+  const verseEnd = m[4] ? parseInt(m[4]) : verseStart
+
+  // Look up book by matching osisId, name, or abbrev (case-insensitive, whitespace-stripped)
+  const books = await prisma.biblicalBook.findMany({ select: { osisId: true, name: true, abbrev: true, totalChapters: true } })
+  const book = books.find(b => {
+    const candidates = [b.osisId, b.name, b.abbrev].map(s => s.toLowerCase().replace(/\s+/g, ''))
+    return candidates.some(s => s === bookPart || s.startsWith(bookPart) || bookPart.startsWith(s.slice(0, Math.max(3, bookPart.length))))
+  })
+  if (!book) return null
+
+  // Single-chapter books: if only one number is given, treat it as verseStart
+  if (book.totalChapters === 1 && !m[3]) {
+    return { bookOsisId: book.osisId, chapter: 1, verseStart: chapter, verseEnd: chapter }
+  }
+  return { bookOsisId: book.osisId, chapter, verseStart, verseEnd }
+}
 
 export async function GET(
   _req: NextRequest,
@@ -20,11 +49,13 @@ export async function GET(
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { courseId: true, type: true, questions: { select: { id: true, points: true, prompt: true } } },
+    select: { courseId: true, type: true, reference: true, questions: { select: { id: true, points: true, prompt: true } } },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  const isTranslation = assignment.type === 'TRANSLATION_EXERCISE'
+  // Passage-based translation exercises have no questions and use ExegesisSession for submissions.
+  // Question-based translation exercises use the Response table (same as quizzes).
+  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
 
   const enrollments = await prisma.enrollment.findMany({
     where: { courseId: assignment.courseId, status: 'APPROVED' },
@@ -32,22 +63,60 @@ export async function GET(
     orderBy: { createdAt: 'asc' },
   })
 
-  if (isTranslation) {
-    // For Translation Exercises, look up ExegesisSession records linked to this assignment
-    const sessions = await prisma.exegesisSession.findMany({
+  if (isPassageExercise) {
+    // Primary: sessions explicitly linked to this assignment
+    const linkedSessions = await prisma.exegesisSession.findMany({
       where: {
         assignmentId: params.assignmentId,
         userId: { in: enrollments.map(e => e.user.id) },
       },
-      select: {
-        id: true,
-        userId: true,
-        submittedAt: true,
-        grade: true,
-        gradeNote: true,
-      },
+      select: { id: true, userId: true, submittedAt: true, grade: true, gradeNote: true,
+                bookOsisId: true, chapter: true, verseStart: true, verseEnd: true },
     })
 
+    // Fallback: orphaned sessions (no assignmentId) for the same passage, from the same students.
+    // These were created before the assignmentId routing was in place.
+    const usersWithLinkedSession = new Set(linkedSessions.map(s => s.userId))
+    const usersWithoutSession = enrollments
+      .map(e => e.user.id)
+      .filter(id => !usersWithLinkedSession.has(id))
+
+    let orphanSessions: typeof linkedSessions = []
+    if (usersWithoutSession.length > 0) {
+      // Determine the passage to match against.
+      // Prefer using a linked session (exact match); fall back to parsing the assignment reference.
+      let passageFilter: { bookOsisId: string; chapter: number; verseStart: number; verseEnd: number } | null = null
+      if (linkedSessions.length > 0) {
+        const ref = linkedSessions[0]
+        passageFilter = { bookOsisId: ref.bookOsisId, chapter: ref.chapter, verseStart: ref.verseStart, verseEnd: ref.verseEnd }
+      } else if (assignment.reference) {
+        // Parse reference string like "John 1:1-5" or "1 Cor 13:4" to get passage details from DB
+        const parsed = await parseAssignmentReference(assignment.reference)
+        if (parsed) passageFilter = parsed
+      }
+
+      if (passageFilter) {
+        const pf = passageFilter
+        orphanSessions = await prisma.exegesisSession.findMany({
+          where: {
+            assignmentId: null,
+            userId: { in: usersWithoutSession },
+            bookOsisId: pf.bookOsisId,
+            chapter: pf.chapter,
+            verseStart: pf.verseStart,
+            verseEnd: pf.verseEnd,
+          },
+          select: { id: true, userId: true, submittedAt: true, grade: true, gradeNote: true,
+                    bookOsisId: true, chapter: true, verseStart: true, verseEnd: true },
+          orderBy: { updatedAt: 'desc' },
+        })
+        // NOTE: orphan sessions are surfaced here for display only — this GET is read-only.
+        // They are permanently linked (adopted) lazily when the instructor grades them
+        // (see the instructor branch of PATCH /api/exegesis/[id]).
+      }
+    }
+
+    const sessions = [...linkedSessions, ...orphanSessions]
     const sessionByUser = new Map(sessions.map(s => [s.userId, s]))
 
     const rows = enrollments.map(e => {
@@ -79,7 +148,7 @@ export async function GET(
     return NextResponse.json({ rows, totalPoints: null, runningPct, overallPct: null, isTranslation: true })
   }
 
-  // ── Standard quiz ─────────────────────────────────────────────────────────
+  // ── Standard quiz / question-based translation exercise ───────────────────
   const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
 
   const responses = await prisma.response.findMany({
@@ -117,14 +186,13 @@ export async function GET(
   const runningPct = attempted.length > 0
     ? Math.round(attempted.reduce((s, r) => s + (r.pct ?? 0), 0) / attempted.length)
     : null
-  const overallPct = rows.length > 0
-    ? Math.round(rows.reduce((s, r) => s + (r.pct ?? 0), 0) / rows.length)
-    : null
+  // overallPct: average only over students who actually attempted (same as runningPct for clarity)
+  const overallPct = runningPct
 
   return NextResponse.json({ rows, totalPoints, runningPct, overallPct, isTranslation: false })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]/results', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

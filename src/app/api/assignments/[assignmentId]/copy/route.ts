@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { isAuthorizedForAssignment, isInstructorOfCourse } from '@/lib/course-auth'
@@ -63,7 +64,7 @@ export async function POST(
   return NextResponse.json({ assignment: copy })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]/copy', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

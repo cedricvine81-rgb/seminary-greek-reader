@@ -42,7 +42,7 @@ export function CourseForm({ initialData, courseId }: CourseFormProps) {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to save course')
-      router.push('/instructor/courses')
+      router.push('/instructor')
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save course')

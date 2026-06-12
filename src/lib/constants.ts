@@ -2,6 +2,7 @@ export const APP_NAME = 'Seminary Greek'
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
 
 export const JWT_EXPIRY = '7d'
+export const JWT_MAX_AGE_SECONDS = 60 * 60 * 24 * 7  // 7 days — must match JWT_EXPIRY
 export const BCRYPT_ROUNDS = 12
 
 export const VOCAB_FREQUENCY_THRESHOLDS = {

@@ -18,6 +18,9 @@ export interface QuizQuestion {
   options?: string[]
   points: number
   reference?: string
+  /** Curated synonyms accepted as correct, from the lemma's lexicon entry.
+   *  Used by the client's instant feedback to agree with the server's grader. */
+  acceptedAnswers?: string[]
 }
 
 export interface QuizResult {
@@ -39,6 +42,8 @@ export interface QuizResultItem {
   correctAnswer: string
   isCorrect: boolean
   points: number
+  /** ID of the Response row this graded result corresponds to. Used to anchor appeals. */
+  responseId?: string
 }
 
 export interface ProgressStats {

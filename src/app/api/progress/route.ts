@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { logError } from '@/lib/logger'
+import { getPayload } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 export async function GET() {
   try {
@@ -47,7 +43,7 @@ export async function GET() {
   })
 
   } catch (err) {
-    console.error(err)
+    logError('api/progress', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

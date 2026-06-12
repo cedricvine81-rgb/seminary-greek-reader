@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { getStudentScores } from '@/lib/scores'
 
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ scores })
 
   } catch (err) {
-    console.error(err)
+    logError('api/scores', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

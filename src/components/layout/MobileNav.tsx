@@ -5,12 +5,13 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, Calendar, GraduationCap, ClipboardList,
   FlipHorizontal, TrendingUp, BarChart2, BookMarked,
-  Archive, FileText, Bell, Scroll,
+  Archive, FileText, Bell, Scroll, Users, BookOpen, Building2, Mail, ShieldAlert,
 } from 'lucide-react'
 
 const instructorTabs = [
   { label: 'Dashboard',   href: '/instructor',             icon: LayoutDashboard },
   { label: 'Requests',    href: '/instructor/requests',    icon: Bell },
+  { label: 'Messages',    href: '/instructor/messages',    icon: Mail },
   { label: 'Assignments', href: '/instructor/assignments', icon: ClipboardList },
   { label: 'Materials',   href: '/instructor/materials',   icon: FileText },
   { label: 'Reports',     href: '/instructor/reports',     icon: BarChart2 },
@@ -20,24 +21,33 @@ const studentTabs = [
   { label: 'Dashboard',   href: '/student',                icon: LayoutDashboard },
   { label: 'Courses',     href: '/student/courses',        icon: GraduationCap },
   { label: 'Assignments', href: '/student/assignments',    icon: ClipboardList },
+  { label: 'Messages',    href: '/student/messages',       icon: Mail },
   { label: 'Exegesis',    href: '/student/exegesis',       icon: Scroll },
   { label: 'Flashcards',  href: '/student/flashcards',     icon: FlipHorizontal },
   { label: 'Grades',      href: '/student/scores',         icon: BarChart2 },
 ]
 
+const adminTabs = [
+  { label: 'Dashboard',    href: '/admin',               icon: LayoutDashboard },
+  { label: 'Users',        href: '/admin/users',         icon: Users },
+  { label: 'Courses',      href: '/admin/courses',       icon: BookOpen },
+  { label: 'Institutions', href: '/admin/institutions',  icon: Building2 },
+  { label: 'Audit',        href: '/admin/audit',         icon: ShieldAlert },
+]
+
 interface MobileNavProps {
-  role: 'INSTRUCTOR' | 'STUDENT'
+  role: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
   pendingRequests?: number
 }
 
 export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
   const pathname = usePathname()
-  const tabs = role === 'INSTRUCTOR' ? instructorTabs : studentTabs
+  const tabs = role === 'INSTRUCTOR' ? instructorTabs : role === 'ADMIN' ? adminTabs : studentTabs
 
   return (
     <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex">
       {tabs.map(({ label, href, icon: Icon }) => {
-        const active = pathname === href || (href !== '/instructor' && href !== '/student' && pathname.startsWith(href))
+        const active = pathname === href || (href !== '/instructor' && href !== '/student' && href !== '/admin' && pathname.startsWith(href))
         const isRequests = href === '/instructor/requests'
         return (
           <Link

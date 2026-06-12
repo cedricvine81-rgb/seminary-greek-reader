@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { logError } from '@/lib/logger'
+import { getPayload } from '@/lib/auth'
 import { getMaterialsByCourse, createMaterial, updateMaterial, deleteMaterial } from '@/lib/materials'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 export async function GET(req: NextRequest) {
   try {
@@ -19,7 +15,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ materials })
 
   } catch (err) {
-    console.error(err)
+    logError('api/materials', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -34,7 +30,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ material }, { status: 201 })
 
   } catch (err) {
-    console.error(err)
+    logError('api/materials', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -52,7 +48,7 @@ export async function PUT(req: NextRequest) {
   return NextResponse.json({ material })
 
   } catch (err) {
-    console.error(err)
+    logError('api/materials', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -69,7 +65,7 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.json({ ok: true })
 
   } catch (err) {
-    console.error(err)
+    logError('api/materials', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

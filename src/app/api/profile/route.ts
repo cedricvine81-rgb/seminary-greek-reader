@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { getPayload } from '@/lib/auth'
 
 export async function GET() {
   try {
@@ -21,7 +17,7 @@ export async function GET() {
   return NextResponse.json(user)
 
   } catch (err) {
-    console.error(err)
+    logError('api/profile', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -51,7 +47,7 @@ export async function PUT(req: NextRequest) {
   return NextResponse.json(updated)
 
   } catch (err) {
-    console.error(err)
+    logError('api/profile', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

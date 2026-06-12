@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { getBooks, getChapter } from '@/lib/reader'
 import type { Corpus } from '@/types/biblical-text'
 
@@ -22,7 +23,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ error: 'Provide corpus or book+chapter params.' }, { status: 400 })
   } catch (err) {
-    console.error(err)
+    logError('api/reader', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }

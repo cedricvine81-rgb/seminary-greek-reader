@@ -1,21 +1,38 @@
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { Fragment } from 'react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
-import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
 import { CourseGradebook } from '@/components/instructor/CourseGradebook'
-import { CoInstructorManager } from '@/components/instructor/CoInstructorManager'
-import { DeleteCourseButton } from '@/components/instructor/DeleteCourseButton'
-import { Badge } from '@/components/ui/Badge'
+import { MessageClassPanel } from '@/components/instructor/MessageClassPanel'
+import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
+import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { getCourseReport } from '@/lib/reports'
-import { Plus, Copy } from 'lucide-react'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import {
+  ArrowLeft, Plus, Copy, Settings,
+  ChevronDown,
+} from 'lucide-react'
+import { format } from 'date-fns'
 
-export const metadata: Metadata = { title: 'Course Details' }
+export const metadata: Metadata = { title: 'Course' }
+
+const typeLabel: Record<string, string> = {
+  VOCABULARY_QUIZ: 'Vocab',
+  MORPHOLOGY_QUIZ: 'Morph',
+  TRANSLATION_EXERCISE: 'Translation',
+  PASSAGE_VOCABULARY: 'Passage Vocab',
+}
+const typeVariant: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
+  VOCABULARY_QUIZ: 'blue',
+  MORPHOLOGY_QUIZ: 'purple',
+  TRANSLATION_EXERCISE: 'green',
+  PASSAGE_VOCABULARY: 'gray',
+}
 
 export default async function CourseDetailPage({ params }: { params: { courseId: string } }) {
   const token = getTokenFromCookies()
@@ -31,88 +48,243 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
       ],
     },
     include: {
-      assignments: { orderBy: { weekNumber: 'asc' } },
-      coInstructors: { include: { user: { select: { id: true, firstName: true, surname: true, email: true } } } },
+      assignments: {
+        orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
+        include: { _count: { select: { questions: true } } },
+      },
+      enrollments: {
+        where: { status: 'APPROVED' },
+        include: { user: { select: { id: true, firstName: true, surname: true } } },
+        orderBy: { createdAt: 'asc' },
+      },
     },
   })
   if (!course) notFound()
-  const isPrimaryInstructor = course.instructorId === payload.sub
+
+  const students = course.enrollments.map(e => ({
+    id: e.user.id,
+    name: [e.user.firstName, e.user.surname].filter(Boolean).join(' ') || 'Student',
+  }))
 
   const report = await getCourseReport(params.courseId)
 
   return (
-    <DashboardShell
-      role="INSTRUCTOR"
-      pageTitle={course.name}
-      actions={isPrimaryInstructor
-        ? <DeleteCourseButton courseId={course.id} courseName={course.name} />
-        : undefined
-      }
-    >
+    <DashboardShell role="INSTRUCTOR" pageTitle={course.name}>
       <div className="space-y-6">
-        <div className="flex items-center gap-3">
-          <Badge variant={COURSE_LEVEL_VARIANTS[course.level] ?? 'gray'}>
-            {COURSE_LEVEL_LABELS[course.level] ?? course.level}
-          </Badge>
-          <span className="text-sm text-gray-500">
-            {new Date(course.startDate).toLocaleDateString()} – {new Date(course.endDate).toLocaleDateString()}
-          </span>
-        </div>
 
-        <Card>
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <CardTitle>Assignments ({course.assignments.length})</CardTitle>
-            <div className="flex gap-2">
-              <Link href={`/instructor/assignments/new?courseId=${course.id}`}>
-                <Button size="sm" variant="secondary">
-                  <Plus size={14} />
-                  Create New
-                </Button>
-              </Link>
-              <Link href={`/instructor/assignments/use-existing?courseId=${course.id}`}>
-                <Button size="sm" variant="secondary">
-                  <Copy size={14} />
-                  Use Existing
-                </Button>
-              </Link>
+        {/* ── Header row ── */}
+        <div className="flex items-start justify-between gap-4 flex-wrap">
+          <div className="space-y-2">
+            <Link
+              href="/instructor"
+              className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+            >
+              <ArrowLeft size={14} /> Back to dashboard
+            </Link>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-gray-400">
+                {format(course.startDate, 'MMM d, yyyy')} – {format(course.endDate, 'MMM d, yyyy')}
+              </span>
             </div>
           </div>
-          {course.assignments.length === 0 ? (
-            <p className="text-sm text-gray-400 italic mt-2">No assignments yet.</p>
-          ) : (
-            <ul className="mt-2 space-y-1">
-              {course.assignments.map(a => (
-                <li key={a.id} className="text-sm text-gray-700 flex justify-between">
-                  <span>Week {a.weekNumber}: {a.title}</span>
-                  <span className="text-gray-400 text-xs">{new Date(a.dueDate).toLocaleDateString()}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
-
-        <Card>
-          <CardTitle>Co-Instructors</CardTitle>
-          <CoInstructorManager
-            courseId={course.id}
-            initialCoInstructors={course.coInstructors}
-            isPrimaryInstructor={isPrimaryInstructor}
-          />
-        </Card>
-
-        <Card>
-          <CardTitle>Student Progress</CardTitle>
-          <div className="mt-3">
-            <StudentProgressTable students={report?.studentStats ?? []} />
+          <div className="flex items-center gap-2">
+            <MessageClassPanel courseId={course.id} students={students} />
+            <Link href={`/instructor/courses/${course.id}/edit`}>
+              <Button size="sm" variant="secondary" className="flex items-center gap-1.5">
+                <Settings size={14} /> Edit Course
+              </Button>
+            </Link>
           </div>
+        </div>
+
+        {/* ── Assignments ── */}
+        <Card>
+          <details open>
+            <summary className="flex items-center justify-between cursor-pointer list-none">
+              <CardTitle>
+                Assignments
+                <span className="ml-2 text-sm font-normal text-gray-400">
+                  ({course.assignments.length})
+                </span>
+              </CardTitle>
+              <div className="flex items-center gap-2">
+                <Link href={`/instructor/assignments/new?courseId=${course.id}`}>
+                  <Button size="sm" variant="secondary">
+                    <Plus size={13} /> Create
+                  </Button>
+                </Link>
+                <Link href={`/instructor/assignments/use-existing?courseId=${course.id}`}>
+                  <Button size="sm" variant="secondary">
+                    <Copy size={13} /> Use Existing
+                  </Button>
+                </Link>
+                <ChevronDown size={16} className="text-gray-400 shrink-0" />
+              </div>
+            </summary>
+
+            <div className="mt-4">
+              {course.assignments.length === 0 ? (
+                <p className="text-sm text-gray-400 italic">
+                  No assignments yet. Create one to get started.
+                </p>
+              ) : (
+                <Fragment>
+                {/* ── Desktop / tablet: aligned grid (md and up) ── */}
+                <div className="hidden md:block">
+                  {/* Header row */}
+                  <div className="grid items-center gap-x-3 px-1 pb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400"
+                    style={{ gridTemplateColumns: '2.5rem 5rem 1fr 5.5rem 2rem 5.5rem 4.5rem 4.5rem' }}>
+                    <span>Wk</span>
+                    <span>Due</span>
+                    <span>Title</span>
+                    <span>Type</span>
+                    <span></span>
+                    <span>Status</span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                  <div className="divide-y divide-gray-50">
+                    {course.assignments.map(a => (
+                      <div
+                        key={a.id}
+                        className="grid items-center gap-x-3 px-1 py-2.5 text-sm hover:bg-gray-50 rounded-lg"
+                        style={{ gridTemplateColumns: '2.5rem 5rem 1fr 5.5rem 2rem 5.5rem 4.5rem 4.5rem' }}
+                      >
+                        <span className="text-gray-400 text-xs">Wk {a.weekNumber}</span>
+                        <span className="text-gray-400 text-xs whitespace-nowrap">
+                          {format(new Date(a.dueDate), 'MMM d')}
+                        </span>
+                        <Link
+                          href={`/instructor/assignments/${a.id}`}
+                          className="font-medium text-gray-800 hover:text-brand-700 truncate"
+                        >
+                          {a.title}
+                        </Link>
+                        <Badge variant={typeVariant[a.type] ?? 'gray'}>
+                          {typeLabel[a.type] ?? a.type}
+                        </Badge>
+                        <span className="text-gray-300 text-xs text-right">
+                          {a._count.questions > 0 ? `${a._count.questions}q` : ''}
+                        </span>
+                        <Badge variant={a.isPublished ? 'green' : 'gray'}>
+                          {a.isPublished ? 'Published' : 'Draft'}
+                        </Badge>
+                        {/* Grade column — reserved width; blank for non-gradeable types */}
+                        <div>
+                          {a.type === 'TRANSLATION_EXERCISE' && (
+                            <Link href={`/instructor/assignments/${a.id}/grade`}>
+                              <Button size="sm" variant="primary" className="w-full">Grade</Button>
+                            </Link>
+                          )}
+                        </div>
+                        <Link href={`/instructor/assignments/${a.id}`}>
+                          <Button size="sm" variant="secondary" className="w-full">Edit</Button>
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* ── Mobile: stacked cards (below md) ── */}
+                <div className="md:hidden divide-y divide-gray-100">
+                  {course.assignments.map(a => (
+                    <div key={a.id} className="py-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <Link
+                          href={`/instructor/assignments/${a.id}`}
+                          className="font-medium text-gray-800 hover:text-brand-700 text-sm flex-1 min-w-0"
+                        >
+                          {a.title}
+                        </Link>
+                        <Badge variant={a.isPublished ? 'green' : 'gray'} className="shrink-0">
+                          {a.isPublished ? 'Published' : 'Draft'}
+                        </Badge>
+                      </div>
+                      <div className="flex items-center gap-2 flex-wrap mt-1.5 text-xs text-gray-400">
+                        <Badge variant={typeVariant[a.type] ?? 'gray'}>
+                          {typeLabel[a.type] ?? a.type}
+                        </Badge>
+                        <span>Wk {a.weekNumber}</span>
+                        <span>· Due {format(new Date(a.dueDate), 'MMM d')}</span>
+                        {a._count.questions > 0 && <span>· {a._count.questions}q</span>}
+                      </div>
+                      <div className="flex gap-2 mt-2.5">
+                        {a.type === 'TRANSLATION_EXERCISE' && (
+                          <Link href={`/instructor/assignments/${a.id}/grade`} className="flex-1">
+                            <Button size="sm" variant="primary" className="w-full">Grade</Button>
+                          </Link>
+                        )}
+                        <Link href={`/instructor/assignments/${a.id}`} className="flex-1">
+                          <Button size="sm" variant="secondary" className="w-full">Edit</Button>
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                </Fragment>
+              )}
+            </div>
+          </details>
         </Card>
 
+        {/* ── Grade Book ── */}
         <Card>
-          <CardTitle>Grade Book</CardTitle>
-          <div className="mt-4">
-            <CourseGradebook courseId={course.id} />
-          </div>
+          <details>
+            <summary className="flex items-center justify-between cursor-pointer list-none mb-0">
+              <CardTitle>Grade Book</CardTitle>
+              <ChevronDown size={16} className="text-gray-400" />
+            </summary>
+            <div className="mt-4">
+              <CourseGradebook courseId={course.id} />
+            </div>
+          </details>
         </Card>
+
+        {/* ── Students ── */}
+        {(report?.studentStats?.length ?? 0) > 0 && (
+          <Card>
+            <details>
+              <summary className="flex items-center justify-between cursor-pointer list-none mb-0">
+                <CardTitle>
+                  Students
+                  <span className="ml-2 text-sm font-normal text-gray-400">
+                    ({report!.studentStats.length})
+                  </span>
+                </CardTitle>
+                <ChevronDown size={16} className="text-gray-400" />
+              </summary>
+              <div className="mt-4">
+                <StudentProgressTable students={report!.studentStats} />
+              </div>
+            </details>
+          </Card>
+        )}
+
+        {/* ── Schedule ── */}
+        {course.assignments.length > 0 && (
+          <Card>
+            <details>
+              <summary className="flex items-center justify-between cursor-pointer list-none mb-0">
+                <CardTitle>Schedule</CardTitle>
+                <ChevronDown size={16} className="text-gray-400" />
+              </summary>
+              <div className="mt-4">
+                <CalendarGrid
+                  events={course.assignments.map(a => ({
+                    id: a.id,
+                    title: a.title,
+                    type: a.type,
+                    dueDate: a.dueDate.toISOString(),
+                    href: `/instructor/assignments/${a.id}`,
+                    isPublished: a.isPublished,
+                  }))}
+                  initialDate={course.assignments[0]?.dueDate.toISOString()}
+                />
+              </div>
+            </details>
+          </Card>
+        )}
+
       </div>
     </DashboardShell>
   )

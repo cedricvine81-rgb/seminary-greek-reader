@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 
 // Standard Protestant book numbers (1-based). Deuterocanonical OSIS IDs
 // that don't exist in Protestant Bibles are intentionally omitted.
@@ -100,7 +101,7 @@ export async function GET(req: NextRequest) {
   }
 
   } catch (err) {
-    console.error(err)
+    logError('api/translation', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

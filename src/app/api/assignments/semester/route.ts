@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
@@ -53,6 +54,7 @@ export async function POST(req: NextRequest) {
     lateDaysLimit,
     provideDefinition,
     maxRetakes,
+    maxAppeals,
     isPublished,
     quizStylePct,
     // morphology: either a series (array) or a single subtype for backwards compat
@@ -71,6 +73,7 @@ export async function POST(req: NextRequest) {
     lateDaysLimit?: number
     provideDefinition?: boolean
     maxRetakes?: number | null
+    maxAppeals?: number | null
     isPublished?: boolean
     quizStylePct?: number
     morphologySeries?: MorphTestConfig[]
@@ -157,6 +160,10 @@ export async function POST(req: NextRequest) {
         lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
         provideDefinition: Boolean(provideDefinition),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
+        // Vocab quizzes only — ignore non-positive values
+        maxAppeals: quizType === 'VOCABULARY_QUIZ' && maxAppeals != null && Number(maxAppeals) > 0
+          ? Number(maxAppeals)
+          : null,
         isPublished: Boolean(isPublished),
       },
     })
@@ -187,7 +194,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ count: created }, { status: 201 })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/semester', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

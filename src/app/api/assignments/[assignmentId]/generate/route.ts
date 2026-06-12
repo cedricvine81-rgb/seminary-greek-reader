@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
@@ -30,7 +31,7 @@ export async function POST(
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { type: true, level: true, morphSubtype: true },
+    select: { type: true, level: true, morphSubtype: true, provideDefinition: true },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
@@ -38,11 +39,13 @@ export async function POST(
   const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)
   const qLevel = (level as CourseLevel) ?? assignment.level
   const morphSubtype = assignment.morphSubtype ?? 'ALL'
+  // When provideDefinition is on, generate 100% open-ended (typed) questions
+  const provideDefinitionPct = assignment.provideDefinition ? 100 : 0
 
   let questions: ReturnType<typeof generateVerbParseQuestions> | Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
-    questions = await generateVocabQuestions(qLevel, qType, qCount)
+    questions = await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break
@@ -55,19 +58,20 @@ export async function POST(
     }
   }
 
-  // Replace all existing questions
-  await prisma.question.deleteMany({ where: { assignmentId: params.assignmentId } })
-
-  if (questions.length > 0) {
-    await prisma.question.createMany({
-      data: questions.map(q => ({ ...q, assignmentId: params.assignmentId })),
-    })
-  }
+  // Replace all existing questions atomically — if createMany fails, deleteMany is rolled back
+  await prisma.$transaction(async tx => {
+    await tx.question.deleteMany({ where: { assignmentId: params.assignmentId } })
+    if (questions.length > 0) {
+      await tx.question.createMany({
+        data: questions.map(q => ({ ...q, assignmentId: params.assignmentId })),
+      })
+    }
+  })
 
   return NextResponse.json({ count: questions.length })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]/generate', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

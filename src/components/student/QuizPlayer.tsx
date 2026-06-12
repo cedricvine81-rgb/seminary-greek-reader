@@ -1,10 +1,11 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
-import { CheckCircle2, XCircle, Clock, RotateCcw, Send } from 'lucide-react'
+import { CheckCircle2, XCircle, Clock, RotateCcw } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
+import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
 import type { QuizQuestion, QuizResult } from '@/types/quiz'
 
 interface QuizPlayerProps {
@@ -14,11 +15,18 @@ interface QuizPlayerProps {
   timePerQuestion?: number | null
   provideDefinition?: boolean
   maxRetakes?: number | null
+  /** Vocab quizzes only: number of wrong-answer appeals the student is permitted per attempt. 0 = appeals off. */
+  maxAppeals?: number
   attemptCount?: number
   bestPct?: number | null
 }
 
 type Phase = 'answering' | 'feedback' | 'complete' | 'submitted'
+
+/** Returns true if the string contains any Greek Unicode characters */
+function hasGreek(s: string | undefined | null): boolean {
+  return /[Ͱ-Ͽἀ-῿]/.test(s ?? '')
+}
 
 /** Parse a correctAnswer string — handles plain text and JSON morphology objects */
 function formatCorrectAnswer(ca: string): string {
@@ -31,34 +39,8 @@ function formatCorrectAnswer(ca: string): string {
   return ca
 }
 
-function levenshtein(a: string, b: string): number {
-  const m = a.length, n = b.length
-  const dp: number[][] = Array.from({ length: m + 1 }, (_, i) =>
-    Array.from({ length: n + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
-  )
-  for (let i = 1; i <= m; i++)
-    for (let j = 1; j <= n; j++)
-      dp[i][j] = a[i - 1] === b[j - 1]
-        ? dp[i - 1][j - 1]
-        : 1 + Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1])
-  return dp[m][n]
-}
 
-function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fuzzy = false): boolean {
-  const norm = (s: string) => s.trim().toLowerCase().replace(/[.,;:!?]/g, '').trim()
-  const student = norm(studentAnswer)
-  if (!student) return false
-  const alts = correctAnswer.split(',').map(a => norm(a))
-  if (!fuzzy) return alts.some(alt => alt === student)
-  return alts.some(alt => {
-    if (alt === student) return true
-    const maxLen = Math.max(student.length, alt.length)
-    const allowed = maxLen <= 3 ? 0 : maxLen <= 6 ? 1 : 2
-    return levenshtein(student, alt) <= allowed
-  })
-}
-
-export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
+export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, maxAppeals = 0, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -79,7 +61,27 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   const [timeLeft, setTimeLeft] = useState<number | null>(timePerQuestion ?? null)
   const [timedOut, setTimedOut] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [result, setResult] = useState<QuizResult | null>(null)
+  // Per-response appeal status (after submit): which responseIds the student has appealed.
+  const [appealedIds, setAppealedIds] = useState<Set<string>>(new Set())
+  const [appealError, setAppealError] = useState<string | null>(null)
+  // Mid-quiz "Appeal this answer" intent: the questionIds marked for appeal.
+  // Actual appeals are POSTed after the quiz submits (responseIds don't exist mid-quiz).
+  const [markedForAppeal, setMarkedForAppeal] = useState<Set<string>>(new Set())
+
+  // Guard against an empty question set (e.g. quiz created but no questions
+  // generated yet). The rest of the component assumes `q` is defined.
+  if (questions.length === 0) {
+    return (
+      <div className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-8 text-center space-y-2">
+        <p className="text-base font-semibold text-amber-900">This quiz has no questions yet.</p>
+        <p className="text-sm text-amber-800">
+          Open the assignment&rsquo;s builder and click <strong>Generate Questions</strong>, then return here.
+        </p>
+      </div>
+    )
+  }
 
   const q = questions[idx]
   const total = questions.length
@@ -93,10 +95,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     }
   }, [idx, phase])
 
-  // Auto-advance after feedback for multiple-choice vocab quizzes
+  // Auto-advance after feedback for multiple-choice questions only (not when provideDefinition is on)
   useEffect(() => {
     if (phase !== 'feedback') return
-    if (type === 'MORPHOLOGY_QUIZ' || provideDefinition) return // keep button for typed answers
+    const isMultipleChoice = !provideDefinition && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
+    if (!isMultipleChoice) return // keep "Next" button for typed answers
     const t = setTimeout(() => handleNext(), 1200)
     return () => clearTimeout(t)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -148,8 +151,15 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             k => studentObj[k]?.toLowerCase() === correctObj[k]?.toLowerCase()
           )
         } catch { correct = false }
+      } else if (q.type === 'MULTIPLE_CHOICE') {
+        // Whole-option match — never comma-split (a gloss may contain a comma)
+        correct = isMultipleChoiceCorrect(answer, q.correctAnswer ?? '')
       } else {
-        correct = isAnswerCorrect(answer, q.correctAnswer ?? '', provideDefinition)
+        // Augment with curated lemma synonyms (kept in sync with the server's grader)
+        const acceptable = q.acceptedAnswers && q.acceptedAnswers.length > 0
+          ? [q.correctAnswer ?? '', ...q.acceptedAnswers].filter(Boolean).join(',')
+          : q.correctAnswer ?? ''
+        correct = isAnswerCorrect(answer, acceptable, provideDefinition)
       }
     }
 
@@ -175,6 +185,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   async function handleSubmit() {
     setSubmitting(true)
+    setSubmitError(null)
     try {
       const payload = questions.map(question => ({
         questionId: question.id,
@@ -185,11 +196,42 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ assignmentId, responses: payload, retake: false }),
       })
-      const data = await res.json()
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok || !data?.result) {
+        // Keep the student's answers intact and let them retry — never silently lose work
+        setSubmitError(data?.error || 'Submission failed. Your answers are saved locally — please try again.')
+        return
+      }
       setResult(data.result)
       setPhase('submitted')
       setAttemptCount(data.result.attemptNumber)
       if (data.result.isNewBest) setBestPct(data.result.percentage)
+
+      // Submit any mid-quiz "marked for appeal" intents. The breakdown now has
+      // responseIds, so we can POST each appeal against the actual Response row.
+      if (markedForAppeal.size > 0 && Array.isArray(data.result.breakdown)) {
+        const breakdownByQuestion = new Map<string, { responseId?: string; isCorrect: boolean }>(
+          data.result.breakdown.map((b: { questionId: string; responseId?: string; isCorrect: boolean }) => [b.questionId, b]),
+        )
+        const submitted = new Set<string>(appealedIds)
+        const intents: string[] = []
+        markedForAppeal.forEach(qid => intents.push(qid))
+        for (const qid of intents) {
+          const item = breakdownByQuestion.get(qid)
+          if (!item?.responseId || item.isCorrect) continue
+          try {
+            const r = await fetch('/api/appeals', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ responseId: item.responseId }),
+            })
+            if (r.ok) submitted.add(item.responseId)
+          } catch { /* best-effort; user can still appeal via the submitted screen */ }
+        }
+        setAppealedIds(submitted)
+      }
+    } catch {
+      setSubmitError('Network error — your answers are saved locally. Please try again.')
     } finally {
       setSubmitting(false)
     }
@@ -205,6 +247,29 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     setPhase('answering')
     setTimeLeft(timePerQuestion ?? null)
     setResult(null)
+    setAppealedIds(new Set())
+    setAppealError(null)
+    setMarkedForAppeal(new Set())
+  }
+
+  /** Submit an appeal for a single wrong response (vocab quiz only). */
+  async function handleAppeal(responseId: string) {
+    setAppealError(null)
+    try {
+      const res = await fetch('/api/appeals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ responseId }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setAppealError(data.error ?? 'Could not submit appeal.')
+        return
+      }
+      setAppealedIds(prev => new Set(prev).add(responseId))
+    } catch {
+      setAppealError('Network error — please try again.')
+    }
   }
 
   // ── Auto-submit when all questions are answered ──
@@ -257,7 +322,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     )
   }
 
-  // ── Complete screen ────────────────────────────────────────────────────────
+  // ── Complete screen (brief — auto-submit fires immediately) ──────────────
+  // Correct answers are intentionally withheld here; they appear on the submitted
+  // screen once the attempt is committed to the database.
   if (phase === 'complete') {
     const finalPct = total > 0 ? Math.round((correctCount / total) * 100) : 0
     return (
@@ -269,45 +336,22 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <p className="text-gray-600 mt-1">{correctCount} / {total} correct</p>
         </div>
 
-        <div className="space-y-2">
-          {questions.map(question => {
-            const yours = answers[question.id] ?? ''
-            const ok = clientCorrect[question.id] ?? false
-            return (
-              <div key={question.id} className={`p-3 rounded-xl border text-sm ${ok ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-                <div className="flex items-start gap-2">
-                  {ok ? <CheckCircle2 size={15} className="text-green-600 mt-0.5 shrink-0" /> : <XCircle size={15} className="text-red-500 mt-0.5 shrink-0" />}
-                  <div>
-                    <span className="font-greek text-base">{question.prompt}</span>
-                    {yours ? (
-                      <p className="mt-0.5">Your answer: <span className={ok ? 'text-green-700 font-medium' : 'text-red-600 line-through'}>{yours}</span></p>
-                    ) : (
-                      <p className="mt-0.5 text-gray-400 italic">No answer</p>
-                    )}
-                    {!ok && <p>Correct: <span className="text-green-700 font-medium">{formatCorrectAnswer(question.correctAnswer ?? '')}</span></p>}
-                  </div>
-                </div>
-              </div>
-            )
-          })}
-        </div>
-
-        <div className="flex gap-3 justify-end items-center">
-          {submitting ? (
-            <span className="text-sm text-gray-500 flex items-center gap-2">
-              <svg className="animate-spin w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
-              </svg>
-              Submitting…
-            </span>
-          ) : (
-            <Button onClick={handleSubmit} loading={submitting} className="flex items-center gap-2">
-              <Send size={15} />
-              Submit for Grading
+        {submitError ? (
+          <div className="space-y-3 text-center py-2">
+            <p className="text-sm text-red-600">{submitError}</p>
+            <Button onClick={handleSubmit} loading={submitting} variant="primary">
+              Try Again
             </Button>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center gap-2 text-sm text-gray-500 py-4">
+            <svg className="animate-spin w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+            </svg>
+            Submitting…
+          </div>
+        )}
       </div>
     )
   }
@@ -332,6 +376,80 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             </p>
           )}
         </div>
+
+        {/* Per-question breakdown — shown here (after commit) so correct answers
+            are only visible once the attempt is recorded in the database */}
+        {result.breakdown && result.breakdown.length > 0 && (
+          <div className="space-y-2">
+            {(() => {
+              const appealsEnabled = type === 'VOCABULARY_QUIZ' && maxAppeals > 0
+              const usedAppeals = appealedIds.size
+              const remainingAppeals = Math.max(0, maxAppeals - usedAppeals)
+              return (
+                <>
+                  {appealsEnabled && (
+                    <p className="text-xs text-gray-500">
+                      Think a wrong answer should have counted? You may appeal up to{' '}
+                      <span className="font-semibold">{maxAppeals}</span> answer{maxAppeals === 1 ? '' : 's'} per attempt.
+                      {usedAppeals > 0 && <> ({remainingAppeals} remaining)</>}
+                    </p>
+                  )}
+                  {result.breakdown.map(b => {
+                    const canAppealThis = appealsEnabled
+                      && !b.isCorrect
+                      && !!b.responseId
+                      && !appealedIds.has(b.responseId)
+                      && !!b.yourAnswer
+                      && remainingAppeals > 0
+                    const alreadyAppealed = b.responseId && appealedIds.has(b.responseId)
+                    return (
+                      <div key={b.questionId} className={`p-3 rounded-xl border text-sm ${b.isCorrect ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+                        <div className="flex items-start gap-2">
+                          {b.isCorrect
+                            ? <CheckCircle2 size={15} className="text-green-600 mt-0.5 shrink-0" />
+                            : <XCircle size={15} className="text-red-500 mt-0.5 shrink-0" />
+                          }
+                          <div className="flex-1 min-w-0">
+                            <span className={`${hasGreek(b.prompt) ? 'font-greek' : ''} text-base`}>{b.prompt}</span>
+                            {b.yourAnswer ? (
+                              <p className="mt-0.5">Your answer: <span className={`${hasGreek(b.yourAnswer) ? 'font-greek' : ''} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
+                            ) : (
+                              <p className="mt-0.5 text-gray-400 italic">No answer</p>
+                            )}
+                            {!b.isCorrect && (
+                              <p>Correct: <span className={`${hasGreek(b.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
+                            )}
+                            {appealsEnabled && !b.isCorrect && !!b.responseId && (
+                              <div className="mt-2">
+                                {alreadyAppealed ? (
+                                  <span className="text-xs text-amber-700 font-medium">⏳ Appeal submitted — awaiting instructor review.</span>
+                                ) : canAppealThis ? (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleAppeal(b.responseId!)}
+                                    className="text-xs font-medium text-red-700 hover:text-red-900 hover:underline"
+                                  >
+                                    Appeal this answer
+                                  </button>
+                                ) : remainingAppeals === 0 ? (
+                                  <span className="text-xs text-gray-400">No appeals remaining for this attempt.</span>
+                                ) : null}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  })}
+                  {appealError && (
+                    <p className="text-xs text-red-600 bg-red-50 rounded px-3 py-2">{appealError}</p>
+                  )}
+                </>
+              )
+            })()}
+          </div>
+        )}
+
         <div className="flex gap-3 justify-end">
           {canRetake && (
             <Button onClick={handleRetake} variant="ghost" className="flex items-center gap-2">
@@ -339,7 +457,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               Retake Quiz
             </Button>
           )}
-          <Button variant="ghost" onClick={() => router.push('/student/assignments')}>
+          <Button variant="ghost" onClick={() => { router.push('/student/assignments'); router.refresh() }}>
             Back to Assignments
           </Button>
         </div>
@@ -393,43 +511,60 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
             {type === 'MORPHOLOGY_QUIZ'
               ? 'Identify the morphology'
-              : provideDefinition
-                ? 'Write the English meaning'
-                : 'Choose the correct definition'}
+              : q.type === 'ENGLISH_TO_GREEK'
+                ? 'Write the Greek word'
+                : q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
+                  ? 'Choose the correct definition'
+                  : 'Write the English meaning'}
           </p>
-          <p className="font-greek text-3xl text-ink-900 leading-relaxed">{q?.prompt}</p>
+          <p className={`${hasGreek(q?.prompt) ? 'font-greek' : ''} text-3xl text-ink-900 leading-relaxed`}>{q?.prompt}</p>
         </div>
 
-        {/* Vocabulary: provide-definition text input */}
-        {type === 'VOCABULARY_QUIZ' && provideDefinition && phase === 'answering' && (
-          <input
-            ref={inputRef}
-            type="text"
-            value={draft}
-            onChange={e => setDraft(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter' && draft.trim()) handleCheck() }}
-            placeholder="Type the English meaning…"
-            className="input w-full"
-            autoComplete="off"
-            autoCorrect="off"
-            spellCheck={false}
-          />
-        )}
+        {/* Vocabulary questions — provideDefinition overrides to text input; otherwise use question type */}
+        {type === 'VOCABULARY_QUIZ' && phase === 'answering' && (() => {
+          const hasOptions = Array.isArray(q.options) && q.options.length > 0
+          // provideDefinition = true means students must type their answer regardless of how
+          // the question was stored (handles assignments generated before this fix).
+          const isMultipleChoice = !provideDefinition && q.type === 'MULTIPLE_CHOICE' && hasOptions
 
-        {/* Vocabulary: choose-definition multiple choice */}
-        {type === 'VOCABULARY_QUIZ' && !provideDefinition && phase === 'answering' && (
-          <div className="grid grid-cols-1 gap-2">
-            {(q.options ?? []).map(opt => (
-              <button
-                key={opt}
-                onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
-        )}
+          if (isMultipleChoice) {
+            // Multiple-choice: tap a button
+            // Detect Greek options (English→Greek questions have Greek words as options)
+            const optionsAreGreek = q.options!.some(o => hasGreek(o))
+            return (
+              <div className="grid grid-cols-1 gap-2">
+                {q.options!.map(opt => (
+                  <button
+                    key={opt}
+                    onClick={() => { setDraft(opt); handleCheck(false, opt) }}
+                    className={`text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            )
+          }
+
+          // Open-ended: student types their answer
+          const placeholder = q.type === 'ENGLISH_TO_GREEK'
+            ? 'Type the Greek word…'
+            : 'Type the English meaning…'
+          return (
+            <input
+              ref={inputRef}
+              type="text"
+              value={draft}
+              onChange={e => setDraft(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter' && draft.trim()) handleCheck() }}
+              placeholder={placeholder}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              autoComplete="off"
+              autoCorrect="off"
+              spellCheck={false}
+            />
+          )
+        })()}
 
         {/* Morphology: multiple-choice (Conditionals / Subjunctive uses) */}
         {type === 'MORPHOLOGY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && phase === 'answering' && (
@@ -440,6 +575,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 onClick={() => { setDraft(opt); handleCheck(false, opt) }}
                 className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
               >
+                {/* Morphology MC options are never Greek — no font-greek needed */}
                 {opt}
               </button>
             ))}
@@ -515,14 +651,49 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             </div>
             {answers[q.id] && (
               <p className="text-sm text-gray-600">
-                Your answer: <span className={clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}>{answers[q.id]}</span>
+                Your answer: <span className={`${hasGreek(answers[q.id]) ? 'font-greek' : ''} ${clientCorrect[q.id] ? 'text-green-700 font-medium' : 'text-red-600 font-medium'}`}>{answers[q.id]}</span>
               </p>
             )}
             {!clientCorrect[q.id] && (
               <p className="text-sm text-gray-600">
-                Correct answer: <span className="text-green-700 font-medium">{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
+                Correct answer: <span className={`${hasGreek(q.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(q.correctAnswer ?? '')}</span>
               </p>
             )}
+            {/* Mid-quiz appeal control — vocab quizzes only, when appeals are enabled and budget remains. */}
+            {!clientCorrect[q.id]
+              && type === 'VOCABULARY_QUIZ'
+              && maxAppeals > 0
+              && (answers[q.id]?.trim() ?? '') !== ''
+              && (() => {
+                const isMarked = markedForAppeal.has(q.id)
+                const remaining = Math.max(0, maxAppeals - markedForAppeal.size)
+                if (isMarked) {
+                  return (
+                    <p className="text-xs text-amber-700 font-medium pt-1">
+                      ✓ Marked for appeal — will be submitted when you finish the quiz.
+                    </p>
+                  )
+                }
+                if (remaining === 0) {
+                  return (
+                    <p className="text-xs text-gray-500 pt-1">No appeals remaining for this attempt.</p>
+                  )
+                }
+                return (
+                  <div className="pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setMarkedForAppeal(prev => new Set(prev).add(q.id))}
+                      className="text-xs font-medium text-red-700 hover:text-red-900 hover:underline"
+                    >
+                      Appeal this answer
+                    </button>
+                    <span className="ml-2 text-xs text-gray-400">
+                      {remaining} of {maxAppeals} appeal{maxAppeals === 1 ? '' : 's'} remaining
+                    </span>
+                  </div>
+                )
+              })()}
           </div>
         )}
       </div>
@@ -532,22 +703,29 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         {phase === 'answering' ? (
           <>
             <span /> {/* spacer */}
-            {(type !== 'VOCABULARY_QUIZ' || provideDefinition) && (
-              <Button
-                onClick={() => handleCheck()}
-                disabled={type === 'VOCABULARY_QUIZ' ? !draft.trim() : Object.keys(morphDraft).length === 0}
-              >
-                Check Answer
-              </Button>
-            )}
+            {/* Show "Check Answer" for open-ended vocab (not multiple choice) and morphology (non-MC) */}
+            {(() => {
+              const isVocabMC = !provideDefinition && type === 'VOCABULARY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
+              const isMorphMC = type === 'MORPHOLOGY_QUIZ' && q.type === 'MULTIPLE_CHOICE'
+              // Multiple-choice questions self-submit on click — no button needed
+              if (isVocabMC || isMorphMC) return null
+              const disabled = type === 'VOCABULARY_QUIZ'
+                ? !draft.trim()
+                : Object.keys(morphDraft).length === 0
+              return (
+                <Button onClick={() => handleCheck()} disabled={disabled}>
+                  Check Answer
+                </Button>
+              )
+            })()}
           </>
         ) : (
           <>
             <span className="text-sm text-gray-500">
               {correctCount} / {answeredSoFar} correct
             </span>
-            {/* Only show the Next button for typed/morphology answers; multiple-choice auto-advances */}
-            {(type === 'MORPHOLOGY_QUIZ' || provideDefinition) ? (
+            {/* Only show the Next button for typed/open-ended answers; multiple-choice auto-advances */}
+            {(provideDefinition || q.type !== 'MULTIPLE_CHOICE' || !(Array.isArray(q.options) && q.options.length > 0)) ? (
               <Button onClick={handleNext}>
                 {idx < total - 1 ? 'Next Question' : 'Finish Quiz'}
               </Button>

@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken, verifyPassword } from '@/lib/auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { getPayload, verifyPassword } from '@/lib/auth'
 
 export async function DELETE(
   req: NextRequest,
@@ -56,7 +52,7 @@ export async function DELETE(
   return NextResponse.json({ ok: true })
 
   } catch (err) {
-    console.error(err)
+    logError('api/courses/[courseId]', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

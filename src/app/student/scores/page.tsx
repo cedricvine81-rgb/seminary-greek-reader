@@ -51,16 +51,29 @@ export default async function StudentScoresPage() {
     orderBy: [{ weekNumber: 'asc' }, { createdAt: 'asc' }],
   })
 
-  // All responses for this student across these assignments
   const assignmentIds = assignments.map(a => a.id)
-  const responses = await prisma.response.findMany({
-    where: {
-      userId: payload.sub,
-      assignmentId: { in: assignmentIds },
-      questionId: { not: null },
-    },
-    select: { assignmentId: true, questionId: true, score: true, submittedAt: true },
-  })
+  const passageExerciseIds = assignments
+    .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0)
+    .map(a => a.id)
+
+  // Responses for question-based assignments (quizzes + question-based translation exercises)
+  const [responses, exegesisSessions] = await Promise.all([
+    prisma.response.findMany({
+      where: {
+        userId: payload.sub,
+        assignmentId: { in: assignmentIds },
+        questionId: { not: null },
+      },
+      select: { assignmentId: true, questionId: true, score: true, submittedAt: true },
+    }),
+    // Passage exercises: use ExegesisSession for submission status and instructor grade
+    passageExerciseIds.length > 0
+      ? prisma.exegesisSession.findMany({
+          where: { userId: payload.sub, assignmentId: { in: passageExerciseIds } },
+          select: { assignmentId: true, grade: true, submittedAt: true },
+        })
+      : Promise.resolve([]),
+  ])
 
   // Group responses by assignmentId
   const responsesByAssignment: Record<string, typeof responses> = {}
@@ -68,9 +81,36 @@ export default async function StudentScoresPage() {
     if (!responsesByAssignment[r.assignmentId]) responsesByAssignment[r.assignmentId] = []
     responsesByAssignment[r.assignmentId].push(r)
   }
+  const sessionByAssignment = Object.fromEntries(
+    exegesisSessions.map(s => [s.assignmentId ?? '', s])
+  )
 
   // Build per-assignment rows
   const rows = assignments.map(a => {
+    const isPassage = a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0
+
+    if (isPassage) {
+      // Passage exercise — grade comes from instructor via ExegesisSession
+      const sess = sessionByAssignment[a.id]
+      const taken = !!sess?.submittedAt
+      const graded = sess?.grade !== null && sess?.grade !== undefined
+      return {
+        id: a.id,
+        title: a.title,
+        courseTitle: a.course.name,
+        weekNumber: a.weekNumber,
+        type: a.type,
+        totalPts: 100 as number,        // passage exercises are graded 0–100
+        earnedPts: graded ? (sess!.grade as number) : null,
+        pct: graded ? (sess!.grade as number) : null,
+        taken,
+        graded,
+        isPassage: true,
+        submittedAt: sess?.submittedAt ?? null,
+      }
+    }
+
+    // Question-based assignment
     const totalPts = a.questions.reduce((s, q) => s + q.points, 0)
     const aResponses = responsesByAssignment[a.id] ?? []
     const taken = aResponses.length > 0
@@ -79,7 +119,6 @@ export default async function StudentScoresPage() {
     const lastSubmitted = taken
       ? aResponses.reduce((latest, r) => (r.submittedAt > latest ? r.submittedAt : latest), aResponses[0].submittedAt)
       : null
-
     return {
       id: a.id,
       title: a.title,
@@ -90,15 +129,19 @@ export default async function StudentScoresPage() {
       earnedPts: taken ? earnedPts : null,
       pct,
       taken,
+      graded: taken,
+      isPassage: false,
       submittedAt: lastSubmitted,
     }
   })
 
-  // Summary stats
+  // Summary stats — only include graded rows in running average; all rows in semester total
   const takenRows = rows.filter(r => r.taken)
+  const gradedRows = rows.filter(r => r.graded && r.pct !== null)
+  // For semester %, passage exercises count as 100pts each (same weight as their /100 grade)
   const totalPossibleAll = rows.reduce((s, r) => s + r.totalPts, 0)
-  const totalPossibleTaken = takenRows.reduce((s, r) => s + r.totalPts, 0)
-  const totalEarned = takenRows.reduce((s, r) => s + (r.earnedPts ?? 0), 0)
+  const totalPossibleTaken = gradedRows.reduce((s, r) => s + r.totalPts, 0)
+  const totalEarned = gradedRows.reduce((s, r) => s + (r.earnedPts ?? 0), 0)
 
   const runningPct = totalPossibleTaken > 0 ? Math.round((totalEarned / totalPossibleTaken) * 100) : null
   const semesterPct = totalPossibleAll > 0 ? Math.round((totalEarned / totalPossibleAll) * 100) : null
@@ -165,16 +208,24 @@ export default async function StudentScoresPage() {
                     <td className="px-4 py-3 text-xs text-gray-500">{row.courseTitle}</td>
                   )}
                   <td className="px-4 py-3 text-gray-600">Wk {row.weekNumber}</td>
-                  <td className="px-4 py-3 text-xs text-gray-500">{row.type.replace(/_/g, ' ')}</td>
+                  <td className="px-4 py-3 text-xs text-gray-500">
+                    {row.type === 'TRANSLATION_EXERCISE' ? 'Translation' : row.type.replace(/_/g, ' ')}
+                  </td>
                   <td className="px-4 py-3 text-right">
                     {row.pct !== null
                       ? pctBadge(row.pct)
-                      : <span className="text-gray-300">—</span>}
+                      : row.isPassage && row.taken
+                        ? <span className="text-xs text-amber-600 font-medium">Awaiting grade</span>
+                        : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-500">
-                    {row.taken
-                      ? `${row.earnedPts} / ${row.totalPts}`
-                      : <span className="text-gray-300">0 / {row.totalPts}</span>}
+                    {row.isPassage
+                      ? row.pct !== null
+                        ? `${row.earnedPts} / 100`
+                        : <span className="text-gray-300">— / 100</span>
+                      : row.taken
+                        ? `${row.earnedPts} / ${row.totalPts}`
+                        : <span className="text-gray-300">0 / {row.totalPts}</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-400">
                     {row.submittedAt ? format(new Date(row.submittedAt), 'MMM d') : '—'}

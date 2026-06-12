@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { getPayload } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 // GET /api/enrollments — available courses (for students, filtered by institution)
 export async function GET() {
@@ -41,7 +39,7 @@ export async function GET() {
   return NextResponse.json({ courses })
 
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -52,6 +50,15 @@ export async function POST(req: NextRequest) {
   const payload = getPayload()
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // Throttle enrollment requests per student
+  const rl = rateLimit(`enroll:${payload.sub}`, 10, 60_000)
+  if (!rl.ok) {
+    return NextResponse.json(
+      { error: 'Too many requests — please wait a moment and try again.' },
+      { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+    )
   }
 
   const { courseId } = await req.json()
@@ -77,10 +84,15 @@ export async function POST(req: NextRequest) {
   const enrollment = await prisma.enrollment.create({
     data: { userId: payload.sub, courseId, status: 'PENDING' },
   })
+
+  // Bust instructor dashboard/course page cache so pending request appears immediately
+  revalidatePath('/instructor')
+  revalidatePath(`/instructor/courses/${courseId}`)
+
   return NextResponse.json({ enrollment }, { status: 201 })
 
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -103,7 +115,7 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.json({ ok: true })
 
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

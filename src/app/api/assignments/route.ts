@@ -1,15 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { getPayload } from '@/lib/auth'
 import { generateVocabQuestions, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,7 +23,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ assignments })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -38,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, allowLate, lateDaysLimit, provideDefinition, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
 
   // Validate required fields
   if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
@@ -46,6 +42,9 @@ export async function POST(req: NextRequest) {
   }
   if (type === 'TRANSLATION_EXERCISE' && !reference?.trim()) {
     return NextResponse.json({ error: 'A passage reference is required for Translation Exercise assignments.' }, { status: 400 })
+  }
+  if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
+    return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
   }
 
   const assignment = await prisma.assignment.create({
@@ -58,9 +57,13 @@ export async function POST(req: NextRequest) {
       reference, instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
+      round1Deadline: round1Deadline ? new Date(round1Deadline) : null,
+      round2Deadline: round2Deadline ? new Date(round2Deadline) : null,
       allowLate: Boolean(allowLate),
       lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
       provideDefinition: Boolean(provideDefinition),
+      allowReaderInRound2: Boolean(allowReaderInRound2),
+      maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
       createdById: payload.sub,
       isPublished: Boolean(isPublished),
@@ -74,7 +77,9 @@ export async function POST(req: NextRequest) {
   }> = []
 
   if (type === 'VOCABULARY_QUIZ') {
-    questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), Number(quizStylePct ?? 0))
+    // provideDefinition=true → 100% open-ended; false → 0% (all multiple-choice)
+    const openEndedPct = Boolean(provideDefinition) ? 100 : 0
+    questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
@@ -94,7 +99,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ assignment }, { status: 201 })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { searchByGreekWord, searchByReference, type SearchCorpus } from '@/lib/search'
 
 export async function GET(req: NextRequest) {
@@ -16,7 +17,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ results })
   } catch (err) {
-    console.error(err)
+    logError('api/search', err)
     return NextResponse.json({ error: 'Search failed' }, { status: 500 })
   }
 }

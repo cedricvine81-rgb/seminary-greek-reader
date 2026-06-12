@@ -1,14 +1,16 @@
 import { redirect, notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizBuilder } from '@/components/instructor/QuizBuilder'
 import { QuizPreview } from '@/components/instructor/QuizPreview'
-import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
 import { AssignmentSettingsEditor } from '@/components/instructor/AssignmentSettingsEditor'
 import { TranslationExerciseBuilder } from '@/components/instructor/TranslationExerciseBuilder'
 import { DeleteAssignmentButton } from '@/components/instructor/DeleteAssignmentButton'
 import { PublishButton } from '@/components/instructor/PublishButton'
 import { Badge } from '@/components/ui/Badge'
+import { Eye } from 'lucide-react'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
@@ -23,7 +25,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    include: { questions: { orderBy: { position: 'asc' } } },
+    include: { questions: { orderBy: { position: 'asc' } }, course: { select: { id: true, name: true } } },
   })
   if (!assignment || !await isAuthorizedForAssignment(params.assignmentId, payload.sub)) notFound()
 
@@ -33,16 +35,30 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
       pageTitle={assignment.title}
       actions={
         <div className="flex items-center gap-2">
+          <Link
+            href={`/api/preview?mode=enter&redirect=/student/assignments/${assignment.id}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border border-brand-300 bg-brand-50 text-brand-700 hover:bg-brand-100 transition-colors"
+          >
+            <Eye size={14} /> Preview as Student
+          </Link>
           <PublishButton assignmentId={assignment.id} isPublished={assignment.isPublished} />
           <DeleteAssignmentButton
             assignmentId={assignment.id}
             assignmentTitle={assignment.title}
-            redirectOnDelete="/instructor/assignments"
+            redirectOnDelete={`/instructor/courses/${assignment.courseId}`}
           />
         </div>
       }
     >
       <div className="space-y-6">
+        {assignment.course && (
+          <Link
+            href={`/instructor/courses/${assignment.course.id}`}
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+          >
+            <ArrowLeft size={14} /> Back to {assignment.course.name}
+          </Link>
+        )}
         <div className="flex gap-2 flex-wrap items-center">
           <Badge variant="gray">Week {assignment.weekNumber}</Badge>
           <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
@@ -60,10 +76,15 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           </Badge>
         </div>
 
-        {(assignment.type === 'VOCABULARY_QUIZ' || assignment.type === 'MORPHOLOGY_QUIZ') && (
+        {/* Morphology quizzes still use the legacy QuizBuilder panel. Vocab quizzes
+            now have the # of questions + Generate Questions inline in the Settings
+            card (positioned after the Type of Quiz slider), so this panel is hidden
+            for vocab to avoid duplication. */}
+        {assignment.type === 'MORPHOLOGY_QUIZ' && (
           <QuizBuilder
             assignmentId={assignment.id}
             level={assignment.level}
+            provideDefinition={assignment.provideDefinition}
           />
         )}
 
@@ -86,8 +107,13 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             reviewTimeSeconds: assignment.reviewTimeSeconds,
             provideDefinition: assignment.provideDefinition,
             maxRetakes: assignment.maxRetakes,
+            maxAppeals: assignment.maxAppeals,
             allowLate: assignment.allowLate,
             lateDaysLimit: assignment.lateDaysLimit,
+            submissionDeadline: assignment.submissionDeadline?.toISOString() ?? null,
+            round1Deadline: assignment.round1Deadline?.toISOString() ?? null,
+            round2Deadline: assignment.round2Deadline?.toISOString() ?? null,
+            allowReaderInRound2: assignment.allowReaderInRound2,
           }}
         />
 
@@ -106,7 +132,6 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           />
         )}
 
-        <AssignmentResultsGrid assignmentId={assignment.id} />
       </div>
     </DashboardShell>
   )

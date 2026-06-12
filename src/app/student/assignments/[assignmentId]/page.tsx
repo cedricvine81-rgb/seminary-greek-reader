@@ -1,4 +1,4 @@
-import { redirect, notFound, permanentRedirect } from 'next/navigation'
+import { redirect, notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { addDays, format } from 'date-fns'
@@ -8,9 +8,10 @@ import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { canViewStudentPages } from '@/lib/preview'
+import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Assignment' }
 
@@ -20,7 +21,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [assignment, attemptCount, bestAttempt] = await Promise.all([
+  const [assignment, attemptCount, bestAttempt, existingSession] = await Promise.all([
     prisma.assignment.findUnique({
       where: { id: params.assignmentId },
       include: { questions: { orderBy: { position: 'asc' } } },
@@ -30,8 +31,15 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
       where: { assignmentId: params.assignmentId, userId: payload.sub, isBest: true },
       select: { percentage: true },
     }),
+    // Check for an existing exegesis session (for passage exercises that are now closed)
+    prisma.exegesisSession.findFirst({
+      where: { assignmentId: params.assignmentId, userId: payload.sub },
+      select: { submittedAt: true, grade: true, gradeNote: true },
+    }),
   ])
   if (!assignment) notFound()
+
+  const previewMode = isPreviewMode() && payload.role === 'INSTRUCTOR'
 
   // Determine submission window
   const now = new Date()
@@ -43,6 +51,23 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   const isClosed = isPastDue && (!assignment.allowLate || (lateDeadline !== null && now > lateDeadline))
   const isLateWindow = isPastDue && assignment.allowLate && !isClosed
 
+  // For Greek → English typed questions, look up curated synonyms in one batch
+  // so client-side instant feedback agrees with the server's grader.
+  const gtePrompts = assignment.questions
+    .filter(q => q.type === 'GREEK_TO_ENGLISH')
+    .map(q => q.prompt)
+  const lexEntries = gtePrompts.length > 0
+    ? await prisma.lexicalEntry.findMany({
+        where: { lexeme: { in: gtePrompts } },
+        select: { lexeme: true, acceptedAnswers: true },
+      })
+    : []
+  const synonymMap = new Map<string, string[]>()
+  for (const l of lexEntries) {
+    if (!l.acceptedAnswers) continue
+    synonymMap.set(l.lexeme, l.acceptedAnswers.split(',').map(s => s.trim()).filter(Boolean))
+  }
+
   const quizQuestions = assignment.questions.map(q => ({
     id: q.id,
     position: q.position,
@@ -52,6 +77,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     options: q.options,
     points: q.points,
     reference: q.reference ?? undefined,
+    acceptedAnswers: q.type === 'GREEK_TO_ENGLISH' ? (synonymMap.get(q.prompt) ?? []) : undefined,
   }))
 
   const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
@@ -60,6 +86,40 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     <DashboardShell role="STUDENT" pageTitle={assignment.title}>
       {/* Passage-based exegesis exercises need full width */}
       <div className={isPassageExercise ? 'flex flex-col h-full print:h-auto overflow-hidden print:overflow-visible' : 'max-w-2xl space-y-6'}>
+
+        {/* Instructor preview banner */}
+        {previewMode && (
+          <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center justify-between gap-4">
+            <div>
+              <span className="font-semibold">Instructor Preview</span>
+              {' — '}you are viewing this assignment as a student would experience it. No student data will be affected.
+            </div>
+            <div className="flex items-center gap-3 shrink-0">
+              <Link
+                href={`/instructor/assignments/${params.assignmentId}`}
+                className="font-medium hover:underline"
+              >
+                ← Back to edit
+              </Link>
+              <Link
+                href="/api/preview?mode=exit"
+                className="font-medium hover:underline"
+              >
+                Exit preview
+              </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Back link — shown for non-passage exercises only (passage has its own toolbar nav) */}
+        {!isPassageExercise && (
+          <Link
+            href="/student/assignments"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+          >
+            <ArrowLeft size={14} /> Back to assignments
+          </Link>
+        )}
 
         {/* Header badges + instructions — shown for non-passage exercises */}
         {!isPassageExercise && (
@@ -93,6 +153,12 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             <span className="font-semibold">This assignment is closed.</span>{' '}
             The submission window has ended.
+            {isPassageExercise && existingSession?.submittedAt && (
+              <span className="ml-1">Your submitted work is shown below in read-only mode.</span>
+            )}
+            {isPassageExercise && existingSession && !existingSession.submittedAt && (
+              <span className="ml-1">Your in-progress work is shown below — submissions are no longer accepted.</span>
+            )}
           </div>
         )}
 
@@ -105,18 +171,34 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {!isClosed && isPassageExercise && (
+        {/* Grade result — shown once instructor has graded the passage exercise */}
+        {isPassageExercise && existingSession?.grade != null && (
+          <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-4 space-y-1">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-semibold text-brand-800">Your Grade</span>
+              <span className="text-2xl font-bold text-brand-700">{existingSession.grade}%</span>
+            </div>
+            {existingSession.gradeNote && (
+              <p className="text-sm text-brand-700 whitespace-pre-wrap">{existingSession.gradeNote}</p>
+            )}
+          </div>
+        )}
+
+        {/* Show passage exercise when open, OR when closed but the student has any existing session
+            (submitted or in-progress) — lets them review their own work even after close.
+            Always shown in instructor preview mode so instructors can inspect regardless of dates. */}
+        {isPassageExercise && (!isClosed || !!existingSession || previewMode) && (
           <ExegesisWorkspace assignmentId={assignment.id} />
         )}
 
-        {!isClosed && !isPassageExercise && assignment.type === 'TRANSLATION_EXERCISE' && (
+        {(!isClosed || previewMode) && !isPassageExercise && assignment.type === 'TRANSLATION_EXERCISE' && (
           <TranslationExercise
             assignmentId={assignment.id}
             questions={quizQuestions}
           />
         )}
 
-        {!isClosed && assignment.type !== 'TRANSLATION_EXERCISE' && (
+        {(!isClosed || previewMode) && assignment.type !== 'TRANSLATION_EXERCISE' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}
@@ -124,6 +206,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             timePerQuestion={assignment.timePerQuestion}
             provideDefinition={assignment.provideDefinition}
             maxRetakes={assignment.maxRetakes}
+            maxAppeals={assignment.maxAppeals ?? 0}
             attemptCount={attemptCount}
             bestPct={bestAttempt?.percentage ?? null}
           />

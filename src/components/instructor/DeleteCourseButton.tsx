@@ -44,7 +44,7 @@ export function DeleteCourseButton({
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to delete course')
-      router.push('/instructor/courses')
+      router.push('/instructor')
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete course')

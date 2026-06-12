@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
+import { useApi } from '@/lib/api-client'
 
 interface Course { id: string; name: string }
 
@@ -42,19 +43,12 @@ function ScoreCell({ pct }: { pct: number | null }) {
 
 export function GradeBook({ courses }: { courses: Course[] }) {
   const [courseId, setCourseId] = useState('')
-  const [data, setData] = useState<GradeBookData | null>(null)
-  const [loading, setLoading] = useState(false)
+  // The course actually fetched (set on "Load"); drives the SWR key.
+  const [requested, setRequested] = useState('')
 
-  async function load() {
-    if (!courseId) return
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/gradebook?courseId=${courseId}`)
-      setData(await res.json())
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data, isLoading } = useApi<GradeBookData>(
+    requested ? `/api/gradebook?courseId=${requested}` : null,
+  )
 
   return (
     <div className="space-y-5">
@@ -62,12 +56,12 @@ export function GradeBook({ courses }: { courses: Course[] }) {
         <Select
           label="Select course"
           value={courseId}
-          onChange={e => { setCourseId(e.target.value); setData(null) }}
+          onChange={e => { setCourseId(e.target.value); setRequested('') }}
           placeholder="Choose a course…"
           options={courses.map(c => ({ value: c.id, label: c.name }))}
           className="max-w-xs"
         />
-        <Button onClick={load} loading={loading} disabled={!courseId}>Load Grade Book</Button>
+        <Button onClick={() => setRequested(courseId)} loading={isLoading} disabled={!courseId}>Load Grade Book</Button>
       </div>
 
       {data && data.rows.length === 0 && (

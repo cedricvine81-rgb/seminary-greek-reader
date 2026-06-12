@@ -148,6 +148,7 @@ export function SignUpForm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState('')
+  const [pendingMessage, setPendingMessage] = useState('')
   const [role, setRole] = useState<Role>('STUDENT')
   const [form, setForm] = useState(INITIAL_FORM)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
@@ -195,6 +196,11 @@ export function SignUpForm() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Sign-up failed')
+      // Instructors are created in a pending state and get no session — show a message instead of redirecting.
+      if (data.pending) {
+        setPendingMessage(data.message ?? 'Your account is awaiting admin approval.')
+        return
+      }
       router.push(role === 'INSTRUCTOR' ? '/instructor' : '/student')
       router.refresh()
     } catch (err) {
@@ -202,6 +208,21 @@ export function SignUpForm() {
     } finally {
       setLoading(false)
     }
+  }
+
+  if (pendingMessage) {
+    return (
+      <div className="space-y-4 text-center py-4">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+          <Check size={24} className="text-green-600" />
+        </div>
+        <h3 className="text-lg font-semibold text-gray-900">Account created</h3>
+        <p className="text-sm text-gray-600">{pendingMessage}</p>
+        <Button onClick={() => router.push('/auth/sign-in')} className="w-full" size="lg">
+          Back to Sign In
+        </Button>
+      </div>
+    )
   }
 
   return (

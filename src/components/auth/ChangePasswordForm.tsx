@@ -1,12 +1,17 @@
 'use client'
 import { useState, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 
 export function ChangePasswordForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  // The forced first-sign-in flow appends ?required=1; in that case we
+  // must NOT use router.back() (which would go to sign-in) — route to root
+  // and let the role-based pages take it from there.
+  const required = searchParams?.get('required') === '1'
   const [password, setPassword] = useState('')
   const [confirm, setConfirm] = useState('')
   const [loading, setLoading] = useState(false)
@@ -36,7 +41,15 @@ export function ChangePasswordForm() {
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to update password')
       setSuccess(true)
-      setTimeout(() => router.back(), 2000)
+      setTimeout(() => {
+        if (required) {
+          // Go to root — the role-aware redirects take it from there
+          router.push('/')
+          router.refresh()
+        } else {
+          router.back()
+        }
+      }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update password')
     } finally {
@@ -77,13 +90,15 @@ export function ChangePasswordForm() {
       <Button type="submit" loading={loading} className="w-full">
         Update Password
       </Button>
-      <button
-        type="button"
-        onClick={() => router.back()}
-        className="w-full text-sm text-gray-500 hover:text-gray-700 hover:underline"
-      >
-        Cancel
-      </button>
+      {!required && (
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="w-full text-sm text-gray-500 hover:text-gray-700 hover:underline"
+        >
+          Cancel
+        </button>
+      )}
     </form>
   )
 }

@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
+import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { getPayload } from '@/lib/auth'
 
 // PATCH /api/enrollments/[enrollmentId] — instructor approves or rejects
 export async function PATCH(
@@ -41,10 +38,17 @@ export async function PATCH(
     include: { user: { select: { firstName: true, surname: true, email: true } } },
   })
 
+  // Bust student dashboard (they can now see their approved course / rejection)
+  // and instructor course page (pending count changes)
+  revalidatePath('/student')
+  revalidatePath('/student/assignments')
+  revalidatePath(`/instructor/courses/${enrollment.courseId}`)
+  revalidatePath('/instructor')
+
   return NextResponse.json({ enrollment: updated })
 
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments/[enrollmentId]', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

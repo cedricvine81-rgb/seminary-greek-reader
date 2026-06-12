@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
@@ -38,9 +39,9 @@ export async function GET(req: NextRequest) {
     orderBy: { weekNumber: 'asc' },
   })
 
-  // All enrolled students
+  // All approved enrolled students
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId },
+    where: { courseId, status: 'APPROVED' },
     include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
     orderBy: { createdAt: 'asc' },
   })
@@ -113,7 +114,7 @@ export async function GET(req: NextRequest) {
   })
 
   } catch (err) {
-    console.error(err)
+    logError('api/gradebook', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

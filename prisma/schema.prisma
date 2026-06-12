@@ -13,6 +13,7 @@ datasource db {
 enum Role {
   INSTRUCTOR
   STUDENT
+  ADMIN
 }
 
 model User {
@@ -24,6 +25,15 @@ model User {
   password    String
   role        Role
   institution String?
+  // Instructors created via self-registration start unapproved and must be
+  // approved by an admin before they can sign in. Students/admins are auto-approved.
+  approved    Boolean  @default(true)
+  // Set true when an admin creates an account with a temporary password — the user
+  // is forced to set their own password on first sign-in. Cleared on successful change.
+  mustChangePassword Boolean @default(false)
+  // Soft-delete timestamp. The admin DELETE endpoint sets this instead of dropping the row.
+  // Sign-in and all queries filter out users with deletedAt set. Reversible by clearing it.
+  deletedAt   DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -35,6 +45,9 @@ model User {
   flashcardProgress  FlashcardProgress[]
   createdAssignments Assignment[]          @relation("CreatedAssignments")
   exegesisSessions   ExegesisSession[]
+  sentMessages       Message[]             @relation("SentMessages")
+  receivedMessages   Message[]             @relation("ReceivedMessages")
+  vocabAppeals       VocabAppeal[]
 
   @@index([email])
 }
@@ -79,6 +92,8 @@ model Course {
   coInstructors  CourseCoInstructor[]
   enrollments    Enrollment[]
   assignments    Assignment[]
+  materials      Material[]
+  messages       Message[]
 
   @@index([instructorId])
 }
@@ -177,6 +192,10 @@ model LexicalEntry {
   extendedGloss String?
   partOfSpeech String
   frequency    Int     @default(0)
+  // Comma-separated additional English glosses that are accepted as correct in
+  // vocab quizzes for this lemma. Instructor-curated. Empty/null = no extra
+  // synonyms (the quiz's own correctAnswer field is still used).
+  acceptedAnswers String?
 
   words       VerseWord[]
   parses      MorphParse[]
@@ -249,24 +268,33 @@ model Assignment {
   weekNumber   Int
   dueDate      DateTime
   level        CourseLevel
-  reference       String?
-  instructions    String?
+  reference           String?
+  instructions        String?
+  submissionDeadline  DateTime?  // translation exercises: cut-off for new submissions; editing still allowed after
+  round1Deadline      DateTime?  // translation exercises: absolute cut-off for Round 1 annotations (to the minute)
+  round2Deadline      DateTime?  // translation exercises: absolute cut-off for Round 2 corrections (to the minute)
   timePerQuestion Int?           // seconds per question; null = untimed
   reviewTimeSeconds Int?         // stage-2 review/correction time limit (seconds); null = unlimited
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   provideDefinition Boolean   @default(false)
+  // Translation exercises: when true, students may consult Reader info (parsing, gloss, lexicon)
+  // for the clicked word during Round 2 corrections. Default false to preserve existing behavior.
+  allowReaderInRound2 Boolean  @default(false)
+  // Vocab quizzes: max number of student appeals per attempt. Null/0 = appeals disabled.
+  maxAppeals  Int?
   maxRetakes   Int?
   morphSubtype String?        // For MORPHOLOGY_QUIZ: VERB | NOUN | ADJECTIVE | PRONOUN | CONDITIONAL | SUBJUNCTIVE
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
-  course     Course        @relation(fields: [courseId], references: [id])
+  course     Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
   createdBy  User          @relation("CreatedAssignments", fields: [createdById], references: [id])
   questions  Question[]
   responses  Response[]
   attempts   QuizAttempt[]
+  appeals    VocabAppeal[]
 
   @@index([courseId])
 }
@@ -296,6 +324,7 @@ model Question {
 
   assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   responses  Response[]
+  appeals    VocabAppeal[]
 
   @@index([assignmentId])
 }
@@ -332,8 +361,9 @@ model Response {
   submittedAt  DateTime @default(now())
 
   user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  assignment Assignment @relation(fields: [assignmentId], references: [id])
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
   question   Question?  @relation(fields: [questionId], references: [id])
+  appeal     VocabAppeal?
 
   @@index([userId, assignmentId])
 }
@@ -389,6 +419,8 @@ model Material {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
   @@index([courseId])
 }
 
@@ -407,8 +439,11 @@ model ExegesisSession {
   verseEnd     Int
   // JSON map: { [wordKey]: { parsing: string, syntax: string, translation: string } }
   // wordKey = "verseNum-wordId"
-  annotations  Json      @default("{}")
-  corrections  Json      @default("{}")   // post-timer review edits; tracked separately, shown in red
+  annotations           Json      @default("{}")
+  corrections           Json      @default("{}")   // post-timer review edits; tracked separately, shown in red
+  verseTranslations     Json      @default("{}")   // Round 1 whole-verse translations: { [verseNumber]: string }
+  verseCorrections      Json      @default("{}")   // Round 2 whole-verse notes/corrections: { [verseNumber]: string }
+  submittedAnnotations  Json?                      // snapshot of annotations at submit time; post-deadline edits show as diff
   startedAt    DateTime?
   submittedAt  DateTime?
   grade        Int?      // instructor-entered score 0-100
@@ -418,4 +453,103 @@ model ExegesisSession {
 
   @@index([userId])
   @@index([assignmentId])
+}
+
+// Internal course messaging — instructors send announcements/messages to a whole
+// class or an individual student. Fan-out model: one row per recipient, so each
+// student has independent read state. A "whole class" send shares a broadcastId.
+model Message {
+  id          String    @id @default(cuid())
+  courseId    String
+  course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  senderId    String
+  sender      User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  recipientId String
+  recipient   User      @relation("ReceivedMessages", fields: [recipientId], references: [id], onDelete: Cascade)
+  subject     String
+  body        String
+  broadcastId String?   // groups a single "to whole class" send
+  // Conversation thread key = the root message's id. Root messages leave this null
+  // (their thread key is their own id); replies carry the root id here.
+  threadId    String?
+  readAt      DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([recipientId, readAt])
+  @@index([courseId])
+  @@index([senderId, broadcastId])
+  @@index([threadId])
+}
+
+// Audit log — records sensitive admin/instructor actions for after-the-fact review.
+// Append-only, intentionally not foreign-keyed to the User table so records survive
+// even if the actor or target is later soft-deleted.
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?  // who performed the action (null = system/script)
+  actorEmail String?  // captured at action time, in case the actor is later deleted
+  action     String   // e.g. "user.create", "user.softDelete", "user.roleChange", "course.delete"
+  targetType String?  // e.g. "User", "Course", "Assignment"
+  targetId   String?  // id of the affected row
+  // Snapshot of relevant fields before/after — keeps the log self-contained
+  before     Json?
+  after      Json?
+  // Free-form context (IP, route, justification, etc.). Never include secrets.
+  context    Json?
+  createdAt  DateTime @default(now())
+
+  @@index([actorId, createdAt])
+  @@index([action, createdAt])
+  @@index([targetType, targetId])
+}
+
+// ─── Vocab quiz appeals ─────────────────────────────────────────────
+//
+// A student appeals a single wrong vocab answer. Flow:
+//   1. Student clicks "Appeal" on a wrong answer (per-quiz cap enforced).
+//   2. Instructor sees pending appeals on /instructor/appeals and Accept/Reject.
+//      Accept → response is flipped correct, quiz score is recomputed, audit-logged.
+//      Reject → no grade change.
+//   3. On instructor-accept, the appeal is forwarded to admin queue. Admin Accept
+//      adds the student's answer to LexicalEntry.acceptedAnswers. Admin Reject
+//      leaves the lexicon untouched but the student's grade still stands.
+
+enum AppealDecision {
+  PENDING
+  ACCEPTED
+  REJECTED
+  NOT_APPLICABLE   // admin tier: never reached because instructor rejected first
+}
+
+model VocabAppeal {
+  id            String   @id @default(cuid())
+
+  // Who and what is being appealed
+  studentId     String
+  assignmentId  String
+  responseId    String   @unique  // one appeal per Response row (deleted-cascade when a new best attempt rewrites responses)
+  questionId    String
+  studentAnswer String
+
+  // Instructor tier — controls the student's grade
+  instructorDecision   AppealDecision  @default(PENDING)
+  instructorDecidedAt  DateTime?
+  instructorNote       String?
+
+  // Admin tier — controls the global lexicon. NOT_APPLICABLE when instructor rejected.
+  adminDecision        AppealDecision  @default(PENDING)
+  adminDecidedAt       DateTime?
+  adminNote            String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  student     User       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  assignment  Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  response    Response   @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question    Question   @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, assignmentId])
+  @@index([assignmentId, instructorDecision])
+  @@index([instructorDecision, adminDecision])
 }

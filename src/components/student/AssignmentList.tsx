@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/Badge'
 import type { Assignment } from '@/types/assignment'
 import { format } from 'date-fns'
 import { ChevronRight } from 'lucide-react'
+import { LocalDeadline } from './LocalDeadline'
 
 interface AssignmentListProps {
   assignments: Assignment[]
@@ -53,6 +54,12 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
                 <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
                 <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(a.dueDate), 'MMM d, yyyy')}</span>
               </div>
+              {(a.round1Deadline || a.round2Deadline) && (
+                <div className="flex flex-col gap-0.5 mt-0.5">
+                  {a.round1Deadline && <LocalDeadline label="Round 1 closes" iso={a.round1Deadline} />}
+                  {a.round2Deadline && <LocalDeadline label="Round 2 closes" iso={a.round2Deadline} />}
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-2 shrink-0">
               {done ? (

@@ -23,6 +23,8 @@ export interface Assignment {
   reference?: string
   instructions?: string
   timePerQuestion?: number | null
+  round1Deadline?: string | null   // ISO; translation exercises
+  round2Deadline?: string | null   // ISO; translation exercises
   allowLate: boolean
   lateDaysLimit?: number | null
   isPublished: boolean
@@ -66,6 +68,9 @@ export interface AssignmentFormData {
   numQuestions: number
   timePerQuestion?: number
   reviewTimeSeconds?: number
+  round1Deadline?: string   // datetime-local string; translation exercises
+  round2Deadline?: string   // datetime-local string; translation exercises
+  allowReaderInRound2?: boolean   // translation exercises: expose Reader info during Round 2
   allowLate?: boolean
   lateDaysLimit?: number
 }

@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { logError } from '@/lib/logger'
+import { getPayload } from '@/lib/auth'
 import { getFlashcardDeck, upsertProgress } from '@/lib/flashcards'
 import type { FrequencyLevel } from '@/types/flashcard'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,7 +14,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ cards })
 
   } catch (err) {
-    console.error(err)
+    logError('api/flashcards', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -44,7 +40,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ progress })
 
   } catch (err) {
-    console.error(err)
+    logError('api/flashcards', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

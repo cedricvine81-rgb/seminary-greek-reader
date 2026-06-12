@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { ExternalLink } from 'lucide-react'
+import { useApi } from '@/lib/api-client'
 
 interface StudentResult {
   userId: string
@@ -42,20 +43,22 @@ function PctBadge({ pct }: { pct: number | null }) {
   )
 }
 
-export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }) {
-  const [data, setData] = useState<ResultsData | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [loaded, setLoaded] = useState(false)
+export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assignmentId: string; autoLoad?: boolean }) {
+  // When not auto-loading, fetching is deferred until the user clicks "Load results".
+  const [enabled, setEnabled] = useState(autoLoad)
 
-  async function load() {
-    setLoading(true)
-    try {
-      const res = await fetch(`/api/assignments/${assignmentId}/results`)
-      setData(await res.json())
-      setLoaded(true)
-    } finally {
-      setLoading(false)
-    }
+  // SWR handles revalidate-on-focus automatically (replaces the old manual focus listener),
+  // so navigating back after grading shows fresh data with no bespoke effect.
+  const { data, isLoading, mutate } = useApi<ResultsData>(
+    enabled ? `/api/assignments/${assignmentId}/results` : null,
+  )
+
+  const loaded = data !== undefined
+  const loading = isLoading
+
+  function refresh() {
+    if (!enabled) setEnabled(true)
+    else mutate()
   }
 
   const isTranslation = data?.isTranslation ?? false
@@ -64,7 +67,7 @@ export function AssignmentResultsGrid({ assignmentId }: { assignmentId: string }
     <Card>
       <div className="flex items-center justify-between mb-4">
         <CardTitle>Student Results</CardTitle>
-        <Button variant="ghost" onClick={load} loading={loading} size="sm">
+        <Button variant="ghost" onClick={refresh} loading={loading} size="sm">
           {loaded ? 'Refresh' : 'Load results'}
         </Button>
       </div>

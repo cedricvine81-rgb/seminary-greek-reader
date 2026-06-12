@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { getPayload } from '@/lib/auth'
 import type { CourseLevel } from '@/types/course'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 export async function GET(req: NextRequest) {
   try {
@@ -23,7 +19,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ courses })
 
   } catch (err) {
-    console.error(err)
+    logError('api/courses', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -58,7 +54,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ course }, { status: 201 })
 
   } catch (err) {
-    console.error(err)
+    logError('api/courses', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -101,7 +97,7 @@ export async function PUT(req: NextRequest) {
   return NextResponse.json({ course })
 
   } catch (err) {
-    console.error(err)
+    logError('api/courses', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

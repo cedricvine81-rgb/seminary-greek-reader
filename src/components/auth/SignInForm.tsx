@@ -23,7 +23,13 @@ export function SignInForm() {
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Sign-in failed')
-      router.push(data.role === 'INSTRUCTOR' ? '/instructor' : '/student')
+      // If the admin created this account with a temporary password, force the
+      // user through the change-password screen before they can use the app.
+      if (data.mustChangePassword) {
+        router.push('/auth/change-password?required=1')
+      } else {
+        router.push(data.role === 'ADMIN' ? '/admin' : data.role === 'INSTRUCTOR' ? '/instructor' : '/student')
+      }
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Sign-in failed')

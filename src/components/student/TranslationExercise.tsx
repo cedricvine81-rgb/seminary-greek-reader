@@ -43,7 +43,7 @@ export function TranslationExercise({ assignmentId, questions }: TranslationExer
       <div className="text-center py-12">
         <p className="text-xl font-semibold text-green-700">Submitted!</p>
         <p className="text-sm text-gray-500 mt-1">Your translation exercise has been submitted for review.</p>
-        <Button className="mt-6" onClick={() => router.push('/student/assignments')}>Back to Assignments</Button>
+        <Button className="mt-6" onClick={() => { router.push('/student/assignments'); router.refresh() }}>Back to Assignments</Button>
       </div>
     )
   }

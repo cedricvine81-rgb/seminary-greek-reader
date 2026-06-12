@@ -1,11 +1,13 @@
 import { ReactNode } from 'react'
+import { redirect } from 'next/navigation'
 import { Sidebar } from './Sidebar'
 import { MobileNav } from './MobileNav'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { userMustChangePassword } from '@/lib/must-change-password'
 
 interface DashboardShellProps {
-  role: 'INSTRUCTOR' | 'STUDENT'
+  role: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
   children: ReactNode
   pageTitle?: string
   pageDescription?: string
@@ -36,6 +38,15 @@ async function getPendingRequestCount(instructorId: string): Promise<number> {
 export async function DashboardShell({
   role, children, pageTitle, pageDescription, actions, pendingCount,
 }: DashboardShellProps) {
+  // Force users who must change their password (admin-created accounts) through the
+  // password-change screen before they can access any dashboard page. This is the
+  // single chokepoint — every authenticated page renders inside DashboardShell.
+  const shellToken = getTokenFromCookies()
+  const shellPayload = shellToken ? verifyToken(shellToken) : null
+  if (shellPayload && await userMustChangePassword(shellPayload.sub)) {
+    redirect('/auth/change-password?required=1')
+  }
+
   let pendingRequests = pendingCount ?? 0
 
   // Only query if the page didn't supply the count

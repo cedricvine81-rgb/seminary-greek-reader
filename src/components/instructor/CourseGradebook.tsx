@@ -36,13 +36,13 @@ function avg(nums: (number | null)[]): number | null {
 export async function CourseGradebook({ courseId }: Props) {
   const [enrollments, assignments] = await Promise.all([
     prisma.enrollment.findMany({
-      where: { courseId },
+      where: { courseId, status: 'APPROVED' },
       include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
       orderBy: { createdAt: 'asc' },
     }),
     prisma.assignment.findMany({
-      where: { courseId },
-      select: { id: true, title: true, type: true, weekNumber: true, instructions: true, questions: { select: { points: true } } },
+      where: { courseId, isPublished: true },
+      select: { id: true, title: true, type: true, weekNumber: true, questions: { select: { points: true } } },
       orderBy: { weekNumber: 'asc' },
     }),
   ])
@@ -50,26 +50,46 @@ export async function CourseGradebook({ courseId }: Props) {
   if (enrollments.length === 0 || assignments.length === 0) return null
 
   const assignmentIds = assignments.map(a => a.id)
-  const translationIds = assignments.filter(a => a.type === 'TRANSLATION_EXERCISE').map(a => a.id)
+  // Passage exercises (no questions) use ExegesisSession.grade; question-based use Response scores
+  const passageExerciseIds = assignments
+    .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0)
+    .map(a => a.id)
+  const questionTranslationIds = assignments
+    .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length > 0)
+    .map(a => a.id)
 
-  const [realAttempts, realResponses] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
     }),
-    translationIds.length > 0
+    questionTranslationIds.length > 0
       ? prisma.response.findMany({
-          where: { assignmentId: { in: translationIds }, questionId: { not: null } },
+          where: { assignmentId: { in: questionTranslationIds }, questionId: { not: null } },
           select: { userId: true, assignmentId: true, score: true },
+        })
+      : Promise.resolve([]),
+    passageExerciseIds.length > 0
+      ? prisma.exegesisSession.findMany({
+          where: { assignmentId: { in: passageExerciseIds }, grade: { not: null } },
+          select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),
   ])
 
   const students = enrollments.map(e => e.user)
 
-  // Score lookup: quiz → use best attempt %; translation → sum scores / total points
+  // Score lookup: quiz → best attempt %; passage exercise → instructor grade; question translation → response scores
   function getScore(userId: string, assignment: typeof assignments[0]): number | null {
     if (assignment.type === 'TRANSLATION_EXERCISE') {
+      if (assignment.questions.length === 0) {
+        // Passage exercise — use instructor-entered grade from ExegesisSession
+        const session = exegesisGrades.find(
+          g => g.userId === userId && g.assignmentId === assignment.id
+        )
+        return session?.grade ?? null
+      }
+      // Question-based translation — use response scores
       const rs = realResponses.filter(r => r.userId === userId && r.assignmentId === assignment.id)
       if (rs.length === 0) return null
       const totalPts = assignment.questions.reduce((s, q) => s + q.points, 0)
@@ -79,12 +99,6 @@ export async function CourseGradebook({ courseId }: Props) {
     }
     const attempt = realAttempts.find(a => a.userId === userId && a.assignmentId === assignment.id)
     return attempt?.percentage ?? null
-  }
-
-  function extractSection(instructions: string | null): string | null {
-    if (!instructions) return null
-    const m = instructions.match(/Section\s+([\w\-:]+)/i)
-    return m ? m[1].replace('-', ':') : null
   }
 
   // Pre-compute groups so every render section uses identical structure
@@ -102,7 +116,7 @@ export async function CourseGradebook({ courseId }: Props) {
           <col style={{ width: '176px' }} />
           {activeGroups.map(g => (
             <Fragment key={g.type}>
-              {g.cols.map(a => <col key={a.id} style={{ width: '64px' }} />)}
+              {g.cols.map(a => <col key={a.id} style={{ width: '80px' }} />)}
               <col style={{ width: '64px' }} />
             </Fragment>
           ))}
@@ -130,17 +144,16 @@ export async function CourseGradebook({ courseId }: Props) {
           <tr className="border-b border-gray-200 bg-gray-50">
             {activeGroups.map(g => (
               <Fragment key={g.type}>
-                {g.cols.map(a => {
-                  const section = extractSection(a.instructions)
-                  return (
-                    <th key={a.id} className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 overflow-hidden">
-                      {section
-                        ? <span className="block text-brand-600 font-semibold truncate">{section}</span>
-                        : <span className="block">Wk {a.weekNumber}</span>
-                      }
-                    </th>
-                  )
-                })}
+                {g.cols.map(a => (
+                  <th
+                    key={a.id}
+                    title={a.title}
+                    className="px-2 py-2 text-center font-medium text-gray-500 border-l border-gray-100 overflow-hidden"
+                  >
+                    <span className="block truncate text-xs leading-tight">{a.title}</span>
+                    <span className="block text-[10px] text-gray-400 leading-tight">Wk {a.weekNumber}</span>
+                  </th>
+                ))}
                 <th className="px-2 py-2 text-center font-semibold text-gray-600 bg-gray-100 border-l border-gray-200">
                   Avg
                 </th>

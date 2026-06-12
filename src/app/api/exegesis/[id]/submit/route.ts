@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
+import { getPayload } from '@/lib/auth'
+import { rateLimit } from '@/lib/rate-limit'
 
 // POST /api/exegesis/[id]/submit — mark an exegesis session as submitted for its assignment
 export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
@@ -13,8 +11,18 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+    // Throttle submit attempts per user
+    const rl = rateLimit(`exegesis-submit:${payload.sub}`, 10, 60_000)
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: 'Too many requests — please wait a moment and try again.' },
+        { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+      )
+    }
+
     const session = await prisma.exegesisSession.findFirst({
       where: { id: params.id, userId: payload.sub },
+      select: { id: true, assignmentId: true, submittedAt: true, annotations: true },
     })
     if (!session) return NextResponse.json({ error: 'Session not found' }, { status: 404 })
     if (!session.assignmentId) return NextResponse.json({ error: 'This session is not linked to an assignment' }, { status: 400 })
@@ -37,28 +45,45 @@ export async function POST(_req: NextRequest, { params }: { params: { id: string
       return NextResponse.json({ ok: true, alreadySubmitted: true })
     }
 
-    // Mark session submitted + create a Response record (questionId=null) so the
-    // student dashboard can detect this assignment as completed.
-    await prisma.$transaction([
-      prisma.exegesisSession.update({
+    // Mark session submitted, snapshot annotations at this moment for later diff comparison.
+    // Create a sentinel Response record (questionId=null) so the student dashboard detects it as
+    // completed. Guard against duplicate rows in case of concurrent submit requests.
+    await prisma.$transaction(async tx => {
+      await tx.exegesisSession.update({
         where: { id: params.id },
-        data: { submittedAt: new Date() },
-      }),
-      prisma.response.create({
         data: {
-          userId: payload.sub,
-          assignmentId: session.assignmentId,
-          questionId: null,
-          answer: params.id, // store session ID as the "answer"
-          isCorrect: null,
-          score: null,
+          submittedAt: new Date(),
+          submittedAnnotations: session.annotations ?? {},   // snapshot
         },
-      }),
-    ])
+      })
+
+      const existing = await tx.response.findFirst({
+        where: { userId: payload.sub, assignmentId: session.assignmentId!, questionId: null },
+        select: { id: true },
+      })
+      if (!existing) {
+        await tx.response.create({
+          data: {
+            userId: payload.sub,
+            assignmentId: session.assignmentId!,
+            questionId: null,
+            answer: params.id,   // session ID as the "answer"
+            isCorrect: null,
+            score: null,
+          },
+        })
+      }
+    })
+
+    // Bust caches so the instructor's results/gradebook and the student's list reflect the submission
+    revalidatePath(`/instructor/courses/${assignment.courseId}`)
+    revalidatePath(`/instructor/assignments/${session.assignmentId}/grade`)
+    revalidatePath('/student/assignments')
+    revalidatePath(`/student/assignments/${session.assignmentId}`)
 
     return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error(err)
+    logError('api/exegesis/[id]/submit', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
@@ -14,6 +14,14 @@ export const metadata: Metadata = {
   description: 'Read the Septuagint and Greek New Testament, study vocabulary, practice morphology, and complete instructor-created assignments.',
 }
 
+// Explicit mobile viewport: correct scaling, allow pinch-zoom (accessibility),
+// and theme the browser chrome to the app's brand colour.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#ffffff',
+}
+
 async function getHeaderProps() {
   try {
     const token = getTokenFromCookies()
@@ -22,9 +30,9 @@ async function getHeaderProps() {
     if (!payload) return { isAuthenticated: false }
     const user = await prisma.user.findUnique({
       where: { id: payload.sub },
-      select: { firstName: true, surname: true, role: true },
+      select: { firstName: true, surname: true, role: true, deletedAt: true },
     })
-    if (!user) return { isAuthenticated: false }
+    if (!user || user.deletedAt) return { isAuthenticated: false }
     return {
       isAuthenticated: true,
       userRole: user.role as 'INSTRUCTOR' | 'STUDENT',

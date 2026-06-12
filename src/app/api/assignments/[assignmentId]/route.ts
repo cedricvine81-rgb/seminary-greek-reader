@@ -1,12 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
-import { getTokenFromCookies, verifyToken } from '@/lib/auth'
+import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
-
-function getPayload() {
-  const token = getTokenFromCookies()
-  return token ? verifyToken(token) : null
-}
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -23,6 +20,8 @@ export async function GET(
         id: true, title: true, type: true, weekNumber: true,
         dueDate: true, reference: true, instructions: true,
         isPublished: true, courseId: true, timePerQuestion: true, reviewTimeSeconds: true,
+        submissionDeadline: true, round1Deadline: true, round2Deadline: true,
+        allowReaderInRound2: true, maxAppeals: true,
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -39,7 +38,7 @@ export async function GET(
 
     return NextResponse.json({ assignment })
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }
@@ -64,7 +63,8 @@ export async function PATCH(
     isPublished,
     title, weekNumber, dueDate, instructions,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
-    allowLate, lateDaysLimit,
+    allowLate, lateDaysLimit, submissionDeadline, round1Deadline, round2Deadline,
+    allowReaderInRound2, maxAppeals,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -81,11 +81,23 @@ export async function PATCH(
     if (reviewTimeSeconds !== undefined)
       data.reviewTimeSeconds = Number(reviewTimeSeconds) > 0 ? Number(reviewTimeSeconds) : null
     if (provideDefinition !== undefined) data.provideDefinition = Boolean(provideDefinition)
+    if (allowReaderInRound2 !== undefined) data.allowReaderInRound2 = Boolean(allowReaderInRound2)
+    if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null
     if (allowLate !== undefined) {
       data.allowLate = Boolean(allowLate)
       data.lateDaysLimit = allowLate && lateDaysLimit != null ? Number(lateDaysLimit) : null
+    }
+    if ('submissionDeadline' in body)
+      data.submissionDeadline = submissionDeadline ? new Date(submissionDeadline) : null
+    if ('round1Deadline' in body)
+      data.round1Deadline = round1Deadline ? new Date(round1Deadline) : null
+    if ('round2Deadline' in body)
+      data.round2Deadline = round2Deadline ? new Date(round2Deadline) : null
+    // Reject a Round 2 deadline that is not strictly after Round 1
+    if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
+      return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
     }
   }
 
@@ -97,7 +109,7 @@ export async function PATCH(
   return NextResponse.json({ assignment: updated })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
@@ -116,11 +128,27 @@ export async function DELETE(
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
+  // Capture the course before deleting so we can bust its cached pages
+  const existing = await prisma.assignment.findUnique({
+    where: { id: params.assignmentId },
+    select: { courseId: true },
+  })
+
   await prisma.assignment.delete({ where: { id: params.assignmentId } })
+
+  // Bust the Router Cache so the deleted assignment doesn't linger on
+  // the course page / assignment lists after redirect.
+  if (existing?.courseId) {
+    revalidatePath(`/instructor/courses/${existing.courseId}`)
+  }
+  revalidatePath('/instructor/assignments')
+  revalidatePath('/instructor')
+  revalidatePath('/student/assignments')
+
   return NextResponse.json({ ok: true })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/[assignmentId]', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

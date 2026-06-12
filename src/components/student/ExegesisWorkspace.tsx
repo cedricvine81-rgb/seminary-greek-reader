@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
+import { buildParsingLabel } from '@/lib/parsing'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -42,12 +43,129 @@ interface AssignmentInfo {
   instructions: string | null
   timeLimitSeconds: number | null         // stage 1: annotation phase
   reviewTimeLimitSeconds: number | null   // stage 2: review/correction phase; null = unlimited
+  submissionDeadline: Date | null         // null = no deadline
+  round1Deadline: Date | null             // absolute cut-off for Round 1 annotations
+  round2Deadline: Date | null             // absolute cut-off for Round 2 corrections
+  allowReaderInRound2: boolean            // expose Reader info during Round 2
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 function wordKey(verse: number, wordId: string) {
   return `${verse}-${wordId}`
+}
+
+/** Inline Round 2 popover anchored to a clicked word. Shows the student's locked Round 1
+ *  answers, optional Reader info (parsing/gloss/lexeme), and editable Round 2 correction inputs. */
+function Round2WordPopover({
+  word, verseNum, original, correction, locked, showReader, onCorrection, onClose,
+}: {
+  word: VerseWord
+  verseNum: number
+  original: WordAnnotation
+  correction: WordAnnotation
+  locked: boolean
+  showReader: boolean
+  onCorrection: (key: string, field: keyof WordAnnotation, value: string) => void
+  onClose: () => void
+}) {
+  const key = wordKey(verseNum, word.id)
+  const parse = word.parses?.[0]
+  const parsingLabel = parse ? buildParsingLabel(parse) : ''
+  const lexeme = word.lexeme?.lexeme ?? ''
+  const gloss = word.lexeme?.gloss ?? ''
+  const extendedGloss = word.lexeme?.extendedGloss ?? ''
+
+  const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
+    { field: 'parsing', label: 'Parsing' },
+    { field: 'syntax', label: 'Syntax / Function' },
+    { field: 'translation', label: 'Translation' },
+  ]
+
+  return (
+    <div className="mt-2 mb-3 w-full max-w-xl rounded-xl border border-brand-300 bg-white shadow-lg overflow-hidden print:hidden">
+      {/* Header */}
+      <div className="flex items-baseline justify-between gap-3 bg-brand-50 px-3 py-2 border-b border-brand-200">
+        <div className="flex items-baseline gap-2 min-w-0">
+          <span className="font-greek text-2xl text-brand-800">{word.surface}</span>
+          {lexeme && (
+            <span className="text-xs text-gray-500 truncate">
+              <span className="font-greek text-sm text-gray-700">{lexeme}</span>
+              {parse?.partOfSpeech && <span className="ml-1">· {parse.partOfSpeech}</span>}
+            </span>
+          )}
+        </div>
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          className="text-gray-400 hover:text-gray-700 text-lg leading-none px-1"
+        >
+          ×
+        </button>
+      </div>
+
+      <div className="p-3 space-y-3">
+        {/* Reader info — only when the assignment allows it */}
+        {showReader && (
+          <div className="rounded-lg border border-emerald-200 bg-emerald-50/50 p-3 space-y-1.5">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-700">Reader reference</p>
+            {parsingLabel && (
+              <p className="text-xs"><span className="text-gray-500">Parsing:</span> <span className="text-gray-800 font-medium">{parsingLabel}</span></p>
+            )}
+            {gloss && (
+              <p className="text-xs"><span className="text-gray-500">Gloss:</span> <span className="text-gray-800">{gloss}</span></p>
+            )}
+            {extendedGloss && extendedGloss !== gloss && (
+              <p className="text-xs text-gray-600 italic">{extendedGloss}</p>
+            )}
+          </div>
+        )}
+
+        {/* Round 1 answers (locked) + Round 2 correction inputs, per field */}
+        {FIELDS.map(({ field, label }) => (
+          <div key={field}>
+            <div className="flex items-baseline justify-between mb-1">
+              <span className="text-[11px] font-semibold text-gray-600 uppercase tracking-wide">{label}</span>
+              <span className="text-[10px] text-gray-400">Round 1</span>
+            </div>
+            <div className={`mb-1.5 text-xs px-2.5 py-1.5 rounded-md bg-gray-50 border border-gray-200 ${original[field] ? 'text-gray-600' : 'text-gray-300 italic'}`}>
+              {original[field] || '—'}
+            </div>
+            <input
+              type="text"
+              value={correction[field]}
+              disabled={locked}
+              onChange={e => onCorrection(key, field, e.target.value)}
+              placeholder={locked ? '' : 'Round 2 correction…'}
+              className={`w-full rounded-md px-2.5 py-1.5 text-sm focus:outline-none focus:ring-2 ${
+                locked
+                  ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
+                  : 'border-2 border-red-300 bg-red-50 text-red-700 placeholder-red-300 focus:ring-red-400'
+              }`}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** Format an absolute deadline in the student's local time, e.g. "Mon, Jun 15, 2026 · 11:59 PM" */
+function formatDeadline(d: Date): string {
+  const date = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+  const time = d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+  return `${date} · ${time}`
+}
+
+/** A single deadline line: shows the date/time, and a "Closed" state once passed. */
+function DeadlineLine({ label, date, passed }: { label: string; date: Date; passed: boolean }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 text-xs ${passed ? 'text-gray-400' : 'text-brand-700'}`}>
+      <span className="font-medium">{label}:</span>
+      <span className={passed ? 'line-through' : ''}>{formatDeadline(date)}</span>
+      {passed && <span className="font-semibold text-amber-700">· Closed</span>}
+    </span>
+  )
 }
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
@@ -87,8 +205,9 @@ function AnnotationPanel({
   )
 }
 
-/** Review-mode annotation panel — shown after timer expires.
- *  Displays the original (read-only), the correct parse, and a red correction input. */
+/** Review-mode annotation panel — shown after Round 1 ends.
+ *  Round 1 answers are grouped (read-only) at the top; Round 2 correction
+ *  inputs for all three fields are grouped together below. */
 function ReviewAnnotationPanel({
   word, verseNum, annotations, corrections, onCorrection, locked,
 }: {
@@ -101,103 +220,54 @@ function ReviewAnnotationPanel({
   const original = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
   const corr = corrections[key] ?? { parsing: '', syntax: '', translation: '' }
 
+  const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
+    { field: 'parsing', label: 'Parsing' },
+    { field: 'syntax', label: 'Syntax / Function' },
+    { field: 'translation', label: 'Translation Contribution' },
+  ]
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       {/* Word header */}
       <div className="flex items-baseline gap-3">
         <span className="text-3xl font-greek text-brand-700">{word.surface}</span>
       </div>
 
-      {/* Parsing */}
-      <ReviewField
-        label="Parsing"
-        correct={null}
-        original={original.parsing}
-        correction={corr.parsing}
-        placeholder=""
-        onChange={v => onCorrection(key, 'parsing', v)}
-        locked={locked}
-      />
-
-      {/* Syntax */}
-      <ReviewField
-        label="Syntax / Function"
-        correct={null}
-        original={original.syntax}
-        correction={corr.syntax}
-        placeholder=""
-        onChange={v => onCorrection(key, 'syntax', v)}
-        locked={locked}
-      />
-
-      {/* Translation */}
-      <ReviewField
-        label="Translation Contribution"
-        correct={null}
-        original={original.translation}
-        correction={corr.translation}
-        placeholder=""
-        onChange={v => onCorrection(key, 'translation', v)}
-        locked={locked}
-      />
-    </div>
-  )
-}
-
-function ReviewField({
-  label, correct, original, correction, placeholder, onChange, onUseCorrect, locked,
-}: {
-  label: string; correct: string | null; original: string; correction: string
-  placeholder: string; onChange: (v: string) => void; onUseCorrect?: () => void; locked?: boolean
-}) {
-  return (
-    <div className="space-y-1.5">
-      <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">{label}</p>
-
-      {/* Original answer */}
-      <div className="flex items-start gap-2">
-        <span className="text-xs text-gray-400 w-14 shrink-0 pt-1">Original</span>
-        <span className={`text-sm flex-1 px-2 py-1 rounded bg-gray-50 border border-gray-200 min-h-[2rem] ${original ? 'text-gray-600' : 'text-gray-300 italic'}`}>
-          {original || '—'}
-        </span>
+      {/* ── Round 1 — your answers (read-only) ── */}
+      <div className="space-y-2">
+        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Round 1 — your answers</p>
+        {FIELDS.map(({ field, label }) => (
+          <div key={field}>
+            <span className="block text-[11px] font-medium text-gray-500 mb-0.5">{label}</span>
+            <div className={`text-sm px-2.5 py-1.5 rounded-lg bg-gray-50 border border-gray-200 min-h-[2rem] ${original[field] ? 'text-gray-600' : 'text-gray-300 italic'}`}>
+              {original[field] || '—'}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* Correct answer (only for parsing, where we have auto-morph) */}
-      {correct !== null && (
-        <div className="flex items-start gap-2">
-          <span className="text-xs text-emerald-600 w-14 shrink-0 pt-1 font-medium">Correct</span>
-          <div className="flex-1 flex items-start gap-1.5">
-            <span className={`text-sm flex-1 px-2 py-1 rounded border min-h-[2rem]
-              ${correct ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
-              {correct || '—'}
-            </span>
-            {correct && onUseCorrect && (
-              <button onClick={onUseCorrect}
-                className="shrink-0 text-xs px-2 py-1 rounded border border-emerald-300 text-emerald-700 hover:bg-emerald-50 transition whitespace-nowrap">
-                Use ↑
-              </button>
-            )}
+      {/* ── Round 2 — corrections (below Round 1) ── */}
+      <div className="space-y-2">
+        <p className={`text-xs font-semibold uppercase tracking-wide ${locked ? 'text-gray-400' : 'text-red-500'}`}>
+          Round 2 — corrections{locked ? ' (locked)' : ''}
+        </p>
+        {FIELDS.map(({ field, label }) => (
+          <div key={field}>
+            <span className="block text-[11px] font-medium text-gray-500 mb-0.5">{label}</span>
+            <input
+              type="text"
+              value={corr[field]}
+              disabled={locked}
+              onChange={e => onCorrection(key, field, e.target.value)}
+              placeholder={locked ? '' : 'Add a correction…'}
+              className={`w-full rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 ${
+                locked
+                  ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
+                  : 'border-2 border-red-300 text-red-700 placeholder-red-200 focus:ring-red-400 bg-red-50'
+              }`}
+            />
           </div>
-        </div>
-      )}
-
-      {/* Correction input */}
-      <div className="flex items-start gap-2">
-        <span className={`text-xs w-14 shrink-0 pt-2 font-medium ${locked ? 'text-gray-400' : 'text-red-500'}`}>
-          {locked ? 'Locked' : 'Edit'}
-        </span>
-        <input
-          type="text"
-          value={correction}
-          placeholder={locked ? '' : placeholder}
-          disabled={locked}
-          onChange={e => onChange(e.target.value)}
-          className={`flex-1 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 ${
-            locked
-              ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
-              : 'border-2 border-red-300 text-red-700 placeholder-red-200 focus:ring-red-400 bg-red-50'
-          }`}
-        />
+        ))}
       </div>
     </div>
   )
@@ -276,6 +346,10 @@ function parsePassageRef(ref: string, books: BiblicalBook[]): {
     return c.some(s => s === bookPart || s.startsWith(bookPart) || bookPart.startsWith(s.slice(0, Math.max(3, bookPart.length))))
   })
   if (!book) return null
+  // Single-chapter books (Jude, Philemon, etc.): if only one number is given, treat it as verse not chapter
+  if (book.totalChapters === 1 && !m[3]) {
+    return { book, chapter: 1, verseStart: ch, verseEnd: ch }
+  }
   return { book, chapter: ch, verseStart: vs, verseEnd: ve }
 }
 
@@ -297,6 +371,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   // ── Annotation state ──
   const [annotations, setAnnotations] = useState<AnnotationMap>({})
   const [corrections, setCorrections] = useState<AnnotationMap>({})
+  // Round 1 whole-verse translations, keyed by verse number (as string)
+  const [verseTranslations, setVerseTranslations] = useState<Record<string, string>>({})
+  // Round 2 whole-verse notes/corrections, keyed by verse number (as string)
+  const [verseCorrections, setVerseCorrections] = useState<Record<string, string>>({})
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
 
@@ -313,6 +391,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [assignment, setAssignment] = useState<AssignmentInfo | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const [deadlinePassed, setDeadlinePassed] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   // ── Stage 1 Timer (annotation phase) ──
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null)  // null = untimed
@@ -324,6 +404,15 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [reviewSecondsLeft, setReviewSecondsLeft] = useState<number | null>(null)
   const [reviewTimerExpired, setReviewTimerExpired] = useState(false)
   const reviewTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // ── Live clock for absolute round deadlines (re-evaluated every 20s) ──
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 20_000)
+    return () => clearInterval(id)
+  }, [])
+  const round1Passed = !!assignment?.round1Deadline && now > assignment.round1Deadline.getTime()
+  const round2Passed = !!assignment?.round2Deadline && now > assignment.round2Deadline.getTime()
 
   // ── Load books list ──
   useEffect(() => {
@@ -350,6 +439,13 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         const assignmentInfo: AssignmentInfo = {
           id: a.id, title: a.title, reference: a.reference ?? null,
           instructions: a.instructions ?? null, timeLimitSeconds, reviewTimeLimitSeconds,
+          submissionDeadline: a.submissionDeadline ? new Date(a.submissionDeadline) : null,
+          round1Deadline: a.round1Deadline ? new Date(a.round1Deadline) : null,
+          round2Deadline: a.round2Deadline ? new Date(a.round2Deadline) : null,
+          allowReaderInRound2: !!a.allowReaderInRound2,
+        }
+        if (assignmentInfo.submissionDeadline && new Date() > assignmentInfo.submissionDeadline) {
+          setDeadlinePassed(true)
         }
         setAssignment(assignmentInfo)
 
@@ -367,6 +463,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           setVerseEnd(sess.verseEnd)
           setAnnotations(sess.annotations ?? {})
           setCorrections(sess.corrections ?? {})
+          setVerseTranslations(sess.verseTranslations ?? {})
+          setVerseCorrections(sess.verseCorrections ?? {})
           setSessionId(sess.id)
           setSessionTitle(sess.title)
           const alreadySubmitted = !!sess.submittedAt
@@ -410,32 +508,124 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
               .finally(() => setIsLoading(false))
           }
         } else if (a.reference) {
-          // Auto-load passage from assignment reference
+          // No session linked to this assignment yet.
+          // Before starting fresh, check if the student has an ORPHANED session for the
+          // same passage (created before the assignmentId routing was added). If so, adopt it.
           const parsed = parsePassageRef(a.reference, books)
           if (parsed) {
-            setSelectedBook(parsed.book)
-            setChapter(parsed.chapter)
-            setVerseStart(parsed.verseStart)
-            setVerseEnd(parsed.verseEnd)
-            setSessionTitle(a.title)
-            // Start timer immediately for new timed sessions
-            if (timeLimitSeconds) {
-              startedAtRef.current = new Date()
-              setSecondsLeft(timeLimitSeconds)
-            }
-            // Load the passage
-            setIsLoading(true)
-            fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}`)
-              .then(pr => pr.json())
-              .then(pd => {
-                const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
-                  (v: LoadedVerse) => v.verse >= parsed.verseStart && v.verse <= parsed.verseEnd
+            // Fetch all student sessions to look for an orphan
+            let orphanAdopted = false
+            try {
+              const allRes = await fetch('/api/exegesis')
+              if (allRes.ok) {
+                const allData = await allRes.json()
+                const orphan = (allData.sessions ?? []).find((s: SavedSession) =>
+                  !s.assignmentId &&
+                  s.bookOsisId === parsed.book.osisId &&
+                  s.chapter === parsed.chapter &&
+                  s.verseStart === parsed.verseStart &&
+                  s.verseEnd === parsed.verseEnd
                 )
-                setLoadedVerses(filtered)
-                const vMax = pd.verses?.[pd.verses.length - 1]?.verse ?? 1
-                setMaxVerse(vMax)
-              })
-              .finally(() => setIsLoading(false))
+                if (orphan) {
+                  // Patch assignmentId onto the orphaned session
+                  await fetch(`/api/exegesis/${orphan.id}`, {
+                    method: 'PATCH',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ assignmentId: propAssignmentId }),
+                  })
+                  // Load the full session (annotations, corrections, etc.)
+                  const fullRes = await fetch(`/api/exegesis/${orphan.id}`)
+                  if (fullRes.ok) {
+                    const fullData = await fullRes.json()
+                    const sess = fullData.session
+                    if (sess) {
+                      const book = books.find((b: BiblicalBook) => b.osisId === sess.bookOsisId) ?? null
+                      setSelectedBook(book)
+                      setChapter(sess.chapter)
+                      setVerseStart(sess.verseStart)
+                      setVerseEnd(sess.verseEnd)
+                      setAnnotations(sess.annotations ?? {})
+                      setCorrections(sess.corrections ?? {})
+                      setVerseTranslations(sess.verseTranslations ?? {})
+                      setVerseCorrections(sess.verseCorrections ?? {})
+                      setSessionId(sess.id)
+                      setSessionTitle(sess.title || a.title)
+                      if (sess.submittedAt) setSubmitted(true)
+                      if (book) {
+                        setIsLoading(true)
+                        fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}`)
+                          .then(pr => pr.json())
+                          .then(pd => {
+                            const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
+                              (v: LoadedVerse) => v.verse >= sess.verseStart && v.verse <= sess.verseEnd
+                            )
+                            setLoadedVerses(filtered)
+                          })
+                          .finally(() => setIsLoading(false))
+                      }
+                      orphanAdopted = true
+                    }
+                  }
+                }
+              }
+            } catch { /* fall through to fresh start */ }
+
+            if (!orphanAdopted) {
+              // No orphan found — start fresh.
+              // Create the session row immediately so that startedAt is persisted to the DB
+              // before the timer ticks. Without this, a page refresh before the first manual
+              // save would reset the timer to zero.
+              const startedAt = new Date()
+              startedAtRef.current = startedAt
+              const resolvedTitle = a.title || `${parsed.book.name} ${parsed.chapter}:${parsed.verseStart}${parsed.verseEnd !== parsed.verseStart ? `–${parsed.verseEnd}` : ''}`
+
+              try {
+                const cr = await fetch('/api/exegesis', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    title: resolvedTitle,
+                    bookOsisId: parsed.book.osisId,
+                    bookName: parsed.book.name,
+                    chapter: parsed.chapter,
+                    verseStart: parsed.verseStart,
+                    verseEnd: parsed.verseEnd,
+                    annotations: {},
+                    assignmentId: propAssignmentId,
+                    startedAt: startedAt.toISOString(),
+                  }),
+                })
+                const cd = await cr.json()
+                if (cd.session?.id) {
+                  setSessionId(cd.session.id)
+                } else if (cr.status === 409 && cd.sessionId) {
+                  // A session already exists for this assignment — load it instead of creating a duplicate
+                  setSessionId(cd.sessionId)
+                }
+              } catch { /* session create failed — timer still starts, will be saved on first manual save */ }
+
+              setSelectedBook(parsed.book)
+              setChapter(parsed.chapter)
+              setVerseStart(parsed.verseStart)
+              setVerseEnd(parsed.verseEnd)
+              setSessionTitle(resolvedTitle)
+              if (timeLimitSeconds) {
+                setSecondsLeft(timeLimitSeconds)
+              }
+              // Load the passage
+              setIsLoading(true)
+              fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}`)
+                .then(pr => pr.json())
+                .then(pd => {
+                  const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
+                    (v: LoadedVerse) => v.verse >= parsed.verseStart && v.verse <= parsed.verseEnd
+                  )
+                  setLoadedVerses(filtered)
+                  const vMax = pd.verses?.[pd.verses.length - 1]?.verse ?? 1
+                  setMaxVerse(vMax)
+                })
+                .finally(() => setIsLoading(false))
+            }
           }
         }
       })
@@ -469,13 +659,27 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     return () => { if (timerRef.current) clearInterval(timerRef.current) }
   }, [secondsLeft !== null && secondsLeft > 0, submitted]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── When stage 1 timer expires: start stage 2 review timer (if set) ──
-  // Only starts if reviewSecondsLeft hasn't already been restored from a saved session.
+  // ── Start the stage 2 review timer when Round 1 ends — via the stage-1 timer
+  // expiring OR the absolute Round 1 deadline passing (so a deadline chains into a
+  // Round 2 timer). Only starts if not already restored from a saved session.
   useEffect(() => {
-    if (timerExpired && !submitted && assignment?.reviewTimeLimitSeconds && reviewSecondsLeft === null) {
+    if (submitted || reviewSecondsLeft !== null || !assignment?.reviewTimeLimitSeconds) return
+    if (timerExpired) {
+      // Stage-1 timer path: full review time begins now.
       setReviewSecondsLeft(assignment.reviewTimeLimitSeconds)
+    } else if (round1Passed && assignment.round1Deadline) {
+      // Deadline path: review time counts from the Round 1 deadline moment, so a
+      // page reload can't reset the Round 2 clock.
+      const elapsed = Math.floor((Date.now() - assignment.round1Deadline.getTime()) / 1000)
+      const remaining = assignment.reviewTimeLimitSeconds - elapsed
+      if (remaining <= 0) {
+        setReviewSecondsLeft(0)
+        setReviewTimerExpired(true)
+      } else {
+        setReviewSecondsLeft(remaining)
+      }
     }
-  }, [timerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [timerExpired, round1Passed]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Stage 2 countdown ──
   useEffect(() => {
@@ -540,29 +744,47 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   // ── Annotation change ──
   function handleAnnotationChange(key: string, field: keyof WordAnnotation, value: string) {
     if (isLocked) return
-    setAnnotations(prev => ({
-      ...prev,
-      [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
-    }))
-    // Debounced auto-save
-    if (sessionId) {
-      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
-      autoSaveTimer.current = setTimeout(() => autoSave(), 3000)
-    }
+    setAnnotations(prev => {
+      const next = {
+        ...prev,
+        [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
+      }
+      scheduleAutoSave(next, corrections)
+      return next
+    })
+  }
+
+  // ── Whole-verse translation change (Round 1) ──
+  function handleVerseTranslationChange(verseNum: number, value: string) {
+    if (isLocked) return
+    setVerseTranslations(prev => {
+      const next = { ...prev, [String(verseNum)]: value }
+      scheduleAutoSave(annotations, corrections, next)
+      return next
+    })
+  }
+
+  // ── Round 2 whole-verse note change ──
+  function handleVerseCorrectionChange(verseNum: number, value: string) {
+    if (reviewTimerExpired || submitted || round2Passed) return
+    setVerseCorrections(prev => {
+      const next = { ...prev, [String(verseNum)]: value }
+      scheduleAutoSave(annotations, corrections, verseTranslations, next)
+      return next
+    })
   }
 
   // ── Correction change (review mode) ──
   function handleCorrectionChange(key: string, field: keyof WordAnnotation, value: string) {
     if (reviewTimerExpired || submitted) return   // corrections locked
-    setCorrections(prev => ({
-      ...prev,
-      [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
-    }))
-    // Auto-save corrections
-    if (sessionId) {
-      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
-      autoSaveTimer.current = setTimeout(() => autoSaveCorrections(), 2000)
-    }
+    setCorrections(prev => {
+      const next = {
+        ...prev,
+        [key]: { ...(prev[key] ?? { parsing: '', syntax: '', translation: '' }), [field]: value },
+      }
+      scheduleAutoSave(annotations, next)
+      return next
+    })
   }
 
   // ── Word click ──
@@ -587,6 +809,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         verseStart,
         verseEnd,
         annotations,
+        verseTranslations,
         ...(propAssignmentId ? { assignmentId: propAssignmentId } : {}),
       }
       let sid = sessionId
@@ -597,6 +820,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           body: JSON.stringify({
             annotations,
             corrections,
+            verseTranslations,
+            verseCorrections,
             title: resolvedTitle,
             // Persist startedAt if not yet stored (first save of a timed session)
             ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
@@ -631,36 +856,59 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   // ── Submit assignment ──
   async function submitAssignment() {
     setIsSubmitting(true)
+    setSubmitError('')
     try {
       // Ensure session is saved first
       let sid = sessionId
       if (!sid) sid = await saveSession()
-      if (!sid) return
+      if (!sid) { setSubmitError('Could not save your work. Please try again.'); return }
+
+      // If the session exists but was created without an assignmentId (e.g. via old /student/exegesis
+      // path), patch it in now so the submit API can find it.
+      if (propAssignmentId) {
+        await fetch(`/api/exegesis/${sid}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ assignmentId: propAssignmentId }),
+        }).catch(() => {})
+      }
+
       const r = await fetch(`/api/exegesis/${sid}/submit`, { method: 'POST' })
       if (r.ok) {
         setSubmitted(true)
+      } else {
+        const d = await r.json().catch(() => ({}))
+        setSubmitError(d.error ?? 'Submission failed. Please try again.')
       }
+    } catch {
+      setSubmitError('Network error. Please check your connection and try again.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  async function autoSave() {
+  /** Schedule a single debounced save that sends the latest annotations, corrections,
+   *  and whole-verse fields together. */
+  function scheduleAutoSave(
+    latestAnnotations: AnnotationMap,
+    latestCorrections: AnnotationMap,
+    latestVerseTranslations: Record<string, string> = verseTranslations,
+    latestVerseCorrections: Record<string, string> = verseCorrections,
+  ) {
     if (!sessionId) return
-    await fetch(`/api/exegesis/${sessionId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ annotations }),
-    }).catch(() => {})
-  }
-
-  async function autoSaveCorrections() {
-    if (!sessionId) return
-    await fetch(`/api/exegesis/${sessionId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ corrections }),
-    }).catch(() => {})
+    if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    autoSaveTimer.current = setTimeout(() => {
+      fetch(`/api/exegesis/${sessionId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          annotations: latestAnnotations,
+          corrections: latestCorrections,
+          verseTranslations: latestVerseTranslations,
+          verseCorrections: latestVerseCorrections,
+        }),
+      }).catch(() => {})
+    }, 2500)
   }
 
   // ── Load saved session ──
@@ -677,6 +925,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     setVerseEnd(sess.verseEnd)
     setAnnotations((sess.annotations as AnnotationMap) ?? {})
     setCorrections((sess.corrections as AnnotationMap) ?? {})
+    setVerseTranslations((sess.verseTranslations as Record<string, string>) ?? {})
+    setVerseCorrections((sess.verseCorrections as Record<string, string>) ?? {})
     setSessionId(sess.id)
     setSessionTitle(sess.title)
     setShowSessionList(false)
@@ -702,6 +952,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     if (sessionId === id) {
       setSessionId(null)
       setAnnotations({})
+      setCorrections({})
+      setVerseTranslations({})
+      setVerseCorrections({})
       setLoadedVerses([])
     }
     loadSessionList()
@@ -744,16 +997,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   }
 
   // ── Lock / mode flags ──
-  const isLocked = timerExpired || submitted              // stage 1 annotations locked
-  const correctionLocked = reviewTimerExpired || submitted // stage 2 corrections locked
-  const reviewMode = timerExpired                         // show 3-column reader layout
+  // deadlinePassed locks stage-1 (black annotations) and opens review mode, but leaves stage-2 (red corrections) editable.
+  // round1Passed / round2Passed are absolute, instructor-set cut-offs that lock the respective phase regardless of timers.
+  const isLocked = timerExpired || submitted || deadlinePassed || round1Passed   // stage 1 annotations locked
+  const correctionLocked = reviewTimerExpired || submitted || round2Passed        // stage 2 corrections locked
+  const reviewMode = timerExpired || deadlinePassed || round1Passed               // show 3-column reader layout
 
   // Show submit button when:
   // - in assignment mode and passage is loaded
   // - AND not yet submitted
   // - AND (there is no stage 1 timer, OR stage 1 has expired)
   const showSubmitButton = !!(propAssignmentId && loadedVerses.length > 0 && !submitted &&
-    (!assignment?.timeLimitSeconds || timerExpired))
+    (!assignment?.timeLimitSeconds || timerExpired || deadlinePassed || round1Passed))
 
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60)
@@ -791,10 +1046,25 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             {assignment.instructions && (
               <p className="text-xs text-gray-600 mt-0.5">{assignment.instructions}</p>
             )}
+            {(assignment.round1Deadline || assignment.round2Deadline) && (
+              <div className="mt-1.5 flex flex-col gap-0.5">
+                {assignment.round1Deadline && (
+                  <DeadlineLine label="Round 1 (annotations) closes" date={assignment.round1Deadline} passed={round1Passed} />
+                )}
+                {assignment.round2Deadline && (
+                  <DeadlineLine label="Round 2 (corrections) closes" date={assignment.round2Deadline} passed={round2Passed} />
+                )}
+              </div>
+            )}
           </div>
           {submitted && (
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-300">
               ✓ Submitted
+            </span>
+          )}
+          {!submitted && deadlinePassed && (
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+              Deadline passed — editing only
             </span>
           )}
         </div>
@@ -1000,17 +1270,22 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
         {/* Submit assignment button — visible in review phase or when untimed */}
         {showSubmitButton && (
-          <button
-            onClick={submitAssignment}
-            disabled={isSubmitting || isSaving || correctionLocked}
-            className="self-end flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
-          >
-            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
-          </button>
+          <div className="self-end flex flex-col items-end gap-1">
+            <button
+              onClick={submitAssignment}
+              disabled={isSubmitting || isSaving || correctionLocked}
+              className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
+            >
+              <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
+            </button>
+            {submitError && (
+              <p className="text-xs text-red-600 max-w-xs text-right">{submitError}</p>
+            )}
+          </div>
         )}
         {propAssignmentId && submitted && (
           <button
@@ -1044,10 +1319,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
       )}
 
       {loadedVerses.length > 0 && (
-        <div className={`flex gap-0 print:block min-h-0 ${reviewMode ? 'flex-row' : 'flex-col lg:flex-row'}`}>
+        <div className="flex gap-0 print:block min-h-0 flex-col lg:flex-row">
 
           {/* ── Greek text pane ── */}
-          <div className={`overflow-y-auto p-4 lg:p-6 print:overflow-visible ${reviewMode ? 'w-72 shrink-0 border-r border-gray-200' : 'flex-1'}`}>
+          <div className="overflow-y-auto p-4 lg:p-6 print:overflow-visible flex-1">
 
             {/* Print: passage header */}
             <div className="hidden print:block mb-4">
@@ -1098,12 +1373,65 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                     )
                   })}
                 </div>
+
+                {/* Round 2 popover for the selected word in this verse */}
+                {reviewMode && selectedWord && selectedWord.verse === v.verse && (
+                  <Round2WordPopover
+                    word={selectedWord.word}
+                    verseNum={selectedWord.verse}
+                    original={(annotations[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
+                    correction={(corrections[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
+                    locked={correctionLocked}
+                    showReader={!!assignment?.allowReaderInRound2}
+                    onCorrection={handleCorrectionChange}
+                    onClose={() => { setSelectedWord(null); setSelectedWordKey(null) }}
+                  />
+                )}
+
+                {/* Whole-verse translation (Round 1) */}
+                <div className="mt-2">
+                  <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                    Verse Translation
+                  </label>
+                  <textarea
+                    value={verseTranslations[String(v.verse)] ?? ''}
+                    onChange={e => handleVerseTranslationChange(v.verse, e.target.value)}
+                    disabled={isLocked}
+                    rows={2}
+                    placeholder={isLocked ? '' : 'Write your translation of this whole verse…'}
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed print:border-gray-300"
+                  />
+                </div>
+
+                {/* Round 2 Notes — only shown after Round 1 ends */}
+                {reviewMode && (
+                  <div className="mt-2">
+                    <label className={`block text-[11px] font-semibold uppercase tracking-wide mb-1 ${correctionLocked ? 'text-gray-400' : 'text-red-500'}`}>
+                      Round 2 Notes{correctionLocked ? ' (locked)' : ''}
+                    </label>
+                    <textarea
+                      value={verseCorrections[String(v.verse)] ?? ''}
+                      onChange={e => handleVerseCorrectionChange(v.verse, e.target.value)}
+                      disabled={correctionLocked}
+                      rows={2}
+                      placeholder={correctionLocked ? '' : 'Add notes or a revised translation for this verse…'}
+                      className={`w-full rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 ${
+                        correctionLocked
+                          ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
+                          : 'border-2 border-red-300 bg-red-50 text-red-700 placeholder-red-300 focus:ring-red-400'
+                      } print:border-gray-300`}
+                    />
+                  </div>
+                )}
               </div>
             ))}
           </div>
 
           {/* ── Annotation / Review panel (screen only) ── */}
-          <div className={`print:hidden border-l border-gray-200 bg-gray-50 flex flex-col ${reviewMode ? 'flex-1' : 'lg:w-96'}`}>
+          {/* Right-side annotation sidebar: only used in Round 1. In Round 2 the
+              inputs live in the inline word popover below each word. */}
+          {!reviewMode && (
+          <div className="print:hidden border-t lg:border-t-0 lg:border-l border-gray-200 bg-gray-50 flex flex-col lg:w-96">
             {/* Scrollable annotation content */}
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
               {!reviewMode && timerExpired && (
@@ -1157,17 +1485,22 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                   Save as PDF
                 </button>
                 {showSubmitButton && (
-                  <button
-                    onClick={submitAssignment}
-                    disabled={isSubmitting || isSaving || correctionLocked}
-                    className="flex items-center gap-1.5 px-4 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
-                  >
-                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
-                  </button>
+                  <div className="flex flex-col items-end gap-1">
+                    <button
+                      onClick={submitAssignment}
+                      disabled={isSubmitting || isSaving || correctionLocked}
+                      className="flex items-center gap-1.5 px-4 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
+                    >
+                      <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
+                    </button>
+                    {submitError && (
+                      <p className="text-xs text-red-600 max-w-xs text-right">{submitError}</p>
+                    )}
+                  </div>
                 )}
                 {propAssignmentId && submitted && (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-300">
@@ -1177,24 +1510,15 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
               </div>
             )}
           </div>
-
-          {/* ── Passage Reader (review mode only, screen only) ── */}
-          {reviewMode && (
-            <div className="print:hidden w-80 shrink-0">
-              <ReviewPassagePanel
-                verses={loadedVerses}
-                selectedWordKey={selectedWordKey}
-                onWordClick={handleWordClick}
-              />
-            </div>
           )}
+          {/* Round 2 NOTE: the secondary review passage panel was removed —
+              students now see one passage with an inline per-word popover. */}
 
           {/* ── Print table ── */}
           <div className="hidden print:block w-full mt-6">
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr className="border-b-2 border-gray-800">
-                  <th className="text-left py-1 pr-2 font-semibold w-24">Ref</th>
                   <th className="text-left py-1 pr-2 font-semibold w-28 font-greek">Word</th>
                   <th className="text-left py-1 pr-2 font-semibold w-28 font-greek">Lemma</th>
                   <th className="text-left py-1 pr-2 font-semibold">Parsing</th>
@@ -1203,9 +1527,20 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                 </tr>
               </thead>
               <tbody>
-                {summaryRows.map((row, i) => (
-                  <tr key={i} className={i % 2 === 0 ? 'bg-gray-50' : ''}>
-                    <td className="py-1 pr-2 text-gray-500 text-xs align-top">{row.ref}</td>
+                {summaryRows.map((row, i) => {
+                  // Show a verse-header row when the reference changes, instead of
+                  // repeating the reference on every word row.
+                  const startsNewVerse = i === 0 || summaryRows[i - 1].ref !== row.ref
+                  return (
+                  <Fragment key={i}>
+                  {startsNewVerse && (
+                    <tr>
+                      <td colSpan={5} className="pt-3 pb-1 text-xs font-semibold text-gray-600 border-b border-gray-300">
+                        {row.ref}
+                      </td>
+                    </tr>
+                  )}
+                  <tr className={i % 2 === 0 ? 'bg-gray-50' : ''}>
                     <td className="py-1 pr-2 font-greek text-base align-top">{row.surface}</td>
                     <td className="py-1 pr-2 font-greek text-xs text-gray-600 align-top">{row.lemma}</td>
                     <td className="py-1 pr-2 text-xs align-top">
@@ -1221,7 +1556,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                       {row.corrTranslation && <div className="text-red-600 font-medium">→ {row.corrTranslation}</div>}
                     </td>
                   </tr>
-                ))}
+                  </Fragment>
+                  )
+                })}
               </tbody>
             </table>
           </div>

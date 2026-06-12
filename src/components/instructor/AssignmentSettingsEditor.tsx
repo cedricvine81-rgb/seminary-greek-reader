@@ -20,9 +20,22 @@ interface Props {
     reviewTimeSeconds: number | null
     provideDefinition: boolean
     maxRetakes: number | null
+    maxAppeals: number | null          // vocab quizzes: appeals per attempt (null/0 = disabled)
     allowLate: boolean
     lateDaysLimit: number | null
+    submissionDeadline: string | null  // ISO string, translation exercises only
+    round1Deadline: string | null      // ISO string, translation exercises only
+    round2Deadline: string | null      // ISO string, translation exercises only
+    allowReaderInRound2: boolean       // translation exercises only
   }
+}
+
+// Convert an ISO string to the value a datetime-local input expects (local time, to the minute)
+function toLocalInput(iso: string | null): string {
+  if (!iso) return ''
+  const d = new Date(iso)
+  const off = d.getTimezoneOffset()
+  return new Date(d.getTime() - off * 60000).toISOString().slice(0, 16)
 }
 
 export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocabQuiz, initial }: Props) {
@@ -47,11 +60,30 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
     Math.round((initial.reviewTimeSeconds ?? 0) / 60)      // display minutes
   )
   const [provideDefinition, setProvideDefinition] = useState(initial.provideDefinition)
+  // Slider value 0–100 driving provideDefinition (>= 50 → true). Mirrors the New Assignment form.
+  const [quizStylePct, setQuizStylePct] = useState(initial.provideDefinition ? 100 : 0)
+
+  // Vocab-quiz auto-generation: count + Generate Questions, moved here from the
+  // QuizBuilder panel so the workflow is "configure → generate" in one card.
+  const [numQuestions, setNumQuestions] = useState(20)
+  const [generating, setGenerating] = useState(false)
+  const [generatedCount, setGeneratedCount] = useState<number | null>(null)
+  const [generateError, setGenerateError] = useState('')
   const [maxRetakes, setMaxRetakes] = useState<number | null>(initial.maxRetakes)
+  const [maxAppeals, setMaxAppeals] = useState<number>(initial.maxAppeals ?? 0)
   const [allowLate, setAllowLate] = useState(initial.allowLate)
   const [lateDaysLimit, setLateDaysLimit] = useState(initial.lateDaysLimit ?? 7)
+  // submissionDeadline stored as datetime-local string (e.g. "2026-06-15T23:59")
+  const [submissionDeadline, setSubmissionDeadline] = useState(toLocalInput(initial.submissionDeadline))
+  const [round1Deadline, setRound1Deadline] = useState(toLocalInput(initial.round1Deadline))
+  const [round2Deadline, setRound2Deadline] = useState(toLocalInput(initial.round2Deadline))
+  const [allowReaderInRound2, setAllowReaderInRound2] = useState(initial.allowReaderInRound2)
 
   async function handleSave() {
+    if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
+      setError('The Round 2 deadline must be after the Round 1 deadline.')
+      return
+    }
     setSaving(true)
     setError('')
     setSaved(false)
@@ -69,8 +101,14 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
           provideDefinition,
           maxRetakes,
+          maxAppeals: isVocabQuiz ? (maxAppeals > 0 ? maxAppeals : 0) : undefined,
           allowLate,
           lateDaysLimit: allowLate ? lateDaysLimit : null,
+          // Convert datetime-local (local wall time) to a true UTC instant so the server (UTC) stores the right moment
+          submissionDeadline: isTranslation ? (submissionDeadline ? new Date(submissionDeadline).toISOString() : null) : undefined,
+          round1Deadline: isTranslation ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
+          round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
+          allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
         }),
       })
       if (!res.ok) {
@@ -84,6 +122,36 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
       setError(err instanceof Error ? err.message : 'Error saving settings')
     } finally {
       setSaving(false)
+    }
+  }
+
+  /** Regenerate the vocab quiz's questions using the current settings. */
+  async function handleGenerate() {
+    setGenerating(true)
+    setGenerateError('')
+    setGeneratedCount(null)
+    try {
+      const res = await fetch(`/api/assignments/${assignmentId}/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          // Vocab quizzes always run Greek → English (the only sensible direction
+          // in Provide Definition mode, which is also the most common in MC mode).
+          type: 'GREEK_TO_ENGLISH',
+          count: numQuestions,
+        }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        setGenerateError(data.error ?? 'Could not generate questions.')
+        return
+      }
+      setGeneratedCount(data.count ?? numQuestions)
+      router.refresh()
+    } catch {
+      setGenerateError('Network error — please try again.')
+    } finally {
+      setGenerating(false)
     }
   }
 
@@ -126,8 +194,66 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         </div>
 
         {isTranslation ? (
-          /* Translation Exercise: two-phase timers, displayed in minutes */
+          /* Translation Exercise: submission deadline + two-phase timers */
           <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-4">
+            <p className="text-sm font-semibold text-brand-800">Submission deadline</p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Deadline (date &amp; time) — students cannot submit after this point
+              </label>
+              <input
+                type="datetime-local"
+                value={submissionDeadline}
+                onChange={e => setSubmissionDeadline(e.target.value)}
+                className="input"
+              />
+              <p className="text-xs text-brand-600 mt-1">
+                After the deadline students can still edit their submitted work, but cannot make a new submission.
+                Leave blank for no deadline.
+              </p>
+            </div>
+            <hr className="border-brand-200" />
+            <p className="text-sm font-semibold text-brand-800">Round deadlines</p>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Round 1 deadline — annotations lock after this time
+              </label>
+              <input
+                type="datetime-local"
+                value={round1Deadline}
+                onChange={e => setRound1Deadline(e.target.value)}
+                className="input"
+              />
+              <p className="text-xs text-brand-600 mt-1">Fixed cut-off for Round 1 annotations. Leave blank for none.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Round 2 deadline — corrections lock after this time
+              </label>
+              <input
+                type="datetime-local"
+                value={round2Deadline}
+                onChange={e => setRound2Deadline(e.target.value)}
+                className="input"
+              />
+              <p className="text-xs text-brand-600 mt-1">Fixed cut-off for Round 2 corrections. Leave blank for none.</p>
+            </div>
+            <hr className="border-brand-200" />
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={allowReaderInRound2}
+                onChange={e => setAllowReaderInRound2(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+              />
+              <div>
+                <span className="text-sm font-medium text-brand-800">Allow Reader tools in Round 2</span>
+                <p className="text-xs text-brand-600 mt-0.5">
+                  When on, clicking a word in Round 2 also shows the Reader's parsing, gloss, and lexicon entry next to the correction box.
+                </p>
+              </div>
+            </label>
+            <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">Timer settings</p>
             <Input
               label="Stage 1 — annotation phase (minutes, 0 = no limit)"
@@ -167,31 +293,69 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
         {isVocabQuiz && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Type of Quiz</label>
-            <div className="flex items-center gap-4">
-              <button
-                type="button"
-                onClick={() => setProvideDefinition(false)}
-                className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                  !provideDefinition
-                    ? 'bg-brand-600 text-white border-brand-600'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-brand-400'
-                }`}
-              >
-                Choose Definition
-              </button>
-              <button
-                type="button"
-                onClick={() => setProvideDefinition(true)}
-                className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors ${
-                  provideDefinition
-                    ? 'bg-brand-600 text-white border-brand-600'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-brand-400'
-                }`}
-              >
-                Provide Definition
-              </button>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Type of Quiz —{' '}
+              <span className="text-brand-700 font-semibold">
+                {quizStylePct === 0
+                  ? 'All multiple-choice'
+                  : quizStylePct === 100
+                    ? 'All open-ended'
+                    : `${100 - quizStylePct}% multiple-choice / ${quizStylePct}% open-ended`}
+              </span>
+            </label>
+            <input
+              type="range"
+              min={0}
+              max={100}
+              step={1}
+              value={quizStylePct}
+              onChange={e => {
+                const v = Number(e.target.value)
+                setQuizStylePct(v)
+                setProvideDefinition(v >= 50)
+              }}
+              className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
+            />
+            <div className="flex justify-between text-xs text-gray-400 mt-0.5">
+              <span>Choose Definition</span>
+              <span>Provide Definition</span>
             </div>
+            <p className="mt-2 text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+              After changing this setting, save first, then use <strong>Generate Questions</strong> below to regenerate in the correct format.
+            </p>
+          </div>
+        )}
+
+        {isVocabQuiz && (
+          <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 space-y-3">
+            <p className="text-sm font-semibold text-gray-800">Generate questions</p>
+            <p className="text-xs text-gray-500">
+              Click after you&rsquo;ve set the Type of Quiz above. Regenerating replaces any existing questions for this quiz.
+            </p>
+            <div className="flex items-end gap-3 flex-wrap">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1"># of questions</label>
+                <input
+                  type="number"
+                  min={1}
+                  max={50}
+                  value={numQuestions}
+                  onChange={e => setNumQuestions(Number(e.target.value) || 0)}
+                  className="input w-24"
+                />
+              </div>
+              <Button onClick={handleGenerate} loading={generating} variant="secondary" size="sm">
+                Generate Questions
+              </Button>
+              {generatedCount !== null && !generating && (
+                <span className="flex items-center gap-1.5 text-sm text-green-700">
+                  ✓ {generatedCount} question{generatedCount === 1 ? '' : 's'} generated
+                </span>
+              )}
+            </div>
+            {generateError && (
+              <p className="text-sm text-red-600 bg-red-50 rounded px-3 py-2">{generateError}</p>
+            )}
           </div>
         )}
 
@@ -209,6 +373,28 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             ]}
             placeholder="Unlimited retakes"
           />
+        )}
+
+        {isVocabQuiz && (
+          <div>
+            <Select
+              label="Wrong-answer appeals per attempt"
+              value={String(maxAppeals)}
+              onChange={e => setMaxAppeals(Number(e.target.value))}
+              options={[
+                { value: '0', label: 'Off — students cannot appeal' },
+                { value: '1', label: '1 appeal per attempt' },
+                { value: '2', label: '2 appeals per attempt' },
+                { value: '3', label: '3 appeals per attempt' },
+                { value: '5', label: '5 appeals per attempt' },
+              ]}
+            />
+            <p className="mt-1 text-xs text-gray-500">
+              When enabled, students see an &ldquo;Appeal this answer&rdquo; link beside each wrong answer on the results screen.
+              You review pending appeals on the instructor Appeals page. Accepting an appeal updates that student&rsquo;s
+              score; the admin separately decides whether to add the answer to the global lexicon.
+            </p>
+          </div>
         )}
 
         {!isTranslation && (

@@ -14,7 +14,10 @@ export async function GET(req: NextRequest) {
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.redirect(new URL('/auth/sign-in', req.url))
     }
-    const res = NextResponse.redirect(new URL('/student', req.url))
+    const redirectTo = req.nextUrl.searchParams.get('redirect') ?? '/student'
+    // Validate redirect is a relative path (prevent open redirect)
+    const safePath = redirectTo.startsWith('/') ? redirectTo : '/student'
+    const res = NextResponse.redirect(new URL(safePath, req.url))
     res.cookies.set(PREVIEW_COOKIE, '1', { httpOnly: true, sameSite: 'lax', path: '/' })
     return res
   }

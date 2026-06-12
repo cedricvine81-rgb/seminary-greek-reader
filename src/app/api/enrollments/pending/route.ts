@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
@@ -39,7 +40,7 @@ export async function GET() {
       pending: pending.map(e => ({ ...e, createdAt: e.createdAt.toISOString() })),
     })
   } catch (err) {
-    console.error(err)
+    logError('api/enrollments/pending', err)
     return NextResponse.json({ error: 'Server error' }, { status: 500 })
   }
 }

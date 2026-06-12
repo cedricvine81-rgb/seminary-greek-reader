@@ -38,6 +38,8 @@ export default async function StudentAssignmentsPage() {
     dueDate: a.dueDate.toISOString(),
     createdAt: a.createdAt.toISOString(),
     updatedAt: a.updatedAt.toISOString(),
+    round1Deadline: a.round1Deadline ? a.round1Deadline.toISOString() : null,
+    round2Deadline: a.round2Deadline ? a.round2Deadline.toISOString() : null,
     reference: a.reference ?? undefined,
     instructions: a.instructions ?? undefined,
   }))

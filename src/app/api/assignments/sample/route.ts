@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { logError } from '@/lib/logger'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { generateVocabQuestions, generateVocabQuestionsInRange, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
@@ -49,7 +50,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ questions, lesson })
 
   } catch (err) {
-    console.error(err)
+    logError('api/assignments/sample', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }
