@@ -9,6 +9,7 @@ import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { CourseEnrollment } from '@/components/student/CourseEnrollment'
 import { PendingEnrollments } from '@/components/student/PendingEnrollments'
+import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { isPreviewMode } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'My Courses' }
@@ -111,9 +112,16 @@ export default async function StudentCoursesPage() {
                     <p className="text-xs text-gray-400">
                       {e.course._count.assignments} assignments · {e.course._count.enrollments} students
                     </p>
-                    <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
-                      View assignments →
-                    </Link>
+                    <div className="flex items-center justify-between gap-2 pt-1">
+                      <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
+                        View assignments →
+                      </Link>
+                      <MessageInstructorButton
+                        courseId={e.courseId}
+                        courseName={e.course.name}
+                        instructorName={instructorName}
+                      />
+                    </div>
                   </Card>
                 )
               })}
