@@ -497,8 +497,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         )}
       </div>
 
-      {/* Question card */}
-      <div className="bg-white rounded-xl border border-gray-100 p-6 space-y-5">
+      {/* Question card — vocab quizzes get a stable min-height so the card doesn't
+          grow/shrink between a short typed question and a tall 4-option multiple-choice
+          one. This keeps the prompt and the Check/Next buttons in a fixed position as
+          the student advances (especially important on a phone). */}
+      <div className={`bg-white rounded-xl border border-gray-100 p-6 space-y-5${type === 'VOCABULARY_QUIZ' ? ' min-h-[22rem]' : ''}`}>
 
         {/* Timer display */}
         {timePerQuestion && phase === 'answering' && timeLeft !== null && (
