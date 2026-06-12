@@ -3,7 +3,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
-  generateVocabQuestions, generateMorphologyQuestions,
+  generateVocabQuestions, generateVocabQuestionsFromSelection, generateMorphologyQuestions,
   generateVerbParseQuestions, generateNounParseQuestions,
   generateAdjectiveParseQuestions, generatePronounParseQuestions,
   generateConditionalQuestions, generateSubjunctiveQuestions,
@@ -27,13 +27,21 @@ export async function POST(
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
-  const { type, count, level, quizStylePct } = await req.json()
+  const { type, count, level, quizStylePct, vocabSubsections, vocabPos } = await req.json()
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { type: true, level: true, morphSubtype: true, provideDefinition: true },
+    select: { type: true, level: true, morphSubtype: true, provideDefinition: true, vocabSelection: true },
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
+  // Effective word selection: a fresh one from the request wins; otherwise reuse
+  // whatever was stored on the assignment.
+  const reqSel = Array.isArray(vocabSubsections) || Array.isArray(vocabPos)
+    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [] }
+    : null
+  const storedSel = (assignment.vocabSelection ?? null) as { subsections: string[]; pos: string[] } | null
+  const effectiveSel = reqSel ?? storedSel
 
   const qType = (type as QuestionType) ?? 'GREEK_TO_ENGLISH'
   const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)
@@ -49,7 +57,9 @@ export async function POST(
   let questions: ReturnType<typeof generateVerbParseQuestions> | Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
-    questions = await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
+    questions = effectiveSel
+      ? generateVocabQuestionsFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, qCount, provideDefinitionPct)
+      : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
       case 'VERB':        questions = generateVerbParseQuestions(qCount);       break
@@ -73,10 +83,13 @@ export async function POST(
         data: questions.map(q => ({ ...q, assignmentId: params.assignmentId })),
       })
     }
-    if (assignment.type === 'VOCABULARY_QUIZ' && quizStylePct != null) {
+    if (assignment.type === 'VOCABULARY_QUIZ' && (quizStylePct != null || reqSel)) {
       await tx.assignment.update({
         where: { id: params.assignmentId },
-        data: { provideDefinition: provideDefinitionPct > 0 },
+        data: {
+          ...(quizStylePct != null && { provideDefinition: provideDefinitionPct > 0 }),
+          ...(reqSel && { vocabSelection: reqSel }),
+        },
       })
     }
   })

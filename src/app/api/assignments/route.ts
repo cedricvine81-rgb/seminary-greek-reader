@@ -3,7 +3,7 @@ import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
-import { generateVocabQuestions, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateVocabQuestionsFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
@@ -34,7 +34,12 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
+
+  // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
+  const vocabSel = type === 'VOCABULARY_QUIZ' && (Array.isArray(vocabSubsections) || Array.isArray(vocabPos))
+    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [] }
+    : null
 
   // Validate required fields
   if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
@@ -71,6 +76,7 @@ export async function POST(req: NextRequest) {
       allowReaderInRound2: Boolean(allowReaderInRound2),
       maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
+      vocabSelection: vocabSel ?? undefined,
       createdById: payload.sub,
       isPublished: Boolean(isPublished),
     },
@@ -89,7 +95,14 @@ export async function POST(req: NextRequest) {
     const openEndedPct = quizStylePct != null
       ? Math.min(Math.max(Number(quizStylePct), 0), 100)
       : Boolean(provideDefinition) ? 100 : 0
-    questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
+    // If the instructor picked frequency sections / parts of speech, draw the
+    // quiz from exactly those words (BGVB list); otherwise fall back to the
+    // course-level pool from the database.
+    if (vocabSel) {
+      questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
+    } else {
+      questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
+    }
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined

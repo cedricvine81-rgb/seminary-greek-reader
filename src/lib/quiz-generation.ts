@@ -1,6 +1,63 @@
 import { prisma } from './db'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
+import { wordsForSelection } from './vocab-subsections'
+
+export interface GeneratedQuestion {
+  position: number
+  type: QuestionType
+  prompt: string
+  correctAnswer: string
+  options: string[]
+  points: number
+}
+
+/**
+ * Build vocab questions from a frequency-section + part-of-speech selection over
+ * the static BGVB word list (the same 1,036-word source as the Vocab Builder /
+ * flashcards). `subsections` are keys like "1-A"; empty = all sections. `pos`
+ * empty = all parts of speech. `provideDefinitionPct` (0–100) sets the share of
+ * open-ended (typed) questions; the rest are multiple-choice.
+ */
+export function generateVocabQuestionsFromSelection(
+  subsections: string[],
+  pos: string[],
+  type: QuestionType,
+  count: number,
+  provideDefinitionPct = 0,
+): GeneratedQuestion[] {
+  const words = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss)
+  if (words.length === 0) return []
+
+  const picked = shuffle(words).slice(0, count)
+  const allGlosses = words.map(w => w.gloss)
+  const allLexemes = words.map(w => w.word)
+  const openEndedCount = Math.round((provideDefinitionPct / 100) * picked.length)
+
+  return picked.map((w, idx) => {
+    const isOpenEnded = idx < openEndedCount
+    if (type === 'ENGLISH_TO_GREEK') {
+      const options = isOpenEnded ? [] : shuffle([w.word, ...pickDistractors(w.word, allLexemes)])
+      return {
+        position: idx + 1,
+        type: (isOpenEnded ? 'ENGLISH_TO_GREEK' : 'MULTIPLE_CHOICE') as QuestionType,
+        prompt: w.gloss,
+        correctAnswer: w.word,
+        options,
+        points: 1,
+      }
+    }
+    const options = isOpenEnded ? [] : shuffle([w.gloss, ...pickDistractors(w.gloss, allGlosses)])
+    return {
+      position: idx + 1,
+      type: (isOpenEnded ? 'GREEK_TO_ENGLISH' : 'MULTIPLE_CHOICE') as QuestionType,
+      prompt: w.word,
+      correctAnswer: w.gloss,
+      options,
+      points: 1,
+    }
+  })
+}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]

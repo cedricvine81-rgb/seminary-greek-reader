@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 
 interface Props {
   assignmentId: string
@@ -18,6 +19,7 @@ interface Props {
     instructions: string | null
     reference: string | null           // translation exercises only
     quizStylePct: number               // vocab quizzes: current % open-ended, from saved questions
+    vocabSelection: { subsections: string[]; pos: string[] } | null  // vocab quizzes: chosen words
     timePerQuestion: number | null
     reviewTimeSeconds: number | null
     provideDefinition: boolean
@@ -70,6 +72,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   // Vocab-quiz auto-generation: count + Generate Questions, moved here from the
   // QuizBuilder panel so the workflow is "configure → generate" in one card.
   const [numQuestions, setNumQuestions] = useState(20)
+  // Vocab word selection (BGVB frequency sections), pre-filled from the saved quiz.
+  const [vocabSubsections, setVocabSubsections] = useState<string[]>(initial.vocabSelection?.subsections ?? [])
   const [generating, setGenerating] = useState(false)
   const [generatedCount, setGeneratedCount] = useState<number | null>(null)
   const [generateError, setGenerateError] = useState('')
@@ -150,6 +154,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           count: numQuestions,
           // Honour the live Type-of-Quiz slider so regeneration produces the chosen mix.
           quizStylePct,
+          // Regenerate from the chosen frequency sections.
+          vocabSubsections,
         }),
       })
       const data = await res.json().catch(() => ({}))
@@ -313,6 +319,16 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             value={timePerQuestion}
             onChange={e => setTimePerQuestion(Number(e.target.value))}
           />
+        )}
+
+        {isVocabQuiz && (
+          <div className="space-y-4">
+            <p className="text-sm font-semibold text-gray-800">Choose the words for this quiz</p>
+            <FrequencySectionPicker selectedSubsections={vocabSubsections} onChange={setVocabSubsections} />
+            <p className="text-xs text-gray-500">
+              After changing the selection, click <strong>Generate Questions</strong> below to rebuild the quiz from these words.
+            </p>
+          </div>
         )}
 
         {isVocabQuiz && (

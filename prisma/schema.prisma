@@ -285,6 +285,10 @@ model Assignment {
   maxAppeals  Int?
   maxRetakes   Int?
   morphSubtype String?        // For MORPHOLOGY_QUIZ: VERB | NOUN | ADJECTIVE | PRONOUN | CONDITIONAL | SUBJUNCTIVE
+  // For VOCABULARY_QUIZ: the instructor's word selection from the BGVB list —
+  // { subsections: string[] (e.g. ["1-A","2-B"]), pos: string[] }. Lets the edit
+  // page pre-fill the picker and regenerate from the same words.
+  vocabSelection Json?
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

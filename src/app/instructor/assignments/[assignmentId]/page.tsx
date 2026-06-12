@@ -112,6 +112,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
                     assignment.questions.length) * 100,
                 )
               : (assignment.provideDefinition ? 100 : 0),
+            vocabSelection: (assignment.vocabSelection as { subsections: string[]; pos: string[] } | null) ?? null,
             timePerQuestion: assignment.timePerQuestion,
             reviewTimeSeconds: assignment.reviewTimeSeconds,
             provideDefinition: assignment.provideDefinition,

@@ -62,3 +62,27 @@ ALL_SECTIONS.forEach(s => {
 export const ALL_SUBSECTION_KEYS = ALL_SECTIONS.flatMap(
   s => SECTION_SUBSECTIONS[s].map(sub => sub.key)
 )
+
+// All parts of speech present in the dataset (sorted), plus friendly labels.
+// Shared by VocabBuilder and the vocab-quiz builder/generator.
+export const ALL_POS = Array.from(new Set(WORDS.map(w => w.pos))).sort()
+
+export const POS_LABELS: Record<string, string> = {
+  Verb: 'Verb', Noun: 'Noun', Adj: 'Adjective', Adv: 'Adverb',
+  Prep: 'Preposition', Conj: 'Conjunction', Pron: 'Pronoun',
+  Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
+}
+
+/**
+ * Collect the BGVB words for a selection of subsection keys + parts of speech.
+ * Empty `subsections` means "all sections"; empty `pos` means "all parts of speech".
+ */
+export function wordsForSelection(subsections: string[], pos: string[]): BgvbWord[] {
+  const subSet = subsections.length > 0 ? new Set(subsections) : null
+  const posSet = pos.length > 0 ? new Set(pos) : null
+  return WORDS.filter(w => {
+    if (subSet && !subSet.has(WORD_SUBSECTION[w.word])) return false
+    if (posSet && !posSet.has(w.pos)) return false
+    return true
+  })
+}

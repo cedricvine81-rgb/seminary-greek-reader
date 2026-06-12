@@ -225,6 +225,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     allowLate: false, lateDaysLimit: 7,
   })
   const [quizStylePct, setQuizStylePct] = useState(0)
+  // Vocab word selection over the BGVB list: frequency subsections.
+  const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
   const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
   const [morphologyFields, setMorphologyFields] = useState<string[]>(
     SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key)
@@ -271,7 +273,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
           maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
           // quizStylePct (0–100) is the real open-ended/MC mix; provideDefinition is derived (>0 → typed answers graded leniently).
-          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -388,10 +390,12 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'VOCABULARY_QUIZ' && (
         <>
-          {/* Removed: Frequency Section Picker + "previous sections %" slider.
-              Neither was wired to generation (vocab questions are drawn by course
-              level), so they over-promised. Re-introduce once generateVocabQuestions
-              supports subsection-scoped selection (planned with the morphology work). */}
+          {/* Choose the words for the quiz from the BGVB frequency list, by section
+              (same source as the Vocab Builder / flashcards). */}
+          <FrequencySectionPicker
+            selectedSubsections={vocabSubsections}
+            onChange={setVocabSubsections}
+          />
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Type of Quiz —{' '}
