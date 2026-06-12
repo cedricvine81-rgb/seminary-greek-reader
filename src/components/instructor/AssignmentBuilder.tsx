@@ -224,8 +224,6 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
     allowLate: false, lateDaysLimit: 7,
   })
-  const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
-  const [prevSectionsPct, setPrevSectionsPct] = useState(0)
   const [quizStylePct, setQuizStylePct] = useState(0)
   const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
   const [morphologyFields, setMorphologyFields] = useState<string[]>(
@@ -266,12 +264,14 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         body: JSON.stringify({ courseId, ...form,
           // Convert datetime-local (instructor's local wall time) to a real UTC instant on the client,
           // so the stored deadline isn't shifted by the server's (UTC) timezone.
+          submissionDeadline: form.submissionDeadline ? new Date(form.submissionDeadline).toISOString() : undefined,
           round1Deadline: form.round1Deadline ? new Date(form.round1Deadline).toISOString() : undefined,
           round2Deadline: form.round2Deadline ? new Date(form.round2Deadline).toISOString() : undefined,
           allowLate, lateDaysLimit: allowLate ? lateDaysLimit : null, maxRetakes,
           // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
           maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
-          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { vocabSubsections, prevSectionsPct, quizStylePct, provideDefinition: quizStylePct >= 50 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
+          // quizStylePct (0–100) is the real open-ended/MC mix; provideDefinition is derived (>0 → typed answers graded leniently).
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0 } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -388,13 +388,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'VOCABULARY_QUIZ' && (
         <>
-          <FrequencySectionPicker
-            selectedSubsections={vocabSubsections}
-            onChange={setVocabSubsections}
-          />
-          {/* Removed: "Questions from previous sections %" slider.
-              The backend doesn't yet support drawing from previous sections — the
-              slider was UI-only. Re-introduce once generateVocabQuestions supports it. */}
+          {/* Removed: Frequency Section Picker + "previous sections %" slider.
+              Neither was wired to generation (vocab questions are drawn by course
+              level), so they over-promised. Re-introduce once generateVocabQuestions
+              supports subsection-scoped selection (planned with the morphology work). */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Type of Quiz —{' '}
@@ -472,6 +469,17 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               Set a fixed date &amp; time (to the minute) after which students can no longer edit. These apply
               regardless of when a student starts, and work alongside the per-session timers above.
             </p>
+            <div>
+              <Input
+                label="Submission deadline — students cannot submit after this point"
+                type="datetime-local"
+                value={form.submissionDeadline ?? ''}
+                onChange={e => set('submissionDeadline', e.target.value || undefined)}
+              />
+              <p className="mt-1 text-xs text-brand-600">
+                After this point students may still edit submitted work but cannot make a new submission. Leave blank for none.
+              </p>
+            </div>
             <div>
               <Input
                 label="Round 1 deadline — annotations lock after this time"

@@ -27,7 +27,7 @@ export async function POST(
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
-  const { type, count, level } = await req.json()
+  const { type, count, level, quizStylePct } = await req.json()
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
@@ -39,8 +39,12 @@ export async function POST(
   const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)
   const qLevel = (level as CourseLevel) ?? assignment.level
   const morphSubtype = assignment.morphSubtype ?? 'ALL'
-  // When provideDefinition is on, generate 100% open-ended (typed) questions
-  const provideDefinitionPct = assignment.provideDefinition ? 100 : 0
+  // Type-of-Quiz mix: when the caller supplies a continuous quizStylePct (0–100,
+  // the % of open-ended / "provide definition" questions), honour it for a real
+  // mix. Otherwise fall back to the stored binary provideDefinition.
+  const provideDefinitionPct = quizStylePct != null
+    ? Math.min(Math.max(Number(quizStylePct), 0), 100)
+    : assignment.provideDefinition ? 100 : 0
 
   let questions: ReturnType<typeof generateVerbParseQuestions> | Awaited<ReturnType<typeof generateVocabQuestions>> = []
 
@@ -58,12 +62,21 @@ export async function POST(
     }
   }
 
-  // Replace all existing questions atomically — if createMany fails, deleteMany is rolled back
+  // Replace all existing questions atomically — if createMany fails, deleteMany is rolled back.
+  // For vocab quizzes also align provideDefinition with the mix (any open-ended portion →
+  // typed answers are graded with fuzzy matching; 100% multiple-choice → off) when an
+  // explicit quizStylePct was supplied.
   await prisma.$transaction(async tx => {
     await tx.question.deleteMany({ where: { assignmentId: params.assignmentId } })
     if (questions.length > 0) {
       await tx.question.createMany({
         data: questions.map(q => ({ ...q, assignmentId: params.assignmentId })),
+      })
+    }
+    if (assignment.type === 'VOCABULARY_QUIZ' && quizStylePct != null) {
+      await tx.assignment.update({
+        where: { id: params.assignmentId },
+        data: { provideDefinition: provideDefinitionPct > 0 },
       })
     }
   })

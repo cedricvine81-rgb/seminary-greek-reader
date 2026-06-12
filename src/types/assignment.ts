@@ -68,6 +68,7 @@ export interface AssignmentFormData {
   numQuestions: number
   timePerQuestion?: number
   reviewTimeSeconds?: number
+  submissionDeadline?: string   // datetime-local string; translation exercises
   round1Deadline?: string   // datetime-local string; translation exercises
   round2Deadline?: string   // datetime-local string; translation exercises
   allowReaderInRound2?: boolean   // translation exercises: expose Reader info during Round 2

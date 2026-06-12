@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, morphologySubtype, vocabThruLesson } = body
 
   // Validate required fields
   if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
@@ -57,11 +57,17 @@ export async function POST(req: NextRequest) {
       reference, instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
+      submissionDeadline: submissionDeadline ? new Date(submissionDeadline) : null,
       round1Deadline: round1Deadline ? new Date(round1Deadline) : null,
       round2Deadline: round2Deadline ? new Date(round2Deadline) : null,
       allowLate: Boolean(allowLate),
       lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
-      provideDefinition: Boolean(provideDefinition),
+      // For vocab quizzes provideDefinition is derived from the mix: any open-ended
+      // portion → typed answers are graded leniently (fuzzy). For other types, use
+      // the supplied boolean.
+      provideDefinition: type === 'VOCABULARY_QUIZ' && quizStylePct != null
+        ? Number(quizStylePct) > 0
+        : Boolean(provideDefinition),
       allowReaderInRound2: Boolean(allowReaderInRound2),
       maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
@@ -77,8 +83,12 @@ export async function POST(req: NextRequest) {
   }> = []
 
   if (type === 'VOCABULARY_QUIZ') {
-    // provideDefinition=true → 100% open-ended; false → 0% (all multiple-choice)
-    const openEndedPct = Boolean(provideDefinition) ? 100 : 0
+    // Continuous Type-of-Quiz mix: quizStylePct (0–100) is the % of open-ended
+    // ("provide definition") questions; the remainder are multiple-choice. Falls
+    // back to the binary provideDefinition when no slider value was sent.
+    const openEndedPct = quizStylePct != null
+      ? Math.min(Math.max(Number(quizStylePct), 0), 100)
+      : Boolean(provideDefinition) ? 100 : 0
     questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
   } else if (type === 'MORPHOLOGY_QUIZ') {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'

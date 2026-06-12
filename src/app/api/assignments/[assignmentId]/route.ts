@@ -61,7 +61,7 @@ export async function PATCH(
   const body = await req.json()
   const {
     isPublished,
-    title, weekNumber, dueDate, instructions,
+    title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, submissionDeadline, round1Deadline, round2Deadline,
     allowReaderInRound2, maxAppeals,
@@ -76,6 +76,13 @@ export async function PATCH(
     if (weekNumber !== undefined)   data.weekNumber = Number(weekNumber)
     if (dueDate !== undefined)      data.dueDate = new Date(dueDate)
     if (instructions !== undefined) data.instructions = instructions || null
+    // Passage reference (translation exercises). Reject clearing it to empty.
+    if (reference !== undefined) {
+      if (typeof reference === 'string' && reference.trim()) data.reference = reference.trim()
+      else if (reference === null || reference === '') {
+        return NextResponse.json({ error: 'A passage reference is required.' }, { status: 400 })
+      }
+    }
     if (timePerQuestion !== undefined)
       data.timePerQuestion = Number(timePerQuestion) > 0 ? Number(timePerQuestion) : null
     if (reviewTimeSeconds !== undefined)

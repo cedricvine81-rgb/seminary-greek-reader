@@ -16,6 +16,8 @@ interface Props {
     weekNumber: number
     dueDate: string         // ISO string
     instructions: string | null
+    reference: string | null           // translation exercises only
+    quizStylePct: number               // vocab quizzes: current % open-ended, from saved questions
     timePerQuestion: number | null
     reviewTimeSeconds: number | null
     provideDefinition: boolean
@@ -50,6 +52,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
   const [dueDate, setDueDate] = useState(initial.dueDate.slice(0, 10))
   const [instructions, setInstructions] = useState(initial.instructions ?? '')
+  const [reference, setReference] = useState(initial.reference ?? '')
   // For translation: timePerQuestion stores stage-1 seconds; display as minutes
   const [timePerQuestion, setTimePerQuestion] = useState(
     isTranslation
@@ -60,8 +63,9 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
     Math.round((initial.reviewTimeSeconds ?? 0) / 60)      // display minutes
   )
   const [provideDefinition, setProvideDefinition] = useState(initial.provideDefinition)
-  // Slider value 0–100 driving provideDefinition (>= 50 → true). Mirrors the New Assignment form.
-  const [quizStylePct, setQuizStylePct] = useState(initial.provideDefinition ? 100 : 0)
+  // Slider value 0–100 = % open-ended ("provide definition"). Initialised from the
+  // actual saved mix so the control reflects the real quiz, not just a binary flag.
+  const [quizStylePct, setQuizStylePct] = useState(initial.quizStylePct)
 
   // Vocab-quiz auto-generation: count + Generate Questions, moved here from the
   // QuizBuilder panel so the workflow is "configure → generate" in one card.
@@ -80,6 +84,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [allowReaderInRound2, setAllowReaderInRound2] = useState(initial.allowReaderInRound2)
 
   async function handleSave() {
+    if (isTranslation && !reference.trim()) {
+      setError('A passage reference is required (e.g. "John 1:1–18").')
+      return
+    }
     if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
       setError('The Round 2 deadline must be after the Round 1 deadline.')
       return
@@ -96,6 +104,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           weekNumber,
           dueDate,
           instructions,
+          reference: isTranslation ? reference : undefined,
           // Convert back to seconds for storage
           timePerQuestion: isTranslation ? timePerQuestion * 60 || 0 : timePerQuestion,
           reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
@@ -139,6 +148,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           // in Provide Definition mode, which is also the most common in MC mode).
           type: 'GREEK_TO_ENGLISH',
           count: numQuestions,
+          // Honour the live Type-of-Quiz slider so regeneration produces the chosen mix.
+          quizStylePct,
         }),
       })
       const data = await res.json().catch(() => ({}))
@@ -194,8 +205,21 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         </div>
 
         {isTranslation ? (
-          /* Translation Exercise: submission deadline + two-phase timers */
+          /* Translation Exercise: passage reference + submission deadline + two-phase timers */
           <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-4">
+            <div>
+              <Input
+                label="Passage reference (required)"
+                value={reference}
+                onChange={e => setReference(e.target.value)}
+                placeholder="e.g. John 1:1–18"
+              />
+              <p className="text-xs text-brand-600 mt-1">
+                The passage students annotate in the Exegesis Workspace. Changing this affects new sessions;
+                students who already started keep their current passage.
+              </p>
+            </div>
+            <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">Submission deadline</p>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -312,7 +336,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               onChange={e => {
                 const v = Number(e.target.value)
                 setQuizStylePct(v)
-                setProvideDefinition(v >= 50)
+                // Any open-ended portion → typed answers graded leniently (fuzzy).
+                setProvideDefinition(v > 0)
               }}
               className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
             />

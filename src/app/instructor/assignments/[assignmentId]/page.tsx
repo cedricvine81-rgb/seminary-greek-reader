@@ -103,6 +103,15 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             weekNumber: assignment.weekNumber,
             dueDate: assignment.dueDate.toISOString(),
             instructions: assignment.instructions,
+            reference: assignment.reference,
+            // Current Type-of-Quiz mix derived from saved questions: % that are
+            // open-ended (typed) vs multiple-choice. Lets the slider show the real quiz.
+            quizStylePct: assignment.questions.length > 0
+              ? Math.round(
+                  (assignment.questions.filter(q => q.type !== 'MULTIPLE_CHOICE').length /
+                    assignment.questions.length) * 100,
+                )
+              : (assignment.provideDefinition ? 100 : 0),
             timePerQuestion: assignment.timePerQuestion,
             reviewTimeSeconds: assignment.reviewTimeSeconds,
             provideDefinition: assignment.provideDefinition,
