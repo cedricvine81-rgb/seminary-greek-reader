@@ -717,6 +717,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     setLoadedVerses([])
     setSelectedWordKey(null)
     setSelectedWord(null)
+    // Standalone tool: loading a fresh passage starts a new session, so clear any
+    // prior session + entries (a new session is created lazily on the first edit).
+    if (!propAssignmentId) {
+      setSessionId(null)
+      setAnnotations({})
+      setCorrections({})
+      setVerseTranslations({})
+      setVerseCorrections({})
+      setSaveStatus('idle')
+    }
     try {
       const r = await fetch(`/api/reader?book=${selectedBook.osisId}&chapter=${chapter}`)
       const d = await r.json()
@@ -906,11 +916,19 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     latestVerseCorrections: Record<string, string> = verseCorrections,
     latestNotes: string = notes,
   ) {
-    if (!sessionId) return
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
     setSaveStatus('pending')   // unsaved edits, autosave queued
     autoSaveTimer.current = setTimeout(() => {
       setSaveStatus('saving')
+      // No session yet: in the standalone tool the first edit creates the session
+      // (capturing current work). In assignment mode the session is created on entry,
+      // so just skip until it exists.
+      if (!sessionId) {
+        if (!propAssignmentId) {
+          saveSession().then(sid => setSaveStatus(sid ? 'saved' : 'error')).catch(() => setSaveStatus('error'))
+        }
+        return
+      }
       fetch(`/api/exegesis/${sessionId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -1271,10 +1289,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           </div>
         )}
 
-        {/* Assignment mode autosaves continuously, so show a passive status instead of
-            a Save button. The standalone Reader→Exegesis tool keeps the button because
-            its first save is what creates the session. */}
-        {loadedVerses.length > 0 && propAssignmentId && (
+        {/* Both the translation exercise and the standalone Reader→Exegesis tool
+            autosave continuously, so show a passive status instead of a Save button. */}
+        {loadedVerses.length > 0 && (
           <span className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-500">
             {saveStatus === 'saving' || isSaving ? (
               <><svg className="w-3.5 h-3.5 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Saving…</>
@@ -1286,15 +1303,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
               <span className="inline-flex items-center gap-1 text-emerald-600">✓ All changes saved</span>
             )}
           </span>
-        )}
-        {loadedVerses.length > 0 && !propAssignmentId && (
-          <button
-            onClick={() => saveSession()}
-            disabled={isSaving}
-            className="self-end px-4 py-1.5 bg-emerald-600 text-white rounded-md text-sm font-medium hover:bg-emerald-700 disabled:opacity-50 transition"
-          >
-            {isSaving ? 'Saving…' : saveStatus === 'saved' ? '✓ Saved' : '💾 Save'}
-          </button>
         )}
 
         {loadedVerses.length > 0 && (
