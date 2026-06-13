@@ -80,6 +80,11 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     acceptedAnswers: q.type === 'GREEK_TO_ENGLISH' ? (synonymMap.get(q.prompt) ?? []) : undefined,
   }))
 
+  // Re-sampling vocab quizzes store the whole pool and show `perAttempt` random
+  // questions each attempt (different words on retake). undefined = show them all.
+  const vocabSel = assignment.vocabSelection as { perAttempt?: number } | null
+  const vocabPerAttempt = vocabSel?.perAttempt && vocabSel.perAttempt > 0 ? vocabSel.perAttempt : undefined
+
   const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
 
   return (
@@ -207,6 +212,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             provideDefinition={assignment.provideDefinition}
             maxRetakes={assignment.maxRetakes}
             maxAppeals={assignment.maxAppeals ?? 0}
+            questionsPerAttempt={vocabPerAttempt}
             attemptCount={attemptCount}
             bestPct={bestAttempt?.percentage ?? null}
           />

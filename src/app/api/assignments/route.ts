@@ -3,7 +3,7 @@ import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
-import { generateVocabQuestions, generateVocabQuestionsFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 
@@ -37,8 +37,14 @@ export async function POST(req: NextRequest) {
   const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
+  // perAttempt = how many questions each attempt shows; the quiz stores the whole
+  // selected pool and draws perAttempt at random each attempt (different on retake).
   const vocabSel = type === 'VOCABULARY_QUIZ' && (Array.isArray(vocabSubsections) || Array.isArray(vocabPos))
-    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [] }
+    ? {
+        subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [],
+        pos: Array.isArray(vocabPos) ? vocabPos : [],
+        perAttempt: Math.min(Math.max(Number(numQuestions ?? 10), 1), 50),
+      }
     : null
 
   // Validate required fields
@@ -99,7 +105,8 @@ export async function POST(req: NextRequest) {
     // quiz from exactly those words (BGVB list); otherwise fall back to the
     // course-level pool from the database.
     if (vocabSel) {
-      questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
+      // Store the full pool; the player draws perAttempt at random each attempt.
+      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct)
     } else {
       questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
     }

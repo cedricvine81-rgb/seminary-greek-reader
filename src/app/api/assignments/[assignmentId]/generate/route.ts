@@ -3,7 +3,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
-  generateVocabQuestions, generateVocabQuestionsFromSelection, generateMorphologyQuestions,
+  generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestions,
   generateVerbParseQuestions, generateNounParseQuestions,
   generateAdjectiveParseQuestions, generatePronounParseQuestions,
   generateConditionalQuestions, generateSubjunctiveQuestions,
@@ -35,16 +35,17 @@ export async function POST(
   })
   if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  // Effective word selection: a fresh one from the request wins; otherwise reuse
-  // whatever was stored on the assignment.
-  const reqSel = Array.isArray(vocabSubsections) || Array.isArray(vocabPos)
-    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [] }
-    : null
-  const storedSel = (assignment.vocabSelection ?? null) as { subsections: string[]; pos: string[] } | null
-  const effectiveSel = reqSel ?? storedSel
-
   const qType = (type as QuestionType) ?? 'GREEK_TO_ENGLISH'
-  const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)
+  const qCount = Math.min(Math.max(Number(count) || 10, 1), 50)  // per-attempt count
+
+  // Effective word selection: a fresh one from the request wins; otherwise reuse
+  // whatever was stored on the assignment. perAttempt = how many the player shows
+  // each attempt (the quiz stores the whole pool and re-samples on retake).
+  const reqSel = Array.isArray(vocabSubsections) || Array.isArray(vocabPos)
+    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [], perAttempt: qCount }
+    : null
+  const storedSel = (assignment.vocabSelection ?? null) as { subsections: string[]; pos: string[]; perAttempt?: number } | null
+  const effectiveSel = reqSel ?? storedSel
   const qLevel = (level as CourseLevel) ?? assignment.level
   const morphSubtype = assignment.morphSubtype ?? 'ALL'
   // Type-of-Quiz mix: when the caller supplies a continuous quizStylePct (0–100,
@@ -58,7 +59,7 @@ export async function POST(
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
     questions = effectiveSel
-      ? generateVocabQuestionsFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, qCount, provideDefinitionPct)
+      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct)
       : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {
@@ -94,7 +95,10 @@ export async function POST(
     }
   })
 
-  return NextResponse.json({ count: questions.length })
+  // For pooled (re-sampling) vocab quizzes, report the per-attempt count for the UI
+  // message, plus the pool size. Otherwise count is just the generated total.
+  const perAttempt = effectiveSel ? Math.min(qCount, questions.length) : questions.length
+  return NextResponse.json({ count: perAttempt, poolSize: questions.length, pooled: !!effectiveSel })
 
   } catch (err) {
     logError('api/assignments/[assignmentId]/generate', err)

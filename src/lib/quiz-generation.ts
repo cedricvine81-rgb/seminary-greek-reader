@@ -59,6 +59,22 @@ export function generateVocabQuestionsFromSelection(
   })
 }
 
+/**
+ * Generate questions for the ENTIRE selected pool (every word in the chosen
+ * sections / parts of speech), used when re-sampling on retake is enabled: the
+ * student is shown a random subset each attempt. Not capped at 50 — the pool can
+ * be a whole frequency section.
+ */
+export function generateVocabPoolFromSelection(
+  subsections: string[],
+  pos: string[],
+  type: QuestionType,
+  provideDefinitionPct = 0,
+): GeneratedQuestion[] {
+  const poolSize = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss).length
+  return generateVocabQuestionsFromSelection(subsections, pos, type, poolSize, provideDefinitionPct)
+}
+
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr]
   for (let i = a.length - 1; i > 0; i--) {

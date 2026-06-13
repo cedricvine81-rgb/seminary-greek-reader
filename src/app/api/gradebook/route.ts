@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
       userId: { in: studentIds },
       questionId: { not: null },
     },
-    select: { userId: true, assignmentId: true, isCorrect: true, score: true, questionId: true },
+    select: { userId: true, assignmentId: true, isCorrect: true, score: true, questionId: true, question: { select: { points: true } } },
   })
 
   // Build per-student × per-assignment score map
@@ -67,11 +67,13 @@ export async function GET(req: NextRequest) {
     for (const e of enrollments) {
       const uid = e.user.id
       if (!scoreMap[uid]) scoreMap[uid] = {}
-      const earned = responses
-        .filter(r => r.userId === uid && r.assignmentId === a.id)
-        .reduce((s, r) => s + (r.score ?? 0), 0)
-      const attempted = responses.some(r => r.userId === uid && r.assignmentId === a.id)
-      scoreMap[uid][a.id] = attempted ? { earned, total: totalPts } : { earned: -1, total: totalPts }
+      const mine = responses.filter(r => r.userId === uid && r.assignmentId === a.id)
+      const earned = mine.reduce((s, r) => s + (r.score ?? 0), 0)
+      // Score out of the questions this student was actually given (their stored
+      // responses), not all stored questions — so re-sampling pools score correctly.
+      // For fixed quizzes this equals the full total.
+      const answeredPts = mine.reduce((s, r) => s + (r.question?.points ?? 0), 0)
+      scoreMap[uid][a.id] = mine.length > 0 ? { earned, total: answeredPts || totalPts } : { earned: -1, total: totalPts }
     }
   }
 

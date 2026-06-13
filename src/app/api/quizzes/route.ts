@@ -54,7 +54,10 @@ export async function POST(req: NextRequest) {
   }
 
   const questionMap = Object.fromEntries(assignment.questions.map(q => [q.id, q]))
-  const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
+  // Score out of the questions actually presented this attempt (the submitted set),
+  // not all stored questions. For fixed quizzes the student answers every stored
+  // question, so this equals the old total; for re-sampling pools it's the subset shown.
+  const totalPoints = responses.reduce((s, r) => s + (questionMap[r.questionId]?.points ?? 0), 0)
 
   // Count previous attempts
   const previousAttempts = await prisma.quizAttempt.findMany({

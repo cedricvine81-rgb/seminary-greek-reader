@@ -17,6 +17,9 @@ interface QuizPlayerProps {
   maxRetakes?: number | null
   /** Vocab quizzes only: number of wrong-answer appeals the student is permitted per attempt. 0 = appeals off. */
   maxAppeals?: number
+  /** If set (re-sampling quizzes), each attempt draws this many random questions from
+   *  the stored pool — so retakes show a different selection of words. */
+  questionsPerAttempt?: number
   attemptCount?: number
   bestPct?: number | null
 }
@@ -38,15 +41,20 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
-/** Randomise a quiz for one attempt: shuffle the question order, and shuffle the
- *  options within each multiple-choice question. Grading is by question id and
- *  whole-option match, so this only changes presentation, never correctness. */
-function shuffleQuiz(qs: QuizQuestion[]): QuizQuestion[] {
-  return shuffle(qs).map(q =>
+/** Randomise a quiz for one attempt: shuffle the question order, shuffle the options
+ *  within each multiple-choice question, and — when `perAttempt` is given and smaller
+ *  than the pool — draw that many at random (so retakes show different words).
+ *  Grading is by question id and whole-option match, so this only changes
+ *  presentation, never correctness. */
+function shuffleQuiz(qs: QuizQuestion[], perAttempt?: number): QuizQuestion[] {
+  const shuffled = shuffle(qs).map(q =>
     Array.isArray(q.options) && q.options.length > 0
       ? { ...q, options: shuffle(q.options) }
       : q,
   )
+  return perAttempt && perAttempt > 0 && perAttempt < shuffled.length
+    ? shuffled.slice(0, perAttempt)
+    : shuffled
 }
 
 /** Parse a correctAnswer string — handles plain text and JSON morphology objects */
@@ -61,7 +69,7 @@ function formatCorrectAnswer(ca: string): string {
 }
 
 
-export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, maxAppeals = 0, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
+export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, maxAppeals = 0, questionsPerAttempt, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -75,7 +83,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // Per-attempt randomised order (and shuffled MC options). Reshuffled on each retake
   // so the quiz is different every time. Grading is unaffected (keyed by question id).
-  const [orderedQuestions, setOrderedQuestions] = useState<QuizQuestion[]>(() => shuffleQuiz(questions))
+  const [orderedQuestions, setOrderedQuestions] = useState<QuizQuestion[]>(() => shuffleQuiz(questions, questionsPerAttempt))
   const [idx, setIdx] = useState(0)
   const [draft, setDraft] = useState('')
   const [morphDraft, setMorphDraft] = useState<Record<string, string>>({})
@@ -212,7 +220,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     setSubmitting(true)
     setSubmitError(null)
     try {
-      const payload = questions.map(question => ({
+      // Submit only the questions actually shown this attempt (the sampled subset),
+      // so grading scores out of what the student saw.
+      const payload = orderedQuestions.map(question => ({
         questionId: question.id,
         answer: answers[question.id] ?? '',
       }))
@@ -263,7 +273,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   }
 
   function handleRetake() {
-    setOrderedQuestions(shuffleQuiz(questions))  // fresh random order for the new attempt
+    setOrderedQuestions(shuffleQuiz(questions, questionsPerAttempt))  // fresh random draw for the new attempt
     setIdx(0)
     setDraft('')
     setMorphDraft({})

@@ -68,9 +68,15 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             assignment.reference && (
               <Badge variant="blue">{assignment.reference}</Badge>
             )
-          ) : (
-            <Badge variant="green">{assignment.questions.length} questions</Badge>
-          )}
+          ) : (() => {
+            // Re-sampling vocab quizzes store the whole pool and show `perAttempt`
+            // random questions each attempt — show that, not the raw pool size.
+            const sel = assignment.vocabSelection as { perAttempt?: number } | null
+            const perAttempt = sel?.perAttempt && sel.perAttempt > 0 ? sel.perAttempt : null
+            return perAttempt
+              ? <Badge variant="green">{perAttempt} per attempt · pool of {assignment.questions.length}</Badge>
+              : <Badge variant="green">{assignment.questions.length} questions</Badge>
+          })()}
           <Badge variant={assignment.isPublished ? 'green' : 'gray'}>
             {assignment.isPublished ? 'Published' : 'Draft'}
           </Badge>
