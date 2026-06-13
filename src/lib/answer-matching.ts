@@ -62,6 +62,15 @@ export function fuzzyMatch(student: string, expected: string): boolean {
 }
 
 /**
+ * Strip a leading verb-gloss marker so the natural form of a verb answer matches
+ * the bare gloss: "I flee" / "to flee" → "flee" (and vice-versa). Greek verbs are
+ * commonly glossed either way, so we normalise both sides before comparing.
+ */
+export function stripVerbMarker(s: string): string {
+  return s.replace(/^(to|i)\s+/, '').trim()
+}
+
+/**
  * Returns true if `studentAnswer` matches `correctAnswer`.
  * `correctAnswer` may contain comma-separated acceptable alternatives.
  * When `fuzzy` is true, small typos are tolerated (used in "provide definition" mode).
@@ -69,12 +78,16 @@ export function fuzzyMatch(student: string, expected: string): boolean {
 export function isAnswerCorrect(studentAnswer: string, correctAnswer: string, fuzzy = false): boolean {
   const student = normalise(studentAnswer)
   if (!student) return false
+  // Compare both the raw answer and a verb-marker-stripped form, so "I flee" / "to flee"
+  // match a "flee" gloss (and the reverse).
+  const studentForms = Array.from(new Set([student, stripVerbMarker(student)])).filter(Boolean)
   // Accept either commas OR semicolons as separators between acceptable alternatives.
   // Lexicon glosses use both conventions (e.g. "love, affection" vs "I raise; I rise").
   const alts = correctAnswer.split(/[,;]/).map(a => normalise(a)).filter(Boolean)
+  const altForms = Array.from(new Set(alts.flatMap(a => [a, stripVerbMarker(a)]))).filter(Boolean)
   return fuzzy
-    ? alts.some(alt => fuzzyMatch(student, alt))
-    : alts.some(alt => alt === student)
+    ? studentForms.some(s => altForms.some(alt => fuzzyMatch(s, alt)))
+    : studentForms.some(s => altForms.includes(s))
 }
 
 /**

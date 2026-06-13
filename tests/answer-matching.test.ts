@@ -37,6 +37,31 @@ describe('isAnswerCorrect (fuzzy mode) — antonym guard end-to-end', () => {
   })
 })
 
+describe('isAnswerCorrect — verb-marker tolerance ("I"/"to")', () => {
+  // Regression: φεύγω is glossed "flee, escape"; a student typing "I flee" (natural
+  // for a Greek verb) was marked wrong.
+  it('accepts "I flee" for "flee, escape"', () => {
+    expect(isAnswerCorrect('I flee', 'flee, escape', false)).toBe(true)
+    expect(isAnswerCorrect('I flee', 'flee, escape', true)).toBe(true)
+  })
+
+  it('accepts "to flee" for "flee, escape"', () => {
+    expect(isAnswerCorrect('to flee', 'flee, escape', false)).toBe(true)
+  })
+
+  it('accepts a bare "flee" when the gloss itself is "I flee"', () => {
+    expect(isAnswerCorrect('flee', 'I flee', false)).toBe(true)
+  })
+
+  it('accepts the second alternative with a marker ("I escape")', () => {
+    expect(isAnswerCorrect('I escape', 'flee, escape', false)).toBe(true)
+  })
+
+  it('still rejects a genuinely wrong verb answer', () => {
+    expect(isAnswerCorrect('I run', 'flee, escape', false)).toBe(false)
+  })
+})
+
 describe('isAnswerCorrect — semicolon-separated alternatives', () => {
   // Regression: ἀνίστημι's gloss is "I raise; I rise" — the grader used to only
   // split on commas, marking "I rise" wrong even though it's literally listed.
