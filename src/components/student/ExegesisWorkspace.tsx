@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
@@ -979,35 +979,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   }
 
   // ── Build summary rows for print ──
-  const summaryRows: Array<{
-    ref: string
-    surface: string
-    lemma: string
-    parsing: string
-    syntax: string
-    translation: string
-    corrParsing: string
-    corrSyntax: string
-    corrTranslation: string
-  }> = []
-  for (const v of loadedVerses) {
-    for (const w of v.words) {
-      const key = wordKey(v.verse, w.id)
-      const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
-      const corr = corrections[key]
-      summaryRows.push({
-        ref: v.reference,
-        surface: w.surface,
-        lemma: w.lexeme?.lexeme ?? '',
-        parsing: ann.parsing,
-        syntax: ann.syntax,
-        translation: ann.translation,
-        corrParsing: corr?.parsing ?? '',
-        corrSyntax: corr?.syntax ?? '',
-        corrTranslation: corr?.translation ?? '',
-      })
-    }
-  }
 
   // ── Lock / mode flags ──
   // deadlinePassed locks stage-1 (black annotations) and opens review mode, but leaves stage-2 (red corrections) editable.
@@ -1462,6 +1433,46 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                     />
                   </div>
                 )}
+
+                {/* Print only: this verse's word analysis, listed directly under the
+                    verse (parsing / syntax / translation, with Round 2 corrections in red). */}
+                {(() => {
+                  const wordHas = (w: VerseWord) => {
+                    const key = wordKey(v.verse, w.id)
+                    const ann = annotations[key]
+                    const corr = corrections[key]
+                    return Boolean(ann?.parsing || ann?.syntax || ann?.translation || corr?.parsing || corr?.syntax || corr?.translation)
+                  }
+                  const rows = v.words.filter(wordHas)
+                  if (rows.length === 0) return null
+                  return (
+                    <table className="hidden print:table w-full border-collapse text-sm mt-2">
+                      <thead>
+                        <tr className="border-b border-gray-400">
+                          <th className="text-left py-0.5 pr-2 font-semibold font-greek">Word</th>
+                          <th className="text-left py-0.5 pr-2 font-semibold">Parsing</th>
+                          <th className="text-left py-0.5 pr-2 font-semibold">Syntax</th>
+                          <th className="text-left py-0.5 font-semibold">Translation</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map(w => {
+                          const key = wordKey(v.verse, w.id)
+                          const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
+                          const corr = corrections[key]
+                          return (
+                            <tr key={w.id} className="align-top">
+                              <td className="py-0.5 pr-2 font-greek">{w.surface}</td>
+                              <td className="py-0.5 pr-2 text-xs">{ann.parsing}{corr?.parsing && <span className="text-red-600 font-medium"> → {corr.parsing}</span>}</td>
+                              <td className="py-0.5 pr-2 text-xs">{ann.syntax}{corr?.syntax && <span className="text-red-600 font-medium"> → {corr.syntax}</span>}</td>
+                              <td className="py-0.5 text-xs">{ann.translation}{corr?.translation && <span className="text-red-600 font-medium"> → {corr.translation}</span>}</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  )
+                })()}
                 </div>{/* end left column */}
 
                 {/* Right column: the parsing / syntax / translation boxes for the
@@ -1510,54 +1521,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           {/* Round 2 NOTE: the secondary review passage panel was removed —
               students now see one passage with an inline per-word popover. */}
 
-          {/* ── Print table ── */}
-          <div className="hidden print:block w-full mt-6">
-            <table className="w-full border-collapse text-sm">
-              <thead>
-                <tr className="border-b-2 border-gray-800">
-                  <th className="text-left py-1 pr-2 font-semibold w-28 font-greek">Word</th>
-                  <th className="text-left py-1 pr-2 font-semibold w-28 font-greek">Lemma</th>
-                  <th className="text-left py-1 pr-2 font-semibold">Parsing</th>
-                  <th className="text-left py-1 pr-2 font-semibold">Syntax</th>
-                  <th className="text-left py-1 font-semibold">Translation</th>
-                </tr>
-              </thead>
-              <tbody>
-                {summaryRows.map((row, i) => {
-                  // Show a verse-header row when the reference changes, instead of
-                  // repeating the reference on every word row.
-                  const startsNewVerse = i === 0 || summaryRows[i - 1].ref !== row.ref
-                  return (
-                  <Fragment key={i}>
-                  {startsNewVerse && (
-                    <tr>
-                      <td colSpan={5} className="pt-3 pb-1 text-xs font-semibold text-gray-600 border-b border-gray-300">
-                        {row.ref}
-                      </td>
-                    </tr>
-                  )}
-                  <tr className={i % 2 === 0 ? 'bg-gray-50' : ''}>
-                    <td className="py-1 pr-2 font-greek text-base align-top">{row.surface}</td>
-                    <td className="py-1 pr-2 font-greek text-xs text-gray-600 align-top">{row.lemma}</td>
-                    <td className="py-1 pr-2 text-xs align-top">
-                      {row.parsing}
-                      {row.corrParsing && <div className="text-red-600 font-medium">→ {row.corrParsing}</div>}
-                    </td>
-                    <td className="py-1 pr-2 text-xs align-top">
-                      {row.syntax}
-                      {row.corrSyntax && <div className="text-red-600 font-medium">→ {row.corrSyntax}</div>}
-                    </td>
-                    <td className="py-1 text-xs align-top">
-                      {row.translation}
-                      {row.corrTranslation && <div className="text-red-600 font-medium">→ {row.corrTranslation}</div>}
-                    </td>
-                  </tr>
-                  </Fragment>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
+          {/* Per-verse analysis is printed under each verse above (no end-of-passage table). */}
 
         </div>
       )}
