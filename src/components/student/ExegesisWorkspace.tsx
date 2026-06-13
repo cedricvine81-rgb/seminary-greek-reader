@@ -1452,7 +1452,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                           <th className="text-left py-0.5 pr-2 font-semibold font-greek">Word</th>
                           <th className="text-left py-0.5 pr-2 font-semibold">Parsing</th>
                           <th className="text-left py-0.5 pr-2 font-semibold">Syntax</th>
-                          <th className="text-left py-0.5 font-semibold">Translation</th>
+                          <th className="text-left py-0.5 font-semibold">Observations</th>
                         </tr>
                       </thead>
                       <tbody>
