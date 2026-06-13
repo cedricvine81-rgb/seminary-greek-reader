@@ -386,7 +386,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   const [sessionTitle, setSessionTitle] = useState('')
   const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
   const [isSaving, setIsSaving] = useState(false)
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saved' | 'error'>('idle')
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saving' | 'saved' | 'error'>('idle')
   const [showSessionList, setShowSessionList] = useState(false)
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -908,7 +908,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
   ) {
     if (!sessionId) return
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+    setSaveStatus('pending')   // unsaved edits, autosave queued
     autoSaveTimer.current = setTimeout(() => {
+      setSaveStatus('saving')
       fetch(`/api/exegesis/${sessionId}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
@@ -919,7 +921,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           verseCorrections: latestVerseCorrections,
           notes: latestNotes,
         }),
-      }).catch(() => {})
+      })
+        .then(r => setSaveStatus(r.ok ? 'saved' : 'error'))
+        .catch(() => setSaveStatus('error'))
     }, 2500)
   }
 
@@ -1267,7 +1271,23 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
           </div>
         )}
 
-        {loadedVerses.length > 0 && (
+        {/* Assignment mode autosaves continuously, so show a passive status instead of
+            a Save button. The standalone Reader→Exegesis tool keeps the button because
+            its first save is what creates the session. */}
+        {loadedVerses.length > 0 && propAssignmentId && (
+          <span className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-500">
+            {saveStatus === 'saving' || isSaving ? (
+              <><svg className="w-3.5 h-3.5 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Saving…</>
+            ) : saveStatus === 'pending' ? (
+              <span className="text-gray-400">Unsaved changes…</span>
+            ) : saveStatus === 'error' ? (
+              <span className="text-red-600">Couldn&rsquo;t save — check your connection</span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-emerald-600">✓ All changes saved</span>
+            )}
+          </span>
+        )}
+        {loadedVerses.length > 0 && !propAssignmentId && (
           <button
             onClick={() => saveSession()}
             disabled={isSaving}
