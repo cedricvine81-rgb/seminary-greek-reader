@@ -190,7 +190,7 @@ function AnnotationPanel({
       {(['parsing', 'syntax', 'translation'] as const).map(field => (
         <div key={field}>
           <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Translation Contribution'}
+            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Observations'}
           </label>
           <input
             type="text"
@@ -223,7 +223,7 @@ function ReviewAnnotationPanel({
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
     { field: 'parsing', label: 'Parsing' },
     { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Translation Contribution' },
+    { field: 'translation', label: 'Observations' },
   ]
 
   return (
