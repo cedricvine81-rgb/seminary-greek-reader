@@ -28,6 +28,27 @@ function hasGreek(s: string | undefined | null): boolean {
   return /[Ͱ-Ͽἀ-῿]/.test(s ?? '')
 }
 
+/** Fisher–Yates shuffle (returns a new array). */
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
+/** Randomise a quiz for one attempt: shuffle the question order, and shuffle the
+ *  options within each multiple-choice question. Grading is by question id and
+ *  whole-option match, so this only changes presentation, never correctness. */
+function shuffleQuiz(qs: QuizQuestion[]): QuizQuestion[] {
+  return shuffle(qs).map(q =>
+    Array.isArray(q.options) && q.options.length > 0
+      ? { ...q, options: shuffle(q.options) }
+      : q,
+  )
+}
+
 /** Parse a correctAnswer string — handles plain text and JSON morphology objects */
 function formatCorrectAnswer(ca: string): string {
   try {
@@ -52,6 +73,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   const retakesRemaining = maxRetakes === null ? null : Math.max(0, maxRetakes - retakesUsed)
   const canRetake = maxAllowed === null || attemptCount < maxAllowed
 
+  // Per-attempt randomised order (and shuffled MC options). Reshuffled on each retake
+  // so the quiz is different every time. Grading is unaffected (keyed by question id).
+  const [orderedQuestions, setOrderedQuestions] = useState<QuizQuestion[]>(() => shuffleQuiz(questions))
   const [idx, setIdx] = useState(0)
   const [draft, setDraft] = useState('')
   const [morphDraft, setMorphDraft] = useState<Record<string, string>>({})
@@ -83,8 +107,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
     )
   }
 
-  const q = questions[idx]
-  const total = questions.length
+  const q = orderedQuestions[idx]
+  const total = orderedQuestions.length
   const correctCount = Object.values(clientCorrect).filter(Boolean).length
   const answeredSoFar = Object.keys(clientCorrect).length
 
@@ -239,6 +263,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   }
 
   function handleRetake() {
+    setOrderedQuestions(shuffleQuiz(questions))  // fresh random order for the new attempt
     setIdx(0)
     setDraft('')
     setMorphDraft({})
