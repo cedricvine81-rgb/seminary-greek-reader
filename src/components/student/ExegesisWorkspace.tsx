@@ -1393,7 +1393,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             )}
 
             {loadedVerses.map(v => (
-              <div key={v.id} className="mb-6 print:mb-4">
+              <div key={v.id} className="mb-6 print:mb-4 lg:grid lg:grid-cols-[1fr_24rem] lg:gap-6 lg:items-start print:block">
+                {/* Left column: the Greek text + whole-verse boxes */}
+                <div className="min-w-0">
                 <p className="text-xs text-gray-400 font-medium mb-2 print:mb-1">{v.reference}</p>
                 <div className="flex flex-wrap gap-1.5 leading-loose">
                   {v.words.map(w => {
@@ -1424,44 +1426,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                     )
                   })}
                 </div>
-
-                {/* Round 2 popover for the selected word in this verse */}
-                {reviewMode && selectedWord && selectedWord.verse === v.verse && (
-                  <Round2WordPopover
-                    word={selectedWord.word}
-                    verseNum={selectedWord.verse}
-                    original={(annotations[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
-                    correction={(corrections[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
-                    locked={correctionLocked}
-                    showReader={!!assignment?.allowReaderInRound2}
-                    onCorrection={handleCorrectionChange}
-                    onClose={() => { setSelectedWord(null); setSelectedWordKey(null) }}
-                  />
-                )}
-
-                {/* Round 1 annotation — inline under the word on mobile. On desktop
-                    the inputs live in the right sidebar; on a phone that sidebar would
-                    stack far below the passage, so tapping a word would seem to do
-                    nothing. Showing it inline puts the inputs right where you tapped. */}
-                {!reviewMode && selectedWord && selectedWord.verse === v.verse && (
-                  <div className="lg:hidden mt-2 rounded-lg border border-brand-200 bg-brand-50/60 p-3">
-                    <AnnotationPanel
-                      word={selectedWord.word}
-                      verseNum={selectedWord.verse}
-                      annotations={annotations}
-                      onChange={handleAnnotationChange}
-                      locked={isLocked}
-                    />
-                    <div className="mt-2 flex justify-end">
-                      <button
-                        onClick={() => { setSelectedWord(null); setSelectedWordKey(null) }}
-                        className="text-xs font-medium text-gray-500 hover:text-gray-700"
-                      >
-                        Done
-                      </button>
-                    </div>
-                  </div>
-                )}
 
                 {/* Whole-verse translation (Round 1) */}
                 <div className="mt-2">
@@ -1498,94 +1462,51 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
                     />
                   </div>
                 )}
+                </div>{/* end left column */}
+
+                {/* Right column: the parsing / syntax / translation boxes for the
+                    selected word, opening level with this verse's row. On mobile
+                    (no grid) it stacks directly beneath the verse. */}
+                <div className="min-w-0 print:hidden">
+                  {selectedWord && selectedWord.verse === v.verse && (
+                    reviewMode ? (
+                      <Round2WordPopover
+                        word={selectedWord.word}
+                        verseNum={selectedWord.verse}
+                        original={(annotations[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
+                        correction={(corrections[wordKey(selectedWord.verse, selectedWord.word.id)] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation}
+                        locked={correctionLocked}
+                        showReader={!!assignment?.allowReaderInRound2}
+                        onCorrection={handleCorrectionChange}
+                        onClose={() => { setSelectedWord(null); setSelectedWordKey(null) }}
+                      />
+                    ) : (
+                      <div className="mt-2 lg:mt-0 rounded-lg border border-brand-200 bg-brand-50/60 p-3 lg:sticky lg:top-2">
+                        <AnnotationPanel
+                          word={selectedWord.word}
+                          verseNum={selectedWord.verse}
+                          annotations={annotations}
+                          onChange={handleAnnotationChange}
+                          locked={isLocked}
+                        />
+                        <div className="mt-2 flex justify-end">
+                          <button
+                            onClick={() => { setSelectedWord(null); setSelectedWordKey(null) }}
+                            className="text-xs font-medium text-gray-500 hover:text-gray-700"
+                          >
+                            Done
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
             ))}
           </div>
 
-          {/* ── Annotation / Review panel (screen only) ── */}
-          {/* Right-side annotation sidebar: only used in Round 1. In Round 2 the
-              inputs live in the inline word popover below each word. */}
-          {!reviewMode && (
-          <div className="hidden lg:flex print:hidden lg:border-l border-gray-200 bg-gray-50 lg:flex-col lg:w-96">
-            {/* Scrollable annotation content */}
-            <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
-              {!reviewMode && timerExpired && (
-                <div className="rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-700 font-medium text-center">
-                  ⏰ Time is up — annotations are locked
-                </div>
-              )}
-              {selectedWord ? (
-                reviewMode ? (
-                  <ReviewAnnotationPanel
-                    word={selectedWord.word}
-                    verseNum={selectedWord.verse}
-                    annotations={annotations}
-                    corrections={corrections}
-                    onCorrection={handleCorrectionChange}
-                    locked={correctionLocked}
-                  />
-                ) : (
-                  <AnnotationPanel
-                    word={selectedWord.word}
-                    verseNum={selectedWord.verse}
-                    annotations={annotations}
-                    onChange={handleAnnotationChange}
-                    locked={isLocked}
-                  />
-                )
-              ) : (
-                <div className="flex flex-col items-center justify-center flex-1 text-gray-400 py-12">
-                  <svg className="w-10 h-10 mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-                      d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" />
-                  </svg>
-                  <p className="text-sm text-center">
-                    {reviewMode ? 'Click a word to review and correct your analysis' : 'Click a word in the text\nto annotate it'}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Sticky action bar — always visible in review mode */}
-            {reviewMode && (
-              <div className="shrink-0 border-t border-gray-200 bg-white px-4 py-3 flex flex-wrap items-center gap-2">
-                <button
-                  onClick={exportPDF}
-                  className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-700 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
-                >
-                  <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  Save as PDF
-                </button>
-                {showSubmitButton && (
-                  <div className="flex flex-col items-end gap-1">
-                    <button
-                      onClick={submitAssignment}
-                      disabled={isSubmitting || isSaving || correctionLocked}
-                      className="flex items-center gap-1.5 px-4 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
-                    >
-                      <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      {isSubmitting ? 'Submitting…' : 'Submit for Grading'}
-                    </button>
-                    {submitError && (
-                      <p className="text-xs text-red-600 max-w-xs text-right">{submitError}</p>
-                    )}
-                  </div>
-                )}
-                {propAssignmentId && submitted && (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 border border-green-300">
-                    ✓ Submitted
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-          )}
+          {/* The Round 1 annotation panel now lives in each verse's right column
+              (aligned with the verse). Save-as-PDF and Submit are in the toolbar above. */}
           {/* Round 2 NOTE: the secondary review passage panel was removed —
               students now see one passage with an inline per-word popover. */}
 
