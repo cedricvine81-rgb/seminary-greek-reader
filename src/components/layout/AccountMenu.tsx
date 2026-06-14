@@ -6,7 +6,7 @@ import {
   Menu, X, LogIn, UserPlus, LogOut, Settings,
   LayoutDashboard, Calendar, ClipboardList, FileText,
   BarChart2, GraduationCap, FlipHorizontal, TrendingUp,
-  BookMarked, Archive, Scroll,
+  BookMarked, Archive, Scroll, Mail,
 } from 'lucide-react'
 
 interface AppMenuProps {
@@ -28,6 +28,7 @@ const STUDENT_NAV = [
   { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
   { href: '/student/courses',       label: 'Courses',      icon: GraduationCap },
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
+  { href: '/student/messages',      label: 'Messages',     icon: Mail },
   { href: '/student/exegesis',       label: 'Exegesis',     icon: Scroll },
   { href: '/student/flashcards',    label: 'Flashcards',   icon: FlipHorizontal },
   { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
@@ -84,9 +85,11 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
                 <p className="text-xs text-brand-600 capitalize">{userRole?.toLowerCase()}</p>
               </div>
 
-              {/* Full navigation — shown on all screen sizes, essential on mobile */}
+              {/* Navigation — mobile only. On desktop the left sidebar already
+                  provides full navigation, so the dropdown stays account-focused
+                  (avoids duplicating the sidebar). */}
               {nav.length > 0 && (
-                <>
+                <div className="lg:hidden">
                   <div className="px-4 pt-2 pb-1">
                     <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Navigation</p>
                   </div>
@@ -102,7 +105,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
                     </Link>
                   ))}
                   <hr className="my-1 border-gray-100" />
-                </>
+                </div>
               )}
 
               {/* Settings + sign out */}
