@@ -15,7 +15,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, bestAttempts, recentAttempts, exegesisSessions] = await Promise.all([
+  const [user, enrollments, completedResponses, recentAttempts, exegesisSessions] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -24,7 +24,6 @@ export default async function StudentPage() {
           include: {
             assignments: true,
             instructor: { select: { firstName: true, surname: true, title: true, email: true } },
-            _count: { select: { enrollments: { where: { status: 'APPROVED' } } } },
           },
         },
       },
@@ -34,12 +33,6 @@ export default async function StudentPage() {
       select: { assignmentId: true },
       distinct: ['assignmentId'],
     }),
-    // Best quiz attempt per quiz — used for the average grade (already scored per
-    // attempt, i.e. out of the questions shown, so it's correct for re-sampling pools).
-    prisma.quizAttempt.findMany({
-      where: { userId: payload.sub, isBest: true },
-      select: { percentage: true },
-    }),
     // Recent best quiz attempts for score feed
     prisma.quizAttempt.findMany({
       where: { userId: payload.sub, isBest: true },
@@ -47,11 +40,10 @@ export default async function StudentPage() {
       take: 5,
       include: { assignment: { select: { title: true } } },
     }),
-    // Translation-exercise (Exegesis) submissions: submitted ones count as completed,
-    // graded ones (0–100) fold into the average grade.
+    // Submitted translation exercises count as completed (no quiz Response rows).
     prisma.exegesisSession.findMany({
       where: { userId: payload.sub, assignmentId: { not: null } },
-      select: { assignmentId: true, submittedAt: true, grade: true },
+      select: { assignmentId: true, submittedAt: true },
     }),
   ])
 
@@ -62,17 +54,6 @@ export default async function StudentPage() {
     if (s.submittedAt && s.assignmentId) completedIds.add(s.assignmentId)
   }
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
-
-  // Average grade = mean of every graded item the student has: best quiz per-attempt
-  // percentages (already scored out of the questions shown) + graded translation
-  // exercises (instructor grade, 0–100). Avoids dividing by the whole word pool.
-  const gradeValues = [
-    ...bestAttempts.map(a => a.percentage),
-    ...exegesisSessions.filter(s => s.grade != null).map(s => s.grade as number),
-  ]
-  const avgScore: number | null = gradeValues.length > 0
-    ? Math.round(gradeValues.reduce((s, v) => s + v, 0) / gradeValues.length)
-    : null
 
   const serializedPending: Assignment[] = pending.slice(0, 5).map(a => ({
     id: a.id,
@@ -106,7 +87,6 @@ export default async function StudentPage() {
     name: e.course.name,
     level: e.course.level as string,
     assignmentCount: e.course.assignments.length,
-    studentCount: e.course._count.enrollments,
     instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
     instructorEmail: e.course.instructor.email,
   }))
@@ -118,12 +98,6 @@ export default async function StudentPage() {
         pendingAssignments={serializedPending}
         recentScores={recentScores}
         courses={courses}
-        stats={{
-          enrolledCourses: enrollments.length,
-          pendingAssignments: pending.length,
-          completedAssignments: completedIds.size,
-          averageScore: avgScore,
-        }}
       />
     </DashboardShell>
   )

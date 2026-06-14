@@ -111,7 +111,7 @@ export default async function StudentCoursesPage() {
                     </div>
                     <p className="text-xs text-gray-500">{instructorName}</p>
                     <p className="text-xs text-gray-400">
-                      {e.course._count.assignments} assignments · {e.course._count.enrollments} students
+                      {e.course._count.assignments} assignments
                     </p>
                     <div className="flex items-center justify-between gap-2 pt-1">
                       <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">

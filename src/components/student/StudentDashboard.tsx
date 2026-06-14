@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, Award, GraduationCap, CheckCircle2, AtSign } from 'lucide-react'
+import { AtSign } from 'lucide-react'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import type { Assignment } from '@/types/assignment'
@@ -19,7 +19,6 @@ interface CourseSummary {
   name: string
   level: string
   assignmentCount: number
-  studentCount: number
   instructorName: string
   instructorEmail: string
 }
@@ -29,12 +28,6 @@ interface StudentDashboardProps {
   pendingAssignments: Assignment[]
   recentScores: RecentScore[]
   courses: CourseSummary[]
-  stats: {
-    enrolledCourses: number
-    pendingAssignments: number
-    completedAssignments: number
-    averageScore: number | null
-  }
 }
 
 function ScoreBadge({ pct }: { pct: number }) {
@@ -64,14 +57,7 @@ const TYPE_LABELS: Record<string, string> = {
   PASSAGE_VOCABULARY:   'Passage',
 }
 
-export function StudentDashboard({ studentName, pendingAssignments, recentScores, courses, stats }: StudentDashboardProps) {
-  const statCards = [
-    { label: 'Courses', value: stats.enrolledCourses, icon: <GraduationCap size={20} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
-    { label: 'To Do', value: stats.pendingAssignments, icon: <ClipboardList size={20} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
-    { label: 'Completed', value: stats.completedAssignments, icon: <CheckCircle2 size={20} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
-    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <Award size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
-  ]
-
+export function StudentDashboard({ studentName, pendingAssignments, recentScores, courses }: StudentDashboardProps) {
   const urgent = pendingAssignments.filter(a =>
     differenceInCalendarDays(new Date(a.dueDate), new Date()) <= 3
   ).length
@@ -86,21 +72,6 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
             ? <span className="text-amber-600 font-medium">{urgent} assignment{urgent > 1 ? 's' : ''} due soon — keep going!</span>
             : 'Here’s an overview of your courses and progress.'}
         </p>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {statCards.map(s => (
-          <Link key={s.label} href={s.href}>
-            <Card hover className="flex items-center gap-3 p-5">
-              <div className={`p-2.5 rounded-lg shrink-0 ${s.color}`}>{s.icon}</div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
-                <p className="text-xs text-gray-500">{s.label}</p>
-              </div>
-            </Card>
-          </Link>
-        ))}
       </div>
 
       {/* My Courses — each course carries its own actions (assignments / message /
@@ -118,7 +89,7 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
                     <p className="text-sm font-medium text-gray-900">{c.name}</p>
                     <p className="text-xs text-gray-500">{c.instructorName}</p>
                     <p className="text-xs text-gray-400">
-                      {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''} · {c.studentCount} student{c.studentCount !== 1 ? 's' : ''}
+                      {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}
                     </p>
                   </div>
                   <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
