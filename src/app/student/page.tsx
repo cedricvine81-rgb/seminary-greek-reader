@@ -15,7 +15,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, bestAttempts, recentAttempts] = await Promise.all([
+  const [user, enrollments, completedResponses, bestAttempts, recentAttempts, exegesisSessions] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, include: { course: { include: { assignments: true } } } }),
     prisma.response.findMany({
@@ -36,16 +36,31 @@ export default async function StudentPage() {
       take: 5,
       include: { assignment: { select: { title: true } } },
     }),
+    // Translation-exercise (Exegesis) submissions: submitted ones count as completed,
+    // graded ones (0–100) fold into the average grade.
+    prisma.exegesisSession.findMany({
+      where: { userId: payload.sub, assignmentId: { not: null } },
+      select: { assignmentId: true, submittedAt: true, grade: true },
+    }),
   ])
 
   const allAssignments = enrollments.flatMap(e => e.course.assignments)
   const completedIds = new Set(completedResponses.map(r => r.assignmentId))
+  // A submitted translation exercise is also "completed" (it has no quiz Response rows).
+  for (const s of exegesisSessions) {
+    if (s.submittedAt && s.assignmentId) completedIds.add(s.assignmentId)
+  }
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
 
-  // Average grade = mean of the best per-attempt percentages (each already scored
-  // out of the questions actually shown). Avoids dividing by the whole word pool.
-  const avgScore: number | null = bestAttempts.length > 0
-    ? Math.round(bestAttempts.reduce((s, a) => s + a.percentage, 0) / bestAttempts.length)
+  // Average grade = mean of every graded item the student has: best quiz per-attempt
+  // percentages (already scored out of the questions shown) + graded translation
+  // exercises (instructor grade, 0–100). Avoids dividing by the whole word pool.
+  const gradeValues = [
+    ...bestAttempts.map(a => a.percentage),
+    ...exegesisSessions.filter(s => s.grade != null).map(s => s.grade as number),
+  ]
+  const avgScore: number | null = gradeValues.length > 0
+    ? Math.round(gradeValues.reduce((s, v) => s + v, 0) / gradeValues.length)
     : null
 
   const serializedPending: Assignment[] = pending.slice(0, 5).map(a => ({
