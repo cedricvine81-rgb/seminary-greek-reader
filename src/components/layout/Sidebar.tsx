@@ -45,7 +45,6 @@ const studentNav: NavItem[] = [
   { label: 'Exegesis',    href: '/student/exegesis',         icon: <Scroll size={16} /> },
   { label: 'Flashcards',  href: '/student/flashcards',       icon: <FlipHorizontal size={16} /> },
   { label: 'Accuracy',    href: '/student/progress',         icon: <TrendingUp size={16} /> },
-  { label: 'Grades',      href: '/student/scores',           icon: <BarChart2 size={16} /> },
   { label: 'Materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
 ]
 

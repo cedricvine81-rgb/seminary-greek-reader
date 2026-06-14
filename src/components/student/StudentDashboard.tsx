@@ -3,6 +3,7 @@ import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { AtSign } from 'lucide-react'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
+import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -19,6 +20,7 @@ interface CourseSummary {
   assignmentCount: number
   instructorName: string
   instructorEmail: string
+  gradebookRows: GradebookRow[]
 }
 
 interface StudentDashboardProps {
@@ -111,6 +113,13 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
                     )}
                   </div>
                 </div>
+
+                {/* This course's grade book (assignments grouped by type → Avg → Overall) */}
+                {c.gradebookRows.length > 0 && (
+                  <div className="mt-3">
+                    <StudentGradebook studentName={studentName} rows={c.gradebookRows} />
+                  </div>
+                )}
               </div>
             ))}
           </div>

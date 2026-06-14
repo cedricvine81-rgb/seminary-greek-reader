@@ -15,7 +15,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, recentAttempts, exegesisSessions] = await Promise.all([
+  const [user, enrollments, completedResponses, recentAttempts, exegesisSessions, bestAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -40,12 +40,29 @@ export default async function StudentPage() {
       take: 5,
       include: { assignment: { select: { title: true } } },
     }),
-    // Submitted translation exercises count as completed (no quiz Response rows).
+    // Translation exercises: submittedAt → completed; grade → per-course gradebook.
     prisma.exegesisSession.findMany({
       where: { userId: payload.sub, assignmentId: { not: null } },
-      select: { assignmentId: true, submittedAt: true },
+      select: { assignmentId: true, submittedAt: true, grade: true },
+    }),
+    // Best quiz attempt per quiz (stored per-attempt %, correct for re-sampling pools).
+    prisma.quizAttempt.findMany({
+      where: { userId: payload.sub, isBest: true },
+      select: { assignmentId: true, percentage: true },
     }),
   ])
+
+  // Score for the per-course grade book: quiz/morph → best attempt %, translation
+  // exercise → instructor grade (0–100). Uses stored values, so it's immune to
+  // later question regeneration / pool size.
+  const bestPctByAssignment = new Map(bestAttempts.map(a => [a.assignmentId, a.percentage]))
+  const gradeByAssignment = new Map(
+    exegesisSessions.filter(s => s.grade != null && s.assignmentId).map(s => [s.assignmentId as string, s.grade as number]),
+  )
+  function scoreFor(a: { id: string; type: string }): number | null {
+    if (a.type === 'TRANSLATION_EXERCISE') return gradeByAssignment.get(a.id) ?? null
+    return bestPctByAssignment.get(a.id) ?? null
+  }
 
   const allAssignments = enrollments.flatMap(e => e.course.assignments)
   const completedIds = new Set(completedResponses.map(r => r.assignmentId))
@@ -81,14 +98,23 @@ export default async function StudentPage() {
     completedAt: a.completedAt.toISOString(),
   }))
 
-  // Enrolled courses for the "My Courses" card (with per-course actions on the dashboard)
-  const courses = enrollments.slice(0, 5).map(e => ({
-    id: e.course.id,
-    name: e.course.name,
-    assignmentCount: e.course.assignments.length,
-    instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
-    instructorEmail: e.course.instructor.email,
-  }))
+  // Enrolled courses for the "My Courses" card — each with its own grade book
+  // (assignments grouped by type, the student's score per assignment).
+  const courses = enrollments.slice(0, 5).map(e => {
+    const published = e.course.assignments.filter(a => a.isPublished)
+    const gradebookRows = published
+      .slice()
+      .sort((a, b) => a.weekNumber - b.weekNumber)
+      .map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) }))
+    return {
+      id: e.course.id,
+      name: e.course.name,
+      assignmentCount: published.length,
+      instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
+      instructorEmail: e.course.instructor.email,
+      gradebookRows,
+    }
+  })
 
   return (
     <DashboardShell role="STUDENT" pageTitle="Dashboard">
