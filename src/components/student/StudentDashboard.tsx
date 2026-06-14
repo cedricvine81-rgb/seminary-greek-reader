@@ -1,9 +1,7 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { AtSign } from 'lucide-react'
-import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
-import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
+import { StudentCourseCard, type StudentCourse } from '@/components/student/StudentCourseCard'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -14,20 +12,11 @@ interface RecentScore {
   completedAt: string
 }
 
-interface CourseSummary {
-  id: string
-  name: string
-  assignmentCount: number
-  instructorName: string
-  instructorEmail: string
-  gradebookRows: GradebookRow[]
-}
-
 interface StudentDashboardProps {
   studentName: string
   pendingAssignments: Assignment[]
   recentScores: RecentScore[]
-  courses: CourseSummary[]
+  courses: StudentCourse[]
 }
 
 function ScoreBadge({ pct }: { pct: number }) {
@@ -74,57 +63,21 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         </p>
       </div>
 
-      {/* My Courses — each course carries its own actions (assignments / message /
-          email), so there's no separate trip to the Courses page for them. */}
-      <Card>
+      {/* My Courses — each course expands into Assignments / Grade Book / Schedule,
+          mirroring the instructor's course view. */}
+      <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="mb-0">My Courses</CardTitle>
+          <h2 className="text-base font-semibold text-gray-900">My Courses</h2>
           <Link href="/student/courses" className="text-xs text-brand-600 hover:underline whitespace-nowrap">
             + Join a course
           </Link>
         </div>
         {courses.length === 0 ? (
-          <p className="text-sm text-gray-400 italic mt-3">You&rsquo;re not enrolled in any courses yet.</p>
+          <Card><p className="text-sm text-gray-400 italic">You&rsquo;re not enrolled in any courses yet.</p></Card>
         ) : (
-          <div className="space-y-3 mt-3">
-            {courses.map(c => (
-              <div key={c.id} className="p-3 rounded-lg border border-gray-100">
-                <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{c.name}</p>
-                  <p className="text-xs text-gray-500">{c.instructorName}</p>
-                  <p className="text-xs text-gray-400">
-                    {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}
-                  </p>
-                </div>
-                <div className="flex items-center justify-between gap-2 pt-2 mt-2 border-t border-gray-50 flex-wrap">
-                  <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
-                    View assignments →
-                  </Link>
-                  <div className="flex items-center gap-4">
-                    <MessageInstructorButton courseId={c.id} courseName={c.name} instructorName={c.instructorName} />
-                    {c.instructorEmail && (
-                      <a
-                        href={`mailto:${encodeURIComponent(c.instructorEmail)}?subject=${encodeURIComponent(`[${c.name}] `)}`}
-                        className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
-                        title={`Email ${c.instructorName} via your mail program`}
-                      >
-                        <AtSign size={14} /> Email
-                      </a>
-                    )}
-                  </div>
-                </div>
-
-                {/* This course's grade book (assignments grouped by type → Avg → Overall) */}
-                {c.gradebookRows.length > 0 && (
-                  <div className="mt-3">
-                    <StudentGradebook studentName={studentName} rows={c.gradebookRows} />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
+          courses.map(c => <StudentCourseCard key={c.id} course={c} studentName={studentName} />)
         )}
-      </Card>
+      </div>
 
       {/* What's due leads (wider); recent scores secondary */}
       <div className="grid lg:grid-cols-3 gap-4">

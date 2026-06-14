@@ -101,18 +101,21 @@ export default async function StudentPage() {
   // Enrolled courses for the "My Courses" card — each with its own grade book
   // (assignments grouped by type, the student's score per assignment).
   const courses = enrollments.slice(0, 5).map(e => {
-    const published = e.course.assignments.filter(a => a.isPublished)
-    const gradebookRows = published
-      .slice()
-      .sort((a, b) => a.weekNumber - b.weekNumber)
-      .map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) }))
+    const published = e.course.assignments.filter(a => a.isPublished).slice().sort((a, b) => a.weekNumber - b.weekNumber)
     return {
       id: e.course.id,
       name: e.course.name,
-      assignmentCount: published.length,
       instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
       instructorEmail: e.course.instructor.email,
-      gradebookRows,
+      assignments: published.map(a => ({
+        id: a.id,
+        title: a.title,
+        type: a.type as string,
+        dueDate: a.dueDate.toISOString(),
+        weekNumber: a.weekNumber,
+        completed: completedIds.has(a.id),
+      })),
+      gradebookRows: published.map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) })),
     }
   })
 
