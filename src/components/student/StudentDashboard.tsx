@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, FlipHorizontal, TrendingUp, BookOpen, Calendar } from 'lucide-react'
+import { ClipboardList, BookOpen, Calendar, Award, GraduationCap, CheckCircle2, Scroll, Layers } from 'lucide-react'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -53,10 +53,10 @@ const TYPE_LABELS: Record<string, string> = {
 
 export function StudentDashboard({ studentName, pendingAssignments, recentScores, stats }: StudentDashboardProps) {
   const statCards = [
-    { label: 'Enrolled', value: stats.enrolledCourses, icon: <BookOpen size={18} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
-    { label: 'Pending', value: stats.pendingAssignments, icon: <ClipboardList size={18} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
-    { label: 'Completed', value: stats.completedAssignments, icon: <TrendingUp size={18} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
-    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <FlipHorizontal size={18} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
+    { label: 'Courses', value: stats.enrolledCourses, icon: <GraduationCap size={18} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
+    { label: 'To Do', value: stats.pendingAssignments, icon: <ClipboardList size={18} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
+    { label: 'Completed', value: stats.completedAssignments, icon: <CheckCircle2 size={18} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
+    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <Award size={18} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
   ]
 
   const urgent = pendingAssignments.filter(a =>
@@ -90,34 +90,29 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         ))}
       </div>
 
-      {/* Quick links — contextual */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <Link href="/student/flashcards"
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
-          <FlipHorizontal size={18} className="text-brand-600" />
-          <span className="text-xs font-medium text-gray-700">Flashcards</span>
-        </Link>
-        <Link href="/student/calendar"
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
-          <Calendar size={18} className="text-brand-600" />
-          <span className="text-xs font-medium text-gray-700">Calendar</span>
-        </Link>
-        <Link href="/reader"
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
-          <BookOpen size={18} className="text-brand-600" />
-          <span className="text-xs font-medium text-gray-700">Reader</span>
-        </Link>
-        <Link href="/student/scores"
-          className="flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl border border-gray-100 bg-white text-center hover:border-brand-200 hover:bg-brand-50 transition-colors">
-          <TrendingUp size={18} className="text-brand-600" />
-          <span className="text-xs font-medium text-gray-700">My Grades</span>
-        </Link>
+      {/* Quick actions — lighter, button-like row, visually distinct from the stat cards */}
+      <div className="flex flex-wrap gap-2">
+        {[
+          { href: '/student/flashcards', label: 'Flashcards', icon: <Layers size={15} /> },
+          { href: '/student/exegesis',   label: 'Exegesis',   icon: <Scroll size={15} /> },
+          { href: '/student/calendar',   label: 'Calendar',   icon: <Calendar size={15} /> },
+          { href: '/reader',             label: 'Reader',     icon: <BookOpen size={15} /> },
+        ].map(q => (
+          <Link
+            key={q.href}
+            href={q.href}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+          >
+            <span className="text-brand-600">{q.icon}</span>
+            {q.label}
+          </Link>
+        ))}
       </div>
 
-      {/* Upcoming + Recent side by side */}
-      <div className="grid lg:grid-cols-2 gap-4">
-        {/* Upcoming assignments */}
-        <Card className="p-4">
+      {/* What's due leads (wider); recent scores secondary */}
+      <div className="grid lg:grid-cols-3 gap-4">
+        {/* Upcoming assignments — the most important thing for a student */}
+        <Card className="p-4 lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <CardTitle className="mb-0">Upcoming Assignments</CardTitle>
             <Link href="/student/assignments" className="text-xs text-brand-600 hover:underline">View all</Link>

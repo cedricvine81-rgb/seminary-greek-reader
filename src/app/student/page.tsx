@@ -15,7 +15,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, allResponses, recentAttempts] = await Promise.all([
+  const [user, enrollments, completedResponses, bestAttempts, recentAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, include: { course: { include: { assignments: true } } } }),
     prisma.response.findMany({
@@ -23,9 +23,11 @@ export default async function StudentPage() {
       select: { assignmentId: true },
       distinct: ['assignmentId'],
     }),
-    prisma.response.findMany({
-      where: { userId: payload.sub, questionId: { not: null } },
-      select: { assignmentId: true, score: true },
+    // Best quiz attempt per quiz — used for the average grade (already scored per
+    // attempt, i.e. out of the questions shown, so it's correct for re-sampling pools).
+    prisma.quizAttempt.findMany({
+      where: { userId: payload.sub, isBest: true },
+      select: { percentage: true },
     }),
     // Recent best quiz attempts for score feed
     prisma.quizAttempt.findMany({
@@ -40,21 +42,11 @@ export default async function StudentPage() {
   const completedIds = new Set(completedResponses.map(r => r.assignmentId))
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
 
-  // Compute running average %
-  let avgScore: number | null = null
-  if (completedIds.size > 0) {
-    const completedAssignmentIds = Array.from(completedIds)
-    const questionTotals = await prisma.question.groupBy({
-      by: ['assignmentId'],
-      where: { assignmentId: { in: completedAssignmentIds } },
-      _sum: { points: true },
-    })
-    const totalPossible = questionTotals.reduce((s, g) => s + (g._sum.points ?? 0), 0)
-    const totalEarned = allResponses
-      .filter(r => completedIds.has(r.assignmentId))
-      .reduce((s, r) => s + (r.score ?? 0), 0)
-    avgScore = totalPossible > 0 ? Math.round((totalEarned / totalPossible) * 100) : null
-  }
+  // Average grade = mean of the best per-attempt percentages (each already scored
+  // out of the questions actually shown). Avoids dividing by the whole word pool.
+  const avgScore: number | null = bestAttempts.length > 0
+    ? Math.round(bestAttempts.reduce((s, a) => s + a.percentage, 0) / bestAttempts.length)
+    : null
 
   const serializedPending: Assignment[] = pending.slice(0, 5).map(a => ({
     id: a.id,
