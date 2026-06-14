@@ -1,25 +1,21 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { DashboardShell } from '@/components/layout/DashboardShell'
-import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
-import { format } from 'date-fns'
+import { StudentGradebook } from '@/components/student/StudentGradebook'
 
 export const metadata: Metadata = { title: 'Grades' }
-
-function pctBadge(pct: number) {
-  const variant = pct >= 90 ? 'green' : pct >= 70 ? 'amber' : 'red'
-  return <Badge variant={variant}>{pct}%</Badge>
-}
 
 export default async function StudentScoresPage() {
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
+
+  const me = await prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } })
+  const studentName = [me?.firstName, me?.surname].filter(Boolean).join(' ') || 'My grades'
 
   // All enrolled courses with their published assignments + questions
   const enrollments = await prisma.enrollment.findMany({
@@ -154,8 +150,6 @@ export default async function StudentScoresPage() {
   // Semester total = points-weighted across graded work (earned ÷ points possible).
   const semesterPct = totalPossibleTaken > 0 ? Math.round((totalEarned / totalPossibleTaken) * 100) : null
 
-  const multipleCourses = new Set(rows.map(r => r.courseTitle)).size > 1
-
   return (
     <DashboardShell role="STUDENT" pageTitle="Grades">
       <div className="space-y-8 max-w-4xl">
@@ -185,70 +179,18 @@ export default async function StudentScoresPage() {
           </div>
         </div>
 
-        {/* Assignment table */}
-        <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
-          <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[32rem]">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50">
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Assignment</th>
-                {multipleCourses && (
-                  <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Course</th>
-                )}
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Week</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Type</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">%</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Submitted</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {rows.map(row => (
-                <tr key={row.id} className={row.taken ? '' : 'opacity-60'}>
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/student/assignments/${row.id}`}
-                      className="font-medium text-gray-900 hover:text-brand-700 hover:underline"
-                    >
-                      {row.title}
-                    </Link>
-                  </td>
-                  {multipleCourses && (
-                    <td className="px-4 py-3 text-xs text-gray-500">{row.courseTitle}</td>
-                  )}
-                  <td className="px-4 py-3 text-gray-600">Wk {row.weekNumber}</td>
-                  <td className="px-4 py-3 text-xs text-gray-500">
-                    {row.type === 'TRANSLATION_EXERCISE' ? 'Translation' : row.type.replace(/_/g, ' ')}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {row.pct !== null
-                      ? pctBadge(row.pct)
-                      : row.isPassage && row.taken
-                        ? <span className="text-xs text-amber-600 font-medium">Awaiting grade</span>
-                        : <span className="text-gray-300">—</span>}
-                  </td>
-                  <td className="px-4 py-3 text-right text-xs text-gray-400">
-                    {row.submittedAt ? format(new Date(row.submittedAt), 'MMM d') : '—'}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-
-            {/* Footer totals row */}
-            {rows.length > 0 && (
-              <tfoot>
-                <tr className="border-t-2 border-gray-200 bg-gray-50 font-semibold">
-                  <td className="px-4 py-3 text-xs text-gray-700" colSpan={multipleCourses ? 4 : 3}>
-                    Semester Total
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    {semesterPct !== null ? pctBadge(semesterPct) : <span className="text-gray-300">—</span>}
-                  </td>
-                  <td />
-                </tr>
-              </tfoot>
-            )}
-          </table>
-          </div>
+        {/* Grade Book — grouped by type with per-group Avg + Overall (matches the
+            instructor gradebook layout) */}
+        <div>
+          <h2 className="text-base font-semibold text-gray-900 mb-3">Grade Book</h2>
+          {rows.length === 0 ? (
+            <p className="text-sm text-gray-400 italic">No assignments yet.</p>
+          ) : (
+            <StudentGradebook
+              studentName={studentName}
+              rows={rows.map(r => ({ id: r.id, title: r.title, weekNumber: r.weekNumber, type: r.type, pct: r.pct }))}
+            />
+          )}
         </div>
 
       </div>
