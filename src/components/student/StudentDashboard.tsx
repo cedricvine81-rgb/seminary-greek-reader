@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, BookOpen, Calendar, Award, GraduationCap, CheckCircle2, Scroll, Layers, BarChart2 } from 'lucide-react'
+import { ClipboardList, Award, GraduationCap, CheckCircle2 } from 'lucide-react'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
@@ -68,15 +68,6 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
     { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <Award size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
   ]
 
-  const quickActions = [
-    { href: '/student/courses',     label: 'My Courses', icon: <GraduationCap size={16} /> },
-    { href: '/student/calendar',    label: 'Calendar',   icon: <Calendar size={16} /> },
-    { href: '/student/scores',      label: 'My Grades',  icon: <BarChart2 size={16} /> },
-    { href: '/student/flashcards',  label: 'Flashcards', icon: <Layers size={16} /> },
-    { href: '/student/exegesis',    label: 'Exegesis',   icon: <Scroll size={16} /> },
-    { href: '/reader',              label: 'Reader',     icon: <BookOpen size={16} /> },
-  ]
-
   const urgent = pendingAssignments.filter(a =>
     differenceInCalendarDays(new Date(a.dueDate), new Date()) <= 3
   ).length
@@ -107,18 +98,6 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
           </Link>
         ))}
       </div>
-
-      {/* Quick actions — brand buttons, matching the instructor dashboard */}
-      <Card>
-        <CardTitle>Quick Actions</CardTitle>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-3">
-          {quickActions.map(a => (
-            <Link key={a.href} href={a.href} className="btn-secondary flex items-center justify-center gap-2 py-2 text-sm">
-              {a.icon} {a.label}
-            </Link>
-          ))}
-        </div>
-      </Card>
 
       {/* My Courses — mirrors the instructor's Recent Courses card */}
       <Card>
