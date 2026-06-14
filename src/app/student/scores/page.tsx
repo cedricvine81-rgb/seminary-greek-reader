@@ -139,16 +139,20 @@ export default async function StudentScoresPage() {
     }
   })
 
-  // Summary stats — only include graded rows in running average; all rows in semester total
+  // Summary stats — based only on graded work. Not-yet-graded / not-yet-taken
+  // assignments must NOT inflate the denominator (otherwise a single ungraded
+  // 100-pt exercise drags the whole total down to a few percent).
   const takenRows = rows.filter(r => r.taken)
   const gradedRows = rows.filter(r => r.graded && r.pct !== null)
-  // For semester %, passage exercises count as 100pts each (same weight as their /100 grade)
-  const totalPossibleAll = rows.reduce((s, r) => s + r.totalPts, 0)
   const totalPossibleTaken = gradedRows.reduce((s, r) => s + r.totalPts, 0)
   const totalEarned = gradedRows.reduce((s, r) => s + (r.earnedPts ?? 0), 0)
 
-  const runningPct = totalPossibleTaken > 0 ? Math.round((totalEarned / totalPossibleTaken) * 100) : null
-  const semesterPct = totalPossibleAll > 0 ? Math.round((totalEarned / totalPossibleAll) * 100) : null
+  // Running average = unweighted mean of each graded assignment's percentage.
+  const runningPct = gradedRows.length > 0
+    ? Math.round(gradedRows.reduce((s, r) => s + (r.pct ?? 0), 0) / gradedRows.length)
+    : null
+  // Semester total = points-weighted across graded work (earned ÷ points possible).
+  const semesterPct = totalPossibleTaken > 0 ? Math.round((totalEarned / totalPossibleTaken) * 100) : null
 
   const multipleCourses = new Set(rows.map(r => r.courseTitle)).size > 1
 
@@ -250,7 +254,7 @@ export default async function StudentScoresPage() {
                     {semesterPct !== null ? pctBadge(semesterPct) : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-600">
-                    {totalEarned} / {totalPossibleAll}
+                    {totalEarned} / {totalPossibleTaken}
                   </td>
                   <td />
                 </tr>
