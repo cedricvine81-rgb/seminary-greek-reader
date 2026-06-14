@@ -108,6 +108,7 @@ export { fuzzyMatch, normalise }
 export async function getAssignmentScore(userId: string, assignmentId: string) {
   const responses = await prisma.response.findMany({
     where: { userId, assignmentId, questionId: { not: null } },
+    include: { question: { select: { points: true } } },
   })
 
   const assignment = await prisma.assignment.findUnique({
@@ -116,8 +117,11 @@ export async function getAssignmentScore(userId: string, assignmentId: string) {
   })
   if (!assignment) return null
 
-  const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
   const earned = responses.reduce((s, r) => s + (r.score ?? 0), 0)
+  // Score out of the questions the student was actually shown (their responses).
+  // For fixed quizzes that's every question; for re-sampling pools it's the subset.
+  const answeredPoints = responses.reduce((s, r) => s + (r.question?.points ?? 0), 0)
+  const totalPoints = answeredPoints || assignment.questions.reduce((s, q) => s + q.points, 0)
 
   return {
     earned,

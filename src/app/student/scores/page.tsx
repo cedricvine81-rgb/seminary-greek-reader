@@ -64,7 +64,7 @@ export default async function StudentScoresPage() {
         assignmentId: { in: assignmentIds },
         questionId: { not: null },
       },
-      select: { assignmentId: true, questionId: true, score: true, submittedAt: true },
+      select: { assignmentId: true, questionId: true, score: true, submittedAt: true, question: { select: { points: true } } },
     }),
     // Passage exercises: use ExegesisSession for submission status and instructor grade
     passageExerciseIds.length > 0
@@ -111,10 +111,14 @@ export default async function StudentScoresPage() {
     }
 
     // Question-based assignment
-    const totalPts = a.questions.reduce((s, q) => s + q.points, 0)
     const aResponses = responsesByAssignment[a.id] ?? []
     const taken = aResponses.length > 0
     const earnedPts = aResponses.reduce((s, r) => s + (r.score ?? 0), 0)
+    // Score out of the questions the student was actually shown (their stored
+    // responses), not the whole pool — re-sampling vocab quizzes draw a subset.
+    // Fixed quizzes answer every question, so this equals the full total.
+    const answeredPts = aResponses.reduce((s, r) => s + (r.question?.points ?? 0), 0)
+    const totalPts = answeredPts || a.questions.reduce((s, q) => s + q.points, 0)
     const pct = taken && totalPts > 0 ? Math.round((earnedPts / totalPts) * 100) : null
     const lastSubmitted = taken
       ? aResponses.reduce((latest, r) => (r.submittedAt > latest ? r.submittedAt : latest), aResponses[0].submittedAt)

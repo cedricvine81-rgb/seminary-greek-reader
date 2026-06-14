@@ -149,7 +149,10 @@ export async function GET(
   }
 
   // ── Standard quiz / question-based translation exercise ───────────────────
-  const totalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
+  // Full-pool total (used only as a fallback / for fixed quizzes). For re-sampling
+  // vocab quizzes the pool can be the whole frequency section, so each student is
+  // scored out of the questions THEY were actually shown (their stored responses).
+  const fullTotalPoints = assignment.questions.reduce((s, q) => s + q.points, 0)
 
   const responses = await prisma.response.findMany({
     where: {
@@ -157,7 +160,7 @@ export async function GET(
       userId: { in: enrollments.map(e => e.user.id) },
       questionId: { not: null },
     },
-    select: { userId: true, questionId: true, answer: true, isCorrect: true, score: true },
+    select: { userId: true, questionId: true, answer: true, isCorrect: true, score: true, question: { select: { points: true } } },
   })
 
   const rows = enrollments.map(e => {
@@ -165,6 +168,9 @@ export async function GET(
     const userResponses = responses.filter(r => r.userId === uid)
     const attempted = userResponses.length > 0
     const earned = userResponses.reduce((s, r) => s + (r.score ?? 0), 0)
+    // Score out of the questions this student was shown, not the whole pool.
+    const answeredPts = userResponses.reduce((s, r) => s + (r.question?.points ?? 0), 0)
+    const totalPoints = answeredPts || fullTotalPoints
     const pct = attempted && totalPoints > 0 ? Math.round((earned / totalPoints) * 100) : null
 
     return {
@@ -188,6 +194,9 @@ export async function GET(
     : null
   // overallPct: average only over students who actually attempted (same as runningPct for clarity)
   const overallPct = runningPct
+  // Representative total for the header: the per-attempt count students were shown
+  // (from an actual attempt) rather than the full pool; fall back to the pool size.
+  const totalPoints = attempted[0]?.totalPoints ?? fullTotalPoints
 
   return NextResponse.json({ rows, totalPoints, runningPct, overallPct, isTranslation: false })
 
