@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, BookOpen, Calendar, Award, GraduationCap, CheckCircle2, Scroll, Layers } from 'lucide-react'
+import { ClipboardList, BookOpen, Calendar, Award, GraduationCap, CheckCircle2, Scroll, Layers, BarChart2 } from 'lucide-react'
+import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -12,10 +13,18 @@ interface RecentScore {
   completedAt: string
 }
 
+interface CourseSummary {
+  id: string
+  name: string
+  level: string
+  assignmentCount: number
+}
+
 interface StudentDashboardProps {
   studentName: string
   pendingAssignments: Assignment[]
   recentScores: RecentScore[]
+  courses: CourseSummary[]
   stats: {
     enrolledCourses: number
     pendingAssignments: number
@@ -51,12 +60,21 @@ const TYPE_LABELS: Record<string, string> = {
   PASSAGE_VOCABULARY:   'Passage',
 }
 
-export function StudentDashboard({ studentName, pendingAssignments, recentScores, stats }: StudentDashboardProps) {
+export function StudentDashboard({ studentName, pendingAssignments, recentScores, courses, stats }: StudentDashboardProps) {
   const statCards = [
-    { label: 'Courses', value: stats.enrolledCourses, icon: <GraduationCap size={18} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
-    { label: 'To Do', value: stats.pendingAssignments, icon: <ClipboardList size={18} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
-    { label: 'Completed', value: stats.completedAssignments, icon: <CheckCircle2 size={18} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
-    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <Award size={18} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
+    { label: 'Courses', value: stats.enrolledCourses, icon: <GraduationCap size={20} />, color: 'text-blue-600 bg-blue-50', href: '/student/courses' },
+    { label: 'To Do', value: stats.pendingAssignments, icon: <ClipboardList size={20} />, color: 'text-amber-600 bg-amber-50', href: '/student/assignments' },
+    { label: 'Completed', value: stats.completedAssignments, icon: <CheckCircle2 size={20} />, color: 'text-green-600 bg-green-50', href: '/student/progress' },
+    { label: 'Avg. Grade', value: stats.averageScore !== null ? `${stats.averageScore}%` : '—', icon: <Award size={20} />, color: 'text-purple-600 bg-purple-50', href: '/student/scores' },
+  ]
+
+  const quickActions = [
+    { href: '/student/courses',     label: 'My Courses', icon: <GraduationCap size={16} /> },
+    { href: '/student/calendar',    label: 'Calendar',   icon: <Calendar size={16} /> },
+    { href: '/student/scores',      label: 'My Grades',  icon: <BarChart2 size={16} /> },
+    { href: '/student/flashcards',  label: 'Flashcards', icon: <Layers size={16} /> },
+    { href: '/student/exegesis',    label: 'Exegesis',   icon: <Scroll size={16} /> },
+    { href: '/reader',              label: 'Reader',     icon: <BookOpen size={16} /> },
   ]
 
   const urgent = pendingAssignments.filter(a =>
@@ -64,25 +82,25 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
   ).length
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
       <div>
         <h2 className="text-lg font-semibold text-gray-900">Welcome back, {studentName}</h2>
         <p className="text-sm text-gray-500 mt-0.5">
           {urgent > 0
             ? <span className="text-amber-600 font-medium">{urgent} assignment{urgent > 1 ? 's' : ''} due soon — keep going!</span>
-            : 'Keep up your Greek studies.'}
+            : 'Here’s an overview of your courses and progress.'}
         </p>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* Stats */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map(s => (
           <Link key={s.label} href={s.href}>
-            <Card hover className="flex items-center gap-3 p-4">
-              <div className={`p-2 rounded-lg shrink-0 ${s.color}`}>{s.icon}</div>
+            <Card hover className="flex items-center gap-3 p-5">
+              <div className={`p-2.5 rounded-lg shrink-0 ${s.color}`}>{s.icon}</div>
               <div>
-                <p className="text-xl font-bold text-gray-900">{s.value}</p>
+                <p className="text-2xl font-bold text-gray-900">{s.value}</p>
                 <p className="text-xs text-gray-500">{s.label}</p>
               </div>
             </Card>
@@ -90,29 +108,47 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         ))}
       </div>
 
-      {/* Quick actions — lighter, button-like row, visually distinct from the stat cards */}
-      <div className="flex flex-wrap gap-2">
-        {[
-          { href: '/student/flashcards', label: 'Flashcards', icon: <Layers size={15} /> },
-          { href: '/student/exegesis',   label: 'Exegesis',   icon: <Scroll size={15} /> },
-          { href: '/student/calendar',   label: 'Calendar',   icon: <Calendar size={15} /> },
-          { href: '/reader',             label: 'Reader',     icon: <BookOpen size={15} /> },
-        ].map(q => (
-          <Link
-            key={q.href}
-            href={q.href}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-white text-sm font-medium text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-          >
-            <span className="text-brand-600">{q.icon}</span>
-            {q.label}
-          </Link>
-        ))}
-      </div>
+      {/* Quick actions — brand buttons, matching the instructor dashboard */}
+      <Card>
+        <CardTitle>Quick Actions</CardTitle>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-3">
+          {quickActions.map(a => (
+            <Link key={a.href} href={a.href} className="btn-secondary flex items-center justify-center gap-2 py-2 text-sm">
+              {a.icon} {a.label}
+            </Link>
+          ))}
+        </div>
+      </Card>
+
+      {/* My Courses — mirrors the instructor's Recent Courses card */}
+      <Card>
+        <div className="flex items-center justify-between mb-4">
+          <CardTitle>My Courses</CardTitle>
+          <Link href="/student/courses" className="text-sm text-brand-600 hover:underline">View all</Link>
+        </div>
+        {courses.length === 0 ? (
+          <p className="text-sm text-gray-400 italic">You&rsquo;re not enrolled in any courses yet.</p>
+        ) : (
+          <div className="space-y-2">
+            {courses.map(c => (
+              <Link key={c.id} href="/student/courses" className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
+                <div>
+                  <p className="text-sm font-medium text-gray-900">{c.name}</p>
+                  <p className="text-xs text-gray-500">{c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}</p>
+                </div>
+                <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
+                  {COURSE_LEVEL_LABELS[c.level] ?? c.level}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        )}
+      </Card>
 
       {/* What's due leads (wider); recent scores secondary */}
       <div className="grid lg:grid-cols-3 gap-4">
         {/* Upcoming assignments — the most important thing for a student */}
-        <Card className="p-4 lg:col-span-2">
+        <Card className="lg:col-span-2">
           <div className="flex items-center justify-between mb-3">
             <CardTitle className="mb-0">Upcoming Assignments</CardTitle>
             <Link href="/student/assignments" className="text-xs text-brand-600 hover:underline">View all</Link>
@@ -144,7 +180,7 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         </Card>
 
         {/* Recent scores */}
-        <Card className="p-4">
+        <Card>
           <div className="flex items-center justify-between mb-3">
             <CardTitle className="mb-0">Recent Scores</CardTitle>
             <Link href="/student/scores" className="text-xs text-brand-600 hover:underline">View all</Link>

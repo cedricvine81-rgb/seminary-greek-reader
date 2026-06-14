@@ -89,12 +89,21 @@ export default async function StudentPage() {
     completedAt: a.completedAt.toISOString(),
   }))
 
+  // Enrolled courses for the "My Courses" card (mirrors the instructor's Recent Courses)
+  const courses = enrollments.slice(0, 5).map(e => ({
+    id: e.course.id,
+    name: e.course.name,
+    level: e.course.level as string,
+    assignmentCount: e.course.assignments.length,
+  }))
+
   return (
     <DashboardShell role="STUDENT" pageTitle="Dashboard">
       <StudentDashboard
         studentName={user?.firstName ?? 'Student'}
         pendingAssignments={serializedPending}
         recentScores={recentScores}
+        courses={courses}
         stats={{
           enrolledCourses: enrollments.length,
           pendingAssignments: pending.length,
