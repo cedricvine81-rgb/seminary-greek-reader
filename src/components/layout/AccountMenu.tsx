@@ -26,7 +26,6 @@ const INSTRUCTOR_NAV = [
 const STUDENT_NAV = [
   { href: '/student',               label: 'Dashboard',    icon: LayoutDashboard },
   { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
-  { href: '/student/courses',       label: 'Courses',      icon: GraduationCap },
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
   { href: '/student/messages',      label: 'Messages',     icon: Mail },
   { href: '/student/exegesis',       label: 'Exegesis',     icon: Scroll },

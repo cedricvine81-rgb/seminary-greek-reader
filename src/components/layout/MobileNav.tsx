@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import {
-  LayoutDashboard, Calendar, GraduationCap, ClipboardList,
+  LayoutDashboard, Calendar, ClipboardList,
   FlipHorizontal, TrendingUp, BarChart2, BookMarked,
   Archive, FileText, Bell, Scroll, Users, BookOpen, Building2, Mail, ShieldAlert,
 } from 'lucide-react'
@@ -19,7 +19,6 @@ const instructorTabs = [
 
 const studentTabs = [
   { label: 'Dashboard',   href: '/student',                icon: LayoutDashboard },
-  { label: 'Courses',     href: '/student/courses',        icon: GraduationCap },
   { label: 'Assignments', href: '/student/assignments',    icon: ClipboardList },
   { label: 'Messages',    href: '/student/messages',       icon: Mail },
   { label: 'Exegesis',    href: '/student/exegesis',       icon: Scroll },

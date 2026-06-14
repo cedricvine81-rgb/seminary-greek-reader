@@ -75,7 +75,12 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
       {/* My Courses — each course carries its own actions (assignments / message /
           email), so there's no separate trip to the Courses page for them. */}
       <Card>
-        <CardTitle>My Courses</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle className="mb-0">My Courses</CardTitle>
+          <Link href="/student/courses" className="text-xs text-brand-600 hover:underline whitespace-nowrap">
+            + Join a course
+          </Link>
+        </div>
         {courses.length === 0 ? (
           <p className="text-sm text-gray-400 italic mt-3">You&rsquo;re not enrolled in any courses yet.</p>
         ) : (
