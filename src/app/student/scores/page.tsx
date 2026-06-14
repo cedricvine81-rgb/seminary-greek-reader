@@ -197,7 +197,6 @@ export default async function StudentScoresPage() {
                 )}
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Week</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Type</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Score</th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">%</th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Submitted</th>
               </tr>
@@ -227,11 +226,6 @@ export default async function StudentScoresPage() {
                         ? <span className="text-xs text-amber-600 font-medium">Awaiting grade</span>
                         : <span className="text-gray-300">—</span>}
                   </td>
-                  <td className="px-4 py-3 text-right text-xs text-gray-500">
-                    {row.pct !== null
-                      ? `${row.pct}%`
-                      : <span className="text-gray-300">—</span>}
-                  </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-400">
                     {row.submittedAt ? format(new Date(row.submittedAt), 'MMM d') : '—'}
                   </td>
@@ -248,9 +242,6 @@ export default async function StudentScoresPage() {
                   </td>
                   <td className="px-4 py-3 text-right">
                     {semesterPct !== null ? pctBadge(semesterPct) : <span className="text-gray-300">—</span>}
-                  </td>
-                  <td className="px-4 py-3 text-right text-xs text-gray-600">
-                    {semesterPct !== null ? `${semesterPct}%` : '—'}
                   </td>
                   <td />
                 </tr>
