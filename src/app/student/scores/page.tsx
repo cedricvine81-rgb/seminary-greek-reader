@@ -198,7 +198,7 @@ export default async function StudentScoresPage() {
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Week</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Type</th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Score</th>
-                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Points</th>
+                <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">%</th>
                 <th className="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Submitted</th>
               </tr>
             </thead>
@@ -228,13 +228,9 @@ export default async function StudentScoresPage() {
                         : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-500">
-                    {row.isPassage
-                      ? row.pct !== null
-                        ? `${row.earnedPts} / 100`
-                        : <span className="text-gray-300">— / 100</span>
-                      : row.taken
-                        ? `${row.earnedPts} / ${row.totalPts}`
-                        : <span className="text-gray-300">0 / {row.totalPts}</span>}
+                    {row.pct !== null
+                      ? `${row.pct}%`
+                      : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-400">
                     {row.submittedAt ? format(new Date(row.submittedAt), 'MMM d') : '—'}
@@ -254,7 +250,7 @@ export default async function StudentScoresPage() {
                     {semesterPct !== null ? pctBadge(semesterPct) : <span className="text-gray-300">—</span>}
                   </td>
                   <td className="px-4 py-3 text-right text-xs text-gray-600">
-                    {totalEarned} / {totalPossibleTaken}
+                    {semesterPct !== null ? `${semesterPct}%` : '—'}
                   </td>
                   <td />
                 </tr>
