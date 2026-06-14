@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { AtSign } from 'lucide-react'
-import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
@@ -17,7 +16,6 @@ interface RecentScore {
 interface CourseSummary {
   id: string
   name: string
-  level: string
   assignmentCount: number
   instructorName: string
   instructorEmail: string
@@ -84,17 +82,12 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
           <div className="space-y-3 mt-3">
             {courses.map(c => (
               <div key={c.id} className="p-3 rounded-lg border border-gray-100">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-gray-900">{c.name}</p>
-                    <p className="text-xs text-gray-500">{c.instructorName}</p>
-                    <p className="text-xs text-gray-400">
-                      {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}
-                    </p>
-                  </div>
-                  <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
-                    {COURSE_LEVEL_LABELS[c.level] ?? c.level}
-                  </Badge>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-gray-900">{c.name}</p>
+                  <p className="text-xs text-gray-500">{c.instructorName}</p>
+                  <p className="text-xs text-gray-400">
+                    {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}
+                  </p>
                 </div>
                 <div className="flex items-center justify-between gap-2 pt-2 mt-2 border-t border-gray-50 flex-wrap">
                   <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">

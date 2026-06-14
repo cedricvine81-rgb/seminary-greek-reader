@@ -85,7 +85,6 @@ export default async function StudentPage() {
   const courses = enrollments.slice(0, 5).map(e => ({
     id: e.course.id,
     name: e.course.name,
-    level: e.course.level as string,
     assignmentCount: e.course.assignments.length,
     instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
     instructorEmail: e.course.instructor.email,
