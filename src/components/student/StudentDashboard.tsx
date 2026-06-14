@@ -1,8 +1,9 @@
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
-import { ClipboardList, Award, GraduationCap, CheckCircle2 } from 'lucide-react'
+import { ClipboardList, Award, GraduationCap, CheckCircle2, AtSign } from 'lucide-react'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import type { Assignment } from '@/types/assignment'
 import { differenceInCalendarDays } from 'date-fns'
 
@@ -18,6 +19,9 @@ interface CourseSummary {
   name: string
   level: string
   assignmentCount: number
+  studentCount: number
+  instructorName: string
+  instructorEmail: string
 }
 
 interface StudentDashboardProps {
@@ -99,26 +103,46 @@ export function StudentDashboard({ studentName, pendingAssignments, recentScores
         ))}
       </div>
 
-      {/* My Courses — mirrors the instructor's Recent Courses card */}
+      {/* My Courses — each course carries its own actions (assignments / message /
+          email), so there's no separate trip to the Courses page for them. */}
       <Card>
-        <div className="flex items-center justify-between mb-4">
-          <CardTitle>My Courses</CardTitle>
-          <Link href="/student/courses" className="text-sm text-brand-600 hover:underline">View all</Link>
-        </div>
+        <CardTitle>My Courses</CardTitle>
         {courses.length === 0 ? (
-          <p className="text-sm text-gray-400 italic">You&rsquo;re not enrolled in any courses yet.</p>
+          <p className="text-sm text-gray-400 italic mt-3">You&rsquo;re not enrolled in any courses yet.</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3 mt-3">
             {courses.map(c => (
-              <Link key={c.id} href="/student/courses" className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{c.name}</p>
-                  <p className="text-xs text-gray-500">{c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''}</p>
+              <div key={c.id} className="p-3 rounded-lg border border-gray-100">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-900">{c.name}</p>
+                    <p className="text-xs text-gray-500">{c.instructorName}</p>
+                    <p className="text-xs text-gray-400">
+                      {c.assignmentCount} assignment{c.assignmentCount !== 1 ? 's' : ''} · {c.studentCount} student{c.studentCount !== 1 ? 's' : ''}
+                    </p>
+                  </div>
+                  <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
+                    {COURSE_LEVEL_LABELS[c.level] ?? c.level}
+                  </Badge>
                 </div>
-                <Badge variant={COURSE_LEVEL_VARIANTS[c.level] ?? 'gray'}>
-                  {COURSE_LEVEL_LABELS[c.level] ?? c.level}
-                </Badge>
-              </Link>
+                <div className="flex items-center justify-between gap-2 pt-2 mt-2 border-t border-gray-50 flex-wrap">
+                  <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
+                    View assignments →
+                  </Link>
+                  <div className="flex items-center gap-4">
+                    <MessageInstructorButton courseId={c.id} courseName={c.name} instructorName={c.instructorName} />
+                    {c.instructorEmail && (
+                      <a
+                        href={`mailto:${encodeURIComponent(c.instructorEmail)}?subject=${encodeURIComponent(`[${c.name}] `)}`}
+                        className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
+                        title={`Email ${c.instructorName} via your mail program`}
+                      >
+                        <AtSign size={14} /> Email
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         )}

@@ -17,7 +17,18 @@ export default async function StudentPage() {
 
   const [user, enrollments, completedResponses, bestAttempts, recentAttempts, exegesisSessions] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
-    prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, include: { course: { include: { assignments: true } } } }),
+    prisma.enrollment.findMany({
+      where: { userId: payload.sub, status: 'APPROVED' },
+      include: {
+        course: {
+          include: {
+            assignments: true,
+            instructor: { select: { firstName: true, surname: true, title: true, email: true } },
+            _count: { select: { enrollments: { where: { status: 'APPROVED' } } } },
+          },
+        },
+      },
+    }),
     prisma.response.findMany({
       where: { userId: payload.sub },
       select: { assignmentId: true },
@@ -89,12 +100,15 @@ export default async function StudentPage() {
     completedAt: a.completedAt.toISOString(),
   }))
 
-  // Enrolled courses for the "My Courses" card (mirrors the instructor's Recent Courses)
+  // Enrolled courses for the "My Courses" card (with per-course actions on the dashboard)
   const courses = enrollments.slice(0, 5).map(e => ({
     id: e.course.id,
     name: e.course.name,
     level: e.course.level as string,
     assignmentCount: e.course.assignments.length,
+    studentCount: e.course._count.enrollments,
+    instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
+    instructorEmail: e.course.instructor.email,
   }))
 
   return (
