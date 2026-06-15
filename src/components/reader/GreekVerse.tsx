@@ -1,4 +1,5 @@
 'use client'
+import { Fragment } from 'react'
 import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
@@ -38,9 +39,8 @@ export function GreekVerse({
       <p className={baseClass} ref={verseRefCallback}>
         <VerseRef verse={verse} />
         {verse.words.map((w, i) => (
-          <>
+          <Fragment key={w.id}>
             <GreekWord
-              key={w.id}
               word={w}
               reference={verse.reference}
               isActive={w.id === activeWordId}
@@ -52,7 +52,7 @@ export function GreekVerse({
               onRightClick={onWordRightClick}
             />
             {i < verse.words!.length - 1 ? ' ' : ''}
-          </>
+          </Fragment>
         ))}
       </p>
     )
@@ -70,9 +70,8 @@ export function GreekVerse({
           surface: token,
         }
         return (
-          <>
+          <Fragment key={fakeWord.id}>
             <GreekWord
-              key={fakeWord.id}
               word={fakeWord}
               reference={verse.reference}
               isActive={fakeWord.id === activeWordId}
@@ -83,7 +82,7 @@ export function GreekVerse({
               onRightClick={onWordRightClick}
             />
             {' '}
-          </>
+          </Fragment>
         )
       })}
     </p>

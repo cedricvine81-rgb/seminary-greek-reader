@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
@@ -355,7 +356,7 @@ function parsePassageRef(ref: string, books: BiblicalBook[]): {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignmentId?: string }) {
+export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true }: { assignmentId?: string; isAuthenticated?: boolean }) {
   const router = useRouter()
 
   // ── Passage state ──
@@ -811,6 +812,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
 
   // ── Save session (returns sessionId) ──
   async function saveSession(): Promise<string | null> {
+    if (!isAuthenticated) return null   // signed-out: nothing to save to
     if (!selectedBook || loadedVerses.length === 0) return null
     setIsSaving(true)
     setSaveStatus('idle')
@@ -916,6 +918,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
     latestVerseCorrections: Record<string, string> = verseCorrections,
     latestNotes: string = notes,
   ) {
+    if (!isAuthenticated) return   // signed-out: don't attempt to save (no account)
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
     setSaveStatus('pending')   // unsaved edits, autosave queued
     autoSaveTimer.current = setTimeout(() => {
@@ -1293,8 +1296,17 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
         )}
 
         {/* Both the translation exercise and the standalone Reader→Exegesis tool
-            autosave continuously, so show a passive status instead of a Save button. */}
-        {loadedVerses.length > 0 && (
+            autosave continuously, so show a passive status instead of a Save button.
+            Signed-out visitors can annotate but can't save — prompt them to sign in. */}
+        {loadedVerses.length > 0 && !isAuthenticated && (
+          <Link
+            href={`/auth/sign-in?redirect=${encodeURIComponent('/exegesis')}`}
+            className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-brand-600 hover:text-brand-800 hover:underline"
+          >
+            🔒 Sign in to save your work
+          </Link>
+        )}
+        {loadedVerses.length > 0 && isAuthenticated && (
           <span className="self-end inline-flex items-center gap-1.5 px-2 py-1.5 text-sm text-gray-500">
             {saveStatus === 'saving' || isSaving ? (
               <><svg className="w-3.5 h-3.5 animate-spin text-gray-400" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Saving…</>
