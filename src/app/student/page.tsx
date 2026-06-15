@@ -5,7 +5,6 @@ import { StudentDashboard } from '@/components/student/StudentDashboard'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
-import type { Assignment } from '@/types/assignment'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -15,7 +14,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, recentAttempts, exegesisSessions, bestAttempts] = await Promise.all([
+  const [user, enrollments, completedResponses, exegesisSessions, bestAttempts] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -32,13 +31,6 @@ export default async function StudentPage() {
       where: { userId: payload.sub },
       select: { assignmentId: true },
       distinct: ['assignmentId'],
-    }),
-    // Recent best quiz attempts for score feed
-    prisma.quizAttempt.findMany({
-      where: { userId: payload.sub, isBest: true },
-      orderBy: { completedAt: 'desc' },
-      take: 5,
-      include: { assignment: { select: { title: true } } },
     }),
     // Translation exercises: submittedAt → completed; grade → per-course gradebook.
     prisma.exegesisSession.findMany({
@@ -71,32 +63,11 @@ export default async function StudentPage() {
     if (s.submittedAt && s.assignmentId) completedIds.add(s.assignmentId)
   }
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
-
-  const serializedPending: Assignment[] = pending.slice(0, 5).map(a => ({
-    id: a.id,
-    courseId: a.courseId,
-    createdById: a.createdById,
-    title: a.title,
-    type: a.type as Assignment['type'],
-    weekNumber: a.weekNumber,
-    dueDate: a.dueDate.toISOString(),
-    level: a.level as Assignment['level'],
-    reference: a.reference ?? undefined,
-    instructions: a.instructions ?? undefined,
-    timePerQuestion: a.timePerQuestion,
-    allowLate: a.allowLate,
-    lateDaysLimit: a.lateDaysLimit,
-    isPublished: a.isPublished,
-    createdAt: a.createdAt.toISOString(),
-    updatedAt: a.updatedAt.toISOString(),
-  }))
-
-  const recentScores = recentAttempts.map(a => ({
-    assignmentId: a.assignmentId,
-    title: a.assignment.title,
-    percentage: a.percentage,
-    completedAt: a.completedAt.toISOString(),
-  }))
+  // Header nudge: assignments due within the next 3 days.
+  const dueSoonCount = pending.filter(a => {
+    const days = Math.ceil((new Date(a.dueDate).getTime() - Date.now()) / 86400000)
+    return days <= 3
+  }).length
 
   // Enrolled courses for the "My Courses" card — each with its own grade book
   // (assignments grouped by type, the student's score per assignment).
@@ -123,9 +94,8 @@ export default async function StudentPage() {
     <DashboardShell role="STUDENT" pageTitle="Dashboard">
       <StudentDashboard
         studentName={user?.firstName ?? 'Student'}
-        pendingAssignments={serializedPending}
-        recentScores={recentScores}
         courses={courses}
+        dueSoonCount={dueSoonCount}
       />
     </DashboardShell>
   )
