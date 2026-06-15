@@ -383,6 +383,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [notesOpen, setNotesOpen] = useState(true)
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
+  const wordPanelRef = useRef<HTMLDivElement | null>(null)
 
   // ── Session persistence ──
   const [sessionId, setSessionId] = useState<string | null>(null)
@@ -670,6 +671,21 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }, [])
 
   useEffect(() => { loadSessionList() }, [loadSessionList])
+
+  // Close the word parsing/syntax panel when clicking outside it (clicks on another
+  // Greek word are ignored so the selection simply switches).
+  useEffect(() => {
+    if (!selectedWord) return
+    function handleClickOutside(e: MouseEvent) {
+      const t = e.target as HTMLElement
+      if (wordPanelRef.current?.contains(t)) return
+      if (t.closest('[data-greek-word]')) return
+      setSelectedWord(null)
+      setSelectedWordKey(null)
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [selectedWord])
 
   // Close the "My Sessions" dropdown when clicking outside it.
   useEffect(() => {
@@ -1414,6 +1430,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     return (
                       <button
                         key={w.id}
+                        data-greek-word
                         onClick={() => handleWordClick(w, v.verse)}
                         className={[
                           'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:border-b print:border-dotted print:border-gray-400',
@@ -1515,7 +1532,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     (no grid) it stacks directly beneath the verse. */}
                 <div className="min-w-0 print:hidden">
                   {selectedWord && selectedWord.verse === v.verse && (
-                    reviewMode ? (
+                    <div ref={wordPanelRef}>
+                    {reviewMode ? (
                       <Round2WordPopover
                         word={selectedWord.word}
                         verseNum={selectedWord.verse}
@@ -1544,7 +1562,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                           </button>
                         </div>
                       </div>
-                    )
+                    )}
+                    </div>
                   )}
                 </div>
               </div>
