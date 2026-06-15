@@ -907,7 +907,7 @@ export function MorphologyView() {
               key={t.id}
               onClick={() => setMainTab(t.id)}
               className={clsx(
-                'px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap',
+                'px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap',
                 mainTab === t.id ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               )}
             >
@@ -928,7 +928,7 @@ export function MorphologyView() {
                   key={s.id}
                   onClick={() => setEssId(s.id)}
                   className={clsx(
-                    'px-2.5 py-1 rounded-full text-xs font-medium transition-colors',
+                    'px-2.5 py-1 rounded-full text-sm font-medium transition-colors',
                     essId === s.id ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   )}
                 >
