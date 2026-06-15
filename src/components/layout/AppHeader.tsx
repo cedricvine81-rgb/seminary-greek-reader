@@ -46,16 +46,6 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
               <Scroll size={18} /> <span className="hidden md:inline">Exegesis</span>
             </Link>
           )}
-          {isAuthenticated && userRole === 'INSTRUCTOR' && (
-            <Link href="/instructor" className="hidden md:flex px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
-              Dashboard
-            </Link>
-          )}
-          {isAuthenticated && userRole === 'STUDENT' && (
-            <Link href="/student" className="hidden md:flex px-3 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors">
-              Dashboard
-            </Link>
-          )}
         </nav>
 
         {/* Right: hamburger menu */}
