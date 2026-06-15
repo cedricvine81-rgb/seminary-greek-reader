@@ -365,7 +365,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [chapter, setChapter] = useState(1)
   const [verseStart, setVerseStart] = useState(1)
   const [verseEnd, setVerseEnd] = useState(1)
-  const [maxVerse, setMaxVerse] = useState(1)
+  // Standalone passage box: type a reference like "Matthew 3:1-3" to load it.
+  const [passageInput, setPassageInput] = useState('')
+  const [passageError, setPassageError] = useState(false)
   const [loadedVerses, setLoadedVerses] = useState<LoadedVerse[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -649,8 +651,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     (v: LoadedVerse) => v.verse >= parsed.verseStart && v.verse <= parsed.verseEnd
                   )
                   setLoadedVerses(filtered)
-                  const vMax = pd.verses?.[pd.verses.length - 1]?.verse ?? 1
-                  setMaxVerse(vMax)
                 })
                 .finally(() => setIsLoading(false))
             }
@@ -767,8 +767,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         (v: LoadedVerse) => v.verse >= vs && v.verse <= ve
       )
       setLoadedVerses(filtered)
-      const vMax = d.verses[d.verses.length - 1]?.verse ?? 1
-      setMaxVerse(vMax)
     } catch {
       // ignore
     } finally {
@@ -776,17 +774,19 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     }
   }
 
-  // ── Update chapter max verse hint ──
-  useEffect(() => {
-    if (!selectedBook) return
-    fetch(`/api/reader?book=${selectedBook.osisId}&chapter=${chapter}`)
-      .then(r => r.json())
-      .then(d => {
-        const last = d.verses?.[d.verses.length - 1]?.verse
-        if (last) setMaxVerse(last)
-      })
-      .catch(() => {})
-  }, [selectedBook, chapter])
+  // ── Passage box: parse a typed reference ("Matthew 3:1-3") and load it ──
+  function handlePassageSubmit() {
+    const raw = passageInput.trim()
+    if (!raw) { setPassageError(false); return }
+    const parsed = parsePassageRef(raw, books)
+    if (!parsed) { setPassageError(true); return }
+    setPassageError(false)
+    setSelectedBook(parsed.book)
+    setChapter(parsed.chapter)
+    setVerseStart(parsed.verseStart)
+    setVerseEnd(parsed.verseEnd)
+    loadPassage(parsed.book, parsed.chapter, parsed.verseStart, parsed.verseEnd, true)
+  }
 
   // ── Annotation change ──
   function handleAnnotationChange(key: string, field: keyof WordAnnotation, value: string) {
@@ -991,6 +991,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     setChapter(sess.chapter)
     setVerseStart(sess.verseStart)
     setVerseEnd(sess.verseEnd)
+    setPassageInput(
+      `${book?.name ?? sess.bookName} ${sess.chapter}:${sess.verseStart}${sess.verseEnd !== sess.verseStart ? `-${sess.verseEnd}` : ''}`
+    )
+    setPassageError(false)
     setAnnotations((sess.annotations as AnnotationMap) ?? {})
     setCorrections((sess.corrections as AnnotationMap) ?? {})
     setVerseTranslations((sess.verseTranslations as Record<string, string>) ?? {})
@@ -1151,73 +1155,27 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       {/* ── Toolbar ── */}
       <div className="print:hidden bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-end gap-3">
 
-        {/* Passage selectors — hidden in assignment mode (passage is fixed) */}
+        {/* Passage box — hidden in assignment mode (passage is fixed) */}
         {!propAssignmentId && (
           <>
-            {/* Book */}
             <div className="flex flex-col gap-0.5">
-              <label className="text-xs text-gray-500 font-medium">Book</label>
-              <select
-                value={selectedBook?.osisId ?? ''}
-                onChange={e => {
-                  const b = books.find(bk => bk.osisId === e.target.value) ?? null
-                  setSelectedBook(b)
-                  setChapter(1)
-                  setVerseStart(1)
-                  setVerseEnd(1)
-                  loadPassage(b, 1, 1, 1, true)
-                }}
-                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-              >
-                {books.map(b => (
-                  <option key={b.osisId} value={b.osisId}>{b.name}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Chapter */}
-            <div className="flex flex-col gap-0.5">
-              <label className="text-xs text-gray-500 font-medium">Chapter</label>
-              <select
-                value={chapter}
-                onChange={e => { const n = Number(e.target.value); setChapter(n); setVerseStart(1); setVerseEnd(1); loadPassage(selectedBook, n, 1, 1, true) }}
-                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
-              >
-                {Array.from({ length: selectedBook?.totalChapters ?? 1 }, (_, i) => i + 1).map(ch => (
-                  <option key={ch} value={ch}>Chapter {ch}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Verse range */}
-            <div className="flex flex-col gap-0.5">
-              <label className="text-xs text-gray-500 font-medium">Verses</label>
-              <div className="flex items-center gap-1">
-                <select
-                  value={verseStart}
-                  onChange={e => { const v = Number(e.target.value); const ve = verseEnd < v ? v : verseEnd; setVerseStart(v); setVerseEnd(ve); loadPassage(selectedBook, chapter, v, ve, false) }}
-                  className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
-                >
-                  {Array.from({ length: maxVerse }, (_, i) => i + 1).map(v => (
-                    <option key={v} value={v}>{v}</option>
-                  ))}
-                </select>
-                <span className="text-gray-400 text-sm">–</span>
-                <select
-                  value={verseEnd}
-                  onChange={e => { const v = Number(e.target.value); setVerseEnd(v); loadPassage(selectedBook, chapter, verseStart, v, false) }}
-                  className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
-                >
-                  {Array.from({ length: maxVerse }, (_, i) => i + 1).filter(v => v >= verseStart).map(v => (
-                    <option key={v} value={v}>{v}</option>
-                  ))}
-                </select>
+              <label className="text-xs text-gray-500 font-medium">Passage</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={passageInput}
+                  onChange={e => { setPassageInput(e.target.value); if (passageError) setPassageError(false) }}
+                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+                  onBlur={handlePassageSubmit}
+                  placeholder="e.g. Matthew 3:1-3"
+                  className={`border rounded-md px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${passageError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+                />
+                {isLoading && <span className="text-sm text-gray-400">Loading…</span>}
               </div>
+              {passageError && (
+                <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>
+              )}
             </div>
-
-            {isLoading && (
-              <span className="self-end pb-1.5 text-sm text-gray-400">Loading…</span>
-            )}
           </>
         )}
 
