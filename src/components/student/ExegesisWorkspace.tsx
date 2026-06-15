@@ -429,6 +429,28 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       .catch(() => {})
   }, [propAssignmentId])
 
+  // ── Standalone: restore the most recent open session on load ──
+  // So navigating away (e.g. to change a password) and back doesn't appear to lose
+  // work — the last unsubmitted, non-assignment session reopens automatically.
+  const didRestoreRef = useRef(false)
+  useEffect(() => {
+    if (propAssignmentId || !isAuthenticated || books.length === 0 || didRestoreRef.current) return
+    didRestoreRef.current = true
+    ;(async () => {
+      try {
+        const r = await fetch('/api/exegesis')
+        const d = await r.json()
+        const open = (d.sessions ?? []).find(
+          (s: SavedSession) => !s.assignmentId && !s.submittedAt
+        )
+        if (open) await loadSavedSession(open)
+      } catch {
+        // ignore — fall back to the default blank passage
+      }
+    })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [propAssignmentId, isAuthenticated, books])
+
   // ── Assignment mode: load assignment + any existing session ──
   useEffect(() => {
     if (!propAssignmentId || books.length === 0) return
@@ -711,16 +733,25 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     }
   }, [reviewTimerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // ── Load passage ──
-  async function loadPassage() {
-    if (!selectedBook) return
+  // ── Load passage (auto-loads on selector change) ──
+  // `resetSession` clears the current session — used when the book/chapter changes
+  // (a genuinely different passage). Verse-range tweaks pass false so annotations
+  // on the already-loaded passage survive.
+  async function loadPassage(
+    book: BiblicalBook | null = selectedBook,
+    chap: number = chapter,
+    vs: number = verseStart,
+    ve: number = verseEnd,
+    resetSession = true,
+  ) {
+    if (!book) return
     setIsLoading(true)
     setLoadedVerses([])
     setSelectedWordKey(null)
     setSelectedWord(null)
     // Standalone tool: loading a fresh passage starts a new session, so clear any
     // prior session + entries (a new session is created lazily on the first edit).
-    if (!propAssignmentId) {
+    if (resetSession && !propAssignmentId) {
       setSessionId(null)
       setAnnotations({})
       setCorrections({})
@@ -729,11 +760,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       setSaveStatus('idle')
     }
     try {
-      const r = await fetch(`/api/reader?book=${selectedBook.osisId}&chapter=${chapter}`)
+      const r = await fetch(`/api/reader?book=${book.osisId}&chapter=${chap}`)
       const d = await r.json()
       if (!d.verses) return
       const filtered: LoadedVerse[] = d.verses.filter(
-        (v: LoadedVerse) => v.verse >= verseStart && v.verse <= verseEnd
+        (v: LoadedVerse) => v.verse >= vs && v.verse <= ve
       )
       setLoadedVerses(filtered)
       const vMax = d.verses[d.verses.length - 1]?.verse ?? 1
@@ -1134,6 +1165,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                   setChapter(1)
                   setVerseStart(1)
                   setVerseEnd(1)
+                  loadPassage(b, 1, 1, 1, true)
                 }}
                 className="border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
               >
@@ -1148,7 +1180,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               <label className="text-xs text-gray-500 font-medium">Chapter</label>
               <select
                 value={chapter}
-                onChange={e => { setChapter(Number(e.target.value)); setVerseStart(1); setVerseEnd(1) }}
+                onChange={e => { const n = Number(e.target.value); setChapter(n); setVerseStart(1); setVerseEnd(1); loadPassage(selectedBook, n, 1, 1, true) }}
                 className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
               >
                 {Array.from({ length: selectedBook?.totalChapters ?? 1 }, (_, i) => i + 1).map(ch => (
@@ -1163,7 +1195,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               <div className="flex items-center gap-1">
                 <select
                   value={verseStart}
-                  onChange={e => { const v = Number(e.target.value); setVerseStart(v); if (verseEnd < v) setVerseEnd(v) }}
+                  onChange={e => { const v = Number(e.target.value); const ve = verseEnd < v ? v : verseEnd; setVerseStart(v); setVerseEnd(ve); loadPassage(selectedBook, chapter, v, ve, false) }}
                   className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
                 >
                   {Array.from({ length: maxVerse }, (_, i) => i + 1).map(v => (
@@ -1173,7 +1205,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                 <span className="text-gray-400 text-sm">–</span>
                 <select
                   value={verseEnd}
-                  onChange={e => setVerseEnd(Number(e.target.value))}
+                  onChange={e => { const v = Number(e.target.value); setVerseEnd(v); loadPassage(selectedBook, chapter, verseStart, v, false) }}
                   className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
                 >
                   {Array.from({ length: maxVerse }, (_, i) => i + 1).filter(v => v >= verseStart).map(v => (
@@ -1183,13 +1215,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               </div>
             </div>
 
-            <button
-              onClick={loadPassage}
-              disabled={isLoading || !selectedBook}
-              className="self-end px-4 py-1.5 bg-brand-600 text-white rounded-md text-sm font-medium hover:bg-brand-700 disabled:opacity-50 transition"
-            >
-              {isLoading ? 'Loading…' : 'Load Passage'}
-            </button>
+            {isLoading && (
+              <span className="self-end pb-1.5 text-sm text-gray-400">Loading…</span>
+            )}
           </>
         )}
 
@@ -1376,8 +1404,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             </>
           ) : (
             <>
-              <p className="text-lg font-medium">Select a passage and click &ldquo;Load Passage&rdquo;</p>
-              <p className="text-sm mt-1">Then click any Greek word to begin annotating</p>
+              <p className="text-lg font-medium">Select a book, chapter, and verses above</p>
+              <p className="text-sm mt-1">The passage loads automatically — then click any Greek word to begin annotating</p>
             </>
           )}
         </div>
