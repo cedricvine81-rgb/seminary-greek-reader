@@ -162,7 +162,9 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                     <td className="px-3 py-2 text-center">
                       {row.attempted
                         ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">Submitted</span>
-                        : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>
+                        : isTranslation && row.sessionId
+                          ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">In progress</span>
+                          : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>
                       }
                     </td>
                     {isTranslation ? (
