@@ -6,7 +6,7 @@ import { useApi } from '@/lib/api-client'
 import {
   LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText,
-  FlipHorizontal, TrendingUp, Settings, Bell,
+  TrendingUp, Settings, Bell,
   Users, BookOpen, Building2, Mail, ShieldAlert, Gavel,
 } from 'lucide-react'
 
@@ -42,7 +42,6 @@ const studentNav: NavItem[] = [
   { label: 'Calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
   { label: 'Assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
   { label: 'Messages',    href: '/student/messages',         icon: <Mail size={16} /> },
-  { label: 'Flashcards',  href: '/student/flashcards',       icon: <FlipHorizontal size={16} /> },
   { label: 'Accuracy',    href: '/student/progress',         icon: <TrendingUp size={16} /> },
   { label: 'Materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
 ]
