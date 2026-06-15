@@ -80,7 +80,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
           </div>
 
           {/* ── Assignments ── */}
-          <details open className="border-t border-gray-100 pt-3">
+          <details className="border-t border-gray-100 pt-3">
             <summary className="flex items-center justify-between cursor-pointer list-none">
               <CardTitle className="mb-0">
                 Assignments <span className="ml-1 text-sm font-normal text-gray-400">({sortedAssignments.length})</span>
