@@ -848,7 +848,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     setIsSaving(true)
     setSaveStatus('idle')
     try {
-      const resolvedTitle = sessionTitle || `${selectedBook.name} ${chapter}:${verseStart}${verseEnd !== verseStart ? `–${verseEnd}` : ''}`
+      // Standalone tool always names the session after the passage; assignment mode
+      // keeps the assignment's own title.
+      const passageName = `${selectedBook.name} ${chapter}:${verseStart}${verseEnd !== verseStart ? `–${verseEnd}` : ''}`
+      const resolvedTitle = propAssignmentId ? (sessionTitle || passageName) : passageName
       const payload = {
         title: resolvedTitle,
         bookOsisId: selectedBook.osisId,
@@ -1230,16 +1233,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           </div>
         )}
 
-        {/* Session title — hide in assignment mode (title comes from assignment) */}
-        {!propAssignmentId && loadedVerses.length > 0 && (
-          <input
-            type="text"
-            value={sessionTitle}
-            onChange={e => setSessionTitle(e.target.value)}
-            placeholder={passageTitle || 'Session title…'}
-            className="border border-gray-300 rounded-md px-2 py-1.5 text-sm w-48 focus:outline-none focus:ring-2 focus:ring-brand-400"
-          />
-        )}
 
         {/* Saved sessions — hide in assignment mode */}
         {!propAssignmentId && (
