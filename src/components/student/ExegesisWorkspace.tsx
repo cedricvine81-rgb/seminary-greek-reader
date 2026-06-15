@@ -1143,37 +1143,40 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId }: { assignme
             {/* Chapter */}
             <div className="flex flex-col gap-0.5">
               <label className="text-xs text-gray-500 font-medium">Chapter</label>
-              <input
-                type="number"
-                min={1}
-                max={selectedBook?.totalChapters ?? 1}
+              <select
                 value={chapter}
                 onChange={e => { setChapter(Number(e.target.value)); setVerseStart(1); setVerseEnd(1) }}
-                className="w-16 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-              />
+                className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {Array.from({ length: selectedBook?.totalChapters ?? 1 }, (_, i) => i + 1).map(ch => (
+                  <option key={ch} value={ch}>Chapter {ch}</option>
+                ))}
+              </select>
             </div>
 
             {/* Verse range */}
             <div className="flex flex-col gap-0.5">
               <label className="text-xs text-gray-500 font-medium">Verses</label>
               <div className="flex items-center gap-1">
-                <input
-                  type="number"
-                  min={1}
-                  max={maxVerse}
+                <select
                   value={verseStart}
-                  onChange={e => setVerseStart(Number(e.target.value))}
-                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                />
+                  onChange={e => { const v = Number(e.target.value); setVerseStart(v); if (verseEnd < v) setVerseEnd(v) }}
+                  className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {Array.from({ length: maxVerse }, (_, i) => i + 1).map(v => (
+                    <option key={v} value={v}>{v}</option>
+                  ))}
+                </select>
                 <span className="text-gray-400 text-sm">–</span>
-                <input
-                  type="number"
-                  min={verseStart}
-                  max={maxVerse}
+                <select
                   value={verseEnd}
                   onChange={e => setVerseEnd(Number(e.target.value))}
-                  className="w-14 border border-gray-300 rounded-md px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                />
+                  className="border border-gray-300 rounded-md px-2 py-1.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {Array.from({ length: maxVerse }, (_, i) => i + 1).filter(v => v >= verseStart).map(v => (
+                    <option key={v} value={v}>{v}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
