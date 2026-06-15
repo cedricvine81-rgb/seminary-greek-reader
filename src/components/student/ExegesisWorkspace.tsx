@@ -391,6 +391,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saving' | 'saved' | 'error'>('idle')
   const [showSessionList, setShowSessionList] = useState(false)
+  const sessionListRef = useRef<HTMLDivElement | null>(null)
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // ── Assignment mode ──
@@ -669,6 +670,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }, [])
 
   useEffect(() => { loadSessionList() }, [loadSessionList])
+
+  // Close the "My Sessions" dropdown when clicking outside it.
+  useEffect(() => {
+    if (!showSessionList) return
+    function handleClickOutside(e: MouseEvent) {
+      if (sessionListRef.current && !sessionListRef.current.contains(e.target as Node)) {
+        setShowSessionList(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [showSessionList])
 
   // ── Countdown timer ──
   useEffect(() => {
@@ -1236,7 +1249,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
 
         {/* Saved sessions — hide in assignment mode */}
         {!propAssignmentId && (
-          <div className="relative">
+          <div className="relative" ref={sessionListRef}>
             <button
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
               className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md text-sm font-medium hover:bg-gray-50 transition"
