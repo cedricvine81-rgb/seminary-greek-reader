@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
+import { Prisma } from '@prisma/client'
 import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
@@ -202,6 +204,74 @@ export async function GET(
 
   } catch (err) {
     logError('api/assignments/[assignmentId]/results', err)
+    return NextResponse.json({ error: 'Server error.' }, { status: 500 })
+  }
+}
+
+// DELETE /api/assignments/[assignmentId]/results?sessionId=xxx
+// Instructor un-submits a student's translation-exercise submission: clears the
+// submitted state, snapshot, and grade, and removes the sentinel Response so the
+// student can finish (e.g. Round 2) and resubmit. The student's work is preserved.
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { assignmentId: string } }
+) {
+  try {
+    const token = getTokenFromCookies()
+    const payload = token ? verifyToken(token) : null
+    if (!payload || payload.role !== 'INSTRUCTOR') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
+      return NextResponse.json({ error: 'Not found' }, { status: 404 })
+    }
+
+    const sessionId = req.nextUrl.searchParams.get('sessionId')
+    if (!sessionId) {
+      return NextResponse.json({ error: 'Missing sessionId' }, { status: 400 })
+    }
+
+    const session = await prisma.exegesisSession.findUnique({
+      where: { id: sessionId },
+      select: { id: true, userId: true, assignmentId: true },
+    })
+    if (!session) return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
+    // Only allow un-submitting a session that belongs to this assignment (or an
+    // orphan session that was matched to it by passage).
+    if (session.assignmentId && session.assignmentId !== params.assignmentId) {
+      return NextResponse.json({ error: 'Submission does not belong to this assignment' }, { status: 403 })
+    }
+
+    const assignment = await prisma.assignment.findUnique({
+      where: { id: params.assignmentId },
+      select: { courseId: true },
+    })
+
+    await prisma.$transaction([
+      prisma.exegesisSession.update({
+        where: { id: sessionId },
+        data: {
+          submittedAt: null,
+          submittedAnnotations: Prisma.DbNull,
+          grade: null,
+          gradeNote: null,
+        },
+      }),
+      prisma.response.deleteMany({
+        where: { userId: session.userId, assignmentId: params.assignmentId, questionId: null },
+      }),
+    ])
+
+    if (assignment) {
+      revalidatePath(`/instructor/courses/${assignment.courseId}`)
+      revalidatePath(`/instructor/assignments/${params.assignmentId}/grade`)
+    }
+    revalidatePath('/student/assignments')
+    revalidatePath(`/student/assignments/${params.assignmentId}`)
+
+    return NextResponse.json({ ok: true })
+  } catch (err) {
+    logError('api/assignments/[assignmentId]/results DELETE', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
 }

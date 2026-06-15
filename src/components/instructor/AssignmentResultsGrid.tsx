@@ -3,7 +3,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
-import { ExternalLink } from 'lucide-react'
+import { ExternalLink, Trash2 } from 'lucide-react'
 import { useApi } from '@/lib/api-client'
 
 interface StudentResult {
@@ -55,10 +55,36 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
 
   const loaded = data !== undefined
   const loading = isLoading
+  const [deletingId, setDeletingId] = useState<string | null>(null)
 
   function refresh() {
     if (!enabled) setEnabled(true)
     else mutate()
+  }
+
+  async function deleteSubmission(row: StudentResult) {
+    if (!row.sessionId) return
+    const ok = window.confirm(
+      `Delete ${row.name}'s submission?\n\nThis re-opens it so the student can finish and resubmit. Their work is kept, but any grade is cleared.`
+    )
+    if (!ok) return
+    setDeletingId(row.sessionId)
+    try {
+      const res = await fetch(
+        `/api/assignments/${assignmentId}/results?sessionId=${encodeURIComponent(row.sessionId)}`,
+        { method: 'DELETE' },
+      )
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        alert(body.error || 'Could not delete the submission. Please try again.')
+        return
+      }
+      await mutate()
+    } catch {
+      alert('Could not delete the submission. Please try again.')
+    } finally {
+      setDeletingId(null)
+    }
   }
 
   const isTranslation = data?.isTranslation ?? false
@@ -116,6 +142,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                       <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Submitted</th>
                       <th className="px-3 py-3 text-center text-xs font-semibold text-brand-700 bg-brand-50">Grade</th>
                       <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">View work</th>
+                      <th className="px-3 py-3 text-center text-xs font-semibold text-gray-600">Delete</th>
                     </>
                   ) : (
                     <>
@@ -158,6 +185,20 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                             <span className="text-xs text-gray-300">—</span>
                           )}
                         </td>
+                        <td className="px-3 py-2 text-center">
+                          {row.sessionId && row.submittedAt ? (
+                            <button
+                              onClick={() => deleteSubmission(row)}
+                              disabled={deletingId === row.sessionId}
+                              title="Delete submission so the student can resubmit"
+                              className="inline-flex items-center gap-1 text-xs text-red-500 hover:text-red-700 font-medium disabled:opacity-50"
+                            >
+                              <Trash2 size={12} /> {deletingId === row.sessionId ? 'Deleting…' : 'Delete'}
+                            </button>
+                          ) : (
+                            <span className="text-xs text-gray-300">—</span>
+                          )}
+                        </td>
                       </>
                     ) : (
                       <>
@@ -181,7 +222,7 @@ export function AssignmentResultsGrid({ assignmentId, autoLoad = false }: { assi
                   <td className="px-3 py-2 text-center bg-brand-50/30">
                     <PctBadge pct={data.runningPct} />
                   </td>
-                  {isTranslation && <td />}
+                  {isTranslation && <td colSpan={2} />}
                 </tr>
               </tfoot>
             </table>
