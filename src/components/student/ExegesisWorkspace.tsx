@@ -1263,46 +1263,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         )}
 
 
-        {/* Saved sessions — hide in assignment mode */}
-        {!propAssignmentId && (
-          <div className="relative" ref={sessionListRef}>
-            <button
-              onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
-              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md text-sm font-medium hover:bg-gray-50 transition"
-            >
-              📂 My Sessions
-            </button>
-            {showSessionList && (
-              <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-h-80 overflow-y-auto">
-                {savedSessions.length === 0 ? (
-                  <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
-                ) : (
-                  <ul className="divide-y divide-gray-100">
-                    {savedSessions.map(s => (
-                      <li key={s.id} className="flex items-center justify-between px-3 py-2 hover:bg-gray-50">
-                        <button
-                          onClick={() => loadSavedSession(s)}
-                          className="text-left flex-1 min-w-0"
-                        >
-                          <p className="text-sm font-medium text-gray-800 truncate">{s.title}</p>
-                          <p className="text-xs text-gray-400">{new Date(s.updatedAt).toLocaleDateString()}</p>
-                        </button>
-                        <button
-                          onClick={() => deleteSession(s.id)}
-                          className="ml-2 text-red-400 hover:text-red-600 text-xs p-1"
-                          title="Delete session"
-                        >
-                          ✕
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            )}
-          </div>
-        )}
-
         {/* Both the translation exercise and the standalone Reader→Exegesis tool
             autosave continuously, so show a passive status instead of a Save button.
             Signed-out visitors can annotate but can't save — prompt them to sign in. */}
@@ -1367,6 +1327,47 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           >
             ← Back to Assignments
           </button>
+        )}
+
+        {/* Saved sessions — pinned to the far right so it stays put whether or not a
+            passage is loaded. Hidden in assignment mode. */}
+        {!propAssignmentId && (
+          <div className="relative" ref={sessionListRef}>
+            <button
+              onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
+              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md text-sm font-medium hover:bg-gray-50 transition"
+            >
+              📂 My Sessions
+            </button>
+            {showSessionList && (
+              <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-h-80 overflow-y-auto">
+                {savedSessions.length === 0 ? (
+                  <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
+                ) : (
+                  <ul className="divide-y divide-gray-100">
+                    {savedSessions.map(s => (
+                      <li key={s.id} className="flex items-center justify-between px-3 py-2 hover:bg-gray-50">
+                        <button
+                          onClick={() => loadSavedSession(s)}
+                          className="text-left flex-1 min-w-0"
+                        >
+                          <p className="text-sm font-medium text-gray-800 truncate">{s.title}</p>
+                          <p className="text-xs text-gray-400">{new Date(s.updatedAt).toLocaleDateString()}</p>
+                        </button>
+                        <button
+                          onClick={() => deleteSession(s.id)}
+                          className="ml-2 text-red-400 hover:text-red-600 text-xs p-1"
+                          title="Delete session"
+                        >
+                          ✕
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </div>
         )}
       </div>
 
