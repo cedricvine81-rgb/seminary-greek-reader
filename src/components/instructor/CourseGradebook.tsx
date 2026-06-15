@@ -38,7 +38,8 @@ export async function CourseGradebook({ courseId }: Props) {
     prisma.enrollment.findMany({
       where: { courseId, status: 'APPROVED' },
       include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
-      orderBy: { createdAt: 'asc' },
+      // Alphabetical by surname, then first name (gradebook convention).
+      orderBy: [{ user: { surname: 'asc' } }, { user: { firstName: 'asc' } }],
     }),
     prisma.assignment.findMany({
       where: { courseId, isPublished: true },
