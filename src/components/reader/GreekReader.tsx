@@ -89,7 +89,7 @@ type FontSize = 'sm' | 'md' | 'lg' | 'xl'
 
 const FONT_SIZE_MAP: Record<FontSize, string> = {
   sm: '0.9rem',
-  md: '1.125rem',
+  md: '1.25rem',   // 20px — matches the Exegesis pane's Greek size
   lg: '1.375rem',
   xl: '1.65rem',
 }
