@@ -1309,7 +1309,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             ) : saveStatus === 'error' ? (
               <span className="text-red-600">Couldn&rsquo;t save — check your connection</span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-emerald-600">✓ All changes saved</span>
+              <span className="inline-flex items-center gap-1 text-emerald-600">All changes saved</span>
             )}
           </span>
         )}
@@ -1317,7 +1317,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         {loadedVerses.length > 0 && (
           <button
             onClick={exportPDF}
-            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-700 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
+            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-md text-sm font-medium hover:bg-gray-300 transition"
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
