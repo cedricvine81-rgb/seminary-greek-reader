@@ -415,8 +415,21 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
   // ── Scroll to highlighted verse (instant; navKey forces re-fire for same verse) ──
 
   useEffect(() => {
-    if (highlightedVerse && verseRefs.current[highlightedVerse]) {
-      verseRefs.current[highlightedVerse].scrollIntoView({ behavior: 'instant', block: 'start' })
+    if (!highlightedVerse) return
+    const scrollToVerse = () => {
+      const el = verseRefs.current[highlightedVerse]
+      if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' })
+    }
+    // Scroll immediately, then re-scroll as layout settles. On a fresh page load
+    // (e.g. arriving via the Exegesis "Open in Reader" link) fonts and parallel-text
+    // rows above the target finish rendering after the first scroll and would push
+    // the verse out of view; the delayed passes correct that overshoot.
+    scrollToVerse()
+    const raf = requestAnimationFrame(scrollToVerse)
+    const timers = [120, 400, 900].map(ms => setTimeout(scrollToVerse, ms))
+    return () => {
+      cancelAnimationFrame(raf)
+      timers.forEach(clearTimeout)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highlightedVerse, navKey])
