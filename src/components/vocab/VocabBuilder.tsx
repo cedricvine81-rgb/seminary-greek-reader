@@ -1,6 +1,6 @@
 'use client'
 import { useState, useMemo, useEffect } from 'react'
-import { Search, GraduationCap, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
+import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -241,23 +241,23 @@ export function VocabBuilder() {
   }
 
   const TABS = [
-    { id: 'study'  as Tab, icon: <GraduationCap size={14} />, label: 'Study',  action: () => setTab('study') },
-    { id: 'browse' as Tab, icon: <Search size={14} />,        label: 'Browse', action: () => setTab('browse') },
+    { id: 'study'  as Tab, label: 'Study',  action: () => setTab('study') },
+    { id: 'browse' as Tab, label: 'Browse', action: () => setTab('browse') },
   ]
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 space-y-6">
       <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
-        {TABS.map(({ id, icon, label, action }) => (
+        {TABS.map(({ id, label, action }) => (
           <button
             key={id}
             onClick={action}
             className={clsx(
-              'flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              tab === id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+              tab === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
-            {icon}{label}
+            {label}
           </button>
         ))}
       </div>
