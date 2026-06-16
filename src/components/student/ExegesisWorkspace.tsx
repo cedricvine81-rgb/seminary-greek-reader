@@ -1202,16 +1202,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           <>
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">
-                <span className="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-                <input
-                  type="text"
-                  value={passageInput}
-                  onChange={e => { setPassageInput(e.target.value); if (passageError) setPassageError(false) }}
-                  onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-                  onBlur={handlePassageSubmit}
-                  placeholder="e.g. Matthew 3:1-3"
-                  className={`border rounded-md px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${passageError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
-                />
+                <div className="flex items-center">
+                  <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+                  <input
+                    type="text"
+                    value={passageInput}
+                    onChange={e => { setPassageInput(e.target.value); if (passageError) setPassageError(false) }}
+                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+                    onBlur={handlePassageSubmit}
+                    placeholder="e.g. Matthew 3:1-3"
+                    className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${passageError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+                  />
+                </div>
                 {isLoading && <span className="text-sm text-gray-400">Loading…</span>}
                 {selectedBook && loadedVerses.length > 0 && (
                   <a
