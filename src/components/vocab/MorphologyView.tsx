@@ -907,9 +907,9 @@ export function MorphologyView() {
               key={t.id}
               onClick={() => setMainTab(t.id)}
               className={clsx(
-                'px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap',
+                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
                 t.id === 'essentials'
-                  ? 'bg-brand-600 text-yellow-300'
+                  ? 'bg-brand-600 text-white'
                   : mainTab === t.id
                     ? 'text-gray-900 font-semibold'
                     : 'text-gray-600 hover:text-gray-900'
