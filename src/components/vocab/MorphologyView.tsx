@@ -96,6 +96,7 @@ type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'prepositions' | 'conjuncti
                '2nd-aorists' | 'deponents'
 
 const MAIN_TABS: { id: MainTab; label: string }[] = [
+  { id: 'essentials',   label: 'Essentials'      },
   { id: 'nouns',        label: 'Nouns/Adj.'      },
   { id: 'pronouns',     label: 'Pronouns'        },
   { id: 'prepositions', label: 'Prepositions'    },
@@ -108,7 +109,6 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'mi-verbs',     label: 'μι-Verbs'        },
   { id: '2nd-aorists',  label: '2nd Aorists'     },
   { id: 'deponents',    label: 'Deponents'       },
-  { id: 'essentials',   label: 'Essentials'      },
 ]
 
 /* ─────────────────────────────────────────────
@@ -908,7 +908,11 @@ export function MorphologyView() {
               onClick={() => setMainTab(t.id)}
               className={clsx(
                 'px-3 py-1.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap',
-                mainTab === t.id ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                t.id === 'essentials'
+                  ? 'bg-brand-600 text-yellow-300'
+                  : mainTab === t.id
+                    ? 'text-gray-900 font-semibold'
+                    : 'text-gray-600 hover:text-gray-900'
               )}
             >
               {t.label}
@@ -929,7 +933,7 @@ export function MorphologyView() {
                   onClick={() => setEssId(s.id)}
                   className={clsx(
                     'px-2.5 py-1 rounded-full text-sm font-medium transition-colors',
-                    essId === s.id ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    essId === s.id ? 'text-gray-900 font-semibold underline underline-offset-4' : 'text-gray-600 hover:text-gray-900'
                   )}
                 >
                   {s.label}
