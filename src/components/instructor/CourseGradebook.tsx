@@ -1,6 +1,7 @@
 import { Fragment } from 'react'
 import type { ReactNode } from 'react'
 import { prisma } from '@/lib/db'
+import { compareStudentsByName } from '@/lib/sort-students'
 
 interface Props {
   courseId: string
@@ -38,8 +39,6 @@ export async function CourseGradebook({ courseId }: Props) {
     prisma.enrollment.findMany({
       where: { courseId, status: 'APPROVED' },
       include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
-      // Alphabetical by surname, then first name (gradebook convention).
-      orderBy: [{ user: { surname: 'asc' } }, { user: { firstName: 'asc' } }],
     }),
     prisma.assignment.findMany({
       where: { courseId, isPublished: true },
@@ -47,6 +46,8 @@ export async function CourseGradebook({ courseId }: Props) {
       orderBy: { weekNumber: 'asc' },
     }),
   ])
+  // Alphabetical by surname, then first name (case-insensitive, locale-aware).
+  enrollments.sort((a, b) => compareStudentsByName(a.user, b.user))
 
   if (enrollments.length === 0 || assignments.length === 0) return null
 

@@ -29,7 +29,7 @@ const STUDENT_NAV = [
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
   { href: '/student/messages',      label: 'Messages',     icon: Mail },
   { href: '/student/exegesis',       label: 'Exegesis',     icon: Scroll },
-  { href: '/student/flashcards',    label: 'Flashcards',   icon: FlipHorizontal },
+  { href: '/vocab',                  label: 'Flashcards',   icon: FlipHorizontal },
   { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
   { href: '/student/scores',        label: 'Grades',       icon: BarChart2 },
   { href: '/student/materials',     label: 'Materials',    icon: BookMarked },

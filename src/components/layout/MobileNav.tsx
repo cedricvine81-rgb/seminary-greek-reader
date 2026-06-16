@@ -22,7 +22,7 @@ const studentTabs = [
   { label: 'Assignments', href: '/student/assignments',    icon: ClipboardList },
   { label: 'Messages',    href: '/student/messages',       icon: Mail },
   { label: 'Exegesis',    href: '/student/exegesis',       icon: Scroll },
-  { label: 'Flashcards',  href: '/student/flashcards',     icon: FlipHorizontal },
+  { label: 'Flashcards',  href: '/vocab',                  icon: FlipHorizontal },
   { label: 'Grades',      href: '/student/scores',         icon: BarChart2 },
 ]
 

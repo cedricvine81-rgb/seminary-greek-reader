@@ -5,6 +5,8 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { compareStudentsByName } from '@/lib/sort-students'
+import { rateLimit } from '@/lib/rate-limit'
 
 /** Parse an assignment reference string (e.g. "John 1:1-5", "1 Cor 13:4–7")
  *  into a passage filter suitable for querying ExegesisSession. */
@@ -62,9 +64,9 @@ export async function GET(
   const enrollments = await prisma.enrollment.findMany({
     where: { courseId: assignment.courseId, status: 'APPROVED' },
     include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
-    // Alphabetical by surname, then first name (gradebook convention).
-    orderBy: [{ user: { surname: 'asc' } }, { user: { firstName: 'asc' } }],
   })
+  // Alphabetical by surname, then first name (case-insensitive, locale-aware).
+  enrollments.sort((a, b) => compareStudentsByName(a.user, b.user))
 
   if (isPassageExercise) {
     // Primary: sessions explicitly linked to this assignment
@@ -223,6 +225,15 @@ export async function DELETE(
     if (!payload || payload.role !== 'INSTRUCTOR') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const rl = rateLimit(`exegesis-unsubmit:${payload.sub}`, 20, 60_000)
+    if (!rl.ok) {
+      return NextResponse.json(
+        { error: 'Too many requests — please wait a moment and try again.' },
+        { status: 429, headers: { 'Retry-After': String(rl.retryAfter) } },
+      )
+    }
+
     if (!await isAuthorizedForAssignment(params.assignmentId, payload.sub)) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 })
     }

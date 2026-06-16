@@ -810,6 +810,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     const parsed = parsePassageRef(raw, books)
     if (!parsed) { setPassageError(true); return }
     setPassageError(false)
+    // No-op if the passage is unchanged (e.g. focusing the box and clicking away, or
+    // re-typing the same reference). Reloading here would reset the current session and
+    // clear its annotations, so only reload when the passage actually changes.
+    const unchanged =
+      selectedBook?.osisId === parsed.book.osisId &&
+      chapter === parsed.chapter &&
+      verseStart === parsed.verseStart &&
+      verseEnd === parsed.verseEnd &&
+      loadedVerses.length > 0
+    if (unchanged) return
     setSelectedBook(parsed.book)
     setChapter(parsed.chapter)
     setVerseStart(parsed.verseStart)
