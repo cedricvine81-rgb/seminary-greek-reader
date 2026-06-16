@@ -1363,7 +1363,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
               className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md text-sm font-medium hover:bg-gray-50 transition"
             >
-              📂 My Sessions
+              My Sessions
             </button>
             {showSessionList && (
               <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-h-80 overflow-y-auto">
