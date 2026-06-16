@@ -124,7 +124,7 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader() {
+export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
   // ── Corpus queues & loaded sections ─────────────────────────────────────────
   const [gntQueue, setGntQueue] = useState<ChapterItem[]>([])
   const [lxxQueue, setLxxQueue] = useState<ChapterItem[]>([])
@@ -203,6 +203,15 @@ export function GreekReader() {
   useEffect(() => { lxxRef.current      = lxx },        [lxx])
   useEffect(() => { gntQueueRef.current = gntQueue },   [gntQueue])
   useEffect(() => { lxxQueueRef.current = lxxQueue },   [lxxQueue])
+
+  // ── Deep link: jump to a passage passed via ?ref= (e.g. from the Exegesis page) ──
+  const initialJumpDone = useRef(false)
+  useEffect(() => {
+    if (initialJumpDone.current || !initialRef || gntQueue.length === 0) return
+    initialJumpDone.current = true
+    handleSearch(initialRef, 'reference')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialRef, gntQueue.length])
   useEffect(() => { parsingRef.current    = parsingInfo }, [parsingInfo])
   useEffect(() => { lockedRef.current     = lockedInfo },  [lockedInfo])
   useEffect(() => { syntaxMenuRef.current = !!syntaxMenu }, [syntaxMenu])
