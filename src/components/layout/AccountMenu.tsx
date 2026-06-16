@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 import {
   Menu, X, LogIn, UserPlus, LogOut, Settings,
   LayoutDashboard, Calendar, ClipboardList, FileText,
-  BarChart2, GraduationCap, FlipHorizontal, TrendingUp,
-  BookMarked, Archive, Scroll, Mail,
+  BarChart2, GraduationCap, TrendingUp,
+  BookMarked, Archive, Mail,
 } from 'lucide-react'
 
 interface AppMenuProps {
@@ -28,8 +28,6 @@ const STUDENT_NAV = [
   { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
   { href: '/student/messages',      label: 'Messages',     icon: Mail },
-  { href: '/student/exegesis',       label: 'Exegesis',     icon: Scroll },
-  { href: '/vocab',                  label: 'Flashcards',   icon: FlipHorizontal },
   { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
   { href: '/student/scores',        label: 'Grades',       icon: BarChart2 },
   { href: '/student/materials',     label: 'Materials',    icon: BookMarked },
