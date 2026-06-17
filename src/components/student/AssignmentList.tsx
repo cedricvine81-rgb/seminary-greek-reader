@@ -41,7 +41,10 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
     <div className="space-y-2">
       {assignments.map(a => {
         const done = completedIds.has(a.id)
-        const overdue = !done && new Date(a.dueDate) < new Date()
+        // Two-round passage exercises run until the Round 2 deadline, so judge
+        // "overdue"/"due" by that, not their dueDate (the Round 1 cut-off).
+        const finalDue = a.round2Deadline ?? a.round1Deadline ?? a.dueDate
+        const overdue = !done && new Date(finalDue) < new Date()
         return (
           <Link
             key={a.id}
@@ -52,7 +55,7 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
               <p className="text-sm font-semibold text-gray-900 truncate">{a.title}</p>
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
-                <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(a.dueDate), 'MMM d, yyyy')}</span>
+                <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(finalDue), 'MMM d, yyyy')}</span>
               </div>
               {(a.round1Deadline || a.round2Deadline) && (
                 <div className="flex flex-col gap-0.5 mt-0.5">

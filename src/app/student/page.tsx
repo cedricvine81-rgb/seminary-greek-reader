@@ -5,6 +5,7 @@ import { StudentDashboard } from '@/components/student/StudentDashboard'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
+import { effectiveDeadline } from '@/lib/assignment-deadline'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -62,10 +63,10 @@ export default async function StudentPage() {
   for (const s of exegesisSessions) {
     if (s.submittedAt && s.assignmentId) completedIds.add(s.assignmentId)
   }
-  const pending = allAssignments.filter(a => !completedIds.has(a.id) && new Date(a.dueDate) >= new Date())
+  const pending = allAssignments.filter(a => !completedIds.has(a.id) && effectiveDeadline(a) >= new Date())
   // Header nudge: assignments due within the next 3 days.
   const dueSoonCount = pending.filter(a => {
-    const days = Math.ceil((new Date(a.dueDate).getTime() - Date.now()) / 86400000)
+    const days = Math.ceil((effectiveDeadline(a).getTime() - Date.now()) / 86400000)
     return days <= 3
   }).length
 
@@ -82,7 +83,7 @@ export default async function StudentPage() {
         id: a.id,
         title: a.title,
         type: a.type as string,
-        dueDate: a.dueDate.toISOString(),
+        dueDate: effectiveDeadline(a).toISOString(),
         weekNumber: a.weekNumber,
         completed: completedIds.has(a.id),
       })),

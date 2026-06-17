@@ -11,6 +11,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
+import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { ArrowLeft } from 'lucide-react'
 
 export const metadata: Metadata = { title: 'Assignment' }
@@ -47,9 +48,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   // assignment before Round 2. Other assignments use dueDate.
   const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
   const now = new Date()
-  const finalDeadline = isPassageExercise
-    ? (assignment.round2Deadline ?? assignment.round1Deadline ?? assignment.dueDate)
-    : assignment.dueDate
+  const finalDeadline = effectiveDeadline(assignment)
   const isPastDue = now > finalDeadline
   const lateDeadline = assignment.allowLate && assignment.lateDaysLimit != null
     ? addDays(finalDeadline, assignment.lateDaysLimit)
