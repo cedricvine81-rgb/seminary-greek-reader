@@ -901,7 +901,7 @@ export function MorphologyView() {
     <div className="flex flex-col min-h-0">
       {/* Main tab bar */}
       <div>
-        <div className="flex flex-wrap gap-1.5 px-4 py-2 border-b border-gray-100 bg-white">
+        <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-white">
           {MAIN_TABS.map(t => (
             <button
               key={t.id}
@@ -926,7 +926,7 @@ export function MorphologyView() {
         {mainTab === 'essentials' ? (
           <>
             {/* Ess. 1–8 sub-navigation */}
-            <div className="flex gap-1.5 flex-wrap px-4 py-3 border-b border-gray-100 bg-white">
+            <div className="flex gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-white">
               {ESS_SECTIONS.map(s => (
                 <button
                   key={s.id}
@@ -940,13 +940,13 @@ export function MorphologyView() {
                 </button>
               ))}
             </div>
-            <div className="px-4 py-4">
+            <div className="py-4">
               <h2 className="text-base font-semibold text-gray-900 mb-4">{activeEss.title}</h2>
               {activeEss.content}
             </div>
           </>
         ) : (
-          <div className="px-4 py-4">
+          <div className="py-4">
             <h2 className="text-base font-semibold text-gray-900 mb-4">
               {MAIN_TABS.find(t => t.id === mainTab)?.label}
             </h2>
