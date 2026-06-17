@@ -354,6 +354,26 @@ function parsePassageRef(ref: string, books: BiblicalBook[]): {
   return { book, chapter: ch, verseStart: vs, verseEnd: ve }
 }
 
+// PDF/print: render a word's Round 1 / Round 2 fields as aligned rows. `fields`
+// is shared between the two columns so Parse/Syntax/Trans line up vertically.
+const PRINT_ANN_FIELDS = ['parsing', 'syntax', 'translation'] as const
+type PrintAnnField = typeof PRINT_ANN_FIELDS[number]
+const PRINT_ANN_LABELS: Record<PrintAnnField, string> = { parsing: 'Parse', syntax: 'Syntax', translation: 'Trans.' }
+function PrintAnnLines({ ann, fields }: { ann: WordAnnotation; fields: readonly PrintAnnField[] }) {
+  if (fields.length === 0) return <span className="text-gray-300">—</span>
+  return (
+    <div className="space-y-0.5">
+      {fields.map(f => (
+        <p key={f}>
+          {ann[f]
+            ? <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{ann[f]}</>
+            : <span className="opacity-0 select-none">—</span>}
+        </p>
+      ))}
+    </div>
+  )
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true }: { assignmentId?: string; isAuthenticated?: boolean }) {
@@ -1460,7 +1480,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                         data-greek-word
                         onClick={() => handleWordClick(w, v.verse)}
                         className={[
-                          'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:border-b print:border-dotted print:border-gray-400',
+                          'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:px-0',
                           reviewMode ? 'text-lg' : 'text-xl',
                           isSelected
                             ? 'bg-brand-100 text-brand-800 ring-2 ring-brand-400 print:bg-transparent print:ring-0'
@@ -1478,7 +1498,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                 </div>
 
                 {/* Whole-verse translation (Round 1) */}
-                <div className="mt-2">
+                <div className="mt-2 print:hidden">
                   <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
                     Verse Translation
                   </label>
@@ -1488,13 +1508,13 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     disabled={isLocked}
                     rows={2}
                     placeholder={isLocked ? '' : 'Write your translation of this whole verse…'}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed print:border-gray-300"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
 
                 {/* Round 2 Notes — only shown after Round 1 ends */}
                 {reviewMode && (
-                  <div className="mt-2">
+                  <div className="mt-2 print:hidden">
                     <label className={`block text-[11px] font-semibold uppercase tracking-wide mb-1 ${correctionLocked ? 'text-gray-400' : 'text-red-500'}`}>
                       Round 2 Notes{correctionLocked ? ' (locked)' : ''}
                     </label>
@@ -1508,43 +1528,63 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                         correctionLocked
                           ? 'border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed'
                           : 'border-2 border-red-300 bg-red-50 text-red-700 placeholder-red-300 focus:ring-red-400'
-                      } print:border-gray-300`}
+                      }`}
                     />
                   </div>
                 )}
 
-                {/* Print only: this verse's word analysis, listed directly under the
-                    verse (parsing / syntax / translation, with Round 2 corrections in red). */}
+                {/* Print only: Round 1 translation + Round 2 notes, side by side */}
                 {(() => {
-                  const wordHas = (w: VerseWord) => {
+                  const r1 = (verseTranslations[String(v.verse)] ?? '').trim()
+                  const r2 = (verseCorrections[String(v.verse)] ?? '').trim()
+                  if (!r1 && !r2) return null
+                  return (
+                    <div className={`hidden print:grid gap-4 mt-2 ${reviewMode ? 'print:grid-cols-2' : 'print:grid-cols-1'}`}>
+                      <div>
+                        <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-500 mb-1">Round 1 — Verse translation</p>
+                        <p className="text-sm text-gray-800 whitespace-pre-wrap">{r1 || '—'}</p>
+                      </div>
+                      {reviewMode && (
+                        <div>
+                          <p className="text-[10px] font-semibold uppercase tracking-wide text-red-500 mb-1">Round 2 Notes</p>
+                          <p className="text-sm text-red-700 whitespace-pre-wrap">{r2 || '—'}</p>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })()}
+
+                {/* Print only: per-word Round 1 annotations vs Round 2 corrections,
+                    matching the on-screen review layout. Fields are aligned row-by-row
+                    so Round 1 and Round 2 line up (Parse↔Parse, Syntax↔Syntax). */}
+                {(() => {
+                  const rows = v.words.filter(w => {
                     const key = wordKey(v.verse, w.id)
                     const ann = annotations[key]
                     const corr = corrections[key]
                     return Boolean(ann?.parsing || ann?.syntax || ann?.translation || corr?.parsing || corr?.syntax || corr?.translation)
-                  }
-                  const rows = v.words.filter(wordHas)
+                  })
                   if (rows.length === 0) return null
                   return (
-                    <table className="hidden print:table w-full border-collapse text-sm mt-2">
+                    <table className="hidden print:table w-full border-collapse text-xs mt-3">
                       <thead>
-                        <tr className="border-b border-gray-400">
-                          <th className="text-left py-0.5 pr-2 font-semibold font-greek">Word</th>
-                          <th className="text-left py-0.5 pr-2 font-semibold">Parsing</th>
-                          <th className="text-left py-0.5 pr-2 font-semibold">Syntax</th>
-                          <th className="text-left py-0.5 font-semibold">Observations</th>
+                        <tr className="border-b border-gray-300">
+                          <th className="text-left py-1 pr-3 font-semibold w-28">Greek word</th>
+                          <th className="text-left py-1 pr-3 font-semibold">Round 1 — annotations</th>
+                          <th className="text-left py-1 font-semibold text-red-600">Round 2 — corrections</th>
                         </tr>
                       </thead>
                       <tbody>
                         {rows.map(w => {
                           const key = wordKey(v.verse, w.id)
-                          const ann = annotations[key] ?? { parsing: '', syntax: '', translation: '' }
-                          const corr = corrections[key]
+                          const ann = (annotations[key] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation
+                          const corr = (corrections[key] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation
+                          const fields = PRINT_ANN_FIELDS.filter(f => ann[f] || corr[f])
                           return (
-                            <tr key={w.id} className="align-top">
-                              <td className="py-0.5 pr-2 font-greek">{w.surface}</td>
-                              <td className="py-0.5 pr-2 text-xs">{ann.parsing}{corr?.parsing && <span className="text-red-600 font-medium"> → {corr.parsing}</span>}</td>
-                              <td className="py-0.5 pr-2 text-xs">{ann.syntax}{corr?.syntax && <span className="text-red-600 font-medium"> → {corr.syntax}</span>}</td>
-                              <td className="py-0.5 text-xs">{ann.translation}{corr?.translation && <span className="text-red-600 font-medium"> → {corr.translation}</span>}</td>
+                            <tr key={w.id} className="align-top border-b border-gray-100">
+                              <td className="py-1.5 pr-3 font-greek text-sm">{w.surface}</td>
+                              <td className="py-1.5 pr-3 text-gray-800"><PrintAnnLines ann={ann} fields={fields} /></td>
+                              <td className="py-1.5 text-red-700"><PrintAnnLines ann={corr} fields={fields} /></td>
                             </tr>
                           )
                         })}

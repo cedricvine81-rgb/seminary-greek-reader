@@ -51,14 +51,25 @@ function Field({ value }: { value?: string }) {
 }
 
 /** Three sub-rows (Parsing / Syntax / Translation) for one column */
-function AnnotationBlock({ ann }: { ann: WordAnnotation }) {
-  const empty = !ann.parsing && !ann.syntax && !ann.translation
-  if (empty) return <span className="text-gray-300 italic text-xs">—</span>
+const ANN_FIELDS = ['parsing', 'syntax', 'translation'] as const
+type AnnField = typeof ANN_FIELDS[number]
+const ANN_LABELS: Record<AnnField, string> = { parsing: 'Parse', syntax: 'Syntax', translation: 'Trans.' }
+
+// `fields` pins which rows to render so the Round 1 and Round 2 columns stay
+// vertically aligned field-by-field (e.g. a lone Round 2 Syntax note lines up with
+// the Round 1 Syntax row instead of jumping to the top).
+function AnnotationBlock({ ann, fields }: { ann: WordAnnotation; fields?: readonly AnnField[] }) {
+  const show = fields ?? ANN_FIELDS.filter(f => ann[f])
+  if (show.length === 0) return <span className="text-gray-300 italic text-xs">—</span>
   return (
     <div className="space-y-1 text-xs">
-      {ann.parsing   && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">Parse</span>{ann.parsing}</p>}
-      {ann.syntax    && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">Syntax</span>{ann.syntax}</p>}
-      {ann.translation && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">Trans.</span>{ann.translation}</p>}
+      {show.map(f => (
+        <p key={f}>
+          {ann[f]
+            ? <><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{ann[f]}</>
+            : <span className="opacity-0 select-none">—</span>}
+        </p>
+      ))}
     </div>
   )
 }
@@ -308,19 +319,19 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                   // Round 1: use the snapshot taken at submit time when available; fall back to current annotations
                   const round1 = (submittedAnnotations ? (submittedAnnotations[key] ?? {}) : (annotations[key] ?? {})) as WordAnnotation
                   const cor = corrections[key] ?? {}
-                  const hasAnn = round1.parsing || round1.syntax || round1.translation
-                  const hasCor = (cor as WordAnnotation).parsing || (cor as WordAnnotation).syntax || (cor as WordAnnotation).translation
-                  if (!hasAnn && !hasCor) return null
+                  const corAnn = cor as WordAnnotation
+                  const fields = ANN_FIELDS.filter(f => round1[f] || corAnn[f])
+                  if (fields.length === 0) return null
                   return (
                     <tr key={word.id} className="hover:bg-gray-50/50">
                       <td className="py-2.5 pr-4 align-top">
                         <p className="font-greek text-base text-gray-900">{word.surface}</p>
                       </td>
                       <td className="py-2.5 pr-4 align-top text-gray-700">
-                        <AnnotationBlock ann={round1} />
+                        <AnnotationBlock ann={round1} fields={fields} />
                       </td>
                       <td className="py-2.5 align-top text-red-700">
-                        <AnnotationBlock ann={cor as WordAnnotation} />
+                        <AnnotationBlock ann={corAnn} fields={fields} />
                       </td>
                     </tr>
                   )
