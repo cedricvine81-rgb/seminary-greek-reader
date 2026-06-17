@@ -22,7 +22,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
         {/* Brand */}
         <Link href={brandHref} className="flex items-center gap-2.5 group">
-          <div className="w-10 h-8 bg-brand-800 rounded-lg flex items-center justify-center">
+          <div className="w-10 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
             <span className="text-parchment-100 font-serif text-base font-bold tracking-tight">ΣΓ</span>
           </div>
           <span className="font-semibold text-gray-900 group-hover:text-brand-700 transition-colors hidden sm:block">
