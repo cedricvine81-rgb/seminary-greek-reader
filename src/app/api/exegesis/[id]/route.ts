@@ -90,16 +90,32 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     if (existing.userId !== payload.sub) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
     const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId } = body
-    // Notes & Questions scratchpad: only writable until submission (locks afterwards).
-    const acceptNotes = notes !== undefined && !existing.submittedAt
+
+    // Server-side lock enforcement (the workspace UI also locks these, but the API is
+    // the source of truth): once submitted, the work is frozen; Round 1 fields lock
+    // after the Round 1 deadline and Round 2 fields after the Round 2 deadline, so a
+    // direct API call can't edit work past the deadline or after submitting.
+    const submitted = !!existing.submittedAt
+    let round1Locked = submitted
+    let round2Locked = submitted
+    if (existing.assignmentId) {
+      const asgn = await prisma.assignment.findUnique({
+        where: { id: existing.assignmentId },
+        select: { round1Deadline: true, round2Deadline: true },
+      })
+      const now = new Date()
+      if (asgn?.round1Deadline && now > asgn.round1Deadline) round1Locked = true
+      if (asgn?.round2Deadline && now > asgn.round2Deadline) round2Locked = true
+    }
+
     const updated = await prisma.exegesisSession.update({
       where: { id: params.id },
       data: {
-        ...(annotations !== undefined && { annotations }),
-        ...(corrections !== undefined && { corrections }),
-        ...(verseTranslations !== undefined && { verseTranslations }),
-        ...(verseCorrections !== undefined && { verseCorrections }),
-        ...(acceptNotes && { notes: String(notes) }),
+        ...(annotations !== undefined && !round1Locked && { annotations }),
+        ...(verseTranslations !== undefined && !round1Locked && { verseTranslations }),
+        ...(corrections !== undefined && !round2Locked && { corrections }),
+        ...(verseCorrections !== undefined && !round2Locked && { verseCorrections }),
+        ...(notes !== undefined && !submitted && { notes: String(notes) }),
         ...(title && { title }),
         // Only set startedAt once (never overwrite)
         ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),

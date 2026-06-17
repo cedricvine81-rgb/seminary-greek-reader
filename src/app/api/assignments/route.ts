@@ -3,6 +3,7 @@ import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
+import { isInstructorOfCourse } from '@/lib/course-auth'
 import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -50,6 +51,10 @@ export async function POST(req: NextRequest) {
   // Validate required fields
   if (!courseId || !title || !type || !weekNumber || !dueDate || !level) {
     return NextResponse.json({ error: 'courseId, title, type, weekNumber, dueDate, and level are required.' }, { status: 400 })
+  }
+  // Authorization: the instructor must actually teach (or co-teach) this course.
+  if (!await isInstructorOfCourse(courseId, payload.sub)) {
+    return NextResponse.json({ error: 'You do not teach this course.' }, { status: 403 })
   }
   if (type === 'TRANSLATION_EXERCISE' && !reference?.trim()) {
     return NextResponse.json({ error: 'A passage reference is required for Translation Exercise assignments.' }, { status: 400 })
