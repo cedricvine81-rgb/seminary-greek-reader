@@ -18,9 +18,22 @@ const _chapterCache = new Map<string, { book: BiblicalBook; chapter: number; ver
 // ─── Gloss lookup (vocabulary-frequency words from seed data) ─────────────────
 // Keyed by Greek lemma → { gloss, partOfSpeech, strongs }
 
-type GlossEntry = { gloss: string; partOfSpeech: string; strongs?: string; frequency?: number }
+type GlossEntry = { gloss: string; partOfSpeech: string; strongs?: string }
 let _glossMap: Map<string, GlossEntry> | null = null
 let _strongsMap: Map<string, GlossEntry> | null = null
+
+// Exact NT (GNT) lemma occurrence counts, precomputed from the corpus text
+// (prisma/seed-data/nt-lemma-frequency.json). Used to flag low-frequency words.
+let _freqMap: Map<string, number> | null = null
+function getNtFrequency(): Map<string, number> {
+  if (_freqMap) return _freqMap
+  _freqMap = new Map()
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/nt-lemma-frequency.json'), 'utf8')) as Record<string, number>
+    for (const [lemma, count] of Object.entries(raw)) _freqMap.set(lemma, count)
+  } catch { /* missing in prod → frequencies default to 0 */ }
+  return _freqMap
+}
 
 function buildGlossMaps() {
   if (_glossMap && _strongsMap) return
@@ -38,7 +51,7 @@ function buildGlossMaps() {
     const v50 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-50-plus.json'), 'utf8'))
     const v30 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-30-plus.json'), 'utf8'))
     for (const entry of [...v50, ...v30]) {
-      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: entry.partOfSpeech, strongs: entry.strongs, frequency: entry.frequency }
+      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: entry.partOfSpeech, strongs: entry.strongs }
       _glossMap.set(entry.lexeme, ge)
       if (entry.strongs) _strongsMap.set(entry.strongs, ge)
     }
@@ -107,9 +120,9 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
     lexeme: raw.lemma,
     gloss: gloss?.gloss ?? '',
     partOfSpeech: gloss?.partOfSpeech ?? raw.morph.partOfSpeech,
-    // Real NT frequency for words in the ≥30 vocab lists; 0 for rarer words
-    // (those occur <30× — enough to flag them for the beginner/intermediate glossary).
-    frequency: gloss?.frequency ?? 0,
+    // Exact NT occurrence count for this lemma (0 if the lemma isn't in the GNT,
+    // e.g. LXX-only words — treated as rare for the glossary).
+    frequency: getNtFrequency().get(raw.lemma) ?? 0,
     strongs: gloss?.strongs ?? (raw.strongs ? `G${raw.strongs}` : undefined),
   }
 

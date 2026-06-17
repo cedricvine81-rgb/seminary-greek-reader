@@ -519,6 +519,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 </div>
               </label>
             </div>
+
+            <div className="border-t border-brand-200 pt-3">
+              <label className="block text-sm font-medium text-brand-800 mb-1">Definition glossary</label>
+              <select
+                value={form.glossFrequency ?? ''}
+                onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
+                className="input"
+              >
+                <option value="">Off — no glossary</option>
+                <option value="50">Beginner — words rarer than 50×</option>
+                <option value="30">Intermediate — words rarer than 30×</option>
+              </select>
+              <p className="text-xs text-brand-600 mt-1">Lists definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
+            </div>
           </div>
         </div>
       )}

@@ -72,6 +72,7 @@ export interface AssignmentFormData {
   round1Deadline?: string   // datetime-local string; translation exercises
   round2Deadline?: string   // datetime-local string; translation exercises
   allowReaderInRound2?: boolean   // translation exercises: expose Reader info during Round 2
+  glossFrequency?: number | null  // translation exercises: glossary frequency threshold (null/undefined = off)
   allowLate?: boolean
   lateDaysLimit?: number
 }
