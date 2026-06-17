@@ -1195,7 +1195,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       )}
 
       {/* ── Toolbar ── */}
-      <div className="print:hidden bg-white border-b border-gray-200 px-4 py-3 flex flex-wrap items-end gap-3">
+      <div className="print:hidden bg-white border-b border-gray-200 py-3 flex flex-wrap items-end gap-3">
 
         {/* Passage box — hidden in assignment mode (passage is fixed) */}
         {!propAssignmentId && (
@@ -1422,7 +1422,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         <div className="flex gap-0 print:block min-h-0 flex-col lg:flex-row">
 
           {/* ── Greek text pane ── */}
-          <div className="overflow-y-auto p-4 lg:p-6 print:overflow-visible flex-1">
+          <div className="overflow-y-auto py-4 lg:py-6 print:overflow-visible flex-1">
 
             {/* Print: passage header */}
             <div className="hidden print:block mb-4">

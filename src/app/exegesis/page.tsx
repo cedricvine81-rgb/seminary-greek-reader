@@ -12,7 +12,7 @@ export default function PublicExegesisPage() {
   const isAuthenticated = !!(token && verifyToken(token))
 
   return (
-    <main className="flex flex-col h-[calc(100vh-3.5rem)] overflow-hidden print:h-auto print:overflow-visible w-full max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+    <main className="flex flex-col h-[calc(100vh-3.5rem)] overflow-hidden print:h-auto print:overflow-visible w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
       <ExegesisWorkspace isAuthenticated={isAuthenticated} />
     </main>
   )
