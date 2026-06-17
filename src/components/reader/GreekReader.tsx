@@ -1041,9 +1041,12 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
   return (
     <div className="flex flex-col h-full gap-2">
 
-      {/* ── Settings button row ── */}
-      <div className="flex-none flex items-center justify-end">
-        <div ref={settingsRef} className="relative">
+      {/* ── Search + settings row ── */}
+      <div className="flex-none flex items-center gap-2">
+        <div className="flex-1 min-w-0">
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <div ref={settingsRef} className="relative shrink-0">
           <button
             title="Settings"
             onClick={() => setShowSettings(v => !v)}
@@ -1258,11 +1261,6 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
             </div>
           )}
         </div>
-      </div>
-
-      {/* ── Search bar ── */}
-      <div className="flex-none">
-        <SearchBar onSearch={handleSearch} />
       </div>
 
       {/* ── Search result bar ── */}
