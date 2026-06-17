@@ -1451,7 +1451,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                 {/* Left column: the Greek text + whole-verse boxes */}
                 <div className="min-w-0">
                 <p className="text-xs text-gray-400 font-medium mb-2 print:mb-1">{v.reference}</p>
-                <div className="flex flex-wrap gap-1.5 leading-loose">
+                <div className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose">
                   {v.words.map(w => {
                     const key = wordKey(v.verse, w.id)
                     const hasAnn = annotations[key] &&
@@ -1465,8 +1465,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                         data-greek-word
                         onClick={() => handleWordClick(w, v.verse)}
                         className={[
-                          'px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:px-0',
-                          reviewMode ? 'text-lg' : 'text-xl',
+                          'flex flex-col items-center px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:px-0',
                           isSelected
                             ? 'bg-brand-100 text-brand-800 ring-2 ring-brand-400 print:bg-transparent print:ring-0'
                             : hasCorr
@@ -1476,7 +1475,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                                 : 'text-gray-800 hover:bg-gray-100 print:text-black',
                         ].join(' ')}
                       >
-                        {w.surface}
+                        {/* Round 1 parsing above + syntax below the (enlarged) Greek word,
+                            so students can translate with their analysis in view. */}
+                        <span className="font-sans text-[11px] leading-tight text-gray-500 whitespace-nowrap print:hidden">{annotations[key]?.parsing || ' '}</span>
+                        <span className={reviewMode ? 'text-xl' : 'text-2xl'}>{w.surface}</span>
+                        <span className="font-sans text-[11px] leading-tight text-gray-500 whitespace-nowrap print:hidden">{annotations[key]?.syntax || ' '}</span>
                       </button>
                     )
                   })}
