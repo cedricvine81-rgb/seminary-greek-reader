@@ -278,6 +278,9 @@ model Assignment {
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   provideDefinition Boolean   @default(false)
+  // Translation exercises: show a glossary of words rarer than this NT frequency
+  // under each verse (e.g. 50 = beginner, 30 = intermediate). Null = no glossary.
+  glossFrequency Int?
   // Translation exercises: when true, students may consult Reader info (parsing, gloss, lexicon)
   // for the clicked word during Round 2 corrections. Default false to preserve existing behavior.
   allowReaderInRound2 Boolean  @default(false)

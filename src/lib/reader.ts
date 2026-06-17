@@ -18,7 +18,7 @@ const _chapterCache = new Map<string, { book: BiblicalBook; chapter: number; ver
 // ─── Gloss lookup (vocabulary-frequency words from seed data) ─────────────────
 // Keyed by Greek lemma → { gloss, partOfSpeech, strongs }
 
-type GlossEntry = { gloss: string; partOfSpeech: string; strongs?: string }
+type GlossEntry = { gloss: string; partOfSpeech: string; strongs?: string; frequency?: number }
 let _glossMap: Map<string, GlossEntry> | null = null
 let _strongsMap: Map<string, GlossEntry> | null = null
 
@@ -38,7 +38,7 @@ function buildGlossMaps() {
     const v50 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-50-plus.json'), 'utf8'))
     const v30 = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'prisma/seed-data/vocabulary-nt-30-plus.json'), 'utf8'))
     for (const entry of [...v50, ...v30]) {
-      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: entry.partOfSpeech, strongs: entry.strongs }
+      const ge: GlossEntry = { gloss: entry.gloss, partOfSpeech: entry.partOfSpeech, strongs: entry.strongs, frequency: entry.frequency }
       _glossMap.set(entry.lexeme, ge)
       if (entry.strongs) _strongsMap.set(entry.strongs, ge)
     }
@@ -107,7 +107,9 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
     lexeme: raw.lemma,
     gloss: gloss?.gloss ?? '',
     partOfSpeech: gloss?.partOfSpeech ?? raw.morph.partOfSpeech,
-    frequency: 0,
+    // Real NT frequency for words in the ≥30 vocab lists; 0 for rarer words
+    // (those occur <30× — enough to flag them for the beginner/intermediate glossary).
+    frequency: gloss?.frequency ?? 0,
     strongs: gloss?.strongs ?? (raw.strongs ? `G${raw.strongs}` : undefined),
   }
 

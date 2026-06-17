@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -80,6 +80,7 @@ export async function POST(req: NextRequest) {
         ? Number(quizStylePct) > 0
         : Boolean(provideDefinition),
       allowReaderInRound2: Boolean(allowReaderInRound2),
+      glossFrequency: glossFrequency != null && Number(glossFrequency) > 0 ? Number(glossFrequency) : null,
       maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
       vocabSelection: vocabSel ?? undefined,

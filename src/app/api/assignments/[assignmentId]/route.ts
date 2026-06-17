@@ -21,7 +21,7 @@ export async function GET(
         dueDate: true, reference: true, instructions: true,
         isPublished: true, courseId: true, timePerQuestion: true, reviewTimeSeconds: true,
         submissionDeadline: true, round1Deadline: true, round2Deadline: true,
-        allowReaderInRound2: true, maxAppeals: true,
+        allowReaderInRound2: true, maxAppeals: true, glossFrequency: true,
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -64,7 +64,7 @@ export async function PATCH(
     title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, submissionDeadline, round1Deadline, round2Deadline,
-    allowReaderInRound2, maxAppeals,
+    allowReaderInRound2, maxAppeals, glossFrequency,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -89,6 +89,7 @@ export async function PATCH(
       data.reviewTimeSeconds = Number(reviewTimeSeconds) > 0 ? Number(reviewTimeSeconds) : null
     if (provideDefinition !== undefined) data.provideDefinition = Boolean(provideDefinition)
     if (allowReaderInRound2 !== undefined) data.allowReaderInRound2 = Boolean(allowReaderInRound2)
+    if ('glossFrequency' in body) data.glossFrequency = glossFrequency != null && Number(glossFrequency) > 0 ? Number(glossFrequency) : null
     if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null

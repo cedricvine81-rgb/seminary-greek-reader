@@ -31,6 +31,7 @@ interface Props {
     round1Deadline: string | null      // ISO string, translation exercises only
     round2Deadline: string | null      // ISO string, translation exercises only
     allowReaderInRound2: boolean       // translation exercises only
+    glossFrequency: number | null      // translation exercises only
   }
 }
 
@@ -86,6 +87,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [round1Deadline, setRound1Deadline] = useState(toLocalInput(initial.round1Deadline))
   const [round2Deadline, setRound2Deadline] = useState(toLocalInput(initial.round2Deadline))
   const [allowReaderInRound2, setAllowReaderInRound2] = useState(initial.allowReaderInRound2)
+  const [glossFrequency, setGlossFrequency] = useState<number | null>(initial.glossFrequency)
 
   async function handleSave() {
     if (isTranslation && !reference.trim()) {
@@ -122,6 +124,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           round1Deadline: isTranslation ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
           round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
           allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
+          glossFrequency: isTranslation ? glossFrequency : undefined,
         }),
       })
       if (!res.ok) {
@@ -283,6 +286,20 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 </p>
               </div>
             </label>
+            <hr className="border-brand-200" />
+            <div>
+              <label className="block text-sm font-medium text-brand-800 mb-1">Definition glossary</label>
+              <select
+                value={glossFrequency ?? ''}
+                onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
+                className="input"
+              >
+                <option value="">Off — no glossary</option>
+                <option value="50">Beginner — words rarer than 50×</option>
+                <option value="30">Intermediate — words rarer than 30×</option>
+              </select>
+              <p className="text-xs text-brand-600 mt-1">Shows definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
+            </div>
             <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">Timer settings</p>
             <Input

@@ -48,6 +48,7 @@ interface AssignmentInfo {
   round1Deadline: Date | null             // absolute cut-off for Round 1 annotations
   round2Deadline: Date | null             // absolute cut-off for Round 2 corrections
   allowReaderInRound2: boolean            // expose Reader info during Round 2
+  glossFrequency: number | null           // show a glossary of words rarer than this; null = off
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -478,6 +479,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           round1Deadline: a.round1Deadline ? new Date(a.round1Deadline) : null,
           round2Deadline: a.round2Deadline ? new Date(a.round2Deadline) : null,
           allowReaderInRound2: !!a.allowReaderInRound2,
+          glossFrequency: a.glossFrequency ?? null,
         }
         if (assignmentInfo.submissionDeadline && new Date() > assignmentInfo.submissionDeadline) {
           setDeadlinePassed(true)
@@ -1499,6 +1501,37 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
+
+                {/* Glossary — words in this verse rarer than the instructor's frequency
+                    threshold, with definitions, to help with translation. */}
+                {assignment?.glossFrequency != null && (() => {
+                  const threshold = assignment.glossFrequency!
+                  const seen = new Set<string>()
+                  const rare = v.words.filter(w => {
+                    const lex = w.lexeme
+                    if (!lex || !lex.gloss || !lex.lexeme) return false
+                    if ((lex.frequency ?? 0) >= threshold) return false
+                    if (seen.has(lex.lexeme)) return false
+                    seen.add(lex.lexeme)
+                    return true
+                  })
+                  if (rare.length === 0) return null
+                  return (
+                    <div className="mt-2 print:hidden rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                      <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                        Glossary · words rarer than {threshold}×
+                      </p>
+                      <ul className="space-y-0.5">
+                        {rare.map(w => (
+                          <li key={w.id} className="text-sm leading-snug">
+                            <span className="font-greek text-gray-800">{w.lexeme!.lexeme}</span>
+                            <span className="text-gray-500"> — {w.lexeme!.gloss}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )
+                })()}
 
                 {/* Round 2 Notes — only shown after Round 1 ends */}
                 {reviewMode && (

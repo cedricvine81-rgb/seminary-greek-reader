@@ -130,6 +130,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             round1Deadline: assignment.round1Deadline?.toISOString() ?? null,
             round2Deadline: assignment.round2Deadline?.toISOString() ?? null,
             allowReaderInRound2: assignment.allowReaderInRound2,
+            glossFrequency: assignment.glossFrequency,
           }}
         />
 

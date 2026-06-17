@@ -49,6 +49,7 @@ export async function POST(
       lateDaysLimit:  source.lateDaysLimit,
       // Carry quiz config so the copy behaves and edits like the original:
       provideDefinition: source.provideDefinition,   // grading mode for typed answers
+      glossFrequency: source.glossFrequency,         // translation-exercise glossary threshold
       maxRetakes:     source.maxRetakes,
       maxAppeals:     source.maxAppeals,
       morphSubtype:   source.morphSubtype,           // morphology regenerate
