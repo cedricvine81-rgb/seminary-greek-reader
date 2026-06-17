@@ -313,28 +313,31 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                   <th className="pb-2 text-left font-semibold text-red-600">Round 2 — corrections</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
-                {verse.words.map(word => {
+              <tbody>
+                {verse.words.flatMap(word => {
                   const key = `${verse.verse}-${word.id}`
                   // Round 1: use the snapshot taken at submit time when available; fall back to current annotations
                   const round1 = (submittedAnnotations ? (submittedAnnotations[key] ?? {}) : (annotations[key] ?? {})) as WordAnnotation
-                  const cor = corrections[key] ?? {}
-                  const corAnn = cor as WordAnnotation
+                  const corAnn = (corrections[key] ?? {}) as WordAnnotation
                   const fields = ANN_FIELDS.filter(f => round1[f] || corAnn[f])
-                  if (fields.length === 0) return null
-                  return (
-                    <tr key={word.id} className="hover:bg-gray-50/50">
-                      <td className="py-2.5 pr-4 align-top">
-                        <p className="font-greek text-base text-gray-900">{word.surface}</p>
+                  if (fields.length === 0) return []
+                  // One table row per field so Round 1 and Round 2 of the same field
+                  // share a row height and stay aligned even when a value wraps.
+                  return fields.map((f, i) => (
+                    <tr key={`${word.id}-${f}`} className={i === 0 ? 'border-t border-gray-100' : ''}>
+                      {i === 0 && (
+                        <td rowSpan={fields.length} className="py-2.5 pr-4 align-top">
+                          <p className="font-greek text-base text-gray-900">{word.surface}</p>
+                        </td>
+                      )}
+                      <td className="py-1 pr-4 align-top text-gray-700">
+                        {round1[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{round1[f]}</p>}
                       </td>
-                      <td className="py-2.5 pr-4 align-top text-gray-700">
-                        <AnnotationBlock ann={round1} fields={fields} />
-                      </td>
-                      <td className="py-2.5 align-top text-red-700">
-                        <AnnotationBlock ann={corAnn} fields={fields} />
+                      <td className="py-1 align-top text-red-700">
+                        {corAnn[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{corAnn[f]}</p>}
                       </td>
                     </tr>
-                  )
+                  ))
                 })}
               </tbody>
             </table>

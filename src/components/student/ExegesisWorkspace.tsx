@@ -354,25 +354,10 @@ function parsePassageRef(ref: string, books: BiblicalBook[]): {
   return { book, chapter: ch, verseStart: vs, verseEnd: ve }
 }
 
-// PDF/print: render a word's Round 1 / Round 2 fields as aligned rows. `fields`
-// is shared between the two columns so Parse/Syntax/Trans line up vertically.
+// PDF/print: field order + labels for the Round 1 / Round 2 word table.
 const PRINT_ANN_FIELDS = ['parsing', 'syntax', 'translation'] as const
 type PrintAnnField = typeof PRINT_ANN_FIELDS[number]
 const PRINT_ANN_LABELS: Record<PrintAnnField, string> = { parsing: 'Parse', syntax: 'Syntax', translation: 'Trans.' }
-function PrintAnnLines({ ann, fields }: { ann: WordAnnotation; fields: readonly PrintAnnField[] }) {
-  if (fields.length === 0) return <span className="text-gray-300">—</span>
-  return (
-    <div className="space-y-0.5">
-      {fields.map(f => (
-        <p key={f}>
-          {ann[f]
-            ? <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{ann[f]}</>
-            : <span className="opacity-0 select-none">—</span>}
-        </p>
-      ))}
-    </div>
-  )
-}
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
@@ -1575,18 +1560,25 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                         </tr>
                       </thead>
                       <tbody>
-                        {rows.map(w => {
+                        {rows.flatMap(w => {
                           const key = wordKey(v.verse, w.id)
                           const ann = (annotations[key] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation
                           const corr = (corrections[key] ?? { parsing: '', syntax: '', translation: '' }) as WordAnnotation
                           const fields = PRINT_ANN_FIELDS.filter(f => ann[f] || corr[f])
-                          return (
-                            <tr key={w.id} className="align-top border-b border-gray-100">
-                              <td className="py-1.5 pr-3 font-greek text-sm">{w.surface}</td>
-                              <td className="py-1.5 pr-3 text-gray-800"><PrintAnnLines ann={ann} fields={fields} /></td>
-                              <td className="py-1.5 text-red-700"><PrintAnnLines ann={corr} fields={fields} /></td>
+                          // One row per field so Round 1 / Round 2 stay aligned even when a value wraps.
+                          return fields.map((f, i) => (
+                            <tr key={`${w.id}-${f}`} className={`align-top ${i === 0 ? 'border-t border-gray-200' : ''}`}>
+                              {i === 0 && (
+                                <td rowSpan={fields.length} className="py-1.5 pr-3 align-top font-greek text-sm">{w.surface}</td>
+                              )}
+                              <td className="py-0.5 pr-3 text-gray-800">
+                                {ann[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{ann[f]}</>}
+                              </td>
+                              <td className="py-0.5 text-red-700">
+                                {corr[f] && <><span className="uppercase tracking-wide text-[9px] text-gray-400 mr-1">{PRINT_ANN_LABELS[f]}</span>{corr[f]}</>}
+                              </td>
                             </tr>
-                          )
+                          ))
                         })}
                       </tbody>
                     </table>
