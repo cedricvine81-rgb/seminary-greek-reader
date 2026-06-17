@@ -164,7 +164,7 @@ function DeadlineLine({ label, date, passed }: { label: string; date: Date; pass
     <span className={`inline-flex items-center gap-1.5 text-xs ${passed ? 'text-gray-400' : 'text-brand-700'}`}>
       <span className="font-medium">{label}:</span>
       <span className={passed ? 'line-through' : ''}>{formatDeadline(date)}</span>
-      {passed && <span className="font-semibold text-amber-700">· Closed</span>}
+      {passed && <span className="font-semibold text-gray-500">· Closed</span>}
     </span>
   )
 }
@@ -1102,7 +1102,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     return `${m}:${s.toString().padStart(2, '0')}`
   }
   const timerColor = secondsLeft !== null
-    ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-amber-600' : 'text-brand-700'
+    ? secondsLeft <= 60 ? 'text-red-600' : secondsLeft <= 180 ? 'text-gray-600' : 'text-brand-700'
     : ''
 
   const passageTitle = selectedBook && loadedVerses.length > 0
@@ -1149,7 +1149,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             </span>
           )}
           {!submitted && deadlinePassed && (
-            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300">
               Deadline passed — editing only
             </span>
           )}
@@ -1250,7 +1250,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             ${secondsLeft <= 60
               ? 'bg-red-50 border-red-200 animate-pulse text-red-600'
               : secondsLeft <= 180
-                ? 'bg-amber-50 border-amber-200 text-amber-600'
+                ? 'bg-gray-100 border-gray-300 text-gray-600'
                 : 'bg-brand-50 border-brand-200 text-brand-700'
             }`}
           >
@@ -1271,8 +1271,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               : reviewSecondsLeft !== null && reviewSecondsLeft <= 60
                 ? 'bg-red-50 border-red-200 animate-pulse text-red-600'
                 : reviewSecondsLeft !== null && reviewSecondsLeft <= 180
-                  ? 'bg-amber-50 border-amber-200 text-amber-600'
-                  : 'bg-amber-50 border-amber-200 text-amber-700'
+                  ? 'bg-gray-100 border-gray-300 text-gray-600'
+                  : 'bg-gray-100 border-gray-300 text-gray-700'
             }`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1431,7 +1431,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
 
             {/* Review mode banner */}
             {reviewMode && !correctionLocked && (
-              <div className="mb-3 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800 font-medium">
+              <div className="mb-3 rounded-lg bg-gray-100 border border-gray-300 px-3 py-2 text-xs text-gray-700 font-medium">
                 ✏️ Review phase — click any word to compare your analysis and add corrections in red.
               </div>
             )}
