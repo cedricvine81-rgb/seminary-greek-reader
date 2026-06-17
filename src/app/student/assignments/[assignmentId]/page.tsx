@@ -41,11 +41,18 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
 
   const previewMode = isPreviewMode() && payload.role === 'INSTRUCTOR'
 
-  // Determine submission window
+  // Determine submission window.
+  // Two-round passage exercises stay open until the Round 2 (corrections) deadline —
+  // their dueDate is the Round 1 cut-off, so closing on dueDate would shut the
+  // assignment before Round 2. Other assignments use dueDate.
+  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
   const now = new Date()
-  const isPastDue = now > assignment.dueDate
+  const finalDeadline = isPassageExercise
+    ? (assignment.round2Deadline ?? assignment.round1Deadline ?? assignment.dueDate)
+    : assignment.dueDate
+  const isPastDue = now > finalDeadline
   const lateDeadline = assignment.allowLate && assignment.lateDaysLimit != null
-    ? addDays(assignment.dueDate, assignment.lateDaysLimit)
+    ? addDays(finalDeadline, assignment.lateDaysLimit)
     : null
   // closed = past due AND (late not allowed OR past lateDeadline)
   const isClosed = isPastDue && (!assignment.allowLate || (lateDeadline !== null && now > lateDeadline))
@@ -84,8 +91,6 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   // questions each attempt (different words on retake). undefined = show them all.
   const vocabSel = assignment.vocabSelection as { perAttempt?: number } | null
   const vocabPerAttempt = vocabSel?.perAttempt && vocabSel.perAttempt > 0 ? vocabSel.perAttempt : undefined
-
-  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
 
   return (
     <DashboardShell role="STUDENT" pageTitle={assignment.title}>
