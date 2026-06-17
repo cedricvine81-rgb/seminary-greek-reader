@@ -1517,7 +1517,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                   })
                   if (rare.length === 0) return null
                   return (
-                    <div className="mt-2 print:hidden rounded-lg border border-gray-200 bg-gray-50 px-3 py-2">
+                    <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 print:bg-transparent print:border-gray-300 print:break-inside-avoid">
                       <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
                         Glossary · words rarer than {threshold}×
                       </p>
