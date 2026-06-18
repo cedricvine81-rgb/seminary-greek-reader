@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -73,6 +73,7 @@ export async function POST(req: NextRequest) {
       reference, instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
+      opensAt: opensAt ? new Date(opensAt) : null,
       submissionDeadline: submissionDeadline ? new Date(submissionDeadline) : null,
       round1Deadline: round1Deadline ? new Date(round1Deadline) : null,
       round2Deadline: round2Deadline ? new Date(round2Deadline) : null,

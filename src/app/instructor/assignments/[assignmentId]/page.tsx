@@ -126,6 +126,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             maxAppeals: assignment.maxAppeals,
             allowLate: assignment.allowLate,
             lateDaysLimit: assignment.lateDaysLimit,
+            opensAt: assignment.opensAt?.toISOString() ?? null,
             submissionDeadline: assignment.submissionDeadline?.toISOString() ?? null,
             round1Deadline: assignment.round1Deadline?.toISOString() ?? null,
             round2Deadline: assignment.round2Deadline?.toISOString() ?? null,

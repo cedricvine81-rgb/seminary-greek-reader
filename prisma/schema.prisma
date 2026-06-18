@@ -271,6 +271,7 @@ model Assignment {
   level        CourseLevel
   reference           String?
   instructions        String?
+  opensAt             DateTime?  // translation exams: students cannot start before this time
   submissionDeadline  DateTime?  // translation exercises: cut-off for new submissions; editing still allowed after
   round1Deadline      DateTime?  // translation exercises: absolute cut-off for Round 1 annotations (to the minute)
   round2Deadline      DateTime?  // translation exercises: absolute cut-off for Round 2 corrections (to the minute)

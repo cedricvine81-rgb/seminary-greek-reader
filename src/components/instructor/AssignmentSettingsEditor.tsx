@@ -27,6 +27,7 @@ interface Props {
     maxAppeals: number | null          // vocab quizzes: appeals per attempt (null/0 = disabled)
     allowLate: boolean
     lateDaysLimit: number | null
+    opensAt: string | null             // ISO string, translation exams only
     submissionDeadline: string | null  // ISO string, translation exercises only
     round1Deadline: string | null      // ISO string, translation exercises only
     round2Deadline: string | null      // ISO string, translation exercises only
@@ -84,6 +85,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [allowLate, setAllowLate] = useState(initial.allowLate)
   const [lateDaysLimit, setLateDaysLimit] = useState(initial.lateDaysLimit ?? 7)
   // submissionDeadline stored as datetime-local string (e.g. "2026-06-15T23:59")
+  const [opensAt, setOpensAt] = useState(toLocalInput(initial.opensAt))
   const [submissionDeadline, setSubmissionDeadline] = useState(toLocalInput(initial.submissionDeadline))
   const [round1Deadline, setRound1Deadline] = useState(toLocalInput(initial.round1Deadline))
   const [round2Deadline, setRound2Deadline] = useState(toLocalInput(initial.round2Deadline))
@@ -122,6 +124,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           lateDaysLimit: allowLate ? lateDaysLimit : null,
           // Convert datetime-local (local wall time) to a true UTC instant so the server (UTC) stores the right moment.
           // Exams have a single cut-off stored in round1Deadline; no Round 2 / reader.
+          opensAt: isExam ? (opensAt ? new Date(opensAt).toISOString() : null) : undefined,
           submissionDeadline: isTranslation ? (submissionDeadline ? new Date(submissionDeadline).toISOString() : null) : undefined,
           round1Deadline: (isTranslation || isExam) ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
           round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
@@ -247,6 +250,16 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             {isExam && (
               <>
                 <hr className="border-brand-200" />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Exam opens (date &amp; time)</label>
+                  <input
+                    type="datetime-local"
+                    value={opensAt}
+                    onChange={e => setOpensAt(e.target.value)}
+                    className="input"
+                  />
+                  <p className="text-xs text-brand-600 mt-1">Students cannot start before this time. Leave blank to open immediately.</p>
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
                   <input

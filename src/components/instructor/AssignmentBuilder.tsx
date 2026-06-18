@@ -264,8 +264,15 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId, ...form,
+          // Exams hide Week/Due date — default them so the record stays valid (week 1;
+          // due date = the exam's close date, falling back to today).
+          ...(form.type === 'TRANSLATION_EXAM' ? {
+            weekNumber: form.weekNumber || 1,
+            dueDate: (form.round1Deadline || new Date().toISOString()).slice(0, 10),
+          } : {}),
           // Convert datetime-local (instructor's local wall time) to a real UTC instant on the client,
           // so the stored deadline isn't shifted by the server's (UTC) timezone.
+          opensAt: form.opensAt ? new Date(form.opensAt).toISOString() : undefined,
           submissionDeadline: form.submissionDeadline ? new Date(form.submissionDeadline).toISOString() : undefined,
           round1Deadline: form.round1Deadline ? new Date(form.round1Deadline).toISOString() : undefined,
           round2Deadline: form.round2Deadline ? new Date(form.round2Deadline).toISOString() : undefined,
@@ -421,12 +428,14 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         </>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        <Input label="Week number" type="number" min={1} required value={form.weekNumber}
-          onChange={e => set('weekNumber', Number(e.target.value))} />
-        <Input label="Due date" type="date" required value={form.dueDate}
-          onChange={e => set('dueDate', e.target.value)} />
-      </div>
+      {form.type !== 'TRANSLATION_EXAM' && (
+        <div className="grid grid-cols-2 gap-4">
+          <Input label="Week number" type="number" min={1} required value={form.weekNumber}
+            onChange={e => set('weekNumber', Number(e.target.value))} />
+          <Input label="Due date" type="date" required value={form.dueDate}
+            onChange={e => set('dueDate', e.target.value)} />
+        </div>
+      )}
 
       {form.type === 'TRANSLATION_EXAM' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
@@ -444,6 +453,16 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               className="input"
               placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Exam opens (date &amp; time)</label>
+            <input
+              type="datetime-local"
+              value={form.opensAt ?? ''}
+              onChange={e => set('opensAt', e.target.value || undefined)}
+              className="input"
+            />
+            <p className="mt-1 text-xs text-brand-600">Students cannot start the exam before this time. Leave blank to open immediately.</p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
@@ -568,31 +587,6 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         </div>
       )}
 
-      {form.type === 'TRANSLATION_EXAM' && (
-        <div className="rounded-lg border border-brand-200 bg-brand-50/40 p-4 space-y-3">
-          <div>
-            <label className="block text-sm font-medium text-brand-800 mb-1">Passages (one per line)</label>
-            <textarea
-              value={form.reference ?? ''}
-              onChange={e => set('reference', e.target.value)}
-              rows={4}
-              className="input font-mono text-sm"
-              placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
-            />
-            <p className="text-xs text-brand-600 mt-1">Students annotate (parsing, syntax, translation) every passage in one sitting. No second round.</p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-brand-800 mb-1">Exam closes (final cut-off)</label>
-            <input
-              type="datetime-local"
-              value={form.round1Deadline ?? ''}
-              onChange={e => set('round1Deadline', e.target.value || undefined)}
-              className="input"
-            />
-            <p className="text-xs text-brand-600 mt-1">At this time the exam locks and auto-submits the student&rsquo;s work.</p>
-          </div>
-        </div>
-      )}
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Instructions (optional)</label>

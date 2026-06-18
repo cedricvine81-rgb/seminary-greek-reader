@@ -51,6 +51,8 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     (assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0) ||
     assignment.type === 'TRANSLATION_EXAM'
   const now = new Date()
+  // Exams have a start gate: students cannot open them before opensAt.
+  const examNotYetOpen = assignment.type === 'TRANSLATION_EXAM' && !!assignment.opensAt && now < assignment.opensAt
   const finalDeadline = effectiveDeadline(assignment)
   const isPastDue = now > finalDeadline
   const lateDeadline = assignment.allowLate && assignment.lateDaysLimit != null
@@ -196,10 +198,18 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
+        {/* Exam not yet open — show when it opens (instructors can still preview). */}
+        {examNotYetOpen && !previewMode && (
+          <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">
+            <span className="font-semibold">This exam isn&rsquo;t open yet.</span>{' '}
+            It opens <span className="font-medium">{format(assignment.opensAt!, 'MMM d, yyyy · h:mm a')}</span>.
+          </div>
+        )}
+
         {/* Show passage exercise when open, OR when closed but the student has any existing session
             (submitted or in-progress) — lets them review their own work even after close.
             Always shown in instructor preview mode so instructors can inspect regardless of dates. */}
-        {isPassageExercise && (!isClosed || !!existingSession || previewMode) && (
+        {isPassageExercise && (!examNotYetOpen || previewMode) && (!isClosed || !!existingSession || previewMode) && (
           <ExegesisWorkspace assignmentId={assignment.id} />
         )}
 

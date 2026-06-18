@@ -20,7 +20,7 @@ export async function GET(
         id: true, title: true, type: true, weekNumber: true,
         dueDate: true, reference: true, instructions: true,
         isPublished: true, courseId: true, timePerQuestion: true, reviewTimeSeconds: true,
-        submissionDeadline: true, round1Deadline: true, round2Deadline: true,
+        opensAt: true, submissionDeadline: true, round1Deadline: true, round2Deadline: true,
         allowReaderInRound2: true, maxAppeals: true, glossFrequency: true,
       },
     })
@@ -63,7 +63,7 @@ export async function PATCH(
     isPublished,
     title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
-    allowLate, lateDaysLimit, submissionDeadline, round1Deadline, round2Deadline,
+    allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
     allowReaderInRound2, maxAppeals, glossFrequency,
   } = body
 
@@ -97,6 +97,8 @@ export async function PATCH(
       data.allowLate = Boolean(allowLate)
       data.lateDaysLimit = allowLate && lateDaysLimit != null ? Number(lateDaysLimit) : null
     }
+    if ('opensAt' in body)
+      data.opensAt = opensAt ? new Date(opensAt) : null
     if ('submissionDeadline' in body)
       data.submissionDeadline = submissionDeadline ? new Date(submissionDeadline) : null
     if ('round1Deadline' in body)
