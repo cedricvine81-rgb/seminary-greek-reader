@@ -428,6 +428,36 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           onChange={e => set('dueDate', e.target.value)} />
       </div>
 
+      {form.type === 'TRANSLATION_EXAM' && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-brand-800">📜 Translation Exam</p>
+          <p className="text-xs text-brand-700">
+            Students translate several passages in one sitting (parsing · syntax · translation per word),
+            with a single cut-off after which the exam locks and auto-submits. No Round 2, no PDF.
+          </p>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Passages (one reference per line, required)</label>
+            <textarea
+              value={form.reference ?? ''}
+              onChange={e => set('reference', e.target.value)}
+              rows={4}
+              className="input"
+              placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
+            <input
+              type="datetime-local"
+              value={form.round1Deadline ?? ''}
+              onChange={e => set('round1Deadline', e.target.value || undefined)}
+              className="input"
+            />
+            <p className="mt-1 text-xs text-brand-600">At this cut-off the exam locks and auto-submits.</p>
+          </div>
+        </div>
+      )}
+
       {form.type === 'TRANSLATION_EXERCISE' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
           <p className="text-sm font-semibold text-brand-800">📜 Exegesis Workspace Exercise</p>

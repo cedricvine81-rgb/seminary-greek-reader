@@ -134,7 +134,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           }}
         />
 
-        {assignment.type !== 'TRANSLATION_EXERCISE' && (
+        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && (
           <QuizPreview
             questions={assignment.questions.map(q => ({
               id: q.id,

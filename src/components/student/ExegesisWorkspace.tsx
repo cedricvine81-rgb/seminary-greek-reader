@@ -795,6 +795,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     }
   }, [timerExpired, round1Passed]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Exam: auto-submit when the single cut-off passes ──
+  useEffect(() => {
+    if (!assignment?.isExam || submitted || !sessionId) return
+    const cutoff = assignment.round1Deadline
+    if (cutoff && Date.now() > cutoff.getTime()) {
+      submitAssignment()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [assignment, submitted, sessionId, now])
+
   // ── Stage 2 countdown ──
   useEffect(() => {
     if (reviewSecondsLeft === null || reviewSecondsLeft <= 0 || submitted) return

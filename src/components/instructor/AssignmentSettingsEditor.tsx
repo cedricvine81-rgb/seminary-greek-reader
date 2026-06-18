@@ -50,6 +50,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [error, setError] = useState('')
 
   const isTranslation = assignmentType === 'TRANSLATION_EXERCISE'
+  const isExam = assignmentType === 'TRANSLATION_EXAM'
 
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
@@ -90,8 +91,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [glossFrequency, setGlossFrequency] = useState<number | null>(initial.glossFrequency)
 
   async function handleSave() {
-    if (isTranslation && !reference.trim()) {
-      setError('A passage reference is required (e.g. "John 1:1–18").')
+    if ((isTranslation || isExam) && !reference.trim()) {
+      setError('At least one passage reference is required (e.g. "John 1:1–18").')
       return
     }
     if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
@@ -110,7 +111,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           weekNumber,
           dueDate,
           instructions,
-          reference: isTranslation ? reference : undefined,
+          reference: (isTranslation || isExam) ? reference : undefined,
           // Convert back to seconds for storage
           timePerQuestion: isTranslation ? timePerQuestion * 60 || 0 : timePerQuestion,
           reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
@@ -119,9 +120,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           maxAppeals: isVocabQuiz ? (maxAppeals > 0 ? maxAppeals : 0) : undefined,
           allowLate,
           lateDaysLimit: allowLate ? lateDaysLimit : null,
-          // Convert datetime-local (local wall time) to a true UTC instant so the server (UTC) stores the right moment
+          // Convert datetime-local (local wall time) to a true UTC instant so the server (UTC) stores the right moment.
+          // Exams have a single cut-off stored in round1Deadline; no Round 2 / reader.
           submissionDeadline: isTranslation ? (submissionDeadline ? new Date(submissionDeadline).toISOString() : null) : undefined,
-          round1Deadline: isTranslation ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
+          round1Deadline: (isTranslation || isExam) ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
           round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
           allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
           glossFrequency: isTranslation ? glossFrequency : undefined,
@@ -177,7 +179,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   return (
     <Card>
-      <CardTitle>{isTranslation ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
+      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -213,21 +215,52 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           />
         </div>
 
-        {isTranslation ? (
-          /* Translation Exercise: passage reference + submission deadline + two-phase timers */
+        {(isTranslation || isExam) ? (
+          /* Translation Exercise / Exam: passage reference(s) + deadline(s) */
           <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-4">
-            <div>
-              <Input
-                label="Passage reference (required)"
-                value={reference}
-                onChange={e => setReference(e.target.value)}
-                placeholder="e.g. John 1:1–18"
-              />
-              <p className="text-xs text-brand-600 mt-1">
-                The passage students annotate in the Exegesis Workspace. Changing this affects new sessions;
-                students who already started keep their current passage.
-              </p>
-            </div>
+            {isExam ? (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Passages (one reference per line, required)</label>
+                <textarea
+                  value={reference}
+                  onChange={e => setReference(e.target.value)}
+                  rows={4}
+                  className="input"
+                  placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
+                />
+                <p className="text-xs text-brand-600 mt-1">Each passage students translate in the exam. Enter one reference per line.</p>
+              </div>
+            ) : (
+              <div>
+                <Input
+                  label="Passage reference (required)"
+                  value={reference}
+                  onChange={e => setReference(e.target.value)}
+                  placeholder="e.g. John 1:1–18"
+                />
+                <p className="text-xs text-brand-600 mt-1">
+                  The passage students annotate in the Exegesis Workspace. Changing this affects new sessions;
+                  students who already started keep their current passage.
+                </p>
+              </div>
+            )}
+            {isExam && (
+              <>
+                <hr className="border-brand-200" />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Exam closes (date &amp; time)</label>
+                  <input
+                    type="datetime-local"
+                    value={round1Deadline}
+                    onChange={e => setRound1Deadline(e.target.value)}
+                    className="input"
+                  />
+                  <p className="text-xs text-brand-600 mt-1">At this cut-off the exam locks and auto-submits. Leave blank for no cut-off.</p>
+                </div>
+              </>
+            )}
+            {!isExam && (
+            <>
             <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">Submission deadline</p>
             <div>
@@ -326,6 +359,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               When this timer expires, all edits lock and the exercise auto-submits.
               Set to 0 for unlimited review time (student must click Submit manually).
             </p>
+            </>
+            )}
           </div>
         ) : (
           <Input
