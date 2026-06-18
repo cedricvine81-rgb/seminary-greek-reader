@@ -46,7 +46,10 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   // Two-round passage exercises stay open until the Round 2 (corrections) deadline —
   // their dueDate is the Round 1 cut-off, so closing on dueDate would shut the
   // assignment before Round 2. Other assignments use dueDate.
-  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
+  // Passage-based exercises and exams both use the Exegesis workspace.
+  const isPassageExercise =
+    (assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0) ||
+    assignment.type === 'TRANSLATION_EXAM'
   const now = new Date()
   const finalDeadline = effectiveDeadline(assignment)
   const isPastDue = now > finalDeadline
@@ -196,7 +199,13 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {/* Show passage exercise when open, OR when closed but the student has any existing session
             (submitted or in-progress) — lets them review their own work even after close.
             Always shown in instructor preview mode so instructors can inspect regardless of dates. */}
-        {isPassageExercise && (!isClosed || !!existingSession || previewMode) && (
+        {isPassageExercise && assignment.type === 'TRANSLATION_EXAM' && (
+          <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+            The student exam workspace (multiple passages, single sitting) is being finalised — this exam isn’t takeable yet.
+          </div>
+        )}
+
+        {isPassageExercise && assignment.type !== 'TRANSLATION_EXAM' && (!isClosed || !!existingSession || previewMode) && (
           <ExegesisWorkspace assignmentId={assignment.id} />
         )}
 
@@ -207,7 +216,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           />
         )}
 
-        {(!isClosed || previewMode) && assignment.type !== 'TRANSLATION_EXERCISE' && (
+        {(!isClosed || previewMode) && !isPassageExercise && assignment.type !== 'TRANSLATION_EXERCISE' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

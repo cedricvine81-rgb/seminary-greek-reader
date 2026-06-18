@@ -56,8 +56,8 @@ export async function POST(req: NextRequest) {
   if (!await isInstructorOfCourse(courseId, payload.sub)) {
     return NextResponse.json({ error: 'You do not teach this course.' }, { status: 403 })
   }
-  if (type === 'TRANSLATION_EXERCISE' && !reference?.trim()) {
-    return NextResponse.json({ error: 'A passage reference is required for Translation Exercise assignments.' }, { status: 400 })
+  if ((type === 'TRANSLATION_EXERCISE' || type === 'TRANSLATION_EXAM') && !reference?.trim()) {
+    return NextResponse.json({ error: 'At least one passage reference is required.' }, { status: 400 })
   }
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
     return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })

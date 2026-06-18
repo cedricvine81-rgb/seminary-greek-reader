@@ -248,9 +248,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     e.preventDefault()
     setError('')
 
-    // Client-side validation for Translation Exercise
-    if (form.type === 'TRANSLATION_EXERCISE' && !form.reference?.trim()) {
-      setError('A passage reference is required for Translation Exercise assignments (e.g. "John 1:1–18").')
+    // Client-side validation for passage exercises/exams
+    if ((form.type === 'TRANSLATION_EXERCISE' || form.type === 'TRANSLATION_EXAM') && !form.reference?.trim()) {
+      setError('At least one passage reference is required (e.g. "John 1:1–18").')
       return
     }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
@@ -315,6 +315,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'PASSAGE_VOCABULARY',   label: 'Passage Vocabulary' },
           { value: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quiz' },
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
+          { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
         ]}
       />
 
@@ -537,18 +538,44 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         </div>
       )}
 
+      {form.type === 'TRANSLATION_EXAM' && (
+        <div className="rounded-lg border border-brand-200 bg-brand-50/40 p-4 space-y-3">
+          <div>
+            <label className="block text-sm font-medium text-brand-800 mb-1">Passages (one per line)</label>
+            <textarea
+              value={form.reference ?? ''}
+              onChange={e => set('reference', e.target.value)}
+              rows={4}
+              className="input font-mono text-sm"
+              placeholder={'John 15:1-4\nRomans 8:1-4\nMark 1:9-13'}
+            />
+            <p className="text-xs text-brand-600 mt-1">Students annotate (parsing, syntax, translation) every passage in one sitting. No second round.</p>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-brand-800 mb-1">Exam closes (final cut-off)</label>
+            <input
+              type="datetime-local"
+              value={form.round1Deadline ?? ''}
+              onChange={e => set('round1Deadline', e.target.value || undefined)}
+              className="input"
+            />
+            <p className="text-xs text-brand-600 mt-1">At this time the exam locks and auto-submits the student&rsquo;s work.</p>
+          </div>
+        </div>
+      )}
+
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Instructions (optional)</label>
         <textarea value={form.instructions ?? ''} onChange={e => set('instructions', e.target.value)}
           rows={3} className="input" placeholder="Additional instructions for students…" />
       </div>
 
-      {form.type !== 'TRANSLATION_EXERCISE' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
         <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
           onChange={e => set('numQuestions', Number(e.target.value))} />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
         <Input
           label="Time per question (seconds, 0 = untimed)"
           type="number"
@@ -559,7 +586,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
         <Select
           label="Quiz retakes allowed"
           value={maxRetakes === null ? '' : String(maxRetakes)}
@@ -597,7 +624,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         </div>
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
         <LatePolicyFields
           allowLate={allowLate}
           lateDaysLimit={lateDaysLimit}

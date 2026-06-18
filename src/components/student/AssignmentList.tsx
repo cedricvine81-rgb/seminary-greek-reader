@@ -15,6 +15,7 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   PASSAGE_VOCABULARY: 'blue',
   MORPHOLOGY_QUIZ: 'purple',
   TRANSLATION_EXERCISE: 'green',
+  TRANSLATION_EXAM: 'green',
 }
 
 const typeLabels: Record<string, string> = {
@@ -22,6 +23,7 @@ const typeLabels: Record<string, string> = {
   PASSAGE_VOCABULARY: 'Passage Vocab',
   MORPHOLOGY_QUIZ: 'Morphology',
   TRANSLATION_EXERCISE: 'Translation',
+  TRANSLATION_EXAM: 'Translation Exam',
 }
 
 export function AssignmentList({ assignments, completedIds = new Set() }: AssignmentListProps) {

@@ -96,4 +96,9 @@ export const ASSIGNMENT_TYPES = [
   { value: 'VOCABULARY_QUIZ', label: 'Vocabulary Quiz' },
   { value: 'MORPHOLOGY_QUIZ', label: 'Morphology Quiz' },
   { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
+  { value: 'TRANSLATION_EXAM', label: 'Translation Exam' },
 ] as const
+
+// Passage-based assignment types use the Exegesis workspace (word annotations +
+// verse translation) rather than the quiz runner.
+export const PASSAGE_ASSIGNMENT_TYPES = ['TRANSLATION_EXERCISE', 'TRANSLATION_EXAM'] as const
