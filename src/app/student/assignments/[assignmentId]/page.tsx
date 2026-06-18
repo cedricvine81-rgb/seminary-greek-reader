@@ -199,13 +199,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {/* Show passage exercise when open, OR when closed but the student has any existing session
             (submitted or in-progress) — lets them review their own work even after close.
             Always shown in instructor preview mode so instructors can inspect regardless of dates. */}
-        {isPassageExercise && assignment.type === 'TRANSLATION_EXAM' && (
-          <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
-            The student exam workspace (multiple passages, single sitting) is being finalised — this exam isn’t takeable yet.
-          </div>
-        )}
-
-        {isPassageExercise && assignment.type !== 'TRANSLATION_EXAM' && (!isClosed || !!existingSession || previewMode) && (
+        {isPassageExercise && (!isClosed || !!existingSession || previewMode) && (
           <ExegesisWorkspace assignmentId={assignment.id} />
         )}
 

@@ -49,6 +49,8 @@ interface AssignmentInfo {
   round2Deadline: Date | null             // absolute cut-off for Round 2 corrections
   allowReaderInRound2: boolean            // expose Reader info during Round 2
   glossFrequency: number | null           // show a glossary of words rarer than this; null = off
+  isExam: boolean                         // TRANSLATION_EXAM: multiple passages, single round, hard cut-off
+  examPassages: { book: BiblicalBook; chapter: number; verseStart: number; verseEnd: number }[]
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -472,6 +474,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         if (!a) return
         const timeLimitSeconds = a.timePerQuestion ?? null
         const reviewTimeLimitSeconds = a.reviewTimeSeconds ?? null
+        const isExam = a.type === 'TRANSLATION_EXAM'
+        // Exams store several references (one per line); parse them all to passages.
+        const examPassages = isExam && a.reference
+          ? (a.reference as string).split('\n').map((line: string) => line.trim()).filter(Boolean)
+              .map((line: string) => parsePassageRef(line, books)).filter((p): p is NonNullable<typeof p> => !!p)
+          : []
         const assignmentInfo: AssignmentInfo = {
           id: a.id, title: a.title, reference: a.reference ?? null,
           instructions: a.instructions ?? null, timeLimitSeconds, reviewTimeLimitSeconds,
@@ -480,11 +488,53 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           round2Deadline: a.round2Deadline ? new Date(a.round2Deadline) : null,
           allowReaderInRound2: !!a.allowReaderInRound2,
           glossFrequency: a.glossFrequency ?? null,
+          isExam,
+          examPassages,
         }
         if (assignmentInfo.submissionDeadline && new Date() > assignmentInfo.submissionDeadline) {
           setDeadlinePassed(true)
         }
         setAssignment(assignmentInfo)
+
+        // ── Exam mode: load all passages into one session, single round ──
+        if (isExam) {
+          // Nominal session coords = the first passage, so saveSession (which requires a
+          // selected book) works; annotations/translations span all passages by word/verse id.
+          if (examPassages[0]) {
+            setSelectedBook(examPassages[0].book)
+            setChapter(examPassages[0].chapter)
+            setVerseStart(examPassages[0].verseStart)
+            setVerseEnd(examPassages[0].verseEnd)
+          }
+          // Load the verses for every passage and concatenate them (word ids are
+          // globally unique, so one annotations map covers all passages).
+          setIsLoading(true)
+          try {
+            const all: LoadedVerse[] = []
+            for (const p of examPassages) {
+              const pr = await fetch(`/api/reader?book=${p.book.osisId}&chapter=${p.chapter}`)
+              const pd = await pr.json()
+              for (const v of (pd.verses ?? []) as LoadedVerse[]) {
+                if (v.verse >= p.verseStart && v.verse <= p.verseEnd) all.push(v)
+              }
+            }
+            setLoadedVerses(all)
+          } finally { setIsLoading(false) }
+
+          // Resume or lazily start the single exam session
+          const sr = await fetch(`/api/exegesis?assignmentId=${propAssignmentId}`)
+          const sd = await sr.json()
+          if (sd.session) {
+            const sess = sd.session
+            setAnnotations(sess.annotations ?? {})
+            setVerseTranslations(sess.verseTranslations ?? {})
+            setNotes(sess.notes ?? '')
+            setSessionId(sess.id)
+            setSessionTitle(sess.title)
+            if (sess.submittedAt) setSubmitted(true)
+          }
+          return
+        }
 
         // Look for an existing session for this assignment
         const sr = await fetch(`/api/exegesis?assignmentId=${propAssignmentId}`)
@@ -769,6 +819,13 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     }
   }, [reviewTimerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // ── Exam: lock + auto-submit when the single cut-off passes ──
+  useEffect(() => {
+    if (assignment?.isExam && round1Passed && !submitted && propAssignmentId && sessionId) {
+      submitAssignment()
+    }
+  }, [round1Passed, submitted, sessionId, assignment]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Load passage (auto-loads on selector change) ──
   // `resetSession` clears the current session — used when the book/chapter changes
   // (a genuinely different passage). Verse-range tweaks pass false so annotations
@@ -848,10 +905,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }
 
   // ── Whole-verse translation change (Round 1) ──
-  function handleVerseTranslationChange(verseNum: number, value: string) {
+  function handleVerseTranslationChange(key: string, value: string) {
     if (isLocked) return
     setVerseTranslations(prev => {
-      const next = { ...prev, [String(verseNum)]: value }
+      const next = { ...prev, [key]: value }
       scheduleAutoSave(annotations, corrections, next)
       return next
     })
@@ -1092,9 +1149,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // ── Lock / mode flags ──
   // deadlinePassed locks stage-1 (black annotations) and opens review mode, but leaves stage-2 (red corrections) editable.
   // round1Passed / round2Passed are absolute, instructor-set cut-offs that lock the respective phase regardless of timers.
+  const isExam = !!assignment?.isExam
   const isLocked = timerExpired || submitted || deadlinePassed || round1Passed   // stage 1 annotations locked
   const correctionLocked = reviewTimerExpired || submitted || round2Passed        // stage 2 corrections locked
-  const reviewMode = timerExpired || deadlinePassed || round1Passed               // show 3-column reader layout
+  // Exams are single-round: never enter the Round 2 (corrections) review layout.
+  const reviewMode = !isExam && (timerExpired || deadlinePassed || round1Passed)  // show 3-column reader layout
+  // Whole-verse translations are keyed by verse number for single-passage exercises,
+  // but by the globally-unique verse id for multi-passage exams (avoids collisions).
+  const vtKey = (v: LoadedVerse) => (isExam ? v.id : String(v.verse))
 
   // Show submit button when:
   // - in assignment mode and passage is loaded
@@ -1135,8 +1197,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             {/* The passage is already the page title above, so only show a reference
                 here when the instructor named the exercise something different (then
                 it adds info) — otherwise we'd echo the same passage three times. */}
-            {assignment.reference && assignment.reference !== assignment.title && (
+            {!assignment.isExam && assignment.reference && assignment.reference !== assignment.title && (
               <p className="text-sm font-semibold text-brand-900">Passage: {assignment.reference}</p>
+            )}
+            {assignment.isExam && (
+              <p className="text-xs text-brand-700 mt-0.5">{assignment.examPassages.length} passages · annotate all in one sitting</p>
             )}
             {assignment.instructions && (
               <p className="text-xs text-gray-600 mt-0.5">{assignment.instructions}</p>
@@ -1144,7 +1209,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             {(assignment.round1Deadline || assignment.round2Deadline) && (
               <div className="mt-1.5 flex flex-col gap-0.5">
                 {assignment.round1Deadline && (
-                  <DeadlineLine label="Round 1 (annotations) closes" date={assignment.round1Deadline} passed={round1Passed} />
+                  <DeadlineLine label={assignment.isExam ? 'Exam closes' : 'Round 1 (annotations) closes'} date={assignment.round1Deadline} passed={round1Passed} />
                 )}
                 {assignment.round2Deadline && (
                   <DeadlineLine label="Round 2 (corrections) closes" date={assignment.round2Deadline} passed={round2Passed} />
@@ -1323,7 +1388,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           </span>
         )}
 
-        {loadedVerses.length > 0 && (
+        {loadedVerses.length > 0 && !isExam && (
           <button
             onClick={exportPDF}
             className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-md text-sm font-medium hover:bg-gray-300 transition"
@@ -1495,8 +1560,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     Verse Translation
                   </label>
                   <textarea
-                    value={verseTranslations[String(v.verse)] ?? ''}
-                    onChange={e => handleVerseTranslationChange(v.verse, e.target.value)}
+                    value={verseTranslations[vtKey(v)] ?? ''}
+                    onChange={e => handleVerseTranslationChange(vtKey(v), e.target.value)}
                     disabled={isLocked}
                     rows={2}
                     placeholder={isLocked ? '' : 'Write your translation of this whole verse…'}
@@ -1558,7 +1623,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
 
                 {/* Print only: Round 1 translation + Round 2 notes, side by side */}
                 {(() => {
-                  const r1 = (verseTranslations[String(v.verse)] ?? '').trim()
+                  const r1 = (verseTranslations[vtKey(v)] ?? '').trim()
                   const r2 = (verseCorrections[String(v.verse)] ?? '').trim()
                   if (!r1 && !r2) return null
                   return (
