@@ -1132,9 +1132,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         <div className="print:hidden bg-brand-50 border-b border-brand-200 px-4 py-3 flex items-start gap-3">
           <span className="text-2xl mt-0.5">📜</span>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-brand-900">{assignment.title}</p>
-            {assignment.reference && (
-              <p className="text-xs text-brand-700 mt-0.5">Passage: {assignment.reference}</p>
+            {/* The passage is already the page title above, so only show a reference
+                here when the instructor named the exercise something different (then
+                it adds info) — otherwise we'd echo the same passage three times. */}
+            {assignment.reference && assignment.reference !== assignment.title && (
+              <p className="text-sm font-semibold text-brand-900">Passage: {assignment.reference}</p>
             )}
             {assignment.instructions && (
               <p className="text-xs text-gray-600 mt-0.5">{assignment.instructions}</p>
