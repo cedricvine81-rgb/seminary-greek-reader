@@ -1703,7 +1703,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                     selected word, opening level with this verse's row. On mobile
                     (no grid) it stacks directly beneath the verse. */}
                 <div className="min-w-0 print:hidden">
-                  {selectedWord && selectedWord.verse === v.verse && (
+                  {/* Match by the verse's unique id, not its number — in a multi-passage
+                      exam two passages can share a verse number, which would otherwise
+                      render the panel under both verses and break it. */}
+                  {selectedWord && selectedWord.word.verseId === v.id && (
                     <div ref={wordPanelRef}>
                     {reviewMode ? (
                       <Round2WordPopover
