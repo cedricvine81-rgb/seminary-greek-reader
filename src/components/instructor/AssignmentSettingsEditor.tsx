@@ -129,7 +129,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           round1Deadline: (isTranslation || isExam) ? (round1Deadline ? new Date(round1Deadline).toISOString() : null) : undefined,
           round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
           allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
-          glossFrequency: isTranslation ? glossFrequency : undefined,
+          glossFrequency: (isTranslation || isExam) ? glossFrequency : undefined,
         }),
       })
       if (!res.ok) {
@@ -269,6 +269,19 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     className="input"
                   />
                   <p className="text-xs text-brand-600 mt-1">At this cut-off the exam locks and auto-submits. Leave blank for no cut-off.</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Definition glossary</label>
+                  <select
+                    value={glossFrequency ?? ''}
+                    onChange={e => setGlossFrequency(e.target.value ? Number(e.target.value) : null)}
+                    className="input"
+                  >
+                    <option value="">Off — no glossary</option>
+                    <option value="50">Beginner — words rarer than 50×</option>
+                    <option value="30">Intermediate — words rarer than 30×</option>
+                  </select>
+                  <p className="text-xs text-brand-600 mt-1">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
                 </div>
               </>
             )}

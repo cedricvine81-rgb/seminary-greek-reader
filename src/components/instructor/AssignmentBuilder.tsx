@@ -474,6 +474,19 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             />
             <p className="mt-1 text-xs text-brand-600">At this cut-off the exam locks and auto-submits.</p>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Definition glossary</label>
+            <select
+              value={form.glossFrequency ?? ''}
+              onChange={e => set('glossFrequency', e.target.value ? Number(e.target.value) : undefined)}
+              className="input"
+            >
+              <option value="">Off — no glossary</option>
+              <option value="50">Beginner — words rarer than 50×</option>
+              <option value="30">Intermediate — words rarer than 30×</option>
+            </select>
+            <p className="mt-1 text-xs text-brand-600">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
+          </div>
         </div>
       )}
 
