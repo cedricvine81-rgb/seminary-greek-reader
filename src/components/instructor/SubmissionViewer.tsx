@@ -40,8 +40,26 @@ interface VerseWord {
 }
 
 interface Verse {
+  id?: string
+  reference?: string
   verse: number
   words: VerseWord[]
+}
+
+type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
+/** Parse a reference like "John 15:1-4" against a book list (client mirror of the server parser). */
+function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
+  const q = ref.trim().replace(/[–—]/g, '-')
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  if (!m) return null
+  const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
+  const chapter = parseInt(m[2]); const vs = m[3] ? parseInt(m[3]) : 1; const ve = m[4] ? parseInt(m[4]) : vs
+  const book = books.find(b => [b.osisId, b.name, b.abbrev].some(s => {
+    const c = s.toLowerCase().replace(/\s+/g, ''); return c === bookPart || c.startsWith(bookPart) || bookPart.startsWith(c.slice(0, Math.max(3, bookPart.length)))
+  }))
+  if (!book) return null
+  if (book.totalChapters === 1 && !m[3]) return { osisId: book.osisId, chapter: 1, verseStart: chapter, verseEnd: chapter }
+  return { osisId: book.osisId, chapter, verseStart: vs, verseEnd: ve }
 }
 
 /** Single annotation field — shows value, or em-dash if empty */
@@ -90,6 +108,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
+  const [isExam, setIsExam] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -108,7 +127,28 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         if (row) setStudentName(row.name)
       }
 
-      if (s.bookOsisId) {
+      // Determine the assignment type — exams span several passages stored on the assignment.
+      const aRes = await fetch(`/api/assignments/${assignmentId}`)
+      const assignment = aRes.ok ? (await aRes.json()).assignment : null
+      if (assignment?.type === 'TRANSLATION_EXAM' && assignment.reference) {
+        setIsExam(true)
+        const bRes = await fetch('/api/reader?corpus=GNT')
+        const books: RefBook[] = bRes.ok ? (await bRes.json()).books ?? [] : []
+        const refs = (assignment.reference as string).split('\n').map(l => l.trim()).filter(Boolean)
+        const all: Verse[] = []
+        for (const line of refs) {
+          const p = parseRef(line, books)
+          if (!p) continue
+          const vRes = await fetch(`/api/reader?book=${p.osisId}&chapter=${p.chapter}`)
+          if (vRes.ok) {
+            const vData = await vRes.json()
+            for (const v of (vData.verses ?? []) as Verse[]) {
+              if (v.verse >= p.verseStart && v.verse <= p.verseEnd) all.push(v)
+            }
+          }
+        }
+        setVerses(all)
+      } else if (s.bookOsisId) {
         const vRes = await fetch(`/api/reader?book=${s.bookOsisId}&chapter=${s.chapter}`)
         if (vRes.ok) {
           const vData = await vRes.json()
@@ -175,7 +215,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
           <ArrowLeft size={14} /> Back to assignment
         </Link>
         <div className="flex flex-wrap gap-4 text-sm text-gray-500">
-          <span>Passage: <strong className="text-gray-800">{session.bookName} {session.chapter}:{session.verseStart}–{session.verseEnd}</strong></span>
+          <span>{isExam ? 'Exam' : 'Passage'}: <strong className="text-gray-800">{isExam ? `${verses.length} verse${verses.length === 1 ? '' : 's'} across the exam passages` : `${session.bookName} ${session.chapter}:${session.verseStart}–${session.verseEnd}`}</strong></span>
           <span>Submitted: <strong className="text-gray-800">{session.submittedAt ? new Date(session.submittedAt).toLocaleString() : 'Not yet submitted'}</strong></span>
         </div>
       </div>
@@ -268,14 +308,17 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       )}
 
       {verses.map(verse => {
-        const verseKey = String(verse.verse)
+        // Verse translations are keyed by verse number for single-passage exercises,
+        // but by the unique verse id for multi-passage exams (avoids cross-passage collisions).
+        const verseKey = isExam ? (verse.id ?? String(verse.verse)) : String(verse.verse)
         const round1Trans = session.verseTranslations?.[verseKey]?.trim() ?? ''
         const round2Notes = session.verseCorrections?.[verseKey]?.trim() ?? ''
+        const verseLabel = verse.reference ?? `${session.bookName} ${session.chapter}:${verse.verse}`
         return (
-        <Card key={verse.verse}>
+        <Card key={verse.id ?? verse.verse}>
           {/* Full Greek verse at the top */}
           <div className="mb-4 pb-3 border-b border-gray-100">
-            <p className="text-xs text-gray-400 mb-1">{session.bookName} {session.chapter}:{verse.verse}</p>
+            <p className="text-xs text-gray-400 mb-1">{verseLabel}</p>
             <p className="font-greek text-lg leading-relaxed text-gray-900">
               {verse.words.map(w => w.surface).join(' ')}
             </p>

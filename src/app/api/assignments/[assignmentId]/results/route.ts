@@ -59,7 +59,11 @@ export async function GET(
 
   // Passage-based translation exercises have no questions and use ExegesisSession for submissions.
   // Question-based translation exercises use the Response table (same as quizzes).
-  const isPassageExercise = assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0
+  // Translation exercises (no questions) and translation exams both store submissions
+  // as ExegesisSessions.
+  const isPassageExercise =
+    (assignment.type === 'TRANSLATION_EXERCISE' && assignment.questions.length === 0) ||
+    assignment.type === 'TRANSLATION_EXAM'
 
   const enrollments = await prisma.enrollment.findMany({
     where: { courseId: assignment.courseId, status: 'APPROVED' },

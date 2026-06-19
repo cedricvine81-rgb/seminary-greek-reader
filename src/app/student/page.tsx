@@ -53,7 +53,7 @@ export default async function StudentPage() {
     exegesisSessions.filter(s => s.grade != null && s.assignmentId).map(s => [s.assignmentId as string, s.grade as number]),
   )
   function scoreFor(a: { id: string; type: string }): number | null {
-    if (a.type === 'TRANSLATION_EXERCISE') return gradeByAssignment.get(a.id) ?? null
+    if (a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') return gradeByAssignment.get(a.id) ?? null
     return bestPctByAssignment.get(a.id) ?? null
   }
 

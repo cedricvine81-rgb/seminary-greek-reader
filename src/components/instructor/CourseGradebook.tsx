@@ -11,6 +11,7 @@ const GROUPS = [
   { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
   { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
+  { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -83,6 +84,10 @@ export async function CourseGradebook({ courseId }: Props) {
 
   // Score lookup: quiz → best attempt %; passage exercise → instructor grade; question translation → response scores
   function getScore(userId: string, assignment: typeof assignments[0]): number | null {
+    if (assignment.type === 'TRANSLATION_EXAM') {
+      const session = exegesisGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return session?.grade ?? null
+    }
     if (assignment.type === 'TRANSLATION_EXERCISE') {
       if (assignment.questions.length === 0) {
         // Passage exercise — use instructor-entered grade from ExegesisSession
