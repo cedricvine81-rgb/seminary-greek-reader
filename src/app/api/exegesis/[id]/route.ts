@@ -3,6 +3,7 @@ import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { Prisma } from '@prisma/client'
+import { GRADE_COMPONENTS, normalizeWeights, examTotal, type PassageSubScores } from '@/lib/exam-grading'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 
@@ -62,28 +63,39 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         }
       }
 
-      // Translation exams are graded per passage: { [reference]: 0-100 | null }.
-      // The overall session.grade is the rounded average of the entered passage scores
+      // Translation exams are graded per passage with three sub-scores:
+      //   { [reference]: { parsing, syntax, translation } } (each 0-100 or omitted).
+      // Each passage grade is the weighted average of its entered sub-scores (exam-wide
+      // weights); the overall session.grade is the rounded average of the passage grades
       // (so the gradebook, which reads session.grade, reflects the exam total).
       let examGrade: number | null | undefined = undefined
-      let cleanPassageGrades: Record<string, number> | undefined = undefined
+      let cleanPassageGrades: Record<string, PassageSubScores> | undefined = undefined
       if (passageGrades !== undefined && passageGrades !== null) {
         if (typeof passageGrades !== 'object' || Array.isArray(passageGrades)) {
           return NextResponse.json({ error: 'Invalid passage grades.' }, { status: 400 })
         }
         cleanPassageGrades = {}
-        for (const [ref, val] of Object.entries(passageGrades as Record<string, unknown>)) {
-          if (val === null || val === '' || val === undefined) continue
-          const n = Number(val)
-          if (isNaN(n) || n < 0 || n > 100) {
-            return NextResponse.json({ error: 'Each passage grade must be between 0 and 100.' }, { status: 400 })
+        for (const [ref, raw] of Object.entries(passageGrades as Record<string, unknown>)) {
+          if (raw === null || raw === undefined || typeof raw !== 'object' || Array.isArray(raw)) continue
+          const scores: PassageSubScores = {}
+          let any = false
+          for (const c of GRADE_COMPONENTS) {
+            const v = (raw as Record<string, unknown>)[c]
+            if (v === null || v === '' || v === undefined) continue
+            const n = Number(v)
+            if (isNaN(n) || n < 0 || n > 100) {
+              return NextResponse.json({ error: 'Each sub-score must be between 0 and 100.' }, { status: 400 })
+            }
+            scores[c] = n
+            any = true
           }
-          cleanPassageGrades[ref] = n
+          if (any) cleanPassageGrades[ref] = scores
         }
-        const entered = Object.values(cleanPassageGrades)
-        examGrade = entered.length > 0
-          ? Math.round(entered.reduce((a, b) => a + b, 0) / entered.length)
-          : null
+        const assignmentForWeights = await prisma.assignment.findUnique({
+          where: { id: targetAssignmentId }, select: { gradeWeights: true },
+        })
+        const weights = normalizeWeights(assignmentForWeights?.gradeWeights)
+        examGrade = examTotal(cleanPassageGrades, weights)
       }
 
       const updated = await prisma.exegesisSession.update({

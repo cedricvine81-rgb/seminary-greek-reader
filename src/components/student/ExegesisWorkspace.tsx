@@ -1555,10 +1555,19 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                         ].join(' ')}
                       >
                         {/* Round 1 parsing above + syntax below the (enlarged) Greek word,
-                            so students can translate with their analysis in view. */}
+                            so students can translate with their analysis in view. In Round 2
+                            (review mode) the parsing/syntax corrections show in red in the same
+                            above/below positions. Screen only (print:hidden) — the PDF table and
+                            instructor grading columns keep their separate-column layout. */}
                         <span className="font-sans text-[11px] leading-tight text-gray-500 whitespace-nowrap print:hidden">{annotations[key]?.parsing || ' '}</span>
+                        {reviewMode && corrections[key]?.parsing && (
+                          <span className="font-sans text-[11px] leading-tight text-red-600 whitespace-nowrap print:hidden">{corrections[key].parsing}</span>
+                        )}
                         <span className={reviewMode ? 'text-xl' : 'text-2xl'}>{w.surface}</span>
                         <span className="font-sans text-[11px] leading-tight text-gray-500 whitespace-nowrap print:hidden">{annotations[key]?.syntax || ' '}</span>
+                        {reviewMode && corrections[key]?.syntax && (
+                          <span className="font-sans text-[11px] leading-tight text-red-600 whitespace-nowrap print:hidden">{corrections[key].syntax}</span>
+                        )}
                       </button>
                     )
                   })}

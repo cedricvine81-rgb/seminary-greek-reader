@@ -33,6 +33,7 @@ interface Props {
     round2Deadline: string | null      // ISO string, translation exercises only
     allowReaderInRound2: boolean       // translation exercises only
     glossFrequency: number | null      // translation exercises only
+    gradeWeights: { parsing: number; syntax: number; translation: number } | null  // translation exams only
   }
 }
 
@@ -91,6 +92,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [round2Deadline, setRound2Deadline] = useState(toLocalInput(initial.round2Deadline))
   const [allowReaderInRound2, setAllowReaderInRound2] = useState(initial.allowReaderInRound2)
   const [glossFrequency, setGlossFrequency] = useState<number | null>(initial.glossFrequency)
+  const [weights, setWeights] = useState(initial.gradeWeights ?? { parsing: 33, syntax: 33, translation: 34 })
+  const weightSum = weights.parsing + weights.syntax + weights.translation
 
   async function handleSave() {
     if ((isTranslation || isExam) && !reference.trim()) {
@@ -130,6 +133,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           round2Deadline: isTranslation ? (round2Deadline ? new Date(round2Deadline).toISOString() : null) : undefined,
           allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
           glossFrequency: (isTranslation || isExam) ? glossFrequency : undefined,
+          gradeWeights: isExam ? weights : undefined,
         }),
       })
       if (!res.ok) {
@@ -282,6 +286,29 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     <option value="30">Intermediate — words less frequent than 30×</option>
                   </select>
                   <p className="text-xs text-brand-600 mt-1">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
+                </div>
+                <hr className="border-brand-200" />
+                <div>
+                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / translation)</label>
+                  <div className="flex flex-wrap gap-3">
+                    {(['parsing', 'syntax', 'translation'] as const).map(c => (
+                      <div key={c} className="flex items-center gap-1.5">
+                        <span className="text-xs text-gray-600 capitalize w-20">{c}</span>
+                        <input
+                          type="number" min={0} max={100}
+                          value={weights[c]}
+                          onChange={e => setWeights(w => ({ ...w, [c]: Number(e.target.value) }))}
+                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                        />
+                        <span className="text-xs text-gray-400">%</span>
+                      </div>
+                    ))}
+                  </div>
+                  <p className={`text-xs mt-1 ${weightSum === 100 ? 'text-brand-600' : 'text-amber-600'}`}>
+                    {weightSum === 100
+                      ? 'Each passage grade is the weighted average of its parsing, syntax, and translation sub-scores.'
+                      : `Weights total ${weightSum}% — they’re applied relatively, but 100% is clearest.`}
+                  </p>
                 </div>
               </>
             )}

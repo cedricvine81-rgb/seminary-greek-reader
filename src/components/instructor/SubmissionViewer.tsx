@@ -5,6 +5,19 @@ import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { ArrowLeft, Save } from 'lucide-react'
+import { GRADE_COMPONENTS, GRADE_COMPONENT_LABELS, DEFAULT_WEIGHTS, normalizeWeights, passageGrade, examTotal, type GradeWeights, type PassageSubScores } from '@/lib/exam-grading'
+
+// Per-passage sub-scores as input strings (parsing/syntax/translation).
+type SubScoreInputs = { parsing: string; syntax: string; translation: string }
+const EMPTY_SUBSCORES: SubScoreInputs = { parsing: '', syntax: '', translation: '' }
+/** Convert input strings to a numeric sub-score object (omitting blanks). */
+function toNumericSubScores(v: SubScoreInputs): PassageSubScores {
+  const out: PassageSubScores = {}
+  for (const c of GRADE_COMPONENTS) {
+    if (v[c] !== '') out[c] = Number(v[c])
+  }
+  return out
+}
 
 interface WordAnnotation {
   parsing?: string
@@ -31,7 +44,7 @@ interface Session {
   submittedAt: string | null
   grade: number | null
   gradeNote: string | null
-  passageGrades: Record<string, number> | null  // translation exams: per-passage scores keyed by reference
+  passageGrades: Record<string, PassageSubScores | number> | null  // exams: per-passage sub-scores keyed by reference
 }
 
 interface VerseWord {
@@ -112,8 +125,10 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [isExam, setIsExam] = useState(false)
   // Exam passages, in display order: each holds its reference line (used as the grade key) and its verses.
   const [examGroups, setExamGroups] = useState<{ key: string; label: string; verses: Verse[] }[]>([])
-  // Per-passage scores (as input strings), keyed by reference line.
-  const [passageGrades, setPassageGrades] = useState<Record<string, string>>({})
+  // Per-passage sub-scores (as input strings), keyed by reference line.
+  const [passageGrades, setPassageGrades] = useState<Record<string, SubScoreInputs>>({})
+  // Exam-wide sub-score weights.
+  const [weights, setWeights] = useState<GradeWeights>(DEFAULT_WEIGHTS)
 
   useEffect(() => {
     async function load() {
@@ -124,8 +139,17 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       setSession(s)
       setGrade(s.grade !== null ? String(s.grade) : '')
       setGradeNote(s.gradeNote ?? '')
-      const savedPg = (s.passageGrades ?? {}) as Record<string, number>
-      setPassageGrades(Object.fromEntries(Object.entries(savedPg).map(([k, v]) => [k, String(v)])))
+      // Hydrate the per-passage inputs. New format is { parsing, syntax, translation };
+      // a legacy number (Phase 2b single score) is dropped into the translation field.
+      const savedPg = (s.passageGrades ?? {}) as Record<string, PassageSubScores | number>
+      setPassageGrades(Object.fromEntries(Object.entries(savedPg).map(([k, v]) => {
+        if (typeof v === 'number') return [k, { ...EMPTY_SUBSCORES, translation: String(v) }]
+        return [k, {
+          parsing: v.parsing != null ? String(v.parsing) : '',
+          syntax: v.syntax != null ? String(v.syntax) : '',
+          translation: v.translation != null ? String(v.translation) : '',
+        }]
+      })))
 
       const rRes = await fetch(`/api/assignments/${assignmentId}/results`)
       if (rRes.ok) {
@@ -139,6 +163,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       const assignment = aRes.ok ? (await aRes.json()).assignment : null
       if (assignment?.type === 'TRANSLATION_EXAM' && assignment.reference) {
         setIsExam(true)
+        setWeights(normalizeWeights(assignment.gradeWeights))
         const bRes = await fetch('/api/reader?corpus=GNT')
         const books: RefBook[] = bRes.ok ? (await bRes.json()).books ?? [] : []
         const refs = (assignment.reference as string).split('\n').map(l => l.trim()).filter(Boolean)
@@ -179,10 +204,10 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          // Exams are graded per passage; the server derives the overall grade from these.
-          // Exercises send a single overall grade.
+          // Exams are graded per passage with three sub-scores; the server derives the
+          // overall grade from these + the exam weights. Exercises send a single grade.
           ...(isExam
-            ? { passageGrades: Object.fromEntries(Object.entries(passageGrades).filter(([, v]) => v !== '').map(([k, v]) => [k, Number(v)])) }
+            ? { passageGrades: Object.fromEntries(Object.entries(passageGrades).map(([k, v]) => [k, toNumericSubScores(v)])) }
             : { grade: grade === '' ? null : Number(grade) }),
           gradeNote: gradeNote || null,
           // Pass the assignment so the server can adopt legacy "orphan" sessions at grade time
@@ -200,6 +225,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       setSaving(false)
     }
   }, [sessionId, grade, gradeNote, isExam, passageGrades, assignmentId, router])
+
+  // Numeric per-passage sub-scores (for live grade math).
+  const numericPassageGrades = Object.fromEntries(
+    Object.entries(passageGrades).map(([k, v]) => [k, toNumericSubScores(v)]),
+  ) as Record<string, PassageSubScores>
 
   if (error) return <p className="text-red-600">{error}</p>
   if (!session) return <p className="text-gray-400 animate-pulse">Loading submission…</p>
@@ -221,11 +251,8 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
     }
   }
 
-  // Exam overall = rounded average of the entered per-passage scores (mirrors the server).
-  const examOverall = (() => {
-    const vals = Object.values(passageGrades).filter(v => v !== '').map(Number).filter(n => !isNaN(n))
-    return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null
-  })()
+  // Exam overall = rounded average of the per-passage grades (mirrors the server).
+  const examOverall = examTotal(numericPassageGrades, weights)
 
   const renderVerseCard = (verse: Verse) => {
     // Verse translations are keyed by verse number for single-passage exercises,
@@ -343,21 +370,37 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         {isExam ? (
           <div className="mt-3 space-y-3">
             <p className="text-xs text-gray-500">
-              Score each passage out of 100. The exam total is the average of the scores you enter.
+              Score each passage on parsing, syntax, and translation (0–100). Each passage grade is the
+              weighted average ({GRADE_COMPONENTS.map(c => `${GRADE_COMPONENT_LABELS[c]} ${weights[c]}%`).join(' · ')});
+              the exam total is the average of the passage grades.
             </p>
-            <div className="space-y-2">
-              {examGroups.map(g => (
-                <div key={g.key} className="flex items-center gap-3">
-                  <label className="flex-1 text-sm text-gray-700">{g.label}</label>
-                  <input
-                    type="number" min={0} max={100}
-                    value={passageGrades[g.key] ?? ''}
-                    onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: e.target.value }))}
-                    placeholder="—"
-                    className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                  />
-                </div>
-              ))}
+            <div className="space-y-3">
+              {examGroups.map(g => {
+                const scores = passageGrades[g.key] ?? EMPTY_SUBSCORES
+                const pg = passageGrade(toNumericSubScores(scores), weights)
+                return (
+                  <div key={g.key} className="rounded-lg border border-gray-200 p-3">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700">{g.label}</span>
+                      <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? Math.round(pg) : '—'}</strong></span>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      {GRADE_COMPONENTS.map(c => (
+                        <div key={c} className="flex items-center gap-1.5">
+                          <span className="text-xs text-gray-500 w-20">{GRADE_COMPONENT_LABELS[c]}</span>
+                          <input
+                            type="number" min={0} max={100}
+                            value={scores[c]}
+                            onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: { ...(prev[g.key] ?? EMPTY_SUBSCORES), [c]: e.target.value } }))}
+                            placeholder="—"
+                            className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
             </div>
             <div className="flex items-center justify-between border-t border-gray-100 pt-3">
               <span className="text-sm font-semibold text-gray-700">Exam total</span>
@@ -458,9 +501,10 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
             <div key={g.key} className="space-y-4">
               <div className="flex items-center justify-between border-b border-gray-200 pb-2">
                 <h3 className="text-sm font-semibold text-gray-800">{g.label}</h3>
-                <span className="text-xs text-gray-500">
-                  Score: <strong className="text-gray-800">{passageGrades[g.key] ? `${passageGrades[g.key]} / 100` : '—'}</strong>
-                </span>
+                {(() => {
+                  const pg = passageGrade(toNumericSubScores(passageGrades[g.key] ?? EMPTY_SUBSCORES), weights)
+                  return <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? `${Math.round(pg)} / 100` : '—'}</strong></span>
+                })()}
               </div>
               {g.verses.map(renderVerseCard)}
             </div>

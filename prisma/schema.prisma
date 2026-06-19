@@ -283,6 +283,9 @@ model Assignment {
   // Translation exercises: show a glossary of words rarer than this NT frequency
   // under each verse (e.g. 50 = beginner, 30 = intermediate). Null = no glossary.
   glossFrequency Int?
+  // Translation exams: relative weights (percent) for the parsing/syntax/translation
+  // sub-scores when computing each passage grade. { parsing, syntax, translation }. Null = equal.
+  gradeWeights Json?
   // Translation exercises: when true, students may consult Reader info (parsing, gloss, lexicon)
   // for the clicked word during Round 2 corrections. Default false to preserve existing behavior.
   allowReaderInRound2 Boolean  @default(false)
@@ -460,7 +463,7 @@ model ExegesisSession {
   submittedAt  DateTime?
   grade        Int?      // instructor-entered score 0-100 (exams: the average of passageGrades)
   gradeNote    String?   // instructor feedback
-  passageGrades Json?    // translation exams: per-passage grades { [reference]: 0-100 }
+  passageGrades Json?    // translation exams: per-passage sub-scores { [reference]: { parsing, syntax, translation } }
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 

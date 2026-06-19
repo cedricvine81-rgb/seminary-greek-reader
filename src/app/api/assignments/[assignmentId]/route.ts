@@ -4,6 +4,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { normalizeWeights } from '@/lib/exam-grading'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -21,7 +22,7 @@ export async function GET(
         dueDate: true, reference: true, instructions: true,
         isPublished: true, courseId: true, timePerQuestion: true, reviewTimeSeconds: true,
         opensAt: true, submissionDeadline: true, round1Deadline: true, round2Deadline: true,
-        allowReaderInRound2: true, maxAppeals: true, glossFrequency: true,
+        allowReaderInRound2: true, maxAppeals: true, glossFrequency: true, gradeWeights: true,
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -64,7 +65,7 @@ export async function PATCH(
     title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
-    allowReaderInRound2, maxAppeals, glossFrequency,
+    allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -90,6 +91,7 @@ export async function PATCH(
     if (provideDefinition !== undefined) data.provideDefinition = Boolean(provideDefinition)
     if (allowReaderInRound2 !== undefined) data.allowReaderInRound2 = Boolean(allowReaderInRound2)
     if ('glossFrequency' in body) data.glossFrequency = glossFrequency != null && Number(glossFrequency) > 0 ? Number(glossFrequency) : null
+    if ('gradeWeights' in body) data.gradeWeights = normalizeWeights(gradeWeights)
     if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null

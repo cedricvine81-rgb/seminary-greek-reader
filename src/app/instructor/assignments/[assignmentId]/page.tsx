@@ -132,6 +132,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             round2Deadline: assignment.round2Deadline?.toISOString() ?? null,
             allowReaderInRound2: assignment.allowReaderInRound2,
             glossFrequency: assignment.glossFrequency,
+            gradeWeights: (assignment.gradeWeights as { parsing: number; syntax: number; translation: number } | null) ?? null,
           }}
         />
 
