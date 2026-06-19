@@ -164,7 +164,7 @@ function formatDeadline(d: Date): string {
 /** A single deadline line: shows the date/time, and a "Closed" state once passed. */
 function DeadlineLine({ label, date, passed }: { label: string; date: Date; passed: boolean }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 text-xs ${passed ? 'text-gray-400' : 'text-brand-700'}`}>
+    <span className={`inline-flex items-center gap-1.5 text-sm ${passed ? 'text-gray-400' : 'text-gray-700'}`}>
       <span className="font-medium">{label}:</span>
       <span className={passed ? 'line-through' : ''}>{formatDeadline(date)}</span>
       {passed && <span className="font-semibold text-gray-500">· Closed</span>}
@@ -1201,23 +1201,23 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
 
       {/* ── Assignment banner ── */}
       {assignment && (
-        <div className="print:hidden bg-brand-50 border-b border-brand-200 px-4 py-3 flex items-start gap-3">
+        <div className="print:hidden bg-gray-100 border-b border-gray-300 px-4 py-3 flex items-start gap-3">
           <span className="text-2xl mt-0.5">📜</span>
           <div className="flex-1 min-w-0">
             {/* The passage is already the page title above, so only show a reference
                 here when the instructor named the exercise something different (then
                 it adds info) — otherwise we'd echo the same passage three times. */}
             {!assignment.isExam && assignment.reference && assignment.reference !== assignment.title && (
-              <p className="text-sm font-semibold text-brand-900">Passage: {assignment.reference}</p>
+              <p className="text-lg font-semibold text-gray-900">Passage: {assignment.reference}</p>
             )}
             {assignment.isExam && (
-              <p className="text-xs text-brand-700 mt-0.5">{assignment.examPassages.length} passages · annotate all in one sitting</p>
+              <p className="text-base text-gray-700 mt-0.5">{assignment.examPassages.length} passages · annotate all in one sitting</p>
             )}
             {assignment.instructions && (
-              <p className="text-xs text-gray-600 mt-0.5">{assignment.instructions}</p>
+              <p className="text-base text-gray-700 mt-1">{assignment.instructions}</p>
             )}
             {(assignment.round1Deadline || assignment.round2Deadline) && (
-              <div className="mt-1.5 flex flex-col gap-0.5">
+              <div className="mt-2 flex flex-col gap-1">
                 {assignment.round1Deadline && (
                   <DeadlineLine label={assignment.isExam ? 'Exam closes' : 'Round 1 (annotations) closes'} date={assignment.round1Deadline} passed={round1Passed} />
                 )}
