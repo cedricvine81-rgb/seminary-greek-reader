@@ -1191,7 +1191,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // ─────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-0 print:block">
+    <div className="flex flex-col gap-0 flex-1 min-h-0 print:block print:flex-none">
 
       {/* ── Print header (hidden on screen) ── */}
       <div className="hidden print:block mb-6">
@@ -1503,7 +1503,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       )}
 
       {loadedVerses.length > 0 && (
-        <div className="flex gap-0 print:block min-h-0 flex-col lg:flex-row">
+        <div className="flex flex-1 gap-0 print:block min-h-0 flex-col lg:flex-row">
 
           {/* ── Greek text pane ── */}
           <div className="overflow-y-auto py-4 lg:py-6 print:overflow-visible flex-1">
