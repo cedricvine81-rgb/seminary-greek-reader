@@ -1240,8 +1240,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         </div>
       )}
 
-      {/* ── Notes & Questions — live scratchpad across Round 1 & 2, locked at submit ── */}
-      {assignment && loadedVerses.length > 0 && (
+      {/* ── Notes & Questions — live scratchpad across Round 1 & 2, locked at submit.
+            Hidden for exams (no scratchpad during a timed exam). ── */}
+      {assignment && !isExam && loadedVerses.length > 0 && (
         <div className="print:hidden border-b border-gray-200 bg-gray-50">
           <button
             type="button"
