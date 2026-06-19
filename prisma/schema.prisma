@@ -458,8 +458,9 @@ model ExegesisSession {
   notes        String    @default("")
   startedAt    DateTime?
   submittedAt  DateTime?
-  grade        Int?      // instructor-entered score 0-100
+  grade        Int?      // instructor-entered score 0-100 (exams: the average of passageGrades)
   gradeNote    String?   // instructor feedback
+  passageGrades Json?    // translation exams: per-passage grades { [reference]: 0-100 }
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 

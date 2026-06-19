@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 
@@ -53,18 +54,44 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
       if (!await isAuthorizedForAssignment(targetAssignmentId, payload.sub)) {
         return NextResponse.json({ error: 'Not found' }, { status: 404 })
       }
-      const { grade, gradeNote } = body
+      const { grade, gradeNote, passageGrades } = body
       if (grade !== undefined && grade !== null) {
         const g = Number(grade)
         if (isNaN(g) || g < 0 || g > 100) {
           return NextResponse.json({ error: 'Grade must be between 0 and 100.' }, { status: 400 })
         }
       }
+
+      // Translation exams are graded per passage: { [reference]: 0-100 | null }.
+      // The overall session.grade is the rounded average of the entered passage scores
+      // (so the gradebook, which reads session.grade, reflects the exam total).
+      let examGrade: number | null | undefined = undefined
+      let cleanPassageGrades: Record<string, number> | undefined = undefined
+      if (passageGrades !== undefined && passageGrades !== null) {
+        if (typeof passageGrades !== 'object' || Array.isArray(passageGrades)) {
+          return NextResponse.json({ error: 'Invalid passage grades.' }, { status: 400 })
+        }
+        cleanPassageGrades = {}
+        for (const [ref, val] of Object.entries(passageGrades as Record<string, unknown>)) {
+          if (val === null || val === '' || val === undefined) continue
+          const n = Number(val)
+          if (isNaN(n) || n < 0 || n > 100) {
+            return NextResponse.json({ error: 'Each passage grade must be between 0 and 100.' }, { status: 400 })
+          }
+          cleanPassageGrades[ref] = n
+        }
+        const entered = Object.values(cleanPassageGrades)
+        examGrade = entered.length > 0
+          ? Math.round(entered.reduce((a, b) => a + b, 0) / entered.length)
+          : null
+      }
+
       const updated = await prisma.exegesisSession.update({
         where: { id: params.id },
         data: {
           // Adopt the orphan session if it wasn't yet linked to an assignment
           ...(!existing.assignmentId && { assignmentId: targetAssignmentId }),
+          ...(passageGrades !== undefined && { passageGrades: cleanPassageGrades ?? Prisma.JsonNull, grade: examGrade }),
           ...(grade !== undefined && { grade: grade === null ? null : Number(grade) }),
           ...(gradeNote !== undefined && { gradeNote }),
         },

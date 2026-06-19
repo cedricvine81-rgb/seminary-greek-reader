@@ -31,6 +31,7 @@ interface Session {
   submittedAt: string | null
   grade: number | null
   gradeNote: string | null
+  passageGrades: Record<string, number> | null  // translation exams: per-passage scores keyed by reference
 }
 
 interface VerseWord {
@@ -109,6 +110,10 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
   const [isExam, setIsExam] = useState(false)
+  // Exam passages, in display order: each holds its reference line (used as the grade key) and its verses.
+  const [examGroups, setExamGroups] = useState<{ key: string; label: string; verses: Verse[] }[]>([])
+  // Per-passage scores (as input strings), keyed by reference line.
+  const [passageGrades, setPassageGrades] = useState<Record<string, string>>({})
 
   useEffect(() => {
     async function load() {
@@ -119,6 +124,8 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       setSession(s)
       setGrade(s.grade !== null ? String(s.grade) : '')
       setGradeNote(s.gradeNote ?? '')
+      const savedPg = (s.passageGrades ?? {}) as Record<string, number>
+      setPassageGrades(Object.fromEntries(Object.entries(savedPg).map(([k, v]) => [k, String(v)])))
 
       const rRes = await fetch(`/api/assignments/${assignmentId}/results`)
       if (rRes.ok) {
@@ -136,18 +143,22 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         const books: RefBook[] = bRes.ok ? (await bRes.json()).books ?? [] : []
         const refs = (assignment.reference as string).split('\n').map(l => l.trim()).filter(Boolean)
         const all: Verse[] = []
+        const groups: { key: string; label: string; verses: Verse[] }[] = []
         for (const line of refs) {
           const p = parseRef(line, books)
           if (!p) continue
+          const gv: Verse[] = []
           const vRes = await fetch(`/api/reader?book=${p.osisId}&chapter=${p.chapter}`)
           if (vRes.ok) {
             const vData = await vRes.json()
             for (const v of (vData.verses ?? []) as Verse[]) {
-              if (v.verse >= p.verseStart && v.verse <= p.verseEnd) all.push(v)
+              if (v.verse >= p.verseStart && v.verse <= p.verseEnd) { gv.push(v); all.push(v) }
             }
           }
+          groups.push({ key: line, label: line, verses: gv })
         }
         setVerses(all)
+        setExamGroups(groups)
       } else if (s.bookOsisId) {
         const vRes = await fetch(`/api/reader?book=${s.bookOsisId}&chapter=${s.chapter}`)
         if (vRes.ok) {
@@ -168,7 +179,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          grade: grade === '' ? null : Number(grade),
+          // Exams are graded per passage; the server derives the overall grade from these.
+          // Exercises send a single overall grade.
+          ...(isExam
+            ? { passageGrades: Object.fromEntries(Object.entries(passageGrades).filter(([, v]) => v !== '').map(([k, v]) => [k, Number(v)])) }
+            : { grade: grade === '' ? null : Number(grade) }),
           gradeNote: gradeNote || null,
           // Pass the assignment so the server can adopt legacy "orphan" sessions at grade time
           assignmentId,
@@ -184,7 +199,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
     } finally {
       setSaving(false)
     }
-  }, [sessionId, grade, gradeNote])
+  }, [sessionId, grade, gradeNote, isExam, passageGrades, assignmentId, router])
 
   if (error) return <p className="text-red-600">{error}</p>
   if (!session) return <p className="text-gray-400 animate-pulse">Loading submission…</p>
@@ -204,6 +219,98 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         diffKeys.push(k)
       }
     }
+  }
+
+  // Exam overall = rounded average of the entered per-passage scores (mirrors the server).
+  const examOverall = (() => {
+    const vals = Object.values(passageGrades).filter(v => v !== '').map(Number).filter(n => !isNaN(n))
+    return vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null
+  })()
+
+  const renderVerseCard = (verse: Verse) => {
+    // Verse translations are keyed by verse number for single-passage exercises,
+    // but by the unique verse id for multi-passage exams (avoids cross-passage collisions).
+    const verseKey = isExam ? (verse.id ?? String(verse.verse)) : String(verse.verse)
+    const round1Trans = session.verseTranslations?.[verseKey]?.trim() ?? ''
+    const round2Notes = session.verseCorrections?.[verseKey]?.trim() ?? ''
+    const verseLabel = verse.reference ?? `${session.bookName} ${session.chapter}:${verse.verse}`
+    return (
+      <Card key={verse.id ?? verse.verse}>
+        {/* Full Greek verse at the top */}
+        <div className="mb-4 pb-3 border-b border-gray-100">
+          <p className="text-xs text-gray-400 mb-1">{verseLabel}</p>
+          <p className="font-greek text-lg leading-relaxed text-gray-900">
+            {verse.words.map(w => w.surface).join(' ')}
+          </p>
+        </div>
+
+        {/* Whole-verse translation (Round 1) and Round 2 Notes */}
+        {(round1Trans || round2Notes) && (
+          <div className="mb-4 grid gap-3 md:grid-cols-2">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 mb-1">
+                {isExam ? 'Verse translation' : 'Round 1 — Verse translation'}
+              </p>
+              <div className={`text-sm whitespace-pre-wrap rounded-lg px-3 py-2 border ${round1Trans ? 'bg-gray-50 border-gray-200 text-gray-700' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
+                {round1Trans || '— not provided —'}
+              </div>
+            </div>
+            {!isExam && (
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-red-500 mb-1">
+                  Round 2 Notes
+                </p>
+                <div className={`text-sm whitespace-pre-wrap rounded-lg px-3 py-2 border ${round2Notes ? 'bg-red-50 border-red-200 text-red-700' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
+                  {round2Notes || '— not provided —'}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 3-column table */}
+        <div className="overflow-x-auto">
+          <table className="w-full text-xs">
+            <thead>
+              <tr className="border-b border-gray-200">
+                <th className="pb-2 pr-4 text-left font-semibold text-gray-500 w-36">Greek word</th>
+                <th className="pb-2 pr-4 text-left font-semibold text-gray-700 w-64">{isExam ? 'Annotations' : 'Round 1 — annotations'}</th>
+                {!isExam && <th className="pb-2 text-left font-semibold text-red-600">Round 2 — corrections</th>}
+              </tr>
+            </thead>
+            <tbody>
+              {verse.words.flatMap(word => {
+                const key = `${verse.verse}-${word.id}`
+                // Round 1: use the snapshot taken at submit time when available; fall back to current annotations
+                const round1 = (submittedAnnotations ? (submittedAnnotations[key] ?? {}) : (annotations[key] ?? {})) as WordAnnotation
+                const corAnn = (corrections[key] ?? {}) as WordAnnotation
+                const fields = ANN_FIELDS.filter(f => round1[f] || corAnn[f])
+                if (fields.length === 0) return []
+                // One table row per field so Round 1 and Round 2 of the same field
+                // share a row height and stay aligned even when a value wraps.
+                return fields.map((f, i) => (
+                  <tr key={`${word.id}-${f}`} className={i === 0 ? 'border-t border-gray-100' : ''}>
+                    {i === 0 && (
+                      <td rowSpan={fields.length} className="py-2.5 pr-4 align-top">
+                        <p className="font-greek text-base text-gray-900">{word.surface}</p>
+                      </td>
+                    )}
+                    <td className="py-1 pr-4 align-top text-gray-700">
+                      {round1[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{round1[f]}</p>}
+                    </td>
+                    {!isExam && (
+                      <td className="py-1 align-top text-red-700">
+                        {corAnn[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{corAnn[f]}</p>}
+                      </td>
+                    )}
+                  </tr>
+                ))
+              })}
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    )
   }
 
   return (
@@ -233,28 +340,65 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       {/* Grade entry */}
       <Card>
         <CardTitle>Grade — {studentName || 'Student'}</CardTitle>
-        <div className="mt-3 flex flex-wrap gap-4 items-end">
-          <div>
-            <label className="block text-xs font-medium text-gray-600 mb-1">Score (0–100)</label>
-            <input
-              type="number" min={0} max={100}
-              value={grade} onChange={e => setGrade(e.target.value)}
-              placeholder="—"
-              className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-            />
+        {isExam ? (
+          <div className="mt-3 space-y-3">
+            <p className="text-xs text-gray-500">
+              Score each passage out of 100. The exam total is the average of the scores you enter.
+            </p>
+            <div className="space-y-2">
+              {examGroups.map(g => (
+                <div key={g.key} className="flex items-center gap-3">
+                  <label className="flex-1 text-sm text-gray-700">{g.label}</label>
+                  <input
+                    type="number" min={0} max={100}
+                    value={passageGrades[g.key] ?? ''}
+                    onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: e.target.value }))}
+                    placeholder="—"
+                    className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between border-t border-gray-100 pt-3">
+              <span className="text-sm font-semibold text-gray-700">Exam total</span>
+              <span className="text-sm font-semibold text-gray-900">{examOverall !== null ? `${examOverall} / 100` : '—'}</span>
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Feedback / note</label>
+              <input
+                type="text" value={gradeNote} onChange={e => setGradeNote(e.target.value)}
+                placeholder="Optional instructor note…"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+            <Button onClick={saveGrade} loading={saving} size="sm">
+              <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
+            </Button>
           </div>
-          <div className="flex-1 min-w-[200px]">
-            <label className="block text-xs font-medium text-gray-600 mb-1">Feedback / note</label>
-            <input
-              type="text" value={gradeNote} onChange={e => setGradeNote(e.target.value)}
-              placeholder="Optional instructor note…"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-            />
+        ) : (
+          <div className="mt-3 flex flex-wrap gap-4 items-end">
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">Score (0–100)</label>
+              <input
+                type="number" min={0} max={100}
+                value={grade} onChange={e => setGrade(e.target.value)}
+                placeholder="—"
+                className="w-24 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+            <div className="flex-1 min-w-[200px]">
+              <label className="block text-xs font-medium text-gray-600 mb-1">Feedback / note</label>
+              <input
+                type="text" value={gradeNote} onChange={e => setGradeNote(e.target.value)}
+                placeholder="Optional instructor note…"
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+            <Button onClick={saveGrade} loading={saving} size="sm">
+              <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
+            </Button>
           </div>
-          <Button onClick={saveGrade} loading={saving} size="sm">
-            <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
-          </Button>
-        </div>
+        )}
       </Card>
 
       {/* Post-deadline diff */}
@@ -307,87 +451,21 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         <p className="text-sm text-gray-400 italic">No verse text available.</p>
       )}
 
-      {verses.map(verse => {
-        // Verse translations are keyed by verse number for single-passage exercises,
-        // but by the unique verse id for multi-passage exams (avoids cross-passage collisions).
-        const verseKey = isExam ? (verse.id ?? String(verse.verse)) : String(verse.verse)
-        const round1Trans = session.verseTranslations?.[verseKey]?.trim() ?? ''
-        const round2Notes = session.verseCorrections?.[verseKey]?.trim() ?? ''
-        const verseLabel = verse.reference ?? `${session.bookName} ${session.chapter}:${verse.verse}`
-        return (
-        <Card key={verse.id ?? verse.verse}>
-          {/* Full Greek verse at the top */}
-          <div className="mb-4 pb-3 border-b border-gray-100">
-            <p className="text-xs text-gray-400 mb-1">{verseLabel}</p>
-            <p className="font-greek text-lg leading-relaxed text-gray-900">
-              {verse.words.map(w => w.surface).join(' ')}
-            </p>
-          </div>
-
-          {/* Whole-verse translation (Round 1) and Round 2 Notes */}
-          {(round1Trans || round2Notes) && (
-            <div className="mb-4 grid gap-3 md:grid-cols-2">
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-gray-500 mb-1">
-                  Round 1 — Verse translation
-                </p>
-                <div className={`text-sm whitespace-pre-wrap rounded-lg px-3 py-2 border ${round1Trans ? 'bg-gray-50 border-gray-200 text-gray-700' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
-                  {round1Trans || '— not provided —'}
-                </div>
+      {/* Exams: group verses under each passage with its own score header.
+          Exercises: flat verse-by-verse list. */}
+      {isExam
+        ? examGroups.map(g => (
+            <div key={g.key} className="space-y-4">
+              <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                <h3 className="text-sm font-semibold text-gray-800">{g.label}</h3>
+                <span className="text-xs text-gray-500">
+                  Score: <strong className="text-gray-800">{passageGrades[g.key] ? `${passageGrades[g.key]} / 100` : '—'}</strong>
+                </span>
               </div>
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-red-500 mb-1">
-                  Round 2 Notes
-                </p>
-                <div className={`text-sm whitespace-pre-wrap rounded-lg px-3 py-2 border ${round2Notes ? 'bg-red-50 border-red-200 text-red-700' : 'bg-gray-50 border-gray-200 text-gray-300 italic'}`}>
-                  {round2Notes || '— not provided —'}
-                </div>
-              </div>
+              {g.verses.map(renderVerseCard)}
             </div>
-          )}
-
-          {/* 3-column table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="pb-2 pr-4 text-left font-semibold text-gray-500 w-36">Greek word</th>
-                  <th className="pb-2 pr-4 text-left font-semibold text-gray-700 w-64">Round 1 — annotations</th>
-                  <th className="pb-2 text-left font-semibold text-red-600">Round 2 — corrections</th>
-                </tr>
-              </thead>
-              <tbody>
-                {verse.words.flatMap(word => {
-                  const key = `${verse.verse}-${word.id}`
-                  // Round 1: use the snapshot taken at submit time when available; fall back to current annotations
-                  const round1 = (submittedAnnotations ? (submittedAnnotations[key] ?? {}) : (annotations[key] ?? {})) as WordAnnotation
-                  const corAnn = (corrections[key] ?? {}) as WordAnnotation
-                  const fields = ANN_FIELDS.filter(f => round1[f] || corAnn[f])
-                  if (fields.length === 0) return []
-                  // One table row per field so Round 1 and Round 2 of the same field
-                  // share a row height and stay aligned even when a value wraps.
-                  return fields.map((f, i) => (
-                    <tr key={`${word.id}-${f}`} className={i === 0 ? 'border-t border-gray-100' : ''}>
-                      {i === 0 && (
-                        <td rowSpan={fields.length} className="py-2.5 pr-4 align-top">
-                          <p className="font-greek text-base text-gray-900">{word.surface}</p>
-                        </td>
-                      )}
-                      <td className="py-1 pr-4 align-top text-gray-700">
-                        {round1[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{round1[f]}</p>}
-                      </td>
-                      <td className="py-1 align-top text-red-700">
-                        {corAnn[f] && <p><span className="text-gray-400 uppercase tracking-wide text-[10px] mr-1">{ANN_LABELS[f]}</span>{corAnn[f]}</p>}
-                      </td>
-                    </tr>
-                  ))
-                })}
-              </tbody>
-            </table>
-          </div>
-        </Card>
-        )
-      })}
+          ))
+        : verses.map(renderVerseCard)}
     </div>
   )
 }
