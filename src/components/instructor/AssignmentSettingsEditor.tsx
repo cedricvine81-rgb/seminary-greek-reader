@@ -289,11 +289,11 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 </div>
                 <hr className="border-brand-200" />
                 <div>
-                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / translation)</label>
+                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / observations)</label>
                   <div className="flex flex-wrap gap-3">
                     {(['parsing', 'syntax', 'translation'] as const).map(c => (
                       <div key={c} className="flex items-center gap-1.5">
-                        <span className="text-xs text-gray-600 capitalize w-20">{c}</span>
+                        <span className="text-xs text-gray-600 capitalize w-20">{c === 'translation' ? 'Observations' : c}</span>
                         <input
                           type="number" min={0} max={100}
                           value={weights[c]}

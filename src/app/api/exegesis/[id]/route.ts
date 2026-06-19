@@ -103,7 +103,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         data: {
           // Adopt the orphan session if it wasn't yet linked to an assignment
           ...(!existing.assignmentId && { assignmentId: targetAssignmentId }),
-          ...(passageGrades !== undefined && { passageGrades: cleanPassageGrades ?? Prisma.JsonNull, grade: examGrade }),
+          ...(passageGrades !== undefined && { passageGrades: cleanPassageGrades as Prisma.InputJsonValue, grade: examGrade }),
           ...(grade !== undefined && { grade: grade === null ? null : Number(grade) }),
           ...(gradeNote !== undefined && { gradeNote }),
         },

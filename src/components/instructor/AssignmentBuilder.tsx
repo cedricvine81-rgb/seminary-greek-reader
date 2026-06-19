@@ -488,13 +488,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             <p className="mt-1 text-xs text-brand-600">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Grade weights (parsing / syntax / translation)</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Grade weights (parsing / syntax / observations)</label>
             <div className="flex flex-wrap gap-3">
               {(['parsing', 'syntax', 'translation'] as const).map(c => {
                 const w = form.gradeWeights ?? { parsing: 33, syntax: 33, translation: 34 }
                 return (
                   <div key={c} className="flex items-center gap-1.5">
-                    <span className="text-xs text-gray-600 capitalize w-20">{c}</span>
+                    <span className="text-xs text-gray-600 capitalize w-20">{c === 'translation' ? 'Observations' : c}</span>
                     <input
                       type="number" min={0} max={100}
                       value={w[c]}

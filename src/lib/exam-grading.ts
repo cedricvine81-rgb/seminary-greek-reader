@@ -7,10 +7,12 @@
 
 export type GradeComponent = 'parsing' | 'syntax' | 'translation'
 export const GRADE_COMPONENTS: GradeComponent[] = ['parsing', 'syntax', 'translation']
+// The third component is the student's "Observations" field (labelled that way in the
+// student workspace); keep the instructor-facing grading labels consistent with it.
 export const GRADE_COMPONENT_LABELS: Record<GradeComponent, string> = {
   parsing: 'Parsing',
   syntax: 'Syntax',
-  translation: 'Translation',
+  translation: 'Observations',
 }
 
 export interface GradeWeights { parsing: number; syntax: number; translation: number }
