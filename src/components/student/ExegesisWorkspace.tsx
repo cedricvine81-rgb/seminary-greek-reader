@@ -83,7 +83,7 @@ function Round2WordPopover({
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
     { field: 'parsing', label: 'Parsing' },
     { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Translation' },
+    { field: 'translation', label: 'Observations' },
   ]
 
   return (
