@@ -48,7 +48,7 @@ interface AssignmentInfo {
   round1Deadline: Date | null             // absolute cut-off for Round 1 annotations
   round2Deadline: Date | null             // absolute cut-off for Round 2 corrections
   allowReaderInRound2: boolean            // expose Reader info during Round 2
-  glossFrequency: number | null           // show a glossary of words rarer than this; null = off
+  glossFrequency: number | null           // show a glossary of words less frequent than this; null = off
   isExam: boolean                         // TRANSLATION_EXAM: multiple passages, single round, hard cut-off
   examPassages: { book: BiblicalBook; chapter: number; verseStart: number; verseEnd: number }[]
 }
@@ -1579,7 +1579,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                   />
                 </div>
 
-                {/* Glossary — words in this verse rarer than the instructor's frequency
+                {/* Glossary — words in this verse less frequent than the instructor's frequency
                     threshold, with definitions, to help with translation. */}
                 {assignment?.glossFrequency != null && (() => {
                   const threshold = assignment.glossFrequency!
@@ -1596,7 +1596,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                   return (
                     <div className="mt-2 rounded-lg border border-gray-200 bg-gray-50 px-3 py-2 print:bg-transparent print:border-gray-300 print:break-inside-avoid">
                       <p className="text-[11px] font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                        Glossary · words rarer than {threshold}×
+                        Glossary · words less frequent than {threshold}×
                       </p>
                       <ul className="space-y-0.5">
                         {rare.map(w => (

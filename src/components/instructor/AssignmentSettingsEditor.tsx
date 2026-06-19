@@ -278,8 +278,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                     className="input"
                   >
                     <option value="">Off — no glossary</option>
-                    <option value="50">Beginner — words rarer than 50×</option>
-                    <option value="30">Intermediate — words rarer than 30×</option>
+                    <option value="50">Beginner — words less frequent than 50×</option>
+                    <option value="30">Intermediate — words less frequent than 30×</option>
                   </select>
                   <p className="text-xs text-brand-600 mt-1">Lists definitions for each passage&rsquo;s less-frequent words beneath its verse translation box.</p>
                 </div>
@@ -354,8 +354,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 className="input"
               >
                 <option value="">Off — no glossary</option>
-                <option value="50">Beginner — words rarer than 50×</option>
-                <option value="30">Intermediate — words rarer than 30×</option>
+                <option value="50">Beginner — words less frequent than 50×</option>
+                <option value="30">Intermediate — words less frequent than 30×</option>
               </select>
               <p className="text-xs text-brand-600 mt-1">Shows definitions for the verse&rsquo;s less-frequent words beneath each Verse Translation box.</p>
             </div>
