@@ -24,6 +24,46 @@ const roleVariant: Record<string, 'blue' | 'green' | 'gray'> = {
   ADMIN: 'blue', INSTRUCTOR: 'green', STUDENT: 'gray',
 }
 
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+const PER_PAGE = 20
+/** Uppercase first letter of a name, or '' when empty/non-alphabetic. */
+const initial = (s: string) => (s?.trim()?.[0] ?? '').toUpperCase()
+
+/** An "All · A–Z" filter strip (matches the participant-picker design). */
+function LetterStrip({ label, value, onChange, available }: {
+  label: string; value: string; onChange: (v: string) => void; available: Set<string>
+}) {
+  return (
+    <div className="flex items-center gap-2 flex-wrap">
+      <span className="w-20 shrink-0 text-sm font-medium text-gray-700">{label}</span>
+      <div className="flex flex-wrap gap-1">
+        {['All', ...ALPHABET].map(L => {
+          const active = value === L
+          const disabled = L !== 'All' && !available.has(L)
+          return (
+            <button
+              key={L}
+              type="button"
+              disabled={disabled}
+              onClick={() => onChange(L)}
+              className={[
+                'min-w-[2rem] rounded border px-2 py-1 text-center text-sm transition-colors',
+                active
+                  ? 'border-brand-800 bg-brand-800 font-semibold text-white'
+                  : disabled
+                    ? 'cursor-not-allowed border-gray-200 text-gray-300'
+                    : 'border-gray-200 text-brand-800 hover:bg-gray-50',
+              ].join(' ')}
+            >
+              {L}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export function AdminUsersTable() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
@@ -32,8 +72,15 @@ export function AdminUsersTable() {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
+  // First/last-name alphabet filters ('All' or a single A–Z letter) + pagination.
+  const [firstLetter, setFirstLetter] = useState('All')
+  const [lastLetter, setLastLetter] = useState('All')
+  const [page, setPage] = useState(1)
   // When true, the table also lists soft-deleted (in-trash) users. Default off.
   const [showDeleted, setShowDeleted] = useState(false)
+
+  // Reset to page 1 whenever the filters change so we don't land on an empty page.
+  useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted])
 
   async function load() {
     try {
@@ -155,10 +202,32 @@ Best wishes,`
     load()
   }
 
-  const filtered = users.filter(u => {
+  // Free-text search (name / email / role / institution).
+  const matchSearch = (u: User) => {
     const q = search.toLowerCase()
     return !q || `${u.firstName} ${u.surname} ${u.email} ${u.role} ${u.institution ?? ''}`.toLowerCase().includes(q)
-  })
+  }
+  const searched = users.filter(matchSearch)
+
+  // Which first/last initials actually have users (so empty letters can be dimmed).
+  // Cross-aware: the First-name strip reflects the chosen Last-name letter and vice versa.
+  const availableFirst = new Set(
+    searched.filter(u => lastLetter === 'All' || initial(u.surname) === lastLetter).map(u => initial(u.firstName)).filter(Boolean),
+  )
+  const availableLast = new Set(
+    searched.filter(u => firstLetter === 'All' || initial(u.firstName) === firstLetter).map(u => initial(u.surname)).filter(Boolean),
+  )
+
+  // Apply the letter filters, then sort alphabetically (by first name, then surname —
+  // matching how names are displayed first-name-first).
+  const matched = searched
+    .filter(u => firstLetter === 'All' || initial(u.firstName) === firstLetter)
+    .filter(u => lastLetter === 'All' || initial(u.surname) === lastLetter)
+    .sort((a, b) => a.firstName.localeCompare(b.firstName) || a.surname.localeCompare(b.surname))
+
+  const pageCount = Math.max(1, Math.ceil(matched.length / PER_PAGE))
+  const safePage = Math.min(page, pageCount)
+  const paged = matched.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE)
 
   if (loading) return <p className="text-gray-400 animate-pulse">Loading users…</p>
 
@@ -194,6 +263,14 @@ Best wishes,`
         </div>
       )}
       {error && <p className="text-sm text-red-600 mb-3 bg-red-50 rounded px-3 py-1">{error}</p>}
+
+      {/* Alphabetical picker — jump to users by first- or last-name initial. */}
+      <div className="mb-4 space-y-2">
+        <p className="text-sm text-gray-600">{matched.length} user{matched.length === 1 ? '' : 's'} found</p>
+        <LetterStrip label="First name" value={firstLetter} onChange={setFirstLetter} available={availableFirst} />
+        <LetterStrip label="Last name" value={lastLetter} onChange={setLastLetter} available={availableLast} />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -208,7 +285,7 @@ Best wishes,`
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
-            {filtered.map(u => (
+            {paged.map(u => (
               <tr key={u.id} className={`hover:bg-gray-50 ${u.deletedAt ? 'opacity-60 bg-gray-50/60' : ''}`}>
                 {editId === u.id ? (
                   <>
@@ -306,8 +383,38 @@ Best wishes,`
             ))}
           </tbody>
         </table>
-        {filtered.length === 0 && <p className="text-sm text-gray-400 italic py-4 text-center">No users found.</p>}
+        {matched.length === 0 && <p className="text-sm text-gray-400 italic py-4 text-center">No users found.</p>}
       </div>
+
+      {/* Pagination */}
+      {pageCount > 1 && (
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-1">
+          {Array.from({ length: pageCount }, (_, i) => i + 1).map(p => (
+            <button
+              key={p}
+              type="button"
+              onClick={() => setPage(p)}
+              className={[
+                'min-w-[2.25rem] rounded border px-2.5 py-1.5 text-sm transition-colors',
+                p === safePage
+                  ? 'border-brand-800 bg-brand-800 font-semibold text-white'
+                  : 'border-gray-200 text-brand-800 hover:bg-gray-50',
+              ].join(' ')}
+            >
+              {p}
+            </button>
+          ))}
+          <button
+            type="button"
+            disabled={safePage >= pageCount}
+            onClick={() => setPage(p => Math.min(pageCount, p + 1))}
+            className="min-w-[2.25rem] rounded border border-gray-200 px-2.5 py-1.5 text-sm text-brand-800 hover:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-300"
+            aria-label="Next page"
+          >
+            »
+          </button>
+        </div>
+      )}
     </Card>
   )
 }
