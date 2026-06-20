@@ -543,7 +543,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
       {form.type === 'TRANSLATION_EXERCISE' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
-          <p className="text-sm font-semibold text-brand-800">📜 Exegesis Workspace Exercise</p>
+          <p className="text-sm font-semibold text-brand-800">Exegesis Workspace Exercise</p>
           <p className="text-xs text-brand-700">
             Students will open the Exegesis Workspace with this passage pre-loaded. They can annotate
             each word (Parsing · Syntax · Translation) and submit their analysis.
