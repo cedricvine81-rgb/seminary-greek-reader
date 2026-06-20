@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
@@ -402,6 +402,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saving' | 'saved' | 'error'>('idle')
   const [showSessionList, setShowSessionList] = useState(false)
   const sessionListRef = useRef<HTMLDivElement | null>(null)
+  const sessionPanelRef = useRef<HTMLDivElement | null>(null)
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // ── Assignment mode ──
@@ -755,6 +756,28 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [selectedWord])
+
+  // Keep the "My Sessions" dropdown on-screen. It's right-anchored to its button, but
+  // when the button wraps to the left on narrow screens the panel would extend off the
+  // left edge (and get clipped by the page's overflow-hidden). Measure after open and
+  // nudge it back inside the viewport.
+  useLayoutEffect(() => {
+    if (!showSessionList) return
+    const clamp = () => {
+      const panel = sessionPanelRef.current
+      if (!panel) return
+      panel.style.transform = 'none'
+      const r = panel.getBoundingClientRect()
+      const margin = 8
+      let shift = 0
+      if (r.left < margin) shift = margin - r.left
+      else if (r.right > window.innerWidth - margin) shift = (window.innerWidth - margin) - r.right
+      if (shift) panel.style.transform = `translateX(${Math.round(shift)}px)`
+    }
+    clamp()
+    window.addEventListener('resize', clamp)
+    return () => window.removeEventListener('resize', clamp)
+  }, [showSessionList])
 
   // Close the "My Sessions" dropdown when clicking outside it.
   useEffect(() => {
@@ -1552,7 +1575,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               My Sessions
             </button>
             {showSessionList && (
-              <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-h-80 overflow-y-auto">
+              <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
                 {savedSessions.length === 0 ? (
                   <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
                 ) : (
