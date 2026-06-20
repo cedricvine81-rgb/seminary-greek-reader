@@ -284,13 +284,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
-      // If launched from a specific course page, return there so the new
-      // assignment is immediately visible in the course's assignment list.
-      if (defaultCourseId) {
-        router.push(`/instructor/courses/${defaultCourseId}`)
-      } else {
-        router.push('/instructor/assignments')
-      }
+      // Return to the assignment's course (the one launched from, or the one the
+      // instructor picked in the selector) so the new assignment is immediately visible.
+      router.push(`/instructor/courses/${defaultCourseId ?? courseId}`)
       router.refresh()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error creating assignment')
@@ -302,11 +298,17 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-lg">
-      {courses.length > 1 && (
+      {/* Show the course selector when there's a choice to make, or when launched from
+          the dashboard (no course pre-selected) so the instructor allocates it explicitly. */}
+      {(courses.length > 1 || !defaultCourseId) && (
         <Select
           label="Course"
           value={courseId}
-          onChange={e => setCourseId(e.target.value)}
+          onChange={e => {
+            const c = courses.find(c => c.id === e.target.value)
+            setCourseId(e.target.value)
+            if (c) set('level', c.level)
+          }}
           options={courses.map(c => ({ value: c.id, label: c.name }))}
         />
       )}
@@ -1335,7 +1337,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create schedule')
       setSuccess(data.count)
-      setTimeout(() => { router.push('/instructor/assignments'); router.refresh() }, 1800)
+      setTimeout(() => { router.push(`/instructor/courses/${form.courseId}`); router.refresh() }, 1800)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error creating schedule')
     } finally {
@@ -1357,8 +1359,9 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
       <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
 
-        {/* Course */}
-        {courses.length > 1 && (
+        {/* Course — shown when there's a choice, or when launched from the dashboard
+            (no course pre-selected) so the instructor allocates it explicitly. */}
+        {(courses.length > 1 || !defaultCourseId) && (
           <Select
             label="Course"
             value={form.courseId}
