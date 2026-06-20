@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
-import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
+import { BookOpen, BookMarked, Table2, Scroll, ListTree, LayoutDashboard } from 'lucide-react'
 
 interface AppHeaderProps {
   isAuthenticated?: boolean
@@ -43,6 +43,9 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           </Link>
           <Link href="/exegesis" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <Scroll size={18} /> <span className="hidden md:inline">Exegesis</span>
+          </Link>
+          <Link href="/phrase" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
+            <ListTree size={18} /> <span className="hidden md:inline">Phrase</span>
           </Link>
           {isAuthenticated && (userRole === 'INSTRUCTOR' || userRole === 'STUDENT' || userRole === 'ADMIN') && (
             <Link
