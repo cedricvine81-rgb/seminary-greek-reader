@@ -437,6 +437,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [violations, setViolations] = useState(0)
   const [lastViolation, setLastViolation] = useState<string | null>(null)
   const violationsRef = useRef(0)        // mirror for event handlers (avoid stale closures)
+  const lastViolationAtRef = useRef(0)   // coalesce co-firing events (e.g. blur + visibilitychange)
   const submitRef = useRef<() => void>(() => {})
 
   // ── Load books list ──
@@ -1207,6 +1208,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
    *  flash a warning, and auto-submit once the configured threshold is reached. */
   const recordViolation = useCallback((type: string) => {
     if (!lockdownOn) return
+    // Coalesce events that co-fire for a single action (e.g. a tab switch raises both
+    // `blur` and `visibilitychange`) so one action counts as one violation.
+    const nowMs = Date.now()
+    if (nowMs - lastViolationAtRef.current < 1200) return
+    lastViolationAtRef.current = nowMs
     violationsRef.current += 1
     const count = violationsRef.current
     setViolations(count)
