@@ -2,6 +2,8 @@ import { Fragment } from 'react'
 import type { ReactNode } from 'react'
 import { prisma } from '@/lib/db'
 import { compareStudentsByName } from '@/lib/sort-students'
+import { GradeWeightEditor } from './GradeWeightEditor'
+import { normalizeCategoryWeights, weightedOverall, type GradeCategory } from '@/lib/grade-weights'
 
 interface Props {
   courseId: string
@@ -36,7 +38,7 @@ function avg(nums: (number | null)[]): number | null {
 }
 
 export async function CourseGradebook({ courseId }: Props) {
-  const [enrollments, assignments] = await Promise.all([
+  const [enrollments, assignments, course] = await Promise.all([
     prisma.enrollment.findMany({
       where: { courseId, status: 'APPROVED' },
       include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
@@ -46,7 +48,9 @@ export async function CourseGradebook({ courseId }: Props) {
       select: { id: true, title: true, type: true, weekNumber: true, questions: { select: { points: true } } },
       orderBy: { weekNumber: 'asc' },
     }),
+    prisma.course.findUnique({ where: { id: courseId }, select: { gradeCategoryWeights: true } }),
   ])
+  const weights = normalizeCategoryWeights(course?.gradeCategoryWeights)
   // Alphabetical by surname, then first name (case-insensitive, locale-aware).
   enrollments.sort((a, b) => compareStudentsByName(a.user, b.user))
 
@@ -116,7 +120,11 @@ export async function CourseGradebook({ courseId }: Props) {
 
   if (activeGroups.length === 0) return null
 
+  const activeTypes = activeGroups.map(g => g.type as GradeCategory)
+
   return (
+    <div>
+    <GradeWeightEditor courseId={courseId} activeTypes={activeTypes} initial={weights} />
     <div className="overflow-auto max-h-[70vh] rounded-xl border border-gray-200">
       <table className="text-xs border-collapse min-w-full table-fixed">
         <colgroup>
@@ -140,6 +148,9 @@ export async function CourseGradebook({ courseId }: Props) {
                 className="px-3 py-2 text-center font-semibold text-gray-700 bg-gray-50 border-l-2 border-gray-300"
               >
                 {g.label}
+                {weights && (weights[g.type as GradeCategory] ?? 0) > 0 && (
+                  <span className="ml-1 font-normal text-brand-600">· {weights[g.type as GradeCategory]}%</span>
+                )}
               </th>
             ))}
             <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l-2 border-gray-300 whitespace-nowrap">
@@ -173,6 +184,7 @@ export async function CourseGradebook({ courseId }: Props) {
         <tbody className="divide-y divide-gray-100">
           {students.map(student => {
             const allScores: (number | null)[] = []
+            const catAvgs: { type: GradeCategory; avg: number | null }[] = []
 
             return (
               <tr key={student.id} className="hover:bg-gray-50">
@@ -186,6 +198,7 @@ export async function CourseGradebook({ courseId }: Props) {
                 {activeGroups.map(g => {
                   const groupScores = g.cols.map(a => getScore(student.id, a))
                   groupScores.forEach(s => allScores.push(s))
+                  catAvgs.push({ type: g.type as GradeCategory, avg: avg(groupScores) })
                   return (
                     <Fragment key={g.type}>
                       {g.cols.map(a => <PctCell key={a.id} pct={getScore(student.id, a)} />)}
@@ -194,7 +207,7 @@ export async function CourseGradebook({ courseId }: Props) {
                   )
                 })}
 
-                <PctCell pct={avg(allScores)} muted />
+                <PctCell pct={weights ? weightedOverall(catAvgs, weights) : avg(allScores)} muted />
               </tr>
             )
           })}
@@ -209,22 +222,25 @@ export async function CourseGradebook({ courseId }: Props) {
             {(() => {
               const cells: ReactNode[] = []
               const allColAvgs: (number | null)[] = []
+              const catAvgs: { type: GradeCategory; avg: number | null }[] = []
 
               activeGroups.forEach(g => {
                 const groupColAvgs = g.cols.map(a => avg(students.map(s => getScore(s.id, a))))
                 groupColAvgs.forEach(v => allColAvgs.push(v))
                 const groupAvg = avg(groupColAvgs)
+                catAvgs.push({ type: g.type as GradeCategory, avg: groupAvg })
 
                 g.cols.forEach((a, i) => cells.push(<PctCell key={a.id} pct={groupColAvgs[i]} />))
                 cells.push(<PctCell key={`${g.type}-avg`} pct={groupAvg} muted />)
               })
 
-              cells.push(<PctCell key="overall" pct={avg(allColAvgs)} muted />)
+              cells.push(<PctCell key="overall" pct={weights ? weightedOverall(catAvgs, weights) : avg(allColAvgs)} muted />)
               return cells
             })()}
           </tr>
         </tfoot>
       </table>
+    </div>
     </div>
   )
 }

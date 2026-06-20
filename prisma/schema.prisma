@@ -84,6 +84,10 @@ model Course {
   institutionId String?
   instructorId  String
   isArchived    Boolean     @default(false)
+  // Final-grade weighting by assignment-type category, e.g.
+  // { VOCABULARY_QUIZ: 40, TRANSLATION_EXERCISE: 30, TRANSLATION_EXAM: 30 }.
+  // Null = no custom weighting (the gradebook overall is a flat average).
+  gradeCategoryWeights Json?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 
