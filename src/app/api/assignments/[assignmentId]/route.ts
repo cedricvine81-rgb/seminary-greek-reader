@@ -23,6 +23,7 @@ export async function GET(
         isPublished: true, courseId: true, timePerQuestion: true, reviewTimeSeconds: true,
         opensAt: true, submissionDeadline: true, round1Deadline: true, round2Deadline: true,
         allowReaderInRound2: true, maxAppeals: true, glossFrequency: true, gradeWeights: true,
+        lockdown: true, lockdownMaxViolations: true,
       },
     })
     if (!assignment) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -65,7 +66,7 @@ export async function PATCH(
     title, weekNumber, dueDate, instructions, reference,
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
-    allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights,
+    allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -92,6 +93,9 @@ export async function PATCH(
     if (allowReaderInRound2 !== undefined) data.allowReaderInRound2 = Boolean(allowReaderInRound2)
     if ('glossFrequency' in body) data.glossFrequency = glossFrequency != null && Number(glossFrequency) > 0 ? Number(glossFrequency) : null
     if ('gradeWeights' in body) data.gradeWeights = normalizeWeights(gradeWeights)
+    if ('lockdown' in body) data.lockdown = Boolean(lockdown)
+    if ('lockdownMaxViolations' in body)
+      data.lockdownMaxViolations = lockdownMaxViolations != null && Number(lockdownMaxViolations) > 0 ? Number(lockdownMaxViolations) : null
     if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null

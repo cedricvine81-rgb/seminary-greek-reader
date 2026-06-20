@@ -51,6 +51,8 @@ interface AssignmentInfo {
   glossFrequency: number | null           // show a glossary of words less frequent than this; null = off
   isExam: boolean                         // TRANSLATION_EXAM: multiple passages, single round, hard cut-off
   examPassages: { book: BiblicalBook; chapter: number; verseStart: number; verseEnd: number }[]
+  lockdown: boolean                       // exam integrity mode: fullscreen + tab-switch detection + paste block
+  lockdownMaxViolations: number | null    // auto-submit after this many violations; null = warn only
 }
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -364,7 +366,7 @@ const PRINT_ANN_LABELS: Record<PrintAnnField, string> = { parsing: 'Parse', synt
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true }: { assignmentId?: string; isAuthenticated?: boolean }) {
+export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean }) {
   const router = useRouter()
 
   // ── Passage state ──
@@ -388,7 +390,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [verseCorrections, setVerseCorrections] = useState<Record<string, string>>({})
   // Free-form "Notes & Questions" scratchpad — live across Round 1 & 2, locked at submit
   const [notes, setNotes] = useState('')
-  const [notesOpen, setNotesOpen] = useState(true)
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
   const wordPanelRef = useRef<HTMLDivElement | null>(null)
@@ -429,6 +430,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }, [])
   const round1Passed = !!assignment?.round1Deadline && now > assignment.round1Deadline.getTime()
   const round2Passed = !!assignment?.round2Deadline && now > assignment.round2Deadline.getTime()
+
+  // ── Lockdown (exam integrity) state ──
+  const [lockdownStarted, setLockdownStarted] = useState(false)  // student has entered fullscreen / begun
+  const [fullscreenLost, setFullscreenLost] = useState(false)    // exited fullscreen mid-exam → re-entry overlay
+  const [violations, setViolations] = useState(0)
+  const [lastViolation, setLastViolation] = useState<string | null>(null)
+  const violationsRef = useRef(0)        // mirror for event handlers (avoid stale closures)
+  const submitRef = useRef<() => void>(() => {})
 
   // ── Load books list ──
   useEffect(() => {
@@ -490,6 +499,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           glossFrequency: a.glossFrequency ?? null,
           isExam,
           examPassages,
+          lockdown: !!a.lockdown,
+          lockdownMaxViolations: a.lockdownMaxViolations ?? null,
         }
         if (assignmentInfo.submissionDeadline && new Date() > assignmentInfo.submissionDeadline) {
           setDeadlinePassed(true)
@@ -825,7 +836,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // ── Auto-submit when stage 2 timer expires ──
   useEffect(() => {
     if (reviewTimerExpired && !submitted && propAssignmentId) {
-      submitAssignment()
+      submitAssignment({ auto: true })
     }
   }, [reviewTimerExpired]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -1019,7 +1030,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }
 
   // ── Submit assignment ──
-  async function submitAssignment() {
+  async function submitAssignment(opts?: { auto?: boolean }) {
+    // Translation exercises require a written "Areas for Improvement" reflection before
+    // grading — but only on a manual submit. Automatic deadline/timer submission must
+    // never be blocked, or the student would lose their work at the cut-off.
+    if (!opts?.auto && !isExam && !notes.trim()) {
+      setSubmitError('Please complete “Areas for Improvement” before submitting for grading.')
+      return
+    }
     setIsSubmitting(true)
     setSubmitError('')
     try {
@@ -1175,6 +1193,75 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const showSubmitButton = !!(propAssignmentId && loadedVerses.length > 0 && !submitted &&
     (!assignment?.timeLimitSeconds || timerExpired || deadlinePassed || round1Passed))
 
+  // ── Lockdown (exam integrity) ──
+  // Active only for a real student attempt on a lockdown exam, before submission.
+  // Instructors previewing (previewMode) are exempt so they can inspect freely.
+  const lockdownOn = isExam && !!assignment?.lockdown && !!propAssignmentId && !previewMode && !submitted
+  const maxViolations = assignment?.lockdownMaxViolations ?? null
+
+  // Keep submitRef pointed at the latest submit so event handlers can auto-submit
+  // without re-binding listeners on every render.
+  useEffect(() => { submitRef.current = () => submitAssignment({ auto: true }) })
+
+  /** Record one integrity violation: bump the count, log it to the server (append-only),
+   *  flash a warning, and auto-submit once the configured threshold is reached. */
+  const recordViolation = useCallback((type: string) => {
+    if (!lockdownOn) return
+    violationsRef.current += 1
+    const count = violationsRef.current
+    setViolations(count)
+    setLastViolation(type)
+    if (sessionId) {
+      // Fire-and-forget; append-only on the server so it can't be wiped client-side.
+      fetch(`/api/exegesis/${sessionId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ appendIntegrityEvents: [{ type, at: new Date().toISOString() }] }),
+        keepalive: true,
+      }).catch(() => {})
+    }
+    if (maxViolations != null && count >= maxViolations) {
+      submitRef.current()
+    }
+  }, [lockdownOn, sessionId, maxViolations])
+
+  // Detect tab/window switching, fullscreen exit, and copy/paste while a lockdown exam
+  // is in progress. Each is logged as a violation; fullscreen exit also raises the
+  // re-entry overlay.
+  useEffect(() => {
+    if (!lockdownOn || !lockdownStarted) return
+    const onVisibility = () => { if (document.hidden) recordViolation('tab-hidden') }
+    const onBlur = () => recordViolation('window-blur')
+    const onFullscreenChange = () => {
+      if (!document.fullscreenElement) { setFullscreenLost(true); recordViolation('fullscreen-exit') }
+    }
+    const block = (type: string) => (e: Event) => { e.preventDefault(); recordViolation(type) }
+    const onCopy = block('copy')
+    const onPaste = block('paste')
+    const onContextMenu = block('contextmenu')
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('blur', onBlur)
+    document.addEventListener('fullscreenchange', onFullscreenChange)
+    document.addEventListener('copy', onCopy)
+    document.addEventListener('paste', onPaste)
+    document.addEventListener('contextmenu', onContextMenu)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('blur', onBlur)
+      document.removeEventListener('fullscreenchange', onFullscreenChange)
+      document.removeEventListener('copy', onCopy)
+      document.removeEventListener('paste', onPaste)
+      document.removeEventListener('contextmenu', onContextMenu)
+    }
+  }, [lockdownOn, lockdownStarted, recordViolation])
+
+  /** Enter fullscreen and begin the locked exam (must be triggered by a user click). */
+  const enterLockdown = useCallback(async () => {
+    try { await document.documentElement.requestFullscreen() } catch { /* some browsers/permissions block it */ }
+    setFullscreenLost(false)
+    setLockdownStarted(true)
+  }, [])
+
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60)
     const s = secs % 60
@@ -1191,7 +1278,55 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // ─────────────────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex flex-col gap-0 flex-1 min-h-0 print:block print:flex-none">
+    <div className={`flex flex-col gap-0 flex-1 min-h-0 print:block print:flex-none ${lockdownOn && lockdownStarted ? 'select-none' : ''}`}>
+
+      {/* ── Lockdown: start gate (must click to enter fullscreen and begin) ── */}
+      {lockdownOn && !lockdownStarted && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90 px-6 print:hidden">
+          <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+            <div className="text-4xl mb-3">🔒</div>
+            <h2 className="text-xl font-bold text-gray-900">Locked exam</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              This exam runs in lockdown mode. It opens in fullscreen, and leaving fullscreen,
+              switching tabs or windows, or copying &amp; pasting is recorded for your instructor
+              {maxViolations != null ? ` and auto-submits the exam after ${maxViolations} violation${maxViolations === 1 ? '' : 's'}` : ''}.
+            </p>
+            <button
+              onClick={enterLockdown}
+              className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+            >
+              Enter fullscreen &amp; begin
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Lockdown: re-entry overlay (exited fullscreen mid-exam) ── */}
+      {lockdownOn && lockdownStarted && fullscreenLost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-red-900/90 px-6 print:hidden">
+          <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+            <div className="text-4xl mb-3">⚠️</div>
+            <h2 className="text-xl font-bold text-red-700">You left fullscreen</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              This was recorded ({violations} violation{violations === 1 ? '' : 's'} so far). Return to fullscreen to continue your exam.
+            </p>
+            <button
+              onClick={enterLockdown}
+              className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+            >
+              Return to exam
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Lockdown: persistent integrity status ── */}
+      {lockdownOn && lockdownStarted && (
+        <div className={`print:hidden flex items-center justify-between gap-3 px-4 py-1.5 text-xs font-medium ${violations > 0 ? 'bg-red-50 text-red-700 border-b border-red-200' : 'bg-gray-100 text-gray-600 border-b border-gray-200'}`}>
+          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — stay in fullscreen; do not switch tabs or copy/paste.</span>
+          <span>{violations > 0 ? `${violations} violation${violations === 1 ? '' : 's'} recorded${lastViolation ? ` · last: ${lastViolation}` : ''}` : 'No violations'}{maxViolations != null ? ` (auto-submit at ${maxViolations})` : ''}</span>
+        </div>
+      )}
 
       {/* ── Print header (hidden on screen) ── */}
       <div className="hidden print:block mb-6">
@@ -1202,7 +1337,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       {/* ── Assignment banner ── */}
       {assignment && (
         <div className="print:hidden bg-gray-100 border-b border-gray-300 px-4 py-3 flex items-start gap-3">
-          <span className="text-2xl mt-0.5">📜</span>
           <div className="flex-1 min-w-0">
             {/* The passage is already the page title above, so only show a reference
                 here when the instructor named the exercise something different (then
@@ -1236,45 +1370,6 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300">
               Deadline passed — editing only
             </span>
-          )}
-        </div>
-      )}
-
-      {/* ── Notes & Questions — live scratchpad across Round 1 & 2, locked at submit.
-            Hidden for exams (no scratchpad during a timed exam). ── */}
-      {assignment && !isExam && loadedVerses.length > 0 && (
-        <div className="print:hidden border-b border-gray-200 bg-gray-50">
-          <button
-            type="button"
-            onClick={() => setNotesOpen(o => !o)}
-            className="w-full flex items-center justify-between px-4 py-2 text-left"
-          >
-            <span className="text-sm font-semibold text-gray-800 flex items-center gap-1.5">
-              📝 Notes &amp; Questions
-              {notes.trim() && <span className="text-xs font-normal text-gray-500">· {notes.trim().length} chars</span>}
-            </span>
-            <span className="text-xs text-brand-600">{notesOpen ? 'Hide' : 'Show'}</span>
-          </button>
-          {notesOpen && (
-            <div className="px-4 pb-3">
-              <p className="text-xs text-gray-500 mb-1.5">
-                Jot down your thoughts and any questions for your instructor as you work through Round 1 and Round 2.
-                Saved automatically{submitted ? '' : ' and editable until you submit'}.
-                {submitted && ' This is now locked because you have submitted.'}
-              </p>
-              <textarea
-                value={notes}
-                onChange={e => {
-                  const next = e.target.value
-                  setNotes(next)
-                  scheduleAutoSave(annotations, corrections, verseTranslations, verseCorrections, next)
-                }}
-                disabled={submitted}
-                rows={4}
-                placeholder="e.g. Unsure whether this participle is causal or temporal — want to ask in class…"
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
-              />
-            </div>
           )}
         </div>
       )}
@@ -1416,7 +1511,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         {showSubmitButton && (
           <div className="self-end flex flex-col items-end gap-1">
             <button
-              onClick={submitAssignment}
+              onClick={() => submitAssignment()}
               disabled={isSubmitting || isSaving || correctionLocked}
               className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
             >
@@ -1753,6 +1848,39 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                 </div>
               </div>
             ))}
+
+            {/* ── Areas for Improvement — appears in Round 2; a written reflection is
+                  required before the student can submit for grading. ── */}
+            {reviewMode && (
+              <div className="mt-6 print:hidden">
+                <label className="block text-sm font-semibold text-gray-800 mb-1">
+                  Areas for Improvement <span className="text-red-500">*</span>
+                </label>
+                <p className="text-xs text-gray-500 mb-1.5">
+                  Reflect on what you found difficult and what you&rsquo;d work on next. This is required before you can submit for grading.
+                </p>
+                <textarea
+                  value={notes}
+                  onChange={e => {
+                    const next = e.target.value
+                    setNotes(next)
+                    scheduleAutoSave(annotations, corrections, verseTranslations, verseCorrections, next)
+                  }}
+                  disabled={submitted}
+                  rows={4}
+                  placeholder={submitted ? '' : 'e.g. I struggled with participle aspect and need to review the genitive absolute…'}
+                  className={`w-full rounded-lg px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 disabled:bg-gray-50 disabled:text-gray-500 ${
+                    !submitted && !notes.trim()
+                      ? 'border-2 border-amber-300 bg-amber-50 focus:ring-amber-400'
+                      : 'border border-gray-300 bg-white focus:ring-brand-500 focus:border-transparent'
+                  }`}
+                />
+                {!submitted && !notes.trim() && (
+                  <p className="text-xs text-amber-600 mt-1">Write a short reflection here before submitting.</p>
+                )}
+              </div>
+            )}
+
           </div>
 
           {/* The Round 1 annotation panel now lives in each verse's right column

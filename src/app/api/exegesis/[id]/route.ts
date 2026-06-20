@@ -128,7 +128,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     // Student — can only patch their own session
     if (existing.userId !== payload.sub) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId } = body
+    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId, appendIntegrityEvents } = body
+
+    // Lockdown integrity events are append-only: the client sends the new events to add,
+    // the server concatenates them onto the existing log so a student can't wipe their
+    // record by PATCHing an empty array. Capped to avoid unbounded growth.
+    let mergedIntegrityEvents: unknown[] | undefined = undefined
+    if (Array.isArray(appendIntegrityEvents) && appendIntegrityEvents.length > 0 && !existing.submittedAt) {
+      const clean = appendIntegrityEvents
+        .filter((e): e is { type: unknown; at: unknown } => !!e && typeof e === 'object')
+        .map(e => ({ type: String((e as { type: unknown }).type ?? '').slice(0, 40), at: String((e as { at: unknown }).at ?? '').slice(0, 40) }))
+        .filter(e => e.type)
+      const existingEvents = Array.isArray(existing.integrityEvents) ? existing.integrityEvents as unknown[] : []
+      mergedIntegrityEvents = [...existingEvents, ...clean].slice(-500)
+    }
 
     // Server-side lock enforcement (the workspace UI also locks these, but the API is
     // the source of truth): once submitted, the work is frozen; Round 1 fields lock
@@ -155,6 +168,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         ...(corrections !== undefined && !round2Locked && { corrections }),
         ...(verseCorrections !== undefined && !round2Locked && { verseCorrections }),
         ...(notes !== undefined && !submitted && { notes: String(notes) }),
+        ...(mergedIntegrityEvents !== undefined && { integrityEvents: mergedIntegrityEvents as Prisma.InputJsonValue }),
         ...(title && { title }),
         // Only set startedAt once (never overwrite)
         ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),

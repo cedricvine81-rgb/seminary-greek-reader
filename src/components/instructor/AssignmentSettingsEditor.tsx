@@ -34,6 +34,8 @@ interface Props {
     allowReaderInRound2: boolean       // translation exercises only
     glossFrequency: number | null      // translation exercises only
     gradeWeights: { parsing: number; syntax: number; translation: number } | null  // translation exams only
+    lockdown: boolean                  // translation exams only
+    lockdownMaxViolations: number | null  // translation exams only
   }
 }
 
@@ -94,6 +96,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [glossFrequency, setGlossFrequency] = useState<number | null>(initial.glossFrequency)
   const [weights, setWeights] = useState(initial.gradeWeights ?? { parsing: 33, syntax: 33, translation: 34 })
   const weightSum = weights.parsing + weights.syntax + weights.translation
+  const [lockdown, setLockdown] = useState(initial.lockdown)
+  const [lockdownMaxViolations, setLockdownMaxViolations] = useState<number | null>(initial.lockdownMaxViolations)
 
   async function handleSave() {
     if ((isTranslation || isExam) && !reference.trim()) {
@@ -134,6 +138,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           allowReaderInRound2: isTranslation ? allowReaderInRound2 : undefined,
           glossFrequency: (isTranslation || isExam) ? glossFrequency : undefined,
           gradeWeights: isExam ? weights : undefined,
+          lockdown: isExam ? lockdown : undefined,
+          lockdownMaxViolations: isExam ? lockdownMaxViolations : undefined,
         }),
       })
       if (!res.ok) {
@@ -309,6 +315,37 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                       ? 'Each passage grade is the weighted average of its parsing, syntax, and translation sub-scores.'
                       : `Weights total ${weightSum}% — they’re applied relatively, but 100% is clearest.`}
                   </p>
+                </div>
+                <hr className="border-brand-200" />
+                <div>
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={lockdown}
+                      onChange={e => setLockdown(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                    />
+                    <div>
+                      <span className="text-sm font-medium text-brand-800">Lockdown mode</span>
+                      <p className="text-xs text-brand-600 mt-0.5">
+                        Requires fullscreen, detects tab/window switching, blocks copy &amp; paste, and logs integrity
+                        events for you to review. A browser can deter and detect, but cannot fully prevent cheating.
+                      </p>
+                    </div>
+                  </label>
+                  {lockdown && (
+                    <div className="mt-2 ml-6 flex items-center gap-2">
+                      <label className="text-xs text-gray-600">Auto-submit after</label>
+                      <input
+                        type="number" min={0} max={50}
+                        value={lockdownMaxViolations ?? ''}
+                        onChange={e => setLockdownMaxViolations(e.target.value ? Number(e.target.value) : null)}
+                        placeholder="—"
+                        className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                      />
+                      <span className="text-xs text-gray-600">violations (blank = warn only)</span>
+                    </div>
+                  )}
                 </div>
               </>
             )}

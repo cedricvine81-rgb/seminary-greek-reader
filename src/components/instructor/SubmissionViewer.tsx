@@ -10,6 +10,15 @@ import { GRADE_COMPONENTS, GRADE_COMPONENT_LABELS, DEFAULT_WEIGHTS, normalizeWei
 // Per-passage sub-scores as input strings (parsing/syntax/translation).
 type SubScoreInputs = { parsing: string; syntax: string; translation: string }
 const EMPTY_SUBSCORES: SubScoreInputs = { parsing: '', syntax: '', translation: '' }
+// Friendly labels for lockdown integrity event types.
+const INTEGRITY_LABELS: Record<string, string> = {
+  'tab-hidden': 'Switched away from the exam tab',
+  'window-blur': 'Left the exam window',
+  'fullscreen-exit': 'Exited fullscreen',
+  'copy': 'Attempted to copy',
+  'paste': 'Attempted to paste',
+  'contextmenu': 'Opened the right-click menu',
+}
 /** Convert input strings to a numeric sub-score object (omitting blanks). */
 function toNumericSubScores(v: SubScoreInputs): PassageSubScores {
   const out: PassageSubScores = {}
@@ -45,6 +54,7 @@ interface Session {
   grade: number | null
   gradeNote: string | null
   passageGrades: Record<string, PassageSubScores | number> | null  // exams: per-passage sub-scores keyed by reference
+  integrityEvents: { type: string; at: string }[] | null  // lockdown exams: logged violations
 }
 
 interface VerseWord {
@@ -357,10 +367,28 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       {/* Student's Notes & Questions (live scratchpad they kept during Round 1 & 2) */}
       {session.notes?.trim() && (
         <Card>
-          <CardTitle>📝 Notes &amp; Questions from {studentName || 'the student'}</CardTitle>
+          <CardTitle>Areas for Improvement — {studentName || 'the student'}</CardTitle>
           <p className="mt-3 whitespace-pre-wrap text-sm text-gray-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
             {session.notes}
           </p>
+        </Card>
+      )}
+
+      {/* Lockdown integrity log (exams in lockdown mode) */}
+      {session.integrityEvents && session.integrityEvents.length > 0 && (
+        <Card>
+          <CardTitle className="text-red-700">🔒 Lockdown integrity — {session.integrityEvents.length} event{session.integrityEvents.length === 1 ? '' : 's'}</CardTitle>
+          <p className="text-xs text-gray-500 mt-1 mb-3">
+            Recorded while the student took the exam. A browser deters and detects but cannot fully prevent cheating — use this as a signal, not proof.
+          </p>
+          <ul className="text-xs divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+            {session.integrityEvents.map((e, i) => (
+              <li key={i} className="flex items-center justify-between px-3 py-1.5 odd:bg-gray-50">
+                <span className="font-medium text-gray-700">{INTEGRITY_LABELS[e.type] ?? e.type}</span>
+                <span className="text-gray-400">{e.at ? new Date(e.at).toLocaleString() : ''}</span>
+              </li>
+            ))}
+          </ul>
         </Card>
       )}
 

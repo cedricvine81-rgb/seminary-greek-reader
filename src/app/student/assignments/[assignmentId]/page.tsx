@@ -210,7 +210,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
             (submitted or in-progress) — lets them review their own work even after close.
             Always shown in instructor preview mode so instructors can inspect regardless of dates. */}
         {isPassageExercise && (!examNotYetOpen || previewMode) && (!isClosed || !!existingSession || previewMode) && (
-          <ExegesisWorkspace assignmentId={assignment.id} />
+          <ExegesisWorkspace assignmentId={assignment.id} previewMode={previewMode} />
         )}
 
         {(!isClosed || previewMode) && !isPassageExercise && assignment.type === 'TRANSLATION_EXERCISE' && (

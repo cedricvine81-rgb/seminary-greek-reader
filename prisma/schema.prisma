@@ -286,6 +286,11 @@ model Assignment {
   // Translation exams: relative weights (percent) for the parsing/syntax/translation
   // sub-scores when computing each passage grade. { parsing, syntax, translation }. Null = equal.
   gradeWeights Json?
+  // Translation exams: "lockdown" integrity mode. When on, the exam requires fullscreen,
+  // detects tab/window switching, blocks copy/paste, and logs integrity events.
+  lockdown    Boolean  @default(false)
+  // Auto-submit the exam after this many integrity violations (null = warn only, never auto-submit).
+  lockdownMaxViolations Int?
   // Translation exercises: when true, students may consult Reader info (parsing, gloss, lexicon)
   // for the clicked word during Round 2 corrections. Default false to preserve existing behavior.
   allowReaderInRound2 Boolean  @default(false)
@@ -464,6 +469,7 @@ model ExegesisSession {
   grade        Int?      // instructor-entered score 0-100 (exams: the average of passageGrades)
   gradeNote    String?   // instructor feedback
   passageGrades Json?    // translation exams: per-passage sub-scores { [reference]: { parsing, syntax, translation } }
+  integrityEvents Json?  // lockdown exams: array of { type, at } violation events logged during the exam
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 

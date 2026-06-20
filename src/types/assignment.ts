@@ -75,6 +75,8 @@ export interface AssignmentFormData {
   allowReaderInRound2?: boolean   // translation exercises: expose Reader info during Round 2
   glossFrequency?: number | null  // translation exercises: glossary frequency threshold (null/undefined = off)
   gradeWeights?: { parsing: number; syntax: number; translation: number } | null  // translation exams: sub-score weights
+  lockdown?: boolean              // translation exams: fullscreen/tab-switch integrity mode
+  lockdownMaxViolations?: number | null  // auto-submit after this many violations (null = warn only)
   allowLate?: boolean
   lateDaysLimit?: number
 }

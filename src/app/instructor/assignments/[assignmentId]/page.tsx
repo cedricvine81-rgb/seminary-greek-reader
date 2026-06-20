@@ -133,6 +133,8 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             allowReaderInRound2: assignment.allowReaderInRound2,
             glossFrequency: assignment.glossFrequency,
             gradeWeights: (assignment.gradeWeights as { parsing: number; syntax: number; translation: number } | null) ?? null,
+            lockdown: assignment.lockdown,
+            lockdownMaxViolations: assignment.lockdownMaxViolations,
           }}
         />
 

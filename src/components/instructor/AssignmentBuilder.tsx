@@ -508,6 +508,36 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             </div>
             <p className="mt-1 text-xs text-brand-600">Each passage grade is the weighted average of its parsing, syntax, and translation sub-scores.</p>
           </div>
+          <div className="border-t border-brand-200 pt-3">
+            <label className="flex items-start gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={!!form.lockdown}
+                onChange={e => set('lockdown', e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+              />
+              <div>
+                <span className="text-sm font-medium text-gray-700">Lockdown mode</span>
+                <p className="text-xs text-brand-600 mt-0.5">
+                  Requires fullscreen, detects tab/window switching, blocks copy &amp; paste, and logs integrity
+                  events for you to review. Note: a browser can deter and detect, but cannot fully prevent cheating.
+                </p>
+              </div>
+            </label>
+            {form.lockdown && (
+              <div className="mt-2 ml-6 flex items-center gap-2">
+                <label className="text-xs text-gray-600">Auto-submit after</label>
+                <input
+                  type="number" min={0} max={50}
+                  value={form.lockdownMaxViolations ?? ''}
+                  onChange={e => set('lockdownMaxViolations', e.target.value ? Number(e.target.value) : undefined)}
+                  placeholder="—"
+                  className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                />
+                <span className="text-xs text-gray-600">violations (blank = warn only, never auto-submit)</span>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
