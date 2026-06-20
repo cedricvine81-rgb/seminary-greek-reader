@@ -319,7 +319,6 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         onChange={e => set('type', e.target.value as AssignmentType)}
         options={[
           { value: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quiz' },
-          { value: 'PASSAGE_VOCABULARY',   label: 'Passage Vocabulary' },
           { value: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quiz' },
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
           { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
