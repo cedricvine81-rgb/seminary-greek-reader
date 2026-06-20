@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 /**
- * Builds a NESTED phrase/clause syntax tree from the Macula Greek Nestle 1904
- * lowfat XML (Clear-Bible/macula-greek, CC BY 4.0) for the Phrase tool.
+ * Builds NESTED phrase/clause syntax trees from the Macula Greek Nestle 1904
+ * lowfat XML (Clear-Bible/macula-greek, CC BY 4.0) for the Phrase Explorer.
  *
  * The existing import-macula-syntax.js flattens the tree to per-word tags; this
- * keeps the hierarchy (sentence → clause → phrase → word) so the Phrase view can
- * show the levels.
+ * keeps the hierarchy (sentence → clause → phrase → word). Output is one file
+ * per book so the client only loads the book it needs.
  *
  * Source: https://github.com/Clear-Bible/macula-greek/tree/main/Nestle1904/lowfat
- * Output: public/data/phrase-tree-john.json   (prototype: John chapter 1 only)
+ * Output: public/data/phrase-tree/<OsisId>.json
  * Attribution required by CC BY 4.0: "MACULA Greek Linguistic Datasets,
  *   available at https://github.com/Clear-Bible/macula-greek/"
  *
@@ -18,16 +18,31 @@ const fs = require('fs')
 const path = require('path')
 const https = require('https')
 
-const BOOK_FILE = '04-john'
-const OSIS = 'John'
-const ONLY_CHAPTER = 1 // prototype scope
-const URL = `https://raw.githubusercontent.com/Clear-Bible/macula-greek/main/Nestle1904/lowfat/${BOOK_FILE}.xml`
-const OUT = path.join(__dirname, '..', 'public', 'data', 'phrase-tree-john.json')
+const OUT_DIR = path.join(__dirname, '..', 'public', 'data', 'phrase-tree')
+const BASE_URL = 'https://raw.githubusercontent.com/Clear-Bible/macula-greek/main/Nestle1904/lowfat/'
+const ATTRIBUTION = 'MACULA Greek Linguistic Datasets (CC BY 4.0), https://github.com/Clear-Bible/macula-greek/'
+
+const FILES = [
+  '01-matthew', '02-mark', '03-luke', '04-john', '05-acts', '06-romans',
+  '07-1corinthians', '08-2corinthians', '09-galatians', '10-ephesians',
+  '11-philippians', '12-colossians', '13-1thessalonians', '14-2thessalonians',
+  '15-1timothy', '16-2timothy', '17-titus', '18-philemon', '19-hebrews',
+  '20-james', '21-1peter', '22-2peter', '23-1john', '24-2john', '25-3john',
+  '26-jude', '27-revelation',
+]
+
+const BOOK_NUM_TO_OSIS = {
+  40: 'Matt', 41: 'Mark', 42: 'Luke', 43: 'John', 44: 'Acts', 45: 'Rom',
+  46: '1Cor', 47: '2Cor', 48: 'Gal', 49: 'Eph', 50: 'Phil', 51: 'Col',
+  52: '1Thess', 53: '2Thess', 54: '1Tim', 55: '2Tim', 56: 'Titus', 57: 'Phlm',
+  58: 'Heb', 59: 'Jas', 60: '1Pet', 61: '2Pet', 62: '1John', 63: '2John',
+  64: '3John', 65: 'Jude', 66: 'Rev',
+}
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
     const chunks = []
-    https.get(url, { timeout: 120000 }, res => {
+    https.get(url, { timeout: 180000 }, res => {
       if (res.statusCode === 301 || res.statusCode === 302) return fetchUrl(res.headers.location).then(resolve, reject)
       if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}`))
       res.on('data', c => chunks.push(c))
@@ -41,31 +56,30 @@ const attr = (s, n) => {
   return m ? m[1] : ''
 }
 
-// xml:id n43001001001 → { chapter, verse, word }
+// xml:id n43001001001 → { book, chapter, verse, word }
 function parseId(xmlId) {
   const d = xmlId.replace(/^n/, '')
   if (d.length < 11) return null
-  return { chapter: +d.slice(2, 5), verse: +d.slice(5, 8), word: +d.slice(8, 11) }
+  return { book: +d.slice(0, 2), chapter: +d.slice(2, 5), verse: +d.slice(5, 8), word: +d.slice(8, 11) }
 }
 
 function build(xml) {
-  // Tokens: <sentence>, </sentence>, <wg ...>, </wg>, <w ...>text</w>
   const re = /<sentence>|<\/sentence>|<wg([^>]*)>|<\/wg>|<w([^>]*?)>([^<]*)<\/w>/g
   const sentences = []
   let sentence = null
   let stack = []
+  let osis = null
   let m
   while ((m = re.exec(xml)) !== null) {
     const tok = m[0]
     if (tok === '<sentence>') {
-      sentence = { root: { t: 'g', c: [] }, minV: Infinity, maxV: -Infinity, chapter: null }
+      sentence = { root: { t: 'g', c: [] }, chapter: null, minV: Infinity, maxV: -Infinity }
       stack = [sentence.root]
       continue
     }
     if (tok === '</sentence>') {
       if (sentence && sentence.root.c.length) sentences.push(sentence)
-      sentence = null
-      stack = []
+      sentence = null; stack = []
       continue
     }
     if (!sentence) continue
@@ -77,18 +91,17 @@ function build(xml) {
       continue
     }
     if (tok === '</wg>') { stack.pop(); continue }
-    // <w ...>text</w>
     const a = m[2] || ''
     const text = m[3] || ''
-    const xmlId = attr(a, 'xml:id') || attr(a, 'id')
-    const id = parseId(xmlId)
+    const id = parseId(attr(a, 'xml:id') || attr(a, 'id'))
     if (!id) continue
+    osis = osis || BOOK_NUM_TO_OSIS[id.book]
+    if (sentence.chapter === null) sentence.chapter = id.chapter
     sentence.minV = Math.min(sentence.minV, id.verse)
     sentence.maxV = Math.max(sentence.maxV, id.verse)
-    if (sentence.chapter === null) sentence.chapter = id.chapter
     stack[stack.length - 1].c.push({
       t: 'w',
-      id: `${OSIS}.${id.chapter}.${id.verse}.${id.word}`,
+      id: `${BOOK_NUM_TO_OSIS[id.book]}.${id.chapter}.${id.verse}.${id.word}`,
       w: text,
       gloss: attr(a, 'gloss'),
       lemma: attr(a, 'lemma'),
@@ -97,10 +110,9 @@ function build(xml) {
       cls: attr(a, 'class'),
     })
   }
-  return sentences
+  return { osis, sentences }
 }
 
-// Drop empty attrs to keep the JSON small.
 function clean(node) {
   if (node.t === 'g') {
     const o = { t: 'g', c: node.c.map(clean) }
@@ -113,22 +125,32 @@ function clean(node) {
 }
 
 async function main() {
-  console.log('Downloading', URL)
-  const xml = await fetchUrl(URL)
-  const all = build(xml)
-  const inScope = all.filter(s => s.chapter === ONLY_CHAPTER)
-  const out = {
-    book: OSIS,
-    chapter: ONLY_CHAPTER,
-    attribution: 'MACULA Greek Linguistic Datasets (CC BY 4.0), https://github.com/Clear-Bible/macula-greek/',
-    sentences: inScope.map(s => ({
-      ref: s.minV === s.maxV ? `${OSIS} ${s.chapter}:${s.minV}` : `${OSIS} ${s.chapter}:${s.minV}–${s.maxV}`,
-      startVerse: s.minV,
-      endVerse: s.maxV,
-      tree: clean(s.root),
-    })),
+  fs.mkdirSync(OUT_DIR, { recursive: true })
+  let totalBytes = 0
+  for (const file of FILES) {
+    process.stdout.write(`${file} … `)
+    const xml = await fetchUrl(BASE_URL + file + '.xml')
+    const { osis, sentences } = build(xml)
+    const out = {
+      book: osis,
+      attribution: ATTRIBUTION,
+      sentences: sentences.map(s => ({
+        chapter: s.chapter,
+        startVerse: s.minV,
+        endVerse: s.maxV,
+        ref: s.minV === s.maxV ? `${osis} ${s.chapter}:${s.minV}` : `${osis} ${s.chapter}:${s.minV}–${s.maxV}`,
+        tree: clean(s.root),
+      })),
+    }
+    const dest = path.join(OUT_DIR, `${osis}.json`)
+    fs.writeFileSync(dest, JSON.stringify(out))
+    const bytes = fs.statSync(dest).size
+    totalBytes += bytes
+    console.log(`${osis}: ${sentences.length} sentences, ${(bytes / 1024).toFixed(0)} KB`)
   }
-  fs.writeFileSync(OUT, JSON.stringify(out))
-  console.log(`Wrote ${out.sentences.length} sentences for ${OSIS} ${ONLY_CHAPTER} → ${OUT} (${fs.statSync(OUT).size} bytes)`)
+  // Remove the old single-file prototype output if present.
+  const legacy = path.join(__dirname, '..', 'public', 'data', 'phrase-tree-john.json')
+  if (fs.existsSync(legacy)) fs.unlinkSync(legacy)
+  console.log(`Total: ${(totalBytes / 1024 / 1024).toFixed(1)} MB across ${FILES.length} books`)
 }
 main().catch(e => { console.error(e); process.exit(1) })

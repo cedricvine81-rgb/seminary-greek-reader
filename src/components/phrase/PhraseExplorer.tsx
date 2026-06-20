@@ -1,13 +1,30 @@
 'use client'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 type TreeNode =
   | { t: 'g'; cls?: string; role?: string; rule?: string; c: TreeNode[] }
   | { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string }
 
-interface Sentence { ref: string; startVerse: number; endVerse: number; tree: TreeNode }
-interface Data { book: string; chapter: number; attribution: string; sentences: Sentence[] }
+interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
+interface BookData { book: string; attribution: string; sentences: Sentence[] }
+
+type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
+
+/** Parse a reference like "John 1:1-5" against the book list (mirrors the Reader/Exegesis parser). */
+function parseRef(ref: string, books: RefBook[]): { osisId: string; chapter: number; verseStart: number; verseEnd: number } | null {
+  const q = ref.trim().replace(/[–—]/g, '-')
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  if (!m) return null
+  const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
+  const chapter = parseInt(m[2]); const vs = m[3] ? parseInt(m[3]) : 1; const ve = m[4] ? parseInt(m[4]) : (m[3] ? vs : 999)
+  const book = books.find(b => [b.osisId, b.name, b.abbrev].some(s => {
+    const c = s.toLowerCase().replace(/\s+/g, ''); return c === bookPart || c.startsWith(bookPart) || bookPart.startsWith(c.slice(0, Math.max(3, bookPart.length)))
+  }))
+  if (!book) return null
+  if (book.totalChapters === 1 && !m[3]) return { osisId: book.osisId, chapter: 1, verseStart: chapter, verseEnd: chapter }
+  return { osisId: book.osisId, chapter, verseStart: vs, verseEnd: ve }
+}
 
 // Human labels for the syntactic group classes/roles Macula uses.
 const CLASS_LABEL: Record<string, string> = {
@@ -62,46 +79,79 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
 }
 
 export function PhraseExplorer() {
-  const [data, setData] = useState<Data | null>(null)
-  const [error, setError] = useState('')
-  const [verse, setVerse] = useState<number | 'all'>(1)
+  const [books, setBooks] = useState<RefBook[]>([])
+  const [input, setInput] = useState('John 1:1-5')
+  const [inputError, setInputError] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [heading, setHeading] = useState('')
+  const [shown, setShown] = useState<Sentence[]>([])
+  const [attribution, setAttribution] = useState('')
+  const [message, setMessage] = useState('')
+  const cache = useRef<Record<string, BookData>>({})
 
+  // Load the GNT book list (for reference parsing), then the default passage.
   useEffect(() => {
-    fetch('/data/phrase-tree-john.json')
-      .then(r => { if (!r.ok) throw new Error('not found'); return r.json() })
-      .then(setData)
-      .catch(() => setError('Could not load phrase data.'))
+    fetch('/api/reader?corpus=GNT')
+      .then(r => r.json())
+      .then((d) => {
+        const bs: RefBook[] = d.books ?? []
+        setBooks(bs)
+        if (bs.length) loadPassage('John 1:1-5', bs)
+      })
+      .catch(() => setMessage('Could not load the book list.'))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const verses = useMemo(() => {
-    if (!data) return []
-    const max = Math.max(...data.sentences.map(s => s.endVerse))
-    return Array.from({ length: max }, (_, i) => i + 1)
-  }, [data])
+  async function loadPassage(ref: string, bookList: RefBook[]) {
+    const p = parseRef(ref, bookList)
+    if (!p) { setInputError(true); return }
+    setInputError(false)
+    setLoading(true)
+    setMessage('')
+    try {
+      let data = cache.current[p.osisId]
+      if (!data) {
+        const res = await fetch(`/data/phrase-tree/${p.osisId}.json`)
+        if (!res.ok) throw new Error('no data')
+        data = await res.json()
+        cache.current[p.osisId] = data
+      }
+      const matches = data.sentences.filter(
+        s => s.chapter === p.chapter && s.startVerse <= p.verseEnd && s.endVerse >= p.verseStart,
+      )
+      setShown(matches)
+      setAttribution(data.attribution)
+      const vLabel = p.verseStart === p.verseEnd ? `${p.verseStart}` : `${p.verseStart}–${p.verseEnd === 999 ? 'end' : p.verseEnd}`
+      setHeading(`${data.book} ${p.chapter}:${vLabel}`)
+      if (matches.length === 0) setMessage('No sentences found for that reference.')
+    } catch {
+      setMessage('No syntax data for that book yet.')
+      setShown([])
+    } finally {
+      setLoading(false)
+    }
+  }
 
-  const shown = useMemo(() => {
-    if (!data) return []
-    if (verse === 'all') return data.sentences
-    return data.sentences.filter(s => verse >= s.startVerse && verse <= s.endVerse)
-  }, [data, verse])
-
-  if (error) return <p className="text-red-600">{error}</p>
-  if (!data) return <p className="text-gray-400 animate-pulse">Loading phrase data…</p>
+  const submit = () => { if (books.length) loadPassage(input, books) }
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-3 flex-wrap">
-        <span className="px-3 py-1.5 rounded-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-        <span className="text-sm font-medium text-gray-700">{data.book} {data.chapter}</span>
-        <select
-          value={String(verse)}
-          onChange={e => setVerse(e.target.value === 'all' ? 'all' : Number(e.target.value))}
-          className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-        >
-          {verses.map(v => <option key={v} value={v}>Verse {v}</option>)}
-          <option value="all">Whole chapter</option>
-        </select>
-        <span className="text-xs text-gray-400 ml-auto">Prototype · {data.book} {data.chapter} only</span>
+      {/* Passage entry — matches the Reader / Exegesis tools */}
+      <div className="flex items-center flex-wrap gap-3">
+        <div className="flex items-center">
+          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+          <input
+            type="text"
+            value={input}
+            onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+            onBlur={submit}
+            placeholder="e.g. Matthew 3:1-3"
+            className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+          />
+        </div>
+        {loading && <span className="text-sm text-gray-400">Loading…</span>}
+        {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
       </div>
 
       <p className="text-xs text-gray-500">
@@ -109,8 +159,10 @@ export function PhraseExplorer() {
         Hover a word for its lemma, parsing, and role.
       </p>
 
-      {shown.length === 0 ? (
-        <p className="text-sm text-gray-400 italic">No sentence for that verse.</p>
+      {heading && !loading && <p className="text-sm font-medium text-gray-700">{heading}</p>}
+
+      {message ? (
+        <p className="text-sm text-gray-400 italic">{message}</p>
       ) : (
         shown.map((s, i) => (
           <div key={i} className="rounded-xl border border-gray-200 p-4">
@@ -120,9 +172,9 @@ export function PhraseExplorer() {
         ))
       )}
 
-      <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
-        Syntax data: {data.attribution}
-      </p>
+      {attribution && (
+        <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">Syntax data: {attribution}</p>
+      )}
     </div>
   )
 }
