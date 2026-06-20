@@ -48,9 +48,11 @@ export default async function StudentScoresPage() {
   })
 
   const assignmentIds = assignments.map(a => a.id)
-  const passageExerciseIds = assignments
-    .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0)
-    .map(a => a.id)
+  // Assignments whose grade comes from an ExegesisSession (instructor-graded 0–100):
+  // passage translation exercises and translation exams.
+  const isExegesisGraded = (a: { type: string; questions: { id: string }[] }) =>
+    (a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0) || a.type === 'TRANSLATION_EXAM'
+  const passageExerciseIds = assignments.filter(isExegesisGraded).map(a => a.id)
 
   // Responses for question-based assignments (quizzes + question-based translation exercises)
   const [responses, exegesisSessions] = await Promise.all([
@@ -83,7 +85,7 @@ export default async function StudentScoresPage() {
 
   // Build per-assignment rows
   const rows = assignments.map(a => {
-    const isPassage = a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0
+    const isPassage = isExegesisGraded(a)
 
     if (isPassage) {
       // Passage exercise — grade comes from instructor via ExegesisSession

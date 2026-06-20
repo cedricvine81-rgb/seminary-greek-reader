@@ -1,4 +1,5 @@
 import { Fragment } from 'react'
+import { weightedOverall, type CategoryWeights, type GradeCategory } from '@/lib/grade-weights'
 
 // Mirrors the instructor CourseGradebook layout, scoped to a single student:
 // assignment columns grouped by type → per-group Avg → Overall.
@@ -6,6 +7,7 @@ const GROUPS = [
   { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
   { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
+  { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
 ] as const
 
 export interface GradebookRow {
@@ -35,7 +37,7 @@ function avg(nums: (number | null)[]): number | null {
   return vals.length > 0 ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null
 }
 
-export function StudentGradebook({ studentName, rows }: { studentName: string; rows: GradebookRow[] }) {
+export function StudentGradebook({ studentName, rows, weights = null }: { studentName: string; rows: GradebookRow[]; weights?: CategoryWeights | null }) {
   const activeGroups = GROUPS.map(({ type, label }) => ({
     type, label,
     cols: rows.filter(r => r.type === type),
@@ -44,6 +46,7 @@ export function StudentGradebook({ studentName, rows }: { studentName: string; r
   if (activeGroups.length === 0) return null
 
   const allScores: (number | null)[] = []
+  const catAvgs: { type: GradeCategory; avg: number | null }[] = []
 
   return (
     <div className="overflow-auto rounded-xl border border-gray-200">
@@ -69,6 +72,9 @@ export function StudentGradebook({ studentName, rows }: { studentName: string; r
                 className="px-3 py-2 text-center font-semibold text-gray-700 bg-gray-50 border-l-2 border-gray-300"
               >
                 {g.label}
+                {weights && (weights[g.type as GradeCategory] ?? 0) > 0 && (
+                  <span className="ml-1 font-normal text-brand-600">· {weights[g.type as GradeCategory]}%</span>
+                )}
               </th>
             ))}
             <th className="px-3 py-2 text-center font-semibold text-brand-700 bg-brand-50 border-l-2 border-gray-300 whitespace-nowrap">
@@ -103,6 +109,7 @@ export function StudentGradebook({ studentName, rows }: { studentName: string; r
             {activeGroups.map(g => {
               const groupScores = g.cols.map(a => a.pct)
               groupScores.forEach(s => allScores.push(s))
+              catAvgs.push({ type: g.type as GradeCategory, avg: avg(groupScores) })
               return (
                 <Fragment key={g.type}>
                   {g.cols.map(a => <PctCell key={a.id} pct={a.pct} />)}
@@ -110,7 +117,7 @@ export function StudentGradebook({ studentName, rows }: { studentName: string; r
                 </Fragment>
               )
             })}
-            <PctCell pct={avg(allScores)} muted />
+            <PctCell pct={weights ? weightedOverall(catAvgs, weights) : avg(allScores)} muted />
           </tr>
         </tbody>
       </table>

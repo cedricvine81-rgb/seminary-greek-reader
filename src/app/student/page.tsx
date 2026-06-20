@@ -6,6 +6,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
+import { normalizeCategoryWeights } from '@/lib/grade-weights'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -88,6 +89,7 @@ export default async function StudentPage() {
         completed: completedIds.has(a.id),
       })),
       gradebookRows: published.map(a => ({ id: a.id, title: a.title, weekNumber: a.weekNumber, type: a.type as string, pct: scoreFor(a) })),
+      gradeCategoryWeights: normalizeCategoryWeights(e.course.gradeCategoryWeights),
     }
   })
 

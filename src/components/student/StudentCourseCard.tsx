@@ -6,6 +6,7 @@ import { ChevronDown, ArrowLeft, AtSign } from 'lucide-react'
 import { differenceInCalendarDays } from 'date-fns'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
+import type { CategoryWeights } from '@/lib/grade-weights'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 
 export interface StudentCourse {
@@ -15,6 +16,7 @@ export interface StudentCourse {
   instructorEmail: string
   assignments: { id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean }[]
   gradebookRows: GradebookRow[]
+  gradeCategoryWeights: CategoryWeights | null
 }
 
 const TYPE_LABELS: Record<string, string> = {
@@ -120,7 +122,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
             </summary>
             <div className="mt-3">
               {course.gradebookRows.length > 0
-                ? <StudentGradebook studentName={studentName} rows={course.gradebookRows} />
+                ? <StudentGradebook studentName={studentName} rows={course.gradebookRows} weights={course.gradeCategoryWeights} />
                 : <p className="text-sm text-gray-400 italic">No grades yet.</p>}
             </div>
           </details>
