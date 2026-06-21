@@ -364,6 +364,27 @@ const PRINT_ANN_FIELDS = ['parsing', 'syntax', 'translation'] as const
 type PrintAnnField = typeof PRINT_ANN_FIELDS[number]
 const PRINT_ANN_LABELS: Record<PrintAnnField, string> = { parsing: 'Parse', syntax: 'Syntax', translation: 'Trans.' }
 
+// ── Fullscreen helpers (with WebKit fallback for older Safari) ──────────────────
+type FsElement = HTMLElement & { webkitRequestFullscreen?: () => Promise<void> | void }
+type FsDocument = Document & { webkitFullscreenElement?: Element | null }
+/** True when the browser can put a page element into fullscreen (false on iPhone Safari). */
+function fullscreenSupported(): boolean {
+  if (typeof document === 'undefined') return false
+  const el = document.documentElement as FsElement
+  return !!(el.requestFullscreen || el.webkitRequestFullscreen)
+}
+function requestFullscreenCompat(el: HTMLElement): Promise<void> {
+  const e = el as FsElement
+  if (e.requestFullscreen) return e.requestFullscreen()
+  if (e.webkitRequestFullscreen) return Promise.resolve(e.webkitRequestFullscreen())
+  return Promise.reject(new Error('no fullscreen'))
+}
+/** The current fullscreen element across standard + WebKit-prefixed APIs. */
+function fullscreenElementCompat(): Element | null {
+  const d = document as FsDocument
+  return document.fullscreenElement ?? d.webkitFullscreenElement ?? null
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean }) {
@@ -440,6 +461,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const violationsRef = useRef(0)        // mirror for event handlers (avoid stale closures)
   const lastViolationAtRef = useRef(0)   // coalesce co-firing events (e.g. blur + visibilitychange)
   const submitRef = useRef<() => void>(() => {})
+  // Viewport width (for blocking phone-sized screens from a lockdown exam).
+  const [viewportW, setViewportW] = useState(1200)
+  useEffect(() => {
+    const f = () => setViewportW(window.innerWidth)
+    f()
+    window.addEventListener('resize', f)
+    return () => window.removeEventListener('resize', f)
+  }, [])
 
   // ── Load books list ──
   useEffect(() => {
@@ -1245,6 +1274,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // Instructors previewing (previewMode) are exempt so they can inspect freely.
   const lockdownOn = isExam && !!assignment?.lockdown && !!propAssignmentId && !previewMode && !submitted
   const maxViolations = assignment?.lockdownMaxViolations ?? null
+  // A lockdown exam needs fullscreen + a large enough screen. iPhone Safari has no
+  // element fullscreen, so phones can't be locked down — require a desktop/laptop/tablet.
+  const canLockdown = fullscreenSupported() && viewportW >= 768
 
   // Keep submitRef pointed at the latest submit so event handlers can auto-submit
   // without re-binding listeners on every render.
@@ -1285,7 +1317,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     const onVisibility = () => { if (document.hidden) recordViolation('tab-hidden') }
     const onBlur = () => recordViolation('window-blur')
     const onFullscreenChange = () => {
-      if (!document.fullscreenElement) { setFullscreenLost(true); recordViolation('fullscreen-exit') }
+      // Only count a fullscreen exit on browsers that actually support fullscreen — on
+      // iPhone Safari there's no fullscreen, so this must not fire spurious violations.
+      if (fullscreenSupported() && !fullscreenElementCompat()) { setFullscreenLost(true); recordViolation('fullscreen-exit') }
     }
     const block = (type: string) => (e: Event) => { e.preventDefault(); recordViolation(type) }
     const onCopy = block('copy')
@@ -1294,6 +1328,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     document.addEventListener('visibilitychange', onVisibility)
     window.addEventListener('blur', onBlur)
     document.addEventListener('fullscreenchange', onFullscreenChange)
+    document.addEventListener('webkitfullscreenchange', onFullscreenChange)
     document.addEventListener('copy', onCopy)
     document.addEventListener('paste', onPaste)
     document.addEventListener('contextmenu', onContextMenu)
@@ -1301,6 +1336,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('blur', onBlur)
       document.removeEventListener('fullscreenchange', onFullscreenChange)
+      document.removeEventListener('webkitfullscreenchange', onFullscreenChange)
       document.removeEventListener('copy', onCopy)
       document.removeEventListener('paste', onPaste)
       document.removeEventListener('contextmenu', onContextMenu)
@@ -1317,7 +1353,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
 
   /** Enter fullscreen and begin the locked exam (must be triggered by a user click). */
   const enterLockdown = useCallback(async () => {
-    try { await document.documentElement.requestFullscreen() } catch { /* some browsers/permissions block it */ }
+    try { await requestFullscreenCompat(document.documentElement) } catch { /* some browsers/permissions block it */ }
     setFullscreenLost(false)
     setLockdownStarted(true)
   }, [])
@@ -1343,21 +1379,32 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       {/* ── Lockdown: start gate (must click to enter fullscreen and begin) ── */}
       {lockdownOn && !lockdownStarted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90 px-6 print:hidden">
-          <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
-            <div className="text-4xl mb-3">🔒</div>
-            <h2 className="text-xl font-bold text-gray-900">Locked exam</h2>
-            <p className="mt-2 text-sm text-gray-600">
-              This exam runs in lockdown mode. It opens in fullscreen, and leaving fullscreen,
-              switching tabs or windows, or copying &amp; pasting is recorded for your instructor
-              {maxViolations != null ? ` and auto-submits the exam after ${maxViolations} violation${maxViolations === 1 ? '' : 's'}` : ''}.
-            </p>
-            <button
-              onClick={enterLockdown}
-              className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
-            >
-              Enter fullscreen &amp; begin
-            </button>
-          </div>
+          {canLockdown ? (
+            <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+              <div className="text-4xl mb-3">🔒</div>
+              <h2 className="text-xl font-bold text-gray-900">Locked exam</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                This exam runs in lockdown mode. It opens in fullscreen, and leaving fullscreen,
+                switching tabs or windows, or copying &amp; pasting is recorded for your instructor
+                {maxViolations != null ? ` and auto-submits the exam after ${maxViolations} violation${maxViolations === 1 ? '' : 's'}` : ''}.
+              </p>
+              <button
+                onClick={enterLockdown}
+                className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+              >
+                Enter fullscreen &amp; begin
+              </button>
+            </div>
+          ) : (
+            <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+              <div className="text-4xl mb-3">🖥️</div>
+              <h2 className="text-xl font-bold text-gray-900">Use a computer for this exam</h2>
+              <p className="mt-2 text-sm text-gray-600">
+                This is a locked exam that must run in fullscreen, which phones don&rsquo;t support.
+                Please open it on a desktop or laptop (or a tablet) in an up-to-date browser to begin.
+              </p>
+            </div>
+          )}
         </div>
       )}
 
