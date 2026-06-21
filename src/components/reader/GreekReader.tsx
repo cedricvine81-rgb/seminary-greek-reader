@@ -1046,6 +1046,16 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
         <div className="flex-1 min-w-0">
           <SearchBar onSearch={handleSearch} />
         </div>
+        {/* Parallel translation selector — shows a translation column beside the Greek. */}
+        <select
+          value={parallelLang ?? ''}
+          onChange={e => setParallelLang(e.target.value || null)}
+          title="Show a parallel translation column"
+          className="shrink-0 rounded-lg border border-gray-300 px-2 py-1.5 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
+        >
+          <option value="">Greek only</option>
+          {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+        </select>
         <div ref={settingsRef} className="relative shrink-0">
           <button
             title="Settings"

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
+import { ExegesisTabs } from '@/components/student/ExegesisTabs'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export const metadata: Metadata = { title: 'Exegesis Workspace' }
@@ -13,7 +13,7 @@ export default function PublicExegesisPage() {
 
   return (
     <main className="flex flex-col h-[calc(100vh-3.5rem)] overflow-hidden print:h-auto print:overflow-visible w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-      <ExegesisWorkspace isAuthenticated={isAuthenticated} />
+      <ExegesisTabs isAuthenticated={isAuthenticated} />
     </main>
   )
 }
