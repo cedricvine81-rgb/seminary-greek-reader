@@ -43,6 +43,8 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
   const [extraRefs, setExtraRefs] = useState<string[]>([])
   const [addInput, setAddInput] = useState('')
   const [addError, setAddError] = useState(false)
+  const [pericopes, setPericopes] = useState<Record<string, string>[]>([])
+  const [parallelsAttribution, setParallelsAttribution] = useState('')
   const cache = useRef<Record<string, Record<string, string>>>({})  // version → verseId → text
   const loaded = useRef<Set<string>>(new Set())
   const [, setVer] = useState(0)
@@ -53,7 +55,31 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
 
   useEffect(() => {
     fetch('/api/reader?corpus=GNT').then(r => r.json()).then(d => setBooks(d.books ?? [])).catch(() => {})
+    fetch('/data/gospel-parallels.json').then(r => r.json()).then((d: { attribution?: string; pericopes?: Record<string, string>[] }) => {
+      setPericopes(d.pericopes ?? [])
+      setParallelsAttribution(d.attribution ?? '')
+    }).catch(() => {})
   }, [])
+
+  // Auto-suggested gospel parallels for the anchor passage: find the pericope whose
+  // entry for the anchor's gospel overlaps it, then suggest the other gospels' refs.
+  const GOSPELS = ['Matt', 'Mark', 'Luke', 'John']
+  const suggestions: { title: string; refs: string[] } | null = (() => {
+    if (!anchor || !books.length || !pericopes.length) return null
+    const p = parseRef(anchor, books)
+    if (!p || !GOSPELS.includes(p.book.osisId)) return null
+    const osis = p.book.osisId
+    for (const per of pericopes) {
+      const cell = per[osis]
+      if (!cell) continue
+      const cp = parseRef(cell, books)
+      if (cp && cp.book.osisId === osis && cp.chapter === p.chapter && cp.verseStart <= p.verseEnd && cp.verseEnd >= p.verseStart) {
+        const refs = GOSPELS.filter(g => g !== osis && per[g]).map(g => per[g]).filter(r => !columns.includes(r))
+        return { title: per.title, refs }
+      }
+    }
+    return null
+  })()
 
   // Load verse text for every column's chapter in the chosen version.
   useEffect(() => {
@@ -122,8 +148,23 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
         >
           {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
         </select>
-        <span className="text-xs text-gray-400">Auto-suggested gospel parallels are coming; for now add the passages to compare.</span>
       </div>
+
+      {/* Auto-suggested gospel parallels for the anchor passage */}
+      {suggestions && suggestions.refs.length > 0 && (
+        <div className="flex items-center flex-wrap gap-2">
+          <span className="text-xs font-medium text-gray-500">Parallels for <span className="text-gray-700">{suggestions.title}</span>:</span>
+          {suggestions.refs.map(r => (
+            <button
+              key={r}
+              onClick={() => setExtraRefs(prev => prev.includes(r) ? prev : [...prev, r])}
+              className="inline-flex items-center gap-1 rounded-full border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs text-brand-700 hover:bg-brand-100"
+            >
+              + {r}
+            </button>
+          ))}
+        </div>
+      )}
 
       {!anchor ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to anchor the synopsis.</p>
@@ -167,6 +208,10 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
           </div>
         </div>
+      )}
+
+      {parallelsAttribution && (
+        <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">{parallelsAttribution}</p>
       )}
     </div>
   )
