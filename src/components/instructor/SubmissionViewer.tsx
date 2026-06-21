@@ -374,23 +374,53 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         </Card>
       )}
 
-      {/* Lockdown integrity log (exams in lockdown mode) */}
-      {session.integrityEvents && session.integrityEvents.length > 0 && (
-        <Card>
-          <CardTitle className="text-red-700">🔒 Lockdown integrity — {session.integrityEvents.length} event{session.integrityEvents.length === 1 ? '' : 's'}</CardTitle>
-          <p className="text-xs text-gray-500 mt-1 mb-3">
-            Recorded while the student took the exam. A browser deters and detects but cannot fully prevent cheating — use this as a signal, not proof.
-          </p>
-          <ul className="text-xs divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
-            {session.integrityEvents.map((e, i) => (
-              <li key={i} className="flex items-center justify-between px-3 py-1.5 odd:bg-gray-50">
-                <span className="font-medium text-gray-700">{INTEGRITY_LABELS[e.type] ?? e.type}</span>
-                <span className="text-gray-400">{e.at ? new Date(e.at).toLocaleString() : ''}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
+      {/* Lockdown integrity report (exams in lockdown mode) */}
+      {session.integrityEvents && session.integrityEvents.length > 0 && (() => {
+        const events = session.integrityEvents
+        // Summary: count by type, most frequent first.
+        const counts = new Map<string, number>()
+        for (const e of events) counts.set(e.type, (counts.get(e.type) ?? 0) + 1)
+        const summary = Array.from(counts.entries()).sort((a, b) => b[1] - a[1])
+        const times = events.map(e => e.at ? new Date(e.at).getTime() : NaN).filter(t => !isNaN(t))
+        const first = times.length ? new Date(Math.min(...times)) : null
+        const last = times.length ? new Date(Math.max(...times)) : null
+        return (
+          <Card>
+            <CardTitle className="text-red-700">🔒 Lockdown integrity report — {events.length} event{events.length === 1 ? '' : 's'}</CardTitle>
+            <p className="text-xs text-gray-500 mt-1 mb-3">
+              Every flagged action recorded while {studentName || 'the student'} took the exam, with timestamps.
+              A browser deters and detects but cannot fully prevent cheating — use this as a signal, not proof.
+            </p>
+
+            {/* At-a-glance summary by type */}
+            <div className="flex flex-wrap gap-2 mb-3">
+              {summary.map(([type, n]) => (
+                <span key={type} className="inline-flex items-center gap-1.5 rounded-full bg-red-50 border border-red-200 px-2.5 py-1 text-xs text-red-700">
+                  <span className="font-semibold">{n}×</span> {INTEGRITY_LABELS[type] ?? type}
+                </span>
+              ))}
+            </div>
+            {first && last && (
+              <p className="text-xs text-gray-500 mb-3">
+                First event {first.toLocaleString()} · last event {last.toLocaleString()}
+                {session.submittedAt && <> · submitted {new Date(session.submittedAt).toLocaleString()}</>}
+              </p>
+            )}
+
+            {/* Full chronological log */}
+            <ol className="text-xs divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+              {events.map((e, i) => (
+                <li key={i} className="flex items-center justify-between gap-3 px-3 py-1.5 odd:bg-gray-50">
+                  <span className="text-gray-400 w-6 shrink-0 tabular-nums">{i + 1}.</span>
+                  <span className="font-medium text-gray-700 flex-1">{INTEGRITY_LABELS[e.type] ?? e.type}</span>
+                  <span className="text-gray-400 shrink-0">{e.at ? new Date(e.at).toLocaleString() : ''}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="text-[11px] text-gray-400 mt-2">Tip: use your browser&rsquo;s Print to save this report as a PDF for your records.</p>
+          </Card>
+        )
+      })()}
 
       {/* Grade entry */}
       <Card>
