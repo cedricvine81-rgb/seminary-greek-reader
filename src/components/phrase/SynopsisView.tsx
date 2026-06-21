@@ -61,17 +61,16 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
     }).catch(() => {})
   }, [])
 
-  // Auto-suggested gospel parallels for the anchor passage: find the pericope whose
-  // entry for the anchor's gospel overlaps it, then suggest the other gospels' refs.
+  // Find the best-matching gospel pericope for the anchor and its parallel refs.
+  // Collect every pericope whose entry for the anchor's gospel overlaps the anchor,
+  // then prefer the one with the most parallels (so a single-gospel pericope sharing a
+  // verse range never hides a richer multi-gospel match).
   const GOSPELS = ['Matt', 'Mark', 'Luke', 'John']
-  const suggestions: { title: string; refs: string[] } | null = (() => {
-    if (!anchor || !books.length || !pericopes.length) return null
-    const p = parseRef(anchor, books)
+  function computeBest(anchorRef: string): { title: string; refs: string[] } | null {
+    if (!anchorRef || !books.length || !pericopes.length) return null
+    const p = parseRef(anchorRef, books)
     if (!p || !GOSPELS.includes(p.book.osisId)) return null
     const osis = p.book.osisId
-    // Collect every pericope whose entry for this gospel overlaps the anchor, then
-    // prefer the one with the most parallels (so a single-gospel pericope sharing a
-    // verse range never hides a richer multi-gospel match).
     const matches: { title: string; refs: string[]; score: number }[] = []
     for (const per of pericopes) {
       const cell = per[osis]
@@ -79,13 +78,23 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
       const cp = parseRef(cell, books)
       if (cp && cp.book.osisId === osis && cp.chapter === p.chapter && cp.verseStart <= p.verseEnd && cp.verseEnd >= p.verseStart) {
         const others = GOSPELS.filter(g => g !== osis && per[g])
-        matches.push({ title: per.title, refs: others.map(g => per[g]).filter(r => !columns.includes(r)), score: others.length })
+        matches.push({ title: per.title, refs: others.map(g => per[g]), score: others.length })
       }
     }
     if (!matches.length) return null
     matches.sort((a, b) => b.score - a.score)
-    return matches[0]
-  })()
+    return { title: matches[0].title, refs: matches[0].refs }
+  }
+  const best = computeBest(anchor)
+  // Chips offer to re-add any parallel the user has removed.
+  const suggestionChips = best ? best.refs.filter(r => !columns.includes(r)) : []
+
+  // Auto-load the parallels as columns when the anchor passage changes.
+  useEffect(() => {
+    const b = computeBest(anchor)
+    setExtraRefs(b ? b.refs : [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [anchor, books, pericopes])
 
   // Load verse text for every column's chapter in the chosen version.
   useEffect(() => {
@@ -156,11 +165,11 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
         </select>
       </div>
 
-      {/* Auto-suggested gospel parallels for the anchor passage */}
-      {suggestions && suggestions.refs.length > 0 && (
+      {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
+      {best && (
         <div className="flex items-center flex-wrap gap-2">
-          <span className="text-xs font-medium text-gray-500">Parallels for <span className="text-gray-700">{suggestions.title}</span>:</span>
-          {suggestions.refs.map(r => (
+          <span className="text-xs font-medium text-gray-500">Gospel parallels — <span className="text-gray-700">{best.title}</span></span>
+          {suggestionChips.map(r => (
             <button
               key={r}
               onClick={() => setExtraRefs(prev => prev.includes(r) ? prev : [...prev, r])}
