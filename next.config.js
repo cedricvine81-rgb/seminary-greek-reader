@@ -13,6 +13,10 @@ const nextConfig = {
   images: {
     remotePatterns: [],
   },
+  // The standalone Phrase tool was folded into the Exegesis page (Phrasing tab).
+  async redirects() {
+    return [{ source: '/phrase', destination: '/exegesis', permanent: false }]
+  },
 }
 
 module.exports = nextConfig
