@@ -92,16 +92,29 @@ const LANGS = [
 ]
 const langLabel = (code: string) => LANGS.find(l => l.code === code)?.label ?? code
 
-function LangSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+// Greek editions for the middle column (the tree itself is Nestle 1904).
+const GREEK_EDITIONS = [
+  { code: 'na1904', label: 'Greek — Nestle 1904' },
+  { code: 'gnt', label: 'Greek — Tischendorf' },
+]
+const greekLabel = (code: string) => GREEK_EDITIONS.find(g => g.code === code)?.label ?? code
+
+function OptionSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { code: string; label: string }[] }) {
   return (
     <select
       value={value}
       onChange={e => onChange(e.target.value)}
       className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
     >
-      {LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+      {options.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
     </select>
   )
+}
+
+/** Collect a sentence's Greek words (Nestle 1904) in order from its tree. */
+function treeGreek(node: TreeNode): string {
+  if (node.t === 'w') return node.w
+  return node.c.map(treeGreek).filter(Boolean).join(' ')
 }
 
 export function PhraseExplorer() {
@@ -114,9 +127,9 @@ export function PhraseExplorer() {
   const [message, setMessage] = useState('')
   const cache = useRef<Record<string, BookData>>({})
 
-  // The two side-by-side translation columns.
-  const [lang1, setLang1] = useState('bsb')
-  const [lang2, setLang2] = useState('en')
+  // Middle column = a Greek edition; right column = a modern translation.
+  const [greekEd, setGreekEd] = useState('na1904')
+  const [transLang, setTransLang] = useState('bsb')
   const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
   // Translation text keyed by lang → verseId ("John.1.1") → text, with a version
   // counter to re-render after async loads. `loaded` dedupes fetches.
@@ -137,15 +150,27 @@ export function PhraseExplorer() {
     return () => document.removeEventListener('mousedown', onDown)
   }, [showSettings])
 
-  // Ensure both columns' translations are loaded for the current passage's chapter.
+  // Ensure both columns' text is loaded for the current passage's chapter.
+  // 'na1904' needs nothing (it comes straight from the tree); 'gnt' is the static
+  // Tischendorf chapter file; 'bsb' is the alignment file; others use /api/translation.
   useEffect(() => {
     if (!cur) return
     const { osis, chapter } = cur
-    for (const lang of Array.from(new Set([lang1, lang2]))) {
-      const ck = lang === 'bsb' ? 'bsb' : `${lang}.${osis}.${chapter}`
+    for (const code of Array.from(new Set([greekEd, transLang]))) {
+      if (code === 'na1904') continue
+      const ck = code === 'bsb' ? 'bsb' : `${code}.${osis}.${chapter}`
       if (loaded.current.has(ck)) continue
       loaded.current.add(ck)
-      if (lang === 'bsb') {
+      if (code === 'gnt') {
+        fetch(`/data/gnt/${osis}_${chapter}.json`)
+          .then(r => r.json())
+          .then((d: { verses?: { verse: number; text: string }[] }) => {
+            const map = (transCache.current.gnt ??= {})
+            for (const v of d.verses ?? []) map[`${osis}.${chapter}.${v.verse}`] = v.text
+            bump()
+          })
+          .catch(() => {})
+      } else if (code === 'bsb') {
         fetch('/data/bsb-alignment.json?v=3')
           .then(r => r.json())
           .then((d: Record<string, { text: string }>) => {
@@ -155,21 +180,22 @@ export function PhraseExplorer() {
           })
           .catch(() => {})
       } else {
-        fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${lang}`)
+        fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${code}`)
           .then(r => r.json())
           .then((d: { verses?: Record<string, string> }) => {
-            const map = (transCache.current[lang] ??= {})
+            const map = (transCache.current[code] ??= {})
             Object.assign(map, d.verses ?? {})
             bump()
           })
           .catch(() => {})
       }
     }
-  }, [cur, lang1, lang2])
+  }, [cur, greekEd, transLang])
 
-  /** Joined translation text for a sentence's verse range in the chosen language. */
-  const sentenceText = (lang: string, s: Sentence): string => {
-    const map = transCache.current[lang]
+  /** Text for a column (Greek edition or translation) over a sentence's verse range. */
+  const colText = (code: string, s: Sentence): string => {
+    if (code === 'na1904') return treeGreek(s.tree)
+    const map = transCache.current[code]
     if (!map) return ''
     const parts: string[] = []
     for (let v = s.startVerse; v <= s.endVerse; v++) {
@@ -263,10 +289,11 @@ export function PhraseExplorer() {
                 <div>
                   <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
                   <p className="mt-0.5">
-                    MACULA Greek Linguistic Datasets — syntax trees over the Nestle 1904 Greek New Testament (public domain).
-                    Licensed <span className="font-medium">CC BY 4.0</span>.{' '}
+                    Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
+                    licensed <span className="font-medium">CC BY 4.0</span>.{' '}
                     <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
                   </p>
+                  <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
                 </div>
                 <div>
                   <p className="font-semibold text-gray-700">Translations</p>
@@ -286,26 +313,26 @@ export function PhraseExplorer() {
       </div>
 
       <p className="text-xs text-gray-500">
-        Each sentence is broken into its clause → phrase → word levels (left), with two
-        translation columns alongside. Click a label to collapse a level; hover a word for
-        its lemma, parsing, and role.
+        Each sentence is broken into its clause → phrase → word levels (left), with a Greek
+        edition and a translation column alongside. Click a label to collapse a level; hover
+        a word for its lemma, parsing, and role.
       </p>
 
       {heading && !loading && <p className="text-sm font-medium text-gray-700">{heading}</p>}
 
-      {/* Column header with the two translation dropdowns (aligned over the columns on lg+). */}
+      {/* Column header: middle = Greek edition, right = translation (aligned on lg+). */}
       {!message && shown.length > 0 && (
         <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_15rem_15rem] gap-4 items-end">
           <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Greek — clause / phrase structure</span>
-          <LangSelect value={lang1} onChange={setLang1} />
-          <LangSelect value={lang2} onChange={setLang2} />
+          <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
+          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
         </div>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
       {!message && shown.length > 0 && (
         <div className="grid grid-cols-2 gap-2 lg:hidden">
-          <LangSelect value={lang1} onChange={setLang1} />
-          <LangSelect value={lang2} onChange={setLang2} />
+          <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
+          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
         </div>
       )}
 
@@ -313,8 +340,8 @@ export function PhraseExplorer() {
         <p className="text-sm text-gray-400 italic">{message}</p>
       ) : (
         shown.map((s, i) => {
-          const t1 = sentenceText(lang1, s)
-          const t2 = sentenceText(lang2, s)
+          const mid = colText(greekEd, s)
+          const right = colText(transLang, s)
           return (
             <div key={i} className="rounded-xl border border-gray-200 p-4">
               <p className="text-xs font-semibold text-gray-400 mb-2">{s.ref}</p>
@@ -322,13 +349,13 @@ export function PhraseExplorer() {
                 <div className="min-w-0">
                   <NodeView node={s.tree} depth={0} />
                 </div>
-                <div className="text-sm text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
-                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(lang1)}</span>
-                  {t1 || <span className="text-gray-300 italic">—</span>}
+                <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
+                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
+                  <span className="font-greek text-base">{mid || <span className="font-sans text-sm text-gray-300 italic">—</span>}</span>
                 </div>
                 <div className="text-sm text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
-                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(lang2)}</span>
-                  {t2 || <span className="text-gray-300 italic">—</span>}
+                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
+                  {right || <span className="text-gray-300 italic">—</span>}
                 </div>
               </div>
             </div>
