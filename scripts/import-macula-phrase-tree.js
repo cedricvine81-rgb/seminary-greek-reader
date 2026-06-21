@@ -56,6 +56,30 @@ const attr = (s, n) => {
   return m ? m[1] : ''
 }
 
+// Build a verbose parsing label from MACULA's morphology attributes, matching the
+// Reader's formatParsing output (e.g. "Verb, Aorist, Active, Indicative, 3 person, Singular").
+const POS_LABEL = {
+  verb: 'Verb', noun: 'Noun', prep: 'Preposition', adj: 'Adjective', adv: 'Adverb',
+  det: 'Article', pron: 'Pronoun', conj: 'Conjunction', ptcl: 'Particle', num: 'Number',
+  intj: 'Interjection', x: '', name: 'Noun (proper)',
+}
+const titleCase = (s) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : '')
+const personNum = (p) => ({ first: '1', second: '2', third: '3' }[p] || '')
+function buildParsing(a) {
+  const cls = attr(a, 'class')
+  const parts = [POS_LABEL[cls] ?? titleCase(cls)].filter(Boolean)
+  const push = (v) => { const t = titleCase(v); if (t) parts.push(t) }
+  push(attr(a, 'tense'))
+  push(attr(a, 'voice'))
+  push(attr(a, 'mood'))
+  const per = personNum(attr(a, 'person')); if (per) parts.push(`${per} person`)
+  push(attr(a, 'number'))
+  push(attr(a, 'case'))
+  push(attr(a, 'gender'))
+  push(attr(a, 'degree'))
+  return parts.join(', ')
+}
+
 // xml:id n43001001001 → { book, chapter, verse, word }
 function parseId(xmlId) {
   const d = xmlId.replace(/^n/, '')
@@ -108,6 +132,8 @@ function build(xml) {
       morph: attr(a, 'morph'),
       role: attr(a, 'role'),
       cls: attr(a, 'class'),
+      strongs: attr(a, 'strong'),
+      parsing: buildParsing(a),
     })
   }
   return { osis, sentences }
@@ -120,7 +146,7 @@ function clean(node) {
     return o
   }
   const o = { t: 'w', id: node.id, w: node.w }
-  for (const k of ['gloss', 'lemma', 'morph', 'role', 'cls']) if (node[k]) o[k] = node[k]
+  for (const k of ['gloss', 'lemma', 'morph', 'role', 'cls', 'strongs', 'parsing']) if (node[k]) o[k] = node[k]
   return o
 }
 

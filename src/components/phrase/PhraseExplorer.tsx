@@ -1,11 +1,18 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { MoreVertical, X } from 'lucide-react'
+import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
+type WordNodeT = { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string; strongs?: string; parsing?: string }
 type TreeNode =
   | { t: 'g'; cls?: string; role?: string; rule?: string; c: TreeNode[] }
-  | { t: 'w'; id: string; w: string; gloss?: string; lemma?: string; morph?: string; role?: string; cls?: string }
+  | WordNodeT
+
+// Lets the recursively-rendered words report clicks + know if they're selected,
+// without threading callbacks through every tree level.
+const WordCtx = createContext<{ selectedId: string | null; onWord: (n: WordNodeT) => void }>({ selectedId: null, onWord: () => {} })
 
 interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
 interface BookData { book: string; attribution: string; sentences: Sentence[] }
@@ -60,16 +67,20 @@ function GroupNode({ node, depth }: { node: Extract<TreeNode, { t: 'g' }>; depth
   )
 }
 
-/** A word leaf: Greek surface + gloss, with lemma/morph on hover. */
-function WordNode({ node }: { node: Extract<TreeNode, { t: 'w' }> }) {
+/** A word leaf: Greek surface + gloss. Click to show its lexical detail below. */
+function WordNode({ node }: { node: WordNodeT }) {
+  const { selectedId, onWord } = useContext(WordCtx)
+  const active = selectedId === node.id
   return (
-    <span
-      className="inline-flex flex-col items-start mr-3 mb-1 align-top"
+    <button
+      type="button"
+      onClick={() => onWord(node)}
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
+      className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
     >
       <span className="font-greek text-lg text-gray-900 leading-tight">{node.w}</span>
       {node.gloss && <span className="text-[11px] text-gray-400 leading-tight">{node.gloss}</span>}
-    </span>
+    </button>
   )
 }
 
@@ -111,6 +122,12 @@ function OptionSelect({ value, onChange, options }: { value: string; onChange: (
   )
 }
 
+/** "John.1.3.5" → "John 1:3" for the lexical panel's reference line. */
+function refFromId(id: string): string {
+  const [book, ch, v] = id.split('.')
+  return book && ch && v ? `${book} ${ch}:${v}` : id
+}
+
 /** Collect a sentence's Greek words (Nestle 1904) in order from its tree. */
 function treeGreek(node: TreeNode): string {
   if (node.t === 'w') return node.w
@@ -124,6 +141,17 @@ export function PhraseExplorer() {
   const [loading, setLoading] = useState(false)
   const [shown, setShown] = useState<Sentence[]>([])
   const [message, setMessage] = useState('')
+  // The Greek word whose lexical detail is shown in the panel below.
+  const [selected, setSelected] = useState<WordNodeT | null>(null)
+  const selectedInfo: LexicalInfoPanel | null = selected ? {
+    surface: selected.w,
+    lexeme: selected.lemma ?? '',
+    gloss: selected.gloss ?? '',
+    partOfSpeech: '',
+    parsing: selected.parsing ?? '',
+    strongs: selected.strongs,
+    reference: refFromId(selected.id),
+  } : null
   const cache = useRef<Record<string, BookData>>({})
 
   // Middle column = a Greek edition; right column = a modern translation.
@@ -235,6 +263,7 @@ export function PhraseExplorer() {
         s => s.chapter === p.chapter && s.startVerse <= p.verseEnd && s.endVerse >= p.verseStart,
       )
       setShown(matches)
+      setSelected(null)
       setCur({ osis: p.osisId, chapter: p.chapter })
       if (matches.length === 0) setMessage('No sentences found for that reference.')
     } catch {
@@ -248,6 +277,7 @@ export function PhraseExplorer() {
   const submit = () => { if (books.length) loadPassage(input, books) }
 
   return (
+    <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
     <div className="space-y-4">
       {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right. */}
       <div className="flex items-start justify-between gap-3">
@@ -358,6 +388,14 @@ export function PhraseExplorer() {
           )
         })
       )}
+
+      {/* Lexical detail for the clicked Greek word — pinned below, where there's room. */}
+      {!message && shown.length > 0 && (
+        <div className="sticky bottom-2 z-10 pt-2">
+          <ParsingPanel info={selectedInfo} />
+        </div>
+      )}
     </div>
+    </WordCtx.Provider>
   )
 }
