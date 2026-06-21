@@ -122,7 +122,6 @@ export function PhraseExplorer() {
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [heading, setHeading] = useState('')
   const [shown, setShown] = useState<Sentence[]>([])
   const [message, setMessage] = useState('')
   const cache = useRef<Record<string, BookData>>({})
@@ -237,8 +236,6 @@ export function PhraseExplorer() {
       )
       setShown(matches)
       setCur({ osis: p.osisId, chapter: p.chapter })
-      const vLabel = p.verseStart === p.verseEnd ? `${p.verseStart}` : `${p.verseStart}–${p.verseEnd === 999 ? 'end' : p.verseEnd}`
-      setHeading(`${data.book} ${p.chapter}:${vLabel}`)
       if (matches.length === 0) setMessage('No sentences found for that reference.')
     } catch {
       setMessage('No syntax data for that book yet.')
@@ -318,7 +315,6 @@ export function PhraseExplorer() {
         a word for its lemma, parsing, and role.
       </p>
 
-      {heading && !loading && <p className="text-sm font-medium text-gray-700">{heading}</p>}
 
       {/* Column header: middle = Greek edition, right = translation (aligned on lg+). */}
       {!message && shown.length > 0 && (
