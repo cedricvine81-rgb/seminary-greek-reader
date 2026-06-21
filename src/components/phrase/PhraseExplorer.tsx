@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
+import { MoreVertical, X } from 'lucide-react'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
 type TreeNode =
@@ -80,14 +81,14 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
 
 // Translations available in the Reader (mirrors GreekReader's PARALLEL_LANGS).
 const LANGS = [
-  { code: 'bsb', label: 'English (BSB)' },
-  { code: 'en', label: 'English (WEB)' },
-  { code: 'es', label: 'Spanish' },
-  { code: 'fr', label: 'French' },
-  { code: 'pt', label: 'Portuguese' },
-  { code: 'ru', label: 'Russian' },
-  { code: 'ko', label: 'Korean' },
-  { code: 'zh', label: 'Mandarin' },
+  { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible · public domain' },
+  { code: 'en', label: 'English (WEB)', sub: 'World English Bible · public domain' },
+  { code: 'es', label: 'Spanish', sub: 'Reina-Valera 1909 · public domain' },
+  { code: 'fr', label: 'French', sub: 'Louis Segond 1910 · public domain' },
+  { code: 'pt', label: 'Portuguese', sub: 'João Ferreira de Almeida (ARC)' },
+  { code: 'ru', label: 'Russian', sub: 'Russian Synodal Bible · public domain' },
+  { code: 'ko', label: 'Korean', sub: 'Korean Revised Version' },
+  { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version · public domain' },
 ]
 const langLabel = (code: string) => LANGS.find(l => l.code === code)?.label ?? code
 
@@ -110,7 +111,6 @@ export function PhraseExplorer() {
   const [loading, setLoading] = useState(false)
   const [heading, setHeading] = useState('')
   const [shown, setShown] = useState<Sentence[]>([])
-  const [attribution, setAttribution] = useState('')
   const [message, setMessage] = useState('')
   const cache = useRef<Record<string, BookData>>({})
 
@@ -124,6 +124,18 @@ export function PhraseExplorer() {
   const loaded = useRef<Set<string>>(new Set())
   const [, setTransVer] = useState(0)
   const bump = () => setTransVer(v => v + 1)
+
+  // Settings / sources panel (top-right, like the Reader).
+  const [showSettings, setShowSettings] = useState(false)
+  const settingsRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!showSettings) return
+    const onDown = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) setShowSettings(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [showSettings])
 
   // Ensure both columns' translations are loaded for the current passage's chapter.
   useEffect(() => {
@@ -199,7 +211,6 @@ export function PhraseExplorer() {
       )
       setShown(matches)
       setCur({ osis: p.osisId, chapter: p.chapter })
-      setAttribution(data.attribution)
       const vLabel = p.verseStart === p.verseEnd ? `${p.verseStart}` : `${p.verseStart}–${p.verseEnd === 999 ? 'end' : p.verseEnd}`
       setHeading(`${data.book} ${p.chapter}:${vLabel}`)
       if (matches.length === 0) setMessage('No sentences found for that reference.')
@@ -215,22 +226,63 @@ export function PhraseExplorer() {
 
   return (
     <div className="space-y-4">
-      {/* Passage entry — matches the Reader / Exegesis tools */}
-      <div className="flex items-center flex-wrap gap-3">
-        <div className="flex items-center">
-          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-          <input
-            type="text"
-            value={input}
-            onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
-            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-            onBlur={submit}
-            placeholder="e.g. Matthew 3:1-3"
-            className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
-          />
+      {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right. */}
+      <div className="flex items-start justify-between gap-3">
+        <div className="flex items-center flex-wrap gap-3">
+          <div className="flex items-center">
+            <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+            <input
+              type="text"
+              value={input}
+              onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+              onBlur={submit}
+              placeholder="e.g. Matthew 3:1-3"
+              className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+            />
+          </div>
+          {loading && <span className="text-sm text-gray-400">Loading…</span>}
+          {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
         </div>
-        {loading && <span className="text-sm text-gray-400">Loading…</span>}
-        {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
+
+        <div ref={settingsRef} className="relative shrink-0">
+          <button
+            title="Settings & sources"
+            onClick={() => setShowSettings(v => !v)}
+            className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+          >
+            <MoreVertical size={20} />
+          </button>
+          {showSettings && (
+            <div className="absolute right-0 top-full mt-1 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl p-4 shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-semibold text-gray-800">Sources &amp; copyright</span>
+                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
+              </div>
+              <div className="space-y-3 text-xs text-gray-600">
+                <div>
+                  <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
+                  <p className="mt-0.5">
+                    MACULA Greek Linguistic Datasets — syntax trees over the Nestle 1904 Greek New Testament (public domain).
+                    Licensed <span className="font-medium">CC BY 4.0</span>.{' '}
+                    <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-700">Translations</p>
+                  <ul className="mt-0.5 space-y-0.5">
+                    {LANGS.map(l => (
+                      <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
+                    ))}
+                  </ul>
+                </div>
+                <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
+                  All sources are public-domain or openly licensed (CC BY 4.0), used with attribution.
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       <p className="text-xs text-gray-500">
@@ -282,10 +334,6 @@ export function PhraseExplorer() {
             </div>
           )
         })
-      )}
-
-      {attribution && (
-        <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">Syntax data: {attribution}</p>
       )}
     </div>
   )
