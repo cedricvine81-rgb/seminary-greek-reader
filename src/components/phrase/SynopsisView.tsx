@@ -69,16 +69,22 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
     const p = parseRef(anchor, books)
     if (!p || !GOSPELS.includes(p.book.osisId)) return null
     const osis = p.book.osisId
+    // Collect every pericope whose entry for this gospel overlaps the anchor, then
+    // prefer the one with the most parallels (so a single-gospel pericope sharing a
+    // verse range never hides a richer multi-gospel match).
+    const matches: { title: string; refs: string[]; score: number }[] = []
     for (const per of pericopes) {
       const cell = per[osis]
       if (!cell) continue
       const cp = parseRef(cell, books)
       if (cp && cp.book.osisId === osis && cp.chapter === p.chapter && cp.verseStart <= p.verseEnd && cp.verseEnd >= p.verseStart) {
-        const refs = GOSPELS.filter(g => g !== osis && per[g]).map(g => per[g]).filter(r => !columns.includes(r))
-        return { title: per.title, refs }
+        const others = GOSPELS.filter(g => g !== osis && per[g])
+        matches.push({ title: per.title, refs: others.map(g => per[g]).filter(r => !columns.includes(r)), score: others.length })
       }
     }
-    return null
+    if (!matches.length) return null
+    matches.sort((a, b) => b.score - a.score)
+    return matches[0]
   })()
 
   // Load verse text for every column's chapter in the chosen version.
