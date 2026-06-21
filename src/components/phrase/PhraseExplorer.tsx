@@ -389,10 +389,14 @@ export function PhraseExplorer() {
         })
       )}
 
-      {/* Lexical detail for the clicked Greek word — pinned below, where there's room. */}
+      {/* Lexical detail for the clicked Greek word — pinned below and aligned under the
+          Greek + translation columns (not under the phrase tree), where there's room. */}
       {!message && shown.length > 0 && (
-        <div className="sticky bottom-2 z-10 pt-2">
-          <ParsingPanel info={selectedInfo} />
+        <div className="sticky bottom-2 z-10 pt-2 grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem] lg:px-4">
+          <div className="hidden lg:block" />
+          <div className="lg:col-span-2">
+            <ParsingPanel info={selectedInfo} />
+          </div>
         </div>
       )}
     </div>
