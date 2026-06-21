@@ -78,6 +78,31 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
   return <GroupNode node={node} depth={depth} />
 }
 
+// Translations available in the Reader (mirrors GreekReader's PARALLEL_LANGS).
+const LANGS = [
+  { code: 'bsb', label: 'English (BSB)' },
+  { code: 'en', label: 'English (WEB)' },
+  { code: 'es', label: 'Spanish' },
+  { code: 'fr', label: 'French' },
+  { code: 'pt', label: 'Portuguese' },
+  { code: 'ru', label: 'Russian' },
+  { code: 'ko', label: 'Korean' },
+  { code: 'zh', label: 'Mandarin' },
+]
+const langLabel = (code: string) => LANGS.find(l => l.code === code)?.label ?? code
+
+function LangSelect({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <select
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+    >
+      {LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+    </select>
+  )
+}
+
 export function PhraseExplorer() {
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
@@ -88,6 +113,59 @@ export function PhraseExplorer() {
   const [attribution, setAttribution] = useState('')
   const [message, setMessage] = useState('')
   const cache = useRef<Record<string, BookData>>({})
+
+  // The two side-by-side translation columns.
+  const [lang1, setLang1] = useState('bsb')
+  const [lang2, setLang2] = useState('en')
+  const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
+  // Translation text keyed by lang → verseId ("John.1.1") → text, with a version
+  // counter to re-render after async loads. `loaded` dedupes fetches.
+  const transCache = useRef<Record<string, Record<string, string>>>({})
+  const loaded = useRef<Set<string>>(new Set())
+  const [, setTransVer] = useState(0)
+  const bump = () => setTransVer(v => v + 1)
+
+  // Ensure both columns' translations are loaded for the current passage's chapter.
+  useEffect(() => {
+    if (!cur) return
+    const { osis, chapter } = cur
+    for (const lang of Array.from(new Set([lang1, lang2]))) {
+      const ck = lang === 'bsb' ? 'bsb' : `${lang}.${osis}.${chapter}`
+      if (loaded.current.has(ck)) continue
+      loaded.current.add(ck)
+      if (lang === 'bsb') {
+        fetch('/data/bsb-alignment.json?v=3')
+          .then(r => r.json())
+          .then((d: Record<string, { text: string }>) => {
+            const map = (transCache.current.bsb ??= {})
+            for (const [vid, val] of Object.entries(d)) map[vid] = val.text
+            bump()
+          })
+          .catch(() => {})
+      } else {
+        fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${lang}`)
+          .then(r => r.json())
+          .then((d: { verses?: Record<string, string> }) => {
+            const map = (transCache.current[lang] ??= {})
+            Object.assign(map, d.verses ?? {})
+            bump()
+          })
+          .catch(() => {})
+      }
+    }
+  }, [cur, lang1, lang2])
+
+  /** Joined translation text for a sentence's verse range in the chosen language. */
+  const sentenceText = (lang: string, s: Sentence): string => {
+    const map = transCache.current[lang]
+    if (!map) return ''
+    const parts: string[] = []
+    for (let v = s.startVerse; v <= s.endVerse; v++) {
+      const t = map[`${cur?.osis}.${s.chapter}.${v}`]
+      if (t) parts.push(t)
+    }
+    return parts.join(' ')
+  }
 
   // Load the GNT book list (for reference parsing), then the default passage.
   useEffect(() => {
@@ -120,6 +198,7 @@ export function PhraseExplorer() {
         s => s.chapter === p.chapter && s.startVerse <= p.verseEnd && s.endVerse >= p.verseStart,
       )
       setShown(matches)
+      setCur({ osis: p.osisId, chapter: p.chapter })
       setAttribution(data.attribution)
       const vLabel = p.verseStart === p.verseEnd ? `${p.verseStart}` : `${p.verseStart}–${p.verseEnd === 999 ? 'end' : p.verseEnd}`
       setHeading(`${data.book} ${p.chapter}:${vLabel}`)
@@ -155,21 +234,54 @@ export function PhraseExplorer() {
       </div>
 
       <p className="text-xs text-gray-500">
-        Each sentence is broken into its clause → phrase → word levels. Click a label to collapse a level.
-        Hover a word for its lemma, parsing, and role.
+        Each sentence is broken into its clause → phrase → word levels (left), with two
+        translation columns alongside. Click a label to collapse a level; hover a word for
+        its lemma, parsing, and role.
       </p>
 
       {heading && !loading && <p className="text-sm font-medium text-gray-700">{heading}</p>}
 
+      {/* Column header with the two translation dropdowns (aligned over the columns on lg+). */}
+      {!message && shown.length > 0 && (
+        <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_15rem_15rem] gap-4 items-end">
+          <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Greek — clause / phrase structure</span>
+          <LangSelect value={lang1} onChange={setLang1} />
+          <LangSelect value={lang2} onChange={setLang2} />
+        </div>
+      )}
+      {/* On mobile the dropdowns stack above the cards. */}
+      {!message && shown.length > 0 && (
+        <div className="grid grid-cols-2 gap-2 lg:hidden">
+          <LangSelect value={lang1} onChange={setLang1} />
+          <LangSelect value={lang2} onChange={setLang2} />
+        </div>
+      )}
+
       {message ? (
         <p className="text-sm text-gray-400 italic">{message}</p>
       ) : (
-        shown.map((s, i) => (
-          <div key={i} className="rounded-xl border border-gray-200 p-4">
-            <p className="text-xs font-semibold text-gray-400 mb-2">{s.ref}</p>
-            <NodeView node={s.tree} depth={0} />
-          </div>
-        ))
+        shown.map((s, i) => {
+          const t1 = sentenceText(lang1, s)
+          const t2 = sentenceText(lang2, s)
+          return (
+            <div key={i} className="rounded-xl border border-gray-200 p-4">
+              <p className="text-xs font-semibold text-gray-400 mb-2">{s.ref}</p>
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem]">
+                <div className="min-w-0">
+                  <NodeView node={s.tree} depth={0} />
+                </div>
+                <div className="text-sm text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
+                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(lang1)}</span>
+                  {t1 || <span className="text-gray-300 italic">—</span>}
+                </div>
+                <div className="text-sm text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
+                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(lang2)}</span>
+                  {t2 || <span className="text-gray-300 italic">—</span>}
+                </div>
+              </div>
+            </div>
+          )
+        })
       )}
 
       {attribution && (
