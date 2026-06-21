@@ -387,7 +387,7 @@ function fullscreenElementCompat(): Element | null {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean }) {
+export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean; controlledPassage?: string }) {
   const router = useRouter()
 
   // ── Passage state ──
@@ -486,7 +486,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // work — the last unsubmitted, non-assignment session reopens automatically.
   const didRestoreRef = useRef(false)
   useEffect(() => {
-    if (propAssignmentId || !isAuthenticated || books.length === 0 || didRestoreRef.current) return
+    // In coordinated mode the shared passage box drives loading, so don't auto-restore.
+    if (propAssignmentId || controlledPassage !== undefined || !isAuthenticated || books.length === 0 || didRestoreRef.current) return
     didRestoreRef.current = true
     ;(async () => {
       try {
@@ -963,6 +964,25 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       setIsLoading(false)
     }
   }
+
+  // Coordinated mode: a shared passage box (in ExegesisTabs) drives the workspace.
+  // When the controlled passage changes, load it (standalone study page only).
+  useEffect(() => {
+    if (controlledPassage === undefined || propAssignmentId || books.length === 0) return
+    const raw = controlledPassage.trim()
+    if (!raw) return
+    const parsed = parsePassageRef(raw, books)
+    if (!parsed) return
+    const unchanged =
+      selectedBook?.osisId === parsed.book.osisId && chapter === parsed.chapter &&
+      verseStart === parsed.verseStart && verseEnd === parsed.verseEnd && loadedVerses.length > 0
+    if (unchanged) return
+    setPassageInput(raw)
+    setSelectedBook(parsed.book); setChapter(parsed.chapter)
+    setVerseStart(parsed.verseStart); setVerseEnd(parsed.verseEnd)
+    loadPassage(parsed.book, parsed.chapter, parsed.verseStart, parsed.verseEnd, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlledPassage, books])
 
   // ── Passage box: parse a typed reference ("Matthew 3:1-3") and load it ──
   function handlePassageSubmit() {
@@ -1484,8 +1504,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       {/* ── Toolbar ── */}
       <div className="print:hidden bg-white border-b border-gray-200 py-3 flex flex-wrap items-end gap-3">
 
-        {/* Passage box — hidden in assignment mode (passage is fixed) */}
-        {!propAssignmentId && (
+        {/* Passage box — hidden in assignment mode (fixed passage) and in coordinated
+            mode (a shared passage box in ExegesisTabs drives all the tabs). */}
+        {!propAssignmentId && controlledPassage === undefined && (
           <>
             <div className="flex flex-col gap-0.5">
               <div className="flex items-center gap-2">

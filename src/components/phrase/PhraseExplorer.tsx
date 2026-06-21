@@ -134,7 +134,7 @@ function treeGreek(node: TreeNode): string {
   return node.c.map(treeGreek).filter(Boolean).join(' ')
 }
 
-export function PhraseExplorer() {
+export function PhraseExplorer({ controlledPassage }: { controlledPassage?: string } = {}) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
@@ -239,11 +239,22 @@ export function PhraseExplorer() {
       .then((d) => {
         const bs: RefBook[] = d.books ?? []
         setBooks(bs)
-        if (bs.length) loadPassage('John 1:1-5', bs)
+        // In coordinated mode the shared passage effect below drives loading.
+        if (bs.length && controlledPassage === undefined) loadPassage('John 1:1-5', bs)
       })
       .catch(() => setMessage('Could not load the book list.'))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Coordinated mode: load whatever the shared passage box dictates.
+  useEffect(() => {
+    if (controlledPassage === undefined || books.length === 0) return
+    const raw = controlledPassage.trim()
+    if (!raw) return
+    setInput(raw)
+    loadPassage(raw, books)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [controlledPassage, books])
 
   async function loadPassage(ref: string, bookList: RefBook[]) {
     const p = parseRef(ref, bookList)
@@ -279,21 +290,24 @@ export function PhraseExplorer() {
   return (
     <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
     <div className="space-y-4">
-      {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right. */}
+      {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right.
+          Hidden in coordinated mode — a shared passage box drives all tabs. */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center flex-wrap gap-3">
-          <div className="flex items-center">
-            <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-            <input
-              type="text"
-              value={input}
-              onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-              onBlur={submit}
-              placeholder="e.g. Matthew 3:1-3"
-              className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
-            />
-          </div>
+          {controlledPassage === undefined && (
+            <div className="flex items-center">
+              <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+              <input
+                type="text"
+                value={input}
+                onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+                onBlur={submit}
+                placeholder="e.g. Matthew 3:1-3"
+                className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+              />
+            </div>
+          )}
           {loading && <span className="text-sm text-gray-400">Loading…</span>}
           {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
         </div>
