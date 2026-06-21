@@ -534,7 +534,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             setLoadedVerses(all)
           } finally { setIsLoading(false) }
 
-          // Resume or lazily start the single exam session
+          // Resume the single exam session, or create it now if none exists. Creating
+          // on entry (like translation exercises do) is what makes autosave work and lets
+          // the session resume if the student navigates away and back — otherwise nothing
+          // is persisted until submit, so a reload looks like the exam "restarted".
           const sr = await fetch(`/api/exegesis?assignmentId=${propAssignmentId}`)
           const sd = await sr.json()
           if (sd.session) {
@@ -545,6 +548,26 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
             setSessionId(sess.id)
             setSessionTitle(sess.title)
             if (sess.submittedAt) setSubmitted(true)
+          } else if (examPassages[0]) {
+            const first = examPassages[0]
+            const startedAt = new Date()
+            startedAtRef.current = startedAt
+            try {
+              const cr = await fetch('/api/exegesis', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  title: a.title,
+                  bookOsisId: first.book.osisId, bookName: first.book.name,
+                  chapter: first.chapter, verseStart: first.verseStart, verseEnd: first.verseEnd,
+                  annotations: {}, assignmentId: propAssignmentId, startedAt: startedAt.toISOString(),
+                }),
+              })
+              const cd = await cr.json()
+              if (cd.session?.id) setSessionId(cd.session.id)
+              else if (cr.status === 409 && cd.sessionId) setSessionId(cd.sessionId)
+            } catch { /* will retry on first autosave */ }
+            setSessionTitle(a.title)
           }
           return
         }
@@ -1283,6 +1306,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       document.removeEventListener('contextmenu', onContextMenu)
     }
   }, [lockdownOn, lockdownStarted, recordViolation])
+
+  // While a lockdown exam is in progress, hide the app chrome (top bar, sidebar, mobile
+  // nav) so the student can't navigate away mid-exam. globals.css hides them under this class.
+  useEffect(() => {
+    const active = lockdownOn && lockdownStarted
+    document.body.classList.toggle('exam-lockdown', active)
+    return () => document.body.classList.remove('exam-lockdown')
+  }, [lockdownOn, lockdownStarted])
 
   /** Enter fullscreen and begin the locked exam (must be triggered by a user click). */
   const enterLockdown = useCallback(async () => {

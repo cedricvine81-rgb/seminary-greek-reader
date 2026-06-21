@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Lockdown exam mode: hide the app chrome (top bar, sidebar, mobile nav) so a
+   student can't navigate away while a lockdown Translation Exam is in progress.
+   Toggled on <body> by ExegesisWorkspace. */
+body.exam-lockdown header,
+body.exam-lockdown aside,
+body.exam-lockdown nav.fixed.bottom-0 {
+  display: none !important;
+}
+
 /* ── Greek font via Google Fonts (loaded in layout.tsx) ── */
 @layer base {
   :root {
