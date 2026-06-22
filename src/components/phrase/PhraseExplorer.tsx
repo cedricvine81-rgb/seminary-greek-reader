@@ -1,5 +1,5 @@
 'use client'
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import { createContext, useContext, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { MoreVertical, X } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -78,8 +78,8 @@ function WordNode({ node }: { node: WordNodeT }) {
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
       className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
     >
-      <span className="font-greek text-lg text-gray-900 leading-tight">{node.w}</span>
-      {node.gloss && <span className="text-[11px] text-gray-400 leading-tight">{node.gloss}</span>}
+      <span className="font-greek text-gray-900 leading-tight" style={{ fontSize: 'var(--phrase-fs, 1.45rem)' }}>{node.w}</span>
+      {node.gloss && <span className="text-gray-400 leading-tight" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.6)' }}>{node.gloss}</span>}
     </button>
   )
 }
@@ -109,6 +109,12 @@ const GREEK_EDITIONS = [
   { code: 'gnt', label: 'Greek — Tischendorf' },
 ]
 const greekLabel = (code: string) => GREEK_EDITIONS.find(g => g.code === code)?.label ?? code
+
+// Adjustable Greek text size (default larger than before). Children scale off the
+// --phrase-fs CSS variable set on the container.
+type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl'
+const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl']
+const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 
 function OptionSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { code: string; label: string }[] }) {
   return (
@@ -167,6 +173,7 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
 
   // Settings / sources panel (top-right, like the Reader).
   const [showSettings, setShowSettings] = useState(false)
+  const [fontSize, setFontSize] = useState<PhraseFontSize>('lg')
   const settingsRef = useRef<HTMLDivElement | null>(null)
   useEffect(() => {
     if (!showSettings) return
@@ -289,7 +296,7 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
 
   return (
     <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
-    <div className="space-y-4">
+    <div className="space-y-4" style={{ '--phrase-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
       {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right.
           Hidden in coordinated mode — a shared passage box drives all tabs. */}
       <div className="flex items-start justify-between gap-3">
@@ -323,31 +330,55 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
           {showSettings && (
             <div className="absolute right-0 top-full mt-1 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl p-4 shadow-lg">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-gray-800">Sources &amp; copyright</span>
+                <span className="text-sm font-semibold text-gray-800">Settings</span>
                 <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
               </div>
-              <div className="space-y-3 text-xs text-gray-600">
-                <div>
-                  <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
-                  <p className="mt-0.5">
-                    Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
-                    licensed <span className="font-medium">CC BY 4.0</span>.{' '}
-                    <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
-                  </p>
-                  <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
+
+              {/* Text size */}
+              <div className="mb-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+                  <input
+                    type="range" min={0} max={3} step={1}
+                    value={FONT_SIZES.indexOf(fontSize)}
+                    onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
+                    className="flex-1 accent-brand-600"
+                  />
+                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
                 </div>
-                <div>
-                  <p className="font-semibold text-gray-700">Translations</p>
-                  <ul className="mt-0.5 space-y-0.5">
-                    {LANGS.map(l => (
-                      <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
-                    ))}
-                  </ul>
-                </div>
-                <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
-                  All sources are public-domain or openly licensed (CC BY 4.0), used with attribution.
-                </p>
               </div>
+
+              {/* Sources & copyright — collapsed submenu */}
+              <details className="border-t border-gray-100 pt-2">
+                <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                <div className="space-y-3 text-xs text-gray-600 mt-2">
+                  <div>
+                    <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
+                    <p className="mt-0.5">
+                      Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
+                      licensed <span className="font-medium">CC BY 4.0</span>.{' '}
+                      <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
+                    </p>
+                    <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-700">Translations</p>
+                    <ul className="mt-0.5 space-y-0.5">
+                      {LANGS.map(l => (
+                        <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-700">Gospel parallels</p>
+                    <p className="mt-0.5">Adapted from Wikipedia, &ldquo;Gospel harmony&rdquo; (CC BY-SA 4.0).</p>
+                  </div>
+                  <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
+                    All sources are public-domain or openly licensed, used with attribution.
+                  </p>
+                </div>
+              </details>
             </div>
           )}
         </div>
@@ -391,9 +422,9 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
                 </div>
                 <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
                   <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
-                  <span className="font-greek text-base">{mid || <span className="font-sans text-sm text-gray-300 italic">—</span>}</span>
+                  <span className="font-greek" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>{mid || <span className="font-sans text-sm text-gray-300 italic">—</span>}</span>
                 </div>
-                <div className="text-sm text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
+                <div className="text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.8)' }}>
                   <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
                   {right || <span className="text-gray-300 italic">—</span>}
                 </div>

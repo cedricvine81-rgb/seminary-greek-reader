@@ -92,7 +92,7 @@ export function ParsingPanel({ info, locked }: ParsingPanelProps) {
           Hover or click any Greek word to see lexical information.
         </div>
       ) : (
-        <div className="overflow-y-auto px-5 py-3 text-sm leading-snug">
+        <div className="flex-1 min-h-0 overflow-y-auto px-5 py-3 text-sm leading-snug">
           {/* Word + parsing header */}
           <div className="flex items-baseline gap-2 flex-wrap mb-1">
             <span className="greek-text text-lg font-semibold text-brand-800">{info.surface}</span>
