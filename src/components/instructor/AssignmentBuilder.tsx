@@ -270,6 +270,11 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             weekNumber: form.weekNumber || 1,
             dueDate: (form.round1Deadline || new Date().toISOString()).slice(0, 10),
           } : {}),
+          // Translation exercises hide Due date — derive it from the Round deadlines
+          // (Round 1 → Round 2 → today) so the close window is driven by the rounds.
+          ...(form.type === 'TRANSLATION_EXERCISE' ? {
+            dueDate: (form.round1Deadline || form.round2Deadline || form.dueDate || new Date().toISOString()).slice(0, 10),
+          } : {}),
           // Convert datetime-local (instructor's local wall time) to a real UTC instant on the client,
           // so the stored deadline isn't shifted by the server's (UTC) timezone.
           opensAt: form.opensAt ? new Date(form.opensAt).toISOString() : undefined,
@@ -433,8 +438,12 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         <div className="grid grid-cols-2 gap-4">
           <Input label="Week number" type="number" min={1} required value={form.weekNumber}
             onChange={e => set('weekNumber', Number(e.target.value))} />
-          <Input label="Due date" type="date" required value={form.dueDate}
-            onChange={e => set('dueDate', e.target.value)} />
+          {/* Translation exercises take their close date from the Round deadlines, so the
+              Due date is derived on save rather than entered here. */}
+          {form.type !== 'TRANSLATION_EXERCISE' && (
+            <Input label="Due date" type="date" required value={form.dueDate}
+              onChange={e => set('dueDate', e.target.value)} />
+          )}
         </div>
       )}
 
@@ -586,19 +595,9 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             <p className="text-sm font-semibold text-brand-800">Absolute deadlines (optional)</p>
             <p className="text-xs text-brand-700">
               Set a fixed date &amp; time (to the minute) after which students can no longer edit. These apply
-              regardless of when a student starts, and work alongside the per-session timers above.
+              regardless of when a student starts, and work alongside the per-session timers above. The exercise
+              closes at the Round 2 deadline (or Round 1 if there&rsquo;s no Round 2); the due date is set from these.
             </p>
-            <div>
-              <Input
-                label="Submission deadline — students cannot submit after this point"
-                type="datetime-local"
-                value={form.submissionDeadline ?? ''}
-                onChange={e => set('submissionDeadline', e.target.value || undefined)}
-              />
-              <p className="mt-1 text-xs text-brand-600">
-                After this point students may still edit submitted work but cannot make a new submission. Leave blank for none.
-              </p>
-            </div>
             <div>
               <Input
                 label="Round 1 deadline — annotations lock after this time"

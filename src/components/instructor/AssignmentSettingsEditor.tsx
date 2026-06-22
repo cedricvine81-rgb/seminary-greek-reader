@@ -87,9 +87,9 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const [maxAppeals, setMaxAppeals] = useState<number>(initial.maxAppeals ?? 0)
   const [allowLate, setAllowLate] = useState(initial.allowLate)
   const [lateDaysLimit, setLateDaysLimit] = useState(initial.lateDaysLimit ?? 7)
-  // submissionDeadline stored as datetime-local string (e.g. "2026-06-15T23:59")
   const [opensAt, setOpensAt] = useState(toLocalInput(initial.opensAt))
-  const [submissionDeadline, setSubmissionDeadline] = useState(toLocalInput(initial.submissionDeadline))
+  // Preserved (existing exercises may have one) but no longer editable — Round 1 covers it.
+  const [submissionDeadline] = useState(toLocalInput(initial.submissionDeadline))
   const [round1Deadline, setRound1Deadline] = useState(toLocalInput(initial.round1Deadline))
   const [round2Deadline, setRound2Deadline] = useState(toLocalInput(initial.round2Deadline))
   const [allowReaderInRound2, setAllowReaderInRound2] = useState(initial.allowReaderInRound2)
@@ -118,7 +118,9 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
         body: JSON.stringify({
           title,
           weekNumber,
-          dueDate,
+          // Translation exercises derive their due date from the Round deadlines
+          // (Round 1 → Round 2 → existing), since the Due date field is hidden for them.
+          dueDate: isTranslation ? ((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate) : dueDate,
           instructions,
           reference: (isTranslation || isExam) ? reference : undefined,
           // Convert back to seconds for storage
@@ -209,12 +211,15 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             value={weekNumber}
             onChange={e => setWeekNumber(Number(e.target.value))}
           />
-          <Input
-            label="Due date"
-            type="date"
-            value={dueDate}
-            onChange={e => setDueDate(e.target.value)}
-          />
+          {/* Translation exercises derive their close/due date from the Round deadlines. */}
+          {!isTranslation && (
+            <Input
+              label="Due date"
+              type="date"
+              value={dueDate}
+              onChange={e => setDueDate(e.target.value)}
+            />
+          )}
         </div>
 
         <div>
@@ -352,24 +357,8 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             {!isExam && (
             <>
             <hr className="border-brand-200" />
-            <p className="text-sm font-semibold text-brand-800">Submission deadline</p>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Deadline (date &amp; time) — students cannot submit after this point
-              </label>
-              <input
-                type="datetime-local"
-                value={submissionDeadline}
-                onChange={e => setSubmissionDeadline(e.target.value)}
-                className="input"
-              />
-              <p className="text-xs text-brand-600 mt-1">
-                After the deadline students can still edit their submitted work, but cannot make a new submission.
-                Leave blank for no deadline.
-              </p>
-            </div>
-            <hr className="border-brand-200" />
             <p className="text-sm font-semibold text-brand-800">Round deadlines</p>
+            <p className="text-xs text-brand-600 -mt-1">The exercise closes at the Round 2 deadline (or Round 1 if there&rsquo;s no Round 2); the due date is set from these.</p>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Round 1 deadline — annotations lock after this time
