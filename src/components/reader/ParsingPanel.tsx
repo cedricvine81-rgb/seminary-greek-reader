@@ -59,9 +59,10 @@ function normalizeLemma(lemma: string): string {
 interface ParsingPanelProps {
   info: LexicalInfoPanel | null
   locked?: boolean
+  bgClass?: string
 }
 
-export function ParsingPanel({ info, locked }: ParsingPanelProps) {
+export function ParsingPanel({ info, locked, bgClass = 'bg-white' }: ParsingPanelProps) {
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
   const vocabGloss = lookupVocabGloss(info?.lexeme)
@@ -86,7 +87,7 @@ export function ParsingPanel({ info, locked }: ParsingPanelProps) {
 
   // Fixed outer container — height never changes, content scrolls inside
   return (
-    <div className={`h-64 bg-white rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}>
+    <div className={`h-64 ${bgClass} rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}>
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
           Hover or click any Greek word to see lexical information.

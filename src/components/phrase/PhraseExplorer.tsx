@@ -490,7 +490,7 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
         <div className="sticky bottom-2 z-10 pt-2 grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem] lg:px-4">
           <div className="hidden lg:block" />
           <div className="lg:col-span-2">
-            <ParsingPanel info={selectedInfo} />
+            <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
           </div>
         </div>
       )}

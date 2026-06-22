@@ -21,6 +21,7 @@ function parseRef(ref: string, books: RefBook[]): { book: RefBook; chapter: numb
 
 // Versions a synopsis column can be shown in: a Greek edition or a translation.
 const VERSIONS = [
+  { code: 'na1904', label: 'Greek — Nestle 1904' },
   { code: 'gnt', label: 'Greek — Tischendorf' },
   { code: 'bsb', label: 'English (BSB)' },
   { code: 'en', label: 'English (WEB)' },
@@ -108,11 +109,28 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
   }, [columns.join('|'), version, books])
 
   function ensure(v: string, osis: string, chapter: number) {
-    const ck = v === 'bsb' ? 'bsb' : `${v}.${osis}.${chapter}`
+    // na1904 has no verse-text files — reconstruct verse text from the per-book phrase
+    // tree (MACULA = Nestle 1904), loaded once per book.
+    const ck = v === 'bsb' ? 'bsb' : v === 'na1904' ? `na1904.${osis}` : `${v}.${osis}.${chapter}`
     if (loaded.current.has(ck)) return
     loaded.current.add(ck)
     const done = (map: Record<string, string>, patch: Record<string, string>) => { Object.assign(map, patch); bump() }
-    if (v === 'gnt') {
+    if (v === 'na1904') {
+      type Node = { t: string; id?: string; w?: string; c?: Node[] }
+      fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: { sentences?: { tree: Node }[] }) => {
+        const byVerse: Record<string, { i: number; w: string }[]> = {}
+        const walk = (n: Node) => {
+          if (n.t === 'w' && n.id) {
+            const [bk, ch, vs, wd] = n.id.split('.')
+            ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({ i: parseInt(wd || '0', 10), w: n.w ?? '' })
+          } else (n.c ?? []).forEach(walk)
+        }
+        for (const s of d.sentences ?? []) walk(s.tree)
+        const patch: Record<string, string> = {}
+        for (const [vKey, ws] of Object.entries(byVerse)) { ws.sort((a, b) => a.i - b.i); patch[vKey] = ws.map(x => x.w).join(' ') }
+        done((cache.current.na1904 ??= {}), patch)
+      }).catch(() => {})
+    } else if (v === 'gnt') {
       fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string }[] }) => {
         const map = (cache.current.gnt ??= {})
         done(map, Object.fromEntries((d.verses ?? []).map(x => [`${osis}.${chapter}.${x.verse}`, x.text])))
@@ -150,7 +168,7 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
     setAddInput(''); setAddError(false)
   }
 
-  const isGreek = version === 'gnt'
+  const isGreek = version === 'gnt' || version === 'na1904'
 
   return (
     <div className="space-y-4">
