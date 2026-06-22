@@ -2,6 +2,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { MoreVertical, X } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // One node of the Macula phrase/clause tree (see scripts/import-macula-phrase-tree.js).
@@ -140,6 +141,26 @@ function treeGreek(node: TreeNode): string {
   return node.c.map(treeGreek).filter(Boolean).join(' ')
 }
 
+/** Collect the word nodes (in order) so the Greek column can render clickable words. */
+function treeWords(node: TreeNode): WordNodeT[] {
+  if (node.t === 'w') return [node]
+  return node.c.flatMap(treeWords)
+}
+
+/** A clickable Greek word in the running-text Greek column → opens the lexical panel. */
+function GreekColWord({ node }: { node: WordNodeT }) {
+  const { selectedId, onWord } = useContext(WordCtx)
+  return (
+    <button
+      type="button"
+      onClick={() => onWord(node)}
+      className={`rounded px-0.5 transition-colors hover:bg-gray-100 ${selectedId === node.id ? 'bg-brand-100' : ''}`}
+    >
+      {node.w}
+    </button>
+  )
+}
+
 export function PhraseExplorer({ controlledPassage }: { controlledPassage?: string } = {}) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
@@ -167,6 +188,8 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
   // Translation text keyed by lang → verseId ("John.1.1") → text, with a version
   // counter to re-render after async loads. `loaded` dedupes fetches.
   const transCache = useRef<Record<string, Record<string, string>>>({})
+  // Tischendorf (gnt) words per verseId, so the Greek column can be clickable too.
+  const gntWords = useRef<Record<string, WordNodeT[]>>({})
   const loaded = useRef<Set<string>>(new Set())
   const [, setTransVer] = useState(0)
   const bump = () => setTransVer(v => v + 1)
@@ -196,11 +219,20 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
       if (loaded.current.has(ck)) continue
       loaded.current.add(ck)
       if (code === 'gnt') {
+        type GntMorph = { partOfSpeech: string; tense?: string | null; voice?: string | null; mood?: string | null; person?: string | null; number?: string | null; casus?: string | null; gender?: string | null }
+        type GntWord = { id: string; surface: string; lemma?: string; strongs?: string; morph?: GntMorph }
         fetch(`/data/gnt/${osis}_${chapter}.json`)
           .then(r => r.json())
-          .then((d: { verses?: { verse: number; text: string }[] }) => {
+          .then((d: { verses?: { verse: number; text: string; words?: GntWord[] }[] }) => {
             const map = (transCache.current.gnt ??= {})
-            for (const v of d.verses ?? []) map[`${osis}.${chapter}.${v.verse}`] = v.text
+            for (const v of d.verses ?? []) {
+              const vid = `${osis}.${chapter}.${v.verse}`
+              map[vid] = v.text
+              if (v.words) gntWords.current[vid] = v.words.map(w => ({
+                t: 'w', id: w.id, w: w.surface, lemma: w.lemma, strongs: w.strongs,
+                parsing: w.morph ? formatParsing(w.morph) : '',
+              }))
+            }
             bump()
           })
           .catch(() => {})
@@ -237,6 +269,18 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
       if (t) parts.push(t)
     }
     return parts.join(' ')
+  }
+
+  /** Clickable Greek words for the middle column (Nestle 1904 from the tree; Tischendorf
+   *  from the loaded gnt word data). Empty until gnt words load → caller falls back to text. */
+  const greekWordsFor = (s: Sentence): WordNodeT[] => {
+    if (greekEd === 'na1904') return treeWords(s.tree)
+    const out: WordNodeT[] = []
+    for (let v = s.startVerse; v <= s.endVerse; v++) {
+      const ws = gntWords.current[`${cur?.osis}.${s.chapter}.${v}`]
+      if (ws) out.push(...ws)
+    }
+    return out
   }
 
   // Load the GNT book list (for reference parsing), then the default passage.
@@ -422,7 +466,13 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
                 </div>
                 <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
                   <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
-                  <span className="font-greek" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>{mid || <span className="font-sans text-sm text-gray-300 italic">—</span>}</span>
+                  <span className="font-greek leading-relaxed" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
+                    {(() => {
+                      const gw = greekWordsFor(s)
+                      if (gw.length) return gw.map((w, wi) => <span key={w.id}>{wi > 0 ? ' ' : ''}<GreekColWord node={w} /></span>)
+                      return mid || <span className="font-sans text-sm text-gray-300 italic">—</span>
+                    })()}
+                  </span>
                 </div>
                 <div className="text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.8)' }}>
                   <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
