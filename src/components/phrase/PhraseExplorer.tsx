@@ -179,6 +179,12 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
     strongs: selected.strongs,
     reference: refFromId(selected.id),
   } : null
+  // True when the selected word belongs to this sentence (so its card shows the panel).
+  const selInSentence = (s: Sentence): boolean => {
+    if (!selected) return false
+    const [, ch, v] = selected.id.split('.')
+    return Number(ch) === s.chapter && Number(v) >= s.startVerse && Number(v) <= s.endVerse
+  }
   const cache = useRef<Record<string, BookData>>({})
 
   // Middle column = a Greek edition; right column = a modern translation.
@@ -479,20 +485,20 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
                   {right || <span className="text-gray-300 italic">—</span>}
                 </div>
               </div>
+
+              {/* Lexical detail for a word clicked in THIS sentence — embedded under the
+                  columns so it scrolls with the verse, aligned under the Greek + translation. */}
+              {selInSentence(s) && (
+                <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem]">
+                  <div className="hidden lg:block" />
+                  <div className="lg:col-span-2">
+                    <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
+                  </div>
+                </div>
+              )}
             </div>
           )
         })
-      )}
-
-      {/* Lexical detail for the clicked Greek word — pinned below and aligned under the
-          Greek + translation columns (not under the phrase tree), where there's room. */}
-      {!message && shown.length > 0 && (
-        <div className="sticky bottom-2 z-10 pt-2 grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem] lg:px-4">
-          <div className="hidden lg:block" />
-          <div className="lg:col-span-2">
-            <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
-          </div>
-        </div>
       )}
     </div>
     </WordCtx.Provider>
