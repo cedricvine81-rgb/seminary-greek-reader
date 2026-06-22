@@ -1977,9 +1977,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               </div>
             ))}
 
-            {/* ── Areas for Improvement — appears in Round 2; a written reflection is
-                  required before the student can submit for grading. ── */}
-            {reviewMode && (
+            {/* ── Areas for Improvement — a written reflection required before submitting.
+                  Shown for any assignment exercise (not exams) and available throughout, so
+                  one-round exercises (no Round-1 cut-off, where reviewMode never triggers)
+                  still expose it. ── */}
+            {!!propAssignmentId && !isExam && (
               <div className="mt-6 print:hidden">
                 <label className="block text-sm font-semibold text-gray-800 mb-1">
                   Areas for Improvement <span className="text-red-500">*</span>
