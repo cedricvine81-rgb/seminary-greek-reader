@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { ArrowLeft, Save } from 'lucide-react'
+import { ArrowLeft, Save, RotateCcw } from 'lucide-react'
 import { GRADE_COMPONENTS, GRADE_COMPONENT_LABELS, DEFAULT_WEIGHTS, normalizeWeights, passageGrade, examTotal, type GradeWeights, type PassageSubScores } from '@/lib/exam-grading'
 
 // Per-passage sub-scores as input strings (parsing/syntax/translation).
@@ -133,6 +133,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState('')
   const [isExam, setIsExam] = useState(false)
+  const [reopening, setReopening] = useState(false)
   // Exam passages, in display order: each holds its reference line (used as the grade key) and its verses.
   const [examGroups, setExamGroups] = useState<{ key: string; label: string; verses: Verse[] }[]>([])
   // Per-passage sub-scores (as input strings), keyed by reference line.
@@ -235,6 +236,28 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       setSaving(false)
     }
   }, [sessionId, grade, gradeNote, isExam, passageGrades, assignmentId, router])
+
+  // Reopen this student's submission so they can edit and resubmit. Clears the
+  // submitted state and grade; their work is preserved (shares the results un-submit API).
+  async function reopen() {
+    if (!confirm(`Reopen ${studentName || 'this student'}'s submission?\n\nThey'll be able to edit and resubmit. Their work is kept, but any grade is cleared.`)) return
+    setReopening(true)
+    setError('')
+    try {
+      const res = await fetch(`/api/assignments/${assignmentId}/results?sessionId=${encodeURIComponent(sessionId)}`, { method: 'DELETE' })
+      if (!res.ok) {
+        const d = await res.json().catch(() => ({}))
+        setError(d.error || 'Could not reopen the submission.')
+        return
+      }
+      router.push(onBack)
+      router.refresh()
+    } catch {
+      setError('Could not reopen the submission.')
+    } finally {
+      setReopening(false)
+    }
+  }
 
   // Numeric per-passage sub-scores (for live grade math).
   const numericPassageGrades = Object.fromEntries(
@@ -358,9 +381,14 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         <Link href={onBack} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors">
           <ArrowLeft size={14} /> Back to assignment
         </Link>
-        <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+        <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">
           <span>{isExam ? 'Exam' : 'Passage'}: <strong className="text-gray-800">{isExam ? `${verses.length} verse${verses.length === 1 ? '' : 's'} across the exam passages` : `${session.bookName} ${session.chapter}:${session.verseStart}–${session.verseEnd}`}</strong></span>
           <span>Submitted: <strong className="text-gray-800">{session.submittedAt ? new Date(session.submittedAt).toLocaleString() : 'Not yet submitted'}</strong></span>
+          {session.submittedAt && (
+            <Button size="sm" variant="secondary" onClick={reopen} loading={reopening} className="text-amber-700 hover:bg-amber-50" title="Let this student edit and resubmit; clears the grade">
+              <RotateCcw size={13} /> Reopen for student
+            </Button>
+          )}
         </div>
       </div>
 
