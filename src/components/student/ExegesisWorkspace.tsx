@@ -411,6 +411,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [verseCorrections, setVerseCorrections] = useState<Record<string, string>>({})
   // Free-form "Notes & Questions" scratchpad — live across Round 1 & 2, locked at submit
   const [notes, setNotes] = useState('')
+  // Student-chosen glossary threshold (standalone study): show definitions for words
+  // less frequent than N× in the NT. null = off. An instructor-set glossFrequency wins.
+  const [glossPref, setGlossPref] = useState<number | null>(null)
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
   const wordPanelRef = useRef<HTMLDivElement | null>(null)
@@ -1550,6 +1553,23 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           <span className="self-end text-sm font-medium text-gray-700">{passageTitle}</span>
         )}
 
+        {/* Vocabulary glossary control — adds definitions for rarer words beneath each
+            verse, like translation exercises. Hidden when an instructor has set it. */}
+        {loadedVerses.length > 0 && assignment?.glossFrequency == null && (
+          <div className="self-end flex items-center gap-1.5">
+            <label className="text-xs font-medium text-gray-500">Vocabulary</label>
+            <select
+              value={glossPref ?? ''}
+              onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
+              className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+            >
+              <option value="">Off</option>
+              <option value="50">Words less frequent than 50×</option>
+              <option value="30">Words less frequent than 30×</option>
+            </select>
+          </div>
+        )}
+
         <div className="flex-1" />
 
         {/* ── Stage 1 Countdown timer ── */}
@@ -1812,10 +1832,10 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                   />
                 </div>
 
-                {/* Glossary — words in this verse less frequent than the instructor's frequency
-                    threshold, with definitions, to help with translation. */}
-                {assignment?.glossFrequency != null && (() => {
-                  const threshold = assignment.glossFrequency!
+                {/* Glossary — words in this verse less frequent than the threshold (the
+                    instructor's setting, or the student's Vocabulary choice when none). */}
+                {(assignment?.glossFrequency ?? glossPref) != null && (() => {
+                  const threshold = (assignment?.glossFrequency ?? glossPref)!
                   const seen = new Set<string>()
                   const rare = v.words.filter(w => {
                     const lex = w.lexeme
