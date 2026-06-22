@@ -188,6 +188,9 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
   const lxxLoading     = useRef(false)
   const gntBackLoading = useRef(false)
   const lxxBackLoading = useRef(false)
+  // While true, infinite-scroll loading is paused so a jump (esp. into the LXX, which
+  // sits below the whole NT) isn't fought by chapters loading above and shifting it.
+  const navLockRef     = useRef(false)
 
   const gntRef      = useRef(gnt)
   const lxxRef      = useRef(lxx)
@@ -374,6 +377,8 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
     if (!panel) return
 
     function onScroll() {
+      // Don't lazy-load (which shifts layout) while a navigation jump is settling.
+      if (navLockRef.current) return
       const rect        = panel!.getBoundingClientRect()
       const panelTop    = rect.top
       const panelBottom = rect.bottom
@@ -424,12 +429,18 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
     // (e.g. arriving via the Exegesis "Open in Reader" link) fonts and parallel-text
     // rows above the target finish rendering after the first scroll and would push
     // the verse out of view; the delayed passes correct that overshoot.
+    // Pause infinite-scroll loading until the jump settles, so chapters loading above
+    // the target (especially the whole NT above an LXX target) can't push it around.
+    navLockRef.current = true
     scrollToVerse()
     const raf = requestAnimationFrame(scrollToVerse)
     const timers = [120, 400, 900].map(ms => setTimeout(scrollToVerse, ms))
+    const release = setTimeout(() => { navLockRef.current = false }, 1100)
     return () => {
       cancelAnimationFrame(raf)
       timers.forEach(clearTimeout)
+      clearTimeout(release)
+      navLockRef.current = false
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highlightedVerse, navKey])
