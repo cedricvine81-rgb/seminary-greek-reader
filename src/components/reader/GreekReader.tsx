@@ -1110,7 +1110,7 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
                 {settingsFlyout === 'contents' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
@@ -1131,6 +1131,27 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
                         </button>
                       ))}
                     </div>
+
+                    {/* Jump to any book — New Testament or Old Testament (Septuagint). */}
+                    {([
+                      { label: 'New Testament', books: Array.from(new Map(gntQueue.map(q => [q.osisId, q.bookName])).entries()) },
+                      { label: 'Old Testament (Septuagint)', books: Array.from(new Map(lxxQueue.map(q => [q.osisId, q.bookName])).entries()) },
+                    ] as const).map(group => group.books.length > 0 && (
+                      <div key={group.label} className="mt-4 pt-4 border-t border-gray-100">
+                        <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-2">{group.label}</p>
+                        <div className="flex flex-wrap gap-1">
+                          {group.books.map(([osisId, name]) => (
+                            <button
+                              key={osisId}
+                              onClick={() => { handleSearch(`${name} 1`, 'reference'); setShowSettings(false); setSettingsFlyout(null) }}
+                              className="px-2 py-1 text-xs rounded border border-gray-200 text-gray-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
+                            >
+                              {name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
