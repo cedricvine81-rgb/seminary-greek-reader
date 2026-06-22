@@ -101,6 +101,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
       {/* Passage-based exegesis exercises need full width */}
       <div className={isPassageExercise ? 'flex flex-col h-full print:h-auto overflow-hidden print:overflow-visible' : 'max-w-2xl space-y-6'}>
 
+        {/* Back to the student's assignment list — hidden for lockdown exams so it can't
+            be used as an escape hatch mid-exam. */}
+        {!(assignment.type === 'TRANSLATION_EXAM' && assignment.lockdown) && (
+          <Link href="/student/assignments" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors mb-3 print:hidden">
+            <ArrowLeft size={14} /> Back to assignments
+          </Link>
+        )}
+
         {/* Instructor preview banner */}
         {previewMode && (
           <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800 flex items-center justify-between gap-4">
