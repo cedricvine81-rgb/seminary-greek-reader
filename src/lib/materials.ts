@@ -194,22 +194,67 @@ async function sharedFolderIds(courseIds: string[]): Promise<string[]> {
   return Array.from(out)
 }
 
-/** Files a student can see: shared directly, shared via a folder, or attached to
- *  one of their courses (legacy). */
-export async function getAccessibleFiles(userId: string) {
+/** Breadcrumb for a student, stopping at the shared-root ancestor so the chain
+ *  never reveals folders above what was actually shared. */
+async function studentBreadcrumb(folderId: string, accessible: Set<string>): Promise<{ id: string; name: string }[]> {
+  const chain: { id: string; name: string }[] = []
+  let cur: string | null = folderId
+  const seen = new Set<string>()
+  while (cur && accessible.has(cur) && !seen.has(cur)) {
+    seen.add(cur)
+    const f: { id: string; name: string; parentId: string | null } | null =
+      await prisma.materialFolder.findUnique({ where: { id: cur }, select: { id: true, name: true, parentId: true } })
+    if (!f) break
+    chain.unshift({ id: f.id, name: f.name })
+    cur = f.parentId && accessible.has(f.parentId) ? f.parentId : null
+  }
+  return chain
+}
+
+/** One level of a student's view of the shared library — the same folder structure
+ *  the instructor built, but limited to subtrees shared with the student's courses.
+ *  At the root: the top-most shared folders, plus any individually-shared or legacy
+ *  course files that don't live inside a navigable (shared) folder. */
+export async function getStudentFolder(userId: string, folderId: string | null) {
   const courseIds = await approvedCourseIds(userId)
-  if (courseIds.length === 0) return []
-  const folderIds = await sharedFolderIds(courseIds)
-  return prisma.material.findMany({
-    where: {
-      OR: [
-        { shares: { some: { courseId: { in: courseIds } } } },
-        folderIds.length ? { folderId: { in: folderIds } } : { id: '' },
-        { courseId: { in: courseIds } },
-      ],
-    },
+  if (courseIds.length === 0) return { folders: [], files: [], breadcrumb: [] as { id: string; name: string }[] }
+  const accessible = new Set(await sharedFolderIds(courseIds))
+
+  if (folderId) {
+    if (!accessible.has(folderId)) throw new Error('Folder not found')
+    const [folders, files, breadcrumb] = await Promise.all([
+      prisma.materialFolder.findMany({
+        where: { parentId: folderId }, orderBy: { name: 'asc' },
+        select: { id: true, name: true, _count: { select: { children: true, materials: true } } },
+      }),
+      prisma.material.findMany({ where: { folderId }, orderBy: { createdAt: 'desc' } }),
+      studentBreadcrumb(folderId, accessible),
+    ])
+    return { folders, files, breadcrumb }
+  }
+
+  // Root level.
+  const accIds = Array.from(accessible)
+  const allAccessible = accIds.length
+    ? await prisma.materialFolder.findMany({
+        where: { id: { in: accIds } },
+        select: { id: true, name: true, parentId: true, _count: { select: { children: true, materials: true } } },
+      })
+    : []
+  // Show only the top-most shared folders (those whose parent isn't itself shared).
+  const folders = allAccessible
+    .filter(f => !f.parentId || !accessible.has(f.parentId))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(({ parentId, ...rest }) => rest)
+
+  // Loose files: individually-shared or legacy course files that aren't inside a
+  // navigable shared folder (those appear when browsing into the folder instead).
+  const looseFiles = (await prisma.material.findMany({
+    where: { OR: [{ shares: { some: { courseId: { in: courseIds } } } }, { courseId: { in: courseIds } }] },
     orderBy: { createdAt: 'desc' },
-  })
+  })).filter(f => !f.folderId || !accessible.has(f.folderId))
+
+  return { folders, files: looseFiles, breadcrumb: [] as { id: string; name: string }[] }
 }
 
 /** Whether a given user may download a specific file. */
