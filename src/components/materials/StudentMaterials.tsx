@@ -1,10 +1,11 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import { Folder, FileText, Download, ExternalLink, Loader2, ChevronRight } from 'lucide-react'
+import { sortMaterials, SORT_OPTIONS, type MaterialSort } from '@/lib/materials-sort'
 
-interface FolderItem { id: string; name: string; _count: { children: number; materials: number } }
+interface FolderItem { id: string; name: string; createdAt: string; _count: { children: number; materials: number } }
 interface FileItem {
-  id: string; title: string; description?: string | null; content?: string | null
+  id: string; title: string; createdAt: string; description?: string | null; content?: string | null
   fileUrl?: string | null; storagePath?: string | null; sizeBytes?: number | null
 }
 interface Crumb { id: string; name: string }
@@ -25,6 +26,13 @@ export function StudentMaterials() {
   const [loading, setLoading] = useState(true)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
+  const [sort, setSort] = useState<MaterialSort>('name-asc')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('student-materials-sort') as MaterialSort | null
+    if (saved && SORT_OPTIONS.some(o => o.value === saved)) setSort(saved)
+  }, [])
+  useEffect(() => { localStorage.setItem('student-materials-sort', sort) }, [sort])
 
   const load = useCallback(async (id: string | null) => {
     setLoading(true); setError('')
@@ -58,7 +66,7 @@ export function StudentMaterials() {
 
   return (
     <div className="space-y-4">
-      {/* Breadcrumb */}
+      {/* Breadcrumb + sort */}
       <div className="flex items-center flex-wrap gap-1 text-sm">
         <button onClick={() => setFolderId(null)} className="text-gray-600 hover:text-gray-900 font-medium">Materials</button>
         {crumbs.map(c => (
@@ -67,6 +75,13 @@ export function StudentMaterials() {
             <button onClick={() => setFolderId(c.id)} className="text-gray-600 hover:text-gray-900">{c.name}</button>
           </span>
         ))}
+        <label className="ml-auto flex items-center gap-1.5 text-xs text-gray-500">
+          Sort
+          <select value={sort} onChange={e => setSort(e.target.value as MaterialSort)}
+            className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </label>
       </div>
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
@@ -79,7 +94,7 @@ export function StudentMaterials() {
         </p>
       ) : (
         <div className="rounded-xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
-          {folders.map(f => (
+          {sortMaterials(folders, sort).map(f => (
             <button key={f.id} onClick={() => setFolderId(f.id)}
               className="w-full flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50 text-left">
               <Folder size={18} className="text-amber-500 shrink-0" />
@@ -90,7 +105,7 @@ export function StudentMaterials() {
               <ChevronRight size={16} className="text-gray-300 shrink-0" />
             </button>
           ))}
-          {files.map(m => {
+          {sortMaterials(files, sort).map(m => {
             const downloadable = !!(m.storagePath || m.fileUrl)
             return (
               <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50">

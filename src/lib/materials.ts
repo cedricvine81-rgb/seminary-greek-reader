@@ -225,7 +225,7 @@ export async function getStudentFolder(userId: string, folderId: string | null) 
     const [folders, files, breadcrumb] = await Promise.all([
       prisma.materialFolder.findMany({
         where: { parentId: folderId }, orderBy: { name: 'asc' },
-        select: { id: true, name: true, _count: { select: { children: true, materials: true } } },
+        select: { id: true, name: true, createdAt: true, _count: { select: { children: true, materials: true } } },
       }),
       prisma.material.findMany({ where: { folderId }, orderBy: { createdAt: 'desc' } }),
       studentBreadcrumb(folderId, accessible),
@@ -238,7 +238,7 @@ export async function getStudentFolder(userId: string, folderId: string | null) 
   const allAccessible = accIds.length
     ? await prisma.materialFolder.findMany({
         where: { id: { in: accIds } },
-        select: { id: true, name: true, parentId: true, _count: { select: { children: true, materials: true } } },
+        select: { id: true, name: true, parentId: true, createdAt: true, _count: { select: { children: true, materials: true } } },
       })
     : []
   // Show only the top-most shared folders (those whose parent isn't itself shared).

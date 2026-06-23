@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { MATERIALS_BUCKET } from '@/lib/storage'
+import { sortMaterials, SORT_OPTIONS, type MaterialSort } from '@/lib/materials-sort'
 import { Button } from '@/components/ui/Button'
 import {
   Folder, FileText, Upload, FolderPlus, FolderUp, Trash2, Share2,
@@ -10,8 +11,8 @@ import {
 
 interface Course { id: string; name: string }
 interface Share { courseId: string }
-interface FolderItem { id: string; name: string; shares: Share[]; _count: { children: number; materials: number } }
-interface FileItem { id: string; title: string; originalName: string | null; mimeType: string | null; sizeBytes: number | null; storagePath: string | null; fileUrl: string | null; shares: Share[] }
+interface FolderItem { id: string; name: string; createdAt: string; shares: Share[]; _count: { children: number; materials: number } }
+interface FileItem { id: string; title: string; createdAt: string; originalName: string | null; mimeType: string | null; sizeBytes: number | null; storagePath: string | null; fileUrl: string | null; shares: Share[] }
 interface Crumb { id: string; name: string }
 // Minimal shape of the non-standard FileSystem entries API used for folder drops.
 interface FsEntry {
@@ -43,6 +44,14 @@ export function FileManager({ courses }: { courses: Course[] }) {
   const [newFolderName, setNewFolderName] = useState('')
   const [share, setShare] = useState<{ type: 'file' | 'folder'; id: string; name: string; courseIds: Set<string> } | null>(null)
   const [dragOver, setDragOver] = useState(false)
+  const [sort, setSort] = useState<MaterialSort>('name-asc')
+
+  // Remember the chosen order across sessions.
+  useEffect(() => {
+    const saved = localStorage.getItem('materials-sort') as MaterialSort | null
+    if (saved && SORT_OPTIONS.some(o => o.value === saved)) setSort(saved)
+  }, [])
+  useEffect(() => { localStorage.setItem('materials-sort', sort) }, [sort])
 
   const fileInput = useRef<HTMLInputElement>(null)
   const folderInput = useRef<HTMLInputElement>(null)
@@ -281,7 +290,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
         </div>
       )}
 
-      {/* Breadcrumb */}
+      {/* Breadcrumb + sort */}
       <div className="flex items-center flex-wrap gap-1 text-sm">
         <button onClick={() => setFolderId(null)} className="text-gray-600 hover:text-gray-900 font-medium">Library</button>
         {crumbs.map(c => (
@@ -290,6 +299,13 @@ export function FileManager({ courses }: { courses: Course[] }) {
             <button onClick={() => setFolderId(c.id)} className="text-gray-600 hover:text-gray-900">{c.name}</button>
           </span>
         ))}
+        <label className="ml-auto flex items-center gap-1.5 text-xs text-gray-500">
+          Sort
+          <select value={sort} onChange={e => setSort(e.target.value as MaterialSort)}
+            className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </label>
       </div>
 
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
@@ -301,14 +317,14 @@ export function FileManager({ courses }: { courses: Course[] }) {
         <p className="text-sm text-gray-400 italic py-8 text-center">This folder is empty. Create a folder, use the upload buttons, or drag files and folders here.</p>
       ) : (
         <div className="rounded-xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
-          {folders.map(f => (
+          {sortMaterials(folders, sort).map(f => (
             <Row key={f.id} icon={<Folder size={18} className="text-amber-500" />}
               title={f.name} subtitle={`${f._count.children} folder${f._count.children === 1 ? '' : 's'}, ${f._count.materials} file${f._count.materials === 1 ? '' : 's'}`}
               onOpen={() => setFolderId(f.id)} shareCount={f.shares.length}
               onShare={() => setShare({ type: 'folder', id: f.id, name: f.name, courseIds: new Set(f.shares.map(s => s.courseId)) })}
               onDelete={() => remove('folder', f.id, f.name)} />
           ))}
-          {files.map(f => (
+          {sortMaterials(files, sort).map(f => (
             <Row key={f.id} icon={<FileText size={18} className="text-brand-600" />}
               title={f.title} subtitle={[f.originalName !== f.title ? f.originalName : null, humanSize(f.sizeBytes)].filter(Boolean).join(' · ')}
               onOpen={() => download(f.id)} shareCount={f.shares.length}
