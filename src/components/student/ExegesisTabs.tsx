@@ -1,9 +1,15 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { PencilLine, ListTree, Columns3 } from 'lucide-react'
 import { ExegesisWorkspace } from './ExegesisWorkspace'
 import { PhraseExplorer } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
+
+type Section = { c: number; v: number; ec: number; ev: number; t: string }
+type Pericopes = Record<string, Section[]>
+type Book = { osisId: string; name: string; abbrev?: string }
+
+const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
 
 /**
  * Standalone Exegesis page: one shared Passage box drives three tabs — the annotation
@@ -11,6 +17,11 @@ import { SynopsisView } from '@/components/phrase/SynopsisView'
  * tabs stay mounted so switching keeps their state. Phrasing/Synopsis live only on this
  * public study page — translation assignments and exams render <ExegesisWorkspace>
  * directly (no phrasing, so it can't leak answers).
+ *
+ * As you type a passage start (e.g. "Matt 4:1"), the box suggests the rest of that
+ * pericope in grey ("-11", giving "Matt 4:1-11" = the Temptation) from BSB section
+ * data (public/data/pericopes.json). Accept with Tab / → / Enter. NT boundaries are
+ * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
 export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) {
   const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis'>('workspace')
@@ -18,6 +29,74 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   // `passage` is committed on Enter/blur and pushed to the tabs.
   const [input, setInput] = useState('John 1:1-5')
   const [passage, setPassage] = useState('John 1:1-5')
+  // Grey ghost-text completion of the current pericope.
+  const [ghost, setGhost] = useState('')
+  const suggestionRef = useRef('')        // full accepted string when ghost is shown
+  const dataRef = useRef<{ books: Book[]; pericopes: Pericopes } | null>(null)
+
+  useEffect(() => {
+    let alive = true
+    Promise.all([
+      fetch('/data/books.json').then(r => r.json()),
+      fetch('/data/pericopes.json').then(r => r.json()),
+    ]).then(([booksData, pericopes]) => {
+      if (!alive) return
+      const books = [...(booksData.gnt ?? []), ...(booksData.lxx ?? [])] as Book[]
+      dataRef.current = { books, pericopes }
+      computeGhost(input)
+    }).catch(() => {})
+    return () => { alive = false }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Derive the grey completion for the current box text.
+  function computeGhost(value: string) {
+    suggestionRef.current = ''
+    const data = dataRef.current
+    if (!data) { setGhost(''); return }
+    // Capture "Book ch:vs" (ignoring any partial "-…" the user has started).
+    const m = value.match(/^(\s*.+?\s+(\d+):(\d+))(?:\s*-\s*\d*)?\s*$/)
+    if (!m) { setGhost(''); return }
+    const prefix = m[1].replace(/\s+$/, '')
+    const chapter = parseInt(m[2], 10)
+    const startVerse = parseInt(m[3], 10)
+    const bookStr = norm(prefix.slice(0, prefix.lastIndexOf(m[2] + ':' + m[3])))
+    if (!bookStr) { setGhost(''); return }
+    const book = data.books.find(b =>
+      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
+      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    if (!book) { setGhost(''); return }
+    const sections = data.pericopes[book.osisId]
+    if (!sections) { setGhost(''); return }
+    const sec = sections.find(s =>
+      (chapter > s.c || (chapter === s.c && startVerse >= s.v)) &&
+      (chapter < s.ec || (chapter === s.ec && startVerse <= s.ev)))
+    // Only suggest when the section ends within the typed chapter and past the start.
+    if (!sec || sec.ec !== chapter || sec.ev <= startVerse) { setGhost(''); return }
+    const suggestion = `${prefix}-${sec.ev}`
+    if (suggestion.startsWith(value) && suggestion.length > value.length) {
+      suggestionRef.current = suggestion
+      setGhost(suggestion.slice(value.length))
+    } else {
+      setGhost('')
+    }
+  }
+
+  function onChange(value: string) { setInput(value); computeGhost(value) }
+  function accept() { const s = suggestionRef.current; setInput(s); setGhost(''); suggestionRef.current = ''; return s }
+
+  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    const atEnd = e.currentTarget.selectionStart === input.length && e.currentTarget.selectionEnd === input.length
+    if (ghost && (e.key === 'Tab' || (e.key === 'ArrowRight' && atEnd))) {
+      e.preventDefault(); accept(); return
+    }
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      const final = (ghost ? accept() : input).trim()
+      setPassage(final)
+      e.currentTarget.blur()
+    }
+  }
 
   const tabClass = (active: boolean) =>
     `inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
@@ -30,15 +109,23 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       <div className="flex-none flex items-center flex-wrap gap-3 mb-2">
         <div className="flex items-center">
           <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-            onBlur={() => setPassage(input.trim())}
-            placeholder="e.g. Matthew 3:1-3"
-            className="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
-          />
+          {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}
+          <div className="relative">
+            {ghost && (
+              <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-56 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
+                <span className="invisible">{input}</span><span className="text-gray-400">{ghost}</span>
+              </div>
+            )}
+            <input
+              type="text"
+              value={input}
+              onChange={e => onChange(e.target.value)}
+              onKeyDown={onKeyDown}
+              onBlur={() => { setPassage(input.trim()); setGhost('') }}
+              placeholder="e.g. Matthew 3:1-3"
+              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            />
+          </div>
         </div>
         <div className="flex items-center gap-1">
           <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
