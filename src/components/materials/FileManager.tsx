@@ -231,13 +231,18 @@ export function FileManager({ courses }: { courses: Course[] }) {
   }
 
   async function download(id: string) {
+    // Open the tab synchronously (within the click gesture), then redirect it —
+    // window.open after the await is blocked by popup blockers.
+    const tab = window.open('', '_blank')
     setError('')
     try {
       const res = await fetch(`/api/materials/download?id=${id}`)
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed')
-      window.open(data.url, '_blank', 'noopener')
+      if (tab) tab.location.href = data.url
+      else window.location.href = data.url
     } catch (e) {
+      if (tab) tab.close()
       setError(e instanceof Error ? e.message : 'Failed')
     }
   }

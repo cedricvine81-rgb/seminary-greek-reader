@@ -51,13 +51,19 @@ export function StudentMaterials() {
   useEffect(() => { load(folderId) }, [folderId, load])
 
   async function open(id: string) {
+    // Open the tab synchronously, inside the click gesture, then redirect it once
+    // we have the signed URL. Calling window.open after the await would be treated
+    // as non-user-initiated and blocked by popup blockers (the "dead link" bug).
+    const tab = window.open('', '_blank')
     setBusy(id); setError('')
     try {
       const res = await fetch(`/api/materials/download?id=${id}`)
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Unavailable')
-      window.open(data.url, '_blank', 'noopener')
+      if (tab) tab.location.href = data.url
+      else window.location.href = data.url   // popup blocked → same-tab fallback
     } catch (e) {
+      if (tab) tab.close()
       setError(e instanceof Error ? e.message : 'Could not open file')
     } finally {
       setBusy(null)
