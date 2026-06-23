@@ -48,6 +48,17 @@ interface StudyConfig {
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const WORDS = bgvbData as BgvbWord[]
+
+// Fisher–Yates: an unbiased shuffle (unlike `sort(() => Math.random() - 0.5)`,
+// which skews toward the original order).
+function shuffled<T>(arr: T[]): T[] {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
 const STORAGE_KEY = 'bgvb-progress-v1'
 const ALL_SECTIONS = [1, 2, 3, 4, 5, 6, 7]
 const ALL_POS = Array.from(new Set(WORDS.map(w => w.pos))).sort()
@@ -150,9 +161,9 @@ export function VocabBuilder() {
 
   const previewWords = useMemo(() => filterWords(WORDS, config), [config])
 
-  const startStudying = (shuffle = false) => {
+  const startStudying = (shuffle = true) => {
     let words = filterWords(WORDS, config)
-    if (shuffle) words = [...words].sort(() => Math.random() - 0.5)
+    if (shuffle) words = shuffled(words)
     const dirs = words.map(() => config.mode !== 'english-to-greek')
     setSessionWords(words)
     setDirections(dirs)
@@ -267,7 +278,7 @@ export function VocabBuilder() {
           config={config}
           onChange={setConfig}
           cardCount={previewWords.length}
-          onStart={() => startStudying(false)}
+          onStart={() => startStudying(true)}
         />
       )}
 
@@ -285,7 +296,7 @@ export function VocabBuilder() {
           onFlip={() => setFlipped(f => !f)}
           onAdvance={advance}
           onGoBack={() => setTab('study')}
-          onRestart={() => { setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }); setMissedWordKeys(new Set()) }}
+          onRestart={() => { setSessionWords(prev => prev ? shuffled(prev) : prev); setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }); setMissedWordKeys(new Set()) }}
           onStudyMissed={startMissed}
         />
       )}
