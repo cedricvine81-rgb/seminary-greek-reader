@@ -122,9 +122,9 @@ export default async function InstructorPage() {
                 <Copy size={14} /> Use Existing
               </Button>
             </Link>
-            <Link href="/instructor/materials/new">
+            <Link href="/instructor/materials">
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5">
-                <FileText size={14} /> Upload Material
+                <FileText size={14} /> Materials
               </Button>
             </Link>
             <a href="/api/preview?mode=enter">

@@ -61,7 +61,7 @@ export function InstructorDashboard({ stats, recentCourses, instructorName }: In
           {[
             { href: '/instructor/courses/new', label: 'New Course', icon: <Plus size={16} />, color: 'btn-primary' },
             { href: '/instructor/assignments/new', label: 'New Assignment', icon: <ClipboardList size={16} />, color: 'btn-secondary' },
-            { href: '/instructor/materials/new', label: 'Upload Material', icon: <FileText size={16} />, color: 'btn-secondary' },
+            { href: '/instructor/materials', label: 'Materials', icon: <FileText size={16} />, color: 'btn-secondary' },
             { href: '/instructor/students', label: 'Invite Students', icon: <Users size={16} />, color: 'btn-secondary' },
           ].map(a => (
             <Link key={a.href} href={a.href} className={`${a.color} flex items-center justify-center gap-2 py-2 text-sm`}>

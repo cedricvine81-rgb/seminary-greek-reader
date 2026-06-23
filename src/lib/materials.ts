@@ -61,6 +61,10 @@ export async function createFileRecord(instructorId: string, data: {
     const folder = await prisma.materialFolder.findUnique({ where: { id: data.folderId }, select: { instructorId: true } })
     if (!folder || folder.instructorId !== instructorId) throw new Error('Folder not found')
   }
+  // The storage key is always minted server-side as `<instructorId>/…`. Reject a
+  // record that points outside the caller's namespace (e.g. a hand-crafted request
+  // referencing another instructor's object).
+  if (!data.storagePath.startsWith(`${instructorId}/`)) throw new Error('Invalid storage path')
   return prisma.material.create({
     data: {
       instructorId,

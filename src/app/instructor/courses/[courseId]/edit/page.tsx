@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { ArrowLeft, FileText, ExternalLink } from 'lucide-react'
+import { ArrowLeft, FileText } from 'lucide-react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { CourseEditInlineForm } from '@/components/instructor/CourseEditInlineForm'
@@ -103,10 +103,10 @@ export default async function EditCoursePage({ params }: { params: { courseId: s
           <div className="flex items-center justify-between mb-3">
             <CardTitle>Course Materials</CardTitle>
             <Link
-              href={`/instructor/materials/new?courseId=${course.id}`}
+              href="/instructor/materials"
               className="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 hover:text-brand-900 border border-brand-200 hover:bg-brand-50 px-2.5 py-1 rounded-lg transition-colors"
             >
-              <FileText size={12} /> Upload material
+              <FileText size={12} /> Manage materials
             </Link>
           </div>
           {materials.length === 0 ? (
@@ -124,12 +124,6 @@ export default async function EditCoursePage({ params }: { params: { courseId: s
                       <p className="text-xs text-gray-400">Week {m.weekNumber}</p>
                     )}
                   </div>
-                  <Link
-                    href={`/instructor/materials/${m.id}`}
-                    className="shrink-0 inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-900"
-                  >
-                    Edit <ExternalLink size={11} />
-                  </Link>
                 </li>
               ))}
             </ul>
