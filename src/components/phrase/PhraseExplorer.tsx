@@ -185,6 +185,22 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
     const [, ch, v] = selected.id.split('.')
     return Number(ch) === s.chapter && Number(v) >= s.startVerse && Number(v) <= s.endVerse
   }
+  const infoFor = (w: WordNodeT): LexicalInfoPanel => ({
+    surface: w.w,
+    lexeme: w.lemma ?? '',
+    gloss: w.gloss ?? '',
+    partOfSpeech: '',
+    parsing: w.parsing ?? '',
+    strongs: w.strongs,
+    reference: refFromId(w.id),
+  })
+  // The parsing box always shows something so users know it's there: the clicked
+  // word if one is selected in this sentence, otherwise the verse's first word.
+  const panelInfo = (s: Sentence): LexicalInfoPanel | null => {
+    if (selInSentence(s)) return selectedInfo
+    const first = greekWordsFor(s)[0]
+    return first ? infoFor(first) : null
+  }
   const cache = useRef<Record<string, BookData>>({})
 
   // Middle column = a Greek edition; right column = a modern translation.
@@ -491,8 +507,9 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
                       {right || <span className="text-gray-300 italic">—</span>}
                     </div>
                   </div>
-                  {/* Lexical detail for a word clicked in THIS sentence, right under the text. */}
-                  {selInSentence(s) && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+                  {/* Parsing box, always shown under the text — defaults to the verse's
+                      first word so its presence is obvious; updates on word click. */}
+                  <ParsingPanel info={panelInfo(s)} bgClass="bg-gray-50" />
                 </div>
               </div>
             </div>
