@@ -13,6 +13,14 @@ interface Share { courseId: string }
 interface FolderItem { id: string; name: string; shares: Share[]; _count: { children: number; materials: number } }
 interface FileItem { id: string; title: string; originalName: string | null; mimeType: string | null; sizeBytes: number | null; storagePath: string | null; fileUrl: string | null; shares: Share[] }
 interface Crumb { id: string; name: string }
+// Minimal shape of the non-standard FileSystem entries API used for folder drops.
+interface FsEntry {
+  isFile: boolean
+  isDirectory: boolean
+  name: string
+  file?: (cb: (f: File) => void, err?: () => void) => void
+  createReader?: () => { readEntries: (cb: (e: FsEntry[]) => void, err?: () => void) => void }
+}
 
 const MAX_MB = 50
 
@@ -34,6 +42,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
   const [newFolderOpen, setNewFolderOpen] = useState(false)
   const [newFolderName, setNewFolderName] = useState('')
   const [share, setShare] = useState<{ type: 'file' | 'folder'; id: string; name: string; courseIds: Set<string> } | null>(null)
+  const [dragOver, setDragOver] = useState(false)
 
   const fileInput = useRef<HTMLInputElement>(null)
   const folderInput = useRef<HTMLInputElement>(null)
@@ -96,35 +105,30 @@ export function FileManager({ courses }: { courses: Course[] }) {
     return map
   }
 
-  async function handleFiles(list: FileList | null) {
-    if (!list || list.length === 0) return
-    const items = Array.from(list)
+  // Core uploader. Each item carries a File plus the directory path it belongs in
+  // ('' = the current folder). Used by the file/folder pickers and drag-and-drop.
+  async function processUploads(items: { file: File; dir: string }[]) {
+    if (items.length === 0) return
     setError('')
     try {
-      // Folder upload: files carry webkitRelativePath "Top/sub/file.ext".
-      const hasDirs = items.some(f => (f as File & { webkitRelativePath?: string }).webkitRelativePath)
+      // Every ancestor directory that must exist before uploading.
+      const dirSet = new Set<string>()
+      for (const { dir } of items) {
+        if (!dir) continue
+        const parts = dir.split('/')
+        for (let i = 1; i <= parts.length; i++) dirSet.add(parts.slice(0, i).join('/'))
+      }
       let folderMap = new Map<string, string>()
-      if (hasDirs) {
-        const dirSet = new Set<string>()
-        for (const f of items) {
-          const rel = (f as File & { webkitRelativePath?: string }).webkitRelativePath || ''
-          const dir = rel.split('/').slice(0, -1).join('/')
-          if (dir) { // register every ancestor directory
-            const parts = dir.split('/')
-            for (let i = 1; i <= parts.length; i++) dirSet.add(parts.slice(0, i).join('/'))
-          }
-        }
+      if (dirSet.size) {
         setBusy(`Creating ${dirSet.size} folder${dirSet.size === 1 ? '' : 's'}…`)
         folderMap = await ensureFolders(Array.from(dirSet), folderId)
       }
       let done = 0
-      for (const f of items) {
+      for (const { file, dir } of items) {
         done++
-        setBusy(`Uploading ${done} of ${items.length}: ${f.name}`)
-        const rel = (f as File & { webkitRelativePath?: string }).webkitRelativePath || ''
-        const dir = rel.split('/').slice(0, -1).join('/')
+        setBusy(`Uploading ${done} of ${items.length}: ${file.name}`)
         const target = dir ? folderMap.get(dir) ?? folderId : folderId
-        await uploadOne(f, target)
+        await uploadOne(file, target)
       }
       await load(folderId)
     } catch (e) {
@@ -133,6 +137,54 @@ export function FileManager({ courses }: { courses: Course[] }) {
       setBusy('')
       if (fileInput.current) fileInput.current.value = ''
       if (folderInput.current) folderInput.current.value = ''
+    }
+  }
+
+  // <input> pickers: folder picker files carry webkitRelativePath "Top/sub/file.ext".
+  function handleFiles(list: FileList | null) {
+    if (!list || list.length === 0) return
+    const items = Array.from(list).map(f => {
+      const rel = (f as File & { webkitRelativePath?: string }).webkitRelativePath || ''
+      return { file: f, dir: rel.split('/').slice(0, -1).join('/') }
+    })
+    processUploads(items)
+  }
+
+  // Recursively walk a dropped filesystem entry into { file, dir } items. Dropped
+  // folders only expose their structure through the (non-standard) entries API.
+  function readEntry(entry: FsEntry, dir: string): Promise<{ file: File; dir: string }[]> {
+    return new Promise(resolve => {
+      if (entry.isFile && entry.file) {
+        entry.file(file => resolve([{ file, dir }]), () => resolve([]))
+      } else if (entry.isDirectory && entry.createReader) {
+        const reader = entry.createReader()
+        const all: { file: File; dir: string }[] = []
+        const childDir = dir ? `${dir}/${entry.name}` : entry.name
+        const readBatch = () => reader.readEntries(async batch => {
+          if (!batch.length) { resolve(all); return }   // empty batch = done
+          for (const child of batch) all.push(...await readEntry(child, childDir))
+          readBatch()                                    // dirs may need several reads
+        }, () => resolve(all))
+        readBatch()
+      } else resolve([])
+    })
+  }
+
+  async function onDrop(e: React.DragEvent) {
+    e.preventDefault(); setDragOver(false)
+    const dt = e.dataTransfer
+    const entries: FsEntry[] = []
+    for (const it of Array.from(dt.items ?? [])) {
+      const entry = (it as DataTransferItem & { webkitGetAsEntry?: () => FsEntry | null }).webkitGetAsEntry?.()
+      if (entry) entries.push(entry)
+    }
+    if (entries.length) {
+      setBusy('Reading dropped items…')
+      const items: { file: File; dir: string }[] = []
+      for (const entry of entries) items.push(...await readEntry(entry, ''))
+      await processUploads(items)
+    } else if (dt.files?.length) {
+      await processUploads(Array.from(dt.files).map(f => ({ file: f, dir: '' })))
     }
   }
 
@@ -198,12 +250,18 @@ export function FileManager({ courses }: { courses: Course[] }) {
   /* ── Render ─────────────────────────────────────────────── */
 
   return (
-    <div className="space-y-4">
+    <div
+      className={`space-y-4 rounded-xl transition-shadow ${dragOver ? 'ring-2 ring-brand-400 ring-offset-4 ring-offset-white' : ''}`}
+      onDragOver={e => { e.preventDefault(); if (!dragOver) setDragOver(true) }}
+      onDragLeave={e => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setDragOver(false) }}
+      onDrop={onDrop}
+    >
       {/* Toolbar */}
       <div className="flex flex-wrap items-center gap-2">
         <Button size="sm" onClick={() => setNewFolderOpen(true)}><FolderPlus size={14} /> New folder</Button>
         <Button size="sm" variant="secondary" onClick={() => fileInput.current?.click()}><Upload size={14} /> Upload files</Button>
         <Button size="sm" variant="secondary" onClick={() => folderInput.current?.click()}><FolderUp size={14} /> Upload folder</Button>
+        <span className="text-xs text-gray-400 hidden sm:inline">or drag files &amp; folders anywhere here</span>
         {busy && <span className="inline-flex items-center gap-1.5 text-sm text-gray-500"><Loader2 size={14} className="animate-spin" /> {busy}</span>}
         <input ref={fileInput} type="file" multiple hidden onChange={e => handleFiles(e.target.files)} />
         {/* webkitdirectory enables folder selection */}
@@ -240,7 +298,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
       {loading ? (
         <p className="text-sm text-gray-400 py-8 text-center"><Loader2 size={16} className="inline animate-spin" /> Loading…</p>
       ) : folders.length === 0 && files.length === 0 ? (
-        <p className="text-sm text-gray-400 italic py-8 text-center">This folder is empty. Create a folder or upload files to get started.</p>
+        <p className="text-sm text-gray-400 italic py-8 text-center">This folder is empty. Create a folder, use the upload buttons, or drag files and folders here.</p>
       ) : (
         <div className="rounded-xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
           {folders.map(f => (
