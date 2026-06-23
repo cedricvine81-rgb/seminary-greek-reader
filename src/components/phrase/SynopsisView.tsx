@@ -1,6 +1,11 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
+
+// Text-size control — same scale as the Phrasing tab.
+type SynFontSize = 'sm' | 'md' | 'lg' | 'xl'
+const FONT_SIZES: SynFontSize[] = ['sm', 'md', 'lg', 'xl']
+const FONT_SIZE_MAP: Record<SynFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
 
@@ -41,6 +46,7 @@ const VERSIONS = [
 export function SynopsisView({ controlledPassage }: { controlledPassage?: string }) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('bsb')
+  const [fontSize, setFontSize] = useState<SynFontSize>('lg')
   const [extraRefs, setExtraRefs] = useState<string[]>([])
   const [addInput, setAddInput] = useState('')
   const [addError, setAddError] = useState(false)
@@ -181,6 +187,19 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
         >
           {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
         </select>
+
+        {/* Text size — same scale as Phrasing */}
+        <div className="flex items-center gap-2 ml-auto">
+          <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+          <input
+            type="range" min={0} max={3} step={1}
+            value={FONT_SIZES.indexOf(fontSize)}
+            onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
+            className="w-28 accent-brand-600"
+            title="Text size"
+          />
+          <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+        </div>
       </div>
 
       {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
@@ -202,7 +221,7 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
       {!anchor ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to anchor the synopsis.</p>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-2">
+        <div className="flex gap-4 overflow-x-auto pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
@@ -214,7 +233,10 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
                   )}
                 </div>
                 {col && col.verses.length > 0 ? (
-                  <div className={`space-y-1 text-sm ${isGreek ? 'font-greek text-gray-900 text-base leading-relaxed' : 'text-gray-700 leading-relaxed'}`}>
+                  <div
+                    className={`space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'text-gray-700'}`}
+                    style={{ fontSize: isGreek ? 'var(--syn-fs, 1.45rem)' : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
+                  >
                     {col.verses.map(v => (
                       <p key={v.ref}><sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>{v.text}</p>
                     ))}
