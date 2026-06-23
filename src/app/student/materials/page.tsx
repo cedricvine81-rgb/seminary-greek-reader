@@ -1,10 +1,10 @@
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
-import { WeeklyMaterialsView } from '@/components/materials/WeeklyMaterialsView'
+import { StudentMaterials } from '@/components/materials/StudentMaterials'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
-import { prisma } from '@/lib/db'
+import { getAccessibleFiles } from '@/lib/materials'
 
 export const metadata: Metadata = { title: 'Materials' }
 
@@ -14,17 +14,22 @@ export default async function StudentMaterialsPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const enrollments = await prisma.enrollment.findMany({ where: { userId: payload.sub, status: 'APPROVED' }, select: { courseId: true } })
-  const materials = await prisma.material.findMany({
-    where: { courseId: { in: enrollments.map(e => e.courseId) } },
-    orderBy: [{ weekNumber: 'asc' }, { createdAt: 'desc' }],
-  })
-
-  const serialized = materials.map(m => ({ ...m, createdAt: m.createdAt.toISOString(), updatedAt: m.updatedAt.toISOString() }))
+  const materials = await getAccessibleFiles(payload.sub)
+  const items = materials.map(m => ({
+    id: m.id,
+    title: m.title,
+    description: m.description,
+    content: m.content,
+    fileUrl: m.fileUrl,
+    storagePath: m.storagePath,
+    mimeType: m.mimeType,
+    sizeBytes: m.sizeBytes,
+    weekNumber: m.weekNumber,
+  }))
 
   return (
-    <DashboardShell role="STUDENT" pageTitle="Materials">
-      <WeeklyMaterialsView materials={serialized} />
+    <DashboardShell role="STUDENT" pageTitle="Materials" pageDescription="Files your instructors have shared with your courses.">
+      <StudentMaterials items={items} />
     </DashboardShell>
   )
 }

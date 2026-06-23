@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
-import { getMaterialsByCourse, createMaterial, updateMaterial, deleteMaterial } from '@/lib/materials'
+import { getMaterialsByCourse, createMaterial, updateMaterial, deleteFile } from '@/lib/materials'
 
 export async function GET(req: NextRequest) {
   try {
@@ -61,7 +61,7 @@ export async function DELETE(req: NextRequest) {
   const id = req.nextUrl.searchParams.get('id')
   if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
 
-  await deleteMaterial(id)
+  await deleteFile(payload.sub, id)
   return NextResponse.json({ ok: true })
 
   } catch (err) {
