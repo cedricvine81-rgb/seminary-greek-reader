@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
-import { X } from 'lucide-react'
+import { MoreVertical, X } from 'lucide-react'
 
 // Text-size control — same scale as the Phrasing tab.
 type SynFontSize = 'sm' | 'md' | 'lg' | 'xl'
@@ -47,6 +47,16 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
   const [books, setBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('bsb')
   const [fontSize, setFontSize] = useState<SynFontSize>('lg')
+  const [showSettings, setShowSettings] = useState(false)
+  const settingsRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!showSettings) return
+    const onDown = (e: MouseEvent) => {
+      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) setShowSettings(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [showSettings])
   const [extraRefs, setExtraRefs] = useState<string[]>([])
   const [addInput, setAddInput] = useState('')
   const [addError, setAddError] = useState(false)
@@ -188,17 +198,46 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
           {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
         </select>
 
-        {/* Text size — same scale as Phrasing */}
-        <div className="flex items-center gap-2 ml-auto">
-          <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-          <input
-            type="range" min={0} max={3} step={1}
-            value={FONT_SIZES.indexOf(fontSize)}
-            onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
-            className="w-28 accent-brand-600"
-            title="Text size"
-          />
-          <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+        {/* Settings menu (⋮) — same format as the Phrasing tab. */}
+        <div ref={settingsRef} className="relative shrink-0 ml-auto">
+          <button
+            title="Settings & sources"
+            onClick={() => setShowSettings(v => !v)}
+            className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+          >
+            <MoreVertical size={20} />
+          </button>
+          {showSettings && (
+            <div className="absolute right-0 top-full mt-1 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl p-4 shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-sm font-semibold text-gray-800">Settings</span>
+                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
+              </div>
+
+              {/* Text size */}
+              <div className="mb-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+                  <input
+                    type="range" min={0} max={3} step={1}
+                    value={FONT_SIZES.indexOf(fontSize)}
+                    onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
+                    className="flex-1 accent-brand-600"
+                  />
+                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+                </div>
+              </div>
+
+              {/* Sources & copyright — collapsed submenu */}
+              {parallelsAttribution && (
+                <details className="border-t border-gray-100 pt-2">
+                  <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                  <p className="text-xs text-gray-600 mt-2">{parallelsAttribution}</p>
+                </details>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -263,10 +302,6 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
           </div>
         </div>
-      )}
-
-      {parallelsAttribution && (
-        <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">{parallelsAttribution}</p>
       )}
     </div>
   )
