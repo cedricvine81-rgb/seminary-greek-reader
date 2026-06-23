@@ -17,7 +17,14 @@ const ADMIN_PREFIXES = ['/api/admin', '/admin']
 const INSTRUCTOR_PREFIXES = [
   '/api/gradebook',
   '/api/reports',
-  '/api/materials',
+  // Managing the materials library is instructor-only. NB: /api/materials/download
+  // is intentionally omitted so students can fetch files shared with their courses
+  // (that route runs its own per-file access check).
+  '/api/materials/list',
+  '/api/materials/folders',
+  '/api/materials/files',
+  '/api/materials/upload-url',
+  '/api/materials/share',
   '/instructor',
 ]
 
