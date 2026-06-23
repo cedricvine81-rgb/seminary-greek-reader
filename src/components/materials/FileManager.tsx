@@ -6,7 +6,7 @@ import { sortMaterials, SORT_OPTIONS, type MaterialSort } from '@/lib/materials-
 import { Button } from '@/components/ui/Button'
 import {
   Folder, FileText, Upload, FolderPlus, FolderUp, Trash2, Share2,
-  ChevronRight, Download, Loader2, X, Check,
+  ChevronRight, Loader2, X, Check,
 } from 'lucide-react'
 
 interface Course { id: string; name: string }
@@ -230,23 +230,6 @@ export function FileManager({ courses }: { courses: Course[] }) {
     } finally { setBusy('') }
   }
 
-  async function download(id: string) {
-    // Open the tab synchronously (within the click gesture), then redirect it —
-    // window.open after the await is blocked by popup blockers.
-    const tab = window.open('', '_blank')
-    setError('')
-    try {
-      const res = await fetch(`/api/materials/download?id=${id}`)
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed')
-      if (tab) tab.location.href = data.url
-      else window.location.href = data.url
-    } catch (e) {
-      if (tab) tab.close()
-      setError(e instanceof Error ? e.message : 'Failed')
-    }
-  }
-
   async function toggleShare(courseId: string) {
     if (!share) return
     const has = share.courseIds.has(courseId)
@@ -332,7 +315,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
           {sortMaterials(files, sort).map(f => (
             <Row key={f.id} icon={<FileText size={18} className="text-brand-600" />}
               title={f.title} subtitle={[f.originalName !== f.title ? f.originalName : null, humanSize(f.sizeBytes)].filter(Boolean).join(' · ')}
-              onOpen={() => download(f.id)} shareCount={f.shares.length}
+              href={`/api/materials/download?id=${f.id}`} shareCount={f.shares.length}
               onShare={() => setShare({ type: 'file', id: f.id, name: f.title, courseIds: new Set(f.shares.map(s => s.courseId)) })}
               onDelete={() => remove('file', f.id, f.title)} />
           ))}
@@ -378,19 +361,28 @@ export function FileManager({ courses }: { courses: Course[] }) {
   )
 }
 
-function Row({ icon, title, subtitle, onOpen, onShare, onDelete, shareCount }: {
+function Row({ icon, title, subtitle, onOpen, href, onShare, onDelete, shareCount }: {
   icon: React.ReactNode; title: string; subtitle?: string
-  onOpen: () => void; onShare: () => void; onDelete: () => void; shareCount: number
+  onOpen?: () => void; href?: string; onShare: () => void; onDelete: () => void; shareCount: number
 }) {
+  const label = (
+    <>
+      <span className="shrink-0">{icon}</span>
+      <span className="min-w-0">
+        <span className="block text-sm font-medium text-gray-900 truncate">{title}</span>
+        {subtitle && <span className="block text-xs text-gray-400 truncate">{subtitle}</span>}
+      </span>
+    </>
+  )
   return (
     <div className="flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50">
-      <button onClick={onOpen} className="flex items-center gap-3 min-w-0 flex-1 text-left">
-        <span className="shrink-0">{icon}</span>
-        <span className="min-w-0">
-          <span className="block text-sm font-medium text-gray-900 truncate">{title}</span>
-          {subtitle && <span className="block text-xs text-gray-400 truncate">{subtitle}</span>}
-        </span>
-      </button>
+      {href ? (
+        // Files: a real anchor (opens reliably, never popup-blocked).
+        <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-w-0 flex-1 text-left">{label}</a>
+      ) : (
+        // Folders: navigate within the manager.
+        <button onClick={onOpen} className="flex items-center gap-3 min-w-0 flex-1 text-left">{label}</button>
+      )}
       <button onClick={onShare} title="Share with courses"
         className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs ${shareCount > 0 ? 'bg-brand-50 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
         <Share2 size={13} /> {shareCount > 0 ? shareCount : 'Share'}

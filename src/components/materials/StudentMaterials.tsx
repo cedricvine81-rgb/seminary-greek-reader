@@ -24,7 +24,6 @@ export function StudentMaterials() {
   const [files, setFiles] = useState<FileItem[]>([])
   const [crumbs, setCrumbs] = useState<Crumb[]>([])
   const [loading, setLoading] = useState(true)
-  const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
   const [sort, setSort] = useState<MaterialSort>('name-asc')
 
@@ -49,26 +48,6 @@ export function StudentMaterials() {
   }, [])
 
   useEffect(() => { load(folderId) }, [folderId, load])
-
-  async function open(id: string) {
-    // Open the tab synchronously, inside the click gesture, then redirect it once
-    // we have the signed URL. Calling window.open after the await would be treated
-    // as non-user-initiated and blocked by popup blockers (the "dead link" bug).
-    const tab = window.open('', '_blank')
-    setBusy(id); setError('')
-    try {
-      const res = await fetch(`/api/materials/download?id=${id}`)
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Unavailable')
-      if (tab) tab.location.href = data.url
-      else window.location.href = data.url   // popup blocked → same-tab fallback
-    } catch (e) {
-      if (tab) tab.close()
-      setError(e instanceof Error ? e.message : 'Could not open file')
-    } finally {
-      setBusy(null)
-    }
-  }
 
   return (
     <div className="space-y-4">
@@ -122,11 +101,11 @@ export function StudentMaterials() {
                   {humanSize(m.sizeBytes) && <p className="text-xs text-gray-400">{humanSize(m.sizeBytes)}</p>}
                 </div>
                 {downloadable && (
-                  <button onClick={() => open(m.id)} disabled={busy === m.id}
-                    className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50 disabled:opacity-50 shrink-0">
-                    {busy === m.id ? <Loader2 size={14} className="animate-spin" /> : (m.storagePath ? <Download size={14} /> : <ExternalLink size={14} />)}
+                  <a href={`/api/materials/download?id=${m.id}`} target="_blank" rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50 shrink-0">
+                    {m.storagePath ? <Download size={14} /> : <ExternalLink size={14} />}
                     {m.storagePath ? 'Download' : 'Open'}
-                  </button>
+                  </a>
                 )}
               </div>
             )
