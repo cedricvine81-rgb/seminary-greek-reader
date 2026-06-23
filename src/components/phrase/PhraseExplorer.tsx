@@ -441,12 +441,14 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
       </p>
 
 
-      {/* Column header: middle = Greek edition, right = translation (aligned on lg+). */}
+      {/* Column header: tree label | (Greek edition + translation) dropdowns (lg+). */}
       {!message && shown.length > 0 && (
-        <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_15rem_15rem] gap-4 items-end">
+        <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_31rem] gap-4 items-end">
           <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Greek — clause / phrase structure</span>
-          <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
-          <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
+          <div className="grid grid-cols-2 gap-4">
+            <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
+            <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
+          </div>
         </div>
       )}
       {/* On mobile the dropdowns stack above the cards. */}
@@ -466,36 +468,33 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
           return (
             <div key={i} className="rounded-xl border border-gray-200 p-4">
               <p className="text-xs font-semibold text-gray-400 mb-2">{s.ref}</p>
-              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem]">
+              <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">
                 <div className="min-w-0">
                   <NodeView node={s.tree} depth={0} />
                 </div>
-                <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
-                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
-                  <span className="font-greek leading-relaxed" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
-                    {(() => {
-                      const gw = greekWordsFor(s)
-                      if (gw.length) return gw.map((w, wi) => <span key={w.id}>{wi > 0 ? ' ' : ''}<GreekColWord node={w} /></span>)
-                      return mid || <span className="font-sans text-sm text-gray-300 italic">—</span>
-                    })()}
-                  </span>
-                </div>
-                <div className="text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.8)' }}>
-                  <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
-                  {right || <span className="text-gray-300 italic">—</span>}
+                {/* Greek + translation columns and the parsing box grouped together, so the
+                    box sits directly beneath the text (not below the taller phrase tree). */}
+                <div className="space-y-3">
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    <div className="text-gray-800 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4">
+                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{greekLabel(greekEd)}</span>
+                      <span className="font-greek leading-relaxed" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
+                        {(() => {
+                          const gw = greekWordsFor(s)
+                          if (gw.length) return gw.map((w, wi) => <span key={w.id}>{wi > 0 ? ' ' : ''}<GreekColWord node={w} /></span>)
+                          return mid || <span className="font-sans text-sm text-gray-300 italic">—</span>
+                        })()}
+                      </span>
+                    </div>
+                    <div className="text-gray-700 leading-relaxed lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.8)' }}>
+                      <span className="lg:hidden block text-[11px] font-semibold uppercase tracking-wide text-gray-400 mb-0.5">{langLabel(transLang)}</span>
+                      {right || <span className="text-gray-300 italic">—</span>}
+                    </div>
+                  </div>
+                  {/* Lexical detail for a word clicked in THIS sentence, right under the text. */}
+                  {selInSentence(s) && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
                 </div>
               </div>
-
-              {/* Lexical detail for a word clicked in THIS sentence — embedded under the
-                  columns so it scrolls with the verse, aligned under the Greek + translation. */}
-              {selInSentence(s) && (
-                <div className="mt-3 grid gap-4 lg:grid-cols-[minmax(0,1fr)_15rem_15rem]">
-                  <div className="hidden lg:block" />
-                  <div className="lg:col-span-2">
-                    <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
-                  </div>
-                </div>
-              )}
             </div>
           )
         })
