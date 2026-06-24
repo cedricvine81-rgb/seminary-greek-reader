@@ -1,7 +1,7 @@
 import { redirect, notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { addDays, format } from 'date-fns'
+import { addDays } from 'date-fns'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizPlayer } from '@/components/student/QuizPlayer'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
@@ -13,6 +13,7 @@ import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { ArrowLeft } from 'lucide-react'
+import { LocalDateTime } from '@/components/ui/LocalDateTime'
 
 export const metadata: Metadata = { title: 'Assignment' }
 
@@ -188,7 +189,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
             <span className="font-semibold">Late submission.</span>{' '}
             {lateDeadline
-              ? <>Accepting submissions until <span className="font-medium">{format(lateDeadline, 'MMM d, yyyy')}</span>.</>
+              ? <>Accepting submissions until <span className="font-medium"><LocalDateTime iso={lateDeadline.toISOString()} withTime={false} /></span>.</>
               : 'Accepting submissions indefinitely.'}
           </div>
         )}
@@ -210,7 +211,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
         {examNotYetOpen && !previewMode && (
           <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">
             <span className="font-semibold">This exam isn&rsquo;t open yet.</span>{' '}
-            It opens <span className="font-medium">{format(assignment.opensAt!, 'MMM d, yyyy · h:mm a')}</span>.
+            It opens <span className="font-medium"><LocalDateTime iso={assignment.opensAt!.toISOString()} /></span>.
           </div>
         )}
 
