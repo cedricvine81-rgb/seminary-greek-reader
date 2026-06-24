@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import { MoreVertical, X, ChevronRight } from 'lucide-react'
 import { SearchBar } from './SearchBar'
 import { GreekVerse } from './GreekVerse'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu } from './SyntaxMenu'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
@@ -124,12 +125,34 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
+export function GreekReader({ initialRef, isAuthenticated = false }: { initialRef?: string; isAuthenticated?: boolean } = {}) {
   // ── Corpus queues & loaded sections ─────────────────────────────────────────
   const [gntQueue, setGntQueue] = useState<ChapterItem[]>([])
   const [lxxQueue, setLxxQueue] = useState<ChapterItem[]>([])
   const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
   const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
+
+  // ── Per-verse personal notes (signed-in readers) ─────────────────────────────
+  // Keyed "bookId.chapter.verse" for the currently-loaded chapters.
+  const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
+  const refreshReaderNotes = useCallback(async () => {
+    if (!isAuthenticated) { setNotedKeys(new Set()); return }
+    const chapters = new Map<string, { book: string; chapter: number }>()
+    for (const s of [...gnt.sections, ...lxx.sections]) {
+      const v0 = s.verses[0]
+      if (v0) chapters.set(`${v0.bookId}.${v0.chapter}`, { book: v0.bookId, chapter: v0.chapter })
+    }
+    const keys = new Set<string>()
+    await Promise.all(Array.from(chapters.values()).map(async ({ book, chapter }) => {
+      try {
+        const r = await fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${chapter}&verseStart=1&verseEnd=200`)
+        const d = await r.json()
+        for (const n of (d.notes ?? []) as { verse: number }[]) keys.add(`${book}.${chapter}.${n.verse}`)
+      } catch { /* ignore */ }
+    }))
+    setNotedKeys(keys)
+  }, [isAuthenticated, gnt.sections, lxx.sections])
+  useEffect(() => { refreshReaderNotes() }, [refreshReaderNotes])
 
   // ── Word interaction ─────────────────────────────────────────────────────────
   const [activeWordId, setActiveWordId]   = useState<string | null>(null)
@@ -959,7 +982,18 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
       />
     )
 
-    if (!parallelLang) return greek
+    // Signed-in readers get a per-verse note icon to the left of the Greek.
+    const withNote = isAuthenticated ? (
+      <div className="flex items-start gap-1">
+        <span className="pt-1 print:hidden">
+          <VerseNoteButton book={v.bookId} chapter={v.chapter} verse={v.verse}
+            noted={notedKeys.has(`${v.bookId}.${v.chapter}.${v.verse}`)} onChanged={refreshReaderNotes} />
+        </span>
+        <div className="min-w-0 flex-1">{greek}</div>
+      </div>
+    ) : greek
+
+    if (!parallelLang) return withNote
 
     // ── BSB: use alignment data ───────────────────────────────────────────────
     if (parallelLang === 'bsb') {
@@ -999,7 +1033,7 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
 
       return (
         <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">
-          {greek}
+          {withNote}
           {englishCol}
         </div>
       )
@@ -1009,7 +1043,7 @@ export function GreekReader({ initialRef }: { initialRef?: string } = {}) {
     const transTxt = translationVerses[v.id]
     return (
       <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">
-        {greek}
+        {withNote}
         <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
