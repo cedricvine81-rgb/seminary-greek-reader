@@ -1,7 +1,9 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2 } from 'lucide-react'
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
+import { NoteComposer } from '@/components/notes/NoteComposer'
+import { useNoteFontScale } from '@/lib/note-prefs'
 
 interface NoteT { id: string; folderId: string | null; book: string; chapter: number; verse: number; verseEnd: number | null; body: string }
 interface FolderT { id: string; name: string; color: string; _count: { notes: number } }
@@ -185,10 +187,11 @@ function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
 }) {
   const [folderId, setFolderId] = useState<string | null>(existing?.folderId ?? null)
   const [saving, setSaving] = useState(false)
-  const taRef = useRef<HTMLTextAreaElement>(null)
+  const [draft, setDraft] = useState(existing?.body ?? '')
+  const [fontScale, setFontScale] = useNoteFontScale()
 
   async function persist() {
-    const body = taRef.current?.value ?? ''
+    const body = draft
     setSaving(true)
     try {
       if (existing) {
@@ -226,9 +229,7 @@ function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
           {existing && <button onClick={async () => { await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
         </span>
       </div>
-      <textarea ref={taRef} defaultValue={existing?.body ?? ''} onBlur={persist} rows={existing?.body ? 2 : 1}
-        placeholder="Write a note…"
-        className="w-full resize-y rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+      <NoteComposer value={draft} onChange={setDraft} onBlur={persist} fontScale={fontScale} onFontScale={setFontScale} minRows={existing?.body ? 2 : 1} />
     </div>
   )
 }
