@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
+import { toEndOfDayLocalISO } from '@/lib/due-date'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card, CardTitle } from '@/components/ui/Card'
@@ -120,7 +121,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           weekNumber,
           // Translation exercises derive their due date from the Round deadlines
           // (Round 1 → Round 2 → existing), since the Due date field is hidden for them.
-          dueDate: isTranslation ? ((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate) : dueDate,
+          dueDate: toEndOfDayLocalISO(isTranslation ? ((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate) : dueDate),
           instructions,
           reference: (isTranslation || isExam) ? reference : undefined,
           // Convert back to seconds for storage

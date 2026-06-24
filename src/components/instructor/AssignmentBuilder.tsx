@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
+import { toEndOfDayLocalISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-generation'
@@ -264,16 +265,19 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId, ...form,
+          // A calendar due date closes at the end of that day in the instructor's
+          // local timezone (not UTC midnight).
+          ...(form.dueDate ? { dueDate: toEndOfDayLocalISO(form.dueDate) } : {}),
           // Exams hide Week/Due date — default them so the record stays valid (week 1;
           // due date = the exam's close date, falling back to today).
           ...(form.type === 'TRANSLATION_EXAM' ? {
             weekNumber: form.weekNumber || 1,
-            dueDate: (form.round1Deadline || new Date().toISOString()).slice(0, 10),
+            dueDate: toEndOfDayLocalISO(form.round1Deadline || new Date().toISOString()),
           } : {}),
           // Translation exercises hide Due date — derive it from the Round deadlines
           // (Round 1 → Round 2 → today) so the close window is driven by the rounds.
           ...(form.type === 'TRANSLATION_EXERCISE' ? {
-            dueDate: (form.round1Deadline || form.round2Deadline || form.dueDate || new Date().toISOString()).slice(0, 10),
+            dueDate: toEndOfDayLocalISO(form.round1Deadline || form.round2Deadline || form.dueDate || new Date().toISOString()),
           } : {}),
           // Convert datetime-local (instructor's local wall time) to a real UTC instant on the client,
           // so the stored deadline isn't shifted by the server's (UTC) timezone.
@@ -1329,7 +1333,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
           lateDaysLimit: form.allowLate ? form.lateDaysLimit : null,
           provideDefinition: form.quizType === 'VOCABULARY_QUIZ' ? form.quizStylePct >= 50 : false,
           isPublished: publishRef.current,
-          schedule: schedule.map(s => ({ week: s.week, dueDate: s.date })),
+          schedule: schedule.map(s => ({ week: s.week, dueDate: toEndOfDayLocalISO(format(s.date, 'yyyy-MM-dd')) })),
           ...(form.quizType === 'MORPHOLOGY_QUIZ' ? { morphologySeries: form.morphologySeries } : {}),
         }),
       })
