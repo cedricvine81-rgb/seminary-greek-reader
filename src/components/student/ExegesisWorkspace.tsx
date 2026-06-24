@@ -654,7 +654,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           // Load passage
           if (book) {
             setIsLoading(true)
-            fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}`)
+            fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
               .then(pr => pr.json())
               .then(pd => {
                 const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -711,7 +711,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
                       if (sess.submittedAt) setSubmitted(true)
                       if (book) {
                         setIsLoading(true)
-                        fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}`)
+                        fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
                           .then(pr => pr.json())
                           .then(pd => {
                             const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -772,7 +772,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               }
               // Load the passage
               setIsLoading(true)
-              fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}`)
+              fetch(`/api/reader?book=${parsed.book.osisId}&chapter=${parsed.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
                 .then(pr => pr.json())
                 .then(pd => {
                   const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
@@ -954,7 +954,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       setSaveStatus('idle')
     }
     try {
-      const r = await fetch(`/api/reader?book=${book.osisId}&chapter=${chap}`)
+      const r = await fetch(`/api/reader?book=${book.osisId}&chapter=${chap}${propAssignmentId ? '' : '&corpus=NA1904'}`)
       const d = await r.json()
       if (!d.verses) return
       const filtered: LoadedVerse[] = d.verses.filter(
@@ -1240,7 +1240,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
     if (book) {
       setIsLoading(true)
       try {
-        const pr = await fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}`)
+        const pr = await fetch(`/api/reader?book=${book.osisId}&chapter=${sess.chapter}${propAssignmentId ? '' : '&corpus=NA1904'}`)
         const pd = await pr.json()
         const filtered: LoadedVerse[] = (pd.verses ?? []).filter(
           (v: LoadedVerse) => v.verse >= sess.verseStart && v.verse <= sess.verseEnd

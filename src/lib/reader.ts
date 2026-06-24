@@ -151,28 +151,28 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
   }
 }
 
-export function getChapter(bookOsisId: string, chapter: number) {
-  const cacheKey = `${bookOsisId}:${chapter}`
-  if (_chapterCache.has(cacheKey)) return _chapterCache.get(cacheKey)!
-
+export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: Corpus) {
   // Determine corpus from books index
   const allBooks = getAllBooks()
   const book = allBooks.find(b => b.osisId === bookOsisId)
   if (!book) return null
 
-  const corpus = book.corpus.toLowerCase() as 'gnt' | 'lxx' | 'na1904'
-  const filePath = path.join(DATA_ROOT, corpus, `${bookOsisId}_${chapter}.json`)
+  // Try a preferred corpus first (e.g. NA1904 for the Exegesis screen), then fall
+  // back to the book's native corpus so OT books and any missing chapter still load.
+  const primary = (preferCorpus ?? book.corpus).toLowerCase()
+  const nativeCorpus = book.corpus.toLowerCase()
+  const cacheKey = `${bookOsisId}:${chapter}:${primary}`
+  if (_chapterCache.has(cacheKey)) return _chapterCache.get(cacheKey)!
 
+  const candidates = primary === nativeCorpus ? [primary] : [primary, nativeCorpus]
   let raw: { book: string; chapter: number; verses: Array<{
     id: string; bookId: string; chapter: number; verse: number
     reference: string; text: string; words: RawWord[]
-  }> }
-
-  try {
-    raw = JSON.parse(fs.readFileSync(filePath, 'utf8'))
-  } catch {
-    return null
+  }> } | null = null
+  for (const corpus of candidates) {
+    try { raw = JSON.parse(fs.readFileSync(path.join(DATA_ROOT, corpus, `${bookOsisId}_${chapter}.json`), 'utf8')); break } catch { /* try next corpus */ }
   }
+  if (!raw) return null
 
   const verses: BiblicalVerse[] = raw.verses.map(v => ({
     id: v.id,
