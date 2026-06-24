@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -401,6 +402,18 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [passageError, setPassageError] = useState(false)
   const [loadedVerses, setLoadedVerses] = useState<LoadedVerse[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  // Per-verse personal notes (free-study only — kept out of graded assignments/exams).
+  const [notedVerses, setNotedVerses] = useState<Set<number>>(new Set())
+  const notesEnabled = isAuthenticated && !propAssignmentId
+  const refreshNotes = useCallback(async () => {
+    if (!notesEnabled || !selectedBook || loadedVerses.length === 0) { setNotedVerses(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${selectedBook.osisId}&chapter=${chapter}&verseStart=${verseStart}&verseEnd=${verseEnd}`)
+      const d = await r.json()
+      setNotedVerses(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* ignore */ }
+  }, [notesEnabled, selectedBook, chapter, verseStart, verseEnd, loadedVerses.length])
+  useEffect(() => { refreshNotes() }, [refreshNotes])
 
   // ── Annotation state ──
   const [annotations, setAnnotations] = useState<AnnotationMap>({})
@@ -1773,7 +1786,14 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
               <div key={v.id} className="mb-6 print:mb-4 lg:grid lg:grid-cols-[1fr_24rem] lg:gap-6 lg:items-start print:block">
                 {/* Left column: the Greek text + whole-verse boxes */}
                 <div className="min-w-0">
-                <p className="text-xs text-gray-400 font-medium mb-2 print:mb-1">{v.reference}</p>
+                <p className="text-xs text-gray-400 font-medium mb-2 print:mb-1 flex items-center gap-1.5">
+                  {v.reference}
+                  {notesEnabled && selectedBook && (
+                    <span className="print:hidden">
+                      <VerseNoteButton book={selectedBook.osisId} chapter={chapter} verse={v.verse} noted={notedVerses.has(v.verse)} onChanged={refreshNotes} />
+                    </span>
+                  )}
+                </p>
                 <div className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose">
                   {v.words.map(w => {
                     const key = wordKey(v.verse, w.id)
