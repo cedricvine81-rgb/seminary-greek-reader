@@ -1,7 +1,8 @@
 'use client'
-import { createContext, useContext, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { MoreVertical, X } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -161,7 +162,7 @@ function GreekColWord({ node }: { node: WordNodeT }) {
   )
 }
 
-export function PhraseExplorer({ controlledPassage }: { controlledPassage?: string } = {}) {
+export function PhraseExplorer({ controlledPassage, isAuthenticated = false }: { controlledPassage?: string; isAuthenticated?: boolean } = {}) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
@@ -207,6 +208,17 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
   const [greekEd, setGreekEd] = useState('na1904')
   const [transLang, setTransLang] = useState('bsb')
   const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
+  // Per-verse personal notes (signed-in users).
+  const [notedVerses, setNotedVerses] = useState<Set<number>>(new Set())
+  const refreshNotes = useCallback(async () => {
+    if (!isAuthenticated || !cur) { setNotedVerses(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${cur.osis}&chapter=${cur.chapter}&verseStart=1&verseEnd=200`)
+      const d = await r.json()
+      setNotedVerses(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* ignore */ }
+  }, [isAuthenticated, cur])
+  useEffect(() => { refreshNotes() }, [refreshNotes])
   // Translation text keyed by lang → verseId ("John.1.1") → text, with a version
   // counter to re-render after async loads. `loaded` dedupes fetches.
   const transCache = useRef<Record<string, Record<string, string>>>({})
@@ -483,7 +495,12 @@ export function PhraseExplorer({ controlledPassage }: { controlledPassage?: stri
           const right = colText(transLang, s)
           return (
             <div key={i} className="rounded-xl border border-gray-200 p-4">
-              <p className="text-xs font-semibold text-gray-400 mb-2">{s.ref}</p>
+              <p className="text-xs font-semibold text-gray-400 mb-2 flex items-center gap-1.5">
+                {s.ref}
+                {isAuthenticated && cur && (
+                  <VerseNoteButton book={cur.osis} chapter={s.chapter} verse={s.startVerse} noted={notedVerses.has(s.startVerse)} onChanged={refreshNotes} />
+                )}
+              </p>
               <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_31rem] lg:items-start">
                 <div className="min-w-0">
                   <NodeView node={s.tree} depth={0} />

@@ -162,10 +162,10 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
         <ExegesisWorkspace isAuthenticated={isAuthenticated} controlledPassage={passage} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'phrasing' ? '' : 'hidden'}`}>
-        <PhraseExplorer controlledPassage={passage} />
+        <PhraseExplorer controlledPassage={passage} isAuthenticated={isAuthenticated} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'synopsis' ? '' : 'hidden'}`}>
-        <SynopsisView controlledPassage={passage} />
+        <SynopsisView controlledPassage={passage} isAuthenticated={isAuthenticated} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'notes' ? '' : 'hidden'}`}>
         <NotesView isAuthenticated={isAuthenticated} anchor={anchor} books={books} onJumpToPassage={jumpTo} />

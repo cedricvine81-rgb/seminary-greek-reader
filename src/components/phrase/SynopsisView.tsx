@@ -1,6 +1,7 @@
 'use client'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { MoreVertical, X } from 'lucide-react'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 
 // Text-size control — same scale as the Phrasing tab.
 type SynFontSize = 'sm' | 'md' | 'lg' | 'xl'
@@ -43,7 +44,7 @@ const VERSIONS = [
  * references the user adds, all shown side by side in a chosen version (Greek edition
  * or translation). Auto-suggested gospel parallels are a planned follow-up.
  */
-export function SynopsisView({ controlledPassage }: { controlledPassage?: string }) {
+export function SynopsisView({ controlledPassage, isAuthenticated = false }: { controlledPassage?: string; isAuthenticated?: boolean }) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('bsb')
   const [fontSize, setFontSize] = useState<SynFontSize>('lg')
@@ -69,6 +70,27 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
 
   const anchor = (controlledPassage ?? '').trim()
   const columns = [anchor, ...extraRefs].filter(Boolean)
+
+  // Per-verse personal notes across every column (signed-in users). Keyed "book.chapter.verse".
+  const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
+  const refreshNotes = useCallback(async () => {
+    if (!isAuthenticated || books.length === 0) { setNotedKeys(new Set()); return }
+    const chapters = new Map<string, { book: string; chapter: number }>()
+    for (const ref of columns) {
+      const p = parseRef(ref, books)
+      if (p) chapters.set(`${p.book.osisId}.${p.chapter}`, { book: p.book.osisId, chapter: p.chapter })
+    }
+    const keys = new Set<string>()
+    await Promise.all(Array.from(chapters.values()).map(async ({ book, chapter }) => {
+      try {
+        const r = await fetch(`/api/notes?book=${book}&chapter=${chapter}&verseStart=1&verseEnd=200`)
+        const d = await r.json()
+        for (const n of (d.notes ?? []) as { verse: number }[]) keys.add(`${book}.${chapter}.${n.verse}`)
+      } catch { /* ignore */ }
+    }))
+    setNotedKeys(keys)
+  }, [isAuthenticated, books, columns.join('|')]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { refreshNotes() }, [refreshNotes])
 
   useEffect(() => {
     fetch('/api/reader?corpus=GNT').then(r => r.json()).then(d => setBooks(d.books ?? [])).catch(() => {})
@@ -163,17 +185,17 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
     }
   }
 
-  function column(ref: string): { label: string; verses: { ref: string; text: string }[] } | null {
+  function column(ref: string): { label: string; book: string; chapter: number; verses: { ref: string; verse: number; text: string }[] } | null {
     const p = parseRef(ref, books)
     if (!p) return null
     const map = cache.current[version] ?? {}
-    const verses: { ref: string; text: string }[] = []
+    const verses: { ref: string; verse: number; text: string }[] = []
     for (let v = p.verseStart; v <= p.verseEnd; v++) {
       const t = map[`${p.book.osisId}.${p.chapter}.${v}`]
-      if (t) verses.push({ ref: `${p.chapter}:${v}`, text: t })
+      if (t) verses.push({ ref: `${p.chapter}:${v}`, verse: v, text: t })
     }
     const label = `${p.book.name} ${p.chapter}:${p.verseStart}${p.verseEnd !== p.verseStart ? `–${verses.length ? verses[verses.length - 1].ref.split(':')[1] : p.verseEnd}` : ''}`
-    return { label, verses }
+    return { label, book: p.book.osisId, chapter: p.chapter, verses }
   }
 
   const addRef = () => {
@@ -277,7 +299,12 @@ export function SynopsisView({ controlledPassage }: { controlledPassage?: string
                     style={{ fontSize: isGreek ? 'var(--syn-fs, 1.45rem)' : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
                   >
                     {col.verses.map(v => (
-                      <p key={v.ref}><sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>{v.text}</p>
+                      <p key={v.ref}>
+                        {isAuthenticated && (
+                          <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
+                        )}
+                        <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>{v.text}
+                      </p>
                     ))}
                   </div>
                 ) : (
