@@ -174,7 +174,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         </Badge>
                         {/* Grade column — reserved width; blank for non-gradeable types */}
                         <div>
-                          {a.type === 'TRANSLATION_EXERCISE' && (
+                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') && (
                             <Link href={`/instructor/assignments/${a.id}/grade`}>
                               <Button size="sm" variant="primary" className="w-full">Grade</Button>
                             </Link>
@@ -212,7 +212,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         {a._count.questions > 0 && <span>· {a._count.questions}q</span>}
                       </div>
                       <div className="flex gap-2 mt-2.5">
-                        {a.type === 'TRANSLATION_EXERCISE' && (
+                        {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') && (
                           <Link href={`/instructor/assignments/${a.id}/grade`} className="flex-1">
                             <Button size="sm" variant="primary" className="w-full">Grade</Button>
                           </Link>
