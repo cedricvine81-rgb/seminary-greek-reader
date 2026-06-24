@@ -58,7 +58,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
         type="button"
         onClick={() => (open ? setOpen(false) : openPopover())}
         title={noted ? 'Edit note' : 'Add a note'}
-        className={`p-0.5 rounded transition-colors ${noted ? 'text-amber-500 hover:text-amber-600' : 'text-gray-300 hover:text-brand-500'}`}
+        className={`p-0.5 rounded transition-colors ${noted ? 'text-brand-600 hover:text-brand-700' : 'text-gray-300 hover:text-brand-500'}`}
       >
         <StickyNote size={14} fill={noted ? 'currentColor' : 'none'} />
       </button>
