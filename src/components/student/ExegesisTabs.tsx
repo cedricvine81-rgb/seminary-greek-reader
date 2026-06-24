@@ -1,9 +1,10 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3 } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote } from 'lucide-react'
 import { ExegesisWorkspace } from './ExegesisWorkspace'
 import { PhraseExplorer } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
+import { NotesView, type NoteAnchor } from './NotesView'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
 type Pericopes = Record<string, Section[]>
@@ -24,7 +25,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
 export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) {
-  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis'>('workspace')
+  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'notes'>('workspace')
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs.
   const [input, setInput] = useState('John 1:1-5')
@@ -33,6 +34,8 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   const [ghost, setGhost] = useState('')
   const suggestionRef = useRef('')        // full accepted string when ghost is shown
   const dataRef = useRef<{ books: Book[]; pericopes: Pericopes } | null>(null)
+  const [books, setBooks] = useState<Book[]>([])
+  const [anchor, setAnchor] = useState<NoteAnchor | null>(null)  // committed passage → verse anchor for Notes
 
   useEffect(() => {
     let alive = true
@@ -41,13 +44,33 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       fetch('/data/pericopes.json').then(r => r.json()),
     ]).then(([booksData, pericopes]) => {
       if (!alive) return
-      const books = [...(booksData.gnt ?? []), ...(booksData.lxx ?? [])] as Book[]
-      dataRef.current = { books, pericopes }
+      const bks = [...(booksData.gnt ?? []), ...(booksData.lxx ?? [])] as Book[]
+      dataRef.current = { books: bks, pericopes }
+      setBooks(bks)
       computeGhost(input)
+      setAnchor(parseAnchor(passage))
     }).catch(() => {})
     return () => { alive = false }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // Resolve a committed passage string to a canonical verse anchor for notes.
+  function parseAnchor(value: string): NoteAnchor | null {
+    const bks = dataRef.current?.books
+    if (!bks) return null
+    const m = value.trim().match(/^(.+?)\s+(\d+):(\d+)(?:\s*-\s*(\d+))?$/)
+    if (!m) return null
+    const bookStr = norm(m[1])
+    const book = bks.find(b =>
+      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
+      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    if (!book) return null
+    const chapter = parseInt(m[2], 10), vs = parseInt(m[3], 10), ve = m[4] ? parseInt(m[4], 10) : vs
+    return { book: book.osisId, name: book.name, chapter, verseStart: vs, verseEnd: Math.max(vs, ve) }
+  }
+
+  function commitPassage(value: string) { setPassage(value); setAnchor(parseAnchor(value)) }
+  function jumpTo(ref: string) { setInput(ref); setGhost(''); commitPassage(ref); setTab('workspace') }
 
   // Derive the grey completion for the current box text.
   function computeGhost(value: string) {
@@ -93,7 +116,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
     if (e.key === 'Enter') {
       e.preventDefault()
       const final = (ghost ? accept() : input).trim()
-      setPassage(final)
+      commitPassage(final)
       e.currentTarget.blur()
     }
   }
@@ -121,7 +144,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
               value={input}
               onChange={e => onChange(e.target.value)}
               onKeyDown={onKeyDown}
-              onBlur={() => { setPassage(input.trim()); setGhost('') }}
+              onBlur={() => { commitPassage(input.trim()); setGhost('') }}
               placeholder="e.g. Matthew 3:1-3"
               className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
@@ -131,6 +154,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
           <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
           <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
           <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
+          <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
         </div>
       </div>
 
@@ -142,6 +166,9 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'synopsis' ? '' : 'hidden'}`}>
         <SynopsisView controlledPassage={passage} />
+      </div>
+      <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'notes' ? '' : 'hidden'}`}>
+        <NotesView isAuthenticated={isAuthenticated} anchor={anchor} books={books} onJumpToPassage={jumpTo} />
       </div>
     </>
   )

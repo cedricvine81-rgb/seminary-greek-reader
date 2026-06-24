@@ -50,6 +50,8 @@ model User {
   vocabAppeals       VocabAppeal[]
   ownedMaterials     Material[]            @relation("InstructorMaterials")
   ownedFolders       MaterialFolder[]      @relation("InstructorFolders")
+  noteFolders        NoteFolder[]
+  verseNotes         VerseNote[]
 
   @@index([email])
 }
@@ -643,4 +645,45 @@ model VocabAppeal {
   @@index([studentId, assignmentId])
   @@index([assignmentId, instructorDecision])
   @@index([instructorDecision, adminDecision])
+}
+
+// ─── Personal verse notes ─────────────────────────────────────────
+// Private study notes a student writes, grouped into colour-labelled folders.
+
+model NoteFolder {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  color     String   @default("blue")   // palette key (blue/sky/indigo/amber/yellow/slate)
+  // Present from day one so nested folders can be enabled later with no migration.
+  // Currently always null (the UI shows a single flat level).
+  parentId  String?
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  notes VerseNote[]
+
+  @@index([userId])
+}
+
+model VerseNote {
+  id        String   @id @default(cuid())
+  userId    String
+  folderId  String?
+  // Canonical, version-independent verse anchor (osisId + chapter + verse).
+  book      String
+  chapter   Int
+  verse     Int
+  verseEnd  Int?     // optional range end (e.g. a note spanning 1:1–3)
+  body      String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  folder NoteFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  @@index([userId, book, chapter, verse])
+  @@index([userId, folderId])
 }
