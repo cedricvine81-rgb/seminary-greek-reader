@@ -151,6 +151,28 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
   }
 }
 
+// Expand the compact NA1904 chapter format into the standard reader shape.
+// Compact: { b: osisId, c: chapter, v: { "<verse>": [[surface, lemma, strongs], …] } }
+function expandCompactChapter(raw: { b: string; c: number; v: Record<string, [string, string, string][]> }, bookName: string) {
+  const verses = Object.keys(raw.v)
+    .map(Number).sort((a, b) => a - b)
+    .map(vn => {
+      const words: RawWord[] = raw.v[String(vn)].map((t, i) => ({
+        id: `${raw.b}.${raw.c}.${vn}.${i + 1}`,
+        position: i + 1,
+        surface: t[0],
+        lemma: t[1] || '',
+        strongs: t[2] || '',
+        morph: { partOfSpeech: '', casus: null, number: null, gender: null, tense: null, voice: null, mood: null, person: null },
+      }))
+      return {
+        id: `${raw.b}.${raw.c}.${vn}`, bookId: raw.b, chapter: raw.c, verse: vn,
+        reference: `${bookName} ${raw.c}:${vn}`, text: words.map(w => w.surface).join(' '), words,
+      }
+    })
+  return { book: raw.b, chapter: raw.c, verses }
+}
+
 export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: Corpus) {
   // Determine corpus from books index
   const allBooks = getAllBooks()
@@ -164,13 +186,17 @@ export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: C
   const cacheKey = `${bookOsisId}:${chapter}:${primary}`
   if (_chapterCache.has(cacheKey)) return _chapterCache.get(cacheKey)!
 
+  type RawVerse = { id: string; bookId: string; chapter: number; verse: number; reference: string; text: string; words: RawWord[] }
   const candidates = primary === nativeCorpus ? [primary] : [primary, nativeCorpus]
-  let raw: { book: string; chapter: number; verses: Array<{
-    id: string; bookId: string; chapter: number; verse: number
-    reference: string; text: string; words: RawWord[]
-  }> } | null = null
+  let raw: { book: string; chapter: number; verses: RawVerse[] } | null = null
   for (const corpus of candidates) {
-    try { raw = JSON.parse(fs.readFileSync(path.join(DATA_ROOT, corpus, `${bookOsisId}_${chapter}.json`), 'utf8')); break } catch { /* try next corpus */ }
+    try {
+      const parsed = JSON.parse(fs.readFileSync(path.join(DATA_ROOT, corpus, `${bookOsisId}_${chapter}.json`), 'utf8'))
+      // NA1904 ships a compact format ({ b, c, v: { verse: [[surface,lemma,strongs]…] } })
+      // to keep the function bundle small — expand it to the standard shape here.
+      raw = parsed.verses ? parsed : expandCompactChapter(parsed, book.name)
+      break
+    } catch { /* try next corpus */ }
   }
   if (!raw) return null
 
