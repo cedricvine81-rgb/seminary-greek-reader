@@ -1,0 +1,39 @@
+{
+  "commentaries": [
+    {
+      "id": "robertson",
+      "name": "Robertson — Word Pictures in the NT",
+      "author": "A.T. Robertson",
+      "attribution": "A.T. Robertson, Word Pictures in the New Testament (1930–1933), public domain. Source: Christian Classics Ethereal Library (ccel.org).",
+      "books": [
+        "1Cor",
+        "1John",
+        "1Pet",
+        "1Thess",
+        "1Tim",
+        "2Cor",
+        "2John",
+        "2Pet",
+        "2Thess",
+        "2Tim",
+        "3John",
+        "Acts",
+        "Col",
+        "Eph",
+        "Gal",
+        "Heb",
+        "Jas",
+        "John",
+        "Jude",
+        "Luke",
+        "Mark",
+        "Matt",
+        "Phil",
+        "Phlm",
+        "Rev",
+        "Rom",
+        "Titus"
+      ]
+    }
+  ]
+}

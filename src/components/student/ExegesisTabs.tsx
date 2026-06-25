@@ -1,10 +1,11 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen } from 'lucide-react'
 import { ExegesisWorkspace } from './ExegesisWorkspace'
 import { PhraseExplorer } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { NotesView, type NoteAnchor } from './NotesView'
+import { CommentaryView } from '@/components/commentary/CommentaryView'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
 type Pericopes = Record<string, Section[]>
@@ -25,7 +26,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
 export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) {
-  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'notes'>('workspace')
+  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'notes' | 'commentary'>('workspace')
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs.
   const [input, setInput] = useState('John 1:1-5')
@@ -154,6 +155,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
           <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
           <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
           <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
+          <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
           <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
         </div>
       </div>
@@ -166,6 +168,9 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'synopsis' ? '' : 'hidden'}`}>
         <SynopsisView controlledPassage={passage} isAuthenticated={isAuthenticated} />
+      </div>
+      <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>
+        <CommentaryView anchor={anchor} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'notes' ? '' : 'hidden'}`}>
         <NotesView isAuthenticated={isAuthenticated} anchor={anchor} books={books} onJumpToPassage={jumpTo} />
