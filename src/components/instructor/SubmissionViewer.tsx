@@ -456,38 +456,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         {isExam ? (
           <div className="mt-3 space-y-3">
             <p className="text-xs text-gray-500">
-              Score each passage on parsing, syntax, and translation (0–100). Each passage grade is the
-              weighted average ({GRADE_COMPONENTS.map(c => `${GRADE_COMPONENT_LABELS[c]} ${weights[c]}%`).join(' · ')});
-              the exam total is the average of the passage grades.
+              Grade each passage at the end of its text below — score parsing, syntax, and translation
+              (0–100). Each passage grade is the weighted average
+              ({GRADE_COMPONENTS.map(c => `${GRADE_COMPONENT_LABELS[c]} ${weights[c]}%`).join(' · ')});
+              the exam total (updated live) is the average of the passage grades.
             </p>
-            <div className="space-y-3">
-              {examGroups.map(g => {
-                const scores = passageGrades[g.key] ?? EMPTY_SUBSCORES
-                const pg = passageGrade(toNumericSubScores(scores), weights)
-                return (
-                  <div key={g.key} className="rounded-lg border border-gray-200 p-3">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">{g.label}</span>
-                      <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? Math.round(pg) : '—'}</strong></span>
-                    </div>
-                    <div className="flex flex-wrap gap-3">
-                      {GRADE_COMPONENTS.map(c => (
-                        <div key={c} className="flex items-center gap-1.5">
-                          <span className="text-xs text-gray-500 w-20">{GRADE_COMPONENT_LABELS[c]}</span>
-                          <input
-                            type="number" min={0} max={100}
-                            value={scores[c]}
-                            onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: { ...(prev[g.key] ?? EMPTY_SUBSCORES), [c]: e.target.value } }))}
-                            placeholder="—"
-                            className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
             <div className="flex items-center justify-between border-t border-gray-100 pt-3">
               <span className="text-sm font-semibold text-gray-700">Exam total</span>
               <span className="text-sm font-semibold text-gray-900">{examOverall !== null ? `${examOverall} / 100` : '—'}</span>
@@ -583,18 +556,40 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       {/* Exams: group verses under each passage with its own score header.
           Exercises: flat verse-by-verse list. */}
       {isExam
-        ? examGroups.map(g => (
-            <div key={g.key} className="space-y-4">
-              <div className="flex items-center justify-between border-b border-gray-200 pb-2">
-                <h3 className="text-sm font-semibold text-gray-800">{g.label}</h3>
-                {(() => {
-                  const pg = passageGrade(toNumericSubScores(passageGrades[g.key] ?? EMPTY_SUBSCORES), weights)
-                  return <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? `${Math.round(pg)} / 100` : '—'}</strong></span>
-                })()}
+        ? examGroups.map(g => {
+            const scores = passageGrades[g.key] ?? EMPTY_SUBSCORES
+            const pg = passageGrade(toNumericSubScores(scores), weights)
+            return (
+              <div key={g.key} className="space-y-4">
+                <div className="flex items-center justify-between border-b border-gray-200 pb-2">
+                  <h3 className="text-sm font-semibold text-gray-800">{g.label}</h3>
+                  <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? `${Math.round(pg)} / 100` : '—'}</strong></span>
+                </div>
+                {g.verses.map(renderVerseCard)}
+                {/* Grade this passage right after its text, so you can grade as you read. */}
+                <div className="rounded-lg border border-brand-200 bg-brand-50/60 p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-medium text-gray-700">Grade — {g.label}</span>
+                    <span className="text-xs text-gray-500">Passage grade: <strong className="text-gray-800">{pg !== null ? `${Math.round(pg)} / 100` : '—'}</strong></span>
+                  </div>
+                  <div className="flex flex-wrap gap-3">
+                    {GRADE_COMPONENTS.map(c => (
+                      <div key={c} className="flex items-center gap-1.5">
+                        <span className="text-xs text-gray-500 w-20">{GRADE_COMPONENT_LABELS[c]}</span>
+                        <input
+                          type="number" min={0} max={100}
+                          value={scores[c]}
+                          onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: { ...(prev[g.key] ?? EMPTY_SUBSCORES), [c]: e.target.value } }))}
+                          placeholder="—"
+                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              {g.verses.map(renderVerseCard)}
-            </div>
-          ))
+            )
+          })
         : verses.map(renderVerseCard)}
     </div>
   )
