@@ -388,7 +388,7 @@ function fullscreenElementCompat(): Element | null {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean; controlledPassage?: string }) {
+export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage, glossPref: controlledGloss, onGlossPref }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean; controlledPassage?: string; glossPref?: number | null; onGlossPref?: (v: number | null) => void }) {
   const router = useRouter()
 
   // ── Passage state ──
@@ -426,7 +426,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   const [notes, setNotes] = useState('')
   // Student-chosen glossary threshold (standalone study): show definitions for words
   // less frequent than N× in the NT. null = off. An instructor-set glossFrequency wins.
-  const [glossPref, setGlossPref] = useState<number | null>(null)
+  // On the coordinated exegesis page the control lives in the shared header, so the
+  // value can be driven from the parent (onGlossPref present = controlled).
+  const isGlossControlled = onGlossPref !== undefined
+  const [internalGloss, setInternalGloss] = useState<number | null>(null)
+  const glossPref = isGlossControlled ? (controlledGloss ?? null) : internalGloss
+  const setGlossPref = onGlossPref ?? setInternalGloss
   const [selectedWordKey, setSelectedWordKey] = useState<string | null>(null)
   const [selectedWord, setSelectedWord] = useState<{ word: VerseWord; verse: number } | null>(null)
   const wordPanelRef = useRef<HTMLDivElement | null>(null)
@@ -1567,8 +1572,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         )}
 
         {/* Vocabulary glossary control — adds definitions for rarer words beneath each
-            verse, like translation exercises. Hidden when an instructor has set it. */}
-        {loadedVerses.length > 0 && assignment?.glossFrequency == null && (
+            verse, like translation exercises. Hidden when an instructor has set it, or
+            when the control is hoisted into the shared exegesis header (controlled). */}
+        {!isGlossControlled && loadedVerses.length > 0 && assignment?.glossFrequency == null && (
           <div className="self-end flex items-center gap-1.5">
             <label className="text-xs font-medium text-gray-500">Vocabulary</label>
             <select

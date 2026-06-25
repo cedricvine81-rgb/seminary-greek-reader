@@ -37,6 +37,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   const dataRef = useRef<{ books: Book[]; pericopes: Pericopes } | null>(null)
   const [books, setBooks] = useState<Book[]>([])
   const [anchor, setAnchor] = useState<NoteAnchor | null>(null)  // committed passage → verse anchor for Notes
+  const [glossPref, setGlossPref] = useState<number | null>(null) // Vocabulary glossary threshold (drives the Exegesis tab)
 
   useEffect(() => {
     let alive = true
@@ -150,6 +151,23 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
               className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
           </div>
+          {/* Vocabulary glossary control — sits flush against the Passage box, styled to
+              match it. Only meaningful on the Exegesis tab, which renders the glosses. */}
+          {tab === 'workspace' && (
+            <div className="flex items-center -ml-px">
+              <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Vocabulary</span>
+              <select
+                value={glossPref ?? ''}
+                onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
+                title="Show glosses for less common words"
+                className="bg-white border border-l-0 border-gray-300 rounded-l-none rounded-r-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="">Off</option>
+                <option value="50">Words less frequent than 50×</option>
+                <option value="30">Words less frequent than 30×</option>
+              </select>
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-1">
           <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
@@ -161,7 +179,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       </div>
 
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'workspace' ? '' : 'hidden'}`}>
-        <ExegesisWorkspace isAuthenticated={isAuthenticated} controlledPassage={passage} />
+        <ExegesisWorkspace isAuthenticated={isAuthenticated} controlledPassage={passage} glossPref={glossPref} onGlossPref={setGlossPref} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'phrasing' ? '' : 'hidden'}`}>
         <PhraseExplorer controlledPassage={passage} isAuthenticated={isAuthenticated} />
