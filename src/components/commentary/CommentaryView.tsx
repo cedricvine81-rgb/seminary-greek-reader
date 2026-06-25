@@ -126,7 +126,6 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
             {commentaries.length === 0 && <option value="robertson">Robertson — Word Pictures in the NT</option>}
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          {activeVerse != null && <span className="text-sm font-semibold text-gray-700">{anchor.name} {anchor.chapter}:{activeVerse}</span>}
           <TextSettingsMenu
             label="Commentary text" className="ml-auto"
             fontScale={fontScale} onFontScale={setFontScale}
