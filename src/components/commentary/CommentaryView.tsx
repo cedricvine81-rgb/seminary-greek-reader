@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { BiblicalVerse } from '@/types/biblical-text'
@@ -22,6 +22,8 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
   const [commentaryId, setCommentaryId] = useState('robertson')
   const [verseMap, setVerseMap] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const verseEls = useRef<Map<number, HTMLElement>>(new Map())
 
   // Registry of available commentaries.
   useEffect(() => {
@@ -52,6 +54,26 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
       .then(r => (r.ok ? r.json() : {})).then(setVerseMap).catch(() => setVerseMap({}))
   }, [commentaryId, anchor?.book]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Scroll-tracking: whichever verse sits nearest the top of the Greek pane becomes
+  // active, so the commentary follows as you scroll (clicking a verse still works).
+  useEffect(() => {
+    const root = scrollRef.current
+    if (!root || verses.length === 0) return
+    const tops = new Map<number, number>()
+    const io = new IntersectionObserver(entries => {
+      for (const e of entries) {
+        const v = Number((e.target as HTMLElement).dataset.verse)
+        if (e.isIntersecting) tops.set(v, e.boundingClientRect.top)
+        else tops.delete(v)
+      }
+      let pick: number | null = null, best = Infinity
+      tops.forEach((t, v) => { if (t < best) { best = t; pick = v } })
+      if (pick != null) setActiveVerse(pick)
+    }, { root, rootMargin: '0px 0px -65% 0px', threshold: 0 })
+    verseEls.current.forEach(el => io.observe(el))
+    return () => io.disconnect()
+  }, [verses])
+
   if (!anchor) return <p className="text-sm text-gray-400 italic py-10 text-center">Enter a passage above to read the commentary.</p>
 
   const html = activeVerse != null ? verseMap[`${anchor.chapter}:${activeVerse}`] : undefined
@@ -61,11 +83,13 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
     <div className="grid lg:grid-cols-2 gap-4 h-full min-h-0">
       {/* Left: Greek text (scrolls) + parsing box (fixed, bottom-left) */}
       <div className="flex flex-col min-h-0">
-        <div className="flex-1 overflow-y-auto pr-1 space-y-1.5">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto pr-1 space-y-1.5">
           {loading ? (
             <p className="text-sm text-gray-400">Loading…</p>
           ) : verses.map(v => (
-            <div key={v.id} onClick={() => setActiveVerse(v.verse)}
+            <div key={v.id} data-verse={v.verse}
+              ref={el => { if (el) verseEls.current.set(v.verse, el); else verseEls.current.delete(v.verse) }}
+              onClick={() => setActiveVerse(v.verse)}
               className={`rounded-lg px-2 py-1 transition-colors ${v.verse === activeVerse ? 'bg-brand-50 ring-1 ring-brand-200' : 'hover:bg-gray-50'}`}>
               <GreekVerse verse={v} activeWordId={null} highlighted={false}
                 onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }} />
