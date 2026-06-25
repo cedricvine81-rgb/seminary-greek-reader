@@ -86,7 +86,7 @@ function Round2WordPopover({
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
     { field: 'parsing', label: 'Parsing' },
     { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Observations' },
+    { field: 'translation', label: 'Translation' },
   ]
 
   return (
@@ -197,7 +197,7 @@ function AnnotationPanel({
       {(['parsing', 'syntax', 'translation'] as const).map(field => (
         <div key={field}>
           <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wide mb-1">
-            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Observations'}
+            {field === 'parsing' ? 'Parsing' : field === 'syntax' ? 'Syntax / Function' : 'Translation'}
           </label>
           <input
             type="text"
@@ -230,7 +230,7 @@ function ReviewAnnotationPanel({
   const FIELDS: { field: keyof WordAnnotation; label: string }[] = [
     { field: 'parsing', label: 'Parsing' },
     { field: 'syntax', label: 'Syntax / Function' },
-    { field: 'translation', label: 'Observations' },
+    { field: 'translation', label: 'Translation' },
   ]
 
   return (
