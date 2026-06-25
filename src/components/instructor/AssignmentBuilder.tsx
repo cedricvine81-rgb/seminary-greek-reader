@@ -508,7 +508,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                 const w = form.gradeWeights ?? { parsing: 33, syntax: 33, translation: 34 }
                 return (
                   <div key={c} className="flex items-center gap-1.5">
-                    <span className="text-xs text-gray-600 capitalize w-20">{c === 'translation' ? 'Observations' : c}</span>
+                    <span className="text-xs text-gray-600 capitalize w-20">{c === 'translation' ? 'Translation' : c}</span>
                     <input
                       type="number" min={0} max={100}
                       value={w[c]}
