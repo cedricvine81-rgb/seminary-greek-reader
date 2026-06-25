@@ -11,7 +11,7 @@ import { sanitizeNoteHtml } from '@/lib/note-html'
  * so the caret never jumps while typing.
  */
 export function NoteComposer({
-  initialHtml, onChange, onBlur, autoFocus, fontScale, onFontScale, minHeight = 56, maxHeight = 320,
+  initialHtml, onChange, onBlur, autoFocus, fontScale, onFontScale, lineScale, minHeight = 56, maxHeight = 320,
 }: {
   initialHtml: string
   onChange: (html: string) => void
@@ -19,6 +19,7 @@ export function NoteComposer({
   autoFocus?: boolean
   fontScale: number
   onFontScale?: (s: number) => void
+  lineScale?: number
   minHeight?: number
   maxHeight?: number
 }) {
@@ -72,7 +73,7 @@ export function NoteComposer({
         onBlur={onBlur}
         role="textbox"
         aria-multiline
-        style={{ fontSize: `${fontScale}rem`, minHeight, maxHeight }}
+        style={{ fontSize: `${fontScale}rem`, lineHeight: lineScale, minHeight, maxHeight }}
         className="prose-notes w-full overflow-y-auto rounded-md border border-gray-200 px-2 py-1.5 leading-snug focus:outline-none focus:ring-2 focus:ring-brand-400 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
       />
     </div>

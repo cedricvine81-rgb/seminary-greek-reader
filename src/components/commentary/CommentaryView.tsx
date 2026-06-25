@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { TextSettingsMenu } from '@/components/reader/TextSettingsMenu'
+import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-prefs'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { NoteAnchor } from '@/components/student/NotesView'
@@ -22,6 +24,10 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
   const [commentaryId, setCommentaryId] = useState('robertson')
   const [verseMap, setVerseMap] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  // Greek edition shown alongside the commentary. Nestle 1904 = NA1904, Tischendorf 8th = GNT.
+  const [gntEdition, setGntEdition] = useState<'nestle1904' | 'tischendorf'>('nestle1904')
+  const [fontScale, setFontScale] = useCommentaryFontScale()
+  const [lineSpacing, setLineSpacing] = useCommentaryLineSpacing()
   const scrollRef = useRef<HTMLDivElement>(null)
   const verseEls = useRef<Map<number, HTMLElement>>(new Map())
 
@@ -35,17 +41,18 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Greek text for the passage (NA1904).
+  // Greek text for the passage (Nestle 1904 or Tischendorf, per the dropdown).
   useEffect(() => {
     if (!anchor) { setVerses([]); setActiveVerse(null); return }
     setLoading(true); setInfo(null)
-    fetch(`/api/reader?corpus=NA1904&book=${anchor.book}&chapter=${anchor.chapter}`)
+    const corpus = gntEdition === 'nestle1904' ? 'NA1904' : 'GNT'
+    fetch(`/api/reader?corpus=${corpus}&book=${anchor.book}&chapter=${anchor.chapter}`)
       .then(r => r.json())
       .then(d => {
         const vs: BiblicalVerse[] = (d.verses ?? []).filter((v: BiblicalVerse) => v.verse >= anchor.verseStart && v.verse <= anchor.verseEnd)
         setVerses(vs); setActiveVerse(vs[0]?.verse ?? anchor.verseStart)
       }).catch(() => setVerses([])).finally(() => setLoading(false))
-  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Commentary text for the current book + selected commentary.
   useEffect(() => {
@@ -83,6 +90,15 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
     <div className="grid lg:grid-cols-2 gap-4 h-full min-h-0">
       {/* Left: Greek text (scrolls) + parsing box (fixed, bottom-left) */}
       <div className="flex flex-col min-h-0">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Greek</span>
+          <select value={gntEdition} onChange={e => setGntEdition(e.target.value as 'nestle1904' | 'tischendorf')}
+            title="Choose the Greek edition"
+            className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <option value="nestle1904">Nestle 1904</option>
+            <option value="tischendorf">Tischendorf 8th</option>
+          </select>
+        </div>
         <div ref={scrollRef} className="flex-1 overflow-y-auto pr-1 space-y-1.5">
           {loading ? (
             <p className="text-sm text-gray-400">Loading…</p>
@@ -110,13 +126,27 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
           {activeVerse != null && <span className="text-sm font-semibold text-gray-700">{anchor.name} {anchor.chapter}:{activeVerse}</span>}
+          <TextSettingsMenu
+            label="Commentary text" className="ml-auto"
+            fontScale={fontScale} onFontScale={setFontScale}
+            lineSpacing={lineSpacing} onLineSpacing={setLineSpacing}
+          >
+            {meta?.attribution && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Copyright</p>
+                <p className="text-[11px] leading-relaxed text-gray-500">{meta.attribution}</p>
+              </div>
+            )}
+          </TextSettingsMenu>
         </div>
-        <div className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-white p-4 text-sm leading-relaxed text-gray-800 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-gray-900 [&_i]:italic">
+        <div
+          style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}
+          className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-white p-4 text-ink-900 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-ink-900 [&_i]:italic"
+        >
           {html
             ? <div dangerouslySetInnerHTML={{ __html: html }} />
             : <p className="text-gray-400 italic">No commentary for this verse{activeVerse != null ? ` (${anchor.name} ${anchor.chapter}:${activeVerse})` : ''}.</p>}
         </div>
-        {meta?.attribution && <p className="text-[11px] text-gray-400 mt-2">{meta.attribution}</p>}
       </div>
     </div>
   )
