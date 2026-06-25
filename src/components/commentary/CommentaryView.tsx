@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { TextSettingsMenu } from '@/components/reader/TextSettingsMenu'
@@ -99,7 +99,8 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
             <option value="tischendorf">Tischendorf 8th</option>
           </select>
         </div>
-        <div ref={scrollRef} className="flex-1 overflow-y-auto pr-1 space-y-1.5">
+        <div ref={scrollRef} className="flex-1 overflow-y-auto pr-1 space-y-1.5"
+          style={{ '--greek-fs': `${1.125 * fontScale}rem`, '--greek-lh': lineSpacing } as CSSProperties}>
           {loading ? (
             <p className="text-sm text-gray-400">Loading…</p>
           ) : verses.map(v => (

@@ -31,7 +31,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
   .greek-text {
     font-family: 'Gentium Plus', 'GFS Didot', Georgia, serif;
     font-size: var(--greek-fs, 1.125rem);
-    line-height: 1.9;
+    line-height: var(--greek-lh, 1.9);
     letter-spacing: 0.01em;
   }
 
