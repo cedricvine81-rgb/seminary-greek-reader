@@ -605,7 +605,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                           value={scores[c]}
                           onChange={e => setPassageGrades(prev => ({ ...prev, [g.key]: { ...(prev[g.key] ?? EMPTY_SUBSCORES), [c]: e.target.value } }))}
                           placeholder="0–100"
-                          className="w-16 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                          className="w-24 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
                         />
                         <span className="text-xs text-gray-400 select-none">/ 100</span>
                       </div>

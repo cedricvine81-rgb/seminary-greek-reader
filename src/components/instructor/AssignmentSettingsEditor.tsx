@@ -301,7 +301,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                 </div>
                 <hr className="border-brand-200" />
                 <div>
-                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / observations)</label>
+                  <label className="block text-sm font-medium text-brand-800 mb-1">Grade weights (parsing / syntax / translation)</label>
                   <div className="flex flex-wrap gap-3">
                     {(['parsing', 'syntax', 'translation'] as const).map(c => (
                       <div key={c} className="flex items-center gap-1.5">
