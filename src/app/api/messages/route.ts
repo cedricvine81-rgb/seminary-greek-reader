@@ -16,11 +16,12 @@ export async function GET(_req: NextRequest) {
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const me = payload.sub
+    // Exclude messages this user has deleted from their own side.
     const messages = await prisma.message.findMany({
-      where: { OR: [{ senderId: me }, { recipientId: me }] },
+      where: { OR: [{ senderId: me, senderDeletedAt: null }, { recipientId: me, recipientDeletedAt: null }] },
       orderBy: { createdAt: 'asc' },
       select: {
-        id: true, subject: true, body: true, threadId: true, readAt: true, createdAt: true,
+        id: true, subject: true, body: true, threadId: true, broadcastId: true, readAt: true, createdAt: true,
         senderId: true, recipientId: true,
         course: { select: { id: true, name: true } },
         sender: { select: { id: true, firstName: true, surname: true, title: true } },
@@ -28,17 +29,13 @@ export async function GET(_req: NextRequest) {
       },
     })
 
+    type Thread = {
+      rootId: string; subject: string; course: { id: string; name: string }; other: Participant
+      lastBody: string; lastAt: Date; unread: number; count: number
+      rootSenderId: string; rootBroadcastId: string | null; isBroadcast: boolean; recipients: number
+    }
     // Group into threads keyed by (threadId ?? id). Roots have threadId null.
-    const threads = new Map<string, {
-      rootId: string
-      subject: string
-      course: { id: string; name: string }
-      other: Participant
-      lastBody: string
-      lastAt: Date
-      unread: number
-      count: number
-    }>()
+    const threads = new Map<string, Thread>()
 
     for (const m of messages) {
       const key = m.threadId ?? m.id
@@ -47,14 +44,9 @@ export async function GET(_req: NextRequest) {
       const isUnread = m.recipientId === me && m.readAt === null
       if (!existing) {
         threads.set(key, {
-          rootId: key,
-          subject: m.subject,
-          course: m.course,
-          other,
-          lastBody: m.body,
-          lastAt: m.createdAt,
-          unread: isUnread ? 1 : 0,
-          count: 1,
+          rootId: key, subject: m.subject, course: m.course, other,
+          lastBody: m.body, lastAt: m.createdAt, unread: isUnread ? 1 : 0, count: 1,
+          rootSenderId: m.senderId, rootBroadcastId: m.broadcastId, isBroadcast: false, recipients: 1,
         })
       } else {
         existing.lastBody = m.body
@@ -64,8 +56,22 @@ export async function GET(_req: NextRequest) {
       }
     }
 
-    const list = Array.from(threads.values()).sort((a, b) => b.lastAt.getTime() - a.lastAt.getTime())
-    return NextResponse.json({ threads: list })
+    // Collapse a class-wide broadcast (one copy per student, no replies) that I sent
+    // into a single row, so the announcement is listed once — not once per student.
+    const out: Thread[] = []
+    const broadcasts = new Map<string, Thread>()
+    for (const t of Array.from(threads.values())) {
+      if (t.rootSenderId === me && t.rootBroadcastId && t.count === 1) {
+        const g = broadcasts.get(t.rootBroadcastId)
+        if (!g) broadcasts.set(t.rootBroadcastId, { ...t, rootId: `b:${t.rootBroadcastId}`, isBroadcast: true, recipients: 1 })
+        else { g.recipients += 1; if (t.lastAt.getTime() > g.lastAt.getTime()) { g.lastAt = t.lastAt; g.lastBody = t.lastBody } }
+      } else {
+        out.push(t)
+      }
+    }
+    for (const g of Array.from(broadcasts.values())) out.push(g)
+    out.sort((a, b) => b.lastAt.getTime() - a.lastAt.getTime())
+    return NextResponse.json({ threads: out })
   } catch (err) {
     logError('api/messages', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })

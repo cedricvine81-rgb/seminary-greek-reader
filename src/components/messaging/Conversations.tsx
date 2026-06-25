@@ -7,7 +7,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Select } from '@/components/ui/Select'
 import { Input } from '@/components/ui/Input'
 import { useApi } from '@/lib/api-client'
-import { Mail, MailOpen, PenSquare, CheckCircle2 } from 'lucide-react'
+import { Mail, MailOpen, PenSquare, CheckCircle2, Trash2, Megaphone } from 'lucide-react'
 import { format } from 'date-fns'
 
 interface ComposeCourse { id: string; name: string }
@@ -106,6 +106,8 @@ interface ThreadSummary {
   lastAt: string
   unread: number
   count: number
+  isBroadcast?: boolean
+  recipients?: number
 }
 
 interface ThreadMessage {
@@ -121,7 +123,7 @@ function fullName(p: Participant) {
   return p.title ? `${p.title} ${name}` : name
 }
 
-function ThreadView({ rootId, meId, onChanged }: { rootId: string; meId: string; onChanged: () => void }) {
+function ThreadView({ rootId, meId, onChanged, isBroadcast }: { rootId: string; meId: string; onChanged: () => void; isBroadcast?: boolean }) {
   const { data, isLoading, mutate } = useApi<{ messages: ThreadMessage[] }>(`/api/messages/thread/${rootId}`)
   const [reply, setReply] = useState('')
   const [sending, setSending] = useState(false)
@@ -174,16 +176,20 @@ function ThreadView({ rootId, meId, onChanged }: { rootId: string; meId: string;
         })}
       </div>
 
-      <div className="flex items-end gap-2">
-        <textarea
-          value={reply}
-          onChange={e => setReply(e.target.value)}
-          rows={2}
-          placeholder="Write a reply…"
-          className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-        />
-        <Button onClick={send} loading={sending} size="sm">Reply</Button>
-      </div>
+      {isBroadcast ? (
+        <p className="text-xs text-gray-400 italic">Class announcement — sent to every student. Replies arrive as individual conversations.</p>
+      ) : (
+        <div className="flex items-end gap-2">
+          <textarea
+            value={reply}
+            onChange={e => setReply(e.target.value)}
+            rows={2}
+            placeholder="Write a reply…"
+            className="flex-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+          />
+          <Button onClick={send} loading={sending} size="sm">Reply</Button>
+        </div>
+      )}
       {error && <p className="text-xs text-red-600">{error}</p>}
     </div>
   )
@@ -198,6 +204,15 @@ export function Conversations({ meId, composeCourses }: { meId: string; composeC
   if (isLoading) return <p className="text-gray-400 animate-pulse">Loading messages…</p>
 
   const threads = data?.threads ?? []
+
+  async function del(rootId: string, isBroadcast?: boolean) {
+    if (!confirm(isBroadcast
+      ? 'Delete this class announcement from your messages? (It stays in students’ inboxes.)'
+      : 'Delete this conversation from your messages?')) return
+    if (openId === rootId) setOpenId(null)
+    await fetch(`/api/messages/thread/${rootId}`, { method: 'DELETE' })
+    mutate()
+  }
 
   return (
     <div className="space-y-3">
@@ -221,27 +236,32 @@ export function Conversations({ meId, composeCourses }: { meId: string; composeC
         const isOpen = openId === t.rootId
         return (
           <Card key={t.rootId} className={unread ? 'border-brand-200 bg-brand-50/40' : ''}>
-            <button
-              onClick={() => setOpenId(isOpen ? null : t.rootId)}
-              className="w-full flex items-start gap-3 text-left"
-            >
-              <span className="mt-0.5 shrink-0 text-gray-400">
-                {unread ? <Mail size={16} className="text-brand-600" /> : <MailOpen size={16} />}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className={`text-sm ${unread ? 'font-semibold text-gray-900' : 'font-medium text-gray-700'}`}>
-                    {t.subject}
-                  </span>
-                  {unread && <Badge variant="blue">{t.unread} new</Badge>}
+            <div className="flex items-start gap-2">
+              <button
+                onClick={() => setOpenId(isOpen ? null : t.rootId)}
+                className="flex-1 min-w-0 flex items-start gap-3 text-left"
+              >
+                <span className="mt-0.5 shrink-0 text-gray-400">
+                  {t.isBroadcast ? <Megaphone size={16} className="text-brand-500" /> : unread ? <Mail size={16} className="text-brand-600" /> : <MailOpen size={16} />}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className={`text-sm ${unread ? 'font-semibold text-gray-900' : 'font-medium text-gray-700'}`}>
+                      {t.subject}
+                    </span>
+                    {unread && <Badge variant="blue">{t.unread} new</Badge>}
+                  </div>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {t.isBroadcast ? `Whole class · ${t.recipients ?? 0} student${t.recipients === 1 ? '' : 's'}` : fullName(t.other)} · {t.course.name} · {format(new Date(t.lastAt), 'MMM d, yyyy · h:mm a')}
+                  </p>
+                  {!isOpen && <p className="text-sm text-gray-500 mt-1 truncate">{t.lastBody}</p>}
                 </div>
-                <p className="text-xs text-gray-500 mt-0.5">
-                  {fullName(t.other)} · {t.course.name} · {format(new Date(t.lastAt), 'MMM d, yyyy · h:mm a')}
-                </p>
-                {!isOpen && <p className="text-sm text-gray-500 mt-1 truncate">{t.lastBody}</p>}
-              </div>
-            </button>
-            {isOpen && <ThreadView rootId={t.rootId} meId={meId} onChanged={() => mutate()} />}
+              </button>
+              <button onClick={() => del(t.rootId, t.isBroadcast)} title="Delete" className="shrink-0 text-gray-300 hover:text-red-600 p-1">
+                <Trash2 size={15} />
+              </button>
+            </div>
+            {isOpen && <ThreadView rootId={t.rootId} meId={meId} onChanged={() => mutate()} isBroadcast={t.isBroadcast} />}
           </Card>
         )
       })}

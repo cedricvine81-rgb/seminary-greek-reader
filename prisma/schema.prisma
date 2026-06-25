@@ -566,6 +566,10 @@ model Message {
   // (their thread key is their own id); replies carry the root id here.
   threadId    String?
   readAt      DateTime?
+  // Per-user soft delete: each party can remove a message from their own view
+  // without affecting the other's. Filtered out of their lists when set.
+  senderDeletedAt    DateTime?
+  recipientDeletedAt DateTime?
   createdAt   DateTime  @default(now())
 
   @@index([recipientId, readAt])
