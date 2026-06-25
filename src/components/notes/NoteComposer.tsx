@@ -2,55 +2,47 @@
 import { useEffect, useRef } from 'react'
 import { Bold, Italic, List, Minus, Plus } from 'lucide-react'
 import { NOTE_FONT_SCALES } from '@/lib/note-prefs'
+import { sanitizeNoteHtml } from '@/lib/note-html'
 
 /**
- * Shared note editor: a Markdown formatting toolbar over an auto-growing textarea,
- * scaled by the global note font size. Plain-text/Markdown in, so copy-paste stays
- * clean. Used by the per-verse popover/modal and the Notes tab.
+ * WYSIWYG note editor: Bold/Italic/bullet-list actually format the selected text
+ * (via a contentEditable surface), scaled by the global note font size. Emits
+ * sanitized HTML. Uncontrolled by design — the initial HTML is set once on mount
+ * so the caret never jumps while typing.
  */
 export function NoteComposer({
-  value, onChange, onBlur, autoFocus, fontScale, onFontScale,
-  minRows = 2, maxHeight = 320, placeholder = 'Write a note…  (**bold**, *italic*, - list)',
+  initialHtml, onChange, onBlur, autoFocus, fontScale, onFontScale, minHeight = 56, maxHeight = 320,
 }: {
-  value: string
-  onChange: (v: string) => void
+  initialHtml: string
+  onChange: (html: string) => void
   onBlur?: () => void
   autoFocus?: boolean
   fontScale: number
   onFontScale?: (s: number) => void
-  minRows?: number
+  minHeight?: number
   maxHeight?: number
-  placeholder?: string
 }) {
-  const ref = useRef<HTMLTextAreaElement>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
-  const grow = () => {
+  useEffect(() => {
     const el = ref.current
     if (!el) return
-    el.style.height = 'auto'
-    el.style.height = `${Math.min(el.scrollHeight, maxHeight)}px`
-  }
-  useEffect(grow, [value, fontScale, maxHeight])
-
-  // Wrap the selection with inline marks, or prefix each selected line (lists).
-  function apply(before: string, after = before, linePrefix?: string) {
-    const el = ref.current
-    if (!el) return
-    const s = el.selectionStart, e = el.selectionEnd
-    let next: string, caret: number
-    if (linePrefix) {
-      const lineStart = value.lastIndexOf('\n', s - 1) + 1
-      const sel = value.slice(lineStart, e) || 'item'
-      const prefixed = sel.split('\n').map(l => linePrefix + l).join('\n')
-      next = value.slice(0, lineStart) + prefixed + value.slice(e)
-      caret = lineStart + prefixed.length
-    } else {
-      const sel = value.slice(s, e) || 'text'
-      next = value.slice(0, s) + before + sel + after + value.slice(e)
-      caret = s + before.length + sel.length + after.length
+    el.innerHTML = initialHtml
+    if (autoFocus) {
+      el.focus()
+      // place caret at the end
+      const r = document.createRange(); r.selectNodeContents(el); r.collapse(false)
+      const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r)
     }
-    onChange(next)
-    requestAnimationFrame(() => { el.focus(); el.setSelectionRange(caret, caret) })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const emit = () => { if (ref.current) onChange(sanitizeNoteHtml(ref.current.innerHTML)) }
+
+  function exec(cmd: string) {
+    ref.current?.focus()
+    document.execCommand(cmd) // bold | italic | insertUnorderedList
+    emit()
   }
 
   const idx = NOTE_FONT_SCALES.indexOf(fontScale)
@@ -59,10 +51,10 @@ export function NoteComposer({
   return (
     <div>
       <div className="flex items-center gap-0.5 mb-1">
-        {/* onMouseDown preventDefault keeps the textarea selection while clicking. */}
-        <button type="button" title="Bold" onMouseDown={e => e.preventDefault()} onClick={() => apply('**')} className={btn}><Bold size={13} /></button>
-        <button type="button" title="Italic" onMouseDown={e => e.preventDefault()} onClick={() => apply('*')} className={btn}><Italic size={13} /></button>
-        <button type="button" title="Bullet list" onMouseDown={e => e.preventDefault()} onClick={() => apply('', '', '- ')} className={btn}><List size={13} /></button>
+        {/* onMouseDown preventDefault keeps the editor selection while clicking. */}
+        <button type="button" title="Bold" onMouseDown={e => e.preventDefault()} onClick={() => exec('bold')} className={btn}><Bold size={13} /></button>
+        <button type="button" title="Italic" onMouseDown={e => e.preventDefault()} onClick={() => exec('italic')} className={btn}><Italic size={13} /></button>
+        <button type="button" title="Bullet list" onMouseDown={e => e.preventDefault()} onClick={() => exec('insertUnorderedList')} className={btn}><List size={13} /></button>
         {onFontScale && (
           <span className="ml-auto flex items-center gap-0.5">
             <button type="button" title="Smaller text" onMouseDown={e => e.preventDefault()} disabled={idx <= 0}
@@ -72,17 +64,16 @@ export function NoteComposer({
           </span>
         )}
       </div>
-      <textarea
+      <div
         ref={ref}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        onInput={grow}
+        contentEditable
+        suppressContentEditableWarning
+        onInput={emit}
         onBlur={onBlur}
-        autoFocus={autoFocus}
-        rows={minRows}
-        placeholder={placeholder}
-        style={{ fontSize: `${fontScale}rem`, maxHeight }}
-        className="w-full resize-none overflow-y-auto rounded-md border border-gray-200 px-2 py-1.5 leading-snug focus:outline-none focus:ring-2 focus:ring-brand-400"
+        role="textbox"
+        aria-multiline
+        style={{ fontSize: `${fontScale}rem`, minHeight, maxHeight }}
+        className="prose-notes w-full overflow-y-auto rounded-md border border-gray-200 px-2 py-1.5 leading-snug focus:outline-none focus:ring-2 focus:ring-brand-400 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
       />
     </div>
   )

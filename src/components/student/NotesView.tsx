@@ -4,6 +4,7 @@ import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2 } fro
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
+import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 
 interface NoteT { id: string; folderId: string | null; book: string; chapter: number; verse: number; verseEnd: number | null; body: string }
 interface FolderT { id: string; name: string; color: string; _count: { notes: number } }
@@ -195,10 +196,10 @@ function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
     setSaving(true)
     try {
       if (existing) {
-        if (body.trim() === '') await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' })
+        if (isHtmlEmpty(body)) await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' })
         else if (body !== existing.body) await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }) })
         else { setSaving(false); return }
-      } else if (body.trim() !== '') {
+      } else if (!isHtmlEmpty(body)) {
         await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...anchor, body, folderId }) })
       } else { setSaving(false); return }
       onChanged()
@@ -229,7 +230,7 @@ function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
           {existing && <button onClick={async () => { await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
         </span>
       </div>
-      <NoteComposer value={draft} onChange={setDraft} onBlur={persist} fontScale={fontScale} onFontScale={setFontScale} minRows={existing?.body ? 2 : 1} />
+      <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={persist} fontScale={fontScale} onFontScale={setFontScale} />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { StickyNote, Loader2, Trash2, Maximize2, X } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
-import { renderMarkdown } from '@/lib/markdown'
+import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
 
 /**
  * Per-verse note affordance for any reading view. The icon is brand-blue/filled
@@ -49,9 +49,9 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
     setSaving(true)
     try {
       if (note) {
-        if (body.trim() === '') await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' })
+        if (isHtmlEmpty(body)) await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' })
         else if (body !== note.body) await fetch(`/api/notes?id=${note.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }) })
-      } else if (body.trim() !== '') {
+      } else if (!isHtmlEmpty(body)) {
         await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ book, chapter, verse, body }) })
       }
       onChanged?.()
@@ -102,7 +102,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
               <p className="text-xs text-gray-400 p-2"><Loader2 size={12} className="inline animate-spin" /> Loading…</p>
             ) : (
               <>
-                <NoteComposer value={body} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} maxHeight={260} />
+                <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} maxHeight={260} />
                 {footer}
               </>
             )}
@@ -119,10 +119,12 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
               <button type="button" onClick={close} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
             </div>
             <div className="grid gap-4 lg:grid-cols-2">
-              <NoteComposer value={body} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minRows={8} maxHeight={460} />
+              <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minHeight={180} maxHeight={460} />
               <div className="rounded-md border border-gray-100 bg-gray-50 p-3 overflow-y-auto" style={{ maxHeight: 460, fontSize: `${fontScale}rem` }}>
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Preview</p>
-                {body.trim() ? <div className="text-gray-800 leading-snug">{renderMarkdown(body)}</div> : <p className="text-gray-300 italic text-sm">Nothing yet.</p>}
+                {isHtmlEmpty(body)
+                  ? <p className="text-gray-300 italic text-sm">Nothing yet.</p>
+                  : <div className="text-gray-800 leading-snug [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(body) }} />}
               </div>
             </div>
             {footer}
