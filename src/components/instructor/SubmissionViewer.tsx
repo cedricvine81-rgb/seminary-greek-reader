@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
@@ -140,6 +140,9 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
   const [passageGrades, setPassageGrades] = useState<Record<string, SubScoreInputs>>({})
   // Exam-wide sub-score weights.
   const [weights, setWeights] = useState<GradeWeights>(DEFAULT_WEIGHTS)
+  // Auto-save bookkeeping: baseline of the last persisted grade so we only save on change.
+  const loadedRef = useRef(false)
+  const lastSavedRef = useRef('')
 
   useEffect(() => {
     async function load() {
@@ -153,14 +156,18 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       // Hydrate the per-passage inputs. New format is { parsing, syntax, translation };
       // a legacy number (Phase 2b single score) is dropped into the translation field.
       const savedPg = (s.passageGrades ?? {}) as Record<string, PassageSubScores | number>
-      setPassageGrades(Object.fromEntries(Object.entries(savedPg).map(([k, v]) => {
+      const pgInputs = Object.fromEntries(Object.entries(savedPg).map(([k, v]) => {
         if (typeof v === 'number') return [k, { ...EMPTY_SUBSCORES, translation: String(v) }]
         return [k, {
           parsing: v.parsing != null ? String(v.parsing) : '',
           syntax: v.syntax != null ? String(v.syntax) : '',
           translation: v.translation != null ? String(v.translation) : '',
         }]
-      })))
+      })) as Record<string, SubScoreInputs>
+      setPassageGrades(pgInputs)
+      // Remember the just-loaded grade as the baseline so auto-save only fires on edits.
+      lastSavedRef.current = JSON.stringify({ grade: s.grade !== null ? String(s.grade) : '', gradeNote: s.gradeNote ?? '', passageGrades: pgInputs })
+      loadedRef.current = true
 
       const rRes = await fetch(`/api/assignments/${assignmentId}/results`)
       if (rRes.ok) {
@@ -226,6 +233,7 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
         }),
       })
       if (!res.ok) throw new Error('Save failed')
+      lastSavedRef.current = JSON.stringify({ grade, gradeNote, passageGrades })
       setSaved(true)
       // Refresh server components (course gradebook) so the saved grade is reflected on navigation
       router.refresh()
@@ -236,6 +244,16 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       setSaving(false)
     }
   }, [sessionId, grade, gradeNote, isExam, passageGrades, assignmentId, router])
+
+  // Auto-save: 800ms after the instructor stops editing, persist any change. The
+  // baseline (lastSavedRef) prevents saving the just-loaded values or re-saving
+  // immediately after a manual save.
+  useEffect(() => {
+    if (!loadedRef.current) return
+    if (JSON.stringify({ grade, gradeNote, passageGrades }) === lastSavedRef.current) return
+    const t = setTimeout(() => { saveGrade() }, 800)
+    return () => clearTimeout(t)
+  }, [grade, gradeNote, passageGrades, saveGrade])
 
   // Reopen this student's submission so they can edit and resubmit. Clears the
   // submitted state and grade; their work is preserved (shares the results un-submit API).
@@ -473,9 +491,12 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
               />
             </div>
-            <Button onClick={saveGrade} loading={saving} size="sm">
-              <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button onClick={saveGrade} loading={saving} size="sm">
+                <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
+              </Button>
+              <span className="text-xs text-gray-400">{saving ? 'Saving…' : saved ? 'Saved' : 'Changes save automatically'}</span>
+            </div>
           </div>
         ) : (
           <div className="mt-3 flex flex-wrap gap-4 items-end">
@@ -496,9 +517,12 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
               />
             </div>
-            <Button onClick={saveGrade} loading={saving} size="sm">
-              <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
-            </Button>
+            <div className="flex items-center gap-3">
+              <Button onClick={saveGrade} loading={saving} size="sm">
+                <Save size={14} /> {saved ? 'Saved!' : 'Save grade'}
+              </Button>
+              <span className="text-xs text-gray-400">{saving ? 'Saving…' : saved ? 'Saved' : 'Changes save automatically'}</span>
+            </div>
           </div>
         )}
       </Card>
