@@ -3,7 +3,7 @@ import { useRef, useState } from 'react'
 import { StickyNote, Loader2, Trash2, Maximize2, X } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
-import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
+import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 
 /**
  * Per-verse note affordance for any reading view. The icon is brand-blue/filled
@@ -118,15 +118,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
               <h3 className="text-sm font-semibold text-gray-800">Note · {reference}</h3>
               <button type="button" onClick={close} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
             </div>
-            <div className="grid gap-4 lg:grid-cols-2">
-              <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minHeight={180} maxHeight={460} />
-              <div className="rounded-md border border-gray-100 bg-gray-50 p-3 overflow-y-auto" style={{ maxHeight: 460, fontSize: `${fontScale}rem` }}>
-                <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400 mb-1">Preview</p>
-                {isHtmlEmpty(body)
-                  ? <p className="text-gray-300 italic text-sm">Nothing yet.</p>
-                  : <div className="text-gray-800 leading-snug [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(body) }} />}
-              </div>
-            </div>
+            <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minHeight={320} maxHeight={540} />
             {footer}
           </div>
         </div>
