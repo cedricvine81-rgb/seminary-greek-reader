@@ -69,13 +69,14 @@ function GroupNode({ node, depth }: { node: Extract<TreeNode, { t: 'g' }>; depth
   )
 }
 
-/** A word leaf: Greek surface + gloss. Click to show its lexical detail below. */
+/** A word leaf: Greek surface + gloss. Hover (or click, for touch) to show its lexical detail below. */
 function WordNode({ node }: { node: WordNodeT }) {
   const { selectedId, onWord } = useContext(WordCtx)
   const active = selectedId === node.id
   return (
     <button
       type="button"
+      onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
       className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
@@ -148,12 +149,13 @@ function treeWords(node: TreeNode): WordNodeT[] {
   return node.c.flatMap(treeWords)
 }
 
-/** A clickable Greek word in the running-text Greek column → opens the lexical panel. */
+/** A Greek word in the running-text column → hover (or click, for touch) opens the lexical panel. */
 function GreekColWord({ node }: { node: WordNodeT }) {
   const { selectedId, onWord } = useContext(WordCtx)
   return (
     <button
       type="button"
+      onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
       className={`rounded px-0.5 transition-colors hover:bg-gray-100 ${selectedId === node.id ? 'bg-brand-100' : ''}`}
     >
@@ -462,18 +464,10 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false }: {
         </div>
       </div>
 
-      <p className="text-xs text-gray-500">
-        Each sentence is broken into its clause → phrase → word levels (left), with a Greek
-        edition and a translation column alongside. Click a label to collapse a level; hover
-        a word for its lemma, parsing, and role.
-      </p>
-
-
-      {/* Column header: tree label | (Greek edition + translation) dropdowns (lg+). */}
+      {/* Column header: (Greek edition + translation) dropdowns, right-aligned (lg+). */}
       {!message && shown.length > 0 && (
-        <div className="hidden lg:grid grid-cols-[minmax(0,1fr)_31rem] gap-4 items-end">
-          <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">Greek — clause / phrase structure</span>
-          <div className="grid grid-cols-2 gap-4">
+        <div className="hidden lg:flex justify-end">
+          <div className="grid grid-cols-2 gap-4 w-[31rem]">
             <OptionSelect value={greekEd} onChange={setGreekEd} options={GREEK_EDITIONS} />
             <OptionSelect value={transLang} onChange={setTransLang} options={LANGS} />
           </div>
