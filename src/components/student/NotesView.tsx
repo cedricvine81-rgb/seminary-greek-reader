@@ -4,7 +4,6 @@ import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2 } fro
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
-import { TextSettingsMenu } from '@/components/reader/TextSettingsMenu'
 import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 
 interface NoteT { id: string; folderId: string | null; book: string; chapter: number; verse: number; verseEnd: number | null; body: string }
@@ -27,8 +26,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const [activeFolder, setActiveFolder] = useState<string>('all') // 'all' | 'unfiled' | folderId
   const [newFolder, setNewFolder] = useState<{ name: string; color: NoteColor } | null>(null)
   const [editFolder, setEditFolder] = useState<{ id: string; name: string; color: NoteColor } | null>(null)
-  const [fontScale, setFontScale] = useNoteFontScale()
-  const [lineSpacing, setLineSpacing] = useNoteLineSpacing()
 
   const bookName = useCallback((osis: string) => books.find(b => b.osisId === osis)?.name ?? osis, [books])
 
@@ -82,10 +79,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
   return (
     <div className="max-w-3xl space-y-8 pb-10">
-      <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold text-gray-800">Study notes</h2>
-        <TextSettingsMenu label="Note text" fontScale={fontScale} onFontScale={setFontScale} lineSpacing={lineSpacing} onLineSpacing={setLineSpacing} />
-      </div>
+      <h2 className="text-base font-semibold text-gray-800">Study notes</h2>
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       {/* ── This passage ── */}

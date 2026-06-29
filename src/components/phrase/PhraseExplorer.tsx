@@ -1,6 +1,5 @@
 'use client'
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { MoreVertical, X } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { formatParsing } from '@/lib/morph-formatting'
@@ -94,7 +93,7 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
 }
 
 // Translations available in the Reader (mirrors GreekReader's PARALLEL_LANGS).
-const LANGS = [
+export const LANGS = [
   { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible · public domain' },
   { code: 'en', label: 'English (WEB)', sub: 'World English Bible · public domain' },
   { code: 'es', label: 'Spanish', sub: 'Reina-Valera 1909 · public domain' },
@@ -115,9 +114,44 @@ const greekLabel = (code: string) => GREEK_EDITIONS.find(g => g.code === code)?.
 
 // Adjustable Greek text size (default larger than before). Children scale off the
 // --phrase-fs CSS variable set on the container.
-type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl'
-const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl']
+export type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl'
+export const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl']
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+
+/** Static "Sources & copyright" content for the Phrasing tab's settings menu. */
+export function PhrasingSourcesPanel() {
+  return (
+    <details className="border-t border-gray-100 pt-2">
+      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+      <div className="space-y-3 text-xs text-gray-600 mt-2">
+        <div>
+          <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
+          <p className="mt-0.5">
+            Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
+            licensed <span className="font-medium">CC BY 4.0</span>.{' '}
+            <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
+          </p>
+          <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
+        </div>
+        <div>
+          <p className="font-semibold text-gray-700">Translations</p>
+          <ul className="mt-0.5 space-y-0.5">
+            {LANGS.map(l => (
+              <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="font-semibold text-gray-700">Gospel parallels</p>
+          <p className="mt-0.5">Adapted from Wikipedia, &ldquo;Gospel harmony&rdquo; (CC BY-SA 4.0).</p>
+        </div>
+        <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
+          All sources are public-domain or openly licensed, used with attribution.
+        </p>
+      </div>
+    </details>
+  )
+}
 
 function OptionSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: { code: string; label: string }[] }) {
   return (
@@ -164,7 +198,12 @@ function GreekColWord({ node }: { node: WordNodeT }) {
   )
 }
 
-export function PhraseExplorer({ controlledPassage, isAuthenticated = false }: { controlledPassage?: string; isAuthenticated?: boolean } = {}) {
+export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize }: {
+  controlledPassage?: string
+  isAuthenticated?: boolean
+  fontSize?: PhraseFontSize
+  onFontSize?: (v: PhraseFontSize) => void
+} = {}) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [input, setInput] = useState('John 1:1-5')
   const [inputError, setInputError] = useState(false)
@@ -230,18 +269,12 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false }: {
   const [, setTransVer] = useState(0)
   const bump = () => setTransVer(v => v + 1)
 
-  // Settings / sources panel (top-right, like the Reader).
-  const [showSettings, setShowSettings] = useState(false)
-  const [fontSize, setFontSize] = useState<PhraseFontSize>('lg')
-  const settingsRef = useRef<HTMLDivElement | null>(null)
-  useEffect(() => {
-    if (!showSettings) return
-    const onDown = (e: MouseEvent) => {
-      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) setShowSettings(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    return () => document.removeEventListener('mousedown', onDown)
-  }, [showSettings])
+  // Text size — the settings/sources panel that used to live here is now hoisted into
+  // the shared exegesis tools menu (when coordinated); fontSize becomes controlled then.
+  const isFontSizeControlled = onFontSize !== undefined
+  const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
+  const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
+  const setFontSize = onFontSize ?? setInternalFontSize
 
   // Ensure both columns' text is loaded for the current passage's chapter.
   // 'na1904' needs nothing (it comes straight from the tree); 'gnt' is the static
@@ -377,92 +410,27 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false }: {
   return (
     <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
     <div className="space-y-4" style={{ '--phrase-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
-      {/* Passage entry (matches the Reader / Exegesis tools) + settings, top-right.
-          Hidden in coordinated mode — a shared passage box drives all tabs. */}
-      <div className="flex items-start justify-between gap-3">
+      {/* Passage entry (matches the Reader / Exegesis tools). Hidden in coordinated
+          mode — a shared passage box drives all tabs, and settings (text size, sources
+          & copyright) live in that page's shared tools menu instead of here. */}
+      {controlledPassage === undefined && (
         <div className="flex items-center flex-wrap gap-3">
-          {controlledPassage === undefined && (
-            <div className="flex items-center">
-              <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-              <input
-                type="text"
-                value={input}
-                onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
-                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-                onBlur={submit}
-                placeholder="e.g. Matthew 3:1-3"
-                className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
-              />
-            </div>
-          )}
+          <div className="flex items-center">
+            <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+            <input
+              type="text"
+              value={input}
+              onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
+              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
+              onBlur={submit}
+              placeholder="e.g. Matthew 3:1-3"
+              className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+            />
+          </div>
           {loading && <span className="text-sm text-gray-400">Loading…</span>}
           {inputError && <span className="text-xs text-red-500">Couldn&rsquo;t find that reference — try e.g. &ldquo;John 1:1-5&rdquo;</span>}
         </div>
-
-        <div ref={settingsRef} className="relative shrink-0">
-          <button
-            title="Settings & sources"
-            onClick={() => setShowSettings(v => !v)}
-            className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
-          >
-            <MoreVertical size={20} />
-          </button>
-          {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl p-4 shadow-lg">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-gray-800">Settings</span>
-                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
-              </div>
-
-              {/* Text size */}
-              <div className="mb-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                  <input
-                    type="range" min={0} max={3} step={1}
-                    value={FONT_SIZES.indexOf(fontSize)}
-                    onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                    className="flex-1 accent-brand-600"
-                  />
-                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                </div>
-              </div>
-
-              {/* Sources & copyright — collapsed submenu */}
-              <details className="border-t border-gray-100 pt-2">
-                <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
-                <div className="space-y-3 text-xs text-gray-600 mt-2">
-                  <div>
-                    <p className="font-semibold text-gray-700">Greek text &amp; syntax</p>
-                    <p className="mt-0.5">
-                      Syntax trees: MACULA Greek Linguistic Datasets over the Nestle 1904 Greek New Testament (public domain),
-                      licensed <span className="font-medium">CC BY 4.0</span>.{' '}
-                      <a href="https://github.com/Clear-Bible/macula-greek" target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">Clear-Bible/macula-greek</a>
-                    </p>
-                    <p className="mt-1">Greek editions: Nestle 1904 and Tischendorf (8th ed.) — both public domain.</p>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-700">Translations</p>
-                    <ul className="mt-0.5 space-y-0.5">
-                      {LANGS.map(l => (
-                        <li key={l.code}><span className="text-gray-700">{l.label}</span> — {l.sub}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-gray-700">Gospel parallels</p>
-                    <p className="mt-0.5">Adapted from Wikipedia, &ldquo;Gospel harmony&rdquo; (CC BY-SA 4.0).</p>
-                  </div>
-                  <p className="text-[11px] text-gray-400 pt-2 border-t border-gray-100">
-                    All sources are public-domain or openly licensed, used with attribution.
-                  </p>
-                </div>
-              </details>
-            </div>
-          )}
-        </div>
-      </div>
+      )}
 
       {/* Column header: (Greek edition + translation) dropdowns, right-aligned (lg+). */}
       {!message && shown.length > 0 && (

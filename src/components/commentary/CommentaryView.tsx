@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
-import { TextSettingsMenu } from '@/components/reader/TextSettingsMenu'
 import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-prefs'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -16,7 +15,7 @@ interface CommentaryMeta { id: string; name: string; author: string; attribution
  * dropdown; the pane follows whichever verse you click in the Greek. Commentary data
  * is static, verse-keyed JSON (public/data/commentary/<id>/<book>.json).
  */
-export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
+export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor | null; onAttribution?: (a: string | null) => void }) {
   const [verses, setVerses] = useState<BiblicalVerse[]>([])
   const [activeVerse, setActiveVerse] = useState<number | null>(null)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
@@ -26,8 +25,11 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
   const [loading, setLoading] = useState(false)
   // Greek edition shown alongside the commentary. Nestle 1904 = NA1904, Tischendorf 8th = GNT.
   const [gntEdition, setGntEdition] = useState<'nestle1904' | 'tischendorf'>('nestle1904')
-  const [fontScale, setFontScale] = useCommentaryFontScale()
-  const [lineSpacing, setLineSpacing] = useCommentaryLineSpacing()
+  // The three-dot text-settings menu (font size / line spacing / copyright) is hoisted
+  // up into the shared exegesis tools menu — this still needs the live values to style
+  // its own text, kept in sync with that menu via the shared localStorage-backed hooks.
+  const [fontScale] = useCommentaryFontScale()
+  const [lineSpacing] = useCommentaryLineSpacing()
   const scrollRef = useRef<HTMLDivElement>(null)
   const verseEls = useRef<Map<number, HTMLElement>>(new Map())
 
@@ -81,10 +83,14 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
     return () => io.disconnect()
   }, [verses])
 
+  // Report the selected commentary's attribution up so the hoisted tools menu can
+  // show the "Copyright" subheading without needing the commentary list itself.
+  const meta = commentaries.find(c => c.id === commentaryId)
+  useEffect(() => { onAttribution?.(meta?.attribution ?? null) }, [meta?.attribution, onAttribution])
+
   if (!anchor) return <p className="text-sm text-gray-400 italic py-10 text-center">Enter a passage above to read the commentary.</p>
 
   const html = activeVerse != null ? verseMap[`${anchor.chapter}:${activeVerse}`] : undefined
-  const meta = commentaries.find(c => c.id === commentaryId)
 
   return (
     <div className="grid lg:grid-cols-2 gap-4 h-full min-h-0">
@@ -126,18 +132,6 @@ export function CommentaryView({ anchor }: { anchor: NoteAnchor | null }) {
             {commentaries.length === 0 && <option value="robertson">Robertson — Word Pictures in the NT</option>}
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
-          <TextSettingsMenu
-            label="Commentary text" className="ml-auto"
-            fontScale={fontScale} onFontScale={setFontScale}
-            lineSpacing={lineSpacing} onLineSpacing={setLineSpacing}
-          >
-            {meta?.attribution && (
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1">Copyright</p>
-                <p className="text-[11px] leading-relaxed text-gray-500">{meta.attribution}</p>
-              </div>
-            )}
-          </TextSettingsMenu>
         </div>
         <div
           style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}

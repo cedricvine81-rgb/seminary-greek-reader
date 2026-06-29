@@ -1,11 +1,12 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { MoreVertical, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import type { PhraseFontSize } from './PhraseExplorer'
 
-// Text-size control — same scale as the Phrasing tab.
-type SynFontSize = 'sm' | 'md' | 'lg' | 'xl'
-const FONT_SIZES: SynFontSize[] = ['sm', 'md', 'lg', 'xl']
+// Text-size control — same scale as the Phrasing tab (shares its type/values so the
+// shared exegesis tools menu can drive both with one slider implementation).
+type SynFontSize = PhraseFontSize
 const FONT_SIZE_MAP: Record<SynFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
@@ -44,25 +45,29 @@ const VERSIONS = [
  * references the user adds, all shown side by side in a chosen version (Greek edition
  * or translation). Auto-suggested gospel parallels are a planned follow-up.
  */
-export function SynopsisView({ controlledPassage, isAuthenticated = false }: { controlledPassage?: string; isAuthenticated?: boolean }) {
+export function SynopsisView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution }: {
+  controlledPassage?: string
+  isAuthenticated?: boolean
+  fontSize?: SynFontSize
+  onFontSize?: (v: SynFontSize) => void
+  onAttribution?: (a: string) => void
+}) {
   const [books, setBooks] = useState<RefBook[]>([])
   const [version, setVersion] = useState('bsb')
-  const [fontSize, setFontSize] = useState<SynFontSize>('lg')
-  const [showSettings, setShowSettings] = useState(false)
-  const settingsRef = useRef<HTMLDivElement | null>(null)
-  useEffect(() => {
-    if (!showSettings) return
-    const onDown = (e: MouseEvent) => {
-      if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) setShowSettings(false)
-    }
-    document.addEventListener('mousedown', onDown)
-    return () => document.removeEventListener('mousedown', onDown)
-  }, [showSettings])
+  // Text size — the settings panel that used to live here is now hoisted into the
+  // shared exegesis tools menu (when coordinated); fontSize becomes controlled then.
+  const isFontSizeControlled = onFontSize !== undefined
+  const [internalFontSize, setInternalFontSize] = useState<SynFontSize>('lg')
+  const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
+  const setFontSize = onFontSize ?? setInternalFontSize
   const [extraRefs, setExtraRefs] = useState<string[]>([])
   const [addInput, setAddInput] = useState('')
   const [addError, setAddError] = useState(false)
   const [pericopes, setPericopes] = useState<Record<string, string>[]>([])
   const [parallelsAttribution, setParallelsAttribution] = useState('')
+  // Report attribution up so the hoisted tools menu can show it without duplicating
+  // the gospel-parallels fetch.
+  useEffect(() => { onAttribution?.(parallelsAttribution) }, [parallelsAttribution, onAttribution])
   const cache = useRef<Record<string, Record<string, string>>>({})  // version → verseId → text
   const loaded = useRef<Set<string>>(new Set())
   const [, setVer] = useState(0)
@@ -219,48 +224,6 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false }: { c
         >
           {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
         </select>
-
-        {/* Settings menu (⋮) — same format as the Phrasing tab. */}
-        <div ref={settingsRef} className="relative shrink-0 ml-auto">
-          <button
-            title="Settings & sources"
-            onClick={() => setShowSettings(v => !v)}
-            className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
-          >
-            <MoreVertical size={20} />
-          </button>
-          {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-80 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-xl p-4 shadow-lg">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-sm font-semibold text-gray-800">Settings</span>
-                <button onClick={() => setShowSettings(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
-              </div>
-
-              {/* Text size */}
-              <div className="mb-3">
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                <div className="flex items-center gap-3">
-                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                  <input
-                    type="range" min={0} max={3} step={1}
-                    value={FONT_SIZES.indexOf(fontSize)}
-                    onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                    className="flex-1 accent-brand-600"
-                  />
-                  <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                </div>
-              </div>
-
-              {/* Sources & copyright — collapsed submenu */}
-              {parallelsAttribution && (
-                <details className="border-t border-gray-100 pt-2">
-                  <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
-                  <p className="text-xs text-gray-600 mt-2">{parallelsAttribution}</p>
-                </details>
-              )}
-            </div>
-          )}
-        </div>
       </div>
 
       {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
