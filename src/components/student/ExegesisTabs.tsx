@@ -210,10 +210,11 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                     </select>
                   </div>
 
-                  {/* Download as PDF */}
+                  {/* Download as PDF — close the menu and let it actually unmount (a tick)
+                      before printing, or the open panel ends up in the printed page. */}
                   <button
                     type="button"
-                    onClick={() => { workspaceRef.current?.exportPDF(); setShowToolsMenu(false) }}
+                    onClick={() => { setShowToolsMenu(false); setTimeout(() => workspaceRef.current?.exportPDF(), 0) }}
                     className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     <Download size={15} className="text-gray-400" /> Download as PDF
