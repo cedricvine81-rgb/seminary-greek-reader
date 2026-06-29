@@ -471,6 +471,17 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   const sessionListRef = useRef<HTMLDivElement | null>(null)
   const sessionPanelRef = useRef<HTMLDivElement | null>(null)
   const autoSaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Mirrors the latest annotation/translation/notes state so a page-unload handler
+  // (registered once, with an empty dependency array) can read current values instead
+  // of a stale closure. Updated by an effect below, right after each of those states.
+  const latestFieldsRef = useRef({ annotations: {} as AnnotationMap, corrections: {} as AnnotationMap, verseTranslations: {} as Record<string, string>, verseCorrections: {} as Record<string, string>, notes: '', sessionId: null as string | null })
+  // Set when an edit arrives before the session row exists yet (assignment mode creates
+  // it async on entry) — scheduleAutoSave bails in that case since there's nothing to
+  // PATCH. Once the session shows up, flush whatever was pending instead of losing it.
+  const hasUnflushedEditRef = useRef(false)
+  useEffect(() => {
+    latestFieldsRef.current = { annotations, corrections, verseTranslations, verseCorrections, notes, sessionId }
+  }, [annotations, corrections, verseTranslations, verseCorrections, notes, sessionId])
 
   // ── Assignment mode ──
   const [assignment, setAssignment] = useState<AssignmentInfo | null>(null)
@@ -1232,10 +1243,13 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       setSaveStatus('saving')
       // No session yet: in the standalone tool the first edit creates the session
       // (capturing current work). In assignment mode the session is created on entry,
-      // so just skip until it exists.
+      // so just skip until it exists — but remember the edit so the effect below can
+      // flush it the moment the session shows up, instead of silently dropping it.
       if (!sessionId) {
         if (!propAssignmentId) {
           saveSession().then(sid => setSaveStatus(sid ? 'saved' : 'error')).catch(() => setSaveStatus('error'))
+        } else {
+          hasUnflushedEditRef.current = true
         }
         return
       }
@@ -1254,6 +1268,54 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         .catch(() => setSaveStatus('error'))
     }, 2500)
   }
+
+  // If an edit arrived before the assignment-mode session existed (scheduleAutoSave
+  // bailed and set hasUnflushedEditRef), flush it the moment the session shows up —
+  // otherwise that edit is silently lost forever (no later edit would ever retry it).
+  useEffect(() => {
+    if (!sessionId || !hasUnflushedEditRef.current) return
+    hasUnflushedEditRef.current = false
+    const { annotations, corrections, verseTranslations, verseCorrections, notes } = latestFieldsRef.current
+    fetch(`/api/exegesis/${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes }),
+    })
+      .then(r => setSaveStatus(r.ok ? 'saved' : 'error'))
+      .catch(() => setSaveStatus('error'))
+  }, [sessionId])
+
+  // Flush a pending debounced autosave before the page unloads/backgrounds, instead of
+  // losing the last few seconds of edits to the 2.5s debounce window. fetch(...,
+  // {keepalive:true}) lets the request outlive navigation; sendBeacon can't do PATCH.
+  // beforeunload also warns the student so they get a chance to cancel and wait.
+  useEffect(() => {
+    function flush() {
+      const { annotations, corrections, verseTranslations, verseCorrections, notes, sessionId: sid } = latestFieldsRef.current
+      if (!sid) return
+      fetch(`/api/exegesis/${sid}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes }),
+        keepalive: true,
+      }).catch(() => {})
+    }
+    function onBeforeUnload(e: BeforeUnloadEvent) {
+      if (!autoSaveTimer.current) return   // nothing debounced/unsaved right now
+      flush()
+      e.preventDefault()
+      e.returnValue = ''
+    }
+    function onPageHide() {
+      if (autoSaveTimer.current) flush()
+    }
+    window.addEventListener('beforeunload', onBeforeUnload)
+    window.addEventListener('pagehide', onPageHide)
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload)
+      window.removeEventListener('pagehide', onPageHide)
+    }
+  }, [])
 
   // ── Load saved session ──
   const loadSavedSession = useCallback(async (s: SavedSession) => {
