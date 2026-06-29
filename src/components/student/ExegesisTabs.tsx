@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen } from 'lucide-react'
-import { ExegesisWorkspace } from './ExegesisWorkspace'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock } from 'lucide-react'
+import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { NotesView, type NoteAnchor } from './NotesView'
@@ -38,6 +38,13 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   const [books, setBooks] = useState<Book[]>([])
   const [anchor, setAnchor] = useState<NoteAnchor | null>(null)  // committed passage → verse anchor for Notes
   const [glossPref, setGlossPref] = useState<number | null>(null) // Vocabulary glossary threshold (drives the Exegesis tab)
+  // "Exegesis tools" menu — Vocabulary, Download as PDF, My Sessions — sits next to the
+  // Notes tab. The latter two are owned by ExegesisWorkspace; we drive them imperatively
+  // via a ref and mirror its saved-sessions list here so the menu can render it.
+  const workspaceRef = useRef<ExegesisWorkspaceHandle>(null)
+  const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
+  const [showToolsMenu, setShowToolsMenu] = useState(false)
+  const toolsMenuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let alive = true
@@ -55,6 +62,15 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
     return () => { alive = false }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    if (!showToolsMenu) return
+    function onMouseDown(e: MouseEvent) {
+      if (toolsMenuRef.current && !toolsMenuRef.current.contains(e.target as Node)) setShowToolsMenu(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [showToolsMenu])
 
   // Resolve a committed passage string to a canonical verse anchor for notes.
   function parseAnchor(value: string): NoteAnchor | null {
@@ -151,23 +167,6 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
               className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
           </div>
-          {/* Vocabulary glossary control — sits flush against the Passage box, styled to
-              match it. Only meaningful on the Exegesis tab, which renders the glosses. */}
-          {tab === 'workspace' && (
-            <div className="flex items-center -ml-px">
-              <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Vocabulary</span>
-              <select
-                value={glossPref ?? ''}
-                onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
-                title="Show glosses for less common words"
-                className="bg-white border border-l-0 border-gray-300 rounded-l-none rounded-r-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-              >
-                <option value="">Off</option>
-                <option value="50">Words less frequent than 50×</option>
-                <option value="30">Words less frequent than 30×</option>
-              </select>
-            </div>
-          )}
         </div>
         <div className="flex items-center gap-1">
           <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
@@ -175,11 +174,93 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
           <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
           <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
           <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
+
+          {/* Exegesis tools — Vocabulary, Download as PDF, My Sessions. Only meaningful
+              on the Exegesis tab, since that's the content these act on. */}
+          {tab === 'workspace' && (
+            <div ref={toolsMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                title="Exegesis tools"
+                onClick={() => setShowToolsMenu(v => !v)}
+                className={`p-1.5 rounded-lg transition-colors ${showToolsMenu ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+              >
+                <MoreVertical size={18} />
+              </button>
+
+              {showToolsMenu && (
+                <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-800">Exegesis tools</span>
+                    <button onClick={() => setShowToolsMenu(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
+                  </div>
+
+                  {/* Vocabulary */}
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Vocabulary</p>
+                    <select
+                      value={glossPref ?? ''}
+                      onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
+                      title="Show glosses for less common words"
+                      className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    >
+                      <option value="">Off</option>
+                      <option value="50">Words less frequent than 50×</option>
+                      <option value="30">Words less frequent than 30×</option>
+                    </select>
+                  </div>
+
+                  {/* Download as PDF */}
+                  <button
+                    type="button"
+                    onClick={() => { workspaceRef.current?.exportPDF(); setShowToolsMenu(false) }}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <Download size={15} className="text-gray-400" /> Download as PDF
+                  </button>
+
+                  {/* My Sessions */}
+                  <div className="pt-3 border-t border-gray-100">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2 flex items-center gap-1.5">
+                      <FolderClock size={13} /> My Sessions
+                    </p>
+                    {savedSessions.length === 0 ? (
+                      <p className="text-sm text-gray-400">No saved sessions yet.</p>
+                    ) : (
+                      <ul className="divide-y divide-gray-100 max-h-56 overflow-y-auto -mx-1">
+                        {savedSessions.map(s => (
+                          <li key={s.id} className="flex items-center justify-between px-1 py-1.5 hover:bg-gray-50 rounded">
+                            <button
+                              type="button"
+                              onClick={() => { workspaceRef.current?.loadSavedSession(s); setShowToolsMenu(false) }}
+                              className="text-left flex-1 min-w-0"
+                            >
+                              <p className="text-sm font-medium text-gray-800 truncate">{s.title}</p>
+                              <p className="text-xs text-gray-400">{new Date(s.updatedAt).toLocaleDateString()}</p>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => workspaceRef.current?.deleteSession(s.id)}
+                              className="ml-2 text-red-400 hover:text-red-600 text-xs p-1"
+                              title="Delete session"
+                            >
+                              ✕
+                            </button>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'workspace' ? '' : 'hidden'}`}>
-        <ExegesisWorkspace isAuthenticated={isAuthenticated} controlledPassage={passage} glossPref={glossPref} onGlossPref={setGlossPref} />
+        <ExegesisWorkspace ref={workspaceRef} isAuthenticated={isAuthenticated} controlledPassage={passage}
+          glossPref={glossPref} onGlossPref={setGlossPref} savedSessions={savedSessions} onSavedSessions={setSavedSessions} />
       </div>
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'phrasing' ? '' : 'hidden'}`}>
         <PhraseExplorer controlledPassage={passage} isAuthenticated={isAuthenticated} />

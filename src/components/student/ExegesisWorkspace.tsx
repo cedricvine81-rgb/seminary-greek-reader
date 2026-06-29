@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, useRef, forwardRef, useImperativeHandle } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
@@ -25,7 +25,7 @@ interface LoadedVerse {
   words: VerseWord[]
 }
 
-interface SavedSession {
+export interface SavedSession {
   id: string
   title: string
   bookOsisId: string
@@ -388,7 +388,27 @@ function fullscreenElementCompat(): Element | null {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage, glossPref: controlledGloss, onGlossPref }: { assignmentId?: string; isAuthenticated?: boolean; previewMode?: boolean; controlledPassage?: string; glossPref?: number | null; onGlossPref?: (v: number | null) => void }) {
+// Imperative actions exposed to a parent that has hoisted the "My Sessions" /
+// "Download as PDF" UI elsewhere (see ExegesisTabs' three-dot tools menu).
+export interface ExegesisWorkspaceHandle {
+  loadSavedSession: (s: SavedSession) => void
+  deleteSession: (id: string) => void
+  exportPDF: () => void
+}
+
+export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
+  assignmentId?: string
+  isAuthenticated?: boolean
+  previewMode?: boolean
+  controlledPassage?: string
+  glossPref?: number | null
+  onGlossPref?: (v: number | null) => void
+  savedSessions?: SavedSession[]
+  onSavedSessions?: (s: SavedSession[]) => void
+}>(function ExegesisWorkspace({
+  assignmentId: propAssignmentId, isAuthenticated = true, previewMode = false, controlledPassage,
+  glossPref: controlledGloss, onGlossPref, savedSessions: controlledSessions, onSavedSessions,
+}, ref) {
   const router = useRouter()
 
   // ── Passage state ──
@@ -439,7 +459,12 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   // ── Session persistence ──
   const [sessionId, setSessionId] = useState<string | null>(null)
   const [sessionTitle, setSessionTitle] = useState('')
-  const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
+  // "My Sessions" data is controlled the same way as glossPref when a parent (the
+  // coordinated exegesis page) has hoisted the list into its own tools menu.
+  const isSessionsControlled = onSavedSessions !== undefined
+  const [internalSessions, setInternalSessions] = useState<SavedSession[]>([])
+  const savedSessions = isSessionsControlled ? (controlledSessions ?? []) : internalSessions
+  const setSavedSessions = onSavedSessions ?? setInternalSessions
   const [isSaving, setIsSaving] = useState(false)
   const [saveStatus, setSaveStatus] = useState<'idle' | 'pending' | 'saving' | 'saved' | 'error'>('idle')
   const [showSessionList, setShowSessionList] = useState(false)
@@ -1231,7 +1256,7 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
   }
 
   // ── Load saved session ──
-  async function loadSavedSession(s: SavedSession) {
+  const loadSavedSession = useCallback(async (s: SavedSession) => {
     const r = await fetch(`/api/exegesis/${s.id}`)
     const d = await r.json()
     if (!d.session) return
@@ -1268,10 +1293,11 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         setIsLoading(false)
       }
     }
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [books, propAssignmentId])
 
   // ── Delete session ──
-  async function deleteSession(id: string) {
+  const deleteSession = useCallback(async (id: string) => {
     await fetch(`/api/exegesis/${id}`, { method: 'DELETE' })
     if (sessionId === id) {
       setSessionId(null)
@@ -1282,12 +1308,16 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       setLoadedVerses([])
     }
     loadSessionList()
-  }
+  }, [sessionId, loadSessionList])
 
   // ── PDF export ──
-  function exportPDF() {
+  const exportPDF = useCallback(() => {
     window.print()
-  }
+  }, [])
+
+  // Expose actions to a parent that renders the "My Sessions" / "Download as PDF"
+  // controls elsewhere (the coordinated exegesis page's tools menu).
+  useImperativeHandle(ref, () => ({ loadSavedSession, deleteSession, exportPDF }), [loadSavedSession, deleteSession, exportPDF])
 
   // ── Build summary rows for print ──
 
@@ -1663,7 +1693,8 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
           </span>
         )}
 
-        {loadedVerses.length > 0 && !isExam && (
+        {/* Hidden when hoisted into the coordinated exegesis page's tools menu. */}
+        {!isSessionsControlled && loadedVerses.length > 0 && !isExam && (
           <button
             onClick={exportPDF}
             className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-md text-sm font-medium hover:bg-gray-300 transition"
@@ -1705,8 +1736,9 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
         )}
 
         {/* Saved sessions — pinned to the far right so it stays put whether or not a
-            passage is loaded. Hidden in assignment mode. */}
-        {!propAssignmentId && (
+            passage is loaded. Hidden in assignment mode, and when hoisted into the
+            coordinated exegesis page's tools menu. */}
+        {!propAssignmentId && !isSessionsControlled && (
           <div className="relative" ref={sessionListRef}>
             <button
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
@@ -2072,4 +2104,4 @@ export function ExegesisWorkspace({ assignmentId: propAssignmentId, isAuthentica
       )}
     </div>
   )
-}
+})
