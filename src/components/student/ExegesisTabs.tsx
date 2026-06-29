@@ -140,7 +140,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   }
 
   const tabClass = (active: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors ${
+    `inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors shrink-0 ${
       active ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'
     }`
 
@@ -168,12 +168,18 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
             />
           </div>
         </div>
-        <div className="flex items-center gap-1">
-          <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
-          <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
-          <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
-          <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
-          <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
+        {/* On narrow screens the 5 tabs can be wider than the viewport — let them scroll
+            horizontally rather than clipping "Notes" off-screen. The tools menu sits
+            outside this scroll container (a sibling, not a child): overflow-x-auto
+            computes overflow-y to auto too, which would clip the dropdown's popover. */}
+        <div className="flex items-center gap-1 min-w-0">
+          <div className="flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+            <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
+            <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
+            <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
+            <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
+            <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
+          </div>
 
           {/* Exegesis tools — Vocabulary, Download as PDF, My Sessions. Only meaningful
               on the Exegesis tab, since that's the content these act on. */}
