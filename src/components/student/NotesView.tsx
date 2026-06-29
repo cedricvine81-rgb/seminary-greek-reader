@@ -79,7 +79,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
   return (
     <div className="max-w-3xl space-y-8 pb-10">
-      <h2 className="text-base font-semibold text-gray-800">Study notes</h2>
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
       {/* ── This passage ── */}
