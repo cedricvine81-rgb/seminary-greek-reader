@@ -34,6 +34,15 @@
         "Rom",
         "Titus"
       ]
+    },
+    {
+      "id": "alford",
+      "name": "Alford — Greek Testament",
+      "author": "Henry Alford",
+      "attribution": "Henry Alford, The Greek Testament: with a critically revised text... and a critical and exegetical commentary, Vol. I (5th ed., 1863), public domain.",
+      "books": [
+        "John"
+      ]
     }
   ]
 }
