@@ -1,11 +1,42 @@
 'use client'
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { X, ZoomIn, ZoomOut } from 'lucide-react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-prefs'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { NoteAnchor } from '@/components/student/NotesView'
+
+/** Full-screen viewer for the original commentary page scan(s) behind a verse —
+ *  lets a student check the transcription against the actual source. Click to
+ *  toggle between fit-to-width and full-resolution (scrollable) zoom. */
+function PageScanModal({ pages, book, onClose }: { pages: number[]; book: string; onClose: () => void }) {
+  const [zoomed, setZoomed] = useState(false)
+  return (
+    <div className="fixed inset-0 z-[100] bg-black/80 flex flex-col" onClick={onClose}>
+      <div className="flex-none flex items-center justify-between px-4 py-2.5 bg-black/40" onClick={e => e.stopPropagation()}>
+        <span className="text-white text-sm font-medium">Original page scan &mdash; Alford, {book} (p.{pages.join(', ')})</span>
+        <div className="flex items-center gap-2">
+          <button onClick={() => setZoomed(z => !z)} title={zoomed ? 'Fit to width' : 'Full resolution'}
+            className="p-1.5 rounded text-white hover:bg-white/20">
+            {zoomed ? <ZoomOut size={18} /> : <ZoomIn size={18} />}
+          </button>
+          <button onClick={onClose} title="Close" className="p-1.5 rounded text-white hover:bg-white/20"><X size={18} /></button>
+        </div>
+      </div>
+      <div className="flex-1 overflow-auto p-4" onClick={e => e.stopPropagation()}>
+        <div className={`flex flex-col gap-3 ${zoomed ? '' : 'items-center'}`}>
+          {pages.map(p => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img key={p} src={`/data/commentary/alford-pages/${book}/p${p}.jpg`} alt={`Page ${p}`}
+              className={zoomed ? '' : 'max-w-3xl w-full'} onClick={() => setZoomed(z => !z)} />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
 
 interface CommentaryMeta { id: string; name: string; author: string; attribution: string; books: string[] }
 
@@ -23,6 +54,11 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
   const [commentaryId, setCommentaryId] = useState('robertson')
   const [verseMap, setVerseMap] = useState<Record<string, string>>({})
   const [loading, setLoading] = useState(false)
+  // Page scan viewer (currently only available for the Alford commentary on John) —
+  // maps "chapter:verse" to the original PDF page number(s) so a student can check
+  // the transcription against the actual source.
+  const [pageMap, setPageMap] = useState<Record<string, number[]>>({})
+  const [showPageScan, setShowPageScan] = useState(false)
   // Greek edition shown alongside the commentary. Nestle 1904 = NA1904, Tischendorf 8th = GNT.
   const [gntEdition, setGntEdition] = useState<'nestle1904' | 'tischendorf'>('nestle1904')
   // The three-dot text-settings menu (font size / line spacing / copyright) is hoisted
@@ -55,6 +91,15 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
         setVerses(vs); setActiveVerse(vs[0]?.verse ?? anchor.verseStart)
       }).catch(() => setVerses([])).finally(() => setLoading(false))
   }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Page-scan map for the current book + commentary, if one exists (only Alford/John
+  // for now). 404s are expected for books/commentaries without scans — just clear it.
+  useEffect(() => {
+    setShowPageScan(false)
+    if (!anchor) { setPageMap({}); return }
+    fetch(`/data/commentary/${commentaryId}-pages/${anchor.book}.json`)
+      .then(r => (r.ok ? r.json() : {})).then(setPageMap).catch(() => setPageMap({}))
+  }, [commentaryId, anchor?.book])
 
   // Commentary text for the current book + selected commentary.
   useEffect(() => {
@@ -132,6 +177,12 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
             {commentaries.length === 0 && <option value="robertson">Robertson — Word Pictures in the NT</option>}
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>
+          {activeVerse != null && pageMap[`${anchor.chapter}:${activeVerse}`] && (
+            <button onClick={() => setShowPageScan(true)}
+              className="text-xs text-brand-600 hover:text-brand-800 hover:underline">
+              View original page
+            </button>
+          )}
         </div>
         <div
           style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}
@@ -142,6 +193,9 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
             : <p className="text-gray-400 italic">No commentary for this verse{activeVerse != null ? ` (${anchor.name} ${anchor.chapter}:${activeVerse})` : ''}.</p>}
         </div>
       </div>
+      {showPageScan && activeVerse != null && pageMap[`${anchor.chapter}:${activeVerse}`] && (
+        <PageScanModal pages={pageMap[`${anchor.chapter}:${activeVerse}`]} book={anchor.book} onClose={() => setShowPageScan(false)} />
+      )}
     </div>
   )
 }
