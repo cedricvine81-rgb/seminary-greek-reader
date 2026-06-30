@@ -646,6 +646,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             setVerseTranslations(sess.verseTranslations ?? {})
             setNotes(sess.notes ?? '')
             timingsRef.current = sess.answerTimings ?? {}
+            // Anchor timing telemetry to the original exam start, so first-keystroke
+            // latency stays consistent if the student reloads mid-exam.
+            if (sess.startedAt) startedAtRef.current = new Date(sess.startedAt)
             setSessionId(sess.id)
             setSessionTitle(sess.title)
             if (sess.submittedAt) { setSubmitted(true); clearLocalDraft(sess.id) }
@@ -1277,9 +1280,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     setSaveStatus('pending')   // unsaved edits, autosave queued
     // Offline safety net: mirror this edit to localStorage *synchronously*, before the
     // 2.5s debounce, so a crash/reload/disconnect can't lose it. The debounced server
-    // save below confirms it (markLocalDraftSynced) once it lands.
+    // save below confirms it (markLocalDraftSynced) once it lands. Scoped to graded
+    // assignment/exam mode (propAssignmentId): those sessions are cleared on submit, so
+    // drafts can't accumulate in localStorage the way unbounded free-study ones would.
     let draftVersion = 0
-    if (sessionId) {
+    if (sessionId && propAssignmentId) {
       draftVersion = saveLocalDraft(sessionId, {
         annotations: latestAnnotations, corrections: latestCorrections,
         verseTranslations: latestVerseTranslations, verseCorrections: latestVerseCorrections,
@@ -1374,7 +1379,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // the freshly-loaded server data and re-flush so the server catches up. Runs once per
   // session, only when the local draft is genuinely ahead of the server.
   useEffect(() => {
-    if (!sessionId || didRestoreLocalRef.current || submitted) return
+    if (!sessionId || !propAssignmentId || didRestoreLocalRef.current || submitted) return
     didRestoreLocalRef.current = true
     const rec = readLocalDraft(sessionId)
     if (!rec || rec.version <= rec.syncedVersion) return   // nothing unsynced to recover
@@ -1401,7 +1406,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // re-flushing the local draft on an interval and whenever the browser reports it's back
   // online, until the server confirms it — so a transient drop self-heals.
   useEffect(() => {
-    if (!sessionId || !isAuthenticated) return
+    if (!sessionId || !isAuthenticated || !propAssignmentId) return
     const flush = () => {
       const rec = readLocalDraft(sessionId)
       if (!rec || rec.version <= rec.syncedVersion) return   // nothing unsaved
