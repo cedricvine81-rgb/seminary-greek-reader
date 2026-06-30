@@ -12,6 +12,9 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: { default: 'Seminary Greek', template: '%s | Seminary Greek' },
   description: 'Read the Septuagint and Greek New Testament, study vocabulary, practice morphology, and complete instructor-created assignments.',
+  // Declare the app icon so browsers request /icon.svg (and get a 200) instead of
+  // blindly probing /favicon.ico — which keeps 404 noise out of the server logs.
+  icons: { icon: '/icon.svg', shortcut: '/icon.svg', apple: '/icon.svg' },
 }
 
 // Explicit mobile viewport: correct scaling, allow pinch-zoom (accessibility),

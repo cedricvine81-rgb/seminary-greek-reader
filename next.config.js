@@ -16,7 +16,13 @@ const nextConfig = {
   },
   // The standalone Phrase tool was folded into the Exegesis page (Phrasing tab).
   async redirects() {
-    return [{ source: '/phrase', destination: '/exegesis', permanent: false }]
+    return [
+      { source: '/phrase', destination: '/exegesis', permanent: false },
+      // Browsers and crawlers blindly probe these legacy favicon paths; point them at
+      // the real icon so they resolve to a 200 instead of cluttering logs with 404s.
+      { source: '/favicon.ico', destination: '/icon.svg', permanent: false },
+      { source: '/favicon.png', destination: '/icon.svg', permanent: false },
+    ]
   },
 }
 
