@@ -1987,7 +1987,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             )}
             {correctionLocked && (
               <div className="mb-3 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-xs text-red-800 font-medium">
-                🔒 Review phase ended — all annotations are locked. Download your PDF or submit for grading.
+                {isExam
+                  ? (submitted
+                      ? '🔒 Exam submitted — your answers are locked.'
+                      : '🔒 Exam closed — your answers are locked.')
+                  : '🔒 Review phase ended — all annotations are locked. Download your PDF or submit for grading.'}
               </div>
             )}
 
