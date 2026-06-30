@@ -36,6 +36,13 @@
       ]
     },
     {
+      "id": "alford",
+      "name": "Alford — The Greek Testament",
+      "author": "Henry Alford",
+      "attribution": "Henry Alford, The Greek Testament: with a critically revised text, a digest of various readings, marginal references to verbal and idiomatic usage, prolegomena, and a critical and exegetical commentary, Vol. I (5th ed., London: Rivingtons, 1863), public domain.",
+      "books": ["John"]
+    },
+    {
       "id": "original-view",
       "name": "Original View Commentaries",
       "kind": "original-view"
