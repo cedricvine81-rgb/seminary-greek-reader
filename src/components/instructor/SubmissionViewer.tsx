@@ -445,10 +445,12 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
       {/* Lockdown integrity report (exams in lockdown mode) */}
       {session.integrityEvents && session.integrityEvents.length > 0 && (() => {
         const all = session.integrityEvents
-        // The rules acknowledgment is recorded in the same append-only log but isn't a
-        // violation — pull it out and show it separately (green), not as a flag.
+        // Some entries in the append-only log aren't violations (the student's rules
+        // acknowledgment, and any instructor reopen) — pull them out and show them
+        // separately rather than counting them as flags.
         const ackEvent = all.find(e => e.type === 'acknowledged-rules') ?? null
-        const events = all.filter(e => e.type !== 'acknowledged-rules')
+        const reopenEvents = all.filter(e => e.type === 'reopened-by-instructor')
+        const events = all.filter(e => e.type !== 'acknowledged-rules' && e.type !== 'reopened-by-instructor')
         // Summary: count by type, most frequent first.
         const counts = new Map<string, number>()
         for (const e of events) counts.set(e.type, (counts.get(e.type) ?? 0) + 1)
@@ -469,6 +471,11 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
                 ✓ Student acknowledged the exam rules before starting{ackEvent.at ? ` — ${new Date(ackEvent.at).toLocaleString()}` : ''}.
               </p>
             )}
+            {reopenEvents.map((e, i) => (
+              <p key={`reopen-${i}`} className="mb-3 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-800">
+                ↺ Reopened by instructor{e.at ? ` — ${new Date(e.at).toLocaleString()}` : ''}. The integrity log above and below this point is from one continuous record.
+              </p>
+            ))}
 
             {events.length === 0 ? (
               <p className="rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-600">

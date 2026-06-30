@@ -513,6 +513,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   const [submitted, setSubmitted] = useState(false)
   const [deadlinePassed, setDeadlinePassed] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  // Set when the instructor has reopened this submission. While true and not yet
+  // resubmitted, the passed exam deadline no longer locks or auto-submits the work,
+  // so the student can edit and resubmit.
+  const [reopenedAt, setReopenedAt] = useState<string | null>(null)
 
   // ── Stage 1 Timer (annotation phase) ──
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null)  // null = untimed
@@ -533,6 +537,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   }, [])
   const round1Passed = !!assignment?.round1Deadline && now > assignment.round1Deadline.getTime()
   const round2Passed = !!assignment?.round2Deadline && now > assignment.round2Deadline.getTime()
+  // Instructor reopened this submission: until the student resubmits, a passed deadline
+  // must not lock or auto-submit their work.
+  const reopened = !!reopenedAt && !submitted
 
   // ── Lockdown (exam integrity) state ──
   const [lockdownStarted, setLockdownStarted] = useState(false)  // student has entered fullscreen / begun
@@ -665,6 +672,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             setVerseTranslations(sess.verseTranslations ?? {})
             setNotes(sess.notes ?? '')
             timingsRef.current = sess.answerTimings ?? {}
+            setReopenedAt(sess.reopenedAt ?? null)
             // Anchor timing telemetry to the original exam start, so first-keystroke
             // latency stays consistent if the student reloads mid-exam.
             if (sess.startedAt) startedAtRef.current = new Date(sess.startedAt)
@@ -713,6 +721,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           setVerseCorrections(sess.verseCorrections ?? {})
           setNotes(sess.notes ?? '')
           timingsRef.current = sess.answerTimings ?? {}
+          setReopenedAt(sess.reopenedAt ?? null)
           setSessionId(sess.id)
           setSessionTitle(sess.title)
           const alreadySubmitted = !!sess.submittedAt
@@ -979,13 +988,13 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
 
   // ── Exam: auto-submit when the single cut-off passes ──
   useEffect(() => {
-    if (!assignment?.isExam || submitted || !sessionId) return
+    if (!assignment?.isExam || submitted || !sessionId || reopened) return
     const cutoff = assignment.round1Deadline
     if (cutoff && Date.now() > cutoff.getTime()) {
       submitAssignment()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [assignment, submitted, sessionId, now])
+  }, [assignment, submitted, sessionId, now, reopened])
 
   // ── Stage 2 countdown ──
   useEffect(() => {
@@ -1013,7 +1022,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
 
   // ── Exam: lock + auto-submit when the single cut-off passes ──
   useEffect(() => {
-    if (assignment?.isExam && round1Passed && !submitted && propAssignmentId && sessionId) {
+    if (assignment?.isExam && round1Passed && !submitted && propAssignmentId && sessionId && !reopened) {
       submitAssignment()
     }
   }, [round1Passed, submitted, sessionId, assignment]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -1513,8 +1522,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // deadlinePassed locks stage-1 (black annotations) and opens review mode, but leaves stage-2 (red corrections) editable.
   // round1Passed / round2Passed are absolute, instructor-set cut-offs that lock the respective phase regardless of timers.
   const isExam = !!assignment?.isExam
-  const isLocked = timerExpired || submitted || deadlinePassed || round1Passed   // stage 1 annotations locked
-  const correctionLocked = reviewTimerExpired || submitted || round2Passed        // stage 2 corrections locked
+  // A reopened submission bypasses deadline-based locks (but not submit/timer locks).
+  const isLocked = timerExpired || submitted || (!reopened && (deadlinePassed || round1Passed))   // stage 1 annotations locked
+  const correctionLocked = reviewTimerExpired || submitted || (!reopened && round2Passed)          // stage 2 corrections locked
   // Exams are single-round: never enter the Round 2 (corrections) review layout.
   const reviewMode = !isExam && (timerExpired || deadlinePassed || round1Passed)  // show 3-column reader layout
   // Whole-verse translations are keyed by verse number for single-passage exercises,
@@ -1807,7 +1817,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               ✓ Submitted
             </span>
           )}
-          {!submitted && deadlinePassed && (
+          {!submitted && reopened && (
+            <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 border border-amber-300">
+              Reopened by instructor — edit &amp; resubmit
+            </span>
+          )}
+          {!submitted && !reopened && deadlinePassed && (
             <span className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700 border border-gray-300">
               Deadline passed — editing only
             </span>

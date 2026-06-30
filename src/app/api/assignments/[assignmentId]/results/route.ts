@@ -249,7 +249,7 @@ export async function DELETE(
 
     const session = await prisma.exegesisSession.findUnique({
       where: { id: sessionId },
-      select: { id: true, userId: true, assignmentId: true },
+      select: { id: true, userId: true, assignmentId: true, integrityEvents: true },
     })
     if (!session) return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     // Only allow un-submitting a session that belongs to this assignment (or an
@@ -263,6 +263,11 @@ export async function DELETE(
       select: { courseId: true },
     })
 
+    // Preserve the integrity report and append a marker so the timeline shows when the
+    // instructor reopened it (kept append-only, capped like the student-side appends).
+    const existingEvents = Array.isArray(session.integrityEvents) ? session.integrityEvents as unknown[] : []
+    const mergedEvents = [...existingEvents, { type: 'reopened-by-instructor', at: new Date().toISOString() }].slice(-500)
+
     await prisma.$transaction([
       prisma.exegesisSession.update({
         where: { id: sessionId },
@@ -271,6 +276,10 @@ export async function DELETE(
           submittedAnnotations: Prisma.DbNull,
           grade: null,
           gradeNote: null,
+          // Grant this student a per-session override so the passed exam deadline no
+          // longer locks/auto-submits their work until they resubmit.
+          reopenedAt: new Date(),
+          integrityEvents: mergedEvents as Prisma.InputJsonValue,
         },
       }),
       prisma.response.deleteMany({

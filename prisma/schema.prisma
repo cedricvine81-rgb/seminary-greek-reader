@@ -546,6 +546,11 @@ model ExegesisSession {
   // exam start to first/last keystroke in that field, and the keystroke count. Lets the
   // instructor spot answers entered near-instantly or in a single action (possible AI paste).
   answerTimings   Json?
+  // Set when an instructor reopens a submitted exam for this student. Lets that one
+  // student edit and resubmit even though the exam's close time has passed, without
+  // affecting anyone else. Cleared-effect is implicit: once they resubmit, submittedAt
+  // locks the work again; reopening again refreshes this timestamp.
+  reopenedAt   DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
