@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -483,6 +484,18 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     latestFieldsRef.current = { annotations, corrections, verseTranslations, verseCorrections, notes, sessionId }
   }, [annotations, corrections, verseTranslations, verseCorrections, notes, sessionId])
 
+  // ── Answer-timing telemetry (exam integrity signal) ──
+  // Per-answer typing record keyed by "verseNum-wordId:field" (or "vt:key" for whole-verse
+  // translations): t0 = ms from exam start to the first keystroke in that field,
+  // tLast = ms to the last keystroke, edits = number of keystroke events. Lets the
+  // instructor spot answers that appeared near-instantly or in a single action (a possible
+  // sign of pasted/auto-filled AI output). Hydrated from the server on load, persisted
+  // alongside annotations on every save. A ref so it never triggers a re-render.
+  const timingsRef = useRef<Record<string, { t0: number; tLast: number; edits: number }>>({})
+  const firstEditMsRef = useRef<number | null>(null)
+  // Offline restore guard — only adopt a recovered local draft once per session.
+  const didRestoreLocalRef = useRef(false)
+
   // ── Assignment mode ──
   const [assignment, setAssignment] = useState<AssignmentInfo | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -632,9 +645,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             setAnnotations(sess.annotations ?? {})
             setVerseTranslations(sess.verseTranslations ?? {})
             setNotes(sess.notes ?? '')
+            timingsRef.current = sess.answerTimings ?? {}
             setSessionId(sess.id)
             setSessionTitle(sess.title)
-            if (sess.submittedAt) setSubmitted(true)
+            if (sess.submittedAt) { setSubmitted(true); clearLocalDraft(sess.id) }
           } else if (examPassages[0]) {
             const first = examPassages[0]
             const startedAt = new Date()
@@ -676,10 +690,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           setVerseTranslations(sess.verseTranslations ?? {})
           setVerseCorrections(sess.verseCorrections ?? {})
           setNotes(sess.notes ?? '')
+          timingsRef.current = sess.answerTimings ?? {}
           setSessionId(sess.id)
           setSessionTitle(sess.title)
           const alreadySubmitted = !!sess.submittedAt
-          if (alreadySubmitted) setSubmitted(true)
+          if (alreadySubmitted) { setSubmitted(true); clearLocalDraft(sess.id) }
           // Initialise timer from stored startedAt
           if (timeLimitSeconds && sess.startedAt && !alreadySubmitted) {
             const startedAtMs = new Date(sess.startedAt).getTime()
@@ -1065,9 +1080,26 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     loadPassage(parsed.book, parsed.chapter, parsed.verseStart, parsed.verseEnd, true)
   }
 
+  // ── Answer-timing telemetry ──
+  // Record a keystroke against an answer field, measured from the exam's start. Only in
+  // graded assignment/exam mode; standalone study isn't timed.
+  function recordTiming(timingKey: string) {
+    if (!propAssignmentId) return
+    let base = startedAtRef.current?.getTime()
+    if (base == null) {
+      if (firstEditMsRef.current == null) firstEditMsRef.current = Date.now()
+      base = firstEditMsRef.current
+    }
+    const rel = Math.max(0, Date.now() - base)
+    const cur = timingsRef.current[timingKey]
+    if (!cur) timingsRef.current[timingKey] = { t0: rel, tLast: rel, edits: 1 }
+    else { cur.tLast = rel; cur.edits += 1 }
+  }
+
   // ── Annotation change ──
   function handleAnnotationChange(key: string, field: keyof WordAnnotation, value: string) {
     if (isLocked) return
+    recordTiming(`${key}:${field}`)
     setAnnotations(prev => {
       const next = {
         ...prev,
@@ -1081,6 +1113,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // ── Whole-verse translation change (Round 1) ──
   function handleVerseTranslationChange(key: string, value: string) {
     if (isLocked) return
+    recordTiming(`vt:${key}`)
     setVerseTranslations(prev => {
       const next = { ...prev, [key]: value }
       scheduleAutoSave(annotations, corrections, next)
@@ -1151,6 +1184,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             verseTranslations,
             verseCorrections,
             notes,
+            answerTimings: timingsRef.current,
             title: resolvedTitle,
             // Persist startedAt if not yet stored (first save of a timed session)
             ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
@@ -1162,6 +1196,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...payload,
+            answerTimings: timingsRef.current,
             // Persist the actual timer-start time so server stores the correct value
             ...(startedAtRef.current ? { startedAt: startedAtRef.current.toISOString() } : {}),
           }),
@@ -1216,6 +1251,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       const r = await fetch(`/api/exegesis/${sid}/submit`, { method: 'POST' })
       if (r.ok) {
         setSubmitted(true)
+        clearLocalDraft(sid)   // work is committed server-side — drop the offline draft
       } else {
         const d = await r.json().catch(() => ({}))
         setSubmitError(d.error ?? 'Submission failed. Please try again.')
@@ -1239,6 +1275,17 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     if (!isAuthenticated) return   // signed-out: don't attempt to save (no account)
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
     setSaveStatus('pending')   // unsaved edits, autosave queued
+    // Offline safety net: mirror this edit to localStorage *synchronously*, before the
+    // 2.5s debounce, so a crash/reload/disconnect can't lose it. The debounced server
+    // save below confirms it (markLocalDraftSynced) once it lands.
+    let draftVersion = 0
+    if (sessionId) {
+      draftVersion = saveLocalDraft(sessionId, {
+        annotations: latestAnnotations, corrections: latestCorrections,
+        verseTranslations: latestVerseTranslations, verseCorrections: latestVerseCorrections,
+        notes: latestNotes, answerTimings: timingsRef.current,
+      })
+    }
     autoSaveTimer.current = setTimeout(() => {
       setSaveStatus('saving')
       // No session yet: in the standalone tool the first edit creates the session
@@ -1262,9 +1309,13 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           verseTranslations: latestVerseTranslations,
           verseCorrections: latestVerseCorrections,
           notes: latestNotes,
+          answerTimings: timingsRef.current,
         }),
       })
-        .then(r => setSaveStatus(r.ok ? 'saved' : 'error'))
+        .then(r => {
+          if (r.ok && sessionId) markLocalDraftSynced(sessionId, draftVersion)
+          setSaveStatus(r.ok ? 'saved' : 'error')
+        })
         .catch(() => setSaveStatus('error'))
     }, 2500)
   }
@@ -1279,7 +1330,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     fetch(`/api/exegesis/${sessionId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes }),
+      body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes, answerTimings: timingsRef.current }),
     })
       .then(r => setSaveStatus(r.ok ? 'saved' : 'error'))
       .catch(() => setSaveStatus('error'))
@@ -1296,7 +1347,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       fetch(`/api/exegesis/${sid}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes }),
+        body: JSON.stringify({ annotations, corrections, verseTranslations, verseCorrections, notes, answerTimings: timingsRef.current }),
         keepalive: true,
       }).catch(() => {})
     }
@@ -1316,6 +1367,57 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       window.removeEventListener('pagehide', onPageHide)
     }
   }, [])
+
+  // ── Offline safety net: restore a recovered local draft ──
+  // If the connection dropped before the last autosave landed and the page then reloaded,
+  // the server copy is stale but localStorage still holds the newer edits. Adopt them over
+  // the freshly-loaded server data and re-flush so the server catches up. Runs once per
+  // session, only when the local draft is genuinely ahead of the server.
+  useEffect(() => {
+    if (!sessionId || didRestoreLocalRef.current || submitted) return
+    didRestoreLocalRef.current = true
+    const rec = readLocalDraft(sessionId)
+    if (!rec || rec.version <= rec.syncedVersion) return   // nothing unsynced to recover
+    const d = rec.data
+    setAnnotations((d.annotations as AnnotationMap) ?? {})
+    setCorrections((d.corrections as AnnotationMap) ?? {})
+    setVerseTranslations(d.verseTranslations ?? {})
+    setVerseCorrections(d.verseCorrections ?? {})
+    setNotes(d.notes ?? '')
+    if (d.answerTimings) timingsRef.current = d.answerTimings
+    const v = rec.version
+    setSaveStatus('saving')
+    fetch(`/api/exegesis/${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(d),
+    })
+      .then(r => { if (r.ok) markLocalDraftSynced(sessionId, v); setSaveStatus(r.ok ? 'saved' : 'error') })
+      .catch(() => setSaveStatus('error'))
+  }, [sessionId, submitted])
+
+  // ── Offline safety net: retry failed saves until they land ──
+  // A debounced save that fails (offline) was previously stranded in memory. Here we keep
+  // re-flushing the local draft on an interval and whenever the browser reports it's back
+  // online, until the server confirms it — so a transient drop self-heals.
+  useEffect(() => {
+    if (!sessionId || !isAuthenticated) return
+    const flush = () => {
+      const rec = readLocalDraft(sessionId)
+      if (!rec || rec.version <= rec.syncedVersion) return   // nothing unsaved
+      const v = rec.version
+      fetch(`/api/exegesis/${sessionId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(rec.data),
+      })
+        .then(r => { if (r.ok) { markLocalDraftSynced(sessionId, v); setSaveStatus('saved') } else setSaveStatus('error') })
+        .catch(() => { /* still offline — try again on the next tick */ })
+    }
+    const id = setInterval(flush, 15000)
+    window.addEventListener('online', flush)
+    return () => { clearInterval(id); window.removeEventListener('online', flush) }
+  }, [sessionId, isAuthenticated])
 
   // ── Load saved session ──
   const loadSavedSession = useCallback(async (s: SavedSession) => {
@@ -1748,7 +1850,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             ) : saveStatus === 'pending' ? (
               <span className="text-gray-400">Unsaved changes…</span>
             ) : saveStatus === 'error' ? (
-              <span className="text-red-600">Couldn&rsquo;t save — check your connection</span>
+              <span className="text-amber-600">Offline — your work is saved on this device and will sync when you reconnect</span>
             ) : (
               <span className="inline-flex items-center gap-1 text-emerald-600">All changes saved</span>
             )}

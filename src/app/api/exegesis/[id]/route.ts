@@ -128,7 +128,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
     // Student — can only patch their own session
     if (existing.userId !== payload.sub) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId, appendIntegrityEvents } = body
+    const { annotations, title, startedAt, corrections, verseTranslations, verseCorrections, notes, assignmentId: patchAssignmentId, appendIntegrityEvents, answerTimings } = body
 
     // Lockdown integrity events are append-only: the client sends the new events to add,
     // the server concatenates them onto the existing log so a student can't wipe their
@@ -141,6 +141,26 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         .filter(e => e.type)
       const existingEvents = Array.isArray(existing.integrityEvents) ? existing.integrityEvents as unknown[] : []
       mergedIntegrityEvents = [...existingEvents, ...clean].slice(-500)
+    }
+
+    // Per-answer typing telemetry (lockdown exam integrity signal). The client sends the
+    // full timing map each save; sanitize and bound it (numeric fields, key length, count)
+    // so a crafted payload can't bloat the row. Only stored while the exam is unsubmitted.
+    let cleanTimings: Record<string, { t0: number; tLast: number; edits: number }> | undefined
+    if (answerTimings && typeof answerTimings === 'object' && !Array.isArray(answerTimings) && !existing.submittedAt) {
+      cleanTimings = {}
+      const num = (x: unknown, max: number) => Math.max(0, Math.min(Number(x) || 0, max))
+      let n = 0
+      for (const [k, v] of Object.entries(answerTimings as Record<string, unknown>)) {
+        if (n++ >= 5000) break
+        if (!v || typeof v !== 'object') continue
+        const o = v as Record<string, unknown>
+        cleanTimings[String(k).slice(0, 80)] = {
+          t0: num(o.t0, 1e9),
+          tLast: num(o.tLast, 1e9),
+          edits: Math.floor(num(o.edits, 1e6)),
+        }
+      }
     }
 
     // Server-side lock enforcement (the workspace UI also locks these, but the API is
@@ -169,6 +189,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
         ...(verseCorrections !== undefined && !round2Locked && { verseCorrections }),
         ...(notes !== undefined && !submitted && { notes: String(notes) }),
         ...(mergedIntegrityEvents !== undefined && { integrityEvents: mergedIntegrityEvents as Prisma.InputJsonValue }),
+        ...(cleanTimings !== undefined && { answerTimings: cleanTimings as Prisma.InputJsonValue }),
         ...(title && { title }),
         // Only set startedAt once (never overwrite)
         ...(startedAt && !existing.startedAt && { startedAt: new Date(startedAt) }),

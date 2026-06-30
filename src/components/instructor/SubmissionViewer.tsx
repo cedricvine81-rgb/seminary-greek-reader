@@ -19,6 +19,27 @@ const INTEGRITY_LABELS: Record<string, string> = {
   'paste': 'Attempted to paste',
   'contextmenu': 'Opened the right-click menu',
 }
+// ── Answer-timing telemetry helpers (lockdown exams) ──
+const TIMING_FIELD_LABELS: Record<string, string> = {
+  parsing: 'Parsing', syntax: 'Syntax', translation: 'Translation',
+}
+/** A readable pointer to the answer a timing key refers to, e.g. "v5 · Parsing". */
+function timingLabel(key: string): string {
+  if (key.startsWith('vt:')) return `Verse translation (${key.slice(3)})`
+  const idx = key.lastIndexOf(':')
+  if (idx < 0) return key
+  const annKey = key.slice(0, idx)
+  const field = key.slice(idx + 1)
+  const verse = annKey.split('-')[0]
+  return `v${verse} · ${TIMING_FIELD_LABELS[field] ?? field}`
+}
+/** Format a millisecond duration as "12s" or "1m 05s". */
+function fmtMs(ms: number): string {
+  const s = Math.round(ms / 1000)
+  if (s < 60) return `${s}s`
+  return `${Math.floor(s / 60)}m ${(s % 60).toString().padStart(2, '0')}s`
+}
+
 /** Convert input strings to a numeric sub-score object (omitting blanks). */
 function toNumericSubScores(v: SubScoreInputs): PassageSubScores {
   const out: PassageSubScores = {}
@@ -55,6 +76,7 @@ interface Session {
   gradeNote: string | null
   passageGrades: Record<string, PassageSubScores | number> | null  // exams: per-passage sub-scores keyed by reference
   integrityEvents: { type: string; at: string }[] | null  // lockdown exams: logged violations
+  answerTimings: Record<string, { t0: number; tLast: number; edits: number }> | null  // lockdown exams: per-answer typing telemetry
 }
 
 interface VerseWord {
@@ -464,6 +486,62 @@ export function SubmissionViewer({ assignmentId, sessionId, onBack }: Props) {
               ))}
             </ol>
             <p className="text-[11px] text-gray-400 mt-2">Tip: use your browser&rsquo;s Print to save this report as a PDF for your records.</p>
+          </Card>
+        )
+      })()}
+
+      {/* Answer-timing telemetry (lockdown exams) */}
+      {session.answerTimings && Object.keys(session.answerTimings).length > 0 && (() => {
+        const timings = session.answerTimings!
+        const anns = (session.annotations ?? {}) as Annotations
+        const vts = session.verseTranslations ?? {}
+        // The final text the student left in the field a timing key refers to.
+        const valueFor = (key: string): string => {
+          if (key.startsWith('vt:')) return (vts[key.slice(3)] ?? '').trim()
+          const idx = key.lastIndexOf(':')
+          if (idx < 0) return ''
+          const ann = anns[key.slice(0, idx)]
+          const field = key.slice(idx + 1) as keyof WordAnnotation
+          return (ann?.[field] ?? '').trim()
+        }
+        const entries = Object.entries(timings)
+        const firstKeystroke = Math.min(...entries.map(([, t]) => t.t0))
+        // Flag answers whose final text is "too complete for the typing it took": filled in
+        // a single action, or with far fewer keystrokes than characters (suggests a paste /
+        // autofill rather than hand-typing). Paste is blocked in lockdown, so this is a
+        // signal that something bypassed it — review the camera recording for these.
+        const flagged = entries
+          .map(([key, t]) => ({ key, t, val: valueFor(key) }))
+          .filter(({ t, val }) => val.length >= 4 && (t.edits <= 1 || (val.length >= 6 && t.edits < val.length * 0.5)))
+          .sort((a, b) => a.t.t0 - b.t.t0)
+        return (
+          <Card>
+            <CardTitle className="text-amber-700">⌨️ Answer timing — {entries.length} answer{entries.length === 1 ? '' : 's'} timed</CardTitle>
+            <p className="text-xs text-gray-500 mt-1 mb-3">
+              How long each answer took to type, measured from when the exam opened. A normally
+              typed answer has roughly one keystroke per character; an answer that appears fully
+              formed in a single action stands out. Treat this as a signal to review alongside the
+              camera recording, not as proof.
+            </p>
+            <div className="flex flex-wrap gap-2 mb-3 text-xs">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-gray-50 border border-gray-200 px-2.5 py-1 text-gray-700">
+                First keystroke <span className="font-semibold">{fmtMs(firstKeystroke)}</span> after the exam opened
+              </span>
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 ${flagged.length ? 'bg-amber-50 border border-amber-200 text-amber-700' : 'bg-emerald-50 border border-emerald-200 text-emerald-700'}`}>
+                <span className="font-semibold">{flagged.length}</span> answer{flagged.length === 1 ? '' : 's'} entered unusually fast
+              </span>
+            </div>
+            {flagged.length > 0 && (
+              <ol className="text-xs divide-y divide-gray-100 border border-amber-200 rounded-lg overflow-hidden">
+                {flagged.map(({ key, t, val }) => (
+                  <li key={key} className="flex items-center justify-between gap-3 px-3 py-1.5 odd:bg-amber-50/40">
+                    <span className="font-medium text-gray-700 shrink-0 w-28">{timingLabel(key)}</span>
+                    <span className="text-gray-500 flex-1 truncate">{t.edits <= 1 ? 'filled in a single action' : `${val.length} chars in ${t.edits} keystrokes`}</span>
+                    <span className="text-gray-400 shrink-0">at +{fmtMs(t.t0)}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
           </Card>
         )
       })()}

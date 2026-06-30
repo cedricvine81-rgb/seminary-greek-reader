@@ -541,6 +541,11 @@ model ExegesisSession {
   gradeNote    String?   // instructor feedback
   passageGrades Json?    // translation exams: per-passage sub-scores { [reference]: { parsing, syntax, translation } }
   integrityEvents Json?  // lockdown exams: array of { type, at } violation events logged during the exam
+  // lockdown exams: per-answer typing telemetry, keyed by "verseNum-wordId:field" (or
+  // "vt:key" for whole-verse translations). Each value is { t0, tLast, edits }: ms from
+  // exam start to first/last keystroke in that field, and the keystroke count. Lets the
+  // instructor spot answers entered near-instantly or in a single action (possible AI paste).
+  answerTimings   Json?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
 
