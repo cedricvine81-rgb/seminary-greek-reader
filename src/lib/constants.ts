@@ -10,6 +10,12 @@ export const VOCAB_FREQUENCY_THRESHOLDS = {
   INTERMEDIATE: 30,
 } as const
 
+// Lockdown exams: the lowest auto-submit threshold an instructor may set. A value of 1
+// (or 2) means a single stray focus-loss — an OS notification, a glance at another
+// window, a flaky-connection blip — ends the student's whole exam. Enforced both in the
+// settings UI and at runtime, so a single violation can never auto-submit an exam.
+export const MIN_LOCKDOWN_AUTOSUBMIT = 3
+
 export const GNT_BOOKS = [
   { osisId: 'Matt', name: 'Matthew', abbrev: 'Matt', chapters: 28 },
   { osisId: 'Mark', name: 'Mark', abbrev: 'Mark', chapters: 16 },

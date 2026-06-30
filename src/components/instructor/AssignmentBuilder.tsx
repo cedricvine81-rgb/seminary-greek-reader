@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { toEndOfDayLocalISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
+import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-generation'
 import { SUBTYPE_FIELD_OPTIONS } from '@/lib/quiz-generation'
@@ -539,16 +540,26 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               </div>
             </label>
             {form.lockdown && (
-              <div className="mt-2 ml-6 flex items-center gap-2">
-                <label className="text-xs text-gray-600">Auto-submit after</label>
-                <input
-                  type="number" min={0} max={50}
-                  value={form.lockdownMaxViolations ?? ''}
-                  onChange={e => set('lockdownMaxViolations', e.target.value ? Number(e.target.value) : undefined)}
-                  placeholder="—"
-                  className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                />
-                <span className="text-xs text-gray-600">violations (blank = warn only, never auto-submit)</span>
+              <div className="mt-2 ml-6">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs text-gray-600">Auto-submit after</label>
+                  <input
+                    type="number" min={MIN_LOCKDOWN_AUTOSUBMIT} max={50}
+                    value={form.lockdownMaxViolations ?? ''}
+                    onChange={e => {
+                      const v = e.target.value ? Number(e.target.value) : undefined
+                      // Blank = warn only. Any positive value is floored so a single stray
+                      // violation can never end a student's exam.
+                      set('lockdownMaxViolations', v != null && v > 0 ? Math.max(v, MIN_LOCKDOWN_AUTOSUBMIT) : undefined)
+                    }}
+                    placeholder="—"
+                    className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  />
+                  <span className="text-xs text-gray-600">violations (blank = warn only, never auto-submit)</span>
+                </div>
+                <p className="text-[11px] text-gray-500 mt-1">
+                  Leave blank to only log violations (recommended — pair with proctoring). If set, the minimum is {MIN_LOCKDOWN_AUTOSUBMIT}, so an accidental focus-loss can&rsquo;t end an exam.
+                </p>
               </div>
             )}
           </div>

@@ -7,6 +7,7 @@ import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
+import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -387,6 +388,16 @@ function fullscreenElementCompat(): Element | null {
   return document.fullscreenElement ?? d.webkitFullscreenElement ?? null
 }
 
+// Student-facing wording for each integrity event type (shown in the live warning).
+const VIOLATION_MESSAGES: Record<string, string> = {
+  'tab-hidden': 'You switched away from the exam tab',
+  'window-blur': 'You left the exam window',
+  'fullscreen-exit': 'You exited fullscreen',
+  'copy': 'Copying is disabled in this exam',
+  'paste': 'Pasting is disabled in this exam',
+  'contextmenu': 'The right-click menu is disabled in this exam',
+}
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 // Imperative actions exposed to a parent that has hoisted the "My Sessions" /
@@ -531,6 +542,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   const violationsRef = useRef(0)        // mirror for event handlers (avoid stale closures)
   const lastViolationAtRef = useRef(0)   // coalesce co-firing events (e.g. blur + visibilitychange)
   const submitRef = useRef<() => void>(() => {})
+  // Transient on-screen warning shown to the student each time a violation is recorded.
+  const [violationWarning, setViolationWarning] = useState<string | null>(null)
+  const warningTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Pre-exam rules acknowledgment: the student must tick the box before entering, and the
+  // acknowledgment is logged (append-only) so there's a permanent record they agreed.
+  const [rulesAck, setRulesAck] = useState(false)
+  const ackAtRef = useRef<string | null>(null)
+  const ackSentRef = useRef(false)
   // Viewport width (for blocking phone-sized screens from a lockdown exam).
   const [viewportW, setViewportW] = useState(1200)
   useEffect(() => {
@@ -1513,7 +1532,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // Active only for a real student attempt on a lockdown exam, before submission.
   // Instructors previewing (previewMode) are exempt so they can inspect freely.
   const lockdownOn = isExam && !!assignment?.lockdown && !!propAssignmentId && !previewMode && !submitted
-  const maxViolations = assignment?.lockdownMaxViolations ?? null
+  // Safety floor: clamp the auto-submit threshold up to MIN_LOCKDOWN_AUTOSUBMIT at runtime,
+  // so a single stray violation can never end an exam — even on an exam whose stored
+  // threshold predates this guard (e.g. a value of 1). Blank stays blank (warn only).
+  const rawMaxViolations = assignment?.lockdownMaxViolations ?? null
+  const maxViolations = rawMaxViolations != null ? Math.max(rawMaxViolations, MIN_LOCKDOWN_AUTOSUBMIT) : null
   // A lockdown exam needs fullscreen + a large enough screen. iPhone Safari has no
   // element fullscreen, so phones can't be locked down — require a desktop/laptop/tablet.
   const canLockdown = fullscreenSupported() && viewportW >= 768
@@ -1544,7 +1567,19 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         keepalive: true,
       }).catch(() => {})
     }
-    if (maxViolations != null && count >= maxViolations) {
+    const willAutoSubmit = maxViolations != null && count >= maxViolations
+    // Flash a clear, unmissable warning so the student knows what was recorded and what
+    // happens next. Stays until the next one replaces it or ~7s passes.
+    const action = VIOLATION_MESSAGES[type] ?? 'An action was flagged'
+    const consequence = maxViolations != null
+      ? (willAutoSubmit
+          ? 'You have reached the limit — your exam is being submitted.'
+          : `This was recorded (${count} of ${maxViolations}). At ${maxViolations} your exam will be submitted automatically.`)
+      : 'This was recorded for your instructor. Stay in the exam window.'
+    setViolationWarning(`${action}. ${consequence}`)
+    if (warningTimerRef.current) clearTimeout(warningTimerRef.current)
+    warningTimerRef.current = setTimeout(() => setViolationWarning(null), 7000)
+    if (willAutoSubmit) {
       submitRef.current()
     }
   }, [lockdownOn, sessionId, maxViolations])
@@ -1591,12 +1626,28 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     return () => document.body.classList.remove('exam-lockdown')
   }, [lockdownOn, lockdownStarted])
 
-  /** Enter fullscreen and begin the locked exam (must be triggered by a user click). */
+  /** Enter fullscreen and begin the locked exam (must be triggered by a user click).
+   *  Stamps the rules-acknowledgment time on first entry; the effect below logs it. */
   const enterLockdown = useCallback(async () => {
+    if (!ackAtRef.current) ackAtRef.current = new Date().toISOString()
     try { await requestFullscreenCompat(document.documentElement) } catch { /* some browsers/permissions block it */ }
     setFullscreenLost(false)
     setLockdownStarted(true)
   }, [])
+
+  // Record the rules acknowledgment to the append-only integrity log, so there's a
+  // permanent, server-side record (with timestamp) that the student agreed before
+  // starting. Runs once the exam session exists; retries if the session wasn't ready yet.
+  useEffect(() => {
+    if (ackSentRef.current || !ackAtRef.current || !sessionId || !lockdownStarted) return
+    ackSentRef.current = true
+    fetch(`/api/exegesis/${sessionId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ appendIntegrityEvents: [{ type: 'acknowledged-rules', at: ackAtRef.current }] }),
+      keepalive: true,
+    }).catch(() => { ackSentRef.current = false })  // allow a later retry on failure
+  }, [sessionId, lockdownStarted])
 
   function formatTime(secs: number): string {
     const m = Math.floor(secs / 60)
@@ -1620,20 +1671,53 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {lockdownOn && !lockdownStarted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90 px-6 print:hidden">
           {canLockdown ? (
-            <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
-              <div className="text-4xl mb-3">🔒</div>
-              <h2 className="text-xl font-bold text-gray-900">Locked exam</h2>
-              <p className="mt-2 text-sm text-gray-600">
-                This exam runs in lockdown mode. It opens in fullscreen, and leaving fullscreen,
-                switching tabs or windows, or copying &amp; pasting is recorded for your instructor
-                {maxViolations != null ? ` and auto-submits the exam after ${maxViolations} violation${maxViolations === 1 ? '' : 's'}` : ''}.
+            <div className="max-w-lg w-full rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+              <div className="text-center">
+                <div className="text-4xl mb-2">🔒</div>
+                <h2 className="text-xl font-bold text-gray-900">Locked exam — please read before you begin</h2>
+                <p className="mt-1 text-sm text-gray-600">This exam opens in fullscreen. While it is open, the following are recorded with a timestamp and shown to your instructor:</p>
+              </div>
+
+              <ul className="mt-4 space-y-2 text-sm text-gray-700">
+                <li className="flex gap-2"><span className="text-red-500">•</span> Leaving fullscreen</li>
+                <li className="flex gap-2"><span className="text-red-500">•</span> Switching to another tab, window, or application (clicking outside this window)</li>
+                <li className="flex gap-2"><span className="text-red-500">•</span> Copying, pasting, or opening the right-click menu</li>
+              </ul>
+
+              {maxViolations != null ? (
+                <p className="mt-4 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
+                  After <strong>{maxViolations}</strong> such actions, your exam will be <strong>submitted automatically</strong>. Stay in this window and in fullscreen until you finish.
+                </p>
+              ) : (
+                <p className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
+                  These actions are logged for your instructor to review. Stay in this window and in fullscreen until you finish.
+                </p>
+              )}
+
+              <p className="mt-3 rounded-lg bg-emerald-50 border border-emerald-200 px-3 py-2 text-xs text-emerald-800">
+                If your internet drops, don&rsquo;t worry — your answers are saved on this device and sync automatically when you reconnect. Keep working.
               </p>
+
+              <label className="mt-5 flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={rulesAck}
+                  onChange={e => setRulesAck(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-brand-600 focus:ring-brand-400"
+                />
+                <span className="text-sm text-gray-800">I have read and understand these rules and agree to abide by them.</span>
+              </label>
+
               <button
                 onClick={enterLockdown}
-                className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+                disabled={!rulesAck}
+                className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
                 Enter fullscreen &amp; begin
               </button>
+              {!rulesAck && (
+                <p className="mt-2 text-center text-xs text-gray-400">Tick the box above to start the exam.</p>
+              )}
             </div>
           ) : (
             <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
@@ -1672,6 +1756,16 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         <div className={`print:hidden flex items-center justify-between gap-3 px-4 py-1.5 text-xs font-medium ${violations > 0 ? 'bg-red-50 text-red-700 border-b border-red-200' : 'bg-gray-100 text-gray-600 border-b border-gray-200'}`}>
           <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — stay in fullscreen; do not switch tabs or copy/paste.</span>
           <span>{violations > 0 ? `${violations} violation${violations === 1 ? '' : 's'} recorded${lastViolation ? ` · last: ${lastViolation}` : ''}` : 'No violations'}{maxViolations != null ? ` (auto-submit at ${maxViolations})` : ''}</span>
+        </div>
+      )}
+
+      {/* ── Lockdown: transient warning shown each time a violation is recorded ── */}
+      {lockdownOn && lockdownStarted && violationWarning && !fullscreenLost && (
+        <div className="fixed inset-x-0 top-4 z-50 flex justify-center px-4 print:hidden pointer-events-none">
+          <div role="alert" className="pointer-events-auto max-w-md rounded-xl bg-red-600 px-4 py-3 text-sm font-medium text-white shadow-2xl flex items-start gap-2.5">
+            <span className="text-lg leading-none">⚠️</span>
+            <span>{violationWarning}</span>
+          </div>
         </div>
       )}
 

@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { normalizeWeights } from '@/lib/exam-grading'
+import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -95,7 +96,9 @@ export async function PATCH(
     if ('gradeWeights' in body) data.gradeWeights = normalizeWeights(gradeWeights)
     if ('lockdown' in body) data.lockdown = Boolean(lockdown)
     if ('lockdownMaxViolations' in body)
-      data.lockdownMaxViolations = lockdownMaxViolations != null && Number(lockdownMaxViolations) > 0 ? Number(lockdownMaxViolations) : null
+      // Clamp any positive value up to the floor so one stray violation can't end an exam.
+      data.lockdownMaxViolations = lockdownMaxViolations != null && Number(lockdownMaxViolations) > 0
+        ? Math.max(Number(lockdownMaxViolations), MIN_LOCKDOWN_AUTOSUBMIT) : null
     if (maxAppeals !== undefined) data.maxAppeals = maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null
     if ('maxRetakes' in body)
       data.maxRetakes = maxRetakes != null ? Number(maxRetakes) : null

@@ -8,6 +8,7 @@ import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphol
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 import { normalizeWeights } from '@/lib/exam-grading'
+import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
 export async function GET(req: NextRequest) {
   try {
@@ -90,8 +91,10 @@ export async function POST(req: NextRequest) {
       glossFrequency: glossFrequency != null && Number(glossFrequency) > 0 ? Number(glossFrequency) : null,
       gradeWeights: type === 'TRANSLATION_EXAM' ? ({ ...normalizeWeights(gradeWeights) } as Record<string, number>) : undefined,
       lockdown: type === 'TRANSLATION_EXAM' ? Boolean(lockdown) : false,
+      // Auto-submit threshold: blank/0 = log-only (never auto-submit). Any positive value
+      // is clamped up to MIN_LOCKDOWN_AUTOSUBMIT so a single stray violation can't end an exam.
       lockdownMaxViolations: type === 'TRANSLATION_EXAM' && lockdownMaxViolations != null && Number(lockdownMaxViolations) > 0
-        ? Number(lockdownMaxViolations) : null,
+        ? Math.max(Number(lockdownMaxViolations), MIN_LOCKDOWN_AUTOSUBMIT) : null,
       maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
       vocabSelection: vocabSel ?? undefined,
