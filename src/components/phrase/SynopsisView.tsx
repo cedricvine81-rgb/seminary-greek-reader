@@ -311,7 +311,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       {!anchor ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to anchor the synopsis.</p>
       ) : (
-        <div className="flex gap-4 overflow-x-auto pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+        // Capped height with its own scroll (rather than letting the page grow), so a
+        // long passage can't push the parsing pane below the fold — it stays visible
+        // right after the columns without the user needing to scroll to find it.
+        <div className="flex gap-4 overflow-x-auto overflow-y-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
