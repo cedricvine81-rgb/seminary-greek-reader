@@ -125,9 +125,38 @@ function apocryphaUrl(citationText: string): string | null {
   return entry ? `https://en.wikisource.org/wiki/Bible_(King_James)/${entry[1]}` : null
 }
 
+// 1 Enoch (R.H. Charles's public-domain translation) is hosted chapter-by-chapter on
+// Wikisource with a confirmed, predictable URL — better precision than a whole-work link.
+function enoch1Url(citationText: string): string | null {
+  const m = citationText.match(/^1 En\.\s+(\d+):/)
+  if (!m) return null
+  const chapter = m[1].padStart(2, '0')
+  return `https://en.wikisource.org/wiki/The_Book_of_Enoch_(Charles)/Chapter_${chapter}`
+}
+// earlyjewishwritings.com (same publisher family as earlychristianwritings.com, used for
+// Philo above) hosts these pseudepigrapha as one page per work — confirmed directly from
+// its own index, not guessed. No chapter-level granularity here (unlike 1 Enoch above),
+// but still a real, verified link to the right work.
+const EARLY_JEWISH_WRITINGS: Record<string, string> = {
+  '2 En.': '2enoch.html', '3 En.': '3enoch.html', 'Jub.': 'jubilees.html',
+  '2 Bar.': '2baruch.html', '3 Bar.': '3baruch.html', '4 Bar.': '4baruch.html',
+  '4 Ezra': '2esdras.html', 'Pss. Sol.': 'psalmssolomon.html', 'Sib. Or.': 'sibylline.html',
+  // All twelve individual Testaments live on one combined page (no per-testament URLs).
+  'T. Levi': 'testtwelve.html', 'T. Reu': 'testtwelve.html', 'T. Sim': 'testtwelve.html',
+  'T. Jud': 'testtwelve.html', 'T. Iss': 'testtwelve.html', 'T. Zeb': 'testtwelve.html',
+  'T. Dan': 'testtwelve.html', 'T. Naph': 'testtwelve.html', 'T. Gad': 'testtwelve.html',
+  'T. Ash': 'testtwelve.html', 'T. Jos': 'testtwelve.html', 'T. Benj': 'testtwelve.html',
+}
+function pseudepigraphaUrl(citationText: string): string | null {
+  const enoch = enoch1Url(citationText)
+  if (enoch) return enoch
+  const entry = Object.entries(EARLY_JEWISH_WRITINGS).find(([abbrev]) => citationText.startsWith(`${abbrev} `))
+  return entry ? `https://www.earlyjewishwritings.com/${entry[1]}` : null
+}
+
 // Tries each source in turn; extend this as more sources get a verified URL scheme.
 function secondTempleUrl(citationText: string): string | null {
-  return josephusUrl(citationText) ?? philoUrl(citationText) ?? apocryphaUrl(citationText)
+  return josephusUrl(citationText) ?? philoUrl(citationText) ?? apocryphaUrl(citationText) ?? pseudepigraphaUrl(citationText)
 }
 
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
@@ -496,7 +525,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           const extUrl = !c.ref ? secondTempleUrl(c.text) : null
                           if (extUrl) {
                             const sourceName = extUrl.includes('perseus.tufts.edu') ? 'Perseus'
-                              : extUrl.includes('wikisource.org') ? 'KJV Apocrypha' : 'Yonge translation'
+                              : extUrl.includes('Bible_(King_James)') ? 'KJV Apocrypha'
+                              : extUrl.includes('Book_of_Enoch') ? 'Wikisource'
+                              : extUrl.includes('earlyjewishwritings.com') ? 'Early Jewish Writings'
+                              : 'Yonge translation'
                             return (
                               <a
                                 key={ci}
