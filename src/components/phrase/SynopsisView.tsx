@@ -255,6 +255,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         >
           {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
         </select>
+        {isGreek && (
+          <span className="text-xs text-gray-500">
+            <span className="hidden sm:inline">Tip: </span>click any Greek word to see its parsing.
+          </span>
+        )}
       </div>
 
       {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
