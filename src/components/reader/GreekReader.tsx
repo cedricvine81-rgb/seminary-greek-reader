@@ -132,6 +132,22 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
   const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
   const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
 
+  // ── Full book list (both corpora) for resolving a typed reference like "Gen 1" ──
+  // Fetched once from the static /data/books.json asset — the same file the reader API's
+  // book-list endpoint reads server-side — rather than derived from gntQueue/lxxQueue,
+  // which populate from separate background fetches (LXX is the larger of the two) and
+  // so wouldn't reliably contain an LXX book yet if the user searched right after the
+  // page loaded. A static asset fetch is small and independent of those heavier calls.
+  const [allBooks, setAllBooks] = useState<BiblicalBook[]>([])
+  const allBooksRef = useRef(allBooks)
+  useEffect(() => { allBooksRef.current = allBooks }, [allBooks])
+  useEffect(() => {
+    fetch('/data/books.json')
+      .then(r => r.json())
+      .then((d: { gnt?: BiblicalBook[]; lxx?: BiblicalBook[] }) => setAllBooks([...(d.gnt ?? []), ...(d.lxx ?? [])]))
+      .catch(() => {})
+  }, [])
+
   // ── Per-verse personal notes (signed-in readers) ─────────────────────────────
   // Keyed "bookId.chapter.verse" for the currently-loaded chapters.
   const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
@@ -548,30 +564,56 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
 
   // ── Search / navigation ────────────────────────────────────────────────────────
 
+  // Poll until the full book list (fetched from /data/books.json on mount) is
+  // populated, so a search right after page load doesn't race that fetch.
+  async function waitForBooksReady(timeoutMs = 10_000): Promise<BiblicalBook[]> {
+    const start = Date.now()
+    while (allBooksRef.current.length === 0 && Date.now() - start < timeoutMs) {
+      await new Promise(resolve => setTimeout(resolve, 100))
+    }
+    return allBooksRef.current
+  }
+
+  // Poll until the target corpus's queue actually contains the requested chapter, or
+  // give up after a timeout. gntQueue/lxxQueue populate from their own background
+  // fetches on mount (LXX is the larger of the two), so a reference into a corpus that
+  // hasn't finished loading yet would otherwise find no match and silently do nothing.
+  async function waitForChapterInQueue(isLxx: boolean, osisId: string, chapter: number, timeoutMs = 10_000): Promise<boolean> {
+    const start = Date.now()
+    while (Date.now() - start < timeoutMs) {
+      const queue = isLxx ? lxxQueueRef.current : gntQueueRef.current
+      if (queue.some(item => item.osisId === osisId && item.chapter === chapter)) return true
+      await new Promise(resolve => setTimeout(resolve, 150))
+    }
+    return false
+  }
+
   async function handleSearch(query: string, type: 'word' | 'reference') {
     const trimmed = query.trim()
 
     if (type === 'reference') {
-      const booksFromQueues: BiblicalBook[] = []
-      const seen = new Set<string>()
-      for (const q of [...gntQueue, ...lxxQueue]) {
-        if (seen.has(q.osisId)) continue
-        seen.add(q.osisId)
-        booksFromQueues.push({
-          id: q.osisId, osisId: q.osisId, name: q.bookName,
-          abbrev: q.osisId, corpus: q.corpus as 'GNT' | 'LXX' | 'NA1904',
-          totalChapters: (q.corpus === 'GNT' || q.corpus === 'NA1904' ? gntQueue : lxxQueue)
-            .filter(x => x.osisId === q.osisId).length,
-        })
-      }
-      const ref = parseReference(trimmed, booksFromQueues)
-      if (ref) {
-        setSearchLoading(true)
-        setSearchResults(null)   // stay in scrolling mode
-        setSearchType(null)
-        setWordSearchTerm(null)
-        try {
-          const isLxx     = ref.book.corpus === 'LXX'
+      setSearchLoading(true)
+      let handledAsReference = false
+      try {
+        // Resolved against the full book list (both corpora), not the live queues —
+        // otherwise a reference into a corpus that hadn't finished loading yet (LXX
+        // is the larger fetch) would find no matching book and silently fail.
+        const books = await waitForBooksReady()
+        const ref = parseReference(trimmed, books)
+        if (ref) {
+          handledAsReference = true
+          setSearchResults(null)   // stay in scrolling mode
+          setSearchType(null)
+          setWordSearchTerm(null)
+          const isLxx  = ref.book.corpus === 'LXX'
+          const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
+          if (!ready) {
+            // The corpus never finished loading (or something's genuinely wrong) —
+            // say so instead of leaving the reader looking like nothing happened.
+            setSearchType('reference')
+            setSearchResults([])
+            return
+          }
           const queue     = isLxx ? lxxQueueRef.current : gntQueueRef.current
           const targetIdx = queue.findIndex(
             item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
@@ -619,9 +661,9 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
             if (isLxx) lxxLoading.current = false
             else       gntLoading.current = false
           }
-        } finally { setSearchLoading(false) }
-        return
-      }
+        }
+      } finally { setSearchLoading(false) }
+      if (handledAsReference) return
     }
 
     setSearchLoading(true)
