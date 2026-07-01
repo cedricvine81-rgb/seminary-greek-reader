@@ -57,6 +57,21 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 
+// Perseus Digital Library's own confirmed URL scheme for Whiston's translation of
+// Josephus (CC BY-SA 3.0 US) — Antiquities of the Jews = Perseus text 1999.01.0146,
+// The Jewish War = 1999.01.0148, both addressable by book/chapter/section. Rather than
+// reproducing this public-domain text inside the app (bulk-scraping hundreds of
+// passages isn't reliable or appropriate), cross-references to Josephus link straight
+// to the matching page on Perseus, the authoritative source.
+function josephusUrl(citationText: string): string | null {
+  const m = citationText.match(/Josephus,\s*(J\.W\.|Ant\.)\s*(\d+)\.(\d+)(?:\.(\d+))?/)
+  if (!m) return null
+  const textId = m[1] === 'J.W.' ? '0148' : '0146'
+  let url = `https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.${textId}:book%3D${m[2]}:whiston+chapter%3D${m[3]}`
+  if (m[4]) url += `:whiston+section%3D${m[4]}`
+  return url
+}
+
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
 interface CrossRefCitation {
   text: string
@@ -419,17 +434,35 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <div key={ei}>
                       <p className="text-[11px] font-semibold text-gray-500 mb-1">{entry.label}</p>
                       <div className="space-y-1">
-                        {cites.map((c, ci) => (
-                          <button
-                            key={ci}
-                            onClick={() => openRightRef(entry.label, c)}
-                            disabled={!c.ref}
-                            title={c.ref ? 'View text' : 'Full text not yet available for this source'}
-                            className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${c.ref ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
-                          >
-                            {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
-                          </button>
-                        ))}
+                        {cites.map((c, ci) => {
+                          const extUrl = !c.ref ? josephusUrl(c.text) : null
+                          if (extUrl) {
+                            return (
+                              <a
+                                key={ci}
+                                href={extUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Read this passage at Perseus Digital Library (opens in a new tab)"
+                                className={`flex items-center justify-between gap-1.5 w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 ${TYPE_COLORS[c.type]}`}
+                              >
+                                <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
+                                <span className="shrink-0 text-[10px] opacity-60">Perseus ↗</span>
+                              </a>
+                            )
+                          }
+                          return (
+                            <button
+                              key={ci}
+                              onClick={() => openRightRef(entry.label, c)}
+                              disabled={!c.ref}
+                              title={c.ref ? 'View text' : 'Full text not yet available for this source'}
+                              className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${c.ref ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                            >
+                              {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
+                            </button>
+                          )
+                        })}
                       </div>
                     </div>
                   )
