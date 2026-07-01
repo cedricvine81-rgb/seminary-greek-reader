@@ -397,6 +397,19 @@ function exitFullscreenCompat(): void {
     }
   } catch { /* ignore */ }
 }
+/** True on iPad. iPadOS Safari *reports* support for the element Fullscreen API
+ *  (unlike iPhone), but that support is unreliable in practice — scrolling can
+ *  silently drop the page out of fullscreen mid-exam, which is a browser quirk, not
+ *  the student leaving. Confirmed against real exam logs: students repeatedly hit
+ *  paired fullscreen-exit + window-blur events seconds apart while simply scrolling.
+ *  So lockdown on iPad still runs (tab-switch/copy-paste detection is unaffected),
+ *  but does not require or police fullscreen. iPadOS 13+ reports its UA as
+ *  "Macintosh" — multi-touch is what distinguishes it from a real Mac. */
+function isIPad(): boolean {
+  if (typeof navigator === 'undefined') return false
+  if (/iPad/.test(navigator.userAgent)) return true
+  return /Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1
+}
 
 // Student-facing wording for each integrity event type (shown in the live warning).
 const VIOLATION_MESSAGES: Record<string, string> = {
@@ -581,6 +594,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     window.addEventListener('resize', f)
     return () => window.removeEventListener('resize', f)
   }, [])
+  // Computed once on mount (device identity doesn't change mid-session).
+  const [isIPadDevice] = useState(() => isIPad())
 
   // ── Load books list ──
   useEffect(() => {
@@ -1630,6 +1645,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     const onFullscreenChange = () => {
       // Our own exit-on-submit isn't a violation — consume the flag and ignore it.
       if (suppressFsExitRef.current) { suppressFsExitRef.current = false; return }
+      // iPad doesn't police fullscreen at all — see isIPad()'s comment for why.
+      if (isIPadDevice) return
       // Only count a fullscreen exit on browsers that actually support fullscreen — on
       // iPhone Safari there's no fullscreen, so this must not fire spurious violations.
       if (fullscreenSupported() && !fullscreenElementCompat()) { setFullscreenLost(true); recordViolation('fullscreen-exit') }
@@ -1654,7 +1671,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       document.removeEventListener('paste', onPaste)
       document.removeEventListener('contextmenu', onContextMenu)
     }
-  }, [lockdownOn, lockdownStarted, recordViolation])
+  }, [lockdownOn, lockdownStarted, recordViolation, isIPadDevice])
 
   // While a lockdown exam is in progress, hide the app chrome (top bar, sidebar, mobile
   // nav) so the student can't navigate away mid-exam. globals.css hides them under this class.
@@ -1713,22 +1730,28 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <div className="text-center">
                 <div className="text-4xl mb-2">🔒</div>
                 <h2 className="text-xl font-bold text-gray-900">Locked exam — please read before you begin</h2>
-                <p className="mt-1 text-sm text-gray-600">This exam opens in fullscreen. While it is open, the following are recorded with a timestamp and shown to your instructor:</p>
+                <p className="mt-1 text-sm text-gray-600">
+                  {isIPadDevice
+                    ? 'While this exam is open, the following are recorded with a timestamp and shown to your instructor:'
+                    : 'This exam opens in fullscreen. While it is open, the following are recorded with a timestamp and shown to your instructor:'}
+                </p>
               </div>
 
               <ul className="mt-4 space-y-2 text-sm text-gray-700">
-                <li className="flex gap-2"><span className="text-red-500">•</span> Leaving fullscreen</li>
+                {!isIPadDevice && (
+                  <li className="flex gap-2"><span className="text-red-500">•</span> Leaving fullscreen</li>
+                )}
                 <li className="flex gap-2"><span className="text-red-500">•</span> Switching to another tab, window, or application (clicking outside this window)</li>
                 <li className="flex gap-2"><span className="text-red-500">•</span> Copying, pasting, or opening the right-click menu</li>
               </ul>
 
               {maxViolations != null ? (
                 <p className="mt-4 rounded-lg bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
-                  After <strong>{maxViolations}</strong> such actions, your exam will be <strong>submitted automatically</strong>. Stay in this window and in fullscreen until you finish.
+                  After <strong>{maxViolations}</strong> such actions, your exam will be <strong>submitted automatically</strong>. Stay in this {isIPadDevice ? 'browser tab' : 'window and in fullscreen'} until you finish.
                 </p>
               ) : (
                 <p className="mt-4 rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
-                  These actions are logged for your instructor to review. Stay in this window and in fullscreen until you finish.
+                  These actions are logged for your instructor to review. Stay in this {isIPadDevice ? 'browser tab' : 'window and in fullscreen'} until you finish.
                 </p>
               )}
 
@@ -1751,7 +1774,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 disabled={!rulesAck}
                 className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
-                Enter fullscreen &amp; begin
+                {isIPadDevice ? 'Begin exam' : 'Enter fullscreen & begin'}
               </button>
               {!rulesAck && (
                 <p className="mt-2 text-center text-xs text-gray-400">Tick the box above to start the exam.</p>
@@ -1792,7 +1815,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Lockdown: persistent integrity status ── */}
       {lockdownOn && lockdownStarted && (
         <div className={`print:hidden flex items-center justify-between gap-3 px-4 py-1.5 text-xs font-medium ${violations > 0 ? 'bg-red-50 text-red-700 border-b border-red-200' : 'bg-gray-100 text-gray-600 border-b border-gray-200'}`}>
-          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — stay in fullscreen; do not switch tabs or copy/paste.</span>
+          <span className="inline-flex items-center gap-1.5">🔒 Lockdown exam — {isIPadDevice ? 'stay in this tab' : 'stay in fullscreen'}; do not switch tabs or copy/paste.</span>
           <span>{violations > 0 ? `${violations} violation${violations === 1 ? '' : 's'} recorded${lastViolation ? ` · last: ${lastViolation}` : ''}` : 'No violations'}{maxViolations != null ? ` (auto-submit at ${maxViolations})` : ''}</span>
         </div>
       )}
