@@ -2,6 +2,8 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 
 // Text-size control — same scale as the Phrasing tab (shares its type/values so the
@@ -40,10 +42,12 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 
-// A clickable Greek word carries enough to fill the parsing pane. Nestle 1904 words
-// (from the phrase tree) ship a ready-made `parsing` string + gloss; Tischendorf words
-// (from /data/gnt) ship structured morph we format the same way.
-type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string }
+// A clickable Greek word carries enough to fill the parsing pane (the same shared
+// ParsingPanel used on the Phrasing tab, which looks up Thayer's/Mounce/Abbott-Smith/
+// LSJ by Strong's number). Nestle 1904 words (from the phrase tree) ship a ready-made
+// `parsing` string + gloss; Tischendorf words (from /data/gnt) ship structured morph we
+// format the same way. Both ship a Strong's number.
+type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
 const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
 function formatGntMorph(m: Record<string, string | null> | undefined): string {
   if (!m) return ''
@@ -78,10 +82,16 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // Report attribution up so the hoisted tools menu can show it without duplicating
   // the gospel-parallels fetch.
   useEffect(() => { onAttribution?.(parallelsAttribution) }, [parallelsAttribution, onAttribution])
+  // Clear any clicked-word selection when the anchor passage changes, so the pane falls
+  // back to the new passage's default word instead of showing a stale selection.
+  useEffect(() => { setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
   const cache = useRef<Record<string, Record<string, string>>>({})  // version → verseId → text
   // Greek word-level tokens (surface + parse) for the clickable parsing pane.
   const wordCache = useRef<Record<string, Record<string, WordToken[]>>>({})  // version → verseId → tokens
-  const [selectedWord, setSelectedWord] = useState<WordToken | null>(null)
+  // The word whose lexical detail is shown in the parsing pane, plus a key identifying
+  // its exact instance (so highlighting doesn't light up every occurrence of a word).
+  const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
+  const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const loaded = useRef<Set<string>>(new Set())
   const [, setVer] = useState(0)
   const bump = () => setVer(v => v + 1)
@@ -172,7 +182,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     loaded.current.add(ck)
     const done = (map: Record<string, string>, patch: Record<string, string>) => { Object.assign(map, patch); bump() }
     if (v === 'na1904') {
-      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; c?: Node[] }
+      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; strongs?: string; c?: Node[] }
       fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: { sentences?: { tree: Node }[] }) => {
         const byVerse: Record<string, { i: number; tok: WordToken }[]> = {}
         const walk = (n: Node) => {
@@ -180,7 +190,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
             const [bk, ch, vs, wd] = n.id.split('.')
             ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({
               i: parseInt(wd || '0', 10),
-              tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss },
+              tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss, strongs: n.strongs },
             })
           } else (n.c ?? []).forEach(walk)
         }
@@ -196,14 +206,14 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         done((cache.current.na1904 ??= {}), patch)
       }).catch(() => {})
     } else if (v === 'gnt') {
-      type GntWord = { surface: string; lemma?: string; morph?: Record<string, string | null> }
+      type GntWord = { surface: string; lemma?: string; strongs?: string; morph?: Record<string, string | null> }
       fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string; words?: GntWord[] }[] }) => {
         const map = (cache.current.gnt ??= {})
         const wmap = (wordCache.current.gnt ??= {})
         for (const vv of d.verses ?? []) {
           const vid = `${osis}.${chapter}.${vv.verse}`
           map[vid] = vv.text
-          if (vv.words) wmap[vid] = vv.words.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '' }))
+          if (vv.words) wmap[vid] = vv.words.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '', strongs: w.strongs }))
         }
         bump()
       }).catch(() => {})
@@ -219,7 +229,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     }
   }
 
-  function column(ref: string): { label: string; book: string; chapter: number; verses: { ref: string; verse: number; text: string; tokens?: WordToken[] }[] } | null {
+  function column(ref: string): { label: string; book: string; bookName: string; chapter: number; verses: { ref: string; verse: number; text: string; tokens?: WordToken[] }[] } | null {
     const p = parseRef(ref, books)
     if (!p) return null
     const map = cache.current[version] ?? {}
@@ -231,7 +241,15 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       if (t) verses.push({ ref: `${p.chapter}:${v}`, verse: v, text: t, tokens: wmap[vid] })
     }
     const label = `${p.book.name} ${p.chapter}:${p.verseStart}${p.verseEnd !== p.verseStart ? `–${verses.length ? verses[verses.length - 1].ref.split(':')[1] : p.verseEnd}` : ''}`
-    return { label, book: p.book.osisId, chapter: p.chapter, verses }
+    return { label, book: p.book.osisId, bookName: p.book.name, chapter: p.chapter, verses }
+  }
+
+  /** Build the ParsingPanel's info object for a clicked word, given its owning column + verse. */
+  function toLexicalInfo(tok: WordToken, bookName: string, verseRef: string): LexicalInfoPanel {
+    return {
+      surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '',
+      parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName} ${verseRef}`,
+    }
   }
 
   const addRef = () => {
@@ -243,6 +261,18 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   }
 
   const isGreek = version === 'gnt' || version === 'na1904'
+
+  // Default parsing-pane content before any word is clicked: the anchor column's first
+  // available token, so the pane never sits empty (mirrors the Phrasing tab's behavior).
+  const defaultParsingInfo: LexicalInfoPanel | null = (() => {
+    if (!isGreek || !anchor) return null
+    const col0 = column(anchor)
+    if (!col0) return null
+    const firstVerse = col0.verses.find(v => v.tokens && v.tokens.length > 0)
+    const firstTok = firstVerse?.tokens?.[0]
+    if (!firstVerse || !firstTok) return null
+    return toLexicalInfo(firstTok, col0.bookName, firstVerse.ref)
+  })()
 
   return (
     <div className="space-y-4">
@@ -303,19 +333,22 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
                         )}
                         <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
-                        {/* Greek: clickable words open the parsing pane. Falls back to plain
-                            text if word-level tokens haven't loaded (or aren't available). */}
+                        {/* Greek: clickable words update the parsing pane below. Falls back to
+                            plain text if word-level tokens haven't loaded (or aren't available). */}
                         {isGreek && v.tokens && v.tokens.length > 0
-                          ? v.tokens.map((tok, ti) => (
-                              <span
-                                key={ti}
-                                onClick={() => setSelectedWord(tok)}
-                                title="Click to parse"
-                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedWord?.surface === tok.surface && selectedWord?.parsing === tok.parsing ? 'bg-brand-100' : ''}`}
-                              >
-                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
-                              </span>
-                            ))
+                          ? v.tokens.map((tok, ti) => {
+                              const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
+                              return (
+                                <span
+                                  key={ti}
+                                  onClick={() => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }}
+                                  title="Click to parse"
+                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
+                                >
+                                  {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                                </span>
+                              )
+                            })
                           : v.text}
                       </p>
                     ))}
@@ -344,23 +377,13 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         </div>
       )}
 
-      {/* Parsing pane — click a Greek word to see its parse. Along the bottom so it doesn't
-          compete with the horizontally-scrolling comparison columns. */}
-      {selectedWord && (
-        <div className="sticky bottom-0 z-10 rounded-xl border border-brand-300 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
-          <div className="flex items-start justify-between gap-4">
-            <div className="min-w-0">
-              <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="font-greek text-2xl text-brand-800">{selectedWord.surface}</span>
-                {selectedWord.lemma && <span className="font-greek text-lg text-gray-600">{selectedWord.lemma}</span>}
-              </div>
-              {selectedWord.parsing
-                ? <p className="mt-1 text-sm font-medium text-gray-800">{selectedWord.parsing}</p>
-                : <p className="mt-1 text-xs text-gray-400 italic">No parsing available for this word.</p>}
-              {selectedWord.gloss && <p className="mt-0.5 text-sm italic text-gray-500">{selectedWord.gloss}</p>}
-            </div>
-            <button onClick={() => setSelectedWord(null)} aria-label="Close parsing" className="shrink-0 text-gray-400 hover:text-gray-700"><X size={16} /></button>
-          </div>
+      {/* Parsing pane — the same shared component used on the Phrasing tab (Strong's,
+          Thayer's, Mounce, Abbott-Smith, LSJ). Always visible for a Greek edition so its
+          presence is obvious; defaults to the anchor's first word until one is clicked.
+          Sticky along the bottom so it doesn't compete with the scrolling columns. */}
+      {isGreek && (
+        <div className="sticky bottom-0 z-10">
+          <ParsingPanel info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
         </div>
       )}
     </div>
