@@ -527,6 +527,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // resubmitted, the passed exam deadline no longer locks or auto-submits the work,
   // so the student can edit and resubmit.
   const [reopenedAt, setReopenedAt] = useState<string | null>(null)
+  // Re-entrancy guard: the deadline-cutoff and round1-passed effects can both fire on the
+  // same tick, and a double-click can too — this ensures only one submit runs at a time.
+  const submittingRef = useRef(false)
+  // Set right before we programmatically leave fullscreen on submit, so the
+  // fullscreenchange handler doesn't log that as a violation or flash the re-entry overlay.
+  const suppressFsExitRef = useRef(false)
 
   // ── Stage 1 Timer (annotation phase) ──
   const [secondsLeft, setSecondsLeft] = useState<number | null>(null)  // null = untimed
@@ -1267,6 +1273,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       setSubmitError('Please complete “Areas for Improvement” before submitting for grading.')
       return
     }
+    if (submittingRef.current || submitted) return   // already submitting/submitted — don't double-fire
+    submittingRef.current = true
     setIsSubmitting(true)
     setSubmitError('')
     try {
@@ -1274,7 +1282,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       // corrections, verse fields, and notes) synchronously before submitting — so
       // anything typed in the last couple of seconds isn't lost, and no late autosave
       // fires after submittedAt is set (which the server would reject).
-      if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current)
+      if (autoSaveTimer.current) { clearTimeout(autoSaveTimer.current); autoSaveTimer.current = null }
       let sid = await saveSession()
       if (!sid) sid = sessionId
       if (!sid) { setSubmitError('Could not save your work. Please try again.'); return }
@@ -1296,6 +1304,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         // Close the exam once it's submitted (manual, timer, deadline, or violation):
         // leave the locked fullscreen view and return the student to their assignments.
         if (isExam) {
+          suppressFsExitRef.current = true   // our own exit — don't flag it as a violation
           exitFullscreenCompat()
           router.push('/student/assignments')
         }
@@ -1307,6 +1316,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       setSubmitError('Network error. Please check your connection and try again.')
     } finally {
       setIsSubmitting(false)
+      submittingRef.current = false
     }
   }
 
@@ -1618,6 +1628,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     const onVisibility = () => { if (document.hidden) recordViolation('tab-hidden') }
     const onBlur = () => recordViolation('window-blur')
     const onFullscreenChange = () => {
+      // Our own exit-on-submit isn't a violation — consume the flag and ignore it.
+      if (suppressFsExitRef.current) { suppressFsExitRef.current = false; return }
       // Only count a fullscreen exit on browsers that actually support fullscreen — on
       // iPhone Safari there's no fullscreen, so this must not fire spurious violations.
       if (fullscreenSupported() && !fullscreenElementCompat()) { setFullscreenLost(true); recordViolation('fullscreen-exit') }

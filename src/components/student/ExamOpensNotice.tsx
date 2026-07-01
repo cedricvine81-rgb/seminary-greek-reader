@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 /**
@@ -28,10 +28,11 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
   const isOpen = remaining <= 0
 
   // The instant the countdown reaches zero, re-run the server component so the exam
-  // becomes available without the student having to refresh manually. Fires once
-  // (the effect's deps don't change once isOpen flips true).
+  // becomes available without the student having to refresh manually. Guarded by a ref
+  // so it fires exactly once, even if server/client clocks are slightly skewed.
+  const refreshedRef = useRef(false)
   useEffect(() => {
-    if (isOpen) router.refresh()
+    if (isOpen && !refreshedRef.current) { refreshedRef.current = true; router.refresh() }
   }, [isOpen, router])
 
   function fmt(ms: number): string {
