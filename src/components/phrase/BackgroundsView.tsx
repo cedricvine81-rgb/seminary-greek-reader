@@ -107,9 +107,27 @@ function philoUrl(citationText: string): string | null {
     null
   return page ? PHILO_BASE + page : null
 }
+
+// The 1611 King James Apocrypha (public domain) is hosted book-by-book on Wikisource
+// with a clean, predictable URL — confirmed directly from Wikisource's own index page,
+// not guessed. 3/4 Maccabees aren't part of the KJV Apocrypha and aren't on Wikisource
+// under this scheme, so they're left unmapped rather than guessed at.
+const WIKISOURCE_APOCRYPHA: Record<string, string> = {
+  '1 Esdr': '1_Esdras', '2 Esdr': '2_Esdras', 'Tob': 'Tobit', 'Jdt': 'Judith',
+  'Wis': 'Wisdom_of_Solomon', 'Sir': 'Ecclesiasticus', 'Bar': 'Baruch',
+  'Pr Man': 'Prayer_of_Manasseh', 'Sus': 'Susanna', '1 Macc': '1_Maccabees', '2 Macc': '2_Maccabees',
+}
+function apocryphaUrl(citationText: string): string | null {
+  // The Epistle/Letter of Jeremiah is traditionally Baruch chapter 6 in the KJV — the
+  // dataset's own citations note this equivalence (e.g. "Ep Jer 29 (= Bar 6:29)").
+  if (/^Ep Jer\s/.test(citationText)) return 'https://en.wikisource.org/wiki/Bible_(King_James)/Baruch'
+  const entry = Object.entries(WIKISOURCE_APOCRYPHA).find(([abbrev]) => citationText.startsWith(`${abbrev} `))
+  return entry ? `https://en.wikisource.org/wiki/Bible_(King_James)/${entry[1]}` : null
+}
+
 // Tries each source in turn; extend this as more sources get a verified URL scheme.
 function secondTempleUrl(citationText: string): string | null {
-  return josephusUrl(citationText) ?? philoUrl(citationText)
+  return josephusUrl(citationText) ?? philoUrl(citationText) ?? apocryphaUrl(citationText)
 }
 
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
@@ -477,7 +495,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                         {cites.map((c, ci) => {
                           const extUrl = !c.ref ? secondTempleUrl(c.text) : null
                           if (extUrl) {
-                            const sourceName = extUrl.includes('perseus.tufts.edu') ? 'Perseus' : 'Yonge translation'
+                            const sourceName = extUrl.includes('perseus.tufts.edu') ? 'Perseus'
+                              : extUrl.includes('wikisource.org') ? 'KJV Apocrypha' : 'Yonge translation'
                             return (
                               <a
                                 key={ci}
