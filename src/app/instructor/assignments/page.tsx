@@ -41,7 +41,7 @@ export default async function InstructorAssignmentsPage() {
     }),
     prisma.enrollment.groupBy({
       by: ['courseId'],
-      where: { courseId: { in: courseIds } },
+      where: { courseId: { in: courseIds }, user: { deletedAt: null } },
       _count: { userId: true },
     }),
   ])

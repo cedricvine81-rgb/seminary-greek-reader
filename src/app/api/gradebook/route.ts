@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
 
   // All approved enrolled students
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId, status: 'APPROVED' },
+    where: { courseId, status: 'APPROVED', user: { deletedAt: null } },
     include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
   })
   // Alphabetical by surname, then first name (case-insensitive, locale-aware).

@@ -57,10 +57,10 @@ export default async function InstructorPage() {
     prisma.assignment.count({ where: { courseId: { in: courseIds } } }),
     prisma.enrollment.groupBy({
       by: ['userId'],
-      where: { courseId: { in: courseIds }, status: 'APPROVED' },
+      where: { courseId: { in: courseIds }, status: 'APPROVED', user: { deletedAt: null } },
     }).then(r => r.length),
     prisma.enrollment.findMany({
-      where: { courseId: { in: courseIds }, status: 'PENDING' },
+      where: { courseId: { in: courseIds }, status: 'PENDING', user: { deletedAt: null } },
       select: {
         id: true,
         createdAt: true,

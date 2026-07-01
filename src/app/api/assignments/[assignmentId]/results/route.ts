@@ -66,7 +66,7 @@ export async function GET(
     assignment.type === 'TRANSLATION_EXAM'
 
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId: assignment.courseId, status: 'APPROVED' },
+    where: { courseId: assignment.courseId, status: 'APPROVED', user: { deletedAt: null } },
     include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
   })
   // Alphabetical by surname, then first name (case-insensitive, locale-aware).

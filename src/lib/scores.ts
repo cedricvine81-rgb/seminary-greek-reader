@@ -38,7 +38,7 @@ export async function saveAssignmentScore(userId: string, assignmentId: string, 
 
 export async function getCourseLeaderboard(courseId: string) {
   const enrollments = await prisma.enrollment.findMany({
-    where: { courseId },
+    where: { courseId, user: { deletedAt: null } },
     include: { user: { select: { id: true, firstName: true, surname: true } } },
   })
 

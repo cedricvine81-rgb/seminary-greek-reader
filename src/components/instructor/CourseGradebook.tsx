@@ -40,7 +40,7 @@ function avg(nums: (number | null)[]): number | null {
 export async function CourseGradebook({ courseId }: Props) {
   const [enrollments, assignments, course] = await Promise.all([
     prisma.enrollment.findMany({
-      where: { courseId, status: 'APPROVED' },
+      where: { courseId, status: 'APPROVED', user: { deletedAt: null } },
       include: { user: { select: { id: true, firstName: true, surname: true, email: true } } },
     }),
     prisma.assignment.findMany({

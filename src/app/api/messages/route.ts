@@ -155,7 +155,7 @@ export async function POST(req: NextRequest) {
       recipientIds = [recipientId]
     } else {
       const enrollments = await prisma.enrollment.findMany({
-        where: { courseId, status: 'APPROVED' },
+        where: { courseId, status: 'APPROVED', user: { deletedAt: null } },
         select: { userId: true },
       })
       recipientIds = enrollments.map(e => e.userId)

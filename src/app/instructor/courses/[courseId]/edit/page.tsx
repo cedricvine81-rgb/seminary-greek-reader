@@ -41,7 +41,7 @@ export default async function EditCoursePage({ params }: { params: { courseId: s
 
   const [pendingEnrollments, materials] = await Promise.all([
     prisma.enrollment.findMany({
-      where: { courseId: params.courseId, status: 'PENDING' },
+      where: { courseId: params.courseId, status: 'PENDING', user: { deletedAt: null } },
       select: {
         id: true,
         createdAt: true,

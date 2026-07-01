@@ -26,7 +26,7 @@ export async function GET() {
     ).map(c => c.id)
 
     const pending = await prisma.enrollment.findMany({
-      where: { courseId: { in: courseIds }, status: 'PENDING' },
+      where: { courseId: { in: courseIds }, status: 'PENDING', user: { deletedAt: null } },
       select: {
         id: true,
         createdAt: true,

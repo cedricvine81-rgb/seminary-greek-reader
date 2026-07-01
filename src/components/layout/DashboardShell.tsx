@@ -28,7 +28,7 @@ async function getPendingRequestCount(instructorId: string): Promise<number> {
       select: { id: true },
     })
     return prisma.enrollment.count({
-      where: { courseId: { in: courses.map(c => c.id) }, status: 'PENDING' },
+      where: { courseId: { in: courses.map(c => c.id) }, status: 'PENDING', user: { deletedAt: null } },
     })
   } catch {
     return 0
