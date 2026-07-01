@@ -78,10 +78,17 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [addInput, setAddInput] = useState('')
   const [addError, setAddError] = useState(false)
   const [pericopes, setPericopes] = useState<Record<string, string>[]>([])
+  // Non-Gospel NT parallels (Ephesians/Colossians, Jude/2 Peter, Acts doublets) — a
+  // separate, smaller curated set, since "parallel" there means literary/verbal overlap
+  // rather than a multi-Gospel narrative event.
+  const [ntParallels, setNtParallels] = useState<{ title: string; refs: string[] }[]>([])
   const [parallelsAttribution, setParallelsAttribution] = useState('')
-  // Report attribution up so the hoisted tools menu can show it without duplicating
-  // the gospel-parallels fetch.
-  useEffect(() => { onAttribution?.(parallelsAttribution) }, [parallelsAttribution, onAttribution])
+  const [ntParallelsAttribution, setNtParallelsAttribution] = useState('')
+  // Report combined attribution up so the hoisted tools menu can show it without
+  // duplicating either parallels fetch.
+  useEffect(() => {
+    onAttribution?.([parallelsAttribution, ntParallelsAttribution].filter(Boolean).join(' '))
+  }, [parallelsAttribution, ntParallelsAttribution, onAttribution])
   // Clear any clicked-word selection when the anchor passage changes, so the pane falls
   // back to the new passage's default word instead of showing a stale selection.
   useEffect(() => { setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
@@ -126,6 +133,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       setPericopes(d.pericopes ?? [])
       setParallelsAttribution(d.attribution ?? '')
     }).catch(() => {})
+    fetch('/data/nt-parallels.json').then(r => r.json()).then((d: { attribution?: string; parallels?: { title: string; refs: string[] }[] }) => {
+      setNtParallels(d.parallels ?? [])
+      setNtParallelsAttribution(d.attribution ?? '')
+    }).catch(() => {})
   }, [])
 
   // Find the best-matching gospel pericope for the anchor and its parallel refs.
@@ -152,16 +163,40 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     matches.sort((a, b) => b.score - a.score)
     return { title: matches[0].title, refs: matches[0].refs }
   }
-  const best = computeBest(anchor)
+
+  // Non-Gospel NT parallels (Ephesians/Colossians, Jude/2 Peter, Acts doublets): a flat
+  // list of { title, refs[] } entries rather than the Gospel table's book-keyed columns,
+  // since these span arbitrary book pairs (and Acts pairs a book with itself). Returns
+  // the first entry whose refs overlap the anchor, plus its other refs to suggest.
+  function computeBestNt(anchorRef: string): { title: string; refs: string[] } | null {
+    if (!anchorRef || !books.length || !ntParallels.length) return null
+    const p = parseRef(anchorRef, books)
+    if (!p) return null
+    for (const par of ntParallels) {
+      const idx = par.refs.findIndex(r => {
+        const cp = parseRef(r, books)
+        return !!cp && cp.book.osisId === p.book.osisId && cp.chapter === p.chapter && cp.verseStart <= p.verseEnd && cp.verseEnd >= p.verseStart
+      })
+      if (idx !== -1) return { title: par.title, refs: par.refs.filter((_, i) => i !== idx) }
+    }
+    return null
+  }
+
+  // Gospel pericopes take priority (richer, denser dataset); the NT parallels only
+  // apply outside the Gospels anyway, so the two never really compete for the same anchor.
+  const bestGospel = computeBest(anchor)
+  const bestNt = !bestGospel ? computeBestNt(anchor) : null
+  const best = bestGospel ?? bestNt
+  const parallelsLabel = bestGospel ? 'Gospel parallels' : 'Parallel passages'
   // Chips offer to re-add any parallel the user has removed.
   const suggestionChips = best ? best.refs.filter(r => !columns.includes(r)) : []
 
   // Auto-load the parallels as columns when the anchor passage changes.
   useEffect(() => {
-    const b = computeBest(anchor)
+    const b = computeBest(anchor) ?? computeBestNt(anchor)
     setExtraRefs(b ? b.refs : [])
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [anchor, books, pericopes])
+  }, [anchor, books, pericopes, ntParallels])
 
   // Load verse text for every column's chapter in the chosen version.
   useEffect(() => {
@@ -295,7 +330,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
       {best && (
         <div className="flex items-center flex-wrap gap-2">
-          <span className="text-xs font-medium text-gray-500">Gospel parallels — <span className="text-gray-700">{best.title}</span></span>
+          <span className="text-xs font-medium text-gray-500">{parallelsLabel} — <span className="text-gray-700">{best.title}</span></span>
           {suggestionChips.map(r => (
             <button
               key={r}

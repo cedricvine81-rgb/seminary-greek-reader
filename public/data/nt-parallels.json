@@ -1,0 +1,25 @@
+{
+  "attribution": "Non-Gospel NT parallels: standard cross-references compiled from Ephesians/Colossians and Jude/2 Peter commentaries, and Luke's own doublets in Acts.",
+  "parallels": [
+    { "title": "Salutation", "refs": ["Ephesians 1:1-2", "Colossians 1:1-2"] },
+    { "title": "Put off the old self, put on the new", "refs": ["Ephesians 4:22-24", "Colossians 3:9-10"] },
+    { "title": "Psalms, hymns, and spiritual songs", "refs": ["Ephesians 5:19-20", "Colossians 3:16-17"] },
+    { "title": "Household code: wives and husbands", "refs": ["Ephesians 5:22-33", "Colossians 3:18-19"] },
+    { "title": "Household code: children and parents", "refs": ["Ephesians 6:1-4", "Colossians 3:20-21"] },
+    { "title": "Household code: slaves and masters", "refs": ["Ephesians 6:5-9", "Colossians 3:22-25"] },
+    { "title": "Prayer for boldness to proclaim the gospel", "refs": ["Ephesians 6:19-20", "Colossians 4:3-4"] },
+    { "title": "Commendation of Tychicus", "refs": ["Ephesians 6:21-22", "Colossians 4:7-8"] },
+
+    { "title": "False teachers condemned", "refs": ["Jude 1:4", "2 Peter 2:1-3"] },
+    { "title": "Judgment of the sinning angels", "refs": ["Jude 1:6", "2 Peter 2:4"] },
+    { "title": "Sodom and Gomorrah as a warning", "refs": ["Jude 1:7", "2 Peter 2:6-8"] },
+    { "title": "Slander against the glorious ones", "refs": ["Jude 1:8-10", "2 Peter 2:10-12"] },
+    { "title": "The way of Cain, Balaam, and Korah", "refs": ["Jude 1:11", "2 Peter 2:15-16"] },
+    { "title": "Blemishes at the love feasts", "refs": ["Jude 1:12-13", "2 Peter 2:13-17"] },
+    { "title": "Loud-mouthed boasters", "refs": ["Jude 1:16", "2 Peter 2:18"] },
+    { "title": "The apostles' prediction of scoffers", "refs": ["Jude 1:17-18", "2 Peter 3:2-3"] },
+
+    { "title": "Paul's conversion", "refs": ["Acts 9:1-19", "Acts 22:3-16", "Acts 26:9-18"] },
+    { "title": "Cornelius' conversion", "refs": ["Acts 10:1-48", "Acts 11:4-17"] }
+  ]
+}
