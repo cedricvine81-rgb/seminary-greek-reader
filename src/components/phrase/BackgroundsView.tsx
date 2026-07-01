@@ -40,9 +40,21 @@ function toLexicalInfo(tok: WordToken, bookName: string, verseRef: string): Lexi
   }
 }
 
+// Versions either column can be shown in: a Greek edition or a translation. Only the
+// 66 canonical Bible books have translation data (see /api/translation) — this list
+// applies to the Greek NT passage (left) and to OT/LXX/NT cross-references (right);
+// other cross-reference types (DSS, Second Temple lit, etc.) have a single fixed source.
 const VERSIONS = [
   { code: 'na1904', label: 'Greek — Nestle 1904' },
   { code: 'gnt', label: 'Greek — Tischendorf' },
+  { code: 'bsb', label: 'English (BSB)' },
+  { code: 'en', label: 'English (WEB)' },
+  { code: 'es', label: 'Spanish' },
+  { code: 'fr', label: 'French' },
+  { code: 'pt', label: 'Portuguese' },
+  { code: 'ru', label: 'Russian' },
+  { code: 'ko', label: 'Korean' },
+  { code: 'zh', label: 'Mandarin' },
 ]
 
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
@@ -125,8 +137,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   const [typeFilter, setTypeFilter] = useState<Set<CrossRefCitation['type']>>(new Set(TYPE_ORDER))
 
   // ── Right column: the selected cross-reference's text ──
+  // Only OT/LXX/NT citations carry a `ref` (book+chapter+verse) that the app's own Bible
+  // text/translation APIs can resolve — those are the ones this version selector applies
+  // to. Other cross-reference types (DSS, Second Temple lit, etc.) have a single fixed
+  // source and show a citation only, unaffected by this dropdown.
   const [rightRef, setRightRef] = useState<{ label: string; citation: CrossRefCitation } | null>(null)
-  const rightCache = useRef<Record<string, string>>({}) // "book.chapter" -> full chapter text loaded flag key, verses stored separately
+  const [rightVersion, setRightVersion] = useState('na1904')
+  const rightCache = useRef<Record<string, Record<string, { verse: number; text: string }[]>>>({}) // version -> "book.chapter" -> verses
   const [rightVerses, setRightVerses] = useState<{ verse: number; text: string; tokens?: WordToken[] }[] | null>(null)
   const [rightLoading, setRightLoading] = useState(false)
 
@@ -153,7 +170,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   }, [anchor, version, gntBooks.length])
 
   function ensure(v: string, osis: string, chapter: number) {
-    const ck = v === 'na1904' ? `na1904.${osis}` : `${v}.${osis}.${chapter}`
+    const ck = v === 'na1904' ? `na1904.${osis}` : v === 'bsb' ? 'bsb' : `${v}.${osis}.${chapter}`
     if (loaded.current.has(ck)) { bump(); return }
     loaded.current.add(ck)
     const done = (map: Record<string, string>, patch: Record<string, string>) => { Object.assign(map, patch); bump() }
@@ -181,7 +198,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
         Object.assign((wordCache.current.na1904 ??= {}), wpatch)
         done((cache.current.na1904 ??= {}), patch)
       }).catch(() => {})
-    } else {
+    } else if (v === 'gnt') {
       type GntWord = { surface: string; lemma?: string; strongs?: string; morph?: Record<string, string | null> }
       fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string; words?: GntWord[] }[] }) => {
         const map = (cache.current.gnt ??= {})
@@ -192,6 +209,17 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           if (vv.words) wmap[vid] = vv.words.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '', strongs: w.strongs }))
         }
         bump()
+      }).catch(() => {})
+    } else if (v === 'bsb') {
+      // Berean Standard Bible — pre-aligned static file (covers the whole Bible at once).
+      fetch('/data/bsb-alignment.json?v=3').then(r => r.json()).then((d: Record<string, { text: string }>) => {
+        const map = (cache.current.bsb ??= {})
+        done(map, Object.fromEntries(Object.entries(d).map(([vid, val]) => [vid, val.text])))
+      }).catch(() => {})
+    } else {
+      // WEB (en) and the other translations, one chapter at a time.
+      fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${v}`).then(r => r.json()).then((d: { verses?: Record<string, string> }) => {
+        done((cache.current[v] ??= {}), d.verses ?? {})
       }).catch(() => {})
     }
   }
@@ -222,42 +250,67 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     })
   })()
 
-  // ── Right column: load a cross-reference's actual text ──
-  // No corpus param: the server resolves each book's own native corpus (LXX for OT
-  // books, GNT for NT ones — a citation can be either, e.g. Mark 16:9 -> Luke 8:2).
-  async function openRightRef(label: string, citation: CrossRefCitation) {
-    setRightRef({ label, citation })
+  // ── Right column: load a cross-reference's actual text, in whichever version the
+  // right-column dropdown is set to. Greek editions (na1904/gnt) go through the Reader
+  // API (word-level tokens, for the parsing pane); translations go through the same
+  // Bible-translation endpoints the left column and Synopsis use. Re-runs when either
+  // the open reference or the right-column version changes.
+  const loadRightRef = useCallback(async (citation: CrossRefCitation, rv: string) => {
     if (!citation.ref) { setRightVerses(null); return }
     const { book: osis, chapter } = citation.ref
+    const cacheForVersion = (rightCache.current[rv] ??= {})
     const ck = `${osis}.${chapter}`
     setRightLoading(true)
     try {
-      if (!rightCache.current[ck]) {
-        const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}`)
-        const d = await r.json()
-        const wmap = (wordCache.current.rightLxx ??= {})
-        const verses: { verse: number; text: string }[] = (d.verses ?? []).map((v: { verse: number; text?: string; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: { partOfSpeech: string; tense?: string; voice?: string; mood?: string; person?: string; number?: string; casus?: string; gender?: string }[] }[] }) => {
-          if (v.words) {
-            wmap[`${osis}.${chapter}.${v.verse}`] = v.words.map(w => ({
-              surface: w.surface, lemma: w.lexeme?.lexeme ?? '', gloss: w.lexeme?.gloss, strongs: w.lexeme?.strongs,
-              parsing: w.parses?.[0] ? formatGntMorph(w.parses[0] as unknown as Record<string, string | null>) : '',
-            }))
-          }
-          return { verse: v.verse, text: v.text ?? (v.words ?? []).map(w => w.surface).join(' ') }
-        })
-        rightCache.current[ck] = JSON.stringify(verses)
+      if (!cacheForVersion[ck]) {
+        if (rv === 'na1904' || rv === 'gnt') {
+          const corpus = rv === 'na1904' ? 'NA1904' : 'GNT'
+          const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}&corpus=${corpus}`)
+          const d = await r.json()
+          const wmap = (wordCache.current[`right.${rv}`] ??= {})
+          cacheForVersion[ck] = (d.verses ?? []).map((v: { verse: number; text?: string; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: { partOfSpeech: string; tense?: string; voice?: string; mood?: string; person?: string; number?: string; casus?: string; gender?: string }[] }[] }) => {
+            if (v.words) {
+              wmap[`${osis}.${chapter}.${v.verse}`] = v.words.map(w => ({
+                surface: w.surface, lemma: w.lexeme?.lexeme ?? '', gloss: w.lexeme?.gloss, strongs: w.lexeme?.strongs,
+                parsing: w.parses?.[0] ? formatGntMorph(w.parses[0] as unknown as Record<string, string | null>) : '',
+              }))
+            }
+            return { verse: v.verse, text: v.text ?? (v.words ?? []).map(w => w.surface).join(' ') }
+          })
+        } else if (rv === 'bsb') {
+          const r = await fetch('/data/bsb-alignment.json?v=3')
+          const d: Record<string, { text: string }> = await r.json()
+          cacheForVersion[ck] = Object.entries(d)
+            .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
+            .map(([vid, val]) => ({ verse: parseInt(vid.split('.')[2], 10), text: val.text }))
+        } else {
+          const r = await fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${rv}`)
+          const d: { verses?: Record<string, string> } = await r.json()
+          cacheForVersion[ck] = Object.entries(d.verses ?? {})
+            .map(([vid, text]) => ({ verse: parseInt(vid.split('.')[2], 10), text }))
+        }
       }
-      const verses: { verse: number; text: string }[] = JSON.parse(rightCache.current[ck])
-      const wmap = wordCache.current.rightLxx ?? {}
-      setRightVerses(verses.map(v => ({ ...v, tokens: wmap[`${osis}.${chapter}.${v.verse}`] })))
+      const wmap = wordCache.current[`right.${rv}`] ?? {}
+      setRightVerses(cacheForVersion[ck].map(v => ({ ...v, tokens: wmap[`${osis}.${chapter}.${v.verse}`] })))
     } catch {
       setRightVerses(null)
     } finally {
       setRightLoading(false)
     }
+  }, [])
+
+  function openRightRef(label: string, citation: CrossRefCitation) {
+    setRightRef({ label, citation })
+    void loadRightRef(citation, rightVersion)
   }
+  // Re-fetch the currently open reference when the right-column version dropdown changes.
+  useEffect(() => {
+    if (rightRef?.citation.ref) void loadRightRef(rightRef.citation, rightVersion)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rightVersion])
 
   const isGreek = version === 'gnt' || version === 'na1904'
+  const isRightGreek = rightVersion === 'gnt' || rightVersion === 'na1904'
   const rightBookName = rightRef?.citation.ref
     ? (lxxBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? gntBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? rightRef.citation.ref.book)
     : ''
@@ -313,7 +366,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               {leftVerses.length === 0 ? (
                 <p className="text-xs text-gray-300 italic">Loading…</p>
               ) : (
-                <div className="space-y-1 leading-relaxed font-greek text-gray-900" style={{ fontSize: 'var(--bg-fs, 1.45rem)' }}>
+                <div
+                  className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : ''}`}
+                  style={{ fontSize: isGreek ? 'var(--bg-fs, 1.45rem)' : 'calc(var(--bg-fs, 1.45rem) * 0.65)' }}
+                >
                   {leftVerses.map(v => (
                     <p key={v.verse}>
                       {isAuthenticated && (
@@ -384,9 +440,23 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
 
           {/* ── Right: the selected cross-reference's text ── */}
           <div className="flex flex-col min-h-0 rounded-xl border border-gray-200 overflow-hidden">
-            <p className="shrink-0 px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 border-b border-gray-200 uppercase tracking-wide">
-              {rightRef ? rightRef.citation.text : 'Referenced text'}
-            </p>
+            <div className="shrink-0 px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between gap-2">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide truncate">
+                {rightRef ? rightRef.citation.text : 'Referenced text'}
+              </p>
+              {/* Only meaningful for OT/LXX/NT cross-references — the app's own Bible
+                  text/translations. Harmless to leave visible otherwise; it just won't
+                  affect a citation-only source. */}
+              {rightRef?.citation.ref && (
+                <select
+                  value={rightVersion}
+                  onChange={e => setRightVersion(e.target.value)}
+                  className="shrink-0 rounded-lg border border-gray-300 px-1.5 py-1 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                </select>
+              )}
+            </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
               {!rightRef ? (
                 <p className="text-xs text-gray-400 italic">Click a cross-reference to view its text here.</p>
@@ -400,7 +470,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               ) : !rightVerses || rightVerses.length === 0 ? (
                 <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
               ) : (
-                <div className="space-y-1 leading-relaxed font-greek text-gray-900" style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.85)' }}>
+                <div
+                  className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : ''}`}
+                  style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                >
                   {rightVerses.map(v => (
                     <p key={v.verse}>
                       {isAuthenticated && rightRef.citation.ref && (
