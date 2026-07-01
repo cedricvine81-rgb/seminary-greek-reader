@@ -72,6 +72,46 @@ function josephusUrl(citationText: string): string | null {
   return url
 }
 
+// earlychristianwritings.com hosts C.D. Yonge's 19th-century (public-domain) translation
+// of Philo as one HTML page per treatise (confirmed by fetching its table of contents —
+// this is the complete, verified list of what's actually on the site, not a guess). A
+// few treatises span multiple volumes (Allegorical Interpretation I-III, Special Laws
+// I-IV, On the Life of Moses I-II, On Providence Fragments I-II); the leading digit in
+// the citation (e.g. "Spec. Laws 2.16") picks the right one. A handful of works cited in
+// the appendix (Questions on Exodus, the Armenian "On God" fragment) aren't on this site
+// at all — those are left unmapped rather than guessed.
+const PHILO_BASE = 'http://www.earlychristianwritings.com/yonge/'
+const PHILO_SIMPLE: Record<string, string> = {
+  'Creation': 'book1.html', 'Cherubim': 'book5.html', 'Sacrifices': 'book6.html',
+  'Worse': 'book7.html', 'Posterity': 'book8.html', 'Confusion': 'book15.html',
+  'Migration': 'book16.html', 'Heir': 'book17.html', 'Decalogue': 'book26.html',
+  'Virtues': 'book31.html', 'Rewards': 'book32.html', 'Good Person': 'book33.html',
+  'Flaccus': 'book36.html', 'Embassy': 'book40.html', 'On the Life of Abraham': 'book22.html',
+  'Dreams': 'book21.html',
+}
+function philoUrl(citationText: string): string | null {
+  const m = citationText.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '').match(/Philo,\s*(.+)$/)
+  if (!m) return null
+  const tail = m[1]
+  const volume = (name: string, pages: string[]): string | null => {
+    const vm = tail.match(new RegExp(`^${name}\\s+(\\d)`))
+    if (!vm) return null
+    return pages[parseInt(vm[1], 10) - 1] ?? null
+  }
+  const page =
+    volume('Alleg\\. Interp\\.', ['book2.html', 'book3.html', 'book4.html']) ??
+    volume('Spec\\. Laws', ['book27.html', 'book28.html', 'book29.html', 'book30.html']) ??
+    volume('Providence', ['book38.html', 'book39.html']) ??
+    (/^Moses\s+2\./.test(tail) ? 'book25.html' : /^Moses/.test(tail) ? 'book24.html' : null) ??
+    Object.entries(PHILO_SIMPLE).find(([name]) => tail.startsWith(name))?.[1] ??
+    null
+  return page ? PHILO_BASE + page : null
+}
+// Tries each source in turn; extend this as more sources get a verified URL scheme.
+function secondTempleUrl(citationText: string): string | null {
+  return josephusUrl(citationText) ?? philoUrl(citationText)
+}
+
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
 interface CrossRefCitation {
   text: string
@@ -435,19 +475,20 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       <p className="text-[11px] font-semibold text-gray-500 mb-1">{entry.label}</p>
                       <div className="space-y-1">
                         {cites.map((c, ci) => {
-                          const extUrl = !c.ref ? josephusUrl(c.text) : null
+                          const extUrl = !c.ref ? secondTempleUrl(c.text) : null
                           if (extUrl) {
+                            const sourceName = extUrl.includes('perseus.tufts.edu') ? 'Perseus' : 'Yonge translation'
                             return (
                               <a
                                 key={ci}
                                 href={extUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                title="Read this passage at Perseus Digital Library (opens in a new tab)"
+                                title={`Read this passage at ${sourceName} (opens in a new tab)`}
                                 className={`flex items-center justify-between gap-1.5 w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 ${TYPE_COLORS[c.type]}`}
                               >
                                 <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
-                                <span className="shrink-0 text-[10px] opacity-60">Perseus ↗</span>
+                                <span className="shrink-0 text-[10px] opacity-60">{sourceName} ↗</span>
                               </a>
                             )
                           }
