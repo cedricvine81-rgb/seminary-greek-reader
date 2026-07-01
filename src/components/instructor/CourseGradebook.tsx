@@ -57,9 +57,10 @@ export async function CourseGradebook({ courseId }: Props) {
   if (enrollments.length === 0 || assignments.length === 0) return null
 
   const assignmentIds = assignments.map(a => a.id)
-  // Passage exercises (no questions) use ExegesisSession.grade; question-based use Response scores
-  const passageExerciseIds = assignments
-    .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0)
+  // Both translation exams and passage exercises (no questions) are graded via
+  // ExegesisSession.grade; question-based exercises use Response scores.
+  const exegesisGradedIds = assignments
+    .filter(a => a.type === 'TRANSLATION_EXAM' || (a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0))
     .map(a => a.id)
   const questionTranslationIds = assignments
     .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length > 0)
@@ -76,9 +77,9 @@ export async function CourseGradebook({ courseId }: Props) {
           select: { userId: true, assignmentId: true, score: true },
         })
       : Promise.resolve([]),
-    passageExerciseIds.length > 0
+    exegesisGradedIds.length > 0
       ? prisma.exegesisSession.findMany({
-          where: { assignmentId: { in: passageExerciseIds }, grade: { not: null } },
+          where: { assignmentId: { in: exegesisGradedIds }, grade: { not: null } },
           select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),

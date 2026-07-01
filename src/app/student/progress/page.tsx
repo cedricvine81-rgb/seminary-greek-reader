@@ -37,8 +37,9 @@ export default async function StudentProgressPage() {
   ])
 
   const assignmentMap = Object.fromEntries(assignments.map(a => [a.id, a]))
+  // Assignments graded via an ExegesisSession: passage exercises (no questions) and exams.
   const passageExerciseIds = new Set(
-    assignments.filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0).map(a => a.id)
+    assignments.filter(a => a.type === 'TRANSLATION_EXAM' || (a.type === 'TRANSLATION_EXERCISE' && a.questions.length === 0)).map(a => a.id)
   )
 
   // Completed via Response sentinel (quizzes + question-based translation)
