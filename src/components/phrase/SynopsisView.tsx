@@ -333,16 +333,18 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
                         )}
                         <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
-                        {/* Greek: clickable words update the parsing pane below. Falls back to
+                        {/* Greek: hovering (or clicking, for touch) a word updates the parsing
+                            pane below — same interaction as the Phrasing tab. Falls back to
                             plain text if word-level tokens haven't loaded (or aren't available). */}
                         {isGreek && v.tokens && v.tokens.length > 0
                           ? v.tokens.map((tok, ti) => {
                               const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
+                              const select = () => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }
                               return (
                                 <span
                                   key={ti}
-                                  onClick={() => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }}
-                                  title="Click to parse"
+                                  onMouseEnter={select}
+                                  onClick={select}
                                   className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
                                 >
                                   {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
@@ -379,12 +381,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
       {/* Parsing pane — the same shared component used on the Phrasing tab (Strong's,
           Thayer's, Mounce, Abbott-Smith, LSJ). Always visible for a Greek edition so its
-          presence is obvious; defaults to the anchor's first word until one is clicked.
-          Sticky along the bottom so it doesn't compete with the scrolling columns. */}
+          presence is obvious; defaults to the anchor's first word until one is hovered or
+          clicked. Placed in normal flow directly under the columns (not sticky/overlaid),
+          so the text ends cleanly above it instead of the pane floating over it. */}
       {isGreek && (
-        <div className="sticky bottom-0 z-10">
-          <ParsingPanel info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
-        </div>
+        <ParsingPanel info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
     </div>
   )
