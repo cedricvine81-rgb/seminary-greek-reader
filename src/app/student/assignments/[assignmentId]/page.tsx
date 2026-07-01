@@ -6,6 +6,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizPlayer } from '@/components/student/QuizPlayer'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
+import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
@@ -207,12 +208,10 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {/* Exam not yet open — show when it opens (instructors can still preview). */}
+        {/* Exam not yet open — show a live countdown; auto-opens when the time arrives.
+            (Instructors can still preview regardless.) */}
         {examNotYetOpen && !previewMode && (
-          <div className="rounded-xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-800">
-            <span className="font-semibold">This exam isn&rsquo;t open yet.</span>{' '}
-            It opens <span className="font-medium"><LocalDateTime iso={assignment.opensAt!.toISOString()} /></span>.
-          </div>
+          <ExamOpensNotice opensAtIso={assignment.opensAt!.toISOString()} />
         )}
 
         {/* Show passage exercise when open, OR when closed but the student has any existing session
