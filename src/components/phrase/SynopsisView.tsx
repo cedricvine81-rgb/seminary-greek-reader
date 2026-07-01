@@ -53,7 +53,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   onAttribution?: (a: string) => void
 }) {
   const [books, setBooks] = useState<RefBook[]>([])
-  const [version, setVersion] = useState('bsb')
+  const [version, setVersion] = useState('na1904')
   // Text size — the settings panel that used to live here is now hoisted into the
   // shared exegesis tools menu (when coordinated); fontSize becomes controlled then.
   const isFontSizeControlled = onFontSize !== undefined
