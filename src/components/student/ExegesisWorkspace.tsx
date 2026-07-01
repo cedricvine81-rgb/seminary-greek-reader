@@ -387,6 +387,16 @@ function fullscreenElementCompat(): Element | null {
   const d = document as FsDocument
   return document.fullscreenElement ?? d.webkitFullscreenElement ?? null
 }
+/** Leave fullscreen if currently in it (standard + WebKit), swallowing any error. */
+function exitFullscreenCompat(): void {
+  try {
+    const d = document as Document & { webkitExitFullscreen?: () => void }
+    if (fullscreenElementCompat()) {
+      if (d.exitFullscreen) void d.exitFullscreen()
+      else if (d.webkitExitFullscreen) d.webkitExitFullscreen()
+    }
+  } catch { /* ignore */ }
+}
 
 // Student-facing wording for each integrity event type (shown in the live warning).
 const VIOLATION_MESSAGES: Record<string, string> = {
@@ -1283,6 +1293,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       if (r.ok) {
         setSubmitted(true)
         clearLocalDraft(sid)   // work is committed server-side — drop the offline draft
+        // Close the exam once it's submitted (manual, timer, deadline, or violation):
+        // leave the locked fullscreen view and return the student to their assignments.
+        if (isExam) {
+          exitFullscreenCompat()
+          router.push('/student/assignments')
+        }
       } else {
         const d = await r.json().catch(() => ({}))
         setSubmitError(d.error ?? 'Submission failed. Please try again.')
