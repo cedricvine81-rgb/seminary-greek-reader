@@ -40,6 +40,16 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 
+// A clickable Greek word carries enough to fill the parsing pane. Nestle 1904 words
+// (from the phrase tree) ship a ready-made `parsing` string + gloss; Tischendorf words
+// (from /data/gnt) ship structured morph we format the same way.
+type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string }
+const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
+function formatGntMorph(m: Record<string, string | null> | undefined): string {
+  if (!m) return ''
+  return GNT_MORPH_ORDER.map(k => m[k]).filter(Boolean).join(', ')
+}
+
 /**
  * Synopsis: the shared (coordinated) passage as the anchor column, plus comparison
  * references the user adds, all shown side by side in a chosen version (Greek edition
@@ -69,6 +79,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // the gospel-parallels fetch.
   useEffect(() => { onAttribution?.(parallelsAttribution) }, [parallelsAttribution, onAttribution])
   const cache = useRef<Record<string, Record<string, string>>>({})  // version → verseId → text
+  // Greek word-level tokens (surface + parse) for the clickable parsing pane.
+  const wordCache = useRef<Record<string, Record<string, WordToken[]>>>({})  // version → verseId → tokens
+  const [selectedWord, setSelectedWord] = useState<WordToken | null>(null)
   const loaded = useRef<Set<string>>(new Set())
   const [, setVer] = useState(0)
   const bump = () => setVer(v => v + 1)
@@ -159,24 +172,40 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     loaded.current.add(ck)
     const done = (map: Record<string, string>, patch: Record<string, string>) => { Object.assign(map, patch); bump() }
     if (v === 'na1904') {
-      type Node = { t: string; id?: string; w?: string; c?: Node[] }
+      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; c?: Node[] }
       fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: { sentences?: { tree: Node }[] }) => {
-        const byVerse: Record<string, { i: number; w: string }[]> = {}
+        const byVerse: Record<string, { i: number; tok: WordToken }[]> = {}
         const walk = (n: Node) => {
           if (n.t === 'w' && n.id) {
             const [bk, ch, vs, wd] = n.id.split('.')
-            ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({ i: parseInt(wd || '0', 10), w: n.w ?? '' })
+            ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({
+              i: parseInt(wd || '0', 10),
+              tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss },
+            })
           } else (n.c ?? []).forEach(walk)
         }
         for (const s of d.sentences ?? []) walk(s.tree)
         const patch: Record<string, string> = {}
-        for (const [vKey, ws] of Object.entries(byVerse)) { ws.sort((a, b) => a.i - b.i); patch[vKey] = ws.map(x => x.w).join(' ') }
+        const wpatch: Record<string, WordToken[]> = {}
+        for (const [vKey, ws] of Object.entries(byVerse)) {
+          ws.sort((a, b) => a.i - b.i)
+          patch[vKey] = ws.map(x => x.tok.surface).join(' ')
+          wpatch[vKey] = ws.map(x => x.tok)
+        }
+        Object.assign((wordCache.current.na1904 ??= {}), wpatch)
         done((cache.current.na1904 ??= {}), patch)
       }).catch(() => {})
     } else if (v === 'gnt') {
-      fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string }[] }) => {
+      type GntWord = { surface: string; lemma?: string; morph?: Record<string, string | null> }
+      fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string; words?: GntWord[] }[] }) => {
         const map = (cache.current.gnt ??= {})
-        done(map, Object.fromEntries((d.verses ?? []).map(x => [`${osis}.${chapter}.${x.verse}`, x.text])))
+        const wmap = (wordCache.current.gnt ??= {})
+        for (const vv of d.verses ?? []) {
+          const vid = `${osis}.${chapter}.${vv.verse}`
+          map[vid] = vv.text
+          if (vv.words) wmap[vid] = vv.words.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '' }))
+        }
+        bump()
       }).catch(() => {})
     } else if (v === 'bsb') {
       fetch('/data/bsb-alignment.json?v=3').then(r => r.json()).then((d: Record<string, { text: string }>) => {
@@ -190,14 +219,16 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     }
   }
 
-  function column(ref: string): { label: string; book: string; chapter: number; verses: { ref: string; verse: number; text: string }[] } | null {
+  function column(ref: string): { label: string; book: string; chapter: number; verses: { ref: string; verse: number; text: string; tokens?: WordToken[] }[] } | null {
     const p = parseRef(ref, books)
     if (!p) return null
     const map = cache.current[version] ?? {}
-    const verses: { ref: string; verse: number; text: string }[] = []
+    const wmap = wordCache.current[version] ?? {}
+    const verses: { ref: string; verse: number; text: string; tokens?: WordToken[] }[] = []
     for (let v = p.verseStart; v <= p.verseEnd; v++) {
-      const t = map[`${p.book.osisId}.${p.chapter}.${v}`]
-      if (t) verses.push({ ref: `${p.chapter}:${v}`, verse: v, text: t })
+      const vid = `${p.book.osisId}.${p.chapter}.${v}`
+      const t = map[vid]
+      if (t) verses.push({ ref: `${p.chapter}:${v}`, verse: v, text: t, tokens: wmap[vid] })
     }
     const label = `${p.book.name} ${p.chapter}:${p.verseStart}${p.verseEnd !== p.verseStart ? `–${verses.length ? verses[verses.length - 1].ref.split(':')[1] : p.verseEnd}` : ''}`
     return { label, book: p.book.osisId, chapter: p.chapter, verses }
@@ -266,7 +297,21 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                         {isAuthenticated && (
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
                         )}
-                        <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>{v.text}
+                        <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
+                        {/* Greek: clickable words open the parsing pane. Falls back to plain
+                            text if word-level tokens haven't loaded (or aren't available). */}
+                        {isGreek && v.tokens && v.tokens.length > 0
+                          ? v.tokens.map((tok, ti) => (
+                              <span
+                                key={ti}
+                                onClick={() => setSelectedWord(tok)}
+                                title="Click to parse"
+                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedWord?.surface === tok.surface && selectedWord?.parsing === tok.parsing ? 'bg-brand-100' : ''}`}
+                              >
+                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                              </span>
+                            ))
+                          : v.text}
                       </p>
                     ))}
                   </div>
@@ -290,6 +335,26 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
             />
             <button onClick={addRef} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
+          </div>
+        </div>
+      )}
+
+      {/* Parsing pane — click a Greek word to see its parse. Along the bottom so it doesn't
+          compete with the horizontally-scrolling comparison columns. */}
+      {selectedWord && (
+        <div className="sticky bottom-0 z-10 rounded-xl border border-brand-300 bg-white/95 px-4 py-3 shadow-lg backdrop-blur">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              <div className="flex items-baseline gap-3 flex-wrap">
+                <span className="font-greek text-2xl text-brand-800">{selectedWord.surface}</span>
+                {selectedWord.lemma && <span className="font-greek text-lg text-gray-600">{selectedWord.lemma}</span>}
+              </div>
+              {selectedWord.parsing
+                ? <p className="mt-1 text-sm font-medium text-gray-800">{selectedWord.parsing}</p>
+                : <p className="mt-1 text-xs text-gray-400 italic">No parsing available for this word.</p>}
+              {selectedWord.gloss && <p className="mt-0.5 text-sm italic text-gray-500">{selectedWord.gloss}</p>}
+            </div>
+            <button onClick={() => setSelectedWord(null)} aria-label="Close parsing" className="shrink-0 text-gray-400 hover:text-gray-700"><X size={16} /></button>
           </div>
         </div>
       )}
