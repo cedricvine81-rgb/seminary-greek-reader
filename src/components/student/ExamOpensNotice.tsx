@@ -23,7 +23,9 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
   useEffect(() => {
     setMounted(true)
     setNow(Date.now())
-    setLocalTime(new Date(opensAtIso).toLocaleString(undefined, { dateStyle: 'full', timeStyle: 'short', timeZoneName: 'short' }))
+    // Explicit field options (not dateStyle/timeStyle) so timeZoneName is allowed —
+    // Safari throws a TypeError if dateStyle/timeStyle are mixed with other options.
+    setLocalTime(new Date(opensAtIso).toLocaleString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }))
     const id = setInterval(() => setNow(Date.now()), 1000)
     return () => clearInterval(id)
   }, [opensAtIso])

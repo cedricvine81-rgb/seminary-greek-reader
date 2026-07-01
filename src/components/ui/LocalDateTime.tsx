@@ -11,8 +11,11 @@ import { useEffect, useState } from 'react'
 export function LocalDateTime({ iso, withTime = true }: { iso: string; withTime?: boolean }) {
   const [text, setText] = useState('')
   useEffect(() => {
+    // NB: dateStyle/timeStyle can't be combined with timeZoneName — Safari throws a
+    // TypeError (Chrome tolerates it). Use explicit field options so we can still show
+    // the zone. Without time, dateStyle alone is fine.
     setText(new Date(iso).toLocaleString(undefined, withTime
-      ? { dateStyle: 'medium', timeStyle: 'short', timeZoneName: 'short' }
+      ? { year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' }
       : { dateStyle: 'medium' }))
   }, [iso, withTime])
   return <span suppressHydrationWarning>{text || '…'}</span>
