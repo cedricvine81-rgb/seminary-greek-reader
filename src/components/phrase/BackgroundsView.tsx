@@ -59,10 +59,13 @@ const VERSIONS = [
 
 // Perseus Digital Library's own confirmed URL scheme for Whiston's translation of
 // Josephus (CC BY-SA 3.0 US) — Antiquities of the Jews = Perseus text 1999.01.0146,
-// The Jewish War = 1999.01.0148, both addressable by book/chapter/section. Rather than
-// reproducing this public-domain text inside the app (bulk-scraping hundreds of
-// passages isn't reliable or appropriate), cross-references to Josephus link straight
-// to the matching page on Perseus, the authoritative source.
+// The Jewish War = 1999.01.0148, both addressable by book/chapter/section. Both works
+// are now embedded in-app (public/data/josephus/antiquities/ and .../jewish-war/,
+// parsed from the same public-domain Whiston translation via Project Gutenberg eBooks
+// #2848 and #2850) and rendered directly in the right column — see parseJosephusRef
+// below. This Perseus link remains as (a) a fallback for Against Apion citations,
+// which aren't embedded, and (b) a secondary "open at Perseus" link next to embedded
+// citations, for students who want Perseus's own apparatus.
 function josephusUrl(citationText: string): string | null {
   const m = citationText.match(/Josephus,\s*(J\.W\.|Ant\.)\s*(\d+)\.(\d+)(?:\.(\d+))?/)
   if (!m) return null
@@ -71,6 +74,38 @@ function josephusUrl(citationText: string): string | null {
   if (m[4]) url += `:whiston+section%3D${m[4]}`
   return url
 }
+
+// Antiquities and Jewish War citations ("Josephus, Ant. B.C.S" / "Josephus, J.W. B.C.S",
+// optionally with a Niese "§N" tail that this ignores) resolve against the embedded
+// Whiston text, keyed the same way Perseus keys it: Book -> Chapter -> Section. Against
+// Apion isn't embedded, so it falls through to the Perseus link above.
+type JosephusWork = 'Ant' | 'JW'
+type JosephusRef = { work: JosephusWork; book: number; chapter: number; section: number }
+const JOSEPHUS_WORK_DIR: Record<JosephusWork, string> = { Ant: 'antiquities', JW: 'jewish-war' }
+const JOSEPHUS_WORK_LABEL: Record<JosephusWork, string> = { Ant: 'Antiquities', JW: 'War' }
+function parseJosephusRef(citationText: string): JosephusRef | null {
+  const m = citationText.match(/Josephus,\s*(Ant\.|J\.W\.)\s*(\d+)\.(\d+)\.(\d+)/)
+  if (!m) return null
+  return { work: m[1] === 'Ant.' ? 'Ant' : 'JW', book: parseInt(m[2], 10), chapter: parseInt(m[3], 10), section: parseInt(m[4], 10) }
+}
+interface JosephusSection { number: number; text: string }
+interface JosephusChapter { number: number; title: string; sections: JosephusSection[] }
+interface JosephusBook { number: number; title: string; chapters: JosephusChapter[] }
+
+// 2 Esdras (KJV 1611, public domain) is embedded in-app at public/data/apocrypha/2esdras.json
+// — unlike the rest of the Apocrypha, it isn't part of the Rahlfs Septuagint (it survives only
+// in Latin/Syriac/Ethiopic etc., not Greek), so it can't live alongside the LXX corpus and needs
+// its own citation parser. Scholarly literature cites its middle chapters (3-14, the Jewish
+// apocalypse proper) as "4 Ezra" and the whole KJV span (with the Christian-added bookend
+// chapters 1-2 and 15-16) as "2 Esdr" — both use the same chapter:verse numbering.
+type EsdrasRef = { chapter: number; verse: number }
+function parse2EsdrasRef(citationText: string): EsdrasRef | null {
+  const m = citationText.match(/(?:2 Esdr\.?|4 Ezra)\s+(\d+):(\d+)/)
+  if (!m) return null
+  return { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) }
+}
+interface EsdrasVerse { number: number; text: string }
+interface EsdrasChapter { number: number; verses: EsdrasVerse[] }
 
 // earlychristianwritings.com hosts C.D. Yonge's 19th-century (public-domain) translation
 // of Philo as one HTML page per treatise (confirmed by fetching its table of contents —
@@ -179,6 +214,11 @@ interface CrossRefCitation {
   type: 'OT' | 'LXX' | 'DSS' | 'Second Temple' | 'Christian Apocrypha' | 'Rabbinic' | 'Greco-Roman' | 'NT' | 'Other'
   cf?: boolean
   ref?: { book: string; chapter: number; verse: number }
+  // Present on citations merged in from named scholarly commentaries (e.g. France NICNT,
+  // Beale & Carson) rather than the Evans appendix — see scripts/merge-nt-ot-allusions.py.
+  kind?: 'Quotation' | 'Allusion'
+  source?: string
+  note?: string
 }
 interface CrossRefEntry {
   book: string; chapter: number; endChapter: number; verseStart: number; verseEnd: number
@@ -263,6 +303,81 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   const [rightVerses, setRightVerses] = useState<{ verse: number; text: string; tokens?: WordToken[] }[] | null>(null)
   const [rightLoading, setRightLoading] = useState(false)
 
+  // ── Right column, alternate mode: an embedded Josephus (Antiquities or Jewish War)
+  // citation. Mutually exclusive with rightRef above — opening one clears the other.
+  const [rightJosephus, setRightJosephus] = useState<{ label: string; citation: CrossRefCitation; ref: JosephusRef } | null>(null)
+  const [josephusChapter, setJosephusChapter] = useState<JosephusChapter | null>(null)
+  const [josephusLoading, setJosephusLoading] = useState(false)
+  const [josephusAttribution, setJosephusAttribution] = useState<Record<JosephusWork, string>>({ Ant: '', JW: '' })
+  const josephusBookCache = useRef<Record<string, JosephusBook | null>>({})
+
+  useEffect(() => {
+    (['Ant', 'JW'] as JosephusWork[]).forEach(work => {
+      fetch(`/data/josephus/${JOSEPHUS_WORK_DIR[work]}/index.json`).then(r => r.json()).then((d: { attribution?: string }) => {
+        setJosephusAttribution(prev => ({ ...prev, [work]: d.attribution ?? '' }))
+      }).catch(() => {})
+    })
+  }, [])
+
+  const loadJosephusRef = useCallback(async (ref: JosephusRef) => {
+    setJosephusLoading(true)
+    try {
+      const cacheKey = `${ref.work}.${ref.book}`
+      let book = josephusBookCache.current[cacheKey]
+      if (book === undefined) {
+        const r = await fetch(`/data/josephus/${JOSEPHUS_WORK_DIR[ref.work]}/${ref.book}.json`)
+        book = r.ok ? await r.json() : null
+        josephusBookCache.current[cacheKey] = book
+      }
+      setJosephusChapter(book?.chapters.find(c => c.number === ref.chapter) ?? null)
+    } catch {
+      setJosephusChapter(null)
+    } finally {
+      setJosephusLoading(false)
+    }
+  }, [])
+
+  function openJosephusRef(label: string, citation: CrossRefCitation, ref: JosephusRef) {
+    setRightRef(null); setRightVerses(null)
+    setRightJosephus({ label, citation, ref })
+    setRight2Esdras(null); setEsdrasChapter(null)
+    void loadJosephusRef(ref)
+  }
+
+  // ── Right column, alternate mode: an embedded 2 Esdras citation. Mutually exclusive
+  // with rightRef/rightJosephus above — opening one clears the other two.
+  const [right2Esdras, setRight2Esdras] = useState<{ label: string; citation: CrossRefCitation; ref: EsdrasRef } | null>(null)
+  const [esdrasChapter, setEsdrasChapter] = useState<EsdrasChapter | null>(null)
+  const [esdrasLoading, setEsdrasLoading] = useState(false)
+  const [esdrasAttribution, setEsdrasAttribution] = useState('')
+  const esdrasBookCache = useRef<EsdrasChapter[] | null>(null)
+
+  const load2EsdrasRef = useCallback(async (ref: EsdrasRef) => {
+    setEsdrasLoading(true)
+    try {
+      let chapters = esdrasBookCache.current
+      if (chapters === null) {
+        const r = await fetch('/data/apocrypha/2esdras.json')
+        const d: { attribution?: string; chapters?: EsdrasChapter[] } = r.ok ? await r.json() : {}
+        chapters = d.chapters ?? []
+        esdrasBookCache.current = chapters
+        setEsdrasAttribution(d.attribution ?? '')
+      }
+      setEsdrasChapter(chapters.find(c => c.number === ref.chapter) ?? null)
+    } catch {
+      setEsdrasChapter(null)
+    } finally {
+      setEsdrasLoading(false)
+    }
+  }, [])
+
+  function open2EsdrasRef(label: string, citation: CrossRefCitation, ref: EsdrasRef) {
+    setRightRef(null); setRightVerses(null)
+    setRightJosephus(null); setJosephusChapter(null)
+    setRight2Esdras({ label, citation, ref })
+    void load2EsdrasRef(ref)
+  }
+
   // ── Library: whole-work links, independent of whichever citation is open ──
   const [showLibrary, setShowLibrary] = useState(false)
   const libraryRef = useRef<HTMLDivElement | null>(null)
@@ -294,6 +409,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     refreshNotes(parsed.book.osisId, parsed.chapter)
     setSelectedInfo(null); setSelectedKey(null)
     setRightRef(null); setRightVerses(null)
+    setRightJosephus(null); setJosephusChapter(null)
+    setRight2Esdras(null); setEsdrasChapter(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchor, version, gntBooks.length])
 
@@ -428,6 +545,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   }, [])
 
   function openRightRef(label: string, citation: CrossRefCitation) {
+    setRightJosephus(null); setJosephusChapter(null)
+    setRight2Esdras(null); setEsdrasChapter(null)
     setRightRef({ label, citation })
     void loadRightRef(citation, rightVersion)
   }
@@ -548,6 +667,45 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       <p className="text-[11px] font-semibold text-gray-500 mb-1">{entry.label}</p>
                       <div className="space-y-1">
                         {cites.map((c, ci) => {
+                          const josephusRef = !c.ref ? parseJosephusRef(c.text) : null
+                          if (josephusRef) {
+                            const perseusHref = josephusUrl(c.text)
+                            return (
+                              <div key={ci} className="flex items-center gap-1">
+                                <button
+                                  onClick={() => openJosephusRef(entry.label, c, josephusRef)}
+                                  title="View text"
+                                  className={`flex-1 block text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightJosephus?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                >
+                                  {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
+                                </button>
+                                {perseusHref && (
+                                  <a
+                                    href={perseusHref}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Open at Perseus (opens in a new tab)"
+                                    className="shrink-0 text-[10px] text-gray-400 hover:text-brand-600 px-1"
+                                  >
+                                    ↗
+                                  </a>
+                                )}
+                              </div>
+                            )
+                          }
+                          const esdrasRef = !c.ref ? parse2EsdrasRef(c.text) : null
+                          if (esdrasRef) {
+                            return (
+                              <button
+                                key={ci}
+                                onClick={() => open2EsdrasRef(entry.label, c, esdrasRef)}
+                                title="View text"
+                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${right2Esdras?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                              >
+                                {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
+                              </button>
+                            )
+                          }
                           const extUrl = !c.ref ? secondTempleUrl(c.text) : null
                           if (extUrl) {
                             const sourceName = extUrl.includes('perseus.tufts.edu') ? 'Perseus'
@@ -569,15 +727,21 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               </a>
                             )
                           }
+                          const scholarTitle = c.note
+                            ? `${c.kind ? `${c.kind}. ` : ''}${c.note}${c.source ? ` — ${c.source}` : ''}`
+                            : (c.ref ? 'View text' : 'Full text not yet available for this source')
                           return (
                             <button
                               key={ci}
                               onClick={() => openRightRef(entry.label, c)}
                               disabled={!c.ref}
-                              title={c.ref ? 'View text' : 'Full text not yet available for this source'}
+                              title={scholarTitle}
                               className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${c.ref ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                             >
-                              {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
+                              <span className="flex items-baseline justify-between gap-1.5">
+                                <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
+                                {c.source && <span className="shrink-0 text-[10px] opacity-60">{c.source}</span>}
+                              </span>
                             </button>
                           )
                         })}
@@ -593,7 +757,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           <div className="flex flex-col min-h-0 rounded-xl border border-gray-200 overflow-hidden">
             <div className="shrink-0 px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between gap-2">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide truncate">
-                {rightRef ? rightRef.citation.text : 'Referenced text'}
+                {rightJosephus ? rightJosephus.citation.text : right2Esdras ? right2Esdras.citation.text : rightRef ? rightRef.citation.text : 'Referenced text'}
               </p>
               <div className="shrink-0 flex items-center gap-1.5">
                 {/* Only meaningful for OT/LXX/NT cross-references — the app's own Bible
@@ -645,49 +809,123 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               </div>
             </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
-              {!rightRef ? (
-                <p className="text-xs text-gray-400 italic">Click a cross-reference to view its text here.</p>
-              ) : rightLoading ? (
-                <p className="text-xs text-gray-300 italic">Loading…</p>
-              ) : !rightRef.citation.ref ? (
-                <div className="text-xs text-gray-500 space-y-2">
-                  <p className="italic">Full text not yet available for this source ({TYPE_LABELS[rightRef.citation.type]}).</p>
-                  <p className="text-gray-400">Citation: {rightRef.citation.text}</p>
-                </div>
-              ) : !rightVerses || rightVerses.length === 0 ? (
-                <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
-              ) : (
-                <div
-                  className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : ''}`}
-                  style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
-                >
-                  {rightVerses.map(v => (
-                    <p key={v.verse}>
-                      {isAuthenticated && rightRef.citation.ref && (
-                        <span className="font-sans align-middle mr-0.5">
-                          <VerseNoteButton book={rightRef.citation.ref.book} chapter={rightRef.citation.ref.chapter} verse={v.verse} noted={false} />
-                        </span>
-                      )}
-                      <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
-                      {v.tokens && v.tokens.length > 0
-                        ? v.tokens.map((tok, ti) => {
-                            const key = `right.${rightRef.citation.ref!.book}.${rightRef.citation.ref!.chapter}.${v.verse}.${ti}`
-                            const select = () => { setSelectedInfo(toLexicalInfo(tok, rightBookName, `${rightRef.citation.ref!.chapter}:${v.verse}`)); setSelectedKey(key) }
-                            return (
-                              <span
-                                key={ti}
-                                onMouseEnter={select}
-                                onClick={select}
-                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
-                              >
-                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
-                              </span>
-                            )
-                          })
-                        : v.text}
+              {rightJosephus ? (
+                josephusLoading ? (
+                  <p className="text-xs text-gray-300 italic">Loading…</p>
+                ) : !josephusChapter ? (
+                  <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold text-gray-600">
+                      {JOSEPHUS_WORK_LABEL[rightJosephus.ref.work]} {rightJosephus.ref.book}.{josephusChapter.number}
+                      {josephusChapter.title && <> — {josephusChapter.title}</>}
                     </p>
-                  ))}
-                </div>
+                    <div
+                      className="space-y-1 leading-relaxed text-gray-900"
+                      style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                    >
+                      {josephusChapter.sections.map(s => (
+                        <p
+                          key={s.number}
+                          className={s.number === rightJosephus.ref.section ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
+                        >
+                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
+                          {s.text}
+                        </p>
+                      ))}
+                    </div>
+                    {josephusAttribution[rightJosephus.ref.work] && (
+                      <p className="text-[10px] text-gray-400 italic">{josephusAttribution[rightJosephus.ref.work]}</p>
+                    )}
+                  </div>
+                )
+              ) : right2Esdras ? (
+                esdrasLoading ? (
+                  <p className="text-xs text-gray-300 italic">Loading…</p>
+                ) : !esdrasChapter ? (
+                  <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                ) : (
+                  <div className="space-y-3">
+                    <p className="text-xs font-semibold text-gray-600">
+                      2 Esdras {esdrasChapter.number}
+                    </p>
+                    <div
+                      className="space-y-1 leading-relaxed text-gray-900"
+                      style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                    >
+                      {esdrasChapter.verses.map(v => (
+                        <p
+                          key={v.number}
+                          className={v.number === right2Esdras.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
+                        >
+                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
+                          {v.text}
+                        </p>
+                      ))}
+                    </div>
+                    {esdrasAttribution && (
+                      <p className="text-[10px] text-gray-400 italic">{esdrasAttribution}</p>
+                    )}
+                  </div>
+                )
+              ) : !rightRef ? (
+                <p className="text-xs text-gray-400 italic">Click a cross-reference to view its text here.</p>
+              ) : (
+                <>
+                  {/* Exegetical note + scholar attribution — present on citations merged in
+                      from named commentaries (see scripts/merge-nt-ot-allusions.py), rather
+                      than the Evans appendix. Shown regardless of whether the passage itself
+                      resolves to embedded text. */}
+                  {rightRef.citation.note && (
+                    <div className="mb-2 rounded-lg border border-brand-100 bg-brand-50/60 px-2 py-1.5 text-xs text-gray-700">
+                      {rightRef.citation.kind && <span className="font-semibold">{rightRef.citation.kind}. </span>}
+                      {rightRef.citation.note}
+                      {rightRef.citation.source && <span className="text-gray-500"> — {rightRef.citation.source}</span>}
+                    </div>
+                  )}
+                  {rightLoading ? (
+                    <p className="text-xs text-gray-300 italic">Loading…</p>
+                  ) : !rightRef.citation.ref ? (
+                    <div className="text-xs text-gray-500 space-y-2">
+                      <p className="italic">Full text not yet available for this source ({TYPE_LABELS[rightRef.citation.type]}).</p>
+                      <p className="text-gray-400">Citation: {rightRef.citation.text}</p>
+                    </div>
+                  ) : !rightVerses || rightVerses.length === 0 ? (
+                    <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
+                  ) : (
+                    <div
+                      className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : ''}`}
+                      style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                    >
+                      {rightVerses.map(v => (
+                        <p key={v.verse}>
+                          {isAuthenticated && rightRef.citation.ref && (
+                            <span className="font-sans align-middle mr-0.5">
+                              <VerseNoteButton book={rightRef.citation.ref.book} chapter={rightRef.citation.ref.chapter} verse={v.verse} noted={false} />
+                            </span>
+                          )}
+                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
+                          {v.tokens && v.tokens.length > 0
+                            ? v.tokens.map((tok, ti) => {
+                                const key = `right.${rightRef.citation.ref!.book}.${rightRef.citation.ref!.chapter}.${v.verse}.${ti}`
+                                const select = () => { setSelectedInfo(toLexicalInfo(tok, rightBookName, `${rightRef.citation.ref!.chapter}:${v.verse}`)); setSelectedKey(key) }
+                                return (
+                                  <span
+                                    key={ti}
+                                    onMouseEnter={select}
+                                    onClick={select}
+                                    className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
+                                  >
+                                    {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                                  </span>
+                                )
+                              })
+                            : v.text}
+                        </p>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

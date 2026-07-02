@@ -187,8 +187,16 @@ const GNT_BOOKS = [
   { file:'RE',  osisId:'Rev',   name:'Revelation',        abbrev:'Rev',  chapters:22 },
 ]
 
-// ─── LXX book metadata (from books_main.csv numeric IDs) ─────────────────────
-
+// ─── LXX book metadata (from LXX_final_main.csv numeric IDs) ─────────────────
+//
+// These codes were verified directly against each book's actual Greek incipit and
+// chapter count in the CSV (see scripts/data/ for the investigation) — the previous
+// table's codes from Ezra (155) onward were guessed and wrong, which silently mislabeled
+// several live books: files named "Ezek_*" actually held Baruch's text, "Mic_*" held
+// Jonah, "Hab_*" held Micah, "Zech_*" held Habakkuk, "Mal_*" held Zephaniah, "Hag_*" held
+// Nahum, and "DanLXX_1" held Susanna instead of Daniel. `chapters` here is a rarely-used
+// fallback only — the real per-book chapter count always comes from the parsed data
+// (see `chNums.length || meta.chapters` below).
 const LXX_BOOKS_META = {
   10:  { osisId:'Gen',     name:'Genesis',             abbrev:'Gen',   chapters:50 },
   20:  { osisId:'Exod',    name:'Exodus',              abbrev:'Exod',  chapters:40 },
@@ -204,38 +212,40 @@ const LXX_BOOKS_META = {
   120: { osisId:'2Kgs',    name:'2 Kings',             abbrev:'2Kgs',  chapters:25 },
   130: { osisId:'1Chr',    name:'1 Chronicles',        abbrev:'1Chr',  chapters:29 },
   140: { osisId:'2Chr',    name:'2 Chronicles',        abbrev:'2Chr',  chapters:36 },
-  155: { osisId:'1Esd',    name:'1 Esdras',            abbrev:'1Esd',  chapters:9  },
-  165: { osisId:'Ezra',    name:'Ezra',                abbrev:'Ezra',  chapters:10 },
-  170: { osisId:'Neh',     name:'Nehemiah',            abbrev:'Neh',   chapters:13 },
-  175: { osisId:'Tob',     name:'Tobit',               abbrev:'Tob',   chapters:14 },
+  150: { osisId:'Ezra',    name:'Ezra',                abbrev:'Ezra',  chapters:10 },
+  160: { osisId:'Neh',     name:'Nehemiah',            abbrev:'Neh',   chapters:13 },
+  165: { osisId:'1Esd',    name:'1 Esdras',            abbrev:'1Esd',  chapters:9  },
+  170: { osisId:'Tob',     name:'Tobit',               abbrev:'Tob',   chapters:14 },
   180: { osisId:'Jdt',     name:'Judith',              abbrev:'Jdt',   chapters:16 },
   190: { osisId:'EsthGr',  name:'Esther (Greek)',      abbrev:'Esth',  chapters:10 },
   220: { osisId:'Job',     name:'Job',                 abbrev:'Job',   chapters:42 },
   230: { osisId:'Ps',      name:'Psalms',              abbrev:'Ps',    chapters:151 },
   240: { osisId:'Prov',    name:'Proverbs',            abbrev:'Prov',  chapters:31 },
-  245: { osisId:'Eccl',    name:'Ecclesiastes',        abbrev:'Eccl',  chapters:12 },
-  250: { osisId:'Song',    name:'Song of Songs',       abbrev:'Song',  chapters:8  },
-  260: { osisId:'Wis',     name:'Wisdom of Solomon',   abbrev:'Wis',   chapters:19 },
-  270: { osisId:'Sir',     name:'Sirach',              abbrev:'Sir',   chapters:51 },
+  250: { osisId:'Eccl',    name:'Ecclesiastes',        abbrev:'Eccl',  chapters:12 },
+  260: { osisId:'Song',    name:'Song of Songs',       abbrev:'Song',  chapters:8  },
+  270: { osisId:'Wis',     name:'Wisdom of Solomon',   abbrev:'Wis',   chapters:19 },
+  280: { osisId:'Sir',     name:'Sirach',              abbrev:'Sir',   chapters:51 },
   290: { osisId:'Isa',     name:'Isaiah',              abbrev:'Isa',   chapters:66 },
   300: { osisId:'Jer',     name:'Jeremiah',            abbrev:'Jer',   chapters:52 },
-  305: { osisId:'Bar',     name:'Baruch',              abbrev:'Bar',   chapters:6  },
   310: { osisId:'Lam',     name:'Lamentations',        abbrev:'Lam',   chapters:5  },
   315: { osisId:'EpJer',   name:'Epistle of Jeremiah', abbrev:'EpJer', chapters:1  },
-  320: { osisId:'Ezek',    name:'Ezekiel',             abbrev:'Ezek',  chapters:48 },
-  325: { osisId:'DanLXX',  name:'Daniel (LXX)',        abbrev:'Dan',   chapters:14 },
+  320: { osisId:'Bar',     name:'Baruch',              abbrev:'Bar',   chapters:5  },
+  325: { osisId:'Sus',     name:'Susanna',             abbrev:'Sus',   chapters:1  },
+  330: { osisId:'Ezek',    name:'Ezekiel',             abbrev:'Ezek',  chapters:48 },
+  340: { osisId:'DanLXX',  name:'Daniel (LXX)',        abbrev:'Dan',   chapters:12 },
+  345: { osisId:'Bel',     name:'Bel and the Dragon',  abbrev:'Bel',   chapters:1  },
   350: { osisId:'Hos',     name:'Hosea',               abbrev:'Hos',   chapters:14 },
   360: { osisId:'Joel',    name:'Joel',                abbrev:'Joel',  chapters:4  },
   370: { osisId:'Amos',    name:'Amos',                abbrev:'Amos',  chapters:9  },
-  375: { osisId:'Obad',    name:'Obadiah',             abbrev:'Obad',  chapters:1  },
-  380: { osisId:'Jonah',   name:'Jonah',               abbrev:'Jonah', chapters:4  },
-  390: { osisId:'Mic',     name:'Micah',               abbrev:'Mic',   chapters:7  },
-  395: { osisId:'Nah',     name:'Nahum',               abbrev:'Nah',   chapters:3  },
-  400: { osisId:'Hab',     name:'Habakkuk',            abbrev:'Hab',   chapters:3  },
-  405: { osisId:'Zeph',    name:'Zephaniah',           abbrev:'Zeph',  chapters:3  },
-  410: { osisId:'Hag',     name:'Haggai',              abbrev:'Hag',   chapters:2  },
-  420: { osisId:'Zech',    name:'Zechariah',           abbrev:'Zech',  chapters:14 },
-  430: { osisId:'Mal',     name:'Malachi',             abbrev:'Mal',   chapters:4  },
+  380: { osisId:'Obad',    name:'Obadiah',             abbrev:'Obad',  chapters:1  },
+  390: { osisId:'Jonah',   name:'Jonah',               abbrev:'Jonah', chapters:4  },
+  400: { osisId:'Mic',     name:'Micah',               abbrev:'Mic',   chapters:7  },
+  410: { osisId:'Nah',     name:'Nahum',               abbrev:'Nah',   chapters:3  },
+  420: { osisId:'Hab',     name:'Habakkuk',            abbrev:'Hab',   chapters:3  },
+  430: { osisId:'Zeph',    name:'Zephaniah',           abbrev:'Zeph',  chapters:3  },
+  440: { osisId:'Hag',     name:'Haggai',              abbrev:'Hag',   chapters:2  },
+  450: { osisId:'Zech',    name:'Zechariah',           abbrev:'Zech',  chapters:14 },
+  460: { osisId:'Mal',     name:'Malachi',             abbrev:'Mal',   chapters:3  },
   462: { osisId:'1Macc',   name:'1 Maccabees',         abbrev:'1Macc', chapters:16 },
   464: { osisId:'2Macc',   name:'2 Maccabees',         abbrev:'2Macc', chapters:15 },
   466: { osisId:'3Macc',   name:'3 Maccabees',         abbrev:'3Macc', chapters:7  },

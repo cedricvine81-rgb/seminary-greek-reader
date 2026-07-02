@@ -1,0 +1,600 @@
+{
+  "work": "The Wars of the Jews",
+  "author": "Flavius Josephus",
+  "translator": "William Whiston",
+  "attribution": "Flavius Josephus, The Wars of the Jews, tr. William Whiston (1737), public domain. Source: Project Gutenberg eBook #2850 (gutenberg.org/ebooks/2850).",
+  "books": [
+    {
+      "number": 1,
+      "title": "Containing The Interval Of One Hundred And Sixty-Seven Years.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How The City Jerusalem Was Taken, And The Temple Pillaged [By Antiochus Epiphanes]. As Also Concerning The Actions Of The Maccabees, Matthias And Judas; And Concerning The Death Of Judas.",
+          "sections": 6
+        },
+        {
+          "number": 2,
+          "title": "Concerning The Successors Of Judas, Who Were Jonathan And Simon, And John Hyrcanus.",
+          "sections": 8
+        },
+        {
+          "number": 3,
+          "title": "How Aristobulus Was The First That Put A Diadem About His Head; And After He Had Put His Mother And Brother To Death, Died Himself, When He Had Reigned No More Than A Year.",
+          "sections": 6
+        },
+        {
+          "number": 4,
+          "title": "What Actions Were Done By Alexander Janneus, Who Reigned Twenty-Seven Years.",
+          "sections": 8
+        },
+        {
+          "number": 5,
+          "title": "Alexandra Reigns Nine Years, During Which Time The Pharisees Were The Real Rulers Of The Nation.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "When Hyrcanus Who Was Alexander's Heir, Receded From His Claim To The Crown Aristobulus Is Made King; And Afterward The Same Hyrcanus By The Means Of Antipater, Is Brought Back By Abetas. At Last Pompey Is Made The Arbitrator Of The Dispute Between The Brothers.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "How Pompey Had The City Of Jerusalem Delivered Up To Him But Took The Temple By Force. How He Went Into The Holy Of Holies; As Also What Were His Other Exploits In Judea.",
+          "sections": 7
+        },
+        {
+          "number": 8,
+          "title": "Alexander, The Son Of Aristobulus, Who Ran Away From Pompey, Makes An Expedition Against Hyrcanus; But Being Overcome By Gabinius He Delivers Up The Fortresses To Him. After This Aristobulus Escapes From Rome And Gathers An Army Together; But Being Beaten By The Romans, He Is Brought Back To Rome; With Other Things Relating To Gabinius, Crassus And Cassius.",
+          "sections": 9
+        },
+        {
+          "number": 9,
+          "title": "Aristobulus Is Taken Off By Pompey's Friends, As Is His Son Alexander By Scipio. Antipater Cultivates A Friendship With Caesar, After Pompey's Death; He Also Performs Great Actions In That War, Wherein He Assisted Mithridates.",
+          "sections": 5
+        },
+        {
+          "number": 10,
+          "title": "Caesar Makes Antipater Procurator Of Judea; As Does Antipater Appoint Phasaelus To Be Governor Of Jerusalem, And Herod Governor Of Galilee; Who, In Some Time, Was Called To Answer For Himself [Before The Sanhedrim], Where He Is Acquitted. Sextus Caesar Is Treacherously Killed By Bassus And Is Succeeded By Marcus.",
+          "sections": 10
+        },
+        {
+          "number": 11,
+          "title": "Herod Is Made Procurator Of All Syria; Malichus Is Afraid Of Him, And Takes Antipater Off By Poison; Whereupon The Tribunes Of The Soldiers Are Prevailed With To Kill Him.",
+          "sections": 8
+        },
+        {
+          "number": 12,
+          "title": "Phasaelus Is Too Hard For Felix; Herod Also Overcomes Antigonus In Rattle; And The Jews Accuse Both Herod And Phasaelus But Antonius Acquits Them, And Makes Them Tetrarchs.",
+          "sections": 7
+        },
+        {
+          "number": 13,
+          "title": "The Parthians Bring Antigonus Back Into Judea, And Cast Hyrcanus And Phasaelus Into Prison. The Flight Of Herod, And The Taking Of Jerusalem And What Hyrcanus And Phasaelus Suffered.",
+          "sections": 11
+        },
+        {
+          "number": 14,
+          "title": "When Herod Is Rejected In Arabia, He Makes Haste To Rome Where Antony And Caesar Join Their Interest To Make Him King .",
+          "sections": 4
+        },
+        {
+          "number": 15,
+          "title": "Antigonus Besieges Those That Were In Masada, Whom Herod Frees From Confinement When He Came Back From Rome, And Presently Marches To Jerusalem Where He Finds Silo Corrupted By Bribes.",
+          "sections": 6
+        },
+        {
+          "number": 16,
+          "title": "Herod Takes Sepphoris And Subdues The Robbers That Were In The Caves; He After That Avenges Himself Upon Machaerus, As Upon An Enemy Of His And Goes To Antony As He Was Besieging Samosata.",
+          "sections": 7
+        },
+        {
+          "number": 17,
+          "title": "The Death Of Joseph [Herod's Brother] Which Had Been Signified To Herod In Dreams. How Herod Was Preserved Twice After A Wonderful Manner. He Cuts Off The Head Of Pappus, Who Was The Murderer Of His Brother And Sends That Head To [His Other Brother] Pheroras, And In No Long Time He Besieges Jerusalem And Marries Mariamne.",
+          "sections": 9
+        },
+        {
+          "number": 18,
+          "title": "How Herod And Sosius Took Jerusalem By Force; And What Death Antigonus Came To. Also Concerning Cleopatra's Avaricious Temper.",
+          "sections": 5
+        },
+        {
+          "number": 19,
+          "title": "How Antony At The Persuasion Of Cleopatra Sent Herod To Fight Against The Arabians; And Now After Several Battles, He At Length Got The Victory. As Also Concerning A Great Earthquake.",
+          "sections": 6
+        },
+        {
+          "number": 20,
+          "title": "Herod Is Confirmed In His Kingdom By Caesar, And Cultivates A Friendship With The Emperor By Magnificent Presents; While Caesar Returns His Kindness By Bestowing On Him That Part Of His Kingdom Which Had Been Taken Away From It By Cleopatra With The Addition Of Zenodoruss Country Also.",
+          "sections": 4
+        },
+        {
+          "number": 21,
+          "title": "Of The [Temple And] Cities That Were Built By Herod And Erected From The Very Foundations; As Also Of Those Other Edifices That Were Erected By Him; And What Magnificence He Showed To Foreigners; And How Fortune Was In All Things Favorable To Him.",
+          "sections": 13
+        },
+        {
+          "number": 22,
+          "title": "The Murder Of Aristobulus And Hyrcanus, The High Priests, As Also Of Mariamne The Queen.",
+          "sections": 5
+        },
+        {
+          "number": 23,
+          "title": "Calumnies Against The Sons Of Mariamne. Antipateris Preferred Before Them. They Are Accused Before Caesar, And Herod Is Reconciled To Them.",
+          "sections": 5
+        },
+        {
+          "number": 24,
+          "title": "The Malice Of Antipater And Doris. Alexander Is Very Uneasy On Glaphyras Account. Herod Pardons Pheroras, Whom He Suspected, And Salome Whom He Knew To Make Mischief Among Them. Herod's Eunuchs Are Tortured And Alexander Is Bound.",
+          "sections": 8
+        },
+        {
+          "number": 25,
+          "title": "Archelaus Procures A Reconciliation Between Alexander Pheroras, And Herod.",
+          "sections": 6
+        },
+        {
+          "number": 26,
+          "title": "How Eurycles <a href=\"#linknote-40\" name=\"linknoteref-40\" id=\"linknoteref-40\">40</a> Calumniated The Sons Of Mariamne; And How Euaratus Of Cos's Apology For Them Had No Effect.",
+          "sections": 5
+        },
+        {
+          "number": 27,
+          "title": "Herod By Caesars Direction Accuses His Sons At Eurytus. They Are Not Produced Before The Courts But Yet Are Condemned; And In A Little Time They Are Sent To Sebaste, And Strangled There.",
+          "sections": 6
+        },
+        {
+          "number": 28,
+          "title": "How Antipater Is Hated Of All Men; And How The King Espouses The Sons Of Those That Had Been Slain To His Kindred; But That Antipater Made Him Change Them For Other Women. Of Herod's Marriages, And Children.",
+          "sections": 6
+        },
+        {
+          "number": 29,
+          "title": "Antipater Becomes Intolerable. He Is Sent To Rome, And Carries Herod's Testament With Him; Pheroras Leaves His Brother, That He May Keep His Wife. He Dies At Home.",
+          "sections": 4
+        },
+        {
+          "number": 30,
+          "title": "When Herod Made Inquiry About Pheroras's Death A Discovery Was Made That Antipater Had Prepared A Poisonous Draught For Him. Herod Casts Doris And Her Accomplices, As Also Mariamne, Out Of The Palace And Blots Her Son Herod Out Of His Testament.",
+          "sections": 7
+        },
+        {
+          "number": 31,
+          "title": "Antipater Is Convicted By Bathyllus; But He Still Returns From Rome Without Knowing It. Herod Brings Him To His Trial.",
+          "sections": 5
+        },
+        {
+          "number": 32,
+          "title": "Antipater Is Accused Before Varus, And Is Convicted Of Laying A Plot [Against His Father] By The Strongest Evidence. Herod Puts Off His Punishment Till He Should Be Recovered, And In The Mean Time Alters His Testament.",
+          "sections": 7
+        },
+        {
+          "number": 33,
+          "title": "The Golden Eagle Is Cut To Pieces. Herod's Barbarity When He Was Ready To Die. He Attempts To Kill Himself. He Commands Antipater To Be Slain. He Survives Him Five Days And Then Dies.",
+          "sections": 9
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Containing The Interval Of Sixty-Nine Years.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Archelaus Makes A Funeral Feast For The People, On The Account Of Herod. After Which A Great Tumult Is Raised By The Multitude And He Sends The Soldiers Out Upon Them, Who Destroy About Three Thousand Of Them.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "Archelaus Goes To Rome With A Great Number Of His Kindred. He Is There Accused Before Caesar By Antipater; But Is Superior To His Accusers In Judgment By The Means Of That Defense Which Nicolaus Made For Him.",
+          "sections": 7
+        },
+        {
+          "number": 3,
+          "title": "The Jews Fight A Great Battle With Sabinus's Soldiers, And A Great Destruction Is Made At Jerusalem.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "Herod's Veteran Soldiers Become Tumultuous. The Robberies Of Judas. Simon And Athronoeus Take The Name Of King Upon Them.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "Varus Composes The Tumults In Judea And Crucifies About Two Thousand Of The Seditious.",
+          "sections": 3
+        },
+        {
+          "number": 6,
+          "title": "The Jews Greatly Complain Of Archelaus And Desire That They May Be Made Subject To Roman Governors. But When Caesar Had Heard What They Had To Say, He Distributed Herod's Dominions Among His Sons According To His Own Pleasure.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "The History Of The Spurious Alexander. Archelaus Is Banished And Glaphyra Dies, After What Was To Happen To Both Of Them Had Been Showed Them In Dreams.",
+          "sections": 4
+        },
+        {
+          "number": 8,
+          "title": "Archelaus's Ethnarchy Is Reduced Into A [Roman] Province. The Sedition Of Judas Of Galilee. The Three Sects.",
+          "sections": 14
+        },
+        {
+          "number": 9,
+          "title": "The Death Of Salome. The Cities Which Herod And Philip Built. Pilate Occasions Disturbances. Tiberius Puts Agrippa Into Bonds But Caius Frees Him From Them, And Makes Him King. Herod Antipas Is Banished.",
+          "sections": 6
+        },
+        {
+          "number": 10,
+          "title": "Caius Commands That His Statue Should Be Set Up In The Temple Itself; And What Petronius Did Thereupon.",
+          "sections": 5
+        },
+        {
+          "number": 11,
+          "title": "Concerning The Government Of Claudius, And The Reign Of Agrippa. Concerning The Deaths Of Agrippa And Of Herod And What Children They Both Left Behind Them.",
+          "sections": 6
+        },
+        {
+          "number": 12,
+          "title": "Many Tumults Under Cumanus, Which Were Composed By Quadratus. Felix Is Procurator Of Judea. Agrippa Is Advanced From Chalcis To A Greater Kingdom.",
+          "sections": 8
+        },
+        {
+          "number": 13,
+          "title": "Nero Adds Four Cities To Agrippas Kingdom; But The Other Parts Of Judea Were Under Felix. The Disturbances Which Were Raised By The Sicarii The Magicians And An Egyptian False Prophet. The Jews And Syrians Have A Contest At Cesarea.",
+          "sections": 7
+        },
+        {
+          "number": 14,
+          "title": "Festus Succeeds Felix Who Is Succeeded By Albinus As He Is By Florus; Who By The Barbarity Of His Government Forces The Jews Into The War.",
+          "sections": 9
+        },
+        {
+          "number": 15,
+          "title": "Concerning Bernice's Petition To Florus, To Spare The Jews, But In Vain; As Also How, After The Seditious Flame Was Quenched, It Was Kindled Again By Florus.",
+          "sections": 6
+        },
+        {
+          "number": 16,
+          "title": "Cestius Sends Neopolitanus The Tribune To See In What Condition The Affairs Of The Jews Were. Agrippa Makes A Speech To The People Of The Jews That He May Divert Them From Their Intentions Of Making War With The Romans.",
+          "sections": 4
+        },
+        {
+          "number": 17,
+          "title": "How The War Of The Jews With The Romans Began, And Concerning Manahem.",
+          "sections": 10
+        },
+        {
+          "number": 18,
+          "title": "The Calamities And Slaughters That Came Upon The Jews.",
+          "sections": 11
+        },
+        {
+          "number": 19,
+          "title": "What Cestius Did Against The Jews; And How, Upon His Besieging Jerusalem, He Retreated From The City Without Any Just Occasion In The World. As Also What Severe Calamities He Under Went From The Jews In His Retreat.",
+          "sections": 9
+        },
+        {
+          "number": 20,
+          "title": "Cestius Sends Ambassadors To Nero. The People Of Damascus Slay Those Jews That Lived With Them. The People Of Jerusalem After They Had [Left Off] Pursuing Cestius, Return To The City And Get Things Ready For Its Defense And Make A Great Many Generals For Their Armies And Particularly Josephus The Writer Of These Books. Some Account Of His Administration.",
+          "sections": 8
+        },
+        {
+          "number": 21,
+          "title": "Concerning John Of Gichala. Josephus Uses Stratagems Against The Plots John Laid Against Him And Recovers Certain Cities Which Had Revolted From Him.",
+          "sections": 10
+        },
+        {
+          "number": 22,
+          "title": "The Jews Make All Ready For The War; And Simon, The Son Of Gioras, Falls To Plundering.",
+          "sections": 2
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Containing The Interval Of About One Year. From Vespasian's Coming To Subdue The Jews To The Taking Of Gamala.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Vespasian Is Sent Into Syria By Nero In Order To Make War With The Jews.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "A Great Slaughter About Ascalon. Vespasian Comes To Ptolemais.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "A Description Of Galilee, Samaria, And Judea.",
+          "sections": 5
+        },
+        {
+          "number": 4,
+          "title": "Josephus Makes An Attempt Upon Sepphoris But Is Repelled. Titus Comes With A Great Army To Ptolemais.",
+          "sections": 2
+        },
+        {
+          "number": 5,
+          "title": "A Description Of The Roman Armies And Roman Camps And Of Other Particulars For Which The Romans Are Commended.",
+          "sections": 8
+        },
+        {
+          "number": 6,
+          "title": "Placidus Attempts To Take Jotapata And Is Beaten Off. Vespasian Marches Into Galilee.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "Vespasian, When He Had Taken The City Gadaea Marches To Jotapata. After A Long Siege The City Is Betrayed By A Deserter, And Taken By Vespasian.",
+          "sections": 36
+        },
+        {
+          "number": 8,
+          "title": "How Josephus Was Discovered By A Woman, And Was Willing To Deliver Himself Up To The Romans; And What Discourse He Had With His Own Men, When They Endeavored To Hinder Him; And What He Said To Vespasian, When He Was Brought To Him; And After What Manner Vespasian Used Him Afterward.",
+          "sections": 9
+        },
+        {
+          "number": 9,
+          "title": "How Joppa Was Taken, And Tiberias Delivered Up.",
+          "sections": 8
+        },
+        {
+          "number": 10,
+          "title": "How Taricheae Was Taken. A Description Of The River Jordan, And Of The Country Of Gennesareth.",
+          "sections": 10
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Containing The Interval Of About One Year.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Siege And Taking Of Gamala.",
+          "sections": 10
+        },
+        {
+          "number": 2,
+          "title": "The Surrender Of Gischala; While John Flies Away From It To Jerusalem.",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "Concerning John Of Gischala. Concerning The Zealots And The High Priest Ananus; As Also How The Jews Raise Seditions One Against Another [In Jerusalem].",
+          "sections": 14
+        },
+        {
+          "number": 4,
+          "title": "The Idumeans Being Sent For By The Zealots, Came Immediately To Jerusalem; And When They Were Excluded Out Of The City, They Lay All Night There. Jesus One Of The High Priests Makes A Speech To Them; And Simon The Idumean Makes A Reply To It.",
+          "sections": 7
+        },
+        {
+          "number": 5,
+          "title": "",
+          "sections": 5
+        },
+        {
+          "number": 6,
+          "title": "How The Zealots When They Were Freed From The Idumeans, Slew A Great Many More Of The Citizens; And How Vespasian Dissuaded The Romans When They Were Very Earnest To March Against The Jews From Proceeding In The War At That Time.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "How John Tyrannized Over The Rest; And What Mischiefs The Zealots Did At Masada. How Also Vespasian Took Gadara; And What Actions Were Performed By Placidus.",
+          "sections": 6
+        },
+        {
+          "number": 8,
+          "title": "How Vespasian Upon Hearing Of Some Commotions In Gall, <a href=\"#link4note-12\" name=\"link4noteref-12\" id=\"link4noteref-12\">12</a> Made Haste To Finish The Jewish War. A Description Of Jericho, And Of The Great Plain; With An Account Besides Of The Lake Asphaltites.",
+          "sections": 4
+        },
+        {
+          "number": 9,
+          "title": "That Vespasian, After He Had Taken Gadara Made Preparation For The Siege Of Jerusalem; But That, Upon His Hearing Of The Death Of Nero, He Changed His Intentions. As Also Concerning Simon Of Geras.",
+          "sections": 12
+        },
+        {
+          "number": 10,
+          "title": "How The Soldiers, Both In Judea And Egypt, Proclaimed Vespasian Emperor; And How Vespasian Released Josephus From His Bonds.",
+          "sections": 7
+        },
+        {
+          "number": 11,
+          "title": "That Upon The Conquest And Slaughter Of Vitellius Vespasian Hastened His Journey To Rome; But Titus His Son Returned To Jerusalem.",
+          "sections": 5
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Containing The Interval Of Near Six Months.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Concerning The Seditions At Jerusalem And What Terrible Miseries Afflicted The City By Their Means.",
+          "sections": 6
+        },
+        {
+          "number": 2,
+          "title": "How Titus Marched To Jerusalem, And How He Was In Danger As He Was Taking A View Of The City Of The Place Also Where He Pitched His Camp",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "How The Sedition Was Again Revived Within Jerusalem And Yet The Jews Contrived Snares For The Romans. How Titus Also Threatened His Soldiers For Their Ungovernable Rashness.",
+          "sections": 5
+        },
+        {
+          "number": 4,
+          "title": "The Description Of Jerusalem.",
+          "sections": 4
+        },
+        {
+          "number": 5,
+          "title": "A Description Of The Temple.",
+          "sections": 9
+        },
+        {
+          "number": 6,
+          "title": "Concerning The Tyrants Simon And John. How Also As Titus Was Going Round The Wall Of This City Nicanor Was Wounded By A Dart; Which Accident Provoked Titus To Press On The Siege.",
+          "sections": 5
+        },
+        {
+          "number": 7,
+          "title": "How One Of The Towers Erected By The Romans Fell Down Of Its Own Accord; And How The Romans After Great Slaughter Had Been Made Got Possession Of The First Wall. How Also Titus Made His Assaults Upon The Second Wall; As Also Concerning Longinus The Roman, And Castor The Jew.",
+          "sections": 4
+        },
+        {
+          "number": 8,
+          "title": "How The Romans Took The Second Wall Twice, And Got All Ready For Taking The Third Wall.",
+          "sections": 2
+        },
+        {
+          "number": 9,
+          "title": "Titus When The Jews Were Not At All Mollified By His Leaving Off The Siege For A While, Set Himself Again To Prosecute The Same; But Soon Sent Josephus To Discourse With His Own Countrymen About Peace.",
+          "sections": 4
+        },
+        {
+          "number": 10,
+          "title": "How A Great Many Of The People Earnestly Endeavored To Desert To The Romans; As Also What Intolerable Things Those That Staid Behind Suffered By Famine, And The Sad Consequences Thereof.",
+          "sections": 5
+        },
+        {
+          "number": 11,
+          "title": "How The Jews Were Crucified Before The Walls Of The City Concerning Antiochus Epiphanes; And How The Jews Overthrew The Banks That Had Been Raised By The Romans.",
+          "sections": 6
+        },
+        {
+          "number": 12,
+          "title": "Titus Thought Fit To Encompass The City Round With A Wall; After Which The Famine Consumed The People By Whole Houses And Families Together.",
+          "sections": 4
+        },
+        {
+          "number": 13,
+          "title": "The Great Slaughters And Sacrilege That Were In Jerusalem.",
+          "sections": 7
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Containing The Interval Of About One Month.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "That The Miseries Still Grew Worse; And How The Romans Made An Assault Upon The Tower Of Antonia.",
+          "sections": 8
+        },
+        {
+          "number": 2,
+          "title": "How Titus Gave Orders To Demolish The Tower Of Antonia And Then Persuaded Josephus To Exhort The Jews Again [To A Surrender].",
+          "sections": 10
+        },
+        {
+          "number": 3,
+          "title": "Concerning A Stratagem That Was Devised By The Jews, By Which They Burnt Many Of The Romans; With Another Description Of The Terrible Famine That Was In The City.",
+          "sections": 5
+        },
+        {
+          "number": 4,
+          "title": "When The Banks Were Completed And The Battering Rams Brought, And Could Do Nothing, Titus Gave Orders To Set Fire To The Gates Of The Temple; In No Long Time After Which The Holy House Itself Was Burnt Down, Even Against His Consent.",
+          "sections": 8
+        },
+        {
+          "number": 5,
+          "title": "The Great Distress The Jews Were In Upon The Conflagration Of The Holy House. Concerning A False Prophet, And The Signs That Preceded This Destruction.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "How The Romans Carried Their Ensigns To The Temple, And Made Joyful Acclamations To Titus. The Speech That Titus Made To The Jews When They Made Supplication For Mercy. What Reply They Made Thereto; And How That Reply Moved Titus's Indignation Against Them.",
+          "sections": 4
+        },
+        {
+          "number": 7,
+          "title": "What Afterward Befell The Seditious When They Had Done A Great Deal Of Mischief, And Suffered Many Misfortunes; As Also How Caesar Became Master Of The Upper City.",
+          "sections": 3
+        },
+        {
+          "number": 8,
+          "title": "How Caesar Raised Banks Round About The Upper City [Mount Zion] And When They Were Completed, Gave Orders That The Machines Should Be Brought. He Then Possessed Himself Of The Whole City.",
+          "sections": 5
+        },
+        {
+          "number": 9,
+          "title": "What Injunctions Caesar Gave When He Was Come Within The City. The Number Of The Captives And Of Those That Perished In The Siege; As Also Concerning Those That Had Escaped Into The Subterranean Caverns, Among Whom Were The Tyrants Simon And John Themselves.",
+          "sections": 4
+        },
+        {
+          "number": 10,
+          "title": "That Whereas The City Of Jerusalem Had Been Five Times Taken Formerly, This Was The Second Time Of Its Desolation. A Brief Account Of Its History.",
+          "sections": 1
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Containing The Interval Of About Three Years. From The Taking Of Jerusalem By Titus To The Sedition At Cyrene",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How The Entire City Of Jerusalem Was Demolished, Excepting Three Towers; And How Titus Commended His Soldiers In A Speech Made To Them, And Distributed Rewards To Them And Then Dismissed Many Of Them.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "How Titus Exhibited All Sorts Of Shows At Cesarea Philippi. Concerning Simon The Tyrant How He Was Taken, And Reserved For The Triumph.",
+          "sections": 1
+        },
+        {
+          "number": 3,
+          "title": "How Titus Upon The Celebration Of His Brothers And Fathers Birthdays Had Many Of The Jews Slain. Concerning The Danger The Jews Were In At Antioch, By Means Of The Transgression And Impiety Of One Antiochus, A Jew.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "How Vespasian Was Received At Rome; As Also How The Germans Revolted From The Romans, But Were Subdued. That The Sarmatians Overran Mysia, But Were Compelled To Retire To Their Own Country Again.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "",
+          "sections": 7
+        },
+        {
+          "number": 6,
+          "title": "Concerning Machaerus, And How Lucilius Bassus Took That Citadel, And Other Places.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "Concerning The Calamity That Befell Antiochus, King Of Commagene. As Also Concerning The Alans And What Great Mischiefs They Did To The Medes And Armenians.",
+          "sections": 4
+        },
+        {
+          "number": 8,
+          "title": "Concerning Masada And Those Sicarii Who Kept It; And How Silva Betook Himself To Form The Siege Of That Citadel. Eleazar's Speeches To The Besieged.",
+          "sections": 7
+        },
+        {
+          "number": 9,
+          "title": "How The People That Were In The Fortress Were Prevailed On By The Words Of Eleazar, Two Women And Five Children Only Excepted And All Submitted To Be Killed By One Another.",
+          "sections": 2
+        },
+        {
+          "number": 10,
+          "title": "That Many Of The Sicarii Fled To Alexandria Also And What Dangers They Were In There; On Which Account That Temple Which Had Formerly Been Built By Onias The High Priest Was Destroyed.",
+          "sections": 4
+        },
+        {
+          "number": 11,
+          "title": "Concerning Jonathan, One Of The Sicarii, That Stirred Up A Sedition In Cyrene, And Was A False Accuser [Of The Innocent].",
+          "sections": 5
+        }
+      ]
+    }
+  ]
+}

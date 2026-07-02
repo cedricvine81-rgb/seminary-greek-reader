@@ -1,0 +1,1408 @@
+{
+  "work": "Antiquities of the Jews",
+  "author": "Flavius Josephus",
+  "translator": "William Whiston",
+  "attribution": "Flavius Josephus, Antiquities of the Jews, tr. William Whiston (1737), public domain. Source: Project Gutenberg eBook #2848 (gutenberg.org/ebooks/2848).",
+  "books": [
+    {
+      "number": 1,
+      "title": "Containing The Interval Of Three Thousand Eight Hundred And Thirty-Three Years. — From The Creation To The Death Of Isaac.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Constitution Of The World And The Disposition Of The Elements.",
+          "sections": 4
+        },
+        {
+          "number": 2,
+          "title": "Concerning The Posterity Of Adam, And The Ten Generations From Him To The Deluge.",
+          "sections": 3
+        },
+        {
+          "number": 3,
+          "title": "Concerning The Flood; And After What Manner Noah Was Saved In An Ark, With His Kindred, And Afterwards Dwelt In The Plain Of Shinar.",
+          "sections": 9
+        },
+        {
+          "number": 4,
+          "title": "Concerning The Tower Of Babylon, And The Confusion Of Tongues.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "After What Manner The Posterity Of Noah Sent Out Colonies, And Inhabited The Whole Earth.",
+          "sections": 1
+        },
+        {
+          "number": 6,
+          "title": "How Every Nation Was Denominated From Their First Inhabitants.",
+          "sections": 5
+        },
+        {
+          "number": 7,
+          "title": "How Abram Our Forefather Went Out Of The Land Of The Chaldeans, And Lived In The Land Then Called Canaan But Now Judea.",
+          "sections": 2
+        },
+        {
+          "number": 8,
+          "title": "That When There Was A Famine In Canaan, Abram Went Thence Into Egypt; And After He Had Continued There A While He Returned Back Again.",
+          "sections": 3
+        },
+        {
+          "number": 9,
+          "title": "The Destruction Of The Sodomites By The Assyrian War.",
+          "sections": 1
+        },
+        {
+          "number": 10,
+          "title": "How Abram Fought With The Assyrians, And Overcame Them, And Saved The Sodomite Prisoners, And Took From The Assyrians The Prey They Had Gotten.",
+          "sections": 5
+        },
+        {
+          "number": 11,
+          "title": "How God Overthrew The Nation Of The Sodomites, Out Of His Wrath Against Them For Their Sins.",
+          "sections": 5
+        },
+        {
+          "number": 12,
+          "title": "Concerning Abimelech; And Concerning Ismael The Son Of Abraham; And Concerning The Arabians, Who Were His Posterity.",
+          "sections": 4
+        },
+        {
+          "number": 13,
+          "title": "Concerning Isaac The Legitimate Son Of Abraham.",
+          "sections": 4
+        },
+        {
+          "number": 14,
+          "title": "Concerning Sarah Abraham's Wife; And How She Ended Her Days.",
+          "sections": 1
+        },
+        {
+          "number": 15,
+          "title": "How The Nation Of The Troglodytes Were Derived From Abraham By Keturah.",
+          "sections": 1
+        },
+        {
+          "number": 16,
+          "title": "How Isaac Took Rebeka To Wife.",
+          "sections": 3
+        },
+        {
+          "number": 17,
+          "title": "Concerning The Death Of Abraham.",
+          "sections": 1
+        },
+        {
+          "number": 18,
+          "title": "Concerning The Sons Of Isaac, Esau And Jacob; Of Their Nativity And Education.",
+          "sections": 8
+        },
+        {
+          "number": 19,
+          "title": "Concerning Jacob's Flight Into Mesopotamia, By Reason Of The Fear He Was In Of His Brother.",
+          "sections": 11
+        },
+        {
+          "number": 20,
+          "title": "Concerning The Meeting Of Jacob And Esau.",
+          "sections": 3
+        },
+        {
+          "number": 21,
+          "title": "Concerning The Violation Of Dina's Chastity.",
+          "sections": 3
+        },
+        {
+          "number": 22,
+          "title": "How Isaac Died, And Was Buried In Hebron.",
+          "sections": 1
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Containing The Interval Of Two Hundred And Twenty Years.—From The Death Of Isaac To The Exodus Out Of Egypt.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Esau And Jacob, Isaac's Sons Divided Their Habitation; And Esau Possessed Idumea And Jacob Canaan.",
+          "sections": 2
+        },
+        {
+          "number": 2,
+          "title": "How Joseph, The Youngest Of Jacob's Sons, Was Envied By His Brethren, When Certain Dreams Had Foreshown His Future Happiness.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "How Joseph Was Thus Sold By His Brethren Into Egypt, By Reason Of Their Hatred To Him; And How He There Grew Famous And Illustrious And Had His Brethren Under His Power.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "Concerning The Signal Chastity Of Joseph.",
+          "sections": 5
+        },
+        {
+          "number": 5,
+          "title": "What Things Befell Joseph In Prison.",
+          "sections": 7
+        },
+        {
+          "number": 6,
+          "title": "How Joseph When He Was Become Famous In Egypt, Had His Brethren In Subjection.",
+          "sections": 9
+        },
+        {
+          "number": 7,
+          "title": "The Removal Of Joseph's Father With All His Family, To Him, On Account Of The Famine.",
+          "sections": 7
+        },
+        {
+          "number": 8,
+          "title": "Of The Death Of Jacob And Joseph.",
+          "sections": 2
+        },
+        {
+          "number": 9,
+          "title": "Concerning The Afflictions That Befell The Hebrews In Egypt, During Four Hundred Years. 16",
+          "sections": 7
+        },
+        {
+          "number": 10,
+          "title": "How Moses Made War With The Ethiopians.",
+          "sections": 2
+        },
+        {
+          "number": 11,
+          "title": "How Moses Fled Out Of Egypt Into Midian.",
+          "sections": 2
+        },
+        {
+          "number": 12,
+          "title": "Concerning The Burning Bush And The Rod Of Moses.",
+          "sections": 4
+        },
+        {
+          "number": 13,
+          "title": "How Moses And Aaron Returned Into Egypt To Pharaoh.",
+          "sections": 4
+        },
+        {
+          "number": 14,
+          "title": "Concerning The Ten Plagues Which Came Upon The Egyptians.",
+          "sections": 6
+        },
+        {
+          "number": 15,
+          "title": "How The Hebrews Under The Conduct Of Moses Left Egypt.",
+          "sections": 5
+        },
+        {
+          "number": 16,
+          "title": "How The Sea Was Divided Asunder For The Hebrews, When They Were Pursued By The Egyptians, And So Gave Them An Opportunity Of Escaping From Them.",
+          "sections": 6
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Containing The Interval Of Two Years.—From The Exodus Out Of Egypt, To The Rejection Of That Generation.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Moses When He Had Brought The People Out Of Egypt Led Them To Mount Sinai; But Not Till They Had Suffered Much In Their Journey.",
+          "sections": 7
+        },
+        {
+          "number": 2,
+          "title": "How The Amalekites And The Neighbouring Nations, Made War With The Hebrews And Were Beaten And Lost A Great Part Of Their Army.",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "That Moses Kindly Received-His Father-In-Law, Jethro, When He Came To Him To Mount Sinai.",
+          "sections": 1
+        },
+        {
+          "number": 4,
+          "title": "How Raguel Suggested To Moses To Set His People In Order, Under Their Rulers Of Thousands, And Rulers Of Hundreds, Who Lived Without Order Before; And How Moses Complied In All Things With His Father-In-Law's Admonition.",
+          "sections": 2
+        },
+        {
+          "number": 5,
+          "title": "How Moses Ascended Up To Mount Sinai, And Received Laws From God, And Delivered Them To The Hebrews.",
+          "sections": 8
+        },
+        {
+          "number": 6,
+          "title": "Concerning The Tabernacle Which Moses Built In The Wilderness For The Honor Of God And Which Seemed To Be A Temple.",
+          "sections": 8
+        },
+        {
+          "number": 7,
+          "title": "Concerning The Garments Of The Priests, And Of The High Priest.",
+          "sections": 7
+        },
+        {
+          "number": 8,
+          "title": "Of The Priesthood Of Aaron.",
+          "sections": 10
+        },
+        {
+          "number": 9,
+          "title": "The Manner Of Our Offering Sacrifices.",
+          "sections": 4
+        },
+        {
+          "number": 10,
+          "title": "Concerning The Festivals; And How Each Day Of Such Festival Is To Be Observed.",
+          "sections": 7
+        },
+        {
+          "number": 11,
+          "title": "Of The Purifications.",
+          "sections": 6
+        },
+        {
+          "number": 12,
+          "title": "Several Laws.",
+          "sections": 6
+        },
+        {
+          "number": 13,
+          "title": "Moses Removed From Mount Sinai, And Conducted The People To The Borders Of The Canaanites.",
+          "sections": 1
+        },
+        {
+          "number": 14,
+          "title": "How Moses Sent Some Persons To Search Out The Land Of The Canaanites, And The Largeness Of Their Cities; And Further That When Those Who Were Sent Were Returned, After Forty Days And Reported That They Should Not Be A Match For Them, And Extolled The Strength Of The Canaanites The Multitude Were Disturbed And Fell Into Despair; And Were Resolved To Stone Moses, And To Return Back Again Into Egypt, And Serve The Egyptians.",
+          "sections": 4
+        },
+        {
+          "number": 15,
+          "title": "How Moses Was Displeased At This, And Foretold That God Was Angry And That They Should Continue In The Wilderness For Forty Years And Not, During That Time, Either Return Into Egypt Or Take Possession Of Canaan.",
+          "sections": 3
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Containing The Interval Of Thirty-Eight Years.—From The Rejection Of That Generation To The Death Of Moses.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Fight Of The Hebrews With The Canaanites Without The Consent Of Moses; And Their Defeat.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "The Sedition Of Corah And Of The Multitude Against Moses, And Against His Brother, Concerning The Priesthood.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "How Those That Stirred Up This Sedition Were Destroyed, According To The Will Of God; And How Aaron, Moses's Brother Both He And His Posterity, Retained The Priesthood.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "What Happened To The Hebrews During Thirty-Eight Years In The Wilderness.",
+          "sections": 7
+        },
+        {
+          "number": 5,
+          "title": "How Moses Conquered Sihon And Og Kings Of The Amorites, And Destroyed Their Whole Army And Then Divided Their Land By Lot To Two Tribes And A Half Of The Hebrews.",
+          "sections": 3
+        },
+        {
+          "number": 6,
+          "title": "Concerning Balaam The Prophet And What Kind Of Man He Was.",
+          "sections": 13
+        },
+        {
+          "number": 7,
+          "title": "How The Hebrews Fought With The Midianites, And Overcame Them.",
+          "sections": 5
+        },
+        {
+          "number": 8,
+          "title": "The Polity Settled By Moses; And How He Disappeared From Among Mankind.",
+          "sections": 48
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "title": "Containing The Interval Of Four Hundred And Seventy-Six Years.—From The Death Of Moses To The Death Of Eli.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Joshua, The Commander Of The Hebrews, Made War With The Canaanites, And Overcame Them, And Destroyed Them, And Divided Their Land By Lot To The Tribes Of Israel.",
+          "sections": 29
+        },
+        {
+          "number": 2,
+          "title": "How, After The Death Of Joshua Their Commander, The Israelites Transgressed The Laws Of Their Country, And Experienced Great Afflictions; And When There Was A Sedition Arisen, The Tribe Of Benjamin Was Destroyed Excepting Only Six Hundred Men.",
+          "sections": 12
+        },
+        {
+          "number": 3,
+          "title": "How The Israelites After This Misfortune Grew Wicked And Served The Assyrians; And How God Delivered Them By Othniel, Who Ruled Over The Forty Years.",
+          "sections": 3
+        },
+        {
+          "number": 4,
+          "title": "How Our People Served The Moabites Eighteen Years, And Were Then Delivered From Slavery By One Ehud Who Retained The Dominion Eighty Years.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "How The Canaanites Brought The Israelites Under Slavery For Twenty Years; After Which They Were Delivered By Barak And Deborah, Who Ruled Over Them For Forty Years.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "How The Midianites And Other Nations Fought Against The Israelites And Beat Them, And Afflicted Their Country For Seven Years, How They Were Delivered By Gideon, Who Ruled Over The Multitude For Forty Years.",
+          "sections": 7
+        },
+        {
+          "number": 7,
+          "title": "That The Judges Who Succeeded Gideon Made War With The Adjoining Nations For A Long Time.",
+          "sections": 15
+        },
+        {
+          "number": 8,
+          "title": "Concerning The Fortitude Of Samson, And What Mischiefs He Brought Upon The Philistines.",
+          "sections": 12
+        },
+        {
+          "number": 9,
+          "title": "How Under Eli's Government Of The Israelites Booz Married Ruth, From Whom Came Obed The Grandfather Of David.",
+          "sections": 4
+        },
+        {
+          "number": 10,
+          "title": "Concerning The Birth Of Samuel; And How He Foretold The Calamity That Befell The Sons Of Eli.",
+          "sections": 4
+        },
+        {
+          "number": 11,
+          "title": "Herein Is Declared What Befell The Sons Of Eli, The Ark, And The People And How Eli Himself Died Miserably.",
+          "sections": 5
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "title": "Containing The Interval Of Thirty-Two Years.—From The Death Of Eli To The Death Of Saul.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Destruction That Came Upon The Philistines, And Upon Their Land, By The Wrath Of Go On Account Of Their Having Carried The Ark Away Captive; And After What Manner They Sent It Back To The Hebrews.",
+          "sections": 4
+        },
+        {
+          "number": 2,
+          "title": "The Expedition Of The Philistines Against The Hebrews And The Hebrews' Victory Under The Conduct Of Samuel The Prophet, Who Was Their General.",
+          "sections": 3
+        },
+        {
+          "number": 3,
+          "title": "How Samuel When He Was So Infirm With Old Age That He Could Not Take Care Of The Public Affairs Intrusted Them To His Sons; And How Upon The Evil Administration Of The Government By Them The Multitude Were So Angry, That They Required To Have A King To Govern Them, Although Samuel Was Much Displeased Thereat.",
+          "sections": 6
+        },
+        {
+          "number": 4,
+          "title": "The Appointment Of A King Over The Israelites, Whose Name Was Saul; And This By The Command Of God.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "Saul's Expedition Against The Nation Of The Ammonites And Victory Over Them And The Spoils He Took From Them.",
+          "sections": 6
+        },
+        {
+          "number": 6,
+          "title": "How The Philistines Made Another Expedition Against The Hebrews And Were Beaten.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "Saul's War With The Amalekites, And Conquest Of Them.",
+          "sections": 5
+        },
+        {
+          "number": 8,
+          "title": "How, Upon Saul's Transgression Of The Prophet's Commands, Samuel Ordained Another Person To Be King Privately, Whose Name Was David, As God Commanded Him.",
+          "sections": 2
+        },
+        {
+          "number": 9,
+          "title": "How The Philistines Made Another Expedition Against The Hebrews Under The Reign Of Saul; And How They Were Overcome By David's Slaying Goliath In Single Combat.",
+          "sections": 5
+        },
+        {
+          "number": 10,
+          "title": "Saul Envies David For His Glorious Success, And Takes An Occasion Of Entrapping Him, From The Promise He Made Him Of Giving Him His Daughter In Marriage; But This Upon Condition Of His Bringing Him Six Hundred Heads Of The Philistines.",
+          "sections": 3
+        },
+        {
+          "number": 11,
+          "title": "How David, Upon Saul's Laying Snares For Him, Did Yet Escape The Dangers He Was In By The Affection And Care Of Jonathan And The Contrivances Of His Wife Michal: And How He Came To Samuel The Prophet.",
+          "sections": 10
+        },
+        {
+          "number": 12,
+          "title": "How David Fled To Ahimelech And Afterwards To The Kings Of The Philistines And Of The Moabites, And How Saul Slew Ahimelech And His Family.",
+          "sections": 8
+        },
+        {
+          "number": 13,
+          "title": "How David, When He Had Twice The Opportunity Of Killing Saul Did Not Kill Him. Also Concerning The Death Of Samuel And Nabal.",
+          "sections": 10
+        },
+        {
+          "number": 14,
+          "title": "How Saul Upon God's Not Answering Him Concerning The Fight With The Philistines Desired A Necromantic Woman To Raise Up The Soul Of Samuel To Him; And How He Died, With His Sons Upon The Overthrow Of The Hebrews In Battle.",
+          "sections": 9
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "title": "Containing The Interval Of Forty Years.—From The Death Of Saul To The Death Of David.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How David Reigned Over One Tribe At Hebron While The Son Of Saul Reigned Over The Rest Of The Multitude; And How, In The Civil War Which Then Arose Asahel And Abner Were Slain.",
+          "sections": 6
+        },
+        {
+          "number": 2,
+          "title": "That Upon The Slaughter Of Ishbosheth By The Treachery Of His Friends, David Received The Whole Kingdom.",
+          "sections": 2
+        },
+        {
+          "number": 3,
+          "title": "How David Laid Siege To Jerusalem; And When He Had Taken The City, He Cast The Canaanites Out Of It, And Brought In The Jews To Inhabit Therein.",
+          "sections": 3
+        },
+        {
+          "number": 4,
+          "title": "That When David Had Conquered The Philistines Who Made War Against Him At Jerusalem, He Removed The Ark To Jerusalem And Had A Mind To Build A Temple.",
+          "sections": 4
+        },
+        {
+          "number": 5,
+          "title": "How David Brought Under The Philistines, And The Moabites, And The Kings Of Sophene And Of Damascus, And Of The Syrians As Also The Idumeans, In War; And How He Made A League With The King Of Hamath; And Was Mindful Of The Friendship That Jonathan, The Son Of Saul, Had Borne Him.",
+          "sections": 5
+        },
+        {
+          "number": 6,
+          "title": "How The War Was Waged Against The Ammonites And Happily Concluded.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "How David Fell In Love With Bathsheba, And Slew Her Husband Uriah, For Which He Is Reproved By Nathan.",
+          "sections": 5
+        },
+        {
+          "number": 8,
+          "title": "How Absalom Murdered Amnon, Who Had Forced His Own Sister; And How He Was Banished And Afterwards Recalled By David.",
+          "sections": 5
+        },
+        {
+          "number": 9,
+          "title": "Concerning The Insurrection Of Absalom Against David And Concerning Ahithophel And Hushai; And Concerning Ziba And Shimei; And How Ahithophel Hanged Himself.",
+          "sections": 8
+        },
+        {
+          "number": 10,
+          "title": "How, When Absalom Was Beaten, He Was Caught In A Tree By His Hair And Was Slain",
+          "sections": 5
+        },
+        {
+          "number": 11,
+          "title": "How David, When He Had Recovered His Kingdom, Was Reconciled To Shimei, And To Ziba; And Showed A Great Affection To Barzillai; And How, Upon The Rise Of A Sedition, He Made Amasa Captain Of His Host, In Order To Pursue Seba; Which Amasa Was Slain By Joab.",
+          "sections": 8
+        },
+        {
+          "number": 12,
+          "title": "How The Hebrews Were Delivered From A Famine When The Gibeonites Had Caused Punishment To Be Inflicted For Those Of Them That Had Been Slain: As Also, What Great Actions Were Performed Against The Philistines By David, And The Men Of Valor About Him.",
+          "sections": 4
+        },
+        {
+          "number": 13,
+          "title": "That When David Had Numbered the People, They Were Punished; and How the Divine Compassion Restrained That Punishment.",
+          "sections": 4
+        },
+        {
+          "number": 14,
+          "title": "That David Made Great Preparations For The House Of God; And That, Upon Adonijah's Attempt To Gain The Kingdom, He Appointed Solomon To Reign.",
+          "sections": 10
+        },
+        {
+          "number": 15,
+          "title": "What Charge David Gave To his Son Solomon At The Approach Of His Death, And How Many Things He Left Him For The Building Of The Temple.",
+          "sections": 3
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "title": "Containing The Interval Of One Hundred And Sixty-Three Years.—From The Death Of David To The Death Of Ahab.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Solomon, When He Had Received The Kingdom Took Off His Enemies.",
+          "sections": 5
+        },
+        {
+          "number": 2,
+          "title": "Concerning The Wife Of Solomon; Concerning His Wisdom And Riches; And Concerning What He Obtained Of Hiram For The Building Of The Temple.",
+          "sections": 9
+        },
+        {
+          "number": 3,
+          "title": "Of The Building Of This Temple",
+          "sections": 9
+        },
+        {
+          "number": 4,
+          "title": "How Solomon Removed The Ark Into The Temple How He Made Supplication To God, And Offered Public Sacrifices To Him.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "How Solomon Built Himself A Royal Palace, Very Costly And Splendid; And How He Solved The Riddles Which Were Sent Him By Hiram.",
+          "sections": 3
+        },
+        {
+          "number": 6,
+          "title": "How Solomon Fortified The City Of Jerusalem, And Built Great Cities; And How He Brought Some Of The Canaanites Into Subjection, And Entertained The Queen Of Egypt And Of Ethiopia.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "How Solomon Grew Rich, And Fell Desperately In Love With Women And How God, Being Incensed At It, Raised Up Ader And Jeroboam Against Him. Concerning The Death Of Solomon.",
+          "sections": 8
+        },
+        {
+          "number": 8,
+          "title": "How, Upon The Death Of Solomon The People Forsook His Son Rehoboam, And Ordained Jeroboam King Over The Ten Tribes.",
+          "sections": 5
+        },
+        {
+          "number": 9,
+          "title": "How Jadon The Prophet Was Persuaded By Another Lying Prophet And Returned [To Bethel,] And Was Afterwards Slain By A Lion. As Also What Words The Wicked Prophet Made Use Of To Persuade The King, And Thereby Alienated His Mind From God.",
+          "sections": 1
+        },
+        {
+          "number": 10,
+          "title": "Concerning Rehoboam, And How God Inflicted Punishment Upon Him For His Impiety By Shishak [King Of Egypt].",
+          "sections": 4
+        },
+        {
+          "number": 11,
+          "title": "Concerning The Death Of A Son Of Jeroboam. How Jeroboam Was Beaten By Abijah Who Died A Little Afterward And Was Succeeded In His Kingdom By Asa. And Also How, After The Death Of Jeroboam Baasha Destroyed His Son Nadab And All The House Of Jeroboam.",
+          "sections": 4
+        },
+        {
+          "number": 12,
+          "title": "How Zerah, King Of The Ethiopians, Was Beaten By Asa; And How Asa, Upon Baasha's Making War Against Him, Invited The King Of The Damascens To Assist Him; And How, On The Destruction Of The House Of Baasha Zimri Got The Kingdom As Did His Son Ahab After Him.",
+          "sections": 6
+        },
+        {
+          "number": 13,
+          "title": "How Ahab When He Had Taken Jezebel To Wife Became More Wicked Than All The Kings That Had Been Before Him; Of The Actions Of The Prophet Elijah, And What Befell Naboth.",
+          "sections": 8
+        },
+        {
+          "number": 14,
+          "title": "How Hadad King Of Damascus And Of Syria, Made Two Expeditions Against Ahab And Was Beaten.",
+          "sections": 5
+        },
+        {
+          "number": 15,
+          "title": "Concerning Jehoshaphat The King Of Jerusalem And How Ahab Made An Expedition Against The Syrians And Was Assisted Therein By Jehoshaphat, But Was Himself Overcome In Battle And Perished Therein.",
+          "sections": 6
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "title": "Containing The Interval Of One Hundred And Fifty-Seven Years.—From The Death Of Ahab To The Captivity Of The Ten Tribes.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Concerning Jehoshaphat Again; How He Constituted Judges And, By God's Assistance Overcame His Enemies.",
+          "sections": 4
+        },
+        {
+          "number": 2,
+          "title": "Concerning Ahaziah; The King Of Israel; And Again Concerning The Prophet Elijah.",
+          "sections": 2
+        },
+        {
+          "number": 3,
+          "title": "How Joram And Jehoshaphat Made An Expedition Against The Moabites; As Also Concerning The Wonders Of Elisha; And The Death Of Jehoshaphat.",
+          "sections": 2
+        },
+        {
+          "number": 4,
+          "title": "Jehoram Succeeds Jehoshaphat; How Joram, His Namesake, King Of Israel, Fought With The Syrians; And What Wonders Were Done By The Prophet Elisha.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "Concerning The Wickedness Of Jehoram King Of Jerusalem; His Defeat And Death.",
+          "sections": 3
+        },
+        {
+          "number": 6,
+          "title": "How Jehu Was Anointed King, And Slew Both Joram And Ahaziah; As Also What He Did For The Punishment Of The Wicked.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "How Athaliah Reigned Over Jerusalem For Five [Six] Years When Jehoiada The High Priest Slew Her And Made Jehoash, The Son Of Ahaziah, King.",
+          "sections": 5
+        },
+        {
+          "number": 8,
+          "title": "Hazael Makes An Expedition Against The People Of Israel And The Inhabitants Of Jerusalem. Jehu Dies, And Jehoahaz Succeeds In The Government. Jehoash The King Of Jerusalem At First Is Careful About The Worship Of God But Afterwards Becomes Impious And Commands Zechariah To Be Stoned. When Jehoash [King Of Judah] Was Dead, Amaziah Succeeds Him In The Kingdom.",
+          "sections": 7
+        },
+        {
+          "number": 9,
+          "title": "How Amaziah Made An Expedition Against The Edomites And Amalekites And Conquered Them; But When He Afterwards Made War Against Joash, He Was Beaten And Not Long After Was Slain, And Uzziah Succeeded In The Government.",
+          "sections": 3
+        },
+        {
+          "number": 10,
+          "title": "Concerning Jeroboam King Of Israel And Jonah The Prophet; And How After The Death Of Jeroboam His Son Zachariah Took The Government. How Uzziah, King Of Jerusalem, Subdued The Nations That Were Round About Him; And What Befell Him When He Attempted To Offer Incense To God.",
+          "sections": 4
+        },
+        {
+          "number": 11,
+          "title": "How Zachariah Shallum, Menahem Pekahiah And Pekah Took The Government Over The Israelites; And How Pul And Tiglath-Pileser Made An Expedition Against The Israelites. How Jotham, The Son Of Uzziah Reigned Over The Tribe Of Judah; And What Things Nahum Prophesied Against The Assyrians.",
+          "sections": 3
+        },
+        {
+          "number": 12,
+          "title": "How Upon The Death Of Jotham, Ahaz Reigned In His Stead; Against Whom Rezin, King Of Syria And Pekah King Of Israel, Made War; And How Tiglath-Pileser, King Of Assyria Came To The Assistance Of Ahaz, And Laid Syria Waste And Removing The Damascenes Into Media Placed Other Nations In Their Room.",
+          "sections": 3
+        },
+        {
+          "number": 13,
+          "title": "How Pekah Died By The Treachery Of Hoshea Who Was A Little After Subdued By Shalmaneser; And How Hezekiah Reigned Instead Of Ahaz; And What Actions Of Piety And Justice He Did.",
+          "sections": 3
+        },
+        {
+          "number": 14,
+          "title": "How Shalmaneser Took Samaria By Force And How He Transplanted The Ten Tribes Into Media, And Brought The Nation Of The Cutheans Into Their Country [In Their Room].",
+          "sections": 3
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "title": "Containing The Interval Of One Hundred And Eighty-Two Years And A Half.—From The Captivity Of The Ten Tribes To The First Year Of Cyrus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Sennacherib Made An Expedition Against Hezekiah; What Threatenings Rabshakeh Made To Hezekiah When Sennacherib Was Gone Against The Egyptians; How Isaiah The Prophet Encouraged Him; How Sennacherib Having Failed Of Success In Egypt, Returned Thence To Jerusalem; And How Upon His Finding His Army Destroyed, He Returned Home; And What Befell Him A Little Afterward.",
+          "sections": 5
+        },
+        {
+          "number": 2,
+          "title": "How Hezekiah Was Sick, And Ready To Die; And How God Bestowed Upon Him Fifteen Years Longer Life, [And Secured That Promise] By The Going Back Of The Shadow Ten Degrees.",
+          "sections": 2
+        },
+        {
+          "number": 3,
+          "title": "How Manasseh Reigned After Hezekiah; And How When He Was In Captivity He Returned To God And Was Restored To His Kingdom And Left It To [His Son] Amon.",
+          "sections": 2
+        },
+        {
+          "number": 4,
+          "title": "How Amon Reigned Instead Of Manasseh; And After Amon Reigned Josiah; He Was Both Righteous And Religious. As Also Concerning Huldah The Prophetess.",
+          "sections": 5
+        },
+        {
+          "number": 5,
+          "title": "How Josiah Fought With Neco [King Of Egypt.] And Was Wounded And Died In A Little Time Afterward; As Also How Neco Carried Jehoahaz, Who Had Been Made King Into Egypt And Delivered The Kingdom To Jehoiakim; And [Lastly] Concerning Jeremiah And Ezekiel.",
+          "sections": 2
+        },
+        {
+          "number": 6,
+          "title": "How Nebuchadnezzar, When He Had Conquered The King Of Egypt Made An Expedition Against The Jews, And Slew Jehoiakim, And Made Jehoiachin His Son King.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "That The King Of Babylon Repented Of Making Jehoiachin King, And Took Him Away To Babylon And Delivered The Kingdom To Zedekiah. This King Would Not Believe What Was Predicted By Jeremiah And Ezekiel But Joined Himself To The Egyptians; Who When They Came Into Judea, Were Vanquished By The King Of Babylon; As Also What Befell Jeremiah.",
+          "sections": 6
+        },
+        {
+          "number": 8,
+          "title": "How The King Of Babylon Took Jerusalem And Burnt The Temple And Removed The People Of Jerusalem And Zedekiah To Babylon. As Also, Who They Were That Had Succeeded In The High Priesthood Under The Kings.",
+          "sections": 7
+        },
+        {
+          "number": 9,
+          "title": "How Nebuzaradan Set Gedaliah Over The Jews That Were Left In Judea Which Gedaliah Was A Little Afterward Slain By Ishmael; And How Johanan After Ishmael Was Driven Away Went Down Into Egypt With The People Which People Nebuchadnezzar When He Made An Expedition Against The Egyptians Took Captive And Brought Them Away To Babylon.",
+          "sections": 7
+        },
+        {
+          "number": 10,
+          "title": "Concerning Daniel And What Befell Him At Babylon.",
+          "sections": 6
+        },
+        {
+          "number": 11,
+          "title": "Concerning Nebuchadnezzar And His Successors And How Their Government Was Dissolved By The Persians; And What Things Befell Daniel In Media; And What Prophecies He Delivered There.",
+          "sections": 7
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "title": "Containing The Interval Of Two Hundred And Fifty-Three Years And Five Months.—From The First Of Cyrus To The Death Of Alexander The Great.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Cyrus, King Of The Persians, Delivered The Jews Out Of Babylon And Suffered Them To Return To Their Own Country And To Build Their Temple, For Which Work He Gave Them Money.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "How Upon The Death Of Cyrus The Jews Were Hindered In Building Of The Temple By The Cutheans, And The Neighboring Governors; And How Cambyses Entirely Forbade The Jews To Do Any Such Thing.",
+          "sections": 2
+        },
+        {
+          "number": 3,
+          "title": "How After The Death Of Cambyses And The Slaughter Of The Magi But Under The Reign Of Darius, Zorobabel Was Superior To The Rest In The Solution Of Problems And Thereby Obtained This Favor Of The King, That The Temple Should Be Built.",
+          "sections": 10
+        },
+        {
+          "number": 4,
+          "title": "How The Temple Was Built While The Cutheans Endeavored In Vain To Obstruct The Work.",
+          "sections": 9
+        },
+        {
+          "number": 5,
+          "title": "How Xerxes The Son Of Darius Was Well Disposed To The Jews; As Also Concerning Esdras And Nehemiah.",
+          "sections": 8
+        },
+        {
+          "number": 6,
+          "title": "Concerning Esther And Mordecai And Haman; And How In The Reign Of Artaxerxes The Whole Nation Of The Jews Was In Danger Of Perishing.",
+          "sections": 13
+        },
+        {
+          "number": 7,
+          "title": "How John Slew His Brother Jesus In The Temple; And How Bagoses Offered Many Injuries To The Jews; And What Sanballat Did.",
+          "sections": 2
+        },
+        {
+          "number": 8,
+          "title": "Concerning Sanballat And Manasseh, And The Temple Which They Built On Mount Gerizzim; As Also How Alexander Made His Entry Into The City Jerusalem, And What Benefits He Bestowed On The Jews.",
+          "sections": 7
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "title": "Containing The Interval Of A Hundred And Seventy Years.—From The Death Of Alexander The Great To The Death Of Judas Maccabeus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Ptolemy The Son Of Lagus Took Jerusalem And Judea By Deceit And Treachery, And Carried Many Thence, And Planted Them In Egypt.",
+          "sections": 1
+        },
+        {
+          "number": 2,
+          "title": "How Ptolemy Philadelphus Procured The Laws Of The Jews To Be Translated Into The Greek Tongue And Set Many Captives Free, And Dedicated Many Gifts To God.",
+          "sections": 15
+        },
+        {
+          "number": 3,
+          "title": "How The Kings Of Asia Honored The Nation Of The Jews And Made Them Citizens Of Those Cities Which They Built.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "How Antiochus Made A League With Ptolemy And How Onias Provoked Ptolemy Euergetes To Anger; And How Joseph Brought All Things Right Again, And Entered Into Friendship With Him; And What Other Things Were Done By Joseph, And His Son Hyrcanus.",
+          "sections": 11
+        },
+        {
+          "number": 5,
+          "title": "How, Upon The Quarrels One Against Another About The High Priesthood Antiochus Made An Expedition Against Jerusalem, Took The City And Pillaged The Temples. And Distressed The Jews' As Also How Many Of The Jews Forsook The Laws Of Their Country; And How The Samaritans Followed The Customs Of The Greeks And Named Their Temple At Mount Gerizzim The Temple Of Jupiter Hellenius.",
+          "sections": 5
+        },
+        {
+          "number": 6,
+          "title": "How, Upon Antiochus's Prohibition To The Jews To Make Use Of The Laws Of Their Country Mattathias, The Son Of Asamoneus, Alone Despised The King, And Overcame The Generals Of Antiochus's Army; As Also Concerning The Death Of Mattathias, And The Succession Of Judas.",
+          "sections": 4
+        },
+        {
+          "number": 7,
+          "title": "How Judas Overthrew The Forces Of Apollonius And Seron And Killed The Generals Of Their Armies Themselves; And How When, A Little While Afterwards Lysias And Gorgias Were Beaten He Went Up To Jerusalem And Purified The Temple.",
+          "sections": 7
+        },
+        {
+          "number": 8,
+          "title": "How Judas Subdued The Nations Round About; And How Simon Beat The People Of Tyre And Ptolemais; And How Judas Overcame Timotheus, And Forced Him To Fly Away, And Did Many Other Things After Joseph And Azarias Had Been Beaten.",
+          "sections": 6
+        },
+        {
+          "number": 9,
+          "title": "Concerning The Death Of Antiochus Epiphane. How Antiochus Eupator Fought Against Juda And Besieged Him In The Temple And Afterwards Made Peace With Him And Departed; Of Alcimus And Onias.",
+          "sections": 7
+        },
+        {
+          "number": 10,
+          "title": "How Bacchides, The General Of Demetrius's Army, Made An Expedition Against Judea, And Returned Without Success; And How Nicanor Was Sent A Little Afterward Against Judas And Perished, Together With His Army; As Also Concerning The Death Of Alcimus And The Succession Of Judas.",
+          "sections": 6
+        },
+        {
+          "number": 11,
+          "title": "That Bacchides Was Again Sent Out Against Judas; And How Judas Fell As He Was Courageously Fighting.",
+          "sections": 2
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "title": "Containing The Interval Of Eighty-Two Years.—From The Death Of Judas Maccabeus To The Death Of Queen Alexandra.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Jonathan Took The Government After His Brother Judas; And How He, Together With His Brother Simon, Waged War Against Bacchides.",
+          "sections": 6
+        },
+        {
+          "number": 2,
+          "title": "How Alexander [Bala] In His War With Demetrius, Granted Jonathan Many Advantages And Appointed Him To Be High Priest And Persuaded Him To Assist Him Although Demetrius Promised Him Greater Advantages On The Other Side. Concerning The Death Of Demetrius.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "The Friendship That Was Between Onias And Ptolemy Philometor; And How Onias Built A Temple In Egypt Like To That At Jerusalem.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "How Alexander Honored Jonathan After An Extraordinary Manner; And How Demetrius, The Son Of Demetrius, Overcame Alexander And Made A League Of Friendship With Jonathan.",
+          "sections": 9
+        },
+        {
+          "number": 5,
+          "title": "How Trypho After He Had Beaten Demetrius Delivered The Kingdom To Antiochus The Son Of Alexander, And Gained Jonathan For His Assistant; And Concerning The Actions And Embassies Of Jonathan.",
+          "sections": 11
+        },
+        {
+          "number": 6,
+          "title": "How Jonathan Was Slain By Treachery; And How Thereupon The Jews Made Simon Their General And High Priest: What Courageous Actions He Also Performed Especially Against Trypho.",
+          "sections": 7
+        },
+        {
+          "number": 7,
+          "title": "How Simon Confederated Himself With Antiochus Pius, And Made War Against Trypho, And A Little Afterward, Against Cendebeus, The General Of Antiochus's Army; As Also How Simon Was Murdered By His Son- In-Law Ptolemy, And That By Treachery.",
+          "sections": 4
+        },
+        {
+          "number": 8,
+          "title": "Hyrcanus Receives The High Priesthood, And Ejects Ptolemy Out Of The Country. Antiochus Makes War Against Hyrcanus And Afterwards Makes A League With Him.",
+          "sections": 4
+        },
+        {
+          "number": 9,
+          "title": "How, After The Death Of Antiochus, Hyrcanus Made An Expedition Against Syria, And Made A League With The Romans. Concerning The Death Of King Demetrius And Alexander.",
+          "sections": 3
+        },
+        {
+          "number": 10,
+          "title": "How Upon The Quarrel Between Antiochus Grypus And Antiochus Cyzicenus About The Kingdom Hyrcanus Tooksamaria, And Utterly Demolished It; And How Hyrcanus Joined Himself To The Sect Of The Sadducees, And Left That Of The Pharisees.",
+          "sections": 7
+        },
+        {
+          "number": 11,
+          "title": "How Aristobulus, When He Had Taken The Government First Of All Put A Diadem On His Head, And Was Most Barbarously Cruel To His Mother And His Brethren; And How, After He Had Slain Antigonus, He Himself Died.",
+          "sections": 3
+        },
+        {
+          "number": 12,
+          "title": "How Alexander When He Had Taken The Government Made An Expedition Against Ptolemais, And Then Raised The Siege Out Of Fear Of Ptolemy Lathyrus; And How Ptolemy Made War Against Him, Because He Had Sent To Cleopatra To Persuade Her To Make War Against Ptolemy, And Yet Pretended To Be In Friendship With Him, When He Beat The Jews In The Battle.",
+          "sections": 6
+        },
+        {
+          "number": 13,
+          "title": "How Alexander, upon the League of Mutual Defense Which Cleopatra Had Agreed with Him, Made an Expedition Against Coelesyria, and Utterly Overthrew the City of Gaza; and How He Slew Many Ten Thousands of Jews That Rebelled Against Him. Also Concerning Antiochus Grypus, Seleucus Antiochus Cyzicenus, and Antiochus Pius, and Others.",
+          "sections": 5
+        },
+        {
+          "number": 14,
+          "title": "How Demetrius Eucerus Overcame Alexander And Yet In A Little Time Retired Out Of The Country For Fear; As Also How Alexander Slew Many Of The Jews And Thereby Got Clear Of His Troubles. Concerning The Death Of Demetrius.",
+          "sections": 3
+        },
+        {
+          "number": 15,
+          "title": "How Antiochus, Who Was Called Dionysus, And After Him Aretas Made Expeditions Into Judea; As Also How Alexander Took Many Cities And Then Returned To Jerusalem, And After A Sickness Of Three Years Died; And What Counsel He Gave To Alexandra.",
+          "sections": 5
+        },
+        {
+          "number": 16,
+          "title": "How Alexandra By Gaining The Good-Will Of The Pharisees, Retained The Kingdom Nine Years, And Then, Having Done Many Glorious Actions Died.",
+          "sections": 6
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "title": "Containing The Interval Of Thirty-Two Years.—From The Death Of Queen Alexandra To The Death Of Antigonus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The War Between Aristobulus And Hyrcanus About The Kingdom; And How They Made Anagreement That Aristobulus Should Be King, And Hyrcanus Live A Private Life; As Also How Hyrcanus A Little Afterward Was Persuaded By Antipater To Fly To Aretas.",
+          "sections": 4
+        },
+        {
+          "number": 2,
+          "title": "How Aretas And Hyrcanus Made An Expedition Against Aristobulus And Besieged Jerusalem; And How Scaurus The Roman General Raised The Siege. Concerning The Death Of Onias.",
+          "sections": 3
+        },
+        {
+          "number": 3,
+          "title": "How Aristobulus And Hyrcanus Came To Pompey In Order To Argue Who Ought To Have The Kingdom; And How Upon The Plight Of Aristobulus To The Fortress Alexandrium Pompey Led His Army Against Him And Ordered Him To Deliver Up The Fortresses Whereof He Was Possessed.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "How Pompey When The Citizens Of Jerusalem Shut Their Gates Against Him Besieged The City And Took It By Force; As Also What Other Things He Did In Judea.",
+          "sections": 5
+        },
+        {
+          "number": 5,
+          "title": "How Scaurus Made A League Of Mutual Assistance With Aretas; And What Gabinius Did In Judea, After He Had Conquered Alexander, The Son Of Aristobulus.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "How Gabinius Caught Aristobulus After He Had Fled From Rome, And Sent Him Back To Rome Again; And How The Same Gabinius As He Returned Out Of Egypt Overcame Alexander And The Nabateans In Battle.",
+          "sections": 4
+        },
+        {
+          "number": 7,
+          "title": "How Crassus Came Into Judea, And Pillaged The Temple; And Then Marched Against The Parthians And Perished, With His Army. Also How Cassius Obtained Syria, And Put A Stop To The Parthians And Then Went Up To Judea.",
+          "sections": 4
+        },
+        {
+          "number": 8,
+          "title": "The Jews Become Confederates With Cæsar When He Fought Against Egypt. The Glorious Actions Of Antipater, And His Friendship With Cæsar. The Honors Which The Jews Received From The Romans And Athenians.",
+          "sections": 5
+        },
+        {
+          "number": 9,
+          "title": "How Antipater Committed The Care Of Galilee To Herod, And That Of Jerusalem To Phasaelus; As Also How Herod Upon The Jews' Envy At Antipater Was Accused Before Hyrcanus.",
+          "sections": 5
+        },
+        {
+          "number": 10,
+          "title": "The Honors That Were Paid The Jews; And The Leagues That Were Made By The Romans And Other Nations, With Them.",
+          "sections": 26
+        },
+        {
+          "number": 11,
+          "title": "How Marcus, Succeeded Sextus When He Had Been Slain By Bassus's Treachery; And How, After The Death Of Cæsar, Cassius Came Into Syria, And Distressed Judea; As Also How Malichus Slew Antipater And Was Himself Slain By Herod.",
+          "sections": 7
+        },
+        {
+          "number": 12,
+          "title": "Herod Ejects Antigonus, The Son Of Aristobulus Out Of Judea, And Gains The Friendship Of Antony, Who Was Now Come Into Syria, By Sending Him Much Money; On Which Account He Would Not Admit Of Those That Would Have Accused Herod: And What It Was That Antony Wrote To The Tyrians In Behalf.",
+          "sections": 6
+        },
+        {
+          "number": 13,
+          "title": "How Antony Made Herod And Phasaelus Tetrarchs, After They Had Been Accused To No Purpose; And How The Parthians When They Brought Antigonus Into Judea Took Hyrcanus And Phasaelus Captives. Herod's Flight; And What Afflictions Hyrcanus And Phasaelus Endured.",
+          "sections": 10
+        },
+        {
+          "number": 14,
+          "title": "How Herod Got Away From The King Of Arabia And Made Haste To Go Into Egypt And Thence Went Away In Haste Also To Rome; And How, By Promising A Great Deal Of Money To Antony He Obtained Of The Senate And Of Cæsar To Be Made King Of The Jews.",
+          "sections": 6
+        },
+        {
+          "number": 15,
+          "title": "How Herod Sailed Out Of Italy To Judea, And Fought With Antigonus And What Other Things Happened In Judea About That Time.",
+          "sections": 14
+        },
+        {
+          "number": 16,
+          "title": "How Herod, When He Had Married Mariamne Took Jerusalem With The Assistance Of Sosius By Force; And How The Government Of The Asamoneans Was Put An End To.",
+          "sections": 4
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "title": "Containing The Interval Of Eighteen Years.—From The Death Of Antigonus To The Finishing Of The Temple By Herod.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Concerning Pollio And Sameas. Herod Slays The Principal Of Antigonus's Friends, And Spoils The City Of Its Wealth. Antony Beheads Antigonus.",
+          "sections": 2
+        },
+        {
+          "number": 2,
+          "title": "How Hyrcanus Was Set At Liberty By The Parthians, And Returned To Herod; And What Alexandra Did When She Heard That Ananelus Was Made High Priest.",
+          "sections": 7
+        },
+        {
+          "number": 3,
+          "title": "How Herod Upon His Making Aristobulus High Priest Took Care That He Should Be Murdered In A Little Time; And What Apology He Made To Antony About Aristobulus; As Also Concerning Joseph And Mariamne.",
+          "sections": 9
+        },
+        {
+          "number": 4,
+          "title": "How Cleopatra, When She Had Gotten From Antony Some Parts Of Judea And Arabia Came Into Judea; And How Herod Gave Her Many Presents And Conducted Her On Her Way Back To Egypt.",
+          "sections": 4
+        },
+        {
+          "number": 5,
+          "title": "How Herod Made War With The King Of Arabia, And After They Had Fought Many Battles, At Length Conquered Him, And Was Chosen By The Arabs To Be Governor Of That Nation; As Also Concerning A Great Earthquake.",
+          "sections": 5
+        },
+        {
+          "number": 6,
+          "title": "How Herod Slew Hyrcanus And Then Hasted Away To Cæsar, And Obtained The Kingdom From Him Also; And How A Little Time Afterward, He Entertained Cæsar In A Most Honorable Manner.",
+          "sections": 7
+        },
+        {
+          "number": 7,
+          "title": "How Herod Slew Sohemus And Mariamne And Afterward Alexandra And Costobarus, And His Most Intimate Friends, And At Last The Sons Of Babbas Also.",
+          "sections": 10
+        },
+        {
+          "number": 8,
+          "title": "How Ten Men Of The Citizens [Of Jerusalem] Made A Conspiracy Against Herod, For The Foreign Practices He Had Introduced, Which Was A Transgression Of The Laws Of Their Country. Concerning The Building Of Sebaste And Cæsarea, And Other Edifices Of Herod.",
+          "sections": 5
+        },
+        {
+          "number": 9,
+          "title": "Concerning The Famine That Happened In Judea And Syria; And How Herod, After He Had Married Another Wife, Rebuilt Cæsarea, And Other Grecian Cities.",
+          "sections": 6
+        },
+        {
+          "number": 10,
+          "title": "How Herod Sent His Sons To Rome; How Also He Was Accused By Zenodorus And The Gadarens, But Was Cleared Of What They Accused Him Of And Withal Gained To Himself The Good-Will Of Cæsar. Concerning The Pharisees, The Essens And Manahem.",
+          "sections": 5
+        },
+        {
+          "number": 11,
+          "title": "How Herod Rebuilt The Temple And Raised It Higher And Made It More Magnificent Than It Was Before; As Also Concerning That Tower Which He Called Antonia.",
+          "sections": 7
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "title": "Containing The Interval Of Twelve Years.—From The Finishing Of The Temple By Herod To The Death Of Alexander And Aristobulus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Law Of Herod's About, Thieves. Salome And Pheroras Calumniate Alexander And Aristobulus, Upon Their Return From Rome For Whom Yet Herod Provides Wives.",
+          "sections": 2
+        },
+        {
+          "number": 2,
+          "title": "How Herod Twice Sailed To Agrippa; And How Upon The Complaint In Ionia Against The Greeks Agrippa Confirmed The Laws To Them.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "How Great Disturbances Arose In Herods Family On His Preferring Antipater His Eldest Son Before The Rest, Till Alexander Took That Injury Very Heinously.",
+          "sections": 3
+        },
+        {
+          "number": 4,
+          "title": "How During Antipater's Abode At Rome, Herod Brought Alexander And Aristobulus Before Cæsar And Accused Them. Alexander's Defense Of Himself Before Cæsar And Reconciliation To His Father.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "How Herod Celebrated The Games That Were To Return Every Fifth Year Upon The Building Of Cæsarea; And How He Built And Adorned Many Other Places After A Magnificent Manner; And Did Many Other Actions Gloriously",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "An Embassage In Cyrene And Asia To Cæsar, Concerning The Complaints They Had To Make Against The Greeks; With Copies Of The Epistles Which Cæsar And Agrippa Wrote To The Cities For Them.",
+          "sections": 8
+        },
+        {
+          "number": 7,
+          "title": "How, Upon Herod's Going Down Into David's Sepulcher, The Sedition In His Family Greatly Increased.",
+          "sections": 6
+        },
+        {
+          "number": 8,
+          "title": "How Herod Took Up Alexander And Bound Him; Whom Yet Archelaus King Of Cappadocia Reconciled To His Father Herod Again.",
+          "sections": 6
+        },
+        {
+          "number": 9,
+          "title": "Concerning The Revolt Of The Trachonites; How Sylleus Accused Herod Before Cæsar; And How Herod, When Cæsar Was Angry At Him, Resolved To Send Nicolaus To Rome.",
+          "sections": 4
+        },
+        {
+          "number": 10,
+          "title": "How Eurycles Falsely Accused Herod's Sons; And How Their Father Bound Them, And Wrote To Cæsar About Them. Of Sylleus And How He Was Accused By Nicolaus.",
+          "sections": 9
+        },
+        {
+          "number": 11,
+          "title": "How Herod, By Permission From Cæsar Accused His Sons Before An Assembly Of Judges At Berytus; And What Tero Suffered For Using A Boundless And Military Liberty Of Speech. Concerning Also The Death Of The Young Men And Their Burial At Alexandrium.",
+          "sections": 8
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "title": "Containing The Interval Of Fourteen Years.—From The Death Of Alexander And Aristobulus To The Banishment Of Archelaus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Antipater Was Hated By All The Nation [Of The Jews] For The Slaughter Of His Brethren; And How, For That Reason He Got Into Peculiar Favor With His Friends At Rome, By Giving Them Many Presents; As He Did Also With Saturninus, The President Of Syria And The Governors Who Were Under Him; And Concerning Herod's Wives And Children.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "Concerning Zamaris, The Babylonian Jew; Concerning The Plots Laid By Antipater Against His Father; And Somewhat About The Pharisees.",
+          "sections": 4
+        },
+        {
+          "number": 3,
+          "title": "Concerning The Enmity Between Herod And Pheroras; How Herod Sent Antipater To Cæsar; And Of The Death Of Pheroras.",
+          "sections": 3
+        },
+        {
+          "number": 4,
+          "title": "Pheroras's Wife Is Accused By His Freedmen, As Guilty Of Poisoning Him; And How Herod, Upon Examining; Of The Matter By Torture Found The Poison; But So That It Had Been Prepared For Himself By His Son Antipater; And Upon An Inquiry By Torture He Discovered The Dangerous Designs Of Antipater.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "Antipater's Navigation From Rome To His Father; And How He Was Accused By Nicolaus Of Damascus And Condemned To Die By His Father, And By Quintilius Varus, Who Was Then President Of Syria; And How He Was Then Bound Till Cæsar Should Be Informed Of His Cause.",
+          "sections": 8
+        },
+        {
+          "number": 6,
+          "title": "Concerning The Disease That Herod Fell Into And The Sedition Which The Jews Raised Thereupon; With The Punishment Of The Seditious.",
+          "sections": 6
+        },
+        {
+          "number": 7,
+          "title": "Herod Has Thoughts Of Killing Himself With His Own Hand; And A Little Afterwards He Orders Antipater To Be Slain.",
+          "sections": 1
+        },
+        {
+          "number": 8,
+          "title": "Concerning Herod's Death, And Testament, And Burial.",
+          "sections": 4
+        },
+        {
+          "number": 9,
+          "title": "How The People Raised A Sedition Against Archelaus, And How He Sailed To Rome.",
+          "sections": 7
+        },
+        {
+          "number": 10,
+          "title": "A Sedition Against Sabinus; And How Varus Brought The Authors Of It To Punishment.",
+          "sections": 10
+        },
+        {
+          "number": 11,
+          "title": "An Embassage To Cæsar; And How Cæsar Confirmed Herod's Testament.",
+          "sections": 5
+        },
+        {
+          "number": 12,
+          "title": "Concerning A Spurious Alexander.",
+          "sections": 2
+        },
+        {
+          "number": 13,
+          "title": "How Archelaus Upon A Second Accusation, Was Banished To Vienna.",
+          "sections": 5
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "title": "Containing The Interval Of Thirty-Two Years.—From The Banishment Of Archelaus To The Departure From Babylon.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Cyrenius Was Sent By Cæsar To Make A Taxation Of Syria And Judea; And How Coponius Was Sent To Be Procurator Of Judea; Concerning Judas Of Galilee And Concerning The Sects That Were Among The Jews.",
+          "sections": 6
+        },
+        {
+          "number": 2,
+          "title": "How Herod And Philip Built Several Cities In Honor Of Cæsar. Concerning The Succession Of Priests And Procurators; As Also What Befell Phraates And The Parthians.",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "Sedition Of The Jews Against Pontius Pilate. Concerning Christ, And What Befell Paulina And The Jews At Rome.",
+          "sections": 5
+        },
+        {
+          "number": 4,
+          "title": "How The Samaritans Made A Tumult And Pilate Destroyed Many Of Them; How Pilate Was Accused And What Things Were Done By Vitellius Relating To The Jews And The Parthians.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "Herod The Tetrarch Makes War With Aretas, The King Of Arabia, And Is Beaten By Him As Also Concerning The Death Of John The Baptist. How Vitellius Went Up To Jerusalem; Together With Some Account Of Agrippa And Of The Posterity Of Herod The Great.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "Of The Navigation Of King Agrippa To Rome, To Tiberius Cæsar; And Now Upon His Being Accused By His Own Freed-Man, He Was Bound; How Also He, Was Set At Liberty By Caius, After Tiberius's Death And Was Made King Of The Tetrarchy Of Philip.",
+          "sections": 11
+        },
+        {
+          "number": 7,
+          "title": "How Herod The Tetrarch Was Banished.",
+          "sections": 2
+        },
+        {
+          "number": 8,
+          "title": "Concerning The Embassage Of The Jews To Caius; 28 And How Caius Sent Petronius Into Syria To Make War Against The Jews, Unless They Would Receive His Statue.",
+          "sections": 9
+        },
+        {
+          "number": 9,
+          "title": "What Befell The Jews That Were In Babylon On Occasion Of Asineus And Anileus, Two Brethren.",
+          "sections": 9
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "title": "Containing The Interval Of Three Years And A Half.—From The Departure Out Of Babylon To Fadus, The Roman Procurator.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "How Caius 1 Was Slain By Cherea.",
+          "sections": 20
+        },
+        {
+          "number": 2,
+          "title": "How The Senators Determined To Restore The Democracy; But The Soldiers Were For Preserving The Monarchy, Concerning The Slaughter Of Caius's Wife And Daughter. A Character Of Caius's Morals.",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "How Claudius Was Seized Upon And Brought Out Of His House And Brought To The Camp; And How The Senate Sent An Embassage To Him.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "What Things King Agrippa Did For Claudius; And How Claudius When He Had Taken The Government Commanded The Murderers Of Caius To Be Slain.",
+          "sections": 6
+        },
+        {
+          "number": 5,
+          "title": "How Claudius Restored To Agrippa His Grandfathers Kingdoms And Augmented His Dominions; And How He Published An Edict In Behalf.",
+          "sections": 3
+        },
+        {
+          "number": 6,
+          "title": "What Things Were Done By Agrippa At Jerusalem When He Was Returned Back Into Judea; And What It Was That Petronius Wrote To The Inhabitants Of Doris, In Behalf.",
+          "sections": 4
+        },
+        {
+          "number": 7,
+          "title": "Concerning Silas And On What Account It Was That King Agrippa Was Angry At Him. How Agrippa Began To Encompass Jerusalem With A Wall; And What Benefits He Bestowed On The Inhabitants Of Berytus.",
+          "sections": 5
+        },
+        {
+          "number": 8,
+          "title": "What Other Acts Were Done By Agrippa Until His Death; And After What Manner He Died.",
+          "sections": 3
+        },
+        {
+          "number": 9,
+          "title": "What Things Were Done After The Death Of Agrippa; And How Claudius, On Account Of The Youth And Unskilfulness Of Agrippa, Junior, Sent Cuspius Fadus To Be Procurator Of Judea, And Of The Entire Kingdom.",
+          "sections": 2
+        }
+      ]
+    },
+    {
+      "number": 20,
+      "title": "Containing The Interval Of Twenty-Two Years.—From Fadus The Procurator To Florus.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Sedition Of The Philadelphians Against The Jews; And Also Concerning The Vestments Of The High Priest.",
+          "sections": 3
+        },
+        {
+          "number": 2,
+          "title": "How Helena The Queen Of Adiabene And Her Son Izates, Embraced The Jewish Religion; And How Helena Supplied The Poor With Corn, When There Was A Great Famine At Jerusalem.",
+          "sections": 5
+        },
+        {
+          "number": 3,
+          "title": "How Artabanus, the King of Parthia out of Fear of the Secret Contrivances of His Subjects Against Him, Went to Izates, and Was By Him Reinstated in His Government; as Also How Bardanes His Son Denounced War Against Izates.",
+          "sections": 4
+        },
+        {
+          "number": 4,
+          "title": "How Izates Was Betrayed By His Own Subjects, And Fought Against By The Arabians And How Izates, By The Providence Of God, Was Delivered Out Of Their Hands.",
+          "sections": 3
+        },
+        {
+          "number": 5,
+          "title": "Concerning Theudas And The Sons Of Judas The Galilean; As Also What Calamity Fell Upon The Jews On The Day Of The Passover.",
+          "sections": 4
+        },
+        {
+          "number": 6,
+          "title": "How There Happened A Quarrel Between The Jews And The Samaritans; And How Claudius Put An End To Their Differences.",
+          "sections": 3
+        },
+        {
+          "number": 7,
+          "title": "Felix Is Made Procurator Of Judea; As Also Concerning Agrippa, Junior And His Sisters.",
+          "sections": 3
+        },
+        {
+          "number": 8,
+          "title": "After What Manner Upon The Death Of Claudius, Nero Succeeded In The Government; As Also What Barbarous Things He Did. Concerning The Robbers, Murderers And Impostors, That Arose While Felix And Festus Were Procurators Of Judea.",
+          "sections": 11
+        },
+        {
+          "number": 9,
+          "title": "Concerning Albinus Under Whose Procuratorship James Was Slain; As Also What Edifices Were Built By Agrippa.",
+          "sections": 7
+        },
+        {
+          "number": 10,
+          "title": "An Enumeration Of The High Priests.",
+          "sections": 1
+        },
+        {
+          "number": 11,
+          "title": "Concerning Florus The Procurator, Who Necessitated The Jews To Take Up Arms Against The Romans. The Conclusion.",
+          "sections": 3
+        }
+      ]
+    }
+  ]
+}

@@ -336,7 +336,7 @@
       "osisId": "Ezra",
       "name": "Ezra",
       "abbrev": "Ezra",
-      "totalChapters": 9
+      "totalChapters": 10
     },
     {
       "id": "Neh",
@@ -344,6 +344,22 @@
       "osisId": "Neh",
       "name": "Nehemiah",
       "abbrev": "Neh",
+      "totalChapters": 13
+    },
+    {
+      "id": "1Esd",
+      "corpus": "LXX",
+      "osisId": "1Esd",
+      "name": "1 Esdras",
+      "abbrev": "1Esd",
+      "totalChapters": 9
+    },
+    {
+      "id": "Tob",
+      "corpus": "LXX",
+      "osisId": "Tob",
+      "name": "Tobit",
+      "abbrev": "Tob",
       "totalChapters": 14
     },
     {
@@ -387,12 +403,20 @@
       "totalChapters": 31
     },
     {
+      "id": "Eccl",
+      "corpus": "LXX",
+      "osisId": "Eccl",
+      "name": "Ecclesiastes",
+      "abbrev": "Eccl",
+      "totalChapters": 12
+    },
+    {
       "id": "Song",
       "corpus": "LXX",
       "osisId": "Song",
       "name": "Song of Songs",
       "abbrev": "Song",
-      "totalChapters": 12
+      "totalChapters": 8
     },
     {
       "id": "Wis",
@@ -400,7 +424,7 @@
       "osisId": "Wis",
       "name": "Wisdom of Solomon",
       "abbrev": "Wis",
-      "totalChapters": 8
+      "totalChapters": 19
     },
     {
       "id": "Sir",
@@ -408,7 +432,7 @@
       "osisId": "Sir",
       "name": "Sirach",
       "abbrev": "Sir",
-      "totalChapters": 19
+      "totalChapters": 51
     },
     {
       "id": "Isa",
@@ -443,12 +467,28 @@
       "totalChapters": 1
     },
     {
+      "id": "Bar",
+      "corpus": "LXX",
+      "osisId": "Bar",
+      "name": "Baruch",
+      "abbrev": "Bar",
+      "totalChapters": 5
+    },
+    {
+      "id": "Sus",
+      "corpus": "LXX",
+      "osisId": "Sus",
+      "name": "Susanna",
+      "abbrev": "Sus",
+      "totalChapters": 1
+    },
+    {
       "id": "Ezek",
       "corpus": "LXX",
       "osisId": "Ezek",
       "name": "Ezekiel",
       "abbrev": "Ezek",
-      "totalChapters": 5
+      "totalChapters": 48
     },
     {
       "id": "DanLXX",
@@ -456,6 +496,14 @@
       "osisId": "DanLXX",
       "name": "Daniel (LXX)",
       "abbrev": "Dan",
+      "totalChapters": 12
+    },
+    {
+      "id": "Bel",
+      "corpus": "LXX",
+      "osisId": "Bel",
+      "name": "Bel and the Dragon",
+      "abbrev": "Bel",
       "totalChapters": 1
     },
     {
@@ -483,12 +531,20 @@
       "totalChapters": 9
     },
     {
+      "id": "Obad",
+      "corpus": "LXX",
+      "osisId": "Obad",
+      "name": "Obadiah",
+      "abbrev": "Obad",
+      "totalChapters": 1
+    },
+    {
       "id": "Jonah",
       "corpus": "LXX",
       "osisId": "Jonah",
       "name": "Jonah",
       "abbrev": "Jonah",
-      "totalChapters": 1
+      "totalChapters": 4
     },
     {
       "id": "Mic",
@@ -496,7 +552,15 @@
       "osisId": "Mic",
       "name": "Micah",
       "abbrev": "Mic",
-      "totalChapters": 4
+      "totalChapters": 7
+    },
+    {
+      "id": "Nah",
+      "corpus": "LXX",
+      "osisId": "Nah",
+      "name": "Nahum",
+      "abbrev": "Nah",
+      "totalChapters": 3
     },
     {
       "id": "Hab",
@@ -504,7 +568,15 @@
       "osisId": "Hab",
       "name": "Habakkuk",
       "abbrev": "Hab",
-      "totalChapters": 7
+      "totalChapters": 3
+    },
+    {
+      "id": "Zeph",
+      "corpus": "LXX",
+      "osisId": "Zeph",
+      "name": "Zephaniah",
+      "abbrev": "Zeph",
+      "totalChapters": 3
     },
     {
       "id": "Hag",
@@ -512,7 +584,7 @@
       "osisId": "Hag",
       "name": "Haggai",
       "abbrev": "Hag",
-      "totalChapters": 3
+      "totalChapters": 2
     },
     {
       "id": "Zech",
@@ -520,7 +592,7 @@
       "osisId": "Zech",
       "name": "Zechariah",
       "abbrev": "Zech",
-      "totalChapters": 3
+      "totalChapters": 14
     },
     {
       "id": "Mal",
