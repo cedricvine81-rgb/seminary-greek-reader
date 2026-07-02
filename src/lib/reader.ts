@@ -90,6 +90,32 @@ export function getAllBooks(): BiblicalBook[] {
   }
 }
 
+// Reads one corpus chapter file. On Vercel, this fetches it from the deployment's own
+// static assets instead of the local filesystem — public/data/{gnt,lxx,na1904} together
+// run well over 200MB, and a plain fs.readFileSync with a dynamic path makes Next's
+// build tracer bundle the *entire* directory into this function (it can't tell which
+// files a dynamic path might touch), which blew past Vercel's 250MB uncompressed
+// function-size limit. Fetching them as static assets instead means they're served
+// straight from the CDN and never counted against the function bundle at all — see the
+// matching outputFileTracingExcludes entries in next.config.js. Locally there's no
+// VERCEL_URL, so this just reads the file directly (faster, no self-fetch round trip).
+async function readCorpusFile(corpus: string, bookOsisId: string, chapter: number): Promise<string | null> {
+  const relPath = `${corpus}/${bookOsisId}_${chapter}.json`
+  if (process.env.VERCEL_URL) {
+    try {
+      const res = await fetch(`https://${process.env.VERCEL_URL}/data/${relPath}`)
+      return res.ok ? await res.text() : null
+    } catch {
+      return null
+    }
+  }
+  try {
+    return fs.readFileSync(path.join(DATA_ROOT, relPath), 'utf8')
+  } catch {
+    return null
+  }
+}
+
 // ─── Chapter loading ──────────────────────────────────────────────────────────
 
 interface RawWord {
@@ -173,7 +199,7 @@ function expandCompactChapter(raw: { b: string; c: number; v: Record<string, [st
   return { book: raw.b, chapter: raw.c, verses }
 }
 
-export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: Corpus) {
+export async function getChapter(bookOsisId: string, chapter: number, preferCorpus?: Corpus) {
   // Determine corpus from books index
   const allBooks = getAllBooks()
   const book = allBooks.find(b => b.osisId === bookOsisId)
@@ -190,8 +216,10 @@ export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: C
   const candidates = primary === nativeCorpus ? [primary] : [primary, nativeCorpus]
   let raw: { book: string; chapter: number; verses: RawVerse[] } | null = null
   for (const corpus of candidates) {
+    const text = await readCorpusFile(corpus, bookOsisId, chapter)
+    if (!text) continue
     try {
-      const parsed = JSON.parse(fs.readFileSync(path.join(DATA_ROOT, corpus, `${bookOsisId}_${chapter}.json`), 'utf8'))
+      const parsed = JSON.parse(text)
       // NA1904 ships a compact format ({ b, c, v: { verse: [[surface,lemma,strongs]…] } })
       // to keep the function bundle small — expand it to the standard shape here.
       raw = parsed.verses ? parsed : expandCompactChapter(parsed, book.name)
@@ -215,8 +243,8 @@ export function getChapter(bookOsisId: string, chapter: number, preferCorpus?: C
   return result
 }
 
-export function getVerse(bookOsisId: string, chapter: number, verseNum: number) {
-  const chapterData = getChapter(bookOsisId, chapter)
+export async function getVerse(bookOsisId: string, chapter: number, verseNum: number) {
+  const chapterData = await getChapter(bookOsisId, chapter)
   if (!chapterData) return null
   return chapterData.verses.find(v => v.verse === verseNum) ?? null
 }

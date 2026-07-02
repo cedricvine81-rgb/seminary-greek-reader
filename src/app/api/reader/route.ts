@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (bookOsisId && chapter) {
-      const data = getChapter(bookOsisId, Number(chapter), corpus ?? undefined)
+      const data = await getChapter(bookOsisId, Number(chapter), corpus ?? undefined)
       if (!data) return NextResponse.json({ error: 'Not found' }, { status: 404 })
       return NextResponse.json(data)
     }
