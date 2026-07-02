@@ -99,11 +99,24 @@ export function getAllBooks(): BiblicalBook[] {
 // straight from the CDN and never counted against the function bundle at all — see the
 // matching outputFileTracingExcludes entries in next.config.js. Locally there's no
 // VERCEL_URL, so this just reads the file directly (faster, no self-fetch round trip).
+//
+// The fetch target matters: VERCEL_URL is this specific deployment's own
+// *.vercel.app URL, which sits behind this project's Deployment Protection — even
+// the function's own self-fetch to it gets intercepted and returns an HTML challenge
+// page instead of the file (confirmed directly: same request against the assigned
+// production domain returns the real JSON, application/json; against VERCEL_URL it
+// returns text/html). VERCEL_PROJECT_PRODUCTION_URL is that protection-exempt
+// production domain, so production deployments use it instead; VERCEL_URL is only
+// used as a fallback for preview deployments, which have no production domain of
+// their own.
 async function readCorpusFile(corpus: string, bookOsisId: string, chapter: number): Promise<string | null> {
   const relPath = `${corpus}/${bookOsisId}_${chapter}.json`
-  if (process.env.VERCEL_URL) {
+  const host = process.env.VERCEL_ENV === 'production'
+    ? process.env.VERCEL_PROJECT_PRODUCTION_URL
+    : process.env.VERCEL_URL
+  if (host) {
     try {
-      const res = await fetch(`https://${process.env.VERCEL_URL}/data/${relPath}`)
+      const res = await fetch(`https://${host}/data/${relPath}`)
       return res.ok ? await res.text() : null
     } catch {
       return null
