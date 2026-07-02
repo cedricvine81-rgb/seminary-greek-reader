@@ -395,6 +395,14 @@
       "totalChapters": 151
     },
     {
+      "id": "PsSol",
+      "corpus": "LXX",
+      "osisId": "PsSol",
+      "name": "Psalms of Solomon",
+      "abbrev": "PsSol",
+      "totalChapters": 18
+    },
+    {
       "id": "Prov",
       "corpus": "LXX",
       "osisId": "Prov",

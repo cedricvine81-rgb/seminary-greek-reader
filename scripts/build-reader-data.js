@@ -220,6 +220,7 @@ const LXX_BOOKS_META = {
   190: { osisId:'EsthGr',  name:'Esther (Greek)',      abbrev:'Esth',  chapters:10 },
   220: { osisId:'Job',     name:'Job',                 abbrev:'Job',   chapters:42 },
   230: { osisId:'Ps',      name:'Psalms',              abbrev:'Ps',    chapters:151 },
+  232: { osisId:'PsSol',   name:'Psalms of Solomon',   abbrev:'PsSol', chapters:18  },
   240: { osisId:'Prov',    name:'Proverbs',            abbrev:'Prov',  chapters:31 },
   250: { osisId:'Eccl',    name:'Ecclesiastes',        abbrev:'Eccl',  chapters:12 },
   260: { osisId:'Song',    name:'Song of Songs',       abbrev:'Song',  chapters:8  },

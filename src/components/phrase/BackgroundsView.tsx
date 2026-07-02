@@ -1,5 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { Library } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -780,9 +781,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     type="button"
                     onClick={() => setShowLibrary(v => !v)}
                     title="Library — browse full source texts"
-                    className={`rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showLibrary ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+                    className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showLibrary ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
                   >
-                    📚 Library
+                    <Library size={14} /> Library
                   </button>
                   {showLibrary && (
                     <div className="absolute right-0 top-full mt-1 z-20 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">

@@ -2438,7 +2438,12 @@
         },
         {
           "text": "Pss. Sol. 9:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 9,
+            "verse": 5
+          }
         },
         {
           "text": "4 Ezra 7:77",
@@ -2619,7 +2624,12 @@
         },
         {
           "text": "Pss. Sol. 5:9–11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 5,
+            "verse": 9
+          }
         },
         {
           "text": "m. Qidd. 4:14",
@@ -3869,7 +3879,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:26–28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 26
+          }
         }
       ]
     },
@@ -3883,7 +3898,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:26–28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 26
+          }
         }
       ]
     },
@@ -4580,7 +4600,12 @@
         },
         {
           "text": "Pss. Sol. 1:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 1,
+            "verse": 5
+          }
         },
         {
           "text": "t. Soṭah 3.19",
@@ -5003,11 +5028,21 @@
       "citations": [
         {
           "text": "Pss. Sol. 4:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 4,
+            "verse": 10
+          }
         },
         {
           "text": "Pss. Sol. 17:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 26
+          }
         },
         {
           "text": "Tg. Isa. 53:6, 8",
@@ -5324,7 +5359,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 18:6–7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 18,
+            "verse": 6
+          }
         }
       ]
     },
@@ -5360,7 +5400,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:44",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 44
+          }
         },
         {
           "text": "Mek. on Exod 15:2 (Shirata’ §3)",
@@ -6400,7 +6445,12 @@
         },
         {
           "text": "Pss. Sol. 17:40",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 40
+          }
         },
         {
           "text": "Epictetus 3.22.23",
@@ -6785,7 +6835,12 @@
         },
         {
           "text": "Pss. Sol. 17:26–28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 26
+          }
         },
         {
           "text": "T. Ab. (A) 13:6",
@@ -6899,7 +6954,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 30
+          }
         }
       ]
     },
@@ -10216,7 +10276,12 @@
         },
         {
           "text": "Pss. Sol. 5:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 5,
+            "verse": 3
+          }
         }
       ]
     },
@@ -12321,7 +12386,12 @@
         },
         {
           "text": "Pss. Sol. 16:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 16,
+            "verse": 7
+          }
         },
         {
           "text": "Plato, Symp. 204C",
@@ -12778,7 +12848,12 @@
         },
         {
           "text": "Pss. Sol. 9:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 9,
+            "verse": 5
+          }
         },
         {
           "text": "Sir 29:10–12",
@@ -12913,7 +12988,12 @@
         },
         {
           "text": "Pss. Sol. 8:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 8,
+            "verse": 14
+          }
         },
         {
           "text": "Mart. Isa. 5:13",
@@ -13034,11 +13114,21 @@
         },
         {
           "text": "Pss. Sol. 17:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 21
+          }
         },
         {
           "text": "Pss. Sol. 20:1–2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 20,
+            "verse": 1
+          }
         }
       ]
     },
@@ -14688,15 +14778,30 @@
         },
         {
           "text": "Pss. Sol. 8:28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 8,
+            "verse": 28
+          }
         },
         {
           "text": "Pss. Sol. 11:1–4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 11,
+            "verse": 1
+          }
         },
         {
           "text": "Pss. Sol. 17:21–28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 21
+          }
         },
         {
           "text": "Tg. Isa. 53:8",
@@ -17611,7 +17716,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:32",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 32
+          }
         }
       ]
     },
@@ -17625,7 +17735,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 18:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 18,
+            "verse": 10
+          }
         },
         {
           "text": "1 Clem. 60:4",
@@ -18456,7 +18571,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 10:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 10,
+            "verse": 7
+          }
         },
         {
           "text": "b. Ber. 6b",
@@ -19403,7 +19523,12 @@
         },
         {
           "text": "Pss. Sol. 1:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 1,
+            "verse": 5
+          }
         },
         {
           "text": "t. Soṭah 3.19",
@@ -19813,7 +19938,12 @@
         },
         {
           "text": "Pss. Sol. 5:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 5,
+            "verse": 4
+          }
         }
       ]
     },
@@ -22479,7 +22609,12 @@
         },
         {
           "text": "Pss. Sol. 17:22, 25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 22
+          }
         },
         {
           "text": "1 Macc 3:45, 51",
@@ -22799,7 +22934,12 @@
         },
         {
           "text": "Pss. Sol. 16:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 16,
+            "verse": 5
+          }
         }
       ]
     },
@@ -24022,7 +24162,12 @@
         },
         {
           "text": "Pss. Sol. 7:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 7,
+            "verse": 6
+          }
         },
         {
           "text": "Pr. Jos. frg. A",
@@ -27530,7 +27675,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 8:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 8,
+            "verse": 15
+          }
         }
       ]
     },
@@ -33671,7 +33821,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 4:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 4,
+            "verse": 25
+          }
         },
         {
           "text": "Plato, Resp. 612E",
@@ -44913,7 +45068,12 @@
         },
         {
           "text": "Pss. Sol. 4:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 4,
+            "verse": 23
+          }
         }
       ]
     },
@@ -46307,7 +46467,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:36",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 36
+          }
         }
       ]
     },
@@ -46546,7 +46711,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 12:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 12,
+            "verse": 6
+          }
         }
       ]
     },
@@ -48806,11 +48976,21 @@
         },
         {
           "text": "Pss. Sol. 10:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 10,
+            "verse": 2
+          }
         },
         {
           "text": "Pss. Sol. 14:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 14,
+            "verse": 1
+          }
         }
       ]
     },
@@ -49429,7 +49609,12 @@
         },
         {
           "text": "Pss. Sol. 15:2–3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 15,
+            "verse": 2
+          }
         }
       ]
     },
@@ -50449,7 +50634,12 @@
         },
         {
           "text": "Pss. Sol. 12:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 12,
+            "verse": 2
+          }
         },
         {
           "text": "Plutarch, Mor. 507B: Concerning Talkativeness 10",
@@ -51131,7 +51321,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 3:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 3,
+            "verse": 2
+          }
         }
       ]
     },
@@ -54893,7 +55088,12 @@
         },
         {
           "text": "Pss. Sol. 17:23–24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 23
+          }
         }
       ]
     },
@@ -54971,7 +55171,12 @@
       "citations": [
         {
           "text": "Pss. Sol. 17:43",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 43
+          }
         },
         {
           "text": "2 En. 22:9",
@@ -55915,7 +56120,12 @@
         },
         {
           "text": "Pss. Sol. 15:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 15,
+            "verse": 6
+          }
         },
         {
           "text": "Apoc. Elijah 1:9",
@@ -56442,7 +56652,12 @@
         },
         {
           "text": "Pss. Sol. 15:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 15,
+            "verse": 6
+          }
         }
       ]
     },
@@ -56984,7 +57199,12 @@
         },
         {
           "text": "Pss. Sol. 15:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 15,
+            "verse": 6
+          }
         },
         {
           "text": "Apoc. Elijah 1:9",
@@ -57494,7 +57714,12 @@
         },
         {
           "text": "Pss. Sol. 8:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 8,
+            "verse": 2
+          }
         }
       ]
     },
@@ -58605,7 +58830,12 @@
         },
         {
           "text": "Pss. Sol. 17:34",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 34
+          }
         }
       ]
     },
@@ -58642,7 +58872,12 @@
         },
         {
           "text": "Pss. Sol. 17:34",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 17,
+            "verse": 34
+          }
         }
       ]
     },
@@ -58734,7 +58969,12 @@
         },
         {
           "text": "Pss. Sol. 14:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "PsSol",
+            "chapter": 14,
+            "verse": 3
+          }
         },
         {
           "text": "1 En. 25:5",
