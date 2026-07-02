@@ -30,7 +30,12 @@
       "citations": [
         {
           "text": "1 Esdr 1:32",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Esd",
+            "chapter": 1,
+            "verse": 32
+          }
         }
       ]
     },
@@ -569,7 +574,12 @@
       "citations": [
         {
           "text": "Wis 16:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 26
+          }
         },
         {
           "text": "Deut 8:3",
@@ -689,7 +699,12 @@
       "citations": [
         {
           "text": "1 Macc 5:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 5,
+            "verse": 15
+          }
         }
       ]
     },
@@ -727,7 +742,12 @@
       "citations": [
         {
           "text": "Sir 25:7–12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 25,
+            "verse": 7
+          }
         }
       ]
     },
@@ -1133,7 +1153,12 @@
       "citations": [
         {
           "text": "Bar 4:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 1
+          }
         }
       ]
     },
@@ -1174,7 +1199,12 @@
       "citations": [
         {
           "text": "2 Macc 2:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 2,
+            "verse": 22
+          }
         },
         {
           "text": "7:19",
@@ -1182,7 +1212,12 @@
         },
         {
           "text": "4 Macc 5:19, 33",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 5,
+            "verse": 19
+          }
         },
         {
           "text": "b. Šabb. 116a–b",
@@ -1213,7 +1248,12 @@
         },
         {
           "text": "Bar 4:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 1
+          }
         },
         {
           "text": "2 Bar. 77:15",
@@ -1323,7 +1363,12 @@
       "citations": [
         {
           "text": "Sir 28:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 7
+          }
         }
       ]
     },
@@ -1369,7 +1414,12 @@
         },
         {
           "text": "Sir 8:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 8,
+            "verse": 1
+          }
         }
       ]
     },
@@ -1463,7 +1513,12 @@
       "citations": [
         {
           "text": "Sir 9:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 9,
+            "verse": 8
+          }
         },
         {
           "text": "T. Benj. 8:2",
@@ -1834,7 +1889,12 @@
       "citations": [
         {
           "text": "Sir 4:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 4
+          }
         },
         {
           "text": "Gos. Thom. §95",
@@ -1929,7 +1989,12 @@
       "citations": [
         {
           "text": "Sir 4:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 10
+          }
         },
         {
           "text": "Diogenes Laertius 8.1.23",
@@ -1982,7 +2047,12 @@
       "citations": [
         {
           "text": "Tob 12:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 8
+          }
         }
       ]
     },
@@ -2112,7 +2182,12 @@
         },
         {
           "text": "Sir 7:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 7,
+            "verse": 14
+          }
         },
         {
           "text": "Marcus Aurelius, Med. 5.7",
@@ -2162,7 +2237,12 @@
         },
         {
           "text": "Sir 23:1, 4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 1
+          }
         },
         {
           "text": "1 En. 61:12",
@@ -2210,7 +2290,12 @@
       "citations": [
         {
           "text": "1 Macc 3:60",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 3,
+            "verse": 60
+          }
         },
         {
           "text": "t. Ber. 3.11",
@@ -2236,7 +2321,12 @@
       "citations": [
         {
           "text": "Sir 28:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 2
+          }
         }
       ]
     },
@@ -2250,11 +2340,21 @@
       "citations": [
         {
           "text": "Sir 23:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 1
+          }
         },
         {
           "text": "Sir 33:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 1
+          }
         },
         {
           "text": "Jas 1:13",
@@ -2285,7 +2385,12 @@
       "citations": [
         {
           "text": "Sir 28:2–4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 2
+          }
         }
       ]
     },
@@ -2299,11 +2404,21 @@
       "citations": [
         {
           "text": "1 Macc 3:47",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 3,
+            "verse": 47
+          }
         },
         {
           "text": "Bar 1:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 1,
+            "verse": 5
+          }
         },
         {
           "text": "T. Zeb. 8:6",
@@ -2363,7 +2478,12 @@
         },
         {
           "text": "Jdt 16:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 8
+          }
         }
       ]
     },
@@ -2416,7 +2536,12 @@
       "citations": [
         {
           "text": "Sir 29:9–12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 9
+          }
         },
         {
           "text": "2 Bar. 14:13",
@@ -2434,7 +2559,12 @@
       "citations": [
         {
           "text": "Sir 29:10–11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 10
+          }
         },
         {
           "text": "Pss. Sol. 9:5",
@@ -2501,7 +2631,12 @@
       "citations": [
         {
           "text": "Sir 23:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 19
+          }
         },
         {
           "text": "T. Iss. 4:6",
@@ -2541,15 +2676,30 @@
       "citations": [
         {
           "text": "Sir 14:8, 10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 14,
+            "verse": 8
+          }
         },
         {
           "text": "Sir 26:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 26,
+            "verse": 11
+          }
         },
         {
           "text": "Tob 4:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 7
+          }
         },
         {
           "text": "T. Benj. 4:2",
@@ -2692,7 +2842,12 @@
         },
         {
           "text": "Sir 47:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 47,
+            "verse": 18
+          }
         }
       ]
     },
@@ -2742,7 +2897,12 @@
       "citations": [
         {
           "text": "Wis 7:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 11
+          }
         },
         {
           "text": "Sent. Sextus 14, 311",
@@ -2990,7 +3150,12 @@
         },
         {
           "text": "Wis 6:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 6,
+            "verse": 12
+          }
         },
         {
           "text": "b. Meg. 12b",
@@ -3040,11 +3205,21 @@
       "citations": [
         {
           "text": "Tob 4:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 15
+          }
         },
         {
           "text": "Sir 31:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 31,
+            "verse": 15
+          }
         },
         {
           "text": "Let. Aris. 207",
@@ -3111,7 +3286,12 @@
         },
         {
           "text": "Sir 21:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 21,
+            "verse": 10
+          }
         },
         {
           "text": "2 Bar. 85:13",
@@ -3242,7 +3422,12 @@
       "citations": [
         {
           "text": "Sir 27:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 27,
+            "verse": 6
+          }
         },
         {
           "text": "b. Ber. 48a",
@@ -3330,7 +3515,12 @@
         },
         {
           "text": "1 Esdr 8:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Esd",
+            "chapter": 8,
+            "verse": 16
+          }
         }
       ]
     },
@@ -3477,15 +3667,30 @@
         },
         {
           "text": "Bar 4:37",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 37
+          }
         },
         {
           "text": "2 Macc 1:27–29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 1,
+            "verse": 27
+          }
         },
         {
           "text": "4 Macc 13:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 13,
+            "verse": 17
+          }
         },
         {
           "text": "Tg. Isa. 53:8",
@@ -3614,7 +3819,12 @@
       "citations": [
         {
           "text": "Tob 4:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 3
+          }
         }
       ]
     },
@@ -3724,7 +3934,12 @@
       "citations": [
         {
           "text": "Sir 9:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 9,
+            "verse": 10
+          }
         }
       ]
     },
@@ -3829,7 +4044,12 @@
         },
         {
           "text": "Jdt 11:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 11,
+            "verse": 19
+          }
         }
       ]
     },
@@ -3857,7 +4077,12 @@
       "citations": [
         {
           "text": "1 Macc 12:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 12,
+            "verse": 17
+          }
         },
         {
           "text": "4 Ezra 4:26–37",
@@ -4008,7 +4233,12 @@
       "citations": [
         {
           "text": "Sir 13:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 13,
+            "verse": 17
+          }
         },
         {
           "text": "Song Rab. 2:14 §1",
@@ -4071,7 +4301,12 @@
       "citations": [
         {
           "text": "4 Macc 1:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 1,
+            "verse": 11
+          }
         }
       ]
     },
@@ -4113,7 +4348,12 @@
       "citations": [
         {
           "text": "Ep Jer 29 (= Bar 6:29)",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "EpJer",
+            "chapter": 1,
+            "verse": 29
+          }
         },
         {
           "text": "2 Bar. 83:2–3",
@@ -4151,7 +4391,12 @@
       "citations": [
         {
           "text": "4 Macc 13:14–15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 13,
+            "verse": 14
+          }
         },
         {
           "text": "Sent. Sextus 363",
@@ -4387,7 +4632,12 @@
         },
         {
           "text": "Sir 48:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 5
+          }
         },
         {
           "text": "Apoc. El. (C) 3:9",
@@ -4405,7 +4655,12 @@
       "citations": [
         {
           "text": "3 Macc 2:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 22
+          }
         }
       ]
     },
@@ -4472,7 +4727,12 @@
       "citations": [
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         }
       ]
     },
@@ -4577,7 +4837,12 @@
       "citations": [
         {
           "text": "Jdt 16:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 17
+          }
         }
       ]
     },
@@ -4632,11 +4897,21 @@
         },
         {
           "text": "Tob 7:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 7,
+            "verse": 17
+          }
         },
         {
           "text": "Sir 51:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 51,
+            "verse": 1
+          }
         },
         {
           "text": "Tg. Isa. 48:6",
@@ -4663,7 +4938,12 @@
         },
         {
           "text": "Tob 5:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 5,
+            "verse": 2
+          }
         }
       ]
     },
@@ -4677,15 +4957,30 @@
       "citations": [
         {
           "text": "Sir 6:24–25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 6,
+            "verse": 24
+          }
         },
         {
           "text": "Sir 24:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 19
+          }
         },
         {
           "text": "Sir 51:23–27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 51,
+            "verse": 23
+          }
         },
         {
           "text": "Jer 6:16",
@@ -4712,7 +5007,12 @@
       "citations": [
         {
           "text": "Sir 6:24–29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 6,
+            "verse": 24
+          }
         },
         {
           "text": "2 En. 34:1",
@@ -4842,7 +5142,12 @@
       "citations": [
         {
           "text": "2 Macc 10:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 10,
+            "verse": 3
+          }
         }
       ]
     },
@@ -5204,7 +5509,12 @@
       "citations": [
         {
           "text": "3 Macc 6:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 6,
+            "verse": 8
+          }
         },
         {
           "text": "m. Taʿan. 2:4",
@@ -5272,7 +5582,12 @@
         },
         {
           "text": "Sir 47:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 47,
+            "verse": 17
+          }
         }
       ]
     },
@@ -5345,7 +5660,12 @@
       "citations": [
         {
           "text": "Sir 40:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 40,
+            "verse": 15
+          }
         }
       ]
     },
@@ -5698,7 +6018,12 @@
       "citations": [
         {
           "text": "Sir 20:30–31",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 20,
+            "verse": 30
+          }
         },
         {
           "text": "Josephus, J.W. 7.5.2 §§114–115",
@@ -5833,11 +6158,21 @@
       "citations": [
         {
           "text": "Sir 1:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 25
+          }
         },
         {
           "text": "Sir 39:1–3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 39,
+            "verse": 1
+          }
         },
         {
           "text": "Epictetus 3.22.4",
@@ -6026,7 +6361,12 @@
       "citations": [
         {
           "text": "3 Macc 6:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 6,
+            "verse": 8
+          }
         },
         {
           "text": "m. Taʿan. 2:4",
@@ -6133,11 +6473,21 @@
         },
         {
           "text": "Wis 7:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 11
+          }
         },
         {
           "text": "Wis 16:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 13
+          }
         },
         {
           "text": "Homer, Il. 23.70",
@@ -6186,7 +6536,12 @@
       "citations": [
         {
           "text": "1 Macc 2:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 21
+          }
         }
       ]
     },
@@ -6236,7 +6591,12 @@
         },
         {
           "text": "Sir 35:19, 22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 19
+          }
         }
       ]
     },
@@ -6316,7 +6676,12 @@
       "citations": [
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         }
       ]
     },
@@ -6388,7 +6753,12 @@
       "citations": [
         {
           "text": "Tob 12:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 15
+          }
         },
         {
           "text": "1 En. 104:1",
@@ -6577,7 +6947,12 @@
         },
         {
           "text": "Sir 33:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 18
+          }
         }
       ]
     },
@@ -6672,7 +7047,12 @@
       "citations": [
         {
           "text": "Sir 28:1–5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 1
+          }
         }
       ]
     },
@@ -6886,11 +7266,21 @@
       "citations": [
         {
           "text": "Tob 4:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 6
+          }
         },
         {
           "text": "Tob 5:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 5,
+            "verse": 15
+          }
         }
       ]
     },
@@ -7030,7 +7420,12 @@
         },
         {
           "text": "Wis 10:18–21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 10,
+            "verse": 18
+          }
         },
         {
           "text": "Mek. on Exod 15:1 (Shirata’ §1)",
@@ -7148,7 +7543,12 @@
       "citations": [
         {
           "text": "Wis 17:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 2
+          }
         },
         {
           "text": "1 En. 10:4",
@@ -7206,7 +7606,12 @@
       "citations": [
         {
           "text": "4 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         },
         {
           "text": "16:25",
@@ -7605,7 +8010,12 @@
       "citations": [
         {
           "text": "1 Macc 13:27–30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 13,
+            "verse": 27
+          }
         },
         {
           "text": "Josephus, Ant. 7.15.3 §§392–394",
@@ -7793,7 +8203,12 @@
         },
         {
           "text": "Tob 14:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 14,
+            "verse": 4
+          }
         }
       ]
     },
@@ -7968,7 +8383,12 @@
       "citations": [
         {
           "text": "1 Macc 1:54",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 1,
+            "verse": 54
+          }
         },
         {
           "text": "6:7",
@@ -7976,7 +8396,12 @@
         },
         {
           "text": "2 Macc 8:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 8,
+            "verse": 17
+          }
         },
         {
           "text": "2 Bar. 28:1",
@@ -7994,7 +8419,12 @@
       "citations": [
         {
           "text": "1 Macc 2:28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 28
+          }
         }
       ]
     },
@@ -8300,7 +8730,12 @@
       "citations": [
         {
           "text": "Jdt 16:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 17
+          }
         }
       ]
     },
@@ -8342,11 +8777,21 @@
       "citations": [
         {
           "text": "Sir 13:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 13,
+            "verse": 4
+          }
         },
         {
           "text": "Sir 26:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 26,
+            "verse": 29
+          }
         }
       ]
     },
@@ -8446,7 +8891,12 @@
       "citations": [
         {
           "text": "Tob 4:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 17
+          }
         },
         {
           "text": "T. Isaac 6:21",
@@ -8486,7 +8936,12 @@
       "citations": [
         {
           "text": "Sir 7:32–35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 7,
+            "verse": 32
+          }
         }
       ]
     },
@@ -8648,7 +9103,12 @@
       "citations": [
         {
           "text": "Sir 37:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 37,
+            "verse": 2
+          }
         }
       ]
     },
@@ -9008,7 +9468,12 @@
         },
         {
           "text": "Sus 44, 46",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sus",
+            "chapter": 1,
+            "verse": 44
+          }
         },
         {
           "text": "Herodotus, Hist. 1.35",
@@ -9085,7 +9550,12 @@
         },
         {
           "text": "Wis 2:13, 18–20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 13
+          }
         }
       ]
     },
@@ -9442,7 +9912,12 @@
         },
         {
           "text": "Bar 5:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 5,
+            "verse": 7
+          }
         },
         {
           "text": "Barn. 9:3",
@@ -9667,7 +10142,12 @@
       "citations": [
         {
           "text": "Tob 14:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 14,
+            "verse": 5
+          }
         }
       ]
     },
@@ -9989,7 +10469,12 @@
       "citations": [
         {
           "text": "Sir 9:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 9,
+            "verse": 10
+          }
         }
       ]
     },
@@ -10066,7 +10551,12 @@
         },
         {
           "text": "2 Macc 5:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 5,
+            "verse": 19
+          }
         },
         {
           "text": "2 Bar. 14:17",
@@ -10379,7 +10869,12 @@
       "citations": [
         {
           "text": "Sir 40:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 40,
+            "verse": 15
+          }
         }
       ]
     },
@@ -10466,7 +10961,12 @@
       "citations": [
         {
           "text": "Wis 2:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 22
+          }
         }
       ]
     },
@@ -10588,11 +11088,21 @@
         },
         {
           "text": "Sir 40:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 40,
+            "verse": 15
+          }
         },
         {
           "text": "Wis 4:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 4,
+            "verse": 3
+          }
         }
       ]
     },
@@ -10706,7 +11216,12 @@
         },
         {
           "text": "1 Macc 4:50",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 4,
+            "verse": 50
+          }
         },
         {
           "text": "Gos. Thom. §33",
@@ -10951,7 +11466,12 @@
         },
         {
           "text": "Sir 47:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 47,
+            "verse": 15
+          }
         },
         {
           "text": "11QPsa 27:2, 5, 11",
@@ -11038,7 +11558,12 @@
       "citations": [
         {
           "text": "2 Macc 9:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 9,
+            "verse": 8
+          }
         }
       ]
     },
@@ -11226,7 +11751,12 @@
       "citations": [
         {
           "text": "Jdt 8:35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 8,
+            "verse": 35
+          }
         }
       ]
     },
@@ -11445,7 +11975,12 @@
         },
         {
           "text": "Jdt 11:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 11,
+            "verse": 19
+          }
         }
       ]
     },
@@ -11532,7 +12067,12 @@
       "citations": [
         {
           "text": "Wis 17:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 15
+          }
         }
       ]
     },
@@ -11799,7 +12339,12 @@
       "citations": [
         {
           "text": "3 Macc 6:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 6,
+            "verse": 8
+          }
         },
         {
           "text": "m. Taʿan. 2:4",
@@ -12004,7 +12549,12 @@
       "citations": [
         {
           "text": "Sir 26:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 26,
+            "verse": 14
+          }
         },
         {
           "text": "Menander, Sent. 843",
@@ -12170,7 +12720,12 @@
         },
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         },
         {
           "text": "4Q558",
@@ -12378,11 +12933,21 @@
       "citations": [
         {
           "text": "Sir 9:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 9,
+            "verse": 5
+          }
         },
         {
           "text": "Sir 23:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 8
+          }
         },
         {
           "text": "Pss. Sol. 16:7",
@@ -12430,11 +12995,21 @@
         },
         {
           "text": "Jdt 16:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 17
+          }
         },
         {
           "text": "Sir 7:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 7,
+            "verse": 17
+          }
         },
         {
           "text": "t. Ber. 5.31",
@@ -12804,7 +13379,12 @@
         },
         {
           "text": "Sir 4:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 1
+          }
         },
         {
           "text": "m. Mak. 1:3",
@@ -12844,7 +13424,12 @@
         },
         {
           "text": "Tob 4:8–9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 8
+          }
         },
         {
           "text": "Pss. Sol. 9:5",
@@ -12857,7 +13442,12 @@
         },
         {
           "text": "Sir 29:10–12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 10
+          }
         },
         {
           "text": "2 Bar. 24:1",
@@ -13074,7 +13664,12 @@
         },
         {
           "text": "1 Macc 2:50",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 50
+          }
         }
       ]
     },
@@ -13166,7 +13761,12 @@
         },
         {
           "text": "1 Macc 4:19–25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 4,
+            "verse": 19
+          }
         },
         {
           "text": "Josephus, Ant. 5:45–54",
@@ -13178,7 +13778,12 @@
         },
         {
           "text": "2 Macc 4:21–22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 4,
+            "verse": 21
+          }
         }
       ]
     },
@@ -13237,7 +13842,12 @@
         },
         {
           "text": "2 Macc 10:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 10,
+            "verse": 7
+          }
         },
         {
           "text": "Herodianus 1:16",
@@ -13426,7 +14036,12 @@
       "citations": [
         {
           "text": "Sir 28:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 2
+          }
         },
         {
           "text": "Amidah",
@@ -13727,7 +14342,12 @@
       "citations": [
         {
           "text": "Tob 3:7–15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 3,
+            "verse": 7
+          }
         }
       ]
     },
@@ -13784,7 +14404,12 @@
         },
         {
           "text": "4 Macc 7:18–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 18
+          }
         },
         {
           "text": "Exod 16:25",
@@ -14068,11 +14693,21 @@
         },
         {
           "text": "1 Macc 14:49",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 14,
+            "verse": 49
+          }
         },
         {
           "text": "2 Macc 3:6, 24, 28, 40",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 6
+          }
         },
         {
           "text": "m. Šeqal. 6:5",
@@ -14528,7 +15163,12 @@
         },
         {
           "text": "1 Macc 1:54",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 1,
+            "verse": 54
+          }
         },
         {
           "text": "Josephus, Ant. 12.5.4 §253",
@@ -15135,15 +15775,30 @@
       "citations": [
         {
           "text": "1 Macc 6:44",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 6,
+            "verse": 44
+          }
         },
         {
           "text": "2 Macc 7:33, 37–38",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 7,
+            "verse": 33
+          }
         },
         {
           "text": "4 Macc 1:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 1,
+            "verse": 11
+          }
         },
         {
           "text": "17:21–22",
@@ -15366,7 +16021,12 @@
       "citations": [
         {
           "text": "4 Macc 10:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 10,
+            "verse": 15
+          }
         },
         {
           "text": "T. Job 5:1",
@@ -15393,7 +16053,12 @@
         },
         {
           "text": "Sir 37:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 37,
+            "verse": 2
+          }
         }
       ]
     },
@@ -15407,7 +16072,12 @@
       "citations": [
         {
           "text": "Sir 23:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 1
+          }
         },
         {
           "text": "4Q372 frg. 1, line 16",
@@ -15538,7 +16208,12 @@
         },
         {
           "text": "1 Esdr 4:47",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Esd",
+            "chapter": 4,
+            "verse": 47
+          }
         },
         {
           "text": "t. Ḥag. 2.1",
@@ -15615,7 +16290,12 @@
       "citations": [
         {
           "text": "Sus 36–62",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sus",
+            "chapter": 1,
+            "verse": 36
+          }
         }
       ]
     },
@@ -16033,7 +16713,12 @@
         },
         {
           "text": "4 Macc 6:1–30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 6,
+            "verse": 1
+          }
         },
         {
           "text": "P.Louvre 68 1.1–7",
@@ -16206,7 +16891,12 @@
         },
         {
           "text": "Wis 2:17–18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 17
+          }
         },
         {
           "text": "Mart. Isa. 5:2–3",
@@ -16305,7 +16995,12 @@
       "citations": [
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         },
         {
           "text": "b. ʿAbod. Zar. 17b",
@@ -16441,7 +17136,12 @@
       "citations": [
         {
           "text": "2 Macc 3:26, 33",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 26
+          }
         },
         {
           "text": "Josephus, Ant. 5.8.2 §277",
@@ -16892,7 +17592,12 @@
         },
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         },
         {
           "text": "3 Macc 48:10",
@@ -16933,7 +17638,12 @@
       "citations": [
         {
           "text": "Tob 12:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 15
+          }
         }
       ]
     },
@@ -17083,7 +17793,12 @@
       "citations": [
         {
           "text": "Jdt 13:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 13,
+            "verse": 18
+          }
         },
         {
           "text": "2 Bar. 54:11",
@@ -17246,7 +17961,12 @@
         },
         {
           "text": "Sir 10:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 10,
+            "verse": 14
+          }
         },
         {
           "text": "Ovid, Tristia 3.7.41",
@@ -17702,7 +18422,12 @@
       "citations": [
         {
           "text": "Wis 7:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 4
+          }
         }
       ]
     },
@@ -17893,7 +18618,12 @@
       "citations": [
         {
           "text": "Tob 11:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 11,
+            "verse": 9
+          }
         }
       ]
     },
@@ -18032,7 +18762,12 @@
       "citations": [
         {
           "text": "Jdt 8:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 8,
+            "verse": 6
+          }
         },
         {
           "text": "T. Jos. 4:8",
@@ -18497,7 +19232,12 @@
       "citations": [
         {
           "text": "Sir 9:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 9,
+            "verse": 10
+          }
         }
       ]
     },
@@ -18543,7 +19283,12 @@
       "citations": [
         {
           "text": "4 Macc 3:13–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 3,
+            "verse": 13
+          }
         }
       ]
     },
@@ -18677,11 +19422,21 @@
       "citations": [
         {
           "text": "Sir 7:34",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 7,
+            "verse": 34
+          }
         },
         {
           "text": "Sir 21:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 21,
+            "verse": 20
+          }
         }
       ]
     },
@@ -18759,7 +19514,12 @@
       "citations": [
         {
           "text": "Tob 4:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 7
+          }
         }
       ]
     },
@@ -18773,7 +19533,12 @@
       "citations": [
         {
           "text": "Tob 4:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 15
+          }
         }
       ]
     },
@@ -18805,15 +19570,30 @@
       "citations": [
         {
           "text": "Wis 15:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 1
+          }
         },
         {
           "text": "Wis 16:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 29
+          }
         },
         {
           "text": "4 Macc 9:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 9,
+            "verse": 10
+          }
         }
       ]
     },
@@ -18949,7 +19729,12 @@
       "citations": [
         {
           "text": "Sir 27:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 27,
+            "verse": 6
+          }
         },
         {
           "text": "b. Ber. 48a",
@@ -18971,11 +19756,21 @@
       "citations": [
         {
           "text": "Sir 13:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 13,
+            "verse": 25
+          }
         },
         {
           "text": "Bar 1:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 1,
+            "verse": 21
+          }
         },
         {
           "text": "Gos. Thom. §45",
@@ -19071,7 +19866,12 @@
         },
         {
           "text": "Sir 48:1–14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 1
+          }
         },
         {
           "text": "Liv. Pro. 21–22",
@@ -19118,7 +19918,12 @@
         },
         {
           "text": "Sir 48:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 5
+          }
         },
         {
           "text": "Apoc. Elijah 3:9",
@@ -19221,7 +20026,12 @@
       "citations": [
         {
           "text": "Sir 48:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 10
+          }
         }
       ]
     },
@@ -19546,7 +20356,12 @@
       "citations": [
         {
           "text": "Tob 6:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 6,
+            "verse": 17
+          }
         }
       ]
     },
@@ -19590,7 +20405,12 @@
       "citations": [
         {
           "text": "Sir 11:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 11,
+            "verse": 19
+          }
         }
       ]
     },
@@ -19688,7 +20508,12 @@
       "citations": [
         {
           "text": "Sir 51:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 51,
+            "verse": 1
+          }
         }
       ]
     },
@@ -20128,7 +20953,12 @@
       "citations": [
         {
           "text": "Sir 11:18–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 11,
+            "verse": 18
+          }
         },
         {
           "text": "Seneca, Ad Helviam 9.9",
@@ -20183,7 +21013,12 @@
         },
         {
           "text": "Tob 7:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 7,
+            "verse": 10
+          }
         },
         {
           "text": "1 En. 97:8–10",
@@ -20233,7 +21068,12 @@
       "citations": [
         {
           "text": "Sir 11:18–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 11,
+            "verse": 18
+          }
         }
       ]
     },
@@ -20247,7 +21087,12 @@
       "citations": [
         {
           "text": "Wis 15:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 8
+          }
         },
         {
           "text": "Philo, Alleg. Interp. 3.227",
@@ -20277,7 +21122,12 @@
       "citations": [
         {
           "text": "Sir 29:9–12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 9
+          }
         }
       ]
     },
@@ -20291,7 +21141,12 @@
       "citations": [
         {
           "text": "Tob 4:8–10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 8
+          }
         }
       ]
     },
@@ -20424,7 +21279,12 @@
         },
         {
           "text": "1 Macc 3:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 3,
+            "verse": 6
+          }
         }
       ]
     },
@@ -20452,7 +21312,12 @@
       "citations": [
         {
           "text": "Bar 4:37",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 37
+          }
         }
       ]
     },
@@ -20578,7 +21443,12 @@
         },
         {
           "text": "Tob 14:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 14,
+            "verse": 4
+          }
         }
       ]
     },
@@ -20633,7 +21503,12 @@
         },
         {
           "text": "Sir 3:18, 20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 3,
+            "verse": 18
+          }
         },
         {
           "text": "b. ʿErub. 13b",
@@ -20676,7 +21551,12 @@
         },
         {
           "text": "Sir 3:17–20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -20690,7 +21570,12 @@
       "citations": [
         {
           "text": "Tob 2:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 2,
+            "verse": 2
+          }
         },
         {
           "text": "Plato, Phaedo 233E",
@@ -20800,7 +21685,12 @@
       "citations": [
         {
           "text": "Sir 12:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 12,
+            "verse": 4
+          }
         },
         {
           "text": "Mek. on Exod 18:1 (Amalek §3)",
@@ -20882,7 +21772,12 @@
         },
         {
           "text": "Sir 6:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 6,
+            "verse": 25
+          }
         }
       ]
     },
@@ -20995,15 +21890,30 @@
         },
         {
           "text": "Tob 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 3,
+            "verse": 17
+          }
         },
         {
           "text": "1 Macc 10:29–30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 10,
+            "verse": 29
+          }
         },
         {
           "text": "Sir 33:19, 23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 19
+          }
         }
       ]
     },
@@ -21017,7 +21927,12 @@
       "citations": [
         {
           "text": "Sir 3:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 3,
+            "verse": 12
+          }
         },
         {
           "text": "Dio Chrysostom, Disc. 4.103–104",
@@ -21139,7 +22054,12 @@
         },
         {
           "text": "Tob 11:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 11,
+            "verse": 9
+          }
         }
       ]
     },
@@ -21411,7 +22331,12 @@
       "citations": [
         {
           "text": "Tob 4:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 10
+          }
         },
         {
           "text": "Sent. Sextus 73",
@@ -21447,7 +22372,12 @@
         },
         {
           "text": "4 Macc 13:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 13,
+            "verse": 15
+          }
         },
         {
           "text": "1 En. 22:9–11",
@@ -21487,7 +22417,12 @@
         },
         {
           "text": "4 Macc 13:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 13,
+            "verse": 15
+          }
         },
         {
           "text": "1 En. 22:9–11",
@@ -21646,7 +22581,12 @@
       "citations": [
         {
           "text": "Sir 35:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 22
+          }
         }
       ]
     },
@@ -21752,11 +22692,21 @@
       "citations": [
         {
           "text": "Sir 29:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 11
+          }
         },
         {
           "text": "Tob 4:8–10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 8
+          }
         }
       ]
     },
@@ -22141,7 +23091,12 @@
         },
         {
           "text": "Wis 3:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 7
+          }
         },
         {
           "text": "Josephus, J.W. 4.9.11 §573",
@@ -22251,7 +23206,12 @@
       "citations": [
         {
           "text": "Sir 19:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 19,
+            "verse": 25
+          }
         }
       ]
     },
@@ -22279,7 +23239,12 @@
       "citations": [
         {
           "text": "4 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         },
         {
           "text": "16:25",
@@ -22301,7 +23266,12 @@
         },
         {
           "text": "4 Macc 7:18–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 18
+          }
         }
       ]
     },
@@ -22383,7 +23353,12 @@
       "citations": [
         {
           "text": "2 Macc 5:2–3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 5,
+            "verse": 2
+          }
         },
         {
           "text": "Sib. Or. 3:796–808",
@@ -22547,7 +23522,12 @@
       "citations": [
         {
           "text": "Sir 28:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 18
+          }
         },
         {
           "text": "Deut 28:41, 64",
@@ -22587,7 +23567,12 @@
         },
         {
           "text": "Tob 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 1,
+            "verse": 10
+          }
         },
         {
           "text": "LXX Ezra 9:7",
@@ -22618,7 +23603,12 @@
         },
         {
           "text": "1 Macc 3:45, 51",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 3,
+            "verse": 45
+          }
         },
         {
           "text": "Dan 12:7",
@@ -22631,7 +23621,12 @@
         },
         {
           "text": "Tob 14:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 14,
+            "verse": 5
+          }
         }
       ]
     },
@@ -22671,7 +23666,12 @@
         },
         {
           "text": "Wis 5:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 22
+          }
         },
         {
           "text": "1 En. 80:4–7",
@@ -23351,7 +24351,12 @@
       "citations": [
         {
           "text": "2 Macc 3:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 26
+          }
         }
       ]
     },
@@ -23416,7 +24421,12 @@
       "citations": [
         {
           "text": "2 Macc 3:34",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 34
+          }
         }
       ]
     },
@@ -23448,7 +24458,12 @@
         },
         {
           "text": "Sir 39:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 39,
+            "verse": 1
+          }
         }
       ]
     },
@@ -23498,7 +24513,12 @@
       "citations": [
         {
           "text": "Sir 50:20–21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 50,
+            "verse": 20
+          }
         }
       ]
     },
@@ -23512,7 +24532,12 @@
       "citations": [
         {
           "text": "Sir 50:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 50,
+            "verse": 22
+          }
         }
       ]
     },
@@ -23548,23 +24573,48 @@
         },
         {
           "text": "Sir 1:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 1
+          }
         },
         {
           "text": "Sir 24:3, 9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 3
+          }
         },
         {
           "text": "Wis 8:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 3
+          }
         },
         {
           "text": "Wis 9:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 4
+          }
         },
         {
           "text": "Wis 18:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         },
         {
           "text": "Anaxagoras of Clazomenai, frg. 1 (apud Aetius, Plac. phil. 1.3)",
@@ -23616,7 +24666,12 @@
         },
         {
           "text": "Wis 18:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         },
         {
           "text": "Philo, Confusion 62–63, 146–147",
@@ -23700,15 +24755,30 @@
         },
         {
           "text": "Sir 24:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 8
+          }
         },
         {
           "text": "Sir 42:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 42,
+            "verse": 15
+          }
         },
         {
           "text": "Wis 9:1–2, 9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 1
+          }
         },
         {
           "text": "4 Ezra 6:38",
@@ -23776,15 +24846,30 @@
         },
         {
           "text": "Sir 24:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 27
+          }
         },
         {
           "text": "Wis 18:3–4, 13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 3
+          }
         },
         {
           "text": "Bar 4:1–2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 1
+          }
         },
         {
           "text": "Philo, Creation 30",
@@ -23844,7 +24929,12 @@
         },
         {
           "text": "Wis 7:29–30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 29
+          }
         },
         {
           "text": "Philo, Creation 33–34",
@@ -23923,7 +25013,12 @@
         },
         {
           "text": "Sir 24:27, 32",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 27
+          }
         },
         {
           "text": "T. Levi 14:4",
@@ -23961,11 +25056,21 @@
       "citations": [
         {
           "text": "Sir 24:28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 28
+          }
         },
         {
           "text": "Bar 3:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 3,
+            "verse": 12
+          }
         },
         {
           "text": "Philo, Creation 24",
@@ -23996,7 +25101,12 @@
         },
         {
           "text": "Wis 9:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 10
+          }
         }
       ]
     },
@@ -24019,7 +25129,12 @@
         },
         {
           "text": "Sir 24:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 12
+          }
         },
         {
           "text": "Odes Sol. 7:12",
@@ -24041,11 +25156,21 @@
       "citations": [
         {
           "text": "Sir 24:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 11
+          }
         },
         {
           "text": "Wis 7:14, 27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 14
+          }
         },
         {
           "text": "Odes Sol. 7:4",
@@ -24107,23 +25232,48 @@
       "citations": [
         {
           "text": "Sir 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 10
+          }
         },
         {
           "text": "Sir 24:8–10, 16, 26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 8
+          }
         },
         {
           "text": "Wis 7:22, 25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 22
+          }
         },
         {
           "text": "Wis 18:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         },
         {
           "text": "Bar 3:37",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 3,
+            "verse": 37
+          }
         },
         {
           "text": "Exod 25:8",
@@ -24242,11 +25392,21 @@
         },
         {
           "text": "Wis 1:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 4
+          }
         },
         {
           "text": "Sir 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 10
+          }
         },
         {
           "text": "1 En. 4:1–3",
@@ -24264,7 +25424,12 @@
       "citations": [
         {
           "text": "Sir 24:26, 29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 26
+          }
         },
         {
           "text": "Philo, Alleg. Interp. 1.44",
@@ -24291,7 +25456,12 @@
         },
         {
           "text": "Sir 24:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 23
+          }
         }
       ]
     },
@@ -24314,7 +25484,12 @@
         },
         {
           "text": "Sir 43:31",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 43,
+            "verse": 31
+          }
         },
         {
           "text": "Prov 8:25, 30",
@@ -24652,7 +25827,12 @@
       "citations": [
         {
           "text": "Sir 16:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 16,
+            "verse": 21
+          }
         },
         {
           "text": "Corp. herm. 13.3",
@@ -24670,7 +25850,12 @@
       "citations": [
         {
           "text": "Wis 9:14, 16–17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 14
+          }
         }
       ]
     },
@@ -24684,11 +25869,21 @@
       "citations": [
         {
           "text": "Wis 9:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 16
+          }
         },
         {
           "text": "Wis 18:15–16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         }
       ]
     },
@@ -24711,7 +25906,12 @@
         },
         {
           "text": "Bar 3:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 3,
+            "verse": 29
+          }
         },
         {
           "text": "4 Ezra 4:8",
@@ -24756,7 +25956,12 @@
         },
         {
           "text": "Wis 16:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 7
+          }
         },
         {
           "text": "Frg. Tg. Num 21:9",
@@ -24870,7 +26075,12 @@
       "citations": [
         {
           "text": "Tob 4:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 6
+          }
         },
         {
           "text": "1QS 1:5",
@@ -24878,11 +26088,21 @@
         },
         {
           "text": "Tob 5:3",
-          "type": "DSS"
+          "type": "DSS",
+          "ref": {
+            "book": "Tob",
+            "chapter": 5,
+            "verse": 3
+          }
         },
         {
           "text": "Tob 8:2",
-          "type": "DSS"
+          "type": "DSS",
+          "ref": {
+            "book": "Tob",
+            "chapter": 8,
+            "verse": 2
+          }
         }
       ]
     },
@@ -24910,7 +26130,12 @@
       "citations": [
         {
           "text": "1 Macc 9:39",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 9,
+            "verse": 39
+          }
         }
       ]
     },
@@ -24924,7 +26149,12 @@
       "citations": [
         {
           "text": "Sir 24:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 4
+          }
         }
       ]
     },
@@ -24984,7 +26214,12 @@
       "citations": [
         {
           "text": "Sir 50:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 50,
+            "verse": 25
+          }
         }
       ]
     },
@@ -25196,7 +26431,12 @@
       "citations": [
         {
           "text": "Wis 8:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 8
+          }
         }
       ]
     },
@@ -25228,7 +26468,12 @@
       "citations": [
         {
           "text": "Wis 2:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 16
+          }
         },
         {
           "text": "Philo, Alleg. Interp. 1.49",
@@ -25420,7 +26665,12 @@
       "citations": [
         {
           "text": "Sir 24:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 19
+          }
         }
       ]
     },
@@ -25520,7 +26770,12 @@
       "citations": [
         {
           "text": "Sir 24:21–22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 21
+          }
         },
         {
           "text": "Jos. Asen. 8:5",
@@ -25665,7 +26920,12 @@
       "citations": [
         {
           "text": "Sir 24:21–22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 21
+          }
         },
         {
           "text": "Corp. herm. 1.29",
@@ -25728,7 +26988,12 @@
         },
         {
           "text": "Sir 24:30–31, 40, 43",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 30
+          }
         },
         {
           "text": "1QS 4:19–21",
@@ -25975,7 +27240,12 @@
       "citations": [
         {
           "text": "Wis 2:23b–24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 23
+          }
         },
         {
           "text": "Porphyry, On Abstinence 2.42",
@@ -25993,7 +27263,12 @@
       "citations": [
         {
           "text": "Sir 44:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 19
+          }
         }
       ]
     },
@@ -26040,7 +27315,12 @@
       "citations": [
         {
           "text": "Bar 3:4, 7–8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 3,
+            "verse": 4
+          }
         }
       ]
     },
@@ -26223,7 +27503,12 @@
       "citations": [
         {
           "text": "Wis 5:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 4
+          }
         },
         {
           "text": "cf. Plato, Phaedr. 249CD",
@@ -26256,7 +27541,12 @@
       "citations": [
         {
           "text": "1 Macc 4:59",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 4,
+            "verse": 59
+          }
         },
         {
           "text": "m. Moʾed Qaṭ. 3:9",
@@ -26424,7 +27714,12 @@
       "citations": [
         {
           "text": "Sir 24:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 15
+          }
         }
       ]
     },
@@ -26460,7 +27755,12 @@
       "citations": [
         {
           "text": "4 Macc 17:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 20
+          }
         }
       ]
     },
@@ -26578,7 +27878,12 @@
         },
         {
           "text": "Sir 24:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 9
+          }
         },
         {
           "text": "Tg. Isa. 52:13",
@@ -26881,7 +28186,12 @@
       "citations": [
         {
           "text": "Wis 6:18–19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 6,
+            "verse": 18
+          }
         }
       ]
     },
@@ -26945,7 +28255,12 @@
       "citations": [
         {
           "text": "Sir 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 10
+          }
         }
       ]
     },
@@ -26999,7 +28314,12 @@
       "citations": [
         {
           "text": "Sir 24:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 17
+          }
         },
         {
           "text": "LXX Jer 2:21",
@@ -27026,7 +28346,12 @@
       "citations": [
         {
           "text": "Sir 24:16–17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 16
+          }
         }
       ]
     },
@@ -27040,7 +28365,12 @@
       "citations": [
         {
           "text": "Sir 24:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 17
+          }
         },
         {
           "text": "Corp. herm. 13.7",
@@ -27058,7 +28388,12 @@
       "citations": [
         {
           "text": "Sir 24:16–17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 16
+          }
         },
         {
           "text": "Aelius Aristides, Or. 37.10",
@@ -27076,7 +28411,12 @@
       "citations": [
         {
           "text": "Wis 3:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 9
+          }
         }
       ]
     },
@@ -27277,7 +28617,12 @@
       "citations": [
         {
           "text": "Wis 15:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 3
+          }
         },
         {
           "text": "Corp. herm. 13.8",
@@ -27567,7 +28912,12 @@
       "citations": [
         {
           "text": "Wis 15:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 11
+          }
         },
         {
           "text": "1QS 4:21",
@@ -27631,7 +28981,12 @@
       "citations": [
         {
           "text": "1 Macc 9:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 9,
+            "verse": 22
+          }
         },
         {
           "text": "Philo, Posterity 144",
@@ -27722,7 +29077,12 @@
       "citations": [
         {
           "text": "2 Macc 3:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 26
+          }
         }
       ]
     },
@@ -27750,7 +29110,12 @@
       "citations": [
         {
           "text": "Wis 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -27825,7 +29190,12 @@
       "citations": [
         {
           "text": "Sir 48:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 12
+          }
         }
       ]
     },
@@ -27853,7 +29223,12 @@
       "citations": [
         {
           "text": "Sir 36:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 36,
+            "verse": 7
+          }
         },
         {
           "text": "2 En. 54:1",
@@ -28076,7 +29451,12 @@
       "citations": [
         {
           "text": "Sir 24:32",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 24,
+            "verse": 32
+          }
         }
       ]
     },
@@ -28181,7 +29561,12 @@
         {
           "text": "cf. 1 Macc 4:46",
           "type": "Second Temple",
-          "cf": true
+          "cf": true,
+          "ref": {
+            "book": "1Macc",
+            "chapter": 4,
+            "verse": 46
+          }
         },
         {
           "text": "Lev 14:41",
@@ -28339,7 +29724,12 @@
       "citations": [
         {
           "text": "Jdt 9:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 9,
+            "verse": 12
+          }
         }
       ]
     },
@@ -28430,7 +29820,12 @@
       "citations": [
         {
           "text": "2 Macc 4:32",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 4,
+            "verse": 32
+          }
         }
       ]
     },
@@ -28444,7 +29839,12 @@
       "citations": [
         {
           "text": "3 Macc 4:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 4,
+            "verse": 17
+          }
         }
       ]
     },
@@ -28458,11 +29858,21 @@
       "citations": [
         {
           "text": "1 Macc 12:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 12,
+            "verse": 6
+          }
         },
         {
           "text": "2 Macc 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 1,
+            "verse": 10
+          }
         }
       ]
     },
@@ -28518,11 +29928,21 @@
       "citations": [
         {
           "text": "Wis 12:13–14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 13
+          }
         },
         {
           "text": "2 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         }
       ]
     },
@@ -29017,7 +30437,12 @@
         },
         {
           "text": "Sir 45:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 45,
+            "verse": 3
+          }
         }
       ]
     },
@@ -29305,11 +30730,21 @@
         {
           "text": "cf. Wis 13:10",
           "type": "Second Temple",
-          "cf": true
+          "cf": true,
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 10
+          }
         },
         {
           "text": "Ep Jer 50",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "EpJer",
+            "chapter": 1,
+            "verse": 50
+          }
         }
       ]
     },
@@ -29717,7 +31152,12 @@
       "citations": [
         {
           "text": "Wis 3:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 14
+          }
         }
       ]
     },
@@ -29784,11 +31224,21 @@
       "citations": [
         {
           "text": "2 Macc 3:24–40",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 24
+          }
         },
         {
           "text": "4 Macc 4:1–14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 4,
+            "verse": 1
+          }
         }
       ]
     },
@@ -29802,7 +31252,12 @@
       "citations": [
         {
           "text": "1 Macc 15:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 15,
+            "verse": 21
+          }
         }
       ]
     },
@@ -29816,7 +31271,12 @@
       "citations": [
         {
           "text": "Wis 18:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 1
+          }
         },
         {
           "text": "Euripides, Hipp. 85",
@@ -29838,7 +31298,12 @@
       "citations": [
         {
           "text": "Tob 12:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 8
+          }
         },
         {
           "text": "Juvenal, Sat. 14.96–106",
@@ -29896,7 +31361,12 @@
       "citations": [
         {
           "text": "1 Macc 10:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 10,
+            "verse": 25
+          }
         },
         {
           "text": "11:30, 33",
@@ -29914,7 +31384,12 @@
       "citations": [
         {
           "text": "Wis 7:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 1
+          }
         }
       ]
     },
@@ -29928,7 +31403,12 @@
       "citations": [
         {
           "text": "2 Macc 11:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 11,
+            "verse": 8
+          }
         }
       ]
     },
@@ -29942,7 +31422,12 @@
       "citations": [
         {
           "text": "Sir 35:12–13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 12
+          }
         }
       ]
     },
@@ -29956,7 +31441,12 @@
       "citations": [
         {
           "text": "Wis 8:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 3
+          }
         }
       ]
     },
@@ -29984,7 +31474,12 @@
       "citations": [
         {
           "text": "Wis 12:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 19
+          }
         }
       ]
     },
@@ -29998,7 +31493,12 @@
       "citations": [
         {
           "text": "Jdt 4:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 4,
+            "verse": 9
+          }
         }
       ]
     },
@@ -30012,7 +31512,12 @@
       "citations": [
         {
           "text": "Sir 19:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 19,
+            "verse": 26
+          }
         }
       ]
     },
@@ -30054,19 +31559,39 @@
       "citations": [
         {
           "text": "1 Macc 7:41",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 7,
+            "verse": 41
+          }
         },
         {
           "text": "2 Macc 9:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 9,
+            "verse": 9
+          }
         },
         {
           "text": "Jdt 16:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 17
+          }
         },
         {
           "text": "Sir 28:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 7
+          }
         },
         {
           "text": "Hesiod, Op. 137",
@@ -30121,7 +31646,12 @@
       "citations": [
         {
           "text": "Sir 1:30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 30
+          }
         }
       ]
     },
@@ -30149,7 +31679,12 @@
       "citations": [
         {
           "text": "Wis 19:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 19,
+            "verse": 10
+          }
         }
       ]
     },
@@ -30342,7 +31877,12 @@
       "citations": [
         {
           "text": "Jdt 14:16–17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 14,
+            "verse": 16
+          }
         }
       ]
     },
@@ -30356,11 +31896,21 @@
       "citations": [
         {
           "text": "4 Macc 12:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 12,
+            "verse": 13
+          }
         },
         {
           "text": "Wis 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -30402,7 +31952,12 @@
       "citations": [
         {
           "text": "Jdt 8:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 8,
+            "verse": 26
+          }
         }
       ]
     },
@@ -30591,7 +32146,12 @@
       "citations": [
         {
           "text": "4 Macc 5:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 5,
+            "verse": 2
+          }
         }
       ]
     },
@@ -30637,7 +32197,12 @@
       "citations": [
         {
           "text": "2 Macc 1:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 1,
+            "verse": 4
+          }
         }
       ]
     },
@@ -30879,11 +32444,21 @@
       "citations": [
         {
           "text": "Wis 14:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 20
+          }
         },
         {
           "text": "Wis 15:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 17
+          }
         },
         {
           "text": "Pausanias, Descr. 1.1.4",
@@ -30913,11 +32488,21 @@
       "citations": [
         {
           "text": "Wis 9:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 9
+          }
         },
         {
           "text": "Tob 7:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 7,
+            "verse": 17
+          }
         },
         {
           "text": "Plato, Phaedo 97C",
@@ -30943,7 +32528,12 @@
       "citations": [
         {
           "text": "Wis 9:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 1
+          }
         }
       ]
     },
@@ -30975,7 +32565,12 @@
       "citations": [
         {
           "text": "Wis 7:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 18
+          }
         }
       ]
     },
@@ -30989,7 +32584,12 @@
       "citations": [
         {
           "text": "Wis 13:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 6
+          }
         }
       ]
     },
@@ -31025,7 +32625,12 @@
       "citations": [
         {
           "text": "Wis 13:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 10
+          }
         }
       ]
     },
@@ -31039,7 +32644,12 @@
       "citations": [
         {
           "text": "Sir 28:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 7
+          }
         }
       ]
     },
@@ -31240,7 +32850,12 @@
       "citations": [
         {
           "text": "Wis 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -31254,7 +32869,12 @@
       "citations": [
         {
           "text": "Bel 18, 41",
-          "type": "Other"
+          "type": "Other",
+          "ref": {
+            "book": "Bel",
+            "chapter": 1,
+            "verse": 18
+          }
         }
       ]
     },
@@ -31282,7 +32902,12 @@
       "citations": [
         {
           "text": "Sus 46",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sus",
+            "chapter": 1,
+            "verse": 46
+          }
         }
       ]
     },
@@ -31296,7 +32921,12 @@
       "citations": [
         {
           "text": "Wis 5:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 5
+          }
         }
       ]
     },
@@ -31310,7 +32940,12 @@
       "citations": [
         {
           "text": "Sir 4:31",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 31
+          }
         }
       ]
     },
@@ -31324,7 +32959,12 @@
       "citations": [
         {
           "text": "1 Macc 3:49",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 3,
+            "verse": 49
+          }
         }
       ]
     },
@@ -31383,7 +33023,12 @@
       "citations": [
         {
           "text": "Wis 18:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 1
+          }
         },
         {
           "text": "Tg. Ps.-J. Gen 22:10",
@@ -31447,7 +33092,12 @@
       "citations": [
         {
           "text": "2 Macc 4:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 4,
+            "verse": 6
+          }
         }
       ]
     },
@@ -31461,7 +33111,12 @@
       "citations": [
         {
           "text": "4 Macc 12:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 12,
+            "verse": 17
+          }
         }
       ]
     },
@@ -31497,7 +33152,12 @@
       "citations": [
         {
           "text": "Wis 5:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 5
+          }
         }
       ]
     },
@@ -31548,7 +33208,12 @@
       "citations": [
         {
           "text": "Jdt 10:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 10,
+            "verse": 13
+          }
         }
       ]
     },
@@ -31789,11 +33454,21 @@
       "citations": [
         {
           "text": "Wis 13:5–10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 5
+          }
         },
         {
           "text": "Wis 14:22–27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 22
+          }
         }
       ]
     },
@@ -31879,7 +33554,12 @@
       "citations": [
         {
           "text": "Wis 13:5, 8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 5
+          }
         },
         {
           "text": "2 Bar. 54:18",
@@ -31919,7 +33599,12 @@
         },
         {
           "text": "Wis 13:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 1
+          }
         },
         {
           "text": "1 En. 99:8",
@@ -31955,7 +33640,12 @@
       "citations": [
         {
           "text": "Wis 12:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 24
+          }
         }
       ]
     },
@@ -31969,11 +33659,21 @@
       "citations": [
         {
           "text": "Wis 11:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 11,
+            "verse": 15
+          }
         },
         {
           "text": "Wis 12:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 12
+          }
         }
       ]
     },
@@ -32001,7 +33701,12 @@
       "citations": [
         {
           "text": "Wis 14:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 24
+          }
         },
         {
           "text": "T. Jos. 7:8",
@@ -32045,11 +33750,21 @@
       "citations": [
         {
           "text": "2 Macc 6:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 6,
+            "verse": 4
+          }
         },
         {
           "text": "3 Macc 4:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 4,
+            "verse": 16
+          }
         }
       ]
     },
@@ -32077,15 +33792,30 @@
       "citations": [
         {
           "text": "Wis 14:24–27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 24
+          }
         },
         {
           "text": "4 Macc 1:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 1,
+            "verse": 26
+          }
         },
         {
           "text": "Wis 2:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 15
+          }
         },
         {
           "text": "Seneca, Ben. 1.10.4",
@@ -32149,11 +33879,21 @@
       "citations": [
         {
           "text": "Wis 11:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 11,
+            "verse": 23
+          }
         },
         {
           "text": "Wis 12:19–20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 19
+          }
         },
         {
           "text": "Pr Man 8",
@@ -32217,7 +33957,12 @@
       "citations": [
         {
           "text": "Sir 16:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 16,
+            "verse": 14
+          }
         }
       ]
     },
@@ -32245,7 +33990,12 @@
       "citations": [
         {
           "text": "Sir 35:12–13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 12
+          }
         }
       ]
     },
@@ -32297,7 +34047,12 @@
         },
         {
           "text": "Wis 17:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 11
+          }
         },
         {
           "text": "2 Bar. 57:2",
@@ -32849,7 +34604,12 @@
         },
         {
           "text": "4 Macc 6:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 6,
+            "verse": 29
+          }
         },
         {
           "text": "17:22",
@@ -32921,7 +34681,12 @@
         },
         {
           "text": "Wis 11:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 11,
+            "verse": 17
+          }
         }
       ]
     },
@@ -32985,7 +34750,12 @@
       "citations": [
         {
           "text": "Sir 44:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 21
+          }
         },
         {
           "text": "Jub. 19:21",
@@ -33189,7 +34959,12 @@
       "citations": [
         {
           "text": "Sir 18:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 18,
+            "verse": 11
+          }
         }
       ]
     },
@@ -33217,7 +34992,12 @@
       "citations": [
         {
           "text": "Wis 2:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 24
+          }
         },
         {
           "text": "4 Ezra 3:6–8, 21–22, 26",
@@ -33283,7 +35063,12 @@
       "citations": [
         {
           "text": "Sir 5:4–6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 4
+          }
         },
         {
           "text": "T. Levi 4:1",
@@ -33361,7 +35146,12 @@
       "citations": [
         {
           "text": "4 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         },
         {
           "text": "Philo, Worse 49",
@@ -33481,7 +35271,12 @@
         },
         {
           "text": "4 Macc 2:5–6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 2,
+            "verse": 5
+          }
         },
         {
           "text": "Apoc. Mos. 19:3",
@@ -33503,7 +35298,12 @@
       "citations": [
         {
           "text": "4 Macc 2:1–6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 2,
+            "verse": 1
+          }
         }
       ]
     },
@@ -33945,11 +35745,21 @@
       "citations": [
         {
           "text": "Sir 44:12, 18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 12
+          }
         },
         {
           "text": "2 Macc 6:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 6,
+            "verse": 23
+          }
         }
       ]
     },
@@ -34171,7 +35981,12 @@
       "citations": [
         {
           "text": "Wis 12:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 12
+          }
         },
         {
           "text": "2 Bar. 3:7",
@@ -34214,7 +36029,12 @@
         },
         {
           "text": "Wis 12:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 12
+          }
         }
       ]
     },
@@ -34237,11 +36057,21 @@
         },
         {
           "text": "Sir 33:10–13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 10
+          }
         },
         {
           "text": "Wis 15:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 15,
+            "verse": 7
+          }
         },
         {
           "text": "T. Naph. 2:2",
@@ -34286,7 +36116,12 @@
       "citations": [
         {
           "text": "Wis 12:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 20
+          }
         }
       ]
     },
@@ -34433,11 +36268,21 @@
       "citations": [
         {
           "text": "Wis 2:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 11
+          }
         },
         {
           "text": "Sir 27:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 27,
+            "verse": 8
+          }
         }
       ]
     },
@@ -34556,7 +36401,12 @@
         },
         {
           "text": "Bar 3:29–31",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 3,
+            "verse": 29
+          }
         },
         {
           "text": "4 Ezra 3:17–18",
@@ -34564,7 +36414,12 @@
         },
         {
           "text": "Bar 4:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 8
+          }
         },
         {
           "text": "Tg. Neof. Deut 30:12–14",
@@ -34594,7 +36449,12 @@
       "citations": [
         {
           "text": "Wis 16:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 13
+          }
         }
       ]
     },
@@ -34896,7 +36756,12 @@
         },
         {
           "text": "2 Macc 2:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 2,
+            "verse": 4
+          }
         }
       ]
     },
@@ -34985,7 +36850,12 @@
       "citations": [
         {
           "text": "Sir 10:20–21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 10,
+            "verse": 20
+          }
         }
       ]
     },
@@ -35151,7 +37021,12 @@
         },
         {
           "text": "Wis 17:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 1
+          }
         },
         {
           "text": "2 Bar. 14:8–10",
@@ -35372,7 +37247,12 @@
       "citations": [
         {
           "text": "Sir 7:34",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 7,
+            "verse": 34
+          }
         }
       ]
     },
@@ -35559,11 +37439,21 @@
         },
         {
           "text": "Sir 10:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 10,
+            "verse": 4
+          }
         },
         {
           "text": "Wis 6:3–4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 6,
+            "verse": 3
+          }
         },
         {
           "text": "Josephus, J.W. 2.8.7 §140",
@@ -35599,7 +37489,12 @@
       "citations": [
         {
           "text": "Sir 4:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 27
+          }
         }
       ]
     },
@@ -35684,7 +37579,12 @@
         },
         {
           "text": "4 Macc 2:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 2,
+            "verse": 6
+          }
         },
         {
           "text": "t. Šebu. 3.7",
@@ -35723,11 +37623,21 @@
         },
         {
           "text": "Sir 10:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 10,
+            "verse": 6
+          }
         },
         {
           "text": "Wis 6:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 6,
+            "verse": 18
+          }
         },
         {
           "text": "Let. Aris. 168, 207",
@@ -35809,7 +37719,12 @@
       "citations": [
         {
           "text": "4 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         }
       ]
     },
@@ -35891,7 +37806,12 @@
       "citations": [
         {
           "text": "1 Macc 12:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 12,
+            "verse": 9
+          }
         }
       ]
     },
@@ -35914,7 +37834,12 @@
         },
         {
           "text": "Sir 36:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 36,
+            "verse": 20
+          }
         }
       ]
     },
@@ -36112,7 +38037,12 @@
       "citations": [
         {
           "text": "4 Macc 18:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 18,
+            "verse": 24
+          }
         },
         {
           "text": "Ps.-Phocylides, Sent. 54",
@@ -36263,7 +38193,12 @@
       "citations": [
         {
           "text": "Wis 9:13, 17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 13
+          }
         }
       ]
     },
@@ -36294,7 +38229,12 @@
         },
         {
           "text": "Sir 1:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 10
+          }
         },
         {
           "text": "L.A.B. 26:13",
@@ -36354,7 +38294,12 @@
       "citations": [
         {
           "text": "Jdt 8:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 8,
+            "verse": 14
+          }
         }
       ]
     },
@@ -36438,7 +38383,12 @@
         },
         {
           "text": "Jdt 8:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 8,
+            "verse": 14
+          }
         }
       ]
     },
@@ -36648,7 +38598,12 @@
       "citations": [
         {
           "text": "4 Macc 17:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 14
+          }
         }
       ]
     },
@@ -36864,7 +38819,12 @@
         },
         {
           "text": "Wis 3:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 8
+          }
         }
       ]
     },
@@ -36946,7 +38906,12 @@
       "citations": [
         {
           "text": "Sir 37:28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 37,
+            "verse": 28
+          }
         },
         {
           "text": "Plutarch, Mor. 236BC: Apoph. lac. 65",
@@ -37542,7 +39507,12 @@
         },
         {
           "text": "Bar 4:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 7
+          }
         }
       ]
     },
@@ -37670,7 +39640,12 @@
         },
         {
           "text": "Wis 2:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 23
+          }
         },
         {
           "text": "T. Naph. 2:5",
@@ -38473,7 +40448,12 @@
       "citations": [
         {
           "text": "2 Macc 12:38–45",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 12,
+            "verse": 38
+          }
         }
       ]
     },
@@ -38611,7 +40591,12 @@
       "citations": [
         {
           "text": "2 Macc 7:10–11, 22–23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 7,
+            "verse": 10
+          }
         },
         {
           "text": "14:46",
@@ -39409,7 +41394,12 @@
         },
         {
           "text": "Wis 9:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 15
+          }
         }
       ]
     },
@@ -39437,7 +41427,12 @@
       "citations": [
         {
           "text": "Wis 9:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 15
+          }
         }
       ]
     },
@@ -39529,7 +41524,12 @@
         },
         {
           "text": "Wis 9:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 15
+          }
         }
       ]
     },
@@ -39916,7 +41916,12 @@
         },
         {
           "text": "Sir 38:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 38,
+            "verse": 18
+          }
         },
         {
           "text": "T. Gad 5:7",
@@ -39957,7 +41962,12 @@
         },
         {
           "text": "Tob 4:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 8
+          }
         }
       ]
     },
@@ -40041,7 +42051,12 @@
         },
         {
           "text": "Tob 4:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 16
+          }
         },
         {
           "text": "T. Reu. 1:9",
@@ -40377,7 +42392,12 @@
       "citations": [
         {
           "text": "4 Macc 18:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 18,
+            "verse": 24
+          }
         }
       ]
     },
@@ -40442,7 +42462,12 @@
         },
         {
           "text": "Sir 35:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 13
+          }
         }
       ]
     },
@@ -40531,7 +42556,12 @@
       "citations": [
         {
           "text": "4 Macc 7:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         },
         {
           "text": "Pythagorean Sentences 30",
@@ -40602,7 +42632,12 @@
         },
         {
           "text": "Sir 44:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 21
+          }
         },
         {
           "text": "3 Macc 44:21",
@@ -40629,7 +42664,12 @@
         },
         {
           "text": "4 Macc 5:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 5,
+            "verse": 20
+          }
         }
       ]
     },
@@ -40878,7 +42918,12 @@
       "citations": [
         {
           "text": "Tob 14:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 14,
+            "verse": 5
+          }
         },
         {
           "text": "2 Bar. 40:4",
@@ -40923,7 +42968,12 @@
         },
         {
           "text": "Ep Jer 16, 23, 29, 40, 44, 56, 65, 69",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "EpJer",
+            "chapter": 1,
+            "verse": 16
+          }
         }
       ]
     },
@@ -41195,7 +43245,12 @@
       "citations": [
         {
           "text": "Wis 17:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 17
+          }
         }
       ]
     },
@@ -41269,7 +43324,12 @@
       "citations": [
         {
           "text": "Tob 4:6–7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 6
+          }
         }
       ]
     },
@@ -41306,7 +43366,12 @@
       "citations": [
         {
           "text": "3 Macc 2:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 29
+          }
         }
       ]
     },
@@ -41360,11 +43425,21 @@
       "citations": [
         {
           "text": "Sir 45:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 45,
+            "verse": 1
+          }
         },
         {
           "text": "Sir 46:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 46,
+            "verse": 13
+          }
         }
       ]
     },
@@ -41387,7 +43462,12 @@
         },
         {
           "text": "Wis 7:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 7
+          }
         }
       ]
     },
@@ -41605,7 +43685,12 @@
       "citations": [
         {
           "text": "3 Macc 2:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 3
+          }
         }
       ]
     },
@@ -41779,7 +43864,12 @@
       "citations": [
         {
           "text": "Sir 5:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 9
+          }
         },
         {
           "text": "Oppian, Halieutica 3.501",
@@ -41824,7 +43914,12 @@
         },
         {
           "text": "Wis 9:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 3
+          }
         }
       ]
     },
@@ -42255,7 +44350,12 @@
         },
         {
           "text": "Wis 5:17–20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 17
+          }
         }
       ]
     },
@@ -42291,7 +44391,12 @@
         },
         {
           "text": "Wis 5:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 17
+          }
         }
       ]
     },
@@ -42318,7 +44423,12 @@
         },
         {
           "text": "Wis 5:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 18
+          }
         }
       ]
     },
@@ -42364,7 +44474,12 @@
         },
         {
           "text": "Wis 5:19, 21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 19
+          }
         }
       ]
     },
@@ -42797,7 +44912,12 @@
       "citations": [
         {
           "text": "Wis 2:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 19
+          }
         }
       ]
     },
@@ -42865,7 +44985,12 @@
       "citations": [
         {
           "text": "Wis 7:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 23
+          }
         }
       ]
     },
@@ -42906,7 +45031,12 @@
         },
         {
           "text": "Sir 35:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 6
+          }
         },
         {
           "text": "Epictetus 3.24.2–3, 17",
@@ -42988,7 +45118,12 @@
       "citations": [
         {
           "text": "Wis 7:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 26
+          }
         },
         {
           "text": "Pr. Jos. frg. A",
@@ -43006,15 +45141,30 @@
       "citations": [
         {
           "text": "Wis 7:22, 24–27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 22
+          }
         },
         {
           "text": "Wis 8:1, 4–5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 1
+          }
         },
         {
           "text": "Wis 9:1–2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 1
+          }
         }
       ]
     },
@@ -43109,7 +45259,12 @@
         },
         {
           "text": "Sir 1:24–25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 24
+          }
         },
         {
           "text": "1 En. 46:3",
@@ -43390,7 +45545,12 @@
       "citations": [
         {
           "text": "4 Macc 17:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 4
+          }
         }
       ]
     },
@@ -43404,7 +45564,12 @@
       "citations": [
         {
           "text": "4 Macc 16:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 16,
+            "verse": 12
+          }
         }
       ]
     },
@@ -43521,7 +45686,12 @@
       "citations": [
         {
           "text": "Jdt 12:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 12,
+            "verse": 8
+          }
         }
       ]
     },
@@ -43591,7 +45761,12 @@
         },
         {
           "text": "Sir 5:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 3
+          }
         },
         {
           "text": "2 En. 60:1",
@@ -43677,7 +45852,12 @@
       "citations": [
         {
           "text": "Wis 3:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 18
+          }
         },
         {
           "text": "CIG 1973",
@@ -43748,7 +45928,12 @@
       "citations": [
         {
           "text": "Wis 8:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 8
+          }
         }
       ]
     },
@@ -43762,7 +45947,12 @@
       "citations": [
         {
           "text": "Wis 18:14–15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 14
+          }
         }
       ]
     },
@@ -43816,7 +46006,12 @@
         },
         {
           "text": "Wis 17:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 17,
+            "verse": 14
+          }
         }
       ]
     },
@@ -43857,7 +46052,12 @@
         },
         {
           "text": "Wis 5:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 18
+          }
         },
         {
           "text": "Apoc. Elijah 4:31",
@@ -44075,7 +46275,12 @@
       "citations": [
         {
           "text": "2 Macc 2:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 2,
+            "verse": 7
+          }
         }
       ]
     },
@@ -44272,7 +46477,12 @@
       "citations": [
         {
           "text": "Tob 13:7, 11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 13,
+            "verse": 7
+          }
         },
         {
           "text": "Diogenes Laertius, Vit. phil. 10.123",
@@ -44320,11 +46530,21 @@
       "citations": [
         {
           "text": "2 Macc 3:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 11
+          }
         },
         {
           "text": "Bar 1:11–12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 1,
+            "verse": 11
+          }
         }
       ]
     },
@@ -44462,7 +46682,12 @@
       "citations": [
         {
           "text": "4 Macc 6:31",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 6,
+            "verse": 31
+          }
         },
         {
           "text": "7:16",
@@ -44776,7 +47001,12 @@
         },
         {
           "text": "2 Macc 12:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 12,
+            "verse": 15
+          }
         },
         {
           "text": "Deut 13:4",
@@ -44784,11 +47014,21 @@
         },
         {
           "text": "3 Macc 5:35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 5,
+            "verse": 35
+          }
         },
         {
           "text": "Sir 46:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 46,
+            "verse": 5
+          }
         },
         {
           "text": "Homer, Od. 5.7",
@@ -44856,7 +47096,12 @@
       "citations": [
         {
           "text": "Tob 12:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 8
+          }
         }
       ]
     },
@@ -44921,15 +47166,30 @@
         },
         {
           "text": "Sir 17:26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 17,
+            "verse": 26
+          }
         },
         {
           "text": "Sir 23:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 10
+          }
         },
         {
           "text": "Sir 35:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 3
+          }
         }
       ]
     },
@@ -45147,7 +47407,12 @@
       "citations": [
         {
           "text": "Wis 5:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 16
+          }
         },
         {
           "text": "T. Levi 8:2",
@@ -45228,7 +47493,12 @@
         },
         {
           "text": "1 Macc 2:60",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 60
+          }
         }
       ]
     },
@@ -45342,11 +47612,21 @@
       "citations": [
         {
           "text": "2 Macc 3:30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 30
+          }
         },
         {
           "text": "3 Macc 6:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 6,
+            "verse": 9
+          }
         }
       ]
     },
@@ -45442,7 +47722,12 @@
       "citations": [
         {
           "text": "Wis 1:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 6
+          }
         }
       ]
     },
@@ -45537,11 +47822,21 @@
       "citations": [
         {
           "text": "Wis 7:22, 25–26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 22
+          }
         },
         {
           "text": "Wis 8:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 4
+          }
         }
       ]
     },
@@ -45564,7 +47859,12 @@
         },
         {
           "text": "Wis 7:25–26",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 25
+          }
         }
       ]
     },
@@ -45883,7 +48183,12 @@
       "citations": [
         {
           "text": "Sir 17:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 17,
+            "verse": 17
+          }
         }
       ]
     },
@@ -46419,11 +48724,21 @@
         },
         {
           "text": "Wis 7:22–30",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 22
+          }
         },
         {
           "text": "Wis 18:15–16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         },
         {
           "text": "2 Bar. 83:3",
@@ -46568,7 +48883,12 @@
         },
         {
           "text": "1 Macc 14:41",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 14,
+            "verse": 41
+          }
         },
         {
           "text": "Ps 110:4",
@@ -46598,7 +48918,12 @@
         },
         {
           "text": "3 Macc 5:7–9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 5,
+            "verse": 7
+          }
         }
       ]
     },
@@ -46772,7 +49097,12 @@
         },
         {
           "text": "Sir 44:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 21
+          }
         },
         {
           "text": "3 Macc 44:21",
@@ -47050,7 +49380,12 @@
       "citations": [
         {
           "text": "Sir 29:14–16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 14
+          }
         }
       ]
     },
@@ -47148,7 +49483,12 @@
         },
         {
           "text": "Wis 9:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 9,
+            "verse": 8
+          }
         }
       ]
     },
@@ -48051,7 +50391,12 @@
       "citations": [
         {
           "text": "Sir 44:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 1
+          }
         }
       ]
     },
@@ -48141,11 +50486,21 @@
         },
         {
           "text": "Wis 4:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 4,
+            "verse": 10
+          }
         },
         {
           "text": "Sir 44:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 16
+          }
         },
         {
           "text": "3 Macc 44:16",
@@ -48167,7 +50522,12 @@
       "citations": [
         {
           "text": "Wis 10:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 10,
+            "verse": 17
+          }
         }
       ]
     },
@@ -48262,11 +50622,21 @@
         },
         {
           "text": "2 Macc 4:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 4,
+            "verse": 1
+          }
         },
         {
           "text": "Wis 13:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 13,
+            "verse": 1
+          }
         }
       ]
     },
@@ -48355,7 +50725,12 @@
         },
         {
           "text": "Sir 44:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 44,
+            "verse": 21
+          }
         },
         {
           "text": "3 Macc 44:21",
@@ -48458,7 +50833,12 @@
         },
         {
           "text": "1 Macc 2:52",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 52
+          }
         }
       ]
     },
@@ -48557,7 +50937,12 @@
       "citations": [
         {
           "text": "4 Macc 15:2, 8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 15,
+            "verse": 2
+          }
         }
       ]
     },
@@ -48584,7 +50969,12 @@
         },
         {
           "text": "Sir 2:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 2,
+            "verse": 2
+          }
         }
       ]
     },
@@ -48607,7 +50997,12 @@
         },
         {
           "text": "Wis 18:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 25
+          }
         }
       ]
     },
@@ -48752,7 +51147,12 @@
       "citations": [
         {
           "text": "1 Macc 5:1–7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 5,
+            "verse": 1
+          }
         },
         {
           "text": "6:18–31",
@@ -48788,11 +51188,21 @@
         },
         {
           "text": "2 Macc 6:18–7:42",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 6,
+            "verse": 18
+          }
         },
         {
           "text": "4 Macc 9:13–18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 9,
+            "verse": 13
+          }
         }
       ]
     },
@@ -48888,7 +51298,12 @@
       "citations": [
         {
           "text": "4 Macc 16:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 16,
+            "verse": 16
+          }
         },
         {
           "text": "17:10–15",
@@ -49017,7 +51432,12 @@
         },
         {
           "text": "2 Macc 3:24",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 24
+          }
         }
       ]
     },
@@ -49040,7 +51460,12 @@
         },
         {
           "text": "Sir 25:23",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 25,
+            "verse": 23
+          }
         }
       ]
     },
@@ -49139,7 +51564,12 @@
         },
         {
           "text": "Wis 12:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 10
+          }
         }
       ]
     },
@@ -49217,7 +51647,12 @@
         },
         {
           "text": "1 Macc 13:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 13,
+            "verse": 2
+          }
         }
       ]
     },
@@ -49513,11 +51948,21 @@
       "citations": [
         {
           "text": "Sir 33:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 19
+          }
         },
         {
           "text": "Wis 2:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 17
+          }
         }
       ]
     },
@@ -49729,7 +52174,12 @@
       "citations": [
         {
           "text": "2 Macc 1:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 1,
+            "verse": 27
+          }
         }
       ]
     },
@@ -49743,11 +52193,21 @@
       "citations": [
         {
           "text": "Sir 2:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 2,
+            "verse": 1
+          }
         },
         {
           "text": "Wis 3:4–5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 4
+          }
         },
         {
           "text": "T. Dan 4:5",
@@ -49765,7 +52225,12 @@
       "citations": [
         {
           "text": "Sir 2:1–6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 2,
+            "verse": 1
+          }
         }
       ]
     },
@@ -49779,7 +52244,12 @@
       "citations": [
         {
           "text": "4 Macc 1:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 1,
+            "verse": 11
+          }
         }
       ]
     },
@@ -49793,7 +52263,12 @@
       "citations": [
         {
           "text": "4 Macc 15:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 15,
+            "verse": 7
+          }
         }
       ]
     },
@@ -49816,15 +52291,30 @@
         },
         {
           "text": "Sir 4:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 4,
+            "verse": 17
+          }
         },
         {
           "text": "Wis 7:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 7
+          }
         },
         {
           "text": "Wis 8:21",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 8,
+            "verse": 21
+          }
         },
         {
           "text": "Aratus, Phaen. 4",
@@ -49851,7 +52341,12 @@
         },
         {
           "text": "Sir 33:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 33,
+            "verse": 2
+          }
         },
         {
           "text": "Philo, Migration 148",
@@ -49885,7 +52380,12 @@
       "citations": [
         {
           "text": "Sir 5:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 9
+          }
         },
         {
           "text": "T. Ash. 2:5",
@@ -49988,15 +52488,30 @@
       "citations": [
         {
           "text": "Sir 15:11–20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 15,
+            "verse": 11
+          }
         },
         {
           "text": "Sir 15:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 15,
+            "verse": 20
+          }
         },
         {
           "text": "Sir 16:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 16,
+            "verse": 12
+          }
         },
         {
           "text": "Homer, Od. 1.30–35",
@@ -50084,7 +52599,12 @@
       "citations": [
         {
           "text": "Sir 5:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 11
+          }
         },
         {
           "text": "Eccl 7:9",
@@ -50106,7 +52626,12 @@
       "citations": [
         {
           "text": "Sir 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -50305,7 +52830,12 @@
         },
         {
           "text": "4 Macc 5:20",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 5,
+            "verse": 20
+          }
         },
         {
           "text": "1QS 8:16",
@@ -50389,11 +52919,21 @@
       "citations": [
         {
           "text": "Tob 4:9–10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 9
+          }
         },
         {
           "text": "Sir 27:30–28:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 27,
+            "verse": 30
+          }
         },
         {
           "text": "T. Zeb. 5:3",
@@ -50499,11 +53039,21 @@
         },
         {
           "text": "Wis 7:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 7,
+            "verse": 27
+          }
         },
         {
           "text": "1 Macc 2:51–52",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 2,
+            "verse": 51
+          }
         },
         {
           "text": "Jub. 19:9",
@@ -50560,7 +53110,12 @@
       "citations": [
         {
           "text": "Sir 14:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 14,
+            "verse": 1
+          }
         }
       ]
     },
@@ -50608,7 +53163,12 @@
       "citations": [
         {
           "text": "Sir 22:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 22,
+            "verse": 27
+          }
         },
         {
           "text": "1 En. 48:7",
@@ -50626,11 +53186,21 @@
       "citations": [
         {
           "text": "Sir 5:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 5,
+            "verse": 13
+          }
         },
         {
           "text": "Sir 28:11, 22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 11
+          }
         },
         {
           "text": "Pss. Sol. 12:2",
@@ -50685,7 +53255,12 @@
         },
         {
           "text": "Sir 23:1, 4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 1
+          }
         },
         {
           "text": "2 En. 44:1",
@@ -50703,7 +53278,12 @@
       "citations": [
         {
           "text": "Sir 28:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 12
+          }
         },
         {
           "text": "2 En. 44:1",
@@ -50721,7 +53301,12 @@
       "citations": [
         {
           "text": "Sir 28:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 28,
+            "verse": 12
+          }
         },
         {
           "text": "T. Benj. 6:5",
@@ -50739,7 +53324,12 @@
       "citations": [
         {
           "text": "Sir 3:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 3,
+            "verse": 17
+          }
         }
       ]
     },
@@ -50800,7 +53390,12 @@
       "citations": [
         {
           "text": "1 Macc 8:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 8,
+            "verse": 16
+          }
         }
       ]
     },
@@ -50956,7 +53551,12 @@
       "citations": [
         {
           "text": "Wis 1:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 11
+          }
         }
       ]
     },
@@ -51012,7 +53612,12 @@
         },
         {
           "text": "Sir 11:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 11,
+            "verse": 18
+          }
         },
         {
           "text": "Simonides, Elegi 69",
@@ -51081,15 +53686,30 @@
         },
         {
           "text": "Jdt 16:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Jdt",
+            "chapter": 16,
+            "verse": 17
+          }
         },
         {
           "text": "Sir 12:11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 12,
+            "verse": 11
+          }
         },
         {
           "text": "Sir 29:9–10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 29,
+            "verse": 9
+          }
         },
         {
           "text": "2 Bar. 23:7",
@@ -51152,7 +53772,12 @@
         },
         {
           "text": "Tob 4:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 4,
+            "verse": 14
+          }
         },
         {
           "text": "Ps.-Phocylides, Sent. 19–21",
@@ -51193,7 +53818,12 @@
       "citations": [
         {
           "text": "Wis 2:10, 12, 19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 2,
+            "verse": 10
+          }
         }
       ]
     },
@@ -51244,7 +53874,12 @@
       "citations": [
         {
           "text": "4 Macc 9:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 9,
+            "verse": 8
+          }
         }
       ]
     },
@@ -51437,7 +54072,12 @@
       "citations": [
         {
           "text": "Sir 16:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 16,
+            "verse": 12
+          }
         }
       ]
     },
@@ -51451,7 +54091,12 @@
       "citations": [
         {
           "text": "Wis 3:5–6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 3,
+            "verse": 5
+          }
         }
       ]
     },
@@ -51519,7 +54164,12 @@
         },
         {
           "text": "Sir 2:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 2,
+            "verse": 5
+          }
         }
       ]
     },
@@ -51643,11 +54293,21 @@
         },
         {
           "text": "Wis 14:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 3
+          }
         },
         {
           "text": "Sir 23:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 23,
+            "verse": 4
+          }
         },
         {
           "text": "2 Chr 19:7",
@@ -52276,7 +54936,12 @@
         },
         {
           "text": "Wis 1:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 6
+          }
         }
       ]
     },
@@ -52658,7 +55323,12 @@
         },
         {
           "text": "2 Macc 1:27",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 1,
+            "verse": 27
+          }
         }
       ]
     },
@@ -52753,7 +55423,12 @@
         },
         {
           "text": "Wis 12:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 12,
+            "verse": 13
+          }
         },
         {
           "text": "Xenophon, Mem. 4.3",
@@ -52862,7 +55537,12 @@
         },
         {
           "text": "Wis 5:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 6
+          }
         }
       ]
     },
@@ -52983,11 +55663,21 @@
         },
         {
           "text": "Wis 10:6",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 10,
+            "verse": 6
+          }
         },
         {
           "text": "3 Macc 2:13",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 13
+          }
         }
       ]
     },
@@ -53212,7 +55902,12 @@
         },
         {
           "text": "Sir 35:19",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 35,
+            "verse": 19
+          }
         },
         {
           "text": "2 Bar. 21:21",
@@ -53220,7 +55915,12 @@
         },
         {
           "text": "Sir 48:40",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 48,
+            "verse": 40
+          }
         }
       ]
     },
@@ -53287,7 +55987,12 @@
       "citations": [
         {
           "text": "Sir 18:10",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 18,
+            "verse": 10
+          }
         }
       ]
     },
@@ -53556,7 +56261,12 @@
       "citations": [
         {
           "text": "Wis 5:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 5,
+            "verse": 15
+          }
         },
         {
           "text": "Plato, Apol. 41C",
@@ -53728,7 +56438,12 @@
       "citations": [
         {
           "text": "Sir 14:2",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 14,
+            "verse": 2
+          }
         }
       ]
     },
@@ -53865,7 +56580,12 @@
       "citations": [
         {
           "text": "Ep Jer 72",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "EpJer",
+            "chapter": 1,
+            "verse": 72
+          }
         }
       ]
     },
@@ -54142,7 +56862,12 @@
         },
         {
           "text": "Wis 14:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 14,
+            "verse": 1
+          }
         },
         {
           "text": "1 En. 18:15–16",
@@ -54864,7 +57589,12 @@
       "citations": [
         {
           "text": "Sir 18:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 18,
+            "verse": 1
+          }
         }
       ]
     },
@@ -54967,7 +57697,12 @@
       "citations": [
         {
           "text": "2 Macc 13:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 13,
+            "verse": 14
+          }
         },
         {
           "text": "2 Bar. 15:8",
@@ -54975,7 +57710,12 @@
         },
         {
           "text": "3 Macc 7:16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 7,
+            "verse": 16
+          }
         }
       ]
     },
@@ -55019,7 +57759,12 @@
       "citations": [
         {
           "text": "Wis 18:15–16",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 15
+          }
         }
       ]
     },
@@ -55033,7 +57778,12 @@
       "citations": [
         {
           "text": "2 Macc 2:4–8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 2,
+            "verse": 4
+          }
         },
         {
           "text": "2 Bar. 29:8",
@@ -55271,7 +58021,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         },
         {
           "text": "2 En. 20:3",
@@ -55523,7 +58278,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         },
         {
           "text": "Tg. Neof. Exod 14:14",
@@ -55568,7 +58328,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -55582,15 +58347,30 @@
       "citations": [
         {
           "text": "3 Macc 2:3",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 3
+          }
         },
         {
           "text": "Wis 1:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 14
+          }
         },
         {
           "text": "Sir 18:1",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 18,
+            "verse": 1
+          }
         }
       ]
     },
@@ -55631,7 +58411,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         },
         {
           "text": "2 En. 20:3",
@@ -55780,7 +58565,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -55866,7 +58656,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -56075,7 +58870,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         },
         {
           "text": "Apoc. Elijah 2:34",
@@ -56157,7 +58957,12 @@
       "citations": [
         {
           "text": "2 Macc 10:7",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 10,
+            "verse": 7
+          }
         },
         {
           "text": "2 Esdr 2:39–40, 42",
@@ -56206,7 +59011,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -56279,7 +59089,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -56434,7 +59249,12 @@
       "citations": [
         {
           "text": "Wis 18:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 18,
+            "verse": 14
+          }
         }
       ]
     },
@@ -56448,7 +59268,12 @@
       "citations": [
         {
           "text": "Tob 12:15",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 15
+          }
         },
         {
           "text": "Apoc. Mos. 22:3",
@@ -56466,7 +59291,12 @@
       "citations": [
         {
           "text": "Tob 12:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 12,
+            "verse": 12
+          }
         }
       ]
     },
@@ -56512,11 +59342,21 @@
         },
         {
           "text": "Wis 16:22",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 22
+          }
         },
         {
           "text": "Sir 39:29",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 39,
+            "verse": 29
+          }
         }
       ]
     },
@@ -56621,11 +59461,21 @@
         },
         {
           "text": "Wis 1:14",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 1,
+            "verse": 14
+          }
         },
         {
           "text": "Wis 16:9",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Wis",
+            "chapter": 16,
+            "verse": 9
+          }
         }
       ]
     },
@@ -56841,7 +59691,12 @@
       "citations": [
         {
           "text": "Sir 11:26–28",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 11,
+            "verse": 26
+          }
         }
       ]
     },
@@ -56855,7 +59710,12 @@
       "citations": [
         {
           "text": "2 Macc 2:4–8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 2,
+            "verse": 4
+          }
         },
         {
           "text": "T. Levi 5:1",
@@ -57249,7 +60109,12 @@
         },
         {
           "text": "3 Macc 2:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 5
+          }
         }
       ]
     },
@@ -57412,7 +60277,12 @@
         },
         {
           "text": "Tob 13:7, 11",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 13,
+            "verse": 7
+          }
         },
         {
           "text": "1 En. 9:4",
@@ -57582,11 +60452,21 @@
         },
         {
           "text": "2 Macc 13:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 13,
+            "verse": 4
+          }
         },
         {
           "text": "3 Macc 5:35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 5,
+            "verse": 35
+          }
         },
         {
           "text": "1 En. 9:4",
@@ -57626,7 +60506,12 @@
         },
         {
           "text": "Bar 4:35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Bar",
+            "chapter": 4,
+            "verse": 35
+          }
         }
       ]
     },
@@ -57710,7 +60595,12 @@
       "citations": [
         {
           "text": "Tob 13:18",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 13,
+            "verse": 18
+          }
         },
         {
           "text": "Pss. Sol. 8:2",
@@ -57760,7 +60650,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         },
         {
           "text": "2 En. 20:3",
@@ -57792,7 +60687,12 @@
       "citations": [
         {
           "text": "2 Macc 3:25",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 3,
+            "verse": 25
+          }
         },
         {
           "text": "11:8",
@@ -57935,11 +60835,21 @@
         },
         {
           "text": "2 Macc 13:4",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 13,
+            "verse": 4
+          }
         },
         {
           "text": "3 Macc 5:35",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 5,
+            "verse": 35
+          }
         },
         {
           "text": "1 En. 9:4",
@@ -58195,7 +61105,12 @@
         },
         {
           "text": "3 Macc 2:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 5
+          }
         },
         {
           "text": "1 En. 10:13",
@@ -58304,7 +61219,12 @@
         },
         {
           "text": "Sir 16:12",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 16,
+            "verse": 12
+          }
         }
       ]
     },
@@ -58562,7 +61482,12 @@
         },
         {
           "text": "Sir 1:8",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Sir",
+            "chapter": 1,
+            "verse": 8
+          }
         }
       ]
     },
@@ -58681,7 +61606,12 @@
         },
         {
           "text": "3 Macc 2:5",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "3Macc",
+            "chapter": 2,
+            "verse": 5
+          }
         },
         {
           "text": "2 En. 10:2, 5",
@@ -58807,7 +61737,12 @@
       "citations": [
         {
           "text": "Tob 13:17",
-          "type": "Second Temple"
+          "type": "Second Temple",
+          "ref": {
+            "book": "Tob",
+            "chapter": 13,
+            "verse": 17
+          }
         }
       ]
     },
