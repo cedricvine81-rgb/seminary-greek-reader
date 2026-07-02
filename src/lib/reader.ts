@@ -115,12 +115,22 @@ async function readCorpusFile(corpus: string, bookOsisId: string, chapter: numbe
     ? process.env.VERCEL_PROJECT_PRODUCTION_URL
     : process.env.VERCEL_URL
   if (host) {
-    try {
-      const res = await fetch(`https://${host}/data/${relPath}`)
-      return res.ok ? await res.text() : null
-    } catch {
-      return null
+    const url = `https://${host}/data/${relPath}`
+    // Exam-day resilience: unlike the old local disk read, this self-fetch can fail on a
+    // transient network blip, which mid-exam would show a student missing text. So retry
+    // once on a thrown error or a 5xx, with a short backoff, and bound each attempt with a
+    // timeout so a hung request can't stall the response. A 404 is not retried — that means
+    // the file genuinely isn't there (e.g. a chapter that doesn't exist), so the caller
+    // should fall through to its next corpus candidate immediately.
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const res = await fetch(url, { signal: AbortSignal.timeout(5000) })
+        if (res.ok) return await res.text()
+        if (res.status < 500) return null   // 404 etc. — genuine miss, don't retry
+      } catch { /* network error / timeout — fall through to retry */ }
+      if (attempt === 0) await new Promise(r => setTimeout(r, 150))
     }
+    return null
   }
   try {
     return fs.readFileSync(path.join(DATA_ROOT, relPath), 'utf8')
