@@ -4,7 +4,7 @@ import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, 
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
-import { BackgroundsView } from '@/components/phrase/BackgroundsView'
+import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { TextsReader } from '@/components/texts/TextsReader'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
@@ -58,6 +58,15 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
   const [textsFontSize, setTextsFontSize] = useState<PhraseFontSize>('lg')
   const [textsAttribution, setTextsAttribution] = useState('')
+  // "Open in Texts" hand-off from Backgrounds — bumping the token forces the effect in
+  // TextsReader to re-fire even if the same target is requested twice in a row.
+  const [textsOpenRequest, setTextsOpenRequest] = useState<{ target: OpenInTextsTarget; token: number } | null>(null)
+  const openRequestToken = useRef(0)
+  function openInTexts(target: OpenInTextsTarget) {
+    openRequestToken.current += 1
+    setTextsOpenRequest({ target, token: openRequestToken.current })
+    setTab('texts')
+  }
   // Commentary / Notes text size + line spacing (persisted, shared via the same
   // localStorage-backed hooks the views themselves use — both stay in sync).
   const [commentaryFontScale, setCommentaryFontScale] = useCommentaryFontScale()
@@ -422,10 +431,10 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       </div>
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
-          fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} />
+          fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} onOpenInTexts={openInTexts} />
       </div>
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'texts' ? '' : 'hidden'}`}>
-        <TextsReader isAuthenticated={isAuthenticated}
+        <TextsReader isAuthenticated={isAuthenticated} openRequest={textsOpenRequest}
           fontSize={textsFontSize} onFontSize={setTextsFontSize} onAttribution={setTextsAttribution} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>

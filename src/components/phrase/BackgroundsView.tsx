@@ -1,10 +1,22 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Library } from 'lucide-react'
+import { Library, ExternalLink } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
+import { findLxxWork } from '@/lib/texts-catalog'
+
+// A reference the "Open in Texts" button can hand off to the Texts tab — only shown when
+// the currently displayed cross-reference text is actually embedded there.
+export interface OpenInTextsTarget {
+  source: 'lxx' | 'josephus' | '2esdras'
+  osisId?: string
+  workDir?: string
+  book?: number
+  chapter: number
+  verse?: number
+}
 
 type BgFontSize = PhraseFontSize
 const FONT_SIZE_MAP: Record<BgFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
@@ -282,12 +294,13 @@ const posKey = (ch: number, vs: number) => ch * 1000 + vs
  * cross-referenced passage the student selects. OT/LXX cross-references open in full
  * (the app already has that corpus); other sources show their citation only for now.
  */
-export function BackgroundsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution }: {
+export function BackgroundsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, onOpenInTexts }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   fontSize?: BgFontSize
   onFontSize?: (v: BgFontSize) => void
   onAttribution?: (a: string) => void
+  onOpenInTexts?: (target: OpenInTextsTarget) => void
 }) {
   const [gntBooks, setGntBooks] = useState<RefBook[]>([])
   const [lxxBooks, setLxxBooks] = useState<RefBook[]>([])
@@ -619,6 +632,17 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     ? (lxxBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? gntBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? rightRef.citation.ref.book)
     : ''
 
+  // What "Open in Texts" should hand off, if the currently displayed reference is
+  // actually embedded in the Texts tab (Josephus, 2 Esdras, or a catalogued LXX book —
+  // NT cross-references and citation-only sources like DSS/Rabbinic have no Texts entry).
+  const openInTextsTarget: OpenInTextsTarget | null = rightJosephus
+    ? { source: 'josephus', workDir: JOSEPHUS_WORK_DIR[rightJosephus.ref.work], book: rightJosephus.ref.book, chapter: rightJosephus.ref.chapter, verse: rightJosephus.ref.section }
+    : right2Esdras
+    ? { source: '2esdras', chapter: right2Esdras.ref.chapter, verse: right2Esdras.ref.verse }
+    : rightRef?.citation.ref && findLxxWork(rightRef.citation.ref.book)
+    ? { source: 'lxx', osisId: rightRef.citation.ref.book, chapter: rightRef.citation.ref.chapter, verse: rightRef.citation.ref.verse }
+    : null
+
   function toggleType(t: CrossRefCitation['type']) {
     setTypeFilter(prev => {
       const next = new Set(prev)
@@ -641,6 +665,41 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               {TYPE_LABELS[t]}
             </button>
           ))}
+
+          {/* Library — whole-work links, independent of whatever citation is open.
+              Opens each source's own index/table of contents so a student can scroll,
+              search by chapter/verse, or search keywords using that site's own tools. */}
+          <div ref={libraryRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setShowLibrary(v => !v)}
+              title="Library — browse full source texts"
+              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showLibrary ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+            >
+              <Library size={14} /> Library
+            </button>
+            {showLibrary && (
+              <div className="absolute right-0 top-full mt-1 z-20 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
+                <p className="px-1.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
+                  Full texts — opens in a new tab
+                </p>
+                <div className="space-y-0.5">
+                  {LIBRARY_WORKS.map(w => (
+                    <a
+                      key={w.url}
+                      href={w.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setShowLibrary(false)}
+                      className="block rounded-lg px-2 py-1.5 text-xs text-gray-700 hover:bg-brand-50 hover:text-brand-800"
+                    >
+                      {w.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -826,40 +885,18 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       .map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
                 )}
-                {/* Library — whole-work links, independent of whatever citation is open.
-                    Opens each source's own index/table of contents so a student can scroll,
-                    search by chapter/verse, or search keywords using that site's own tools. */}
-                <div ref={libraryRef} className="relative">
+                {/* Open in Texts — hands the current reference off to the Texts tab, where
+                    the student can keep reading the whole work (not just this citation). */}
+                {openInTextsTarget && (
                   <button
                     type="button"
-                    onClick={() => setShowLibrary(v => !v)}
-                    title="Library — browse full source texts"
-                    className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showLibrary ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+                    onClick={() => onOpenInTexts?.(openInTextsTarget)}
+                    title="Open in Texts — keep reading this work"
+                    className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                   >
-                    <Library size={14} /> Library
+                    <ExternalLink size={12} /> Open
                   </button>
-                  {showLibrary && (
-                    <div className="absolute right-0 top-full mt-1 z-20 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
-                      <p className="px-1.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
-                        Full texts — opens in a new tab
-                      </p>
-                      <div className="space-y-0.5">
-                        {LIBRARY_WORKS.map(w => (
-                          <a
-                            key={w.url}
-                            href={w.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={() => setShowLibrary(false)}
-                            className="block rounded-lg px-2 py-1.5 text-xs text-gray-700 hover:bg-brand-50 hover:text-brand-800"
-                          >
-                            {w.label}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
+                )}
               </div>
             </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">

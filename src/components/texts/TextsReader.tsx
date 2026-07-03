@@ -4,8 +4,9 @@ import { Search, ChevronRight } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
-import { TEXT_CATEGORIES, type CatalogWork } from '@/lib/texts-catalog'
+import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
+import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 
 // A clickable Greek word carries what the shared parsing pane needs.
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -76,9 +77,11 @@ interface TextsReaderProps {
   fontSize?: PhraseFontSize
   onFontSize?: (v: PhraseFontSize) => void
   onAttribution?: (a: string) => void
+  // Set (with a bumped token) when another tab hands off a reference via "Open in Texts".
+  openRequest?: { target: OpenInTextsTarget; token: number } | null
 }
 
-export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution }: TextsReaderProps) {
+export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest }: TextsReaderProps) {
   const isFontSizeControlled = onFontSize !== undefined
   const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
   const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
@@ -308,6 +311,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setHoverWork(null); setHoverChapter(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
   }
+
+  // "Open in Texts" hand-off from another tab (e.g. Backgrounds' cross-reference pane).
+  useEffect(() => {
+    if (!openRequest) return
+    const { target } = openRequest
+    const w = target.source === 'lxx' ? findLxxWork(target.osisId!)
+      : target.source === 'josephus' ? findJosephusWork(target.workDir!)
+      : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === '2esdras')
+    if (!w) return
+    setWork(w); setShowEnglish(true); setOpenCat(null); setHoverWork(null); setHoverChapter(null)
+    void openAt(w, target.book, target.chapter, target.verse)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openRequest])
 
   function jumpToChapter(w: CatalogWork, item: QueueItem) {
     setWork(w); setShowEnglish(true); setOpenCat(null)

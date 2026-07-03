@@ -114,3 +114,20 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]
+
+// Look up a Greek OT/Apocrypha book by its osisId — used by "Open in Texts" links
+// elsewhere in the app (e.g. Backgrounds' cross-reference pane) to check whether a
+// reference is actually embedded here before offering to open it.
+export function findLxxWork(osisId: string): CatalogWork | undefined {
+  for (const cat of TEXT_CATEGORIES) {
+    const w = cat.works.find(w => w.source === 'lxx' && w.osisId === osisId)
+    if (w) return w
+  }
+  return undefined
+}
+
+// Look up a Josephus work by its directory name (public/data/josephus/<work>/).
+export function findJosephusWork(workDir: string): CatalogWork | undefined {
+  const josephus = TEXT_CATEGORIES.find(c => c.id === 'josephus')
+  return josephus?.works.find(w => w.work === workDir)
+}
