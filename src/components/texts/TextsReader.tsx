@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { Search } from 'lucide-react'
+import { Search, ChevronRight } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -85,8 +85,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   const [work, setWork] = useState<CatalogWork | null>(null)
   const [openCat, setOpenCat] = useState<string | null>(null)  // which category's dropdown is expanded
-  const [jbook, setJbook] = useState(1)      // Josephus book number — drives the "jump" selects only
-  const [chapter, setChapter] = useState(1)
+  // Hover-cascade "select a chapter/verse" menu: work → chapters → verses.
+  const [hoverWork, setHoverWork] = useState<CatalogWork | null>(null)
+  const [hoverChapter, setHoverChapter] = useState<QueueItem | null>(null)
+  const [hoverVerseNums, setHoverVerseNums] = useState<number[] | null>(null)
+  const hoverFetchToken = useRef(0)
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [series, setSeries] = useState<Series>(EMPTY_SERIES)
   const [initialLoading, setInitialLoading] = useState(false)
@@ -108,6 +111,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const topSentinel = useRef<HTMLDivElement>(null)
   const bottomSentinel = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
+  const verseRefs = useRef<Record<string, HTMLDivElement>>({})
   const catRowRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
@@ -261,11 +265,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMore, loadPrev])
 
-  // Jump to a specific (book, chapter) — reseeds the whole scroll series from there,
-  // preloading a small window on both sides (mirroring the Reader page's reference
-  // jump) so scrolling in either direction works immediately, then scrolls to the
-  // target chapter itself rather than just the top of the panel.
-  const openAt = useCallback(async (w: CatalogWork, book: number | undefined, ch: number) => {
+  // Jump to a specific (book, chapter[, verse]) — reseeds the whole scroll series from
+  // there, preloading a small window on both sides (mirroring the Reader page's
+  // reference jump) so scrolling in either direction works immediately, then scrolls to
+  // the target chapter (or, if given, that exact verse) rather than just the panel top.
+  const openAt = useCallback(async (w: CatalogWork, book: number | undefined, ch: number, verse?: number) => {
     const q = buildQueue(w)
     const idx = Math.max(0, q.findIndex(it => sameItem(it, book, ch)))
     const preloadStart = Math.max(0, idx - 2)
@@ -273,11 +277,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const idxs = Array.from({ length: preloadEnd - preloadStart + 1 }, (_, i) => preloadStart + i)
 
     setQueue(q)
-    setJbook(book ?? 1); setChapter(ch)
     setSelectedInfo(null); setSelectedKey(null); setSearch('')
     setSeries(EMPTY_SERIES)
     setInitialLoading(true)
     sectionRefs.current = {}
+    verseRefs.current = {}
 
     const fetched = await Promise.all(idxs.map(i => fetchChapterRows(w, q[i])))
     const sections = idxs.map((i, n) => blockFor(q[i], fetched[n]))
@@ -292,7 +296,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const targetKey = q[idx] ? keyFor(q[idx]) : null
     requestAnimationFrame(() => {
       const panel = panelRef.current
-      const target = targetKey ? sectionRefs.current[targetKey] : null
+      const vTarget = targetKey && verse != null ? verseRefs.current[`${targetKey}.${verse}`] : null
+      const target = vTarget ?? (targetKey ? sectionRefs.current[targetKey] : null)
       if (target && panel) panel.scrollTop = target.offsetTop - panel.offsetTop
       else if (panel) panel.scrollTop = 0
     })
@@ -300,12 +305,34 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   function openWork(w: CatalogWork) {
     setWork(w); setShowEnglish(true); setOpenCat(null)
+    setHoverWork(null); setHoverChapter(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
   }
 
-  const chapterCount = work?.source === 'josephus'
-    ? (work.books?.[jbook - 1] ?? 1)
-    : (work?.chapters ?? 1)
+  function jumpToChapter(w: CatalogWork, item: QueueItem) {
+    setWork(w); setShowEnglish(true); setOpenCat(null)
+    setHoverWork(null); setHoverChapter(null)
+    void openAt(w, item.book, item.chapter)
+  }
+
+  function jumpToVerse(w: CatalogWork, item: QueueItem, verse: number) {
+    setWork(w); setShowEnglish(true); setOpenCat(null)
+    setHoverWork(null); setHoverChapter(null)
+    void openAt(w, item.book, item.chapter, verse)
+  }
+
+  // Hovering a chapter in the cascade menu lazily fetches its verse/section numbers
+  // for the next flyout — cheap enough (one chapter) to do per hover, and avoids
+  // needing per-chapter verse counts baked into the catalog.
+  function handleHoverChapter(w: CatalogWork, item: QueueItem) {
+    setHoverChapter(item)
+    setHoverVerseNums(null)
+    const token = ++hoverFetchToken.current
+    fetchChapterRows(w, item).then(rows => {
+      if (hoverFetchToken.current !== token) return
+      setHoverVerseNums(rows.map(r => r.num))
+    }).catch(() => { if (hoverFetchToken.current === token) setHoverVerseNums([]) })
+  }
 
   const q = search.trim().toLowerCase()
   const matchesSearch = (r: Row) =>
@@ -316,16 +343,22 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
-      {/* ── Category headings — click one to drop its books down right below it ── */}
+      {/* ── Category headings — click one to drop a Work / Chapter / Verse cascade below it ── */}
       <div ref={catRowRef} className="flex-none flex flex-wrap items-start gap-1.5">
         {TEXT_CATEGORIES.map(cat => {
           const isActive = !!work && cat.works.some(w => w.id === work.id)
+          const chapterItems = hoverWork && cat.works.some(w => w.id === hoverWork.id) ? buildQueue(hoverWork) : null
+          const multiBook = hoverWork?.source === 'josephus' && hoverWork.books!.length > 1
           return (
-            <div key={cat.id} className="relative">
+            <div
+              key={cat.id}
+              className="relative"
+              onMouseLeave={() => { setHoverWork(null); setHoverChapter(null) }}
+            >
               <button
                 type="button"
                 disabled={cat.comingSoon}
-                onClick={() => setOpenCat(c => c === cat.id ? null : cat.id)}
+                onClick={() => { setOpenCat(c => c === cat.id ? null : cat.id); setHoverWork(null); setHoverChapter(null) }}
                 className={`px-2 py-1 text-xs font-medium border transition-colors ${
                   openCat === cat.id ? 'rounded-t border-b-0 bg-brand-100 border-brand-300 text-brand-800'
                   : 'rounded border-gray-300'
@@ -339,19 +372,78 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </button>
 
               {openCat === cat.id && (
-                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
-                  {cat.works.map(w => (
-                    <button
-                      key={w.id}
-                      type="button"
-                      onClick={() => { openWork(w); setOpenCat(null) }}
-                      className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                        work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                    >
-                      {w.name}
-                    </button>
-                  ))}
-                </div>
+                <>
+                  {/* Column 1 — works in this category */}
+                  <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
+                    {cat.works.map(w => {
+                      const expandable = buildQueue(w).length > 1
+                      return (
+                        <button
+                          key={w.id}
+                          type="button"
+                          onMouseEnter={() => { setHoverWork(w); setHoverChapter(null) }}
+                          onClick={() => openWork(w)}
+                          className={`w-full flex items-center justify-between gap-1 text-left px-3 py-1.5 text-sm transition-colors ${
+                            work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium'
+                            : hoverWork?.id === w.id ? 'bg-gray-50 text-gray-700'
+                            : 'text-gray-700 hover:bg-gray-50'}`}
+                        >
+                          <span className="truncate">{w.name}</span>
+                          {expandable && <ChevronRight size={13} className="text-gray-300 shrink-0" />}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Column 2 — every chapter of the hovered work (grouped by book, for Josephus) */}
+                  {chapterItems && chapterItems.length > 1 && (
+                    <div className="absolute left-56 top-full z-20 w-40 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-lg shadow-lg py-1">
+                      {chapterItems.map((item, i) => {
+                        const showBookHeader = multiBook && (i === 0 || chapterItems[i - 1].book !== item.book)
+                        const isHovered = hoverChapter && keyFor(hoverChapter) === keyFor(item)
+                        return (
+                          <div key={keyFor(item)}>
+                            {showBookHeader && (
+                              <p className="px-3 pt-1.5 pb-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-400">Book {item.book}</p>
+                            )}
+                            <button
+                              type="button"
+                              onMouseEnter={() => handleHoverChapter(hoverWork!, item)}
+                              onClick={() => jumpToChapter(hoverWork!, item)}
+                              className={`w-full flex items-center justify-between gap-1 text-left px-3 py-1 text-xs transition-colors ${
+                                isHovered ? 'bg-gray-50 text-gray-800' : 'text-gray-700 hover:bg-gray-50'}`}
+                            >
+                              <span>Chapter {item.chapter}</span>
+                              <ChevronRight size={11} className="text-gray-300" />
+                            </button>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+
+                  {/* Column 3 — every verse/section of the hovered chapter */}
+                  {hoverChapter && chapterItems && chapterItems.length > 1 && (
+                    <div className="absolute left-96 top-full z-20 w-24 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-lg shadow-lg py-1">
+                      {hoverVerseNums === null ? (
+                        <p className="px-3 py-1 text-xs text-gray-300 italic">…</p>
+                      ) : hoverVerseNums.length === 0 ? (
+                        <p className="px-3 py-1 text-xs text-gray-300 italic">—</p>
+                      ) : (
+                        hoverVerseNums.map(vn => (
+                          <button
+                            key={vn}
+                            type="button"
+                            onClick={() => jumpToVerse(hoverWork!, hoverChapter, vn)}
+                            className="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-50"
+                          >
+                            v. {vn}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           )
@@ -363,28 +455,6 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         {work && (
           <div className="flex-none flex flex-wrap items-center gap-2">
             <span className="text-sm font-semibold text-gray-800">{work.name}</span>
-
-            {work.source === 'josephus' && work.books!.length > 1 && (
-              <label className="text-xs text-gray-500 inline-flex items-center gap-1">
-                Book
-                <select value={jbook} onChange={e => void openAt(work, Number(e.target.value), 1)} className="rounded border border-gray-300 px-2 py-1 text-xs">
-                  {work.books!.map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
-                </select>
-              </label>
-            )}
-
-            {chapterCount > 1 && (
-              <label className="text-xs text-gray-500 inline-flex items-center gap-1">
-                Chapter
-                <select
-                  value={chapter}
-                  onChange={e => void openAt(work, work.source === 'josephus' ? jbook : undefined, Number(e.target.value))}
-                  className="rounded border border-gray-300 px-2 py-1 text-xs"
-                >
-                  {Array.from({ length: chapterCount }, (_, i) => i + 1).map(n => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </label>
-            )}
 
             {isGreek && hasEnglish && (
               <button
@@ -435,7 +505,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     </p>
                     <div className="space-y-2">
                       {filteredRows.map(row => (
-                        <div key={row.num} className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                        <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
+                          className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
                           {/* Greek (or, for prose works, the single English column) */}
                           <p className="leading-relaxed text-gray-900">
                             {isAuthenticated && (
