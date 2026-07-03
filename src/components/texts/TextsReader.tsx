@@ -431,61 +431,60 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         })}
       </div>
 
-      {/* ── Locate columns: Book (multi-book Josephus works) → Chapter → Verse. Always
-          visible once a work is open, so a long work like Antiquities (20 books) is easy
-          to browse without a finicky hover cascade. ── */}
-      {work && (
-        <div className="flex-none flex items-start gap-2">
-          {work.source === 'josephus' && work.books!.length > 1 && (
-            <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-              <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Book</p>
-              {work.books!.map((_, i) => {
-                const b = i + 1
-                return (
-                  <button key={b} type="button" onClick={() => selectLocateBook(b)}
-                    className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateBook === b ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
-                    {b}
-                  </button>
-                )
-              })}
-            </div>
-          )}
-
-          {(work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)) > 1 && (
-            <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-              <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Ch.</p>
-              {Array.from({ length: work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1) }, (_, i) => i + 1).map(c => (
-                <button key={c} type="button" onClick={() => selectLocateChapter(c)}
-                  className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateChapter === c ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
-                  {c}
-                </button>
-              ))}
-            </div>
-          )}
-
-          <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-            <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Vs.</p>
-            {locateVerseNums === null ? (
-              <p className="px-2 py-1 text-xs text-gray-300 italic">…</p>
-            ) : locateVerseNums.length === 0 ? (
-              <p className="px-2 py-1 text-xs text-gray-300 italic">—</p>
-            ) : (
-              locateVerseNums.map(vn => (
-                <button key={vn} type="button" onClick={() => selectLocateVerse(vn)}
-                  className="w-full text-left px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 transition-colors">
-                  {vn}
-                </button>
-              ))
-            )}
-          </div>
-        </div>
-      )}
-
       {/* ── Reading pane — always visible ── */}
       <div className="flex-1 min-h-0 flex flex-col gap-3">
         {work && (
           <div className="flex-none flex flex-wrap items-center gap-2">
-            <span className="text-sm font-semibold text-gray-800">{work.name}</span>
+            {/* Hovering the title reveals the Book/Chapter/Verse locator as a floating
+                overlay (absolute, not in flow) so it never pushes the reading pane down —
+                it only takes up space while you're actually using it. */}
+            <div className="relative group">
+              <span className="text-sm font-semibold text-gray-800 cursor-default">{work.name}</span>
+              <div className="hidden group-hover:flex absolute left-0 top-full z-30 items-start gap-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 mt-1">
+                {work.source === 'josephus' && work.books!.length > 1 && (
+                  <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
+                    <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Book</p>
+                    {work.books!.map((_, i) => {
+                      const b = i + 1
+                      return (
+                        <button key={b} type="button" onClick={() => selectLocateBook(b)}
+                          className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateBook === b ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
+                          {b}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {(work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)) > 1 && (
+                  <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
+                    <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Ch.</p>
+                    {Array.from({ length: work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1) }, (_, i) => i + 1).map(c => (
+                      <button key={c} type="button" onClick={() => selectLocateChapter(c)}
+                        className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateChapter === c ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
+                  <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Vs.</p>
+                  {locateVerseNums === null ? (
+                    <p className="px-2 py-1 text-xs text-gray-300 italic">…</p>
+                  ) : locateVerseNums.length === 0 ? (
+                    <p className="px-2 py-1 text-xs text-gray-300 italic">—</p>
+                  ) : (
+                    locateVerseNums.map(vn => (
+                      <button key={vn} type="button" onClick={() => selectLocateVerse(vn)}
+                        className="w-full text-left px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 transition-colors">
+                        {vn}
+                      </button>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
 
             {isGreek && hasEnglish && (
               <button
