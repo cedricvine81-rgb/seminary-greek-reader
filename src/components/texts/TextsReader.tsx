@@ -1,9 +1,11 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { Search } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { TEXT_CATEGORIES, type CatalogWork } from '@/lib/texts-catalog'
+import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 
 // A clickable Greek word carries what the shared parsing pane needs.
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -22,14 +24,41 @@ type Row = { num: number; tokens?: WordToken[]; greek?: string; english?: string
 // Short, readable note-anchor prefixes for Josephus works (book string = "Ant.18" etc.).
 const JOS_SHORT: Record<string, string> = { antiquities: 'Ant', 'jewish-war': 'JW', 'against-apion': 'AgAp', life: 'Life' }
 
-export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
-  const [catId, setCatId] = useState('apocrypha')
+const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+
+// Highlight every case-insensitive match of `q` inside `text` for the search box.
+function highlight(text: string, q: string): ReactNode {
+  if (!q.trim()) return text
+  const idx = text.toLowerCase().indexOf(q.toLowerCase())
+  if (idx === -1) return text
+  return (
+    <>
+      {text.slice(0, idx)}
+      <mark className="bg-yellow-200 rounded-sm">{text.slice(idx, idx + q.length)}</mark>
+      {highlight(text.slice(idx + q.length), q)}
+    </>
+  )
+}
+
+interface TextsReaderProps {
+  isAuthenticated?: boolean
+  fontSize?: PhraseFontSize
+  onFontSize?: (v: PhraseFontSize) => void
+  onAttribution?: (a: string) => void
+}
+
+export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution }: TextsReaderProps) {
+  const isFontSizeControlled = onFontSize !== undefined
+  const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
+  const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
+
   const [work, setWork] = useState<CatalogWork | null>(null)
   const [jbook, setJbook] = useState(1)      // Josephus book number
   const [chapter, setChapter] = useState(1)
   const [rows, setRows] = useState<Row[] | null>(null)
   const [loading, setLoading] = useState(false)
   const [showEnglish, setShowEnglish] = useState(true)
+  const [search, setSearch] = useState('')
 
   // Parsing window (Greek only)
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
@@ -41,7 +70,6 @@ export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boo
   const brentonCache = useRef<Record<string, Record<string, string>>>({})
   const bsbCache = useRef<Record<string, string> | null>(null)
 
-  const category = TEXT_CATEGORIES.find(c => c.id === catId)!
   const isGreek = work?.source === 'lxx'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
 
@@ -64,6 +92,18 @@ export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boo
       setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
     } catch { /* ignore */ }
   }, [isAuthenticated, work, noteBook, chapter])
+
+  // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
+  useEffect(() => {
+    if (!work) { onAttribution?.(''); return }
+    const parts = ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.']
+    if (work.english === 'brenton') parts.push('English: Brenton’s 1851 English Septuagint (public domain).')
+    if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
+    if (work.source === '2esdras') parts.push('Text: the King James Version, 2 Esdras (public domain).')
+    if (work.source === 'josephus') parts.push('Text: William Whiston’s translation of Josephus, 1737 (public domain).')
+    onAttribution?.(parts.join(' '))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [work, onAttribution])
 
   // ── Load the current chapter/section whenever the selection changes ──
   useEffect(() => {
@@ -126,62 +166,56 @@ export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boo
 
   function openWork(w: CatalogWork) {
     setWork(w); setJbook(1); setChapter(1)
-    setShowEnglish(true)
+    setShowEnglish(true); setSearch('')
   }
 
   const chapterCount = work?.source === 'josephus'
     ? (work.books?.[jbook - 1] ?? 1)
     : (work?.chapters ?? 1)
 
+  const q = search.trim().toLowerCase()
+  const filteredRows = useMemo(() => {
+    if (!rows || !q) return rows
+    return rows.filter(r =>
+      r.greek?.toLowerCase().includes(q) ||
+      r.english?.toLowerCase().includes(q) ||
+      r.tokens?.some(t => t.surface.toLowerCase().includes(q)))
+  }, [rows, q])
+
   return (
-    <div className="flex flex-col gap-3 h-full min-h-0">
-      {/* ── Category rail + work grid ── */}
-      <div className="flex flex-wrap gap-1.5">
-        {TEXT_CATEGORIES.map(c => (
-          <button
-            key={c.id}
-            onClick={() => { if (!c.comingSoon) { setCatId(c.id); setWork(null) } }}
-            disabled={c.comingSoon}
-            className={`rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
-              c.id === catId ? 'bg-brand-100 border-brand-300 text-brand-800'
-              : c.comingSoon ? 'border-gray-200 text-gray-300 cursor-default'
-              : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
-          >
-            {c.label}{c.comingSoon && <span className="ml-1 text-[10px]">soon</span>}
-          </button>
+    <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+      {/* ── Category headings, each with a dropdown of its works ── */}
+      <div className="flex-none flex flex-wrap items-center gap-x-4 gap-y-2">
+        {TEXT_CATEGORIES.map(cat => (
+          <div key={cat.id} className="flex items-center gap-1.5">
+            <span className={`px-2 py-1 text-xs font-medium rounded border ${
+              cat.comingSoon ? 'border-gray-200 text-gray-300' : 'border-gray-300 text-gray-600'}`}>
+              {cat.label}{cat.comingSoon && <span className="ml-1 text-[10px]">soon</span>}
+            </span>
+            {!cat.comingSoon && (
+              <select
+                value={work && cat.works.some(w => w.id === work.id) ? work.id : ''}
+                onChange={e => { const w = cat.works.find(x => x.id === e.target.value); if (w) openWork(w) }}
+                className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                <option value="" disabled>Select…</option>
+                {cat.works.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
+              </select>
+            )}
+          </div>
         ))}
       </div>
 
-      {!work ? (
-        <div>
-          {category.blurb && <p className="text-sm text-gray-500 mb-3">{category.blurb}</p>}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-            {category.works.map(w => (
-              <button
-                key={w.id}
-                onClick={() => openWork(w)}
-                className="rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-sm text-gray-800 text-left hover:border-brand-300 hover:bg-brand-50 transition-colors"
-              >
-                {w.name}
-                <span className="block text-[11px] text-gray-400 mt-0.5">
-                  {w.source === 'josephus' ? `${w.books!.length} book${w.books!.length > 1 ? 's' : ''}`
-                    : w.source === 'lxx' ? (w.english ? 'Greek + English' : 'Greek') : 'English'}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="flex flex-col min-h-0 flex-1 gap-3">
-          {/* Selection bar */}
-          <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => setWork(null)} className="text-xs text-gray-500 hover:text-gray-800 inline-flex items-center gap-1">← {category.label}</button>
+      {/* ── Reading pane — always visible ── */}
+      <div className="flex-1 min-h-0 flex flex-col gap-3">
+        {work && (
+          <div className="flex-none flex flex-wrap items-center gap-2">
             <span className="text-sm font-semibold text-gray-800">{work.name}</span>
 
             {work.source === 'josephus' && work.books!.length > 1 && (
               <label className="text-xs text-gray-500 inline-flex items-center gap-1">
                 Book
-                <select value={jbook} onChange={e => { setJbook(Number(e.target.value)); setChapter(1) }} className="rounded-lg border border-gray-300 px-2 py-1 text-sm">
+                <select value={jbook} onChange={e => { setJbook(Number(e.target.value)); setChapter(1) }} className="rounded border border-gray-300 px-2 py-1 text-xs">
                   {work.books!.map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                 </select>
               </label>
@@ -189,8 +223,8 @@ export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boo
 
             {chapterCount > 1 && (
               <label className="text-xs text-gray-500 inline-flex items-center gap-1">
-                {work.source === 'lxx' || work.source === '2esdras' ? 'Chapter' : 'Chapter'}
-                <select value={chapter} onChange={e => setChapter(Number(e.target.value))} className="rounded-lg border border-gray-300 px-2 py-1 text-sm">
+                Chapter
+                <select value={chapter} onChange={e => setChapter(Number(e.target.value))} className="rounded border border-gray-300 px-2 py-1 text-xs">
                   {Array.from({ length: chapterCount }, (_, i) => i + 1).map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </label>
@@ -199,68 +233,83 @@ export function TextsReader({ isAuthenticated = false }: { isAuthenticated?: boo
             {isGreek && hasEnglish && (
               <button
                 onClick={() => setShowEnglish(v => !v)}
-                className={`ml-auto rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${showEnglish ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+                className={`rounded border px-2 py-1 text-xs font-medium transition-colors ${showEnglish ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
               >
                 {showEnglish ? 'Hide English' : 'Show English'}
               </button>
             )}
           </div>
+        )}
 
-          {/* Reading pane */}
-          <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
-            {loading || !rows ? (
-              <p className="text-xs text-gray-300 italic">Loading…</p>
-            ) : rows.length === 0 ? (
-              <p className="text-xs text-gray-400 italic">No text found.</p>
-            ) : (
-              <div className="space-y-2">
-                {rows.map(row => (
-                  <div key={row.num} className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
-                    {/* Greek (or, for prose works, the single English column) */}
-                    <p className="leading-relaxed text-gray-900">
-                      {isAuthenticated && (
-                        <span className="font-sans align-middle mr-0.5">
-                          <VerseNoteButton book={noteBook} chapter={chapter} verse={row.num} noted={notedKeys.has(row.num)} onChanged={refreshNotes} />
-                        </span>
-                      )}
-                      <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
-                      {isGreek ? (
-                        <span className="font-greek text-[1.35rem]">
-                          {row.tokens && row.tokens.length > 0
-                            ? row.tokens.map((tok, ti) => {
-                                const key = `${row.num}.${ti}`
-                                const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
-                                return (
-                                  <span key={ti} onMouseEnter={select} onClick={select}
-                                    className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
-                                    {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
-                                  </span>
-                                )
-                              })
-                            : row.greek}
-                        </span>
-                      ) : (
-                        <span className="text-[0.95rem]">{row.english}</span>
-                      )}
-                    </p>
-
-                    {/* Parallel English column (Greek works only) */}
-                    {isGreek && showEnglish && hasEnglish && (
-                      <p className="leading-relaxed text-gray-600 text-[0.95rem] lg:border-l lg:border-gray-100 lg:pl-4">
-                        <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
-                        {row.english ?? <span className="text-gray-300 italic">—</span>}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Parsing window — Greek works only */}
-          {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+        {/* Search this text */}
+        <div className="flex-none relative">
+          <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            disabled={!work}
+            placeholder={work ? 'Search this chapter…' : 'Select a text above to begin reading'}
+            className="w-full rounded-lg border border-gray-300 pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
+          />
         </div>
-      )}
+
+        <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
+          {!work ? (
+            <p className="text-sm text-gray-400 italic">Choose a category above and select a text to start reading.</p>
+          ) : loading || !rows ? (
+            <p className="text-xs text-gray-300 italic">Loading…</p>
+          ) : !filteredRows || filteredRows.length === 0 ? (
+            <p className="text-xs text-gray-400 italic">{q ? 'No matches in this chapter.' : 'No text found.'}</p>
+          ) : (
+            <div className="space-y-2">
+              {filteredRows.map(row => (
+                <div key={row.num} className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                  {/* Greek (or, for prose works, the single English column) */}
+                  <p className="leading-relaxed text-gray-900">
+                    {isAuthenticated && (
+                      <span className="font-sans align-middle mr-0.5">
+                        <VerseNoteButton book={noteBook} chapter={chapter} verse={row.num} noted={notedKeys.has(row.num)} onChanged={refreshNotes} />
+                      </span>
+                    )}
+                    <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
+                    {isGreek ? (
+                      <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
+                        {row.tokens && row.tokens.length > 0
+                          ? row.tokens.map((tok, ti) => {
+                              const key = `${row.num}.${ti}`
+                              const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
+                              const matched = !!q && tok.surface.toLowerCase().includes(q)
+                              return (
+                                <span key={ti} onMouseEnter={select} onClick={select}
+                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : ''}`}>
+                                  {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
+                                </span>
+                              )
+                            })
+                          : row.greek}
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>{highlight(row.english ?? '', search)}</span>
+                    )}
+                  </p>
+
+                  {/* Parallel English column (Greek works only) */}
+                  {isGreek && showEnglish && hasEnglish && (
+                    <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>
+                      <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
+                      {row.english ? highlight(row.english, search) : <span className="text-gray-300 italic">—</span>}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Parsing window — Greek works only */}
+        {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+      </div>
     </div>
   )
 }

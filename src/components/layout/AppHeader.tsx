@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
-import { BookOpen, BookMarked, Table2, Scroll, Library, LayoutDashboard } from 'lucide-react'
+import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
 
 interface AppHeaderProps {
   isAuthenticated?: boolean
@@ -34,9 +34,6 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         <nav className="flex items-center gap-0.5">
           <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <BookOpen size={18} /> <span className="hidden md:inline">Reader</span>
-          </Link>
-          <Link href="/texts" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Library size={18} /> <span className="hidden md:inline">Texts</span>
           </Link>
           <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
             <BookMarked size={18} /> <span className="hidden md:inline">Vocab</span>

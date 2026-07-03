@@ -1,10 +1,11 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Library } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { BackgroundsView } from '@/components/phrase/BackgroundsView'
+import { TextsReader } from '@/components/texts/TextsReader'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
 import { TextSizeControls } from '@/components/reader/TextSizeControls'
@@ -29,7 +30,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
 export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) {
-  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'notes' | 'commentary'>('workspace')
+  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'texts' | 'notes' | 'commentary'>('workspace')
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs.
   const [input, setInput] = useState('John 1:1-5')
@@ -55,6 +56,8 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
   const [synopsisAttribution, setSynopsisAttribution] = useState('')
   const [bgFontSize, setBgFontSize] = useState<PhraseFontSize>('lg')
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
+  const [textsFontSize, setTextsFontSize] = useState<PhraseFontSize>('lg')
+  const [textsAttribution, setTextsAttribution] = useState('')
   // Commentary / Notes text size + line spacing (persisted, shared via the same
   // localStorage-backed hooks the views themselves use — both stay in sync).
   const [commentaryFontScale, setCommentaryFontScale] = useCommentaryFontScale()
@@ -163,7 +166,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
 
   const toolsMenuTitles: Record<typeof tab, string> = {
     workspace: 'Exegesis tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
-    backgrounds: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
+    backgrounds: 'Settings & sources', texts: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
 
@@ -201,6 +204,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
             <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
             <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
             <button type="button" onClick={() => setTab('backgrounds')} className={tabClass(tab === 'backgrounds')}><Scroll size={16} /> Backgrounds</button>
+            <button type="button" onClick={() => setTab('texts')} className={tabClass(tab === 'texts')}><Library size={16} /> Texts</button>
             <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
             <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
           </div>
@@ -353,6 +357,30 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                   </>
                 )}
 
+                {tab === 'texts' && (
+                  <>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+                        <input
+                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
+                          value={FONT_SIZES.indexOf(textsFontSize)}
+                          onChange={e => setTextsFontSize(FONT_SIZES[e.target.valueAsNumber])}
+                          className="flex-1 accent-brand-600"
+                        />
+                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+                      </div>
+                    </div>
+                    {textsAttribution && (
+                      <details className="border-t border-gray-100 pt-2">
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <p className="text-xs text-gray-600 mt-2">{textsAttribution}</p>
+                      </details>
+                    )}
+                  </>
+                )}
+
                 {tab === 'commentary' && (
                   <>
                     <TextSizeControls
@@ -395,6 +423,10 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
           fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} />
+      </div>
+      <div className={`flex-1 min-h-0 flex flex-col ${tab === 'texts' ? '' : 'hidden'}`}>
+        <TextsReader isAuthenticated={isAuthenticated}
+          fontSize={textsFontSize} onFontSize={setTextsFontSize} onAttribution={setTextsAttribution} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>
         <CommentaryView anchor={anchor} onAttribution={setCommentaryAttribution} />
