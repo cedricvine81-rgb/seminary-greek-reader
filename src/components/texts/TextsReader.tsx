@@ -108,6 +108,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const topSentinel = useRef<HTMLDivElement>(null)
   const bottomSentinel = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
+  const catRowRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
   const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
@@ -125,6 +126,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       setNotedMap(prev => ({ ...prev, [`${noteBook}.${ch}`]: new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)) }))
     } catch { /* ignore */ }
   }, [isAuthenticated])
+
+  // Close the open category's book dropdown on an outside click.
+  useEffect(() => {
+    if (!openCat) return
+    function onMouseDown(e: MouseEvent) {
+      if (catRowRef.current && !catRowRef.current.contains(e.target as Node)) setOpenCat(null)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [openCat])
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
@@ -305,47 +316,46 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
-      {/* ── Category headings — click one to reveal its books below ── */}
-      <div className="flex-none flex flex-col gap-1.5">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {TEXT_CATEGORIES.map(cat => {
-            const isActive = !!work && cat.works.some(w => w.id === work.id)
-            return (
+      {/* ── Category headings — click one to drop its books down right below it ── */}
+      <div ref={catRowRef} className="flex-none flex flex-wrap items-start gap-1.5">
+        {TEXT_CATEGORIES.map(cat => {
+          const isActive = !!work && cat.works.some(w => w.id === work.id)
+          return (
+            <div key={cat.id} className="relative">
               <button
-                key={cat.id}
                 type="button"
                 disabled={cat.comingSoon}
                 onClick={() => setOpenCat(c => c === cat.id ? null : cat.id)}
-                className={`px-2 py-1 text-xs font-medium rounded border transition-colors ${
+                className={`px-2 py-1 text-xs font-medium border transition-colors ${
+                  openCat === cat.id ? 'rounded-t border-b-0 bg-brand-100 border-brand-300 text-brand-800'
+                  : 'rounded border-gray-300'
+                } ${
                   cat.comingSoon ? 'border-gray-200 text-gray-300 cursor-default'
-                  : openCat === cat.id ? 'bg-brand-100 border-brand-300 text-brand-800'
+                  : openCat === cat.id ? ''
                   : isActive ? 'border-brand-300 text-brand-700'
                   : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
               >
                 {cat.label}{cat.comingSoon && <span className="ml-1 text-[10px]">soon</span>}
               </button>
-            )
-          })}
-        </div>
 
-        {openCat && (() => {
-          const cat = TEXT_CATEGORIES.find(c => c.id === openCat)
-          if (!cat) return null
-          return (
-            <select
-              autoFocus
-              value={work && cat.works.some(w => w.id === work.id) ? work.id : ''}
-              onChange={e => {
-                const w = cat.works.find(x => x.id === e.target.value)
-                if (w) { openWork(w); setOpenCat(null) }
-              }}
-              className="w-full sm:w-64 rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-brand-400"
-            >
-              <option value="" disabled>Select…</option>
-              {cat.works.map(w => <option key={w.id} value={w.id}>{w.name}</option>)}
-            </select>
+              {openCat === cat.id && (
+                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
+                  {cat.works.map(w => (
+                    <button
+                      key={w.id}
+                      type="button"
+                      onClick={() => { openWork(w); setOpenCat(null) }}
+                      className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                        work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                    >
+                      {w.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )
-        })()}
+        })}
       </div>
 
       {/* ── Reading pane — always visible ── */}
