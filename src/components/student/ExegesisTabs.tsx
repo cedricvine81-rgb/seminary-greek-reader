@@ -10,6 +10,7 @@ import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
 import { TextSizeControls } from '@/components/reader/TextSizeControls'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
+import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
 type Pericopes = Record<string, Section[]>
@@ -363,6 +364,24 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                         <p className="text-xs text-gray-600 mt-2">{backgroundsAttribution}</p>
                       </details>
                     )}
+                    <details className="border-t border-gray-100 pt-2">
+                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Abbreviations (SBL)</summary>
+                      <div className="mt-2 max-h-64 overflow-y-auto space-y-1.5 pr-1">
+                        {SBL_ABBREVIATIONS.map(group => (
+                          <details key={group.label} className="rounded border border-gray-100">
+                            <summary className="cursor-pointer px-2 py-1 text-[11px] font-semibold text-gray-600 bg-gray-50 rounded">{group.label}</summary>
+                            <div className="px-2 py-1.5 space-y-1">
+                              {group.items.map(it => (
+                                <div key={it.abbr} className="flex items-baseline gap-2 text-[11px]">
+                                  <span className="font-mono font-medium text-gray-700 shrink-0">{it.abbr}</span>
+                                  <span className="text-gray-400">{it.full}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </details>
+                        ))}
+                      </div>
+                    </details>
                   </>
                 )}
 
