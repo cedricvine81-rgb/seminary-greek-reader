@@ -52,6 +52,7 @@ model User {
   ownedFolders       MaterialFolder[]      @relation("InstructorFolders")
   noteFolders        NoteFolder[]
   verseNotes         VerseNote[]
+  highlights         Highlight[]
 
   @@index([email])
 }
@@ -700,4 +701,24 @@ model VerseNote {
 
   @@index([userId, book, chapter, verse])
   @@index([userId, folderId])
+}
+
+model Highlight {
+  id        String   @id @default(cuid())
+  userId    String
+  // Canonical, version-independent verse anchor (osisId + chapter + verse) — same
+  // pattern as VerseNote. startOffset/endOffset are character offsets into that verse's
+  // canonical plain text (Greek tokens joined by single spaces, or the plain English
+  // string), so a highlight can cover any selected phrase within the verse.
+  book        String
+  chapter     Int
+  verse       Int
+  startOffset Int
+  endOffset   Int
+  color       String   @default("yellow")
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, book, chapter])
 }
