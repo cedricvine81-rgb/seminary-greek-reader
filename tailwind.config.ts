@@ -5,6 +5,10 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // Color palettes (note-colors.ts, highlight-colors.ts) keep literal Tailwind class
+    // names in data objects rather than component files — src/lib wasn't scanned before,
+    // so those classes were silently never generated.
+    './src/lib/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {

@@ -7,6 +7,11 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // A clickable Greek word carries what the shared parsing pane needs.
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -111,6 +116,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const bsbCache = useRef<Record<string, string> | null>(null)
 
   const panelRef = useRef<HTMLDivElement>(null)
+  const highlights = useHighlights(isAuthenticated)
+  const highlightSelection = useHighlightSelection(panelRef)
   const topSentinel = useRef<HTMLDivElement>(null)
   const bottomSentinel = useRef<HTMLDivElement>(null)
   const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
@@ -225,8 +232,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       done: prev.queueIdx + 1 >= q.length,
     }))
     void refreshNotesFor(noteBookFor(w, item), item.chapter)
+    void highlights.loadFor(noteBookFor(w, item), item.chapter)
     loadingRef.current = false
-  }, [fetchChapterRows, refreshNotesFor])
+  }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
   const loadPrev = useCallback(async () => {
     const w = workRef.current, q = queueRef.current, s = seriesRef.current
@@ -245,11 +253,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       backDone: prev.backIdx - 1 < 0,
     }))
     void refreshNotesFor(noteBookFor(w, item), item.chapter)
+    void highlights.loadFor(noteBookFor(w, item), item.chapter)
     requestAnimationFrame(() => {
       if (panel) panel.scrollTop = prevTop + (panel.scrollHeight - prevHeight)
       backLoadingRef.current = false
     })
-  }, [fetchChapterRows, refreshNotesFor])
+  }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
   useEffect(() => {
     const panel = panelRef.current
@@ -293,7 +302,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       queueIdx: preloadEnd + 1, backIdx: preloadStart - 1,
       done: preloadEnd + 1 >= q.length, backDone: preloadStart - 1 < 0,
     })
-    idxs.forEach(i => void refreshNotesFor(noteBookFor(w, q[i]), q[i].chapter))
+    idxs.forEach(i => { void refreshNotesFor(noteBookFor(w, q[i]), q[i].chapter); void highlights.loadFor(noteBookFor(w, q[i]), q[i].chapter) })
     setInitialLoading(false)
 
     const targetKey = q[idx] ? keyFor(q[idx]) : null
@@ -304,7 +313,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       if (target && panel) panel.scrollTop = target.offsetTop - panel.offsetTop
       else if (panel) panel.scrollTop = 0
     })
-  }, [fetchChapterRows, refreshNotesFor])
+  }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
   function openWork(w: CatalogWork) {
     setWork(w); setShowEnglish(true); setOpenCat(null)
@@ -520,10 +529,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                       {work.source === 'josephus' && work.books!.length > 1 ? `Book ${section.book} · Chapter ${section.chapter}` : `Chapter ${section.chapter}`}
                     </p>
                     <div className="space-y-2">
-                      {filteredRows.map(row => (
+                      {filteredRows.map(row => {
+                        const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num)
+                        return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
                           className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
-                          {/* Greek (or, for prose works, the single English column) */}
+                          {/* Greek (or, for prose works, the single English column) — the
+                              only column highlighting applies to (see render.tsx: a verse's
+                              Greek and English text are different canonical strings, so a
+                              highlight can only safely belong to one of them). */}
                           <p className="leading-relaxed text-gray-900">
                             {isAuthenticated && (
                               <span className="font-sans align-middle mr-0.5">
@@ -533,15 +547,17 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             )}
                             <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
                             {isGreek ? (
-                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
+                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
                                 {row.tokens && row.tokens.length > 0
-                                  ? row.tokens.map((tok, ti) => {
+                                  ? withTokenOffsets(row.tokens).map(({ token: tok, start, end }, ti) => {
                                       const key = `${section.key}.${row.num}.${ti}`
                                       const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
                                       const matched = !!q && tok.surface.toLowerCase().includes(q)
+                                      const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}
-                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : ''}`}>
+                                          {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
+                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : hl ? highlightMarkClass(hl.color) : ''}`}>
                                           {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
                                         </span>
                                       )
@@ -549,7 +565,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   : row.greek}
                               </span>
                             ) : (
-                              <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>{highlight(row.english ?? '', search)}</span>
+                              <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
+                                {q ? highlight(row.english ?? '', search) : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights)}
+                              </span>
                             )}
                           </p>
 
@@ -561,7 +579,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             </p>
                           )}
                         </div>
-                      ))}
+                      )})}
                     </div>
                   </div>
                 )
@@ -576,6 +594,24 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         {/* Parsing window — Greek works only */}
         {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
+      )}
     </div>
   )
 }
