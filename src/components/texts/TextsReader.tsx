@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Search } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -21,10 +21,20 @@ function toLexicalInfo(tok: WordToken, ref: string): LexicalInfoPanel {
 // One rendered line of text: a verse (lxx / 2esdras) or a section (Josephus).
 type Row = { num: number; tokens?: WordToken[]; greek?: string; english?: string }
 
+// A single chapter (or, for Josephus, book+chapter) worth of loaded rows.
+type QueueItem = { book?: number; chapter: number }
+type ChapterBlock = { key: string; book?: number; chapter: number; rows: Row[] }
+// One continuous-scroll "series": all the chapters of the open work, loaded lazily
+// forward and backward from wherever the reader jumped in, mirroring the Reader
+// page's infinite-scroll (src/components/reader/GreekReader.tsx: loadMore/loadPrev).
+type Series = { sections: ChapterBlock[]; queueIdx: number; backIdx: number; done: boolean; backDone: boolean }
+const EMPTY_SERIES: Series = { sections: [], queueIdx: 0, backIdx: -1, done: true, backDone: true }
+
 // Short, readable note-anchor prefixes for Josephus works (book string = "Ant.18" etc.).
 const JOS_SHORT: Record<string, string> = { antiquities: 'Ant', 'jewish-war': 'JW', 'against-apion': 'AgAp', life: 'Life' }
 
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/previous chapter
 
 // Highlight every case-insensitive match of `q` inside `text` for the search box.
 function highlight(text: string, q: string): ReactNode {
@@ -38,6 +48,27 @@ function highlight(text: string, q: string): ReactNode {
       {highlight(text.slice(idx + q.length), q)}
     </>
   )
+}
+
+// Every chapter of a work, in reading order — for Josephus that spans all its books.
+function buildQueue(w: CatalogWork): QueueItem[] {
+  if (w.source === 'josephus') {
+    const out: QueueItem[] = []
+    w.books!.forEach((count, bi) => { for (let c = 1; c <= count; c++) out.push({ book: bi + 1, chapter: c }) })
+    return out
+  }
+  return Array.from({ length: w.chapters ?? 1 }, (_, i) => ({ chapter: i + 1 }))
+}
+function sameItem(a: QueueItem, book: number | undefined, chapter: number) {
+  return a.chapter === chapter && (a.book ?? null) === (book ?? null)
+}
+function noteBookFor(w: CatalogWork, item: QueueItem): string {
+  if (w.source === 'lxx') return w.osisId!
+  if (w.source === '2esdras') return '2Esdras'
+  return `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
+}
+function refLabelFor(w: CatalogWork, item: QueueItem): string {
+  return w.source === 'josephus' ? `${w.name} ${item.book}.${item.chapter}` : `${w.name} ${item.chapter}`
 }
 
 interface TextsReaderProps {
@@ -54,10 +85,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   const [work, setWork] = useState<CatalogWork | null>(null)
   const [openCat, setOpenCat] = useState<string | null>(null)  // which category's dropdown is expanded
-  const [jbook, setJbook] = useState(1)      // Josephus book number
+  const [jbook, setJbook] = useState(1)      // Josephus book number — drives the "jump" selects only
   const [chapter, setChapter] = useState(1)
-  const [rows, setRows] = useState<Row[] | null>(null)
-  const [loading, setLoading] = useState(false)
+  const [queue, setQueue] = useState<QueueItem[]>([])
+  const [series, setSeries] = useState<Series>(EMPTY_SERIES)
+  const [initialLoading, setInitialLoading] = useState(false)
   const [showEnglish, setShowEnglish] = useState(true)
   const [search, setSearch] = useState('')
 
@@ -65,34 +97,34 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
-  // Per-verse notes
-  const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
+  // Per-verse notes, keyed by "<noteBook>.<chapter>" since several chapters (and, for
+  // Josephus, several books) can be on screen at once.
+  const [notedMap, setNotedMap] = useState<Record<string, Set<number>>>({})
 
   const brentonCache = useRef<Record<string, Record<string, string>>>({})
   const bsbCache = useRef<Record<string, string> | null>(null)
 
+  const panelRef = useRef<HTMLDivElement>(null)
+  const topSentinel = useRef<HTMLDivElement>(null)
+  const bottomSentinel = useRef<HTMLDivElement>(null)
+  const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
+  const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
+  const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
+  const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
+  const loadingRef = useRef(false)
+  const backLoadingRef = useRef(false)
+
   const isGreek = work?.source === 'lxx'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
 
-  // The canonical note anchor (book string) for the current selection.
-  const noteBook = !work ? ''
-    : work.source === 'lxx' ? work.osisId!
-    : work.source === '2esdras' ? '2Esdras'
-    : `${JOS_SHORT[work.work!] ?? work.work}.${jbook}`
-
-  const refLabel = !work ? ''
-    : work.source === 'josephus'
-      ? `${work.name} ${jbook}.${chapter}`
-      : `${work.name} ${chapter}`
-
-  const refreshNotes = useCallback(async () => {
-    if (!isAuthenticated || !work) { setNotedKeys(new Set()); return }
+  const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
+    if (!isAuthenticated) return
     try {
-      const r = await fetch(`/api/notes?book=${encodeURIComponent(noteBook)}&chapter=${chapter}&verseStart=1&verseEnd=500`)
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(noteBook)}&chapter=${ch}&verseStart=1&verseEnd=500`)
       const d = await r.json()
-      setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+      setNotedMap(prev => ({ ...prev, [`${noteBook}.${ch}`]: new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)) }))
     } catch { /* ignore */ }
-  }, [isAuthenticated, work, noteBook, chapter])
+  }, [isAuthenticated])
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
@@ -106,68 +138,158 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [work, onAttribution])
 
-  // ── Load the current chapter/section whenever the selection changes ──
-  useEffect(() => {
-    if (!work) return
-    let cancelled = false
-    setLoading(true); setRows(null); setSelectedInfo(null); setSelectedKey(null)
+  async function loadBrenton(osisId: string): Promise<Record<string, string>> {
+    if (brentonCache.current[osisId]) return brentonCache.current[osisId]
+    const r = await fetch(`/data/brenton/${osisId}.json`)
+    const d = r.ok ? await r.json() : {}
+    brentonCache.current[osisId] = d
+    return d
+  }
+  async function loadBsb(): Promise<Record<string, string>> {
+    if (bsbCache.current) return bsbCache.current
+    const r = await fetch('/data/bsb-alignment.json?v=3')
+    const d: Record<string, { text: string }> = r.ok ? await r.json() : {}
+    bsbCache.current = Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v.text]))
+    return bsbCache.current
+  }
 
-    async function loadBrenton(osisId: string): Promise<Record<string, string>> {
-      if (brentonCache.current[osisId]) return brentonCache.current[osisId]
-      const r = await fetch(`/data/brenton/${osisId}.json`)
-      const d = r.ok ? await r.json() : {}
-      brentonCache.current[osisId] = d
-      return d
+  const fetchChapterRows = useCallback(async (w: CatalogWork, item: QueueItem): Promise<Row[]> => {
+    if (w.source === 'lxx') {
+      const r = await fetch(`/api/reader?book=${w.osisId}&chapter=${item.chapter}&corpus=NA1904`)
+      const d = await r.json()
+      type V = { verse: number; text?: string; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }[] }
+      let eng: Record<string, string> = {}
+      if (w.english === 'brenton') eng = await loadBrenton(w.osisId!)
+      else if (w.english === 'bsb') eng = await loadBsb()
+      return (d.verses ?? []).map((v: V) => ({
+        num: v.verse,
+        tokens: (v.words ?? []).map(word => ({
+          surface: word.surface, lemma: word.lexeme?.lexeme ?? '', gloss: word.lexeme?.gloss, strongs: word.lexeme?.strongs,
+          parsing: word.parses?.[0] ? formatMorph(word.parses[0]) : '',
+        })),
+        greek: v.text ?? (v.words ?? []).map(word => word.surface).join(' '),
+        english: eng[`${w.osisId}.${item.chapter}.${v.verse}`],
+      }))
     }
-    async function loadBsb(): Promise<Record<string, string>> {
-      if (bsbCache.current) return bsbCache.current
-      const r = await fetch('/data/bsb-alignment.json?v=3')
-      const d: Record<string, { text: string }> = r.ok ? await r.json() : {}
-      bsbCache.current = Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v.text]))
-      return bsbCache.current
+    if (w.source === 'josephus') {
+      const r = await fetch(`/data/josephus/${w.work}/${item.book}.json`)
+      const d = r.ok ? await r.json() : null
+      const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
+      return (ch?.sections ?? []).map((s: { number: number; text: string }) => ({ num: s.number, english: s.text }))
     }
-
-    async function run() {
-      const w = work!
-      let out: Row[] = []
-      if (w.source === 'lxx') {
-        const r = await fetch(`/api/reader?book=${w.osisId}&chapter=${chapter}&corpus=NA1904`)
-        const d = await r.json()
-        type V = { verse: number; text?: string; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }[] }
-        let eng: Record<string, string> = {}
-        if (w.english === 'brenton') eng = await loadBrenton(w.osisId!)
-        else if (w.english === 'bsb') eng = await loadBsb()
-        out = (d.verses ?? []).map((v: V) => ({
-          num: v.verse,
-          tokens: (v.words ?? []).map(word => ({
-            surface: word.surface, lemma: word.lexeme?.lexeme ?? '', gloss: word.lexeme?.gloss, strongs: word.lexeme?.strongs,
-            parsing: word.parses?.[0] ? formatMorph(word.parses[0]) : '',
-          })),
-          greek: v.text ?? (v.words ?? []).map(word => word.surface).join(' '),
-          english: eng[`${w.osisId}.${chapter}.${v.verse}`],
-        }))
-      } else if (w.source === 'josephus') {
-        const r = await fetch(`/data/josephus/${w.work}/${jbook}.json`)
-        const d = r.ok ? await r.json() : null
-        const ch = d?.chapters?.find((c: { number: number }) => c.number === chapter)
-        out = (ch?.sections ?? []).map((s: { number: number; text: string }) => ({ num: s.number, english: s.text }))
-      } else if (w.source === '2esdras') {
-        const r = await fetch('/data/apocrypha/2esdras.json')
-        const d = r.ok ? await r.json() : null
-        const ch = d?.chapters?.find((c: { number: number }) => c.number === chapter)
-        out = (ch?.verses ?? []).map((v: { number: number; text: string }) => ({ num: v.number, english: v.text }))
-      }
-      if (!cancelled) { setRows(out); setLoading(false) }
-    }
-    void run()
-    void refreshNotes()
-    return () => { cancelled = true }
+    // 2esdras
+    const r = await fetch('/data/apocrypha/2esdras.json')
+    const d = r.ok ? await r.json() : null
+    const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
+    return (ch?.verses ?? []).map((v: { number: number; text: string }) => ({ num: v.number, english: v.text }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [work, jbook, chapter])
+  }, [])
+
+  function keyFor(item: QueueItem): string {
+    return `${item.book ?? ''}.${item.chapter}`
+  }
+  function blockFor(item: QueueItem, rows: Row[]): ChapterBlock {
+    return { key: keyFor(item), book: item.book, chapter: item.chapter, rows }
+  }
+
+  // ── Forward (downward) and backward (upward) lazy loading ──
+  const loadMore = useCallback(async () => {
+    const w = workRef.current, q = queueRef.current, s = seriesRef.current
+    if (!w || loadingRef.current || s.done) return
+    const item = q[s.queueIdx]
+    if (!item) { setSeries(prev => ({ ...prev, done: true })); return }
+    loadingRef.current = true
+    const rows = await fetchChapterRows(w, item)
+    setSeries(prev => ({
+      ...prev,
+      sections: [...prev.sections, blockFor(item, rows)],
+      queueIdx: prev.queueIdx + 1,
+      done: prev.queueIdx + 1 >= q.length,
+    }))
+    void refreshNotesFor(noteBookFor(w, item), item.chapter)
+    loadingRef.current = false
+  }, [fetchChapterRows, refreshNotesFor])
+
+  const loadPrev = useCallback(async () => {
+    const w = workRef.current, q = queueRef.current, s = seriesRef.current
+    if (!w || backLoadingRef.current || s.backDone || s.backIdx < 0) return
+    const item = q[s.backIdx]
+    if (!item) { setSeries(prev => ({ ...prev, backDone: true })); return }
+    backLoadingRef.current = true
+    const panel = panelRef.current
+    const prevHeight = panel?.scrollHeight ?? 0
+    const prevTop = panel?.scrollTop ?? 0
+    const rows = await fetchChapterRows(w, item)
+    setSeries(prev => ({
+      ...prev,
+      sections: [blockFor(item, rows), ...prev.sections],
+      backIdx: prev.backIdx - 1,
+      backDone: prev.backIdx - 1 < 0,
+    }))
+    void refreshNotesFor(noteBookFor(w, item), item.chapter)
+    requestAnimationFrame(() => {
+      if (panel) panel.scrollTop = prevTop + (panel.scrollHeight - prevHeight)
+      backLoadingRef.current = false
+    })
+  }, [fetchChapterRows, refreshNotesFor])
+
+  useEffect(() => {
+    const panel = panelRef.current
+    if (!panel) return
+    function onScroll() {
+      const rect = panel!.getBoundingClientRect()
+      if (bottomSentinel.current && !seriesRef.current.done) {
+        if (bottomSentinel.current.getBoundingClientRect().top < rect.bottom + LOOKAHEAD) void loadMore()
+      }
+      if (topSentinel.current && !seriesRef.current.backDone) {
+        if (topSentinel.current.getBoundingClientRect().bottom > rect.top - LOOKAHEAD) void loadPrev()
+      }
+    }
+    panel.addEventListener('scroll', onScroll, { passive: true })
+    onScroll()
+    return () => panel.removeEventListener('scroll', onScroll)
+  }, [loadMore, loadPrev])
+
+  // Jump to a specific (book, chapter) — reseeds the whole scroll series from there,
+  // preloading a small window on both sides (mirroring the Reader page's reference
+  // jump) so scrolling in either direction works immediately, then scrolls to the
+  // target chapter itself rather than just the top of the panel.
+  const openAt = useCallback(async (w: CatalogWork, book: number | undefined, ch: number) => {
+    const q = buildQueue(w)
+    const idx = Math.max(0, q.findIndex(it => sameItem(it, book, ch)))
+    const preloadStart = Math.max(0, idx - 2)
+    const preloadEnd = Math.min(q.length - 1, idx + 1)
+    const idxs = Array.from({ length: preloadEnd - preloadStart + 1 }, (_, i) => preloadStart + i)
+
+    setQueue(q)
+    setJbook(book ?? 1); setChapter(ch)
+    setSelectedInfo(null); setSelectedKey(null); setSearch('')
+    setSeries(EMPTY_SERIES)
+    setInitialLoading(true)
+    sectionRefs.current = {}
+
+    const fetched = await Promise.all(idxs.map(i => fetchChapterRows(w, q[i])))
+    const sections = idxs.map((i, n) => blockFor(q[i], fetched[n]))
+    setSeries({
+      sections,
+      queueIdx: preloadEnd + 1, backIdx: preloadStart - 1,
+      done: preloadEnd + 1 >= q.length, backDone: preloadStart - 1 < 0,
+    })
+    idxs.forEach(i => void refreshNotesFor(noteBookFor(w, q[i]), q[i].chapter))
+    setInitialLoading(false)
+
+    const targetKey = q[idx] ? keyFor(q[idx]) : null
+    requestAnimationFrame(() => {
+      const panel = panelRef.current
+      const target = targetKey ? sectionRefs.current[targetKey] : null
+      if (target && panel) panel.scrollTop = target.offsetTop - panel.offsetTop
+      else if (panel) panel.scrollTop = 0
+    })
+  }, [fetchChapterRows, refreshNotesFor])
 
   function openWork(w: CatalogWork) {
-    setWork(w); setJbook(1); setChapter(1)
-    setShowEnglish(true); setSearch('')
+    setWork(w); setShowEnglish(true); setOpenCat(null)
+    void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
   }
 
   const chapterCount = work?.source === 'josephus'
@@ -175,13 +297,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     : (work?.chapters ?? 1)
 
   const q = search.trim().toLowerCase()
-  const filteredRows = useMemo(() => {
-    if (!rows || !q) return rows
-    return rows.filter(r =>
-      r.greek?.toLowerCase().includes(q) ||
-      r.english?.toLowerCase().includes(q) ||
-      r.tokens?.some(t => t.surface.toLowerCase().includes(q)))
-  }, [rows, q])
+  const matchesSearch = (r: Row) =>
+    !q ||
+    !!r.greek?.toLowerCase().includes(q) ||
+    !!r.english?.toLowerCase().includes(q) ||
+    !!r.tokens?.some(t => t.surface.toLowerCase().includes(q))
 
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
@@ -237,7 +357,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             {work.source === 'josephus' && work.books!.length > 1 && (
               <label className="text-xs text-gray-500 inline-flex items-center gap-1">
                 Book
-                <select value={jbook} onChange={e => { setJbook(Number(e.target.value)); setChapter(1) }} className="rounded border border-gray-300 px-2 py-1 text-xs">
+                <select value={jbook} onChange={e => void openAt(work, Number(e.target.value), 1)} className="rounded border border-gray-300 px-2 py-1 text-xs">
                   {work.books!.map((_, i) => <option key={i + 1} value={i + 1}>{i + 1}</option>)}
                 </select>
               </label>
@@ -246,7 +366,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             {chapterCount > 1 && (
               <label className="text-xs text-gray-500 inline-flex items-center gap-1">
                 Chapter
-                <select value={chapter} onChange={e => setChapter(Number(e.target.value))} className="rounded border border-gray-300 px-2 py-1 text-xs">
+                <select
+                  value={chapter}
+                  onChange={e => void openAt(work, work.source === 'josephus' ? jbook : undefined, Number(e.target.value))}
+                  className="rounded border border-gray-300 px-2 py-1 text-xs"
+                >
                   {Array.from({ length: chapterCount }, (_, i) => i + 1).map(n => <option key={n} value={n}>{n}</option>)}
                 </select>
               </label>
@@ -260,6 +384,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 {showEnglish ? 'Hide English' : 'Show English'}
               </button>
             )}
+
+            <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
           </div>
         )}
 
@@ -271,60 +397,81 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             value={search}
             onChange={e => setSearch(e.target.value)}
             disabled={!work}
-            placeholder={work ? 'Search this chapter…' : 'Select a text above to begin reading'}
+            placeholder={work ? 'Search the loaded text…' : 'Select a text above to begin reading'}
             className="w-full rounded-lg border border-gray-300 pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
           />
         </div>
 
-        <div className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
+        <div ref={panelRef} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
             <p className="text-sm text-gray-400 italic">Choose a category above and select a text to start reading.</p>
-          ) : loading || !rows ? (
+          ) : initialLoading || series.sections.length === 0 ? (
             <p className="text-xs text-gray-300 italic">Loading…</p>
-          ) : !filteredRows || filteredRows.length === 0 ? (
-            <p className="text-xs text-gray-400 italic">{q ? 'No matches in this chapter.' : 'No text found.'}</p>
           ) : (
-            <div className="space-y-2">
-              {filteredRows.map(row => (
-                <div key={row.num} className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
-                  {/* Greek (or, for prose works, the single English column) */}
-                  <p className="leading-relaxed text-gray-900">
-                    {isAuthenticated && (
-                      <span className="font-sans align-middle mr-0.5">
-                        <VerseNoteButton book={noteBook} chapter={chapter} verse={row.num} noted={notedKeys.has(row.num)} onChanged={refreshNotes} />
-                      </span>
-                    )}
-                    <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
-                    {isGreek ? (
-                      <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
-                        {row.tokens && row.tokens.length > 0
-                          ? row.tokens.map((tok, ti) => {
-                              const key = `${row.num}.${ti}`
-                              const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
-                              const matched = !!q && tok.surface.toLowerCase().includes(q)
-                              return (
-                                <span key={ti} onMouseEnter={select} onClick={select}
-                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : ''}`}>
-                                  {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
-                                </span>
-                              )
-                            })
-                          : row.greek}
-                      </span>
-                    ) : (
-                      <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>{highlight(row.english ?? '', search)}</span>
-                    )}
-                  </p>
+            <div className="space-y-4">
+              <div ref={topSentinel} />
+              {!series.backDone && <p className="text-xs text-gray-300 italic text-center">Loading previous chapter…</p>}
 
-                  {/* Parallel English column (Greek works only) */}
-                  {isGreek && showEnglish && hasEnglish && (
-                    <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>
-                      <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
-                      {row.english ? highlight(row.english, search) : <span className="text-gray-300 italic">—</span>}
+              {series.sections.map(section => {
+                const filteredRows = section.rows.filter(matchesSearch)
+                if (q && filteredRows.length === 0) return null
+                const noteBook = noteBookFor(work, section)
+                const refLabel = refLabelFor(work, section)
+                const notedKeys = notedMap[`${noteBook}.${section.chapter}`] ?? new Set<number>()
+                return (
+                  <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
+                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
+                      {work.source === 'josephus' && work.books!.length > 1 ? `Book ${section.book} · Chapter ${section.chapter}` : `Chapter ${section.chapter}`}
                     </p>
-                  )}
-                </div>
-              ))}
+                    <div className="space-y-2">
+                      {filteredRows.map(row => (
+                        <div key={row.num} className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                          {/* Greek (or, for prose works, the single English column) */}
+                          <p className="leading-relaxed text-gray-900">
+                            {isAuthenticated && (
+                              <span className="font-sans align-middle mr-0.5">
+                                <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
+                                  onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
+                              </span>
+                            )}
+                            <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
+                            {isGreek ? (
+                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
+                                {row.tokens && row.tokens.length > 0
+                                  ? row.tokens.map((tok, ti) => {
+                                      const key = `${section.key}.${row.num}.${ti}`
+                                      const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
+                                      const matched = !!q && tok.surface.toLowerCase().includes(q)
+                                      return (
+                                        <span key={ti} onMouseEnter={select} onClick={select}
+                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : ''}`}>
+                                          {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
+                                        </span>
+                                      )
+                                    })
+                                  : row.greek}
+                              </span>
+                            ) : (
+                              <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>{highlight(row.english ?? '', search)}</span>
+                            )}
+                          </p>
+
+                          {/* Parallel English column (Greek works only) */}
+                          {isGreek && showEnglish && hasEnglish && (
+                            <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>
+                              <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
+                              {row.english ? highlight(row.english, search) : <span className="text-gray-300 italic">—</span>}
+                            </p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+
+              {!series.done && <p className="text-xs text-gray-300 italic text-center">Loading next chapter…</p>}
+              <div ref={bottomSentinel} />
             </div>
           )}
         </div>
