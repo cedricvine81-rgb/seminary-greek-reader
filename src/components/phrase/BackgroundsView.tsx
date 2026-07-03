@@ -66,6 +66,23 @@ const VERSIONS = [
 const BRENTON_BOOKS = new Set(['Tob', 'Jdt', 'EsthGr', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc'])
 const BRENTON_VERSION = { code: 'brenton', label: 'English — Brenton (LXX)' }
 
+// Which right-column versions actually have text for a given reference. The bsb/web/es/…
+// translations exist only for the 66-book Protestant canon (see /api/translation), so
+// they're dropped for the deuterocanonical books below, where they'd load nothing. And
+// na1904/gnt are two distinct Greek NT editions only for NT references; for OT/LXX/
+// Apocrypha refs both fall back to the same Septuagint text, so they collapse to a single,
+// accurately-labelled "Greek — Septuagint" option.
+const PROTESTANT_CODES = new Set(['bsb', 'en', 'es', 'fr', 'pt', 'ru', 'ko', 'zh'])
+const DEUTEROCANONICAL = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '3Macc', '4Macc', '1Esd', 'Odes', 'PsSol'])
+function rightVersionOptions(osisId: string, isNT: boolean): { code: string; label: string }[] {
+  const out: { code: string; label: string }[] = isNT
+    ? [{ code: 'na1904', label: 'Greek — Nestle 1904' }, { code: 'gnt', label: 'Greek — Tischendorf' }]
+    : [{ code: 'na1904', label: 'Greek — Septuagint' }]
+  if (!DEUTEROCANONICAL.has(osisId)) out.push(...VERSIONS.filter(v => PROTESTANT_CODES.has(v.code)))
+  if (BRENTON_BOOKS.has(osisId)) out.push(BRENTON_VERSION)
+  return out
+}
+
 // Perseus Digital Library's own confirmed URL scheme for Whiston's translation of
 // Josephus (CC BY-SA 3.0 US) — Antiquities of the Jews = Perseus text 1999.01.0146,
 // The Jewish War = 1999.01.0148, both addressable by book/chapter/section. All four of
@@ -579,11 +596,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     setRightJosephus(null); setJosephusChapter(null)
     setRight2Esdras(null); setEsdrasChapter(null)
     setRightRef({ label, citation })
-    // Brenton only exists for the Apocrypha books — if the dropdown was left on Brenton
-    // and this new reference isn't one of them, fall back to the Greek so it doesn't load
-    // an empty result against a version this book has no data for.
-    const brentonOk = !!citation.ref && BRENTON_BOOKS.has(citation.ref.book)
-    const effectiveVersion = rightVersion === 'brenton' && !brentonOk ? 'na1904' : rightVersion
+    // If the dropdown was left on a version this new reference has no text for (e.g.
+    // Brenton on a non-Apocrypha ref, or an English translation on a deuterocanonical
+    // book), fall back to the Greek, which every reference has.
+    const book = citation.ref?.book
+    const codes = book
+      ? rightVersionOptions(book, gntBooks.some(b => b.osisId === book)).map(v => v.code)
+      : ['na1904']
+    const effectiveVersion = codes.includes(rightVersion) ? rightVersion : 'na1904'
     if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
     void loadRightRef(citation, effectiveVersion)
   }
@@ -806,7 +826,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     onChange={e => setRightVersion(e.target.value)}
                     className="rounded-lg border border-gray-300 px-1.5 py-1 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
-                    {(BRENTON_BOOKS.has(rightRef.citation.ref.book) ? [...VERSIONS, BRENTON_VERSION] : VERSIONS)
+                    {rightVersionOptions(rightRef.citation.ref.book, gntBooks.some(b => b.osisId === rightRef.citation.ref!.book))
                       .map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
                 )}
