@@ -58,6 +58,14 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 
+// The deuterocanonical / Apocrypha books have no BSB/WEB English (those are Protestant-
+// canon only), so for them the right column also offers Brenton's 1851 English of the
+// Septuagint (public-domain, from ebible.org — see scripts/build-brenton-apocrypha.py).
+// Because it's translated from the same Greek the app shows, it sits verse-aligned next
+// to it. Only these books have Brenton data; the option is shown only when one is open.
+const BRENTON_BOOKS = new Set(['Tob', 'Jdt', 'EsthGr', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc'])
+const BRENTON_VERSION = { code: 'brenton', label: 'English — Brenton (LXX)' }
+
 // Perseus Digital Library's own confirmed URL scheme for Whiston's translation of
 // Josephus (CC BY-SA 3.0 US) — Antiquities of the Jews = Perseus text 1999.01.0146,
 // The Jewish War = 1999.01.0148, both addressable by book/chapter/section. All four of
@@ -544,6 +552,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           cacheForVersion[ck] = Object.entries(d)
             .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
             .map(([vid, val]) => ({ verse: parseInt(vid.split('.')[2], 10), text: val.text }))
+        } else if (rv === 'brenton') {
+          // Brenton's English Septuagint — a static per-book file, filtered to this chapter.
+          const r = await fetch(`/data/brenton/${osis}.json`)
+          const d: Record<string, string> = r.ok ? await r.json() : {}
+          cacheForVersion[ck] = Object.entries(d)
+            .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
+            .map(([vid, text]) => ({ verse: parseInt(vid.split('.')[2], 10), text }))
         } else {
           const r = await fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${rv}`)
           const d: { verses?: Record<string, string> } = await r.json()
@@ -564,7 +579,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     setRightJosephus(null); setJosephusChapter(null)
     setRight2Esdras(null); setEsdrasChapter(null)
     setRightRef({ label, citation })
-    void loadRightRef(citation, rightVersion)
+    // Brenton only exists for the Apocrypha books — if the dropdown was left on Brenton
+    // and this new reference isn't one of them, fall back to the Greek so it doesn't load
+    // an empty result against a version this book has no data for.
+    const brentonOk = !!citation.ref && BRENTON_BOOKS.has(citation.ref.book)
+    const effectiveVersion = rightVersion === 'brenton' && !brentonOk ? 'na1904' : rightVersion
+    if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
+    void loadRightRef(citation, effectiveVersion)
   }
   // Re-fetch the currently open reference when the right-column version dropdown changes.
   useEffect(() => {
@@ -785,7 +806,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     onChange={e => setRightVersion(e.target.value)}
                     className="rounded-lg border border-gray-300 px-1.5 py-1 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
-                    {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                    {(BRENTON_BOOKS.has(rightRef.citation.ref.book) ? [...VERSIONS, BRENTON_VERSION] : VERSIONS)
+                      .map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
                 )}
                 {/* Library — whole-work links, independent of whatever citation is open.
