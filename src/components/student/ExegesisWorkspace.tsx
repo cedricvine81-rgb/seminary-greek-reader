@@ -1759,6 +1759,16 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                 If your internet drops, don&rsquo;t worry — your answers are saved on this device and sync automatically when you reconnect. Keep working.
               </p>
 
+              {/* Academic-integrity consent — the checkbox below constitutes the student's
+                  agreement to these terms before the exam can start. */}
+              <p className="mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-600">
+                To maintain academic integrity, your activity during this exam — including the actions
+                listed above and the timing of your answers — is recorded and reviewed by your instructor.
+                By beginning the exam you confirm that you are aware of this and give your permission. If
+                there is any suspicion that you have acted inappropriately, you may be required to
+                participate in an oral examination.
+              </p>
+
               <label className="mt-5 flex items-start gap-2.5 cursor-pointer select-none">
                 <input
                   type="checkbox"
@@ -1766,7 +1776,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   onChange={e => setRulesAck(e.target.checked)}
                   className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-brand-600 focus:ring-brand-400"
                 />
-                <span className="text-sm text-gray-800">I have read and understand these rules and agree to abide by them.</span>
+                <span className="text-sm text-gray-800">I have read and understand these rules, I agree to abide by them, and I consent to my exam being recorded for academic integrity as described above.</span>
               </label>
 
               <button

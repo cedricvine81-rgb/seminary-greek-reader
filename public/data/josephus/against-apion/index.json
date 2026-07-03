@@ -1,0 +1,30 @@
+{
+  "work": "Against Apion",
+  "author": "Flavius Josephus",
+  "translator": "William Whiston",
+  "attribution": "Flavius Josephus, Against Apion, tr. William Whiston (1737), public domain. Source: Project Gutenberg eBook #2849 (gutenberg.org/ebooks/2849).",
+  "books": [
+    {
+      "number": 1,
+      "title": "",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "",
+          "sections": 35
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "",
+          "sections": 42
+        }
+      ]
+    }
+  ]
+}

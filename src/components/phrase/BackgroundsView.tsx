@@ -60,13 +60,13 @@ const VERSIONS = [
 
 // Perseus Digital Library's own confirmed URL scheme for Whiston's translation of
 // Josephus (CC BY-SA 3.0 US) — Antiquities of the Jews = Perseus text 1999.01.0146,
-// The Jewish War = 1999.01.0148, both addressable by book/chapter/section. Both works
-// are now embedded in-app (public/data/josephus/antiquities/ and .../jewish-war/,
-// parsed from the same public-domain Whiston translation via Project Gutenberg eBooks
-// #2848 and #2850) and rendered directly in the right column — see parseJosephusRef
-// below. This Perseus link remains as (a) a fallback for Against Apion citations,
-// which aren't embedded, and (b) a secondary "open at Perseus" link next to embedded
-// citations, for students who want Perseus's own apparatus.
+// The Jewish War = 1999.01.0148, both addressable by book/chapter/section. All four of
+// Josephus's works are now embedded in-app (public/data/josephus/{antiquities,jewish-war,
+// against-apion,life}/, parsed from the same public-domain Whiston translation via Project
+// Gutenberg eBooks #2848, #2850, #2849, #2846) and rendered directly in the right column —
+// see parseJosephusRef below. This Perseus link remains only as a secondary "open at
+// Perseus" link next to embedded Antiquities/War citations, for students who want Perseus's
+// own apparatus (Against Apion and the Life have no such secondary link).
 function josephusUrl(citationText: string): string | null {
   const m = citationText.match(/Josephus,\s*(J\.W\.|Ant\.)\s*(\d+)\.(\d+)(?:\.(\d+))?/)
   if (!m) return null
@@ -76,18 +76,25 @@ function josephusUrl(citationText: string): string | null {
   return url
 }
 
-// Antiquities and Jewish War citations ("Josephus, Ant. B.C.S" / "Josephus, J.W. B.C.S",
-// optionally with a Niese "§N" tail that this ignores) resolve against the embedded
-// Whiston text, keyed the same way Perseus keys it: Book -> Chapter -> Section. Against
-// Apion isn't embedded, so it falls through to the Perseus link above.
-type JosephusWork = 'Ant' | 'JW'
+// Josephus citations resolve against the embedded Whiston text. The four works are cited
+// at different depths, so each is normalized to a {book, chapter, section} the viewer can
+// use: Antiquities/War use Book.Chapter.Section directly; Against Apion is Book.Section
+// (no chapter level → modeled as a single chapter 1 per book); the Life is a flat run of
+// sections (→ book 1, chapter 1). A trailing Niese "§N" is ignored for locating. The
+// Against Apion / Life patterns are searched anywhere in the string so the two malformed
+// "Josephus, Ant. Ag. Ap. …" / "Josephus, Ant. Life …" citations still resolve.
+type JosephusWork = 'Ant' | 'JW' | 'AgAp' | 'Life'
 type JosephusRef = { work: JosephusWork; book: number; chapter: number; section: number }
-const JOSEPHUS_WORK_DIR: Record<JosephusWork, string> = { Ant: 'antiquities', JW: 'jewish-war' }
-const JOSEPHUS_WORK_LABEL: Record<JosephusWork, string> = { Ant: 'Antiquities', JW: 'War' }
+const JOSEPHUS_WORK_DIR: Record<JosephusWork, string> = { Ant: 'antiquities', JW: 'jewish-war', AgAp: 'against-apion', Life: 'life' }
+const JOSEPHUS_WORK_LABEL: Record<JosephusWork, string> = { Ant: 'Antiquities', JW: 'War', AgAp: 'Against Apion', Life: 'The Life' }
 function parseJosephusRef(citationText: string): JosephusRef | null {
-  const m = citationText.match(/Josephus,\s*(Ant\.|J\.W\.)\s*(\d+)\.(\d+)\.(\d+)/)
-  if (!m) return null
-  return { work: m[1] === 'Ant.' ? 'Ant' : 'JW', book: parseInt(m[2], 10), chapter: parseInt(m[3], 10), section: parseInt(m[4], 10) }
+  const bcs = citationText.match(/Josephus,\s*(Ant\.|J\.W\.)\s*(\d+)\.(\d+)\.(\d+)/)
+  if (bcs) return { work: bcs[1] === 'Ant.' ? 'Ant' : 'JW', book: parseInt(bcs[2], 10), chapter: parseInt(bcs[3], 10), section: parseInt(bcs[4], 10) }
+  const agap = citationText.match(/Ag\.\s*Ap\.\s*(\d+)\.(\d+)/)
+  if (agap) return { work: 'AgAp', book: parseInt(agap[1], 10), chapter: 1, section: parseInt(agap[2], 10) }
+  const life = citationText.match(/\bLife\s+(\d+)/)
+  if (life) return { work: 'Life', book: 1, chapter: 1, section: parseInt(life[1], 10) }
+  return null
 }
 interface JosephusSection { number: number; text: string }
 interface JosephusChapter { number: number; title: string; sections: JosephusSection[] }
@@ -304,16 +311,24 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   const [rightVerses, setRightVerses] = useState<{ verse: number; text: string; tokens?: WordToken[] }[] | null>(null)
   const [rightLoading, setRightLoading] = useState(false)
 
-  // ── Right column, alternate mode: an embedded Josephus (Antiquities or Jewish War)
-  // citation. Mutually exclusive with rightRef above — opening one clears the other.
+  // ── Right column, alternate mode: an embedded Josephus citation (Antiquities, Jewish
+  // War, Against Apion, or the Life). Mutually exclusive with rightRef above — opening
+  // one clears the other.
   const [rightJosephus, setRightJosephus] = useState<{ label: string; citation: CrossRefCitation; ref: JosephusRef } | null>(null)
   const [josephusChapter, setJosephusChapter] = useState<JosephusChapter | null>(null)
   const [josephusLoading, setJosephusLoading] = useState(false)
-  const [josephusAttribution, setJosephusAttribution] = useState<Record<JosephusWork, string>>({ Ant: '', JW: '' })
+  const [josephusAttribution, setJosephusAttribution] = useState<Record<JosephusWork, string>>({ Ant: '', JW: '', AgAp: '', Life: '' })
   const josephusBookCache = useRef<Record<string, JosephusBook | null>>({})
+  // Scrolls the cited section into view once its text loads — matters most for Against
+  // Apion (up to 42 sections in one "chapter") and the Life (76), where the passage would
+  // otherwise be far below the fold.
+  const josephusHighlightRef = useRef<HTMLParagraphElement | null>(null)
+  useEffect(() => {
+    if (josephusChapter) josephusHighlightRef.current?.scrollIntoView({ block: 'start' })
+  }, [josephusChapter])
 
   useEffect(() => {
-    (['Ant', 'JW'] as JosephusWork[]).forEach(work => {
+    (['Ant', 'JW', 'AgAp', 'Life'] as JosephusWork[]).forEach(work => {
       fetch(`/data/josephus/${JOSEPHUS_WORK_DIR[work]}/index.json`).then(r => r.json()).then((d: { attribution?: string }) => {
         setJosephusAttribution(prev => ({ ...prev, [work]: d.attribution ?? '' }))
       }).catch(() => {})
@@ -818,7 +833,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 ) : (
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-gray-600">
-                      {JOSEPHUS_WORK_LABEL[rightJosephus.ref.work]} {rightJosephus.ref.book}.{josephusChapter.number}
+                      {/* Header depth matches how each work is cited: Ant./War by Book.Chapter,
+                          Against Apion by Book (its sections have no chapter level), the Life
+                          by nothing (a single flat run of sections). */}
+                      {rightJosephus.ref.work === 'Life'
+                        ? JOSEPHUS_WORK_LABEL.Life
+                        : rightJosephus.ref.work === 'AgAp'
+                          ? `${JOSEPHUS_WORK_LABEL.AgAp} ${rightJosephus.ref.book}`
+                          : `${JOSEPHUS_WORK_LABEL[rightJosephus.ref.work]} ${rightJosephus.ref.book}.${josephusChapter.number}`}
                       {josephusChapter.title && <> — {josephusChapter.title}</>}
                     </p>
                     <div
@@ -828,6 +850,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       {josephusChapter.sections.map(s => (
                         <p
                           key={s.number}
+                          ref={s.number === rightJosephus.ref.section ? josephusHighlightRef : undefined}
                           className={s.number === rightJosephus.ref.section ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>

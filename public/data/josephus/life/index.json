@@ -1,0 +1,19 @@
+{
+  "work": "The Life of Flavius Josephus",
+  "author": "Flavius Josephus",
+  "translator": "William Whiston",
+  "attribution": "Flavius Josephus, The Life of Flavius Josephus, tr. William Whiston (1737), public domain. Source: Project Gutenberg eBook #2846 (gutenberg.org/ebooks/2846).",
+  "books": [
+    {
+      "number": 1,
+      "title": "The Life of Flavius Josephus",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "",
+          "sections": 76
+        }
+      ]
+    }
+  ]
+}
