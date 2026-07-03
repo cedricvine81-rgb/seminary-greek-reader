@@ -630,19 +630,6 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   return (
     <div className="flex flex-col h-full gap-3" style={{ '--bg-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
       <div className="flex items-center flex-wrap gap-3">
-        <label className="text-sm font-medium text-gray-700">Version</label>
-        <select
-          value={version}
-          onChange={e => setVersion(e.target.value)}
-          className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-        >
-          {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
-        </select>
-        {isGreek && (
-          <span className="text-xs text-gray-500">
-            <span className="hidden sm:inline">Tip: </span>click any Greek word to see its parsing.
-          </span>
-        )}
         {/* Type filter chips for the middle column */}
         <div className="flex items-center flex-wrap gap-1.5 ml-auto">
           {TYPE_ORDER.map(t => (
@@ -663,9 +650,18 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
         <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* ── Left: Greek text ── */}
           <div className="flex flex-col min-h-0 rounded-xl border border-gray-200 overflow-hidden">
-            <p className="shrink-0 px-3 py-1.5 text-xs font-semibold text-gray-500 bg-gray-50 border-b border-gray-200 uppercase tracking-wide">
-              {parsed.book.name} {parsed.chapter}:{parsed.verseStart}{parsed.verseEnd !== parsed.verseStart ? `–${parsed.verseEnd}` : ''}
-            </p>
+            <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-1.5 bg-gray-50 border-b border-gray-200">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                {parsed.book.name} {parsed.chapter}:{parsed.verseStart}{parsed.verseEnd !== parsed.verseStart ? `–${parsed.verseEnd}` : ''}
+              </p>
+              <select
+                value={version}
+                onChange={e => setVersion(e.target.value)}
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+              </select>
+            </div>
             <div className="flex-1 min-h-0 overflow-y-auto p-3">
               {leftVerses.length === 0 ? (
                 <p className="text-xs text-gray-300 italic">Loading…</p>
