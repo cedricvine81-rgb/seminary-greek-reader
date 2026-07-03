@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
+import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
@@ -72,6 +73,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="flex flex-1 flex-col">
             {children}
           </div>
+          <AppFooter />
         </div>
       </body>
     </html>
