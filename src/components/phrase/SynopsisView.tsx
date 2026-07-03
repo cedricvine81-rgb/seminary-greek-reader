@@ -333,12 +333,12 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         // Capped height with its own scroll (rather than letting the page grow), so a
         // long passage can't push the parsing pane below the fold — it stays visible
         // right after the columns without the user needing to scroll to find it.
-        <div className="flex gap-4 overflow-x-auto overflow-y-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+        <div className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
-              <div key={i} className="w-72 shrink-0 rounded-xl border border-gray-200 p-3">
-                <div className="flex items-center justify-between mb-2 gap-2">
+              <div key={i} className="w-72 shrink-0 rounded-xl border border-gray-200 p-3 flex flex-col min-h-0">
+                <div className="flex items-center justify-between mb-2 gap-2 shrink-0">
                   <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}</p>
                   {i > 0 && (
                     <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title="Remove column"><X size={14} /></button>
@@ -348,14 +348,14 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                   <select
                     value={version}
                     onChange={e => setVersion(e.target.value)}
-                    className="mb-2 w-full rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    className="mb-2 w-full shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
                     {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
                 )}
                 {col && col.verses.length > 0 ? (
                   <div
-                    className={`space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'text-gray-700'}`}
+                    className={`flex-1 min-h-0 overflow-y-auto space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'text-gray-700'}`}
                     style={{ fontSize: isGreek ? 'var(--syn-fs, 1.45rem)' : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
                   >
                     {col.verses.map(v => (
