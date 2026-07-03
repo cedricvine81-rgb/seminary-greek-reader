@@ -311,22 +311,6 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center flex-wrap gap-3">
-        <label className="text-sm font-medium text-gray-700">Version</label>
-        <select
-          value={version}
-          onChange={e => setVersion(e.target.value)}
-          className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-        >
-          {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
-        </select>
-        {isGreek && (
-          <span className="text-xs text-gray-500">
-            <span className="hidden sm:inline">Tip: </span>click any Greek word to see its parsing.
-          </span>
-        )}
-      </div>
-
       {/* Matched pericope + auto-loaded parallels. Removed columns can be re-added here. */}
       {best && (
         <div className="flex items-center flex-wrap gap-2">
@@ -360,6 +344,15 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                     <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title="Remove column"><X size={14} /></button>
                   )}
                 </div>
+                {i === 0 && (
+                  <select
+                    value={version}
+                    onChange={e => setVersion(e.target.value)}
+                    className="mb-2 w-full rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  >
+                    {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                  </select>
+                )}
                 {col && col.verses.length > 0 ? (
                   <div
                     className={`space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'text-gray-700'}`}
