@@ -7,6 +7,9 @@ import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-pre
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { NoteAnchor } from '@/components/student/NotesView'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 
 /** Full-screen viewer for an original commentary page scan — lets a student read
  *  the source directly rather than a transcription. Click the image to toggle
@@ -49,7 +52,7 @@ interface OriginalSource { id: string; name: string; attribution: string; pagesP
  * dropdown; the pane follows whichever verse you click in the Greek. Commentary data
  * is static, verse-keyed JSON (public/data/commentary/<id>/<book>.json).
  */
-export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor | null; onAttribution?: (a: string | null) => void }) {
+export function CommentaryView({ anchor, isAuthenticated = false, onAttribution }: { anchor: NoteAnchor | null; isAuthenticated?: boolean; onAttribution?: (a: string | null) => void }) {
   const [verses, setVerses] = useState<BiblicalVerse[]>([])
   const [activeVerse, setActiveVerse] = useState<number | null>(null)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
@@ -73,6 +76,8 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
   const scrollRef = useRef<HTMLDivElement>(null)
   const verseEls = useRef<Map<number, HTMLElement>>(new Map())
   const meta = commentaries.find(c => c.id === commentaryId)
+  const highlights = useHighlights(isAuthenticated)
+  const highlightSelection = useHighlightSelection(scrollRef)
 
   // Registry of available commentaries.
   useEffect(() => {
@@ -95,7 +100,8 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
         const vs: BiblicalVerse[] = (d.verses ?? []).filter((v: BiblicalVerse) => v.verse >= anchor.verseStart && v.verse <= anchor.verseEnd)
         setVerses(vs); setActiveVerse(vs[0]?.verse ?? anchor.verseStart)
       }).catch(() => setVerses([])).finally(() => setLoading(false))
-  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition]) // eslint-disable-line react-hooks/exhaustive-deps
+    void highlights.loadFor(anchor.book, anchor.chapter)
+  }, [anchor?.book, anchor?.chapter, anchor?.verseStart, anchor?.verseEnd, gntEdition, highlights.loadFor]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Registry of "Original View" PDF sources (fetched once, lazily — only used when
   // that option is selected).
@@ -184,6 +190,7 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
               onClick={() => setActiveVerse(v.verse)}
               className={`rounded-lg px-2 py-1 transition-colors ${v.verse === activeVerse ? 'bg-brand-50 ring-1 ring-brand-200' : 'hover:bg-gray-50'}`}>
               <GreekVerse verse={v} activeWordId={null} highlighted={false}
+                textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse) : []}
                 onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }} />
             </div>
           ))}
@@ -237,6 +244,24 @@ export function CommentaryView({ anchor, onAttribution }: { anchor: NoteAnchor |
       {activeScan && (
         <PageScanModal pages={activeScan.pages} pagesPath={activeScan.source.pagesPath} book={anchor.book}
           sourceName={activeScan.source.name} onClose={() => setActiveScan(null)} />
+      )}
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
       )}
     </div>
   )

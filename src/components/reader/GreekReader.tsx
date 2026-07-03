@@ -14,6 +14,9 @@ import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
 import { normalizeGreek } from '@/lib/greek-utils'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 
 // ── BSB alignment loader ───────────────────────────────────────────────────────
 
@@ -216,6 +219,20 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
 
   // ── Refs ─────────────────────────────────────────────────────────────────────
   const textPanelRef  = useRef<HTMLDivElement>(null)
+
+  // ── Persisted text highlights (signed-in readers) — same per-chapter loading pattern
+  // as the notes above, and drag-to-select capture scoped to the scrolling text panel.
+  const highlights = useHighlights(isAuthenticated)
+  const highlightSelection = useHighlightSelection(textPanelRef)
+  useEffect(() => {
+    const chapters = new Map<string, { book: string; chapter: number }>()
+    for (const s of [...gnt.sections, ...lxx.sections]) {
+      const v0 = s.verses[0]
+      if (v0) chapters.set(`${v0.bookId}.${v0.chapter}`, { book: v0.bookId, chapter: v0.chapter })
+    }
+    chapters.forEach(({ book, chapter }) => void highlights.loadFor(book, chapter))
+  }, [gnt.sections, lxx.sections, highlights.loadFor])
+
   const settingsRef   = useRef<HTMLDivElement>(null)
   const gntSentinel      = useRef<HTMLDivElement>(null)
   const lxxSentinel      = useRef<HTMLDivElement>(null)
@@ -1017,6 +1034,7 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
         bsbHighlightPos={bsbHighlightPos}
         highlighted={v.id === highlightedVerse}
         searchWord={wordSearchTerm ?? undefined}
+        textHighlights={highlights.forVerse(v.bookId, v.chapter, v.verse)}
         onWordHover={handleWordHover}
         onWordClick={handleWordClick}
         onWordRightClick={handleWordRightClick}
@@ -1448,6 +1466,24 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
           gbiOn={gbiOn}
           absOn={absOn}
           onClose={() => setSyntaxMenu(null)}
+        />
+      )}
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
         />
       )}
     </div>

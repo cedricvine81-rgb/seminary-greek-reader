@@ -5,6 +5,7 @@ import type { VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { formatParsing } from '@/lib/morph-formatting'
 import { normalizeGreek } from '@/lib/greek-utils'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 interface GreekWordProps {
   word: VerseWord
@@ -12,12 +13,17 @@ interface GreekWordProps {
   isActive: boolean
   isBsbHighlight?: boolean  // highlighted because the corresponding BSB English token is hovered
   searchWord?: string   // normalized search term — word is highlighted if it matches
+  // Persisted text highlight covering this word, if any (see src/components/highlights).
+  highlightId?: string
+  highlightColor?: string
+  hlBook?: string
+  hlChapter?: number
   onHover: (info: LexicalInfoPanel | null) => void
   onClick: (info: LexicalInfoPanel | null) => void
   onRightClick?: (word: VerseWord, x: number, y: number) => void
 }
 
-export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWord, onHover, onClick, onRightClick }: GreekWordProps) {
+export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWord, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: GreekWordProps) {
   // Long-press state for touch devices (fires the same handler as desktop right-click)
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
@@ -67,11 +73,13 @@ export function GreekWord({ word, reference, isActive, isBsbHighlight, searchWor
   return (
     <span
       className={clsx(
-        'greek-word cursor-pointer select-none',
+        'greek-word cursor-pointer',
         isActive && 'active',
         isMatch && 'text-red-600 font-semibold',
+        highlightColor && highlightMarkClass(highlightColor),
       )}
       style={bsbStyle}
+      {...(highlightId ? { 'data-highlight-id': highlightId, 'data-hl-book': hlBook, 'data-hl-chapter': hlChapter, 'data-hl-color': highlightColor } : {})}
       onMouseEnter={() => onHover(buildInfo())}
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(buildInfo())}

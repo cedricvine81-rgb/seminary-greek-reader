@@ -6,6 +6,11 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 import { findLxxWork } from '@/lib/texts-catalog'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // A reference the "Open in Texts" button can hand off to the Texts tab — only shown when
 // the currently displayed cross-reference text is actually embedded there.
@@ -334,6 +339,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     } catch { /* ignore */ }
   }, [isAuthenticated])
 
+  // ── Persisted text highlights (signed-in users), left + right columns keyed
+  // independently by their own (book, chapter) — no cross-column bleed. ──
+  const highlights = useHighlights(isAuthenticated)
+  const panesRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(panesRef)
+
   // ── Cross-reference dataset ──
   const [crossRefData, setCrossRefData] = useState<{ attribution: string; entries: CrossRefEntry[] } | null>(null)
   const [typeFilter, setTypeFilter] = useState<Set<CrossRefCitation['type']>>(new Set(TYPE_ORDER))
@@ -461,6 +472,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     if (!parsed) return
     ensure(version, parsed.book.osisId, parsed.chapter)
     refreshNotes(parsed.book.osisId, parsed.chapter)
+    void highlights.loadFor(parsed.book.osisId, parsed.chapter)
     setSelectedInfo(null); setSelectedKey(null)
     setRightRef(null); setRightVerses(null)
     setRightJosephus(null); setJosephusChapter(null)
@@ -598,12 +610,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       }
       const wmap = wordCache.current[`right.${rv}`] ?? {}
       setRightVerses(cacheForVersion[ck].map(v => ({ ...v, tokens: wmap[`${osis}.${chapter}.${v.verse}`] })))
+      void highlights.loadFor(osis, chapter)
     } catch {
       setRightVerses(null)
     } finally {
       setRightLoading(false)
     }
-  }, [])
+  }, [highlights.loadFor])
 
   function openRightRef(label: string, citation: CrossRefCitation) {
     setRightJosephus(null); setJosephusChapter(null)
@@ -706,7 +719,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       {!anchor || !parsed ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to load its background apparatus.</p>
       ) : (
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
+        <div ref={panesRef} className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* ── Left: Greek text ── */}
           <div className="flex flex-col min-h-0 rounded-xl border border-gray-200 overflow-hidden">
             <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-1.5 bg-gray-50 border-b border-gray-200">
@@ -729,7 +742,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : ''}`}
                   style={{ fontSize: isGreek ? 'var(--bg-fs, 1.45rem)' : 'calc(var(--bg-fs, 1.45rem) * 0.65)' }}
                 >
-                  {leftVerses.map(v => (
+                  {leftVerses.map(v => {
+                    const verseHighlights = highlights.forVerse(parsed.book.osisId, parsed.chapter, v.verse)
+                    return (
                     <p key={v.verse}>
                       {isAuthenticated && (
                         <span className="font-sans align-middle mr-0.5">
@@ -737,24 +752,32 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                         </span>
                       )}
                       <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
-                      {v.tokens && v.tokens.length > 0
-                        ? v.tokens.map((tok, ti) => {
+                      {v.tokens && v.tokens.length > 0 ? (
+                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse)}>
+                          {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                             const key = `left.${parsed.book.osisId}.${parsed.chapter}.${v.verse}.${ti}`
                             const select = () => { setSelectedInfo(toLexicalInfo(tok, parsed.book.name, `${parsed.chapter}:${v.verse}`)); setSelectedKey(key) }
+                            const hl = highlightAt(start, end, verseHighlights)
                             return (
                               <span
                                 key={ti}
                                 onMouseEnter={select}
                                 onClick={select}
-                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
+                                {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': parsed.book.osisId, 'data-hl-chapter': parsed.chapter, 'data-hl-color': hl.color } : {})}
+                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
                               >
                                 {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                               </span>
                             )
-                          })
-                        : v.text}
+                          })}
+                        </span>
+                      ) : (
+                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse)}>
+                          {renderHighlightedPlainText(v.text, parsed.book.osisId, parsed.chapter, verseHighlights)}
+                        </span>
+                      )}
                     </p>
-                  ))}
+                  )})}
                 </div>
               )}
             </div>
@@ -996,7 +1019,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : ''}`}
                       style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
-                      {rightVerses.map(v => (
+                      {rightVerses.map(v => {
+                        const rightBook = rightRef.citation.ref!.book, rightChapter = rightRef.citation.ref!.chapter
+                        const verseHighlights = highlights.forVerse(rightBook, rightChapter, v.verse)
+                        return (
                         <p key={v.verse}>
                           {isAuthenticated && rightRef.citation.ref && (
                             <span className="font-sans align-middle mr-0.5">
@@ -1004,24 +1030,32 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             </span>
                           )}
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
-                          {v.tokens && v.tokens.length > 0
-                            ? v.tokens.map((tok, ti) => {
-                                const key = `right.${rightRef.citation.ref!.book}.${rightRef.citation.ref!.chapter}.${v.verse}.${ti}`
-                                const select = () => { setSelectedInfo(toLexicalInfo(tok, rightBookName, `${rightRef.citation.ref!.chapter}:${v.verse}`)); setSelectedKey(key) }
+                          {v.tokens && v.tokens.length > 0 ? (
+                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse)}>
+                              {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
+                                const key = `right.${rightBook}.${rightChapter}.${v.verse}.${ti}`
+                                const select = () => { setSelectedInfo(toLexicalInfo(tok, rightBookName, `${rightChapter}:${v.verse}`)); setSelectedKey(key) }
+                                const hl = highlightAt(start, end, verseHighlights)
                                 return (
                                   <span
                                     key={ti}
                                     onMouseEnter={select}
                                     onClick={select}
-                                    className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
+                                    {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': rightBook, 'data-hl-chapter': rightChapter, 'data-hl-color': hl.color } : {})}
+                                    className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
                                   >
                                     {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                                   </span>
                                 )
-                              })
-                            : v.text}
+                              })}
+                            </span>
+                          ) : (
+                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse)}>
+                              {renderHighlightedPlainText(v.text, rightBook, rightChapter, verseHighlights)}
+                            </span>
+                          )}
                         </p>
-                      ))}
+                      )})}
                     </div>
                   )}
                 </>
@@ -1035,6 +1069,24 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           columns; same component used on Phrasing and Synopsis. */}
       {isGreek && (
         <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
+      )}
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
       )}
     </div>
   )
