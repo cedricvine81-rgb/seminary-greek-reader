@@ -52,6 +52,7 @@ model User {
   ownedFolders       MaterialFolder[]      @relation("InstructorFolders")
   noteFolders        NoteFolder[]
   verseNotes         VerseNote[]
+  noteSubmissions    NoteSubmission[]
   highlights         Highlight[]
 
   @@index([email])
@@ -269,6 +270,7 @@ enum AssignmentType {
   MORPHOLOGY_QUIZ
   TRANSLATION_EXERCISE
   TRANSLATION_EXAM
+  COURSE_NOTES
 }
 
 model Assignment {
@@ -313,6 +315,9 @@ model Assignment {
   // { subsections: string[] (e.g. ["1-A","2-B"]), pos: string[] }. Lets the edit
   // page pre-fill the picker and regenerate from the same words.
   vocabSelection Json?
+  // For COURSE_NOTES: the name of the notes folder each enrolled student is given and
+  // submits for grading (e.g. "Judaism"). Null for every other assignment type.
+  notesFolderName String?
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -323,6 +328,8 @@ model Assignment {
   responses  Response[]
   attempts   QuizAttempt[]
   appeals    VocabAppeal[]
+  noteSubmissions NoteSubmission[]
+  noteFolders     NoteFolder[]
 
   @@index([courseId])
 }
@@ -674,13 +681,23 @@ model NoteFolder {
   // Currently always null (the UI shows a single flat level).
   parentId  String?
   position  Int      @default(0)
+  // Set (non-null) when this folder was auto-provisioned for a COURSE_NOTES assignment.
+  // Links the student's submission folder to its assignment — rename-safe, so the coupling
+  // survives even if the student renames the folder. onDelete SetNull keeps the notes.
+  assignmentId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  notes VerseNote[]
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment? @relation(fields: [assignmentId], references: [id], onDelete: SetNull)
+  notes      VerseNote[]
 
+  // One provisioned folder per (student, COURSE_NOTES assignment). Postgres treats NULLs
+  // as distinct, so ordinary folders (assignmentId = null) are unaffected — a student can
+  // still have many of those.
+  @@unique([userId, assignmentId])
   @@index([userId])
+  @@index([assignmentId])
 }
 
 model VerseNote {
@@ -701,6 +718,27 @@ model VerseNote {
 
   @@index([userId, book, chapter, verse])
   @@index([userId, folderId])
+}
+
+// A student's submission of a COURSE_NOTES notes folder for grading. Holds only the
+// "submitted" flag + the instructor's grade — the graded content is the student's live
+// folder notes (they stay editable; the grade reflects the folder's latest state).
+model NoteSubmission {
+  id           String    @id @default(cuid())
+  userId       String
+  assignmentId String
+  folderId     String?   // the student's folder that was submitted (their "Judaism" folder)
+  submittedAt  DateTime  @default(now())
+  grade        Int?      // instructor-entered score 0-100
+  gradeNote    String?   // instructor feedback
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assignmentId])
+  @@index([assignmentId])
 }
 
 model Highlight {

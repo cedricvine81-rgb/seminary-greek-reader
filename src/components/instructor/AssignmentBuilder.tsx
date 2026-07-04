@@ -224,7 +224,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [form, setForm] = useState<AssignmentFormData>({
     title: '', type: 'VOCABULARY_QUIZ', weekNumber: 1, dueDate: '',
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
-    allowLate: false, lateDaysLimit: 7,
+    allowLate: false, lateDaysLimit: 7, notesFolderName: '',
   })
   const [quizStylePct, setQuizStylePct] = useState(0)
   // Vocab word selection over the BGVB list: frequency subsections.
@@ -253,6 +253,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     // Client-side validation for passage exercises/exams
     if ((form.type === 'TRANSLATION_EXERCISE' || form.type === 'TRANSLATION_EXAM') && !form.reference?.trim()) {
       setError('At least one passage reference is required (e.g. "John 1:1–18").')
+      return
+    }
+    if (form.type === 'COURSE_NOTES' && !form.notesFolderName?.trim()) {
+      setError('A folder name is required (e.g. "Judaism").')
       return
     }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
@@ -334,8 +338,27 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quiz' },
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
           { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
+          { value: 'COURSE_NOTES',         label: 'Course Notes' },
         ]}
       />
+
+      {form.type === 'COURSE_NOTES' && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
+          <p className="text-sm font-semibold text-brand-800">📓 Course Notes</p>
+          <p className="text-xs text-brand-700">
+            Every enrolled student is given a notes folder with the name below. They write study notes into it
+            (from the reader or the Notes page) and submit the folder for grading. You read their notes and enter
+            a grade out of 100; it flows into the gradebook like any other assignment.
+          </p>
+          <Input
+            label="Folder name (required)"
+            required
+            value={form.notesFolderName ?? ''}
+            onChange={e => set('notesFolderName', e.target.value)}
+            placeholder="e.g. Judaism"
+          />
+        </div>
+      )}
 
       {form.type === 'MORPHOLOGY_QUIZ' && (
         <>
@@ -673,12 +696,12 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           rows={3} className="input" placeholder="Additional instructions for students…" />
       </div>
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
         <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
           onChange={e => set('numQuestions', Number(e.target.value))} />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
         <Input
           label="Time per question (seconds, 0 = untimed)"
           type="number"
@@ -689,7 +712,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
         <Select
           label="Quiz retakes allowed"
           value={maxRetakes === null ? '' : String(maxRetakes)}

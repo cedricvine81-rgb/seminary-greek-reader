@@ -1,6 +1,6 @@
 import type { CourseLevel } from './course'
 
-export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM'
+export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES'
 
 export type QuestionType =
   | 'GREEK_TO_ENGLISH'
@@ -79,4 +79,5 @@ export interface AssignmentFormData {
   lockdownMaxViolations?: number | null  // auto-submit after this many violations (null = warn only)
   allowLate?: boolean
   lateDaysLimit?: number
+  notesFolderName?: string   // COURSE_NOTES: the folder each student is given and submits
 }

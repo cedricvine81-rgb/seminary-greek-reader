@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2 } from 'lucide-react'
+import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock } from 'lucide-react'
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
@@ -10,6 +10,11 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 
 interface NoteT { id: string; folderId: string | null; book: string; chapter: number; verse: number; verseEnd: number | null; body: string }
 interface FolderT { id: string; name: string; color: string; _count: { notes: number } }
+// A graded Course Notes assignment: the student's auto-provisioned folder + its submission status.
+interface CourseNotesEntry {
+  assignmentId: string; title: string; courseName: string; folderId: string; folderName: string
+  dueDate: string; submittedAt: string | null; grade: number | null; gradeNote: string | null
+}
 interface Book { osisId: string; name: string }
 export interface NoteAnchor { book: string; name: string; chapter: number; verseStart: number; verseEnd: number }
 
@@ -46,6 +51,8 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 }) {
   const [folders, setFolders] = useState<FolderT[]>([])
   const [notes, setNotes] = useState<NoteT[]>([])
+  const [courseNotes, setCourseNotes] = useState<CourseNotesEntry[]>([])
+  const [submitting, setSubmitting] = useState<string | null>(null) // assignmentId being submitted
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [activeFolder, setActiveFolder] = useState<string>('all') // 'all' | 'unfiled' | folderId
@@ -112,10 +119,11 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const load = useCallback(async () => {
     if (!isAuthenticated) { setLoading(false); return }
     try {
-      const res = await fetch('/api/notes')
+      const [res, cnRes] = await Promise.all([fetch('/api/notes'), fetch('/api/notes/course-notes')])
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to load')
       setFolders(data.folders); setNotes(data.notes)
+      if (cnRes.ok) setCourseNotes((await cnRes.json()).entries ?? [])
     } catch (e) { setError(e instanceof Error ? e.message : 'Failed to load') }
     finally { setLoading(false) }
   }, [isAuthenticated])
@@ -138,6 +146,19 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     await fetch(`/api/notes/folders?id=${id}`, { method: 'DELETE' })
     if (activeFolder === id) setActiveFolder('all')
     setEditFolder(null); load()
+  }
+
+  /* ── Course Notes: submit a folder for grading ── */
+  async function submitForGrading(assignmentId: string) {
+    setSubmitting(assignmentId)
+    try {
+      const res = await fetch('/api/notes/course-notes', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ assignmentId }),
+      })
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error ?? 'Submit failed') }
+      await load()
+    } catch (e) { setError(e instanceof Error ? e.message : 'Submit failed') }
+    finally { setSubmitting(null) }
   }
 
   if (!isAuthenticated) {
@@ -171,6 +192,25 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                   existing={passageVerseNote(v)}
                   anchor={{ book: anchor.book, chapter: anchor.chapter, verse: v, label: `${anchor.name} ${anchor.chapter}:${v}` }}
                   folders={folders} onChanged={load} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* ── Course Notes assignments ── */}
+        {courseNotes.length > 0 && (
+          <section>
+            <h3 className="flex items-center gap-1.5 text-sm font-semibold text-gray-800 mb-2">
+              <GraduationCap size={16} className="text-brand-600" /> Course Notes
+            </h3>
+            <div className="space-y-2">
+              {courseNotes.map(cn => (
+                <CourseNotesCard key={cn.assignmentId} entry={cn}
+                  noteCount={folders.find(f => f.id === cn.folderId)?._count.notes ?? 0}
+                  isActive={activeFolder === cn.folderId}
+                  submitting={submitting === cn.assignmentId}
+                  onOpen={() => setActiveFolder(cn.folderId)}
+                  onSubmit={() => submitForGrading(cn.assignmentId)} />
               ))}
             </div>
           </section>
@@ -279,6 +319,68 @@ function Chip({ active, onClick, label }: { active: boolean; onClick: () => void
       className={`rounded-full border px-2.5 py-1 text-xs ${active ? 'bg-brand-50 border-brand-200 text-brand-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
       {label}
     </button>
+  )
+}
+
+// Safari-safe date formatting: explicit field options only (no dateStyle/timeStyle mix).
+function formatDue(iso: string): string {
+  return new Date(iso).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })
+}
+
+// One graded Course Notes assignment: due date, note count, submission status + grade, and
+// a submit/resubmit button. Notes stay editable after submitting; resubmitting re-timestamps.
+function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSubmit }: {
+  entry: CourseNotesEntry
+  noteCount: number
+  isActive: boolean
+  submitting: boolean
+  onOpen: () => void
+  onSubmit: () => void
+}) {
+  const overdue = !entry.submittedAt && new Date(entry.dueDate).getTime() < Date.now()
+  const graded = entry.grade != null
+  return (
+    <div className={`rounded-lg border bg-white p-3 ${isActive ? 'border-brand-300 ring-1 ring-brand-200' : 'border-gray-200'}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <button onClick={onOpen} className="text-sm font-semibold text-brand-700 hover:underline text-left">
+            {entry.title}
+          </button>
+          <p className="text-xs text-gray-500 mt-0.5">
+            {entry.courseName} · Folder “{entry.folderName}” · {noteCount} {noteCount === 1 ? 'note' : 'notes'}
+          </p>
+          <p className={`text-xs mt-0.5 ${overdue ? 'text-red-600 font-medium' : 'text-gray-400'}`}>
+            Due {formatDue(entry.dueDate)}{overdue ? ' · overdue' : ''}
+          </p>
+        </div>
+        <div className="shrink-0 flex flex-col items-end gap-1.5">
+          {graded && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-green-50 border border-green-200 px-2 py-0.5 text-xs font-semibold text-green-700">
+              <CheckCircle2 size={12} /> {entry.grade}/100
+            </span>
+          )}
+          <button onClick={onSubmit} disabled={submitting}
+            className="inline-flex items-center gap-1 rounded-md bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
+            {submitting ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
+            {entry.submittedAt ? 'Resubmit' : 'Submit'}
+          </button>
+        </div>
+      </div>
+
+      {/* Submission status / grade feedback */}
+      {(entry.submittedAt || graded) && (
+        <div className="mt-2 border-t border-gray-100 pt-2 space-y-1">
+          {entry.submittedAt && (
+            <p className="flex items-center gap-1 text-[11px] text-gray-500">
+              <Clock size={11} /> Submitted {formatDue(entry.submittedAt)} · notes stay editable
+            </p>
+          )}
+          {entry.gradeNote && (
+            <p className="text-xs text-gray-700 bg-gray-50 rounded p-2 whitespace-pre-wrap">{entry.gradeNote}</p>
+          )}
+        </div>
+      )}
+    </div>
   )
 }
 

@@ -4,6 +4,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
@@ -68,6 +69,7 @@ export async function PATCH(
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
     allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations,
+    notesFolderName,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -76,6 +78,7 @@ export async function PATCH(
     data.isPublished = Boolean(isPublished)
   } else {
     if (title !== undefined)        data.title = title
+    if (notesFolderName !== undefined) data.notesFolderName = String(notesFolderName).trim() || null
     if (weekNumber !== undefined)   data.weekNumber = Number(weekNumber)
     if (dueDate !== undefined)      data.dueDate = new Date(dueDate)
     if (instructions !== undefined) data.instructions = instructions || null
@@ -124,6 +127,11 @@ export async function PATCH(
     where: { id: params.assignmentId },
     data,
   })
+
+  // Course Notes: (re)provision student folders once it's published or its name changes.
+  if (updated.type === 'COURSE_NOTES' && updated.isPublished) {
+    await ensureCourseNotesFoldersForAssignment(updated.id)
+  }
 
   return NextResponse.json({ assignment: updated })
 

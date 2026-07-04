@@ -3,13 +3,14 @@
 // Translation Exercises 30%, Translation Exam 30%); the overall grade is the
 // weighted average of the per-category averages. Weights are stored on the Course.
 
-export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM'
+export type GradeCategory = 'VOCABULARY_QUIZ' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES'
 
 export const GRADE_CATEGORIES: { type: GradeCategory; label: string }[] = [
   { type: 'VOCABULARY_QUIZ',      label: 'Vocabulary Quizzes' },
   { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
   { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
+  { type: 'COURSE_NOTES',         label: 'Course Notes' },
 ]
 
 export type CategoryWeights = Partial<Record<GradeCategory, number>>

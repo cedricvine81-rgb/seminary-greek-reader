@@ -14,6 +14,7 @@ const GROUPS = [
   { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
   { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
+  { type: 'COURSE_NOTES',         label: 'Course Notes' },
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -65,8 +66,10 @@ export async function CourseGradebook({ courseId }: Props) {
   const questionTranslationIds = assignments
     .filter(a => a.type === 'TRANSLATION_EXERCISE' && a.questions.length > 0)
     .map(a => a.id)
+  // Course Notes are graded 0–100 by the instructor and stored on NoteSubmission.
+  const courseNotesIds = assignments.filter(a => a.type === 'COURSE_NOTES').map(a => a.id)
 
-  const [realAttempts, realResponses, exegesisGrades] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades, noteGrades] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
@@ -83,6 +86,12 @@ export async function CourseGradebook({ courseId }: Props) {
           select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),
+    courseNotesIds.length > 0
+      ? prisma.noteSubmission.findMany({
+          where: { assignmentId: { in: courseNotesIds }, grade: { not: null } },
+          select: { userId: true, assignmentId: true, grade: true },
+        })
+      : Promise.resolve([]),
   ])
 
   const students = enrollments.map(e => e.user)
@@ -92,6 +101,10 @@ export async function CourseGradebook({ courseId }: Props) {
     if (assignment.type === 'TRANSLATION_EXAM') {
       const session = exegesisGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
       return session?.grade ?? null
+    }
+    if (assignment.type === 'COURSE_NOTES') {
+      const sub = noteGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return sub?.grade ?? null
     }
     if (assignment.type === 'TRANSLATION_EXERCISE') {
       if (assignment.questions.length === 0) {

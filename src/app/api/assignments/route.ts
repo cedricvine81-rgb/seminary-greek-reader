@@ -4,6 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
+import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson, notesFolderName } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -98,10 +99,17 @@ export async function POST(req: NextRequest) {
       maxAppeals: maxAppeals != null && Number(maxAppeals) > 0 ? Number(maxAppeals) : null,
       maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
       vocabSelection: vocabSel ?? undefined,
+      // Course Notes: the folder name each student is given and submits (defaults to the title).
+      notesFolderName: type === 'COURSE_NOTES' ? (String(notesFolderName ?? title).trim() || title) : undefined,
       createdById: payload.sub,
       isPublished: Boolean(isPublished),
     },
   })
+
+  // Course Notes: give every enrolled student the named folder as soon as it's published.
+  if (type === 'COURSE_NOTES' && Boolean(isPublished)) {
+    await ensureCourseNotesFoldersForAssignment(assignment.id)
+  }
 
   // Auto-generate questions
   let questions: Array<{
