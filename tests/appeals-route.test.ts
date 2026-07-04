@@ -26,6 +26,8 @@ jest.mock('@/lib/db', () => ({
   },
 }))
 jest.mock('@/lib/auth', () => ({ getPayload: () => getPayload() }))
+// The subscription paywall gate is covered by its own suite; no-op it here.
+jest.mock('@/lib/subscription', () => ({ requireStudentAccess: async () => null, studentHasAccess: async () => true }))
 jest.mock('@/lib/rate-limit', () => ({ rateLimit: (...a: unknown[]) => rateLimit(...a) }))
 jest.mock('next/cache', () => ({ revalidatePath: jest.fn() }))
 jest.mock('@/lib/logger', () => ({ logError: jest.fn() }))
