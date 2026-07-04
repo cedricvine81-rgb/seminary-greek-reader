@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { Search } from 'lucide-react'
+import { Search, ChevronDown } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -41,6 +41,12 @@ const JOS_SHORT: Record<string, string> = { antiquities: 'Ant', 'jewish-war': 'J
 
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/previous chapter
+
+// Fixed pixel heights for the Book/Chapter/Verse locator rows and column headers. The
+// cascading columns align by offsetting each column's top by (selectedIndex × row height),
+// so every option row must be exactly this tall for the arithmetic to line up.
+const LOCATE_ROW_H = 26
+const LOCATE_HEADER_H = 22
 
 // Highlight every case-insensitive match of `q` inside `text` for the search box.
 function highlight(text: string, q: string): ReactNode {
@@ -93,10 +99,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   const [work, setWork] = useState<CatalogWork | null>(null)
   const [openCat, setOpenCat] = useState<string | null>(null)  // which category's dropdown is expanded
-  // Persistent "locate a passage" columns: Book (Josephus multi-book works only) →
-  // Chapter → Verse. Click-based (not hover), so it doesn't fight with the mouse the way
-  // a cascading hover menu can, and stays visible so a book with many chapters/verses is
-  // easy to scan.
+  // "Locate a passage" cascade, opened by clicking the work title (like the translation
+  // menus). Columns are Book (Josephus multi-book works only) → Chapter → Verse; each new
+  // column appears to the right with its first row aligned to the selected row of the one
+  // before it. Click-based (not hover) so it doesn't fight the mouse as you reach across.
+  const [locateOpen, setLocateOpen] = useState(false)
   const [locateBook, setLocateBook] = useState(1)
   const [locateChapter, setLocateChapter] = useState<number | null>(null)
   const [locateVerseNums, setLocateVerseNums] = useState<number[] | null>(null)
@@ -126,6 +133,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
   const verseRefs = useRef<Record<string, HTMLDivElement>>({})
   const catRowRef = useRef<HTMLDivElement>(null)
+  const locateMenuRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
   const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
@@ -153,6 +161,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [openCat])
+
+  // Close the Book/Chapter/Verse locate cascade on an outside click.
+  useEffect(() => {
+    if (!locateOpen) return
+    function onMouseDown(e: MouseEvent) {
+      if (locateMenuRef.current && !locateMenuRef.current.contains(e.target as Node)) setLocateOpen(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [locateOpen])
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
@@ -309,17 +327,35 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setInitialLoading(false)
 
     const targetKey = q[idx] ? keyFor(q[idx]) : null
-    requestAnimationFrame(() => {
+    // Returns false only when the target row hasn't been committed to the DOM yet, so the
+    // caller can retry on a later frame.
+    const doScroll = (): boolean => {
       const panel = panelRef.current
-      const vTarget = targetKey && verse != null ? verseRefs.current[`${targetKey}.${verse}`] : null
-      const target = vTarget ?? (targetKey ? sectionRefs.current[targetKey] : null)
+      if (!panel) return true
+      if (!targetKey) { panel.scrollTop = 0; return true }
+      const vTarget = verse != null ? verseRefs.current[`${targetKey}.${verse}`] : null
+      const target = vTarget ?? sectionRefs.current[targetKey]
+      if (!target) return false
       // getBoundingClientRect (not offsetTop) — offsetTop is only meaningful relative to
       // the nearest *positioned* ancestor, which isn't necessarily (and here, isn't) the
       // scroll panel itself, so `target.offsetTop - panel.offsetTop` silently measured
       // against the wrong reference frame and could land on the wrong chapter/verse.
-      if (target && panel) panel.scrollTop += target.getBoundingClientRect().top - panel.getBoundingClientRect().top
-      else if (panel) panel.scrollTop = 0
-    })
+      panel.scrollTop += target.getBoundingClientRect().top - panel.getBoundingClientRect().top
+      return true
+    }
+    // The target row may not be laid out on the very next frame, and the Greek web-font
+    // reflows the text after it finishes loading — either of which can leave the jump a
+    // chapter or several verses off. So retry until the row exists, correct once more on
+    // the following frame, and re-align after the font is ready.
+    let tries = 0
+    const attempt = () => {
+      if (!doScroll() && tries++ < 20) { requestAnimationFrame(attempt); return }
+      requestAnimationFrame(doScroll)
+    }
+    requestAnimationFrame(attempt)
+    if (typeof document !== 'undefined' && document.fonts?.ready) {
+      document.fonts.ready.then(() => requestAnimationFrame(doScroll))
+    }
   }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
   // Fetches a chapter's verse/section numbers for the Verse locate column — cheap enough
@@ -378,6 +414,42 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (!work || locateChapter == null) return
     const book = work.source === 'josephus' ? locateBook : undefined
     void openAt(work, book, locateChapter, verse)
+    setLocateOpen(false)
+  }
+
+  // Build the cascade's columns (Book → Chapter → Verse) in order. Each column's top is
+  // offset by the selected row of the one before it, so the new column's first row lines
+  // up with what you just clicked. Row heights are fixed (LOCATE_ROW_H), so the offset is
+  // simply selectedIndex × row height; the uniform header height cancels out.
+  type LocateItem = { n: number; selected: boolean; onClick: () => void }
+  type LocateColumn = { key: string; label: string; marginTop: number; items: 'loading' | LocateItem[] }
+  function buildLocateColumns(): LocateColumn[] {
+    if (!work) return []
+    const cols: LocateColumn[] = []
+    const bookPresent = work.source === 'josephus' && work.books!.length > 1
+    const chapterCount = work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)
+    const chPresent = chapterCount > 1
+    const bookOffset = bookPresent ? (locateBook - 1) * LOCATE_ROW_H : 0
+    const chOffset = bookOffset + (chPresent ? ((locateChapter ?? 1) - 1) * LOCATE_ROW_H : 0)
+
+    if (bookPresent) {
+      cols.push({
+        key: 'book', label: 'Book', marginTop: 0,
+        items: work.books!.map((_, i) => ({ n: i + 1, selected: locateBook === i + 1, onClick: () => selectLocateBook(i + 1) })),
+      })
+    }
+    if (chPresent) {
+      cols.push({
+        key: 'ch', label: 'Ch.', marginTop: bookOffset,
+        items: Array.from({ length: chapterCount }, (_, i) => ({ n: i + 1, selected: locateChapter === i + 1, onClick: () => selectLocateChapter(i + 1) })),
+      })
+    }
+    cols.push({
+      key: 'vs', label: 'Vs.', marginTop: chOffset,
+      items: locateVerseNums === null ? 'loading'
+        : locateVerseNums.map(vn => ({ n: vn, selected: false, onClick: () => selectLocateVerse(vn) })),
+    })
+    return cols
   }
 
   const q = search.trim().toLowerCase()
@@ -435,55 +507,51 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       <div className="flex-1 min-h-0 flex flex-col gap-3">
         {work && (
           <div className="flex-none flex flex-wrap items-center gap-2">
-            {/* Hovering the title reveals the Book/Chapter/Verse locator as a floating
-                overlay (absolute, not in flow) so it never pushes the reading pane down —
-                it only takes up space while you're actually using it. */}
-            <div className="relative group">
-              <span className="text-sm font-semibold text-gray-800 cursor-default">{work.name}</span>
-              <div className="hidden group-hover:flex absolute left-0 top-full z-30 items-start gap-2 bg-white border border-gray-200 rounded-lg shadow-lg p-2 mt-1">
-                {work.source === 'josephus' && work.books!.length > 1 && (
-                  <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-                    <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Book</p>
-                    {work.books!.map((_, i) => {
-                      const b = i + 1
-                      return (
-                        <button key={b} type="button" onClick={() => selectLocateBook(b)}
-                          className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateBook === b ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
-                          {b}
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
+            {/* Click the work title to drop down the Book/Chapter/Verse locate cascade
+                (same click-to-open pattern as the category menus above). Each column
+                appears to the right of the last, its first row aligned with the row you
+                just selected. Absolutely positioned so it never pushes the reading pane. */}
+            <div className="relative" ref={locateMenuRef}>
+              <button
+                type="button"
+                onClick={() => setLocateOpen(o => !o)}
+                className={`inline-flex items-center gap-1 rounded px-1 text-sm font-semibold transition-colors ${locateOpen ? 'text-brand-800' : 'text-gray-800 hover:text-brand-700'}`}
+              >
+                {work.name}
+                <ChevronDown size={14} className={`text-gray-400 transition-transform ${locateOpen ? 'rotate-180' : ''}`} />
+              </button>
 
-                {(work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)) > 1 && (
-                  <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-                    <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Ch.</p>
-                    {Array.from({ length: work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1) }, (_, i) => i + 1).map(c => (
-                      <button key={c} type="button" onClick={() => selectLocateChapter(c)}
-                        className={`w-full text-left px-2 py-1 text-xs transition-colors ${locateChapter === c ? 'bg-brand-100 text-brand-800' : 'text-gray-600 hover:bg-gray-50'}`}>
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                <div className="w-16 shrink-0 rounded-lg border border-gray-200 max-h-40 overflow-y-auto">
-                  <p className="sticky top-0 bg-gray-50 px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400 border-b border-gray-100">Vs.</p>
-                  {locateVerseNums === null ? (
-                    <p className="px-2 py-1 text-xs text-gray-300 italic">…</p>
-                  ) : locateVerseNums.length === 0 ? (
-                    <p className="px-2 py-1 text-xs text-gray-300 italic">—</p>
-                  ) : (
-                    locateVerseNums.map(vn => (
-                      <button key={vn} type="button" onClick={() => selectLocateVerse(vn)}
-                        className="w-full text-left px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 transition-colors">
-                        {vn}
-                      </button>
-                    ))
-                  )}
+              {locateOpen && (
+                <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
+                  {buildLocateColumns().map(col => (
+                    <div key={col.key} style={{ marginTop: col.marginTop }} className="w-14 shrink-0">
+                      <p
+                        className="px-2 text-[10px] font-semibold uppercase tracking-wide text-gray-400"
+                        style={{ height: LOCATE_HEADER_H, lineHeight: `${LOCATE_HEADER_H}px` }}
+                      >
+                        {col.label}
+                      </p>
+                      {col.items === 'loading' ? (
+                        <p className="px-2 text-xs text-gray-300 italic" style={{ height: LOCATE_ROW_H, lineHeight: `${LOCATE_ROW_H}px` }}>…</p>
+                      ) : col.items.length === 0 ? (
+                        <p className="px-2 text-xs text-gray-300 italic" style={{ height: LOCATE_ROW_H, lineHeight: `${LOCATE_ROW_H}px` }}>—</p>
+                      ) : (
+                        col.items.map(it => (
+                          <button
+                            key={it.n}
+                            type="button"
+                            onClick={it.onClick}
+                            style={{ height: LOCATE_ROW_H }}
+                            className={`flex w-full items-center px-2 text-left text-xs transition-colors ${it.selected ? 'bg-brand-100 text-brand-800 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
+                          >
+                            {it.n}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  ))}
                 </div>
-              </div>
+              )}
             </div>
 
             {isGreek && hasEnglish && (
