@@ -39,6 +39,15 @@ const EMPTY_SERIES: Series = { sections: [], queueIdx: 0, backIdx: -1, done: tru
 // Short, readable note-anchor prefixes for Josephus works (book string = "Ant.18" etc.).
 const JOS_SHORT: Record<string, string> = { antiquities: 'Ant', 'jewish-war': 'JW', 'against-apion': 'AgAp', life: 'Life' }
 
+// Display names for the parallel translations a Greek work can show alongside it.
+const TRANSLATION_LABELS: Record<string, string> = { brenton: 'Brenton (1851)', bsb: 'Berean Standard Bible' }
+// The parallel translations available for a work. Only Greek (LXX) works carry one, and
+// each currently provides a single option; returning a list keeps the menu ready for more.
+function translationsFor(w: CatalogWork | null): { id: string; label: string }[] {
+  if (!w || w.source !== 'lxx' || !w.english) return []
+  return [{ id: w.english, label: TRANSLATION_LABELS[w.english] ?? w.english }]
+}
+
 const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/previous chapter
 
@@ -111,7 +120,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [series, setSeries] = useState<Series>(EMPTY_SERIES)
   const [initialLoading, setInitialLoading] = useState(false)
-  const [showEnglish, setShowEnglish] = useState(true)
+  // Which parallel translation is shown next to the Greek, or null for "No translation".
+  const [translationId, setTranslationId] = useState<string | null>(null)
+  const [translationMenuOpen, setTranslationMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
 
   // Parsing window (Greek only)
@@ -134,6 +145,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const verseRefs = useRef<Record<string, HTMLDivElement>>({})
   const catRowRef = useRef<HTMLDivElement>(null)
   const locateMenuRef = useRef<HTMLDivElement>(null)
+  const translationMenuRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
   const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
@@ -142,6 +154,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   const isGreek = work?.source === 'lxx'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
+  const availableTranslations = translationsFor(work)
+  const showEnglish = translationId !== null
+  const currentTranslationLabel = translationId
+    ? (availableTranslations.find(t => t.id === translationId)?.label ?? 'Translation')
+    : 'No translation'
 
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
     if (!isAuthenticated) return
@@ -171,6 +188,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [locateOpen])
+
+  // Close the translation picker on an outside click.
+  useEffect(() => {
+    if (!translationMenuOpen) return
+    function onMouseDown(e: MouseEvent) {
+      if (translationMenuRef.current && !translationMenuRef.current.contains(e.target as Node)) setTranslationMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [translationMenuOpen])
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
@@ -371,7 +398,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setShowEnglish(true); setOpenCat(null)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
     setLocateBook(1); setLocateChapter(1)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
     loadLocateVerses(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -385,7 +412,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === '2esdras')
     if (!w) return
-    setWork(w); setShowEnglish(true); setOpenCat(null)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     void openAt(w, target.book, target.chapter, target.verse)
     loadLocateVerses(w, target.book, target.chapter)
@@ -554,13 +581,40 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               )}
             </div>
 
-            {isGreek && hasEnglish && (
-              <button
-                onClick={() => setShowEnglish(v => !v)}
-                className={`rounded border px-2 py-1 text-xs font-medium transition-colors ${showEnglish ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
-              >
-                {showEnglish ? 'Hide English' : 'Show English'}
-              </button>
+            {isGreek && availableTranslations.length > 0 && (
+              <div className="relative" ref={translationMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setTranslationMenuOpen(o => !o)}
+                  className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs font-medium transition-colors ${
+                    translationMenuOpen || showEnglish ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+                >
+                  {currentTranslationLabel}
+                  <ChevronDown size={13} className={`transition-transform ${translationMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {translationMenuOpen && (
+                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[10rem] rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                    <button
+                      type="button"
+                      onClick={() => { setTranslationId(null); setTranslationMenuOpen(false) }}
+                      className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                    >
+                      No translation
+                    </button>
+                    {availableTranslations.map(t => (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => { setTranslationId(t.id); setTranslationMenuOpen(false) }}
+                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        {t.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             )}
 
             <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
