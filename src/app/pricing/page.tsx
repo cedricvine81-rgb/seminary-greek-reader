@@ -36,22 +36,27 @@ export default function PricingPage() {
         </section>
 
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-2">3. Instructors and Administrators</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-2">3. How to Cancel</h2>
+          <p>You can cancel automatic renewal at any time by signing in and going to <strong>Settings → Subscription → Cancel Subscription</strong>. Cancelling stops future billing only — you keep full access through the end of your current paid period, and no refund is issued for time already paid. See our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for full details.</p>
+        </section>
+
+        <section>
+          <h2 className="text-base font-semibold text-gray-900 mb-2">4. Instructors and Administrators</h2>
           <p>Instructor and administrator accounts are not subject to this subscription fee.</p>
         </section>
 
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-2">4. Existing Students</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-2">5. Existing Students</h2>
           <p>Student accounts created before this pricing policy took effect are grandfathered and retain full access at no charge.</p>
         </section>
 
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-2">5. Changes to Pricing</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-2">6. Changes to Pricing</h2>
           <p>We may change the subscription price or terms for future billing periods. Any change will be reflected on this page before it takes effect. See our <Link href="/terms" className="text-brand-600 hover:underline">Terms of Service</Link> and <Link href="/privacy" className="text-brand-600 hover:underline">Privacy Policy</Link> for the rest of our policies.</p>
         </section>
 
         <section>
-          <h2 className="text-base font-semibold text-gray-900 mb-2">6. Contact</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-2">7. Contact</h2>
           <p>Questions about pricing can be directed to the site administrator.</p>
         </section>
       </div>
