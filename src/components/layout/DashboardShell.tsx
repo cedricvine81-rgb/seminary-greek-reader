@@ -5,6 +5,7 @@ import { MobileNav } from './MobileNav'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { userMustChangePassword } from '@/lib/must-change-password'
+import { studentHasAccess } from '@/lib/subscription'
 
 interface DashboardShellProps {
   role: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
@@ -45,6 +46,13 @@ export async function DashboardShell({
   const shellPayload = shellToken ? verifyToken(shellToken) : null
   if (shellPayload && await userMustChangePassword(shellPayload.sub)) {
     redirect('/auth/change-password?required=1')
+  }
+
+  // Same chokepoint blocks students without an active (or grandfathered) subscription.
+  // Checked against the real logged-in role, not the `role` prop — an instructor
+  // previewing student pages passes role="STUDENT" but must never be paywalled.
+  if (shellPayload?.role === 'STUDENT' && !await studentHasAccess(shellPayload.sub)) {
+    redirect('/subscribe')
   }
 
   let pendingRequests = pendingCount ?? 0

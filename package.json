@@ -17,6 +17,7 @@
     "data:nestle1904": "node scripts/import-nestle1904.js"
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.6.4",
     "@prisma/client": "^5.10.2",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.39.7",

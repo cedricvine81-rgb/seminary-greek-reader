@@ -8,6 +8,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/search',
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
+  '/api/webhooks/paddle', // Paddle calls this with no session cookie — trust is via HMAC signature instead
 ]
 
 // Routes that require ADMIN role

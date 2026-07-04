@@ -4,6 +4,9 @@ import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie
 import { rateLimit } from '@/lib/rate-limit'
 import type { Role } from '@/types/auth'
 
+// Bump whenever /terms is materially revised, so we know whose consent is stale.
+const TERMS_VERSION = '2026-07'
+
 /** Best-effort client IP for rate-limiting (Vercel sets x-forwarded-for). */
 function clientIp(req: NextRequest): string {
   return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
@@ -16,7 +19,7 @@ export async function POST(req: NextRequest) {
     const ip = clientIp(req)
 
     if (action === 'signup') {
-      const { firstName, surname, email, password, institution, role } = body
+      const { firstName, surname, email, password, institution, role, personalEmail, messagingConsent, terms } = body
 
       // Throttle account creation per IP to prevent spam registration
       const rl = rateLimit(`signup:${ip}`, 5, 3_600_000)
@@ -41,6 +44,20 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Invalid role.' }, { status: 400 })
       }
 
+      // Students must provide a personal (non-institutional) contact email, distinct
+      // from their login email, and accept the Terms of Service.
+      if (role === 'STUDENT') {
+        if (!personalEmail || typeof personalEmail !== 'string') {
+          return NextResponse.json({ error: 'A personal email address is required.' }, { status: 400 })
+        }
+        if (personalEmail.trim().toLowerCase() === String(email).trim().toLowerCase()) {
+          return NextResponse.json({ error: 'Personal email must differ from your institutional email.' }, { status: 400 })
+        }
+      }
+      if (!terms) {
+        return NextResponse.json({ error: 'You must accept the Terms of Service to continue.' }, { status: 400 })
+      }
+
       const existing = await prisma.user.findUnique({ where: { email } })
       if (existing) return NextResponse.json({ error: 'Email already in use.' }, { status: 409 })
 
@@ -52,6 +69,10 @@ export async function POST(req: NextRequest) {
           firstName, surname, email, password: hashed,
           role: role as Role, institution,
           approved: !isInstructor, // students auto-approved; instructors pending
+          personalEmail: role === 'STUDENT' ? personalEmail.trim() : undefined,
+          messagingConsent: role === 'STUDENT' ? !!messagingConsent : undefined,
+          termsAcceptedAt: new Date(),
+          termsVersion: TERMS_VERSION,
         },
       })
 

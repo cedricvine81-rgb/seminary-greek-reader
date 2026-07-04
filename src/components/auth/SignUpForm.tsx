@@ -119,6 +119,7 @@ interface FieldErrors {
   firstName?: string
   surname?: string
   email?: string
+  personalEmail?: string
   password?: string
   confirmPassword?: string
   terms?: string
@@ -131,6 +132,15 @@ function validate(form: typeof INITIAL_FORM, role: Role, terms: boolean): FieldE
   if (!form.email.trim())                errors.email     = 'Required.'
   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
                                          errors.email     = 'Enter a valid email address.'
+  // Students need a personal email so we can stay in touch after they graduate —
+  // instructor accounts don't have this requirement.
+  if (role === 'STUDENT') {
+    if (!form.personalEmail.trim())      errors.personalEmail = 'Required.'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.personalEmail))
+                                         errors.personalEmail = 'Enter a valid email address.'
+    else if (form.personalEmail.trim().toLowerCase() === form.email.trim().toLowerCase())
+                                         errors.personalEmail = 'Use a different address than your institutional email.'
+  }
   if (!form.password)                    errors.password  = 'Required.'
   else if (strength(form.password) < 2) errors.password  = 'Password is too weak.'
   if (!form.confirmPassword)             errors.confirmPassword = 'Required.'
@@ -141,7 +151,7 @@ function validate(form: typeof INITIAL_FORM, role: Role, terms: boolean): FieldE
 }
 
 const INITIAL_FORM = {
-  firstName: '', surname: '', email: '', institution: '', password: '', confirmPassword: '',
+  firstName: '', surname: '', email: '', personalEmail: '', institution: '', password: '', confirmPassword: '',
 }
 
 export function SignUpForm() {
@@ -153,6 +163,7 @@ export function SignUpForm() {
   const [form, setForm] = useState(INITIAL_FORM)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [terms, setTerms] = useState(false)
+  const [messagingConsent, setMessagingConsent] = useState(false)
   const [touched, setTouched] = useState<Partial<Record<keyof typeof INITIAL_FORM, boolean>>>({})
   const [institutions, setInstitutions] = useState<string[]>([])
 
@@ -183,7 +194,7 @@ export function SignUpForm() {
     if (Object.keys(errors).length > 0) {
       setFieldErrors(errors)
       // Mark all fields as touched so errors show
-      setTouched({ firstName: true, surname: true, email: true, password: true, confirmPassword: true })
+      setTouched({ firstName: true, surname: true, email: true, personalEmail: true, password: true, confirmPassword: true })
       return
     }
 
@@ -192,7 +203,7 @@ export function SignUpForm() {
       const res = await fetch('/api/auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'signup', role, ...form }),
+        body: JSON.stringify({ action: 'signup', role, ...form, terms, messagingConsent }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Sign-up failed')
@@ -201,7 +212,7 @@ export function SignUpForm() {
         setPendingMessage(data.message ?? 'Your account is awaiting admin approval.')
         return
       }
-      router.push(role === 'INSTRUCTOR' ? '/instructor' : '/student')
+      router.push(role === 'INSTRUCTOR' ? '/instructor' : '/subscribe')
       router.refresh()
     } catch (err) {
       setServerError(err instanceof Error ? err.message : 'Sign-up failed')
@@ -263,6 +274,25 @@ export function SignUpForm() {
         placeholder="jane@seminary.edu"
         error={touched.email ? fieldErrors.email : undefined}
       />
+
+      {/* Personal email — students only, contact-only, never a login credential */}
+      {role === 'STUDENT' && (
+        <Input
+          label="Personal email address"
+          type="email"
+          required
+          value={form.personalEmail}
+          onChange={set('personalEmail')}
+          onBlur={blur('personalEmail')}
+          placeholder="jane@gmail.com"
+          error={touched.personalEmail ? fieldErrors.personalEmail : undefined}
+        />
+      )}
+      {role === 'STUDENT' && !fieldErrors.personalEmail && (
+        <p className="-mt-3 text-xs text-gray-400">
+          A non-institutional address so we can stay in touch after you graduate. Never used to sign in.
+        </p>
+      )}
 
       {/* Institution — pick from instructor-created list only */}
       <div>
@@ -334,6 +364,23 @@ export function SignUpForm() {
           <p className="mt-1 text-xs text-red-600">{fieldErrors.terms}</p>
         )}
       </div>
+
+      {/* Messaging consent — students only, opt-in, defaults off */}
+      {role === 'STUDENT' && (
+        <div>
+          <label className="flex items-start gap-2.5 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={messagingConsent}
+              onChange={e => setMessagingConsent(e.target.checked)}
+              className="mt-0.5 h-4 w-4 rounded border-gray-300 text-brand-600 focus:ring-brand-500 shrink-0"
+            />
+            <span className="text-sm text-gray-600 leading-snug">
+              Let coursemates see my email address when they message me. (Optional — you can change this anytime in settings. Admins can always see all messages.)
+            </span>
+          </label>
+        </div>
+      )}
 
       {/* Server error */}
       {serverError && (

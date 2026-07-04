@@ -6,10 +6,11 @@ import { isInstructorOfCourse } from '@/lib/course-auth'
 import { rateLimit } from '@/lib/rate-limit'
 import { logError } from '@/lib/logger'
 
-type Participant = { id: string; firstName: string; surname: string; title: string | null }
+type Participant = { id: string; firstName: string; surname: string; title: string | null; email?: string }
 
 // GET /api/messages — conversation threads the current user is part of (either role).
-// Each thread is a 1:1 conversation between an instructor and a student.
+// Each thread is a 1:1 conversation between an instructor and a student, or — when
+// the recipient has opted in — between two students in the same course.
 export async function GET(_req: NextRequest) {
   try {
     const payload = getPayload()
@@ -24,8 +25,8 @@ export async function GET(_req: NextRequest) {
         id: true, subject: true, body: true, threadId: true, broadcastId: true, readAt: true, createdAt: true,
         senderId: true, recipientId: true,
         course: { select: { id: true, name: true } },
-        sender: { select: { id: true, firstName: true, surname: true, title: true } },
-        recipient: { select: { id: true, firstName: true, surname: true, title: true } },
+        sender: { select: { id: true, firstName: true, surname: true, title: true, role: true, email: true, messagingConsent: true } },
+        recipient: { select: { id: true, firstName: true, surname: true, title: true, role: true, email: true, messagingConsent: true } },
       },
     })
 
@@ -39,7 +40,14 @@ export async function GET(_req: NextRequest) {
 
     for (const m of messages) {
       const key = m.threadId ?? m.id
-      const other = m.senderId === me ? m.recipient : m.sender
+      const otherRaw = m.senderId === me ? m.recipient : m.sender
+      // The other party's own consent governs whether I get to see their email —
+      // it's their choice to reveal it, not mine to request it.
+      const revealEmail = otherRaw.role === 'STUDENT' && otherRaw.messagingConsent
+      const other: Participant = {
+        id: otherRaw.id, firstName: otherRaw.firstName, surname: otherRaw.surname, title: otherRaw.title,
+        email: revealEmail ? otherRaw.email : undefined,
+      }
       const existing = threads.get(key)
       const isUnread = m.recipientId === me && m.readAt === null
       if (!existing) {
@@ -103,7 +111,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Subject must be 200 characters or fewer.' }, { status: 400 })
     }
 
-    // ── Student-initiated message → goes to the course's instructor only ──
+    // ── Student-initiated message → the course's instructor by default, or a
+    //    coursemate who has opted in to being messaged (recipientId provided) ──
     if (payload.role === 'STUDENT') {
       const enrollment = await prisma.enrollment.findFirst({
         where: { courseId, userId: payload.sub, status: 'APPROVED' },
@@ -117,11 +126,26 @@ export async function POST(req: NextRequest) {
       })
       if (!course) return NextResponse.json({ error: 'Course not found.' }, { status: 404 })
 
+      let targetId = course.instructorId
+      if (recipientId && recipientId !== course.instructorId) {
+        // Messaging a classmate directly — only allowed if they're an approved,
+        // opted-in student enrolled in the same course.
+        const target = await prisma.user.findFirst({
+          where: {
+            id: recipientId, role: 'STUDENT', deletedAt: null, messagingConsent: true,
+            enrollments: { some: { courseId, status: 'APPROVED' } },
+          },
+          select: { id: true },
+        })
+        if (!target) return NextResponse.json({ error: 'That classmate is not available to message.' }, { status: 403 })
+        targetId = target.id
+      }
+
       await prisma.message.create({
         data: {
           courseId,
           senderId: payload.sub,
-          recipientId: course.instructorId,
+          recipientId: targetId,
           subject: subject.trim(),
           body: body.trim(),
         },

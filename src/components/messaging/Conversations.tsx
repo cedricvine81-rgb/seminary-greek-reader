@@ -11,19 +11,27 @@ import { Mail, MailOpen, PenSquare, CheckCircle2, Trash2, Megaphone } from 'luci
 import { format } from 'date-fns'
 
 interface ComposeCourse { id: string; name: string }
+interface Classmate { id: string; firstName: string; surname: string; title: string | null; email: string }
 
-// Compose box for students to start a new conversation with a course's instructor
+// Compose box for students to start a new conversation with a course's instructor,
+// or — when a coursemate has opted in to messaging — directly with that classmate.
 function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: () => void }) {
   const [open, setOpen] = useState(false)
   const [courseId, setCourseId] = useState(courses[0]?.id ?? '')
+  const [recipientId, setRecipientId] = useState('')
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [done, setDone] = useState(false)
 
+  const { data: classmatesData } = useApi<{ classmates: Classmate[] }>(
+    open && courseId ? `/api/courses/${courseId}/classmates` : null
+  )
+  const classmates = classmatesData?.classmates ?? []
+
   function reset() {
-    setCourseId(courses[0]?.id ?? ''); setSubject(''); setBody(''); setError(''); setDone(false)
+    setCourseId(courses[0]?.id ?? ''); setRecipientId(''); setSubject(''); setBody(''); setError(''); setDone(false)
   }
 
   async function send() {
@@ -36,7 +44,7 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
       const res = await fetch('/api/messages', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ courseId, subject, body }),
+        body: JSON.stringify({ courseId, recipientId: recipientId || undefined, subject, body }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) { setError(data.error ?? 'Failed to send message.'); return }
@@ -54,11 +62,11 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
       <Button size="sm" onClick={() => { reset(); setOpen(true) }} className="flex items-center gap-1.5">
         <PenSquare size={14} /> New Message
       </Button>
-      <Modal open={open} onClose={() => setOpen(false)} title="Message your instructor" size="lg">
+      <Modal open={open} onClose={() => setOpen(false)} title="New message" size="lg">
         {done ? (
           <div className="text-center py-6 space-y-3">
             <CheckCircle2 size={36} className="text-green-500 mx-auto" />
-            <p className="text-sm text-gray-700">Your message has been sent to your instructor.</p>
+            <p className="text-sm text-gray-700">Your message has been sent.</p>
             <div className="flex justify-center gap-2">
               <Button size="sm" variant="secondary" onClick={reset}>Send another</Button>
               <Button size="sm" onClick={() => setOpen(false)}>Done</Button>
@@ -69,8 +77,17 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
             <Select
               label="Course"
               value={courseId}
-              onChange={e => setCourseId(e.target.value)}
+              onChange={e => { setCourseId(e.target.value); setRecipientId('') }}
               options={courses.map(c => ({ value: c.id, label: c.name }))}
+            />
+            <Select
+              label="To"
+              value={recipientId}
+              onChange={e => setRecipientId(e.target.value)}
+              options={[
+                { value: '', label: 'Your instructor' },
+                ...classmates.map(c => ({ value: c.id, label: `${fullName(c)} (classmate)` })),
+              ]}
             />
             <Input label="Subject" value={subject} onChange={e => setSubject(e.target.value)} placeholder="e.g. Question about week 5" maxLength={200} />
             <div>
@@ -79,7 +96,7 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
                 value={body}
                 onChange={e => setBody(e.target.value)}
                 rows={6}
-                placeholder="Write your message to the instructor…"
+                placeholder="Write your message…"
                 className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>

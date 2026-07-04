@@ -16,6 +16,16 @@ enum Role {
   ADMIN
 }
 
+// Paddle-backed subscription lifecycle for the $10/yr student paywall.
+// NONE = never subscribed (blocked). GRANDFATHERED = pre-paywall student, exempt for life.
+enum SubscriptionStatus {
+  NONE
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  GRANDFATHERED
+}
+
 model User {
   id          String   @id @default(cuid())
   firstName   String
@@ -37,6 +47,31 @@ model User {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
+  // Personal (non-institutional) email — contact-only, never a login credential.
+  // Lets us stay in touch with students after they graduate and their institutional
+  // address is deactivated. Required for new sign-ups; nullable for pre-existing accounts.
+  personalEmail   String?
+  termsAcceptedAt DateTime?
+  // Version string of the Terms of Service the user agreed to (e.g. "2026-07"), so we
+  // know whose consent is stale if the terms are materially revised later.
+  termsVersion    String?
+  // Opt-in (default false): lets coursemates see this user's email address when
+  // messaging them directly. Independent of admin visibility, which always applies.
+  messagingConsent Boolean @default(false)
+
+  // ── Paddle subscription state ($10/yr, students only) ──
+  // Never trust a client-side read of this field alone — every protected route/action
+  // must re-check it server-side. Updated only by the Paddle webhook handler.
+  subscriptionStatus         SubscriptionStatus @default(NONE)
+  paddleCustomerId           String?
+  paddleSubscriptionId       String?
+  subscriptionCurrentPeriodEnd DateTime?
+  // True once the student has scheduled a cancellation — the subscription stays ACTIVE
+  // (full access, no refund for time already paid) until subscriptionCurrentPeriodEnd,
+  // when Paddle sends the final `subscription.canceled` webhook and subscriptionStatus
+  // flips to CANCELED. Written only by the webhook handler, same as subscriptionStatus.
+  subscriptionCancelAtPeriodEnd Boolean @default(false)
+
   instructorCourses  Course[]              @relation("InstructorCourses")
   coInstructorOf     CourseCoInstructor[]
   enrollments        Enrollment[]
@@ -56,6 +91,8 @@ model User {
   highlights         Highlight[]
 
   @@index([email])
+  @@index([paddleCustomerId])
+  @@index([paddleSubscriptionId])
 }
 
 // ─── Institutions ────────────────────────────────────────────────
