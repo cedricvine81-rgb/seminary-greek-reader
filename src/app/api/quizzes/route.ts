@@ -5,11 +5,13 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { gradeResponse, getAssignmentScore } from '@/lib/grading'
 import { rateLimit } from '@/lib/rate-limit'
+import { requireStudentAccess } from '@/lib/subscription'
 
 export async function POST(req: NextRequest) {
   try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   // Throttle quiz submissions per user (guards against rapid duplicate submits)
   const rl = rateLimit(`quiz-submit:${payload.sub}`, 10, 60_000)

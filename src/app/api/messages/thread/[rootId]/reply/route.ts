@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // POST /api/messages/thread/[rootId]/reply — reply within a conversation.
 // Either participant (the instructor or the student) may reply.
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest, { params }: { params: { rootId: str
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub
     const { rootId } = params
 

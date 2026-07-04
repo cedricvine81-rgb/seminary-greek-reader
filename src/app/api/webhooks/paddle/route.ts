@@ -51,8 +51,11 @@ export async function POST(req: NextRequest) {
     }
 
     if (event_type === 'subscription.canceled') {
+      // Match the specific subscription, not just the user: if the student already
+      // resubscribed (a new paddleSubscriptionId is stored), a late `canceled` event
+      // for the OLD subscription must not flip their new active one to CANCELED.
       await prisma.user.updateMany({
-        where: { id: userId },
+        where: { id: userId, paddleSubscriptionId: data.id },
         data: { subscriptionStatus: 'CANCELED', subscriptionCancelAtPeriodEnd: false },
       })
     } else {

@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
 import { highlightsForPassage, createHighlight, updateHighlightColor, deleteHighlight } from '@/lib/highlights'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET: highlights for a passage — ?book=&chapter=&verseStart=&verseEnd=
 export async function GET(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const p = req.nextUrl.searchParams
     const book = p.get('book')
     const chapter = Number(p.get('chapter'))
@@ -26,6 +28,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
     if (!b.book || !b.chapter || !b.verse || b.startOffset == null || b.endOffset == null) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
@@ -45,6 +48,7 @@ export async function PATCH(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
     const b = await req.json()
@@ -61,6 +65,7 @@ export async function DELETE(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
     await deleteHighlight(payload.sub, id)

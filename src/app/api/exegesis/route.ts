@@ -3,6 +3,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/exegesis — list sessions, or look up by assignmentId
 // ?assignmentId=xxx  →  returns the session for that assignment (if any)
@@ -10,6 +11,7 @@ export async function GET(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const assignmentId = req.nextUrl.searchParams.get('assignmentId')
 
@@ -43,6 +45,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     // Throttle session creation per user
     const rl = rateLimit(`exegesis-create:${payload.sub}`, 15, 60_000)

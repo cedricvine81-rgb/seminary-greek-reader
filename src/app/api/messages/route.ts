@@ -5,6 +5,7 @@ import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
 import { rateLimit } from '@/lib/rate-limit'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 
 type Participant = { id: string; firstName: string; surname: string; title: string | null; email?: string }
 
@@ -15,6 +16,7 @@ export async function GET(_req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const me = payload.sub
     // Exclude messages this user has deleted from their own side.
@@ -93,6 +95,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     // Throttle to prevent accidental/abusive bulk sends
     const rl = rateLimit(`messages-send:${payload.sub}`, 30, 60_000)

@@ -4,12 +4,14 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // POST /api/exegesis/[id]/submit — mark an exegesis session as submitted for its assignment
 export async function POST(_req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     // Throttle submit attempts per user
     const rl = rateLimit(`exegesis-submit:${payload.sub}`, 10, 60_000)

@@ -10,11 +10,13 @@ import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
+import { requireStudentAccess } from '@/lib/subscription'
 
 export async function GET(req: NextRequest) {
   try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   const { searchParams } = req.nextUrl
   const courseId = searchParams.get('courseId')

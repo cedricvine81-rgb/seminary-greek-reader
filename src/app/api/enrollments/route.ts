@@ -3,6 +3,7 @@ import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
+import { requireStudentAccess } from '@/lib/subscription'
 import { rateLimit } from '@/lib/rate-limit'
 
 // GET /api/enrollments — available courses (for students, filtered by institution)
@@ -12,6 +13,7 @@ export async function GET() {
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   const student = await prisma.user.findUnique({
     where: { id: payload.sub },
@@ -51,6 +53,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   // Throttle enrollment requests per student
   const rl = rateLimit(`enroll:${payload.sub}`, 10, 60_000)
@@ -104,6 +107,7 @@ export async function DELETE(req: NextRequest) {
   if (!payload || payload.role !== 'STUDENT') {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   const { courseId } = await req.json()
   if (!courseId) return NextResponse.json({ error: 'courseId is required' }, { status: 400 })

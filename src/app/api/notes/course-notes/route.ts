@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
 import { getCourseNotesForStudent, submitCourseNotes } from '@/lib/notes'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET: the signed-in student's Course Notes assignments (with auto-provisioned folder +
 // submission status). Provisions any missing folders as a side effect.
@@ -9,6 +10,7 @@ export async function GET() {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const entries = await getCourseNotesForStudent(payload.sub)
     return NextResponse.json({ entries })
   } catch (err) {
@@ -22,6 +24,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
     if (!b.assignmentId) return NextResponse.json({ error: 'Missing assignmentId' }, { status: 400 })
     const sub = await submitCourseNotes(payload.sub, String(b.assignmentId))

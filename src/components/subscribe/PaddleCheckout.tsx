@@ -21,6 +21,10 @@ export function PaddleCheckout({ userId, email }: { userId: string; email: strin
   const [phase, setPhase] = useState<Phase>('idle')
   const [error, setError] = useState('')
   const paddleRef = useRef<Paddle | undefined>(undefined)
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  // Stop polling if the student navigates away mid-activation.
+  useEffect(() => () => { if (pollRef.current) clearInterval(pollRef.current) }, [])
 
   useEffect(() => {
     if (!CLIENT_TOKEN) {
@@ -50,6 +54,7 @@ export function PaddleCheckout({ userId, email }: { userId: string; email: strin
 
   function pollForActivation() {
     const startedAt = Date.now()
+    if (pollRef.current) clearInterval(pollRef.current)
     const interval = setInterval(async () => {
       try {
         const res = await fetch('/api/subscription')
@@ -68,6 +73,7 @@ export function PaddleCheckout({ userId, email }: { userId: string; email: strin
         setPhase('timed-out')
       }
     }, POLL_INTERVAL_MS)
+    pollRef.current = interval
   }
 
   function openCheckout() {

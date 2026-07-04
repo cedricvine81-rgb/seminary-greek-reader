@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/messages/thread/[rootId] — full conversation, and mark messages addressed
 // to the current user as read. rootId = the thread's root message id.
@@ -9,6 +10,7 @@ export async function GET(_req: NextRequest, { params }: { params: { rootId: str
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub
     const { rootId } = params
 
@@ -68,6 +70,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: { rootId: 
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
     const me = payload.sub
     const { rootId } = params
     const now = new Date()

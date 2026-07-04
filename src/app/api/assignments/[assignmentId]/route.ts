@@ -7,6 +7,7 @@ import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/assignments/[assignmentId] — fetch a single assignment (students can read published ones)
 export async function GET(
@@ -16,6 +17,7 @@ export async function GET(
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const assignment = await prisma.assignment.findUnique({
       where: { id: params.assignmentId },

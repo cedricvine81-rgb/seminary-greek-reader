@@ -3,11 +3,13 @@ import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
 import { getFlashcardDeck, upsertProgress } from '@/lib/flashcards'
 import type { FrequencyLevel } from '@/types/flashcard'
+import { requireStudentAccess } from '@/lib/subscription'
 
 export async function GET(req: NextRequest) {
   try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   const level = (req.nextUrl.searchParams.get('level') ?? 'BEGINNING') as FrequencyLevel
   const cards = await getFlashcardDeck(level, payload.sub)
@@ -23,6 +25,7 @@ export async function POST(req: NextRequest) {
   try {
   const payload = getPayload()
   if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const gate = await requireStudentAccess(payload); if (gate) return gate
 
   const body = await req.json()
   const { flashcardId, easeFactor, interval, repetitions, nextReviewDate } = body

@@ -4,6 +4,7 @@ import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
+import { requireStudentAccess } from '@/lib/subscription'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,6 +23,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     // Light rate-limit so a determined script can't carpet-bomb the endpoint
     const rl = rateLimit(`appeal-create:${payload.sub}`, 30, 60_000)
@@ -112,6 +114,7 @@ export async function GET(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const assignmentId = req.nextUrl.searchParams.get('assignmentId')
     if (!assignmentId) return NextResponse.json({ error: 'assignmentId required' }, { status: 400 })

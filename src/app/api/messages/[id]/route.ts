@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { logError } from '@/lib/logger'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // PATCH /api/messages/[id] — recipient marks a message read/unread
 // Body: { read: boolean }
@@ -9,6 +10,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const { read } = await req.json()
 
@@ -31,6 +33,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const result = await prisma.message.deleteMany({
       where: { id: params.id, recipientId: payload.sub },

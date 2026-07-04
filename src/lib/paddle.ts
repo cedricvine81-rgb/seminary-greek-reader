@@ -1,12 +1,10 @@
 import { createHmac, timingSafeEqual } from 'crypto'
 import { SubscriptionStatus } from '@prisma/client'
 
-if (!process.env.PADDLE_API_KEY && process.env.NODE_ENV === 'production') {
-  throw new Error('PADDLE_API_KEY environment variable must be set in production')
-}
-if (!process.env.PADDLE_WEBHOOK_SECRET && process.env.NODE_ENV === 'production') {
-  throw new Error('PADDLE_WEBHOOK_SECRET environment variable must be set in production')
-}
+// NB: env vars are validated at request time (see verifyPaddleWebhookSignature and
+// paddleCancelSubscription), not at module load. A top-level throw here would run
+// during `next build` (NODE_ENV=production) and fail the entire deploy if the Paddle
+// vars weren't present at build time — a much worse failure than a single route erroring.
 
 const PADDLE_API_BASE = process.env.NEXT_PUBLIC_PADDLE_ENV === 'production'
   ? 'https://api.paddle.com'
@@ -44,6 +42,7 @@ export function verifyPaddleWebhookSignature(rawBody: string, signatureHeader: s
  * period actually ends, which is what flips our DB's subscriptionStatus to CANCELED.
  */
 export async function paddleCancelSubscription(subscriptionId: string) {
+  if (!process.env.PADDLE_API_KEY) throw new Error('PADDLE_API_KEY is not configured')
   const res = await fetch(`${PADDLE_API_BASE}/subscriptions/${subscriptionId}/cancel`, {
     method: 'POST',
     headers: {

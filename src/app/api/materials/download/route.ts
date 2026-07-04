@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
+import { studentHasAccess } from '@/lib/subscription'
 import { canAccessFile, getFileStoragePath } from '@/lib/materials'
 import { getDownloadUrl } from '@/lib/storage'
 
@@ -14,6 +15,7 @@ export async function GET(req: NextRequest) {
   try {
     const payload = getPayload()
     if (!payload) return text('Please sign in.', 401)
+    if (payload.role === 'STUDENT' && !(await studentHasAccess(payload.sub))) return text('A subscription is required.', 402)
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return text('Missing file id.', 400)
 

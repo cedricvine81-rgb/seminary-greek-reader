@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
+import { requireStudentAccess } from '@/lib/subscription'
 import { logError } from '@/lib/logger'
 
 // GET /api/courses/[courseId]/classmates — coursemates a student is allowed to
@@ -15,6 +16,7 @@ export async function GET(
     if (!payload || payload.role !== 'STUDENT') {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const enrollment = await prisma.enrollment.findFirst({
       where: { courseId: params.courseId, userId: payload.sub, status: 'APPROVED' },

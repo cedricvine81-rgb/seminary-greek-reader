@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client'
 import { GRADE_COMPONENTS, normalizeWeights, examTotal, type PassageSubScores } from '@/lib/exam-grading'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { requireStudentAccess } from '@/lib/subscription'
 
 // GET /api/exegesis/[id] — load a session
 // Students load their own; instructors can load any session linked to their assignment
@@ -13,6 +14,7 @@ export async function GET(_req: NextRequest, { params }: { params: { id: string 
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const session = await prisma.exegesisSession.findUnique({ where: { id: params.id } })
     if (!session) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -40,6 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { id: string
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const body = await req.json()
 
@@ -219,6 +222,7 @@ export async function DELETE(_req: NextRequest, { params }: { params: { id: stri
   try {
     const payload = getPayload()
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const gate = await requireStudentAccess(payload); if (gate) return gate
 
     const existing = await prisma.exegesisSession.findFirst({
       where: { id: params.id, userId: payload.sub },
