@@ -1,16 +1,16 @@
 'use client'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { StickyNote, Loader2, Trash2, X } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
-import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
+import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
 
 /**
  * Per-verse note affordance for any reading view. The icon is brand-blue/filled
- * when a note exists. Clicking opens the roomy note editor directly (a modal with a
- * Markdown toolbar, font size, and a folder selector so the note can be filed without
- * leaving the reader). Notes are anchored to (book, chapter, verse), so they're shared
- * across every text/version.
+ * when a note exists. Hovering a filled icon shows the note read-only in a small
+ * bubble (desktop only — touch devices have no hover and fall back to tapping);
+ * clicking opens the roomy editor (Markdown toolbar, font size, folder selector).
+ * Notes are anchored to (book, chapter, verse), so they're shared across every text.
  */
 interface FolderLite { id: string; name: string }
 
@@ -26,9 +26,26 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
   const [folders, setFolders] = useState<FolderLite[]>([])
   const [fontScale, setFontScale] = useNoteFontScale()
 
+  // Hover preview: a read-only bubble on pointer hover (desktop). The note body is
+  // fetched once on first hover and cached until the note is edited or removed.
+  const [showPreview, setShowPreview] = useState(false)
+  const [previewBody, setPreviewBody] = useState<string | null>(null)
+  const [place, setPlace] = useState<{ v: 'top' | 'bottom'; h: 'left' | 'right' }>({ v: 'bottom', h: 'left' })
+  const wrapRef = useRef<HTMLSpanElement>(null)
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   const reference = `${book} ${chapter}:${verse}`
 
+  async function fetchNote(): Promise<{ id: string; body: string; folderId: string | null } | null> {
+    const res = await fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`)
+    const d = await res.json()
+    const n = (d.notes || [])[0]
+    return n ? { id: n.id, body: n.body, folderId: n.folderId ?? null } : null
+  }
+
   async function openEditor() {
+    if (hoverTimer.current) { clearTimeout(hoverTimer.current); hoverTimer.current = null }
+    setShowPreview(false)
     setOpen(true)
     // Load the user's folders so the note can be filed from here (cheap enough per open).
     fetch('/api/notes')
@@ -38,16 +55,33 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
     if (!noted) { setNote(null); setBody(''); setFolderId(null); return }
     setLoading(true)
     try {
-      const res = await fetch(`/api/notes?book=${encodeURIComponent(book)}&chapter=${chapter}&verse=${verse}`)
-      const d = await res.json()
-      const n = (d.notes || [])[0]
-      setNote(n ? { id: n.id, body: n.body, folderId: n.folderId ?? null } : null)
+      const n = await fetchNote()
+      setNote(n)
       setBody(n?.body ?? '')
       setFolderId(n?.folderId ?? null)
     } catch { /* leave empty */ } finally { setLoading(false) }
   }
 
   function close() { setOpen(false) }
+
+  // Hover in: after a short delay (so a passing pointer doesn't flash the bubble),
+  // show the preview and fetch the body once. Delay is cancelled on hover out.
+  function onEnter() {
+    if (!noted || open) return
+    const r = wrapRef.current?.getBoundingClientRect()
+    if (r) setPlace({ v: r.bottom + 240 > window.innerHeight ? 'top' : 'bottom', h: r.left + 300 > window.innerWidth ? 'right' : 'left' })
+    hoverTimer.current = setTimeout(async () => {
+      setShowPreview(true)
+      if (previewBody === null) {
+        try { const n = await fetchNote(); setPreviewBody(n?.body ?? '') }
+        catch { setPreviewBody('') }
+      }
+    }, 250)
+  }
+  function onLeave() {
+    if (hoverTimer.current) { clearTimeout(hoverTimer.current); hoverTimer.current = null }
+    setShowPreview(false)
+  }
 
   async function save() {
     setSaving(true)
@@ -59,6 +93,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
       } else if (!isHtmlEmpty(body)) {
         await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ book, chapter, verse, body, folderId }) })
       }
+      setPreviewBody(null) // note changed — invalidate the hover-preview cache
       onChanged?.()
       close()
     } finally { setSaving(false) }
@@ -67,12 +102,12 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
   async function remove() {
     if (!note) { close(); return }
     setSaving(true)
-    try { await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' }); onChanged?.(); close() }
+    try { await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' }); setPreviewBody(null); onChanged?.(); close() }
     finally { setSaving(false) }
   }
 
   return (
-    <span className="relative inline-block align-middle">
+    <span ref={wrapRef} className="relative inline-block align-middle" onMouseEnter={onEnter} onMouseLeave={onLeave}>
       <button
         type="button"
         onClick={() => (open ? close() : openEditor())}
@@ -81,6 +116,30 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
       >
         <StickyNote size={14} fill={noted ? 'currentColor' : 'none'} />
       </button>
+
+      {/* Read-only hover preview (desktop). Padding (not margin) bridges the gap to the
+          icon so moving the pointer onto the bubble doesn't dismiss it. */}
+      {noted && showPreview && !open && (
+        <div
+          className={`absolute z-50 ${place.h === 'right' ? 'right-0' : 'left-0'} ${place.v === 'top' ? 'bottom-full pb-1' : 'top-full pt-1'}`}
+          role="tooltip"
+        >
+          <div className="w-72 max-w-[80vw] rounded-lg border border-gray-200 bg-white p-2.5 shadow-lg">
+            <div className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">{reference}</div>
+            {previewBody === null ? (
+              <p className="text-xs text-gray-400"><Loader2 size={12} className="inline animate-spin" /> Loading…</p>
+            ) : isHtmlEmpty(toNoteHtml(previewBody)) ? (
+              <p className="text-xs italic text-gray-400">Empty note</p>
+            ) : (
+              <div
+                className="prose-notes max-h-52 overflow-y-auto text-sm leading-snug text-gray-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(previewBody)) }}
+              />
+            )}
+            <p className="mt-1.5 border-t border-gray-100 pt-1 text-[10px] text-gray-400">Click to edit</p>
+          </div>
+        </div>
+      )}
 
       {/* Roomy editor modal — opened directly (no small popover step). */}
       {open && (
