@@ -16,15 +16,17 @@ type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: nu
 /** Parse "John 1:1-5" against the book list (mirror of the other tools' parser). */
 function parseRef(ref: string, books: RefBook[]): { book: RefBook; chapter: number; verseStart: number; verseEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
-  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
   if (!m) return null
   const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
   const chapter = parseInt(m[2]); const vs = m[3] ? parseInt(m[3]) : 1; const ve = m[4] ? parseInt(m[4]) : (m[3] ? vs : 200)
+  const dashEnd = m[5] ? parseInt(m[5]) : undefined   // bare "N-M" verse range (single-chapter books)
   const book = books.find(b => [b.osisId, b.name, b.abbrev].some(s => {
     const c = s.toLowerCase().replace(/\s+/g, ''); return c === bookPart || c.startsWith(bookPart) || bookPart.startsWith(c.slice(0, Math.max(3, bookPart.length)))
   }))
   if (!book) return null
-  if (book.totalChapters === 1 && !m[3]) return { book, chapter: 1, verseStart: chapter, verseEnd: chapter }
+  // Single-chapter books (Jude, Obadiah, …): bare numbers are verses of ch.1, "14-15" a range.
+  if (book.totalChapters === 1 && !m[3]) return { book, chapter: 1, verseStart: chapter, verseEnd: dashEnd ?? chapter }
   return { book, chapter, verseStart: vs, verseEnd: ve }
 }
 

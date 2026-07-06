@@ -29,18 +29,23 @@ const FONT_SIZE_MAP: Record<BgFontSize, string> = { sm: '1.05rem', md: '1.25rem'
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 
-/** Parse "John 1:1-5" against a book list (mirrors the Synopsis/Phrasing tools' parser). */
+/** Parse "John 1:1-5" against a book list (mirrors the Synopsis/Phrasing tools' parser).
+ *  Also handles single-chapter books cited without a chapter, as a bare verse or verse
+ *  range — "Jude 14", "Jude 14-15", "Obad 5" (m[5] is that trailing dash range). */
 function parseRef(ref: string, books: RefBook[]): { book: RefBook; chapter: number; verseStart: number; verseEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
-  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
   if (!m) return null
   const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
   const chapter = parseInt(m[2]); const vs = m[3] ? parseInt(m[3]) : 1; const ve = m[4] ? parseInt(m[4]) : (m[3] ? vs : 200)
+  const dashEnd = m[5] ? parseInt(m[5]) : undefined   // bare "N-M" range with no chapter:verse colon
   const book = books.find(b => [b.osisId, b.name, b.abbrev].some(s => {
     const c = s.toLowerCase().replace(/\s+/g, ''); return c === bookPart || c.startsWith(bookPart) || bookPart.startsWith(c.slice(0, Math.max(3, bookPart.length)))
   }))
   if (!book) return null
-  if (book.totalChapters === 1 && !m[3]) return { book, chapter: 1, verseStart: chapter, verseEnd: chapter }
+  // Single-chapter books (Jude, Obadiah, Philemon, 2-3 John): a bare number is a verse of
+  // chapter 1, and "14-15" is a verse range — not a chapter or a chapter range.
+  if (book.totalChapters === 1 && !m[3]) return { book, chapter: 1, verseStart: chapter, verseEnd: dashEnd ?? chapter }
   return { book, chapter, verseStart: vs, verseEnd: ve }
 }
 

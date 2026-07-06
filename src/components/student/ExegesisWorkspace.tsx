@@ -343,21 +343,23 @@ function parsePassageRef(ref: string, books: BiblicalBook[]): {
 } | null {
   const q = ref.trim().replace(/–|—/g, '-')
   // Match: bookPart + chapter : verseStart [-verseEnd]
-  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?$/)
+  const m = q.match(/^((?:\d\s*)?\w[\w\s]*?)\s+(\d+)(?:\s*[:.,]\s*(\d+)(?:\s*-\s*(\d+))?)?(?:\s*-\s*(\d+))?$/)
   if (!m) return null
   const bookPart = m[1].trim().toLowerCase().replace(/\s+/g, '')
   const ch = parseInt(m[2])
   const vs = m[3] ? parseInt(m[3]) : 1
   const ve = m[4] ? parseInt(m[4]) : vs
+  const dashEnd = m[5] ? parseInt(m[5]) : undefined   // bare "N-M" verse range (single-chapter books)
 
   const book = books.find(b => {
     const c = [b.osisId, b.name, b.abbrev].map(s => s.toLowerCase().replace(/\s+/g, ''))
     return c.some(s => s === bookPart || s.startsWith(bookPart) || bookPart.startsWith(s.slice(0, Math.max(3, bookPart.length))))
   })
   if (!book) return null
-  // Single-chapter books (Jude, Philemon, etc.): if only one number is given, treat it as verse not chapter
+  // Single-chapter books (Jude, Philemon, etc.): if only one number is given, treat it as
+  // verse not chapter; "14-15" is a verse range of chapter 1.
   if (book.totalChapters === 1 && !m[3]) {
-    return { book, chapter: 1, verseStart: ch, verseEnd: ch }
+    return { book, chapter: 1, verseStart: ch, verseEnd: dashEnd ?? ch }
   }
   return { book, chapter: ch, verseStart: vs, verseEnd: ve }
 }
