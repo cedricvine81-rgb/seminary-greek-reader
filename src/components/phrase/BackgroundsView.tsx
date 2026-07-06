@@ -6,6 +6,7 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 import { findLxxWork } from '@/lib/texts-catalog'
+import { matchProseCitation, type ProseWork, type ProseChapter, type EmbeddedProseSource } from '@/lib/prose-texts'
 import { BACKGROUND_SUMMARIES, type SummaryWork } from '@/lib/backgrounds-summaries'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -16,7 +17,7 @@ import { highlightMarkClass } from '@/lib/highlight-colors'
 // A reference the "Open in Texts" button can hand off to the Texts tab — only shown when
 // the currently displayed cross-reference text is actually embedded there.
 export interface OpenInTextsTarget {
-  source: 'lxx' | 'josephus' | '2esdras' | '1enoch'
+  source: 'lxx' | 'josephus' | EmbeddedProseSource
   osisId?: string
   workDir?: string
   book?: number
@@ -148,20 +149,6 @@ interface JosephusSection { number: number; text: string }
 interface JosephusChapter { number: number; title: string; sections: JosephusSection[] }
 interface JosephusBook { number: number; title: string; chapters: JosephusChapter[] }
 
-// 2 Esdras (KJV 1611, public domain) is embedded in-app at public/data/apocrypha/2esdras.json
-// — unlike the rest of the Apocrypha, it isn't part of the Rahlfs Septuagint (it survives only
-// in Latin/Syriac/Ethiopic etc., not Greek), so it can't live alongside the LXX corpus and needs
-// its own citation parser. Scholarly literature cites its middle chapters (3-14, the Jewish
-// apocalypse proper) as "4 Ezra" and the whole KJV span (with the Christian-added bookend
-// chapters 1-2 and 15-16) as "2 Esdr" — both use the same chapter:verse numbering.
-type EsdrasRef = { chapter: number; verse: number }
-function parse2EsdrasRef(citationText: string): EsdrasRef | null {
-  const m = citationText.match(/(?:2 Esdr\.?|4 Ezra)\s+(\d+):(\d+)/)
-  if (!m) return null
-  return { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) }
-}
-interface EsdrasVerse { number: number; text: string }
-interface EsdrasChapter { number: number; verses: EsdrasVerse[] }
 
 // earlychristianwritings.com hosts C.D. Yonge's 19th-century (public-domain) translation
 // of Philo as one HTML page per treatise (confirmed by fetching its table of contents —
@@ -216,19 +203,6 @@ function apocryphaUrl(citationText: string): string | null {
   return entry ? `https://en.wikisource.org/wiki/Bible_(King_James)/${entry[1]}` : null
 }
 
-// 1 Enoch (R.H. Charles's 1917 public-domain translation) is embedded in-app at
-// public/data/pseudepigrapha/1enoch.json (chapter→verse, parsed from Wikisource) and
-// rendered directly in the right column, like 2 Esdras below — see parse1EnochRef. Its
-// 108 chapters are cited as "1 En. C:V" (occasionally chapter-only or a chapter range).
-type EnochRef = { chapter: number; verse?: number }
-function parse1EnochRef(citationText: string): EnochRef | null {
-  const m = citationText.match(/^1 En\.\s+(\d+)(?::(\d+))?/)
-  if (!m) return null
-  return { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
-}
-interface EnochVerse { number: number; text: string }
-interface EnochChapter { number: number; verses: EnochVerse[] }
-
 // earlyjewishwritings.com (same publisher family as earlychristianwritings.com, used for
 // Philo above) hosts these pseudepigrapha as one page per work — confirmed directly from
 // its own index, not guessed. No chapter-level granularity here (unlike 1 Enoch above),
@@ -244,7 +218,7 @@ const EARLY_JEWISH_WRITINGS: Record<string, string> = {
   'T. Ash': 'testtwelve.html', 'T. Jos': 'testtwelve.html', 'T. Benj': 'testtwelve.html',
 }
 function pseudepigraphaUrl(citationText: string): string | null {
-  // 1 Enoch is embedded in-app (parse1EnochRef) rather than linked out, so it's not here.
+  // 1 Enoch is embedded in-app (see lib/prose-texts.ts) rather than linked out, so it's not here.
   const entry = Object.entries(EARLY_JEWISH_WRITINGS).find(([abbrev]) => citationText.startsWith(`${abbrev} `))
   return entry ? `https://www.earlyjewishwritings.com/${entry[1]}` : null
 }
@@ -401,79 +375,44 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   function openJosephusRef(label: string, citation: CrossRefCitation, ref: JosephusRef) {
     setRightRef(null); setRightVerses(null)
     setRightJosephus({ label, citation, ref })
-    setRight2Esdras(null); setEsdrasChapter(null)
-    setRight1Enoch(null); setEnochChapter(null)
+    setRightProse(null); setProseChapter(null)
     void loadJosephusRef(ref)
   }
 
-  // ── Right column, alternate mode: an embedded 2 Esdras citation. Mutually exclusive
-  // with rightRef/rightJosephus above — opening one clears the other two.
-  const [right2Esdras, setRight2Esdras] = useState<{ label: string; citation: CrossRefCitation; ref: EsdrasRef } | null>(null)
-  const [esdrasChapter, setEsdrasChapter] = useState<EsdrasChapter | null>(null)
-  const [esdrasLoading, setEsdrasLoading] = useState(false)
-  const [esdrasAttribution, setEsdrasAttribution] = useState('')
-  const esdrasBookCache = useRef<EsdrasChapter[] | null>(null)
+  // ── Right column, alternate mode: an embedded prose work (2 Esdras, 1 Enoch, Jubilees,
+  // 2 Baruch, 2 Enoch — see lib/prose-texts.ts). Mutually exclusive with rightRef/
+  // rightJosephus above; opening one clears the others. Each work's chapters + attribution
+  // are cached by source id after the first fetch.
+  const [rightProse, setRightProse] = useState<{ work: ProseWork; label: string; citation: CrossRefCitation; ref: { chapter: number; verse?: number } } | null>(null)
+  const [proseChapter, setProseChapter] = useState<ProseChapter | null>(null)
+  const [proseLoading, setProseLoading] = useState(false)
+  const [proseAttribution, setProseAttribution] = useState('')
+  const proseCache = useRef<Record<string, { chapters: ProseChapter[]; attribution: string }>>({})
 
-  const load2EsdrasRef = useCallback(async (ref: EsdrasRef) => {
-    setEsdrasLoading(true)
+  const loadProseRef = useCallback(async (work: ProseWork, ref: { chapter: number; verse?: number }) => {
+    setProseLoading(true)
     try {
-      let chapters = esdrasBookCache.current
-      if (chapters === null) {
-        const r = await fetch('/data/apocrypha/2esdras.json')
-        const d: { attribution?: string; chapters?: EsdrasChapter[] } = r.ok ? await r.json() : {}
-        chapters = d.chapters ?? []
-        esdrasBookCache.current = chapters
-        setEsdrasAttribution(d.attribution ?? '')
+      let cached = proseCache.current[work.source]
+      if (!cached) {
+        const r = await fetch(work.dataUrl)
+        const d: { attribution?: string; chapters?: ProseChapter[] } = r.ok ? await r.json() : {}
+        cached = { chapters: d.chapters ?? [], attribution: d.attribution ?? '' }
+        proseCache.current[work.source] = cached
       }
-      setEsdrasChapter(chapters.find(c => c.number === ref.chapter) ?? null)
+      setProseAttribution(cached.attribution)
+      setProseChapter(cached.chapters.find(c => c.number === ref.chapter) ?? null)
     } catch {
-      setEsdrasChapter(null)
+      setProseChapter(null)
     } finally {
-      setEsdrasLoading(false)
+      setProseLoading(false)
     }
   }, [])
 
-  function open2EsdrasRef(label: string, citation: CrossRefCitation, ref: EsdrasRef) {
+  function openProseRef(work: ProseWork, label: string, citation: CrossRefCitation, ref: { chapter: number; verse?: number }) {
     setRightRef(null); setRightVerses(null)
     setRightJosephus(null); setJosephusChapter(null)
-    setRight1Enoch(null); setEnochChapter(null)
-    setRight2Esdras({ label, citation, ref })
-    void load2EsdrasRef(ref)
-  }
-
-  // ── Right column, alternate mode: an embedded 1 Enoch citation (Charles 1917). Mutually
-  // exclusive with the three modes above — opening one clears the others.
-  const [right1Enoch, setRight1Enoch] = useState<{ label: string; citation: CrossRefCitation; ref: EnochRef } | null>(null)
-  const [enochChapter, setEnochChapter] = useState<EnochChapter | null>(null)
-  const [enochLoading, setEnochLoading] = useState(false)
-  const [enochAttribution, setEnochAttribution] = useState('')
-  const enochBookCache = useRef<EnochChapter[] | null>(null)
-
-  const load1EnochRef = useCallback(async (ref: EnochRef) => {
-    setEnochLoading(true)
-    try {
-      let chapters = enochBookCache.current
-      if (chapters === null) {
-        const r = await fetch('/data/pseudepigrapha/1enoch.json')
-        const d: { attribution?: string; chapters?: EnochChapter[] } = r.ok ? await r.json() : {}
-        chapters = d.chapters ?? []
-        enochBookCache.current = chapters
-        setEnochAttribution(d.attribution ?? '')
-      }
-      setEnochChapter(chapters.find(c => c.number === ref.chapter) ?? null)
-    } catch {
-      setEnochChapter(null)
-    } finally {
-      setEnochLoading(false)
-    }
-  }, [])
-
-  function open1EnochRef(label: string, citation: CrossRefCitation, ref: EnochRef) {
-    setRightRef(null); setRightVerses(null)
-    setRightJosephus(null); setJosephusChapter(null)
-    setRight2Esdras(null); setEsdrasChapter(null)
-    setRight1Enoch({ label, citation, ref })
-    void load1EnochRef(ref)
+    setRightProse({ work, label, citation, ref })
+    void loadProseRef(work, ref)
   }
 
   // ── Library: whole-work links, independent of whichever citation is open ──
@@ -514,8 +453,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     setSelectedInfo(null); setSelectedKey(null)
     setRightRef(null); setRightVerses(null)
     setRightJosephus(null); setJosephusChapter(null)
-    setRight2Esdras(null); setEsdrasChapter(null)
-    setRight1Enoch(null); setEnochChapter(null)
+    setRightProse(null); setProseChapter(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [anchor, version, gntBooks.length])
 
@@ -659,8 +597,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
 
   function openRightRef(label: string, citation: CrossRefCitation) {
     setRightJosephus(null); setJosephusChapter(null)
-    setRight2Esdras(null); setEsdrasChapter(null)
-    setRight1Enoch(null); setEnochChapter(null)
+    setRightProse(null); setProseChapter(null)
     setRightRef({ label, citation })
     // If the dropdown was left on a version this new reference has no text for (e.g.
     // Brenton on a non-Apocrypha ref, or an English translation on a deuterocanonical
@@ -690,10 +627,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   // NT cross-references and citation-only sources like DSS/Rabbinic have no Texts entry).
   const openInTextsTarget: OpenInTextsTarget | null = rightJosephus
     ? { source: 'josephus', workDir: JOSEPHUS_WORK_DIR[rightJosephus.ref.work], book: rightJosephus.ref.book, chapter: rightJosephus.ref.chapter, verse: rightJosephus.ref.section }
-    : right2Esdras
-    ? { source: '2esdras', chapter: right2Esdras.ref.chapter, verse: right2Esdras.ref.verse }
-    : right1Enoch
-    ? { source: '1enoch', chapter: right1Enoch.ref.chapter, verse: right1Enoch.ref.verse }
+    : rightProse
+    ? { source: rightProse.work.source, chapter: rightProse.ref.chapter, verse: rightProse.ref.verse }
     : rightRef?.citation.ref && findLxxWork(rightRef.citation.ref.book)
     ? { source: 'lxx', osisId: rightRef.citation.ref.book, chapter: rightRef.citation.ref.chapter, verse: rightRef.citation.ref.verse }
     : null
@@ -897,27 +832,16 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               </div>
                             )
                           }
-                          const esdrasRef = !c.ref ? parse2EsdrasRef(c.text) : null
-                          if (esdrasRef) {
+                          // Embedded prose works (2 Esdras / 1 Enoch / Jubilees / 2 Baruch /
+                          // 2 Enoch) open in the right reading pane rather than linking out.
+                          const prose = !c.ref ? matchProseCitation(c.text) : null
+                          if (prose) {
                             return (
                               <button
                                 key={ci}
-                                onClick={() => open2EsdrasRef(entry.label, c, esdrasRef)}
+                                onClick={() => openProseRef(prose.work, entry.label, c, prose.ref)}
                                 title="View text"
-                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${right2Esdras?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
-                              >
-                                {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
-                              </button>
-                            )
-                          }
-                          const enochRef = !c.ref ? parse1EnochRef(c.text) : null
-                          if (enochRef) {
-                            return (
-                              <button
-                                key={ci}
-                                onClick={() => open1EnochRef(entry.label, c, enochRef)}
-                                title="View text"
-                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${right1Enoch?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightProse?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                               >
                                 {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
                               </button>
@@ -973,7 +897,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           <div className="flex flex-col min-h-0 rounded-xl border border-gray-200 overflow-hidden">
             <div className="shrink-0 px-3 py-1.5 bg-gray-50 border-b border-gray-200 flex items-center justify-between gap-2">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide truncate">
-                {rightJosephus ? rightJosephus.citation.text : right2Esdras ? right2Esdras.citation.text : right1Enoch ? right1Enoch.citation.text : rightRef ? rightRef.citation.text : 'Referenced text'}
+                {rightJosephus ? rightJosephus.citation.text : rightProse ? rightProse.citation.text : rightRef ? rightRef.citation.text : 'Referenced text'}
               </p>
               <div className="shrink-0 flex items-center gap-1.5">
                 {/* Only meaningful for OT/LXX/NT cross-references — the app's own Bible
@@ -1042,61 +966,32 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     )}
                   </div>
                 )
-              ) : right2Esdras ? (
-                esdrasLoading ? (
+              ) : rightProse ? (
+                proseLoading ? (
                   <p className="text-xs text-gray-300 italic">Loading…</p>
-                ) : !esdrasChapter ? (
+                ) : !proseChapter ? (
                   <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
                 ) : (
                   <div className="space-y-3">
                     <p className="text-xs font-semibold text-gray-600">
-                      2 Esdras {esdrasChapter.number}
+                      {rightProse.work.name} {proseChapter.number}
                     </p>
                     <div
                       className="space-y-1 leading-relaxed text-gray-900"
                       style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
-                      {esdrasChapter.verses.map(v => (
+                      {proseChapter.verses.map(v => (
                         <p
                           key={v.number}
-                          className={v.number === right2Esdras.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
+                          className={v.number === rightProse.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
                           {v.text}
                         </p>
                       ))}
                     </div>
-                    {esdrasAttribution && (
-                      <p className="text-[10px] text-gray-400 italic">{esdrasAttribution}</p>
-                    )}
-                  </div>
-                )
-              ) : right1Enoch ? (
-                enochLoading ? (
-                  <p className="text-xs text-gray-300 italic">Loading…</p>
-                ) : !enochChapter ? (
-                  <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
-                ) : (
-                  <div className="space-y-3">
-                    <p className="text-xs font-semibold text-gray-600">
-                      1 Enoch {enochChapter.number}
-                    </p>
-                    <div
-                      className="space-y-1 leading-relaxed text-gray-900"
-                      style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
-                    >
-                      {enochChapter.verses.map(v => (
-                        <p
-                          key={v.number}
-                          className={v.number === right1Enoch.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
-                        >
-                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
-                          {v.text}
-                        </p>
-                      ))}
-                    </div>
-                    {enochAttribution && (
-                      <p className="text-[10px] text-gray-400 italic">{enochAttribution}</p>
+                    {proseAttribution && (
+                      <p className="text-[10px] text-gray-400 italic">{proseAttribution}</p>
                     )}
                   </div>
                 )

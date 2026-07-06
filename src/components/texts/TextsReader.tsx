@@ -5,6 +5,7 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
+import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { useHighlights } from '@/components/highlights/useHighlights'
@@ -85,8 +86,8 @@ function sameItem(a: QueueItem, book: number | undefined, chapter: number) {
 }
 function noteBookFor(w: CatalogWork, item: QueueItem): string {
   if (w.source === 'lxx') return w.osisId!
-  if (w.source === '2esdras') return '2Esdras'
-  if (w.source === '1enoch') return '1Enoch'
+  const prose = findProseWork(w.source)
+  if (prose) return prose.noteBook
   return `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
 }
 function refLabelFor(w: CatalogWork, item: QueueItem): string {
@@ -206,8 +207,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const parts = ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.']
     if (work.english === 'brenton') parts.push('English: Brenton’s 1851 English Septuagint (public domain).')
     if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
-    if (work.source === '2esdras') parts.push('Text: the King James Version, 2 Esdras (public domain).')
-    if (work.source === '1enoch') parts.push('Text: R. H. Charles’ translation of 1 Enoch, 1917 (public domain).')
+    const prose = findProseWork(work.source)
+    if (prose) parts.push(prose.attribution)
     if (work.source === 'josephus') parts.push('Text: William Whiston’s translation of Josephus, 1737 (public domain).')
     onAttribution?.(parts.join(' '))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -252,9 +253,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
       return (ch?.sections ?? []).map((s: { number: number; text: string }) => ({ num: s.number, english: s.text }))
     }
-    // 2esdras / 1enoch — both are plain English prose stored as chapter→verses.
-    const url = w.source === '1enoch' ? '/data/pseudepigrapha/1enoch.json' : '/data/apocrypha/2esdras.json'
-    const r = await fetch(url)
+    // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
+    // chapter→verses; the registry knows where each one's JSON lives.
+    const r = await fetch(findProseWork(w.source)!.dataUrl)
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     return (ch?.verses ?? []).map((v: { number: number; text: string }) => ({ num: v.number, english: v.text }))
