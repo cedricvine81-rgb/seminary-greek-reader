@@ -5,6 +5,7 @@ import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } fr
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
 import { TextsReader } from '@/components/texts/TextsReader'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
@@ -379,6 +380,23 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                               ))}
                             </div>
                           </details>
+                        ))}
+                      </div>
+                    </details>
+                    <details className="border-t border-gray-100 pt-2">
+                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Full source texts</summary>
+                      <p className="mt-2 mb-1.5 text-[11px] text-gray-400">Browse whole works — opens in a new tab.</p>
+                      <div className="space-y-0.5">
+                        {LIBRARY_WORKS.map(w => (
+                          <a
+                            key={w.url}
+                            href={w.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block rounded-lg px-2 py-1.5 text-xs text-gray-700 hover:bg-brand-50 hover:text-brand-800"
+                          >
+                            {w.label}
+                          </a>
                         ))}
                       </div>
                     </details>

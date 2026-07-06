@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Library, ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
+import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -240,20 +240,6 @@ function pseudepigraphaUrl(citationText: string): string | null {
   return entry ? `https://www.earlyjewishwritings.com/${entry[1]}` : null
 }
 
-// "Library" — whole-work landing pages for free browsing/searching, not tied to any one
-// citation. Every URL here is the same source already verified above (Perseus,
-// earlychristianwritings.com, Wikisource, earlyjewishwritings.com); this just points at
-// each site's own index/table of contents instead of one specific passage, so a student
-// can scroll or use the source's own search to find anything themselves.
-const LIBRARY_WORKS: { label: string; url: string }[] = [
-  { label: 'Josephus — Antiquities of the Jews (Perseus)', url: 'https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0146' },
-  { label: 'Josephus — The Jewish War (Perseus)', url: 'https://www.perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.01.0148' },
-  { label: 'Philo — Complete Works, tr. Yonge', url: 'http://www.earlychristianwritings.com/yonge/' },
-  { label: 'Apocrypha (KJV 1611) — Sirach, Wisdom, Maccabees, etc.', url: 'https://en.wikisource.org/wiki/Bible_(King_James)' },
-  { label: '1 Enoch (Charles translation)', url: 'https://en.wikisource.org/wiki/The_Book_of_Enoch_(Charles)' },
-  { label: 'More Pseudepigrapha — 2–3 Enoch, Jubilees, Baruch, Testaments, etc.', url: 'https://www.earlyjewishwritings.com/' },
-]
-
 // Tries each source in turn; extend this as more sources get a verified URL scheme.
 function secondTempleUrl(citationText: string): string | null {
   return josephusUrl(citationText) ?? philoUrl(citationText) ?? apocryphaUrl(citationText) ?? pseudepigraphaUrl(citationText)
@@ -445,17 +431,6 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   }
 
   // ── Library: whole-work links, independent of whichever citation is open ──
-  const [showLibrary, setShowLibrary] = useState(false)
-  const libraryRef = useRef<HTMLDivElement | null>(null)
-  useEffect(() => {
-    if (!showLibrary) return
-    function onMouseDown(e: MouseEvent) {
-      if (libraryRef.current && !libraryRef.current.contains(e.target as Node)) setShowLibrary(false)
-    }
-    document.addEventListener('mousedown', onMouseDown)
-    return () => document.removeEventListener('mousedown', onMouseDown)
-  }, [showLibrary])
-
   // Summaries — scholarly overviews of extra-canonical works, grouped by corpus. The
   // dropdown is an accordion of categories → books; clicking a book opens its summary
   // in a centered card. Static reference data, so no fetching involved.
@@ -737,41 +712,6 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               {TYPE_LABELS[t]}
             </button>
           ))}
-
-          {/* Library — whole-work links, independent of whatever citation is open.
-              Opens each source's own index/table of contents so a student can scroll,
-              search by chapter/verse, or search keywords using that site's own tools. */}
-          <div ref={libraryRef} className="relative">
-            <button
-              type="button"
-              onClick={() => setShowLibrary(v => !v)}
-              title="Library — browse full source texts"
-              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showLibrary ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
-            >
-              <Library size={14} /> Library
-            </button>
-            {showLibrary && (
-              <div className="absolute right-0 top-full mt-1 z-20 w-72 rounded-xl border border-gray-200 bg-white p-2 shadow-lg">
-                <p className="px-1.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">
-                  Full texts — opens in a new tab
-                </p>
-                <div className="space-y-0.5">
-                  {LIBRARY_WORKS.map(w => (
-                    <a
-                      key={w.url}
-                      href={w.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => setShowLibrary(false)}
-                      className="block rounded-lg px-2 py-1.5 text-xs text-gray-700 hover:bg-brand-50 hover:text-brand-800"
-                    >
-                      {w.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
