@@ -5,9 +5,11 @@
 //   brenton  → public/data/brenton/<osisId>.json (Brenton's English LXX)
 //   josephus → public/data/josephus/<work>/<book>.json (Whiston, book→chapter→section)
 //   2esdras  → public/data/apocrypha/2esdras.json (KJV, chapter→verse)
-//   1enoch   → public/data/pseudepigrapha/1enoch.json (Charles 1917, chapter→verse)
+//   1enoch / jubilees / 2baruch / 2enoch
+//            → public/data/pseudepigrapha/<id>.json (chapter→verse English prose; see
+//              lib/prose-texts.ts, which also drives the Backgrounds cross-reference pane)
 
-export type TextSource = 'lxx' | 'josephus' | '2esdras' | '1enoch'
+export type TextSource = 'lxx' | 'josephus' | '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch'
 
 export interface CatalogWork {
   id: string
@@ -114,9 +116,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'pseudepigrapha',
     label: 'Pseudepigrapha',
-    blurb: 'Old Testament Pseudepigrapha — 1 Enoch in R. H. Charles’ 1917 English translation.',
+    blurb: 'Old Testament Pseudepigrapha — 1 Enoch, Jubilees, 2 Baruch, and 2 Enoch in their public-domain English translations.',
     works: [
       { id: '1enoch', name: '1 Enoch', source: '1enoch', chapters: 108 },
+      { id: 'jubilees', name: 'Jubilees', source: 'jubilees', chapters: 50 },
+      { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 85 },
+      { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
     ],
   },
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
