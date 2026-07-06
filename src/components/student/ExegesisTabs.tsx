@@ -359,12 +359,6 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                         <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
                       </div>
                     </div>
-                    {backgroundsAttribution && (
-                      <details className="border-t border-gray-100 pt-2">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
-                        <p className="text-xs text-gray-600 mt-2">{backgroundsAttribution}</p>
-                      </details>
-                    )}
                     <details className="border-t border-gray-100 pt-2">
                       <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Abbreviations (SBL)</summary>
                       <div className="mt-2 max-h-64 overflow-y-auto space-y-1.5 pr-1">
@@ -384,7 +378,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                       </div>
                     </details>
                     <details className="border-t border-gray-100 pt-2">
-                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Full source texts</summary>
+                      <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Online source texts</summary>
                       <p className="mt-2 mb-1.5 text-[11px] text-gray-400">Browse whole works — opens in a new tab.</p>
                       <div className="space-y-0.5">
                         {LIBRARY_WORKS.map(w => (
@@ -400,6 +394,12 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
                         ))}
                       </div>
                     </details>
+                    {backgroundsAttribution && (
+                      <details className="border-t border-gray-100 pt-2">
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <p className="text-xs text-gray-600 mt-2">{backgroundsAttribution}</p>
+                      </details>
+                    )}
                   </>
                 )}
 
