@@ -444,10 +444,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setLocateOpen(false)
   }
 
-  // Build the cascade's columns (Book → Chapter → Verse) in order. Each column's top is
-  // offset by the selected row of the one before it, so the new column's first row lines
-  // up with what you just clicked. Row heights are fixed (LOCATE_ROW_H), so the offset is
-  // simply selectedIndex × row height; the uniform header height cancels out.
+  // Build the cascade's columns (Book → Chapter → Verse) in order. All columns are
+  // top-aligned so the numbers sit in neat parallel columns; the selected row in each is
+  // highlighted (rather than offsetting the next column) to show the current location.
   type LocateItem = { n: number; selected: boolean; onClick: () => void }
   type LocateColumn = { key: string; label: string; marginTop: number; items: 'loading' | LocateItem[] }
   function buildLocateColumns(): LocateColumn[] {
@@ -456,8 +455,6 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const bookPresent = work.source === 'josephus' && work.books!.length > 1
     const chapterCount = work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)
     const chPresent = chapterCount > 1
-    const bookOffset = bookPresent ? (locateBook - 1) * LOCATE_ROW_H : 0
-    const chOffset = bookOffset + (chPresent ? ((locateChapter ?? 1) - 1) * LOCATE_ROW_H : 0)
 
     if (bookPresent) {
       cols.push({
@@ -467,12 +464,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     }
     if (chPresent) {
       cols.push({
-        key: 'ch', label: 'Ch.', marginTop: bookOffset,
+        key: 'ch', label: 'Ch.', marginTop: 0,
         items: Array.from({ length: chapterCount }, (_, i) => ({ n: i + 1, selected: locateChapter === i + 1, onClick: () => selectLocateChapter(i + 1) })),
       })
     }
     cols.push({
-      key: 'vs', label: 'Vs.', marginTop: chOffset,
+      key: 'vs', label: 'Vs.', marginTop: 0,
       items: locateVerseNums === null ? 'loading'
         : locateVerseNums.map(vn => ({ n: vn, selected: false, onClick: () => selectLocateVerse(vn) })),
     })
