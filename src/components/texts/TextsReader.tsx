@@ -583,10 +583,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 <button
                   type="button"
                   onClick={() => setTranslationMenuOpen(o => !o)}
-                  className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs font-medium transition-colors ${
-                    translationMenuOpen ? 'bg-brand-100 border-brand-300 text-brand-800'
-                    : showEnglish ? 'border-brand-300 text-brand-700'
-                    : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+                  className={`inline-flex items-center gap-1 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 ${
+                    translationMenuOpen ? 'bg-gray-100' : ''}`}
                 >
                   {currentTranslationLabel}
                   <ChevronDown size={13} className={`transition-transform ${translationMenuOpen ? 'rotate-180' : ''}`} />
