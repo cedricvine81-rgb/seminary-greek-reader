@@ -42,7 +42,6 @@ export default async function SettingsPage() {
   return (
     <DashboardShell role={payload.role as Role} pageTitle="Settings">
       <div className="space-y-6">
-        {payload.role === 'STUDENT' && <ManageSubscription />}
         <SettingsForm
           initialFirstName={user.firstName}
           initialSurname={user.surname}
@@ -50,6 +49,7 @@ export default async function SettingsPage() {
           initialInstitution={user.institution ?? null}
           institutions={institutions}
         />
+        {payload.role === 'STUDENT' && <ManageSubscription />}
       </div>
     </DashboardShell>
   )
