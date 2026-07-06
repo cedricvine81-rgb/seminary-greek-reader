@@ -5,8 +5,9 @@
 //   brenton  → public/data/brenton/<osisId>.json (Brenton's English LXX)
 //   josephus → public/data/josephus/<work>/<book>.json (Whiston, book→chapter→section)
 //   2esdras  → public/data/apocrypha/2esdras.json (KJV, chapter→verse)
+//   1enoch   → public/data/pseudepigrapha/1enoch.json (Charles 1917, chapter→verse)
 
-export type TextSource = 'lxx' | 'josephus' | '2esdras'
+export type TextSource = 'lxx' | 'josephus' | '2esdras' | '1enoch'
 
 export interface CatalogWork {
   id: string
@@ -110,7 +111,14 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'Mal', name: 'Malachi', source: 'lxx', osisId: 'Mal', chapters: 3, english: 'brenton' },
     ],
   },
-  { id: 'pseudepigrapha', label: 'Pseudepigrapha', comingSoon: true, works: [] },
+  {
+    id: 'pseudepigrapha',
+    label: 'Pseudepigrapha',
+    blurb: 'Old Testament Pseudepigrapha — 1 Enoch in R. H. Charles’ 1917 English translation.',
+    works: [
+      { id: '1enoch', name: '1 Enoch', source: '1enoch', chapters: 108 },
+    ],
+  },
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]

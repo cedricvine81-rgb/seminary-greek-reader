@@ -86,6 +86,7 @@ function sameItem(a: QueueItem, book: number | undefined, chapter: number) {
 function noteBookFor(w: CatalogWork, item: QueueItem): string {
   if (w.source === 'lxx') return w.osisId!
   if (w.source === '2esdras') return '2Esdras'
+  if (w.source === '1enoch') return '1Enoch'
   return `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
 }
 function refLabelFor(w: CatalogWork, item: QueueItem): string {
@@ -206,6 +207,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (work.english === 'brenton') parts.push('English: Brenton’s 1851 English Septuagint (public domain).')
     if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
     if (work.source === '2esdras') parts.push('Text: the King James Version, 2 Esdras (public domain).')
+    if (work.source === '1enoch') parts.push('Text: R. H. Charles’ translation of 1 Enoch, 1917 (public domain).')
     if (work.source === 'josephus') parts.push('Text: William Whiston’s translation of Josephus, 1737 (public domain).')
     onAttribution?.(parts.join(' '))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -250,8 +252,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
       return (ch?.sections ?? []).map((s: { number: number; text: string }) => ({ num: s.number, english: s.text }))
     }
-    // 2esdras
-    const r = await fetch('/data/apocrypha/2esdras.json')
+    // 2esdras / 1enoch — both are plain English prose stored as chapter→verses.
+    const url = w.source === '1enoch' ? '/data/pseudepigrapha/1enoch.json' : '/data/apocrypha/2esdras.json'
+    const r = await fetch(url)
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     return (ch?.verses ?? []).map((v: { number: number; text: string }) => ({ num: v.number, english: v.text }))
@@ -410,7 +413,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const { target } = openRequest
     const w = target.source === 'lxx' ? findLxxWork(target.osisId!)
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
-      : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === '2esdras')
+      : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
     setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
