@@ -1,11 +1,12 @@
 'use client'
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { Library, ExternalLink } from 'lucide-react'
+import { Library, ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 import { findLxxWork } from '@/lib/texts-catalog'
+import { BACKGROUND_SUMMARIES, type SummaryWork } from '@/lib/backgrounds-summaries'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
@@ -455,6 +456,22 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [showLibrary])
 
+  // Summaries — scholarly overviews of extra-canonical works, grouped by corpus. The
+  // dropdown is an accordion of categories → books; clicking a book opens its summary
+  // in a centered card. Static reference data, so no fetching involved.
+  const [showSummaries, setShowSummaries] = useState(false)
+  const [expandedSummaryCat, setExpandedSummaryCat] = useState<string | null>(null)
+  const [openSummary, setOpenSummary] = useState<{ work: SummaryWork; category: string } | null>(null)
+  const summariesRef = useRef<HTMLDivElement | null>(null)
+  useEffect(() => {
+    if (!showSummaries) return
+    function onMouseDown(e: MouseEvent) {
+      if (summariesRef.current && !summariesRef.current.contains(e.target as Node)) setShowSummaries(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [showSummaries])
+
   useEffect(() => { onAttribution?.(crossRefData?.attribution ?? '') }, [crossRefData, onAttribution])
 
   useEffect(() => {
@@ -669,6 +686,48 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       <div className="flex items-center flex-wrap gap-3">
         {/* Type filter chips for the middle column */}
         <div className="flex items-center flex-wrap gap-1.5 ml-auto">
+          {/* Summaries — accordion of corpora → works; a work opens its overview in a card. */}
+          <div ref={summariesRef} className="relative">
+            <button
+              type="button"
+              onClick={() => setShowSummaries(v => !v)}
+              title="Summaries — overviews of extra-canonical literature"
+              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+            >
+              <BookOpen size={14} /> Summaries
+            </button>
+            {showSummaries && (
+              <div className="absolute left-0 top-full mt-1 z-30 w-72 max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-white p-1.5 shadow-lg">
+                {BACKGROUND_SUMMARIES.map(cat => (
+                  <div key={cat.id}>
+                    <button
+                      type="button"
+                      onClick={() => setExpandedSummaryCat(c => c === cat.id ? null : cat.id)}
+                      className="flex w-full items-start justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                    >
+                      <span>{cat.label}</span>
+                      <ChevronDown size={13} className={`mt-0.5 shrink-0 text-gray-400 transition-transform ${expandedSummaryCat === cat.id ? 'rotate-180' : ''}`} />
+                    </button>
+                    {expandedSummaryCat === cat.id && (
+                      <div className="mb-1 space-y-0.5 pl-2">
+                        {cat.works.map(w => (
+                          <button
+                            key={w.id}
+                            type="button"
+                            onClick={() => { setOpenSummary({ work: w, category: cat.label }); setShowSummaries(false) }}
+                            className="block w-full rounded-md px-2 py-1 text-left text-xs text-gray-600 hover:bg-brand-50 hover:text-brand-800"
+                          >
+                            {w.title}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {TYPE_ORDER.map(t => (
             <button
               key={t}
@@ -715,6 +774,26 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           </div>
         </div>
       </div>
+
+      {/* Summary card — the "bubble" that opens with a selected work's overview. */}
+      {openSummary && (
+        <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/30 p-4 overflow-y-auto" onClick={() => setOpenSummary(null)}>
+          <div className="w-full max-w-2xl my-8 rounded-xl bg-white shadow-xl" onClick={e => e.stopPropagation()}>
+            <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-5 py-3">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-wide text-brand-500">{openSummary.category}</p>
+                <h3 className="text-base font-semibold text-gray-800">{openSummary.work.title}</h3>
+              </div>
+              <button type="button" onClick={() => setOpenSummary(null)} className="shrink-0 text-gray-400 hover:text-gray-600" aria-label="Close summary"><X size={18} /></button>
+            </div>
+            <div className="max-h-[70vh] overflow-y-auto px-5 py-4 space-y-3">
+              {openSummary.work.summary.map((para, i) => (
+                <p key={i} className="text-sm leading-relaxed text-gray-700">{para}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {!anchor || !parsed ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to load its background apparatus.</p>
