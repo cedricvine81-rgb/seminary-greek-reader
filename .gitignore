@@ -43,3 +43,5 @@ prisma/migrations/
 # editor
 .vscode/
 .idea/
+# secret backups — never commit
+.env*.bak*

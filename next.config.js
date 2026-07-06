@@ -39,6 +39,23 @@ const nextConfig = {
       { source: '/favicon.png', destination: '/icon.svg', permanent: false },
     ]
   },
+  // Baseline security headers. Deliberately NO Content-Security-Policy here — a CSP
+  // must be scoped against Paddle.js / Supabase / fonts and tested before enabling,
+  // so it's handled separately. None of these affect what resources the app loads.
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+        ],
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

@@ -1,0 +1,57 @@
+# seminarygreek.app
+# Standard search engines are welcome (so marketing/legal pages stay indexed).
+# The major AI training/scraping crawlers are asked not to crawl the site.
+# NOTE: robots.txt is advisory — compliant bots honor it, but it is NOT a security
+# control. Real content protection is via authentication (most of the app is login-gated).
+
+User-agent: *
+Allow: /
+
+# ── AI training / scraping crawlers — disallowed ──
+User-agent: GPTBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Meta-ExternalAgent
+Disallow: /
+
+User-agent: FacebookBot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: Omgilibot
+Disallow: /
