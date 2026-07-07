@@ -5,11 +5,12 @@
 //   brenton  → public/data/brenton/<osisId>.json (Brenton's English LXX)
 //   josephus → public/data/josephus/<work>/<book>.json (Whiston, book→chapter→section)
 //   2esdras  → public/data/apocrypha/2esdras.json (KJV, chapter→verse)
-//   1enoch / jubilees / 2baruch / 2enoch
-//            → public/data/pseudepigrapha/<id>.json (chapter→verse English prose; see
-//              lib/prose-texts.ts, which also drives the Backgrounds cross-reference pane)
+//   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
+//            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
+//              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
+import { TWELVE_PATRIARCHS_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
-export type TextSource = 'lxx' | 'josephus' | '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch'
+export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
 export interface CatalogWork {
   id: string
@@ -123,6 +124,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 85 },
       { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
     ],
+  },
+  {
+    id: 'testaments',
+    label: 'Testaments (12 Patriarchs)',
+    blurb: 'The Testaments of the Twelve Patriarchs — the Ante-Nicene Fathers (Roberts-Donaldson) translation.',
+    works: TWELVE_PATRIARCHS_CATALOG,
   },
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
