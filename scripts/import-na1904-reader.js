@@ -7,8 +7,11 @@
  *
  * Source: public/data/phrase-tree/<OsisId>.json (MACULA, Nestle 1904, CC BY 4.0)
  * Output: public/data/na1904/<OsisId>_<chapter>.json
- *   { b: osisId, c: chapter, v: { "<verse>": [[surface, lemma, strongs], …] } }
- *   id + position are reconstructed from book/chapter/verse + array index.
+ *   { b: osisId, c: chapter, v: { "<verse>": [[surface, lemma, strongs, parsing], …] } }
+ *   id + position are reconstructed from book/chapter/verse + array index; `parsing` is the
+ *   MACULA readable morphology string (e.g. "Verb, Aorist, Active, Indicative, 3 person,
+ *   Singular"), expanded into structured morph by getChapter — needed for the parsing pane
+ *   and the Wallace syntax menu, which the earlier [surface,lemma,strongs]-only tuple lacked.
  */
 const fs = require('fs')
 const path = require('path')
@@ -46,7 +49,7 @@ function main() {
         if (!chapterMap.has(chapter)) chapterMap.set(chapter, new Map())
         const vmap = chapterMap.get(chapter)
         if (!vmap.has(verse)) vmap.set(verse, [])
-        vmap.get(verse).push({ pos, tuple: [w.w, w.lemma || '', w.strongs || ''] })
+        vmap.get(verse).push({ pos, tuple: [w.w, w.lemma || '', w.strongs || '', w.parsing || ''] })
       }
     }
 
