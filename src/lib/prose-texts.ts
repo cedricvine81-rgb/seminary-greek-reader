@@ -18,7 +18,7 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | `tp-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -80,6 +80,9 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '2enoch', name: '2 Enoch', noteBook: '2Enoch', dataUrl: '/data/pseudepigrapha/2enoch.json', chapters: 68,
     attribution: 'Text: W. R. Morfill’s translation of 2 Enoch (the Slavonic Secrets of Enoch), 1896 (public domain).',
     parseCitation: cite(/^2 En\.\s+(\d+)(?::(\d+))?/) },
+  { source: 'apocmoses', name: 'Apocalypse of Moses', noteBook: 'ApocMos', dataUrl: '/data/pseudepigrapha/apocmoses.json', chapters: 43,
+    attribution: 'Text: R. H. Charles’ translation of the Apocalypse of Moses, 1913 (public domain).',
+    parseCitation: cite(/^Apoc\. Mos\.\s+(\d+)(?::(\d+))?/) },
   ...TWELVE_PATRIARCHS_WORKS,
 ]
 
