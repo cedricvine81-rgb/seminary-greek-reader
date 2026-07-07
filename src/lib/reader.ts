@@ -74,7 +74,11 @@ export function getBooks(corpus: Corpus): BiblicalBook[] {
   try {
     const index = loadBooksIndex()
     if (corpus === 'GNT') return index.gnt
-    if (corpus === 'NA1904') return index.na1904 ?? []
+    // Nestle 1904 covers the same 27 NT books as the Tischendorf GNT (its chapter files
+    // live in public/data/na1904/). books.json has no separate na1904 list, so derive it
+    // from the GNT books with the corpus relabelled — otherwise selecting the Nestle 1904
+    // edition would build an empty reader queue and nothing would load.
+    if (corpus === 'NA1904') return index.na1904 ?? index.gnt.map(b => ({ ...b, corpus: 'NA1904' as Corpus }))
     return index.lxx
   } catch {
     return []

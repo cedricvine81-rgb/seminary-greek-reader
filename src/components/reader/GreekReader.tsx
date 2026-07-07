@@ -291,7 +291,10 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
 
   const fetchChapter = useCallback(async (item: ChapterItem): Promise<TextSection | null> => {
     try {
-      const res  = await fetch(`/api/reader?book=${item.osisId}&chapter=${item.chapter}`)
+      // Pass the queue item's corpus so the selected GNT edition (Tischendorf vs Nestle
+      // 1904) actually loads its own text; the API falls back to the book's native corpus
+      // if a chapter file is missing.
+      const res  = await fetch(`/api/reader?book=${item.osisId}&chapter=${item.chapter}&corpus=${item.corpus}`)
       const data = await res.json()
       if (!data.verses?.length) return null
       return { key: `${item.osisId}-${item.chapter}`, bookName: item.bookName, corpus: item.corpus, verses: data.verses }
