@@ -128,6 +128,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17 },
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
+      { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
     ],
   },
   {

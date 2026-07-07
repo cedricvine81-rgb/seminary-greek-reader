@@ -18,7 +18,7 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | `tp-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -95,6 +95,9 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: 'apocabr', name: 'Apocalypse of Abraham', noteBook: 'ApocAbr', dataUrl: '/data/pseudepigrapha/apocabr.json', chapters: 32,
     attribution: 'Text: the G. H. Box / J. I. Landsman translation of the Apocalypse of Abraham, 1918 (public domain).',
     parseCitation: cite(/^Apoc\. Ab\.\s+(\d+)(?::(\d+))?/) },
+  { source: 'josaseneth', name: 'Joseph and Aseneth', noteBook: 'JosAsen', dataUrl: '/data/pseudepigrapha/josaseneth.json', chapters: 29,
+    attribution: 'Text: a public-domain English translation of Joseph and Aseneth (29 chapters). Verse divisions vary between editions, so some scholarly citations resolve at the chapter level only.',
+    parseCitation: cite(/^Jos\. Asen\.\s+(\d+)(?::(\d+))?/) },
   ...TWELVE_PATRIARCHS_WORKS,
 ]
 
