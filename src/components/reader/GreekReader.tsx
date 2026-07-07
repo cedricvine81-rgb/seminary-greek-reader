@@ -197,7 +197,7 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
   const [absOn,     setAbsOn]              = useState(true)
 
   type GntEdition = 'tischendorf' | 'nestle1904'
-  const [gntEdition, setGntEdition]         = useState<GntEdition>('tischendorf')
+  const [gntEdition, setGntEdition]         = useState<GntEdition>('nestle1904')
 
   // ── BSB alignment ────────────────────────────────────────────────────────────
   const [bsbAlignment, setBsbAlignment]       = useState<BsbAlignmentData | null>(null)
@@ -407,7 +407,7 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
   }, [fetchChapter])
 
   // ── GNT edition: load/reload GNT corpus when edition changes ─────────────────
-  // Also runs on mount (initial value 'tischendorf') to seed the first GNT chapter.
+  // Also runs on mount (initial value 'nestle1904') to seed the first GNT chapter.
 
   useEffect(() => {
     setGnt({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
