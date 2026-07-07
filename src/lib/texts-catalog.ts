@@ -123,6 +123,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'jubilees', name: 'Jubilees', source: 'jubilees', chapters: 50 },
       { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 85 },
       { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
+      { id: 'apocmoses', name: 'Apocalypse of Moses', source: 'apocmoses', chapters: 43 },
     ],
   },
   {
