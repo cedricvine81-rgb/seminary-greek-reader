@@ -206,7 +206,35 @@ function wordToVerseWord(raw: RawWord, verseId: string): VerseWord {
 
 // Expand the compact NA1904 chapter format into the standard reader shape.
 // Compact: { b: osisId, c: chapter, v: { "<verse>": [[surface, lemma, strongs], …] } }
-function expandCompactChapter(raw: { b: string; c: number; v: Record<string, [string, string, string][]> }, bookName: string) {
+// Expand the MACULA readable morphology string ("Verb, Aorist, Active, Indicative, 3 person,
+// Singular") stored in the compact NA1904 tuple into the structured morph shape the reader,
+// parsing pane, and Wallace syntax menu expect. The first token is the part of speech; the
+// rest are matched by keyword (order-independent), so it works for nouns, verbs, participles,
+// articles, etc. alike. Older tuples without a parsing element fall back to empty morph.
+const NA1904_CASE = new Set(['Nominative', 'Genitive', 'Dative', 'Accusative', 'Vocative'])
+const NA1904_NUMBER = new Set(['Singular', 'Plural', 'Dual'])
+const NA1904_GENDER = new Set(['Masculine', 'Feminine', 'Neuter'])
+const NA1904_TENSE = new Set(['Present', 'Imperfect', 'Future', 'Aorist', 'Perfect', 'Pluperfect'])
+const NA1904_VOICE = new Set(['Active', 'Middle', 'Passive', 'Middlepassive'])
+const NA1904_MOOD = new Set(['Indicative', 'Subjunctive', 'Optative', 'Imperative', 'Infinitive', 'Participle'])
+function parsingToMorph(parsing: string | undefined) {
+  const empty = { partOfSpeech: '', casus: null, number: null, gender: null, tense: null, voice: null, mood: null, person: null }
+  if (!parsing) return empty as RawWord['morph']
+  const parts = parsing.split(',').map(s => s.trim()).filter(Boolean)
+  const m: RawWord['morph'] = { ...empty, partOfSpeech: parts[0] ?? '' }
+  for (const p of parts.slice(1)) {
+    if (NA1904_CASE.has(p)) m.casus = p
+    else if (NA1904_NUMBER.has(p)) m.number = p
+    else if (NA1904_GENDER.has(p)) m.gender = p
+    else if (NA1904_TENSE.has(p)) m.tense = p
+    else if (NA1904_VOICE.has(p)) m.voice = p
+    else if (NA1904_MOOD.has(p)) m.mood = p
+    else { const pm = /^(\d)\s*person$/i.exec(p); if (pm) m.person = pm[1] }
+  }
+  return m
+}
+
+function expandCompactChapter(raw: { b: string; c: number; v: Record<string, [string, string, string, string?][]> }, bookName: string) {
   const verses = Object.keys(raw.v)
     .map(Number).sort((a, b) => a - b)
     .map(vn => {
@@ -216,7 +244,7 @@ function expandCompactChapter(raw: { b: string; c: number; v: Record<string, [st
         surface: t[0],
         lemma: t[1] || '',
         strongs: t[2] || '',
-        morph: { partOfSpeech: '', casus: null, number: null, gender: null, tense: null, voice: null, mood: null, person: null },
+        morph: parsingToMorph(t[3]),
       }))
       return {
         id: `${raw.b}.${raw.c}.${vn}`, bookId: raw.b, chapter: raw.c, verse: vn,
