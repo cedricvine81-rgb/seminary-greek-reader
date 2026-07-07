@@ -127,6 +127,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51 },
       { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17 },
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
+      { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
     ],
   },
   {
