@@ -18,7 +18,7 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | `tp-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -89,6 +89,9 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '3baruch', name: '3 Baruch', noteBook: '3Baruch', dataUrl: '/data/pseudepigrapha/3baruch.json', chapters: 17,
     attribution: 'Text: H. M. Hughes’ translation of 3 Baruch (the Greek Apocalypse of Baruch), 1913 (public domain).',
     parseCitation: cite(/^3 Bar\.\s+(\d+)(?::(\d+))?/) },
+  { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
+    attribution: 'Text: the M. R. James / K. Kohler translation of the Testament of Job (public domain). Uses the 12-chapter division; scholarly citations often use the 53-chapter one.',
+    parseCitation: cite(/^T\. Job\.?\s+(\d+)(?::(\d+))?/) },
   ...TWELVE_PATRIARCHS_WORKS,
 ]
 
