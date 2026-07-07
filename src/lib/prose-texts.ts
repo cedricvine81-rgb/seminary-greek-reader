@@ -17,7 +17,8 @@ export interface ProseWork {
   parseCitation: (text: string) => { chapter: number; verse?: number } | null
 }
 
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch'
+// The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -25,6 +26,43 @@ const cite = (re: RegExp) => (text: string) => {
   const m = text.match(re)
   return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
 }
+
+// The Testaments of the Twelve Patriarchs — twelve short works cited as "T. Levi 3:5" etc.
+// The embedded text is the Ante-Nicene Fathers (Roberts-Donaldson) translation, which
+// divides each testament into numbered chapters with no sub-verse numbering, so every
+// chapter is stored as one verse and citations resolve at the chapter level. `abbrev` is
+// the exact form used in the cross-reference dataset; `chapters` matches the ANF text.
+const TWELVE_PATRIARCHS: { slug: string; name: string; abbrev: string; chapters: number }[] = [
+  { slug: 'reuben', name: 'Reuben', abbrev: 'Reu', chapters: 7 },
+  { slug: 'simeon', name: 'Simeon', abbrev: 'Sim', chapters: 9 },
+  { slug: 'levi', name: 'Levi', abbrev: 'Levi', chapters: 19 },
+  { slug: 'judah', name: 'Judah', abbrev: 'Jud', chapters: 26 },
+  { slug: 'issachar', name: 'Issachar', abbrev: 'Iss', chapters: 7 },
+  { slug: 'zebulun', name: 'Zebulun', abbrev: 'Zeb', chapters: 10 },
+  { slug: 'dan', name: 'Dan', abbrev: 'Dan', chapters: 7 },
+  { slug: 'naphtali', name: 'Naphtali', abbrev: 'Naph', chapters: 9 },
+  { slug: 'gad', name: 'Gad', abbrev: 'Gad', chapters: 8 },
+  { slug: 'asher', name: 'Asher', abbrev: 'Ash', chapters: 8 },
+  { slug: 'joseph', name: 'Joseph', abbrev: 'Jos', chapters: 20 },
+  { slug: 'benjamin', name: 'Benjamin', abbrev: 'Benj', chapters: 12 },
+]
+
+const TWELVE_PATRIARCHS_WORKS: ProseWork[] = TWELVE_PATRIARCHS.map(t => ({
+  source: `tp-${t.slug}` as EmbeddedProseSource,
+  name: `Testament of ${t.name}`,
+  noteBook: `TP${t.abbrev}`,
+  dataUrl: `/data/pseudepigrapha/testaments/${t.slug}.json`,
+  chapters: t.chapters,
+  attribution: `Text: the Ante-Nicene Fathers (Roberts-Donaldson) translation of the Testament of ${t.name}, 1886 (public domain).`,
+  // e.g. "T. Levi 3:5" — a bare chapter (or chapter:verse; the verse is ignored, since the
+  // ANF text has no sub-verse divisions).
+  parseCitation: cite(new RegExp(`^T\\. ${t.abbrev}\\.?\\s+(\\d+)(?::(\\d+))?`)),
+}))
+
+// Ids/names the catalog needs so the Texts tab can list all twelve under one category.
+export const TWELVE_PATRIARCHS_CATALOG = TWELVE_PATRIARCHS.map(t => ({
+  id: `tp-${t.slug}`, source: `tp-${t.slug}` as EmbeddedProseSource, name: `Testament of ${t.name}`, chapters: t.chapters,
+}))
 
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
@@ -42,6 +80,7 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '2enoch', name: '2 Enoch', noteBook: '2Enoch', dataUrl: '/data/pseudepigrapha/2enoch.json', chapters: 68,
     attribution: 'Text: W. R. Morfill’s translation of 2 Enoch (the Slavonic Secrets of Enoch), 1896 (public domain).',
     parseCitation: cite(/^2 En\.\s+(\d+)(?::(\d+))?/) },
+  ...TWELVE_PATRIARCHS_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
