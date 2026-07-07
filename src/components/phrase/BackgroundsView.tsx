@@ -712,8 +712,11 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               <button type="button" onClick={() => setOpenSummary(null)} className="shrink-0 text-gray-400 hover:text-gray-600" aria-label="Close summary"><X size={18} /></button>
             </div>
             <div className="max-h-[70vh] overflow-y-auto px-5 py-4 space-y-3">
-              {openSummary.work.summary.map((para, i) => (
-                <p key={i} className="text-sm leading-relaxed text-gray-700">{para}</p>
+              {openSummary.work.sections.map((section, i) => (
+                <div key={i}>
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-brand-600 mb-0.5">{section.heading}</p>
+                  <p className="text-sm leading-relaxed text-gray-700">{section.body}</p>
+                </div>
               ))}
             </div>
           </div>

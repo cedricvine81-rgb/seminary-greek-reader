@@ -1,7 +1,10 @@
-// AUTO-GENERATED from Second_Temple_Early_Jewish_and_Early_Christian_Literature.docx.
-// Scholarly overviews of extra-canonical literature, grouped by corpus, shown in the
-// Backgrounds "Summaries" menu. Regenerate from the source doc if it is revised.
-export interface SummaryWork { id: string; title: string; summary: string[] }
+// AUTO-GENERATED from Second_Temple_Early_Jewish_and_Early_Christian_Literature_Student_Guide.docx.
+// Student-friendly overviews of extra-canonical literature, grouped by corpus, shown in the
+// Backgrounds "Summaries" menu. Each work has five sections (Authorship, Historical Context,
+// Contents, Theological Significance, Relationship to New Testament). Regenerate from the
+// source doc if it is revised.
+export interface SummarySection { heading: string; body: string }
+export interface SummaryWork { id: string; title: string; sections: SummarySection[] }
 export interface SummaryCategory { id: string; label: string; works: SummaryWork[] }
 
 export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
@@ -12,109 +15,469 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "tobit",
         "title": "Tobit",
-        "summary": [
-          "Tobit is a didactic novella, most likely composed in Aramaic (fragments of both Aramaic and Hebrew recensions were recovered at Qumran, 4Q196–4Q200), probably in the eastern Diaspora or Palestine during the late third or early second century BCE, prior to the Maccabean crisis it shows no awareness of. The author is anonymous; the narrative attributes itself to Tobit and his son Tobias but is a work of fiction employing the folkloric motifs of the grateful dead and the monster in the bridal chamber, set fictively in the Assyrian exile of the eighth century BCE. Three text-forms survive — a longer Greek recension (Sinaiticus, Old Latin) and a shorter one (Vaticanus, Alexandrinus) — with the Qumran fragments generally supporting the longer text as more original. Historically the book reflects the concerns of a Diaspora Jewish community negotiating fidelity to ancestral law, endogamous marriage, almsgiving, and burial of the dead while living under foreign rule, without direct engagement with contemporary political crisis. Theologically, Tobit advances a doctrine of divine providence mediated through ordinary piety: righteous suffering is not abandoned by God but is worked out through the quiet agency of the angel Raphael, present incognito as a travelling companion, and through the practical virtues of almsgiving (framed as atoning and life-preserving), prayer, and covenant loyalty. The book also displays an incipient angelology and demonology — Raphael’s self-disclosure and the binding of the demon Asmodeus — that anticipates later apocalyptic speculation. Its wisdom sayings, especially Tobit’s testamentary instructions to Tobias in chapter 4, align it with the sapiential tradition of Proverbs and Sirach. The book was received as canonical in the Catholic and Orthodox traditions, following its inclusion in the Septuagint and Vulgate, but was excluded from the Hebrew canon and, following Jerome’s judgment and the Reformers, from Protestant Scripture, though it retained devotional and liturgical use as edifying literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Tobit is an anonymous work of fiction, written in Aramaic or Hebrew (fragments of both were found at Qumran). The story is told in the voice of Tobit and his son Tobias, but no one thinks they actually wrote it."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It was probably written in the eastern Diaspora or Palestine in the late third or early second century BCE, before the Maccabean revolt. It reflects the everyday concerns of Jews living under foreign rule: keeping the law, marrying within the community, giving to the poor, and burying the dead properly."
+          },
+          {
+            "heading": "Contents",
+            "body": "Tobit, a blind and righteous man, sends his son Tobias on a journey guided (unknowingly) by the angel Raphael in disguise. Tobias marries Sarah, whose seven previous husbands were killed by a demon, and cures his father's blindness with a fish's gall, following Raphael's instructions."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The book teaches that God cares for ordinary, faithful people through quiet, everyday means rather than dramatic miracles. Almsgiving, prayer, and loyalty to family and law are shown as the path God rewards. The story also shows an early interest in angels and demons."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Tobit's themes of divine providence working through hidden agents and its praise of charitable giving echo later New Testament ethical teaching, though it is not directly quoted there. It was accepted as scripture by Catholic and Orthodox Christians but excluded from the Hebrew and Protestant canons."
+          }
         ]
       },
       {
         "id": "judith",
         "title": "Judith",
-        "summary": [
-          "Judith is a Hebrew (or possibly Greek-composed but Hebraizing) novella surviving complete only in Greek, with secondary Old Latin, Syriac, and later Hebrew versions. Most critical scholarship places its composition in the Hasmonean period, likely the late second century BCE, on the basis of its historical anachronisms — the Assyrian king Nebuchadnezzar is impossibly conflated with Persian-era geography and a restored post-exilic Judea — which point away from historiography toward theological fiction addressed to a Hasmonean-era audience. The author is unknown; the narrative’s celebration of a righteous widow’s zeal and its polemic against foreign domination and idolatrous imperial cult have suggested to many scholars a Hasmonean court setting, possibly composed to bolster resistance ideology comparable to that found in 1 Maccabees. Its central theological purpose is to dramatize Israel’s dependence on Yahweh alone for deliverance, achieved not through military might but through the unlikely instrumentality of a devout, ritually observant widow who deceives and beheads the Assyrian general Holofernes. The book emphasizes strict Torah observance (dietary law, prayer, fasting, ritual purity) as the precondition of divine favor and frames Judith’s act as an answer to communal prayer and covenant faithfulness rather than autonomous heroism. It participates in the broader Second Temple genre of the “tale of deliverance,” alongside Esther and Daniel 1–6, in which a vulnerable protagonist outwits imperial power through divinely assisted cunning. Judith was preserved and transmitted within the Septuagint tradition and received canonical status in Catholic and Orthodox Bibles; it was excluded from the Hebrew canon, seemingly never having circulated widely in Hebrew, and was relegated to the Apocrypha at the Reformation, though it exercised considerable influence on later Jewish festal literature associated with Hanukkah and on Christian iconography and moral exempla concerning courage and chastity."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The author of Judith is unknown. The book survives complete only in Greek, though it may have had a Hebrew original."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Scholars usually date it to the Hasmonean period, around the late second century BCE. The story contains historical errors (mixing up Assyrian and Persian details), suggesting it is a work of theological fiction rather than history, likely written to encourage Jewish resistance to foreign rule."
+          },
+          {
+            "heading": "Contents",
+            "body": "When the Assyrian general Holofernes besieges her town, the widow Judith deceives him with her beauty and piety, gains his trust, and beheads him while he sleeps, saving her people without any army."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Judith shows that Israel depends on God alone, not military strength, for deliverance, and that God can use an unlikely person — a devout widow — to accomplish it. The book stresses strict observance of Jewish law as the condition for divine favor."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Judith belongs to the same 'deliverance story' genre as Esther and Daniel, where a vulnerable hero defeats a powerful enemy through God-given cleverness. It has no direct citation in the New Testament but shaped later Jewish and Christian ideas about courage and faithfulness. It is canonical for Catholics and Orthodox but not for Jews or Protestants."
+          }
         ]
       },
       {
         "id": "additions-to-esther",
         "title": "Additions to Esther",
-        "summary": [
-          "The Greek Additions to Esther comprise six passages (typically labeled A–F) absent from the Hebrew Masoretic Esther, including Mordecai’s dream and its interpretation, the royal edicts of Artaxerxes, and extended prayers of Mordecai and Esther. The Greek translator’s colophon (11:1) dates the translation itself to the fourth year of a Ptolemaic king, most plausibly Ptolemy VIII Physcon (114 BCE) or, on an alternative reading, Ptolemy XII (78 or 48 BCE); the compositional history of the individual additions, however, may be earlier, and their original language is debated, with some sections likely composed directly in Greek and others translated from a Semitic Vorlage. The additions were most probably produced within the Alexandrian Jewish community to supply the overtly secular Hebrew Esther — famously the only book of the Hebrew Bible never to mention God — with explicit piety. Historically they reflect Diaspora Judaism’s negotiation of identity under Hellenistic and, later, Roman rule, and its discomfort with a canonical narrative lacking theological vocabulary. Theologically, the additions insert direct divine causation, prayer, and providence into the story: Esther and Mordecai pray explicitly to God, Esther’s approach to the king is framed as an act of faith rather than court intrigue, and the narrative is reoriented around covenant fidelity and the vindication of the righteous remnant against Gentile threat, specifically the villain Haman, here explicitly identified as a “Macedonian,” which sharpens the ethnic-religious conflict. The additions also serve an apologetic function, defending Jewish practice and identity to a Hellenistic audience while affirming providential protection of the diaspora community from annihilation. Jerome placed the additions at the end of his Latin Esther, separated from the Hebrew narrative, a decision that shaped their subsequent apocryphal status in Protestant Bibles while they remain integrated into the Catholic and Orthodox text of Esther."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "These six extra passages (labeled A–F) were added to the Greek version of Esther by an unknown translator or translators; the Hebrew Esther never mentions God, and the additions supply this missing piety."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "A note inside the text dates the Greek translation to around 114 BCE, though some of the additions may be earlier. They likely come from the Jewish community in Alexandria, Egypt, and reflect Diaspora Jews' discomfort with a Bible book that never names God."
+          },
+          {
+            "heading": "Contents",
+            "body": "The additions include Mordecai's prophetic dream, the full text of royal decrees, and long prayers by Mordecai and Esther asking God for help before Esther approaches the king."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By inserting prayer and direct statements about God's action, the additions turn Esther's political scheming into an act of faith and reframe the whole story around God's providence protecting his people from an enemy who is now called a 'Macedonian.'"
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The additions are not cited in the New Testament, but their concern with divine rescue of a threatened minority parallels New Testament themes of God's care for a vulnerable community. Jerome placed them separately in his Latin Bible, which is why they became 'apocryphal' for Protestants while staying part of Esther for Catholics and Orthodox."
+          }
         ]
       },
       {
         "id": "wisdom-of-solomon",
         "title": "Wisdom of Solomon",
-        "summary": [
-          "The Wisdom of Solomon is a Greek-composed wisdom text, pseudonymously attributed to Solomon (1:1; 9:7–8) though never claiming his name directly, written most likely in Alexandria between the late second century BCE and the early first century CE, with many scholars favoring a date under Roman rule (30 BCE–40 CE) given its apparent allusions to Roman-era persecution and its sophisticated engagement with Middle Platonic and Stoic philosophical vocabulary. The actual author is an unknown, highly Hellenized Alexandrian Jew, deeply trained in Greek rhetoric and philosophy, who nonetheless remains firmly rooted in Israel’s scriptural and covenantal tradition. The work divides broadly into an eschatological discourse on the fate of the righteous and the wicked (chaps. 1–5), a meditation on the nature and pursuit of Wisdom personified (chaps. 6–9), and a review of salvation history from Adam to the Exodus emphasizing divine wisdom’s providential activity (chaps. 10–19), including an extended polemic against Egyptian idolatry. Its historical context is the pressure exerted on Diaspora Jewish identity by Hellenistic philosophical culture and, plausibly, by social or political hostility from a Gentile (specifically Egyptian) population; the text functions apologetically to commend Jewish monotheism as philosophically superior to pagan religion while offering pastoral consolation to Jews suffering unjust affliction. Theologically, its most significant contribution is the personification and near-hypostatization of Wisdom as an emanation of divine glory pervading and ordering creation (7:22–8:1), a conception that exercised deep influence on later Jewish speculation and on New Testament Christology, particularly Pauline and Johannine wisdom motifs. It further advances one of the clearest Second Temple articulations of the immortality of the soul (as opposed to bodily resurrection), reflecting Hellenistic anthropology rather than the apocalyptic resurrection hope found elsewhere. Never part of the Hebrew canon, it was received into the Septuagint, Vulgate, and Catholic/Orthodox canons, and remains excluded from Protestant Scripture."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Though it claims to be Solomon's words, the book was actually written much later by an unknown, highly educated Jewish author in Alexandria who never states Solomon's name directly."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it between the late second century BCE and the early first century CE, possibly written in response to persecution of Jews under Roman rule in Egypt. Its author knew Greek philosophy well, especially Platonism and Stoicism."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book has three parts: the fate of the righteous versus the wicked, praise of personified Wisdom, and a retelling of Israel's history (especially the Exodus) showing Wisdom's guiding hand, along with mockery of Egyptian idol worship."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its biggest contribution is describing Wisdom as almost a separate divine being who spreads through and organizes creation. The book also clearly teaches the immortality of the soul, differing from the bodily-resurrection hope found in other Jewish writings of the period."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Wisdom of Solomon's picture of Wisdom as God's agent in creation deeply influenced how New Testament writers, especially Paul and John, described Christ's role in creation. It was never part of the Hebrew Bible and is excluded from Protestant Scripture, though Catholics and Orthodox accept it."
+          }
         ]
       },
       {
-        "id": "sirach-ecclesiasticus-the-wisdom-of-jesus-ben-sira",
-        "title": "Sirach (Ecclesiasticus / The Wisdom of Jesus ben Sira)",
-        "summary": [
-          "Sirach is unusual among apocryphal books in preserving a named author: Yeshua ben Eleazar ben Sira, a Jerusalem sage and scribe, who composed the work in Hebrew around 180–175 BCE, shortly before the Hellenistic reforms and Antiochene persecution that convulsed Judea from 175 BCE onward. The book was translated into Greek by the author’s grandson in Egypt, who supplies a prologue dating his own arrival there to the thirty-eighth year of Ptolemy VIII Euergetes (132 BCE), making Sirach one of the most securely dated works of Second Temple literature; substantial portions of the Hebrew original have been recovered from the Cairo Geniza, Qumran (2Q18, 11QPsa), and Masada, confirming the translator’s fidelity. Ben Sira writes from within the Jerusalem priestly-scribal establishment, and the book reflects the social world of the Second Temple sage: a professional class mediating Torah, wisdom instruction, and practical ethics for an urban elite audience, prior to the Hellenistic crisis that would soon fracture that world. Structurally the book combines conventional proverbial wisdom (on family, friendship, wealth, speech, and honor) with an extended encomium on Torah as the concrete embodiment of cosmic Wisdom (chap. 24, echoing and revising Proverbs 8) and a climactic “Praise of the Ancestors” (chaps. 44–50) that narrates Israel’s history through its great figures, culminating in the high priest Simon II, ben Sira’s contemporary. Theologically, Sirach’s central achievement is the identification of transcendent, cosmic Wisdom with the Mosaic Torah, given by God to dwell uniquely in Israel — a move that would prove foundational for later Jewish and, indirectly, Christian wisdom Christology. The book is notably conservative regarding retribution (denying an afterlife of reward and punishment, in tension with later apocalyptic developments) and reflects a still-optimistic confidence in the sage’s capacity to harmonize wisdom, law, and the temple cult. Excluded from the Hebrew canon at Jamnia-era discussions, it retained wide esteem in rabbinic literature and was received canonically by Catholic and Orthodox traditions. ## Baruch",
-          "The Book of Baruch is a composite work attributed pseudonymously to Baruch ben Neriah, the scribe of Jeremiah (Jer 36; 45), purporting to be written in Babylon in the years following the 586 BCE exile and sent back to Jerusalem to be read publicly. Critical scholarship regards this attribution as fictive and the book as a later composite, likely assembled from at least three originally independent units: a prose confession and communal lament (1:1–3:8), a poem in praise of Wisdom identified with Torah (3:9–4:4, closely paralleling Sirach 24 and Job 28), and a poetic oracle of consolation to Jerusalem (4:5–5:9, echoing Second Isaiah). Proposed dates range widely, from the Persian period for some sections to as late as the aftermath of the 70 CE destruction of the Second Temple for the final redaction, with a Maccabean-era date (mid-second century BCE) commonly favored for the work’s assembly into its present form, plausibly in response to a national crisis evoking the memory of the Babylonian exile — some scholars specifically propose the Antiochene persecution as the generative crisis. The original language of the prose section is likely Hebrew (a Semitic Vorlage is widely posited on stylistic grounds, though the book survives complete only in Greek), while the poetic sections may be later Greek compositions modeled on Hebrew antecedents. The Letter of Jeremiah, though separately authored and dated (see below), circulated as an appendage to Baruch in the Greek and Latin traditions (as Baruch 6) and thus is often discussed as part of the “Baruch complex.” Theologically, the book interprets the exile as just divine punishment for covenant infidelity, calls Israel to penitential confession, and grounds hope for restoration in identifying Wisdom exclusively with Torah given to Israel, structurally paralleling Deuteronomistic covenant theology’s cycle of sin, punishment, repentance, and restoration. The final poem personifies Jerusalem as a mourning mother comforted by the prospect of her children’s return, offering communal consolation to a Jewish readership living either under continued Diaspora dispersion or in the aftermath of renewed national catastrophe. Baruch was received into the Septuagint, Vulgate, and Catholic/Orthodox canons but was excluded from the Hebrew Bible and the Protestant Apocrypha’s canonical status."
+        "id": "sirach-ecclesiasticus",
+        "title": "Sirach (Ecclesiasticus)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unusually, we know the author's name: Jesus ben Sira, a Jerusalem scribe and teacher, wrote the book in Hebrew around 180 BCE. His grandson later translated it into Greek in Egypt and added a helpful preface."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Because the grandson dates his own move to Egypt precisely, Sirach is one of the most confidently dated books of this era, written shortly before the Greek-influenced crisis that led to the Maccabean revolt. Ben Sira wrote for the Jerusalem priestly and scribal elite."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book mixes practical proverbs (on family, money, friendship, and speech) with a long poem identifying Wisdom with the Torah (chapter 24) and a closing 'Praise of the Ancestors' reviewing Israel's great heroes."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Sirach's key idea is that cosmic Wisdom and the Law of Moses are the same thing, given uniquely to Israel. Unlike later apocalyptic texts, Sirach does not teach an afterlife of reward and punishment, showing an earlier, more this-worldly view of divine justice."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Sirach's wisdom-Torah identification influenced later Jewish and Christian thinking about divine wisdom, feeding into New Testament wisdom Christology. It was respected in rabbinic tradition and is canonical for Catholics and Orthodox, though excluded from the Hebrew and Protestant Bibles."
+          }
+        ]
+      },
+      {
+        "id": "baruch",
+        "title": "Baruch",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The book claims to be written by Baruch, the scribe of the prophet Jeremiah, but scholars agree this is a pen name. It is really a combination of at least three separate pieces joined together by an unknown editor."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Dates for its parts range widely, from the Persian period to after 70 CE, but most scholars think it was assembled around the Maccabean crisis (mid-second century BCE), using the memory of the Babylonian exile to speak to a later national crisis."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book contains a communal confession of sin, a poem praising Wisdom as identical with the Torah (closely resembling Sirach 24), and a poem of comfort addressed to Jerusalem, personified as a grieving mother."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Baruch interprets exile as fair punishment for breaking the covenant and calls Israel to confess its sin, with hope for restoration grounded in Israel's unique possession of Wisdom-as-Torah, following the classic pattern of sin, punishment, repentance, and restoration."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Baruch's themes of national confession and restoration parallel New Testament ideas about repentance and hope, though it is not directly quoted there. It is included in Catholic and Orthodox Bibles but excluded from the Hebrew and Protestant canons."
+          }
         ]
       },
       {
         "id": "letter-of-jeremiah",
         "title": "Letter of Jeremiah",
-        "summary": [
-          "The Letter of Jeremiah is a satirical polemic against idolatry, presented pseudonymously as a letter sent by the prophet Jeremiah to Jewish exiles being deported to Babylon, warning them against the worship of Babylonian idols they would encounter (drawing on Jer 10:1–16 and 29:1–23 as literary models). Most critical scholarship dates the actual composition considerably later than the sixth-century BCE setting it claims, likely to the late fourth or early third century BCE, on the basis of a fragment of a Greek version found at Qumran (7Q2) providing a terminus ante quem, and its Hellenistic-period concerns about syncretism and idol worship among Diaspora communities exposed to Babylonian, Persian, or Hellenistic religious practice. The original language is debated, with a Hebrew or Aramaic Vorlage often proposed, though some scholars argue for direct Greek composition. The author is unknown, writing under Jeremiah’s authority to lend prophetic weight to a tract addressing the perennial temptation of Diaspora Jews toward idolatrous accommodation. Structurally the letter is organized as a refrain-driven satire, repeatedly asserting that idols “cannot” — cannot move, speak, protect themselves from theft or decay, or save their worshipers from any danger — building a cumulative case for their impotence contrasted with the living, active God of Israel. This genre of anti-idol polemic draws on precedents in Isaiah 44 and Psalm 115 and anticipates similar argumentation in the Wisdom of Solomon (13–15) and later rabbinic and patristic apologetics. Its theological purpose is straightforwardly protective and paraenetic: to fortify Jewish communal identity against assimilation by ridiculing the surrounding culture’s central religious institutions, and to reinforce exclusive Yahwistic monotheism as intellectually and morally superior. The letter circulated in the Greek and Latin traditions as an appendix to Baruch (Baruch chapter 6) and shares its canonical fate, included in Catholic and Orthodox Bibles as part of Baruch and excluded from the Hebrew canon and Protestant Scripture."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Written as though it were a letter from the prophet Jeremiah to Jewish exiles in Babylon, the actual author is unknown and lived much later than Jeremiah's time."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "A fragment found at Qumran shows the letter existed by around the third century BCE. It was likely written to strengthen Jews living among peoples who worshiped idols, warning them against being drawn into that worship."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter is a satirical, repeated attack on idols, insisting again and again that they 'cannot' do anything — move, speak, or protect themselves — unlike the living God of Israel."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its purpose is to defend strict monotheism by ridiculing idol worship as obviously foolish, protecting Jewish identity from assimilation into the surrounding culture through humor and logical argument."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This kind of anti-idol argument reappears in the New Testament's warnings against idolatry (such as in Acts and Paul's letters), showing a shared Jewish apologetic tradition. The letter was attached to Baruch in Greek and Latin Bibles, shares its canonical status, and is excluded from Hebrew and Protestant Scripture."
+          }
         ]
       },
       {
-        "id": "the-additions-to-daniel-prayer-of-azariah-and-the-song-of-th",
-        "title": "The Additions to Daniel: Prayer of Azariah and the Song of the Three Young Men",
-        "summary": [
-          "This Greek addition inserts, at Daniel 3:23, an extended prayer of confession by Azariah (one of the three companions cast into the fiery furnace) followed by a hymn of praise sung by the three young men once delivered, modeled closely on Psalm 148’s call to all creation to praise God. The addition survives in the Old Greek and Theodotionic recensions of Daniel and was almost certainly composed in Hebrew or Aramaic, subsequently translated into Greek, likely in the second century BCE, contemporaneous with or shortly after the composition of the Hebrew-Aramaic core of Daniel during the Antiochene crisis (167–164 BCE), a context the addition’s themes of righteous suffering, faithful resistance to idolatrous compulsion, and confident hope of deliverance directly reflect. The author is unknown, plausibly a member of the same scribal-apocalyptic circles responsible for Daniel’s visions, seeking to supply liturgical and penitential material appropriate to the narrative’s climax. Theologically, Azariah’s prayer functions as a communal confession acknowledging Israel’s sin as the just cause of national calamity (echoing Deuteronomic and Danielic covenant theology, closely paralleling Daniel 9), while petitioning for deliverance for the sake of God’s own name and covenant promises to the patriarchs; it notably reflects a situation without functioning temple sacrifice, offering “a contrite heart and a humble spirit” as an acceptable substitute — a theologically significant adaptation for a community in exile or crisis. The subsequent Song of the Three functions doxologically, extending creation’s praise cosmically (sun, moon, stars, seas, beasts, all humanity) in a manner that has proved enormously influential liturgically, forming the basis of the canticle Benedicite still used in Christian daily office traditions. The addition thus serves both catechetical and liturgical purposes for its early audience, modeling penitence and confident praise amid persecution. It was received into Catholic and Orthodox canons as part of Daniel and excluded, with the rest of the Additions, from the Hebrew Bible and Protestant canon."
+        "id": "prayer-of-azariah-and-song-of-the-three-young-men",
+        "title": "Prayer of Azariah and Song of the Three Young Men",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This Greek addition to the book of Daniel is anonymous, inserted into the story of the fiery furnace, and was likely composed in Hebrew or Aramaic before being translated into Greek."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It was probably written around the same time as the core of Daniel, during the persecution under Antiochus IV in the 160s BCE, when Jews faced pressure to abandon their faith or die."
+          },
+          {
+            "heading": "Contents",
+            "body": "Azariah, one of three young men thrown into a furnace for refusing to worship an idol, prays a confession of Israel's sin, and then all three sing a hymn calling on all of creation to praise God after their miraculous rescue."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The prayer treats a humble, repentant heart as an acceptable offering to God even without Temple sacrifice, useful for a community in crisis. The hymn's cosmic praise later became the basis for the Christian liturgical song known as the Benedicite."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The theme of steadfast faith under persecution parallels New Testament calls to endurance under trial. Along with the other Additions to Daniel, it is scripture for Catholics and Orthodox but excluded from Hebrew and Protestant Bibles."
+          }
         ]
       },
       {
         "id": "susanna",
         "title": "Susanna",
-        "summary": [
-          "Susanna is a detective-style novella, appended to the Additions to Daniel, in which the beautiful, virtuous wife Susanna is falsely accused of adultery by two lecherous elders after she refuses their advances, and is vindicated when the young Daniel exposes the discrepancies in their testimony through skillful cross-examination. It survives in two Greek recensions (Old Greek and Theodotion, the latter significantly longer and the form more widely transmitted) and was most likely composed in Hebrew or Aramaic, though no Semitic original survives; a date in the second century BCE is commonly proposed, plausibly connected to the same crisis period as the core Daniel visions, though the tale’s folkloric, wisdom-oriented character (rather than apocalyptic content) has led some scholars to posit an independent origin subsequently attached to the Daniel cycle. The author is unknown. Historically, the narrative reflects concerns central to Second Temple Jewish jurisprudence and social ethics: the vulnerability of women to false testimony, the requirement of corroborating witnesses under Deuteronomic law (Deut 19:15–21, explicitly invoked in the elders’ punishment), and anxiety about corrupt judicial leadership, here embodied by elders who are themselves appointed judges. Theologically, the tale asserts divine vindication of the innocent through the Spirit-inspired wisdom of a divinely raised advocate (Daniel, whose name means “God is my judge”), affirming that God sees and answers the prayer of the falsely accused righteous even when human courts fail, and it functions didactically to commend chastity, integrity under pressure, and confidence in providence. The story also participates in the broader ancient Near Eastern and Hellenistic genre of the wise youth who exposes the folly of corrupt elders, a pattern with resonance in Greek novelistic literature as well as biblical wisdom tradition. Susanna was received into Catholic and Orthodox canons as part of Daniel (chapter 13 in the Vulgate ordering) and, like the other Additions, excluded from the Hebrew Bible and the Protestant canon. ## Bel and the Dragon",
-          "Bel and the Dragon comprises two satirical tales appended to Daniel (as chapter 14 in the Vulgate): in the first, Daniel exposes the Babylonian priests of the idol Bel as frauds who secretly consume the offerings supposedly eaten by the god, using ash strewn on the temple floor to reveal their nocturnal footprints; in the second, Daniel kills a venerated dragon (or serpent) by feeding it cakes of pitch, fat, and hair, and is subsequently cast into a lions’ den, from which he is miraculously preserved and fed by the prophet Habakkuk, transported by an angel. As with the other Danielic additions, the tales survive in Old Greek and Theodotionic recensions, were likely composed originally in a Semitic language (Aramaic or Hebrew) though no original survives, and are generally dated to the second century BCE, contemporaneous with the broader Danielic corpus, though their independent, self-contained narrative units suggest they may have circulated separately before attachment to Daniel. The author is unknown. Historically and theologically the tales function as polemical satire against idolatry, sharing the genre and purpose of the Letter of Jeremiah: they mock the impotence and fraudulence of pagan cult, contrasting it with the living God who acts through his faithful servant, and by extension they reassure a Jewish audience — plausibly living under the pressure of Hellenistic religious syncretism or, if earlier material underlies them, Babylonian and Persian dominance — of Yahweh’s superiority to the imperial gods and of divine protection for those who refuse idolatrous compromise even at personal risk. The narrative also reinforces the Danielic theme of miraculous deliverance from mortal danger (echoing Daniel 6’s lions’ den and Daniel 3’s furnace), building confidence that God vindicates the wise and faithful before hostile political and religious authority. As entertaining apologetic fiction, the tales likely served a didactic and morale-sustaining function within Diaspora or crisis-era Jewish communities, reinforcing communal boundaries against assimilation through ridicule of the dominant culture’s religious claims. Bel and the Dragon was received canonically within Catholic and Orthodox Daniel and excluded, with the other additions, from the Hebrew Bible and Protestant canon."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Susanna is an anonymous short story attached to the book of Daniel, probably originally written in a Semitic language, though no original survives."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Likely written in the second century BCE, it reflects Jewish concerns about fair trials, the need for multiple witnesses under biblical law, and fear of corrupt judges."
+          },
+          {
+            "heading": "Contents",
+            "body": "Two wicked elders falsely accuse the virtuous Susanna of adultery after she refuses their advances. The young Daniel proves her innocence by cleverly cross-examining the elders separately, exposing their conflicting stories."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The story shows that God vindicates the innocent even when human courts fail, working through the Spirit-given wisdom of a young hero, and it holds up chastity and integrity as ideals worth defending under pressure."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Like other 'wise youth exposes corrupt elders' stories, Susanna resonates with New Testament concerns about false testimony and unjust judgment (as in Jesus's own trial). It is part of Catholic and Orthodox Daniel but excluded from Hebrew and Protestant Bibles."
+          }
+        ]
+      },
+      {
+        "id": "bel-and-the-dragon",
+        "title": "Bel and the Dragon",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "These two anonymous satirical tales are attached to the end of Daniel and were likely composed originally in a Semitic language."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Generally dated to the second century BCE, alongside the rest of the Daniel material, in a period when Jews were tempted or pressured to accept foreign religious practices."
+          },
+          {
+            "heading": "Contents",
+            "body": "In the first tale, Daniel proves that priests of the idol Bel have been secretly eating the offerings themselves. In the second, he kills a worshiped serpent and is thrown into a lions' den, where he survives unharmed and is fed by the prophet Habakkuk."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Both stories mock the powerlessness and fraud of pagan worship while showing the true God actively protecting his faithful servant, reinforcing the message that loyalty to God brings deliverance even in mortal danger."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "These tales continue the biblical pattern of miraculous deliverance seen in Daniel 3 and 6, a pattern echoed in New Testament rescue narratives (such as Peter's escape from prison in Acts). It is canonical for Catholics and Orthodox, excluded elsewhere."
+          }
         ]
       },
       {
         "id": "prayer-of-manasseh",
         "title": "Prayer of Manasseh",
-        "summary": [
-          "The Prayer of Manasseh is a short penitential psalm placed in the mouth of King Manasseh of Judah, whose notorious idolatry and subsequent captivity, repentance, and restoration are narrated in 2 Chronicles 33:11–13, which mentions but does not record his prayer — a gap this text purports to fill. Critical scholarship regards the attribution as pseudonymous and the composition as considerably later than Manasseh’s seventh-century BCE reign, with most scholars proposing a date in the second or first century BCE, though the original language (Hebrew or Greek) remains debated; the prayer survives independently in Greek (transmitted in some manuscripts of the Septuagint’s Odes) and in Syriac, and is embedded within the third-century CE Christian composition Didascalia Apostolorum, complicating efforts to fix an early terminus. The author is unknown. Historically, the prayer reflects the broader Second Temple penitential tradition exemplified also in Ezra 9, Nehemiah 9, Daniel 9, and the Qumran Words of the Luminaries, in which national or personal calamity is processed through structured liturgical confession acknowledging God’s justice, one’s own sin, and appeal to covenant mercy. Theologically, the prayer’s central concern is the assurance of divine forgiveness even for the most extreme sinner, since Manasseh’s biblical reputation as Judah’s worst idolatrous king made him the paradigmatic test case for the reach of repentance and grace; the text explicitly states that repentance was not appointed for the righteous (Abraham, Isaac, Jacob) but for sinners such as Manasseh, articulating a theology in which God’s mercy exceeds even the gravest apostasy. This made the prayer attractive for later Christian liturgical use as a model of contrition, and it was incorporated into Byzantine and some Western penitential offices and daily prayer cycles. The prayer was never part of the Hebrew canon nor of the main body of the Septuagint’s biblical books proper (circulating instead among liturgical odes), was included in an appendix to the Vulgate without canonical status even in the Catholic tradition, and is treated as apocryphal by Protestant, Catholic, and Orthodox traditions alike, though it retains devotional and liturgical significance."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This short penitential prayer is put into the mouth of King Manasseh of Judah, but it was actually composed much later by an unknown author to fill a gap: 2 Chronicles mentions Manasseh's prayer but never records it."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second or first century BCE, in the same broad tradition of confession prayers as Ezra 9, Nehemiah 9, and Daniel 9, where communities processed hardship through structured repentance."
+          },
+          {
+            "heading": "Contents",
+            "body": "The prayer has Manasseh, remembered as Judah's worst idol-worshiping king, confess his sins and beg for God's mercy, acknowledging that he does not deserve forgiveness."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its main point is that God's mercy reaches even the worst sinner — the text explicitly says repentance was not needed for righteous men like Abraham but was given for sinners like Manasseh, emphasizing forgiveness that goes beyond human expectation."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This message of grace extended to the greatest sinner anticipates New Testament teaching on repentance and forgiveness. The prayer was never part of the Hebrew Bible or officially canonical for Catholics, though it is used in Christian liturgy across traditions."
+          }
         ]
       },
       {
         "id": "1-maccabees",
         "title": "1 Maccabees",
-        "summary": [
-          "1 Maccabees is a historiographical narrative, composed originally in Hebrew (surviving only in Greek translation, with the Hebrew original lost, though its style and idiom betray clear Semitic substrate), covering the Antiochene persecution and the Hasmonean revolt from roughly 175 to 134 BCE, culminating in the high priesthood of John Hyrcanus. Internal evidence (the reference to chronicles “to this day” at 16:23–24, and its Hasmonean-favorable perspective prior to the dynasty’s later controversial developments) points to a composition date in the last decades of the second century BCE, likely during the reign of John Hyrcanus (134–104 BCE) or shortly after. The author is unknown but was almost certainly a Judean writing from within, or closely sympathetic to, the Hasmonean court, modeling his history self-consciously on the Deuteronomistic history and Chronicles, employing biblical Hebrew historiographic conventions (formulaic notices of reign, death, and succession) to narrate contemporary events as a continuation of sacred history. Historically the book provides the single most detailed extant narrative of the Maccabean revolt, the desecration and rededication of the Jerusalem Temple (the origin of Hanukkah), and the establishment of Hasmonean political and priestly authority, though its selective, dynastically favorable perspective requires critical use alongside 2 Maccabees and Josephus. Theologically, 1 Maccabees is notably restrained: it avoids direct divine speech or overt supernatural intervention, framing Judas Maccabeus and his brothers’ victories as the outworking of covenant zeal (modeled explicitly on the biblical Phinehas, 2:26, 54) and fidelity to Torah under existential threat, while implicitly affirming divine providence through the pattern of events rather than explicit theological commentary — a historiographic restraint some scholars read as a deliberate legitimating strategy for Hasmonean political-priestly rule, presenting the dynasty as the divinely sanctioned heirs of the Maccabean zealot tradition. The book was preserved through the Septuagint and Vulgate and received canonical status in Catholic and Orthodox traditions, while remaining excluded from the Hebrew Bible and Protestant canon, despite its high historical value being widely acknowledged even by scholars who do not regard it as scripture."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The author is unknown but was almost certainly a Judean writer sympathetic to the Hasmonean royal family, writing in Hebrew (only the Greek translation survives)."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Written in the late second century BCE, probably during or shortly after the reign of John Hyrcanus, the book covers the Maccabean revolt against Greek rule from about 175 to 134 BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book narrates the persecution under Antiochus IV, the successful revolt led by Judas Maccabeus and his brothers, the rededication of the Jerusalem Temple (the origin of Hanukkah), and the rise of the Hasmonean dynasty."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Unlike many other Jewish texts, 1 Maccabees rarely mentions God directly, instead showing divine providence quietly at work through the heroic zeal and faithfulness of the Maccabee family, likely to support Hasmonean political legitimacy."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The book provides essential historical background for the Jewish world into which Jesus was later born, including groups and tensions the New Testament assumes its readers already know. It is scripture for Catholics and Orthodox but excluded from Hebrew and Protestant Bibles, despite its high value as history."
+          }
         ]
       },
       {
         "id": "2-maccabees",
         "title": "2 Maccabees",
-        "summary": [
-          "2 Maccabees presents itself as an abridgment (2:23) of a five-volume history by one Jason of Cyrene, otherwise unknown, covering a narrower period than 1 Maccabees (roughly 180–161 BCE, from the high priesthood of Onias III through Judas Maccabeus’s victory over Nicanor) and prefaced by two festal letters (1:1–2:18) urging Egyptian Jews to observe the feast of Temple rededication. The epitomator’s identity is unknown, and the work was composed in Greek, reflecting a Hellenistic-Jewish historiographic style markedly different from 1 Maccabees’ Hebraic annalistic mode, employing the conventions of Greek “pathetic” or dramatic historiography with an emphasis on emotional intensity, martyrological set-pieces, and moralizing authorial comment. Most scholars date the epitome to the mid-to-late second century BCE, close to the events described, though the prefatory letters may be somewhat later additions; the work was likely composed for a Diaspora, probably Alexandrian Egyptian, Jewish audience, evidenced by its address to Egyptian Jewry and its interest in commending the Jerusalem Temple’s sanctity to those living at geographic and, to a degree, cultic distance from it. Theologically, 2 Maccabees is considerably more overtly providential and supernaturalist than 1 Maccabees, featuring angelic epiphanies, direct divine intervention in battle, and, most significantly, the earliest clear extant articulation in Jewish literature of bodily resurrection as vindication for martyrdom, dramatized in the martyrdom of the mother and her seven sons (chapter 7) and Judas’s practice of prayer and sacrifice for the dead (12:43–45), the latter becoming a key proof-text in later Catholic theology of purgatory. The book also develops a robust theology of vicarious atoning martyrdom, in which the suffering of the righteous functions to turn away divine wrath from the nation, a theological motif with significant downstream influence on early Christian interpretations of Jesus’s death. 2 Maccabees was transmitted through the Septuagint and received into the Catholic and Orthodox canons, excluded from the Hebrew Bible and Protestant Scripture, though its martyrological and resurrection theology profoundly shaped later Jewish and Christian thought regardless of canonical status. ## 1 Esdras",
-          "1 Esdras (also called 3 Esdras in some Latin traditions) is a Greek historical narrative that largely parallels and reworks material from 2 Chronicles 35–36, Ezra, and Nehemiah 8, recounting the last kings of Judah, the exile, the decree of Cyrus, the rebuilding of the Temple under Zerubbabel, and Ezra’s reforms, while inserting a unique episode not found in the canonical parallels: the tale of three bodyguards at the Persian court debating the greatest power in the world (wine, the king, or women — with truth ultimately declared victorious), through which Zerubbabel wins Darius’s favor and permission to rebuild Jerusalem (3:1–5:6). Scholars debate whether 1 Esdras represents an independent, possibly earlier, Greek translation tradition than the canonical Ezra-Nehemiah (some regarding it as preserving a superior or alternative Hebrew/Aramaic Vorlage) or a later, secondary reworking; a date in the second century BCE is often proposed for the Greek composition or translation, though the underlying material’s compositional history is considerably more complex and contested. The author/compiler is unknown. Historically, the text reflects continued Jewish interest, in the Hellenistic period, in narrating and theologically interpreting the Persian-period restoration of the Temple and priestly cultic order as the foundational moment of Second Temple Judaism’s institutional legitimacy. Theologically, the book emphasizes divine providence operating through and validated by pagan imperial power (Cyrus and Darius are cast as instruments of God’s will for Israel’s restoration), the primacy of Temple worship and its proper priestly administration, and, through the courtiers’ contest, a meditation on truth as the supreme value that “endures and is strong forever” (4:38), subtly Judaizing a wisdom topos by having the victorious speech pivot to praise of God as the source of truth. The work likely served to reinforce confidence in the legitimacy of the Second Temple’s founding and priesthood among a later Hellenistic-era readership. 1 Esdras was widely read in the Greek East (positioned before Ezra-Nehemiah in many Septuagint manuscripts) and was included in the Vulgate’s appendix, granted a variable and contested canonical status: accepted in the Orthodox canon, relegated to an appendix without canonical authority in official Catholic teaching since Trent, and classified as apocryphal in Protestant tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The book says it is a summary of a longer, now-lost history by one Jason of Cyrene; the actual editor who made this summary is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in Greek, likely in the mid-to-late second century BCE for Jews living in Egypt, using a dramatic, emotional style typical of Greek historical writing rather than the plain style of 1 Maccabees."
+          },
+          {
+            "heading": "Contents",
+            "body": "It covers a narrower period than 1 Maccabees, focusing on the persecution under Antiochus IV and Judas Maccabeus's early victories, and includes the famous story of a mother and her seven sons martyred for refusing to break Jewish law."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This book is the earliest clear statement in Jewish literature of bodily resurrection as the reward for faithful martyrs. It also introduces the idea of praying for the dead, later important in Catholic teaching about purgatory."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its theology of martyrs' suffering benefiting the whole nation strongly shaped early Christian understanding of Jesus's death as a sacrifice for others. It is canonical for Catholics and Orthodox and excluded from Hebrew and Protestant Bibles."
+          }
         ]
       },
       {
-        "id": "2-esdras-4-ezra-with-the-christian-additions-5-and-6-ezra",
-        "title": "2 Esdras (4 Ezra, with the Christian additions 5 and 6 Ezra)",
-        "summary": [
-          "2 Esdras as it appears in the Apocrypha is a composite: its core, chapters 3–14, is 4 Ezra, a Jewish apocalypse composed in Hebrew (now lost, surviving fully only in Latin, Syriac, Ethiopic, and other secondary versions derived from a lost Greek intermediary) most likely in the last decade of the first century CE, roughly a generation after the destruction of the Second Temple in 70 CE, an event the book’s fictive setting (thirty years after the 586 BCE destruction, i.e., Ezra writing “in Babylon”) transparently allegorizes. The author is an unknown Jewish apocalyptic seer writing pseudonymously as Ezra, wrestling in a series of dialogues with the angel Uriel over the fundamental theodicy problem posed by the Temple’s destruction: how can a righteous, covenant-keeping God permit Israel’s suffering and Gentile Rome’s (“Babylon’s”) triumph? Chapters 1–2 (5 Ezra) and 15–16 (6 Ezra) are later Christian compositions, likely second and third century CE respectively, appended to the Jewish core, reflecting subsequent Christian appropriation and supersessionist reading. Historically, 4 Ezra is among the most theologically probing responses to the trauma of 70 CE alongside 2 Baruch, composed within the same broad literary and theological milieu, possibly by contemporaries responding to shared events. Theologically, 4 Ezra stages an unusually candid and unresolved wrestling with divine justice, human sinfulness (articulated through a doctrine of the “evil inclination,” cor malignum, rooted in Adam’s transgression, that anticipates in striking ways later rabbinic yetzer hara concepts and offers a fascinating parallel to Pauline anthropology), and the fate of the few righteous versus the mass of the condemned, before the seer’s despair is answered — not fully resolved — through apocalyptic visions of eschatological judgment, a messianic interregnum, and ultimate restoration. The book’s unusual theological severity and its wrestling with predestination and human freedom made it influential though marginal; it circulated widely in Latin Christianity (functioning liturgically as the source of the Requiem’s “Dies Irae” imagery) and is canonical in the Ethiopian Orthodox and, as an appendix, referenced in some Slavonic traditions, while classified as apocryphal or pseudepigraphal elsewhere; it is also frequently treated within Pseudepigrapha collections as 4 Ezra proper."
+        "id": "1-esdras",
+        "title": "1 Esdras",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The compiler is unknown. The book is a Greek retelling that overlaps heavily with 2 Chronicles, Ezra, and Nehemiah, but scholars debate whether it preserves an older version of that material or reworks it later."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Likely translated or composed in the second century BCE, it reflects ongoing Jewish interest in the story of the Temple's rebuilding after the Babylonian exile as the founding moment of Second Temple worship."
+          },
+          {
+            "heading": "Contents",
+            "body": "Along with retelling the Persian-period restoration, it adds a unique story: three bodyguards debate what is strongest in the world (wine, kings, or women) before one argues 'truth' wins, earning Zerubbabel royal favor to rebuild Jerusalem."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The book presents pagan kings like Cyrus and Darius as instruments used by God to restore Israel's Temple, emphasizing that even foreign rulers serve God's plan, alongside a message that truth is the greatest and most enduring power."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its themes of restoration and rebuilding echo New Testament hopes for renewal, though it is not directly cited there. Its canonical status varies: accepted by the Orthodox, placed in an appendix by Catholics, and considered apocryphal by Protestants."
+          }
+        ]
+      },
+      {
+        "id": "2-esdras-4-ezra-plus-christian-additions",
+        "title": "2 Esdras (4 Ezra plus Christian additions)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The core of the book (chapters 3–14, known as 4 Ezra) was written by an unknown Jewish author using the pen name Ezra; chapters 1–2 and 15–16 were added later by Christian writers."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The Jewish core was written about a generation after Rome destroyed the Jerusalem Temple in 70 CE, though it is set fictionally centuries earlier during the Babylonian exile as a way of processing that more recent trauma."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book presents a series of visionary dialogues between Ezra and the angel Uriel, wrestling with why God allows the righteous to suffer while the wicked prosper, eventually moving toward visions of judgment and a coming messianic age."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "4 Ezra offers an unusually honest and unresolved struggle with divine justice and human sinfulness, describing an 'evil inclination' inherited from Adam that leads most people toward condemnation — a bleak view of human nature."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This anxious wrestling with sin and law closely resembles Paul's discussion of human sinfulness in Romans, making 4 Ezra valuable for understanding the ideas Paul was engaging with. It is canonical for Ethiopian Orthodox Christians but apocryphal elsewhere."
+          }
         ]
       },
       {
         "id": "3-maccabees",
         "title": "3 Maccabees",
-        "summary": [
-          "3 Maccabees, despite its title, does not concern the Maccabean revolt at all but narrates events set two generations earlier, under Ptolemy IV Philopator (221–204 BCE): the king’s attempted forcible entry into the Jerusalem Temple’s Holy of Holies (repelled by divine intervention), his subsequent persecution of Alexandrian Jews, including an attempt at mass execution in a hippodrome using intoxicated elephants, and their miraculous deliverance. The work is a Greek composition, likely by an Alexandrian Jewish author, generally dated to the late second or first century BCE, functioning as a fictionalized “foundation legend” possibly reflecting, in displaced and dramatized form, the historical tensions and occasional violence experienced by Alexandrian Jewry under Ptolemaic or, some argue, early Roman rule, rather than a straightforward historical record of the Philopator era. The author is unknown. Historically the narrative belongs to the genre of Diaspora “deliverance” literature comparable to Esther and Daniel, dramatizing the vulnerability of a minority community to arbitrary royal caprice and mob hostility, and its eventual vindication through divine intervention channeled through faithful prayer (notably the high priest Simon’s and the elder Eleazar’s petitionary prayers, chapters 2 and 6). Theologically, the book emphasizes God’s covenant faithfulness to Israel even in the Diaspora, the efficacy of righteous intercessory prayer, the inviolability of the Jerusalem Temple against Gentile profanation, and divine justice meted out to persecutors (Philopator’s elephants turn instead upon his own soldiers). The narrative likely functioned to bolster communal solidarity and confidence among Alexandrian Jews facing periodic anti-Jewish agitation, a recurring feature of that city’s social history as also attested by Philo’s In Flaccum and Legatio ad Gaium. 3 Maccabees was transmitted in the Septuagint tradition and is accepted as canonical in the Eastern Orthodox and Oriental Orthodox traditions, while excluded from the Catholic Vulgate canon and the Protestant Bible; it is sometimes classified instead among the Pseudepigrapha in Western scholarship given its exclusion from the Catholic canon."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Despite its title, this book has nothing to do with the Maccabean revolt. The author, an Alexandrian Jew, is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Set two generations before the Maccabees, under Ptolemy IV (221–204 BCE), it was likely written in the late second or first century BCE, reflecting real tensions Jews in Alexandria, Egypt faced under Greek or Roman rule."
+          },
+          {
+            "heading": "Contents",
+            "body": "The story tells how Ptolemy IV tries to enter the Jerusalem Temple's most sacred room and is stopped by God, then takes revenge on Alexandria's Jews, even trying to kill them using drunk elephants in a stadium — a plan that fails when God intervenes."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The book emphasizes that God remains faithful to Jews even outside the land of Israel, that prayer is powerful, and that those who persecute God's people will themselves be punished."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Like Esther and Daniel, it belongs to the 'deliverance from persecution' genre familiar to early Christian readers. It is scripture for Eastern and Oriental Orthodox Christians but excluded from Catholic and Protestant Bibles."
+          }
         ]
       },
       {
         "id": "4-maccabees",
         "title": "4 Maccabees",
-        "summary": [
-          "4 Maccabees is a philosophical discourse, cast in the form of a diatribe or protreptic address, arguing the thesis that “devout reason is sovereign over the passions,” and illustrating this thesis through an extended retelling of the martyrdoms of the elder Eleazar and of the mother and her seven sons under Antiochus IV, material drawn directly from and expanding upon 2 Maccabees 6–7. The work was composed in a highly rhetorical, Atticizing Greek, reflecting formal training in Hellenistic philosophical rhetoric (drawing eclectically on Stoic ethical theory in particular), most likely by a Diaspora Jewish author, possibly from Antioch or Alexandria, with proposed dates ranging from the mid-first century BCE to the mid-first century CE, a majority of scholars favoring a date in the early to mid-first century CE, potentially in proximity to the reign of Caligula, whose attempted desecration of the Jerusalem Temple (40 CE) may form part of the work’s contemporary resonance. The author is unknown. Historically the text represents one of the most sophisticated instances of the fusion of Hellenistic philosophy and Jewish piety in Second Temple literature, presenting Torah observance itself as the supreme expression of rational self-mastery, thereby answering, on its own philosophical terms, the charge that Jewish law was irrational or barbarous. Theologically, 4 Maccabees develops the vicarious, atoning value of martyrdom with unusual explicitness, describing the martyrs’ deaths as a “ransom” (antipsychon) and “propitiation” (hilasterion) for the nation’s sins (17:21–22) — language strikingly proximate to New Testament soteriological vocabulary (cf. Rom 3:25) and of considerable interest for tracing the conceptual background of early Christian atonement theology — while also affirming personal immortality for the righteous dead, framed philosophically rather than through bodily resurrection. The work thus stands as a crucial witness to the intellectual sophistication of Hellenistic Judaism’s engagement with Greek philosophy on the eve of, or within, the earliest Christian period. 4 Maccabees is canonical in the Georgian Orthodox tradition and appears as an appendix in some Greek Orthodox Bibles without full canonical status, while excluded from Catholic and Protestant canons; it nonetheless remains an important primary source for Second Temple martyrological and philosophical theology."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The author is an unknown Jewish writer from the Diaspora, highly trained in Greek philosophical rhetoric, especially Stoic ethics."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the early-to-mid first century CE, possibly around the time the emperor Caligula tried to desecrate the Jerusalem Temple in 40 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book argues that 'devout reason rules over the passions,' proving this through a detailed retelling of the martyrdoms of the elder Eleazar and a mother and her seven sons under Antiochus IV, expanding on the story from 2 Maccabees."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It describes the martyrs' deaths using words like 'ransom' and 'sacrifice of atonement,' language strikingly close to how the New Testament describes the meaning of Jesus's death, and affirms personal immortality for the righteous."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its vocabulary of atoning martyrdom offers valuable background for understanding how early Christians explained the saving significance of Jesus's death (compare Romans 3:25). It is canonical only for Georgian Orthodox Christians."
+          }
         ]
       },
       {
         "id": "psalm-151",
         "title": "Psalm 151",
-        "summary": [
-          "Psalm 151 is a short autobiographical psalm attributed to David, celebrating his selection as the youngest and least of his brothers to be anointed by Samuel and his subsequent victory over Goliath, functioning as a poetic supplement to the narratives of 1 Samuel 16–17. The psalm survives in Greek (in the Septuagint, appended after Psalm 150) and, significantly, in a longer Hebrew form discovered among the Psalms Scroll from Qumran Cave 11 (11QPsa), where it appears alongside additional apocryphal psalms not included in the shorter Greek/Syriac tradition, demonstrating that a Hebrew form of the psalm (or psalms) circulated among at least some Second Temple Jewish communities, quite possibly including sectarian groups, well before the Christian era; most scholars therefore date the composition, or at least its Hebrew antecedent, to the Hasmonean or late Hellenistic period, with the Qumran evidence pushing serious consideration of an origin considerably earlier than the psalm’s eventual Greek form might otherwise suggest. The author is unknown, writing pseudonymously in David’s voice. Historically, the psalm’s discovery at Qumran has been central to debates about the fluidity of the “Psalter” as a collection during the late Second Temple period, since 11QPsa arranges canonical and non-canonical psalms together without apparent distinction, suggesting the boundaries of the psalms collection remained unsettled in at least some circles into the first century BCE or CE. Theologically, the psalm functions to celebrate divine election that inverts human expectation — David explicitly notes that his brothers were “handsome and tall” yet the Lord was not pleased with them, choosing instead the shepherd boy — reinforcing a persistent biblical theme (paralleled in the call narratives of Gideon, Saul, and others) that God’s choice rests on divine prerogative rather than external qualification, and celebrating God’s direct empowerment of the otherwise powerless to accomplish deliverance, here framed personally through David’s slaying of the “Philistine” who “cursed” Israel’s God. Psalm 151 is canonical within the Eastern Orthodox and Oriental Orthodox psalters, appended to the Septuagint Psalter, and excluded from Catholic, Protestant, and Jewish canonical Psalters."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This short psalm is written in David's voice but was composed anonymously long after his lifetime."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "A longer Hebrew version was discovered among the Dead Sea Scrolls (11QPsa), proving a Hebrew form circulated well before the Christian era, probably from the Hasmonean or late Hellenistic period."
+          },
+          {
+            "heading": "Contents",
+            "body": "The psalm has David recall being chosen by Samuel as the youngest and least impressive of his brothers, and celebrates his victory over Goliath."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It highlights that God chooses the unlikely and outwardly unimpressive person for his purposes, rather than picking based on external qualities — a message consistent with other biblical call stories (like Gideon and Saul)."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This 'God chooses the humble' theme parallels New Testament teaching, such as Paul's comments about God choosing the weak to shame the strong. Psalm 151 is scripture for Eastern and Oriental Orthodox Christians but not for Catholics, Protestants, or Jews."
+          }
         ]
       }
     ]
@@ -126,355 +489,1561 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "1-enoch-ethiopic-enoch",
         "title": "1 Enoch (Ethiopic Enoch)",
-        "summary": [
-          "1 Enoch is a composite apocalypse comprising five originally independent booklets — the Book of the Watchers (1–36), the Similitudes/Parables (37–71), the Astronomical Book (72–82), the Dream Visions (83–90), and the Epistle of Enoch (91–108) — attributed pseudonymously to the antediluvian patriarch Enoch (Gen 5:21–24), preserved in full only in Ge’ez (Ethiopic) but substantially attested in Aramaic fragments from Qumran (covering all sections except the Similitudes) and in Greek fragments. The booklets span several centuries of composition: the Astronomical Book and the Book of the Watchers are among the oldest, likely third century BCE, drawing on Mesopotamian astronomical and mythological traditions (notably the Watchers/fallen angels tradition reworking Gen 6:1–4); the Dream Visions and Epistle date to the Maccabean crisis, mid-second century BCE; the Similitudes, absent from Qumran, are usually dated to the late first century BCE or first century CE, possibly Herodian-era. The authors are unknown scribal-priestly circles, plausibly disaffected from the Jerusalem priesthood, given the corpus’s polemic against a corrupted temple cult. Historically, 1 Enoch represents the earliest sustained apocalyptic literary tradition in Judaism, predating and influencing Daniel, and reflects social and theological crises including priestly corruption, the origin of evil and suffering (attributed to the Watchers’ transgression rather than solely Adam’s), and eschatological hope for cosmic renewal. Theologically, the work develops rich angelology and demonology, a periodized view of history moving toward final judgment, and, in the Similitudes, a transcendent “Son of Man” figure who executes eschatological judgment — material of major significance for New Testament Christology and explicitly cited in Jude 14–15. Excluded from Jewish and Western Christian canons, 1 Enoch is canonical scripture in the Ethiopian Orthodox Tewahedo Church."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "1 Enoch combines five originally separate booklets, all attributed to the ancient patriarch Enoch but actually written anonymously by different scribal groups over several centuries."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The oldest parts (the Book of the Watchers and the Astronomical Book) date to the third century BCE; other sections were added during the Maccabean crisis and as late as the first century CE. It survives complete only in Ethiopic, though Aramaic fragments turned up at Qumran."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book covers rebellious angels ('Watchers') who corrupt humanity, tours of the cosmos, dream-visions of Israel's history, and a heavenly 'Son of Man' figure who will judge the world."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "1 Enoch is the earliest major example of Jewish apocalyptic writing, developing rich ideas about angels, demons, and a set, unfolding plan of history leading to final judgment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its 'Son of Man' figure directly shaped how the New Testament speaks of Jesus's coming judgment, and the letter of Jude actually quotes 1 Enoch by name. It is canonical scripture only in the Ethiopian Orthodox Church."
+          }
         ]
       },
       {
         "id": "2-enoch-slavonic-enoch",
         "title": "2 Enoch (Slavonic Enoch)",
-        "summary": [
-          "2 Enoch, surviving only in Old Church Slavonic (in longer and shorter recensions of disputed relative priority), recounts Enoch’s ascent through seven (in the longer recension, ten) heavens, his instruction by angels in cosmological and ethical secrets, and his commissioning to record this revelation for his sons before his translation to heaven. The date and provenance are among the most contested in Pseudepigrapha scholarship: proposals range from a first-century CE Alexandrian Jewish origin (the traditional majority view, citing apparent knowledge of the still-standing Jerusalem Temple and affinities with Philonic and Hellenistic-Jewish thought) to a considerably later Byzantine Christian or Bogomil composition, with no Hebrew, Aramaic, or Greek witness surviving to adjudicate definitively; recent scholarship increasingly favors a Jewish core with subsequent Christian redaction. The author or authors are unknown. Historically, if a Second Temple Jewish origin is accepted, the book witnesses to Hellenistic Jewish apocalyptic and mystical speculation contemporaneous with the milieu that produced Philo and elements of the developing Merkavah tradition, though its precise setting cannot be securely fixed. Theologically, the work is notable for its elaborate seven-heaven cosmology, its ethical instruction emphasizing almsgiving and social justice, and — significantly — an apparent doctrine of the pre-mundane creation of the world through divine Wisdom and a strong emphasis on cosmic and calendrical order. Its portrayal of Enoch as a heavenly scribe and mediator of cosmic secrets contributed to the broader “heavenly ascent” tradition influential in later Jewish mysticism and in some strands of early Christian apocalyptic literature. 2 Enoch has no canonical status in any tradition but remains an important, if textually uncertain, witness to Second Temple or early post-Temple Jewish (or Jewish-Christian) cosmological and ethical speculation."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The author is unknown, and even the text's origin is disputed — some scholars think it is a first-century Jewish work from Alexandria, while others argue it is a much later Christian composition."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It survives only in Old Church Slavonic, with no earlier Hebrew, Aramaic, or Greek copies to help settle the debate over date and origin, though many now think a Jewish core was later reworked by Christian scribes."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book describes Enoch's journey up through seven (or in some versions, ten) heavens, where angels teach him cosmic secrets before he returns to instruct his sons and is taken back up to heaven."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It develops an elaborate multi-level heaven cosmology and stresses ethical living, especially generosity to the poor, alongside ideas about the world's creation through divine Wisdom."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its heavenly-ascent framework parallels similar ideas found in Paul's reference to being caught up to the 'third heaven' (2 Corinthians 12). It has no canonical status in any Christian or Jewish tradition."
+          }
         ]
       },
       {
-        "id": "3-enoch-hebrew-enoch-sefer-hekhalot",
-        "title": "3 Enoch (Hebrew Enoch / Sefer Hekhalot)",
-        "summary": [
-          "3 Enoch is a Hebrew apocalypse belonging to the Hekhalot (“palaces”) mystical literature, narrating Rabbi Ishmael’s ascent through the heavenly palaces and his encounter with the angel Metatron, who is revealed to be the transformed and exalted patriarch Enoch, now serving as the “lesser YHWH” and supreme angelic vizier of the divine throne-room. The work is considerably later than 1 and 2 Enoch, most scholars dating its composition to the fifth or sixth century CE, situating it within the flowering of rabbinic-era Jewish mysticism in Babylonia or Palestine, well after the New Testament period, though it draws on and develops earlier Enochic and merkavah traditions with roots extending back into the Second Temple period. The author is unknown, writing within priestly-rabbinic mystical circles associated with the broader Hekhalot corpus. Historically, 3 Enoch documents the trajectory by which the ancient Enoch traditions, marginalized in normative rabbinic Judaism after the destruction of the Temple and the parting of ways with nascent Christianity (which had claimed Enochic and Son of Man traditions for its own Christology), were preserved and transformed within esoteric mystical circles, evidencing ongoing rabbinic ambivalence toward exalted angelic or quasi-divine intermediary figures, a concern reflected in the text’s own narrative in which Metatron is punished for permitting the heretical inference of “two powers in heaven.” Theologically, 3 Enoch represents a sophisticated development of merkavah throne mysticism, angelic hierarchy, and the transformation of a righteous human into a supreme angelic being, while simultaneously working to contain and delimit the theological danger such exaltation posed to strict monotheism. It is not part of any canon but is a central primary text for the study of early Jewish mysticism and for tracing the later reception history of Enochic tradition."
+        "id": "3-enoch-hebrew-enoch",
+        "title": "3 Enoch (Hebrew Enoch)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This Hebrew mystical text is anonymous, written within Jewish circles devoted to visionary 'palace' (Hekhalot) literature."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It is much later than 1 and 2 Enoch, dating to around the fifth or sixth century CE, well after the New Testament period, though it builds on much older Enoch traditions."
+          },
+          {
+            "heading": "Contents",
+            "body": "Rabbi Ishmael ascends through heaven and meets the angel Metatron, who turns out to be the patriarch Enoch transformed into a powerful angel called the 'lesser YHWH.'"
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text shows both fascination with and caution about exalting a human figure to near-divine angelic status, since Metatron is punished at one point for suggesting there are 'two powers in heaven.'"
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "3 Enoch documents how Jewish tradition handled ideas about exalted heavenly mediators after Christianity had already claimed similar Enoch traditions for its own view of Christ. It holds no canonical status but matters for studying Jewish mysticism."
+          }
         ]
       },
       {
         "id": "sibylline-oracles",
         "title": "Sibylline Oracles",
-        "summary": [
-          "The Sibylline Oracles are a composite collection of twelve (numbered 1–8, 11–14, with books 9 and 10 being later duplications) Greek hexameter oracular compositions, pseudonymously voiced through the pagan prophetic figure of the Sibyl, a device that allowed Jewish (and later Christian) authors to present monotheistic theology, historical review, and eschatological prediction as though independently confirmed by venerable pagan prophecy. The corpus spans an extraordinarily wide compositional range, from the second century BCE (notably book 3, the oldest and most clearly Jewish stratum, likely composed in Ptolemaic Egypt) through the fourth or fifth century CE for some Christian strata, with individual books reflecting distinct authors, dates, and communities layered through a long process of composition, redaction, and Christian interpolation. The authors are unknown Hellenistic Jewish and, later, Christian writers. Historically, the oracles reflect the apologetic strategies of Diaspora Judaism (especially Egyptian) seeking to commend monotheism and Jewish moral teaching to a Gentile audience through a culturally familiar oracular genre, while also processing contemporary political events — the oracles frequently offer thinly veiled commentary on Hellenistic dynastic struggles and, later, Roman imperial history, including apparent allusions to Nero and the Flavian destruction of Jerusalem. Theologically, the earlier Jewish books emphasize ethical monotheism, condemnation of idolatry and sexual immorality, and eschatological judgment culminating in a coming golden age or messianic kingdom, while later Christian layers overlay explicitly Christological and Trinitarian content, including the famous acrostic on “Jesus Christ, Son of God, Savior, Cross” in book 8. The collection, though never canonical, exercised considerable influence, being cited approvingly by early Christian apologists such as Justin Martyr, Clement of Alexandria, and Lactantius as independent pagan corroboration of biblical truth."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This is a mixed collection of twelve books of Greek prophetic poetry, written by different unknown Jewish and, later, Christian authors over several centuries, all pretending to be the words of the pagan prophetess called the Sibyl."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The material spans from the second century BCE (the oldest, most clearly Jewish sections) to the fourth or fifth century CE for later Christian layers, commenting along the way on real political events like Roman conquests."
+          },
+          {
+            "heading": "Contents",
+            "body": "The oracles predict judgment on the nations, condemn idol worship and immorality, and look forward to a coming golden age or messianic kingdom; later Christian sections add explicit references to Jesus."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By putting monotheistic, ethical teaching into the mouth of a respected pagan prophet, Jewish and Christian writers tried to show that even outsiders could confirm biblical truth."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Early Christian writers like Justin Martyr cited the Oracles as independent, pagan proof of Christian claims. The collection was never scripture in any tradition but was influential in apologetics."
+          }
         ]
       },
       {
         "id": "treatise-of-shem",
         "title": "Treatise of Shem",
-        "summary": [
-          "The Treatise of Shem is a brief astrological work, attributed pseudonymously to Shem, son of Noah, that offers predictions for the character of each year based on the zodiacal sign in which it begins, functioning essentially as a genre of Second Temple Jewish astrological almanac. Surviving only in a single Syriac manuscript, the work is difficult to date with precision; on internal grounds — notably a reference apparently alluding to Roman conquest of Egypt — most scholars, following Charlesworth’s analysis, propose a date around 20 BCE, situating it in the early Roman imperial period, though the text’s brevity and lack of clear historical anchors leave considerable uncertainty, and some scholars regard a Jewish origin for the text as itself uncertain given the sparse contextual data. The author is unknown. Historically, the work is significant chiefly as evidence, however fragmentary, that some Jewish circles in the late Second Temple period engaged constructively with the astrological sciences widely practiced across the Hellenistic and Near Eastern world, a stance in some tension with, though not entirely absent from, other strands of Jewish thought (compare the astrological interests evident in some Qumran texts, such as 4Q186 and 4Q318). Theologically, the treatise itself offers little explicit theological reflection, functioning primarily as a practical divinatory manual, but its attribution to Shem — a righteous, non-idolatrous patriarch in Jewish tradition — implicitly Judaizes and legitimates astrological practice by rooting it in ancestral revelation rather than pagan science, a strategy paralleled in other pseudepigraphal astrological or scientific texts attributed to Enoch or Abraham. The work’s chief scholarly value lies in what it discloses about the diversity and permeability of Jewish engagement with Hellenistic scientific-religious culture, complicating any simple picture of a monolithic Jewish rejection of astrology in this period. ## Apocryphon of Ezekiel",
-          "The Apocryphon of Ezekiel survives only in fragments, quoted or paraphrased by early Christian writers including Clement of Alexandria, Epiphanius, and a Chester Beatty papyrus fragment, most notably a parable of a blind man and a lame man collaborating to steal from a royal orchard, used to illustrate the interdependence of body and soul in facing divine judgment. Scholars generally date the work to the first century BCE or first century CE, on the basis of its apparent use by writers as early as the second century CE and its thematic engagement with resurrection and judgment consistent with other Second Temple eschatological texts, though the fragmentary evidence makes precise dating difficult. The author is unknown, writing pseudonymously in the persona of the biblical prophet Ezekiel. Historically, the text belongs to a broader genre of pseudo-prophetic apocalyptic and parabolic literature that expanded upon the authority of canonical prophetic figures to address contemporary theological questions, in this case the nature of resurrection and post-mortem accountability. Theologically, the surviving parable is significant for articulating an explicit doctrine of bodily resurrection in which body and soul, having sinned together in life, are reunited for joint judgment — a position that engages debates, live in Second Temple Judaism, over whether resurrection restores the body, the soul alone survives, or some combination is required for just recompense, paralleling and possibly influencing similar concerns in rabbinic and early Christian resurrection theology (compare Paul’s treatment in 1 Cor 15 and later rabbinic parables making structurally similar arguments about the necessity of body-soul reunion for judgment). While too fragmentary to reconstruct a full theological program, the text’s use by patristic authors indicates its ongoing currency as an authoritative or at least respected witness within early Christian argumentation about resurrection well into the common era."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this brief work under the name of Shem, son of Noah."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Surviving only in one Syriac manuscript, it is hard to date precisely; many scholars propose around 20 BCE based on a possible reference to Roman rule in Egypt."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text predicts what kind of year is coming based on which zodiac sign the year begins under, functioning like an astrological almanac."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It offers little direct theology, but by attributing astrological knowledge to a righteous patriarch, it treats astrology as acceptable ancestral wisdom rather than forbidden pagan practice."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The text shows that some Jews engaged positively with astrology, providing background for understanding references to astronomical signs elsewhere in Jewish and Christian literature (such as the star of Bethlehem in Matthew). It has no canonical status."
+          }
+        ]
+      },
+      {
+        "id": "apocryphon-of-ezekiel",
+        "title": "Apocryphon of Ezekiel",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This work survives only in fragments quoted by early Christian writers; the actual author, writing under Ezekiel's name, is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Scholars date the fragments to the first century BCE or CE based on how early Christian writers used them."
+          },
+          {
+            "heading": "Contents",
+            "body": "The most famous surviving piece is a parable about a blind man and a lame man who work together to steal fruit, used to argue that body and soul share responsibility and will be judged together."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The parable supports the idea of bodily resurrection: since body and soul sinned together, they must be reunited to face judgment together, addressing a live debate in Jewish thought about the afterlife."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This concern with bodily resurrection parallels Paul's extended argument in 1 Corinthians 15. It has no canonical status but was respected enough to be quoted by church writers into the common era."
+          }
         ]
       },
       {
         "id": "apocalypse-of-zephaniah",
         "title": "Apocalypse of Zephaniah",
-        "summary": [
-          "The Apocalypse of Zephaniah survives in fragmentary Coptic (Akhmimic and Sahidic) manuscripts, along with a citation by Clement of Alexandria confirming the existence of a Greek original, depicting a heavenly journey in which the seer Zephaniah is guided through the afterlife, witnessing the torments of the wicked, the fate of a repentant soul, and cosmic geography including an underworld of punishment, before angelic escorts. Most scholars date the original composition to the first century BCE or first century CE, situating it as a Jewish apocalypse from Egypt (on the basis of its Coptic transmission and Egyptian coloring) prior to its Christian transmission and possible interpolation. The author is unknown, writing pseudonymously as the biblical minor prophet Zephaniah, though the extant text bears little direct relationship to the canonical book bearing that name beyond invoking its authority. Historically, the work belongs to the well-attested Second Temple genre of the otherworldly journey or “tour of hell and paradise,” paralleled in the Book of the Watchers (1 Enoch 17–36), the Apocalypse of Abraham, and later Christian apocalypses such as the Apocalypse of Peter and Apocalypse of Paul, reflecting widespread Jewish and, subsequently, Christian interest in visualizing post-mortem retribution and reward in vivid, didactically effective detail. Theologically, the text emphasizes individual moral accountability after death, the efficacy of angelic intercession for souls, and a doctrine of a “book of deeds” recording each person’s sins and merits for judgment — a motif with deep roots in Jewish apocalyptic (cf. Dan 7:10) and considerable influence on subsequent Jewish and Christian eschatological imagery, including later Christian apocalyptic tours of hell. Its detailed and visually oriented depiction of judgment scenes situates it as an important, if fragmentary, witness to the development of Jewish and early Christian conceptions of the intermediate state and final judgment."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text under the name of the biblical prophet Zephaniah, though it barely resembles the biblical book by that name."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It likely comes from Jewish Egypt in the first century BCE or CE, before later Christian copying and editing (it survives in fragmentary Coptic)."
+          },
+          {
+            "heading": "Contents",
+            "body": "The prophet Zephaniah is guided through the afterlife, seeing the punishment of the wicked and the fate of a repentant soul, along with vivid cosmic geography."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text stresses individual accountability after death, the value of angelic intercession for souls, and a heavenly 'book of deeds' recording each person's actions for judgment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its detailed tour-of-the-afterlife genre parallels imagery later found in Christian apocalyptic writing, including some Revelation imagery of books of judgment. It has no canonical status in any tradition."
+          }
         ]
       },
       {
         "id": "4-ezra",
         "title": "4 Ezra",
-        "summary": [
-          "See also the entry under 2 Esdras (Old Testament Apocrypha) above, since 4 Ezra constitutes chapters 3–14 of that book; it is treated separately here as it is the form in which the Pseudepigrapha collections (following Charlesworth) present the Jewish apocalyptic core independent of the later Christian additions (5 and 6 Ezra). Composed in Hebrew, now lost, and surviving through a Greek intermediary (also lost) in Latin, Syriac, Ethiopic, Georgian, Arabic, and Armenian versions, the work is dated with unusual confidence to approximately 100 CE, a generation after the destruction of the Second Temple in 70 CE, the trauma the book’s fictive Babylonian exilic setting transparently allegorizes. The author, an unknown Jewish sage writing pseudonymously as Ezra, structures the work as seven visions in dialogue with the angel Uriel, moving from anguished theodicy — why does righteous Israel suffer while wicked Rome (“Babylon”) prospers, and why did God create humanity with an evil inclination (cor malignum) inherited from Adam that condemns the many while saving only a few — toward apocalyptic consolation through visions of a messianic figure (the “man from the sea,” ch. 13), the destruction of Rome, and final judgment. Theologically, 4 Ezra is distinguished within Jewish apocalyptic literature for the severity and honesty of its wrestling with divine justice and human moral capacity, offering a strikingly pessimistic anthropology that resonates with, and may illuminate, Pauline discussions of sin and the law, without arriving at full resolution of the theodicy it raises — the angel’s answers repeatedly exceed or evade the seer’s questions rather than satisfying them outright. The book’s closing legend of Ezra’s Spirit-inspired dictation of ninety-four books (twenty-four canonical, seventy secret) also provides an important, if legendary, witness to contemporary reflection on scriptural canon and esoteric revelation."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "4 Ezra (chapters 3–14 of 2 Esdras) is written anonymously under the name Ezra by an unknown Jewish sage."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in Hebrew around 100 CE, about a generation after Rome destroyed the Second Temple, using the earlier Babylonian exile as a stand-in for that recent trauma."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book presents seven visions in which Ezra questions the angel Uriel about why Israel suffers while Rome ('Babylon') prospers, eventually receiving visions of a coming messianic figure and final judgment."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "4 Ezra is unusually honest about unresolved suffering and portrays humanity as burdened with an inherited 'evil inclination' from Adam, offering a pessimistic view of human moral capacity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its wrestling with sin, law, and human incapacity closely parallels and may illuminate Paul's arguments in Romans about sin and grace. It has no canonical status in most traditions but is valued for comparison with New Testament theology."
+          }
         ]
       },
       {
         "id": "greek-apocalypse-of-ezra",
         "title": "Greek Apocalypse of Ezra",
-        "summary": [
-          "The Greek Apocalypse of Ezra is a later apocalyptic text, distinct from and considerably later than 4 Ezra, in which Ezra ascends through the heavens accompanied by angels, witnesses the torments of hell and the fate of sinners and the righteous, debates with God over divine justice and the possibility of mercy for sinners, and eventually dies after extensive bargaining to delay his own death and intercede for humanity. Scholars generally date the work to the second through ninth centuries CE in its present form, reflecting substantial Christian redaction of what may be an originally Jewish core, making it exceptionally difficult to isolate any securely “pre-Christian” Jewish material; many scholars now treat it primarily as a Christian apocalyptic composition drawing on earlier Ezra traditions and Jewish apocalyptic conventions rather than as straightforwardly Jewish Pseudepigrapha. The author is unknown. Historically, the text illustrates the ongoing generative power of the Ezra tradition across late antiquity, as successive communities — Jewish and Christian — continued to attach new apocalyptic material to this authoritative scribal-prophetic figure long after 4 Ezra’s composition, extending a living literary tradition rather than a single fixed text. Theologically, the work is notable for its unusually persistent depiction of Ezra’s argumentative, even confrontational, intercession with God on behalf of sinful humanity, repeatedly securing divine concessions of mercy through prayer, a portrayal that heightens the intercessory and advocacy themes present already in 4 Ezra to a considerably more dramatic degree. Its extensive tours of infernal punishment situate it within the broader late antique genre of hell-and-paradise apocalypses that flourished in both Jewish and Christian circles, and it provides valuable comparative material for tracing how earlier apocalyptic conventions were adapted and intensified in late antique Christian eschatological imagination."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "A later, unknown author composed this apocalypse, distinct from and much later than 4 Ezra, though it borrows the same central character."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It shows heavy Christian editing and dates anywhere from the second to ninth century CE, making it difficult to isolate any originally Jewish material."
+          },
+          {
+            "heading": "Contents",
+            "body": "Ezra ascends through the heavens, witnesses the torments of hell, argues boldly with God over the possibility of mercy for sinners, and eventually dies after negotiating extensively to delay his death."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text emphasizes Ezra's persistent, almost confrontational prayer on behalf of sinners, repeatedly winning divine concessions of mercy."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It extends themes of intercession found already in 4 Ezra, offering comparative material for understanding intercessory prayer traditions that also appear in the New Testament (as in Hebrews' picture of Christ interceding for believers). It has no canonical status."
+          }
         ]
       },
       {
         "id": "vision-of-ezra",
         "title": "Vision of Ezra",
-        "summary": [
-          "The Vision of Ezra is a brief Latin apocalypse (surviving also in a related but distinct form) recounting Ezra’s guided tour of hell, in which he witnesses graphic, catalogued punishments assigned to specific categories of sinners (the proud, the greedy, those who mistreated orphans and widows, and others), each punishment explicitly correlated to the sin it addresses, before angelic mediation and a plea for mercy on behalf of the human race. Scholars date the work’s present form to the fourth through seventh centuries CE, situating it as a late antique Christian composition, likely drawing on earlier apocalyptic Ezra traditions and conventions of the “tour of hell” genre but composed and transmitted within a specifically Christian, Latin-speaking milieu, complicating its classification as properly “Jewish” pseudepigrapha despite its formal attachment to the Ezra apocalyptic cycle. The author is unknown. Historically, the text is best understood as part of the broader late antique and medieval Christian apocalyptic literature concerned with vivid, moralizing depictions of postmortem punishment, functioning didactically to reinforce ethical behavior through fear of specific, sin-correlated torments — a literary strategy with roots in Jewish apocalyptic (1 Enoch, the Apocalypse of Zephaniah) but developed here with considerably more systematic, almost penitential-manual-like precision. Theologically, the text’s detailed correlation of specific sins to specific punishments reflects a developing Christian moral theology increasingly concerned with a differentiated, proportionate system of postmortem retribution, anticipating later medieval visionary literature (such as the Vision of Tundale) and, ultimately, contributing to the broader Western Christian imaginative tradition that would culminate in Dante’s Inferno. Its value for the study of the Old Testament Pseudepigrapha proper lies chiefly in its testimony to the sustained literary vitality of the Ezra apocalyptic tradition into the Christian era rather than in any direct witness to Second Temple Jewish theology. ## Questions of Ezra",
-          "The Questions of Ezra is a short Armenian apocalyptic text, preserved in two recensions, presenting a dialogue in which Ezra questions an angel about the fate of the soul after death, the nature of judgment, and the destiny of the righteous and wicked, in a catechetical question-and-answer format distinct from the more visionary “tour” apocalypses. Given its sole preservation in Armenian and lack of external attestation before the medieval Armenian manuscript tradition, dating is highly uncertain; Michael Stone, the text’s principal modern editor and translator, has proposed a possible late antique Jewish or Jewish-Christian origin, though a firm date and provenance cannot be established with confidence, and some material may reflect considerably later theological development transmitted through Armenian Christian channels. The author is unknown. Historically, the text is best approached as another link in the long chain of literature attaching apocalyptic and eschatological speculation to the authoritative figure of Ezra, extending across Jewish, Jewish-Christian, and Christian communities from the late Second Temple period into the medieval era, testifying to the enduring appeal of Ezra as a vehicle for otherworldly revelation. Theologically, the work’s question-and-answer catechetical structure lends it a didactic, systematizing character, addressing practical pastoral concerns about the fate of souls — including apparently differentiated categories of the righteous, the moderately sinful, and the wholly wicked — in a manner that suggests use in community instruction about death and judgment rather than purely visionary or mystical purposes. Because of its late attestation and uncertain original language and date, scholars typically treat the Questions of Ezra with considerable caution as evidence for Second Temple Judaism proper, valuing it instead chiefly for what it reveals about the ongoing development and diversification of Ezra-apocalyptic material within later Armenian Christian literary culture."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Latin-speaking Christian author wrote this brief apocalypse using Ezra as the central figure."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Dated to the fourth through seventh centuries CE, it belongs to late antique Christian, not Second Temple Jewish, literature, despite its formal connection to the Ezra tradition."
+          },
+          {
+            "heading": "Contents",
+            "body": "Ezra tours hell and witnesses specific, matched punishments for specific sins — the proud, the greedy, and those who mistreated orphans and widows are each punished in ways that fit their crime."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text reflects a developing Christian idea of exact, proportionate punishment after death, foreshadowing later medieval visionary literature and eventually Dante's Inferno."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its 'tour of hell' genre echoes and extends themes found in Jewish apocalyptic writing that also influenced New Testament judgment imagery. It has no canonical status and mainly reflects post-New Testament Christian imagination."
+          }
+        ]
+      },
+      {
+        "id": "questions-of-ezra",
+        "title": "Questions of Ezra",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this short Armenian apocalyptic dialogue, again using the name Ezra."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Preserved only in medieval Armenian manuscripts, its date and origin (possibly Jewish, Jewish-Christian, or later) cannot be pinned down with confidence."
+          },
+          {
+            "heading": "Contents",
+            "body": "Ezra questions an angel in a catechism-like format about the soul's fate after death and the different outcomes awaiting the righteous, the moderately sinful, and the wicked."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its question-and-answer format suggests it was used for teaching communities about death and judgment in a practical, pastoral way."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It reflects the same broad concern with differentiated post-mortem judgment found in New Testament teaching. Because of its late attestation, scholars treat it cautiously as evidence for Second Temple belief."
+          }
         ]
       },
       {
         "id": "revelation-of-ezra",
         "title": "Revelation of Ezra",
-        "summary": [
-          "The Revelation of Ezra is a very brief Latin text offering calendrical prognostications, predicting the character of the coming year (war, famine, abundance, disease, and so forth) based on the day of the week on which the year begins (specifically, on which day Christmas or the new year falls), functioning as a form of practical divinatory almanac attributed to Ezra’s prophetic authority. Scholars date the work, in its surviving Latin form, to the medieval period, likely composed within Latin Christian Europe, and it shows no clear evidence of a Jewish Second Temple origin, being better classified as a late antique or early medieval Christian composition that appropriates the authoritative name of Ezra for a popular divinatory genre widespread in medieval European culture (compare similar “prognostics” attributed to other biblical or apostolic figures). The author is unknown. Historically, the text illustrates the persistent popular practice, well attested across late antiquity and the Middle Ages, of attaching calendrical and prognosticatory material to venerable religious names to lend it authority, a practice with roots in the wider ancient Near Eastern and Hellenistic tradition of hemerological (day-based) divination discussed above in connection with the Treatise of Shem, but here transmitted within an explicitly Christian medieval context. Theologically, the text offers essentially no developed doctrinal content, functioning purely as a practical divinatory tool rather than a theological or eschatological composition; its inclusion within Pseudepigrapha collections such as Charlesworth’s reflects the broad, inclusive scope of such collections in gathering all literature attributed pseudonymously to Old Testament figures, rather than any judgment that the text preserves substantive Second Temple Jewish theology. Its chief scholarly interest lies in the history of popular Christian divinatory practice rather than in the history of Jewish apocalyptic thought proper."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown medieval Latin Christian author wrote this very short text attributed to Ezra's authority."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It dates to the medieval period and shows no real connection to Second Temple Judaism, being a Christian European composition."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text predicts the character of the coming year (war, famine, disease, or abundance) based on which day of the week the new year begins."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It has essentially no theological content, functioning purely as a popular divination tool that borrowed Ezra's respected name for authority."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It has no meaningful relationship to the New Testament and is included in Pseudepigrapha collections mainly for completeness, illustrating the wide reach of divinatory folk practices that borrowed biblical names."
+          }
         ]
       },
       {
         "id": "apocalypse-of-sedrach",
         "title": "Apocalypse of Sedrach",
-        "summary": [
-          "The Apocalypse of Sedrach presents a dialogue between the seer Sedrach (a figure otherwise essentially unknown outside this text, possibly a variant or corruption of Shadrach) and God, addressing questions of theodicy, divine mercy, and the fate of sinners, in which Sedrach boldly, even audaciously, argues with God on behalf of humanity, ultimately securing an extension of divine mercy before his own death and ascent. The work survives only in Greek, in a small number of late manuscripts, and its present form shows clear and extensive Christian redaction, including explicit references to Christ; most scholars regard it as a Christian composition, likely of the second through fifth centuries CE, that may incorporate an earlier Jewish apocalyptic core or at minimum draws heavily on Jewish apocalyptic conventions and theodicy debates characteristic of texts such as 4 Ezra, with which it shares notable structural and thematic affinities (the bold, argumentative posture toward divine justice in particular). The author is unknown. Historically, the text belongs to the broader late antique tradition of theodicy dialogues that processed the tension between divine justice and human sinfulness through a dramatized, often confrontational exchange between a righteous intercessor and God, a genre with deep roots in Jewish apocalyptic (4 Ezra, 2 Baruch) subsequently adapted by Christian authors. Theologically, the Apocalypse of Sedrach is notable for its unusually emphatic affirmation of divine mercy over strict justice, with Sedrach’s persistent intercession explicitly overturning God’s initially stated intention to judge sinners severely, articulating a theology in which human intercessory prayer is granted remarkable efficacy to move divine judgment toward compassion, a theological emphasis that likely served pastoral and consolatory purposes for its late antique Christian readership."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely a Christian writer, composed this dialogue between a seer named Sedrach and God, possibly drawing on an earlier Jewish core."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It survives only in late Greek manuscripts and shows clear Christian editing, dating most likely to the second through fifth centuries CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "Sedrach boldly argues with God about mercy and the fate of sinners, eventually winning an extension of divine mercy before his own death."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text emphasizes God's mercy overriding strict justice, showing that persistent human intercession can move God toward compassion."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This bold, argumentative prayer style has roots in the same tradition as 4 Ezra and offers comparative material for New Testament intercessory prayer themes. It has no canonical status."
+          }
         ]
       },
       {
         "id": "2-baruch-syriac-apocalypse-of-baruch",
         "title": "2 Baruch (Syriac Apocalypse of Baruch)",
-        "summary": [
-          "2 Baruch is a major Jewish apocalypse, composed originally in Hebrew (now lost, surviving complete only in a single Syriac manuscript translated from a lost Greek intermediary, with a few Greek and Arabic fragments also extant), attributed pseudonymously to Baruch ben Neriah, Jeremiah’s scribe, and set fictively at the time of the Babylonian destruction of Jerusalem in 586 BCE, though the work transparently addresses the trauma of the Roman destruction of the Second Temple in 70 CE. Most scholars date the composition to the late first or early second century CE, closely contemporaneous with 4 Ezra, with which it shares extensive thematic and even verbal parallels, leading to sustained scholarly debate over their precise literary relationship (direct dependence in one direction, common source material, or independent but closely related composition within the same theological circle). The author is unknown. Historically, 2 Baruch represents one of the two most important extant Jewish theological responses to the catastrophe of 70 CE, alongside 4 Ezra, though it is generally regarded as offering a more consoling, pedagogically resolved theodicy than the anguished, less resolved wrestling of 4 Ezra. Theologically, the work emphasizes the eternal, heavenly validity of the Torah (which, the text argues, was not destroyed with the earthly Temple and remains fully accessible and salvific for Israel), individual moral responsibility (“Adam is… the cause of his own soul’s death, but each of us is the Adam of his own soul,” 54:19, a striking anti-deterministic anthropological statement), and detailed apocalyptic and messianic expectation, including a vision of a messianic kingdom followed by resurrection and final judgment (chaps. 29–30, 72–74). The book’s confident, didactic tone and its emphasis on Torah’s enduring sufficiency likely served to console and reorient a Jewish community facing the loss of its central cultic institution."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Jewish author wrote this major apocalypse under the name of Baruch, Jeremiah's scribe."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in Hebrew (now lost, surviving in Syriac) in the late first or early second century CE, closely following the same crisis addressed by 4 Ezra: Rome's destruction of the Jerusalem Temple in 70 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "Baruch wrestles with the Temple's destruction and receives assurance that the Torah's heavenly validity survived the earthly Temple's loss, along with visions of a coming messianic kingdom and final resurrection."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "2 Baruch teaches that each person bears responsibility for their own sin (rather than blaming Adam alone) and offers a more comforting, resolved theology than 4 Ezra's anguished questioning."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its themes of individual responsibility and hope beyond the Temple's loss parallel early Christian responses to the same catastrophe. It has no canonical status but is essential for comparison with New Testament-era Judaism."
+          }
         ]
       },
       {
         "id": "3-baruch-greek-apocalypse-of-baruch",
         "title": "3 Baruch (Greek Apocalypse of Baruch)",
-        "summary": [
-          "3 Baruch narrates a heavenly journey in which the scribe Baruch, mourning Jerusalem’s destruction, is guided by an angel through five heavens, witnessing cosmological wonders (including builders of the tower of Babel transformed into animals) and receiving instruction on divine justice and cosmic order, before being returned to earth to report his vision. The work survives in Greek and Old Church Slavonic recensions, with the Slavonic preserving what many scholars regard as an earlier or more original form in certain respects, including reference to a greater number of heavens; dating is contested, with proposals ranging from the late first to the third century CE, and considerable scholarly debate over whether the work is fundamentally Jewish with later Christian interpolation (the majority view) or substantially a Christian composition from the outset, given manifestly Christian elements in the surviving text, including an explicit reference to the vine (associated with the Fall) being restored through Christ. The author is unknown. Historically, if a Jewish core is accepted, the work responds, like 2 Baruch and 4 Ezra, to the trauma of the Temple’s destruction, though its theological strategy differs markedly: rather than emphasizing continued earthly or heavenly Torah observance, 3 Baruch redirects Baruch’s grief toward cosmological contemplation and a vision of ongoing angelic mediation of human prayers (via the angel Michael, who receives and presents the merits of the righteous before God, chaps. 11–16), somewhat diminishing the centrality of the destroyed Temple by relocating access to God in a heavenly, angelically mediated economy. Theologically, this angelic-mediatorial framework, along with its interest in cosmic geography and astral phenomena, situates the work within a broader stream of Jewish apocalyptic cosmological speculation related to, though distinct from, the Enochic tradition, offering an alternative model of consolation to a community processing the loss of the earthly sanctuary. ## Apocalypse of Abraham",
-          "The Apocalypse of Abraham survives complete only in Old Church Slavonic, divided into a narrative section (chaps. 1–8) recounting Abraham’s rejection of his father Terah’s idol-making trade and his call by God, and an apocalyptic section (chaps. 9–32) recounting Abraham’s ascent to heaven, guided by the angel Yahoel, where he witnesses the divine throne-chariot (merkavah), receives a vision of cosmic history culminating in eschatological judgment, and is instructed concerning the fall of the angel Azazel. Most scholars date the work to the late first or early second century CE, on the basis of its apparent response to the destruction of the Second Temple (referenced allegorically in the narrative’s cosmic vision) and its affinities with the theological concerns of 4 Ezra and 2 Baruch, situating it within the same broad post-70 CE Jewish apocalyptic milieu, likely composed originally in Hebrew or Aramaic. The author is unknown. Historically, the work stands as an important witness to the development of merkavah (throne-chariot) mysticism within Jewish apocalyptic tradition, drawing on and extending Ezekiel 1’s throne vision, and situates the narrative of Abraham’s early rejection of idolatry (a tradition also attested in Jubilees and later rabbinic haggadah, though absent from Genesis itself) within an apocalyptic and cosmological frame that addresses the crisis of the Temple’s loss. Theologically, the text is notable for its unusually developed cosmic dualism, personified in the figure of Azazel as a quasi-independent source of evil and temptation operating in tension with divine sovereignty, and for its detailed vision of the heavenly liturgy and the fate of the righteous and wicked at the eschaton. Its treatment of angelic mediation, cosmic dualism, and throne mysticism situates it as a significant bridge text between earlier Enochic apocalyptic tradition and later, fully developed Jewish mystical literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this heavenly-journey text; scholars debate whether it began as a Jewish work later edited by Christians, or was Christian from the start."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Proposed dates range from the late first to third century CE, likely written in response to the Temple's destruction, like 2 Baruch and 4 Ezra."
+          },
+          {
+            "heading": "Contents",
+            "body": "An angel guides Baruch through five heavens, showing him cosmic wonders and explaining how the angel Michael presents human prayers and good deeds to God."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Rather than focusing on the earthly Temple's loss, the text redirects hope toward heavenly, angel-mediated access to God, offering a different kind of consolation."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its picture of angelic mediation of prayer parallels ideas found in Revelation and Hebrews about angels and heavenly access to God. It has no canonical status."
+          }
+        ]
+      },
+      {
+        "id": "apocalypse-of-abraham",
+        "title": "Apocalypse of Abraham",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Jewish author wrote this text, likely originally in Hebrew or Aramaic, surviving now only in Old Church Slavonic."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Dated to the late first or early second century CE, it responds to the destruction of the Second Temple, like other apocalypses of this period."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book first tells how young Abraham rejected his father's idol-making business, then describes his heavenly ascent, guided by the angel Yahoel, where he sees God's throne-chariot and receives a vision of history ending in judgment."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text develops strong cosmic dualism, with the fallen angel Azazel personifying evil in tension with God's rule, alongside detailed throne-room mysticism."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its throne-vision mysticism parallels imagery in Revelation's heavenly throne scenes. It has no canonical status but is an important bridge between earlier apocalyptic writing and later Jewish mysticism."
+          }
         ]
       },
       {
         "id": "apocalypse-of-adam",
         "title": "Apocalypse of Adam",
-        "summary": [
-          "The Apocalypse of Adam is a Gnostic-flavored revelation discourse, preserved in Coptic as the fifth tractate of Codex V from the Nag Hammadi library, in which Adam, near death, imparts to his son Seth a secret revelation received from three heavenly visitors, recounting the fall from an originally glorious, non-mortal state, the subsequent history of humanity under a hostile demiurgic creator god, and the coming of an “Illuminator” who will deliver the elect “seed of Seth” from the powers of this world. Scholars debate the work’s precise religious classification and date rather sharply: some regard it as a rare witness to a pre-Christian or non-Christian form of Jewish Gnosticism, dating it as early as the first century CE, while others regard its dualistic cosmology and redeemer figure as presupposing, even if not explicitly naming, Christian tradition, favoring a somewhat later date in the second century CE; the absence of any overtly Christian vocabulary (no mention of Jesus or Christ by name) is central to the argument for an early or non-Christian Jewish-Gnostic origin, though this remains contested. The author is unknown. Historically, the text is significant as a potential witness to the diversity and permeability of the boundary between Second Temple Jewish apocalyptic thought and emerging Gnostic cosmological speculation, illustrating how apocalyptic revelatory conventions (heavenly visitors, secret transmission, periodized history, an eschatological deliverer) could be adapted to a fundamentally dualistic, anti-cosmic theological framework quite different from mainstream Jewish apocalyptic optimism about the created order. Theologically, the work’s radical devaluation of the material creation and its attribution of humanity’s mortal, ignorant condition to a lesser, ignorant creator god (rather than human sin as in Genesis) marks a decisive departure from normative Jewish theology, situating the text at the productive but contested boundary between Jewish apocalypticism and Gnostic myth."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this revelation discourse, preserved in Coptic among the Nag Hammadi texts discovered in Egypt in 1945."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Scholars disagree sharply on date: some argue for a Jewish, non-Christian origin as early as the first century CE, while others see it as presupposing Christian ideas and place it in the second century."
+          },
+          {
+            "heading": "Contents",
+            "body": "The dying Adam tells his son Seth a secret revelation about humanity's fall from an originally glorious state and the coming of a savior figure called the 'Illuminator.'"
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text blames a lesser, ignorant creator god (rather than human sin) for the flawed material world, a viewpoint typical of Gnostic thought and a sharp break from mainstream Jewish theology."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It illustrates how apocalyptic ideas could be reshaped into a fundamentally different, anti-material worldview that early Christian writers like Irenaeus rejected as heresy. It has no canonical status."
+          }
         ]
       },
       {
         "id": "apocalypse-of-elijah",
         "title": "Apocalypse of Elijah",
-        "summary": [
-          "The Apocalypse of Elijah survives in Coptic (Sahidic and Akhmimic) and fragmentary Greek, presenting an eschatological discourse combining ethical exhortation (particularly concerning fasting and prayer), an extended account of the coming of Antichrist and his persecution of the righteous, and the eschatological martyrdom and vindication of Enoch and Elijah (or, in some readings, Enoch, Elijah, and a third figure) at the end of days. The work’s composite character and complex transmission history make dating difficult; most scholars posit a Jewish core, possibly from the first century BCE or CE, subsequently expanded with Christian eschatological material reflecting concerns of the third century CE, particularly conflicts and persecutions in Roman Egypt, meaning the surviving text as a whole represents a layered composition spanning several centuries rather than a single moment of authorship. The author or authors are unknown. Historically, the work is valuable for illustrating the ongoing development of Jewish and Christian eschatological expectation concerning a final tribulation, a persecuting Antichrist figure (developing traditions also reflected in Daniel, 2 Thessalonians, and Revelation), and the eschatological role of translated figures such as Enoch and Elijah, who according to widespread Jewish and Christian tradition did not die but were taken bodily into heaven and were therefore expected to return as end-time witnesses (a tradition also reflected in the “two witnesses” of Revelation 11). Theologically, the text’s emphasis on ascetic practice (fasting, purity) as preparation for eschatological trial, combined with its vivid apocalyptic imagery of cosmic upheaval and final judgment, situates it within a broader Egyptian Jewish-Christian ascetic and apocalyptic milieu, offering insight into how eschatological expectation was sustained and adapted across the Jewish-Christian transition in Roman Egypt."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown authors, likely combining a Jewish core with later Christian additions, composed this layered apocalyptic text."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The Jewish material may date to the first century BCE or CE, with later Christian material added around the third century CE, reflecting conflicts in Roman Egypt."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text combines ethical teaching about fasting and prayer with an extended description of the Antichrist's persecution and the martyrdom and vindication of Enoch and Elijah at the end of time."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It emphasizes ascetic practices (fasting, purity) as preparation for the end times and develops the tradition that Enoch and Elijah, who never died, will return as witnesses before the end."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This closely parallels the 'two witnesses' of Revelation 11 and the Antichrist tradition also found in 2 Thessalonians. It has no canonical status but shows shared eschatological expectations."
+          }
         ]
       },
       {
         "id": "apocalypse-of-daniel",
         "title": "Apocalypse of Daniel",
-        "summary": [
-          "The (Greek) Apocalypse of Daniel is a Byzantine-era apocalyptic text, considerably later than the biblical Daniel and unrelated to the Qumran “pseudo-Daniel” fragments, presenting a vision of the last days including the coming of Antichrist, a final righteous emperor, cosmic upheavals, and the eschatological judgment, cast in the persona of the biblical prophet Daniel to lend it authoritative weight. Scholars date the work to approximately the ninth century CE, situating it firmly within Byzantine Christian apocalyptic literature responding to the political and military crises of that era (including Arab-Byzantine conflict), rather than within Second Temple Jewish literature proper, despite its formal attachment to the Danielic apocalyptic tradition; it is included in Pseudepigrapha collections chiefly for the sake of comprehensiveness regarding literature attributed to Daniel rather than as a witness to pre-Christian Judaism. The author is unknown. Historically, the text exemplifies the remarkably long afterlife of the Danielic apocalyptic tradition, which continued to generate new pseudonymous compositions addressing contemporary political crises for many centuries after the biblical book’s composition in the Maccabean period, a pattern also visible in various other “pseudo-Danielic” texts from Qumran and later Jewish and Christian literature. Theologically, the work’s central preoccupation with a righteous final emperor who will defeat the forces of chaos before Christ’s return reflects a distinctively Byzantine political theology in which imperial and eschatological hope were closely intertwined, a development considerably removed from the theological concerns of Second Temple Jewish apocalypticism, though it demonstrates the continuing generative power of apocalyptic conventions (periodized history, cosmic conflict, a righteous remnant) first developed in that earlier literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Byzantine-era author wrote this text under Daniel's name, unrelated to the biblical Daniel or to the Dead Sea Scrolls' pseudo-Daniel fragments."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It dates to about the ninth century CE, responding to Byzantine political crises like conflict with Arab forces, long after the New Testament period."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text describes the last days, including the Antichrist's arrival, a final righteous emperor, cosmic upheaval, and final judgment."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It reflects a distinctly Byzantine political theology linking the empire's fate to end-times expectation, quite different from earlier Jewish apocalyptic concerns."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It shows the long afterlife of apocalyptic conventions first developed in Daniel and continued in Revelation. It has no canonical status and offers little direct light on the New Testament period itself."
+          }
         ]
       },
       {
         "id": "testaments-of-the-twelve-patriarchs",
         "title": "Testaments of the Twelve Patriarchs",
-        "summary": [
-          "The Testaments of the Twelve Patriarchs presents the dying instructions of Jacob’s twelve sons to their descendants, following the biblical genre of the testament (modeled on Gen 49 and Deut 33), each combining autobiographical narrative, ethical exhortation (frequently structured around a particular virtue or vice associated with the patriarch), and predictive apocalyptic material concerning Israel’s future, including messianic expectation. The work survives complete in Greek, with related but distinct Aramaic and Hebrew fragments of some individual testaments (notably Levi and Naphtali) found at Qumran, indicating that at least some component traditions circulated independently in Semitic form during the Second Temple period; the relationship between these earlier Semitic fragments and the fully developed Greek Testaments, which show clear signs of Christian redaction (including explicit references anticipating Christ), is a matter of extensive and unresolved scholarly debate, with proposals ranging from an originally Jewish composition (second century BCE to first century CE) later Christianized, to a substantially Christian composition from the outset drawing on earlier Jewish testamentary source material. The author(s) are unknown. Historically, the work reflects the widespread Second Temple interest in the patriarchal narratives as a vehicle for ethical instruction and eschatological hope, and its complex redactional history illustrates the broader phenomenon of Jewish literature being preserved, transmitted, and theologically reshaped by Christian scribes. Theologically, the Testaments combine practical ethical dualism (the “two spirits” or “two ways” of good and evil, closely paralleling similar dualistic frameworks at Qumran, notably the Community Rule’s Treatise on the Two Spirits) with messianic expectation of priestly and royal deliverer figures (from Levi and Judah respectively), material of considerable interest for tracing the diversity of Second Temple messianic expectation prior to, and its subsequent Christian reappropriation within, early Christological reflection. ## Testament of Job",
-          "The Testament of Job elaborates the biblical book of Job into a testamentary narrative in which the dying Job recounts to his children his sufferings, his patient endurance under demonic assault (here explicitly identified with Satan, who appears as an active antagonist throughout, considerably more so than in the biblical text), and his eventual restoration and the ecstatic, glossolalic worship of his three daughters upon receiving mystical sashes from their father. The work survives in Greek, with the original language debated between Greek and a Semitic (Hebrew or Aramaic) original; most scholars date the composition to the first century BCE or first century CE, and many propose an Egyptian, possibly Therapeutic (the ascetic Jewish contemplative community described by Philo in De Vita Contemplativa) provenance, given the text’s ecstatic worship elements and its unusually prominent, positive portrayal of women, particularly Job’s daughters. The author is unknown. Historically, the work reflects the broader Second Temple expansion and dramatization of biblical narratives (compare Jubilees, Pseudo-Philo, Joseph and Aseneth) to address contemporary theological and pastoral concerns, in this case the problem of righteous suffering and the theology of patient endurance, reframing Job primarily as a model of steadfast piety (hypomone) rather than the biblical Job’s more combative theological questioning of divine justice. Theologically, the text intensifies the cosmic-dualistic dimension of Job’s suffering, presenting it explicitly as a contest between Job and Satan (a marked development from the more ambiguous “satan” of the biblical prologue), while its concluding vision of ecstatic worship and the daughters’ reception of angelic “hearts” enabling heavenly speech and knowledge suggests interest in mystical, possibly proto-merkavah, spiritual experience, situating the text at an interesting intersection of wisdom, apocalyptic, and mystical currents in Second Temple Judaism."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown authors composed the dying instructions of Jacob's twelve sons, following the biblical pattern of farewell speeches (as in Genesis 49 and Deuteronomy 33); some individual pieces circulated separately in Aramaic or Hebrew before being combined and edited, likely by Christian scribes."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The core material may date from the second century BCE to the first century CE, with clear Christian additions layered on later, making its precise origin much debated."
+          },
+          {
+            "heading": "Contents",
+            "body": "Each patriarch gives ethical teaching tied to a particular virtue or vice, tells his life story, and predicts Israel's future, including expectation of priestly and royal savior figures."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text develops a strong 'two ways' ethical dualism (good versus evil), closely paralleled at Qumran, and looks forward to two different messiah figures from the tribes of Levi and Judah."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its diverse messianic expectations help explain the range of hopes that early Christians drew on and reinterpreted for Jesus. It has no canonical status but strongly shaped early Christian ethical and messianic thought."
+          }
+        ]
+      },
+      {
+        "id": "testament-of-job",
+        "title": "Testament of Job",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author expanded the biblical book of Job into this longer, testament-style narrative."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the first century BCE or CE, possibly connected to an Egyptian ascetic Jewish community similar to the Therapeutae described by Philo."
+          },
+          {
+            "heading": "Contents",
+            "body": "The dying Job tells his children about his patient endurance under demonic attack (with Satan appearing as an active enemy) and the ecstatic worship of his three daughters after receiving mystical gifts from their father."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text reframes Job primarily as a model of patient endurance rather than the more argumentative, questioning Job of the Bible, and shows interest in mystical spiritual experience."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its emphasis on patient endurance under suffering parallels New Testament teaching (as in James 5:11, which explicitly praises Job's endurance). It has no canonical status."
+          }
         ]
       },
       {
         "id": "testament-of-abraham",
         "title": "Testament of Abraham",
-        "summary": [
-          "The Testament of Abraham narrates, in a notably humorous and folkloric register unusual among apocalyptic testaments, the patriarch Abraham’s stubborn refusal to die when the angel of death (here identified as the archangel Michael, or, in some traditions, Death personified) is sent to summon him, his subsequent guided tour of the heavenly realms and the judgment of souls, and his eventual, still reluctant, death only after Death takes him by trickery. The work survives in two significantly divergent Greek recensions (a longer A-recension and a shorter B-recension) and various secondary versions; most scholars date the composition to the first or second century CE, likely in Egypt, given its affinities with Egyptian Jewish literary and theological traditions, and regard it as substantially, though not necessarily exclusively, Jewish in origin, with the question of Christian interpolation debated particularly regarding the longer recension. The author is unknown. Historically, the text’s genre-bending combination of testamentary form, apocalyptic tour, and comic folktale distinguishes it within the broader corpus of Jewish testamentary literature, and its concern with the judgment of souls (presided over by Abel as eschatological judge, in an unusual departure from more typical divine or messianic judges) reflects ongoing Second Temple speculation about postmortem accountability. Theologically, the work is notable for its unusually universalist leanings regarding judgment — souls with equally balanced good and dead deeds are given special intercessory consideration, reflecting a theology emphasizing divine mercy alongside justice — and its comic, almost anti-heroic portrayal of Abraham (who bargains, delays, and resists the natural order of death) offers a distinctive and pastorally accessible meditation on human reluctance to face mortality, softened by confidence in eventual angelic and divine compassion."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely writing in Egypt, composed this unusually humorous testament."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the first or second century CE, regarding it as substantially Jewish, though the degree of later Christian editing is debated."
+          },
+          {
+            "heading": "Contents",
+            "body": "Abraham stubbornly refuses to die when the angel of death (Michael) comes for him, tours heaven and watches the judgment of souls, and is finally taken by trickery."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text is notably universalist in tone: souls with equally balanced good and bad deeds receive special merciful consideration, stressing God's compassion alongside justice."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its comic, human portrayal of resistance to death offers an accessible meditation on mortality alongside confidence in divine mercy, a theme with echoes in New Testament comfort language about death. It has no canonical status."
+          }
         ]
       },
       {
         "id": "testament-of-isaac",
         "title": "Testament of Isaac",
-        "summary": [
-          "The Testament of Isaac, closely modeled on and probably dependent upon the Testament of Abraham, narrates Isaac’s final days, his vision of the heavenly realms and the judgment of souls guided by the archangel Michael, and his peaceful death, combined with exhortations to his son Jacob and to Israel more broadly concerning fasting, almsgiving, and righteous living. The work survives in Arabic, Ethiopic (Ge’ez), Coptic (Sahidic and Bohairic), and Greek fragments, complicating efforts to establish an original language and precise date; most scholars propose a Jewish origin dating to the first or second century CE, subsequently transmitted and likely lightly Christianized within Egyptian monastic circles, where testaments of the patriarchs were valued for ascetic and liturgical purposes, particularly in the Coptic Church’s commemorative calendar. The author is unknown. Historically, the text belongs to the same testamentary-apocalyptic literary family as the Testaments of Abraham and Jacob, together forming a loosely connected cycle addressing the deaths and heavenly visions of the three patriarchs, likely composed and compiled within closely related, probably Egyptian, Jewish or Jewish-Christian scribal circles interested in patriarchal piety as a model for ascetic practice. Theologically, the Testament of Isaac places particular emphasis on the practice of fasting as a spiritually efficacious discipline, on divine mercy in judgment (again presided over by Michael, with an emphasis on the intercessory role of the patriarchs themselves for their descendants), and on the eschatological reward awaiting those who follow the patriarchal model of ascetic piety, reflecting concerns especially congenial to the monastic communities within which the text was ultimately preserved and transmitted, particularly in Coptic Egypt."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author modeled this text closely on the Testament of Abraham, likely writing originally in a Jewish context later adapted by Christian, especially Coptic monastic, communities."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a Jewish origin in the first or second century CE, with later light Christianization within Egyptian monasticism."
+          },
+          {
+            "heading": "Contents",
+            "body": "Isaac has a vision of heaven and the judgment of souls guided by Michael before dying peacefully, along with exhortations to his son Jacob about fasting and righteous living."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text especially highlights fasting as spiritually powerful and emphasizes mercy in judgment, fitting the ascetic monastic communities that preserved it."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Along with the related Testaments of Abraham and Jacob, it offers comparative background for New Testament and early Christian teaching on fasting and preparation for judgment. It has no canonical status."
+          }
         ]
       },
       {
         "id": "testament-of-jacob",
         "title": "Testament of Jacob",
-        "summary": [
-          "The Testament of Jacob, the third text in the loosely connected patriarchal testament cycle alongside Abraham and Isaac, recounts Jacob’s final vision of the heavenly realms, his instructions to his sons, and his peaceful death and burial, again emphasizing themes of divine mercy, angelic mediation, and the value of righteous living modeled on patriarchal example. As with the Testament of Isaac, the work survives chiefly in Arabic, Ethiopic (Ge’ez), and Coptic versions, with the original language and precise compositional history difficult to establish; most scholars date it, like its companion texts, to the first or second century CE for a putative Jewish core, with subsequent transmission and probable Christian redaction occurring within Egyptian monastic and liturgical contexts, where the three patriarchal testaments were read together as a commemorative cycle, particularly within Coptic liturgical tradition. The author is unknown. Historically, the text’s close literary and thematic dependence on the Testaments of Abraham and Isaac, and its shared transmission history within Coptic Christian manuscript tradition, suggest that whatever independent Jewish core each testament may possess was substantially shaped by its eventual use within a specific liturgical-monastic setting privileging ascetic and penitential themes. Theologically, the Testament of Jacob continues the cycle’s characteristic emphases on divine mercy exceeding strict justice in the judgment of souls, the intercessory efficacy of the patriarchs on behalf of their descendants, and the exemplary value of the patriarchal deaths as models for a “good death” attended by peace, vision, and assurance of divine favor, themes that made the cycle particularly suited to funerary and commemorative liturgical use in the communities that preserved it."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, the third in a loosely connected cycle alongside the Testaments of Abraham and Isaac."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Like its companion texts, it likely has a Jewish core from the first or second century CE, transmitted and edited within Egyptian Christian monastic circles."
+          },
+          {
+            "heading": "Contents",
+            "body": "Jacob receives a vision of heaven and the judgment of souls, gives final instructions to his sons, and dies peacefully."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text continues the cycle's themes of divine mercy in judgment and the patriarchs' ability to intercede for their descendants, modeling a peaceful, hope-filled death."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its picture of a peaceful, vision-filled death parallels the confidence about death found in New Testament teaching on hope beyond the grave. It has no canonical status."
+          }
         ]
       },
       {
         "id": "testament-of-moses-assumption-of-moses",
         "title": "Testament of Moses (Assumption of Moses)",
-        "summary": [
-          "The Testament of Moses survives in a single, incomplete sixth-century Latin manuscript (a palimpsest), presenting Moses’s final instructions to Joshua, including a periodized prophecy of Israel’s future history from the conquest of Canaan through a period of severe persecution under an unnamed tyrannical ruler, culminating in eschatological deliverance and the exaltation of Israel, notably without reference to individual resurrection, focusing instead on national vindication. Most scholars date the work’s core to the early first century CE, likely shortly after the death of Herod the Great (4 BCE) or during the subsequent turbulence of Roman provincial administration under Herod’s successors, based on internal historical allusions that appear to describe events of this period with reasonable specificity, though a minority propose a Maccabean-era core subsequently updated. The author is unknown, writing pseudonymously as Moses addressing Joshua, modeled on Deuteronomy’s Mosaic farewell discourse. Historically, the text reflects acute anxiety within at least some strand of Second Temple Judaism regarding Herodian and early Roman provincial rule, and its title’s traditional association with an “Assumption of Moses” (referenced by early Christian writers, including an allusion in Jude 9 to a dispute between the archangel Michael and the devil over Moses’s body, not preserved in the surviving fragment) suggests the extant Latin text represents only part of a larger original composition that also narrated Moses’s death and heavenly assumption. Theologically, the work emphasizes strict, uncompromising covenant fidelity even under severe persecution, divine sovereignty over the entire course of history (revealed in advance to Moses), and the eventual direct, unmediated intervention of God himself (rather than a messianic agent) to establish his kingdom and exalt Israel over its enemies, a notably theocentric rather than messianic eschatology distinguishing it from many contemporary apocalyptic texts. ## Testament of Solomon",
-          "The Testament of Solomon narrates, in a first-person testamentary frame, King Solomon’s acquisition of a magical ring from the archangel Michael enabling him to command demons, his interrogation of a lengthy series of named demons regarding their powers, methods of affliction, and the angelic names or countermeasures that thwart them, and his eventual downfall through idolatry induced by foreign wives, ending as a cautionary testament to his readers. The work survives in Greek, in a complex textual tradition with multiple recensions; dating is highly contested, with proposals ranging from the first century CE (positing an originally Jewish magical-exorcistic core) to as late as the fourth century CE for the text’s final Christian form, and most scholars now regard the surviving composition as a layered work incorporating earlier Jewish and Greco-Egyptian magical tradition substantially reshaped by Christian redaction, including explicit Christological material in the demon-repelling formulas. The author is unknown. Historically, the text is a significant witness to the practice and theory of exorcism and apotropaic magic in the eastern Mediterranean world, situating Solomon (already renowned in Jewish tradition, cf. Josephus, Antiquities 8.42–49, as a master of exorcistic knowledge) as the archetypal source of authoritative demonological and angelological lore, a tradition with clear relevance for understanding the exorcism narratives and demonological assumptions of the New Testament Gospels and broader Second Temple and Greco-Roman magical practice. Theologically, the text systematizes an elaborate demonology, correlating specific demons with specific illnesses, vices, and afflictions and specific angels or divine names with their defeat, reflecting a worldview in which malevolent spiritual forces actively cause human suffering and are subject to control through authorized ritual knowledge, a conceptual framework that illuminates, by comparison, the exorcistic ministry attributed to Jesus and his followers in the Synoptic tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, writing as if he were Moses giving final instructions to Joshua, modeled the text on Deuteronomy's farewell speech pattern."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the core to the early first century CE, shortly after Herod the Great's death, reflecting anxiety about Roman rule in Judea."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving text predicts Israel's future history down to a period of harsh persecution, ending in God's own direct rescue and Israel's exaltation — without mentioning a messiah or individual resurrection."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Unlike many contemporary texts, it expects God himself, not a messianic agent, to intervene directly and establish his kingdom, a notably God-centered rather than messiah-centered hope."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The letter of Jude (verse 9) refers to a dispute between the archangel Michael and the devil over Moses's body, a tradition connected to this text's now-lost ending about Moses's death and heavenly assumption. It has no canonical status."
+          }
+        ]
+      },
+      {
+        "id": "testament-of-solomon",
+        "title": "Testament of Solomon",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text in Solomon's voice; it layers earlier Jewish and Greco-Egyptian magical tradition under later, heavy Christian editing."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Dating is highly contested, ranging from the first to the fourth century CE, reflecting a long process of growth and rewriting."
+          },
+          {
+            "heading": "Contents",
+            "body": "Solomon receives a magic ring from the archangel Michael that lets him command demons, and the text lists many demons along with the angelic names or actions that defeat them, ending with Solomon's downfall through idolatry."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text systematizes demonology, matching specific demons to specific illnesses or vices and specific angels to their defeat, reflecting a worldview where evil spirits actively cause suffering."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This detailed demonology helps explain the assumptions behind Gospel exorcism stories, where Jesus and his followers cast out demons understood in similar terms. It has no canonical status."
+          }
         ]
       },
       {
         "id": "testament-of-adam",
         "title": "Testament of Adam",
-        "summary": [
-          "The Testament of Adam is a brief composite work combining a “Horarium” detailing the praises offered by creation to God at each hour of the day and night, a prophecy of the future given by Adam to his son Seth (including predictions of the flood and the coming of Christ), and an angelological section describing the ranks of the heavenly hierarchy, transmitted chiefly in Syriac with related material also surviving in Arabic, Armenian, Ethiopic, Georgian, and Greek. The complex, composite transmission history complicates dating; most scholars regard the “Horarium” section as possibly reflecting an earlier Jewish core (perhaps as early as the second or third century CE) while the prophecy and angelological sections show clear Christian composition or redaction, likely from the third to fifth centuries CE, meaning the work as a whole is best regarded as a Christian composite incorporating older traditional material rather than a straightforwardly Jewish pseudepigraphon. The author is unknown. Historically, the “Horarium” section, if it does preserve earlier Jewish liturgical-cosmological tradition, offers valuable comparative evidence for Second Temple and early rabbinic conceptions of creation’s participation in structured, hour-by-hour praise of God, a theme with resonance in later Jewish liturgical poetry (piyyut) and in some patristic hymnody. Theologically, the work’s vision of a cosmically ordered liturgy, in which every element of creation — angels, humans, animals, even inanimate elements — offers praise at its appointed hour, reflects a strongly ordered, hierarchical cosmology in which worship is the fundamental structuring principle of the universe, a theological vision that, whatever its precise compositional history, exercised meaningful influence on later Christian (particularly Syriac) liturgical and angelological thought."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown authors combined several originally separate pieces into this composite work, with an unknown editor responsible for the final Syriac form."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The 'Horarium' section may preserve an earlier Jewish core (perhaps second or third century CE), while the prophecy and angel-hierarchy sections are Christian compositions from the third to fifth centuries."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text describes the hours at which different parts of creation offer praise to God, a prophecy from Adam to Seth (including a prediction of Christ), and a description of the ranks of angels."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It presents a strongly ordered, hierarchical universe in which every part of creation, from angels to animals, has an appointed time to worship God."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its vision of ordered cosmic worship parallels images of heavenly worship in Revelation. It has no canonical status but influenced later Christian, especially Syriac, liturgy."
+          }
         ]
       },
       {
         "id": "letter-of-aristeas",
         "title": "Letter of Aristeas",
-        "summary": [
-          "The Letter of Aristeas purports to be a firsthand account by a Greek courtier, Aristeas, of the commissioning and execution of the Septuagint translation of the Torah under Ptolemy II Philadelphus (285–246 BCE), narrating the king’s request to the Jewish high priest Eleazar for seventy-two translators, their reception in Alexandria, an extended philosophical banquet dialogue in which the translators answer the king’s questions on kingship and virtue, and the translators’ sequestration on the island of Pharos to produce, in seventy-two days, a translation subsequently ratified by the Alexandrian Jewish community. Despite its narrative claim to eyewitness, first-person Ptolemaic-era authorship, the work’s historical anachronisms and literary character lead virtually all scholars to regard it as pseudonymous, composed considerably later, with a date in the mid-to-late second century BCE most widely favored, by an Alexandrian Jewish author writing under the guise of a sympathetic Gentile observer. Historically, the letter functions as an apologetic “foundation legend” for the authority and divine sanction of the Greek Septuagint translation, addressing anxieties within Hellenistic Diaspora Judaism about the legitimacy of reading scripture in Greek translation rather than the Hebrew original, and more broadly commending Judaism’s law and wisdom to an educated Hellenistic Gentile readership. Theologically, the extended symposium dialogue subtly commends Jewish ethical monotheism as fully compatible with, and indeed superior to, the best of Greek philosophical kingship theory, while the narrative frame’s insistence on the Septuagint’s miraculous unanimity (each translator, working independently, allegedly produced an identical text) establishes a doctrine of the Greek translation’s own quasi-inspired authority, a claim of considerable later significance for the reception of the Septuagint as scripture within both Hellenistic Judaism and the early Christian church."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Alexandrian Jewish author wrote this text pretending to be a Greek courtier named Aristeas, describing events he could not actually have witnessed."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Despite claiming to describe events under Ptolemy II (285–246 BCE), historical errors show it was really written in the mid-to-late second century BCE, addressing Diaspora Jews' anxiety about reading scripture in Greek rather than Hebrew."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter tells how seventy-two Jewish translators, working separately, miraculously produced identical Greek translations of the Torah (the origin of the term 'Septuagint'), framed by a long philosophical banquet dialogue on kingship and virtue."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By claiming miraculous unanimity among the translators, the letter argues that the Greek translation itself carries divine authority, not just the Hebrew original."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This defense of the Greek Bible's authority matters directly for the New Testament, since its authors typically quote the Old Testament in this Greek (Septuagint) form. It has no canonical status of its own but shaped how both Jews and Christians viewed the Greek Bible."
+          }
         ]
       },
       {
         "id": "jubilees",
         "title": "Jubilees",
-        "summary": [
-          "Jubilees is an extensive rewriting and theological elaboration of Genesis 1 through Exodus 12, presented as a revelation given to Moses on Sinai by the “angel of the presence” at God’s dictation, organizing all of history into a chronological scheme of “jubilees” (forty-nine-year periods) and emphasizing a solar 364-day calendar as the sole legitimate liturgical calendar, in explicit and polemical contrast to the lunar or lunisolar calendars used by rival Jewish groups. The work was composed in Hebrew, substantially attested among the Dead Sea Scrolls (at least fourteen or fifteen manuscripts from Qumran, indicating its considerable authority within that community), and is now regarded by most scholars as dating to the mid-second century BCE, likely composed shortly before or during the early stages of the Maccabean crisis, by an author closely aligned with, or a direct precursor of, the priestly-scribal circles that would produce the sectarian literature at Qumran. The author is unknown. Historically, the work reflects intense internal Jewish conflict over calendrical practice, ritual purity, and the proper interpretation of Torah, positioning itself as authoritative revelation superseding ambiguity in the Genesis-Exodus narrative by supplying precise legal and chronological detail absent from the biblical text, and by retrojecting later halakhic practice (Sabbath law, purity regulations, festival observance) onto the patriarchal period, thereby grounding contemporary sectarian practice in primordial, angelically revealed authority. Theologically, Jubilees advances a strongly deterministic, providentially ordered view of history inscribed on “heavenly tablets,” an elevated angelology and demonology (including the figure of Mastema as chief antagonist), and a rigorous, exclusivist covenant theology emphasizing circumcision, calendar, and separation from Gentile impurity as essential markers of authentic covenant membership, exercising profound influence on the theology and legal practice of the Qumran community."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely closely connected to the priestly-scribal circles later associated with Qumran, wrote Jubilees in Hebrew."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed around the mid-second century BCE, likely just before or during the Maccabean crisis, it was hugely popular at Qumran, where at least fourteen copies were found."
+          },
+          {
+            "heading": "Contents",
+            "body": "Presented as revelation given to Moses at Sinai, Jubilees retells Genesis and part of Exodus, organizing history into 49-year periods ('jubilees') and insisting on a 364-day solar calendar rather than the lunar calendars used by rival groups."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The book develops strong angelology and demonology (including the demon-figure Mastema) and stresses circumcision, correct calendar, and separation from Gentiles as essential marks of true covenant membership."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Jubilees shows the kind of strict calendar and purity disputes active in Judaism around the time of Jesus, background relevant to New Testament debates over law observance. It has no canonical status in mainstream Judaism or Christianity but deeply shaped the Qumran community's theology and practice."
+          }
         ]
       },
       {
         "id": "martyrdom-and-ascension-of-isaiah",
         "title": "Martyrdom and Ascension of Isaiah",
-        "summary": [
-          "The Martyrdom and Ascension of Isaiah is a composite work combining a Jewish martyrological narrative (the “Martyrdom of Isaiah,” chaps. 1–5) recounting the prophet’s execution by being sawn in half at the order of the wicked king Manasseh — a tradition also alluded to in Hebrews 11:37 and widely attested in later Jewish and Christian legend — with a Christian apocalyptic ascent narrative (the “Vision of Isaiah,” chaps. 6–11) recounting Isaiah’s journey through the seven heavens, where he witnesses the pre-existence, incarnation, crucifixion, resurrection, and heavenly enthronement of Christ in advance. The Martyrdom section is generally regarded as an originally Jewish composition, possibly as early as the second or first century BCE, while the Vision section is a Christian composition of the late first or early-to-mid second century CE, the two subsequently combined and further redacted; the work survives complete only in Ethiopic, with fragmentary Greek, Latin, Slavonic, and Coptic witnesses attesting parts of the tradition. The author(s) are unknown. Historically, the combined work illustrates the phenomenon of Christian communities incorporating and reworking earlier Jewish martyrological tradition to serve explicitly Christological and prophetic-apologetic purposes, presenting Isaiah as a proto-Christian visionary who foresaw the very events central to Christian proclamation. Theologically, the Vision of Isaiah offers one of the earliest and most striking extra-canonical witnesses to a “docetic” or quasi-docetic Christology (the descending Christ progressively disguises his glory to pass unrecognized through each heavenly level and among human beings) alongside an unusually explicit doctrine of Christ’s pre-existent heavenly enthronement above all angelic powers, making the text a valuable, if theologically idiosyncratic, source for tracing the diversity of early Christian Christological reflection in the sub-apostolic period. ## Joseph and Aseneth",
-          "Joseph and Aseneth is a romantic novella elaborating the terse biblical notice that Joseph married Aseneth, daughter of the Egyptian priest Potiphera (Gen 41:45), narrating Aseneth’s initial disdain for Joseph, her subsequent infatuation, her dramatic repentance from idolatry and mystical conversion (including a visitation by an angelic “man” who feeds her a honeycomb symbolizing incorporation into the people of God), and a later narrative of court intrigue and attempted abduction involving Pharaoh’s son. The work survives in Greek, in two significantly divergent recensions, with the original language and precise textual history much debated; most scholars propose an Egyptian Jewish provenance and a date ranging from the first century BCE to the early second century CE, though a minority have argued for Christian authorship, a position now held by relatively few specialists given the text’s thoroughly Jewish theological and ritual concerns. The author is unknown. Historically, the novella addresses the socially and theologically sensitive question of intermarriage between the patriarchs and Gentile women, transforming Aseneth from a problematic Egyptian outsider into an exemplary convert whose repentance and transformation model an idealized process of Gentile incorporation into the Jewish covenant community, a narrative strategy with clear relevance to ongoing Second Temple debates about proselytism and intermarriage. Theologically, the conversion narrative’s rich ritual and mystical imagery — Aseneth’s destruction of her idols, seven days of penitential fasting and mourning, angelic commissioning, and reception of a new, incorruptible identity symbolized by the honeycomb (“bread of life,” “cup of immortality,” “ointment of incorruptibility”) — offers significant comparative material for understanding Second Temple Jewish conceptions of conversion, transformation, and even quasi-sacramental or mystical initiation, themes of considerable interest for comparison with early Christian baptismal and eucharistic theology."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This composite work joins an originally Jewish martyrdom story (chapters 1–5) with a later Christian vision narrative (chapters 6–11), both by unknown authors."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The Jewish martyrdom section may be as early as the second or first century BCE; the Christian vision section dates to the late first or early second century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The Jewish part narrates the prophet Isaiah's execution — sawn in half by order of the wicked king Manasseh. The Christian part describes Isaiah's ascent through seven heavens, where he foresees Christ's incarnation, crucifixion, and resurrection in advance."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The vision section presents an unusually developed idea that Christ hid his glory as he descended through each heavenly level to become human, and stresses his enthronement above all angels."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Hebrews 11:37, which mentions prophets being 'sawn in two,' likely refers to this same tradition about Isaiah's death. The work has no canonical status but offers valuable early evidence for developing beliefs about Christ."
+          }
+        ]
+      },
+      {
+        "id": "joseph-and-aseneth",
+        "title": "Joseph and Aseneth",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely an Egyptian Jew, wrote this romantic novella expanding on the brief biblical note that Joseph married Aseneth (Genesis 41:45)."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it from the first century BCE to the early second century CE, written to address Jewish concern about intermarriage between patriarchs and Gentile women."
+          },
+          {
+            "heading": "Contents",
+            "body": "The proud Aseneth initially scorns Joseph, then falls in love with him, dramatically repents of idol worship, and is transformed by an angel who feeds her a symbolic honeycomb, before a later plot involving Pharaoh's son threatens the couple."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Aseneth's conversion — destroying her idols, fasting in penitence, and receiving new life through angelic action — offers a rich model of what full religious conversion into the covenant community could look like."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its imagery of transformation through symbolic food ('bread of life,' 'cup of immortality') provides useful comparison for early Christian baptism and communion theology. It has no canonical status in any tradition."
+          }
         ]
       },
       {
         "id": "life-of-adam-and-eve",
         "title": "Life of Adam and Eve",
-        "summary": [
-          "The Life of Adam and Eve (also known, in its Greek form, as the Apocalypse of Moses) narrates the postlapsarian lives of Adam and Eve, including their penitential rituals, Eve’s own retrospective account of the temptation and fall (differing significantly in detail from Genesis, notably attributing greater agency and culpability to Eve while also expanding sympathetically on her remorse), the birth of Cain and Abel, Adam’s final illness and death, and Eve’s subsequent death and burial alongside him, with angelic intervention throughout. The work survives in multiple versions — Greek (Apocalypse of Moses), Latin, Armenian, Georgian, and Slavonic — which diverge considerably in content and sequence, complicating reconstruction of an “original” form; most scholars propose a Jewish origin for the core narrative dating to the first century CE, possibly slightly before or after 70 CE, with the various versions reflecting subsequent, sometimes substantial, redactional development, including likely Christian expansion in some textual traditions (particularly certain Latin recensions with an extended account of Seth’s quest for the oil of mercy). The author is unknown. Historically, the work reflects intense Second Temple interest in expanding and theologically interpreting the sparse Genesis narrative of the fall, addressing questions the biblical text leaves unanswered: the psychological and physical experience of expulsion from paradise, the nature of postlapsarian mortality, and the possibility of eventual restoration. Theologically, the text develops an etiology of human suffering, disease, and mortality rooted in the primal transgression, alongside a hopeful eschatological expectation of bodily resurrection and restoration to paradise, articulated through Adam’s dying vision of future history and God’s promise of eventual mercy, offering an important witness to Second Temple reflection on protology, theodicy, and eschatological restoration."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote the original version, which survives today in several different, sometimes very different, translations (Greek, Latin, Armenian, Georgian, and Slavonic)."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a Jewish origin around the first century CE, near the time of the Temple's destruction, with the various later translations showing further editing, some by Christian scribes."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book tells of Adam and Eve's life after being expelled from Eden, including Eve's own account of the temptation (which gives her more blame than Genesis does), and their eventual deaths and burials."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text explains human suffering, sickness, and death as consequences of the first sin, while also offering hope for eventual resurrection and restoration to paradise."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its themes of the Fall's lasting effects on humanity and hope for eventual restoration echo Paul's discussion of Adam and Christ in Romans 5. It has no canonical status but was widely read and adapted."
+          }
         ]
       },
       {
-        "id": "pseudo-philo-biblical-antiquities-liber-antiquitatum-biblica",
-        "title": "Pseudo-Philo (Biblical Antiquities / Liber Antiquitatum Biblicarum)",
-        "summary": [
-          "Pseudo-Philo’s Biblical Antiquities is an extensive “rewritten Bible” narrative covering biblical history from Adam through the death of Saul, expanding, compressing, and theologically reshaping the biblical narrative with numerous additions, including expanded roles for female biblical characters (notably an extended treatment of Deborah, Jephthah’s daughter — here named Seila — and Miriam), invented speeches, and a strong emphasis on covenant fidelity and divine providence operative even amid apparent narrative gaps or ambiguities in the biblical source. Despite its traditional (and erroneous, hence “Pseudo-”) attribution to Philo of Alexandria, evident from its transmission alongside genuine Philonic works in Latin manuscripts, the work shows no dependence on Philo’s allegorical method and is regarded by scholars as an originally Hebrew composition, likely dating to the first century CE, probably composed in Palestine before or around the time of the Jewish War against Rome (66–73 CE), surviving complete only in Latin (translated from a lost Greek intermediary translating the lost Hebrew original). The author is unknown. Historically, the work exemplifies the broader Second Temple genre of “rewritten Bible” (alongside Jubilees and the Genesis Apocryphon), reworking scriptural narrative to address theological and homiletical concerns of its own era while maintaining close, if creatively adapted, dependence on the biblical narrative sequence. Theologically, the work consistently emphasizes divine covenant faithfulness despite Israel’s repeated unfaithfulness, an eschatological hope oriented toward final resurrection and judgment, and a providential reading of history in which even apparently tragic or morally troubling biblical episodes are reframed to vindicate divine justice and the ultimate faithfulness of God to his covenant people, offering a valuable window into first-century Palestinian Jewish exegetical and theological method roughly contemporary with the New Testament writings."
+        "id": "pseudo-philo-biblical-antiquities",
+        "title": "Pseudo-Philo (Biblical Antiquities)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Despite being wrongly attached to the name of the philosopher Philo of Alexandria, this work was written by a different, unknown author with no connection to Philo's allegorical style."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date this Hebrew composition to the first century CE, likely written in Palestine before or around the time of the Jewish revolt against Rome (66–73 CE)."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book retells biblical history from Adam to the death of Saul, adding invented speeches and expanding the roles of female characters like Deborah and Jephthah's daughter, while stressing God's continued faithfulness despite Israel's failures."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work consistently reframes even troubling biblical episodes to defend God's justice and covenant faithfulness, and looks forward to final resurrection and judgment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "As a 'rewritten Bible' close in time to the New Testament, it offers a valuable window into how first-century Palestinian Jews interpreted and adapted scripture, a practice paralleled in New Testament use of the Old Testament. It has no canonical status."
+          }
         ]
       },
       {
         "id": "lives-of-the-prophets",
         "title": "Lives of the Prophets",
-        "summary": [
-          "The Lives of the Prophets is a collection of brief biographical notices concerning the lives, deaths, burial places, and (in several cases) prophetic miracles and predictions of the sixteen “writing prophets” of the Hebrew Bible together with several other prophetic figures (including Nathan, Ahijah, Joad, Azariah, Elijah, and Elisha), functioning as a kind of hagiographic gazetteer of prophetic tradition. The work survives in Greek, with related material also in Syriac, Ethiopic, and other versions, in several recensions of varying length and content; most scholars propose a Jewish origin, likely composed in Palestine, dating to the first century CE, probably prior to the destruction of the Temple in 70 CE (given apparent assumption of the Temple’s continued standing in some notices), though the transmission history shows clear evidence of later Christian additions and interpolations, particularly predictions retrospectively read as pointing toward Christian events. The author is unknown. Historically, the work reflects the broader Second Temple and early rabbinic interest in venerating the burial sites and legendary biographies of prophetic figures, a devotional practice also reflected in the New Testament’s polemical reference to contemporaries who “build the tombs of the prophets” (Matt 23:29) while allegedly perpetuating their ancestors’ rejection of prophetic messengers, suggesting the Lives of the Prophets preserves and systematizes traditions current in first-century Palestinian Jewish popular piety. Theologically, the collection’s consistent emphasis on the prophets’ miraculous powers, their often violent deaths at the hands of a disobedient Israel, and the geographic sanctity of their burial places reflects a developing hagiographic and martyrological sensibility that would prove highly influential for both later rabbinic Judaism’s veneration of tzadikim (righteous figures) and Christian veneration of saints and martyrs’ relics and burial sites."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely writing in Palestine, compiled these brief biographical notices about the biblical prophets."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the Jewish core to the first century CE, probably before the Temple's destruction in 70 CE, though later Christian additions were included in transmission."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book gives short accounts of the lives, deaths, and burial places of the sixteen 'writing prophets' plus other prophetic figures like Elijah and Elisha, often including miracle stories."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It emphasizes the prophets' miraculous power, their frequent violent deaths at Israel's hands, and the holiness of their burial sites, reflecting devotion to prophetic memory."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Matthew 23:29 refers to people who 'build the tombs of the prophets,' a devotional practice this text reflects and systematizes. It has no canonical status but illuminates popular first-century Jewish piety."
+          }
         ]
       },
       {
         "id": "ladder-of-jacob",
         "title": "Ladder of Jacob",
-        "summary": [
-          "The Ladder of Jacob elaborates the biblical account of Jacob’s dream at Bethel (Gen 28:10–22), offering an extended interpretation of the vision of the ladder (understood as symbolizing the rise and fall of successive world kingdoms and, ultimately, Israel’s own eschatological future) delivered to Jacob by the angel Sariel, along with a hymnic prayer attributed to Jacob praising God’s mysterious and transcendent nature. The work survives only in Old Church Slavonic, embedded within a larger compilation (the Tolkovaya Paleya), making both its original language (Hebrew or Aramaic is generally presumed) and precise date difficult to establish with confidence; most scholars propose a Jewish origin in the first or second century CE, noting apparent allusions to historical circumstances (possibly the Roman conquest of Judea) suggestive of that general period, though the surviving Slavonic text shows evidence of later Christian redaction, including some apparently Christological interpolation. The author is unknown. Historically, the text belongs to the broader genre of apocalyptic dream-interpretation literature that elaborated ambiguous or symbolically rich biblical visions (compare similar treatments of Daniel’s visions) to address contemporary historical and eschatological concerns, using the patriarchal narrative as a vehicle for coded political-eschatological commentary on the succession of empires oppressing Israel. Theologically, the text’s hymnic prayer is notable for its sophisticated apophatic (negative) theology, emphasizing the ultimate unknowability and ineffability of the divine nature even while affirming God’s providential engagement with Israel’s history, a theological sensibility that anticipates later developments in both Jewish mystical and Christian negative theology traditions, while its central interpretive move — reading the ladder’s ascending and descending figures as successive earthly kingdoms — situates it within the broader apocalyptic tradition of periodized, four-kingdom historical schemes exemplified also in Daniel 2 and 7. ## 4 Baruch (Paraleipomena Jeremiou)",
-          "4 Baruch, whose Greek title Paraleipomena Jeremiou means “The Things Omitted from Jeremiah,” narrates events surrounding the Babylonian destruction of Jerusalem, focusing on Jeremiah’s and Baruch’s grief, the miraculous preservation of Abimelech (the Ethiopian eunuch of Jer 38:7–13) who sleeps for sixty-six years and awakens to find Jerusalem destroyed, and Jeremiah’s eventual return from Babylonian exile to Jerusalem, concluding with an account of his martyrdom by stoning that is explicitly and extensively Christianized. The work survives in Greek, Ethiopic, Armenian, and Slavonic versions; the consensus view dates the Jewish core to the early second century CE, likely shortly after the Bar Kokhba revolt (132–135 CE), on the basis of apparent allusions to that catastrophe alongside the fictive setting of the earlier Babylonian destruction, with a distinct Christian conclusion (chap. 9’s account of Jeremiah’s martyrdom and explicit Christological content) appended by a later hand, probably in the same or a closely following generation. The author is unknown. Historically, the work processes the trauma of repeated national catastrophe (encoding, many argue, the recent memory of 70 CE and possibly 135 CE beneath its ostensible sixth-century BCE setting) through the lens of the earlier, paradigmatic Babylonian exile, following a well-established Second Temple and early rabbinic pattern of using the first destruction as a typological lens for processing the second. Theologically, the work emphasizes divine faithfulness to a purified, penitent remnant (symbolized by Abimelech’s miraculous preservation), the possibility of eventual restoration and return from exile, and — in its Christian conclusion — the reinterpretation of Jewish martyrological and prophetic tradition as anticipating and validating Christian claims, making the text a valuable case study in the process by which Jewish apocalyptic literature was preserved, transmitted, and theologically repurposed by early Christian communities."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author expanded the biblical account of Jacob's dream at Bethel (Genesis 28), and the work survives only in Old Church Slavonic."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a Jewish origin in the first or second century CE, possibly responding to the Roman conquest of Judea, though the surviving text shows later Christian editing."
+          },
+          {
+            "heading": "Contents",
+            "body": "The angel Sariel explains to Jacob that the ladder's rising and falling figures represent a sequence of world empires that will oppress and eventually give way for Israel, along with a prayer praising God's mysterious, transcendent nature."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text's hymn stresses that God's true nature can never be fully known or described, while also affirming God's active guidance of Israel's history through the succession of empires."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its theme of interpreting kingdoms symbolically parallels Daniel's four-kingdom visions and later apocalyptic imagery, including parts of Revelation. It has no canonical status."
+          }
+        ]
+      },
+      {
+        "id": "4-baruch-paraleipomena-jeremiou",
+        "title": "4 Baruch (Paraleipomena Jeremiou)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Jewish author wrote the core story, with an unknown Christian editor adding an explicitly Christian ending about Jeremiah's martyrdom."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The Jewish core likely dates to the early second century CE, probably written shortly after the Bar Kokhba revolt (132–135 CE), though set fictionally at the earlier Babylonian destruction of Jerusalem."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book follows Jeremiah and Baruch's grief over Jerusalem's fall, the miraculous sixty-six-year sleep of Abimelech (who wakes to find the city destroyed), and Jeremiah's eventual return from exile and martyrdom."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The book highlights God's faithfulness to a purified, repentant remnant of his people (symbolized by Abimelech's preservation) and hope for eventual restoration after exile."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its Christian ending reinterprets Jewish martyrdom and prophecy as pointing toward and confirming Christian claims, illustrating how the early church absorbed and reshaped Jewish apocalyptic literature. It has no canonical status."
+          }
         ]
       },
       {
         "id": "jannes-and-jambres",
         "title": "Jannes and Jambres",
-        "summary": [
-          "Jannes and Jambres is a fragmentary narrative, surviving only in scattered Greek, Latin, and other fragmentary witnesses (including a Qumran fragment, 4Q Papyrus, sometimes tentatively associated with the tradition, though this identification is disputed among Qumran specialists), elaborating the identity and fate of the two unnamed Egyptian magicians who opposed Moses before Pharaoh (Exod 7:11), a tradition also explicitly referenced by name in 2 Timothy 3:8, demonstrating that the tradition of naming these magicians circulated authoritatively enough to be cited without explanation in a first-century Christian letter. Dating the work is difficult given its fragmentary state, but most scholars propose a date in the first century BCE or first century CE for the core narrative tradition, with the fragmentary Greek and Latin texts that survive representing later, though probably not radically later, transmission witnesses. The author is unknown. Historically, the tradition exemplifies the broader Second Temple and early Christian interest in supplying names, biographies, and expanded narrative detail for anonymous or minor biblical figures, a widespread exegetical impulse (compare similar traditions elaborating unnamed figures throughout apocryphal and rabbinic literature) that here specifically addresses the identity of Pharaoh’s magicians, apparently including in some versions of the tradition an account of their deaths, repentance, or descent to the underworld. Theologically, insofar as the fragmentary evidence permits reconstruction, the narrative appears concerned with vindicating the superiority of Mosaic, divinely empowered wonder-working over merely magical or demonically assisted imitation, a theological concern with clear relevance to New Testament polemic against false teachers and magical practice, and its citation in 2 Timothy demonstrates the tradition’s currency and authority within at least some strands of earliest Christianity."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this now-fragmentary narrative naming the two Egyptian magicians who opposed Moses before Pharaoh (Exodus 7:11 leaves them unnamed)."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a date in the first century BCE or CE for this tradition, based on fragmentary Greek and Latin witnesses."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving fragments describe the magicians' opposition to Moses and, in some versions, their eventual deaths or repentance."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The tradition defends the superiority of Moses's divinely empowered miracles over mere magical imitation, addressing a live concern about distinguishing true divine power from counterfeit magic."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "2 Timothy 3:8 names Jannes and Jambres directly, assuming readers already know this extra-biblical tradition, showing its authority in some early Christian circles. It has no canonical status of its own."
+          }
         ]
       },
       {
         "id": "history-of-the-rechabites",
         "title": "History of the Rechabites",
-        "summary": [
-          "The History of the Rechabites (also known as the Story of Zosimus) narrates the journey of a monk, Zosimus, who miraculously travels to the “Blessed Ones” or “Sons of Rechab” (identified with the ascetic community mentioned in Jer 35), living in a paradisiacal state on an island beyond the ocean, practicing celibacy, vegetarianism, and communal simplicity, and receiving from them an account of their way of life and their hope of eventual bodily transformation and glorification. The work survives in Greek, Syriac, Ethiopic, Georgian, and Slavonic versions, showing extensive evidence of Christian composition or redaction throughout; while some scholars posit a Jewish core reflecting earlier traditions about the biblical Rechabites’ righteous asceticism, the majority view now regards the work substantially as a Christian composition, likely dating from the fourth century CE onward, reflecting Christian monastic and ascetic ideals rather than a straightforwardly Second Temple Jewish text, and it is therefore included in Pseudepigrapha collections with some caveat regarding its properly “Jewish” pedigree. The author is unknown. Historically, the work illustrates how the biblical Rechabites — praised in Jeremiah 35 for their strict ancestral vow of abstinence from wine and settled agriculture — became, in later Jewish and especially Christian tradition, an idealized paradigm for ascetic withdrawal from ordinary society, a figure congenial to the developing monastic movement of late antiquity. Theologically, the text’s depiction of the Rechabites as living an angelic, quasi-paradisiacal existence, free from ordinary human toil, sexuality, and mortality’s usual afflictions, functions as an idealized vision of realized eschatology achieved through ascetic renunciation, offering later monastic readers a scripturally rooted model and validation for their own withdrawal from conventional society in pursuit of angelic purity."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown, likely Christian, author wrote this text, though some scholars think it may build on an earlier Jewish tradition about the Rechabites mentioned in Jeremiah 35."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars now date the work substantially to the fourth century CE or later, reflecting developing Christian monastic ideals rather than Second Temple Judaism."
+          },
+          {
+            "heading": "Contents",
+            "body": "A monk named Zosimus miraculously visits the 'Blessed Ones,' descendants of the biblical Rechabites, who live a simple, celibate, vegetarian life on a paradise-like island, and he learns about their hope for eventual bodily transformation."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text presents ascetic withdrawal from ordinary society as a path to an almost angelic, paradise-like existence, giving later monks a scriptural model for their own lifestyle."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It builds on the positive biblical portrayal of the Rechabites' ancestral vow of abstinence (Jeremiah 35), a theme with resonance in New Testament calls to simple living. It has no canonical status."
+          }
         ]
       },
       {
         "id": "eldad-and-modad",
         "title": "Eldad and Modad",
-        "summary": [
-          "Eldad and Modad is now a lost work, known only through a single quoted line preserved in the early Christian text the Shepherd of Hermas (Vision 2.3.4: “The Lord is near to those who turn to him”), elaborating the brief biblical notice in Numbers 11:26–29 concerning two elders, Eldad and Medad, who prophesied in the Israelite camp without having gone to the tent of meeting with the other seventy elders, provoking Joshua’s request that Moses restrain them, to which Moses famously responds, “Would that all the Lord’s people were prophets!” Given the extremely limited surviving evidence — a single citation rather than any substantial text — dating and characterizing the work’s contents remain almost entirely speculative; most scholars, reasoning from its citation in the Shepherd of Hermas (itself dated to the late first or early-to-mid second century CE), propose that Eldad and Modad must have been composed by that time at the latest, situating it plausibly within the first century CE or earlier, though virtually nothing else can be said with confidence about its authorship, date, or full content. The author is unknown. Historically, the work’s citation in the Shepherd of Hermas demonstrates that at least some apocryphal expansions of minor biblical narrative figures achieved sufficient authority to be quoted as an apparently reliable source within early Christian literature, illustrating the porous and still-developing boundaries of authoritative religious literature in the late Second Temple and earliest Christian periods. Theologically, based solely on the surviving fragment, the work seems to have addressed themes of unexpected or irregular prophetic inspiration and divine nearness to the penitent, themes that would cohere well with the biblical episode’s own implicit challenge to institutionalized, exclusively hierarchical models of prophetic authority, though any fuller theological reconstruction necessarily remains highly conjectural given the paucity of surviving evidence."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This work, quoted only once by an early Christian text (the Shepherd of Hermas), is otherwise entirely lost, and its author is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Since the Shepherd of Hermas (dated late first or early second century CE) quotes it, Eldad and Modad must be at least that old, though almost nothing else can be said about its date or contents."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work apparently expanded on Numbers 11:26–29, where two elders named Eldad and Medad prophesy in the camp without official sanction, prompting Moses's famous reply, 'Would that all the Lord's people were prophets!'"
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Based on the single surviving line ('The Lord is near to those who turn to him'), the work seems to have addressed themes of unexpected prophetic inspiration and divine nearness to the repentant."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its citation in the Shepherd of Hermas shows that some non-biblical Jewish texts were treated as reliable sources even in early Christian writing. It has no canonical status and survives only as this single quotation."
+          }
         ]
       },
       {
         "id": "ahiqar",
         "title": "Ahiqar",
-        "summary": [
-          "The Story of Ahiqar (or Words of Ahiqar) is an ancient Near Eastern wisdom narrative, considerably older in its origins than most other Pseudepigrapha, narrating the story of Ahiqar, a wise counselor to the Assyrian kings Sennacherib and Esarhaddon, who is falsely accused of treason by his ungrateful adopted nephew Nadin, sentenced to death but secretly spared by a sympathetic executioner, and later vindicated when his wisdom proves indispensable to the king, the narrative framed around and interspersed with an extensive collection of proverbial wisdom sayings. The earliest surviving version is a fifth-century BCE Aramaic text discovered among the papyri of the Jewish military colony at Elephantine in Egypt, demonstrating that the story and its associated wisdom sayings circulated among Jewish communities considerably earlier than most other pseudepigraphal literature, with the narrative’s own claimed setting in the seventh century BCE Assyrian court reflecting genuine ancient Near Eastern (rather than distinctively Jewish) origins, subsequently adopted and adapted by Jewish, and later Christian and Islamic, tradition (the tale is referenced in Tobit 1:21–22 and 14:10, evidence of its integration into Jewish narrative memory). The author is unknown, and the work is not properly a Jewish composition but an adopted ancient Near Eastern wisdom tale. Historically, the Elephantine papyri provide invaluable independent evidence of the cultural and literary world of a Second Temple-era Jewish Diaspora community existing in close proximity to and cultural exchange with the broader Aramaic-speaking Near East. Theologically, the tale and its wisdom sayings emphasize conventional ancient Near Eastern sapiential values — loyalty, prudent speech, just recompense for treachery, and confidence in eventual vindication of the wrongly accused — themes that resonate broadly with, and likely influenced, the biblical and apocryphal wisdom tradition more generally, including Tobit’s explicit narrative dependence on the Ahiqar story. ## Pseudo-Phocylides",
-          "Pseudo-Phocylides is a Greek gnomic (proverbial) poem of some 230 hexameter lines, falsely attributed to the sixth-century BCE Ionian poet Phocylides, offering ethical instruction on topics including honesty, moderation, sexual morality, care for the poor and vulnerable, burial of the dead, and treatment of slaves and animals, presented without any explicit reference to Jewish scripture, ritual, or national identity, yet demonstrably dependent at numerous points on the Septuagint, particularly the Torah and Wisdom literature. Most scholars date the work to the period between the second century BCE and the first century CE, with a majority favoring a date around the turn of the era, and regard it as composed by a Hellenized Alexandrian Jewish author who deliberately concealed all overtly Jewish markers in order to present biblical ethical teaching as though it were universal Greek gnomic wisdom, a distinctive and unusual literary strategy among Second Temple Jewish literature. The author is unknown, writing pseudonymously under the borrowed authority of an already-canonical Greek gnomic poet. Historically, the work represents an extreme and sophisticated instance of Hellenistic Jewish apologetic and missionary strategy, seeking to commend Jewish ethical monotheism to a Gentile audience not through explicit argument for Jewish particularity but through the more subtle demonstration that biblical ethics simply is universal human wisdom, worthy of respect on purely rational and humanistic grounds without any appeal to revealed authority or national distinctiveness. Theologically, despite its studied avoidance of explicit theological vocabulary, the poem’s content — its concern for the poor, strangers, and vulnerable; its qualified but genuinely humane treatment of slaves; its opposition to exposure of infants and to various sexual offenses proscribed in Levitical law — reflects a thoroughly biblically grounded ethic presented in a deliberately universalized idiom, offering valuable evidence of how Hellenistic Judaism sought common ethical ground with the surrounding Greco-Roman moral philosophical tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This ancient Near Eastern wisdom story about the Assyrian court official Ahiqar is not originally a Jewish composition; its author is unknown, and it was later adopted into Jewish tradition."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The earliest surviving copy is a fifth-century BCE Aramaic text found among papyri at a Jewish military colony in Elephantine, Egypt, showing the story circulated among Jews far earlier than most other pseudepigraphal works."
+          },
+          {
+            "heading": "Contents",
+            "body": "Ahiqar, a wise advisor to the Assyrian king, is falsely accused of treason by his ungrateful nephew, secretly spared from execution, and later proven right when his wisdom saves the kingdom, all framed around collected proverbs."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The story and its sayings promote loyalty, careful speech, and confidence that the wrongly accused will eventually be vindicated — general ancient Near Eastern wisdom values rather than distinctly Jewish theology."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The book of Tobit explicitly refers to Ahiqar (1:21–22; 14:10), showing its integration into Jewish narrative memory well before the New Testament period. It has no canonical status but influenced the biblical wisdom tradition broadly."
+          }
+        ]
+      },
+      {
+        "id": "pseudo-phocylides",
+        "title": "Pseudo-Phocylides",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown, highly Hellenized Alexandrian Jewish author wrote this poem under the borrowed name of the real sixth-century BCE Greek poet Phocylides."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it between the second century BCE and the first century CE, likely around the turn of the era, written for an educated Gentile audience."
+          },
+          {
+            "heading": "Contents",
+            "body": "The 230-line poem gives ethical instruction on honesty, moderation, sexual morality, caring for the poor, burying the dead, and treating slaves and animals well, all without mentioning Jewish scripture or identity directly."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Though it hides its Jewish source, the poem's content closely follows biblical ethics (especially Torah and Wisdom teaching), presenting biblical morality as universal human wisdom rather than culturally specific religious law."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This strategy of presenting Jewish ethics in universal terms parallels how New Testament writers sometimes commend Christian ethics to Gentile audiences using shared moral vocabulary. It has no canonical status."
+          }
         ]
       },
       {
         "id": "sentences-of-the-syriac-menander",
         "title": "Sentences of the Syriac Menander",
-        "summary": [
-          "The Sentences of the Syriac Menander is a collection of gnomic wisdom sayings, transmitted in Syriac and falsely associated with the name of the Greek comic playwright Menander (a common ancient practice of attributing wisdom collections to famous literary figures), addressing conventional themes of practical ethics including filial duty, marriage, friendship, wealth, and social conduct. Scholars debate whether the work is properly Jewish, Christian, or more broadly reflective of general eastern Mediterranean wisdom tradition without clearly sectarian markers; proposed dates range across a wide span from the third to the seventh century CE, considerably later than most Pseudepigrapha, and its geographic and religious provenance (possibly Syrian or Mesopotamian) remains a matter of ongoing scholarly discussion rather than settled consensus. The author is unknown. Historically, the collection illustrates the persistent, widely diffused ancient Near Eastern and eastern Mediterranean genre of the wisdom sentence collection, a genre with deep roots stretching back through biblical Proverbs and Ahiqar to still older Egyptian and Mesopotamian instructional literature, continuing to generate new compositions well into late antiquity across religious and cultural boundaries. Theologically, the sentences offer relatively generic, broadly applicable ethical instruction concerning household management, respect for parents, and prudent social conduct, without strongly distinctive sectarian theological content, making the work more valuable as comparative evidence for the persistence and adaptability of the ancient wisdom-sentence genre across religious communities than as a direct witness to any specific Jewish or Christian theological program; its inclusion within Pseudepigrapha collections such as Charlesworth’s reflects the broad, inclusive editorial policy of gathering all literature with plausible relevance to the study of the biblical and post-biblical wisdom tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author or group of authors compiled this collection of wisdom sayings, falsely attributing them to the famous Greek playwright Menander."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Proposed dates range widely from the third to the seventh century CE, and scholars debate whether the material is Jewish, Christian, or simply general regional wisdom without clear religious markers."
+          },
+          {
+            "heading": "Contents",
+            "body": "The sayings cover everyday practical ethics: respecting parents, choosing a spouse wisely, valuing friendship, and managing wealth responsibly."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The collection offers generic ethical instruction without strong sectarian theology, continuing an ancient tradition of wisdom-sentence collections going back through Proverbs and Ahiqar to older Near Eastern sources."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its household and practical ethical concerns parallel similar advice given in New Testament letters (such as the household codes in Ephesians and Colossians). It has no canonical status."
+          }
         ]
       },
       {
-        "id": "fragments-of-pseudo-greek-poets-pseudo-orpheus-and-related-f",
-        "title": "Fragments of Pseudo-Greek Poets (Pseudo-Orpheus and Related Fragments)",
-        "summary": [
-          "This category gathers a small corpus of Greek verse fragments falsely attributed to venerable Greek poetic authorities — most substantially “Pseudo-Orpheus,” along with shorter fragments attributed to Hesiod and other figures — preserved through citation in Jewish and Christian apologetic writers (notably the Jewish historian-exegete Eusebius’s Praeparatio Evangelica, drawing on earlier Alexandrian Jewish sources such as Aristobulus), in which the mythical poet Orpheus is depicted as recanting Greek polytheism in favor of monotheistic worship of a single, transcendent, invisible deity, purportedly as secret teaching imparted to his disciple Musaeus. The fragments survive in multiple recensions of varying length, complicating reconstruction of an original form; most scholars date the core composition to the second century BCE, associating it with the Alexandrian Jewish philosopher-exegete Aristobulus’s broader project of demonstrating that Greek philosophy and poetry had already, if imperfectly, anticipated Mosaic monotheism. The author is unknown, writing under the borrowed authority of Orpheus, legendary founder of Greek mystery religion. Historically, the fragments exemplify a further variant of the Hellenistic Jewish apologetic strategy already seen in the Sibylline Oracles and Pseudo-Phocylides: co-opting revered pagan literary and religious authorities as unwitting or secretly enlightened witnesses to biblical monotheism, thereby commending Jewish theology to an educated Hellenistic audience through culturally prestigious indigenous voices rather than through overtly foreign appeal to Jewish scripture. Theologically, the Pseudo-Orphic fragments present a strongly transcendent, invisible, and incomparable deity, explicitly denouncing idolatrous representation, closely paralleling biblical and broader Hellenistic-Jewish apologetic monotheism, and their citation history through Aristobulus and later Christian apologists (Clement of Alexandria, Eusebius) demonstrates the durability and reach of this literary strategy well into the Christian era."
+        "id": "fragments-of-pseudo-orpheus-and-related-poets",
+        "title": "Fragments of Pseudo-Orpheus and Related Poets",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Jewish author wrote these Greek verses under the name of the legendary poet Orpheus, along with smaller fragments credited to other Greek poetic figures."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars connect the core composition to the Alexandrian Jewish philosopher Aristobulus in the second century BCE, part of a broader effort to link Greek thought to Mosaic teaching."
+          },
+          {
+            "heading": "Contents",
+            "body": "In the poem, Orpheus supposedly recants Greek polytheism and secretly teaches his disciple Musaeus about a single, invisible, transcendent God."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The fragments present a strongly transcendent, image-forbidding monotheism, matching biblical teaching, while using a revered pagan literary figure to make that teaching seem independently confirmed."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This strategy of finding pagan witnesses to biblical truth parallels how some early Christian apologists (such as Justin Martyr) argued that Greek philosophy had partially anticipated Christian teaching. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "more-psalms-of-david-syriac-psalms-151155",
+        "id": "more-psalms-of-david-syriac-psalms-151-155",
         "title": "More Psalms of David (Syriac Psalms 151–155)",
-        "summary": [
-          "Beyond the single Psalm 151 transmitted in the Greek Septuagint tradition (treated above under the Apocrypha), a Syriac manuscript tradition preserves five additional apocryphal psalms attributed to David (numbered 151–155 in this tradition), of which Hebrew originals for two (corresponding to Syriac Psalms 151 and 154) were discovered among the Psalms Scroll from Qumran Cave 11 (11QPsa), confirming a genuine Hebrew, likely pre-Christian, origin for at least this portion of the collection, while the remaining psalms’ original language and date remain less certain. Scholars generally date the Hebrew originals to the Hasmonean or late Hellenistic period, prior to the turn of the era, on the strength of the Qumran manuscript evidence, situating their composition within the same fluid, still-developing Psalter tradition responsible for other non-Masoretic psalmic material found at Qumran. The authors are unknown, writing pseudonymously in David’s voice. Historically, as with Psalm 151, the discovery of Hebrew originals at Qumran has proven central to scholarly reassessment of the boundaries and fluidity of the “Book of Psalms” as a collection during the late Second Temple period, with 11QPsa’s arrangement suggesting some communities, quite possibly including the Qumran sect itself, did not sharply distinguish these compositions from the psalms that would eventually become canonical. Theologically, the additional psalms continue characteristic Davidic psalmic themes — praise of divine wisdom and creative power (Psalm 154, which includes an unusual invitation for the righteous to gather and proclaim God’s glory together, evocative of covenantal community worship) and thanksgiving for deliverance — extending the Davidic psalmic tradition’s theological range in ways that illuminate the diversity and vitality of Second Temple liturgical composition beyond the eventually canonized 150 psalms."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "These additional psalms, attributed to David, were composed by unknown authors; Hebrew originals for two of them were found among the Dead Sea Scrolls."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The Dead Sea Scrolls evidence points to a Hasmonean or late Hellenistic date for at least two of the psalms, showing they circulated in Hebrew well before the Christian era."
+          },
+          {
+            "heading": "Contents",
+            "body": "The psalms continue familiar biblical themes: praising God's wisdom and creative power (Psalm 154) and giving thanks for deliverance."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Their content extends typical psalm themes without introducing major new doctrine, but their presence alongside canonical psalms at Qumran shows real diversity in what counted as sacred song."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "They illustrate how fluid the boundaries of the 'Psalter' still were in the period leading up to the New Testament, useful background for understanding how early Christians used and quoted psalms. These extra psalms hold no canonical status in mainstream traditions."
+          }
         ]
       },
       {
         "id": "psalms-of-solomon",
         "title": "Psalms of Solomon",
-        "summary": [
-          "The Psalms of Solomon is a collection of eighteen psalms, pseudonymously attributed to Solomon though internally unnamed (the attribution occurs only in manuscript titles), composed originally in Hebrew (now lost, surviving in Greek and a secondary Syriac version translated from the Greek), most securely dated among all Pseudepigrapha texts to the mid-first century BCE, since several psalms (notably Psalm 2, 8, and 17) transparently describe the Roman general Pompey’s conquest of Jerusalem in 63 BCE and his subsequent assassination in Egypt in 48 BCE, providing an unusually firm historical anchor. The author is unknown, writing from within a pious circle — widely, though not universally, identified by scholars with early Pharisaic or proto-Pharisaic piety — sharply critical of the Hasmonean priest-kings’ usurpation of Davidic royal legitimacy and perceived defilement of the Jerusalem Temple and priesthood, and viewing the subsequent Roman conquest as a divinely appointed, if painful, judgment on this Hasmonean corruption. Historically, the collection offers invaluable, closely contemporary witness to Jewish political and religious reaction to the collapse of Hasmonean sovereignty and the onset of Roman domination, articulating a theology of divine sovereignty over the nations even as it processes profound national humiliation. Theologically, the Psalms of Solomon contain what is widely regarded as the single clearest and most developed pre-Christian expression of royal Davidic messianism in extant Second Temple Jewish literature (Psalm 17, and to a lesser extent 18), envisioning a righteous, divinely empowered “son of David” who will purge Jerusalem of Gentile and sinful Jewish oppressors, gather a purified, obedient people, and rule in justice and holiness — material of first-order importance for understanding the messianic expectations current in first-century BCE Judea against which early Christian claims about Jesus as Messiah would later be articulated, contested, and reinterpreted. ## Hellenistic Synagogal Prayers",
-          "The Hellenistic Synagogal Prayers are a collection of Jewish liturgical prayers preserved, in Christianized form, embedded within Book 7 and 8 of the fourth-century Christian church order known as the Apostolic Constitutions, where they were adapted for Christian liturgical use but retain, in the judgment of most specialists, an identifiable underlying Jewish liturgical core. Scholars generally date the original Jewish prayers to the Hellenistic or early Roman period, roughly the second century BCE through the second century CE, associating them with Diaspora, likely Alexandrian or broader eastern Mediterranean, synagogue worship, though the process and date of their Christian adaptation and incorporation into the Apostolic Constitutions occurred considerably later, in the fourth century CE. The compilers are unknown, and identifying the precise boundary between original Jewish material and later Christian redaction requires careful comparative philological analysis, a task complicated by the prayers’ liturgical, formulaic style, which readily accommodated theological adaptation without radical structural alteration. Historically, the prayers offer a rare and valuable, if textually complicated, window into actual Second Temple and early post-Temple synagogue liturgical practice, a domain for which direct primary evidence is otherwise scarce, since most surviving Jewish literature from this period is narrative, legal, or apocalyptic rather than liturgical in genre. Theologically, the prayers exhibit characteristic synagogue liturgical themes — praise of God as creator and sustainer of the cosmos, historical recitation of God’s saving acts for Israel, petition for mercy and restoration, and doxological affirmation of divine sovereignty — cast in an elevated, Hellenistically influenced rhetorical style, and their preservation and adaptation within Christian liturgy illustrates the broader continuity and creative appropriation of Jewish liturgical forms and content within emerging Christian worship practice in the post-Temple period."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author or group, likely with ties to early Pharisaic piety, wrote these eighteen psalms in Hebrew (now lost, surviving in Greek), falsely attributed to Solomon."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Because several psalms clearly describe the Roman general Pompey's conquest of Jerusalem in 63 BCE and his death in 48 BCE, this collection can be dated with unusual confidence to the mid-first century BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The psalms criticize the Hasmonean priest-kings for corrupting the Temple and usurping the throne rightfully belonging to David's line, and interpret the Roman conquest as God's judgment on that corruption."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Psalm 17 offers one of the clearest pictures in all Jewish literature of hope for a coming righteous 'son of David' who will purge Jerusalem of its oppressors and rule in holiness."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This vivid royal messianic hope forms essential background for understanding the political and religious expectations that early Christians both drew on and reinterpreted in proclaiming Jesus as Messiah. It has no canonical status in mainstream Judaism or Christianity."
+          }
+        ]
+      },
+      {
+        "id": "hellenistic-synagogal-prayers",
+        "title": "Hellenistic Synagogal Prayers",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown Jewish authors composed the original prayers, later adapted by unknown Christian editors for inclusion in a fourth-century Christian church document (the Apostolic Constitutions)."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The underlying Jewish prayers likely date from the second century BCE through the second century CE, from Diaspora synagogue worship, with Christian adaptation occurring much later in the fourth century."
+          },
+          {
+            "heading": "Contents",
+            "body": "The prayers include praise of God as creator, retelling of God's saving acts for Israel, and petitions for mercy and restoration, all in an elevated liturgical style."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "They show characteristic synagogue liturgical themes — creation, salvation history, and petition — cast in a Hellenistic literary style."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "These prayers offer rare direct evidence of what actual synagogue worship in this era looked like, helpful background for understanding the worship setting many early Christians came from. They hold no canonical status but illustrate continuity between Jewish and early Christian worship."
+          }
         ]
       },
       {
         "id": "prayer-of-joseph",
         "title": "Prayer of Joseph",
-        "summary": [
-          "The Prayer of Joseph survives only in fragmentary quotations preserved by the third-century Christian theologian Origen, in which the patriarch Joseph identifies himself as a pre-existent angelic being, “the firstborn of every living thing,” incarnated on earth and briefly locked in a wrestling contest with the angel Uriel (here apparently reinterpreting or supplementing the Genesis 32 Jacob-wrestling narrative in striking and theologically unusual ways), asserting his own superior angelic rank over other archangels. Given the extremely fragmentary state of the evidence, dating remains uncertain, though most scholars, following Origen’s apparent assumption of an already-established, presumably pre-Christian, Jewish tradition, propose a date in the first century BCE or first century CE for the work’s composition, situating it within circles engaged in speculative angelology and traditions of angelic pre-existence and incarnation. The author is unknown. Historically, the fragments are significant for illustrating the existence, within some strand of Second Temple Judaism, of remarkably developed speculation about angelic pre-existence, hierarchy, and incarnation in human form — traditions with important, if indirect, bearing on the conceptual background against which early Christian pre-existence and incarnation Christology developed and against which it distinguished itself, since such Jewish angelomorphic speculation provided at least part of the conceptual vocabulary available to earliest Christian thinkers grappling with the pre-existence and incarnation of Christ. Theologically, the text’s audacious claim that the patriarch Jacob (identified with the angel “Israel”) ranks above the archangels in the heavenly hierarchy reflects an unusually exalted angelomorphic anthropology, in which a human patriarchal figure is understood to have possessed prior angelic, even quasi-divine, status — material that illuminates the diversity and speculative reach of Second Temple Jewish angelology at the margins of, though clearly related to, more mainstream apocalyptic and mystical tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, which survives only in fragments quoted by the Christian theologian Origen in the third century."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Since Origen assumes it already existed as an established tradition, most scholars propose a date in the first century BCE or CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "In the surviving fragments, the patriarch Joseph claims to be a pre-existing angelic being, 'the firstborn of every living thing,' who wrestled with the angel Uriel — an unusual retelling of Jacob's wrestling match in Genesis 32."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text reflects speculation about angels existing before human birth and taking on human form, with Jacob ranked above other archangels in heaven's hierarchy."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This kind of speculation about pre-existent, exalted beings provides conceptual background relevant to how early Christians described Christ's pre-existence and incarnation, even as Christian teaching would ultimately differ from it. It has no canonical status."
+          }
         ]
       },
       {
         "id": "prayer-of-jacob",
         "title": "Prayer of Jacob",
-        "summary": [
-          "The Prayer of Jacob is a short Greek invocational prayer, preserved within a Greek magical papyrus (part of the so-called Greek Magical Papyri corpus), in which the speaker, identifying as Jacob, invokes God using an elaborate string of divine names, titles, and epithets, requesting protection, strength, and knowledge, in a manner that blends conventional Jewish liturgical invocation with the formal conventions of Greco-Egyptian magical practice. Dating is difficult given its preservation within a magical papyrus compilation of later date (the papyrus itself dates to around the fourth century CE), but most scholars propose that the underlying Jewish prayer tradition it draws upon is considerably older, potentially first century CE or earlier, reflecting the broader phenomenon of Jewish liturgical and angelological material being absorbed into and repurposed within the eclectic, syncretistic magical practice of late antique Egypt. The author is unknown. Historically, the text is a valuable, if unusual, witness to the permeability between Jewish liturgical-theological vocabulary and the broader magical practice of the Greco-Roman world, in which authentically Jewish divine names, titles, and angelological formulas were valued and appropriated by non-Jewish (and possibly some Jewish) practitioners of ritual magic precisely because of their perceived spiritual potency, a phenomenon also visible in the frequent invocation of the Jewish God and biblical figures throughout the wider corpus of Greek magical papyri. Theologically, the prayer’s dense accumulation of divine epithets and its request for angelic knowledge and empowerment reflects the broader Second Temple and late antique interest in theurgic access to divine power through correct invocation of the divine name and attributes, illustrating how elevated Jewish theological vocabulary could be recontextualized within a ritual-magical framework quite distinct from, yet historically continuous with, more conventional synagogue liturgical prayer."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this short prayer, preserved within a Greek magical papyrus rather than in typical Jewish or Christian manuscript collections."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The papyrus itself dates to around the fourth century CE, but the prayer tradition it draws on is likely much older, possibly the first century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The speaker, identifying as Jacob, calls on God using a long string of divine names and titles, asking for protection, strength, and knowledge."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The prayer reflects interest in gaining access to divine power through correctly invoking God's name and titles, blending Jewish liturgical language with the practices of Greco-Egyptian ritual magic."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It shows how Jewish divine names and formulas were valued and borrowed even outside strictly Jewish worship, illustrating the wider religious environment in which early Christianity also took shape. It has no canonical status."
+          }
         ]
       },
       {
         "id": "odes-of-solomon",
         "title": "Odes of Solomon",
-        "summary": [
-          "The Odes of Solomon is a collection of forty-two lyrical hymns, pseudonymously attributed to Solomon, surviving complete only in Syriac (with partial Coptic and a single Greek fragment also extant), characterized by intense mystical and devotional imagery of union with God, living water, light, and love, and containing content that most scholars regard as distinctly, if not always unambiguously, Christian, making the collection’s classification as “Jewish Pseudepigrapha” a matter of ongoing debate — many now treat it as an early Christian, likely Syrian, composition rather than a properly Jewish pseudepigraphon, though it is conventionally included in Pseudepigrapha collections given its formal genre and pseudonymous attribution. Most scholars date the collection to the late first or early second century CE, situating it as one of the earliest surviving bodies of Christian hymnody, quite possibly composed within a Jewish-Christian community in Syria still closely connected to Jewish liturgical and poetic convention while articulating a fully developed devotion to Christ. The author or authors are unknown. Historically, the Odes offer an invaluable, if theologically distinctive, window into the liturgical and devotional life of an early, probably Syrian, Christian community whose poetic idiom remains deeply indebted to Jewish psalmic and wisdom tradition even as its content is thoroughly Christocentric, illustrating the close continuity, rather than sharp rupture, between Jewish liturgical form and emerging Christian devotional expression in this formative period. Theologically, the Odes articulate a high, mystically inflected Christology (Christ as the incarnate Word who descends to and ascends from the underworld, liberating the dead, Ode 42) alongside intense imagery of believer’s mystical union with the divine, use of markedly feminine and maternal imagery for divine and spiritual realities (notably Ode 19’s image of the Father’s breasts and the Spirit’s milk), and a strongly realized, already-experienced eschatology of rest, light, and incorruption, making the collection an important, distinctive witness to the diversity of early Christian devotional and theological expression."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author or authors, likely from a Syrian Jewish-Christian community, wrote these forty-two hymns, falsely attributed to Solomon."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the collection to the late first or early second century CE, making it one of the earliest surviving bodies of specifically Christian hymnody."
+          },
+          {
+            "heading": "Contents",
+            "body": "The odes express intense devotion using images of light, living water, and love, celebrating union with God and the incarnate Christ ('the Word') who descends to free the dead and ascends again."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The odes present a high, mystical view of Christ and use notably feminine, maternal imagery for God (such as the Father's 'breasts' and the Spirit's 'milk' in Ode 19), alongside a sense that eternal rest and light are already present, not just future."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Though technically classified with Jewish Pseudepigrapha for genre reasons, the Odes are really an early Christian text, showing close continuity between Jewish psalm-style poetry and emerging Christian devotion to Christ. It has no canonical status."
+          }
         ]
       },
       {
         "id": "demetrius-the-chronographer",
         "title": "Demetrius the Chronographer",
-        "summary": [
-          "Demetrius the Chronographer is known only through fragments preserved by the later Christian chronicler Eusebius (citing the earlier pagan compiler Alexander Polyhistor), consisting of chronological calculations addressing problems and apparent discrepancies in the biblical genealogical and chronological data, particularly concerning the patriarchal narratives, the length of the Israelite sojourn in Egypt, and similar historical-chronological puzzles arising from close, harmonizing reading of the Hebrew (or Septuagint) biblical text. On the basis of internal evidence — reference to reigning Ptolemaic rulers — most scholars date Demetrius’s work to the late third century BCE, making him among the very earliest identifiable Hellenistic Jewish authors whose work survives even in fragmentary form, considerably predating most other Hellenistic Jewish literature discussed in this collection. Demetrius is thus a rare instance in this corpus of an author whose actual, non-pseudonymous name is preserved, though nothing further is known of his life or circumstances beyond his evident residence in, or close connection to, Ptolemaic Alexandria. Historically, Demetrius’s fragments provide crucial early evidence of sophisticated Alexandrian Jewish scholarly engagement with biblical chronology and historiography using the methods of contemporary Hellenistic chronographic scholarship, demonstrating that rigorous scriptural exegesis employing Greek scholarly technique began remarkably early in the history of Hellenistic Judaism, well before the more famous figures of Philo or the Letter of Aristeas. Theologically, while Demetrius’s surviving fragments are narrowly technical rather than broadly theological in focus, his underlying project — defending the internal chronological coherence and historical reliability of the biblical narrative against potential objections — reflects an apologetic concern for scripture’s trustworthiness that anticipates later, more developed Jewish and Christian harmonistic and apologetic historiography. ## Eupolemus",
-          "Eupolemus is known through fragments preserved by Alexander Polyhistor and transmitted via Eusebius and Clement of Alexandria, presenting an extended historical narrative treating Moses as the inventor of the alphabet later transmitted to the Phoenicians and Greeks, and offering an elaborate, embellished account of the reigns of David and Solomon, including Solomon’s building of the Temple and extensive, largely legendary, diplomatic correspondence with Egyptian and Phoenician rulers. Many scholars identify this Eupolemus with the Jewish envoy of that name sent by Judas Maccabeus to negotiate an alliance with Rome (mentioned in 1 Macc 8:17 and 2 Macc 4:11), which would securely date his work to the mid-second century BCE, shortly after the Maccabean revolt, making him, alongside Demetrius, one of the earliest identifiable named authors of Hellenistic Jewish historiography. Historically, Eupolemus’s project — presenting Moses as a cultural benefactor of humanity and Israel’s kings as Solomonic peers, even superiors, of the great powers of the ancient world — reflects the assertive, nationally confident historiographic mood of the early Hasmonean period, seeking to establish Jewish civilizational priority and prestige vis-à-vis both Greek and other Near Eastern claims to cultural primacy, a strategy paralleled in the roughly contemporary work of the Egyptian priest Manetho and Babylonian priest Berossus asserting their own nations’ civilizational antiquity. Theologically, Eupolemus’s fragments emphasize the unique favor and blessing bestowed on Israel through its covenant relationship with God, expressed concretely through the achievements of its national heroes (Moses, David, Solomon) and validated by the recognition and tribute of foreign rulers, articulating a theology of national election demonstrated through cultural and political achievement rather than through explicit apocalyptic or eschatological speculation, situating Eupolemus’s historiography as an important early instance of Jewish apologetic engagement with the competitive universal historiography of the Hellenistic world."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Demetrius is a rare example of a named, real historical author in this literature; little else is known about his life beyond his likely residence in Ptolemaic Alexandria."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Based on references to Ptolemaic rulers, most scholars date his work to the late third century BCE, making him one of the very earliest identifiable Hellenistic Jewish authors."
+          },
+          {
+            "heading": "Contents",
+            "body": "His surviving fragments address chronological puzzles in the Bible, such as calculating how long the Israelites spent in Egypt and resolving apparent discrepancies in patriarchal genealogies."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Though narrowly technical, his underlying goal was to defend the Bible's historical reliability and internal consistency against potential objections, an early form of scriptural apologetics."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His careful, scholarly approach to biblical chronology anticipates later Jewish and Christian efforts (including within the New Testament's own genealogies) to harmonize scriptural history. His work has no canonical status but is valued as very early evidence of Hellenistic Jewish scholarship."
+          }
+        ]
+      },
+      {
+        "id": "eupolemus",
+        "title": "Eupolemus",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Many scholars identify this named author with the Jewish envoy Eupolemus whom Judas Maccabeus sent to negotiate with Rome (mentioned in 1 Maccabees 8:17), making him one of the earliest identifiable Hellenistic Jewish historians."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "If this identification is correct, his work dates to the mid-second century BCE, shortly after the Maccabean revolt, a period of confident Jewish national identity."
+          },
+          {
+            "heading": "Contents",
+            "body": "His fragments present Moses as the inventor of the alphabet (later passed to the Phoenicians and Greeks) and give an elaborate, legendary account of David and Solomon's reigns, including invented diplomatic letters with foreign kings."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Eupolemus emphasizes Israel's unique covenant blessing, shown through the cultural and political achievements of its great national heroes and their recognition by foreign rulers."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His confident claims for Jewish cultural priority reflect the same assertive national mood found in 1 and 2 Maccabees, part of the broader Jewish world the New Testament later emerged from. His work has no canonical status."
+          }
         ]
       },
       {
         "id": "pseudo-eupolemus",
         "title": "Pseudo-Eupolemus",
-        "summary": [
-          "Pseudo-Eupolemus (so named because Alexander Polyhistor, through Eusebius, transmits this material under an attribution to Eupolemus that most scholars regard as mistaken, the work’s content and outlook differing markedly from the securely attributed Eupolemus fragments above) presents an account of Abraham as a culture-bringer who taught astrology to the Phoenicians and Egyptians, associates Abraham with the biblical Enoch and with the tower of Babel narrative, and links Abraham favorably with the Canaanite priest-king Melchizedek, whom Abraham is depicted honoring at a temple in Argarizin (Mount Gerizim), a detail that has led many scholars to propose a Samaritan, rather than Judean Jewish, authorship or milieu for the fragment, given Mount Gerizim’s significance as the Samaritan holy site. A date in the second century BCE is generally proposed, contemporaneous with the broader flowering of Hellenistic Jewish (or Samaritan) historiographical apologetic exemplified by Eupolemus and Demetrius. The author is unknown, and the question of Samaritan versus Jewish authorship remains a live and significant point of scholarly discussion given the fragment’s evident interest in elevating Gerizim’s sanctity. Historically, the fragment, if of Samaritan origin, would represent rare and valuable direct evidence of Samaritan historiographic and apologetic literary activity in the Hellenistic period, a body of literature otherwise very poorly attested compared to the more extensively preserved output of Judean Hellenistic Jewish authors. Theologically, the fragment’s presentation of Abraham as simultaneously a righteous monotheist and the ultimate source of foreign nations’ astronomical and cultural knowledge continues the broader Hellenistic Jewish (or Samaritan) apologetic strategy of asserting the patriarchal origin of Gentile science and culture, while its favorable treatment of Melchizedek and Gerizim, if correctly read as Samaritan, offers a valuable counterpoint to the Jerusalem-centered historiography dominant in most surviving Second Temple literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This material was wrongly credited to Eupolemus by ancient copyists; the real, unknown author's work differs noticeably in content and outlook from the authentic Eupolemus fragments."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the fragment to the second century BCE, and its favorable treatment of Mount Gerizim (the Samaritan holy site) has led some to propose Samaritan, rather than Judean, authorship."
+          },
+          {
+            "heading": "Contents",
+            "body": "The fragment presents Abraham as a 'culture bringer' who taught astrology to the Phoenicians and Egyptians, links him to the biblical Enoch and the tower of Babel story, and shows him honoring the priest-king Melchizedek at Gerizim."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Like other Hellenistic Jewish historiography, the fragment claims Abraham as the ultimate source of foreign nations' science and culture, elevating Jewish (or Samaritan) heritage."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "If genuinely Samaritan, it offers rare direct evidence for Samaritan religious writing in this period, relevant background for understanding Jewish-Samaritan tensions reflected in the Gospels (such as John 4). It has no canonical status."
+          }
         ]
       },
       {
         "id": "artapanus",
         "title": "Artapanus",
-        "summary": [
-          "Artapanus, known through fragments preserved by Alexander Polyhistor via Eusebius, offers a highly embellished, novelistic account of Israel’s history in Egypt, presenting Abraham as the teacher of astrology to the Egyptian Pharaoh, Joseph as the great agricultural and administrative benefactor of Egypt, and, most strikingly, Moses as a culture hero credited with founding Egyptian religion itself, including the animal cults, and performing wonders that rival or exceed those of Egyptian priest-magicians before Pharaoh. Most scholars date the work to the second or first century BCE, situating it within Alexandrian or broader Egyptian Hellenistic Jewish literary circles, and Artapanus’s syncretistic willingness to credit Moses with founding elements of Egyptian religious practice (including animal worship, which most Jewish authors elsewhere regarded as the height of idolatrous folly) marks the work as an unusually bold, even theologically daring, instance of Hellenistic Jewish apologetic historiography. The author is unknown. Historically, Artapanus’s fragments illustrate the extremes to which Hellenistic Jewish authors could go in asserting Jewish (specifically Mosaic) cultural priority over and even authorship of Egyptian civilization, a rhetorical strategy aimed at commending Jewish heritage’s prestige to a Hellenistic Egyptian audience deeply invested in Egypt’s own claims to civilizational antiquity and religious authority. Theologically, Artapanus’s willingness to attribute the origin of Egyptian animal cults to Moses himself represents a striking departure from the anti-idolatry polemic characteristic of most Second Temple Jewish literature (compare the Letter of Jeremiah and Wisdom of Solomon’s ridicule of Egyptian animal worship), suggesting either a highly syncretistic form of Diaspora Jewish identity willing to blur customary boundaries for apologetic advantage, or a primarily nationalistic-historiographic rather than strictly theological purpose in which cultural priority claims outweighed concerns for doctrinal consistency."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown Hellenistic Jewish author, likely writing in Egypt, composed this bold, novelistic retelling of Israel's history in Egypt."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second or first century BCE, situating it within Alexandrian Jewish literary circles competing culturally with Egyptian claims to civilizational greatness."
+          },
+          {
+            "heading": "Contents",
+            "body": "Artapanus presents Abraham as teaching astrology to Pharaoh, Joseph as Egypt's great agricultural benefactor, and — most strikingly — Moses as the founder of Egyptian religion itself, including its animal cults."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Unlike most Jewish writers, who mocked Egyptian animal worship as foolish idolatry, Artapanus boldly credits Moses with founding it, an unusually syncretistic move made for the sake of asserting Jewish cultural priority."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This extreme claim shows how far some Hellenistic Jewish apologists would go to win Gentile respect, a very different strategy from the more typical anti-idolatry polemic found elsewhere in Jewish and early Christian writing. It has no canonical status."
+          }
         ]
       },
       {
         "id": "cleodemus-malchus",
         "title": "Cleodemus Malchus",
-        "summary": [
-          "Cleodemus Malchus is known only through a brief fragment preserved by Alexander Polyhistor via Josephus (Antiquities 1.239–241) and Eusebius, in which the author, described as “the prophet,” relates that Abraham’s sons by his second wife Keturah (Gen 25:1–4) journeyed to Africa, with two of their descendants joining Heracles in his campaign against Libya and Antaeus, and one marrying Heracles’s daughter, thereby genealogically linking biblical patriarchal figures to the heroic lineage claimed by North African and Greek peoples. Given the extreme brevity of the surviving fragment, dating is uncertain, but most scholars propose a date in the second or first century BCE, situating Cleodemus Malchus within the same broad Hellenistic Jewish historiographic tradition as Eupolemus, Pseudo-Eupolemus, and Artapanus, all engaged in similar projects of genealogically and culturally connecting biblical figures to prestigious elements of Greek and Near Eastern legendary history. The author’s precise identity and even certain ethnicity (Jewish versus Samaritan or other Near Eastern origin) remain debated given the paucity of evidence. Historically, the fragment exemplifies the broader Hellenistic-era genre of syncretistic genealogical historiography, in which various Mediterranean and Near Eastern peoples sought to establish prestigious connections between their own national ancestral figures and the widely revered figures of Greek heroic legend (a strategy also visible, for instance, in Hellenistic Jewish claims connecting Jews to the Spartans via a supposed shared Abrahamic ancestry, reflected in 1 Macc 12:20–23). Theologically, the fragment’s content is too limited to permit extensive theological analysis, but its underlying strategy of asserting patriarchal genealogical priority over even Greek heroic tradition continues the broader apologetic project, visible across this corpus of Hellenistic Jewish historiographic fragments, of establishing Jewish antiquity and cultural primacy relative to the most prestigious available comparative traditions."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, called 'the prophet,' is known only through a brief fragment; his exact identity and even ethnicity (Jewish, Samaritan, or other) is debated."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the short fragment to the second or first century BCE, part of the same Hellenistic Jewish historiographic tradition as Eupolemus and Artapanus."
+          },
+          {
+            "heading": "Contents",
+            "body": "The fragment claims that descendants of Abraham's sons by his second wife Keturah (Genesis 25:1–4) traveled to Africa, with some joining the Greek hero Heracles in his legendary campaigns."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The fragment's content is too brief for real theological analysis, but its strategy — connecting biblical ancestors to prestigious Greek heroic legend — reflects the same broader project of claiming Jewish cultural priority found elsewhere in this literature."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It exemplifies the ancient practice of linking biblical figures to other peoples' national legends, similar to a claimed Jewish-Spartan kinship mentioned in 1 Maccabees 12:20–23. It has no canonical status."
+          }
         ]
       },
       {
         "id": "aristeas-the-exegete",
         "title": "Aristeas the Exegete",
-        "summary": [
-          "Aristeas the Exegete (to be distinguished from the pseudonymous author of the Letter of Aristeas discussed above) is known through a brief fragment preserved by Alexander Polyhistor via Eusebius, offering a paraphrastic summary of the biblical book of Job, describing Job’s identity, genealogy (identifying him, following a tradition also found in the Septuagint’s expanded ending to Job, with Jobab, an Edomite king mentioned in Genesis 36:33), and the essential outline of his story of suffering and restoration. Given the fragment’s brevity, dating is uncertain, but most scholars propose a date in the second or first century BCE, situating the work within the same broad Hellenistic Jewish historiographic-exegetical milieu as Demetrius, Eupolemus, and the other named fragmentary authors preserved through Alexander Polyhistor’s compilation. The author’s precise identity beyond the name “Aristeas” is unknown; the name’s coincidence with the pseudonymous author of the Letter of Aristeas is likely accidental rather than indicating any relationship between the two distinct works. Historically, the fragment offers additional evidence of the same broad current of Hellenistic Jewish literary activity engaged in retelling, epitomizing, and lightly interpreting biblical narrative for a Hellenistic audience, in this instance focusing on the book of Job, whose non-Israelite protagonist (traditionally identified as an Edomite) made it a particularly apt vehicle for demonstrating that righteous piety and divine favor were not restricted to ethnic Israel alone. Theologically, the identification of Job with the Edomite king Jobab, and the fragment’s implicit interest in Job’s story as a paradigm of righteous suffering rewarded, situates the text within the broader Second Temple interpretive tradition (also reflected in the Testament of Job) that found in the figure of Job rich resources for reflecting on theodicy, the universality of divine justice, and the possibility of righteousness among the nations. ## Theodotus",
-          "Theodotus is known through fragments of an epic poem, preserved via Alexander Polyhistor and Eusebius, narrating in Homeric-style Greek hexameter verse the story of Jacob’s family and the rape of Dinah and subsequent destruction of Shechem by Simeon and Levi (Gen 34), including an etiological explanation for the practice of circumcision presented in explicitly apologetic, theologically justifying terms. Scholars debate whether Theodotus was Jewish or Samaritan in origin — the poem’s evident concern with the city of Shechem, sacred to Samaritan tradition, has led some to propose Samaritan authorship, paralleling similar debates over Pseudo-Eupolemus, though the poem’s harshly negative portrayal of Shechem (destroyed as divine punishment) sits somewhat awkwardly with a straightforwardly pro-Samaritan reading, leaving the question genuinely unresolved. A date in the second century BCE is generally proposed, situating the work within the broader flowering of Hellenistic Jewish (or Samaritan) literary engagement with biblical narrative through prestigious Greek epic form. The author is unknown beyond the name Theodotus. Historically, the poem exemplifies the phenomenon of “biblical epic,” in which Second Temple authors adopted the most prestigious available Greek literary genre — Homeric epic verse — to retell biblical narrative, asserting thereby that Jewish (or Samaritan) sacred history was a fit and dignified subject for the highest form of Greek literary art, a strategy of cultural legitimation paralleling the prose historiographic apologetic of Eupolemus and Artapanus. Theologically, the poem’s etiological justification of circumcision as divinely mandated and its framing of the Shechem episode as righteous, divinely sanctioned zeal against sexual violation of covenant purity reflects continued Second Temple concern with defending distinctively Jewish ritual practice (circumcision being a frequent object of Hellenistic mockery) through narrative demonstration of its sacred, ancestral legitimacy."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, distinct from the author of the Letter of Aristeas discussed above, wrote this brief fragment about the biblical Job."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second or first century BCE, part of the same circle of Hellenistic Jewish authors preserved through the later compiler Alexander Polyhistor."
+          },
+          {
+            "heading": "Contents",
+            "body": "The fragment gives Job's genealogy, identifying him with Jobab, an Edomite king mentioned in Genesis 36:33, and summarizes the outline of his story of suffering and restoration."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By identifying Job as a non-Israelite (Edomite) whom God still rewards for righteousness, the fragment suggests that divine favor is available to non-Israelites who live righteously."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This openness to righteousness among non-Israelites anticipates New Testament interest in God's concern for Gentiles as well as Jews. It has no canonical status."
+          }
+        ]
+      },
+      {
+        "id": "theodotus",
+        "title": "Theodotus",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author named Theodotus wrote this epic poem in Homeric-style Greek verse; scholars debate whether he was Jewish or Samaritan."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second century BCE, part of the wider effort by Hellenistic Jewish (or Samaritan) writers to retell biblical stories in prestigious Greek literary forms."
+          },
+          {
+            "heading": "Contents",
+            "body": "The poem retells the story of Dinah's rape and the destruction of the city of Shechem by Simeon and Levi (Genesis 34), including a justification for the practice of circumcision."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The poem defends circumcision, a practice often mocked by Greeks, by presenting it as divinely mandated and rooted in sacred ancestral history, and frames the violent destruction of Shechem as righteous zeal for covenant purity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It illustrates ongoing Jewish need to defend distinctive practices like circumcision to a skeptical Hellenistic audience, a debate that resurfaces prominently in the New Testament (as in Galatians and Acts 15). It has no canonical status."
+          }
         ]
       },
       {
         "id": "ezekiel-the-tragedian",
         "title": "Ezekiel the Tragedian",
-        "summary": [
-          "Ezekiel the Tragedian is the author of the Exagoge, a Greek tragedy (surviving in substantial fragments, some 269 lines, preserved via Alexander Polyhistor and Eusebius, making it the most extensively preserved of the fragmentary Hellenistic Jewish authors) dramatizing the Exodus narrative in the form of Attic tragedy, modeled closely on the conventions of Aeschylus and Euripides, including a striking and theologically significant scene in which Moses, in a dream, sees himself enthroned on a great throne, receiving a scepter and crown from God and the homage of the stars, an image widely discussed by scholars for its apparent testimony to Jewish speculation about human exaltation to a quasi-divine or angelic status. Most scholars date the work to the second century BCE, situating Ezekiel within Alexandrian Hellenistic Jewish literary culture and its sophisticated engagement with the highest forms of Greek dramatic art. The author, named Ezekiel, is otherwise unknown beyond what can be inferred from the text itself. Historically, the Exagoge stands as the most substantial surviving example of Hellenistic Jewish imitation of classical Greek tragedy, demonstrating a remarkably confident and technically accomplished engagement with elite Greek literary form for the purpose of dramatizing sacred Jewish history, likely intended for a sophisticated, Greek-educated Jewish (and possibly interested Gentile) audience. Theologically, the enthronement dream-vision of Moses has attracted extensive scholarly attention as a significant witness to Second Temple speculation about the exaltation of righteous human figures to positions of extraordinary, quasi-divine authority and cosmic significance, material with important, if indirect, bearing on the conceptual matrix within which early Christian claims about the exaltation of Jesus to God’s right hand would later be articulated and would need to be theologically distinguished from other contemporary Jewish exaltation traditions."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An author named Ezekiel, otherwise unknown, wrote the Exagoge, a Greek tragedy modeled on classical playwrights like Aeschylus and Euripides."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the play to the second century BCE, situating it within sophisticated Alexandrian Jewish engagement with elite Greek literary culture."
+          },
+          {
+            "heading": "Contents",
+            "body": "The play dramatizes the Exodus story, including a striking scene where Moses dreams he is enthroned in heaven, receiving a scepter and crown from God while the stars bow before him."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This dream-vision of Moses being exalted to a position of extraordinary, almost divine authority reflects broader Jewish speculation about righteous humans being lifted to heavenly status."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Such exaltation traditions offer important comparative background for understanding early Christian claims about Jesus being exalted to God's right hand after his resurrection. It has no canonical status but is the best-preserved example of Hellenistic Jewish drama."
+          }
         ]
       },
       {
         "id": "pseudo-hecataeus",
         "title": "Pseudo-Hecataeus",
-        "summary": [
-          "Pseudo-Hecataeus refers to Jewish pseudonymous compositions falsely attributed to the genuine Greek historian Hecataeus of Abdera (fl. c. 300 BCE), who himself wrote sympathetically, if with some inaccuracies, about the Jews in his ethnographic work on Egypt; the pseudonymous Jewish works attributed to him — including a treatise “On the Jews” and material “On Abraham” known through citations in Josephus (Against Apion 1.183–204, 2.43) and other sources — considerably expand and embellish the genuine Hecataeus’s relatively modest treatment into more extensive, favorable, and theologically loaded material, including an account of Jewish martyrdom under religious compulsion. Most scholars regard at least some of this material transmitted under Hecataeus’s name as pseudonymous Jewish composition dating to the second or first century BCE, likely composed in Egypt, though disentangling authentically Hecataean material from later Jewish pseudonymous accretion remains a genuinely difficult and disputed philological task, with scholarly opinion divided over precisely how much of the surviving “Hecataean” material on the Jews is spurious. The author(s) of the pseudonymous material are unknown. Historically, the phenomenon of Pseudo-Hecataeus illustrates yet another variant of the broader Hellenistic Jewish apologetic strategy already observed in the Sibylline Oracles and Pseudo-Orpheus: attributing favorable, theologically congenial material to a genuinely respected, non-Jewish Greek authority, thereby lending external, ostensibly objective corroboration to Jewish claims of piety, antiquity, and philosophical sophistication. Theologically, the pseudonymous material’s emphasis on Jewish willingness to accept martyrdom rather than violate ancestral law, and its generally admiring portrayal of Jewish monotheism and legal fidelity, situates it within the broader apologetic literature defending Judaism’s rational and moral respectability to a skeptical or hostile Hellenistic audience, a concern shared extensively with Josephus’s own apologetic project in Against Apion, where much of this material is in fact preserved."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown Jewish authors wrote material falsely attributed to the real Greek historian Hecataeus of Abdera, who had written more modestly and sympathetically about Jews around 300 BCE."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the pseudonymous expansions to the second or first century BCE, likely composed in Egypt, though separating genuine from invented material remains genuinely difficult."
+          },
+          {
+            "heading": "Contents",
+            "body": "The material, known through citations in Josephus, expands favorably on Jewish piety, law, and history, including an account of Jewish willingness to accept martyrdom rather than break ancestral law."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By attributing favorable material to a respected non-Jewish authority, the strategy lends outside, seemingly objective support to claims about Jewish piety, antiquity, and philosophical seriousness."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its emphasis on faithfulness even under threat of death parallels New Testament teaching on enduring persecution for one's faith. It has no canonical status."
+          }
         ]
       },
       {
         "id": "philo-the-epic-poet",
         "title": "Philo the Epic Poet",
-        "summary": [
-          "Philo the Epic Poet (distinct from the far better-known philosopher Philo of Alexandria treated separately below) is known through fragments of an epic poem “On Jerusalem,” preserved via Alexander Polyhistor and Eusebius, treating episodes of biblical history including Abraham, Joseph, the water-supply engineering of Jerusalem, and other topics related to the holy city, composed in elevated, sometimes deliberately obscure, Greek epic verse. Most scholars date the work to the second century BCE, situating this Philo among the broader circle of Hellenistic Jewish authors, including Theodotus and Ezekiel the Tragedian, who adopted prestigious Greek poetic genres to celebrate biblical history and, in this instance, the city of Jerusalem specifically. The author’s precise identity beyond the name Philo is unknown, and the fragments’ unusually dense, allusive, almost willfully obscure poetic style has drawn scholarly comment as an extreme instance of Hellenistic literary affectation possibly aimed at demonstrating the author’s mastery of the most sophisticated and demanding conventions of contemporary Greek poetics. Historically, the poem exemplifies the same broad current of Hellenistic Jewish “biblical epic” production evidenced by Theodotus and Ezekiel the Tragedian, in this case focused specifically on celebrating Jerusalem’s sanctity and historical significance, quite possibly composed for or reflecting the interests of Jerusalem-oriented, rather than exclusively Diaspora-oriented, patriotic sentiment even within a Greek-language, Hellenistically educated milieu. Theologically, insofar as the fragmentary evidence permits assessment, the poem’s celebratory treatment of Jerusalem and its associated patriarchal history reflects continued veneration of the holy city and its sacred history as central to Jewish identity even among highly Hellenized authors fully at home in elite Greek literary culture, illustrating that linguistic and literary Hellenization did not necessarily entail diminished attachment to specifically Judean, Jerusalem-centered religious geography."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This Philo, distinct from the much better-known philosopher Philo of Alexandria, wrote an epic poem called 'On Jerusalem'; almost nothing else is known about him."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the poem to the second century BCE, part of a wider Hellenistic Jewish trend of using prestigious Greek poetic forms to celebrate biblical history."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving fragments cover episodes involving Abraham, Joseph, and Jerusalem's water-supply engineering, written in a dense, deliberately difficult Greek poetic style."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Insofar as the fragments allow judgment, the poem reflects continued devotion to Jerusalem's sanctity and historical significance even among highly Greek-educated Jewish authors."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It shows that Hellenized, Greek-speaking Jews could remain strongly attached to Jerusalem's centrality, a devotion also visible in New Testament attitudes toward the holy city. It has no canonical status."
+          }
         ]
       },
       {
         "id": "aristobulus",
         "title": "Aristobulus",
-        "summary": [
-          "Aristobulus of Alexandria is known through fragments of his philosophical-exegetical work addressing to King Ptolemy (probably Ptolemy VI Philometor, r. 180–145 BCE) the interpretation of the Mosaic law, preserved via Clement of Alexandria and Eusebius, in which he argues that Greek philosophers, particularly Pythagoras and Plato, derived key elements of their thought from an earlier Greek translation of the Torah predating the Septuagint (a historically dubious but rhetorically important claim), and that anthropomorphic language about God in scripture (God’s “hands,” “descending,” and so forth) must be understood allegorically rather than literally, since God’s true nature transcends all corporeal categories. On the basis of the work’s dedication, most scholars date Aristobulus’s activity to the mid-second century BCE, making him one of the earliest datable figures in the Hellenistic Jewish philosophical-allegorical tradition that would culminate roughly two centuries later in the far more extensive corpus of Philo of Alexandria, whose method Aristobulus’s surviving fragments substantially anticipate. Aristobulus is thus another rare instance of a genuinely named, non-pseudonymous author in this literature, plausibly to be identified with the Aristobulus mentioned in 2 Maccabees 1:10 as a teacher of King Ptolemy. Historically, Aristobulus’s project reflects the sophisticated philosophical ambitions of mid-second-century BCE Alexandrian Judaism, seeking to establish Jewish scripture’s priority over, and philosophical compatibility with, the most prestigious currents of Greek philosophical thought. Theologically, his allegorical method for resolving apparent anthropomorphism in scriptural language about God, and his claim of Mosaic priority over Greek philosophy, established interpretive and apologetic strategies of foundational importance for the subsequent development of Hellenistic Jewish philosophical theology, most fully realized in Philo’s later and far more extensive allegorical corpus."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Aristobulus of Alexandria is a rare named, real historical author, possibly the same Aristobulus mentioned in 2 Maccabees 1:10 as a teacher of a Ptolemaic king."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date his activity to the mid-second century BCE, making him one of the earliest known Hellenistic Jewish philosophers, writing generations before the more famous Philo of Alexandria."
+          },
+          {
+            "heading": "Contents",
+            "body": "His surviving fragments argue that Greek philosophers like Plato borrowed ideas from an early Greek translation of the Torah, and that anthropomorphic biblical language about God (like God's 'hands') should be read symbolically, not literally."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Aristobulus's allegorical method for handling difficult biblical language about God, and his claim that Moses came before and influenced Greek philosophy, set patterns later developed much further by Philo."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His allegorical, philosophically minded approach to scripture provided a model that also shaped how some early Christian thinkers, especially in Alexandria, would later interpret the Bible. His work has no canonical status."
+          }
         ]
       }
     ]
@@ -486,36 +2055,131 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "flavius-josephus-life-and-historical-significance",
         "title": "Flavius Josephus (Life and Historical Significance)",
-        "summary": [
-          "Flavius Josephus (born Yosef ben Matityahu, c. 37–100 CE) was a first-century Jewish priest, historian, and, controversially, a former rebel commander turned Roman client, whose four surviving works constitute by far the most extensive and historically indispensable body of Jewish literature from the late Second Temple period outside the New Testament and the Dead Sea Scrolls. Born into a priestly aristocratic family in Jerusalem shortly after Jesus’s death, Josephus received a sophisticated education, claims (in his autobiography) to have sampled the major Jewish sects — Pharisees, Sadducees, and Essenes, as well as a period with the ascetic hermit Bannus — before aligning himself with the Pharisees, and was appointed, somewhat reluctantly by his own account, as a Galilean military commander at the outbreak of the Jewish revolt against Rome in 66 CE. His surrender to Roman forces at Jotapata in 67 CE, followed by his controversial prediction that his captor Vespasian would become emperor (a prophecy fulfilled in 69 CE), secured his survival, patronage, and eventual Roman citizenship under the Flavian dynasty, from whom he took his adopted name. Josephus spent the remainder of his life in Rome under imperial patronage, composing his historical works in Greek (with Aramaic assistance for his earliest work) for both a Jewish and, especially, an educated Gentile Roman readership. Historically, Josephus occupies a deeply ambivalent position: reviled by many Jewish contemporaries and later tradition as a traitor and collaborator, yet indispensable as virtually the sole extensive narrative source for the political, social, and religious history of first-century Judea, including the reign of Herod, the Roman procuratorship, the origins and course of the great revolt, and the destruction of the Second Temple in 70 CE. Theologically, Josephus consistently frames Jewish history and law as embodying a coherent, ancient, and philosophically respectable system, presenting the destruction of Jerusalem as divine punishment for internal Jewish factionalism and impiety rather than as a defeat of God by Rome, a providential interpretive framework that shapes the theological and apologetic character of all his historical narration."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Josephus (born Yosef ben Matityahu, c. 37–100 CE) was a Jewish priest and historian from a Jerusalem priestly family who wrote all his surviving works himself, in Greek, after relocating to Rome."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Appointed a Galilean military commander when the Jewish revolt against Rome broke out in 66 CE, Josephus surrendered to Roman forces in 67 CE, correctly predicted that his captor Vespasian would become emperor, and spent the rest of his life in Rome under imperial patronage."
+          },
+          {
+            "heading": "Contents",
+            "body": "His four surviving works — the Jewish War, Jewish Antiquities, Against Apion, and his autobiography (Life) — together form the single most important body of Jewish historical writing from this period outside the New Testament and Dead Sea Scrolls."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Josephus consistently presents Jewish law and history as ancient and rational, and interprets Jerusalem's destruction as God's punishment for Jewish infighting and impiety rather than as Rome defeating God."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Josephus provides essential background for the political and religious world of first-century Judea in which Jesus and the earliest church lived, including descriptions of Herod, the Roman governors, and Jewish religious groups. His works hold no canonical status but are indispensable historical sources."
+          }
         ]
       },
       {
-        "id": "the-jewish-war-bellum-judaicum",
-        "title": "The Jewish War (Bellum Judaicum)",
-        "summary": [
-          "The Jewish War is Josephus’s earliest major work, composed originally in Aramaic for eastern Diaspora communities and subsequently reworked, with the assistance of Greek collaborators, into the polished Greek version that survives, published in stages during the 70s CE, likely completed by 79 CE under the direct patronage and review of the emperors Vespasian and Titus, whose military conduct the work consistently, and controversially, presents in a favorable light. The work narrates Jewish history from the Hasmonean period through the outbreak, course, and catastrophic conclusion of the Jewish revolt against Rome (66–73 CE), culminating in the destruction of the Jerusalem Temple in 70 CE and the fall of Masada in 73/74 CE, of which Josephus, as a participant turned Roman-aligned observer, provides the only extensive surviving eyewitness-adjacent narrative account. Historically, the work’s proximity to imperial patronage and its evident apologetic aims — exculpating Rome from excessive blame, presenting the revolt as the work of a fanatical minority (“brigands” and “tyrants”) rather than the Jewish people as a whole, and warning against future rebellion — require the historian to read it critically alongside other evidence, though its detailed military and topographical information remains largely corroborated and invaluable, including for New Testament-adjacent study of Jerusalem’s geography, the Herodian temple’s architecture, and first-century Judean sectarian and political life. Theologically, the work interprets the war and Temple’s destruction as divine judgment upon Jewish factional violence and the pollution of the sanctuary by rebel fighters, a theodicy that allows Josephus to defend God’s continued faithfulness to Israel while explaining catastrophic national defeat, a framework that bears comparison with, while remaining historiographically and theologically distinct from, roughly contemporary Jewish apocalyptic responses to the same catastrophe found in 4 Ezra and 2 Baruch."
+        "id": "the-jewish-war",
+        "title": "The Jewish War",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Josephus wrote this work himself, first in Aramaic for eastern Jewish communities and then, with help from Greek assistants, in the polished Greek version that survives."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Published in stages during the 70s CE under the direct patronage of the emperors Vespasian and Titus, the book covers Jewish history from the Hasmonean period through the revolt against Rome (66–73 CE) and the Temple's destruction in 70 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The book narrates the war's outbreak, major battles, the siege and fall of Jerusalem, and the last stand at Masada, drawing on Josephus's own experience as a participant."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Josephus interprets the war and Temple's destruction as divine punishment for Jewish factional violence and pollution of the sanctuary, allowing him to defend God's continued faithfulness while explaining the catastrophic defeat."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The book's detailed information on Jerusalem's geography, the Temple's architecture, and Jewish political and sectarian life is valuable for understanding the setting of the Gospels and Acts. It has no canonical status but is essential historical evidence."
+          }
         ]
       },
       {
-        "id": "jewish-antiquities-antiquitates-judaicae",
-        "title": "Jewish Antiquities (Antiquitates Judaicae)",
-        "summary": [
-          "The Jewish Antiquities, Josephus’s longest work in twenty books, was completed around 93/94 CE under the patronage of the later Flavian emperor Domitian, offering a comprehensive history of the Jewish people from creation through the outbreak of the revolt in 66 CE, explicitly modeled in scope and title on the Roman Antiquities of the Greek historian Dionysius of Halicarnassus, and intended to present Jewish history and law to an educated Greco-Roman audience in terms commensurate with the most prestigious universal historiography of the era. The work paraphrases and substantially expands the biblical narrative for its earlier books, drawing also on extra-biblical Jewish tradition, Hellenistic Jewish historiography (including material also preserved by Pseudo-Hecataeus and other fragmentary authors treated above), and Josephus’s own independent research and access to official archives and other historical sources for the later, post-biblical periods, including uniquely valuable material on the Hasmonean dynasty, Herod the Great’s reign, and the Roman procurators, along with important, if textually disputed, references to John the Baptist, James “the brother of Jesus called Christ,” and the celebrated but almost certainly interpolated Testimonium Flavianum concerning Jesus himself (Ant. 18.63–64), the extent and authenticity of which remains a matter of continuing critical debate, with most scholars today accepting a partially authentic core subsequently expanded by later Christian scribal insertion. Historically, the Antiquities remains an irreplaceable primary source for reconstructing the political history, sectarian diversity (its most detailed descriptions of the Pharisees, Sadducees, and Essenes appear here), and social conditions of Second Temple Judaism, especially the century immediately surrounding the birth of Christianity. Theologically, the work consistently presents Mosaic law as ancient, rational, and philosophically coherent, defending Judaism’s antiquity and moral seriousness to a skeptical Roman audience while interpreting Israel’s history through a providential framework of reward for obedience and punishment for transgression."
+        "id": "jewish-antiquities",
+        "title": "Jewish Antiquities",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Josephus wrote this twenty-book history himself, completing it around 93–94 CE under the patronage of the emperor Domitian."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work covers Jewish history from creation through the outbreak of the revolt in 66 CE, modeled on Roman historical writing and aimed at presenting Jewish history to an educated Greco-Roman audience."
+          },
+          {
+            "heading": "Contents",
+            "body": "Besides retelling and expanding the biblical narrative, the later books give uniquely valuable information on the Hasmonean dynasty, Herod the Great, and the Roman governors, including disputed references to John the Baptist, James 'the brother of Jesus,' and Jesus himself."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Throughout, Josephus presents Mosaic law as ancient, rational, and morally serious, defending Judaism's respectability to a skeptical Roman readership."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The Antiquities offers our most detailed outside description of the Pharisees, Sadducees, and Essenes, and its passing references to John the Baptist and Jesus are among the earliest non-Christian mentions of either figure. It has no canonical status but is an irreplaceable historical source."
+          }
         ]
       },
       {
-        "id": "against-apion-contra-apionem",
-        "title": "Against Apion (Contra Apionem)",
-        "summary": [
-          "Against Apion is Josephus’s latest surviving work, likely composed shortly after the Antiquities in the mid-to-late 90s CE, structured as a two-book apologetic treatise defending the antiquity, historical reliability, and moral respectability of the Jewish people and their scriptures against various Greco-Egyptian detractors, most prominently the grammarian Apion of Alexandria, whose anti-Jewish slanders (including the notorious “donkey worship” and ritual murder libels circulating in Alexandrian anti-Jewish literature) Josephus systematically rebuts. The work is directed at an educated, likely predominantly Gentile, Greco-Roman readership skeptical of or hostile toward Jewish claims to civilizational antiquity and cultural respectability, responding to a genre of anti-Jewish polemic that had circulated in Hellenistic Egypt for centuries, drawing on earlier apologetic material also preserved fragmentarily in Pseudo-Hecataeus and related literature discussed above. Historically, the treatise preserves invaluable citations from now-lost ancient historians (including extensive material from the Egyptian priest Manetho and the Phoenician historian Menander of Ephesus) that would otherwise be entirely unknown, and it constitutes the single most important surviving primary source for understanding the specific content and rhetorical strategies of pagan anti-Jewish polemic in antiquity. Theologically, the work articulates what many scholars regard as the single clearest ancient statement of a coherent Jewish “canon consciousness,” Josephus explicitly enumerating twenty-two sacred books (a count corresponding closely, if not identically, to the eventual Hebrew canon) as uniquely inspired and internally consistent, in deliberate contrast to the multiplicity and contradiction he alleges characterizes Greek historical and literary tradition, alongside a sustained defense of Mosaic law’s superior rationality, antiquity, and moral coherence relative to Greek philosophy and law."
+        "id": "against-apion",
+        "title": "Against Apion",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Josephus wrote this two-book defense of Judaism himself, likely shortly after completing the Antiquities in the mid-to-late 90s CE."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work responds to anti-Jewish slanders circulating in Hellenistic Egypt, especially those spread by the Alexandrian writer Apion, defending Jewish antiquity and moral respectability to an educated Gentile readership."
+          },
+          {
+            "heading": "Contents",
+            "body": "Josephus systematically rebuts specific accusations against Jews and preserves valuable quotations from now-lost ancient historians in the process."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work contains one of the clearest ancient statements of a fixed Jewish scriptural canon, as Josephus lists twenty-two sacred books he considers uniquely inspired and internally consistent."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His description of a settled biblical canon offers useful comparison for understanding how the New Testament writers' own scriptural collection developed. The work has no canonical status but is historically significant for the study of ancient anti-Jewish polemic and canon formation."
+          }
         ]
       },
       {
         "id": "life-vita",
         "title": "Life (Vita)",
-        "summary": [
-          "Josephus’s Life is a short autobiographical work, appended to later editions of the Jewish Antiquities and generally dated to the mid-to-late 90s CE, focusing disproportionately on Josephus’s brief but controversial six-month tenure as Jewish military commander in Galilee at the outbreak of the revolt (66–67 CE), a period also covered, with notably different emphases and details, in Book 2 of the Jewish War, generating significant and long-studied scholarly debate over the discrepancies between the two accounts and their implications for Josephus’s reliability and self-presentation. The work was apparently composed partly in direct response to a rival account by Justus of Tiberias (now lost) that had accused Josephus of instigating or mismanaging the Galilean revolt, making the Life substantially an apologetic self-defense of Josephus’s wartime conduct and loyalty, composed decades after the events it describes and colored accordingly by the political and personal pressures of Josephus’s later position as a Roman client historian needing to justify his conduct to a Flavian-era audience still sensitive to questions of loyalty and collaboration. Historically, despite its polemical character and demonstrable tensions with the parallel War narrative, the Life remains valuable as the only surviving formal autobiography from a first-century Jewish figure, offering unique insight into Galilean social and political conditions on the eve of the revolt, the internal factional politics of Jewish resistance leadership, and Josephus’s own priestly and educational background. Theologically, the work is less doctrinally developed than Josephus’s other writings, functioning primarily as personal and political apologetic, though it reinforces themes present throughout his corpus concerning divine providence guiding his own survival and career (echoing his famous Jotapata prophecy narrated more fully in the War) and his self-presentation as a loyal, law-observant Jew whose Roman accommodation did not compromise ancestral piety."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Josephus wrote this short autobiography himself, appended to later editions of the Antiquities and dated to the mid-to-late 90s CE."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work focuses heavily on Josephus's brief and controversial six months as Jewish military commander in Galilee at the start of the revolt (66–67 CE), largely written to defend himself against a rival historian's accusations of disloyalty."
+          },
+          {
+            "heading": "Contents",
+            "body": "Josephus recounts his early education, his claimed exposure to the major Jewish religious groups, and especially his conduct and decisions during his time commanding Galilean forces."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work is less theologically developed than Josephus's other writings, functioning mainly as personal and political self-defense, though it echoes his belief that divine providence guided his survival and career."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "As the only surviving formal autobiography from a first-century Jewish figure, it offers unique insight into Galilean social and political conditions just before the revolt, useful background for the Gospels' Galilean setting. It has no canonical status."
+          }
         ]
       }
     ]
@@ -527,113 +2191,417 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "philo-of-alexandria-life-and-thought",
         "title": "Philo of Alexandria (Life and Thought)",
-        "summary": [
-          "Philo of Alexandria (c. 20 BCE – c. 50 CE) was a Jewish philosopher and exegete from a wealthy, aristocratic Alexandrian Jewish family (his brother Alexander held the prestigious Roman post of alabarch, and his nephew Tiberius Julius Alexander rose to become Roman prefect of Egypt), whose vast surviving corpus of biblical commentary, composed entirely in Greek, represents the most substantial and sophisticated body of Hellenistic Jewish philosophical-exegetical literature to survive from antiquity. Philo’s precise biography is sparsely documented, but he is securely dated by his own account of leading a Jewish delegation to the emperor Gaius Caligula in Rome around 39–40 CE, in the aftermath of anti-Jewish violence in Alexandria, an episode he narrates in his historical-apologetic works. Philo’s intellectual project fused rigorous training in Middle Platonic and Stoic philosophy with unwavering commitment to the authority and inspiration of the Septuagint, developing an allegorical method of exegesis — building on earlier Hellenistic Jewish precedent in Aristobulus — that read the biblical narrative, especially Genesis, as a symbolic encoding of Platonic metaphysics and Stoic ethical psychology, while simultaneously affirming, in his more historical and legal treatises, the literal, practical authority of Mosaic law and the concrete history of Israel. Historically, Philo’s corpus offers the single richest surviving window into the intellectual world of Diaspora, specifically Alexandrian, Hellenistic Judaism in the generation immediately preceding and overlapping with the emergence of Christianity, and his social and political writings provide crucial primary evidence for the deteriorating conditions of Alexandrian Jewry under Roman rule. Theologically, Philo’s most enduring contribution is his doctrine of the Logos, a divine intermediary principle mediating between the utterly transcendent, ineffable God and the created order, a conceptual framework of profound, much-debated significance for understanding the background against which the Johannine Logos Christology and other early Christian mediatorial theologies would later develop."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo (c. 20 BCE – c. 50 CE) was a Jewish philosopher from a wealthy, aristocratic Alexandrian family who wrote his entire surviving body of work himself, in Greek."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Philo is securely dated by his own account of leading a Jewish delegation to the emperor Caligula in Rome around 39–40 CE, following anti-Jewish violence in Alexandria."
+          },
+          {
+            "heading": "Contents",
+            "body": "His vast body of biblical commentary combines rigorous training in Greek philosophy (especially Platonism and Stoicism) with firm commitment to the authority of the Greek Bible, developing an allegorical method that reads Genesis as encoding Greek philosophical ideas."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Philo's most lasting idea is the Logos, a divine intermediary that connects the utterly transcendent, unknowable God to the created world."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Philo's Logos doctrine offers crucial background for understanding John's Gospel's opening description of Christ as the divine 'Word' (Logos) who was with God and was God. His writings hold no canonical status but are essential for understanding first-century Hellenistic Judaism."
+          }
         ]
       },
       {
-        "id": "de-opificio-mundi-on-the-creation-of-the-world",
-        "title": "De Opificio Mundi (On the Creation of the World)",
-        "summary": [
-          "De Opificio Mundi is Philo’s philosophical commentary on Genesis 1–3, composed as an introductory treatise to his broader exegetical project, likely in the early first century CE during Philo’s mature period of literary activity, presenting the Mosaic creation account as philosophically superior to and more coherent than Greek cosmogonic accounts, particularly Plato’s Timaeus, with which Philo’s treatment engages extensively and sympathetically while asserting Moses’s temporal and substantive priority. The treatise argues that the biblical “six days” of creation describe not a literal temporal sequence but an ordered, logically structured account of the cosmos’s rational architecture, with humanity’s creation “in the image of God” (Gen 1:27) interpreted as referring specifically to the rational mind (nous) rather than physical form, since the incorporeal, transcendent God cannot be represented in bodily terms. Historically, the work exemplifies Philo’s characteristic strategy of using biblical exegesis as a vehicle for full-scale philosophical argument addressed implicitly to an educated Hellenistic readership capable of appreciating its sophisticated engagement with contemporary Middle Platonic cosmology and Stoic natural philosophy. Theologically, the treatise develops Philo’s doctrine of the intelligible world (kosmos noetos) as God’s prior “blueprint” or “model” for the sensible creation, closely paralleling Platonic Forms, and introduces his conception of the Logos as the divine reason or word through which the transcendent God, who cannot directly contact corrupt matter, brings the created order into being — a mediatorial cosmological function of central importance for Philo’s broader theological system and for later comparative study of the conceptual background to New Testament Logos and creation theology, particularly the Johannine prologue’s philosophical resonances."
+        "id": "on-the-creation-of-the-world-de-opificio-mundi",
+        "title": "On the Creation of the World (De Opificio Mundi)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this philosophical commentary on Genesis 1–3 himself, likely in the early first century CE, as an introduction to his broader project of interpreting scripture."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The treatise argues that the Mosaic creation account is philosophically superior to Greek accounts, particularly Plato's Timaeus, engaging that Greek text extensively while insisting Moses came first."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo argues that the biblical 'six days' of creation describe not a literal timeline but a logically ordered structure, and interprets humanity's creation 'in the image of God' as referring to the rational mind rather than physical form."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The treatise introduces Philo's idea of an intelligible, blueprint-like world existing in God's mind before physical creation, and his concept of the Logos as the divine reason through which God brings creation into being."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This cosmological Logos doctrine closely parallels, and likely lies behind, the philosophical resonances in John's prologue about the Word's role in creation (John 1:1–3). It has no canonical status."
+          }
         ]
       },
       {
-        "id": "legum-allegoriae-allegorical-interpretation",
-        "title": "Legum Allegoriae (Allegorical Interpretation)",
-        "summary": [
-          "Legum Allegoriae, surviving in three books, is the founding treatise of Philo’s major exegetical series known as the Allegorical Commentary, offering a verse-by-verse allegorical interpretation of Genesis 2–3 (the creation of Adam and Eve, the garden, and the fall), composed for an inner circle of philosophically and exegetically sophisticated Jewish readers already familiar with the plain sense of scripture and seeking its deeper, symbolic meaning, in contrast to Philo’s more introductory or historically oriented works aimed at a broader audience. The treatise interprets Adam as representing the rational mind (nous), Eve as sense-perception (aisthesis), and the serpent as pleasure (hedone), reading the fall narrative as a psychological-ethical allegory of the soul’s perennial struggle between rational virtue and the seductions of sensory experience and bodily passion, a method deeply indebted to Stoic moral psychology’s analysis of the passions while remaining formally anchored in close, phrase-by-phrase engagement with the Septuagint text. Historically, the work exemplifies the full maturity of Philo’s allegorical method as applied systematically across an extended, continuous biblical narrative, representing the most extensive and technically developed instance of Hellenistic Jewish allegorical exegesis to survive from antiquity, and its methodological influence extended significantly into later Christian allegorical exegesis, notably via Clement of Alexandria and Origen, both demonstrably familiar with and indebted to Philonic interpretive technique. Theologically, the treatise’s central concern is the soul’s ascent toward virtue through the mastery of reason over passion, understood as the practical, psychological outworking of the cosmic Logos-mediated order established in De Opificio Mundi, situating ethical formation within a broader metaphysical framework in which the individual soul’s moral struggle recapitulates cosmic patterns of order versus chaos, reason versus irrationality."
+        "id": "allegorical-interpretation-legum-allegoriae",
+        "title": "Allegorical Interpretation (Legum Allegoriae)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this three-book treatise himself as the founding work of his larger 'Allegorical Commentary' series, aimed at readers already familiar with scripture's plain meaning."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed during Philo's mature career, it offers a verse-by-verse allegorical reading of Genesis 2–3 for an inner circle of philosophically trained readers."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo interprets Adam as the rational mind, Eve as sense-perception, and the serpent as pleasure, reading the fall as a psychological allegory of the soul's struggle between virtue and bodily temptation."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The soul's ascent toward virtue through reason mastering passion is understood as the personal, ethical outworking of the same cosmic order established by the Logos in creation."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Philo's allegorical method strongly influenced later Christian interpreters like Origen and Clement of Alexandria, shaping how large parts of the early church read the Old Testament. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-migratione-abrahami-on-the-migration-of-abraham",
-        "title": "De Migratione Abrahami (On the Migration of Abraham)",
-        "summary": [
-          "De Migratione Abrahami allegorically interprets God’s command to Abraham to leave his country, kindred, and father’s house (Gen 12:1–3), reading the patriarch’s physical migration as a symbolic paradigm of the soul’s philosophical journey away from bodily attachment, sensory preoccupation, and inherited but unexamined opinion, toward the contemplative knowledge of God, composed as part of the mature Allegorical Commentary series likely in the early-to-mid first century CE. The treatise interprets “country” as the body, “kindred” as the faculty of sense-perception, and “father’s house” as speech or reasoned discourse (logos), constructing a threefold scheme of progressive philosophical detachment through which the aspiring sage advances from bodily, to sensory, to even rational-discursive dependency, toward direct, unmediated contemplation of the divine. Historically, the treatise exemplifies Philo’s characteristic technique of extracting from a single, relatively brief scriptural notice an elaborate philosophical-psychological program, deploying Abraham as the paradigmatic model of the philosophically ascending soul, a figure whose narrative journey Philo consistently reads throughout the Abraham cycle of treatises as an allegory of spiritual and intellectual progress (prokope) toward wisdom. Theologically, the work’s emphasis on detachment from sensory and even rational-discursive levels of experience in favor of direct contemplative apprehension of the divine anticipates later mystical and contemplative traditions, both Jewish and Christian, that would draw on Philonic vocabulary and conceptual structure to articulate stages of spiritual ascent, while the treatise’s underlying anthropology — locating authentic human fulfillment in intellectual and spiritual migration away from the corporeal — reflects the broader Platonizing dualism characteristic of Philo’s entire exegetical project."
+        "id": "on-the-migration-of-abraham-de-migratione-abrahami",
+        "title": "On the Migration of Abraham (De Migratione Abrahami)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself as part of his mature Allegorical Commentary series."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in the early-to-mid first century CE, it allegorically interprets God's command to Abraham to leave his homeland (Genesis 12:1–3)."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo reads Abraham's physical migration as a symbol of the soul's philosophical journey away from bodily attachment and inherited but unexamined opinion, toward direct contemplation of God."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The treatise presents a threefold scheme of spiritual progress, moving the soul from bodily to sensory to even purely rational dependence, and finally to unmediated experience of the divine."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its emphasis on detachment from worldly and even intellectual dependence in favor of direct spiritual experience anticipates later Jewish and Christian mystical and contemplative traditions. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "quis-rerum-divinarum-heres-sit-who-is-the-heir-of-divine-thi",
-        "title": "Quis Rerum Divinarum Heres Sit (Who Is the Heir of Divine Things?)",
-        "summary": [
-          "Quis Rerum Divinarum Heres Sit allegorically expounds Genesis 15, God’s covenant with Abraham and the question of his heir, addressing at length the philosophical and spiritual significance of Abraham’s ecstatic trance (Gen 15:12) as a paradigm for the soul’s mystical experience of divine inspiration, in which ordinary discursive reason is temporarily displaced by direct divine illumination, composed within the mature Allegorical Commentary series. The treatise develops an extended discussion of the soul’s proper “inheritance” of divine things as consisting not in material possession but in the cultivation of virtue and wisdom, while its central excursus on prophetic ecstasy (in which “the mind is evicted at the arrival of the divine Spirit” and reason temporarily withdraws to allow direct divine communication) constitutes one of Philo’s most extended and philosophically developed treatments of the psychology of religious inspiration and prophecy. Historically, the treatise’s discussion of ecstatic prophecy draws on both biblical precedent and Greek philosophical (particularly Platonic, via the Phaedrus’s treatment of divine madness) conceptions of inspired utterance, representing a sophisticated synthesis of these two traditions that would prove influential for later discussions, both Jewish and Christian, of the nature of scriptural inspiration. Theologically, the treatise’s careful division of the cosmos and the soul into complementary and opposing pairs (the “equal division” section examining how God divided the sacrificial animals in Gen 15:10 as a symbol for the ordering principle, the Logos, that divides and harmonizes all reality) develops Philo’s cosmological Logos doctrine in unusually explicit and systematic philosophical detail, making this treatise a central resource for reconstructing Philo’s mature metaphysics of divine mediation."
+        "id": "who-is-the-heir-of-divine-things-quis-rerum-divinarum-heres-",
+        "title": "Who Is the Heir of Divine Things? (Quis Rerum Divinarum Heres Sit)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself, part of his mature Allegorical Commentary series, addressing Genesis 15."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed during Philo's productive middle period, it explores the philosophical significance of Abraham's ecstatic trance (Genesis 15:12) as a model of religious inspiration."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo argues that the soul's true 'inheritance' of divine things is virtue and wisdom, not material possession, and gives an extended account of prophetic ecstasy in which ordinary reason is temporarily displaced by direct divine illumination."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The treatise develops Philo's cosmology in unusually explicit detail, describing the Logos as the divine principle that both divides and harmonizes all of reality."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Philo's treatment of prophetic inspiration provides useful comparative background for New Testament and early Christian ideas about how the Holy Spirit inspires prophecy and scripture. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-somniis-on-dreams",
-        "title": "De Somniis (On Dreams)",
-        "summary": [
-          "De Somniis, surviving in two books (of an original larger set, with at least one book now lost), addresses the interpretation of biblical dream narratives — Jacob’s ladder dream (Gen 28) and dreams involving Joseph (Gen 37, 40–41) — developing a philosophical typology of dreams as varying in the directness and clarity of their divine communication, ranging from dreams in which God directly initiates prophetic revelation to dreams requiring skilled interpretation of symbolic imagery, composed as part of the Allegorical Commentary series. The treatise reads Jacob’s ladder as symbolizing the intermediate realm of aerial beings (souls and daemons/angels) connecting heaven and earth, and interprets Joseph’s dream-interpretation narratives as an extended allegory contrasting the philosophically inferior, externally oriented “politician” type of soul (represented by Joseph, whose skill lies in worldly, practical affairs) with the superior contemplative sage. Historically, the treatise reflects broader Hellenistic philosophical and popular interest in dream interpretation and its theoretical classification (paralleled in near-contemporary works like Artemidorus’s Oneirocritica), while grounding this interest firmly within biblical narrative and Jewish theological commitments regarding divine communication with the righteous. Theologically, the treatise’s discussion of the intermediate aerial beings connecting the human and divine realms extends Philo’s broader angelological and cosmological framework, in which the Logos and various subordinate divine powers mediate between transcendent God and the material world, while its ambivalent, sometimes critical treatment of the “practical” Joseph figure reflects Philo’s characteristic privileging of contemplative philosophical wisdom over active political engagement, a tension that recurs throughout his broader corpus, including his more historically oriented works addressing his own forced political involvement."
+        "id": "on-dreams-de-somniis",
+        "title": "On Dreams (De Somniis)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this two-book treatise himself as part of his Allegorical Commentary series, though part of the original work is now lost."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed during Philo's mature period, it interprets biblical dream stories, including Jacob's ladder dream (Genesis 28) and Joseph's dreams (Genesis 37, 40–41)."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo classifies dreams by how directly they communicate God's message, and reads Jacob's ladder as symbolizing an intermediate realm of angelic beings connecting heaven and earth."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The treatise extends Philo's angelology, treating various divine 'powers' as mediating between the transcendent God and the material world, while favoring contemplative wisdom over the more worldly, practical wisdom represented by Joseph."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its discussion of intermediary angelic beings offers comparative background for New Testament angelology, especially in Hebrews and Revelation. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-abrahamo-on-abraham",
-        "title": "De Abrahamo (On Abraham)",
-        "summary": [
-          "De Abrahamo belongs to Philo’s Exposition of the Law series, a distinct set of treatises (unlike the more technical, verse-by-verse Allegorical Commentary) aimed at a broader educated audience, presenting Abraham as the first of the great “unwritten law” figures — patriarchs whose exemplary virtue itself constituted a living embodiment of law prior to the Sinai revelation — narrating and interpreting Abraham’s life (his migration, hospitality to the three visitors, the binding of Isaac, and other episodes) as a coherent moral biography demonstrating the virtues of faith, hospitality, self-mastery, and obedience. Composed likely in the early-to-mid first century CE as part of Philo’s broader, more systematically organized exposition of Mosaic law for readers who may lack the philosophical training presupposed by the Allegorical Commentary, the treatise combines allegorical insight with sustained attention to the historical, literal narrative and its straightforward ethical exemplarity, making it more accessible than Philo’s more technical exegetical works. Historically, the treatise reflects Philo’s broader project of demonstrating that Mosaic law is not an arbitrary, parochial legal code but the codified expression of a universal, rational natural law already exemplified in the patriarchs’ virtuous lives prior to any written legislation, a claim of considerable apologetic significance for commending Judaism’s law to a Hellenistic audience skeptical of merely “positive” or culturally particular legislation. Theologically, the treatise’s presentation of Abraham’s binding of Isaac (the Akedah) as the supreme demonstration of faith and obedience to divine command, interpreted with careful attention to Abraham’s rational, deliberated consent rather than blind or unreflective compulsion, offers an important comparative data point for understanding Second Temple and later rabbinic and Christian interpretive traditions surrounding this pivotal narrative."
+        "id": "on-abraham-de-abrahamo",
+        "title": "On Abraham (De Abrahamo)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself as part of a different series, the 'Exposition of the Law,' aimed at a broader audience than his more technical Allegorical Commentary."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed likely in the early-to-mid first century CE, it presents Abraham as one of several 'unwritten law' patriarchs whose exemplary virtue embodied God's law even before Moses received it at Sinai."
+          },
+          {
+            "heading": "Contents",
+            "body": "The treatise narrates and interprets episodes from Abraham's life — his migration, hospitality to three visitors, and binding of Isaac — as demonstrations of faith, hospitality, and obedience."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Philo argues that Mosaic law is not an arbitrary, narrow code but the codified expression of universal reason already shown in the patriarchs' virtuous lives, defending Judaism's rationality to a skeptical audience."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Philo's careful attention to Abraham's rational, willing consent in the binding of Isaac offers a valuable comparison point for how the New Testament (Hebrews 11) and later Jewish and Christian tradition interpret this same story. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-vita-mosis-on-the-life-of-moses",
-        "title": "De Vita Mosis (On the Life of Moses)",
-        "summary": [
-          "De Vita Mosis, in two books, presents a comprehensive biography of Moses as lawgiver, king, priest, and prophet, composed for a broad, likely partly non-Jewish, Hellenistic readership, presenting Moses in terms deliberately calculated to resonate with Greco-Roman conceptions of the ideal philosopher-king and culture-bringer, comparable in genre and apologetic aim to Hellenistic biographical treatments of revered founder-figures, while remaining grounded throughout in the biblical narrative of Exodus, Leviticus, Numbers, and Deuteronomy. The work narrates Moses’s birth, Egyptian education, calling, leadership of the Exodus, reception of the law at Sinai, and his combined roles as political ruler, high priest, and supreme prophet, presenting this fourfold office as uniquely and unrepeatably combined in Moses alone among historical figures. Historically, the treatise functioned as a sophisticated piece of cultural apologetic, presenting Judaism’s founding lawgiver as fully commensurate with, and indeed superior to, the most celebrated founder-legislators and philosopher-kings of Greek tradition (Lycurgus, Solon, Plato’s philosopher-king ideal), addressed to an audience for whom such comparative categories carried immediate persuasive force. Theologically, the work’s presentation of Moses’s unparalleled combination of prophetic, priestly, and royal offices, and its account of his uniquely intimate, face-to-face communion with God, contributed to a broader Second Temple and later tradition of exalted Mosaic figures whose comparative and contrastive significance for early Christological reflection on Jesus’s own combination of prophetic, priestly, and royal roles (particularly evident in Hebrews and elsewhere in the New Testament) has attracted sustained scholarly comparative attention."
+        "id": "on-the-life-of-moses-de-vita-mosis",
+        "title": "On the Life of Moses (De Vita Mosis)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this two-book biography of Moses himself for a broad, partly non-Jewish, readership."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work presents Moses in terms designed to appeal to Greco-Roman ideas about the ideal philosopher-king, comparing him favorably to famous Greek lawgivers like Solon."
+          },
+          {
+            "heading": "Contents",
+            "body": "The biography covers Moses's birth, Egyptian education, calling, leadership of the Exodus, reception of the law, and his unique combination of prophetic, priestly, and royal roles."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Philo presents Moses's unmatched combination of offices and his uniquely intimate communion with God as unparalleled among historical figures."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This exalted picture of Moses as prophet, priest, and king provides important background for how the New Testament, especially Hebrews, describes Jesus's combination of these same three roles. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-decalogo-on-the-decalogue",
-        "title": "De Decalogo (On the Decalogue)",
-        "summary": [
-          "De Decalogo, the introductory treatise to Philo’s extended exposition of Mosaic law in the Exposition of the Law series, offers a philosophical and theological analysis of the Ten Commandments as the foundational summary of the entire Mosaic legal code, from which Philo argues all subsequent specific legislation (treated in the following treatises De Specialibus Legibus) can be systematically derived and organized under the ten fundamental headings. The treatise addresses questions of the propriety and manner of the Sinai theophany (arguing that the divine “voice” heard by Israel was not an ordinary physical sound but a specially created, intelligible sound adapted to human capacity, since the transcendent, incorporeal God does not literally speak), and offers philosophical justification for the substance and ordering of each commandment, treating the first five (concerning duties to God) and second five (concerning duties to fellow humans) as together constituting a complete and internally coherent ethical-religious system. Historically, the treatise exemplifies Philo’s characteristic strategy of systematizing biblical law according to Hellenistic philosophical categories of ethics (organized around duties, virtues, and their opposing vices), presenting Jewish law as a rationally ordered legal-ethical system fully comparable to, and indeed exceeding, the systematic legal philosophy of Greek and Roman jurisprudential tradition. Theologically, the treatise’s careful philosophical handling of the Sinai theophany reflects Philo’s consistent concern to preserve divine transcendence and incorporeality even while affirming the historical reality and authority of the Sinai revelation, a hermeneutical balancing act central to his entire theological project of reconciling biblical anthropomorphism with Middle Platonic conceptions of an utterly transcendent, immaterial deity."
+        "id": "on-the-decalogue-de-decalogo",
+        "title": "On the Decalogue (De Decalogo)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself as the introduction to his extended exposition of Mosaic law."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed as part of his mature 'Exposition of the Law' series, it analyzes the Ten Commandments as the foundational summary from which all other biblical law can be organized."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo argues that the divine 'voice' Israel heard at Sinai was a specially created sound adapted to human hearing, since the transcendent God does not literally speak, and explains the logic behind each commandment's content and order."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The treatise reflects Philo's constant effort to preserve God's transcendence and non-physical nature even while affirming the historical reality of God's revelation at Sinai."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His philosophical handling of the Sinai theophany offers comparison for how the New Testament (such as Hebrews 12) also reflects on the nature and meaning of that revelation. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-specialibus-legibus-on-the-special-laws",
-        "title": "De Specialibus Legibus (On the Special Laws)",
-        "summary": [
-          "De Specialibus Legibus, in four books, forms the substantial legal core of Philo’s Exposition of the Law series, systematically organizing the entirety of Mosaic legislation under the rubric of the Ten Commandments established in De Decalogo, treating in turn laws concerning worship and priesthood, sexual and family law, judicial and civil law, and dietary and miscellaneous regulations, offering both practical explanation of the laws’ proper observance and philosophical-allegorical reflection on their deeper ethical and spiritual significance. Composed as part of Philo’s broader mature exegetical project directed at an educated audience desiring systematic exposition of Jewish law’s content and rationale, the work represents the most extensive surviving ancient Jewish systematic treatment of halakhic material prior to the Mishnah, offering invaluable, if philosophically colored, evidence for the practical legal interpretation and observance current in first-century Alexandrian Judaism. Historically, the treatise’s detailed attention to matters of sacrifice, purity, marriage, and civil justice provides crucial comparative evidence for assessing the diversity and development of Jewish legal interpretation across the Second Temple period, complementing the roughly contemporary legal material emerging from Qumran (notably 4QMMT) and anticipating in various respects the fuller systematization of rabbinic halakhah. Theologically, Philo consistently pairs literal legal explanation with allegorical interpretation revealing each law’s symbolic ethical significance (dietary laws, for instance, are read both as literal regulations and as symbolic teaching against gluttony and predatory character traits), articulating a hermeneutical principle — that the literal observance of the law’s “body” must never be abandoned even while its allegorical “soul” is contemplated — of considerable importance for understanding Philo’s mediating position between purely allegorizing extremists (whom he explicitly criticizes elsewhere) and merely literalist legal observance."
+        "id": "on-the-special-laws-de-specialibus-legibus",
+        "title": "On the Special Laws (De Specialibus Legibus)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this four-book treatise himself as the legal core of his 'Exposition of the Law' series."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed for an educated audience wanting systematic explanation of Jewish law's content and reasoning, it represents the most extensive ancient Jewish treatment of religious law before the Mishnah."
+          },
+          {
+            "heading": "Contents",
+            "body": "The books organize the entirety of Mosaic law under the Ten Commandments, covering worship, priesthood, sexual and family law, civil law, and dietary regulations."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Philo consistently pairs literal legal explanation with allegorical interpretation of each law's deeper ethical meaning, insisting that the literal practice of the law must never be abandoned even while its symbolic meaning is contemplated."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This balance between literal observance and symbolic meaning is relevant to New Testament debates (as in Paul's letters) about the ongoing role of the law's specific commands. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-virtutibus-on-the-virtues",
-        "title": "De Virtutibus (On the Virtues)",
-        "summary": [
-          "De Virtutibus, closing out the legal portion of the Exposition of the Law series, treats a set of cardinal virtues — courage, humanity (philanthropia), repentance, and nobility of birth — arguing systematically that authentic nobility derives not from ancestry or ethnic descent but from virtuous character and conduct, a thesis Philo illustrates by discussing proselytes who, despite lacking Israelite ancestry, achieve genuine spiritual nobility through conversion and righteous living, contrasted with descendants of the patriarchs who forfeit their inherited privilege through wickedness. Composed within Philo’s mature exegetical corpus addressing a broad, educated readership, the treatise engages extensively with conventional Hellenistic virtue ethics and its philosophical vocabulary while grounding its argument in biblical legal and narrative material, including extended discussion of laws concerning the treatment of animals and the natural environment as expressions of the cardinal virtue of humanity/philanthropia. Historically, the treatise’s remarkably positive and theologically serious treatment of Gentile proselytes reflects the practical realities of Diaspora Judaism’s engagement with interested Gentile “God-fearers” and converts, a social phenomenon of considerable importance also for understanding the social matrix within which early Christian Gentile mission would later develop and to which it would offer a competing, ultimately more expansive, model of Gentile inclusion. Theologically, Philo’s insistence that genuine nobility is a matter of virtuous character rather than ethnic pedigree represents a significant universalizing move within his broader theological anthropology, opening covenant privilege, at least in principle, to righteous Gentiles on the basis of moral transformation, a position that, while distinct from and considerably more legally demanding than later Pauline Gentile inclusion, occupies comparable conceptual territory regarding the relationship between ethnic identity and covenant membership."
+        "id": "on-the-virtues-de-virtutibus",
+        "title": "On the Virtues (De Virtutibus)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself, closing out the legal portion of his 'Exposition of the Law' series."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed for a broad, educated readership, it treats virtues including courage, kindness to others, repentance, and true nobility."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo argues that genuine nobility comes from virtuous character, not ancestry, illustrated through his positive discussion of Gentile converts who achieve real spiritual standing despite lacking Israelite ancestry."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This argument opens covenant privilege, at least in principle, to righteous Gentiles based on moral transformation rather than ethnic birth."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Philo's inclusive view of converts is comparable to, though more legally demanding than, Paul's later teaching on Gentile inclusion in the covenant through faith rather than ethnic descent. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "quod-omnis-probus-liber-sit-that-every-good-person-is-free",
-        "title": "Quod Omnis Probus Liber Sit (That Every Good Person Is Free)",
-        "summary": [
-          "Quod Omnis Probus Liber Sit is a philosophical treatise, distinct in genre from Philo’s biblical commentaries, arguing the Stoic paradox that only the virtuous, wise person possesses genuine freedom, regardless of external legal or social status, while the vicious or foolish person remains enslaved to passion and ignorance even if legally free, illustrated with extensive reference to Greek philosophical exempla (Diogenes the Cynic, the Seven Sages) alongside a notable extended digression describing the Essenes as a living contemporary example of a community embodying genuine philosophical freedom and virtue (paras. 75–91). Scholars regard the treatise as belonging to Philo’s earlier philosophical writings, composed before his fuller turn to systematic biblical exposition, reflecting close, direct engagement with Stoic ethical philosophy in a mode less thoroughly integrated with scriptural exegesis than his mature exegetical corpus. Historically, Philo’s description of the Essenes constitutes one of only three substantial ancient descriptions of this Jewish sectarian group (alongside Josephus and Pliny the Elder), providing independent, broadly corroborating evidence for the communal, celibate or near-celibate, property-sharing lifestyle also associated by many scholars with the community described in the Dead Sea Scrolls, though the precise relationship between Philo’s Essenes, Josephus’s Essenes, and the Qumran sectarians remains a matter of ongoing scholarly discussion. Theologically, the treatise’s central argument — that true freedom consists in virtuous, God-oriented rational self-governance rather than external circumstance — extends Philo’s characteristic fusion of Stoic ethical philosophy with Jewish theological commitment, using the Essenes as a concrete, historically verifiable demonstration that such philosophical freedom could be practically embodied within a genuinely pious Jewish communal context."
+        "id": "that-every-good-person-is-free-quod-omnis-probus-liber-sit",
+        "title": "That Every Good Person Is Free (Quod Omnis Probus Liber Sit)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this philosophical treatise himself, likely earlier in his career than his more extensive biblical commentaries."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work argues the Stoic idea that only the wise, virtuous person is truly free, regardless of legal status, and includes a notable description of the Essenes as a real example of this philosophical freedom."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo illustrates his argument using Greek philosophical examples and devotes a substantial section to describing the Essenes' communal, celibate, property-sharing lifestyle."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "True freedom, Philo argues, means virtuous, God-oriented self-governance rather than depending on external circumstances, a fusion of Stoic ethics with Jewish piety."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His description of the Essenes is one of only a few ancient accounts of this group, offering valuable comparison with the community behind the Dead Sea Scrolls and with communal practices in the earliest church (Acts 2, 4). It has no canonical status."
+          }
         ]
       },
       {
-        "id": "de-vita-contemplativa-on-the-contemplative-life",
-        "title": "De Vita Contemplativa (On the Contemplative Life)",
-        "summary": [
-          "De Vita Contemplativa describes and celebrates the Therapeutae, an ascetic, contemplative Jewish community Philo locates near Lake Mareotis outside Alexandria, comprising both men and women living in individual dwellings devoted to continuous study, prayer, and allegorical contemplation of scripture, gathering communally for a distinctive all-night vigil of antiphonal hymn-singing and ecstatic worship following a festal meal on the fiftieth day (an arrangement of considerable interest for comparison with Pentecost). Most scholars regard the treatise as an authentic, roughly contemporary description composed by Philo himself in the early-to-mid first century CE, though the group’s precise historical reality and the accuracy of Philo’s idealized, philosophically colored portrait (some scholars suspect significant literary idealization aimed at presenting Judaism’s capacity for contemplative philosophical life comparable to or exceeding Greek philosophical schools) remain subjects of scholarly caution. Historically, the treatise offers a rare window into ascetic, contemplative currents within first-century Alexandrian Judaism that parallel, while remaining organizationally distinct from, the roughly contemporary Qumran community and the New Testament’s earliest Jerusalem community, both frequently invoked in comparative scholarly discussion of the treatise’s significance for understanding the diversity of Jewish communal and ascetic experimentation in this period. Theologically, the Therapeutae’s practice of continuous allegorical scriptural study and their communal liturgical life exemplify, in idealized concrete form, the contemplative ideal Philo commends throughout his broader philosophical-exegetical corpus, presenting the fusion of rigorous scriptural devotion and philosophical contemplation as the highest attainable form of human life, a portrait of considerable later interest to early Christian writers (notably Eusebius, who mistakenly identified the Therapeutae as an early Christian monastic community) seeking precedents for emerging Christian monasticism."
+        "id": "on-the-contemplative-life-de-vita-contemplativa",
+        "title": "On the Contemplative Life (De Vita Contemplativa)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this treatise himself, describing an ascetic Jewish community called the Therapeutae near Alexandria."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in the early-to-mid first century CE, though some scholars suspect Philo idealized the group to showcase Judaism's capacity for contemplative philosophy comparable to Greek schools."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo describes men and women living in separate dwellings devoted to prayer and scriptural study, gathering for an all-night vigil of hymn-singing every fiftieth day."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The Therapeutae exemplify, in idealized form, the contemplative ideal Philo commends throughout his writings: combining rigorous scriptural devotion with philosophical reflection."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Their communal, ascetic lifestyle invites comparison with the earliest Jerusalem church's communal life described in Acts, and later Christian writers wrongly identified the Therapeutae as an early Christian monastic group. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "in-flaccum-against-flaccus",
-        "title": "In Flaccum (Against Flaccus)",
-        "summary": [
-          "In Flaccum is a historical-apologetic narrative recounting the anti-Jewish violence that erupted in Alexandria in 38 CE under the Roman prefect Aulus Avillius Flaccus, who, facing political pressure following the death of his patron Tiberius and the accession of Caligula, permitted or actively encouraged pogrom-like violence against the Alexandrian Jewish community, including the forced establishment of a ghetto, desecration of synagogues with images of the emperor, and public humiliation and violence against Jewish leaders, before Flaccus’s eventual fall from imperial favor, exile, and execution, narrated by Philo as an act of divine retributive justice. Composed shortly after these events, likely in the early 40s CE, as the first part of a larger apologetic-historical work (of which the companion treatise Legatio ad Gaium forms the continuation), the work is addressed implicitly to a Roman and Jewish readership concerned to understand and process this unprecedented episode of state-sanctioned anti-Jewish violence in one of the empire’s most important cities. Historically, the treatise constitutes an invaluable, closely contemporary primary source for the social and legal status of Alexandrian Jewry, the mechanics and rhetoric of ancient anti-Jewish violence, and the complex, often precarious relationship between Diaspora Jewish communities and Roman provincial administration, complementing and extending the somewhat more legendary treatment of similar themes found in the roughly contemporary 3 Maccabees. Theologically, the treatise’s central interpretive claim — that Flaccus’s downfall and gruesome death directly and visibly vindicated divine justice on behalf of his Jewish victims — articulates a providential theodicy of history in which God’s governance of even the Roman imperial administration ensures the eventual punishment of those who persecute his covenant people, a theological framework Philo develops further in the companion Legatio."
+        "id": "against-flaccus-in-flaccum",
+        "title": "Against Flaccus (In Flaccum)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this historical-apologetic narrative himself, likely in the early 40s CE."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The work recounts anti-Jewish violence in Alexandria in 38 CE under the Roman governor Flaccus, who allowed attacks on the Jewish community before his own fall from power and execution."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo narrates the violence — forced ghettoization, desecrated synagogues, public humiliation of Jewish leaders — and Flaccus's eventual downfall, which Philo presents as divine justice."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The central theological claim is that Flaccus's gruesome death visibly vindicated God's justice on behalf of his persecuted people."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This providential reading of history — that God ensures eventual punishment for persecutors — parallels similar confidence expressed in New Testament passages about final judgment on those who oppress believers. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "legatio-ad-gaium-on-the-embassy-to-gaius",
-        "title": "Legatio ad Gaium (On the Embassy to Gaius)",
-        "summary": [
-          "Legatio ad Gaium narrates Philo’s own experience leading a Jewish delegation from Alexandria to Rome in 39–40 CE to petition the emperor Gaius Caligula regarding the anti-Jewish violence recounted in the companion work In Flaccum and, more urgently, Caligula’s subsequent order to install a statue of himself in the Jerusalem Temple, an act of unprecedented sacrilege that provoked mass Jewish resistance and was averted only by the emperor’s assassination in January 41 CE before the order could be fully implemented. Composed shortly after these events, in the early-to-mid 40s CE, as the continuation of Philo’s historical-apologetic diptych, the work includes an extended, unflattering portrait of Caligula’s character and an account of the humiliating, inconclusive audience the Jewish delegation received from the erratic emperor, contrasted with an idealized portrait of the emperor Augustus’s more respectful historical treatment of Jewish religious sensibilities and privileges. Historically, the treatise provides an invaluable, eyewitness-adjacent primary source for one of the most acute crises in Jewish-Roman relations prior to the great revolt of 66–73 CE, illuminating both the precariousness of Jewish communal privileges under arbitrary imperial rule and the sophisticated diplomatic and legal strategies Diaspora Jewish leadership employed in defense of Jewish religious interests at the highest levels of Roman power. Theologically, the work’s climactic narrative of the temple crisis’s providential resolution through Caligula’s sudden assassination reinforces the theodicy developed throughout the diptych: that divine providence actively, if sometimes dramatically and unexpectedly, intervenes in the course of even the highest levels of world-imperial politics to protect the sanctity of the Temple and vindicate the covenant people against existential threat."
+        "id": "on-the-embassy-to-gaius-legatio-ad-gaium",
+        "title": "On the Embassy to Gaius (Legatio ad Gaium)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this work himself as the continuation of his historical diptych begun in Against Flaccus."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed in the early-to-mid 40s CE, it narrates Philo's own experience leading a Jewish delegation to the emperor Caligula in 39–40 CE regarding his order to place a statue of himself in the Jerusalem Temple."
+          },
+          {
+            "heading": "Contents",
+            "body": "Philo describes the humiliating audience the delegation received from the erratic emperor and the crisis's resolution when Caligula was assassinated before his order could be carried out."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The narrative reinforces Philo's theme of divine providence actively, if unexpectedly, protecting the Temple's sanctity and the covenant people even at the highest levels of imperial politics."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This crisis over the Temple's sanctity, resolved just before disaster, offers context for New Testament-era anxieties about Roman threats to Jewish worship. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "quaestiones-et-solutiones-in-genesin-et-exodum-questions-and",
-        "title": "Quaestiones et Solutiones in Genesin et Exodum (Questions and Answers on Genesis and Exodus)",
-        "summary": [
-          "Quaestiones et Solutiones in Genesin et Exodum is a distinct exegetical work, organized as a running series of brief questions and answers addressing specific verses of Genesis and Exodus in sequence, offering both literal (“according to the letter”) and allegorical (“according to the deeper meaning”) interpretations for each query, surviving largely only in an Armenian translation (with fragmentary Greek portions also extant), representing a somewhat different genre and likely different, perhaps earlier or more introductory, compositional stage or audience than Philo’s more discursive treatises in the Allegorical Commentary and Exposition of the Law series. Composed at some point during Philo’s mature literary career, the precise relationship of this question-and-answer format to Philo’s other exegetical series remains a matter of scholarly discussion, with some proposing it represents Philo’s earliest exegetical mode, a preliminary working-through of interpretive problems later developed more fully in his discursive treatises, while others regard it as a distinct genre serving a different pedagogical purpose, perhaps for less advanced students. Historically, the work’s systematic, verse-by-verse structure offers valuable insight into the specific textual and interpretive problems Philo and his exegetical tradition identified in the Genesis and Exodus narratives, and its dual literal-allegorical method provides clear, explicit demonstration of Philo’s hermeneutical practice in compact, easily analyzed form. Theologically, the work’s consistent pairing of literal and allegorical interpretation for each scriptural query reinforces Philo’s broader hermeneutical commitment, articulated more discursively elsewhere, that scripture possesses both a plain, practically authoritative sense and a deeper philosophical-spiritual sense, neither of which should be neglected in favor of the other, offering a compact primer on the interpretive method underlying his entire, much more extensive discursive corpus."
+        "id": "questions-and-answers-on-genesis-and-exodus",
+        "title": "Questions and Answers on Genesis and Exodus",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Philo wrote this work himself in a running question-and-answer format, distinct in genre from his other treatises; it survives mostly in Armenian translation."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Composed at some point in Philo's mature career, its exact relationship to his other exegetical series remains uncertain."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work goes through specific verses of Genesis and Exodus in order, offering both a literal ('according to the letter') and an allegorical ('according to the deeper meaning') interpretation for each question."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work compactly demonstrates Philo's consistent hermeneutical principle that scripture has both a plain, practically authoritative sense and a deeper philosophical-spiritual sense, and that neither should be neglected."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This dual-sense approach to reading scripture parallels methods later used by Christian interpreters engaging the Old Testament. It has no canonical status."
+          }
         ]
       }
     ]
@@ -643,150 +2611,549 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
     "label": "The Dead Sea Scrolls",
     "works": [
       {
-        "id": "the-great-isaiah-scroll-1qisaa",
+        "id": "the-great-isaiah-scroll-1qisa",
         "title": "The Great Isaiah Scroll (1QIsaᵃ)",
-        "summary": [
-          "The Great Isaiah Scroll, discovered in Qumran Cave 1 in 1947 and among the first scrolls brought to scholarly attention, preserves the complete text of the book of Isaiah in Hebrew, copied by a professional scribe (or, on codicological analysis, possibly two scribes) and dated on paleographic grounds to approximately 125–100 BCE, making it, by roughly a millennium, the oldest substantially complete manuscript of any biblical book known prior to the Qumran discoveries. The scroll’s authorship is anonymous, being a copy rather than a original composition, though its production reflects the scribal culture either of the Qumran community itself or of a broader Judean scribal tradition from which the community’s library was assembled. Historically, the scroll’s discovery revolutionized textual criticism of the Hebrew Bible, providing direct manuscript evidence roughly a thousand years earlier than the previously earliest complete Hebrew witnesses (the medieval Masoretic codices), and its text proved remarkably, if not perfectly, consistent with the later Masoretic tradition, substantially confirming the general reliability of the Masoretic transmission process while also revealing numerous minor textual variants, orthographic differences, and occasional more significant divergences of text-critical interest. Theologically, the scroll’s significance lies less in independent doctrinal content than in what its close (though not identical) correspondence to the later Masoretic Isaiah demonstrates about the relative stability of the prophetic textual tradition already by the second century BCE, while its non-standard, “full” orthographic spelling conventions and occasional textual variants have proven valuable for tracing the pre-Masoretic textual plurality that characterized Hebrew scriptural transmission in the Second Temple period, directly relevant for New Testament studies given the frequency and significance of Isaianic citation and allusion throughout the New Testament corpus, including messianic and servant-figure texts of central importance to early Christian theological argument."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This scroll is a copy, not an original composition, made by a professional scribe (or possibly two); the identity of the scribe or scribes is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Discovered in Qumran Cave 1 in 1947, it is dated on handwriting style to about 125–100 BCE, making it roughly a thousand years older than any previously known complete Hebrew Bible manuscript."
+          },
+          {
+            "heading": "Contents",
+            "body": "The scroll preserves the complete text of the biblical book of Isaiah in Hebrew."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its text closely, though not perfectly, matches the much later medieval Hebrew Bible (Masoretic Text), confirming that the prophetic text was already fairly stable by the second century BCE, while its differences reveal how Hebrew scripture existed in more than one form during this period."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Isaiah is quoted more often in the New Testament than almost any other Old Testament book, especially in messianic and 'suffering servant' passages, making this scroll directly relevant to how early Christians read and applied Isaiah. It has no separate canonical status of its own — it is simply an ancient copy of a canonical book."
+          }
         ]
       },
       {
-        "id": "the-community-rule-1qs-serekh-ha-yahad",
-        "title": "The Community Rule (1QS / Serekh ha-Yahad)",
-        "summary": [
-          "The Community Rule (Serekh ha-Yahad), the best-preserved and most extensively studied of the Qumran sectarian rule documents, sets out the organizational structure, admission procedures, disciplinary code, and theological worldview of the Yahad (“community” or “unity”), the sectarian group most scholars associate, with varying degrees of confidence, with the Essenes described by Josephus and Philo. Multiple copies (at least twelve, from Cave 1 and Cave 4) attest the document’s ongoing importance and textual development within the community, with the best-preserved Cave 1 copy dated paleographically to approximately 100–75 BCE, though the underlying composition likely developed in stages across the second century BCE, reflecting an evolving, rather than static, community rule. The authorship is anonymous, representing communal legislative tradition rather than a single identifiable author. Historically, the document provides the most detailed extant evidence for the organizational structure, admission process (involving a multi-year probationary period and communal examination), and disciplinary procedures of an actual Second Temple Jewish sectarian community, offering crucial comparative context for understanding sectarian diversity within late Second Temple Judaism and for illuminating aspects of early Christian communal organization, including possible points of contact and contrast with the earliest Jerusalem church’s communal practices described in Acts. Theologically, the Community Rule’s most celebrated section, the “Treatise on the Two Spirits” (cols. 3–4), articulates a sophisticated cosmic and psychological dualism in which humanity is governed by opposing “spirits” of truth (light) and deceit (darkness), locked in a struggle continuing until a divinely appointed eschatological resolution, a dualistic framework of considerable comparative significance for Johannine light-darkness imagery and broader New Testament ethical dualism."
+        "id": "the-community-rule-1qs",
+        "title": "The Community Rule (1QS)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This document was composed anonymously over time by the leadership of the sectarian group known as the Yahad ('community'), likely connected to the Essenes described by Josephus and Philo."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The best-preserved copy dates to about 100–75 BCE, though the rule developed in stages across the second century BCE as the community's own organization evolved."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document sets out admission procedures (including a multi-year waiting period), disciplinary rules, and the community's theological worldview."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its most famous section, the 'Treatise on the Two Spirits,' describes humanity as governed by opposing spirits of truth and deceit (light and darkness), locked in struggle until God's appointed resolution."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This light-versus-darkness dualism closely parallels similar imagery in John's Gospel and letters, suggesting a shared conceptual world. The document has no canonical status but is central for understanding sectarian Judaism around the time of Jesus."
+          }
         ]
       },
       {
-        "id": "the-war-scroll-1qm-the-war-of-the-sons-of-light-against-the-",
-        "title": "The War Scroll (1QM, “The War of the Sons of Light against the Sons of Darkness”)",
-        "summary": [
-          "The War Scroll presents a detailed, quasi-military manual describing an anticipated eschatological war between the “Sons of Light” (the sect and its angelic allies, led by the archangel Michael) and the “Sons of Darkness” (Belial and his forces, including a coalition of historical and symbolic enemy nations, notably the “Kittim,” widely identified by scholars with Rome), specifying troop formations, weaponry, battle liturgies, and trumpet signals with remarkable, almost bureaucratic, precision. The best-preserved copy from Cave 1 is dated paleographically to the early first century CE, though the composition’s core likely developed across the first century BCE, drawing on and adapting conventional Hellenistic and Roman military organizational models for its detailed tactical prescriptions even while envisioning a fundamentally supernatural, divinely determined conflict. The author is anonymous, likely reflecting composite sectarian composition and redaction over time. Historically, the document’s detailed, historically grounded military terminology and its apparent identification of Rome as the ultimate eschatological antagonist provide valuable evidence for the sect’s perception of contemporary Roman imperial power as embodying cosmic evil, a perspective with clear comparative relevance for understanding similar apocalyptic anti-Roman symbolism in Jewish and Christian apocalyptic literature of the period, including the book of Revelation’s Roman-coded imagery. Theologically, the War Scroll’s vision of a final, decisively divinely orchestrated battle in which righteous humanity, empowered and led by angelic forces, definitively defeats cosmic and historical evil, represents one of the most fully developed extant expressions of Second Temple apocalyptic eschatology’s expectation of imminent, violent, divinely accomplished victory over the forces of darkness, articulated in liturgically structured prayers and hymns interspersed throughout the tactical material."
+        "id": "the-war-scroll-1qm",
+        "title": "The War Scroll (1QM)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This anonymous, likely composite document was written and edited by the same sectarian community responsible for the Community Rule."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The best copy dates to the early first century CE, though its core developed across the first century BCE, adapting real Roman military organization for its detailed battle plans."
+          },
+          {
+            "heading": "Contents",
+            "body": "The scroll describes an expected final war between the 'Sons of Light' (the sect and its angelic allies, led by Michael) and the 'Sons of Darkness' (including Rome, coded as the 'Kittim'), with detailed troop formations and battle liturgies."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It expresses confident hope in a final, divinely orchestrated victory of righteousness over cosmic and historical evil, achieved through both human and angelic forces."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its identification of Rome as the ultimate enemy parallels similar anti-Roman coded imagery in the book of Revelation. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-habakkuk-pesher-1qphab",
         "title": "The Habakkuk Pesher (1QpHab)",
-        "summary": [
-          "The Habakkuk Pesher is the best-preserved example of the distinctive Qumran genre of pesher (interpretive) commentary, presenting a verse-by-verse interpretation of the biblical book of Habakkuk in which the prophet’s originally sixth-century BCE oracles are systematically reread as coded predictions of events and figures contemporary with the Qumran community itself, most notably the community’s founding authority figure, the “Teacher of Righteousness,” and his antagonist, the “Wicked Priest,” generally identified by most scholars with a Hasmonean high priest, though the precise historical identification remains debated. The manuscript is dated paleographically to the mid-first century BCE, though the composition likely reflects events of the preceding decades, situating the pesher’s composition within a generation or two of the events and figures it purports to interpret. The author is anonymous, writing within the community’s distinctive prophetic-interpretive tradition. Historically, the pesher provides invaluable, if cryptically coded, evidence for the community’s self-understanding, its conflict with the established Jerusalem priesthood, and its distinctive hermeneutical conviction that biblical prophecy’s true, final meaning had been specially revealed to the Teacher of Righteousness for application to the community’s own historical moment, understood as the terminal generation before eschatological judgment. Theologically, the pesher exemplifies a hermeneutic of eschatological actualization — the conviction that scripture speaks directly and specifically to the interpreter’s own generation as the fulfillment of ancient prophecy — that bears striking, much-discussed comparative significance for understanding the New Testament’s own frequent practice of reading Hebrew Bible prophecy as finding its decisive fulfillment in the person and events of Jesus and the earliest church, representing parallel, if theologically distinct, instances of eschatologically oriented scriptural actualization within roughly contemporary Second Temple Jewish interpretive culture."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous member of the Qumran community wrote this commentary, reinterpreting the ancient prophet Habakkuk's words as coded predictions about the community's own recent history."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the mid-first century BCE and reflects events of the preceding decades, including the community's conflict with a figure called the 'Wicked Priest,' likely a Hasmonean high priest."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text goes verse by verse through Habakkuk, applying each line to the community's founder, the 'Teacher of Righteousness,' and his opponents."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The commentary reflects the conviction that ancient prophecy's true, final meaning was specially revealed to the Teacher of Righteousness for application to the community's own generation, understood as the last one before judgment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This method of reading old prophecy as direct prediction of present events closely resembles how New Testament writers read Old Testament prophecy as fulfilled in Jesus and the early church. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-thanksgiving-hymns-1qhodayot",
         "title": "The Thanksgiving Hymns (1QHodayot)",
-        "summary": [
-          "The Thanksgiving Hymns (Hodayot) comprise a collection of some twenty-five to thirty individual hymns of thanksgiving and praise, composed in a Hebrew style closely modeled on the biblical Psalter, expressing intense personal gratitude for divine election, revelation, and deliverance from the community’s enemies, with a subset of hymns (the so-called “Teacher Hymns”) widely believed by many, though not all, scholars to derive directly from the community’s founding Teacher of Righteousness, expressing his personal experience of persecution, vindication, and unique revelatory insight. The best-preserved manuscript from Cave 1 is dated paleographically to the early-to-mid first century BCE, with the underlying compositions likely originating somewhat earlier in the community’s formative history. The authorship remains debated, with the “Teacher Hymns” attributed by many scholars to the historical founder himself, while other hymns likely represent later communal liturgical composition modeled on his distinctive style and theology. Historically, the hymns provide the most direct extant access to the interior devotional and theological consciousness of the Qumran sectarian movement, complementing the more externally focused legal and organizational documents such as the Community Rule and Damascus Document. Theologically, the hymns articulate an intense doctrine of human depravity and utter dependence on unmerited divine grace for any capacity toward righteousness (expressed in strikingly self-abasing language describing the human condition as a “creature of clay” and a “spirit of error” incapable of self-justification apart from divine election and revelation), a theological anthropology of considerable comparative interest for understanding the conceptual background against which Pauline discussions of grace, election, and human incapacity for self-justification apart from divine action have frequently been illuminated by scholars working at the intersection of Qumran and New Testament studies."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Some hymns in this collection are widely believed to have been written by the community's founder, the Teacher of Righteousness himself, while others were composed anonymously by later community members in his style."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The best manuscript dates to the early-to-mid first century BCE, though the hymns likely originated somewhat earlier in the community's history."
+          },
+          {
+            "heading": "Contents",
+            "body": "The collection of about twenty-five to thirty hymns expresses intense personal gratitude for divine election, revelation, and rescue from enemies."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The hymns describe human beings as utterly dependent on unearned divine grace, using strikingly humble language calling humanity a 'creature of clay' incapable of achieving righteousness on its own."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This emphasis on total dependence on grace closely parallels Paul's teaching about grace and human inability to achieve righteousness through works. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-genesis-apocryphon-1qapgen",
         "title": "The Genesis Apocryphon (1QapGen)",
-        "summary": [
-          "The Genesis Apocryphon is an extensive Aramaic “rewritten Bible” narrative expanding and elaborating the patriarchal narratives of Genesis, particularly the stories of Lamech, Noah, and Abraham, supplying extensive additional dialogue, first-person narrative voice, and novelistic detail absent from the biblical text, including an elaborate description of Sarah’s beauty and an expanded account of Abraham’s journey through the land of Canaan. The manuscript is dated paleographically to the late first century BCE or early first century CE, though the underlying Aramaic composition likely originated somewhat earlier, in the second or early first century BCE, situating it within the broader Second Temple genre of “rewritten Bible” alongside Jubilees and Pseudo-Philo, with which it shares certain narrative expansions and interpretive traditions. The author is anonymous. Historically, the work provides crucial evidence for the vitality and creativity of Aramaic-language Jewish scriptural interpretation and narrative expansion in the Second Temple period, complementing the primarily Hebrew sectarian legal and liturgical material otherwise dominant in the Qumran collection, and its detailed geographic and genealogical material offers valuable comparative data for Second Temple period conceptions of biblical geography and chronology. Theologically, the work’s narrative expansions frequently serve to resolve interpretive difficulties or gaps in the biblical text (such as explaining Lamech’s suspicion regarding Noah’s paternity, addressed through an angelic revelation confirming Noah’s legitimate, non-angelic origin, a tradition intersecting with the Watchers mythology also developed in 1 Enoch and Jubilees) and to heighten the piety, righteousness, and divine favor of the patriarchal figures, reflecting the broader Second Temple exegetical impulse to supply edifying, theologically satisfying elaboration of terse or ambiguous biblical narrative."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author wrote this Aramaic expansion of Genesis, adding extensive dialogue and detail not found in the biblical text."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the late first century BCE or early first century CE, though the underlying composition likely originated somewhat earlier, in the second or early first century BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text expands the stories of Lamech, Noah, and Abraham, adding details like a description of Sarah's beauty and an angelic explanation confirming Noah's legitimate birth."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The expansions typically resolve gaps or difficulties in the biblical text and increase the piety and divine favor shown to the patriarchs."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This kind of imaginative retelling of biblical narrative, called 'rewritten Bible,' shows a broader Jewish practice of interpreting scripture through storytelling that also shapes some New Testament use of Old Testament material. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-temple-scroll-11qtemple",
         "title": "The Temple Scroll (11QTemple)",
-        "summary": [
-          "The Temple Scroll, the longest of the Dead Sea Scrolls (over eight meters), presents an extensive legal composition, framed as direct divine speech to Moses (in the first person, “I” rather than the third-person “the LORD said to Moses” of the Pentateuch), providing detailed prescriptions for an idealized future Temple’s architecture and dimensions, its sacrificial and festival cultic calendar, and an extensive body of purity, civil, and royal legislation, in effect presenting itself as a supplementary or even superseding revelation to the Pentateuchal legal corpus. The manuscript is dated paleographically to the early first century CE (Herodian period), though the composition’s core is generally dated considerably earlier, to the second century BCE, with some scholars proposing that its legal content predates the formation of the sectarian Qumran community proper and was subsequently adopted and transmitted by it. The author is anonymous, writing in the persona of divine revelation rather than under any human pseudonym. Historically, the scroll’s detailed, idealized Temple architecture and expanded festival calendar (including previously unattested festivals of new wine and new oil) provide crucial evidence for currents of Second Temple priestly and legal thought dissatisfied with the actual, historically existing Second Temple’s construction and administration, envisioning instead a purified, divinely specified ideal sanctuary. Theologically, the scroll’s presentation of its legal content as direct, first-person divine revelation effectively claims a status equal to or even superseding the Mosaic Torah itself, raising significant questions, much debated among scholars, about the scroll’s precise relationship to canonical scriptural authority within the community that preserved it, and its detailed purity and Temple legislation offers valuable comparative context for understanding contemporary priestly and sectarian debates over proper Temple administration reflected also in documents such as 4QMMT."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author wrote this text as though God were speaking directly, in the first person, rather than through Moses as in the Pentateuch."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the early first century CE, though its legal content likely originated in the second century BCE, possibly even before the Qumran community's formal existence."
+          },
+          {
+            "heading": "Contents",
+            "body": "The scroll, the longest Dead Sea Scroll at over eight meters, describes an idealized future Temple's architecture, its sacrificial calendar, and extensive purity, civil, and royal laws."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "By presenting its content as direct divine speech, the scroll implicitly claims authority equal to, or even beyond, the Mosaic Torah itself."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its vision of an idealized, purified Temple provides useful background for New Testament passages that criticize the actual Jerusalem Temple's practices and anticipate its replacement or renewal. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "the-damascus-document-cd-with-4q266273",
-        "title": "The Damascus Document (CD, with 4Q266–273)",
-        "summary": [
-          "The Damascus Document, known first from medieval copies discovered in the Cairo Geniza in 1896 (predating the Qumran discoveries by half a century) and subsequently confirmed and supplemented by multiple fragmentary Qumran manuscripts, presents an extended admonitory historical prologue recounting the community’s origins and self-understanding as the righteous remnant of Israel, followed by an extensive legal code addressing matters of Sabbath observance, purity, communal discipline, and covenant renewal, associated with communities apparently living in a “New Covenant in the land of Damascus” (whether understood literally or as a coded, possibly Qumran-related, designation remains debated). The Qumran manuscript fragments are dated paleographically across a range from the first century BCE to the early first century CE, while the underlying composition’s core likely originated in the mid-to-late second century BCE, making the Damascus Document among the earliest attested sectarian legal-theological documents associated with the broader movement that produced the Qumran community. The author is anonymous. Historically, the document’s apparent address to a broader, more geographically dispersed set of communities (including references to members living in “camps” with wives and children, in contrast to the more enclosed, apparently celibate community reflected in some readings of the Community Rule) has led many scholars to conclude that the sectarian movement encompassed multiple, organizationally related but distinct communities, of which the Qumran settlement itself represented only one, particularly rigorous, expression. Theologically, the document’s historical prologue articulates a distinctive covenant theology centered on a “New Covenant,” a righteous remnant chosen from unfaithful Israel, and periodized historical schema anticipating imminent eschatological judgment, terminology and conceptual structure of considerable comparative significance for understanding early Christian “new covenant” theology, particularly Pauline and other New Testament articulations of covenant renewal and remnant ecclesiology."
+        "id": "the-damascus-document-cd",
+        "title": "The Damascus Document (CD)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This anonymous document was first discovered among medieval copies in Cairo in 1896, decades before the Qumran discoveries, and later confirmed by fragments found at Qumran."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Qumran fragments date from the first century BCE to the early first century CE, but the core material likely originated in the mid-to-late second century BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document opens with a historical account of the community's origins as Israel's righteous remnant, followed by legal rules on Sabbath observance, purity, and communal discipline for a 'New Covenant' community."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It develops a covenant theology centered on a righteous remnant chosen out of unfaithful Israel, with a periodized view of history anticipating imminent judgment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its 'New Covenant' language closely anticipates and provides background for Paul's and other New Testament writers' language about a new covenant established through Christ. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-copper-scroll-3q15",
         "title": "The Copper Scroll (3Q15)",
-        "summary": [
-          "The Copper Scroll, uniquely inscribed on sheets of copper rather than the parchment or papyrus used for all other Qumran scrolls, presents a list of sixty-four locations throughout Judea where enormous quantities of gold, silver, and other valuables are said to be buried or hidden, described with topographical precision that has nonetheless defied all subsequent attempts at actual location and recovery, using an unusual, somewhat Mishnaic-influenced Hebrew vocabulary distinct from the classical biblical Hebrew of most other Qumran sectarian compositions. The scroll is dated paleographically to the mid-to-late first century CE, considerably later than most sectarian compositions, and its unusual material, language, and content have generated extensive scholarly debate regarding its origin and purpose, with proposals ranging from a genuine inventory of hidden Temple treasure (possibly concealed during the lead-up to or course of the 66–73 CE revolt) to a symbolic, legendary, or even satirical composition unrelated to any actual treasure. The author is anonymous. Historically, if the scroll does record genuine treasure, its contents would represent an almost unimaginably vast sum, considerably exceeding plausible private Qumran community wealth, leading many scholars who accept its historical authenticity to associate the listed treasure with the Jerusalem Temple treasury, hidden for safekeeping amid the turmoil preceding the Temple’s destruction in 70 CE rather than with the Qumran community’s own resources. Theologically, the scroll’s content is essentially non-theological, functioning as a practical inventory rather than religious or liturgical composition, though its very existence and its association with the Qumran collection raise ongoing, unresolved questions about the relationship between the sectarian community, the Jerusalem Temple establishment, and the broader upheavals of the Jewish revolt, questions with continuing significance for reconstructing the full social and historical context of the scrolls’ deposit in the Qumran caves."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous scribe inscribed this document uniquely on copper sheets rather than the parchment or papyrus used for other scrolls."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It dates to the mid-to-late first century CE, considerably later than most sectarian writings found at Qumran."
+          },
+          {
+            "heading": "Contents",
+            "body": "The scroll lists sixty-four locations across Judea where huge quantities of gold, silver, and other valuables are said to be hidden, though none has ever been found."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The scroll has no religious or theological content, functioning as a practical inventory list rather than scripture or liturgy."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "If genuine, the treasure may relate to the Jerusalem Temple treasury hidden during the turmoil before the Temple's destruction in 70 CE, an event central to the world of the New Testament's later writings. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-rule-of-the-congregation-1qsa",
         "title": "The Rule of the Congregation (1QSa)",
-        "summary": [
-          "The Rule of the Congregation, appended to the single Cave 1 copy of the Community Rule, presents regulations for the community’s anticipated eschatological future, describing the organization of “the congregation of Israel in the Last Days,” including age-graded stages of communal advancement and instruction, and, most notably, a detailed description of a future eschatological banquet at which two anticipated messianic figures — a priestly Messiah and a lay, Davidic Messiah of Israel — preside jointly over the community’s assembled membership according to strict hierarchical protocol. The document is preserved in the same Cave 1 manuscript as the Community Rule, dated paleographically to approximately 100–75 BCE, though scholarly opinion varies on whether the Rule of the Congregation represents an integral part of the same composition or a related but originally separate document subsequently copied alongside it. The author is anonymous. Historically, the document provides crucial evidence for the community’s expectation of an imminent transition from its present sectarian existence to a fully realized eschatological “congregation of Israel,” organized according to detailed hierarchical and liturgical protocols already anticipated and rehearsed in the community’s present organizational structure. Theologically, the document’s vision of dual messianism — a priestly Messiah (of Aaron) taking precedence in ritual protocol over a Davidic royal Messiah (of Israel) — represents one of the clearest and most systematically developed extant expressions of the “two messiahs” expectation attested more allusively elsewhere in Qumran sectarian literature (including the Damascus Document), offering crucial comparative evidence for the diversity of Second Temple messianic expectation against which early Christian claims regarding a single Messiah combining royal, and in some New Testament traditions priestly, functions in the person of Jesus can be more precisely and comparatively assessed."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author, likely from the same community responsible for the Community Rule, wrote this appended document."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It is preserved in the same manuscript as the Community Rule, dated to about 100–75 BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document describes how the community expected to organize itself in the last days, including a detailed eschatological banquet presided over by two expected messianic figures: a priestly Messiah and a royal, Davidic Messiah."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This 'two messiahs' expectation, with the priestly figure taking precedence, represents one of the clearest examples of dual messianic hope in Second Temple Judaism."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It offers important comparison for the New Testament's presentation of Jesus as combining royal and (in some books, like Hebrews) priestly roles in a single person, rather than two separate figures. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-rule-of-benedictions-1qsb",
         "title": "The Rule of Benedictions (1QSb)",
-        "summary": [
-          "The Rule of Benedictions, the final document in the same Cave 1 manuscript scroll containing the Community Rule and Rule of the Congregation, preserves a series of liturgical blessings intended for pronouncement over various categories of community members and leadership figures, including the community’s priesthood, its lay members generally, the “Prince of the Congregation” (a messianic royal figure), and the high priest, though the manuscript’s fragmentary state leaves the precise liturgical context and occasion for these blessings somewhat uncertain. Dated paleographically alongside its companion documents to approximately 100–75 BCE, the document’s authorship is anonymous, representing communal liturgical composition. Historically, the blessings, closely modeled in style and formula on biblical priestly blessing tradition (particularly Numbers 6:24–26 and Genesis 49’s patriarchal blessings), offer valuable evidence for the liturgical and ceremonial life of the Qumran community, particularly its anticipated eschatological leadership structure, complementing the more narrative and legal material found in the Community Rule and Rule of the Congregation. Theologically, the extended blessing pronounced over the “Prince of the Congregation” — describing him as one who will “renew the covenant” and strike the nations “with the rod of his mouth” (echoing Isaiah 11’s messianic oracle) — provides significant additional evidence for the community’s royal-Davidic messianic expectation, drawing explicitly on classic biblical messianic prophecy to articulate hope for a future righteous ruler who will lead the eschatological community in triumph, material of clear comparative relevance for New Testament messianic and Christological argumentation that draws on the identical Isaianic and biblical messianic textual tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author from the same community wrote this collection of liturgical blessings, found alongside the Community Rule and Rule of the Congregation."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Dated alongside its companion documents to about 100–75 BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The blessings are meant to be pronounced over community leaders, including the priesthood, the high priest, and the 'Prince of the Congregation,' a messianic royal figure."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The blessing over the 'Prince of the Congregation,' drawing on Isaiah 11's messianic prophecy, provides further evidence for the community's hope in a coming righteous ruler."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This shared reliance on Isaiah 11 connects directly to New Testament messianic argument that also draws on the same prophecy to describe Jesus. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "4qmmt-miqsat-maase-ha-torah-some-of-the-works-of-the-law",
-        "title": "4QMMT (Miqsat Ma’ase ha-Torah, “Some of the Works of the Law”)",
-        "summary": [
-          "4QMMT, reconstructed from six fragmentary Cave 4 manuscript copies, presents a legal-polemical letter (or treatise cast in epistolary form) addressed apparently to an opposing Jewish authority, likely the Jerusalem priestly establishment, detailing approximately twenty specific points of halakhic disagreement concerning Temple purity, sacrificial procedure, and calendrical practice, concluding with an exhortation to the addressee to recognize the correctness of the author’s legal position and, implicitly, to separate from the practices the document condemns. The manuscript copies date paleographically from the first century BCE, though the underlying composition, given its apparent role in articulating foundational legal disputes, is often associated by scholars with the earliest, formative period of the sectarian movement’s separation from the broader Jerusalem religious establishment, some proposing a date as early as the mid-second century BCE. The author is anonymous, though the document’s authoritative, didactic tone suggests composition by or on behalf of the movement’s leadership, possibly even the Teacher of Righteousness himself, though this attribution remains speculative. Historically, the document’s detailed halakhic content has proven of extraordinary importance for illuminating the specific legal disputes that precipitated the sect’s separation from the Jerusalem establishment, disputes concerning matters of Temple purity procedure that closely parallel, and in several cases directly correspond to, positions later attributed to the Sadducees in rabbinic literature, complicating simple identification of the Qumran sect with the Essenes alone and suggesting more complex sectarian alignments. Theologically, the letter’s closing appeal — that observing “some of the works of the law” rightly, rather than the wrong ones commonly practiced, “will be reckoned to you as righteousness” (echoing Genesis 15:6’s language regarding Abraham’s faith) — has attracted extensive comparative scholarly discussion regarding its striking terminological proximity to, and illuminating contrast with, Pauline discussions of “works of the law” and righteousness reckoned by faith in Galatians and Romans."
+        "id": "4qmmt-some-of-the-works-of-the-law",
+        "title": "4QMMT (Some of the Works of the Law)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author, likely the community's leadership, wrote this letter-like document addressed to an opposing Jewish authority, probably the Jerusalem priesthood."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Manuscript copies date to the first century BCE, though the underlying dispute may go back to the mid-second century BCE, near the community's formative separation from mainstream Jewish leadership."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document lists about twenty specific legal disagreements over Temple purity, sacrifice, and calendar, urging the recipient to accept the author's position."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It closes by suggesting that observing the 'works of the law' correctly 'will be reckoned to you as righteousness,' echoing Genesis 15:6's language about Abraham's faith."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This phrase is strikingly close to, and offers illuminating contrast with, Paul's discussion of 'works of the law' and righteousness by faith in Galatians and Romans. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-melchizedek-document-11qmelchizedek",
         "title": "The Melchizedek Document (11QMelchizedek)",
-        "summary": [
-          "The Melchizedek Document (11Q13) is a fragmentary eschatological midrash presenting the biblical figure of Melchizedek, the mysterious priest-king of Salem (Gen 14:18–20; Ps 110:4), as a heavenly, quasi-angelic redeemer figure who will preside over the final Day of Atonement, proclaim liberty to the captives (explicitly interpreting Isaiah 61’s “year of the Lord’s favor” and Leviticus 25’s Jubilee release as eschatological realities), and execute final judgment against the wicked forces of Belial, drawing together an intricate web of biblical citations (from Leviticus, Deuteronomy, Isaiah, and the Psalms) into a unified eschatological scenario. The manuscript is dated paleographically to the early-to-mid first century BCE, situating its composition within the broader development of Qumran sectarian eschatological and exegetical tradition. The author is anonymous. Historically, the document exemplifies the distinctive Qumran exegetical technique of combining multiple scriptural texts through catchword association and thematic linkage (a technique closely paralleled in other Qumran “thematic pesharim” such as 4QFlorilegium and in early Christian scriptural argumentation, including the extended catena technique of Hebrews and Romans) to construct a coherent eschatological narrative from disparate biblical materials. Theologically, the document’s presentation of Melchizedek as an exalted, quasi-divine or angelic eschatological judge and liberator, functioning in a role remarkably close to that elsewhere assigned to archangels such as Michael, provides crucial comparative background for understanding the elevated, priestly-messianic Melchizedek Christology developed at length in the New Testament epistle to the Hebrews, offering direct evidence that speculative traditions regarding an exalted, heavenly Melchizedek circulated within Second Temple Judaism independently of, and prior to, their distinctive Christian theological application to Jesus."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author wrote this fragmentary text combining several biblical passages into a single vision of the end times."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the early-to-mid first century BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document presents the mysterious biblical priest-king Melchizedek (Genesis 14; Psalm 110) as a heavenly figure who will preside over final judgment, free captives, and defeat the forces of evil."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It portrays Melchizedek as an exalted, almost angelic figure functioning much like the archangel Michael elsewhere in Jewish literature."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This tradition of an exalted heavenly Melchizedek offers crucial background for the New Testament book of Hebrews, which develops an elaborate priestly Christology around Jesus as a priest 'according to the order of Melchizedek.' It has no canonical status."
+          }
         ]
       },
       {
-        "id": "the-songs-of-the-sabbath-sacrifice-4q400407-11q17",
-        "title": "The Songs of the Sabbath Sacrifice (4Q400–407, 11Q17)",
-        "summary": [
-          "The Songs of the Sabbath Sacrifice comprise a cycle of thirteen liturgical compositions, one for each of the first thirteen Sabbaths of the year, describing in elevated, densely angelological language the heavenly worship offered continuously by the angelic priesthood in the celestial Temple, with which the earthly community’s own liturgical worship is understood to be mystically synchronized and united. Manuscript copies survive from both Qumran Cave 4 and Cave 11, along with a related copy discovered at Masada (raising interesting questions about the text’s circulation beyond the Qumran community proper), dated paleographically across the first century BCE and into the early first century CE. The author is anonymous, representing communal liturgical composition likely developed over an extended period. Historically, the discovery of a copy at Masada, a site associated with the Sicarii rebels rather than the Qumran sectarians specifically, suggests this liturgical cycle achieved a circulation and authority extending beyond the narrower Qumran sectarian community, indicating its broader significance within at least some strands of first-century Palestinian Jewish liturgical and mystical practice. Theologically, the Songs’ elaborate description of the heavenly angelic liturgy, the celestial Temple’s architecture, and the mystical participation of the earthly worshiping community in this heavenly worship represent one of the most developed extant expressions of Second Temple “heavenly ascent” and merkavah-adjacent liturgical mysticism, offering crucial comparative background for understanding similar themes of heavenly worship and angelic liturgy found in the New Testament book of Revelation and the epistle to the Hebrews’ depiction of heavenly, angelically attended worship surrounding the divine throne."
+        "id": "the-songs-of-the-sabbath-sacrifice",
+        "title": "The Songs of the Sabbath Sacrifice",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous community, likely over an extended period, composed this cycle of thirteen liturgical songs for the year's first thirteen Sabbaths."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Manuscript copies span the first century BCE into the early first century CE; a related copy was found at Masada, suggesting wider circulation beyond Qumran alone."
+          },
+          {
+            "heading": "Contents",
+            "body": "The songs describe in richly angelological language the continuous worship offered by angels in a heavenly Temple, with which the earthly community's worship is understood to be united."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This represents one of the most developed examples of Jewish 'heavenly ascent' worship imagery, imagining earthly worshipers as mystically joining angelic praise."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It offers valuable comparative background for similar images of heavenly worship in the book of Revelation and the epistle to the Hebrews. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "words-of-the-luminaries-4q504506-divrei-ha-meorot",
-        "title": "Words of the Luminaries (4Q504–506, Divrei ha-Me’orot)",
-        "summary": [
-          "Words of the Luminaries is a collection of liturgical prayers organized for recitation on each day of the week, combining historical recitation of God’s saving acts for Israel (from creation through the exile and hoped-for restoration) with penitential confession of national sin and petition for covenant renewal, closely paralleling in genre and theological structure earlier biblical penitential prayers such as Nehemiah 9 and Daniel 9. The best-preserved manuscript (4Q504) is dated paleographically to the mid-second century BCE, making it among the earliest datable manuscripts in the entire Qumran collection, and its composition likely predates the formation of the specifically sectarian Qumran community, suggesting it derives from a broader, non-sectarian Second Temple Jewish liturgical tradition subsequently adopted into the community’s library and worship. The author is anonymous. Historically, the collection’s early date and apparently non-sectarian origin provide valuable evidence for mainstream Second Temple synagogue or communal liturgical practice, complementing and providing important context for the more explicitly sectarian liturgical compositions (such as the Hodayot and the Songs of the Sabbath Sacrifice) more clearly originating within the Qumran movement itself. Theologically, the prayers’ combination of historical recitation, penitential confession, and covenant-renewal petition reflects the broader Second Temple Deuteronomistic theological framework in which national calamity is understood as covenant consequence and national restoration is petitioned through structured communal confession, a liturgical-theological pattern with clear continuity into later synagogue liturgy and of comparative interest for understanding the theological structure underlying similar New Testament and early Christian penitential and covenantal prayer traditions."
+        "id": "words-of-the-luminaries",
+        "title": "Words of the Luminaries",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author or community composed these prayers, likely from outside the specifically sectarian Qumran movement, later adopted into its library."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The best manuscript dates to the mid-second century BCE, making it one of the earliest datable documents in the whole Dead Sea Scrolls collection."
+          },
+          {
+            "heading": "Contents",
+            "body": "The collection provides prayers for each day of the week, combining historical recollection of God's saving acts with confession of national sin and petition for covenant renewal."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The prayers follow a familiar biblical pattern in which national disaster is understood as covenant punishment, addressed through structured communal confession and hope for restoration."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This pattern of historical recollection and confession parallels prayer traditions that also inform New Testament and early Christian liturgical practice. It has no canonical status."
+          }
         ]
       },
       {
         "id": "pesher-nahum-4qpnah",
         "title": "Pesher Nahum (4QpNah)",
-        "summary": [
-          "Pesher Nahum offers a verse-by-verse interpretation of the biblical book of Nahum’s oracles against Nineveh, reapplying them to contemporary events and figures, most notably containing the only explicit reference by name to a historical, non-biblical figure among all the Qumran pesharim: “Demetrius, king of Greece,” almost certainly the Seleucid king Demetrius III Eukerus, whose invasion of Judea around 88 BCE at the invitation of dissident Jews opposed to the Hasmonean ruler Alexander Jannaeus is also independently attested by Josephus, providing an unusually firm historical anchor for the document’s composition and interpretive framework. The manuscript is dated paleographically to the mid-first century BCE, with its content addressing events of the preceding few decades, situating its composition within a generation of the events it interprets. The author is anonymous. Historically, the pesher’s explicit historical references have made it one of the most valuable Qumran documents for establishing secure correlations between sectarian coded terminology (such as “the Lion of Wrath,” widely identified with Alexander Jannaeus, who according to Josephus crucified eight hundred of his Pharisaic opponents, an atrocity the pesher appears to allude to approvingly or at least without moral censure) and known historical events and figures from Hasmonean-era Judean political history. Theologically, the pesher continues the characteristic Qumran hermeneutic of eschatological actualization already discussed in connection with the Habakkuk Pesher, reading ancient prophetic oracles as directly and specifically applicable to the interpreter’s own generation’s political and religious conflicts, in this instance illuminating the community’s evident hostility toward the Pharisees (likely referenced under the coded designation “seekers of smooth things”) and its complex, shifting relationship to competing factions within contemporary Hasmonean-era Jewish political and religious life."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous member of the Qumran community wrote this commentary, reapplying the prophet Nahum's oracles to recent historical events."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the mid-first century BCE and is unusual among Qumran commentaries for naming an actual historical figure: 'Demetrius, king of Greece,' referring to the Seleucid king Demetrius III, whose invasion of Judea around 88 BCE is also recorded by Josephus."
+          },
+          {
+            "heading": "Contents",
+            "body": "The commentary interprets Nahum's oracles against ancient Nineveh as coded references to conflicts between Jewish factions and foreign powers in the community's own recent past."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "As with other pesher commentaries, the text reflects the conviction that ancient prophecy directly predicts and explains the interpreter's own historical moment."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This same 'prophecy fulfilled now' interpretive method appears throughout the New Testament's use of the Old Testament. It has no canonical status but is especially valuable for anchoring Qumran history to known events."
+          }
         ]
       },
       {
         "id": "testimonia-4q175",
         "title": "Testimonia (4Q175)",
-        "summary": [
-          "Testimonia (4QTestimonia) is a brief but significant thematic anthology gathering four scriptural citations — from Deuteronomy (concerning a coming prophet like Moses), Numbers (Balaam’s oracle of a coming “star out of Jacob”), Deuteronomy again (the Levitical blessing), and a citation from the sectarian Psalms of Joshua text — apparently compiled to articulate the community’s expectation of a threefold eschatological figure complex: a prophetic figure, a royal-messianic figure, and a priestly figure, without extended interpretive commentary, the citations themselves apparently intended to speak for themselves as a coherent testimonial collection. The manuscript is dated paleographically to approximately 100–75 BCE, and the document’s genre — a bare compilation of proof-texts without extended pesher-style commentary — represents a distinctive form within the broader Qumran corpus, closely related in technique to, and frequently compared with, later New Testament and early Christian practice of compiling scriptural “testimonia” collections in defense of messianic and Christological claims. The author/compiler is anonymous. Historically, the document provides crucial direct evidence that the practice of assembling collections of proof-texts to support eschatological and messianic expectation, a technique long recognized as characteristic of early Christian apologetic method (and once hypothesized by scholars such as Rendel Harris to derive from a lost written “testimony book” underlying New Testament citation patterns), was already an established Jewish interpretive practice prior to and independent of Christianity. Theologically, the document’s combination of prophetic, royal, and priestly proof-texts reinforces the multiple-messiah eschatological expectation attested elsewhere at Qumran (notably in the Rule of the Congregation and Damascus Document), offering valuable comparative context for the New Testament’s own combination and Christological application of precisely these same scriptural traditions to the single figure of Jesus."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous compiler assembled this brief collection of four scriptural quotations without extended commentary."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to about 100–75 BCE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document gathers texts about a coming prophet like Moses, a 'star out of Jacob' (Balaam's oracle), a priestly blessing, and material from a sectarian text about Joshua, apparently expecting three separate end-time figures: a prophet, a king, and a priest."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The bare compilation of proof-texts, without extended interpretation, suggests the passages were meant to speak for themselves as a coherent testimony to the community's eschatological hope."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This practice of compiling proof-texts closely resembles a technique long recognized in early Christian apologetic writing, which combined and applied these same Old Testament texts to the single figure of Jesus. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "florilegium-4q174-4qflorilegium-midrash-on-eschatology",
-        "title": "Florilegium (4Q174, 4QFlorilegium / Midrash on Eschatology)",
-        "summary": [
-          "Florilegium presents a thematic anthology and commentary, combining citations from 2 Samuel 7 (Nathan’s oracle promising David an eternal dynastic “house,” reinterpreted eschatologically as promising both a future Davidic messianic figure and a future eschatological Temple “sanctuary of men” not made by human hands) with citations from several Psalms, interpreted through explicit pesher-style commentary identifying these texts’ true, final referent in the community’s own eschatological expectation and self-understanding as a proleptic, spiritual sanctuary. The manuscript is dated paleographically to the early first century CE (Herodian period), though the underlying compositional traditions likely developed somewhat earlier within the community’s exegetical tradition. The author is anonymous. Historically, the document’s technique of combining direct scriptural citation with explicit interpretive commentary applying multiple, thematically related texts to a single eschatological scenario exemplifies a sophisticated exegetical method that anticipates, and offers important comparative background for, similar combinatory scriptural argumentation found throughout the New Testament, particularly the epistle to the Hebrews’ extended argument from combined Psalm and prophetic citations. Theologically, the document’s remarkable reinterpretation of the Davidic “house” promise (2 Sam 7) as referring not merely to a future royal descendant but also, and perhaps primarily, to a spiritual, eschatological “sanctuary” constituted by the righteous community itself functioning as a substitute or supplement for the physical Jerusalem Temple, offers striking and much-discussed comparative material for understanding early Christian temple-replacement and “living temple” ecclesiological imagery, including Paul’s description of the Christian community as God’s temple and similar imagery elsewhere in the New Testament."
+        "id": "florilegium-4q174",
+        "title": "Florilegium (4Q174)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous author combined citations from 2 Samuel and several Psalms with explicit interpretive commentary."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the early first century CE (Herodian period), though its underlying traditions likely developed earlier."
+          },
+          {
+            "heading": "Contents",
+            "body": "The document reinterprets God's promise to David of an eternal 'house' (2 Samuel 7) as pointing not just to a future king but to a spiritual 'sanctuary' formed by the righteous community itself, replacing the physical Temple."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This reworking of the Davidic promise into a community-as-temple image is a striking piece of interpretive creativity, combining multiple texts into a single eschatological picture."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This 'living temple' idea closely parallels Paul's description of the Christian community as God's temple, and similar imagery elsewhere in the New Testament. It has no canonical status."
+          }
         ]
       },
       {
         "id": "the-great-psalms-scroll-11qpsa",
         "title": "The Great Psalms Scroll (11QPsa)",
-        "summary": [
-          "The Great Psalms Scroll from Cave 11 preserves a substantial collection of biblical psalms in a sequence and selection differing notably from the eventual Masoretic Psalter, including several apocryphal compositions not found in the Masoretic Psalms (among them Psalm 151, discussed above under the Apocrypha, and several of the additional Syriac Psalms 154 and 155, discussed above under the Pseudepigrapha), interspersed among canonical psalms without any apparent scribal distinction marking them as of different status or authority. The manuscript is dated paleographically to the first half of the first century CE, though the compositions it contains, particularly the apocryphal psalms, likely originated considerably earlier. The scribe is anonymous. Historically, the scroll has proven centrally important to ongoing scholarly debate over the extent to which the “Book of Psalms” existed as a fixed, closed collection by the first century CE, with some scholars (following the scroll’s principal editor, James Sanders) arguing that 11QPsa represents an authoritative, if variant, edition of the Psalter reflecting genuine fluidity in the collection’s boundaries and internal arrangement at Qumran, while others regard it instead as a liturgical anthology or secondary compilation drawing on an already more fixed Psalter, without necessarily implying comparable fluidity in the broader Jewish community’s conception of the canonical Psalms. Theologically, the scroll’s inclusion of additional apocryphal psalms alongside canonical material, without apparent differentiation, illustrates the practical, devotional continuity Second Temple communities perceived between the eventually canonized Psalter and related devotional-liturgical compositions, offering valuable comparative evidence for understanding the broader, still-developing boundaries of authoritative scriptural collections in this formative period prior to the eventual stabilization of the Hebrew biblical canon."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An anonymous scribe copied this large collection of psalms, arranging them differently from the eventual standard Hebrew Psalter."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscript dates to the first half of the first century CE, though many of its psalms, including several not found in the standard Bible, are considerably older."
+          },
+          {
+            "heading": "Contents",
+            "body": "The scroll includes many familiar biblical psalms alongside several extra compositions, such as Psalm 151 and additional psalms attributed to David, mixed together without any indication of different status."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Scholars debate whether this shows genuine fluidity in what counted as authoritative 'Scripture' among some Jewish communities at this time, or simply a devotional collection drawing on an already fixed core."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This evidence for still-developing scriptural boundaries is relevant to understanding how the New Testament writers' own sense of authoritative Jewish scripture was still taking its final shape. It has no canonical status of its own."
+          }
         ]
       },
       {
-        "id": "reworked-pentateuch-4q158-4q364367",
-        "title": "Reworked Pentateuch (4Q158, 4Q364–367)",
-        "summary": [
-          "Reworked Pentateuch comprises a group of five manuscripts presenting a version of the Pentateuchal text that combines relatively close, though not verbatim, reproduction of the biblical narrative and legal material with numerous small-scale expansions, rearrangements, and interpretive additions, closely paralleling in method, though generally more modest in scope, the more extensive rewriting found in Jubilees and the Genesis Apocryphon, and raising significant text-critical questions about whether these manuscripts represent a distinct literary composition or simply an unusually free, expansionistic edition or recension of the Pentateuchal text itself. The manuscripts are dated paleographically across the second and first centuries BCE, situating their composition within the broader context of textual and literary pluriformity characteristic of Second Temple period scriptural transmission before the later stabilization of a single, standard Pentateuchal text-form. The scribes/compilers are anonymous. Historically, the manuscripts provide crucial evidence for the genuinely fluid boundary in this period between “scriptural text” proper and interpretive “rewritten” expansion of that text, a fluidity of considerable importance for understanding how the very category of authoritative, fixed scriptural text was still in the process of consolidation during the Second Temple period, with implications for understanding the textual and interpretive environment within which the earliest Christian use and citation of Jewish scripture likewise took shape. Theologically, the specific expansions found in these manuscripts (including, for instance, additional material elaborating the Song of Miriam at the Red Sea in 4Q365) generally serve to supply perceived narrative gaps or to harmonize apparently discrepant legal material within the Pentateuch, reflecting the same broader Second Temple exegetical impulse toward clarification, harmonization, and edifying elaboration of scriptural narrative and law evident across the wider “rewritten Bible” genre."
+        "id": "reworked-pentateuch",
+        "title": "Reworked Pentateuch",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Anonymous scribes produced these five manuscripts, which combine fairly close reproduction of the Pentateuch's text with numerous small additions and rearrangements."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The manuscripts date across the second and first centuries BCE, a period when the biblical text itself was still not perfectly fixed in a single standard form."
+          },
+          {
+            "heading": "Contents",
+            "body": "The texts add small expansions to the Pentateuch's narrative and legal material, such as extra material elaborating the Song of Miriam after the Red Sea crossing."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The additions typically resolve gaps or apparent contradictions in the biblical text, reflecting the same impulse toward clarification and elaboration found in other 'rewritten Bible' texts like Jubilees."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This evidence for a genuinely fluid biblical text in this period helps explain some of the textual variety visible in how New Testament authors quote the Old Testament. These manuscripts have no separate canonical status."
+          }
         ]
       },
       {
-        "id": "new-jerusalem-text-1q32-2q24-4q554555-5q15-11q18",
-        "title": "New Jerusalem Text (1Q32, 2Q24, 4Q554–555, 5Q15, 11Q18)",
-        "summary": [
-          "The New Jerusalem Text, surviving in fragmentary Aramaic copies from multiple Qumran caves, describes in extraordinarily precise architectural and numerical detail a visionary tour of an idealized, vastly enlarged future Jerusalem, guided by an angelic figure who measures the city’s walls, gates, streets, and buildings using a measuring reed, in a manner closely paralleling and likely directly influenced by the visionary Temple tour of Ezekiel 40–48, while extending the scope of description beyond the sanctuary itself to encompass an entire idealized eschatological city. The various fragmentary manuscripts are dated paleographically across the first century BCE and into the early first century CE, and the composition’s Aramaic language and content suggest it may derive from a broader visionary-apocalyptic literary tradition related to, but distinct from, the specifically sectarian Hebrew legal and liturgical compositions more clearly original to the Qumran community itself. The author is anonymous. Historically, the multiple copies found across several different Qumran caves indicate the text’s considerable importance and wide circulation within the community’s library, testifying to sustained sectarian interest in detailed eschatological urban planning as an expression of hope for Israel’s ultimate, divinely architected restoration. Theologically, the vision’s meticulous, quasi-utopian architectural detail continues and extends the tradition of idealized Temple and holy-city visionary literature exemplified earlier by Ezekiel and further developed in works like the Temple Scroll, and its imagery of a vastly enlarged, gloriously appointed eschatological Jerusalem provides important comparative background for understanding the New Testament book of Revelation’s own climactic vision of the New Jerusalem descending from heaven (Rev 21), a vision drawing on substantially overlapping Ezekielian and broader Jewish apocalyptic visionary traditions concerning Israel’s ultimate eschatological restoration and glorification."
+        "id": "new-jerusalem-text",
+        "title": "New Jerusalem Text",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Anonymous scribes across several Qumran caves copied this Aramaic visionary text."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The various manuscript fragments date across the first century BCE and into the early first century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "An angel guides the visionary on a detailed architectural tour of an idealized, vastly enlarged future Jerusalem, measuring its walls, gates, and buildings, closely modeled on the Temple tour in Ezekiel 40–48."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text continues and extends the tradition of visionary, idealized holy-city literature, expressing hope for Israel's ultimate, divinely planned restoration."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its detailed vision of a glorious future Jerusalem provides important comparative background for the New Testament book of Revelation's climactic vision of the New Jerusalem descending from heaven (Revelation 21). It has no canonical status."
+          }
         ]
       }
     ]
@@ -798,197 +3165,729 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "gospel-of-thomas",
         "title": "Gospel of Thomas",
-        "summary": [
-          "The Gospel of Thomas is a collection of 114 sayings (logia) attributed to Jesus, lacking narrative framework, passion account, or resurrection appearance, surviving complete in a Coptic translation from the Nag Hammadi library (discovered 1945) and in three earlier fragmentary Greek papyri (Oxyrhynchus Papyri 1, 654, 655) that confirm a Greek original circulating in Egypt considerably earlier than the Coptic manuscript’s fourth-century date. Scholarly dating is sharply contested: a minority of scholars (notably those associated with the Jesus Seminar) have proposed a very early date, potentially the mid-first century CE, positing partial independence from and possible priority to the canonical Synoptic tradition for some sayings, while the substantial majority of scholars date the work’s composition to the mid-to-late second century CE, regarding it as dependent on, and secondary to, the canonical Gospels, reflecting a developed sensibility increasingly associated with Christian Gnosticism, though the precise degree and nature of “Gnostic” content in Thomas remains debated. The author is unknown, writing pseudonymously as the apostle Thomas (called Didymus, “twin”). Historically, the work’s absence of any passion, resurrection, or eschatological framework, and its dominant emphasis on salvation through esoteric self-knowledge, situates it within a trajectory of early Christian thought emphasizing realized, individually appropriated wisdom over the historical, communal, and future-eschatological emphases dominant in the canonical Gospels. Theologically, sayings such as logion 3 (“the kingdom is inside you and outside you… when you know yourselves, then you will be known”) articulate a soteriology centered on self-knowledge as the recovery of an original, divine identity obscured by ignorance, a theological orientation representing one significant, if minority, strand within the broader diversity of second-century Christian thought regarding the nature of salvation and the significance of Jesus’s teaching."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this collection of 114 sayings attributed to Jesus, using the pen name of the apostle Thomas."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "It survives complete in Coptic (found at Nag Hammadi in 1945) and in earlier Greek fragments confirming a Greek original circulating in Egypt. Most scholars date it to the mid-to-late second century CE, though a minority argue for a much earlier, mid-first-century date."
+          },
+          {
+            "heading": "Contents",
+            "body": "The gospel has no narrative, passion story, or resurrection account, presenting only sayings of Jesus, some overlapping with the canonical Gospels and others unique to this text."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Salvation is presented mainly as self-knowledge — recovering an original, divine identity hidden by ignorance — rather than through Jesus's death, resurrection, and future return, which the canonical Gospels emphasize."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its absence of any passion or future-eschatology focus marks a sharp contrast with the canonical Gospels' central concerns, representing one significant but minority strand of second-century Christian thought about salvation. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-peter",
         "title": "Gospel of Peter",
-        "summary": [
-          "The Gospel of Peter survives substantially in a single Greek manuscript (the Akhmim fragment, discovered 1886–87) covering the trial, crucifixion, and resurrection narrative, along with smaller papyrus fragments, presenting a passion narrative with distinctive and theologically significant differences from the canonical accounts, including a markedly more overtly miraculous, even fantastical, resurrection scene (featuring a gigantic, walking cross that speaks) and a portrayal that shifts culpability for Jesus’s death more heavily onto Herod and the Jewish authorities while further minimizing Pilate’s responsibility beyond even the canonical Gospels’ own tendencies in that direction. The work is known to have been read, and subsequently rejected as unorthodox, in the church at Rhossus in Syria around 190 CE, per Eusebius’s report of Bishop Serapion’s investigation, providing a firm terminus ante quem; most scholars date the composition to the mid-second century CE, and scholarly debate continues over whether the work is entirely dependent on the canonical Gospels or preserves some independent early passion tradition, a minority (notably John Dominic Crossan) having controversially argued for an underlying source predating and influencing the canonical passion narratives, a position not widely accepted. The author is unknown, writing pseudonymously as the apostle Peter. Historically, Bishop Serapion’s eventual rejection of the work on grounds of its apparent docetic tendencies (suggesting Jesus did not fully suffer, reflected in the curious statement that Jesus “was silent, as having no pain”) documents an important early instance of a local church actively adjudicating a text’s orthodoxy and canonical suitability. Theologically, the gospel’s heightened supernaturalism and apparent docetic Christological leanings situate it as valuable evidence for the diversity and contested boundaries of second-century Christological reflection on the nature of Christ’s suffering and resurrection."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this gospel under Peter's name; it survives mainly in a single manuscript (the Akhmim fragment) covering the trial, crucifixion, and resurrection."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "A bishop's investigation reported by the historian Eusebius shows the gospel was read, then rejected, in a Syrian church around 190 CE, giving a firm latest possible date; most scholars place its composition in the mid-second century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The gospel presents a passion narrative with striking differences from the canonical accounts, including a giant, talking cross at the resurrection, and shifts more blame for Jesus's death onto Herod and Jewish authorities while further reducing Pilate's role."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text shows signs of docetism — the idea that Jesus did not fully suffer as a real human — reflected in its odd statement that Jesus 'was silent, as having no pain.'"
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its rejection by an early bishop on grounds of docetic tendency is one of the earliest documented cases of a local church actively deciding a text's orthodoxy, directly relevant to how the New Testament canon eventually took shape. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-mary",
         "title": "Gospel of Mary",
-        "summary": [
-          "The Gospel of Mary survives in a fragmentary Coptic manuscript (Berlin Codex, discovered 1896) and two smaller Greek papyrus fragments, presenting Mary Magdalene as a privileged recipient of secret post-resurrection teaching from Jesus concerning the soul’s ascent through hostile cosmic powers after death, and dramatizing a dispute among the male disciples (particularly Peter and Andrew) over the legitimacy and reliability of Mary’s testimony and authority, defended by Levi against Peter’s skepticism. Most scholars date the composition to the second century CE, situating it within a broader current of early Christian thought exhibiting affinities with Gnostic cosmology (the soul’s ascent past hostile “powers,” a developed doctrine of the soul’s true nature obscured by matter) while noting the work lacks some of the more elaborate mythological cosmogony characteristic of fully developed Gnostic systems, leading some scholars to describe it as reflecting an earlier, less systematized stage of related theological tendencies. The author is unknown, writing pseudonymously in Mary’s voice or name. Historically, the text’s dramatization of conflict over Mary’s apostolic authority and testimony has attracted extensive modern scholarly and popular attention as evidence for early Christian debates over gender and legitimate teaching authority, though scholars caution against anachronistically reading later feminist theological categories directly onto second-century sectarian conflict, which more plausibly reflects competing claims to authoritative revelatory tradition than a straightforward proto-feminist program. Theologically, the gospel’s central concern is the soul’s post-mortem ascent past cosmic powers who attempt to obstruct its return to its true, transcendent origin, a soteriology of gnosis (saving knowledge) enabling successful navigation of this cosmic journey, situating the work within the broader diversity of second-century Christian soteriological reflection contesting the nature of salvation, authority, and the relationship between the material and spiritual realms."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text under Mary Magdalene's name or voice; it survives in a fragmentary Coptic manuscript and small Greek fragments."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second century CE, showing some affinity with Gnostic ideas about the soul's ascent past hostile cosmic powers, though less developed than fuller Gnostic systems."
+          },
+          {
+            "heading": "Contents",
+            "body": "Mary Magdalene receives secret teaching from Jesus about the soul's journey after death, and the text dramatizes a dispute among the male disciples, especially Peter, over whether her testimony can be trusted."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Salvation is pictured as the soul's successful navigation past hostile powers back to its true spiritual origin, achieved through special knowledge (gnosis) rather than through Jesus's death and resurrection."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its dispute over Mary's authority reflects real early Christian debates about who could claim legitimate teaching authority, though scholars caution against reading modern gender debates directly onto this ancient conflict. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-judas",
         "title": "Gospel of Judas",
-        "summary": [
-          "The Gospel of Judas survives in a fragmentary and significantly damaged Coptic manuscript (part of the Codex Tchacos, made public in 2006), presenting Judas Iscariot not as a villainous betrayer but as the disciple possessing the deepest, most privileged understanding of Jesus’s true, transcendent identity, entrusted by Jesus with the task of facilitating his death as a means of liberating Jesus’s true spiritual self from its material bodily “vessel” — a portrayal that inverts the overwhelmingly negative characterization of Judas found throughout canonical and most other early Christian tradition. The work is mentioned and vigorously condemned by the second-century heresiologist Irenaeus of Lyons (Against Heresies 1.31.1) as a product of a Gnostic sect he calls the Cainites, providing a secure terminus ante quem of approximately 180 CE, with the underlying Coptic manuscript itself dated to the third or fourth century CE, translating an earlier Greek original. The author is unknown, writing pseudonymously as, or about, Judas. Historically, Irenaeus’s explicit citation and condemnation of the work provides valuable, externally corroborated evidence for its existence and use within a specific, identifiable Gnostic Christian sectarian milieu of the mid-to-late second century, offering rare independent confirmation of a text’s date and use beyond the manuscript evidence alone. Theologically, the gospel’s radical reversal of Judas’s role reflects an extreme Gnostic-Sethian theological framework in which the physical crucifixion is reinterpreted not as a redemptive atoning sacrifice but as the liberation of a divine spiritual essence from degrading material embodiment, representing one of the most theologically distant and radically dualistic extant reinterpretations of the passion narrative within the broader corpus of early Christian apocryphal literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this gospel under, or about, Judas Iscariot; it survives in a damaged Coptic manuscript made public in 2006."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The second-century Christian writer Irenaeus explicitly condemns this work by name around 180 CE, giving a firm latest date and confirming its use within a specific Gnostic sect he calls the Cainites."
+          },
+          {
+            "heading": "Contents",
+            "body": "The gospel presents Judas not as a villain but as the disciple with the deepest understanding of Jesus, entrusted with helping free Jesus's true spiritual self from his physical body through the crucifixion."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This radically reinterprets the crucifixion as a liberation of spirit from matter rather than a saving sacrifice, reflecting an extreme dualistic (Gnostic) view that the material world itself is bad."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its complete reversal of Judas's role stands in sharp contrast to his uniformly negative portrayal throughout the New Testament, illustrating just how far some second-century groups departed from mainstream Christian teaching. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-philip",
         "title": "Gospel of Philip",
-        "summary": [
-          "The Gospel of Philip is a Coptic sayings-collection and theological meditation, surviving in the Nag Hammadi library, addressing sacramental theology (baptism, chrism/anointing, eucharist, redemption, and a mysterious “bridal chamber” rite), the nature of Christ’s body, and the relationship between Mary Magdalene and Jesus (including the controversial, much-discussed but textually damaged and ambiguous statement that Jesus “used to kiss her often,” a passage frequently sensationalized in popular literature but understood by most specialists as symbolic-sacramental rather than romantic in its original context). Most scholars date the composition to the second half of the third century CE, considerably later than many other Nag Hammadi texts, associating it with Valentinian Gnostic Christian sacramental theology, given its close conceptual affinities with the Valentinian theological school. The author is unknown, writing pseudonymously as the apostle Philip, though the work is more accurately characterized as an anthology of excerpted sayings and theological reflections rather than a unified, continuous composition. Historically, the work provides valuable, if difficult and fragmentary, evidence for the sophisticated sacramental theology developed within Valentinian Christian communities, a major and intellectually serious current within second- and third-century Christianity subsequently marginalized as heretical by the emerging mainstream church. Theologically, the “bridal chamber” imagery central to the text symbolizes the soul’s ultimate reunion with its transcendent spiritual counterpart (syzygy), achieved through sacramental participation understood as effecting genuine ontological transformation rather than merely symbolic commemoration, representing a distinctively Valentinian sacramental theology of considerable interest for comparative study of the diversity of second- and third-century Christian sacramental thought."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this collection of sayings and theological reflections under Philip's name, more accurately described as an anthology than a single connected work."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the second half of the third century CE, connecting it with Valentinian Gnostic Christian communities known for their sophisticated sacramental theology."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text addresses baptism, anointing, the eucharist, and a mysterious 'bridal chamber' rite, along with statements about Mary Magdalene's relationship to Jesus, including a damaged, much-debated line about Jesus kissing her."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The 'bridal chamber' imagery symbolizes the soul's ultimate reunion with its heavenly spiritual counterpart, achieved through sacraments that produce real spiritual transformation, not just symbolic remembrance."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It offers a window into Valentinian sacramental theology, a serious and influential strand of second- and third-century Christianity that the developing mainstream church eventually rejected as heretical. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "protevangelium-of-james-infancy-gospel-of-james",
-        "title": "Protevangelium of James (Infancy Gospel of James)",
-        "summary": [
-          "The Protevangelium of James narrates the birth and early life of Mary, mother of Jesus, including the miraculous circumstances of her own conception by the previously infertile Anna and Joachim, her upbringing and dedication in the Jerusalem Temple, her betrothal to the elderly widower Joseph, and an extended, theologically elaborated account of Jesus’s birth affirming Mary’s perpetual virginity even during and after the birth itself (including a notably graphic scene of a midwife’s physical verification of Mary’s continued virginity post-partum). Most scholars date the composition to the mid-to-late second century CE, situating it as one of the earliest and most influential extra-canonical infancy narratives, composed by an author demonstrably unfamiliar with actual Palestinian Jewish geography and customs (suggesting a Gentile Christian author writing at some cultural remove from Judea), writing pseudonymously as James, understood within the text’s own tradition as Jesus’s (half-)brother. Historically, despite never achieving canonical status, the work exercised an extraordinarily profound and lasting influence on later Christian Mariology, iconography, and liturgical tradition, essentially establishing much of the traditional narrative material (Mary’s parents Joachim and Anna, her Temple presentation, and other details) that would become standard across Eastern Orthodox, Catholic, and broader popular Christian tradition despite its absence from the New Testament itself. Theologically, the work’s central preoccupation with establishing and defending Mary’s perpetual virginity (before, during, and after Jesus’s birth) reflects and significantly advanced developing patristic-era Mariological doctrine, addressing theological concerns about the propriety and miraculous nature of the incarnation that would remain central to subsequent Christian dogmatic reflection on Mary’s unique role in salvation history."
+        "id": "protevangelium-of-james",
+        "title": "Protevangelium of James",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown, likely Gentile, author wrote this infancy narrative under the name of James, understood as Jesus's brother."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the mid-to-late second century CE; the author's unfamiliarity with actual Palestinian geography and customs suggests he wrote at some cultural distance from Judea."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text narrates Mary's own miraculous birth, her upbringing in the Jerusalem Temple, her betrothal to the elderly widower Joseph, and Jesus's birth, including a scene meant to confirm Mary's virginity even during the birth itself."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work's central concern is establishing and defending Mary's perpetual virginity — before, during, and after Jesus's birth — a doctrine that became central to later Christian teaching about Mary."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Though never part of the New Testament, this text supplied much of the traditional material about Mary's parents and early life that became standard in later Christian art and devotion. It has no canonical status but was enormously influential."
+          }
         ]
       },
       {
         "id": "infancy-gospel-of-thomas",
         "title": "Infancy Gospel of Thomas",
-        "summary": [
-          "The Infancy Gospel of Thomas (distinct from and unrelated in content to the sayings-Gospel of Thomas discussed above) narrates a series of episodes from Jesus’s childhood between roughly ages five and twelve, depicting the child Jesus performing a series of remarkable, sometimes morally troubling miracles, including striking dead a playmate who bumped into him and later reviving him, miraculously extending a piece of wood his father Joseph had cut too short, and gradually maturing from displays of capricious, even destructive, supernatural power toward more consistently benevolent use of his abilities, culminating in an episode paralleling the canonical Luke 2’s account of the twelve-year-old Jesus in the Temple. Most scholars date the composition to the mid-to-late second century CE, and the work survives in multiple Greek recensions of varying length along with Syriac, Latin, Georgian, Slavonic, and Ethiopic versions, reflecting its wide and enduring popularity across diverse regions of the ancient and medieval Christian world despite its non-canonical status. The author is unknown, writing pseudonymously as the apostle Thomas. Historically, the work reflects widespread popular Christian curiosity about Jesus’s “hidden years” between infancy and the beginning of his public ministry, a narrative gap the canonical Gospels leave almost entirely unaddressed, which this and related infancy gospels sought imaginatively, if theologically unsophisticated fashion, to fill. Theologically, the work’s early episodes depicting the child Jesus’s morally ambiguous, even punitive, exercise of miraculous power have generated considerable scholarly discussion regarding their apparent tension with, and eventual narrative resolution toward, the fully benevolent, redemptive characterization of Jesus’s power and character consistently emphasized in canonical Gospel tradition, suggesting the work’s narrative arc itself functions didactically to model the maturation of divine power into properly ordered, compassionate exercise."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text under the name of the apostle Thomas; it is unrelated in content to the sayings-based Gospel of Thomas discussed above."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the mid-to-late second century CE; it survives in multiple versions across many languages, showing its wide and lasting popularity."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text narrates episodes from Jesus's childhood (roughly ages five to twelve), showing him performing both destructive miracles (striking a playmate dead) and increasingly kind ones as he matures."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The narrative arc, moving from troubling to consistently benevolent uses of miraculous power, seems to model the proper, compassionate exercise of divine power as Jesus matures."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It fills a gap the canonical Gospels leave almost untouched — Jesus's childhood between infancy and the start of his ministry (compare Luke 2:41–52, the only canonical exception). It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-the-ebionites",
         "title": "Gospel of the Ebionites",
-        "summary": [
-          "The Gospel of the Ebionites is known only through seven brief quotations preserved by the fourth-century heresiologist Epiphanius of Salamis in his Panarion, describing a Jewish-Christian gospel apparently harmonizing material from the Synoptic Gospels (particularly Matthew and Luke) while reflecting the distinctive theological emphases of the Ebionites, a Jewish-Christian sect maintaining strict Torah observance, denying Jesus’s virgin birth (regarding him as an ordinary human adopted as God’s Son at his baptism), and, according to Epiphanius, rejecting animal sacrifice and consumption of meat even in descriptions of Jesus’s own practice (altering, for instance, the Baptist’s diet from “locusts” to “cakes” in apparent accommodation to their vegetarian principles). Given the extremely limited surviving evidence — only Epiphanius’s selective, polemically motivated quotations — the work’s precise date and full content cannot be reconstructed with confidence, though most scholars propose a composition date in the second century CE, reflecting an already well-established Ebionite theological tradition. The author is unknown. Historically, the fragmentary gospel provides valuable, if indirect and polemically filtered, evidence for the persistence of theologically distinctive, strictly Torah-observant Jewish-Christian communities well into the patristic period, communities increasingly marginalized and eventually condemned as heretical by an emerging Gentile-dominated mainstream church. Theologically, the gospel’s adoptionist Christology (denying pre-existence and virgin birth in favor of Jesus’s elevation to divine sonship at baptism) and its apparent vegetarian, anti-sacrificial ethical program represent a significant and theologically serious, if ultimately unsuccessful, alternative trajectory within earliest Jewish-Christian theological development, situated at the disputed boundary between continuing Jewish covenant observance and emerging Christian confession."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this gospel; it survives only through seven brief quotations preserved by the fourth-century writer Epiphanius, who was hostile to the group that used it."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a second-century CE date, reflecting the beliefs of the Ebionites, a strictly Torah-observant Jewish-Christian sect."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving quotations show a gospel harmonizing material from Matthew and Luke, altered to fit Ebionite beliefs, including changing John the Baptist's diet from locusts to cakes to fit their vegetarian principles."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The gospel denies the virgin birth, teaching instead that Jesus was an ordinary human adopted as God's Son at his baptism (a view called adoptionism), and reflects strict, ongoing Torah observance."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It shows a theologically serious alternative path within earliest Jewish-Christianity that was eventually marginalized as the church became increasingly non-Jewish and developed different Christological views. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-the-hebrews",
         "title": "Gospel of the Hebrews",
-        "summary": [
-          "The Gospel of the Hebrews is known only through fragmentary citations preserved by Clement of Alexandria, Origen, and Jerome, describing a Jewish-Christian gospel, apparently composed in Greek (despite its title) and possibly used among Egyptian Jewish-Christian communities, containing distinctive material including sayings attributed to Jesus concerning seeking rest and marveling at creation, and, notably, an account of a resurrection appearance to James “the brother of the Lord” that supplements the more limited canonical resurrection appearance traditions. Given the fragmentary nature of the evidence and its citation across a span of authors from the late second through early fifth centuries, the work’s precise date and relationship to other Jewish-Christian gospels (the Gospel of the Ebionites and Gospel of the Nazoreans, discussed separately, though scholars debate whether these three titles in patristic citation actually represent three genuinely distinct works or reflect some overlap and confusion in the patristic sources themselves) remains a matter of ongoing scholarly reconstruction and debate; most propose a date in the early-to-mid second century CE. The author is unknown. Historically, the gospel’s apparent circulation among Jewish-Christian communities, quite possibly in Egypt, and its citation by prominent patristic authors (including the considerable respect Jerome, who claims to have translated it, appears to accord it) demonstrates the continued, if eventually diminishing, currency of specifically Jewish-Christian gospel tradition within broader early Christian literary culture well into the patristic period. Theologically, the gospel’s distinctive resurrection appearance to James reflects and likely serves to bolster a Jewish-Christian tradition emphasizing James’s own preeminent apostolic authority (paralleling his prominent leadership role in Jerusalem attested in Acts and Galatians), offering valuable comparative evidence for the diversity of resurrection appearance traditions and associated claims to apostolic authority circulating in various early Christian communities."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this gospel, likely in Greek despite its title; it survives only in fragmentary quotations by Clement of Alexandria, Origen, and Jerome."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a date in the early-to-mid second century CE, likely used among Jewish-Christian communities, possibly in Egypt."
+          },
+          {
+            "heading": "Contents",
+            "body": "Surviving fragments include unique sayings of Jesus and a resurrection appearance to James 'the brother of the Lord' not found in the canonical Gospels."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The resurrection appearance to James likely served to support traditions about James's own high standing and leadership authority in the early church."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This tradition complements and supplements the New Testament's own accounts of resurrection appearances and James's prominent leadership role (seen in Acts and Galatians). It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-the-nazoreans",
         "title": "Gospel of the Nazoreans",
-        "summary": [
-          "The Gospel of the Nazoreans is known only through fragmentary citations, primarily preserved by Jerome, describing a Jewish-Christian gospel that most scholars regard as an Aramaic or Hebrew version or close paraphrastic adaptation of the canonical Gospel of Matthew, used among the Nazoreans, a Jewish-Christian sect maintaining Torah observance while, unlike the more theologically distinctive Ebionites, apparently affirming more conventional, closer-to-mainstream Christological positions including the virgin birth. Given the fragmentary and citation-dependent nature of the evidence, precise dating is difficult, but most scholars propose the underlying tradition or translation reflects a date in the second century CE, reflecting ongoing Jewish-Christian community use and adaptation of Matthean gospel tradition in a Semitic linguistic form. The author is unknown, the work likely representing translation/adaptation rather than wholly independent composition. Historically, the gospel’s apparent status as an Aramaic or Hebrew rendering of Matthew (rather than an independently composed gospel) illustrates the linguistic and cultural diversity of early Christian communities, with Semitic-speaking Jewish-Christian congregations continuing to use and transmit gospel tradition in their own vernacular language alongside, or independently of, the Greek textual tradition dominant in the broader Gentile church. Theologically, the fragments’ relatively conventional Christological content, in contrast to the more theologically distinctive adoptionism of the Ebionite gospel tradition, suggests the Nazoreans represented a less radically divergent, more moderate strand of continuing Jewish-Christian identity, maintaining Torah observance and Jewish ethnic identity while affirming Christological positions broadly compatible with, if independently transmitted from, the emerging mainstream Gentile Christian tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown translator or adapter, rather than an independent author, produced this text, known only through fragmentary citations, mainly by Jerome."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars propose a second-century CE date for this Aramaic or Hebrew version or close adaptation of the canonical Matthew."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving fragments show a text closely following Matthew's content, used by the Nazoreans, a Torah-observant but otherwise fairly mainstream Jewish-Christian group."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Unlike the more theologically distinctive Ebionites, the Nazoreans apparently affirmed conventional beliefs including the virgin birth, showing a more moderate form of continuing Jewish-Christian identity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It illustrates linguistic diversity in the earliest church, with Aramaic-speaking Jewish-Christian communities continuing to use and adapt Gospel material in their own language. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-the-egyptians",
         "title": "Gospel of the Egyptians",
-        "summary": [
-          "The Gospel of the Egyptians (a title applied to at least two distinct works — a lost second-century text known through citations in Clement of Alexandria, and an unrelated Gnostic-Sethian cosmological treatise of the same title surviving in the Nag Hammadi library) is best known, in its Clementine citation form, through a dialogue between Jesus and Salome addressing questions of sexuality, procreation, and the eschatological abolition of gender distinction (“when you have trampled on the garment of shame, and when the two become one, and the male with the female is neither male nor female”), reflecting an encratite (sexually renunciatory) theological tendency. Clement’s citations, dating his own activity to the late second/early third century CE, provide a firm terminus ante quem for this Clementine text, with most scholars proposing composition in the mid-second century CE, likely within Egyptian, possibly encratite or proto-Gnostic, Christian circles; the separate Nag Hammadi text bearing the same title is a distinct, considerably more elaborate Sethian Gnostic cosmological treatise, unrelated in content to Clement’s citations, and dated by most scholars to the late second or third century CE. The author(s) are unknown. Historically, the encratite Gospel of the Egyptians cited by Clement reflects a significant ascetic-renunciatory current within second-century Egyptian Christianity, associating sexual differentiation and procreation with the fallen, shameful condition of embodied existence, a theological tendency Clement himself, while citing the text, ultimately criticizes as an overly radical distortion of proper Christian asceticism. Theologically, both works, despite their distinct content, share an underlying conviction that authentic spiritual salvation involves transcending ordinary embodied, sexually differentiated human existence, representing variant expressions of the broader ascetic and cosmological speculative currents active within diverse strands of second- and third-century Egyptian Christianity."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This title covers two unrelated works by unknown authors: a lost second-century text known through Clement of Alexandria's citations, and a separate, unrelated Gnostic treatise found at Nag Hammadi."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Clement's citations place the first text's composition in the mid-second century CE, likely in Egypt; the Nag Hammadi text dates to the late second or third century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The Clementine text includes a dialogue between Jesus and Salome discussing sexuality and the eventual erasing of gender distinctions in the age to come."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Both works, despite different content, share the idea that true spiritual salvation involves moving beyond ordinary embodied, sexually differentiated existence, an ascetic (encratite) theological tendency."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This reflects a significant strand of ascetic Christian thought in Egypt, offering context for New Testament passages on celibacy and sexuality (such as 1 Corinthians 7) that some later groups pushed toward more extreme positions. Neither work has canonical status."
+          }
         ]
       },
       {
-        "id": "egerton-gospel-papyrus-egerton-2",
-        "title": "Egerton Gospel (Papyrus Egerton 2)",
-        "summary": [
-          "The Egerton Gospel, known from a fragmentary Greek papyrus (Papyrus Egerton 2, acquired by the British Museum in 1934, with a related fragment subsequently identified among the Cologne papyri), preserves portions of an otherwise unknown gospel narrative including a controversy dialogue with Jewish authorities over Jesus’s authority and testimony (closely paralleling material found in John’s Gospel), a healing of a leper, a controversy over paying tribute to Caesar (paralleling Synoptic material), and a fragmentary account of a miracle performed at the Jordan river. The papyrus itself is dated on paleographic grounds to the mid-second century CE, making it one of the earliest surviving New Testament-related manuscript fragments of any kind, whether canonical or apocryphal, and its content’s striking combination of both Johannine-style and Synoptic-style material has generated extensive scholarly debate over whether the work represents an independent early source drawing on separate oral or written tradition predating the canonical Gospels, or a later harmonizing composition drawing eclectically on the already-written canonical Gospels; most contemporary scholars favor the latter, later-dependent, interpretation, though the question remains genuinely debated. The author is unknown. Historically, the papyrus’s early physical date provides valuable independent manuscript evidence for the currency and combination of gospel traditions, whether independently or dependently derived, circulating in written form remarkably early in Christian manuscript history. Theologically, the fragment’s content does not exhibit distinctively heterodox or sectarian theological positions, presenting material broadly continuous with canonical gospel concerns regarding Jesus’s authority, healing ministry, and controversy with Jewish religious leadership, making its chief scholarly significance text-critical and source-critical rather than distinctively doctrinal."
+        "id": "egerton-gospel",
+        "title": "Egerton Gospel",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this now-fragmentary gospel, preserved on a papyrus (Papyrus Egerton 2) acquired by the British Museum in 1934."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The papyrus itself dates on handwriting grounds to the mid-second century CE, making it one of the earliest surviving New Testament-related manuscript fragments of any kind."
+          },
+          {
+            "heading": "Contents",
+            "body": "The surviving fragments include a controversy dialogue with Jewish authorities (resembling material in John), a healing of a leper, and a dispute over paying tribute to Caesar (resembling Synoptic material)."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The fragment shows no distinctively heterodox theology, presenting content broadly continuous with canonical concerns about Jesus's authority and healing ministry."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its combination of both Johannine-style and Synoptic-style material has fueled debate over whether it draws on independent early tradition or simply blends the already-written canonical Gospels; most scholars favor the latter. It has no canonical status."
+          }
         ]
       },
       {
         "id": "secret-gospel-of-mark",
         "title": "Secret Gospel of Mark",
-        "summary": [
-          "The Secret Gospel of Mark is known only through a letter allegedly written by Clement of Alexandria to a certain Theodore, discovered (and photographed, though the original manuscript has since disappeared, a circumstance generating significant and unresolved scholarly controversy over the letter’s authenticity) by Morton Smith in 1958 at the Mar Saba monastery, quoting brief excerpts from a supposedly more expansive, “spiritual” version of Mark’s Gospel used in Alexandria, including an episode in which Jesus raises a young man from the dead who subsequently comes to Jesus at night wearing only a linen cloth to be taught “the mystery of the kingdom of God.” The authenticity of the entire discovery has been vigorously disputed since its announcement, with a substantial body of scholarly opinion (including detailed stylometric and historical analysis) now regarding the letter and its quoted gospel excerpts as a probable modern forgery, quite possibly perpetrated by Smith himself, though a minority of scholars continue to defend its authenticity as a genuine ancient composition, leaving the matter a live and unusually contentious question within New Testament apocrypha scholarship. If genuine, most proponents would date the underlying “Secret Gospel” material to the second century CE, reflecting a purportedly esoteric, initiatory expansion of canonical Mark circulating in restricted Alexandrian church use. Historically and theologically, the controversy itself has become as significant an object of scholarly study as the purported text, illustrating the methodological challenges of authenticating unprovenanced manuscript discoveries and the ongoing, unresolved debates regarding the relationship between publicly transmitted and purportedly esoteric or restricted-access early Christian gospel traditions, a debate this contested case has done much to sharpen without ultimately resolving."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "This text is known only through a letter allegedly by Clement of Alexandria, discovered (and photographed, though the original has since disappeared) by scholar Morton Smith in 1958."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The letter's authenticity has been strongly disputed since its announcement, with many scholars now suspecting a modern forgery, possibly by Smith himself, though the question remains unresolved."
+          },
+          {
+            "heading": "Contents",
+            "body": "The quoted excerpts describe a fuller, more 'spiritual' version of Mark's Gospel supposedly used in Alexandria, including an episode where Jesus raises a young man who later comes to him at night to learn 'the mystery of the kingdom of God.'"
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "If genuine, the text would suggest a restricted, more esoteric version of Mark circulated alongside the publicly available Gospel, though this remains highly uncertain."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The controversy itself has become an important case study in how scholars evaluate unprovenanced manuscript discoveries and claims about hidden or restricted early Christian traditions. It has no canonical status and its authenticity remains contested."
+          }
         ]
       },
       {
         "id": "acts-of-paul-and-thecla",
         "title": "Acts of Paul (and Thecla)",
-        "summary": [
-          "The Acts of Paul is an extensive apocryphal narrative recounting Paul’s missionary travels, preaching, and eventual martyrdom under Nero, most famously incorporating the widely circulated and independently transmitted Acts of Paul and Thecla, narrating the conversion of the young noblewoman Thecla to celibate Christian discipleship under Paul’s influence, her subsequent survival of repeated attempted executions, and her own independent itinerant teaching and even (controversially, given later restrictions on women’s teaching authority) baptismal ministry. The work is explicitly mentioned by the early Christian writer Tertullian (On Baptism 17), who reports, with evident disapproval, that a presbyter in Asia Minor was removed from office for having composed the work “out of love for Paul,” providing a firm terminus ante quem of approximately 190–200 CE and unusually direct evidence regarding both the work’s origin and its contested reception; most scholars therefore date the composition to the mid-to-late second century CE. The author, per Tertullian’s report, was an otherwise unknown Asian presbyter, writing pseudonymously in Paul’s voice despite his admitted personal, non-apostolic authorship. Historically, Tertullian’s testimony provides a remarkably clear window into contested authorial attribution and ecclesiastical discipline surrounding apocryphal composition in the early church, demonstrating both the genre’s popularity and the emerging institutional concern to police pseudonymous authorship even when motivated by evident personal piety rather than deliberate deception. Theologically, the Thecla narrative’s celebration of female celibate autonomy, itinerant teaching authority, and even self-administered or Pauline-sanctioned baptism reflects and likely reinforced an ascetic, encratite current within second-century Christianity emphasizing sexual renunciation as integral to authentic discipleship, a theological emphasis in productive tension with, though not entirely absent from, canonical Pauline material on celibacy (1 Cor 7)."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The early Christian writer Tertullian reports that an otherwise unknown presbyter in Asia Minor wrote this work 'out of love for Paul' and was removed from office for doing so."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Tertullian's report gives a firm latest date of about 190–200 CE; most scholars date the actual composition to the mid-to-late second century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work narrates Paul's missionary travels and eventual martyrdom, including the widely circulated story of Thecla, a young noblewoman converted to celibate discipleship who survives repeated execution attempts and later teaches and baptizes on her own."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The Thecla story celebrates female celibate independence and even a form of women's teaching and baptismal ministry, reflecting an ascetic strand of second-century Christianity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This tension between ascetic celibacy and canonical Pauline teaching on marriage and women's roles (as in 1 Corinthians 7 and the Pastoral Epistles) illustrates real diversity in how Paul's legacy was understood and extended. It has no canonical status."
+          }
         ]
       },
       {
         "id": "acts-of-peter",
         "title": "Acts of Peter",
-        "summary": [
-          "The Acts of Peter narrates Peter’s confrontation with the heretical magician Simon Magus in Rome (elaborating the brief canonical account in Acts 8:9–24), including a dramatic public contest of miraculous power in the Roman forum, and culminates in Peter’s own martyrdom by crucifixion, including the famous, widely influential “Quo Vadis” episode in which Peter, fleeing Rome to escape persecution, encounters the risen Christ and, shamed into returning to face martyrdom, asks “Lord, where are you going?” (“Quo vadis, Domine?”), to which Christ replies that he goes to Rome to be crucified again in Peter’s place, prompting Peter’s return and voluntary martyrdom. Most scholars date the composition to the late second century CE, likely originating in Asia Minor, and it survives complete only in a Latin translation (the Vercelli Acts) along with fragmentary Greek and Coptic portions. The author is unknown, writing anonymously or pseudonymously within the broader “apocryphal Acts” genre. Historically, the work provides the earliest surviving detailed narrative account of Peter’s martyrdom, including the tradition (highly influential for subsequent Christian tradition and iconography) that Peter requested to be crucified upside down, considering himself unworthy to die in the same manner as Christ, a detail absent from the New Testament itself but subsequently accepted as standard church tradition. Theologically, the work’s central theological concern is the vindication of true apostolic power and teaching against heretical magical imitation (embodied in Simon Magus, who becomes in later Christian tradition a paradigmatic figure for heresy and simony), while its martyrdom narrative develops a rich theology of willing, imitative suffering following Christ’s example as the culminating expression of authentic apostolic discipleship."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, likely originating in Asia Minor; it survives complete only in a Latin translation with fragmentary Greek and Coptic portions."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the composition to the late second century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work narrates Peter's confrontation with the magician Simon Magus in Rome and Peter's own martyrdom by crucifixion, including the famous 'Quo Vadis' story in which the fleeing Peter meets the risen Christ and turns back to face death."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The narrative develops a theology of willing, imitative suffering that follows Christ's example as the highest expression of faithful discipleship, while vindicating true apostolic power against false magical imitation."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It provides the earliest detailed account of Peter's martyrdom tradition, including the detail (absent from the New Testament) that Peter asked to be crucified upside down out of humility. It has no canonical status but decisively shaped later Christian tradition about Peter's death."
+          }
         ]
       },
       {
         "id": "acts-of-john",
         "title": "Acts of John",
-        "summary": [
-          "The Acts of John narrates the apostle John’s missionary activity centered in Ephesus, including a series of miraculous healings and confrontations with pagan temple worship (notably the destruction of the temple of Artemis through John’s prayer), interspersed with lengthy theological and hymnic material, most notably an unusual “Round Dance of the Cross” hymn attributed to Jesus, and concluding with an account of John’s peaceful death, distinguishing him from the martyrdom narratives typical of other apocryphal Acts. Most scholars date the composition to the late second or early third century CE, likely originating in Asia Minor, and the work exhibits clear docetic theological tendencies, including a striking passage in which Jesus’s body is described as immaterial and intangible even during his earthly ministry (John reports being unable to leave footprints when walking alongside Jesus, and touching Jesus’s body sometimes felt solid, sometimes immaterial, “as if it did not exist at all”). The author is unknown. Historically, the work’s docetic Christological content situates it as valuable evidence for the diversity and, from the perspective of the emerging mainstream church, the theological dangers of Christological speculation regarding the true nature of Christ’s physical body during the second and third centuries, a controversy the developing conciliar tradition would eventually resolve through Nicene and Chalcedonian dogmatic formulation explicitly excluding docetism. Theologically, the “Round Dance” hymn’s presentation of Jesus leading his disciples in a mystical ritual dance while pronouncing a series of paradoxical “I am” and revelatory statements reflects sophisticated liturgical-mystical theological creativity, situating the crucifixion itself within a framework of cosmic, mystical revelation rather than straightforward historical suffering, consistent with the work’s broader docetic orientation."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely writing in Asia Minor, composed this text narrating John's missionary work centered in Ephesus."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the late second or early third century CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work includes miraculous healings, the destruction of a pagan temple through John's prayer, an unusual hymn called the 'Round Dance of the Cross,' and an account of John's peaceful death rather than martyrdom."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text shows clear docetic tendencies, describing Jesus's body during his earthly life as sometimes immaterial or intangible, denying that he had an ordinary physical human body."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This docetic Christology represents exactly the kind of teaching that later church councils (Nicaea and Chalcedon) explicitly rejected in defining Jesus's full and genuine humanity. It has no canonical status."
+          }
         ]
       },
       {
         "id": "acts-of-andrew",
         "title": "Acts of Andrew",
-        "summary": [
-          "The Acts of Andrew narrates the apostle Andrew’s missionary travels, healings, and eventual martyrdom by crucifixion at Patras in Achaea, incorporating extensive philosophical and ascetic teaching material, particularly emphasizing the renunciation of marriage and sexuality as central to authentic Christian discipleship, most famously in the narrative’s climactic account of Andrew’s successful persuasion of Maximilla, wife of the Roman proconsul Aegeates, to abandon marital relations with her husband, precipitating the conflict that leads to Andrew’s arrest and execution. The work survives only in fragmentary and reconstructed form, its original text having been extensively excerpted, epitomized, and altered by later editors (including a significant later epitome by Gregory of Tours), complicating efforts to reconstruct its original content with confidence; most scholars date the original composition to the late second or early third century CE. The author is unknown. Historically, the work’s extremely fragmentary and altered transmission history exemplifies the broader challenges facing scholars attempting to reconstruct the apocryphal Acts literature, much of which survives only through later epitomes, translations, and selective citation rather than complete, reliably transmitted original texts. Theologically, the work’s intense encratite emphasis on sexual renunciation, even within existing marriage, as essential to authentic Christian sanctity represents an extreme expression of the broader ascetic tendency evident across much of the apocryphal Acts literature (compare the Acts of Paul and Thecla and Acts of Thomas), reflecting a significant, if eventually marginalized by mainstream church teaching on the legitimacy of Christian marriage, strand of early Christian ascetic theological reflection on sexuality and discipleship."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, writing in the late second or early third century CE, composed this text, though it survives only in fragmentary and heavily altered form through later editors."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Much of the original text was lost or reworked by later editors, including a significant later summary by Gregory of Tours, making the work difficult to reconstruct with confidence."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work narrates Andrew's missionary travels, healings, and martyrdom by crucifixion, with extensive teaching urging sexual renunciation, including persuading a married woman to abandon relations with her husband."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its intense emphasis on sexual renunciation, even within existing marriage, represents an extreme version of the ascetic tendency found across much of this literature."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This extreme asceticism eventually lost out to mainstream church teaching affirming the legitimacy of Christian marriage. It has no canonical status."
+          }
         ]
       },
       {
         "id": "acts-of-thomas",
         "title": "Acts of Thomas",
-        "summary": [
-          "The Acts of Thomas narrates the apostle Thomas’s missionary journey to India (accepted, remarkably, by a significant strand of subsequent Christian tradition, particularly the Saint Thomas Christians of Kerala, as reflecting genuine historical missionary activity, though the narrative’s specific episodes are universally regarded by critical scholars as legendary), including his construction of a “heavenly palace” through charitable almsgiving rather than literal building, extensive encratite teaching on sexual renunciation (including persuading a newly married royal couple to abstain from consummating their marriage), and his eventual martyrdom by spearing. The work survives complete in Syriac and Greek versions and most scholars date the composition to the early third century CE, likely originating in Syriac-speaking eastern Christianity (possibly Edessa), incorporating within its narrative the celebrated “Hymn of the Pearl” (or “Hymn of the Soul”), a separately transmitted poetic allegory of a royal soul’s descent into Egypt (symbolizing embodied earthly existence), forgetfulness of its true heavenly origin, and eventual awakening and return, widely regarded as one of the most sophisticated and theologically significant literary compositions surviving from the broader apocryphal Acts tradition. The author is unknown. Historically, the work’s Syriac origin and its association with the Thomas Christian tradition of India provide valuable evidence for the eastward expansion and adaptation of Christian missionary narrative and communal identity beyond the primarily Mediterranean-focused canonical Acts of the Apostles. Theologically, the embedded Hymn of the Pearl’s allegory of the soul’s fall into forgetful material embodiment and its awakening through a redemptive message reflects broader Gnostic-adjacent themes of soul, ignorance, and gnosis-based salvation, while the work’s pervasive encratite emphasis continues the strong ascetic-sexual-renunciatory current characteristic of much of the wider apocryphal Acts literature."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author, likely writing in Syriac-speaking eastern Christianity (possibly Edessa), composed this text about Thomas's missionary journey to India."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the early third century CE; the Thomas Christians of Kerala, India, still regard the underlying missionary tradition as historically genuine, though scholars view specific episodes as legendary."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work narrates Thomas's ministry, extensive teaching on sexual renunciation, and his eventual martyrdom, and includes the separately well-known 'Hymn of the Pearl,' a poetic allegory of a soul's fall into forgetful earthly existence and eventual awakening and return."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The embedded hymn reflects Gnostic-adjacent themes about the soul's fall into ignorance and its rescue through saving knowledge, alongside the work's broader ascetic, sexually renunciatory emphasis."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The text documents the eastward spread and adaptation of Christian missionary tradition beyond the mainly Mediterranean focus of the canonical Acts of the Apostles. It has no canonical status."
+          }
         ]
       },
       {
         "id": "epistle-to-the-laodiceans",
         "title": "Epistle to the Laodiceans",
-        "summary": [
-          "The Epistle to the Laodiceans is a brief pseudonymous Pauline letter, composed largely as a pastiche of phrases and sentiments drawn from the genuine Pauline corpus (particularly Philippians), apparently generated in response to Colossians 4:16’s tantalizing reference to a letter Paul had written “to the Laodiceans” that does not survive within the canonical Pauline corpus, prompting later composition of a text to fill this apparent gap. The work survives complete only in Latin, and most scholars date its composition to the second, third, or fourth century CE, with a range of proposals reflecting the difficulty of dating a text so heavily and formulaically dependent on earlier Pauline material that it offers few independent stylistic or historical anchors for precise dating. The author is unknown, writing pseudonymously as Paul. Historically, the letter’s manuscript transmission history is notable: despite near-universal patristic recognition of its spurious character (explicitly rejected by the Muratorian Fragment and by Jerome), it nonetheless circulated widely in medieval Latin Vulgate Bible manuscripts, appearing in a substantial number of surviving medieval codices even though it was never formally granted canonical status by any major church council or authoritative doctrinal pronouncement. Theologically, the letter contains no distinctive or controversial theological content whatsoever, consisting essentially of generic Pauline-sounding exhortation assembled from authentic Pauline phraseology, suggesting its primary motivation was not to advance any particular heterodox theological agenda but simply the harmless, if misguided, desire to supply the canonical gap implied by Colossians’ reference, making it perhaps the least theologically consequential text within the entire New Testament apocryphal corpus."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this short letter, made up almost entirely of phrases borrowed from genuine Pauline letters (especially Philippians), pretending to be Paul."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "The letter was likely written to fill a gap implied by Colossians 4:16, which mentions a letter Paul wrote 'to the Laodiceans' that does not survive in the New Testament; most scholars date it somewhere between the second and fourth centuries CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter offers generic Pauline-sounding exhortation with no distinctive content of its own."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its lack of any controversial or heterodox theology suggests it was written simply to satisfy curiosity about the missing letter mentioned in Colossians, not to advance any particular agenda."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Despite being universally recognized by early Christian writers as not genuinely Pauline, it circulated widely in medieval Latin Bible manuscripts, illustrating how canon boundaries were practically negotiated over centuries. It has no canonical status."
+          }
         ]
       },
       {
         "id": "3-corinthians",
         "title": "3 Corinthians",
-        "summary": [
-          "3 Corinthians is a brief pseudonymous Pauline correspondence, comprising a letter purportedly from the Corinthian church to Paul reporting the arrival of false teachers denying bodily resurrection, the goodness of the created material world, and the reality of Christ’s incarnation and virgin birth, followed by Paul’s response letter refuting these errors and affirming orthodox positions on creation, incarnation, and bodily resurrection. The work is embedded within the larger, non-canonical Acts of Paul (discussed above) and most scholars date its composition, along with the broader Acts of Paul, to the mid-to-late second century CE, likely composed specifically to combat Gnostic or Marcionite-influenced denial of material creation’s goodness and bodily resurrection, positions the letter explicitly and systematically refutes point by point. The author is unknown, writing pseudonymously as Paul (and, in the framing letter, as the Corinthian church). Historically, the work achieved notable canonical or quasi-canonical status within certain regional church traditions, being included as scripture in the Armenian church for a period and cited with apparent scriptural authority by some Syriac patristic writers, illustrating the genuinely variable and evolving boundaries of the New Testament canon across different regional early Christian traditions before eventual broader consensus consolidated around the twenty-seven-book canon now standard. Theologically, the work’s systematic refutation of positions denying bodily resurrection, the goodness of material creation, and the reality of the incarnation represents a clear, deliberately orthodox-defending polemical composition directly engaging the same theological controversies addressed by genuine Pauline material (particularly 1 Corinthians 15) and by other emerging orthodox Christian anti-Gnostic and anti-Marcionite apologetic literature of the second century."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this correspondence, embedded within the larger Acts of Paul, presenting a letter from the Corinthian church to Paul followed by Paul's reply."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it, along with the broader Acts of Paul, to the mid-to-late second century CE, likely composed specifically to combat Gnostic or Marcionite teaching."
+          },
+          {
+            "heading": "Contents",
+            "body": "The correspondence has the Corinthian church report false teachers denying bodily resurrection and Christ's real incarnation, and has 'Paul' systematically refute these errors."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The letter defends the goodness of the created world, the reality of the incarnation, and bodily resurrection — all points also defended by the genuine Paul, especially in 1 Corinthians 15."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It was treated as scripture for a time in the Armenian church and cited by some Syriac writers, showing that canon boundaries genuinely varied by region before broader consensus formed around the twenty-seven-book New Testament. It has no canonical status in the mainstream church today."
+          }
         ]
       },
       {
-        "id": "epistle-of-the-apostles-epistula-apostolorum",
-        "title": "Epistle of the Apostles (Epistula Apostolorum)",
-        "summary": [
-          "The Epistle of the Apostles presents itself as a circular letter from the eleven apostles recounting an extended post-resurrection dialogue with Jesus, addressing questions of eschatology, the timing of Christ’s return, resurrection of the body, and explicit refutation of docetic Christology and the teachings of Simon Magus and Cerinthus (early figures associated with heretical teaching in patristic tradition), affirming a strongly anti-docetic, anti-Gnostic orthodox theological position throughout. The work survives complete only in Ethiopic, with a substantial though incomplete Coptic version also extant; most scholars date the composition to the mid-second century CE, situating it as an early and theologically significant orthodox counter-polemic explicitly composed to combat the docetic and Gnostic Christological positions evident in works such as the Acts of John and various Nag Hammadi texts discussed above. The author is unknown, writing pseudonymously in the collective voice of the apostles. Historically, the work provides valuable direct evidence for mid-second-century orthodox Christian theological self-definition achieved specifically through direct engagement with and refutation of named heretical opponents, illustrating the increasingly organized and polemically sophisticated character of orthodox theological argumentation developing in response to the perceived threat of docetic and Gnostic Christological alternatives during this formative period. Theologically, the work’s insistent affirmation of Christ’s genuine bodily incarnation, physical suffering, and bodily resurrection, presented as directly taught by the risen Christ himself to the assembled apostles, functions as a deliberately constructed apostolic authorization for emerging orthodox Christological and eschatological positions against competing docetic and realized-eschatology alternatives circulating within the diverse Christian movements of the second century."
+        "id": "epistle-of-the-apostles",
+        "title": "Epistle of the Apostles",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, presenting it as a circular letter from all eleven apostles together."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the mid-second century CE; it survives complete only in Ethiopic with a substantial Coptic version also extant."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter recounts an extended post-resurrection dialogue between the apostles and Jesus, addressing eschatology, bodily resurrection, and explicitly refuting docetic teaching and named heretical figures like Simon Magus."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text insistently affirms Christ's genuine bodily incarnation, real physical suffering, and bodily resurrection, directly opposing the docetic views found in some other apocryphal texts discussed above (like the Acts of John)."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It shows the developing, increasingly organized character of orthodox Christian argument against docetic and Gnostic alternatives during the second century, a process that shaped the New Testament's eventual reception as authoritative. It has no canonical status."
+          }
         ]
       },
       {
         "id": "correspondence-of-paul-and-seneca",
         "title": "Correspondence of Paul and Seneca",
-        "summary": [
-          "The Correspondence of Paul and Seneca comprises fourteen brief pseudonymous Latin letters exchanged between the apostle Paul and the Roman Stoic philosopher and statesman Seneca the Younger, presenting a cordial, mutually admiring relationship in which Seneca expresses admiration for Paul’s letters (having them read to Emperor Nero) while gently critiquing Paul’s Latin style, and Paul offers correspondingly respectful, if theologically restrained, replies, without any substantive theological content beyond expressions of mutual esteem. Most scholars date the composition to the late third or fourth century CE, considerably later than the purported first-century setting (Seneca died in 65 CE), reflecting a later Christian desire to establish a legitimizing connection between Pauline Christianity and one of Rome’s most respected philosophical and literary figures, a desire evidently strong enough to generate outright literary fabrication despite the complete absence of any genuine historical relationship between the two figures. The author is unknown. Historically, the correspondence’s evident purpose — enhancing Christianity’s cultural respectability by associating the apostle Paul with elite Roman intellectual culture — reflects a broader apologetic strategy visible across various periods of early Christian literature (compare the earlier Hellenistic Jewish strategy of co-opting Greek philosophical and poetic authorities discussed above under the Pseudepigrapha) adapted here specifically to enhance Christianity’s standing within a still partially skeptical Roman intellectual culture. Theologically, the correspondence contains essentially no substantive theological content, its significance lying entirely in its historical-cultural function as an apologetic fabrication rather than in any doctrinal contribution, and its ultimate acceptance by figures as significant as Jerome and Augustine (both of whom, apparently accepting its authenticity, referenced Seneca with some favor partly on this basis) illustrates the occasionally uncritical reception even sophisticated patristic scholars could extend to spurious but culturally appealing apocryphal material."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author invented this exchange of fourteen brief letters between Paul and the Roman Stoic philosopher Seneca the Younger."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the late third or fourth century CE, considerably later than the supposed first-century setting (Seneca died in 65 CE), reflecting a later desire to connect Christianity with a respected Roman philosopher."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letters show mutual admiration, with Seneca praising Paul's writing (even reading it to Nero) while gently critiquing his Latin style, without any substantive theological content."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The correspondence has no theological content, existing purely to create a flattering, invented connection between Christianity and Roman philosophical respectability."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It reflects later Christian interest in showing that Christianity could hold its own alongside respected classical philosophy, though it has no basis in any genuine historical relationship. It has no canonical status."
+          }
         ]
       },
       {
         "id": "apocalypse-of-peter",
         "title": "Apocalypse of Peter",
-        "summary": [
-          "The Apocalypse of Peter presents an extended post-resurrection vision granted to Peter, describing in vivid, systematically catalogued detail the specific torments awaiting various categories of sinners in hell (each punishment carefully correlated to the corresponding sin, closely paralleling the technique later found in the Vision of Ezra discussed above) alongside a corresponding vision of paradisiacal reward for the righteous. The work survives in a fuller Ethiopic version and a shorter, differently ordered Greek fragment (the Akhmim fragment), and most scholars date the composition to the early-to-mid second century CE, making it one of the earliest and most influential Christian apocalyptic “tour of hell” texts, exercising profound and lasting influence on subsequent Christian eschatological imagination, including, many scholars argue, direct or indirect influence on Dante’s later medieval Inferno via intervening tradition. The author is unknown, writing pseudonymously as Peter. Historically, the work achieved remarkably high, near-canonical status in parts of the early church, being explicitly listed as disputed but seriously considered scripture in the Muratorian Fragment (a late second-century Roman canon list) and read liturgically in some churches as late as the early fifth century according to a report by the historian Sozomen, illustrating its genuinely contested and fluctuating canonical standing before its eventual, gradual exclusion from the settled New Testament canon. Theologically, the work’s detailed, sin-specific correlation of punishments (adulterers hung by their hair over boiling mud, slanderers biting their own tongues, and similar vivid correspondences) established enduringly influential conventions for subsequent Christian visionary and homiletical depictions of hell, functioning didactically to reinforce specific ethical prohibitions through vivid, memorable eschatological imagery of proportionate divine retribution."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this vision under Peter's name; it survives in a fuller Ethiopic version and a shorter Greek fragment."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the early-to-mid second century CE, making it one of the earliest and most influential Christian 'tour of hell' texts."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text describes in vivid detail the specific torments awaiting different categories of sinners in hell, matched carefully to their sins, alongside a vision of paradise for the righteous."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its detailed, sin-specific punishments (each fitting its corresponding crime) established conventions that shaped centuries of later Christian preaching and art about the afterlife, likely including background influence on Dante's Inferno."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The work came remarkably close to canonical status, being listed as seriously considered (though disputed) scripture in the late-second-century Muratorian Fragment and read in some churches as late as the early fifth century. It was eventually excluded from the settled New Testament canon."
+          }
         ]
       },
       {
         "id": "apocalypse-of-paul",
         "title": "Apocalypse of Paul",
-        "summary": [
-          "The Apocalypse of Paul presents an extended vision, purportedly discovered buried beneath the house of a certain Roman official in Tarsus and subsequently deposited by imperial order, in which Paul is guided through heaven and hell, elaborating and considerably expanding upon Paul’s own guarded reference to having been “caught up to the third heaven” and hearing “things that cannot be told” (2 Cor 12:2–4), here narrated in extensive, systematically catalogued visionary detail closely modeled on, and substantially dependent upon, the earlier Apocalypse of Peter’s tour-of-hell conventions. Most scholars date the composition to the late fourth century CE, considerably later than the Apocalypse of Peter it draws upon, and the elaborate, legendary “discovery narrative” prefacing the text (the buried manuscript, imperial involvement) itself functions as a literary device lending spurious authenticating authority to the pseudonymous composition. The author is unknown, writing pseudonymously as Paul. Historically, despite its late composition and eventual, decisive exclusion from any serious canonical consideration (unlike the earlier Apocalypse of Peter’s more genuinely contested status), the work achieved extraordinary popular and literary influence throughout the medieval period, particularly in the Latin West, becoming one of the most widely copied and influential visionary texts of medieval Christian literature and exercising significant, well-documented influence on later medieval visionary literature, including, many scholars argue, on Dante’s Divine Comedy. Theologically, the work’s elaborate systematization of specific, proportionate punishments and rewards, building on and extending the Apocalypse of Peter’s earlier conventions, further developed and popularized the increasingly detailed, morally didactic Christian eschatological imagination that would continue shaping Western Christian conceptions of the afterlife throughout the medieval period."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, framed by a legendary story that it was miraculously discovered buried under a house in Tarsus."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the late fourth century CE, considerably later than and heavily dependent on the earlier Apocalypse of Peter."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text dramatically expands Paul's own brief reference to being 'caught up to the third heaven' (2 Corinthians 12:2–4) into an extensive guided tour of heaven and hell."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It further develops and popularizes the detailed, proportionate punishment-and-reward system pioneered by the Apocalypse of Peter."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Despite never being seriously considered for the canon, it became extraordinarily influential in medieval Latin Christianity, shaping visionary literature up to and including Dante's Divine Comedy. It has no canonical status."
+          }
         ]
       },
       {
         "id": "apocalypse-of-thomas",
         "title": "Apocalypse of Thomas",
-        "summary": [
-          "The Apocalypse of Thomas presents a brief eschatological discourse, attributed to the apostle Thomas, describing a sequence of signs marking the approach of the end times across a symbolic series of days, followed by the appearance of Antichrist and the eventual return of Christ in judgment, surviving in a shorter and a longer recension in Latin. Most scholars date the composition to the fourth or fifth century CE, situating it as a relatively late addition to the broader corpus of Christian apocalyptic literature, likely drawing on and synthesizing earlier apocalyptic conventions (including material with affinities to the canonical book of Revelation and earlier Jewish and Christian apocalyptic tradition) into a compact, popularly accessible eschatological handbook. The author is unknown, writing pseudonymously as Thomas. Historically, the work’s relatively late date and its evident dependence on earlier, more theologically developed apocalyptic tradition situate it as part of the broader, ongoing medieval and late antique proliferation of popular eschatological literature addressing perennial Christian interest in the signs and timing of the end times, a genre that continued generating new compositions well beyond the formative period of the New Testament canon’s consolidation. Theologically, the work’s systematic, day-by-day cataloguing of eschatological signs reflects a developing tradition of detailed apocalyptic “timetables” for the end times, a genre convention that would continue to exercise considerable influence on subsequent medieval and even later popular Christian apocalyptic speculation, illustrating the persistent, cross-generational appeal of detailed, systematized eschatological expectation within popular Christian piety regardless of such texts’ non-canonical status."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this brief eschatological text under Thomas's name, surviving in shorter and longer Latin versions."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the fourth or fifth century CE, a relatively late addition to Christian apocalyptic literature."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text describes a sequence of signs marking the approaching end times across a symbolic series of days, followed by the Antichrist's appearance and Christ's return in judgment."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "It reflects a developing tradition of detailed apocalyptic 'timetables' predicting the end, a genre that continued to influence popular Christian speculation about the end times for centuries."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It draws on and extends themes already present in the canonical book of Revelation and other apocalyptic tradition. It has no canonical status."
+          }
         ]
       },
       {
         "id": "gospel-of-nicodemus-acts-of-pilate",
         "title": "Gospel of Nicodemus (Acts of Pilate)",
-        "summary": [
-          "The Gospel of Nicodemus, comprising two originally distinct sections later combined — the Acts of Pilate, narrating Jesus’s trial before Pilate with extensive additional legendary detail (including testimony from healed individuals and even, in some versions, from Roman military standards that miraculously bow before Jesus), and the Descent into Hell, an extended narrative elaboration of Christ’s descent to liberate righteous souls from the underworld (developing the brief and much-debated canonical reference in 1 Peter 3:19) — represents one of the most influential and widely circulated New Testament apocryphal texts throughout the medieval period. Most scholars date the Acts of Pilate portion to the fourth century CE, with the Descent into Hell section composed somewhat later and subsequently combined with it, the whole work undergoing continued expansion and adaptation across late antiquity and the medieval period, surviving in Greek, Latin, and numerous vernacular translations. The author is unknown, the attribution to Nicodemus (the sympathetic Pharisee of John 3 and 19) being a later, secondary ascription. Historically, the work’s elaborate expansion of the trial narrative, purporting to derive from official Roman court records, reflects a persistent early and medieval Christian interest in supplying documentary, quasi-legal corroboration for gospel events, a literary strategy paralleling, in different form, the various “Pilate correspondence” and related legendary Pilate literature that proliferated throughout the patristic and medieval periods. Theologically, the Descent into Hell narrative’s detailed elaboration of Christ’s victorious liberation of righteous Old Testament figures (Adam, the patriarchs, and prophets) from Hades’ captivity provided enormously influential source material for subsequent Christian art, liturgy (particularly Eastern Orthodox Holy Saturday and Easter iconography and hymnody, notably the Anastasis icon), and doctrinal reflection on the scope and cosmic significance of Christ’s redemptive descent between his death and resurrection."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text, later and wrongly attributed to Nicodemus, the sympathetic Pharisee from John's Gospel; it combines two originally separate sections."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the trial-narrative section (Acts of Pilate) to the fourth century CE, with a section on Christ's descent into hell added somewhat later and eventually combined with it."
+          },
+          {
+            "heading": "Contents",
+            "body": "The first part expands Jesus's trial before Pilate with extensive legendary detail; the second part elaborates Christ's descent to free righteous souls from the underworld between his death and resurrection."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The Descent into Hell narrative dramatically develops the brief and debated reference in 1 Peter 3:19 into a detailed story of Christ triumphantly freeing Adam and the Old Testament patriarchs from captivity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This text profoundly shaped later Christian art, hymnody, and doctrine about the meaning and scope of Christ's death and resurrection, especially in Eastern Orthodox Easter traditions. It has no canonical status."
+          }
         ]
       },
       {
         "id": "didascalia-apostolorum",
         "title": "Didascalia Apostolorum",
-        "summary": [
-          "The Didascalia Apostolorum (“Teaching of the Apostles”) is an extensive church order, presenting itself as apostolic instruction on ecclesiastical organization, liturgical practice, penitential discipline, the qualifications and duties of bishops and deacons (including notably detailed instruction regarding the office of deaconess), and polemical instruction against continuing Jewish ritual observance among Christian converts, surviving complete only in Syriac and Latin translations from a lost Greek original. Most scholars date the composition to the early-to-mid third century CE, likely originating in northern Syria, reflecting a developed but still comparatively early stage of Christian ecclesiastical institutional organization considerably predating the fully developed later church orders (such as the Apostolic Constitutions, which substantially incorporates and expands the Didascalia’s material). The author is unknown, writing pseudonymously in the collective voice of the apostles assembled at the Jerusalem council. Historically, the work provides invaluable, detailed evidence for the practical ecclesiastical organization, liturgical practice, and pastoral concerns of an actual, geographically specific early third-century Christian community, complementing the more theologically abstract or polemically focused literature more typically surviving from this period, and its extensive material on penitential discipline for post-baptismal sin offers crucial evidence for the developing practice and theology of ecclesiastical reconciliation. Theologically, the work’s sustained polemic against continuing Jewish ritual practice (arguing that the “Second Legislation,” ceremonial and dietary law given after the golden calf incident as a punitive measure, was abrogated by Christ, while the moral “Decalogue” remains binding) reflects an important, influential strand of developing patristic supersessionist theology regarding the relationship between the Mosaic law and the church, a hermeneutical framework of considerable subsequent influence on Christian theological approaches to the relationship between the Old and New Testaments."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this church order under the collective, pseudonymous voice of the apostles gathered at the Jerusalem council."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the early-to-mid third century CE, likely written in northern Syria."
+          },
+          {
+            "heading": "Contents",
+            "body": "The lengthy text covers church organization, the qualifications of bishops and deacons (including detailed instruction on deaconesses), penitential discipline, and instruction against continuing Jewish ritual practices among Christians."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work argues that only the 'Second Legislation' — ceremonial and dietary law given after the golden calf incident as a punishment — was abolished by Christ, while the moral core of the law (the Ten Commandments) remains binding."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This distinction between abolished ceremonial law and continuing moral law became an influential way later Christians explained the relationship between Old Testament law and New Testament teaching. It has no canonical status but shaped later church-order literature."
+          }
         ]
       },
       {
         "id": "gospel-of-bartholomew-questions-of-bartholomew",
         "title": "Gospel of Bartholomew (Questions of Bartholomew)",
-        "summary": [
-          "The Gospel of Bartholomew (also known as the Questions of Bartholomew) presents a series of post-resurrection dialogues in which the apostle Bartholomew questions the risen Christ and, in a separate section, the bound and interrogated fallen angel Beliar (Satan) regarding cosmological, angelological, and soteriological mysteries, including detailed questions about the mechanics of the incarnation, the nature of Satan’s fall, and the descent into hell. The work survives in Greek, Latin, and Slavonic versions of varying length and content, complicating reconstruction of an original form; most scholars date the composition to the fifth or sixth century CE, though it may incorporate earlier traditional material, situating it as a relatively late contribution to the broader genre of post-resurrection revelatory dialogue literature exemplified earlier by works such as the Apocryphon of John and other Nag Hammadi dialogue texts, though without their more developed Gnostic cosmological system. The author is unknown, writing pseudonymously as Bartholomew. Historically, the work’s genre of extended post-resurrection question-and-answer dialogue between Christ and a favored apostle exemplifies a persistent and popular early and late-antique Christian literary convention for addressing theological and cosmological questions left unresolved or only briefly addressed in canonical material, functioning as an imaginative vehicle for popular theological speculation and instruction. Theologically, the interrogation of the bound Satan figure, in which the fallen angel is compelled to reveal the details of his own primordial rebellion and continuing malevolent activity, reflects the broader late antique Christian fascination with systematized demonology and angelology, situating the text within a long tradition of Christian literature (paralleling, in updated Christian form, similar interests evident in the earlier Jewish Testament of Solomon) seeking to satisfy popular curiosity about the origins, nature, and activity of cosmic evil forces opposing the Christian community."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this text under Bartholomew's name, surviving in Greek, Latin, and Slavonic versions that differ considerably from one another."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the fifth or sixth century CE, though it may draw on earlier traditional material."
+          },
+          {
+            "heading": "Contents",
+            "body": "Bartholomew questions the risen Christ, and separately interrogates the bound fallen angel Beliar (Satan), about cosmological and theological mysteries including the mechanics of the incarnation and the nature of Satan's fall."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The text reflects widespread late-antique Christian fascination with systematized demonology, extending the New Testament's more limited comments about Satan into an elaborate narrative of his origin and ongoing activity."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It exemplifies a popular literary genre of imagined post-resurrection question-and-answer dialogues that filled in theological questions the canonical Gospels leave largely unaddressed. It has no canonical status."
+          }
         ]
       }
     ]
@@ -1000,162 +3899,599 @@ export const BACKGROUND_SUMMARIES: SummaryCategory[] = [
       {
         "id": "1-clement",
         "title": "1 Clement",
-        "summary": [
-          "1 Clement is a letter sent from the church at Rome to the church at Corinth, addressing a crisis of factional strife in which younger members had deposed legitimately appointed presbyters, urging repentance, restoration of proper ecclesiastical order, and unity, grounded in extensive appeal to Old Testament example, the model of orderly Roman civic and military hierarchy, and an early articulation of a doctrine of apostolic succession in ministerial appointment. Traditionally attributed to Clement, a leading presbyter or bishop of Rome, the letter is dated by the great majority of scholars to approximately 96 CE, near the end of Domitian’s reign, on the basis of internal references to recent persecution (“sudden and repeated misfortunes and calamities”) widely, if not universally, associated with Domitian’s final years, making it one of the earliest surviving Christian documents outside the New Testament itself, quite possibly contemporary with or shortly following the composition of some later New Testament writings. Historically, the letter provides invaluable, closely contemporary evidence for the organizational structure and inter-church relations of first-century Christianity, particularly the developing authority of the Roman church in addressing the internal affairs of another congregation, a precedent of considerable later significance for developing conceptions of Roman ecclesiastical primacy. Theologically, the letter’s extensive use of the language of “order” (taxis), its analogy between ecclesiastical hierarchy and cosmic and military order, and its developing doctrine of ministerial succession from the apostles represent significant early evidence for the emerging theological and institutional consolidation of monarchical or quasi-monarchical church leadership structures in the sub-apostolic generation, addressing practical challenges of institutional continuity following the deaths of the apostolic generation."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Traditionally attributed to Clement, a leading presbyter or bishop of Rome, this letter was sent from the Roman church to the church at Corinth."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to about 96 CE, near the end of Emperor Domitian's reign, making it one of the earliest surviving Christian writings outside the New Testament, possibly written around the same time as some later New Testament books."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter addresses a crisis in Corinth where younger members had removed legitimately appointed church leaders, urging repentance and restored order, and offers an early argument that church leaders derive their authority from a line of succession going back to the apostles."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The letter compares proper church order to orderly Roman civic and military structure and develops early ideas about ministerial succession from the apostles."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It offers valuable evidence for how the Roman church related to and could influence other congregations very early on, a precedent important for later ideas about Rome's church authority. It has no canonical status but is treated as an important early Christian document."
+          }
         ]
       },
       {
         "id": "2-clement",
         "title": "2 Clement",
-        "summary": [
-          "2 Clement, despite its traditional title and manuscript association with 1 Clement, is now recognized by virtually all scholars as a distinct, independent, and pseudonymous work — in fact not a letter at all but an early Christian homily or sermon, the earliest complete example of the genre to survive outside the New Testament — with no genuine connection to the historical Clement of Rome. Most scholars date the work to the mid-second century CE (proposals range from approximately 100 to 150 CE), and its precise place of composition remains debated, with Corinth (where the manuscript tradition situates its delivery) and Rome or Alexandria also proposed on the basis of theological and stylistic considerations. The author is unknown. Historically, the homily’s genre as a sermon rather than an epistle makes it a uniquely valuable, if isolated, witness to the actual content and style of early Christian preaching in the sub-apostolic period, a genre otherwise very poorly attested in surviving literature from this early period. Theologically, the homily emphasizes repentance, the necessity of “keeping the flesh pure” through ethical rigor, and contains one of the earliest extant citations of a saying of Jesus not found in the canonical Gospels, along with an apparent citation of material resembling 1 Corinthians as authoritative “scripture,” offering valuable early evidence for the developing status and citation of both dominical sayings tradition and emerging Christian scriptural authority in the mid-second century."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Despite its title, this text is not by Clement and is not even a letter; it is actually an early Christian sermon, written by an unknown author."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the mid-second century CE (roughly 100–150 CE), with its exact location of composition (Corinth, Rome, or Alexandria) debated."
+          },
+          {
+            "heading": "Contents",
+            "body": "As the earliest complete Christian sermon to survive outside the New Testament, it emphasizes repentance and ethical purity, and quotes both an unknown saying of Jesus and material resembling 1 Corinthians as authoritative scripture."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its citation of extra-biblical sayings alongside apparently scriptural material offers early evidence for how quickly and how widely certain texts were beginning to be treated as authoritative."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "As virtually the only surviving example of an actual early Christian sermon, it gives rare insight into how preachers used and cited both Jesus's sayings and apostolic writings in this period. It has no canonical status."
+          }
         ]
       },
       {
         "id": "letters-of-ignatius-of-antioch",
         "title": "Letters of Ignatius of Antioch",
-        "summary": [
-          "The seven authentic letters of Ignatius, bishop of Antioch (to the Ephesians, Magnesians, Trallians, Romans, Philadelphians, Smyrnaeans, and to Polycarp), were written during Ignatius’s forced journey under military guard from Antioch to Rome, where he anticipated and ultimately embraced martyrdom by wild beasts in the arena, most scholars dating the letters to the reign of Trajan, approximately 108–110 CE, though a minority have proposed a somewhat later date; the letters’ authenticity and precise textual form (the “middle recension” of seven letters is generally accepted by scholarly consensus, following J.B. Lightfoot’s classic textual analysis, as substantially authentic) has been the subject of extensive and largely resolved critical scholarship. Ignatius, as bishop of one of early Christianity’s most important sees, writes with striking personal intensity, addressing threats of docetic Christology and Judaizing tendencies within the churches he addresses while urgently commending unified submission to the local bishop as the guarantee of ecclesial unity and doctrinal orthodoxy. Historically, the letters provide the earliest clear extant evidence for a developed monarchical episcopate as an established feature of church organization in at least some major urban centers of Syria and Asia Minor by the early second century. Theologically, Ignatius’s letters contain the earliest surviving use of the term “catholic church” (Smyrnaeans 8.2), robust anti-docetic affirmation of Christ’s genuine physical suffering and death, and an intensely personal theology of martyrdom as authentic imitation of and union with Christ’s own passion, articulated with unusual rhetorical passion as Ignatius anticipates his own impending death."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Ignatius, bishop of Antioch, personally wrote these seven letters while being taken under military guard to Rome, where he expected to be martyred."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the letters to around 108–110 CE, during the reign of Trajan; their basic authenticity is now widely accepted by scholars."
+          },
+          {
+            "heading": "Contents",
+            "body": "Writing to several churches and to fellow bishop Polycarp, Ignatius addresses threats from docetic teaching and Jewish-influenced practices, while urging unity around the local bishop."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The letters contain the earliest known use of the phrase 'catholic church,' firmly affirm Christ's genuine physical suffering against docetism, and present martyrdom as an intense, personal imitation of and union with Christ's own death."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The letters give the earliest clear evidence for a single bishop leading each local church, an important stage in how church leadership developed after the apostolic generation described in the New Testament. They have no canonical status."
+          }
         ]
       },
       {
         "id": "letter-of-polycarp-to-the-philippians",
         "title": "Letter of Polycarp to the Philippians",
-        "summary": [
-          "Polycarp’s letter to the Philippian church, written by the aged bishop of Smyrna (a figure of considerable later significance as a reputed disciple of the apostle John and teacher of Irenaeus), was composed in response to the Philippian church’s request for copies of Ignatius’s letters, and addresses practical pastoral concerns including the case of a presbyter, Valens, guilty of financial misconduct, along with extensive exhortation to steadfastness and imitation of apostolic and martyrological example. Most scholars date the letter to the early-to-mid second century CE, shortly after Ignatius’s martyrdom, though some have proposed the surviving text represents a composite of two originally separate letters, a minority position not universally accepted. Historically, the letter’s evident personal connection to Ignatius and its role in preserving and transmitting Ignatian correspondence make it an invaluable witness to the earliest reception of that material, while Polycarp’s own later martyrdom and reported connection to the apostolic generation lend the letter additional significance as a bridge document connecting apostolic and sub-apostolic church history. Theologically, the letter is notable for its extensive, almost mosaic-like quotation and allusion to a wide range of New Testament writings, offering valuable early evidence for the developing authoritative status and wide circulation of a substantial core of what would become the New Testament canon already by the early-to-mid second century."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Polycarp, the aged bishop of Smyrna and reputed disciple of the apostle John, wrote this letter himself in response to the Philippian church's request for copies of Ignatius's letters."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to the early-to-mid second century CE, shortly after Ignatius's martyrdom."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter addresses practical concerns, including the case of a presbyter guilty of financial misconduct, alongside exhortation to steadfastness following apostolic and martyr example."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The letter quotes or alludes to a wide range of New Testament writings, showing that much of what would become the New Testament was already circulating and treated as authoritative by the early-to-mid second century."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This extensive use of New Testament material offers valuable early evidence for how quickly various New Testament books gained wide circulation and respect. It has no canonical status itself."
+          }
         ]
       },
       {
         "id": "martyrdom-of-polycarp",
         "title": "Martyrdom of Polycarp",
-        "summary": [
-          "The Martyrdom of Polycarp narrates, in the form of a circular letter from the church at Smyrna to the church at Philomelium, the arrest, trial, and execution by burning of the elderly bishop Polycarp during a period of local persecution, traditionally dated to around 155–160 CE, though some scholars have proposed dates as late as the 160s or 170s CE based on close analysis of the document’s internal chronological references. The work is widely regarded as the earliest genuine, non-canonical Christian martyrdom account to survive, composed by an author identifying himself as Marcion (not the famous heretical teacher) shortly after the events described. Historically, the account provides valuable, closely contemporary evidence for the legal and social mechanics of local anti-Christian persecution in second-century Roman Asia Minor, including the specific charges, judicial procedures, and popular participation surrounding Polycarp’s execution. Theologically, the narrative explicitly frames Polycarp’s death as a conscious imitation of Christ’s own passion (“Following the example of the Gospel of Christ,” 1.1) and inaugurates the enduringly influential Christian theological category of martyrdom as authentic Christian witness, establishing conventions and vocabulary that would shape the entire subsequent tradition of Christian martyrological literature and theology."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An author identifying himself as Marcion (a different person from the famous heretical teacher of the same name) wrote this account, framed as a circular letter from the church at Smyrna."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the events, and the account written shortly after, to around 155–160 CE, making it the earliest genuine non-canonical account of a Christian martyrdom to survive."
+          },
+          {
+            "heading": "Contents",
+            "body": "The text narrates the arrest, trial, and execution by burning of the elderly bishop Polycarp during a local persecution."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The narrative explicitly frames Polycarp's death as a deliberate imitation of Christ's own suffering, establishing enduring vocabulary and conventions for how Christians would understand and describe later martyrdoms."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It builds on New Testament teaching about faithful endurance under persecution (as in Revelation and 1 Peter), turning those themes into a concrete historical example. It has no canonical status."
+          }
         ]
       },
       {
-        "id": "didache-the-teaching-of-the-twelve-apostles",
-        "title": "Didache (The Teaching of the Twelve Apostles)",
-        "summary": [
-          "The Didache is a compact early Christian church manual, combining an ethical “Two Ways” instruction (material with close, much-discussed parallels to the Qumran Community Rule’s “Treatise on the Two Spirits” and other Jewish “two ways” wisdom material) with practical liturgical instructions concerning baptism, fasting, eucharistic prayer, and guidance for evaluating itinerant traveling prophets, along with a brief concluding eschatological exhortation. Rediscovered only in 1873, the work’s date is debated, with proposals ranging from as early as the mid-first century CE to the mid-second century, most scholars now favoring a composite compositional history with earlier layers dating to the late first century and the whole reaching something like its final form by the early second century, likely in Syria or Palestine. The author/compilers are unknown. Historically, the work offers uniquely valuable evidence for the actual liturgical and communal practice of an early Jewish-Christian or Syrian Christian community, including detailed practical instructions largely unparalleled in other early Christian sources. Theologically, the work’s eucharistic prayers (chapters 9–10) represent among the earliest surviving Christian liturgical texts, offering invaluable primary evidence for the developing theology and practice of eucharistic celebration in a period considerably predating the more developed liturgical forms of the later patristic church."
+        "id": "didache-teaching-of-the-twelve-apostles",
+        "title": "Didache (Teaching of the Twelve Apostles)",
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Unknown authors or compilers, likely writing in Syria or Palestine, assembled this compact early church manual; it was only rediscovered in 1873."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars now favor a composite history, with earlier material from the late first century CE reaching something like its final form by the early second century."
+          },
+          {
+            "heading": "Contents",
+            "body": "The manual combines ethical 'Two Ways' teaching (closely paralleling similar material at Qumran) with practical instructions on baptism, fasting, eucharistic prayer, and how to evaluate traveling prophets."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its eucharistic prayers are among the very earliest surviving Christian liturgical texts, offering priceless evidence for how communion was celebrated before more developed later liturgies emerged."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The 'Two Ways' ethical framework parallels similar teaching found in the New Testament (such as Matthew 7:13–14's 'two roads'). It has no canonical status but is treasured for its unique liturgical evidence."
+          }
         ]
       },
       {
         "id": "epistle-of-barnabas",
         "title": "Epistle of Barnabas",
-        "summary": [
-          "The Epistle of Barnabas presents an extended, thoroughly allegorical reinterpretation of the Jewish scriptures and ritual law, arguing that the literal, historical practice of Jewish ceremonial observance represents a fundamental misunderstanding of scripture’s true, spiritually intended meaning, which was always and exclusively directed toward Christ and the church. Traditionally, though almost certainly incorrectly, attributed to Paul’s missionary companion Barnabas, the letter is dated by most scholars to around 130–135 CE, on the basis of an apparent, disputed allusion to renewed Roman construction on the Jerusalem Temple site, situating the letter’s composition in a period of continued acute Jewish-Christian tension over scriptural interpretive authority. The author is unknown. Historically, the letter’s extreme supersessionist hermeneutic, considerably more radical than most other early Christian treatments of the Old Testament, reflects an unusually sharp strand of second-century Christian anti-Jewish theological argumentation. Theologically, the letter’s thoroughgoing allegorical method established influential precedent for later, more moderate Christian allegorical exegesis while representing, in its most extreme unmitigated form, a theologically consequential early instance of Christian supersessionist hermeneutics."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Though traditionally, and almost certainly incorrectly, credited to Paul's companion Barnabas, the actual author is unknown."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date it to around 130–135 CE, a period of continuing sharp tension between Jewish and Christian communities over how to interpret shared scripture."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter offers a thoroughly allegorical reading of Jewish scripture and ritual law, arguing that these texts were never meant to be observed literally but always pointed symbolically toward Christ and the church."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its extremely strong supersessionist approach — arguing Jewish practice was always a misunderstanding of scripture — represents an unusually sharp form of early Christian anti-Jewish argument."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It set an influential (if extreme) precedent for later, more moderate Christian allegorical reading of the Old Testament that also shaped how many early Christians approached shared scripture with Judaism. It has no canonical status."
+          }
         ]
       },
       {
         "id": "shepherd-of-hermas",
         "title": "Shepherd of Hermas",
-        "summary": [
-          "The Shepherd of Hermas is an extensive allegorical-apocalyptic work, comprising a series of Visions, Mandates, and Similitudes received by Hermas, a Roman Christian layperson, through the mediating figures of an elderly woman (representing the Church) and subsequently an angelic “shepherd,” addressing the urgent pastoral question of whether and how post-baptismal sin can be forgiven, offering the reassuring but time-limited teaching that a single additional opportunity for repentance remains available before the imminent eschatological judgment. Most scholars, following the internal reference identifying the author as brother of Pius, bishop of Rome, date the composition to the first half of the second century CE, likely composed in stages between approximately 90 and 150 CE, in Rome. Historically, the work achieved remarkably high canonical or near-canonical status in significant portions of the early church (included in Codex Sinaiticus, and commended though ultimately excluded from canonical status by the Muratorian Fragment), illustrating the genuinely contested boundaries of New Testament canon formation well into the fourth century. Theologically, the work’s central teaching on the possibility of a single, time-limited post-baptismal repentance addressed an urgent pastoral crisis regarding the adequacy of baptismal forgiveness for subsequent sin, a question of considerable ongoing importance for the developing theology of ecclesiastical penance throughout the patristic period."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "The text names its author as Hermas, a Roman Christian layman, reportedly the brother of a bishop of Rome named Pius."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date its composition, likely in stages, to the first half of the second century CE (roughly 90–150 CE), in Rome."
+          },
+          {
+            "heading": "Contents",
+            "body": "The lengthy work presents a series of Visions, Mandates, and moral illustrations ('Similitudes') given to Hermas through symbolic figures, addressing whether sins committed after baptism can still be forgiven."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Its central teaching offers one additional opportunity for repentance after baptism before the coming final judgment, addressing an urgent pastoral question about the limits of God's forgiveness."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "The work came remarkably close to canonical status — it appears in one of the oldest complete Bible manuscripts (Codex Sinaiticus) — showing how unsettled the edges of the New Testament canon still were well into the fourth century. It was ultimately not included."
+          }
         ]
       },
       {
         "id": "epistle-to-diognetus",
         "title": "Epistle to Diognetus",
-        "summary": [
-          "The Epistle to Diognetus is an anonymous apologetic letter addressed to an otherwise unidentified Gentile inquirer named Diognetus, offering an elegant defense of Christianity against pagan and Jewish objections, including the celebrated passage (chapter 5) describing Christians as living “in the world” while not being “of the world,” comparing Christians’ relationship to the world to that of the soul to the body. The work’s date is unusually difficult to establish given its anonymous transmission; proposals range widely from the mid-second to the early third century CE, with the concluding two chapters (10–12) increasingly recognized as a later, textually distinct addition. The author is unknown, and the work survives in only a single manuscript, since destroyed by fire in 1870, though earlier transcriptions preserve its text. Historically, the letter’s polished rhetorical style situates it among the more literarily accomplished examples of second-century Christian apologetic literature. Theologically, the letter’s “soul in the body” analogy for Christian presence in the world articulated an enduringly influential model for conceptualizing the relationship between Christian communal distinctiveness and continued social and civic engagement, a framework of considerable ongoing relevance for subsequent Christian reflection on church and world."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "An unknown author wrote this elegant letter addressed to an otherwise unidentified Gentile inquirer named Diognetus."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Its date is unusually hard to pin down, with proposals ranging from the mid-second to the early third century CE; the last two chapters are now widely recognized as a later addition."
+          },
+          {
+            "heading": "Contents",
+            "body": "The letter defends Christianity against pagan and Jewish objections, including the famous image describing Christians as living 'in the world' without being 'of the world,' like the soul within the body."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This 'soul in the body' image became an enormously influential model for how Christians should relate to wider society — distinctive yet still engaged."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This framework for Christian identity within, but distinct from, surrounding culture parallels New Testament language about believers as 'strangers and exiles' in the world (1 Peter 2:11). It has no canonical status."
+          }
         ]
       },
       {
         "id": "fragments-of-papias",
         "title": "Fragments of Papias",
-        "summary": [
-          "Papias, bishop of Hierapolis in Asia Minor, is known only through fragmentary quotations preserved primarily by Eusebius, from Papias’s lost five-volume “Exposition of the Sayings of the Lord,” including his own claim to have gathered oral traditions from those who had known “the elders” who had heard the apostles, and, most famously, statements regarding the origins of Mark and Matthew, reporting that Mark, as Peter’s interpreter, wrote down accurately what he remembered of Peter’s preaching, and that Matthew “compiled the sayings (logia) in the Hebrew language, and each one interpreted them as best he could.” Most scholars date Papias’s activity to approximately 110–140 CE. Historically, Papias’s testimony regarding Mark and Matthew has proven immensely influential and much-debated throughout the history of gospel source-criticism, providing the earliest extant external evidence bearing directly on questions of gospel authorship and composition, even as the precise meaning of his cryptic statements remains subject to ongoing scholarly disagreement. Theologically, Papias’s evident preference for living oral apostolic tradition over written texts offers valuable insight into the transitional epistemological status of both oral and emerging written gospel tradition during the period in which the canonical Gospels were achieving their eventual authoritative status."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Papias, bishop of Hierapolis in Asia Minor, wrote a now-lost five-volume work; he is known today only through fragments quoted by the later historian Eusebius."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date Papias's activity to about 110–140 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "Papias claims to have gathered oral traditions from people who had known those who heard the apostles directly, and reports specific traditions about how Mark and Matthew composed their Gospels."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "His preference for living oral apostolic tradition over written texts reflects the transitional period in which the church was moving from primarily oral memory toward reliance on written Gospels."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Papias's comments about Mark and Matthew are the earliest outside evidence bearing on how these two Gospels were composed, hugely influential (and debated) in New Testament scholarship ever since. His writings have no canonical status and survive only in fragments."
+          }
         ]
       },
       {
         "id": "justin-martyr",
         "title": "Justin Martyr",
-        "summary": [
-          "Justin Martyr (c. 100–165 CE), a Gentile philosopher converted to Christianity after an extended personal philosophical search recounted in his Dialogue with Trypho, became the most significant Christian apologist of the mid-second century, composing his First Apology (addressed to Antoninus Pius, c. 150–155 CE) and Second Apology defending Christianity against charges of atheism, immorality, and subversion, along with the substantial Dialogue with Trypho defending Christian messianic and scriptural interpretive claims against Jewish objections. Justin was martyred in Rome under the prefect Junius Rusticus, likely around 165 CE. Historically, Justin’s works provide invaluable evidence for mid-second-century Christian liturgical practice (his First Apology contains the earliest detailed outside description of a Christian eucharistic and baptismal service, chapters 61 and 65–67) and for the specific arguments Christian intellectuals employed against both pagan philosophical culture and Jewish theological objection. Theologically, Justin’s doctrine of the “seminal Word” (logos spermatikos) — that the divine Logos, fully incarnate in Christ, had also been partially present throughout human history, enabling righteous pagans like Socrates to attain genuine partial truth prior to Christ — established an enormously influential framework for Christian engagement with classical philosophical tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Justin (c. 100–165 CE), a Gentile philosopher converted to Christianity, personally wrote his First and Second Apology and his Dialogue with Trypho."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Justin was martyred in Rome around 165 CE; his First Apology, addressed to the emperor, dates to about 150–155 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "His works defend Christianity against charges of atheism and immorality (the Apologies) and defend Christian claims about Jesus as Messiah against Jewish objections (the Dialogue with Trypho)."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Justin's idea of the 'seminal Word' — that the divine Logos, though fully present only in Christ, had been partially at work throughout human history — allowed him to see partial truth even in pagan philosophers like Socrates."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His First Apology contains the earliest detailed outside description of a Christian communion and baptism service, directly relevant to understanding practices assumed in the New Testament. His writings have no canonical status but are foundational for early Christian apologetics."
+          }
         ]
       },
       {
         "id": "aristides-of-athens",
         "title": "Aristides of Athens",
-        "summary": [
-          "Aristides of Athens is the author of one of the earliest surviving formal Christian apologies, addressed to the Roman emperor (either Hadrian or Antoninus Pius depending on manuscript tradition), surviving complete in Syriac translation and substantially in Greek embedded within the medieval legend of Barlaam and Josaphat, having been lost in independent form until identified by scholars in the late nineteenth century. Most scholars date the work to approximately 125–140 CE, making it chronologically prior to or roughly contemporary with the earliest works of Justin Martyr. The author, an Athenian Christian philosopher, is otherwise known only through this work and brief later patristic references. Historically, the work’s early date and formal address to imperial authority situate it as a pioneering example of Christian apologetic literature defending belief and practice against charges of impiety during a period of considerable legal vulnerability. Theologically, the Apology’s systematic classification and critique of the religious beliefs of Barbarians, Greeks, and Jews as a preparatory foil for presenting Christian monotheism as the superior culmination of religious development established an influential comparative-apologetic template subsequently employed by numerous later apologists."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Aristides, an Athenian Christian philosopher, personally wrote one of the earliest surviving formal Christian defenses (apologies), addressed to a Roman emperor."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the work to about 125–140 CE, making it earlier than or roughly contemporary with Justin Martyr's earliest writing."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work classifies and critiques the religious beliefs of 'Barbarians,' Greeks, and Jews before presenting Christian monotheism as the superior culmination of true religion."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "This comparative method — surveying other religions before presenting Christianity as their fulfillment — became an influential template for later Christian apologists."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "It represents an early, pioneering example of the same kind of public defense of Christian belief the New Testament itself sometimes models (as in Acts 17's speech at the Areopagus). It has no canonical status."
+          }
         ]
       },
       {
         "id": "irenaeus-of-lyons",
         "title": "Irenaeus of Lyons",
-        "summary": [
-          "Irenaeus (c. 130–202 CE), bishop of Lyons in Gaul and, by his own testimony, a hearer in his youth of Polycarp of Smyrna, composed his major work Against Heresies (Adversus Haereses) in five books, likely completed in the 180s CE, providing the most extensive surviving refutation of second-century Gnostic Christian systems, particularly Valentinian Gnosticism, along with the shorter Demonstration of the Apostolic Preaching, surviving complete only in Armenian. Historically, Against Heresies constitutes the single most important primary source for reconstructing the content and diversity of second-century Gnostic Christian theological systems, much of our knowledge of specific Gnostic teachers deriving from Irenaeus’s detailed, polemically framed descriptions, subsequently substantially corroborated by primary texts discovered at Nag Hammadi. Theologically, Irenaeus articulated foundational doctrines including a developed doctrine of apostolic succession and the “rule of faith,” an influential doctrine of “recapitulation” (Christ recapitulating and reversing Adam’s fall), and a robust affirmation of the goodness of material creation and bodily resurrection directly countering Gnostic devaluation of the material world, making Irenaeus arguably the most theologically consequential figure of the late second-century church."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Irenaeus (c. 130–202 CE), bishop of Lyons and, by his own account, a listener to Polycarp in his youth, personally wrote Against Heresies and the shorter Demonstration of the Apostolic Preaching."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Against Heresies was likely completed in the 180s CE, providing the most detailed surviving refutation of second-century Gnostic Christian teaching."
+          },
+          {
+            "heading": "Contents",
+            "body": "The work describes and refutes various Gnostic systems, especially Valentinian Gnosticism, in great detail, much of it later confirmed by the discovery of actual Gnostic texts at Nag Hammadi."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Irenaeus developed influential doctrines of apostolic succession and the 'rule of faith,' the idea that Christ 'recapitulates' and reverses Adam's fall, and firmly defended the goodness of the physical world and bodily resurrection against Gnostic teaching."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His firm insistence on bodily resurrection and the goodness of creation directly defends positions taught throughout the New Testament against Gnostic reinterpretation. His writings have no canonical status but are foundational for later orthodox Christian theology."
+          }
         ]
       },
       {
         "id": "tertullian-of-carthage",
         "title": "Tertullian of Carthage",
-        "summary": [
-          "Tertullian (c. 155–220 CE), a North African Christian writer of exceptional rhetorical and legal training, composed an extensive Latin corpus addressing apologetics, doctrinal controversy, and ethics, including his Apology (c. 197 CE) defending Christianity against Roman persecution with the famous declaration that “the blood of Christians is seed,” his anti-Gnostic and anti-Marcionite works (including Against Marcion and On the Prescription of Heretics), and his trinitarian treatise Against Praxeas, in which Tertullian coined much of the enduring Latin trinitarian vocabulary (including “trinitas,” “persona,” and “substantia”). Later in life, Tertullian’s rigorist sensibilities led him to align with the Montanist movement, complicating his subsequent reception within mainstream orthodox tradition that nonetheless continued drawing extensively on his contributions. Historically, as the founding figure of Latin Christian theological literature, Tertullian’s work provides crucial evidence for the distinctive development of North African Christianity and the emerging Latin theological vocabulary shaping subsequent Western doctrinal discourse. Theologically, Against Praxeas’s articulation of one divine substance subsisting in three distinct persons established foundational conceptual groundwork of lasting significance for the subsequent Nicene development of trinitarian doctrine."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Tertullian (c. 155–220 CE), a North African writer with strong legal and rhetorical training, personally wrote an extensive body of Latin theological works."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His Apology dates to about 197 CE; later in life he joined the strict Montanist movement, complicating his later reputation within the mainstream church."
+          },
+          {
+            "heading": "Contents",
+            "body": "His works include defenses of Christianity against Roman persecution, arguments against Gnostic and Marcionite teaching, and a treatise against a teacher named Praxeas defending trinitarian belief."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Tertullian coined much of the lasting Latin vocabulary for the Trinity (including 'trinity,' 'person,' and 'substance'), describing one divine substance existing in three distinct persons."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His trinitarian vocabulary gave later theologians the tools to describe more precisely what the New Testament implies about Father, Son, and Spirit. His writings have no canonical status but deeply shaped later Western theological language."
+          }
         ]
       },
       {
         "id": "clement-of-alexandria",
         "title": "Clement of Alexandria",
-        "summary": [
-          "Clement of Alexandria (c. 150–215 CE), head of the influential Alexandrian catechetical school, composed a loosely connected trilogy: the Protrepticus (“Exhortation”), urging pagan conversion through critique of Greek mythology’s inadequacies; the Paedagogus (“Instructor”), addressing practical ethical formation under Christ as divine pedagogue; and the more advanced Stromateis (“Miscellanies”), addressing the relationship between Christian faith and Greek philosophy for intellectually mature believers. Clement’s activity spans roughly the final decades of the second century into the early third, and he fled Alexandria during persecution under Septimius Severus around 202 CE, dying in exile. Historically, Clement’s work reflects and shaped the distinctively intellectual character of Alexandrian Christianity, building on and extending the allegorical exegetical tradition established by Philo, whose interpretive methods Clement demonstrably knew and adapted for Christian purposes. Theologically, Clement’s positive assessment of Greek philosophy as a genuine, divinely provided preparatory education for the Greeks analogous to Torah’s role for the Jews, and his conception of the mature Christian “gnostic” who achieves contemplative union with God through combined philosophical and scriptural study, established an influential model for Christian engagement with classical culture, directly anticipating the more systematic synthesis of his student Origen."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Clement (c. 150–215 CE), head of the influential Alexandrian catechetical school, personally wrote a loosely connected trilogy of works."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity spans the final decades of the second century into the early third; he fled Alexandria during persecution around 202 CE and died in exile."
+          },
+          {
+            "heading": "Contents",
+            "body": "His trilogy includes an exhortation urging pagan conversion, a practical guide to Christian ethical living, and a more advanced work addressing the relationship between Christian faith and Greek philosophy."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Clement viewed Greek philosophy positively, as genuine preparatory education for Greeks similar to the Torah's role for Jews, and described the mature Christian as achieving contemplative union with God through combined philosophy and scripture study."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His positive engagement with Greek philosophy built on the same allegorical interpretive tradition earlier developed by the Jewish philosopher Philo, applying similar methods to New Testament and Old Testament interpretation. His writings have no canonical status."
+          }
         ]
       },
       {
         "id": "origen-of-alexandria",
         "title": "Origen of Alexandria",
-        "summary": [
-          "Origen (c. 184–253 CE), Clement’s student and eventual head of the Alexandrian catechetical school before relocating to Caesarea in Palestine, was the most prolific and philosophically sophisticated theologian of the pre-Nicene church, producing an enormous corpus including the systematic theological treatise De Principiis (On First Principles, the earliest surviving attempt at a comprehensive systematic Christian theology), the apologetic masterwork Contra Celsum (a point-by-point refutation of the pagan philosopher Celsus’s earlier attack on Christianity), extensive scriptural commentaries (including a substantial Commentary on John), and the monumental Hexapla, a six-column comparative edition of the Hebrew Bible and its various Greek translations. Origen’s activity spans the first half of the third century CE, and he suffered severe torture during the Decian persecution (250 CE), dying shortly afterward from its effects. Historically, Origen’s textual-critical work on the Hexapla represents one of the most significant scholarly achievements of ancient biblical criticism, while his voluminous exegetical and theological corpus profoundly shaped the entire subsequent trajectory of Greek patristic theology, exegesis, and asceticism, despite later, posthumous condemnation of certain of his more speculative doctrines (including the pre-existence of souls and universal eventual salvation, or apokatastasis) at the Second Council of Constantinople in 553 CE. Theologically, Origen developed a sophisticated threefold (literal, moral, and spiritual/allegorical) method of scriptural interpretation, an early and influential, if later controversial, articulation of the eternal generation of the Son from the Father, and a comprehensive cosmological system addressing the pre-existence and eventual restoration of all rational creatures, making him simultaneously one of the most foundational and one of the most theologically contested figures in the entire patristic tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Origen (c. 184–253 CE), Clement's student, personally wrote an enormous body of theological and exegetical works."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity spans the first half of the third century CE; he was severely tortured during persecution in 250 CE and died shortly after from its effects."
+          },
+          {
+            "heading": "Contents",
+            "body": "His works include the first systematic Christian theology (On First Principles), a detailed defense of Christianity against a pagan critic (Against Celsus), extensive biblical commentaries, and a massive six-column comparative edition of the Hebrew Bible and its Greek translations (the Hexapla)."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Origen developed a three-level (literal, moral, and spiritual) method of interpreting scripture and an early view of the Son being eternally generated from the Father, though some of his more speculative ideas were later condemned by a church council."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His extensive biblical commentaries, including on John's Gospel, profoundly shaped how later generations of Christians interpreted the New Testament. His writings have no canonical status, though his influence on Christian exegesis is immense."
+          }
         ]
       },
       {
         "id": "hippolytus-of-rome",
         "title": "Hippolytus of Rome",
-        "summary": [
-          "Hippolytus (c. 170–235 CE), a Roman presbyter and, according to later and somewhat confused tradition, a rival bishop in schism with the Roman bishops Zephyrinus and Callistus over doctrinal and disciplinary disputes, composed the Refutation of All Heresies (Philosophumena), a detailed heresiological work tracing the origins of various Christian heretical systems to underlying pagan Greek philosophical schools, and is traditionally, though with continuing scholarly debate over authorship, credited with the Apostolic Tradition, an important early liturgical and church-order document detailing ordination rites, baptismal practice, and eucharistic prayer. Hippolytus’s activity is dated to the early third century CE, and he was reportedly reconciled with the Roman church and died a martyr during the Maximinus persecution around 235 CE. Historically, the scholarly identity and precise corpus of “Hippolytus” remains a matter of ongoing and unresolved debate (some scholars propose the surviving works derive from two or more distinct authors sharing traditional attribution to a single figure), complicating confident historical reconstruction, though the Apostolic Tradition, whatever its precise authorship, remains an invaluable witness to early third-century Roman liturgical practice. Theologically, the Refutation of All Heresies provides crucial comparative evidence (alongside Irenaeus) for reconstructing the content of various Gnostic and other heretical systems through their alleged philosophical genealogies, while the Apostolic Tradition’s detailed ordination and eucharistic prayers offer significant primary evidence for the developing theology and structure of Christian ministry and liturgy in this formative period."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Hippolytus (c. 170–235 CE), a Roman presbyter who later rivaled the elected Roman bishops in a dispute over doctrine and discipline, personally wrote or is traditionally credited with several major works."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity dates to the early third century CE; he was reportedly reconciled with the Roman church and died a martyr around 235 CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "His Refutation of All Heresies traces various Christian heretical teachings back to underlying pagan Greek philosophy, while the Apostolic Tradition, traditionally credited to him, details early ordination, baptismal, and eucharistic practices."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The Apostolic Tradition's detailed liturgical prayers offer crucial evidence for how church ministry and worship were structured in this formative period."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This evidence for developing ordination and worship practices helps trace a line from New Testament-era church leadership to more formalized later church structures. His writings have no canonical status."
+          }
         ]
       },
       {
         "id": "cyprian-of-carthage",
         "title": "Cyprian of Carthage",
-        "summary": [
-          "Cyprian (c. 200–258 CE), bishop of Carthage in North Africa, composed influential works addressing ecclesiology and church discipline, most notably On the Unity of the Catholic Church, written in response to schismatic controversies following the Decian persecution (250–251 CE) over the proper treatment of Christians who had lapsed under persecution, along with an extensive body of surviving pastoral correspondence documenting the practical governance of the North African church during a period of acute crisis. Cyprian’s episcopate spans the 240s to 258 CE, when he was martyred by beheading under the emperor Valerian’s persecution. Historically, Cyprian’s letters provide uniquely detailed, closely contemporary evidence for the practical mechanics of third-century North African church governance, including disputes over the readmission of the lapsed, the authority of confessors and martyrs to grant reconciliation, and Cyprian’s own vigorous, sometimes contested, assertion of properly constituted episcopal authority against both rigorist and laxist rival claims. Theologically, Cyprian’s famous formulation “outside the church there is no salvation” (extra ecclesiam nulla salus) and his insistence that valid sacraments (particularly baptism) require administration within the unified, properly ordered episcopal church rather than by schismatic or heretical rivals established foundational, enduringly influential and also enduringly contested principles for subsequent Western Christian ecclesiology and sacramental theology."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Cyprian (c. 200–258 CE), bishop of Carthage in North Africa, personally wrote influential works on church unity along with an extensive body of pastoral letters."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His episcopate spans the 240s to 258 CE, when he was martyred by beheading under persecution by the emperor Valerian."
+          },
+          {
+            "heading": "Contents",
+            "body": "His most important work, On the Unity of the Catholic Church, responds to disputes over how to treat Christians who had abandoned their faith under persecution and later wanted to return."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Cyprian's famous phrase 'outside the church there is no salvation' and his insistence that valid baptism requires administration within the properly ordered church established lasting, though also contested, principles for church authority and sacraments."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His concern for how the church should handle those who fell away under pressure echoes New Testament concerns about restoring those who have strayed (such as in Galatians 6:1). His writings have no canonical status but deeply shaped later church teaching on unity and sacraments."
+          }
         ]
       },
       {
         "id": "melito-of-sardis",
         "title": "Melito of Sardis",
-        "summary": [
-          "Melito, bishop of Sardis in Asia Minor, is best known for his Peri Pascha (“On the Passover”), a sophisticated rhetorical homily on the Christian celebration of Passover/Easter, interpreting the Exodus narrative typologically as prefiguring Christ’s redemptive death, composed in an elaborate, highly rhetorical Greek style employing extensive antithesis and rhythmic parallelism characteristic of Second Sophistic rhetorical fashion. Melito’s activity is dated to the second half of the second century CE, and he is associated with the “Quartodeciman” party in the developing Easter dating controversy, advocating for Easter’s celebration on the fourteenth of the Jewish month Nisan regardless of the day of the week, in contrast to the eventually dominant Sunday-observance position, a controversy Eusebius reports Melito’s own bishop, Polycrates, later defending vigorously against Roman pressure toward uniformity. Historically, the rediscovery and publication of the Peri Pascha’s full Greek text in the mid-twentieth century (previously known only through fragments) substantially enriched scholarly understanding of second-century Quartodeciman Christian liturgical practice and its distinctive theological emphases, particularly its close, continuing engagement with Jewish Passover typology. Theologically, the homily’s typological interpretation of the Exodus Passover lamb as directly prefiguring Christ, alongside its unusually severe (and historically consequential for later Christian anti-Jewish rhetoric) rhetorical blaming of “Israel” for Christ’s death, situates the work as an important, if theologically troubling, witness to developing patristic Christological typology and its entanglement with anti-Jewish polemical tendencies in the second-century church."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Melito, bishop of Sardis in Asia Minor, personally wrote Peri Pascha ('On the Passover'), a sophisticated homily on the Christian Passover/Easter celebration."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity dates to the second half of the second century CE; he supported the 'Quartodeciman' position of celebrating Easter on a fixed date in the Jewish calendar rather than always on a Sunday."
+          },
+          {
+            "heading": "Contents",
+            "body": "The homily interprets the Exodus Passover story typologically, presenting it as foreshadowing Christ's death, written in an elaborate, highly rhetorical Greek style."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "While theologically significant for its typological reading, the homily also contains unusually severe rhetoric blaming 'Israel' for Christ's death, an important but troubling early example of Christian anti-Jewish argument."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "Its typological reading of Exodus as pointing to Christ parallels similar typological reasoning found in the New Testament (such as 1 Corinthians 5:7's reference to Christ as the Passover lamb). It has no canonical status."
+          }
         ]
       },
       {
         "id": "athenagoras-of-athens",
         "title": "Athenagoras of Athens",
-        "summary": [
-          "Athenagoras, an Athenian Christian philosopher, composed a formal apologetic Embassy for the Christians (Legatio pro Christianis), addressed to the emperors Marcus Aurelius and Commodus and dated by most scholars to approximately 176–180 CE, systematically refuting the common charges of atheism, cannibalism (a distorted popular rumor concerning the eucharist), and incest (a similarly distorted rumor concerning the Christian practice of addressing fellow believers as “brother” and “sister”) frequently leveled against Christians in Roman popular and legal discourse, along with a separate treatise, On the Resurrection of the Dead, offering a philosophically sophisticated defense of bodily resurrection against philosophical objections. Historically, Athenagoras’s Embassy is regarded by many scholars as among the most philosophically rigorous and rhetorically polished of the surviving second-century Christian apologies, directly and systematically engaging contemporary Middle Platonic philosophical argumentation in defense of Christian monotheism and ethical practice. Theologically, On the Resurrection’s careful philosophical argumentation addressing the metaphysical coherence and moral necessity of bodily resurrection (arguing that a coherent doctrine of divine justice requires the same body that acted, whether virtuously or viciously, to also receive its corresponding reward or punishment) represents one of the most sustained and philosophically careful early Christian treatments of resurrection theology, engaging directly and substantively with the philosophical objections such a doctrine faced within the broader Greco-Roman intellectual culture of the period."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Athenagoras, an Athenian Christian philosopher, personally wrote a formal defense of Christianity (the Embassy for the Christians) and a separate treatise on bodily resurrection."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "Most scholars date the Embassy to about 176–180 CE, addressed to the emperors Marcus Aurelius and Commodus."
+          },
+          {
+            "heading": "Contents",
+            "body": "The Embassy systematically refutes common charges against Christians (atheism, cannibalism, and incest, all based on distorted rumors about Christian practice), while On the Resurrection of the Dead defends bodily resurrection philosophically."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Athenagoras argues that divine justice requires the very same body that acted, whether well or badly, to also receive its corresponding reward or punishment after death."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His careful philosophical defense of bodily resurrection directly supports the same doctrine central to New Testament teaching (especially 1 Corinthians 15), engaging philosophical objections the New Testament itself does not directly address. His writings have no canonical status."
+          }
         ]
       },
       {
         "id": "theophilus-of-antioch",
         "title": "Theophilus of Antioch",
-        "summary": [
-          "Theophilus, bishop of Antioch in the latter half of the second century CE, composed the apologetic work To Autolycus (Ad Autolycum), addressed to an otherwise unknown pagan correspondent named Autolycus, in three books systematically defending Christian monotheism against pagan idolatry, offering an extended, if chronologically eccentric, biblical chronology intended to demonstrate scripture’s temporal priority over Greek philosophical and historical tradition, and providing, notably, the earliest surviving occurrence of the Greek term “trias” (triad) applied to God, Word, and Wisdom in a formulation anticipating, though not identical to, later fully developed trinitarian doctrine. Theophilus’s activity is generally dated to the 170s–180s CE. Historically, To Autolycus provides valuable evidence for the specific apologetic strategies and biblical-chronological arguments Christian intellectuals in Roman Syria employed in engaging educated pagan readership, situating Theophilus’s work within the broader second-century Greek apologetic tradition alongside Justin Martyr, Athenagoras, and Aristides. Theologically, Theophilus’s early terminological use of “trias” for describing God’s threefold reality (though applied somewhat differently than later Nicene trinitarian formulation, with Theophilus’s “triad” comprising God, his Word, and his Wisdom rather than the later standard Father-Son-Spirit formulation) represents an important, if preliminary and terminologically distinct, milestone in the gradual historical development of explicitly trinitarian theological vocabulary within the patristic tradition."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Theophilus, bishop of Antioch, personally wrote the apologetic work To Autolycus, addressed to an otherwise unknown pagan correspondent."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity is generally dated to the 170s–180s CE."
+          },
+          {
+            "heading": "Contents",
+            "body": "The three-book work defends Christian monotheism against idol worship and offers a biblical chronology meant to show that scripture is older than Greek philosophy and history."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "The work contains the earliest known use of the Greek word for 'triad' applied to God, his Word, and his Wisdom — an early step toward, though not identical with, later fully developed Trinity doctrine."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "This early terminological groundwork helped later theologians develop more precise language for describing the New Testament's teaching about Father, Son, and Spirit. It has no canonical status."
+          }
         ]
       },
       {
         "id": "novatian",
         "title": "Novatian",
-        "summary": [
-          "Novatian, a learned Roman presbyter of the mid-third century CE, composed the treatise On the Trinity, the earliest substantial Latin treatment of trinitarian doctrine to survive from the Western church, defending the divinity of Christ and the reality of the Holy Spirit against various contemporary heretical alternatives (including modalist and adoptionist positions) through careful, systematic scriptural argumentation. Novatian’s activity is dated to the 240s–250s CE, and he became a significant, historically consequential schismatic figure when, following the Decian persecution (250–251 CE), he opposed what he regarded as the excessively lenient policy of the newly elected Roman bishop Cornelius toward readmitting Christians who had lapsed under persecution, leading his own rival consecration as bishop and the establishment of a rigorist schismatic movement (the Novatianists) that persisted for several centuries, condemned as heretical primarily on disciplinary rather than doctrinal grounds. Historically, the Novatianist schism provides crucial comparative evidence, alongside the roughly contemporary and related North African controversies addressed by Cyprian, for the acute pastoral and ecclesiological crisis the mid-third-century Roman church faced regarding the treatment of the lapsed and the proper locus and criteria of legitimate ecclesiastical authority and unity. Theologically, On the Trinity’s systematic, scripturally grounded defense of Christ’s full divinity and the Spirit’s reality, despite Novatian’s own eventual schismatic and ultimately heretical ecclesiastical status on disciplinary grounds, remained influential and was drawn upon by later orthodox Latin trinitarian theologians even as his ecclesiological rigorism was firmly rejected by the mainstream church."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Novatian, a learned Roman presbyter, personally wrote On the Trinity, the earliest substantial Latin treatment of Trinity doctrine to survive from the Western church."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His activity dates to the 240s–250s CE; after the Decian persecution, he opposed what he saw as an overly lenient policy toward readmitting Christians who had lapsed under persecution, becoming a rival, schismatic bishop."
+          },
+          {
+            "heading": "Contents",
+            "body": "The treatise carefully defends Christ's full divinity and the reality of the Holy Spirit against rival heretical views, using systematic scriptural argument."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Though Novatian himself became a schismatic figure over church discipline (not doctrine), his trinitarian arguments remained influential and were later used by orthodox Latin theologians."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His careful scriptural defense of Christ's divinity engages directly with New Testament texts used in the wider trinitarian debates of this period. His writings have no canonical status."
+          }
         ]
       },
       {
         "id": "eusebius-of-caesarea",
         "title": "Eusebius of Caesarea",
-        "summary": [
-          "Eusebius (c. 260–339 CE), bishop of Caesarea in Palestine, stands somewhat later than the other figures treated in this section, spanning the transition from the pre-Constantinian persecuted church into the newly Christianized Roman Empire under Constantine, and is included here for the foundational and indispensable significance of his Ecclesiastical History, the first comprehensive narrative history of the Christian church from the apostolic age through Eusebius’s own time, incorporating extensive verbatim citation of earlier sources (including much of what survives of Papias, and crucial information regarding the formation of the New Testament canon) that would otherwise be entirely lost. Eusebius’s major historical and apologetic works were substantially composed in the first three decades of the fourth century CE, and he played a significant role at the Council of Nicaea (325 CE), initially sympathetic to positions later deemed insufficiently orthodox before eventually subscribing to the Nicene formula. Historically, the Ecclesiastical History constitutes the single most important surviving source for reconstructing the history of the first three Christian centuries, and Eusebius’s practice of extensive verbatim quotation from earlier, frequently otherwise-lost sources (a departure from more typical ancient historiographical paraphrase) makes his work an irreplaceable primary source repository for virtually every other figure and text discussed throughout this entire section on the Apostolic Fathers and early Christian writers. Theologically, Eusebius’s own Christological views, particularly his relationship to the Arian controversy convulsing the church during his later career, remain a matter of continued scholarly discussion, though his historical work’s providential framing of Christian history as culminating in the Constantinian settlement established an influential and long-lasting model of Christian historiography linking ecclesiastical destiny to imperial political fortune."
+        "sections": [
+          {
+            "heading": "Authorship",
+            "body": "Eusebius (c. 260–339 CE), bishop of Caesarea in Palestine, personally wrote the Ecclesiastical History, the first comprehensive narrative history of the Christian church."
+          },
+          {
+            "heading": "Historical Context",
+            "body": "His major works were written in the first three decades of the fourth century CE; he participated in the Council of Nicaea (325 CE), initially holding views later judged insufficiently orthodox before eventually accepting the Nicene position."
+          },
+          {
+            "heading": "Contents",
+            "body": "The Ecclesiastical History traces church history from the apostles to Eusebius's own time, quoting extensively from earlier sources — including material from Papias and information about how the New Testament canon developed — that would otherwise be completely lost."
+          },
+          {
+            "heading": "Theological Significance",
+            "body": "Eusebius's practice of directly quoting his sources, rather than simply paraphrasing them as most ancient historians did, makes his work an irreplaceable record for nearly every other figure and text discussed in this whole section."
+          },
+          {
+            "heading": "Relationship to New Testament",
+            "body": "His history provides crucial evidence for how and when the New Testament's twenty-seven books came to be recognized as authoritative scripture. His writings have no canonical status themselves but are essential for reconstructing how the canon took shape."
+          }
         ]
       }
     ]
