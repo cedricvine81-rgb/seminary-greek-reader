@@ -18,7 +18,7 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | `tp-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -98,6 +98,14 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: 'josaseneth', name: 'Joseph and Aseneth', noteBook: 'JosAsen', dataUrl: '/data/pseudepigrapha/josaseneth.json', chapters: 29,
     attribution: 'Text: a public-domain English translation of Joseph and Aseneth (29 chapters). Verse divisions vary between editions, so some scholarly citations resolve at the chapter level only.',
     parseCitation: cite(/^Jos\. Asen\.\s+(\d+)(?::(\d+))?/) },
+  // The Letter of Aristeas is one continuous letter (§§1–322), stored as a single chapter,
+  // so a bare "Arist. 305" section reference maps to verse 305 of chapter 1.
+  { source: 'aristeas', name: 'Letter of Aristeas', noteBook: 'Aristeas', dataUrl: '/data/pseudepigrapha/aristeas.json', chapters: 1,
+    attribution: 'Text: H. T. Andrews’ translation of the Letter of Aristeas, 1913 (public domain). The work is a single run of numbered sections, shown here as one chapter.',
+    parseCitation: (text: string) => {
+      const m = text.match(/^(?:Ep\.\s*)?Arist(?:eas)?\.?\s+(\d+)/)
+      return m ? { chapter: 1, verse: parseInt(m[1], 10) } : null
+    } },
   ...TWELVE_PATRIARCHS_WORKS,
 ]
 

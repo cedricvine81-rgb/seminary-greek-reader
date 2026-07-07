@@ -129,6 +129,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
+      { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
     ],
   },
   {
