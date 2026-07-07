@@ -130,6 +130,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
+      { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14 },
     ],
   },
   {
