@@ -231,12 +231,14 @@ function secondTempleUrl(citationText: string): string | null {
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
 interface CrossRefCitation {
   text: string
-  type: 'OT' | 'LXX' | 'DSS' | 'Second Temple' | 'Christian Apocrypha' | 'Rabbinic' | 'Greco-Roman' | 'NT' | 'Other'
+  type: 'OT' | 'LXX' | 'DSS' | 'Second Temple' | 'Christian Apocrypha' | 'Patristic' | 'Rabbinic' | 'Greco-Roman' | 'NT' | 'Other'
   cf?: boolean
   ref?: { book: string; chapter: number; verse: number }
   // Present on citations merged in from named scholarly commentaries (e.g. France NICNT,
   // Beale & Carson) rather than the Evans appendix — see scripts/merge-nt-ot-allusions.py.
-  kind?: 'Quotation' | 'Allusion'
+  // 'Testimony' is used by the Patristic (early-Christian reception) layer for entries that
+  // attest a book/passage without a verbatim quotation or clear allusion.
+  kind?: 'Quotation' | 'Allusion' | 'Testimony'
   source?: string
   note?: string
 }
@@ -247,13 +249,15 @@ interface CrossRefEntry {
 const TYPE_LABELS: Record<CrossRefCitation['type'], string> = {
   OT: 'Old Testament', LXX: 'LXX (Septuagint)', DSS: 'Dead Sea Scrolls',
   'Second Temple': 'Second Temple Literature', 'Christian Apocrypha': 'Christian Apocrypha',
+  Patristic: 'Patristic (Early Church)',
   Rabbinic: 'Rabbinic Literature', 'Greco-Roman': 'Greco-Roman Literature', NT: 'New Testament', Other: 'Other',
 }
-const TYPE_ORDER: CrossRefCitation['type'][] = ['OT', 'LXX', 'DSS', 'Second Temple', 'Christian Apocrypha', 'Rabbinic', 'Greco-Roman', 'NT', 'Other']
+const TYPE_ORDER: CrossRefCitation['type'][] = ['OT', 'LXX', 'DSS', 'Second Temple', 'Christian Apocrypha', 'Patristic', 'Rabbinic', 'Greco-Roman', 'NT', 'Other']
 const TYPE_COLORS: Record<CrossRefCitation['type'], string> = {
   OT: 'bg-blue-50 border-blue-200 text-blue-800', LXX: 'bg-indigo-50 border-indigo-200 text-indigo-800',
   DSS: 'bg-amber-50 border-amber-200 text-amber-800', 'Second Temple': 'bg-emerald-50 border-emerald-200 text-emerald-800',
-  'Christian Apocrypha': 'bg-teal-50 border-teal-200 text-teal-800', Rabbinic: 'bg-purple-50 border-purple-200 text-purple-800',
+  'Christian Apocrypha': 'bg-teal-50 border-teal-200 text-teal-800', Patristic: 'bg-orange-50 border-orange-200 text-orange-800',
+  Rabbinic: 'bg-purple-50 border-purple-200 text-purple-800',
   'Greco-Roman': 'bg-rose-50 border-rose-200 text-rose-800', NT: 'bg-gray-100 border-gray-300 text-gray-700',
   Other: 'bg-gray-50 border-gray-200 text-gray-600',
 }
@@ -873,16 +877,21 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           const scholarTitle = c.note
                             ? `${c.kind ? `${c.kind}. ` : ''}${c.note}${c.source ? ` — ${c.source}` : ''}`
                             : (c.ref ? 'View text' : 'Full text not yet available for this source')
+                          // Clickable when there is embedded text (ref) OR a scholarly note to
+                          // show in the right pane — patristic/commentary entries carry a note
+                          // but no embedded text of their own.
+                          const openable = !!c.ref || !!c.note
                           return (
                             <button
                               key={ci}
                               onClick={() => openRightRef(entry.label, c)}
-                              disabled={!c.ref}
+                              disabled={!openable}
                               title={scholarTitle}
-                              className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${c.ref ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                              className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                             >
                               <span className="flex items-baseline justify-between gap-1.5">
                                 <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
+                                {c.kind && !c.source && <span className="shrink-0 text-[10px] opacity-60">{c.kind}</span>}
                                 {c.source && <span className="shrink-0 text-[10px] opacity-60">{c.source}</span>}
                               </span>
                             </button>
