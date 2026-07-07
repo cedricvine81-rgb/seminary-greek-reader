@@ -18,7 +18,7 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | `tp-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -98,6 +98,16 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: 'josaseneth', name: 'Joseph and Aseneth', noteBook: 'JosAsen', dataUrl: '/data/pseudepigrapha/josaseneth.json', chapters: 29,
     attribution: 'Text: a public-domain English translation of Joseph and Aseneth (29 chapters). Verse divisions vary between editions, so some scholarly citations resolve at the chapter level only.',
     parseCitation: cite(/^Jos\. Asen\.\s+(\d+)(?::(\d+))?/) },
+  // The Sibylline Oracles are stored with each BOOK as a chapter. Terry's marginal line
+  // numbers aren't preserved in the source, so a "Sib. Or. 3:636" reference resolves to
+  // book 3 (chapter level) — the line number is intentionally dropped to avoid pointing at
+  // the wrong line.
+  { source: 'sibylline', name: 'Sibylline Oracles', noteBook: 'Sibylline', dataUrl: '/data/pseudepigrapha/sibylline.json', chapters: 14,
+    attribution: 'Text: Milton S. Terry’s translation of the Sibylline Oracles (2nd ed., 1899), public domain. Each book is a chapter; cross-references resolve at the book level.',
+    parseCitation: (text: string) => {
+      const m = text.match(/^Sib\. Or\.\s+(\d+)/)
+      return m ? { chapter: parseInt(m[1], 10) } : null
+    } },
   // The Letter of Aristeas is one continuous letter (§§1–322), stored as a single chapter,
   // so a bare "Arist. 305" section reference maps to verse 305 of chapter 1.
   { source: 'aristeas', name: 'Letter of Aristeas', noteBook: 'Aristeas', dataUrl: '/data/pseudepigrapha/aristeas.json', chapters: 1,
