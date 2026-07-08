@@ -176,7 +176,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
     }`
 
   const toolsMenuTitles: Record<typeof tab, string> = {
-    workspace: 'Exegesis tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
+    workspace: 'Syntax tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
     backgrounds: 'Settings & sources', texts: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
@@ -211,7 +211,7 @@ export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) 
             computes overflow-y to auto too, which would clip the dropdown's popover. */}
         <div className="flex items-center gap-1 min-w-0">
           <div className="flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Exegesis</button>
+            <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Syntax</button>
             <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
             <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
             <button type="button" onClick={() => setTab('backgrounds')} className={tabClass(tab === 'backgrounds')}><Scroll size={16} /> Backgrounds</button>
