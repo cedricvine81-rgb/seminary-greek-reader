@@ -110,6 +110,10 @@ const PARALLEL_LANGS = [
   { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version' },
 ]
 
+// The order mobile swipes through: the complete Greek text, then each full
+// translation as its own page, wrapping back to Greek.
+const PARALLEL_CYCLE: (string | null)[] = [null, ...PARALLEL_LANGS.map(l => l.code)]
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 const LOOKAHEAD = 1600   // px ahead of sentinel to start loading next chapter
@@ -488,12 +492,15 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     }
   }, [])
 
-  // ── Mobile parallel-text swipe ────────────────────────────────────────────────
-  // Remember the last real translation so a swipe can toggle Greek-only <-> it.
-  // The dropdown still picks which of the 8 languages that is; swipe just flips it.
-  const lastParallelRef = useRef<string>('bsb')
-  useEffect(() => { if (parallelLang) lastParallelRef.current = parallelLang }, [parallelLang])
+  // ── Mobile text-cycle swipe ───────────────────────────────────────────────────
+  // Swipe left/right pages through the complete texts: Greek → each full
+  // translation → back to Greek. The dropdown still jumps directly to any language.
   const swipeStartRef = useRef<{ x: number; y: number; t: number } | null>(null)
+
+  function cycleParallel(dir: 1 | -1) {
+    const idx = PARALLEL_CYCLE.indexOf(parallelLang)
+    setParallelLang(PARALLEL_CYCLE[(idx + dir + PARALLEL_CYCLE.length) % PARALLEL_CYCLE.length])
+  }
 
   function onTextTouchStart(e: React.TouchEvent) {
     if (e.touches.length !== 1) { swipeStartRef.current = null; return }
@@ -511,8 +518,8 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     const dy = t.clientY - s.y
     if (Date.now() - s.t > 600) return
     if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return
-    // Swipe left reveals the parallel translation; swipe right returns to Greek only.
-    setParallelLang(dx < 0 ? lastParallelRef.current : null)
+    // Swipe left advances to the next text; swipe right steps back.
+    cycleParallel(dx < 0 ? 1 : -1)
   }
 
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
@@ -1148,9 +1155,9 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
       )
 
       return (
-        <div key={v.id} className="grid grid-cols-1 gap-1.5 lg:grid-cols-2 lg:gap-6 mb-1">
-          {withNote}
-          <div className="border-l-2 border-brand-100 pl-3 lg:border-l-0 lg:pl-0">{englishCol}</div>
+        <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-1">
+          <div className="hidden lg:block">{withNote}</div>
+          {englishCol}
         </div>
       )
     }
@@ -1158,9 +1165,9 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     // ── Other translations: plain verse string ─────────────────────────────────
     const transTxt = translationVerses[v.id]
     return (
-      <div key={v.id} className="grid grid-cols-1 gap-1.5 lg:grid-cols-2 lg:gap-6 mb-1">
-        {withNote}
-        <p className="leading-relaxed text-gray-700 pt-0.5 border-l-2 border-brand-100 pl-3 lg:border-l-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+      <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-1">
+        <div className="hidden lg:block">{withNote}</div>
+        <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
@@ -1504,23 +1511,20 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
         )}
       </div>
 
-      {/* ── Mobile parallel-text switcher ── */}
-      {/* Swipe the text left/right to toggle; these dots show + set the same state. */}
-      <div className="lg:hidden flex-none flex items-center justify-center gap-2 py-0.5">
-        <button
-          type="button"
-          onClick={() => setParallelLang(null)}
-          aria-label="Greek only"
-          className={`h-2 w-2 rounded-full transition-colors ${parallelLang === null ? 'bg-brand-500' : 'bg-gray-300'}`}
-        />
-        <button
-          type="button"
-          onClick={() => setParallelLang(lastParallelRef.current)}
-          aria-label="Show parallel translation"
-          className={`h-2 w-2 rounded-full transition-colors ${parallelLang !== null ? 'bg-brand-500' : 'bg-gray-300'}`}
-        />
-        <span className="ml-1.5 text-[11px] text-gray-400">
-          {parallelLang ? `Greek + ${parallelLangInfo?.label}` : 'Swipe to compare a translation'}
+      {/* ── Mobile text-cycle switcher ── */}
+      {/* Swipe the text left/right to page through Greek → translations; dots jump directly. */}
+      <div className="lg:hidden flex-none flex items-center justify-center gap-1 py-1">
+        {PARALLEL_CYCLE.map((code, i) => (
+          <button
+            key={i}
+            type="button"
+            onClick={() => setParallelLang(code)}
+            aria-label={code ? PARALLEL_LANGS.find(l => l.code === code)?.label : 'Greek'}
+            className={`h-1.5 w-1.5 rounded-full transition-colors ${parallelLang === code ? 'bg-brand-500' : 'bg-gray-300'}`}
+          />
+        ))}
+        <span className="ml-2 text-[11px] text-gray-400 truncate max-w-[45%]">
+          {parallelLang ? parallelLangInfo?.label : 'Greek'}
         </span>
       </div>
 
