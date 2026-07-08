@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
-import { getGroupPresentationGrading, gradeGroupPresentation, gradeGroupMember, setGroupLateApproval } from '@/lib/group-presentations'
+import { getGroupPresentationGrading, gradeGroupPresentation, gradeGroupMember, setGroupLateApproval, reopenGroupSubmission } from '@/lib/group-presentations'
 
 // GET — instructor grading view for a GROUP_PRESENTATION: every group, each member's
 // contribution + attestation, submission status, and the group grade.
@@ -31,6 +31,11 @@ export async function POST(req: NextRequest, { params }: { params: { assignmentI
     const b = await req.json()
     const groupId = String(b.groupId ?? '')
     if (!groupId) return NextResponse.json({ error: 'Missing groupId' }, { status: 400 })
+
+    if (b.reopen === true) {
+      await reopenGroupSubmission(params.assignmentId, groupId)
+      return NextResponse.json({ ok: true })
+    }
 
     if (typeof b.lateApproved === 'boolean') {
       await setGroupLateApproval(params.assignmentId, groupId, b.lateApproved)

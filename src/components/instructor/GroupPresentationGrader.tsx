@@ -4,7 +4,7 @@ import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { useApi } from '@/lib/api-client'
 import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
-import { ChevronDown, ChevronRight, Check, Loader2, CheckCircle2, XCircle, Clock } from 'lucide-react'
+import { ChevronDown, ChevronRight, Check, Loader2, CheckCircle2, XCircle, Clock, RotateCcw } from 'lucide-react'
 
 interface Member {
   userId: string
@@ -92,6 +92,7 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
   const [approving, setApproving] = useState(false)
+  const [reopening, setReopening] = useState(false)
 
   useEffect(() => {
     setGrade(group.grade !== null ? String(group.grade) : '')
@@ -124,6 +125,14 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
     finally { setApproving(false) }
   }
 
+  async function reopen() {
+    if (!window.confirm(`Reopen ${group.name}’s submission? This clears their submitted status and lets them edit and resubmit (late approval is granted).`)) return
+    setReopening(true)
+    try { await post({ reopen: true }); onChanged() }
+    catch { alert('Could not reopen the submission. Please try again.') }
+    finally { setReopening(false) }
+  }
+
   const contributed = group.members.filter(m => m.contributed).length
 
   return (
@@ -145,6 +154,11 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
               ? <span className="text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md">Past deadline</span>
               : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>}
           {group.submittedAt && <p className="mt-1 text-[11px] text-gray-400">{new Date(group.submittedAt).toLocaleDateString()}</p>}
+          {group.submitted && (
+            <button onClick={reopen} disabled={reopening} className="mt-1 inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-brand-700 disabled:opacity-50">
+              <RotateCcw size={11} /> {reopening ? 'Reopening…' : 'Reopen'}
+            </button>
+          )}
         </div>
 
         <div className="shrink-0 flex items-center gap-1.5">

@@ -17,6 +17,24 @@ function cutoff(a: { submissionDeadline: Date | null; dueDate: Date }): Date {
 const studentName = (u: { firstName: string | null; surname: string | null; email: string }) =>
   [u.firstName, u.surname].filter(Boolean).join(' ') || u.email
 
+type Anchor = { submissionDeadline: Date | null; dueDate: Date }
+type SubmissionState = { submittedAt: Date | null; lateApproved: boolean } | null
+
+// Whether members can still edit/attest: not yet submitted, and either before the deadline
+// or granted late approval. The deadline itself freezes work (late approval reopens it).
+function isEditable(a: Anchor, submission: SubmissionState): boolean {
+  if (submission?.submittedAt) return false
+  return Date.now() <= cutoff(a).getTime() || !!submission?.lateApproved
+}
+
+// Throw the matching user-facing error when a group's work is not currently editable.
+function assertEditable(a: Anchor, submission: SubmissionState) {
+  if (submission?.submittedAt) throw new Error('Already submitted')
+  if (Date.now() > cutoff(a).getTime() && !submission?.lateApproved) {
+    throw new Error('The deadline has passed. Ask your instructor to approve a late submission.')
+  }
+}
+
 // ─── Student ──────────────────────────────────────────────────────
 
 // Resolve the group the student belongs to for a given presentation assignment, checking
@@ -46,7 +64,18 @@ async function requireMembership(userId: string, groupId: string) {
 // teammates' sections (read-only), the group's submission state, and the deadline.
 export async function getGroupPresentationsForStudent(userId: string) {
   const memberships = await prisma.courseGroupMember.findMany({
-    where: { userId, group: { assignment: { type: 'GROUP_PRESENTATION', isPublished: true } } },
+    where: {
+      userId,
+      group: {
+        assignment: {
+          type: 'GROUP_PRESENTATION',
+          isPublished: true,
+          // Only surface presentations in courses the student is still approved-enrolled in,
+          // so a dropped student can't keep reading their old group's work.
+          course: { enrollments: { some: { userId, status: 'APPROVED' } } },
+        },
+      },
+    },
     select: { groupId: true },
   })
   const groupIds = memberships.map(m => m.groupId)
@@ -84,8 +113,9 @@ export async function getGroupPresentationsForStudent(userId: string) {
         lateApproved,
         // Group can still submit if not yet submitted and either within the deadline or granted late approval.
         canSubmit: !submitted && (Date.now() <= deadline.getTime() || lateApproved),
-        // Editing is locked once submitted; otherwise members can keep drafting.
-        locked: submitted,
+        // Editing is locked once submitted OR once the deadline passes without late
+        // approval — the deadline freezes work; late approval reopens it.
+        locked: !isEditable(a, g.submission),
         groupGrade: g.submission?.grade ?? null,
         // The grade this student actually receives: their per-member override if set,
         // otherwise the group grade.
@@ -112,8 +142,8 @@ export async function getGroupPresentationsForStudent(userId: string) {
 
 export async function saveMyContribution(userId: string, groupId: string, data: { body?: string; aiDeclaration?: string }) {
   const group = await requireMembership(userId, groupId)
-  if (group.submission?.submittedAt) throw new Error('Already submitted')
   const a = group.assignment!
+  assertEditable(a, group.submission)
   return prisma.groupContribution.upsert({
     where: { groupId_userId: { groupId, userId } },
     update: {
@@ -131,7 +161,7 @@ export async function saveMyContribution(userId: string, groupId: string, data: 
 // declaration so an attestation always has content behind it.
 export async function attestMyContribution(userId: string, groupId: string) {
   const group = await requireMembership(userId, groupId)
-  if (group.submission?.submittedAt) throw new Error('Already submitted')
+  assertEditable(group.assignment!, group.submission)
   const existing = await prisma.groupContribution.findUnique({ where: { groupId_userId: { groupId, userId } }, select: { aiDeclaration: true } })
   if (!existing || existing.aiDeclaration.trim() === '') throw new Error('Add your AI/sources statement before signing')
   return prisma.groupContribution.update({
@@ -153,6 +183,15 @@ export async function submitGroupPresentation(userId: string, groupId: string) {
     update: { submittedAt: new Date() },
     create: { groupId, assignmentId: a.id, submittedAt: new Date() },
   })
+}
+
+// Undo a submission so the group can keep editing. Members may only do this before the
+// deadline (after it, an instructor reopen is required).
+export async function reopenMyGroupSubmission(userId: string, groupId: string) {
+  const group = await requireMembership(userId, groupId)
+  if (!group.submission?.submittedAt) throw new Error('Not submitted')
+  if (Date.now() > cutoff(group.assignment!).getTime()) throw new Error('The deadline has passed. Ask your instructor to reopen it.')
+  return prisma.groupSubmission.update({ where: { groupId }, data: { submittedAt: null } })
 }
 
 // ─── Instructor ───────────────────────────────────────────────────
@@ -245,5 +284,17 @@ export async function setGroupLateApproval(assignmentId: string, groupId: string
     where: { groupId },
     update: { lateApproved: approved },
     create: { groupId, assignmentId, lateApproved: approved },
+  })
+}
+
+// Reopen a submitted presentation: clear the submission and grant late approval so the
+// group can edit and resubmit even if the deadline has already passed.
+export async function reopenGroupSubmission(assignmentId: string, groupId: string) {
+  const group = await prisma.courseGroup.findFirst({ where: { id: groupId, assignmentId }, select: { id: true } })
+  if (!group) throw new Error('Group not found')
+  return prisma.groupSubmission.upsert({
+    where: { groupId },
+    update: { submittedAt: null, lateApproved: true },
+    create: { groupId, assignmentId, lateApproved: true },
   })
 }

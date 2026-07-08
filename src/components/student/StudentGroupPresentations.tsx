@@ -5,7 +5,7 @@ import { NoteComposer } from '@/components/notes/NoteComposer'
 import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
-import { Users, Loader2, CheckCircle2, Clock, Lock, ShieldCheck, Send } from 'lucide-react'
+import { Users, Loader2, CheckCircle2, Clock, Lock, ShieldCheck, Send, RotateCcw } from 'lucide-react'
 
 interface Member {
   userId: string
@@ -61,7 +61,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
   const [body, setBody] = useState(entry.me.body)
   const [ai, setAi] = useState(entry.me.aiDeclaration)
   const [savingSection, setSavingSection] = useState(false)
-  const [busy, setBusy] = useState<'attest' | 'submit' | null>(null)
+  const [busy, setBusy] = useState<'attest' | 'submit' | 'reopen' | null>(null)
   const [error, setError] = useState('')
 
   const attested = entry.me.attestedAt !== null
@@ -100,8 +100,23 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
   }
 
   async function submit() {
+    // Warn about teammates whose work isn't ready, since submitting locks everyone.
+    const noSection = entry.members.filter(m => !m.contributed).length
+    const noSign = entry.members.filter(m => !m.attested).length
+    if (noSection > 0 || noSign > 0) {
+      const bits: string[] = []
+      if (noSection > 0) bits.push(`${noSection} ${noSection === 1 ? "hasn’t" : "haven’t"} written a section`)
+      if (noSign > 0) bits.push(`${noSign} ${noSign === 1 ? "hasn’t" : "haven’t"} signed their statement`)
+      if (!window.confirm(`${bits.join(' and ')} (of ${entry.members.length} members). Submitting locks everyone’s work for grading. Submit anyway?`)) return
+    }
     setBusy('submit')
     if (await act({ action: 'submit' })) onChanged()
+    setBusy(null)
+  }
+
+  async function reopen() {
+    setBusy('reopen')
+    if (await act({ action: 'reopen' })) onChanged()
     setBusy(null)
   }
 
@@ -221,10 +236,19 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           </Button>
         </div>
       )}
-      {entry.submitted && entry.submittedAt && (
-        <p className="mt-3 border-t border-gray-100 pt-3 text-xs text-gray-500">
-          Submitted on {new Date(entry.submittedAt).toLocaleString()}.
-        </p>
+      {entry.submitted && (
+        <div className="mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
+          <p className="text-xs text-gray-500">
+            {entry.submittedAt ? `Submitted on ${new Date(entry.submittedAt).toLocaleString()}.` : 'Submitted.'}
+            {!entry.pastDeadline && ' You can reopen it to keep editing before the deadline.'}
+          </p>
+          {/* Before the deadline, any member can undo the submission; after it, only the instructor can reopen. */}
+          {!entry.pastDeadline && (
+            <Button variant="secondary" size="sm" onClick={reopen} loading={busy === 'reopen'} className="flex items-center gap-1.5">
+              <RotateCcw size={13} /> Reopen
+            </Button>
+          )}
+        </div>
       )}
     </Card>
   )

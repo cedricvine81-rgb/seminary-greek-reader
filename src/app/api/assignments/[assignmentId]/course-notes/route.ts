@@ -4,7 +4,6 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { compareStudentsByName } from '@/lib/sort-students'
-import { sanitizeNoteHtml, toNoteHtml } from '@/lib/note-html'
 import { getAllBooks } from '@/lib/reader'
 import { PROSE_WORKS } from '@/lib/prose-texts'
 
@@ -81,8 +80,9 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
         .filter(n => n.userId === uid)
         .map(n => ({
           // ref is null for a general note; title carries its heading instead.
-          ref: noteRef(bookNames, n), title: n.title,
-          html: sanitizeNoteHtml(toNoteHtml(n.body)),
+          // body is the raw stored HTML; the client sanitizes before rendering (server-side
+          // sanitize is text-only and would strip the note's formatting).
+          ref: noteRef(bookNames, n), title: n.title, body: n.body,
         }))
       return {
         userId: uid,

@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { useApi } from '@/lib/api-client'
+import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ChevronDown, ChevronRight, Check, Loader2, FileText } from 'lucide-react'
 
 interface Note {
   ref: string | null   // "John 1:1" for a verse note; null for a general course note
   title: string | null // heading, mainly for general notes
-  html: string         // sanitized note body
+  body: string         // raw stored HTML; sanitized client-side before render
 }
 interface Row {
   userId: string
@@ -167,24 +168,31 @@ function StudentRow({ row, assignmentId, expanded, onToggle, onSaved }: {
             </p>
           ) : (
             <div className="space-y-2">
-              {row.notes.map((n, i) => (
-                <div key={i} className="rounded-lg border border-gray-200 bg-white p-3">
-                  <div className="flex items-center gap-2 mb-1.5">
-                    {n.ref
-                      ? <span className="text-xs font-semibold text-brand-700">{n.ref}</span>
-                      : <span className="text-xs font-semibold text-gray-700">{n.title || 'Course note'}</span>}
-                    {!n.ref && (
-                      <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Course note</span>
-                    )}
+              {row.notes.map((n, i) => {
+                // Sanitize on the client so the note's formatting is preserved (server-side
+                // sanitize is text-only).
+                const html = sanitizeNoteHtml(toNoteHtml(n.body))
+                return (
+                  <div key={i} className="rounded-lg border border-gray-200 bg-white p-3">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      {n.ref
+                        ? <span className="text-xs font-semibold text-brand-700">{n.ref}</span>
+                        : <span className="text-xs font-semibold text-gray-700">{n.title || 'Course note'}</span>}
+                      {!n.ref && (
+                        <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Course note</span>
+                      )}
+                    </div>
+                    {/* Verse note with its own title still shows it above the body. */}
+                    {n.ref && n.title && <p className="text-xs font-medium text-gray-600 mb-1">{n.title}</p>}
+                    {isHtmlEmpty(html)
+                      ? <p className="text-xs text-gray-400 italic">Empty note.</p>
+                      : <div
+                          className="prose-notes text-sm leading-snug text-gray-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                          dangerouslySetInnerHTML={{ __html: html }}
+                        />}
                   </div>
-                  {/* Verse note with its own title still shows it above the body. */}
-                  {n.ref && n.title && <p className="text-xs font-medium text-gray-600 mb-1">{n.title}</p>}
-                  <div
-                    className="prose-notes text-sm leading-snug text-gray-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
-                    dangerouslySetInnerHTML={{ __html: n.html }}
-                  />
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>

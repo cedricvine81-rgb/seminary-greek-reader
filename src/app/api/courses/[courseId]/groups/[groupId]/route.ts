@@ -34,14 +34,24 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     // Link this group to a Group Presentation (assignmentId), or unlink it (null). The
     // assignment must be a GROUP_PRESENTATION belonging to this course.
     if (assignmentId !== undefined) {
-      if (assignmentId === null) {
-        ops.push(prisma.courseGroup.update({ where: { id: groupId }, data: { assignmentId: null } }))
-      } else {
+      let next: string | null = null
+      if (assignmentId !== null) {
         const a = await prisma.assignment.findFirst({
           where: { id: String(assignmentId), courseId, type: 'GROUP_PRESENTATION' }, select: { id: true },
         })
         if (!a) return NextResponse.json({ error: 'That presentation was not found for this course.' }, { status: 400 })
-        ops.push(prisma.courseGroup.update({ where: { id: groupId }, data: { assignmentId: a.id } }))
+        next = a.id
+      }
+      // Only touch anything when the link actually changes. On a change, discard the
+      // group's contributions + submission so work from the previous presentation can't
+      // resurface under the new one.
+      const current = await prisma.courseGroup.findUnique({ where: { id: groupId }, select: { assignmentId: true } })
+      if ((current?.assignmentId ?? null) !== next) {
+        ops.push(
+          prisma.groupContribution.deleteMany({ where: { groupId } }),
+          prisma.groupSubmission.deleteMany({ where: { groupId } }),
+          prisma.courseGroup.update({ where: { id: groupId }, data: { assignmentId: next } }),
+        )
       }
     }
 
