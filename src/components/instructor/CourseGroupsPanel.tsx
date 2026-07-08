@@ -6,11 +6,14 @@ import { Input } from '@/components/ui/Input'
 import { Users, Mail, Trash2, Plus, CheckCircle2, ArrowLeft } from 'lucide-react'
 
 interface Student { id: string; name: string }
-interface Group { id: string; name: string; members: { id: string; name: string }[] }
+interface Group { id: string; name: string; assignmentId: string | null; members: { id: string; name: string }[] }
+interface Presentation { id: string; title: string }
 
 interface Props {
   courseId: string
   students: Student[]
+  // Published Group Presentation assignments in this course, for linking groups to.
+  presentations?: Presentation[]
 }
 
 /**
@@ -18,7 +21,7 @@ interface Props {
  * belongs to at most one group per course), and message any group. Sits next to "Message
  * Class" on the course page.
  */
-export function CourseGroupsPanel({ courseId, students }: Props) {
+export function CourseGroupsPanel({ courseId, students, presentations = [] }: Props) {
   const [open, setOpen] = useState(false)
   const [groups, setGroups] = useState<Group[]>([])
   const [loaded, setLoaded] = useState(false)
@@ -57,7 +60,7 @@ export function CourseGroupsPanel({ courseId, students }: Props) {
     } finally { setCreating(false) }
   }
 
-  async function patch(id: string, payload: { name?: string; memberIds?: string[] }) {
+  async function patch(id: string, payload: { name?: string; memberIds?: string[]; assignmentId?: string | null }) {
     const res = await fetch(`/api/courses/${courseId}/groups/${id}`, {
       method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     })
@@ -68,6 +71,10 @@ export function CourseGroupsPanel({ courseId, students }: Props) {
   async function rename(id: string, name: string) {
     if (!name.trim()) return
     if (await patch(id, { name: name.trim() })) setGroups(gs => gs.map(g => g.id === id ? { ...g, name: name.trim() } : g))
+  }
+
+  async function setAssignment(id: string, assignmentId: string | null) {
+    if (await patch(id, { assignmentId })) setGroups(gs => gs.map(g => g.id === id ? { ...g, assignmentId } : g))
   }
 
   async function toggleMember(group: Group, student: Student, checked: boolean) {
@@ -158,6 +165,20 @@ export function CourseGroupsPanel({ courseId, students }: Props) {
                       </Button>
                       <button onClick={() => remove(group.id)} className="text-gray-400 hover:text-red-600 p-1" title="Delete group"><Trash2 size={15} /></button>
                     </div>
+                    {/* Link this group to a Group Presentation assignment (or leave unassigned). */}
+                    <label className="flex items-center gap-2 text-xs text-gray-500">
+                      <span className="shrink-0">Assignment</span>
+                      <select
+                        value={group.assignmentId ?? ''}
+                        onChange={e => setAssignment(group.id, e.target.value || null)}
+                        className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-400"
+                      >
+                        <option value="">No assignment (messaging only)</option>
+                        {presentations.map(p => (
+                          <option key={p.id} value={p.id}>Group Presentation · {p.title}</option>
+                        ))}
+                      </select>
+                    </label>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
                       {students.map(s => {
                         const inThis = group.members.some(m => m.id === s.id)

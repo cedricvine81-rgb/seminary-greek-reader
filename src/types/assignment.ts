@@ -1,6 +1,6 @@
 import type { CourseLevel } from './course'
 
-export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES'
+export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION'
 
 export type QuestionType =
   | 'GREEK_TO_ENGLISH'

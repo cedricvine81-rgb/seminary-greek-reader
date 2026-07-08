@@ -21,7 +21,7 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     const { courseId, groupId } = params
     if (!await authorize(courseId, groupId, payload.sub)) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-    const { name, memberIds } = await req.json()
+    const { name, memberIds, assignmentId } = await req.json()
     const ops = []
 
     if (typeof name === 'string') {
@@ -29,6 +29,20 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
       if (!trimmed) return NextResponse.json({ error: 'A group name is required.' }, { status: 400 })
       if (trimmed.length > 100) return NextResponse.json({ error: 'Group name must be 100 characters or fewer.' }, { status: 400 })
       ops.push(prisma.courseGroup.update({ where: { id: groupId }, data: { name: trimmed } }))
+    }
+
+    // Link this group to a Group Presentation (assignmentId), or unlink it (null). The
+    // assignment must be a GROUP_PRESENTATION belonging to this course.
+    if (assignmentId !== undefined) {
+      if (assignmentId === null) {
+        ops.push(prisma.courseGroup.update({ where: { id: groupId }, data: { assignmentId: null } }))
+      } else {
+        const a = await prisma.assignment.findFirst({
+          where: { id: String(assignmentId), courseId, type: 'GROUP_PRESENTATION' }, select: { id: true },
+        })
+        if (!a) return NextResponse.json({ error: 'That presentation was not found for this course.' }, { status: 400 })
+        ops.push(prisma.courseGroup.update({ where: { id: groupId }, data: { assignmentId: a.id } }))
+      }
     }
 
     if (Array.isArray(memberIds)) {

@@ -6,7 +6,7 @@ import {
   Menu, X, LogIn, UserPlus, LogOut, Settings,
   LayoutDashboard, Calendar, ClipboardList, FileText,
   BarChart2, GraduationCap, TrendingUp,
-  BookMarked, Archive, Mail,
+  BookMarked, Archive, Mail, Users,
 } from 'lucide-react'
 
 interface AppMenuProps {
@@ -27,6 +27,7 @@ const STUDENT_NAV = [
   { href: '/student',               label: 'Dashboard',    icon: LayoutDashboard },
   { href: '/student/calendar',      label: 'Calendar',     icon: Calendar },
   { href: '/student/assignments',   label: 'Assignments',  icon: ClipboardList },
+  { href: '/student/group-presentations', label: 'Group Work', icon: Users },
   { href: '/student/messages',      label: 'Messages',     icon: Mail },
   { href: '/student/progress',      label: 'Accuracy',     icon: TrendingUp },
   { href: '/student/scores',        label: 'Grades',       icon: BarChart2 },

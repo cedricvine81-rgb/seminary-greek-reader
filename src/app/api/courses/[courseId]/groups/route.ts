@@ -26,6 +26,7 @@ async function groupsWithMembers(courseId: string, onlyUserId?: string) {
   return groups.map(g => ({
     id: g.id,
     name: g.name,
+    assignmentId: g.assignmentId,  // the Group Presentation this group is linked to, or null
     members: g.members.map(m => ({ id: m.user.id, name: memberName(m.user) })),
   }))
 }
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest, { params }: { params: { courseId: s
 
     const group = await prisma.courseGroup.create({ data: { courseId, name: trimmed } })
     revalidatePath(`/instructor/courses/${courseId}`)
-    return NextResponse.json({ group: { id: group.id, name: group.name, members: [] } }, { status: 201 })
+    return NextResponse.json({ group: { id: group.id, name: group.name, assignmentId: null, members: [] } }, { status: 201 })
   } catch (err) {
     logError('api/courses/groups POST', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })

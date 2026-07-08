@@ -15,6 +15,7 @@ const GROUPS = [
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
   { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
   { type: 'COURSE_NOTES',         label: 'Course Notes' },
+  { type: 'GROUP_PRESENTATION',   label: 'Group Presentations' },
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -68,8 +69,10 @@ export async function CourseGradebook({ courseId }: Props) {
     .map(a => a.id)
   // Course Notes are graded 0–100 by the instructor and stored on NoteSubmission.
   const courseNotesIds = assignments.filter(a => a.type === 'COURSE_NOTES').map(a => a.id)
+  // Group Presentations get one group grade (GroupSubmission.grade), shared by every member.
+  const groupPresentationIds = assignments.filter(a => a.type === 'GROUP_PRESENTATION').map(a => a.id)
 
-  const [realAttempts, realResponses, exegesisGrades, noteGrades] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
@@ -92,7 +95,29 @@ export async function CourseGradebook({ courseId }: Props) {
           select: { userId: true, assignmentId: true, grade: true },
         })
       : Promise.resolve([]),
+    groupPresentationIds.length > 0
+      ? prisma.courseGroup.findMany({
+          where: { assignmentId: { in: groupPresentationIds } },
+          select: {
+            assignmentId: true,
+            members: { select: { userId: true } },
+            submission: { select: { grade: true } },
+            contributions: { select: { userId: true, grade: true } },
+          },
+        })
+      : Promise.resolve([]),
   ])
+
+  // Flatten group presentations to per-student grades. Each member gets their per-member
+  // override (GroupContribution.grade) if set, else the group grade.
+  const groupGrades = presentationGroups.flatMap(g => {
+    if (!g.assignmentId) return []
+    const overrideByUser = new Map(g.contributions.filter(c => c.grade != null).map(c => [c.userId, c.grade as number]))
+    return g.members.flatMap(m => {
+      const grade = overrideByUser.get(m.userId) ?? g.submission?.grade ?? null
+      return grade != null ? [{ userId: m.userId, assignmentId: g.assignmentId as string, grade }] : []
+    })
+  })
 
   const students = enrollments.map(e => e.user)
 
@@ -105,6 +130,10 @@ export async function CourseGradebook({ courseId }: Props) {
     if (assignment.type === 'COURSE_NOTES') {
       const sub = noteGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
       return sub?.grade ?? null
+    }
+    if (assignment.type === 'GROUP_PRESENTATION') {
+      const g = groupGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return g?.grade ?? null
     }
     if (assignment.type === 'TRANSLATION_EXERCISE') {
       if (assignment.questions.length === 0) {

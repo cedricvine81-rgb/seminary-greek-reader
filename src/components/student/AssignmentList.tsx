@@ -16,6 +16,8 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   MORPHOLOGY_QUIZ: 'purple',
   TRANSLATION_EXERCISE: 'green',
   TRANSLATION_EXAM: 'green',
+  COURSE_NOTES: 'blue',
+  GROUP_PRESENTATION: 'purple',
 }
 
 const typeLabels: Record<string, string> = {
@@ -24,7 +26,14 @@ const typeLabels: Record<string, string> = {
   MORPHOLOGY_QUIZ: 'Morphology',
   TRANSLATION_EXERCISE: 'Translation',
   TRANSLATION_EXAM: 'Translation Exam',
+  COURSE_NOTES: 'Course Notes',
+  GROUP_PRESENTATION: 'Group Presentation',
 }
+
+// Group presentations are worked on in a dedicated collaborative page, not the generic
+// single-assignment view.
+const hrefFor = (a: { id: string; type: string }) =>
+  a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
 
 export function AssignmentList({ assignments, completedIds = new Set() }: AssignmentListProps) {
   if (assignments.length === 0) {
@@ -50,7 +59,7 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
         return (
           <Link
             key={a.id}
-            href={`/student/assignments/${a.id}`}
+            href={hrefFor(a)}
             className="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 bg-white hover:border-brand-200 hover:shadow-sm transition-all group"
           >
             <div className="flex flex-col gap-1 min-w-0">

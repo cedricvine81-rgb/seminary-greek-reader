@@ -90,6 +90,7 @@ model User {
   noteSubmissions    NoteSubmission[]
   highlights         Highlight[]
   groupMemberships   CourseGroupMember[]
+  groupContributions GroupContribution[]
 
   @@index([email])
   @@index([paddleCustomerId])
@@ -189,13 +190,68 @@ model CourseGroup {
   id        String   @id @default(cuid())
   courseId  String
   name      String
+  // The Group Presentation this group is doing, or null for a plain (messaging-only)
+  // group. A group is linked to at most one presentation; members write and submit
+  // against this assignment.
+  assignmentId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  course  Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  members CourseGroupMember[]
+  course       Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  assignment   Assignment?         @relation("GroupPresentationGroups", fields: [assignmentId], references: [id], onDelete: SetNull)
+  members      CourseGroupMember[]
+  contributions GroupContribution[]
+  submission   GroupSubmission?
 
   @@index([courseId])
+  @@index([assignmentId])
+}
+
+// One group member's own section of a Group Presentation, plus their individual
+// AI/copying attestation. Per-member so contribution is unambiguous: a member with a
+// non-empty body has contributed. One row per (group, user).
+model GroupContribution {
+  id           String   @id @default(cuid())
+  groupId      String
+  assignmentId String   // denormalised for querying an assignment's contributions directly
+  userId       String
+  body         String   @default("")  // sanitized rich-text HTML: this member's section
+  aiDeclaration String  @default("")  // member's use-of-AI / sources / originality statement
+  attestedAt   DateTime?              // set when the member signs their declaration
+  // Optional per-member grade override. Null = this member inherits the group grade
+  // (GroupSubmission.grade); set it to give an individual a different grade for their
+  // contribution.
+  grade        Int?
+  gradeNote    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  group      CourseGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  assignment Assignment  @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([assignmentId])
+  @@index([userId])
+}
+
+// The group-level record for a Group Presentation: one submission + one grade for the
+// whole group. lateApproved lets an instructor accept a post-deadline submission.
+model GroupSubmission {
+  id           String    @id @default(cuid())
+  groupId      String    @unique
+  assignmentId String
+  submittedAt  DateTime?
+  lateApproved Boolean   @default(false)  // instructor accepted a submission after the deadline
+  grade        Int?      // 0–100, applied to the whole group
+  gradeNote    String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  group      CourseGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  assignment Assignment  @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@index([assignmentId])
 }
 
 model CourseGroupMember {
@@ -339,6 +395,7 @@ enum AssignmentType {
   TRANSLATION_EXERCISE
   TRANSLATION_EXAM
   COURSE_NOTES
+  GROUP_PRESENTATION
 }
 
 model Assignment {
@@ -398,6 +455,9 @@ model Assignment {
   appeals    VocabAppeal[]
   noteSubmissions NoteSubmission[]
   noteFolders     NoteFolder[]
+  groups             CourseGroup[]       @relation("GroupPresentationGroups")
+  groupContributions GroupContribution[]
+  groupSubmissions   GroupSubmission[]
 
   @@index([courseId])
 }

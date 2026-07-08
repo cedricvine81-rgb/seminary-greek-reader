@@ -339,6 +339,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'TRANSLATION_EXERCISE', label: 'Translation Exercise' },
           { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
           { value: 'COURSE_NOTES',         label: 'Course Notes' },
+          { value: 'GROUP_PRESENTATION',   label: 'Group Presentation' },
         ]}
       />
 
@@ -357,6 +358,18 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             onChange={e => set('notesFolderName', e.target.value)}
             placeholder="e.g. Judaism"
           />
+        </div>
+      )}
+
+      {form.type === 'GROUP_PRESENTATION' && (
+        <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-2">
+          <p className="text-sm font-semibold text-brand-800">👥 Group Presentation</p>
+          <p className="text-xs text-brand-700">
+            Assign students to groups from the <span className="font-medium">Course groups</span> panel on the course page,
+            then link each group to this presentation. Each member writes their own section in a shared pane and signs an
+            individual AI/sources statement; the group submits once for a single group grade. The <span className="font-medium">Due date</span> below
+            is the submission deadline — after it passes you can approve a late submission per group from the grading page.
+          </p>
         </div>
       )}
 
@@ -696,12 +709,12 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           rows={3} className="input" placeholder="Additional instructions for students…" />
       </div>
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
         <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
           onChange={e => set('numQuestions', Number(e.target.value))} />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
         <Input
           label="Time per question (seconds, 0 = untimed)"
           type="number"
@@ -712,7 +725,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
         <Select
           label="Quiz retakes allowed"
           value={maxRetakes === null ? '' : String(maxRetakes)}
@@ -750,7 +763,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         </div>
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && (
+      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'GROUP_PRESENTATION' && (
         <LatePolicyFields
           allowLate={allowLate}
           lateDaysLimit={lateDaysLimit}

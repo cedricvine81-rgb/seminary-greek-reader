@@ -28,12 +28,16 @@ const typeLabel: Record<string, string> = {
   MORPHOLOGY_QUIZ: 'Morph',
   TRANSLATION_EXERCISE: 'Translation',
   PASSAGE_VOCABULARY: 'Passage Vocab',
+  COURSE_NOTES: 'Course Notes',
+  GROUP_PRESENTATION: 'Group Pres.',
 }
 const typeVariant: Record<string, 'blue' | 'purple' | 'green' | 'gray'> = {
   VOCABULARY_QUIZ: 'blue',
   MORPHOLOGY_QUIZ: 'purple',
   TRANSLATION_EXERCISE: 'green',
   PASSAGE_VOCABULARY: 'gray',
+  COURSE_NOTES: 'blue',
+  GROUP_PRESENTATION: 'purple',
 }
 
 export default async function CourseDetailPage({ params }: { params: { courseId: string } }) {
@@ -92,7 +96,11 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <MessageClassPanel courseId={course.id} students={students} />
-            <CourseGroupsPanel courseId={course.id} students={students} />
+            <CourseGroupsPanel
+              courseId={course.id}
+              students={students}
+              presentations={course.assignments.filter(a => a.type === 'GROUP_PRESENTATION').map(a => ({ id: a.id, title: a.title }))}
+            />
             <EmailClassButton courseName={course.name} students={students} />
             <Link href={`/instructor/courses/${course.id}/edit`}>
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5">
@@ -176,7 +184,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         </Badge>
                         {/* Grade column — reserved width; blank for non-gradeable types */}
                         <div>
-                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES') && (
+                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION') && (
                             <Link href={`/instructor/assignments/${a.id}/grade`}>
                               <Button size="sm" variant="primary" className="w-full">Grade</Button>
                             </Link>
@@ -214,7 +222,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         {a._count.questions > 0 && <span>· {a._count.questions}q</span>}
                       </div>
                       <div className="flex gap-2 mt-2.5">
-                        {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') && (
+                        {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES' || a.type === 'GROUP_PRESENTATION') && (
                           <Link href={`/instructor/assignments/${a.id}/grade`} className="flex-1">
                             <Button size="sm" variant="primary" className="w-full">Grade</Button>
                           </Link>
