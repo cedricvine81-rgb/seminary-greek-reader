@@ -9,6 +9,8 @@ interface AppHeaderProps {
   userName?: string
 }
 
+// The `.app-header` class hooks the mobile auto-hide behavior in globals.css;
+// the reader toggles html[data-immersive] as the user scrolls. See GreekReader.
 export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHeaderProps) {
   // Brand/logo sends signed-in users to their dashboard, not the Reader at "/".
   const brandHref = isAuthenticated
@@ -18,7 +20,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
       : '/'
     : '/'
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+    <header className="app-header sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
         {/* Brand */}
         <Link href={brandHref} className="flex items-center gap-2.5 group">
