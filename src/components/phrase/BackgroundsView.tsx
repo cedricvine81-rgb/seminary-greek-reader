@@ -231,7 +231,7 @@ function secondTempleUrl(citationText: string): string | null {
 // ── Cross-reference dataset (public/data/backgrounds-crossrefs.json) ──────────────────
 interface CrossRefCitation {
   text: string
-  type: 'OT' | 'LXX' | 'DSS' | 'Second Temple' | 'Christian Apocrypha' | 'Patristic' | 'Rabbinic' | 'Greco-Roman' | 'NT' | 'Other'
+  type: 'OT' | 'LXX' | 'DSS' | 'Apocrypha' | 'Pseudepigrapha' | 'Josephus' | 'Philo' | 'Christian Apocrypha' | 'Patristic' | 'Rabbinic' | 'Greco-Roman' | 'NT' | 'Other'
   cf?: boolean
   ref?: { book: string; chapter: number; verse: number }
   // Present on citations merged in from named scholarly commentaries (e.g. France NICNT,
@@ -246,16 +246,24 @@ interface CrossRefEntry {
   book: string; chapter: number; endChapter: number; verseStart: number; verseEnd: number
   label: string; citations: CrossRefCitation[]
 }
+// Compact chip labels — standard acronyms and dropped "Literature"/parentheticals to
+// save horizontal space. "Christian Apocr." stays qualified to distinguish it from the
+// (Jewish) Apocrypha chip.
 const TYPE_LABELS: Record<CrossRefCitation['type'], string> = {
-  OT: 'Old Testament', LXX: 'LXX (Septuagint)', DSS: 'Dead Sea Scrolls',
-  'Second Temple': 'Second Temple Literature', 'Christian Apocrypha': 'Christian Apocrypha',
-  Patristic: 'Patristic (Early Church)',
-  Rabbinic: 'Rabbinic Literature', 'Greco-Roman': 'Greco-Roman Literature', NT: 'New Testament', Other: 'Other',
+  OT: 'OT', LXX: 'LXX', DSS: 'DSS',
+  Apocrypha: 'Apocrypha', Pseudepigrapha: 'Pseudepigrapha', Josephus: 'Josephus', Philo: 'Philo',
+  'Christian Apocrypha': 'Christian Apocr.',
+  Patristic: 'Patristic',
+  Rabbinic: 'Rabbinic', 'Greco-Roman': 'Greco-Roman', NT: 'NT', Other: 'Other',
 }
-const TYPE_ORDER: CrossRefCitation['type'][] = ['OT', 'LXX', 'DSS', 'Second Temple', 'Christian Apocrypha', 'Patristic', 'Rabbinic', 'Greco-Roman', 'NT', 'Other']
+const TYPE_ORDER: CrossRefCitation['type'][] = ['OT', 'LXX', 'DSS', 'Apocrypha', 'Pseudepigrapha', 'Josephus', 'Philo', 'Christian Apocrypha', 'Patristic', 'Rabbinic', 'Greco-Roman', 'NT', 'Other']
 const TYPE_COLORS: Record<CrossRefCitation['type'], string> = {
   OT: 'bg-blue-50 border-blue-200 text-blue-800', LXX: 'bg-indigo-50 border-indigo-200 text-indigo-800',
-  DSS: 'bg-amber-50 border-amber-200 text-amber-800', 'Second Temple': 'bg-emerald-50 border-emerald-200 text-emerald-800',
+  DSS: 'bg-amber-50 border-amber-200 text-amber-800',
+  // Apocrypha + Pseudepigrapha are green siblings (the old "Second Temple" colour, split).
+  Apocrypha: 'bg-emerald-50 border-emerald-200 text-emerald-800', Pseudepigrapha: 'bg-lime-50 border-lime-200 text-lime-800',
+  // Josephus + Philo — Hellenistic-Jewish authors, split out of "Other".
+  Josephus: 'bg-cyan-50 border-cyan-200 text-cyan-800', Philo: 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-800',
   'Christian Apocrypha': 'bg-teal-50 border-teal-200 text-teal-800', Patristic: 'bg-orange-50 border-orange-200 text-orange-800',
   Rabbinic: 'bg-purple-50 border-purple-200 text-purple-800',
   'Greco-Roman': 'bg-rose-50 border-rose-200 text-rose-800', NT: 'bg-gray-100 border-gray-300 text-gray-700',
@@ -267,7 +275,7 @@ const posKey = (ch: number, vs: number) => ch * 1000 + vs
 
 /**
  * Backgrounds: the passage's Greek text (Nestle 1904 / Tischendorf) with a scholarly
- * cross-reference apparatus (OT, LXX, Dead Sea Scrolls, Second Temple literature,
+ * cross-reference apparatus (OT, LXX, Dead Sea Scrolls, Apocrypha, Pseudepigrapha,
  * rabbinic literature, Greco-Roman literature — adapted from Craig A. Evans, Ancient
  * Texts for New Testament Studies, Appendix Two) and a reading pane for whichever
  * cross-referenced passage the student selects. OT/LXX cross-references open in full
