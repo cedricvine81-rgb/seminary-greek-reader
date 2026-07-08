@@ -124,6 +124,29 @@ body.exam-lockdown nav.fixed.bottom-0 {
     height: calc(100svh - 3.5rem); /* locks to stable viewport height */
   }
 
+  /* ── Immersive reading: auto-hide the app header on scroll (mobile only) ──
+     AppHeader toggles html[data-immersive="on"] when scrolling down inside the
+     reader, and back to "off" when scrolling up or near the top. Only the phone
+     breakpoint reacts; on lg+ the header stays pinned. When hidden, the reader
+     container reclaims the header's 3.5rem so the extra space becomes text. */
+  @media (max-width: 1023px) {
+    .app-header {
+      transition: transform 0.25s ease;
+      will-change: transform;
+    }
+    .reader-container-h {
+      transition: margin-top 0.25s ease;
+    }
+    html[data-immersive='on'] .app-header {
+      transform: translateY(-100%);
+    }
+    html[data-immersive='on'] .reader-container-h {
+      height: 100vh;
+      height: 100svh;
+      margin-top: -3.5rem;
+    }
+  }
+
   /* ── Dashboard layout ───────────────────────────────────── */
   .dashboard-grid {
     @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;

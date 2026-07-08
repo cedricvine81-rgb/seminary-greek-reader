@@ -60,9 +60,15 @@ interface ParsingPanelProps {
   info: LexicalInfoPanel | null
   locked?: boolean
   bgClass?: string
+  /**
+   * 'panel' (default) = the fixed-height desktop card.
+   * 'sheet' = height is controlled by the parent (used inside the mobile
+   * bottom sheet), so we drop the fixed h-64 and the card border/shadow.
+   */
+  variant?: 'panel' | 'sheet'
 }
 
-export function ParsingPanel({ info, locked, bgClass = 'bg-white' }: ParsingPanelProps) {
+export function ParsingPanel({ info, locked, bgClass = 'bg-white', variant = 'panel' }: ParsingPanelProps) {
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
   const vocabGloss = lookupVocabGloss(info?.lexeme)
@@ -85,9 +91,13 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-white' }: ParsingPane
       .catch(() => setLsjEntry(null))
   }, [info?.lexeme])
 
-  // Fixed outer container — height never changes, content scrolls inside
+  // 'panel': fixed outer container — height never changes, content scrolls inside.
+  // 'sheet': parent (the mobile bottom sheet) owns height/scroll, so grow to fill.
+  const containerClass = variant === 'sheet'
+    ? `flex-1 min-h-0 flex flex-col ${bgClass}`
+    : `h-64 ${bgClass} rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`
   return (
-    <div className={`h-64 ${bgClass} rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}>
+    <div className={containerClass}>
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
           Hover or click any Greek word to see lexical information.

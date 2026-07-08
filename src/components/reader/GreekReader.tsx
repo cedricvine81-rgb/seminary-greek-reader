@@ -5,6 +5,7 @@ import { SearchBar } from './SearchBar'
 import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
+import { MobileParsingSheet } from './MobileParsingSheet'
 import { SyntaxMenu } from './SyntaxMenu'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -461,6 +462,58 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     onScroll()
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
+
+  // ── Immersive reading: hide the app header while scrolling down (mobile only) ──
+  // Drives html[data-immersive]; globals.css slides .app-header away and lets the
+  // reader reclaim its height. Listens only to the text panel (the real scroller),
+  // and clears the flag on unmount so other pages are never left header-less.
+  useEffect(() => {
+    const panel = textPanelRef.current
+    if (!panel) return
+    const root = document.documentElement
+    let lastY = panel.scrollTop
+    const THRESHOLD = 8
+    const onScroll = () => {
+      if (window.innerWidth >= 1024) { root.dataset.immersive = 'off'; return }
+      const y = panel.scrollTop
+      if (Math.abs(y - lastY) < THRESHOLD) return
+      if (y < 40) root.dataset.immersive = 'off'            // always show near the top
+      else root.dataset.immersive = y > lastY ? 'on' : 'off' // down hides, up shows
+      lastY = y
+    }
+    panel.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      panel.removeEventListener('scroll', onScroll)
+      delete root.dataset.immersive
+    }
+  }, [])
+
+  // ── Mobile parallel-text swipe ────────────────────────────────────────────────
+  // Remember the last real translation so a swipe can toggle Greek-only <-> it.
+  // The dropdown still picks which of the 8 languages that is; swipe just flips it.
+  const lastParallelRef = useRef<string>('bsb')
+  useEffect(() => { if (parallelLang) lastParallelRef.current = parallelLang }, [parallelLang])
+  const swipeStartRef = useRef<{ x: number; y: number; t: number } | null>(null)
+
+  function onTextTouchStart(e: React.TouchEvent) {
+    if (e.touches.length !== 1) { swipeStartRef.current = null; return }
+    const t = e.touches[0]
+    swipeStartRef.current = { x: t.clientX, y: t.clientY, t: Date.now() }
+  }
+
+  function onTextTouchEnd(e: React.TouchEvent) {
+    const s = swipeStartRef.current
+    swipeStartRef.current = null
+    // Phones only; ignore slow drags (text selection) and vertical-dominant scrolls.
+    if (!s || window.innerWidth >= 1024) return
+    const t = e.changedTouches[0]
+    const dx = t.clientX - s.x
+    const dy = t.clientY - s.y
+    if (Date.now() - s.t > 600) return
+    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return
+    // Swipe left reveals the parallel translation; swipe right returns to Greek only.
+    setParallelLang(dx < 0 ? lastParallelRef.current : null)
+  }
 
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
 
@@ -1095,9 +1148,9 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
       )
 
       return (
-        <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">
+        <div key={v.id} className="grid grid-cols-1 gap-1.5 lg:grid-cols-2 lg:gap-6 mb-1">
           {withNote}
-          {englishCol}
+          <div className="border-l-2 border-brand-100 pl-3 lg:border-l-0 lg:pl-0">{englishCol}</div>
         </div>
       )
     }
@@ -1105,9 +1158,9 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     // ── Other translations: plain verse string ─────────────────────────────────
     const transTxt = translationVerses[v.id]
     return (
-      <div key={v.id} className="grid grid-cols-2 gap-6 mb-1">
+      <div key={v.id} className="grid grid-cols-1 gap-1.5 lg:grid-cols-2 lg:gap-6 mb-1">
         {withNote}
-        <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p className="leading-relaxed text-gray-700 pt-0.5 border-l-2 border-brand-100 pl-3 lg:border-l-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
@@ -1425,6 +1478,8 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
       {/* ── Text panel ── */}
       <div
         ref={textPanelRef}
+        onTouchStart={onTextTouchStart}
+        onTouchEnd={onTextTouchEnd}
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
         className="flex-1 min-h-0 overflow-y-auto bg-white rounded-xl border border-gray-100 shadow-sm p-5"
       >
@@ -1449,9 +1504,34 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
         )}
       </div>
 
+      {/* ── Mobile parallel-text switcher ── */}
+      {/* Swipe the text left/right to toggle; these dots show + set the same state. */}
+      <div className="lg:hidden flex-none flex items-center justify-center gap-2 py-0.5">
+        <button
+          type="button"
+          onClick={() => setParallelLang(null)}
+          aria-label="Greek only"
+          className={`h-2 w-2 rounded-full transition-colors ${parallelLang === null ? 'bg-brand-500' : 'bg-gray-300'}`}
+        />
+        <button
+          type="button"
+          onClick={() => setParallelLang(lastParallelRef.current)}
+          aria-label="Show parallel translation"
+          className={`h-2 w-2 rounded-full transition-colors ${parallelLang !== null ? 'bg-brand-500' : 'bg-gray-300'}`}
+        />
+        <span className="ml-1.5 text-[11px] text-gray-400">
+          {parallelLang ? `Greek + ${parallelLangInfo?.label}` : 'Swipe to compare a translation'}
+        </span>
+      </div>
+
       {/* ── Parsing panel ── */}
-      <div className="flex-none">
+      {/* Desktop: fixed card below the text. */}
+      <div className="hidden lg:block flex-none">
         <ParsingPanel info={parsingInfo} locked={!!lockedInfo} />
+      </div>
+      {/* Mobile: collapsed pill that expands into a bottom sheet, freeing ~180px of reading space. */}
+      <div className="lg:hidden flex-none">
+        <MobileParsingSheet info={parsingInfo} locked={!!lockedInfo} />
       </div>
 
       {/* ── Syntax right-click menu ── */}
