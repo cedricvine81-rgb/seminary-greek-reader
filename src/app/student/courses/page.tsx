@@ -11,6 +11,7 @@ import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { CourseEnrollment } from '@/components/student/CourseEnrollment'
 import { PendingEnrollments } from '@/components/student/PendingEnrollments'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
+import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { isPreviewMode } from '@/lib/preview'
 
 export const metadata: Metadata = { title: 'My Courses' }
@@ -123,6 +124,7 @@ export default async function StudentCoursesPage() {
                           courseName={e.course.name}
                           instructorName={instructorName}
                         />
+                        <MessageGroupButton courseId={e.courseId} />
                         {e.course.instructor.email && (
                           <a
                             href={`mailto:${encodeURIComponent(e.course.instructor.email)}?subject=${encodeURIComponent(`[${e.course.name}] `)}`}
