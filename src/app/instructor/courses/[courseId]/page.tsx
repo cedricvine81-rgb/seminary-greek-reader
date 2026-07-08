@@ -5,6 +5,7 @@ import { Fragment } from 'react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { CourseGradebook } from '@/components/instructor/CourseGradebook'
 import { MessageClassPanel } from '@/components/instructor/MessageClassPanel'
+import { CourseGroupsPanel } from '@/components/instructor/CourseGroupsPanel'
 import { EmailClassButton } from '@/components/instructor/EmailClassButton'
 import { StudentProgressTable } from '@/components/instructor/StudentProgressTable'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
@@ -91,6 +92,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
           </div>
           <div className="flex items-center gap-2 flex-wrap">
             <MessageClassPanel courseId={course.id} students={students} />
+            <CourseGroupsPanel courseId={course.id} students={students} />
             <EmailClassButton courseName={course.name} students={students} />
             <Link href={`/instructor/courses/${course.id}/edit`}>
               <Button size="sm" variant="secondary" className="flex items-center gap-1.5">

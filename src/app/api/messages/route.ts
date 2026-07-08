@@ -106,7 +106,7 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { courseId, recipientId, subject, body } = await req.json()
+    const { courseId, recipientId, groupId, subject, body } = await req.json()
     if (!courseId || !subject?.trim() || !body?.trim()) {
       return NextResponse.json({ error: 'courseId, subject, and body are required.' }, { status: 400 })
     }
@@ -122,6 +122,33 @@ export async function POST(req: NextRequest) {
         select: { id: true },
       })
       if (!enrollment) return NextResponse.json({ error: 'You are not enrolled in this course.' }, { status: 403 })
+
+      // ── Message my own group's other members ──
+      if (groupId) {
+        const membership = await prisma.courseGroupMember.findFirst({
+          where: { groupId, userId: payload.sub, group: { courseId } },
+          select: { id: true },
+        })
+        if (!membership) return NextResponse.json({ error: 'You are not a member of that group.' }, { status: 403 })
+        const others = await prisma.courseGroupMember.findMany({
+          where: { groupId, userId: { not: payload.sub }, user: { deletedAt: null } },
+          select: { userId: true },
+        })
+        const groupRecipients = others.map(m => m.userId)
+        if (groupRecipients.length === 0) {
+          return NextResponse.json({ error: 'Your group has no other members to message yet.' }, { status: 400 })
+        }
+        const groupBroadcastId = crypto.randomUUID()
+        await prisma.message.createMany({
+          data: groupRecipients.map(rid => ({
+            courseId, senderId: payload.sub, recipientId: rid,
+            subject: subject.trim(), body: body.trim(), broadcastId: groupBroadcastId,
+          })),
+        })
+        revalidatePath('/student/messages')
+        revalidatePath('/instructor/messages')
+        return NextResponse.json({ ok: true, sent: groupRecipients.length }, { status: 201 })
+      }
 
       const course = await prisma.course.findUnique({
         where: { id: courseId },
@@ -172,7 +199,23 @@ export async function POST(req: NextRequest) {
     // Resolve recipients
     let recipientIds: string[]
     let broadcastId: string | null = null
-    if (recipientId) {
+    if (groupId) {
+      // Message every member of one of this course's groups.
+      const group = await prisma.courseGroup.findFirst({
+        where: { id: groupId, courseId },
+        select: { id: true },
+      })
+      if (!group) return NextResponse.json({ error: 'Group not found in this course.' }, { status: 404 })
+      const members = await prisma.courseGroupMember.findMany({
+        where: { groupId, user: { deletedAt: null } },
+        select: { userId: true },
+      })
+      recipientIds = members.map(m => m.userId)
+      if (recipientIds.length === 0) {
+        return NextResponse.json({ error: 'This group has no members yet.' }, { status: 400 })
+      }
+      broadcastId = crypto.randomUUID()
+    } else if (recipientId) {
       // Verify the target is an approved student in this course
       const enrollment = await prisma.enrollment.findFirst({
         where: { courseId, userId: recipientId, status: 'APPROVED' },

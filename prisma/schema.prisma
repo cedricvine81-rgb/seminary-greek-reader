@@ -89,6 +89,7 @@ model User {
   verseNotes         VerseNote[]
   noteSubmissions    NoteSubmission[]
   highlights         Highlight[]
+  groupMemberships   CourseGroupMember[]
 
   @@index([email])
   @@index([paddleCustomerId])
@@ -143,6 +144,7 @@ model Course {
   materialShares MaterialShare[]
   folderShares   FolderShare[]
   messages       Message[]
+  groups         CourseGroup[]
 
   @@index([instructorId])
 }
@@ -178,6 +180,35 @@ model Enrollment {
 
   @@unique([userId, courseId])
   @@index([courseId, status])
+}
+
+// A named group of students within a course (e.g. discussion/study groups the
+// instructor sets up). Members can message their group; the instructor can message
+// any group. A student belongs to at most one group per course (enforced in the API).
+model CourseGroup {
+  id        String   @id @default(cuid())
+  courseId  String
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course  Course              @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  members CourseGroupMember[]
+
+  @@index([courseId])
+}
+
+model CourseGroupMember {
+  id        String   @id @default(cuid())
+  groupId   String
+  userId    String
+  createdAt DateTime @default(now())
+
+  group CourseGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([userId])
 }
 
 // ─── Biblical Texts ───────────────────────────────────────────────
