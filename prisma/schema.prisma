@@ -772,11 +772,15 @@ model VerseNote {
   id        String   @id @default(cuid())
   userId    String
   folderId  String?
-  // Canonical, version-independent verse anchor (osisId + chapter + verse).
-  book      String
-  chapter   Int
-  verse     Int
+  // Canonical, version-independent verse anchor (osisId + chapter + verse). Null on a
+  // "general" note — a course/thematic note that isn't tied to any verse but still lives
+  // in a folder and is submitted with the rest (e.g. the "Judaism" collection).
+  book      String?
+  chapter   Int?
+  verse     Int?
   verseEnd  Int?     // optional range end (e.g. a note spanning 1:1–3)
+  // Optional heading, mainly for general notes so a list of them reads without a verse ref.
+  title     String?
   body      String   @default("")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

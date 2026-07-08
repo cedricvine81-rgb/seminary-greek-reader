@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
-import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock } from 'lucide-react'
+import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock, Plus } from 'lucide-react'
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
@@ -8,7 +8,8 @@ import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
-interface NoteT { id: string; folderId: string | null; book: string; chapter: number; verse: number; verseEnd: number | null; body: string }
+// A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
+interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string }
 interface FolderT { id: string; name: string; color: string; _count: { notes: number } }
 // A graded Course Notes assignment: the student's auto-provisioned folder + its submission status.
 interface CourseNotesEntry {
@@ -56,6 +57,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [activeFolder, setActiveFolder] = useState<string>('all') // 'all' | 'unfiled' | folderId
+  const [addingNote, setAddingNote] = useState(false) // composing a new general (verse-less) note
   const [newFolder, setNewFolder] = useState<{ name: string; color: NoteColor } | null>(null)
   const [editFolder, setEditFolder] = useState<{ id: string; name: string; color: NoteColor } | null>(null)
 
@@ -168,7 +170,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
   // Notes for the current passage (same book/chapter, verse within range).
   const passageNotes = anchor
-    ? notes.filter(n => n.book === anchor.book && n.chapter === anchor.chapter && n.verse >= anchor.verseStart && n.verse <= anchor.verseEnd)
+    ? notes.filter(n => n.book === anchor.book && n.chapter === anchor.chapter && n.verse != null && n.verse >= anchor.verseStart && n.verse <= anchor.verseEnd)
     : []
   const passageVerseNote = (v: number) => passageNotes.find(n => n.verse === v)
   const verseList: number[] = anchor
@@ -218,7 +220,16 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
         {/* ── Notebook ── */}
         <section>
-          <h3 className="text-sm font-semibold text-gray-800 mb-2">My notebook</h3>
+          <div className="flex items-center justify-between gap-2 mb-2">
+            <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
+            <button
+              onClick={() => setAddingNote(true)}
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+              title="Write a course note that isn’t tied to a specific verse"
+            >
+              <Plus size={13} /> New note
+            </button>
+          </div>
           <div className="flex items-center flex-wrap gap-1.5 mb-3">
             <Chip active={activeFolder === 'all'} onClick={() => setActiveFolder('all')} label={`All (${notes.length})`} />
             <Chip active={activeFolder === 'unfiled'} onClick={() => setActiveFolder('unfiled')} label={`Unfiled (${notes.filter(n => !n.folderId).length})`} />
@@ -249,17 +260,29 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             />
           )}
 
-          {filtered.length === 0 ? (
-            <p className="text-sm text-gray-400 italic py-6">No notes here yet. Open a passage above and jot one down, or write directly on a verse.</p>
-          ) : (
-            <div className="space-y-2">
-              {filtered.map(n => (
+          <div className="space-y-2">
+            {addingNote && (
+              <NoteEditor
+                general
+                defaultFolderId={activeFolder !== 'all' && activeFolder !== 'unfiled' ? activeFolder : null}
+                folders={folders}
+                onChanged={() => { setAddingNote(false); void load() }}
+                onCancel={() => setAddingNote(false)}
+              />
+            )}
+            {filtered.length === 0 && !addingNote ? (
+              <p className="text-sm text-gray-400 italic py-6">
+                No notes here yet. Use <span className="font-medium text-gray-600">New note</span> for a course note, or open a passage above to write on a verse.
+              </p>
+            ) : (
+              filtered.map(n => (
                 <NoteEditor key={n.id} existing={n}
-                  anchor={{ book: n.book, chapter: n.chapter, verse: n.verse, label: `${bookName(n.book)} ${n.chapter}:${n.verse}${n.verseEnd ? `–${n.verseEnd}` : ''}` }}
-                  folders={folders} onChanged={load} onJump={() => onJumpToPassage(`${bookName(n.book)} ${n.chapter}:${n.verse}`)} />
-              ))}
-            </div>
-          )}
+                  anchor={n.book ? { book: n.book, chapter: n.chapter!, verse: n.verse!, label: `${bookName(n.book)} ${n.chapter}:${n.verse}${n.verseEnd ? `–${n.verseEnd}` : ''}` } : undefined}
+                  folders={folders} onChanged={load}
+                  onJump={n.book ? () => onJumpToPassage(`${bookName(n.book!)} ${n.chapter}:${n.verse}`) : undefined} />
+              ))
+            )}
+          </div>
         </section>
       </div>
 
@@ -407,48 +430,88 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete }: {
   )
 }
 
-// Editor for a single note — `existing` undefined means "new note for this verse".
-function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
+// Editor for a single note. Three shapes:
+//   • existing note (verse-anchored or general) — auto-saves on blur.
+//   • new verse note (`anchor` set, no `existing`) — quick-jot from a passage, saves on blur.
+//   • new general note (`general`, no `anchor`) — a course note with an optional title,
+//     saved explicitly with Save/Cancel.
+function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onChanged, onJump, onCancel }: {
   existing?: NoteT
-  anchor: { book: string; chapter: number; verse: number; label: string }
+  anchor?: { book: string; chapter: number; verse: number; label: string }
+  general?: boolean
+  defaultFolderId?: string | null
   folders: FolderT[]
   onChanged: () => void
   onJump?: () => void
+  onCancel?: () => void
 }) {
-  const [folderId, setFolderId] = useState<string | null>(existing?.folderId ?? null)
+  const isGeneral = existing ? existing.book == null : !!general
+  const isNew = !existing
+  const [folderId, setFolderId] = useState<string | null>(existing?.folderId ?? defaultFolderId ?? null)
   const [saving, setSaving] = useState(false)
   const [draft, setDraft] = useState(existing?.body ?? '')
+  const [titleDraft, setTitleDraft] = useState(existing?.title ?? '')
   const [fontScale, setFontScale] = useNoteFontScale()
   const [lineSpacing] = useNoteLineSpacing()
 
+  const H = { 'Content-Type': 'application/json' }
+
   async function persist() {
     const body = draft
+    const title = titleDraft.trim()
     setSaving(true)
     try {
       if (existing) {
-        if (isHtmlEmpty(body)) await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' })
-        else if (body !== existing.body) await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ body }) })
-        else { setSaving(false); return }
-      } else if (!isHtmlEmpty(body)) {
-        await fetch('/api/notes', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...anchor, body, folderId }) })
+        const bothEmpty = isHtmlEmpty(body) && (!isGeneral || !title)
+        if (bothEmpty) {
+          await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' })
+        } else {
+          const patch: { body?: string; title?: string } = {}
+          if (body !== existing.body) patch.body = body
+          if (isGeneral && title !== (existing.title ?? '')) patch.title = title
+          if (Object.keys(patch).length === 0) { setSaving(false); return }
+          await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: H, body: JSON.stringify(patch) })
+        }
+        onChanged()
+      } else if (isGeneral) {
+        if (!title && isHtmlEmpty(body)) { setSaving(false); onCancel?.(); return }
+        await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify({ general: true, title, body, folderId }) })
+        onChanged()
+      } else if (anchor && !isHtmlEmpty(body)) {
+        await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify({ ...anchor, body, folderId }) })
+        onChanged()
       } else { setSaving(false); return }
-      onChanged()
     } finally { setSaving(false) }
   }
 
   async function changeFolder(id: string | null) {
     setFolderId(id)
-    if (existing) { await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ folderId: id }) }); onChanged() }
+    if (existing) { await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: H, body: JSON.stringify({ folderId: id }) }); onChanged() }
   }
 
   const folder = folders.find(f => f.id === (existing?.folderId ?? folderId))
+  // New general notes save explicitly (they have a title too); everything else auto-saves on blur.
+  const autoSave = !(isNew && isGeneral)
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-2.5">
       <div className="flex items-center gap-2 mb-1">
-        {onJump
-          ? <button onClick={onJump} className="text-xs font-semibold text-brand-700 hover:underline">{anchor.label}</button>
-          : <span className="text-xs font-semibold text-gray-500">{anchor.label}</span>}
+        {isGeneral ? (
+          <input
+            value={titleDraft}
+            onChange={e => setTitleDraft(e.target.value)}
+            onBlur={autoSave ? persist : undefined}
+            placeholder="Course note title (optional)"
+            maxLength={200}
+            autoFocus={isNew}
+            className="flex-1 min-w-0 text-xs font-semibold text-gray-700 bg-transparent rounded border border-transparent hover:border-gray-200 focus:border-brand-400 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+          />
+        ) : onJump ? (
+          <button onClick={onJump} className="text-xs font-semibold text-brand-700 hover:underline">{anchor?.label}</button>
+        ) : (
+          <span className="text-xs font-semibold text-gray-500">{anchor?.label}</span>
+        )}
+        {isGeneral && <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Course note</span>}
         {folder && <span className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] ${colorOf(folder.color).chip}`}><span className={`h-1.5 w-1.5 rounded-full ${colorOf(folder.color).dot}`} />{folder.name}</span>}
         <span className="ml-auto flex items-center gap-2">
           {saving && <Loader2 size={12} className="animate-spin text-gray-400" />}
@@ -460,7 +523,13 @@ function NoteEditor({ existing, anchor, folders, onChanged, onJump }: {
           {existing && <button onClick={async () => { await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
         </span>
       </div>
-      <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={persist} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
+      <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={autoSave ? persist : undefined} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
+      {isNew && isGeneral && (
+        <div className="flex justify-end gap-2 mt-2">
+          <button onClick={() => onCancel?.()} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
+          <button onClick={persist} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
+        </div>
+      )}
     </div>
   )
 }

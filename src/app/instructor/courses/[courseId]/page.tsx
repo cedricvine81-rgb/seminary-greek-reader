@@ -176,7 +176,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
                         </Badge>
                         {/* Grade column — reserved width; blank for non-gradeable types */}
                         <div>
-                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') && (
+                          {(a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM' || a.type === 'COURSE_NOTES') && (
                             <Link href={`/instructor/assignments/${a.id}/grade`}>
                               <Button size="sm" variant="primary" className="w-full">Grade</Button>
                             </Link>

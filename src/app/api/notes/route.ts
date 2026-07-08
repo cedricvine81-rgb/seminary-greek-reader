@@ -34,10 +34,18 @@ export async function POST(req: NextRequest) {
     if (!payload) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     const gate = await requireStudentAccess(payload); if (gate) return gate
     const b = await req.json()
+    // A "general" note (b.general) has no verse anchor — just a title/body filed to a folder.
+    if (b.general) {
+      const note = await createNote(payload.sub, {
+        title: b.title ?? null, body: b.body ?? '', folderId: b.folderId ?? null,
+      })
+      return NextResponse.json({ note }, { status: 201 })
+    }
     if (!b.book || !b.chapter || !b.verse) return NextResponse.json({ error: 'Missing verse' }, { status: 400 })
     const note = await createNote(payload.sub, {
       book: b.book, chapter: Number(b.chapter), verse: Number(b.verse),
-      verseEnd: b.verseEnd ? Number(b.verseEnd) : null, body: b.body ?? '', folderId: b.folderId ?? null,
+      verseEnd: b.verseEnd ? Number(b.verseEnd) : null, title: b.title ?? null,
+      body: b.body ?? '', folderId: b.folderId ?? null,
     })
     return NextResponse.json({ note }, { status: 201 })
   } catch (err) {
@@ -54,7 +62,7 @@ export async function PATCH(req: NextRequest) {
     const id = req.nextUrl.searchParams.get('id')
     if (!id) return NextResponse.json({ error: 'Missing id' }, { status: 400 })
     const b = await req.json()
-    const note = await updateNote(payload.sub, id, { body: b.body, folderId: b.folderId })
+    const note = await updateNote(payload.sub, id, { title: b.title, body: b.body, folderId: b.folderId })
     return NextResponse.json({ note })
   } catch (err) {
     logError('api/notes PATCH', err)

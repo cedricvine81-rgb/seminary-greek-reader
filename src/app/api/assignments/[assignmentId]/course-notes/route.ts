@@ -5,6 +5,26 @@ import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { compareStudentsByName } from '@/lib/sort-students'
 import { sanitizeNoteHtml, toNoteHtml } from '@/lib/note-html'
+import { getAllBooks } from '@/lib/reader'
+import { PROSE_WORKS } from '@/lib/prose-texts'
+
+// osisId → display name across every corpus a verse note can be anchored to
+// (GNT/LXX/NA1904 + the embedded prose works), so the grading view shows real
+// references. Unknown ids fall back to the raw osisId.
+function buildBookNames(): Map<string, string> {
+  const m = new Map<string, string>()
+  for (const b of getAllBooks()) m.set(b.osisId, b.name)
+  for (const w of PROSE_WORKS) m.set(w.noteBook, w.name)
+  return m
+}
+
+// A verse note's human reference, e.g. "John 1:1" or "1 Enoch 1:1–3". Null for a
+// general (verse-less) course note.
+function noteRef(names: Map<string, string>, n: { book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null }): string | null {
+  if (!n.book || n.chapter == null || n.verse == null) return null
+  const name = names.get(n.book) ?? n.book
+  return `${name} ${n.chapter}:${n.verse}${n.verseEnd ? `–${n.verseEnd}` : ''}`
+}
 
 // GET /api/assignments/[assignmentId]/course-notes — instructor grading view: every
 // enrolled student with their submission status and the live notes in their submission
@@ -48,10 +68,11 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
       ? await prisma.verseNote.findMany({
           where: { folderId: { in: folderIds } },
           orderBy: [{ book: 'asc' }, { chapter: 'asc' }, { verse: 'asc' }],
-          select: { userId: true, book: true, chapter: true, verse: true, verseEnd: true, body: true },
+          select: { userId: true, book: true, chapter: true, verse: true, verseEnd: true, title: true, body: true },
         })
       : []
 
+    const bookNames = buildBookNames()
     const subByUser = new Map(submissions.map(s => [s.userId, s]))
     const rows = enrollments.map(e => {
       const uid = e.user.id
@@ -59,7 +80,8 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
       const mine = notes
         .filter(n => n.userId === uid)
         .map(n => ({
-          book: n.book, chapter: n.chapter, verse: n.verse, verseEnd: n.verseEnd,
+          // ref is null for a general note; title carries its heading instead.
+          ref: noteRef(bookNames, n), title: n.title,
           html: sanitizeNoteHtml(toNoteHtml(n.body)),
         }))
       return {

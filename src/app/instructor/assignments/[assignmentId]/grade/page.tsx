@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
+import { CourseNotesGrader } from '@/components/instructor/CourseNotesGrader'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
@@ -40,7 +41,9 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
           </Badge>
         </div>
 
-        <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />
+        {assignment.type === 'COURSE_NOTES'
+          ? <CourseNotesGrader assignmentId={assignment.id} />
+          : <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />}
       </div>
     </DashboardShell>
   )
