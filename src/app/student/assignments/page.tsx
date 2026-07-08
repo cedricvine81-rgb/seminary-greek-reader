@@ -16,9 +16,15 @@ export default async function StudentAssignmentsPage() {
 
   const enrollments = await prisma.enrollment.findMany({
     where: { userId: payload.sub, status: 'APPROVED' },
-    select: { courseId: true },
+    select: { course: { select: { id: true, endDate: true, isArchived: true } } },
   })
-  const courseIds = enrollments.map(e => e.courseId)
+  const courseIds = enrollments.map(e => e.course.id)
+  // "Live" courses (not archived, not yet ended) surface at the top; "earlier" courses
+  // (ended or archived) sink to the bottom.
+  const now = new Date()
+  const liveCourseIds = new Set(
+    enrollments.filter(e => !e.course.isArchived && e.course.endDate >= now).map(e => e.course.id),
+  )
 
   const [assignments, responses] = await Promise.all([
     prisma.assignment.findMany({
@@ -44,9 +50,32 @@ export default async function StudentAssignmentsPage() {
     instructions: a.instructions ?? undefined,
   }))
 
+  // Keep each course's existing week/due-date order, but split live-course assignments
+  // (shown first) from earlier-course ones (shown last).
+  const live = serialized.filter(a => liveCourseIds.has(a.courseId))
+  const earlier = serialized.filter(a => !liveCourseIds.has(a.courseId))
+  const bothGroups = live.length > 0 && earlier.length > 0
+
   return (
     <DashboardShell role="STUDENT" pageTitle="Assignments">
-      <AssignmentList assignments={serialized} completedIds={completedIds} />
+      {serialized.length === 0 ? (
+        <AssignmentList assignments={serialized} completedIds={completedIds} />
+      ) : (
+        <div className="space-y-6">
+          {live.length > 0 && (
+            <div className="space-y-2">
+              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">Current courses</h2>}
+              <AssignmentList assignments={live} completedIds={completedIds} />
+            </div>
+          )}
+          {earlier.length > 0 && (
+            <div className="space-y-2">
+              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">Earlier courses</h2>}
+              <AssignmentList assignments={earlier} completedIds={completedIds} />
+            </div>
+          )}
+        </div>
+      )}
     </DashboardShell>
   )
 }
