@@ -7,6 +7,7 @@ import { Modal } from '@/components/ui/Modal'
 import { Select } from '@/components/ui/Select'
 import { Input } from '@/components/ui/Input'
 import { useApi } from '@/lib/api-client'
+import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { Mail, MailOpen, PenSquare, CheckCircle2, Trash2, Megaphone } from 'lucide-react'
 import { format } from 'date-fns'
 
@@ -234,7 +235,10 @@ export function Conversations({ meId, composeCourses }: { meId: string; composeC
   return (
     <div className="space-y-3">
       {canCompose && (
-        <div className="flex justify-end">
+        <div className="flex justify-end items-center gap-4 flex-wrap">
+          {composeCourses!.map(c => (
+            <MessageGroupButton key={c.id} courseId={c.id} onSent={() => mutate()} />
+          ))}
           <ComposeButton courses={composeCourses!} onSent={() => mutate()} />
         </div>
       )}

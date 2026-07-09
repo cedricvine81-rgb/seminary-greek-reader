@@ -13,7 +13,7 @@ interface Group { id: string; name: string; members: { id: string; name: string 
  * student has been assigned to a group; messages the group's other members via /api/messages
  * (groupId), which fans out to each of them.
  */
-export function MessageGroupButton({ courseId }: { courseId: string }) {
+export function MessageGroupButton({ courseId, onSent }: { courseId: string; onSent?: () => void }) {
   const [group, setGroup] = useState<Group | null>(null)
   const [open, setOpen] = useState(false)
   const [subject, setSubject] = useState('')
@@ -33,7 +33,9 @@ export function MessageGroupButton({ courseId }: { courseId: string }) {
 
   if (!group) return null
 
-  const others = group.members.filter(m => m.id) // members list; self is included but harmless for the count hint
+  // The student always belongs to the group they fetched, so the recipient count is
+  // everyone in the group except themselves.
+  const otherCount = Math.max(0, group.members.length - 1)
   const reset = () => { setSubject(''); setBody(''); setError(''); setSent(null) }
 
   async function send() {
@@ -47,6 +49,7 @@ export function MessageGroupButton({ courseId }: { courseId: string }) {
       const data = await res.json().catch(() => ({}))
       if (!res.ok) { setError(data.error ?? 'Failed to send message.'); return }
       setSent(data.sent ?? 0)
+      onSent?.()
     } catch { setError('Network error — please try again.') }
     finally { setSending(false) }
   }
@@ -77,7 +80,7 @@ export function MessageGroupButton({ courseId }: { courseId: string }) {
           <div className="space-y-4">
             <p className="text-xs text-gray-500">
               To your group <span className="font-medium text-gray-700">{group.name}</span>
-              {others.length > 1 ? ` (${others.length} members)` : ''}. Replies appear under{' '}
+              {otherCount > 0 ? ` (${otherCount} other member${otherCount === 1 ? '' : 's'})` : ''}. Replies appear under{' '}
               <Link href="/student/messages" className="text-brand-600 hover:underline">Messages</Link>.
             </p>
             <Input label="Subject" value={subject} onChange={e => setSubject(e.target.value)} placeholder="e.g. Study session this week?" maxLength={200} />
