@@ -7,13 +7,13 @@ export const metadata: Metadata = { title: 'Exegesis Workspace' }
 // Public standalone Exegesis Workspace (like the Reader / Vocab / Morphology tools).
 // Anyone can open a passage and annotate it; saving requires sign-in — signed-out
 // visitors get a "Sign in to save your work" prompt instead of the save status.
-export default function PublicExegesisPage() {
+export default function PublicExegesisPage({ searchParams }: { searchParams: { tab?: string } }) {
   const token = getTokenFromCookies()
   const isAuthenticated = !!(token && verifyToken(token))
 
   return (
     <main className="flex flex-col h-[calc(100vh-3.5rem)] overflow-hidden print:h-auto print:overflow-visible w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
-      <ExegesisTabs isAuthenticated={isAuthenticated} />
+      <ExegesisTabs isAuthenticated={isAuthenticated} initialTab={searchParams?.tab} />
     </main>
   )
 }

@@ -124,26 +124,18 @@ body.exam-lockdown nav.fixed.bottom-0 {
     height: calc(100svh - 3.5rem); /* locks to stable viewport height */
   }
 
-  /* ── Immersive reading: auto-hide the app header on scroll (mobile only) ──
-     AppHeader toggles html[data-immersive="on"] when scrolling down inside the
-     reader, and back to "off" when scrolling up or near the top. Only the phone
-     breakpoint reacts; on lg+ the header stays pinned. When hidden, the reader
-     container reclaims the header's 3.5rem so the extra space becomes text. */
+  /* ── Immersive reading (mobile only): drop the global header on the Reader ──
+     GreekReader sets html[data-reader="on"] while it's mounted (the Reader at "/"
+     and /reader). On phones we hide the app header entirely — its nav folds into
+     the Reader's own menu — and give the reader the full viewport height. On lg+
+     the media query doesn't apply, so the header and layout are untouched. */
   @media (max-width: 1023px) {
-    .app-header {
-      transition: transform 0.25s ease;
-      will-change: transform;
+    html[data-reader='on'] .app-header {
+      display: none;
     }
-    .reader-container-h {
-      transition: margin-top 0.25s ease;
-    }
-    html[data-immersive='on'] .app-header {
-      transform: translateY(-100%);
-    }
-    html[data-immersive='on'] .reader-container-h {
+    html[data-reader='on'] .reader-container-h {
       height: 100vh;
       height: 100svh;
-      margin-top: -3.5rem;
     }
   }
 

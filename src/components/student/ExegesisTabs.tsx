@@ -31,8 +31,15 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  * data (public/data/pericopes.json). Accept with Tab / → / Enter. NT boundaries are
  * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
-export function ExegesisTabs({ isAuthenticated }: { isAuthenticated: boolean }) {
-  const [tab, setTab] = useState<'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'texts' | 'notes' | 'commentary'>('workspace')
+type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'texts' | 'notes' | 'commentary'
+const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'backgrounds', 'texts', 'notes', 'commentary']
+
+export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated: boolean; initialTab?: string }) {
+  // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
+  // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
+  const [tab, setTab] = useState<ExegesisTab>(
+    EXEGESIS_TABS.includes(initialTab as ExegesisTab) ? (initialTab as ExegesisTab) : 'workspace'
+  )
   // The single passage that coordinates every tab. `input` is the live box text;
   // `passage` is committed on Enter/blur and pushed to the tabs.
   const [input, setInput] = useState('John 1:1-5')
