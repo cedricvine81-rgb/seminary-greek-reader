@@ -1,6 +1,12 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { MoreVertical, X, ChevronRight } from 'lucide-react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import {
+  MoreVertical, X, ChevronRight, Menu,
+  LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
+  Settings, LogOut, LogIn, UserPlus,
+} from 'lucide-react'
 import { SearchBar } from './SearchBar'
 import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -133,7 +139,29 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader({ initialRef, isAuthenticated = false }: { initialRef?: string; isAuthenticated?: boolean } = {}) {
+export function GreekReader({ initialRef, isAuthenticated = false, userRole }: { initialRef?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
+  const router = useRouter()
+  // On mobile the global header is hidden, so the reader menu carries all navigation.
+  const menuAuthed = isAuthenticated || !!userRole
+  const dashboardHref = userRole === 'INSTRUCTOR' ? '/instructor'
+    : userRole === 'ADMIN' ? '/admin'
+    : userRole === 'STUDENT' ? '/student'
+    : '/dashboard'
+  const readerNav = [
+    { href: dashboardHref, label: 'Dashboard', icon: LayoutDashboard, authOnly: true },
+    { href: '/reader', label: 'Reader', icon: BookOpen },
+    { href: '/vocab', label: 'Vocab', icon: BookMarked },
+    { href: '/morphology', label: 'Morphology', icon: Table2 },
+    { href: '/exegesis', label: 'Syntax', icon: PencilLine },
+    { href: '/exegesis?tab=phrasing', label: 'Phrasing', icon: ListTree },
+    { href: '/exegesis?tab=texts', label: 'Texts', icon: Library },
+    { href: '/exegesis?tab=notes', label: 'Notes', icon: StickyNote },
+  ]
+  async function handleReaderSignOut() {
+    await fetch('/api/auth', { method: 'DELETE' })
+    router.push('/')
+    router.refresh()
+  }
   // ── Corpus queues & loaded sections ─────────────────────────────────────────
   const [gntQueue, setGntQueue] = useState<ChapterItem[]>([])
   const [lxxQueue, setLxxQueue] = useState<ChapterItem[]>([])
@@ -467,29 +495,13 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
 
-  // ── Immersive reading: hide the app header while scrolling down (mobile only) ──
-  // Drives html[data-immersive]; globals.css slides .app-header away and lets the
-  // reader reclaim its height. Listens only to the text panel (the real scroller),
-  // and clears the flag on unmount so other pages are never left header-less.
+  // ── Immersive reading (mobile only): mark the Reader mounted ──────────────────
+  // globals.css uses html[data-reader="on"] to drop the global header on phones and
+  // give the reader the full viewport (its nav lives in the reader menu instead).
+  // Cleared on unmount so every other page keeps its header.
   useEffect(() => {
-    const panel = textPanelRef.current
-    if (!panel) return
-    const root = document.documentElement
-    let lastY = panel.scrollTop
-    const THRESHOLD = 8
-    const onScroll = () => {
-      if (window.innerWidth >= 1024) { root.dataset.immersive = 'off'; return }
-      const y = panel.scrollTop
-      if (Math.abs(y - lastY) < THRESHOLD) return
-      if (y < 40) root.dataset.immersive = 'off'            // always show near the top
-      else root.dataset.immersive = y > lastY ? 'on' : 'off' // down hides, up shows
-      lastY = y
-    }
-    panel.addEventListener('scroll', onScroll, { passive: true })
-    return () => {
-      panel.removeEventListener('scroll', onScroll)
-      delete root.dataset.immersive
-    }
+    document.documentElement.dataset.reader = 'on'
+    return () => { delete document.documentElement.dataset.reader }
   }, [])
 
   // ── Mobile text-cycle swipe ───────────────────────────────────────────────────
@@ -1226,20 +1238,63 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
         </select>
         <div ref={settingsRef} className="relative shrink-0">
           <button
-            title="Settings"
+            title="Menu"
+            aria-label="Menu"
             onClick={() => setShowSettings(v => !v)}
             className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
           >
-            <MoreVertical size={20} />
+            {/* Hamburger on mobile (it holds all navigation there); ⋮ on desktop (settings only). */}
+            <Menu size={20} className="lg:hidden" />
+            <MoreVertical size={20} className="hidden lg:block" />
           </button>
 
           {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-semibold text-gray-800">Settings</span>
+                <span className="text-sm font-semibold text-gray-800">
+                  <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
+                </span>
                 <button onClick={() => { setShowSettings(false); setSettingsFlyout(null) }} className="text-gray-400 hover:text-gray-600">
                   <X size={15} />
                 </button>
+              </div>
+
+              {/* ── Mobile-only: full navigation + account ──
+                  The global header is hidden on phones, so it lives here. On desktop
+                  the header provides navigation, so this whole block is hidden. */}
+              <div className="lg:hidden -mt-2 space-y-0.5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 pt-1">Go to</p>
+                {readerNav.filter(i => !i.authOnly || menuAuthed).map(({ href, label, icon: Icon }) => (
+                  <Link
+                    key={label}
+                    href={href}
+                    onClick={() => setShowSettings(false)}
+                    className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50"
+                  >
+                    <Icon size={16} className="text-gray-400 shrink-0" /> {label}
+                  </Link>
+                ))}
+                <hr className="!my-2 border-gray-100" />
+                {menuAuthed ? (
+                  <>
+                    <Link href="/settings" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                      <Settings size={16} className="text-gray-400 shrink-0" /> Settings
+                    </Link>
+                    <button onClick={handleReaderSignOut} className="flex w-full items-center gap-2.5 py-1.5 rounded-md text-sm text-red-600 hover:bg-red-50">
+                      <LogOut size={16} className="shrink-0" /> Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link href="/auth/sign-in" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                      <LogIn size={16} className="text-gray-400 shrink-0" /> Sign in
+                    </Link>
+                    <Link href="/auth/sign-up" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
+                      <UserPlus size={16} className="text-gray-400 shrink-0" /> Sign up
+                    </Link>
+                  </>
+                )}
+                <hr className="!my-2 border-gray-100" />
               </div>
 
               {/* Text Size */}
@@ -1330,7 +1385,11 @@ export function GreekReader({ initialRef, isAuthenticated = false }: { initialRe
                   onClick={() => toggleFlyout('syntax')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'syntax' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-wide">Syntax</p>
+                  {/* On mobile the menu also lists a "Syntax" nav item (the Exegesis tab),
+                      so disambiguate this settings flyout there; desktop keeps "Syntax". */}
+                  <p className="text-xs font-semibold uppercase tracking-wide">
+                    <span className="lg:hidden">Syntax sources</span><span className="hidden lg:inline">Syntax</span>
+                  </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'syntax' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'syntax' && (
