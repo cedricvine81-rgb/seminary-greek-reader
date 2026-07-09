@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock, Plus } from 'lucide-react'
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
@@ -431,10 +431,13 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete }: {
 }
 
 // Editor for a single note. Three shapes:
-//   • existing note (verse-anchored or general) — auto-saves on blur.
-//   • new verse note (`anchor` set, no `existing`) — quick-jot from a passage, saves on blur.
-//   • new general note (`general`, no `anchor`) — a course note with an optional title,
-//     saved explicitly with Save/Cancel.
+//   • existing note (verse-anchored or general) — auto-saves.
+//   • new verse note (`anchor` set, no `existing`) — quick-jot from a passage.
+//   • new general note (`general`, no `anchor`) — a course note with an optional title.
+// All shapes auto-save: a debounce fires ~0.9s after typing stops, and the draft is
+// also flushed when the editor unmounts (navigating away) or the tab is hidden, so
+// notes can't be lost by leaving the page. New notes adopt the server id from their
+// first save, so later edits update that note instead of creating duplicates.
 function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onChanged, onJump, onCancel }: {
   existing?: NoteT
   anchor?: { book: string; chapter: number; verse: number; label: string }
@@ -456,42 +459,106 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
 
   const H = { 'Content-Type': 'application/json' }
 
-  async function persist() {
-    const body = draft
-    const title = titleDraft.trim()
-    setSaving(true)
-    try {
-      if (existing) {
-        const bothEmpty = isHtmlEmpty(body) && (!isGeneral || !title)
-        if (bothEmpty) {
-          await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' })
-        } else {
-          const patch: { body?: string; title?: string } = {}
-          if (body !== existing.body) patch.body = body
-          if (isGeneral && title !== (existing.title ?? '')) patch.title = title
-          if (Object.keys(patch).length === 0) { setSaving(false); return }
-          await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: H, body: JSON.stringify(patch) })
-        }
+  // The note's server id once it exists (null for a new note until its first save).
+  const idRef = useRef<string | null>(existing?.id ?? null)
+  // Last values we've persisted — used to diff PATCHes and skip redundant writes.
+  const saved = useRef({ body: existing?.body ?? '', title: existing?.title ?? '' })
+  // Current drafts, so the debounced / unmount savers read fresh values without re-binding.
+  const draftRef = useRef(draft); draftRef.current = draft
+  const titleRef = useRef(titleDraft); titleRef.current = titleDraft
+  // Serialize saves so an in-flight create can't race a second save into a duplicate.
+  const chain = useRef<Promise<void>>(Promise.resolve())
+  // Set once the note is discarded (Cancel/Delete) so trailing autosaves are ignored.
+  const discarded = useRef(false)
+
+  // Persist the current draft. `final` marks a user-completed edit (blur / explicit Save /
+  // unmount): it may refresh the notebook list and delete an emptied note. The debounced
+  // autosave passes final=false so it never reloads (which would remount and drop the caret).
+  const save = useCallback((final: boolean): Promise<void> => {
+    const run = async () => {
+      if (discarded.current) return
+      const body = draftRef.current
+      const title = titleRef.current.trim()
+      const empty = isHtmlEmpty(body) && (!isGeneral || !title)
+      const id = idRef.current
+
+      if (!id) {
+        if (empty) { if (final && isNew && isGeneral) onCancel?.(); return }
+        if (!isGeneral && !anchor) return
+        setSaving(true)
+        try {
+          const payload = isGeneral ? { general: true, title, body, folderId } : { ...anchor!, body, folderId }
+          const res = await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify(payload) })
+          const d = await res.json().catch(() => ({}))
+          if (res.ok && d.note?.id) { idRef.current = d.note.id; saved.current = { body, title } }
+        } finally { setSaving(false) }
+        if (final && !discarded.current) onChanged()
+        return
+      }
+
+      // Note already exists on the server: update it, or delete it if the user emptied it.
+      if (empty && final) {
+        setSaving(true)
+        try { await fetch(`/api/notes?id=${id}`, { method: 'DELETE' }); saved.current = { body: '', title: '' } }
+        finally { setSaving(false) }
         onChanged()
-      } else if (isGeneral) {
-        if (!title && isHtmlEmpty(body)) { setSaving(false); onCancel?.(); return }
-        await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify({ general: true, title, body, folderId }) })
+        return
+      }
+      const patch: { body?: string; title?: string } = {}
+      if (body !== saved.current.body) patch.body = body
+      if (isGeneral && title !== saved.current.title) patch.title = title
+      if (Object.keys(patch).length > 0) {
+        setSaving(true)
+        try { await fetch(`/api/notes?id=${id}`, { method: 'PATCH', headers: H, body: JSON.stringify(patch) }); saved.current = { body, title } }
+        finally { setSaving(false) }
+        if (final) onChanged()
+      } else if (final) {
         onChanged()
-      } else if (anchor && !isHtmlEmpty(body)) {
-        await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify({ ...anchor, body, folderId }) })
-        onChanged()
-      } else { setSaving(false); return }
-    } finally { setSaving(false) }
-  }
+      }
+    }
+    chain.current = chain.current.then(run, run)
+    return chain.current
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGeneral, isNew, anchor, folderId, onChanged, onCancel])
+
+  const saveRef = useRef(save); saveRef.current = save
+
+  // Debounced autosave: ~0.9s after the student stops typing, persist silently.
+  useEffect(() => {
+    if (draft === saved.current.body && titleDraft.trim() === saved.current.title) return
+    const t = setTimeout(() => { void saveRef.current(false) }, 900)
+    return () => clearTimeout(t)
+  }, [draft, titleDraft])
+
+  // Flush the draft when the tab is hidden and when the editor unmounts (e.g. navigating
+  // to another page) — the two moments a student's in-progress notes would otherwise vanish.
+  useEffect(() => {
+    const onHide = () => { if (document.visibilityState === 'hidden') void saveRef.current(false) }
+    document.addEventListener('visibilitychange', onHide)
+    return () => {
+      document.removeEventListener('visibilitychange', onHide)
+      void saveRef.current(false)
+    }
+  }, [])
 
   async function changeFolder(id: string | null) {
     setFolderId(id)
-    if (existing) { await fetch(`/api/notes?id=${existing.id}`, { method: 'PATCH', headers: H, body: JSON.stringify({ folderId: id }) }); onChanged() }
+    if (idRef.current) {
+      await fetch(`/api/notes?id=${idRef.current}`, { method: 'PATCH', headers: H, body: JSON.stringify({ folderId: id }) })
+      if (existing) onChanged()
+    }
+  }
+
+  function discard() {
+    discarded.current = true
+    if (idRef.current) { void fetch(`/api/notes?id=${idRef.current}`, { method: 'DELETE' }).then(() => onChanged()) }
+    onCancel?.()
   }
 
   const folder = folders.find(f => f.id === (existing?.folderId ?? folderId))
-  // New general notes save explicitly (they have a title too); everything else auto-saves on blur.
-  const autoSave = !(isNew && isGeneral)
+  // Existing / verse notes reload the list on blur; a still-composing new general note
+  // saves silently on blur (so moving between its title and body doesn't remount it).
+  const finalOnBlur = !(isNew && isGeneral)
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-2.5">
@@ -500,7 +567,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
           <input
             value={titleDraft}
             onChange={e => setTitleDraft(e.target.value)}
-            onBlur={autoSave ? persist : undefined}
+            onBlur={() => void save(finalOnBlur)}
             placeholder="Course note title (optional)"
             maxLength={200}
             autoFocus={isNew}
@@ -520,14 +587,15 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
             <option value="">Unfiled</option>
             {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
-          {existing && <button onClick={async () => { await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
+          {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
         </span>
       </div>
-      <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={autoSave ? persist : undefined} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
+      <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={() => void save(finalOnBlur)} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
       {isNew && isGeneral && (
-        <div className="flex justify-end gap-2 mt-2">
-          <button onClick={() => onCancel?.()} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
-          <button onClick={persist} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
+        <div className="flex items-center justify-end gap-2 mt-2">
+          <span className="mr-auto text-[11px] text-gray-400">Saves automatically</span>
+          <button onClick={discard} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
+          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
         </div>
       )}
     </div>
