@@ -28,7 +28,11 @@ export function SignInForm() {
       if (data.mustChangePassword) {
         router.push('/auth/change-password?required=1')
       } else {
-        router.push(data.role === 'ADMIN' ? '/admin' : data.role === 'INSTRUCTOR' ? '/instructor' : '/student')
+        // On mobile (below the `lg` breakpoint the sidebar uses), land on the Reader
+        // instead of the role dashboard. Desktop keeps the dashboard landing.
+        const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 1023px)').matches
+        const dashboard = data.role === 'ADMIN' ? '/admin' : data.role === 'INSTRUCTOR' ? '/instructor' : '/student'
+        router.push(isMobile ? '/reader' : dashboard)
       }
       router.refresh()
     } catch (err) {
