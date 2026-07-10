@@ -35,7 +35,7 @@ const adminNav: NavItem[] = [
   { label: 'Vocab Synonyms',href: '/admin/vocab/synonyms',     icon: <BookMarked size={16} /> },
   { label: 'Vocab Appeals', href: '/admin/appeals',            icon: <Gavel size={16} /> },
   { label: 'Audit Log',     href: '/admin/audit',              icon: <ShieldAlert size={16} /> },
-  { label: 'Settings',      href: '/admin/settings',           icon: <Settings size={16} /> },
+  { label: 'Notifications', href: '/admin/settings',           icon: <Settings size={16} /> },
 ]
 
 const studentNav: NavItem[] = [

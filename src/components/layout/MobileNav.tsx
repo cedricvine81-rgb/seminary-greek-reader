@@ -30,7 +30,7 @@ const adminTabs = [
   { label: 'Courses',      href: '/admin/courses',       icon: BookOpen },
   { label: 'Institutions', href: '/admin/institutions',  icon: Building2 },
   { label: 'Audit',        href: '/admin/audit',         icon: ShieldAlert },
-  { label: 'Settings',     href: '/admin/settings',      icon: Settings },
+  { label: 'Notifications', href: '/admin/settings',     icon: Settings },
 ]
 
 interface MobileNavProps {

@@ -4,7 +4,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { AdminSettingsForm } from '@/components/admin/AdminSettingsForm'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
-export const metadata: Metadata = { title: 'Admin Settings' }
+export const metadata: Metadata = { title: 'Notifications' }
 
 export default function AdminSettingsPage() {
   const token = getTokenFromCookies()
@@ -12,7 +12,7 @@ export default function AdminSettingsPage() {
   if (!payload || payload.role !== 'ADMIN') redirect('/auth/sign-in')
 
   return (
-    <DashboardShell role="ADMIN" pageTitle="Settings">
+    <DashboardShell role="ADMIN" pageTitle="Notifications">
       <AdminSettingsForm />
     </DashboardShell>
   )

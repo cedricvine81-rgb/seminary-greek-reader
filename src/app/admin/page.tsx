@@ -73,8 +73,8 @@ export default async function AdminDashboard() {
                   <Settings size={22} className="text-slate-600" />
                 </div>
                 <div>
-                  <p className="text-base font-semibold text-gray-900">Settings</p>
-                  <p className="text-sm text-gray-500">Notifications &amp; email</p>
+                  <p className="text-base font-semibold text-gray-900">Notifications</p>
+                  <p className="text-sm text-gray-500">New-instructor emails</p>
                 </div>
               </div>
             </Card>
