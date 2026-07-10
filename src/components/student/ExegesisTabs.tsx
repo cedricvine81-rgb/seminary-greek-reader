@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, Menu, X, Download, FolderClock, Scroll, Library, type LucideIcon } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Library, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
@@ -45,6 +45,10 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'notes',       label: 'Notes',       Icon: StickyNote },
 ]
 
+// Mobile switches tabs from inside the ⋮ menu and omits Backgrounds (too wide to use
+// comfortably on a phone — it stays desktop-only).
+const MOBILE_TAB_LIST = TAB_LIST.filter(t => t.id !== 'backgrounds')
+
 export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated: boolean; initialTab?: string }) {
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
@@ -69,9 +73,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
   const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
   const [showToolsMenu, setShowToolsMenu] = useState(false)
   const toolsMenuRef = useRef<HTMLDivElement>(null)
-  // Mobile only: the tab bar collapses into a hamburger.
-  const [showTabMenu, setShowTabMenu] = useState(false)
-  const tabMenuRef = useRef<HTMLDivElement>(null)
   // Phrasing / Synopsis text size (categorical, not persisted) and their static/derived
   // "sources & copyright" content, lifted up from each view so the shared menu can show it.
   const [phraseFontSize, setPhraseFontSize] = useState<PhraseFontSize>('lg')
@@ -123,15 +124,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [showToolsMenu])
-
-  useEffect(() => {
-    if (!showTabMenu) return
-    function onMouseDown(e: MouseEvent) {
-      if (tabMenuRef.current && !tabMenuRef.current.contains(e.target as Node)) setShowTabMenu(false)
-    }
-    document.addEventListener('mousedown', onMouseDown)
-    return () => document.removeEventListener('mousedown', onMouseDown)
-  }, [showTabMenu])
 
   // Resolve a committed passage string to a canonical verse anchor for notes.
   function parseAnchor(value: string): NoteAnchor | null {
@@ -210,7 +202,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
     backgrounds: 'Settings & sources', texts: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
-  const activeTabMeta = TAB_LIST.find(t => t.id === tab)!
 
   return (
     <>
@@ -250,34 +241,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
             ))}
           </div>
 
-          {/* Mobile: the tab bar collapses into a hamburger showing the current tab. */}
-          <div ref={tabMenuRef} className="lg:hidden relative shrink-0">
-            <button
-              type="button"
-              onClick={() => setShowTabMenu(v => !v)}
-              className={`${tabClass(true)} !bg-brand-100 !text-brand-800`}
-            >
-              <activeTabMeta.Icon size={16} /> {activeTabMeta.label}
-              <Menu size={15} className="ml-0.5 text-brand-500" />
-            </button>
-            {showTabMenu && (
-              <div className="absolute left-0 top-full mt-1 z-50 w-56 bg-white border border-gray-200 rounded-xl p-2 shadow-lg">
-                {TAB_LIST.map(({ id, label, Icon }) => (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => { setTab(id); setShowTabMenu(false) }}
-                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors ${
-                      tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    <Icon size={16} className="shrink-0" /> {label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* Shared tools menu (⋮) — content swaps with the active tab: Vocabulary/PDF/
               Sessions for Exegesis, text size + sources/copyright for the rest. */}
           <div ref={toolsMenuRef} className="relative shrink-0">
@@ -295,6 +258,26 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-gray-800">{toolsMenuTitle}</span>
                   <button onClick={() => setShowToolsMenu(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>
+                </div>
+
+                {/* Mobile only: switch tabs from here (desktop uses the inline tab bar).
+                    Backgrounds is intentionally omitted on mobile. */}
+                <div className="lg:hidden border-b border-gray-100 pb-3">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">View</p>
+                  <div className="grid grid-cols-2 gap-1">
+                    {MOBILE_TAB_LIST.map(({ id, label, Icon }) => (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => { setTab(id); setShowToolsMenu(false) }}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors ${
+                          tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        <Icon size={16} className="shrink-0" /> {label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 {tab === 'workspace' && (
