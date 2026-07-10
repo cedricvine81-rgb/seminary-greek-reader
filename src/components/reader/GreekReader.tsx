@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  MoreVertical, X, ChevronRight, Menu,
+  MoreVertical, X, ChevronRight, ChevronUp, ChevronDown, Check, Plus, Menu,
   LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
   Settings, LogOut, LogIn, UserPlus,
 } from 'lucide-react'
@@ -11,7 +11,6 @@ import { SearchBar } from './SearchBar'
 import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
-import { MobileParsingSheet } from './MobileParsingSheet'
 import { SyntaxMenu } from './SyntaxMenu'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -116,9 +115,15 @@ const PARALLEL_LANGS = [
   { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version' },
 ]
 
-// The order mobile swipes through: the complete Greek text, then each full
-// translation as its own page, wrapping back to Greek.
-const PARALLEL_CYCLE: (string | null)[] = [null, ...PARALLEL_LANGS.map(l => l.code)]
+// Every text the mobile reader can show as its own full-screen pane: Greek plus each
+// translation. Users pick and order a subset in the "View Selection" menu; swiping
+// left/right moves between the chosen panes. Greek is the key 'greek' (⇄ parallelLang null).
+const ALL_VIEWS: { key: string; label: string }[] = [
+  { key: 'greek', label: 'Greek' },
+  ...PARALLEL_LANGS.map(l => ({ key: l.code, label: l.label })),
+]
+const DEFAULT_VIEWS = ALL_VIEWS.map(v => v.key)
+const VIEWS_STORAGE_KEY = 'reader-views'
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -223,6 +228,32 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const [showSettings, setShowSettings]     = useState(false)
   const [fontSize, setFontSize]             = useState<FontSize>('md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
+  // Mobile: which texts are enabled as swipeable panes, in the user's chosen order.
+  // Starts as all; hydrated from localStorage after mount (avoids an SSR mismatch).
+  const [selectedViews, setSelectedViews] = useState<string[]>(DEFAULT_VIEWS)
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(VIEWS_STORAGE_KEY)
+      if (!raw) return
+      const arr = JSON.parse(raw)
+      if (Array.isArray(arr)) {
+        const clean = arr.filter((k: unknown): k is string => typeof k === 'string' && ALL_VIEWS.some(v => v.key === k))
+        if (clean.length) setSelectedViews(clean)
+      }
+    } catch { /* ignore malformed storage */ }
+  }, [])
+  useEffect(() => {
+    try { localStorage.setItem(VIEWS_STORAGE_KEY, JSON.stringify(selectedViews)) } catch { /* ignore */ }
+  }, [selectedViews])
+  // If the currently shown text gets removed from the selection, snap to the first one.
+  useEffect(() => {
+    const cur = parallelLang ?? 'greek'
+    if (selectedViews.length && !selectedViews.includes(cur)) {
+      const first = selectedViews[0]
+      setParallelLang(first === 'greek' ? null : first)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedViews])
   const [translationVerses, setTranslationVerses] = useState<Record<string, string>>({})
   const [wallaceOn, setWallaceOn]           = useState(true)
   const [proielOn,  setProielOn]            = useState(true)
@@ -535,9 +566,32 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // translation → back to Greek. The dropdown still jumps directly to any language.
   const swipeStartRef = useRef<{ x: number; y: number; t: number } | null>(null)
 
+  // Swipe moves through the user's selected/ordered views (not the full language list).
   function cycleParallel(dir: 1 | -1) {
-    const idx = PARALLEL_CYCLE.indexOf(parallelLang)
-    setParallelLang(PARALLEL_CYCLE[(idx + dir + PARALLEL_CYCLE.length) % PARALLEL_CYCLE.length])
+    const list = selectedViews.length ? selectedViews : ['greek']
+    const cur = parallelLang ?? 'greek'
+    let idx = list.indexOf(cur)
+    if (idx === -1) idx = 0
+    const next = list[(idx + dir + list.length) % list.length]
+    setParallelLang(next === 'greek' ? null : next)
+  }
+
+  // ── View Selection (mobile): pick + order the swipeable text panes ──
+  function toggleView(key: string) {
+    setSelectedViews(prev =>
+      prev.includes(key)
+        ? (prev.length > 1 ? prev.filter(k => k !== key) : prev)  // keep at least one
+        : [...prev, key]
+    )
+  }
+  function moveView(i: number, dir: -1 | 1) {
+    setSelectedViews(prev => {
+      const j = i + dir
+      if (j < 0 || j >= prev.length) return prev
+      const next = prev.slice()
+      ;[next[i], next[j]] = [next[j], next[i]]
+      return next
+    })
   }
 
   function onTextTouchStart(e: React.TouchEvent) {
@@ -1354,7 +1408,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    Contents
+                    <span className="lg:hidden">View Selection</span><span className="hidden lg:inline">Contents</span>
                     {gntEdition !== 'tischendorf' && <span className="ml-1.5 normal-case font-normal text-brand-600">(Nestle 1904)</span>}
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
@@ -1364,6 +1418,39 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                     onMouseEnter={cancelFlyoutClose}
                     className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
+                    {/* Mobile: choose + order the swipeable text panes. */}
+                    <div className="lg:hidden mb-4 pb-4 border-b border-gray-100">
+                      <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-1">Texts to show</p>
+                      <p className="text-xs text-gray-400 mb-3">Swipe the text left/right to move between them. Tap a text to jump to it; reorder with the arrows.</p>
+                      <div className="space-y-1.5">
+                        {selectedViews.map((key, i) => {
+                          const meta = ALL_VIEWS.find(v => v.key === key)!
+                          const isCurrent = (parallelLang ?? 'greek') === key
+                          return (
+                            <div key={key} className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 ${isCurrent ? 'border-brand-400 ring-1 ring-brand-300 bg-brand-50' : 'border-brand-200 bg-brand-50/40'}`}>
+                              <button type="button" onClick={() => toggleView(key)} title="Remove"
+                                className="shrink-0 h-5 w-5 rounded flex items-center justify-center bg-brand-600 text-white">
+                                <Check size={13} />
+                              </button>
+                              <button type="button" onClick={() => setParallelLang(key === 'greek' ? null : key)}
+                                className="flex-1 text-sm text-left text-gray-800 truncate">{meta.label}</button>
+                              <button type="button" onClick={() => moveView(i, -1)} disabled={i === 0}
+                                className="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30" title="Move up"><ChevronUp size={16} /></button>
+                              <button type="button" onClick={() => moveView(i, 1)} disabled={i === selectedViews.length - 1}
+                                className="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30" title="Move down"><ChevronDown size={16} /></button>
+                            </div>
+                          )
+                        })}
+                        {ALL_VIEWS.filter(v => !selectedViews.includes(v.key)).map(v => (
+                          <button key={v.key} type="button" onClick={() => toggleView(v.key)}
+                            className="w-full flex items-center gap-2 rounded-lg border border-dashed border-gray-200 px-2.5 py-2 text-gray-500 hover:bg-gray-50">
+                            <span className="shrink-0 h-5 w-5 rounded flex items-center justify-center border border-gray-300"><Plus size={13} /></span>
+                            <span className="flex-1 text-sm text-left">{v.label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
                       {([
@@ -1600,32 +1687,20 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         )}
       </div>
 
-      {/* ── Mobile text-cycle switcher ── */}
-      {/* Swipe the text left/right to page through Greek → translations; dots jump directly. */}
-      <div className="lg:hidden flex-none flex items-center justify-center gap-1 py-1">
-        {PARALLEL_CYCLE.map((code, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setParallelLang(code)}
-            aria-label={code ? PARALLEL_LANGS.find(l => l.code === code)?.label : 'Greek'}
-            className={`h-1.5 w-1.5 rounded-full transition-colors ${parallelLang === code ? 'bg-brand-500' : 'bg-gray-300'}`}
-          />
-        ))}
-        <span className="ml-2 text-[11px] text-gray-400 truncate max-w-[45%]">
-          {parallelLang ? parallelLangInfo?.label : 'Greek'}
-        </span>
-      </div>
-
       {/* ── Parsing panel ── */}
       {/* Desktop: fixed card below the text. */}
       <div className="hidden lg:block flex-none">
         <ParsingPanel info={parsingInfo} locked={!!lockedInfo} />
       </div>
-      {/* Mobile: collapsed pill that expands into a bottom sheet, freeing ~180px of reading space. */}
-      <div className="lg:hidden flex-none">
-        <MobileParsingSheet info={parsingInfo} locked={!!lockedInfo} />
-      </div>
+      {/* Mobile: a larger inline parsing pane, shown only while a Greek text is in view
+          (translations have no word-level parsing). Swiping to a translation hides it,
+          giving that text the full screen. Which texts appear + their swipe order are set
+          in the View Selection menu. */}
+      {parallelLang === null && (
+        <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-white flex flex-col overflow-hidden">
+          <ParsingPanel info={parsingInfo} locked={!!lockedInfo} variant="sheet" />
+        </div>
+      )}
 
       {/* ── Syntax right-click menu ── */}
       {syntaxMenu && (
