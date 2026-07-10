@@ -1361,7 +1361,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 {settingsFlyout === 'contents' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
@@ -1423,7 +1423,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 {settingsFlyout === 'syntax' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
                     <div className="space-y-3">
@@ -1467,7 +1467,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'controls' && (
-                  <div onMouseEnter={cancelFlyoutClose} className="absolute right-full top-0 mr-2 z-[51] w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
+                  <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
@@ -1509,7 +1509,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 {settingsFlyout === 'translations' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="absolute right-full top-0 mr-2 z-[51] w-[400px] max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
                     <button
                       onClick={() => setParallelLang(null)}
