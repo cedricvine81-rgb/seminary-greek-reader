@@ -8,6 +8,7 @@ import {
   Settings, LogOut, LogIn, UserPlus,
 } from 'lucide-react'
 import { SearchBar } from './SearchBar'
+import { PassagePicker } from './PassagePicker'
 import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
@@ -284,6 +285,10 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // Mobile only: hide the top control row while scrolling down through the text,
   // reveal it again on any scroll up (desktop keeps it pinned via `lg:flex`).
   const [showTopBar, setShowTopBar] = useState(true)
+  // Mobile passage picker (opened by the SearchBar's "Verse" button). Rendered at the
+  // reader's top level — NOT inside the collapsible top bar — so hiding the bar on scroll
+  // can't affect it.
+  const [pickerOpen, setPickerOpen] = useState(false)
   const lastScrollTopRef = useRef(0)
 
   // ── Refs ─────────────────────────────────────────────────────────────────────
@@ -1306,7 +1311,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           desktop pins it with `lg:flex`. */}
       <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
         <div className="flex-1 min-w-0">
-          <SearchBar onSearch={handleSearch} books={allBooks} />
+          <SearchBar onSearch={handleSearch} onVerseClick={() => setPickerOpen(true)} />
         </div>
         {/* Parallel translation selector — shows a translation column beside the Greek.
             Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
@@ -1700,6 +1705,15 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-white flex flex-col overflow-hidden">
           <ParsingPanel info={parsingInfo} locked={!!lockedInfo} variant="sheet" />
         </div>
+      )}
+
+      {/* ── Mobile passage picker (top-level overlay, independent of the top bar) ── */}
+      {pickerOpen && (
+        <PassagePicker
+          books={allBooks}
+          onPick={ref => { handleSearch(ref, 'reference'); setPickerOpen(false) }}
+          onClose={() => setPickerOpen(false)}
+        />
       )}
 
       {/* ── Syntax right-click menu ── */}

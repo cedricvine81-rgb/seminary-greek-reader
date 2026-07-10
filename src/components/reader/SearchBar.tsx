@@ -1,13 +1,11 @@
 'use client'
 import { useState, useRef, useEffect, KeyboardEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
-import type { BiblicalBook } from '@/types/biblical-text'
-import { PassagePicker } from './PassagePicker'
 
 interface SearchBarProps {
   onSearch: (query: string, type: 'word' | 'reference') => void
-  // Books power the mobile visual passage picker (opened by the "Verse" button).
-  books?: BiblicalBook[]
+  // Mobile "Verse" button opens the passage picker, which the reader renders at top level.
+  onVerseClick?: () => void
 }
 
 // Rows match a compact Greek keyboard layout
@@ -17,11 +15,10 @@ const GREEK_ROWS = [
   ['σ', 'ς', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'],
 ]
 
-export function SearchBar({ onSearch, books = [] }: SearchBarProps) {
+export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
-  const [pickerOpen, setPickerOpen]   = useState(false)
 
   const inputRef    = useRef<HTMLInputElement>(null)
   const wrapperRef  = useRef<HTMLDivElement>(null)
@@ -117,7 +114,7 @@ export function SearchBar({ onSearch, books = [] }: SearchBarProps) {
       {/* Mobile: "Verse" opens the visual passage picker; the search box is word-only. */}
       <button
         type="button"
-        onClick={() => setPickerOpen(true)}
+        onClick={onVerseClick}
         className="lg:hidden shrink-0 px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium"
       >
         Verse
@@ -179,14 +176,6 @@ export function SearchBar({ onSearch, books = [] }: SearchBarProps) {
         </div>
       )}
 
-      {/* Mobile visual passage picker (book → chapter → verse). */}
-      {pickerOpen && (
-        <PassagePicker
-          books={books}
-          onPick={ref => { onSearch(ref, 'reference'); setPickerOpen(false) }}
-          onClose={() => setPickerOpen(false)}
-        />
-      )}
     </div>
   )
 }

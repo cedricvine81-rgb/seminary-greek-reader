@@ -8,7 +8,6 @@ import type { BiblicalBook } from '@/types/biblical-text'
 // in from the right. Emits an "{osisId} {chapter}:{verse}" reference the reader jumps to.
 
 type ColorKey = 'blue' | 'emerald' | 'indigo' | 'amber' | 'rose' | 'sky' | 'violet'
-interface Section { label: string; color: ColorKey; ids: string[] }
 
 // Full literal class strings so Tailwind keeps them.
 const COLORS: Record<ColorKey, { btn: string; head: string }> = {
@@ -38,18 +37,33 @@ const SBL_ABBR: Record<string, string> = {
 }
 const sbl = (b: { osisId: string; abbrev: string }) => SBL_ABBR[b.osisId] ?? b.abbrev
 
-const NT_SECTIONS: Section[] = [
-  { label: 'Gospels',          color: 'blue',    ids: ['Matt', 'Mark', 'Luke', 'John'] },
-  { label: 'History',          color: 'emerald', ids: ['Acts'] },
-  { label: 'Pauline Epistles', color: 'indigo',  ids: ['Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm'] },
-  { label: 'General Epistles', color: 'amber',   ids: ['Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude'] },
-  { label: 'Apocalypse',       color: 'rose',    ids: ['Rev'] },
-]
-const OT_SECTIONS: Section[] = [
-  { label: 'Law',             color: 'sky',     ids: ['Gen', 'Exod', 'Lev', 'Num', 'Deut'] },
-  { label: 'History',         color: 'emerald', ids: ['JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', '1Esd', 'Tob', 'Jdt', 'EsthGr', '1Macc', '2Macc', '3Macc', '4Macc'] },
-  { label: 'Wisdom & Poetry', color: 'amber',   ids: ['Job', 'Ps', 'PsSol', 'Prov', 'Eccl', 'Song', 'Wis', 'Sir', 'Odes'] },
-  { label: 'Prophets',        color: 'violet',  ids: ['Isa', 'Jer', 'Lam', 'EpJer', 'Bar', 'Sus', 'Ezek', 'DanLXX', 'Bel', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+// Each book's colour comes from its canon section; books are listed in canonical
+// sequence within their heading (so colours vary down the list, but order is continuous).
+const COLOR_OF: Record<string, ColorKey> = {
+  // New Testament
+  Matt: 'blue', Mark: 'blue', Luke: 'blue', John: 'blue',
+  Acts: 'emerald',
+  Rom: 'indigo', '1Cor': 'indigo', '2Cor': 'indigo', Gal: 'indigo', Eph: 'indigo', Phil: 'indigo', Col: 'indigo',
+  '1Thess': 'indigo', '2Thess': 'indigo', '1Tim': 'indigo', '2Tim': 'indigo', Titus: 'indigo', Phlm: 'indigo',
+  Heb: 'amber', Jas: 'amber', '1Pet': 'amber', '2Pet': 'amber', '1John': 'amber', '2John': 'amber', '3John': 'amber', Jude: 'amber',
+  Rev: 'rose',
+  // Old Testament
+  Gen: 'sky', Exod: 'sky', Lev: 'sky', Num: 'sky', Deut: 'sky',
+  JoshB: 'emerald', JudgB: 'emerald', Ruth: 'emerald', '1Sam': 'emerald', '2Sam': 'emerald', '1Kgs': 'emerald', '2Kgs': 'emerald',
+  '1Chr': 'emerald', '2Chr': 'emerald', Ezra: 'emerald', Neh: 'emerald', EsthGr: 'emerald',
+  Job: 'amber', Ps: 'amber', Prov: 'amber', Eccl: 'amber', Song: 'amber',
+  Isa: 'violet', Jer: 'violet', Lam: 'violet', Ezek: 'violet', DanLXX: 'violet', Hos: 'violet', Joel: 'violet', Amos: 'violet',
+  Obad: 'violet', Jonah: 'violet', Mic: 'violet', Nah: 'violet', Hab: 'violet', Zeph: 'violet', Hag: 'violet', Zech: 'violet', Mal: 'violet',
+  // Deutero-Canonical
+  '1Esd': 'emerald', Tob: 'emerald', Jdt: 'emerald', '1Macc': 'emerald', '2Macc': 'emerald', '3Macc': 'emerald', '4Macc': 'emerald',
+  Wis: 'amber', Sir: 'amber', PsSol: 'amber', Odes: 'amber',
+  Bar: 'violet', EpJer: 'violet', Sus: 'violet', Bel: 'violet',
+}
+
+const GROUPS: { heading: string; order: string[] }[] = [
+  { heading: 'Old Testament', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+  { heading: 'Deutero-Canonical', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
+  { heading: 'New Testament', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
 ]
 
 export function PassagePicker({ books, onPick, onClose }: {
@@ -78,30 +92,24 @@ export function PassagePicker({ books, onPick, onClose }: {
   }, [book, chapter])
 
   const byId = new Map(books.map(b => [b.osisId, b]))
-  function renderSections(sections: Section[]) {
-    return sections.map(sec => {
-      const secBooks = sec.ids.map(id => byId.get(id)).filter((b): b is BiblicalBook => !!b)
-      if (secBooks.length === 0) return null
-      const c = COLORS[sec.color]
-      return (
-        <div key={sec.label} className="mb-4">
-          <p className={`text-xs font-semibold uppercase tracking-wide mb-1.5 ${c.head}`}>{sec.label}</p>
-          <div className="grid grid-cols-4 gap-1.5">
-            {secBooks.map(b => (
-              <button key={b.osisId} type="button"
-                onClick={() => { setBook(b); setChapter(null); setVerses(null) }}
-                className={`rounded-lg border px-1 py-2 text-[13px] leading-tight font-medium bg-white transition-colors ${c.btn}`}>
-                {sbl(b)}
-              </button>
-            ))}
-          </div>
-        </div>
-      )
-    })
+  function renderGroup(order: string[]) {
+    const gBooks = order.map(id => byId.get(id)).filter((b): b is BiblicalBook => !!b)
+    if (gBooks.length === 0) return null
+    return (
+      <div className="grid grid-cols-4 gap-1.5">
+        {gBooks.map(b => {
+          const c = COLORS[COLOR_OF[b.osisId] ?? 'blue']
+          return (
+            <button key={b.osisId} type="button"
+              onClick={() => { setBook(b); setChapter(null); setVerses(null) }}
+              className={`rounded-lg border px-1 py-2 text-[13px] leading-tight font-medium bg-white transition-colors ${c.btn}`}>
+              {sbl(b)}
+            </button>
+          )
+        })}
+      </div>
+    )
   }
-
-  const hasNT = books.some(b => b.corpus === 'GNT')
-  const hasOT = books.some(b => b.corpus === 'LXX')
 
   return (
     <div className="fixed inset-0 z-[70] bg-white flex flex-col lg:hidden">
@@ -127,20 +135,18 @@ export function PassagePicker({ books, onPick, onClose }: {
         <div className="flex h-full transition-transform duration-300 ease-out"
           style={{ width: '300%', transform: `translateX(-${step * (100 / 3)}%)` }}>
 
-          {/* Pane 1 — books */}
+          {/* Pane 1 — books, grouped OT / Deutero-Canonical / NT, each in canonical order */}
           <div className="w-1/3 h-full overflow-y-auto px-3 py-3">
-            {hasNT && (
-              <>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">New Testament</p>
-                {renderSections(NT_SECTIONS)}
-              </>
-            )}
-            {hasOT && (
-              <>
-                <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2 mt-1">Old Testament (Septuagint)</p>
-                {renderSections(OT_SECTIONS)}
-              </>
-            )}
+            {GROUPS.map(g => {
+              const pane = renderGroup(g.order)
+              if (!pane) return null
+              return (
+                <div key={g.heading} className="mb-5">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">{g.heading}</p>
+                  {pane}
+                </div>
+              )
+            })}
             {books.length === 0 && <p className="text-sm text-gray-400 py-6 text-center">Loading books…</p>}
           </div>
 
