@@ -21,6 +21,9 @@ const nextConfig = {
         'public/data/gnt/**',
         'public/data/lxx/**',
         'public/data/na1904/**',
+        // Translation search indexes are fetched from this deployment's static assets in
+        // production (src/lib/translation-search.ts), so keep them out of the bundle too.
+        'public/data/search-index-*.json.gz',
       ],
     },
   },

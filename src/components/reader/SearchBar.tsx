@@ -3,9 +3,13 @@ import { useState, useRef, useEffect, KeyboardEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
 
 interface SearchBarProps {
-  onSearch: (query: string, type: 'word' | 'reference') => void
+  onSearch: (query: string, type: 'word' | 'reference', lang?: string) => void
   // Mobile "Verse" button opens the passage picker, which the reader renders at top level.
   onVerseClick?: () => void
+  // The translation currently in view on mobile (null = Greek). When set, the search box
+  // searches that translation's text instead of Greek.
+  viewLang?: string | null
+  viewLangLabel?: string
 }
 
 // Rows match a compact Greek keyboard layout
@@ -15,7 +19,7 @@ const GREEK_ROWS = [
   ['σ', 'ς', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'],
 ]
 
-export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
+export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: SearchBarProps) {
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
@@ -34,6 +38,8 @@ export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
     return () => mq.removeEventListener('change', sync)
   }, [])
   const effectiveType = isMobile ? 'word' : type
+  // On mobile, a non-null viewLang means a translation is showing → search that language.
+  const effectiveLang = isMobile && effectiveType === 'word' ? (viewLang ?? null) : null
 
   // Close keyboard when clicking outside the whole component
   useEffect(() => {
@@ -47,7 +53,7 @@ export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
   }, [])
 
   function submit() {
-    if (query.trim()) onSearch(query.trim(), effectiveType)
+    if (query.trim()) onSearch(query.trim(), effectiveType, effectiveLang ?? undefined)
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -128,10 +134,10 @@ export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKey}
-          placeholder={effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
-          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${effectiveType === 'word' ? 'pr-10' : 'pr-3'}`}
+          placeholder={effectiveLang ? `Search ${viewLangLabel ?? 'translation'}…` : effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${effectiveType === 'word' && !effectiveLang ? 'pr-10' : 'pr-3'}`}
         />
-        {effectiveType === 'word' && (
+        {effectiveType === 'word' && !effectiveLang && (
           <button
             type="button"
             title="Greek keyboard"
@@ -145,7 +151,7 @@ export function SearchBar({ onSearch, onVerseClick }: SearchBarProps) {
       </div>
 
       {/* Greek keyboard popup */}
-      {showKeyboard && effectiveType === 'word' && (
+      {showKeyboard && effectiveType === 'word' && !effectiveLang && (
         <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-2 select-none">
           {GREEK_ROWS.map((row, ri) => (
             <div key={ri} className="flex gap-1 mb-1">
