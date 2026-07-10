@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { mutate } from 'swr'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2, XCircle, Mail } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
@@ -59,6 +60,9 @@ export function EnrollmentRequests({ pending: initial }: Props) {
       })
       if (res.ok) {
         setPending(prev => prev.filter(e => e.id !== enrollmentId))
+        // Refresh the sidebar/mobile-nav Requests badge immediately (it reads this
+        // SWR key), rather than waiting for its next 60s poll.
+        void mutate('/api/enrollments/pending')
         router.refresh()
       }
     } finally {
