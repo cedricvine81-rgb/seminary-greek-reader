@@ -250,6 +250,11 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     y: number
   } | null>(null)
 
+  // Mobile only: hide the top control row while scrolling down through the text,
+  // reveal it again on any scroll up (desktop keeps it pinned via `lg:flex`).
+  const [showTopBar, setShowTopBar] = useState(true)
+  const lastScrollTopRef = useRef(0)
+
   // ── Refs ─────────────────────────────────────────────────────────────────────
   const textPanelRef  = useRef<HTMLDivElement>(null)
 
@@ -494,6 +499,27 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     onScroll()
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
+
+  // ── Hide-on-scroll top bar (mobile) ──────────────────────────────────────────
+  // Scrolling down through the text collapses the top control row to free reading
+  // space; scrolling up (or reaching the top) brings it back. Only the display
+  // matters on mobile — desktop pins the row with `lg:flex` regardless of state.
+  useEffect(() => {
+    const panel = textPanelRef.current
+    if (!panel) return
+    const DELTA = 8          // ignore sub-pixel jitter
+    const REVEAL_TOP = 24    // always show near the very top
+    function onScroll() {
+      const y = panel!.scrollTop
+      const last = lastScrollTopRef.current
+      if (y <= REVEAL_TOP) setShowTopBar(true)
+      else if (y - last > DELTA) setShowTopBar(false)
+      else if (last - y > DELTA) setShowTopBar(true)
+      lastScrollTopRef.current = y
+    }
+    panel.addEventListener('scroll', onScroll, { passive: true })
+    return () => panel.removeEventListener('scroll', onScroll)
+  }, [])
 
   // ── Immersive reading (mobile only): mark the Reader mounted ──────────────────
   // globals.css uses html[data-reader="on"] to drop the global header on phones and
@@ -1222,7 +1248,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     <div className="flex flex-col h-full gap-2">
 
       {/* ── Search + settings row ── */}
-      <div className="flex-none flex items-center gap-2">
+      {/* On mobile this row hides while scrolling down and returns on scroll up;
+          desktop pins it with `lg:flex`. */}
+      <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
         <div className="flex-1 min-w-0">
           <SearchBar onSearch={handleSearch} />
         </div>
