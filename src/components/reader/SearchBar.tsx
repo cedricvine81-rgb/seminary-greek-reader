@@ -1,9 +1,13 @@
 'use client'
 import { useState, useRef, useEffect, KeyboardEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
+import type { BiblicalBook } from '@/types/biblical-text'
+import { PassagePicker } from './PassagePicker'
 
 interface SearchBarProps {
   onSearch: (query: string, type: 'word' | 'reference') => void
+  // Books power the mobile visual passage picker (opened by the "Verse" button).
+  books?: BiblicalBook[]
 }
 
 // Rows match a compact Greek keyboard layout
@@ -13,13 +17,26 @@ const GREEK_ROWS = [
   ['σ', 'ς', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'],
 ]
 
-export function SearchBar({ onSearch }: SearchBarProps) {
+export function SearchBar({ onSearch, books = [] }: SearchBarProps) {
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
+  const [pickerOpen, setPickerOpen]   = useState(false)
 
   const inputRef    = useRef<HTMLInputElement>(null)
   const wrapperRef  = useRef<HTMLDivElement>(null)
+
+  // On mobile the Verse/Word toggle is replaced by a "Verse" button (opens the visual
+  // passage picker) and the search box is word-only, so force the word type there.
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1023px)')
+    const sync = () => setIsMobile(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+  const effectiveType = isMobile ? 'word' : type
 
   // Close keyboard when clicking outside the whole component
   useEffect(() => {
@@ -33,7 +50,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
   }, [])
 
   function submit() {
-    if (query.trim()) onSearch(query.trim(), type)
+    if (query.trim()) onSearch(query.trim(), effectiveType)
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -79,8 +96,8 @@ export function SearchBar({ onSearch }: SearchBarProps) {
 
   return (
     <div ref={wrapperRef} className="relative flex items-center gap-2">
-      {/* Word | Verse pill toggle */}
-      <div className="flex rounded-lg border border-gray-300 overflow-hidden text-sm shrink-0">
+      {/* Desktop: Verse | Word type toggle. */}
+      <div className="hidden lg:flex rounded-lg border border-gray-300 overflow-hidden text-sm shrink-0">
         {(['reference', 'word'] as const).map(t => (
           <button
             key={t}
@@ -97,6 +114,15 @@ export function SearchBar({ onSearch }: SearchBarProps) {
         ))}
       </div>
 
+      {/* Mobile: "Verse" opens the visual passage picker; the search box is word-only. */}
+      <button
+        type="button"
+        onClick={() => setPickerOpen(true)}
+        className="lg:hidden shrink-0 px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium"
+      >
+        Verse
+      </button>
+
       {/* Search input + keyboard toggle */}
       <div className="relative flex-1">
         <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
@@ -105,10 +131,10 @@ export function SearchBar({ onSearch }: SearchBarProps) {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKey}
-          placeholder={type === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
-          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${type === 'word' ? 'pr-10' : 'pr-3'}`}
+          placeholder={effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${effectiveType === 'word' ? 'pr-10' : 'pr-3'}`}
         />
-        {type === 'word' && (
+        {effectiveType === 'word' && (
           <button
             type="button"
             title="Greek keyboard"
@@ -122,7 +148,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
       </div>
 
       {/* Greek keyboard popup */}
-      {showKeyboard && type === 'word' && (
+      {showKeyboard && effectiveType === 'word' && (
         <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-2 select-none">
           {GREEK_ROWS.map((row, ri) => (
             <div key={ri} className="flex gap-1 mb-1">
@@ -151,6 +177,15 @@ export function SearchBar({ onSearch }: SearchBarProps) {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Mobile visual passage picker (book → chapter → verse). */}
+      {pickerOpen && (
+        <PassagePicker
+          books={books}
+          onPick={ref => { onSearch(ref, 'reference'); setPickerOpen(false) }}
+          onClose={() => setPickerOpen(false)}
+        />
       )}
     </div>
   )

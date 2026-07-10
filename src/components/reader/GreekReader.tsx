@@ -1306,7 +1306,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           desktop pins it with `lg:flex`. */}
       <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
         <div className="flex-1 min-w-0">
-          <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearch} books={allBooks} />
         </div>
         {/* Parallel translation selector — shows a translation column beside the Greek.
             Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
