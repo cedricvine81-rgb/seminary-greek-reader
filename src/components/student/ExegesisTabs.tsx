@@ -45,9 +45,10 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'notes',       label: 'Notes',       Icon: StickyNote },
 ]
 
-// Mobile switches tabs from inside the ⋮ menu and omits Backgrounds (too wide to use
-// comfortably on a phone — it stays desktop-only).
-const MOBILE_TAB_LIST = TAB_LIST.filter(t => t.id !== 'backgrounds')
+// Mobile switches tabs from inside the ⋮ menu and omits Backgrounds and Synopsis (too
+// wide/complex to use comfortably on a phone — they stay desktop-only).
+const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
+const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated: boolean; initialTab?: string }) {
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
