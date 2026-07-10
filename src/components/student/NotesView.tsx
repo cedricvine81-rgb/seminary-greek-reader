@@ -10,7 +10,9 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
 interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string }
-interface FolderT { id: string; name: string; color: string; _count: { notes: number } }
+// assignmentId is non-null only for Course Notes folders provisioned by an instructor's
+// assignment — those can be renamed/recoloured but not deleted.
+interface FolderT { id: string; name: string; color: string; assignmentId: string | null; _count: { notes: number } }
 // A graded Course Notes assignment: the student's auto-provisioned folder + its submission status.
 interface CourseNotesEntry {
   assignmentId: string; title: string; courseName: string; folderId: string; folderName: string
@@ -145,7 +147,8 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   }
   async function removeFolder(id: string) {
     if (!confirm('Delete this folder? Its notes are kept and moved to “Unfiled.”')) return
-    await fetch(`/api/notes/folders?id=${id}`, { method: 'DELETE' })
+    const res = await fetch(`/api/notes/folders?id=${id}`, { method: 'DELETE' })
+    if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? 'Could not delete this folder.'); return }
     if (activeFolder === id) setActiveFolder('all')
     setEditFolder(null); load()
   }
@@ -250,15 +253,20 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           </div>
 
           {/* New / edit folder inline form */}
-          {(newFolder || editFolder) && (
-            <FolderForm
-              value={newFolder ?? { name: editFolder!.name, color: editFolder!.color }}
-              onChange={v => newFolder ? setNewFolder(v) : setEditFolder({ id: editFolder!.id, ...v })}
-              onSave={newFolder ? saveNewFolder : saveEditFolder}
-              onCancel={() => { setNewFolder(null); setEditFolder(null) }}
-              onDelete={editFolder ? () => removeFolder(editFolder.id) : undefined}
-            />
-          )}
+          {(newFolder || editFolder) && (() => {
+            // Course Notes folders (assignment-linked) can be edited but not deleted.
+            const editingCourseFolder = !!editFolder && folders.find(f => f.id === editFolder.id)?.assignmentId != null
+            return (
+              <FolderForm
+                value={newFolder ?? { name: editFolder!.name, color: editFolder!.color }}
+                onChange={v => newFolder ? setNewFolder(v) : setEditFolder({ id: editFolder!.id, ...v })}
+                onSave={newFolder ? saveNewFolder : saveEditFolder}
+                onCancel={() => { setNewFolder(null); setEditFolder(null) }}
+                onDelete={editFolder && !editingCourseFolder ? () => removeFolder(editFolder.id) : undefined}
+                lockedNote={editingCourseFolder ? 'Course Notes folder — set up by your instructor, so it can’t be deleted.' : undefined}
+              />
+            )
+          })()}
 
           <div className="space-y-2">
             {addingNote && (
@@ -407,10 +415,10 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
   )
 }
 
-function FolderForm({ value, onChange, onSave, onCancel, onDelete }: {
+function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }: {
   value: { name: string; color: NoteColor }
   onChange: (v: { name: string; color: NoteColor }) => void
-  onSave: () => void; onCancel: () => void; onDelete?: () => void
+  onSave: () => void; onCancel: () => void; onDelete?: () => void; lockedNote?: string
 }) {
   return (
     <div className="mb-3 flex items-center flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
@@ -425,7 +433,9 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete }: {
       </div>
       <button onClick={onSave} className="inline-flex items-center gap-1 rounded-md bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
       <button onClick={onCancel} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
-      {onDelete && <button onClick={onDelete} className="ml-auto inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800"><Trash2 size={13} /> Delete folder</button>}
+      {onDelete
+        ? <button onClick={onDelete} className="ml-auto inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800"><Trash2 size={13} /> Delete folder</button>
+        : lockedNote ? <span className="ml-auto text-[11px] text-gray-400 max-w-[16rem]">{lockedNote}</span> : null}
     </div>
   )
 }

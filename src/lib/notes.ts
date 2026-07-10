@@ -21,8 +21,11 @@ export async function updateNoteFolder(userId: string, id: string, data: { name?
 // Deleting a folder leaves its notes intact — they fall back to "Unfiled"
 // (folderId is set null by the DB relation's onDelete: SetNull).
 export async function deleteNoteFolder(userId: string, id: string) {
-  const folder = await prisma.noteFolder.findUnique({ where: { id }, select: { userId: true } })
+  const folder = await prisma.noteFolder.findUnique({ where: { id }, select: { userId: true, assignmentId: true } })
   if (!folder || folder.userId !== userId) throw new Error('Folder not found')
+  // Course Notes folders are provisioned by an instructor's assignment and hold graded
+  // work, so they can be renamed/recoloured but not deleted.
+  if (folder.assignmentId) throw new Error('COURSE_NOTES_FOLDER')
   await prisma.noteFolder.delete({ where: { id } })
 }
 

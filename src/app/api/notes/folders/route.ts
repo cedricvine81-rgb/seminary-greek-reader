@@ -45,6 +45,9 @@ export async function DELETE(req: NextRequest) {
     await deleteNoteFolder(payload.sub, id)
     return NextResponse.json({ ok: true })
   } catch (err) {
+    if (err instanceof Error && err.message === 'COURSE_NOTES_FOLDER') {
+      return NextResponse.json({ error: 'Course Notes folders are set up by your instructor and can’t be deleted.' }, { status: 400 })
+    }
     logError('api/notes/folders DELETE', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
