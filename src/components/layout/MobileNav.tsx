@@ -5,7 +5,7 @@ import { clsx } from 'clsx'
 import {
   LayoutDashboard, Calendar, ClipboardList,
   TrendingUp, BarChart2, BookMarked,
-  Archive, FileText, Bell, Users, BookOpen, Building2, Mail, ShieldAlert,
+  Archive, FileText, Bell, Users, BookOpen, Building2, Mail, ShieldAlert, Settings,
 } from 'lucide-react'
 
 const instructorTabs = [
@@ -30,6 +30,7 @@ const adminTabs = [
   { label: 'Courses',      href: '/admin/courses',       icon: BookOpen },
   { label: 'Institutions', href: '/admin/institutions',  icon: Building2 },
   { label: 'Audit',        href: '/admin/audit',         icon: ShieldAlert },
+  { label: 'Settings',     href: '/admin/settings',      icon: Settings },
 ]
 
 interface MobileNavProps {
