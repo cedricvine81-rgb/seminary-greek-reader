@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Library } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, Menu, X, Download, FolderClock, Scroll, Library, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
@@ -34,6 +34,17 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
 type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'texts' | 'notes' | 'commentary'
 const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'backgrounds', 'texts', 'notes', 'commentary']
 
+// Tab id → label + icon, shared by the desktop tab bar and the mobile hamburger menu.
+const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
+  { id: 'workspace',   label: 'Syntax',      Icon: PencilLine },
+  { id: 'phrasing',    label: 'Phrasing',    Icon: ListTree },
+  { id: 'synopsis',    label: 'Synopsis',    Icon: Columns3 },
+  { id: 'backgrounds', label: 'Backgrounds', Icon: Scroll },
+  { id: 'texts',       label: 'Texts',       Icon: Library },
+  { id: 'commentary',  label: 'Commentary',  Icon: BookOpen },
+  { id: 'notes',       label: 'Notes',       Icon: StickyNote },
+]
+
 export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated: boolean; initialTab?: string }) {
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
@@ -58,6 +69,9 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
   const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
   const [showToolsMenu, setShowToolsMenu] = useState(false)
   const toolsMenuRef = useRef<HTMLDivElement>(null)
+  // Mobile only: the tab bar collapses into a hamburger.
+  const [showTabMenu, setShowTabMenu] = useState(false)
+  const tabMenuRef = useRef<HTMLDivElement>(null)
   // Phrasing / Synopsis text size (categorical, not persisted) and their static/derived
   // "sources & copyright" content, lifted up from each view so the shared menu can show it.
   const [phraseFontSize, setPhraseFontSize] = useState<PhraseFontSize>('lg')
@@ -109,6 +123,15 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [showToolsMenu])
+
+  useEffect(() => {
+    if (!showTabMenu) return
+    function onMouseDown(e: MouseEvent) {
+      if (tabMenuRef.current && !tabMenuRef.current.contains(e.target as Node)) setShowTabMenu(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [showTabMenu])
 
   // Resolve a committed passage string to a canonical verse anchor for notes.
   function parseAnchor(value: string): NoteAnchor | null {
@@ -187,6 +210,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
     backgrounds: 'Settings & sources', texts: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
+  const activeTabMeta = TAB_LIST.find(t => t.id === tab)!
 
   return (
     <>
@@ -217,14 +241,39 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
             outside this scroll container (a sibling, not a child): overflow-x-auto
             computes overflow-y to auto too, which would clip the dropdown's popover. */}
         <div className="flex items-center gap-1 min-w-0">
-          <div className="flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
-            <button type="button" onClick={() => setTab('workspace')} className={tabClass(tab === 'workspace')}><PencilLine size={16} /> Syntax</button>
-            <button type="button" onClick={() => setTab('phrasing')} className={tabClass(tab === 'phrasing')}><ListTree size={16} /> Phrasing</button>
-            <button type="button" onClick={() => setTab('synopsis')} className={tabClass(tab === 'synopsis')}><Columns3 size={16} /> Synopsis</button>
-            <button type="button" onClick={() => setTab('backgrounds')} className={tabClass(tab === 'backgrounds')}><Scroll size={16} /> Backgrounds</button>
-            <button type="button" onClick={() => setTab('texts')} className={tabClass(tab === 'texts')}><Library size={16} /> Texts</button>
-            <button type="button" onClick={() => setTab('commentary')} className={tabClass(tab === 'commentary')}><BookOpen size={16} /> Commentary</button>
-            <button type="button" onClick={() => setTab('notes')} className={tabClass(tab === 'notes')}><StickyNote size={16} /> Notes</button>
+          {/* Desktop: inline (horizontally scrolling) tab bar. */}
+          <div className="hidden lg:flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+            {TAB_LIST.map(({ id, label, Icon }) => (
+              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} /> {label}</button>
+            ))}
+          </div>
+
+          {/* Mobile: the tab bar collapses into a hamburger showing the current tab. */}
+          <div ref={tabMenuRef} className="lg:hidden relative shrink-0">
+            <button
+              type="button"
+              onClick={() => setShowTabMenu(v => !v)}
+              className={`${tabClass(true)} !bg-brand-100 !text-brand-800`}
+            >
+              <activeTabMeta.Icon size={16} /> {activeTabMeta.label}
+              <Menu size={15} className="ml-0.5 text-brand-500" />
+            </button>
+            {showTabMenu && (
+              <div className="absolute left-0 top-full mt-1 z-50 w-56 bg-white border border-gray-200 rounded-xl p-2 shadow-lg">
+                {TAB_LIST.map(({ id, label, Icon }) => (
+                  <button
+                    key={id}
+                    type="button"
+                    onClick={() => { setTab(id); setShowTabMenu(false) }}
+                    className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors ${
+                      tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Icon size={16} className="shrink-0" /> {label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Shared tools menu (⋮) — content swaps with the active tab: Vocabulary/PDF/
