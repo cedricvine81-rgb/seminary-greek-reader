@@ -1254,12 +1254,13 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         <div className="flex-1 min-w-0">
           <SearchBar onSearch={handleSearch} />
         </div>
-        {/* Parallel translation selector — shows a translation column beside the Greek. */}
+        {/* Parallel translation selector — shows a translation column beside the Greek.
+            Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
         <select
           value={parallelLang ?? ''}
           onChange={e => setParallelLang(e.target.value || null)}
           title="Show a parallel translation column"
-          className="shrink-0 self-stretch rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
+          className="hidden lg:block shrink-0 self-stretch rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
         >
           <option value="">Greek only</option>
           {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
@@ -1494,8 +1495,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 )}
               </div>
 
-              {/* Translations flyout trigger */}
-              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
+              {/* Translations flyout trigger — desktop only (redundant with the mobile
+                  bottom dot-switcher). */}
+              <div className="relative hidden lg:block" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('translations')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
