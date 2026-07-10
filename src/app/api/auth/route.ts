@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { hashPassword, verifyPassword, signToken, setAuthCookie, clearAuthCookie, getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { rateLimit } from '@/lib/rate-limit'
+import { sendEmail, escapeHtml } from '@/lib/email'
+import { instructorNotifyRecipients } from '@/lib/app-settings'
+import { logError } from '@/lib/logger'
 import type { Role } from '@/types/auth'
 
 // Bump whenever /terms is materially revised, so we know whose consent is stale.
@@ -78,6 +81,31 @@ export async function POST(req: NextRequest) {
 
       // Pending instructors get no session — they see a "awaiting approval" message.
       if (isInstructor) {
+        // Notify the admin(s) that an instructor is awaiting approval. Best-effort:
+        // sendEmail never throws and no-ops until email is configured, but we still
+        // guard the whole block so a notification hiccup can't fail account creation.
+        try {
+          const recipients = await instructorNotifyRecipients()
+          if (recipients.length > 0) {
+            const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? ''
+            const inst = institution ? String(institution) : '—'
+            await sendEmail({
+              to: recipients,
+              subject: `New instructor awaiting approval: ${firstName} ${surname}`,
+              html: `<p>A new instructor account has been created and is awaiting your approval.</p>
+<ul>
+  <li><strong>Name:</strong> ${escapeHtml(String(firstName))} ${escapeHtml(String(surname))}</li>
+  <li><strong>Email:</strong> ${escapeHtml(String(email))}</li>
+  <li><strong>Institution:</strong> ${escapeHtml(inst)}</li>
+</ul>
+<p><a href="${appUrl}/admin/users">Review and approve in the admin panel</a></p>`,
+              text: `A new instructor account is awaiting your approval.\n\nName: ${firstName} ${surname}\nEmail: ${email}\nInstitution: ${inst}\n\nReview and approve: ${appUrl}/admin/users`,
+            })
+          }
+        } catch (err) {
+          logError('POST /api/auth instructor-signup notify', err)
+        }
+
         return NextResponse.json({
           pending: true,
           message: 'Your instructor account has been created and is awaiting admin approval. You will be able to sign in once approved.',

@@ -97,6 +97,18 @@ model User {
   @@index([paddleSubscriptionId])
 }
 
+// ─── App-wide settings ───────────────────────────────────────────
+
+// Single-row table of admin-configurable app settings (the id is a fixed sentinel,
+// "app"). Currently holds the addresses notified when a new instructor registers —
+// a primary and an optional second address, both editable by an admin.
+model AppSetting {
+  id                     String   @id @default("app")
+  instructorNotifyEmail  String?
+  instructorNotifyEmail2 String?
+  updatedAt              DateTime @updatedAt
+}
+
 // ─── Institutions ────────────────────────────────────────────────
 
 model Institution {
