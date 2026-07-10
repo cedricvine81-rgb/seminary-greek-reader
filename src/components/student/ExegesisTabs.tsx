@@ -214,14 +214,16 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
 
   return (
     <>
-      {/* Shared passage box + tabs */}
-      <div className="flex-none flex items-center flex-wrap gap-3 mb-2">
-        <div className="flex items-center">
-          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
+      {/* Shared passage box + tabs. Mobile keeps everything on one row (passage input
+          flexes) so the tab hamburger sits right after the passage box; desktop wraps
+          with fixed widths. */}
+      <div className="flex-none flex items-center flex-nowrap lg:flex-wrap gap-2 lg:gap-3 mb-2">
+        <div className="flex items-center min-w-0 flex-1 lg:flex-none">
+          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">Passage</span>
           {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}
-          <div className="relative">
+          <div className="relative flex-1 min-w-0 lg:flex-none">
             {ghost && (
-              <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-56 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
+              <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-full lg:w-56 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
                 <span className="invisible">{input}</span><span className="text-gray-400">{ghost}</span>
               </div>
             )}
@@ -232,7 +234,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
               onKeyDown={onKeyDown}
               onBlur={() => { commitPassage(input.trim()); setGhost('') }}
               placeholder="e.g. Matthew 3:1-3"
-              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-56 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
           </div>
         </div>
@@ -240,7 +242,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
             horizontally rather than clipping "Notes" off-screen. The tools menu sits
             outside this scroll container (a sibling, not a child): overflow-x-auto
             computes overflow-y to auto too, which would clip the dropdown's popover. */}
-        <div className="flex items-center gap-1 min-w-0">
+        <div className="flex items-center gap-1 shrink-0 lg:shrink lg:min-w-0">
           {/* Desktop: inline (horizontally scrolling) tab bar. */}
           <div className="hidden lg:flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {TAB_LIST.map(({ id, label, Icon }) => (
