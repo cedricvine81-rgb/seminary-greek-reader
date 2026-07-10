@@ -154,12 +154,15 @@ const INITIAL_FORM = {
   firstName: '', surname: '', email: '', personalEmail: '', institution: '', password: '', confirmPassword: '',
 }
 
-export function SignUpForm() {
+// `lockedRole` fixes the account type (from a role-specific entry point like
+// /auth/sign-up/instructor) and hides the Student/Instructor picker. Omitted → the
+// picker is shown and the user chooses.
+export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [serverError, setServerError] = useState('')
   const [pendingMessage, setPendingMessage] = useState('')
-  const [role, setRole] = useState<Role>('STUDENT')
+  const [role, setRole] = useState<Role>(lockedRole ?? 'STUDENT')
   const [form, setForm] = useState(INITIAL_FORM)
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [terms, setTerms] = useState(false)
@@ -238,8 +241,8 @@ export function SignUpForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-      {/* Role */}
-      <RoleSelector value={role} onChange={setRole} />
+      {/* Role — hidden when the entry point already fixes it */}
+      {!lockedRole && <RoleSelector value={role} onChange={setRole} />}
 
       {/* Name */}
       <div className="grid grid-cols-2 gap-3">

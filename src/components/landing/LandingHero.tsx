@@ -49,7 +49,7 @@ export function LandingHero() {
             <li className="flex items-center gap-2.5"><FlaskConical size={18} className="text-brand-600 shrink-0" /> Deep-research tools</li>
           </ul>
           <Link
-            href="/auth/sign-up"
+            href="/auth/sign-up/student"
             className="mt-6 block rounded-lg bg-brand-600 py-2 text-center text-sm font-medium text-white hover:bg-brand-700 transition-colors"
           >
             Create account
@@ -71,7 +71,7 @@ export function LandingHero() {
             <li className="flex items-center gap-2.5"><MessageSquare size={18} className="text-brand-600 shrink-0" /> Message your classes</li>
           </ul>
           <Link
-            href="/auth/sign-up"
+            href="/auth/sign-up/instructor"
             className="mt-6 block rounded-lg border border-gray-300 py-2 text-center text-sm font-medium text-gray-800 hover:bg-gray-50 transition-colors"
           >
             Create account
