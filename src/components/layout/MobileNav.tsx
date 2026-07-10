@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
+import { useApi } from '@/lib/api-client'
 import {
   LayoutDashboard, Calendar, ClipboardList,
   TrendingUp, BarChart2, BookMarked,
@@ -42,6 +43,14 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
   const pathname = usePathname()
   const tabs = role === 'INSTRUCTOR' ? instructorTabs : role === 'ADMIN' ? adminTabs : studentTabs
 
+  // Poll pending enrollment requests live so the badge flags new submissions without a
+  // reload; the server-passed count seeds the first render until SWR has data.
+  const { data: requestsData } = useApi<{ pending: unknown[] }>(
+    role === 'INSTRUCTOR' ? '/api/enrollments/pending' : null,
+    { refreshInterval: 60_000 },
+  )
+  const liveRequests = requestsData ? requestsData.pending.length : pendingRequests
+
   return (
     <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex">
       {tabs.map(({ label, href, icon: Icon }) => {
@@ -58,9 +67,9 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
           >
             <div className="relative">
               <Icon size={20} />
-              {isRequests && pendingRequests > 0 && (
+              {isRequests && liveRequests > 0 && (
                 <span className="absolute -top-1 -right-1.5 flex items-center justify-center h-4 min-w-[1rem] rounded-full bg-amber-500 text-white text-[9px] font-bold px-0.5">
-                  {pendingRequests}
+                  {liveRequests}
                 </span>
               )}
             </div>

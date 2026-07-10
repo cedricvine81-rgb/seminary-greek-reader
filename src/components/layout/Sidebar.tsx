@@ -69,6 +69,15 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
   )
   const pendingAppeals = appealsData?.count ?? 0
 
+  // Pending enrollment-request count for instructors — polled live (like messages/appeals)
+  // so new requests flag up without a full reload. The server-passed `pendingRequests`
+  // seeds the first render; once SWR has data it takes over.
+  const { data: requestsData } = useApi<{ pending: unknown[] }>(
+    role === 'INSTRUCTOR' ? '/api/enrollments/pending' : null,
+    { refreshInterval: 60_000 },
+  )
+  const liveRequests = requestsData ? requestsData.pending.length : pendingRequests
+
   // Pending admin-tier appeals count for admins
   const { data: adminAppealsData } = useApi<{ count: number }>(
     role === 'ADMIN' ? '/api/admin/appeals/pending' : null,
@@ -100,9 +109,9 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
             >
               {item.icon}
               <span className="flex-1">{item.label}</span>
-              {isRequests && pendingRequests > 0 && (
+              {isRequests && liveRequests > 0 && (
                 <span className="ml-auto flex items-center justify-center h-5 min-w-[1.25rem] rounded-full bg-amber-500 text-white text-xs font-bold px-1">
-                  {pendingRequests}
+                  {liveRequests}
                 </span>
               )}
               {isMessages && unreadMessages > 0 && (
