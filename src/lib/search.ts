@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import zlib from 'zlib'
 import type { Corpus, BiblicalVerse } from '@/types/biblical-text'
 import { prisma } from './db'
 
@@ -78,56 +79,52 @@ export async function searchByReference(
     .map(indexToVerse)
 }
 
-// ─── Word suggestions (autocomplete) ──────────────────────────────────────────
+// ─── Word suggestions (autocomplete) & lemma search ──────────────────────────
 
-// Keep only letters (Latin+accents, Greek, Cyrillic, Hangul, CJK); drop punctuation/
-// digits. Avoids the \p{L}/u regex flag so it type-checks under an es5 target.
-const WORD_STRIP = /[^A-Za-zÀ-ɏͰ-῿가-힣一-鿿]/g
+// A comprehensive GNT lemma index (scripts/build-lemma-index.mjs): every lemma with a
+// gloss, frequency, and the verses it occurs in (in any inflected form). Built from the
+// parsing trees, so it covers every word — not just the vocabulary lexicon. Small enough
+// (~0.4 MB) to bundle and read via fs; ranked by frequency.
+interface LemmaEntry { n: string; l: string; g: string; f: number; v: string[] }
+let _lemmaIndex: LemmaEntry[] | null = null
+let _lemmaByNorm: Map<string, LemmaEntry> | null = null
 
-// Greek suggestions are dictionary words (lexemes), not inflected surface forms, so typing
-// "λογ" offers distinct words (λόγος, λογίζομαι, λόγιον…) each with its gloss — not a dozen
-// forms of λόγος. Sourced from the lexicon table, cached, ranked by frequency.
-let _lexVocab: { norm: string; word: string; sub: string }[] | null = null
-
-async function getLexemeVocab() {
-  if (_lexVocab) return _lexVocab
-  const rows = await prisma.lexicalEntry.findMany({
-    select: { lexeme: true, gloss: true },
-    orderBy: { frequency: 'desc' },
-  })
-  _lexVocab = rows.map(r => ({ norm: normalizeGreek(r.lexeme), word: r.lexeme, sub: r.gloss }))
-  return _lexVocab
+function getLemmaIndex(): LemmaEntry[] {
+  if (_lemmaIndex) return _lemmaIndex
+  const file = path.join(process.cwd(), 'public', 'data', 'lemma-index.json.gz')
+  try {
+    _lemmaIndex = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8'))
+  } catch {
+    _lemmaIndex = []
+  }
+  return _lemmaIndex!
+}
+function getLemmaByNorm(): Map<string, LemmaEntry> {
+  if (_lemmaByNorm) return _lemmaByNorm
+  _lemmaByNorm = new Map(getLemmaIndex().map(e => [e.n, e] as [string, LemmaEntry]))
+  return _lemmaByNorm
 }
 
-/** Up to `limit` Greek lexemes beginning with `prefix` (accent-insensitive), most common first. */
-export async function suggestGreekLexemes(prefix: string, limit = 12): Promise<{ word: string; sub: string }[]> {
+// Greek suggestions are dictionary words (lexemes), not inflected surface forms, so typing
+// "λογ" offers distinct words (λόγος, λογίζομαι, λόγιον…) each with its gloss.
+export function suggestGreekLexemes(prefix: string, limit = 12): { word: string; sub: string }[] {
   const p = normalizeGreek(prefix)
   if (p.length < 2) return []
-  const vocab = await getLexemeVocab()
   const out: { word: string; sub: string }[] = []
-  for (const w of vocab) {
-    if (w.norm.startsWith(p)) { out.push({ word: w.word, sub: w.sub }); if (out.length >= limit) break }
+  for (const e of getLemmaIndex()) {          // pre-sorted by frequency
+    if (e.n.startsWith(p)) { out.push({ word: e.l, sub: e.g }); if (out.length >= limit) break }
   }
   return out
 }
 
-// Find every verse containing any inflected form of a lexeme: get the lemma's attested
-// surface forms from the DB, then match them (exact, accent-insensitive) against the index.
+// Every verse containing any inflected form of a lexeme — straight from the lemma index.
 export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
-  const entry = await prisma.lexicalEntry.findFirst({ where: { lexeme }, select: { id: true } })
+  const entry = getLemmaByNorm().get(normalizeGreek(lexeme))
   if (!entry) return searchByGreekWord(lexeme, corpus)  // unknown lemma → fall back to surface search
-  const rows = await prisma.verseWord.findMany({
-    where: { lexemeId: entry.id }, select: { surface: true }, distinct: ['surface'],
-  })
-  const forms = new Set(rows.map(r => normalizeGreek(r.surface.replace(WORD_STRIP, ''))).filter(Boolean))
-  if (forms.size === 0) return searchByGreekWord(lexeme, corpus)
+  const vset = new Set(entry.v)
   const out: BiblicalVerse[] = []
-  for (const e of getNormalizedIndex()) {
-    if (corpus !== 'BOTH' && e.verse.corpus !== corpus) continue
-    for (const w of e.normalizedText.split(/\s+/)) {
-      const cw = w.replace(WORD_STRIP, '')
-      if (cw && forms.has(cw)) { out.push(indexToVerse(e.verse)); break }
-    }
+  for (const v of getIndex()) {               // iterate the index for canonical order
+    if ((corpus === 'BOTH' || v.corpus === corpus) && vset.has(v.id)) out.push(indexToVerse(v))
   }
   return out
 }

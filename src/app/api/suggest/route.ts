@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
   try {
     const suggestions = lang
       ? (await suggestTranslation(lang, q)).map(word => ({ word }))
-      : await suggestGreekLexemes(q)
+      : suggestGreekLexemes(q)
     return NextResponse.json({ suggestions })
   } catch (err) {
     logError('api/suggest', err)
