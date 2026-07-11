@@ -292,10 +292,15 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // Mobile only: hide the top control row while scrolling down through the text,
   // reveal it again on any scroll up (desktop keeps it pinned via `lg:flex`).
   const [showTopBar, setShowTopBar] = useState(true)
-  // Mobile passage picker (opened by the SearchBar's "Verse" button). Rendered at the
+  // Mobile passage picker (opened by the SearchBar's NT/LXX buttons). Rendered at the
   // reader's top level — NOT inside the collapsible top bar — so hiding the bar on scroll
   // can't affect it.
   const [pickerOpen, setPickerOpen] = useState(false)
+  // Mobile shows ONE corpus at a time (NT or LXX) so jumps land in a short single-corpus
+  // scroll instead of having to cross the whole other testament. Inferred from the passage
+  // you open; the NT/LXX buttons switch it manually. Desktop still shows both.
+  const [corpus, setCorpus] = useState<'GNT' | 'LXX'>('GNT')
+  const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX'>('GNT')
   const lastScrollTopRef = useRef(0)
 
   // ── Refs ─────────────────────────────────────────────────────────────────────
@@ -824,6 +829,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           setSearchResults(null)   // stay in scrolling mode
           setSearchType(null)
           setWordSearchTerm(null)
+          setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // mobile: show the corpus we're jumping into
           const isLxx  = ref.book.corpus === 'LXX'
           const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
           if (!ready) {
@@ -1375,7 +1381,13 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           desktop pins it with `lg:flex`. */}
       <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
         <div className="flex-1 min-w-0">
-          <SearchBar onSearch={handleSearch} onVerseClick={() => setPickerOpen(true)} viewLang={parallelLang} viewLangLabel={parallelLangInfo?.label} />
+          <SearchBar
+            onSearch={handleSearch}
+            onVerseClick={c => { setCorpus(c); setPickerCorpus(c); setPickerOpen(true) }}
+            viewCorpus={corpus}
+            viewLang={parallelLang}
+            viewLangLabel={parallelLangInfo?.label}
+          />
         </div>
         {/* Parallel translation selector — shows a translation column beside the Greek.
             Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
@@ -1758,11 +1770,14 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
             : <div>{searchResults.map(v => renderVerseRow(v))}</div>
         ) : (
           <div>
-            {!gnt.backDone && <div ref={gntTopSentinel} className="h-1" aria-hidden />}
-            {renderSections(gnt.sections)}
-            {!gnt.done && <div ref={gntSentinel} className="h-1" aria-hidden />}
+            {/* Mobile shows only the active corpus; desktop shows both (lg:block). */}
+            <div className={corpus === 'GNT' ? '' : 'hidden lg:block'}>
+              {!gnt.backDone && <div ref={gntTopSentinel} className="h-1" aria-hidden />}
+              {renderSections(gnt.sections)}
+              {!gnt.done && <div ref={gntSentinel} className="h-1" aria-hidden />}
+            </div>
 
-            <div className="mt-10">
+            <div className={`lg:mt-10 ${corpus === 'LXX' ? '' : 'hidden lg:block'}`}>
               {!lxx.backDone && <div ref={lxxTopSentinel} className="h-1" aria-hidden />}
               {renderSections(lxx.sections)}
               {!lxx.done && <div ref={lxxSentinel} className="h-1" aria-hidden />}
@@ -1790,6 +1805,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       {pickerOpen && (
         <PassagePicker
           books={allBooks}
+          corpus={pickerCorpus}
           onPick={ref => { handleSearch(ref, 'reference'); setPickerOpen(false) }}
           onClose={() => setPickerOpen(false)}
         />

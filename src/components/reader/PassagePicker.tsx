@@ -60,14 +60,15 @@ const COLOR_OF: Record<string, ColorKey> = {
   Bar: 'violet', EpJer: 'violet', Sus: 'violet', Bel: 'violet',
 }
 
-const GROUPS: { heading: string; order: string[] }[] = [
-  { heading: 'Old Testament', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
-  { heading: 'Deutero-Canonical', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
-  { heading: 'New Testament', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
+const GROUPS: { heading: string; corpus: 'GNT' | 'LXX'; order: string[] }[] = [
+  { heading: 'Old Testament', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
+  { heading: 'Deutero-Canonical', corpus: 'LXX', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
+  { heading: 'New Testament', corpus: 'GNT', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
 ]
 
-export function PassagePicker({ books, onPick, onClose }: {
+export function PassagePicker({ books, corpus, onPick, onClose }: {
   books: BiblicalBook[]
+  corpus: 'GNT' | 'LXX'
   onPick: (ref: string) => void
   onClose: () => void
 }) {
@@ -122,7 +123,7 @@ export function PassagePicker({ books, onPick, onClose }: {
             <ChevronLeft size={18} /> Back
           </button>
         ) : (
-          <span className="text-sm font-semibold text-gray-800">Select a passage</span>
+          <span className="text-sm font-semibold text-gray-800">Select {corpus === 'GNT' ? 'an NT' : 'an LXX'} passage</span>
         )}
         <span className="ml-auto text-sm text-gray-500 truncate">
           {book ? `${sbl(book)}${chapter ? ` ${chapter}` : ''}` : ''}
@@ -137,7 +138,7 @@ export function PassagePicker({ books, onPick, onClose }: {
 
           {/* Pane 1 — books, grouped OT / Deutero-Canonical / NT, each in canonical order */}
           <div className="w-1/3 h-full overflow-y-auto px-3 py-3">
-            {GROUPS.map(g => {
+            {GROUPS.filter(g => g.corpus === corpus).map(g => {
               const pane = renderGroup(g.order)
               if (!pane) return null
               return (

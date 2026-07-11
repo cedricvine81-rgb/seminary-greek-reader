@@ -4,8 +4,9 @@ import { Search, Delete } from 'lucide-react'
 
 interface SearchBarProps {
   onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) => void
-  // Mobile "Verse" button opens the passage picker, which the reader renders at top level.
-  onVerseClick?: () => void
+  // Mobile NT/LXX buttons switch the reader's corpus and open that corpus's passage picker.
+  onVerseClick?: (corpus: 'GNT' | 'LXX') => void
+  viewCorpus?: 'GNT' | 'LXX'
   // The translation currently in view on mobile (null = Greek). When set, the search box
   // searches that translation's text instead of Greek.
   viewLang?: string | null
@@ -19,7 +20,7 @@ const GREEK_ROWS = [
   ['σ', 'ς', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω'],
 ]
 
-export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: SearchBarProps) {
+export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLangLabel }: SearchBarProps) {
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
@@ -146,14 +147,22 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
         ))}
       </div>
 
-      {/* Mobile: "Verse" opens the visual passage picker; the search box is word-only. */}
-      <button
-        type="button"
-        onClick={onVerseClick}
-        className="lg:hidden shrink-0 px-3 py-2 rounded-lg bg-brand-600 text-white text-sm font-medium"
-      >
-        Verse
-      </button>
+      {/* Mobile: NT / LXX each open that corpus's visual passage picker (and switch the
+          reader to it). The active corpus is highlighted. Search box stays word-only. */}
+      <div className="lg:hidden flex shrink-0 rounded-lg overflow-hidden border border-brand-600">
+        {(['GNT', 'LXX'] as const).map(c => (
+          <button
+            key={c}
+            type="button"
+            onClick={() => onVerseClick?.(c)}
+            className={`px-2.5 py-2 text-sm font-medium ${
+              viewCorpus === c ? 'bg-brand-600 text-white' : 'bg-white text-brand-700'
+            } ${c === 'LXX' ? 'border-l border-brand-600' : ''}`}
+          >
+            {c === 'GNT' ? 'NT' : 'LXX'}
+          </button>
+        ))}
+      </div>
 
       {/* Search input + keyboard toggle */}
       <div className="relative flex-1">
