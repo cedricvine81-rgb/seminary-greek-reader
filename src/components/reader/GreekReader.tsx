@@ -649,26 +649,42 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
 
   useEffect(() => {
     if (!highlightedVerse) return
+    const panel = textPanelRef.current
     const scrollToVerse = () => {
       const el = verseRefs.current[highlightedVerse]
       if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' })
     }
-    // Scroll immediately, then re-scroll as layout settles. On a fresh page load
-    // (e.g. arriving via the Exegesis "Open in Reader" link) fonts and parallel-text
-    // rows above the target finish rendering after the first scroll and would push
-    // the verse out of view; the delayed passes correct that overshoot.
-    // Pause infinite-scroll loading until the jump settles, so chapters loading above
-    // the target (especially the whole NT above an LXX target) can't push it around.
+    // Snap to the target, then a couple of passes to correct overshoot as fonts/parallel
+    // rows above it finish rendering. Pause infinite-scroll loading meanwhile so chapters
+    // loading above can't push it around.
     navLockRef.current = true
     scrollToVerse()
     const raf = requestAnimationFrame(scrollToVerse)
+    // A longer window catches slow-loading chapters; the user-scroll cancel below makes it
+    // safe (it only snaps while the reader is idle, never while you're scrolling).
     const timers = [120, 400, 900, 1500, 2200].map(ms => setTimeout(scrollToVerse, ms))
     const release = setTimeout(() => { navLockRef.current = false }, 2400)
+    // Crucially, stop snapping the moment the user scrolls/keys — never fight their reading.
+    const stop = () => {
+      cancelAnimationFrame(raf)
+      timers.forEach(clearTimeout)
+      clearTimeout(release)
+      navLockRef.current = false
+      panel?.removeEventListener('wheel', stop)
+      panel?.removeEventListener('touchmove', stop)
+      window.removeEventListener('keydown', stop)
+    }
+    panel?.addEventListener('wheel', stop, { passive: true })
+    panel?.addEventListener('touchmove', stop, { passive: true })
+    window.addEventListener('keydown', stop)
     return () => {
       cancelAnimationFrame(raf)
       timers.forEach(clearTimeout)
       clearTimeout(release)
       navLockRef.current = false
+      panel?.removeEventListener('wheel', stop)
+      panel?.removeEventListener('touchmove', stop)
+      window.removeEventListener('keydown', stop)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highlightedVerse, navKey])
