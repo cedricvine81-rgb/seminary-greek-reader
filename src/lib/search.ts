@@ -78,6 +78,50 @@ export async function searchByReference(
     .map(indexToVerse)
 }
 
+// ─── Word suggestions (autocomplete) ──────────────────────────────────────────
+
+// Keep only letters (Latin+accents, Greek, Cyrillic, Hangul, CJK); drop punctuation/
+// digits. Avoids the \p{L}/u regex flag so it type-checks under an es5 target.
+const WORD_STRIP = /[^A-Za-zÀ-ɏͰ-῿가-힣一-鿿]/g
+
+// Distinct Greek words keyed by their normalized (accent-stripped) form, with the most
+// frequent actual spelling as the display. Built once from the index, ranked by frequency.
+let _greekVocab: { norm: string; display: string; count: number }[] | null = null
+
+function getGreekVocab() {
+  if (_greekVocab) return _greekVocab
+  const byNorm = new Map<string, { count: number; forms: Map<string, number> }>()
+  for (const v of getIndex()) {
+    for (const raw of v.text.split(/\s+/)) {
+      const token = raw.replace(WORD_STRIP, '')
+      if (token.length < 2) continue
+      const norm = normalizeGreek(token)
+      if (!norm) continue
+      let e = byNorm.get(norm)
+      if (!e) { e = { count: 0, forms: new Map() }; byNorm.set(norm, e) }
+      e.count++
+      e.forms.set(token, (e.forms.get(token) ?? 0) + 1)
+    }
+  }
+  _greekVocab = Array.from(byNorm.entries()).map(([norm, e]) => {
+    let display = '', best = 0
+    for (const [f, n] of Array.from(e.forms.entries())) if (n > best) { display = f; best = n }
+    return { norm, display, count: e.count }
+  }).sort((a, b) => b.count - a.count)
+  return _greekVocab
+}
+
+/** Up to `limit` Greek words beginning with `prefix` (accent-insensitive), most common first. */
+export function suggestGreekWords(prefix: string, limit = 12): string[] {
+  const p = normalizeGreek(prefix)
+  if (p.length < 2) return []
+  const out: string[] = []
+  for (const w of getGreekVocab()) {
+    if (w.norm.startsWith(p)) { out.push(w.display); if (out.length >= limit) break }
+  }
+  return out
+}
+
 // ─── Lexicon search (still DB-backed — lexical entries are small) ─────────────
 
 export async function searchLexicon(query: string, limit = 20) {

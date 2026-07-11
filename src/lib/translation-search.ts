@@ -56,6 +56,54 @@ async function load(lang: string): Promise<Loaded | null> {
   return loaded
 }
 
+// Per-language autocomplete vocabulary (normalized form → most frequent spelling), lazy.
+const _vocab = new Map<string, { norm: string; display: string; count: number }[]>()
+
+// Keep only letters (Latin+accents, Greek, Cyrillic, Hangul, CJK); drop punctuation/digits.
+const WORD_STRIP = /[^A-Za-zÀ-ɏͰ-῿가-힣一-鿿]/g
+
+async function getVocab(lang: string) {
+  const key = LANG_ALIAS[lang] ?? lang
+  if (_vocab.has(key)) return _vocab.get(key)!
+  const data = await load(lang)
+  const list: { norm: string; display: string; count: number }[] = []
+  if (data) {
+    const byNorm = new Map<string, { count: number; forms: Map<string, number> }>()
+    for (const e of data.entries) {
+      for (const raw of e.t.split(/\s+/)) {
+        const token = raw.replace(WORD_STRIP, '')
+        if (token.length < 2) continue
+        const norm = normalize(token)
+        if (!norm) continue
+        let x = byNorm.get(norm)
+        if (!x) { x = { count: 0, forms: new Map() }; byNorm.set(norm, x) }
+        x.count++
+        x.forms.set(token, (x.forms.get(token) ?? 0) + 1)
+      }
+    }
+    for (const [norm, x] of Array.from(byNorm.entries())) {
+      let display = '', best = 0
+      for (const [f, n] of Array.from(x.forms.entries())) if (n > best) { display = f; best = n }
+      list.push({ norm, display, count: x.count })
+    }
+    list.sort((a, b) => b.count - a.count)
+  }
+  _vocab.set(key, list)
+  return list
+}
+
+/** Up to `limit` words in the translation beginning with `prefix`, most common first. */
+export async function suggestTranslation(lang: string, prefix: string, limit = 12): Promise<string[]> {
+  const p = normalize(prefix)
+  if (p.length < 2) return []
+  const vocab = await getVocab(lang)
+  const out: string[] = []
+  for (const w of vocab) {
+    if (w.norm.startsWith(p)) { out.push(w.display); if (out.length >= limit) break }
+  }
+  return out
+}
+
 /** Verses in the given translation whose text contains the query (accent-insensitive). */
 export async function searchTranslation(lang: string, query: string, limit = 300): Promise<{ id: string; text: string }[]> {
   const data = await load(lang)

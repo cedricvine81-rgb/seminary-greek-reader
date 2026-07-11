@@ -23,9 +23,12 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
+  const [suggestions, setSuggestions] = useState<string[]>([])
 
   const inputRef    = useRef<HTMLInputElement>(null)
   const wrapperRef  = useRef<HTMLDivElement>(null)
+  // The last query we searched — so suggestions don't immediately re-open on that exact word.
+  const lastSubmittedRef = useRef('')
 
   // On mobile the Verse/Word toggle is replaced by a "Verse" button (opens the visual
   // passage picker) and the search box is word-only, so force the word type there.
@@ -41,11 +44,26 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
   // On mobile, a non-null viewLang means a translation is showing → search that language.
   const effectiveLang = isMobile && effectiveType === 'word' ? (viewLang ?? null) : null
 
-  // Close keyboard when clicking outside the whole component
+  // Predictive word suggestions: after 2+ letters of a word search, fetch matching words.
+  useEffect(() => {
+    if (effectiveType !== 'word' || query.trim().length < 2 || query.trim() === lastSubmittedRef.current) { setSuggestions([]); return }
+    const ctrl = new AbortController()
+    const t = setTimeout(() => {
+      const url = `/api/suggest?q=${encodeURIComponent(query.trim())}${effectiveLang ? `&lang=${effectiveLang}` : ''}`
+      fetch(url, { signal: ctrl.signal })
+        .then(r => (r.ok ? r.json() : { words: [] }))
+        .then(d => setSuggestions(d.words ?? []))
+        .catch(() => { /* aborted / offline */ })
+    }, 150)
+    return () => { clearTimeout(t); ctrl.abort() }
+  }, [query, effectiveType, effectiveLang])
+
+  // Close keyboard + suggestions when clicking outside the whole component
   useEffect(() => {
     function onMouseDown(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
         setShowKeyboard(false)
+        setSuggestions([])
       }
     }
     document.addEventListener('mousedown', onMouseDown)
@@ -53,7 +71,17 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
   }, [])
 
   function submit() {
-    if (query.trim()) onSearch(query.trim(), effectiveType, effectiveLang ?? undefined)
+    if (query.trim()) { lastSubmittedRef.current = query.trim(); onSearch(query.trim(), effectiveType, effectiveLang ?? undefined) }
+    setSuggestions([])
+  }
+
+  // Pick a suggested word → fill it and search immediately.
+  function pick(word: string) {
+    lastSubmittedRef.current = word
+    setQuery(word)
+    setSuggestions([])
+    setShowKeyboard(false)
+    onSearch(word, effectiveType, effectiveLang ?? undefined)
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -147,6 +175,23 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
           >
             α
           </button>
+        )}
+
+        {/* Predictive word suggestions */}
+        {suggestions.length > 0 && !showKeyboard && (
+          <div className="absolute left-0 right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-64 overflow-y-auto">
+            {suggestions.map(w => (
+              <button
+                key={w}
+                type="button"
+                onMouseDown={e => { e.preventDefault(); pick(w) }}
+                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-brand-50 border-b border-gray-50 last:border-0"
+                style={effectiveLang ? undefined : { fontFamily: "'Gentium Plus', Georgia, serif", fontSize: '1rem' }}
+              >
+                {w}
+              </button>
+            ))}
+          </div>
         )}
       </div>
 

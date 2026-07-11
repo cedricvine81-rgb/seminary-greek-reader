@@ -6,6 +6,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/reader',
   '/api/translation',
   '/api/search',
+  '/api/suggest',
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
   '/api/webhooks/paddle', // Paddle calls this with no session cookie — trust is via HMAC signature instead
