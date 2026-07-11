@@ -84,40 +84,50 @@ export async function searchByReference(
 // digits. Avoids the \p{L}/u regex flag so it type-checks under an es5 target.
 const WORD_STRIP = /[^A-Za-zÀ-ɏͰ-῿가-힣一-鿿]/g
 
-// Distinct Greek words keyed by their normalized (accent-stripped) form, with the most
-// frequent actual spelling as the display. Built once from the index, ranked by frequency.
-let _greekVocab: { norm: string; display: string; count: number }[] | null = null
+// Greek suggestions are dictionary words (lexemes), not inflected surface forms, so typing
+// "λογ" offers distinct words (λόγος, λογίζομαι, λόγιον…) each with its gloss — not a dozen
+// forms of λόγος. Sourced from the lexicon table, cached, ranked by frequency.
+let _lexVocab: { norm: string; word: string; sub: string }[] | null = null
 
-function getGreekVocab() {
-  if (_greekVocab) return _greekVocab
-  const byNorm = new Map<string, { count: number; forms: Map<string, number> }>()
-  for (const v of getIndex()) {
-    for (const raw of v.text.split(/\s+/)) {
-      const token = raw.replace(WORD_STRIP, '')
-      if (token.length < 2) continue
-      const norm = normalizeGreek(token)
-      if (!norm) continue
-      let e = byNorm.get(norm)
-      if (!e) { e = { count: 0, forms: new Map() }; byNorm.set(norm, e) }
-      e.count++
-      e.forms.set(token, (e.forms.get(token) ?? 0) + 1)
-    }
-  }
-  _greekVocab = Array.from(byNorm.entries()).map(([norm, e]) => {
-    let display = '', best = 0
-    for (const [f, n] of Array.from(e.forms.entries())) if (n > best) { display = f; best = n }
-    return { norm, display, count: e.count }
-  }).sort((a, b) => b.count - a.count)
-  return _greekVocab
+async function getLexemeVocab() {
+  if (_lexVocab) return _lexVocab
+  const rows = await prisma.lexicalEntry.findMany({
+    select: { lexeme: true, gloss: true },
+    orderBy: { frequency: 'desc' },
+  })
+  _lexVocab = rows.map(r => ({ norm: normalizeGreek(r.lexeme), word: r.lexeme, sub: r.gloss }))
+  return _lexVocab
 }
 
-/** Up to `limit` Greek words beginning with `prefix` (accent-insensitive), most common first. */
-export function suggestGreekWords(prefix: string, limit = 12): string[] {
+/** Up to `limit` Greek lexemes beginning with `prefix` (accent-insensitive), most common first. */
+export async function suggestGreekLexemes(prefix: string, limit = 12): Promise<{ word: string; sub: string }[]> {
   const p = normalizeGreek(prefix)
   if (p.length < 2) return []
-  const out: string[] = []
-  for (const w of getGreekVocab()) {
-    if (w.norm.startsWith(p)) { out.push(w.display); if (out.length >= limit) break }
+  const vocab = await getLexemeVocab()
+  const out: { word: string; sub: string }[] = []
+  for (const w of vocab) {
+    if (w.norm.startsWith(p)) { out.push({ word: w.word, sub: w.sub }); if (out.length >= limit) break }
+  }
+  return out
+}
+
+// Find every verse containing any inflected form of a lexeme: get the lemma's attested
+// surface forms from the DB, then match them (exact, accent-insensitive) against the index.
+export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
+  const entry = await prisma.lexicalEntry.findFirst({ where: { lexeme }, select: { id: true } })
+  if (!entry) return searchByGreekWord(lexeme, corpus)  // unknown lemma → fall back to surface search
+  const rows = await prisma.verseWord.findMany({
+    where: { lexemeId: entry.id }, select: { surface: true }, distinct: ['surface'],
+  })
+  const forms = new Set(rows.map(r => normalizeGreek(r.surface.replace(WORD_STRIP, ''))).filter(Boolean))
+  if (forms.size === 0) return searchByGreekWord(lexeme, corpus)
+  const out: BiblicalVerse[] = []
+  for (const e of getNormalizedIndex()) {
+    if (corpus !== 'BOTH' && e.verse.corpus !== corpus) continue
+    for (const w of e.normalizedText.split(/\s+/)) {
+      const cw = w.replace(WORD_STRIP, '')
+      if (cw && forms.has(cw)) { out.push(indexToVerse(e.verse)); break }
+    }
   }
   return out
 }

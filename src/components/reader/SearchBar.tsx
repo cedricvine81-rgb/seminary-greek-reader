@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, KeyboardEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
 
 interface SearchBarProps {
-  onSearch: (query: string, type: 'word' | 'reference', lang?: string) => void
+  onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) => void
   // Mobile "Verse" button opens the passage picker, which the reader renders at top level.
   onVerseClick?: () => void
   // The translation currently in view on mobile (null = Greek). When set, the search box
@@ -23,7 +23,7 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
-  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string }[]>([])
 
   const inputRef    = useRef<HTMLInputElement>(null)
   const wrapperRef  = useRef<HTMLDivElement>(null)
@@ -51,8 +51,8 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
     const t = setTimeout(() => {
       const url = `/api/suggest?q=${encodeURIComponent(query.trim())}${effectiveLang ? `&lang=${effectiveLang}` : ''}`
       fetch(url, { signal: ctrl.signal })
-        .then(r => (r.ok ? r.json() : { words: [] }))
-        .then(d => setSuggestions(d.words ?? []))
+        .then(r => (r.ok ? r.json() : { suggestions: [] }))
+        .then(d => setSuggestions(d.suggestions ?? []))
         .catch(() => { /* aborted / offline */ })
     }, 150)
     return () => { clearTimeout(t); ctrl.abort() }
@@ -71,17 +71,18 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
   }, [])
 
   function submit() {
-    if (query.trim()) { lastSubmittedRef.current = query.trim(); onSearch(query.trim(), effectiveType, effectiveLang ?? undefined) }
+    if (query.trim()) { lastSubmittedRef.current = query.trim(); onSearch(query.trim(), effectiveType, effectiveLang ? { lang: effectiveLang } : undefined) }
     setSuggestions([])
   }
 
-  // Pick a suggested word → fill it and search immediately.
+  // Pick a suggestion → fill it and search. A Greek pick is a lexeme, so search all its
+  // forms; a translation pick is a plain word in that language.
   function pick(word: string) {
     lastSubmittedRef.current = word
     setQuery(word)
     setSuggestions([])
     setShowKeyboard(false)
-    onSearch(word, effectiveType, effectiveLang ?? undefined)
+    onSearch(word, effectiveType, effectiveLang ? { lang: effectiveLang } : { lemma: true })
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -180,15 +181,20 @@ export function SearchBar({ onSearch, onVerseClick, viewLang, viewLangLabel }: S
         {/* Predictive word suggestions */}
         {suggestions.length > 0 && !showKeyboard && (
           <div className="absolute left-0 right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-64 overflow-y-auto">
-            {suggestions.map(w => (
+            {suggestions.map(s => (
               <button
-                key={w}
+                key={s.word}
                 type="button"
-                onMouseDown={e => { e.preventDefault(); pick(w) }}
-                className="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-brand-50 border-b border-gray-50 last:border-0"
-                style={effectiveLang ? undefined : { fontFamily: "'Gentium Plus', Georgia, serif", fontSize: '1rem' }}
+                onMouseDown={e => { e.preventDefault(); pick(s.word) }}
+                className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2"
               >
-                {w}
+                <span
+                  className="text-gray-800 shrink-0"
+                  style={effectiveLang ? { fontSize: '0.875rem' } : { fontFamily: "'Gentium Plus', Georgia, serif", fontSize: '1rem' }}
+                >
+                  {s.word}
+                </span>
+                {s.sub && <span className="text-xs text-gray-400 truncate">{s.sub}</span>}
               </button>
             ))}
           </div>

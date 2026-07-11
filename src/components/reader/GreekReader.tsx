@@ -769,8 +769,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return false
   }
 
-  async function handleSearch(query: string, type: 'word' | 'reference', lang?: string) {
+  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) {
     const trimmed = query.trim()
+    const lang = opts?.lang
     setTranslationResults(null)  // any new search clears a prior translation-search result
 
     // ── Translation word search (mobile, while a translation is the current view) ──
@@ -785,6 +786,20 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}&type=word&lang=${lang}`)
         const data = await res.json()
         setTranslationResults(data.results ?? [])
+      } finally { setSearchLoading(false) }
+      return
+    }
+
+    // ── Greek lemma search (picked a lexeme suggestion): find every inflected form ──
+    if (type === 'word' && opts?.lemma) {
+      setSearchLoading(true)
+      setSearchType('word')
+      setWordSearchTerm(null)      // forms vary, so no single highlight term
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(trimmed)}&type=word&lemma=true&corpus=BOTH`)
+        const data = await res.json()
+        setSearchResults(data.results ?? [])
+        setHighlightedVerse(null)
       } finally { setSearchLoading(false) }
       return
     }
