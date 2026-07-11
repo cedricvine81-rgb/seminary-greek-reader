@@ -225,6 +225,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const [translationResults, setTranslationResults] = useState<{ id: string; text: string }[] | null>(null)
   const [translationSearchLang, setTranslationSearchLang] = useState<string | null>(null)
   const [translationSearchTerm, setTranslationSearchTerm] = useState('')
+  // True while reading a passage opened from a translation result — the list is kept so a
+  // "Back to results" arrow can restore it.
+  const [viewingResultPassage, setViewingResultPassage] = useState(false)
   const [highlightedVerse, setHighlightedVerse] = useState<string | null>(null)
   const [navKey, setNavKey] = useState(0)   // incremented on every reference search to force scroll
   const [searchLoading, setSearchLoading]   = useState(false)
@@ -654,8 +657,8 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     navLockRef.current = true
     scrollToVerse()
     const raf = requestAnimationFrame(scrollToVerse)
-    const timers = [120, 400, 900].map(ms => setTimeout(scrollToVerse, ms))
-    const release = setTimeout(() => { navLockRef.current = false }, 1100)
+    const timers = [120, 400, 900, 1500, 2200].map(ms => setTimeout(scrollToVerse, ms))
+    const release = setTimeout(() => { navLockRef.current = false }, 2400)
     return () => {
       cancelAnimationFrame(raf)
       timers.forEach(clearTimeout)
@@ -769,10 +772,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return false
   }
 
-  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) {
+  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; keepResults?: boolean }) {
     const trimmed = query.trim()
     const lang = opts?.lang
-    setTranslationResults(null)  // any new search clears a prior translation-search result
+    // A result-click (keepResults) jumps to the passage but keeps the results list so the
+    // reader can return to it; any other search clears the list.
+    if (!opts?.keepResults) { setTranslationResults(null); setViewingResultPassage(false) }
 
     // ── Translation word search (mobile, while a translation is the current view) ──
     if (type === 'word' && lang) {
@@ -815,6 +820,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         const ref = parseReference(trimmed, books)
         if (ref) {
           handledAsReference = true
+          if (opts?.keepResults) setViewingResultPassage(true)  // show the passage; keep the list behind a Back arrow
           setSearchResults(null)   // stay in scrolling mode
           setSearchType(null)
           setWordSearchTerm(null)
@@ -1348,10 +1354,10 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return (
       <button
         key={r.id}
-        onClick={() => handleSearch(`${osis} ${ch}:${vs}`, 'reference')}
-        className="w-full text-left rounded-lg border border-gray-100 hover:bg-brand-50 p-3 transition-colors"
+        onClick={() => handleSearch(`${osis} ${ch}:${vs}`, 'reference', { keepResults: true })}
+        className="w-full text-left rounded-lg border border-gray-100 hover:bg-brand-50 p-3 transition-colors group"
       >
-        <span className="block text-xs font-semibold text-brand-700 mb-0.5">{bookName} {ch}:{vs}</span>
+        <span className="block text-xs font-semibold text-brand-700 mb-0.5 underline decoration-brand-300 underline-offset-2 group-hover:decoration-brand-600">{bookName} {ch}:{vs} →</span>
         <span className="block text-sm text-gray-700 leading-relaxed">{body}</span>
       </button>
     )
@@ -1704,17 +1710,26 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       {/* ── Search result bar ── */}
       {(searchResults !== null || translationResults !== null) && (
         <div className="flex-none flex items-center justify-between gap-2">
-          <p className="text-sm text-gray-600 truncate">
-            {searchLoading
-              ? 'Searching…'
-              : translationResults !== null
-                ? `${translationResults.length} result${translationResults.length !== 1 ? 's' : ''} in ${PARALLEL_LANGS.find(l => l.code === translationSearchLang)?.label ?? 'translation'}`
-                : `${searchResults!.length} result${searchResults!.length !== 1 ? 's' : ''}`}
-          </p>
+          {translationResults !== null && viewingResultPassage ? (
+            <button
+              className="text-sm font-medium text-brand-600 hover:underline truncate"
+              onClick={() => setViewingResultPassage(false)}
+            >
+              ← Back to {translationResults.length} result{translationResults.length !== 1 ? 's' : ''}
+            </button>
+          ) : (
+            <p className="text-sm text-gray-600 truncate">
+              {searchLoading
+                ? 'Searching…'
+                : translationResults !== null
+                  ? `${translationResults.length} result${translationResults.length !== 1 ? 's' : ''} in ${PARALLEL_LANGS.find(l => l.code === translationSearchLang)?.label ?? 'translation'}`
+                  : `${searchResults!.length} result${searchResults!.length !== 1 ? 's' : ''}`}
+            </p>
+          )}
           <button
             className="shrink-0 text-sm text-brand-600 hover:underline"
             onClick={() => {
-              setSearchResults(null); setTranslationResults(null); setSearchType(null)
+              setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
               setWordSearchTerm(null); setLockedInfo(null); setHighlightedVerse(null)
             }}
           >
@@ -1733,7 +1748,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       >
         {searchLoading ? (
           <div className="flex items-center justify-center h-32 text-gray-400 text-sm">Loading…</div>
-        ) : translationResults !== null ? (
+        ) : translationResults !== null && !viewingResultPassage ? (
           translationResults.length === 0
             ? <p className="text-gray-400 text-sm italic">No results found.</p>
             : <div className="space-y-2">{translationResults.map(r => renderTranslationResult(r))}</div>
