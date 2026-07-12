@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  MoreVertical, X, ChevronRight, ChevronUp, ChevronDown, Check, Plus, Menu,
+  MoreVertical, X, ChevronRight, Menu,
   LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
   Settings, LogOut, LogIn, UserPlus,
 } from 'lucide-react'
@@ -116,15 +116,10 @@ const PARALLEL_LANGS = [
   { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version' },
 ]
 
-// Every text the mobile reader can show as its own full-screen pane: Greek plus each
-// translation. Users pick and order a subset in the "View Selection" menu; swiping
-// left/right moves between the chosen panes. Greek is the key 'greek' (⇄ parallelLang null).
-const ALL_VIEWS: { key: string; label: string }[] = [
-  { key: 'greek', label: 'Greek' },
-  ...PARALLEL_LANGS.map(l => ({ key: l.code, label: l.label })),
-]
-const DEFAULT_VIEWS = ALL_VIEWS.map(v => v.key)
-const VIEWS_STORAGE_KEY = 'reader-views'
+// The reader shows the Greek text and, optionally, ONE translation inline beneath each
+// verse (Greek verse → its translation → next verse …). parallelLang holds the chosen
+// translation code, or null for Greek only. The choice is persisted under this key.
+const PARALLEL_LANG_STORAGE_KEY = 'reader-parallel-lang'
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -236,33 +231,25 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const [showSettings, setShowSettings]     = useState(false)
   const [fontSize, setFontSize]             = useState<FontSize>('md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
-  // Mobile: which texts are enabled as swipeable panes, in the user's chosen order.
-  // Starts as all; hydrated from localStorage after mount (avoids an SSR mismatch).
-  const [selectedViews, setSelectedViews] = useState<string[]>(DEFAULT_VIEWS)
+  // Restore the reader's chosen inline translation on return. Hydrated after mount to
+  // avoid an SSR mismatch; persisted whenever it changes.
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(VIEWS_STORAGE_KEY)
-      if (!raw) return
-      const arr = JSON.parse(raw)
-      if (Array.isArray(arr)) {
-        const clean = arr.filter((k: unknown): k is string => typeof k === 'string' && ALL_VIEWS.some(v => v.key === k))
-        if (clean.length) setSelectedViews(clean)
-      }
-    } catch { /* ignore malformed storage */ }
+      const raw = localStorage.getItem(PARALLEL_LANG_STORAGE_KEY)
+      if (raw && PARALLEL_LANGS.some(l => l.code === raw)) setParallelLang(raw)
+    } catch { /* ignore */ }
   }, [])
   useEffect(() => {
-    try { localStorage.setItem(VIEWS_STORAGE_KEY, JSON.stringify(selectedViews)) } catch { /* ignore */ }
-  }, [selectedViews])
-  // If the currently shown text gets removed from the selection, snap to the first one.
-  useEffect(() => {
-    const cur = parallelLang ?? 'greek'
-    if (selectedViews.length && !selectedViews.includes(cur)) {
-      const first = selectedViews[0]
-      setParallelLang(first === 'greek' ? null : first)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedViews])
-  const [translationVerses, setTranslationVerses] = useState<Record<string, string>>({})
+    try {
+      if (parallelLang) localStorage.setItem(PARALLEL_LANG_STORAGE_KEY, parallelLang)
+      else localStorage.removeItem(PARALLEL_LANG_STORAGE_KEY)
+    } catch { /* ignore */ }
+  }, [parallelLang])
+  // Fetched translation text, cached per language: transByLang[lang][verseId] = text.
+  // Keyed by language (not a single flat map) so swiping back to a translation you've
+  // already seen is instant and does zero network, and so neighboring views can be
+  // pre-warmed in the background before you swipe to them.
+  const [transByLang, setTransByLang] = useState<Record<string, Record<string, string>>>({})
   const [wallaceOn, setWallaceOn]           = useState(true)
   const [proielOn,  setProielOn]            = useState(true)
   const [gbiOn,     setGbiOn]              = useState(true)
@@ -325,6 +312,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const gntTopSentinel   = useRef<HTMLDivElement>(null)
   const lxxTopSentinel   = useRef<HTMLDivElement>(null)
   const verseRefs     = useRef<Record<string, HTMLElement>>({})
+  // Verse to re-scroll to after switching the inline translation, captured before the switch
+  // so the reader stays on the same verse as the layout re-flows.
+  const anchorVerseRef = useRef<string | null>(null)
 
   const gntLoading     = useRef(false)
   const lxxLoading     = useRef(false)
@@ -360,6 +350,11 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   useEffect(() => { parsingRef.current    = parsingInfo }, [parsingInfo])
   useEffect(() => { lockedRef.current     = lockedInfo },  [lockedInfo])
   useEffect(() => { syntaxMenuRef.current = !!syntaxMenu }, [syntaxMenu])
+  // Mirror searchResults into a ref so the (useCallback-stable) word handlers can read
+  // the current results without taking it as a dep — keeping their identity stable so
+  // memoized verses aren't re-rendered every time a search runs.
+  const searchResultsRef = useRef(searchResults)
+  useEffect(() => { searchResultsRef.current = searchResults }, [searchResults])
 
   // ── Close settings on outside click ─────────────────────────────────────────
 
@@ -522,19 +517,16 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     if (!panel) return
 
     function onScroll() {
-      // Don't lazy-load (which shifts layout) while a navigation jump is settling.
       if (navLockRef.current) return
       const rect        = panel!.getBoundingClientRect()
       const panelTop    = rect.top
       const panelBottom = rect.bottom
-      // Forward (downward) loading
       if (gntSentinel.current && !gntRef.current.done) {
         if (gntSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreGnt()
       }
       if (lxxSentinel.current && !lxxRef.current.done) {
         if (lxxSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreLxx()
       }
-      // Backward (upward) loading
       if (gntTopSentinel.current && !gntRef.current.backDone) {
         if (gntTopSentinel.current.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevGnt()
       }
@@ -548,15 +540,11 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
 
-  // ── Hide-on-scroll top bar (mobile) ──────────────────────────────────────────
-  // Scrolling down through the text collapses the top control row to free reading
-  // space; scrolling up (or reaching the top) brings it back. Only the display
-  // matters on mobile — desktop pins the row with `lg:flex` regardless of state.
   useEffect(() => {
     const panel = textPanelRef.current
     if (!panel) return
-    const DELTA = 8          // ignore sub-pixel jitter
-    const REVEAL_TOP = 24    // always show near the very top
+    const DELTA = 8
+    const REVEAL_TOP = 24
     function onScroll() {
       const y = panel!.scrollTop
       const last = lastScrollTopRef.current
@@ -578,57 +566,44 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return () => { delete document.documentElement.dataset.reader }
   }, [])
 
-  // ── Mobile text-cycle swipe ───────────────────────────────────────────────────
-  // Swipe left/right pages through the complete texts: Greek → each full
-  // translation → back to Greek. The dropdown still jumps directly to any language.
-  const swipeStartRef = useRef<{ x: number; y: number; t: number } | null>(null)
-
-  // Swipe moves through the user's selected/ordered views (not the full language list).
-  function cycleParallel(dir: 1 | -1) {
-    const list = selectedViews.length ? selectedViews : ['greek']
-    const cur = parallelLang ?? 'greek'
-    let idx = list.indexOf(cur)
-    if (idx === -1) idx = 0
-    const next = list[(idx + dir + list.length) % list.length]
-    setParallelLang(next === 'greek' ? null : next)
+  // Per-verse callback refs, cached by id so each keeps a STABLE identity across renders —
+  // otherwise a fresh arrow every render would defeat React.memo on GreekVerse. Anchors the
+  // Greek verse <p> for scroll-position measurement.
+  const greekRefCbs = useRef<Map<string, (el: HTMLElement | null) => void>>(new Map())
+  function greekVerseRef(id: string) {
+    let cb = greekRefCbs.current.get(id)
+    if (!cb) {
+      cb = (el: HTMLElement | null) => { if (el) verseRefs.current[id] = el; else delete verseRefs.current[id] }
+      greekRefCbs.current.set(id, cb)
+    }
+    return cb
   }
 
-  // ── View Selection (mobile): pick + order the swipeable text panes ──
-  function toggleView(key: string) {
-    setSelectedViews(prev =>
-      prev.includes(key)
-        ? (prev.length > 1 ? prev.filter(k => k !== key) : prev)  // keep at least one
-        : [...prev, key]
-    )
-  }
-  function moveView(i: number, dir: -1 | 1) {
-    setSelectedViews(prev => {
-      const j = i + dir
-      if (j < 0 || j >= prev.length) return prev
-      const next = prev.slice()
-      ;[next[i], next[j]] = [next[j], next[i]]
-      return next
-    })
-  }
-
-  function onTextTouchStart(e: React.TouchEvent) {
-    if (e.touches.length !== 1) { swipeStartRef.current = null; return }
-    const t = e.touches[0]
-    swipeStartRef.current = { x: t.clientX, y: t.clientY, t: Date.now() }
+  // The verse currently at the top of the reading panel. Returns the first verse whose
+  // bottom is still below the panel's top edge — i.e. the one straddling / at the top.
+  function visibleVerseId(): string | null {
+    const panel = textPanelRef.current
+    if (!panel) return null
+    const panelTop = panel.getBoundingClientRect().top
+    const map = verseRefs.current
+    let bestId: string | null = null
+    let bestTop = Infinity
+    for (const id in map) {
+      const el = map[id]
+      if (!el || !el.isConnected) continue
+      const r = el.getBoundingClientRect()
+      if (r.height === 0) continue
+      if (r.bottom > panelTop + 4 && r.top < bestTop) { bestTop = r.top; bestId = id }
+    }
+    return bestId
   }
 
-  function onTextTouchEnd(e: React.TouchEvent) {
-    const s = swipeStartRef.current
-    swipeStartRef.current = null
-    // Phones only; ignore slow drags (text selection) and vertical-dominant scrolls.
-    if (!s || window.innerWidth >= 1024) return
-    const t = e.changedTouches[0]
-    const dx = t.clientX - s.x
-    const dy = t.clientY - s.y
-    if (Date.now() - s.t > 600) return
-    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 2) return
-    // Swipe left advances to the next text; swipe right steps back.
-    cycleParallel(dx < 0 ? 1 : -1)
+  // Change the inline translation (or Greek-only) but keep the reader on the same verse:
+  // remember the top verse, switch, then the re-anchor effect below scrolls it back to the
+  // top once the layout (adding/removing the inline translation) has re-flowed.
+  function switchView(next: string | null) {
+    anchorVerseRef.current = visibleVerseId()
+    setParallelLang(next)
   }
 
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
@@ -650,24 +625,46 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   useEffect(() => {
     if (!highlightedVerse) return
     const panel = textPanelRef.current
+    // A jump preloads NAV_PRE chapters *before* the target, so the freshly-rendered window
+    // starts on the PREVIOUS book; only this snap moves the view down onto the target. If we
+    // gave up (or let a stray touch cancel us) before the target's DOM existed, the reader
+    // would be stranded at the top of that window — i.e. on the previous book. So we poll
+    // until the target actually renders, and we do NOT honour a user scroll until we've
+    // landed. Uses setTimeout (not requestAnimationFrame) because rAF is paused whenever the
+    // page is hidden/backgrounded, which would leave the jump un-scrolled.
+    let landed = false
+    let landedAt = 0
+    let timer: ReturnType<typeof setTimeout> | undefined
     const scrollToVerse = () => {
       const el = verseRefs.current[highlightedVerse]
-      if (el) el.scrollIntoView({ behavior: 'instant', block: 'start' })
+      if (!el || !el.isConnected) return
+      el.scrollIntoView({ behavior: 'instant', block: 'start' })
+      if (!landed) { landed = true; landedAt = Date.now() }
     }
-    // Snap to the target, then a couple of passes to correct overshoot as fonts/parallel
-    // rows above it finish rendering. Pause infinite-scroll loading meanwhile so chapters
-    // loading above can't push it around.
     navLockRef.current = true
-    scrollToVerse()
-    const raf = requestAnimationFrame(scrollToVerse)
-    // A longer window catches slow-loading chapters; the user-scroll cancel below makes it
-    // safe (it only snaps while the reader is idle, never while you're scrolling).
-    const timers = [120, 400, 900, 1500, 2200].map(ms => setTimeout(scrollToVerse, ms))
-    const release = setTimeout(() => { navLockRef.current = false }, 2400)
-    // Crucially, stop snapping the moment the user scrolls/keys — never fight their reading.
+    const startedAt = Date.now()
+    const tick = () => {
+      scrollToVerse()
+      const now = Date.now()
+      if (!landed) {
+        // Still waiting for the target to render — keep polling (mobile can take ~1s).
+        timer = now - startedAt < 6000 ? setTimeout(tick, 32) : undefined
+      } else if (now - landedAt < 1800) {
+        // Landed — a few more corrective snaps as fonts / parallel rows settle heights.
+        timer = setTimeout(tick, 250)
+      } else {
+        navLockRef.current = false
+      }
+    }
+    scrollToVerse()               // immediate attempt (target may already be rendered)
+    timer = setTimeout(tick, 32)
+    const release = setTimeout(() => { navLockRef.current = false }, 6000)  // hard backstop
+    // Stop snapping the moment the user scrolls/keys — but only AFTER we've landed on the
+    // target. Before that, a stray touch must not cancel the snap (that is exactly what
+    // stranded the reader on the previous book).
     const stop = () => {
-      cancelAnimationFrame(raf)
-      timers.forEach(clearTimeout)
+      if (!landed) return
+      if (timer) clearTimeout(timer)
       clearTimeout(release)
       navLockRef.current = false
       panel?.removeEventListener('wheel', stop)
@@ -678,8 +675,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     panel?.addEventListener('touchmove', stop, { passive: true })
     window.addEventListener('keydown', stop)
     return () => {
-      cancelAnimationFrame(raf)
-      timers.forEach(clearTimeout)
+      if (timer) clearTimeout(timer)
       clearTimeout(release)
       navLockRef.current = false
       panel?.removeEventListener('wheel', stop)
@@ -689,54 +685,75 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [highlightedVerse, navKey])
 
-  // ── Parallel translation fetching ─────────────────────────────────────────────
-  // Reset cached keys and verse map whenever the selected language changes.
-
-  const prevParallelLang = useRef<string | null>(null)
+  // ── Re-anchor after a view switch ─────────────────────────────────────────────
+  // A swipe/tap that changes the shown text (parallelLang) reuses the same scroll
+  // container, whose scrollTop is a pixel value — and the panes have very different
+  // heights, so the old pixel offset lands on the wrong verse. Scroll the verse that
+  // was at the top back to the top once the new pane has rendered. Runs a few passes
+  // because a first-seen translation fills in asynchronously (heights shift as it
+  // arrives); stops the moment the user scrolls so it never fights their reading.
   useEffect(() => {
-    if (parallelLang !== prevParallelLang.current) {
-      prevParallelLang.current = parallelLang
-      fetchedTransKeys.current = new Set()
-      setTranslationVerses({})
+    const id = anchorVerseRef.current
+    if (!id) return
+    anchorVerseRef.current = null
+    const panel = textPanelRef.current
+    const scrollToAnchor = () => {
+      const el = verseRefs.current[id]
+      if (el && el.isConnected) el.scrollIntoView({ behavior: 'instant', block: 'start' })
     }
+    scrollToAnchor()
+    const raf = requestAnimationFrame(scrollToAnchor)
+    const timers = [80, 250, 600].map(ms => setTimeout(scrollToAnchor, ms))
+    const stop = () => {
+      cancelAnimationFrame(raf)
+      timers.forEach(clearTimeout)
+      panel?.removeEventListener('wheel', stop)
+      panel?.removeEventListener('touchmove', stop)
+    }
+    panel?.addEventListener('wheel', stop, { passive: true })
+    panel?.addEventListener('touchmove', stop, { passive: true })
+    return () => {
+      cancelAnimationFrame(raf)
+      timers.forEach(clearTimeout)
+      panel?.removeEventListener('wheel', stop)
+      panel?.removeEventListener('touchmove', stop)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [parallelLang])
 
-  // Load BSB alignment data when BSB is selected.
+  // ── Inline translation fetching ───────────────────────────────────────────────
+  // Fetch the chosen translation for every loaded chapter. Results are cached per language
+  // in transByLang and never cleared, so re-selecting a translation you've viewed before is
+  // instant. fetchedTransKeys (namespaced by lang) dedupes across chapters.
   useEffect(() => {
-    if (parallelLang === 'bsb' && !bsbAlignment) {
-      loadBsbAlignment().then(data => setBsbAlignment(data))
-    }
-  }, [parallelLang, bsbAlignment])
-
-  // Fetch translation for every newly loaded section when a language is active.
-  // After each fetch (success or failure) mark every verse in the section with
-  // '' if no translation came back — prevents "Loading…" showing indefinitely
-  // for deuterocanonical books or any chapter the API doesn't cover.
-  useEffect(() => {
-    if (!parallelLang || parallelLang === 'bsb') return  // BSB uses alignment data
+    if (!parallelLang) return
+    // BSB is rendered from its alignment file, not the translation API.
+    if (parallelLang === 'bsb') { if (!bsbAlignment) loadBsbAlignment().then(setBsbAlignment); return }
+    const lang = parallelLang
     const allSections = [...gnt.sections, ...lxx.sections]
     for (const sec of allSections) {
-      const key = `${parallelLang}.${sec.key}`
+      const key = `${lang}.${sec.key}`
       if (fetchedTransKeys.current.has(key)) continue
       fetchedTransKeys.current.add(key)
       const [osisId, chapterStr] = sec.key.split('-')
       const chapter = parseInt(chapterStr, 10)
       const verseIds = sec.verses.map(v => v.id)
-      fetch(`/api/translation?book=${osisId}&chapter=${chapter}&lang=${parallelLang}`)
+      fetch(`/api/translation?book=${osisId}&chapter=${chapter}&lang=${lang}`)
         .then(r => r.json())
         .then(data => {
           const received: Record<string, string> = data.verses ?? {}
-          // Fill in '' for any verse the API didn't return
+          // Fill in '' for any verse the API didn't return so it doesn't show "Loading…"
+          // forever (deuterocanonical books, uncovered chapters).
           const patch: Record<string, string> = {}
           for (const id of verseIds) patch[id] = received[id] ?? ''
-          setTranslationVerses(prev => ({ ...prev, ...patch }))
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
         .catch(() => {
           const patch = Object.fromEntries(verseIds.map(id => [id, '']))
-          setTranslationVerses(prev => ({ ...prev, ...patch }))
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
     }
-  }, [parallelLang, gnt.sections, lxx.sections])
+  }, [parallelLang, gnt.sections, lxx.sections, bsbAlignment])
 
   // Fetch translations for search results (they aren't in gnt/lxx sections so the
   // effect above never covers them). Group by book+chapter to minimise requests.
@@ -748,21 +765,22 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       if (!groups[secKey]) groups[secKey] = { osisId: v.bookId, chapter: v.chapter, verseIds: [] }
       groups[secKey].verseIds.push(v.id)
     }
+    const lang = parallelLang
     for (const [secKey, group] of Object.entries(groups)) {
-      const key = `${parallelLang}.${secKey}`
+      const key = `${lang}.${secKey}`
       if (fetchedTransKeys.current.has(key)) continue
       fetchedTransKeys.current.add(key)
-      fetch(`/api/translation?book=${group.osisId}&chapter=${group.chapter}&lang=${parallelLang}`)
+      fetch(`/api/translation?book=${group.osisId}&chapter=${group.chapter}&lang=${lang}`)
         .then(r => r.json())
         .then(data => {
           const received: Record<string, string> = data.verses ?? {}
           const patch: Record<string, string> = {}
           for (const id of group.verseIds) patch[id] = received[id] ?? ''
-          setTranslationVerses(prev => ({ ...prev, ...patch }))
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
         .catch(() => {
           const patch = Object.fromEntries(group.verseIds.map(id => [id, '']))
-          setTranslationVerses(prev => ({ ...prev, ...patch }))
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
     }
   }, [parallelLang, searchResults])
@@ -939,19 +957,22 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
 
   // ── Word interaction ───────────────────────────────────────────────────────────
 
-  function handleWordHover(wordId: string | null, info: LexicalInfoPanel | null) {
+  // These three word handlers are useCallback-stable (they read state through refs, not
+  // closures) so that GreekVerse/GreekWord — now memoized — aren't torn down and re-rendered
+  // on every parent render just because a handler identity changed.
+  const handleWordHover = useCallback((wordId: string | null, info: LexicalInfoPanel | null) => {
     setActiveWordId(wordId)
     if (!lockedRef.current) {
       // Don't clear the panel when the mouse leaves due to the syntax menu appearing on top
       if (info !== null || !syntaxMenuRef.current) setParsingInfo(info)
     }
-  }
+  }, [])
 
-  function handleWordClick(info: LexicalInfoPanel | null) {
+  const handleWordClick = useCallback((info: LexicalInfoPanel | null) => {
     if (!lockedRef.current) setParsingInfo(info)
-  }
+  }, [])
 
-  function handleWordRightClick(word: VerseWord, x: number, y: number) {
+  const handleWordRightClick = useCallback((word: VerseWord, x: number, y: number) => {
     Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()]).then(([data, gbiData, absData, maculaData]) => {
       const gbiEntry    = gbiData[word.id]    ?? null
       const absEntry    = absData[word.id]    ?? null
@@ -965,8 +986,8 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         if (found) { verse = found; break }
       }
       // Also check search results
-      if (!verse && searchResults) {
-        verse = searchResults.find(v => v.id === word.verseId) ?? null
+      if (!verse && searchResultsRef.current) {
+        verse = searchResultsRef.current.find(v => v.id === word.verseId) ?? null
       }
 
       const words = verse?.words ?? []
@@ -1240,7 +1261,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       const ny = y + menuH > window.innerHeight ? y - menuH : y
       setSyntaxMenu({ word, syntax: syn, gbiEntry, absEntry, ctx, x: Math.max(8, nx), y: Math.max(8, ny) })
     })
-  }
+  }, [])
 
   // ── Render helpers ─────────────────────────────────────────────────────────────
 
@@ -1262,7 +1283,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         onWordHover={handleWordHover}
         onWordClick={handleWordClick}
         onWordRightClick={handleWordRightClick}
-        verseRefCallback={el => { if (el) verseRefs.current[v.id] = el }}
+        verseRefCallback={greekVerseRef(v.id)}
       />
     )
 
@@ -1315,20 +1336,23 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         </p>
       )
 
+      // Mobile: Greek verse then its translation stacked (grid-cols-1); desktop: two
+      // columns side by side. On mobile the translation gets a small indent + left accent
+      // so it reads as the rendering of the Greek verse above it.
       return (
-        <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-1">
-          <div className="hidden lg:block">{withNote}</div>
-          {englishCol}
+        <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
+          <div>{withNote}</div>
+          <div className="mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0">{englishCol}</div>
         </div>
       )
     }
 
     // ── Other translations: plain verse string ─────────────────────────────────
-    const transTxt = translationVerses[v.id]
+    const transTxt = transByLang[parallelLang]?.[v.id]
     return (
-      <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-1">
-        <div className="hidden lg:block">{withNote}</div>
-        <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+      <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
+        <div>{withNote}</div>
+        <p className="leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
@@ -1409,7 +1433,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
             Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
         <select
           value={parallelLang ?? ''}
-          onChange={e => setParallelLang(e.target.value || null)}
+          onChange={e => switchView(e.target.value || null)}
           title="Show a parallel translation column"
           className="hidden lg:block shrink-0 self-stretch rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
         >
@@ -1505,7 +1529,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    <span className="lg:hidden">View Selection</span><span className="hidden lg:inline">Contents</span>
+                    Contents
                     {gntEdition !== 'tischendorf' && <span className="ml-1.5 normal-case font-normal text-brand-600">(Nestle 1904)</span>}
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'contents' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
@@ -1515,39 +1539,6 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                     onMouseEnter={cancelFlyoutClose}
                     className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
-                    {/* Mobile: choose + order the swipeable text panes. */}
-                    <div className="lg:hidden mb-4 pb-4 border-b border-gray-100">
-                      <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-1">Texts to show</p>
-                      <p className="text-xs text-gray-400 mb-3">Swipe the text left/right to move between them. Tap a text to jump to it; reorder with the arrows.</p>
-                      <div className="space-y-1.5">
-                        {selectedViews.map((key, i) => {
-                          const meta = ALL_VIEWS.find(v => v.key === key)!
-                          const isCurrent = (parallelLang ?? 'greek') === key
-                          return (
-                            <div key={key} className={`flex items-center gap-2 rounded-lg border px-2.5 py-2 ${isCurrent ? 'border-brand-400 ring-1 ring-brand-300 bg-brand-50' : 'border-brand-200 bg-brand-50/40'}`}>
-                              <button type="button" onClick={() => toggleView(key)} title="Remove"
-                                className="shrink-0 h-5 w-5 rounded flex items-center justify-center bg-brand-600 text-white">
-                                <Check size={13} />
-                              </button>
-                              <button type="button" onClick={() => setParallelLang(key === 'greek' ? null : key)}
-                                className="flex-1 text-sm text-left text-gray-800 truncate">{meta.label}</button>
-                              <button type="button" onClick={() => moveView(i, -1)} disabled={i === 0}
-                                className="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30" title="Move up"><ChevronUp size={16} /></button>
-                              <button type="button" onClick={() => moveView(i, 1)} disabled={i === selectedViews.length - 1}
-                                className="p-1 text-gray-400 hover:text-gray-700 disabled:opacity-30" title="Move down"><ChevronDown size={16} /></button>
-                            </div>
-                          )
-                        })}
-                        {ALL_VIEWS.filter(v => !selectedViews.includes(v.key)).map(v => (
-                          <button key={v.key} type="button" onClick={() => toggleView(v.key)}
-                            className="w-full flex items-center gap-2 rounded-lg border border-dashed border-gray-200 px-2.5 py-2 text-gray-500 hover:bg-gray-50">
-                            <span className="shrink-0 h-5 w-5 rounded flex items-center justify-center border border-gray-300"><Plus size={13} /></span>
-                            <span className="flex-1 text-sm text-left">{v.label}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
                       {([
@@ -1679,26 +1670,27 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 )}
               </div>
 
-              {/* Translations flyout trigger — desktop only (redundant with the mobile
-                  bottom dot-switcher). */}
-              <div className="relative hidden lg:block" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
+              {/* Translation picker — choose one translation to show inline beneath each
+                  Greek verse (or None for Greek only). Available on mobile and desktop. */}
+              <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('translations')}
                   className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
-                    Translations
-                    {parallelLang && <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLangInfo?.label})</span>}
+                    Translation
+                    <span className="ml-1.5 normal-case font-normal text-brand-600">({parallelLang ? parallelLangInfo?.label : 'off'})</span>
                   </p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'translations' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'translations' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
+                    <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">Shown inline beneath each Greek verse.</p>
                     <button
-                      onClick={() => setParallelLang(null)}
+                      onClick={() => switchView(null)}
                       className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
                         parallelLang === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                       }`}
@@ -1708,7 +1700,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                     {PARALLEL_LANGS.map(l => (
                       <button
                         key={l.code}
-                        onClick={() => setParallelLang(l.code)}
+                        onClick={() => switchView(l.code)}
                         className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
                           parallelLang === l.code ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                         }`}
@@ -1769,8 +1761,6 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       {/* ── Text panel ── */}
       <div
         ref={textPanelRef}
-        onTouchStart={onTextTouchStart}
-        onTouchEnd={onTextTouchEnd}
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
         className="flex-1 min-h-0 overflow-y-auto bg-white rounded-xl border border-gray-100 shadow-sm p-5"
       >
@@ -1807,15 +1797,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       <div className="hidden lg:block flex-none">
         <ParsingPanel info={parsingInfo} locked={!!lockedInfo} />
       </div>
-      {/* Mobile: a larger inline parsing pane, shown only while a Greek text is in view
-          (translations have no word-level parsing). Swiping to a translation hides it,
-          giving that text the full screen. Which texts appear + their swipe order are set
-          in the View Selection menu. */}
-      {parallelLang === null && (
-        <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-white flex flex-col overflow-hidden">
-          <ParsingPanel info={parsingInfo} locked={!!lockedInfo} variant="sheet" />
-        </div>
-      )}
+      {/* Mobile: a larger inline parsing pane. The Greek is always on screen now (with the
+          optional translation stacked beneath each verse), so tapping any word shows its
+          parsing here regardless of whether a translation is selected. */}
+      <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-white flex flex-col overflow-hidden">
+        <ParsingPanel info={parsingInfo} locked={!!lockedInfo} variant="sheet" />
+      </div>
 
       {/* ── Mobile passage picker (top-level overlay, independent of the top bar) ── */}
       {pickerOpen && (

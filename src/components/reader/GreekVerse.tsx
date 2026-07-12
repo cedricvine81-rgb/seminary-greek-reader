@@ -1,5 +1,5 @@
 'use client'
-import { Fragment } from 'react'
+import { Fragment, memo } from 'react'
 import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
@@ -34,7 +34,7 @@ function VerseRef({ verse }: { verse: BiblicalVerse }) {
   )
 }
 
-export function GreekVerse({
+function GreekVerseImpl({
   verse, activeWordId, bsbHighlightPos, highlighted, searchWord, textHighlights = [], onWordHover, onWordClick, onWordRightClick, verseRefCallback
 }: GreekVerseProps) {
   const baseClass = `greek-text mb-2 rounded px-1 transition-colors ${highlighted ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`
@@ -117,3 +117,34 @@ export function GreekVerse({
     </p>
   )
 }
+
+// A chapter can hold hundreds of these, each with many interactive word spans, so a verse
+// must not re-render just because the parent did (e.g. another chapter loaded, or a hover
+// changed a word in a DIFFERENT verse). The parent passes stable (useCallback'd) handlers
+// and per-verse ref callbacks, and the verse object itself is stable in state, so we can
+// skip re-render unless something that actually affects THIS verse's output changed.
+function areEqual(prev: GreekVerseProps, next: GreekVerseProps): boolean {
+  if (prev.verse !== next.verse) return false
+  if (prev.highlighted !== next.highlighted) return false
+  if (prev.searchWord !== next.searchWord) return false
+  if (prev.bsbHighlightPos !== next.bsbHighlightPos) return false
+
+  // activeWordId only affects this verse when it points at one of its words. If neither
+  // the old nor the new value targets this verse, the change is irrelevant here.
+  const prefix = next.verse.id + '.'
+  const prevMine = !!prev.activeWordId && prev.activeWordId.startsWith(prefix)
+  const nextMine = !!next.activeWordId && next.activeWordId.startsWith(prefix)
+  if ((prevMine || nextMine) && prev.activeWordId !== next.activeWordId) return false
+
+  // textHighlights is a freshly-filtered array every render, so compare by content.
+  const a = prev.textHighlights ?? []
+  const b = next.textHighlights ?? []
+  if (a.length !== b.length) return false
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].id !== b[i].id || a[i].color !== b[i].color ||
+        a[i].startOffset !== b[i].startOffset || a[i].endOffset !== b[i].endOffset) return false
+  }
+  return true
+}
+
+export const GreekVerse = memo(GreekVerseImpl, areEqual)
