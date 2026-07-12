@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -69,6 +69,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'against-apion', name: 'Against Apion', source: 'josephus', work: 'against-apion', books: [1, 1] },
       { id: 'life', name: 'The Life', source: 'josephus', work: 'life', books: [1] },
     ],
+  },
+  {
+    id: 'philo',
+    label: 'Philo',
+    blurb: 'The complete works of Philo of Alexandria, in C. D. Yonge’s English translation, numbered by the standard Cohn-Wendland sections.',
+    works: PHILO_CATALOG,
   },
   {
     id: 'septuagint',

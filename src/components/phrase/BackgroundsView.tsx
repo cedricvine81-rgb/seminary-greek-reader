@@ -150,14 +150,16 @@ interface JosephusChapter { number: number; title: string; sections: JosephusSec
 interface JosephusBook { number: number; title: string; chapters: JosephusChapter[] }
 
 
-// earlychristianwritings.com hosts C.D. Yonge's 19th-century (public-domain) translation
-// of Philo as one HTML page per treatise (confirmed by fetching its table of contents —
-// this is the complete, verified list of what's actually on the site, not a guess). A
-// few treatises span multiple volumes (Allegorical Interpretation I-III, Special Laws
-// I-IV, On the Life of Moses I-II, On Providence Fragments I-II); the leading digit in
-// the citation (e.g. "Spec. Laws 2.16") picks the right one. A handful of works cited in
-// the appendix (Questions on Exodus, the Armenian "On God" fragment) aren't on this site
-// at all — those are left unmapped rather than guessed.
+// Philo's treatises are now embedded in-app (public/data/philo/, driven by the
+// prose-texts registry) and open in the right reading pane via matchProseCitation above,
+// so well-formed "Philo, …" citations never reach this function. It survives only as an
+// external fallback for citations that don't resolve in-pane — chiefly the handful of
+// malformed concatenated ones (e.g. "Philo, Cherubim Creation 20"), for which it still
+// links out to the first-named treatise's Yonge page. earlychristianwritings.com hosts
+// Yonge one HTML page per treatise; a few span multiple volumes (Allegorical
+// Interpretation I-III, Special Laws I-IV, Moses I-II, Providence I-II), the leading digit
+// picking the volume. Questions on Exodus and the Armenian "On God" fragment aren't on the
+// site and stay unmapped.
 const PHILO_BASE = 'http://www.earlychristianwritings.com/yonge/'
 const PHILO_SIMPLE: Record<string, string> = {
   'Creation': 'book1.html', 'Cherubim': 'book5.html', 'Sacrifices': 'book6.html',
@@ -847,8 +849,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               </div>
                             )
                           }
-                          // Embedded prose works (2 Esdras / 1 Enoch / Jubilees / 2 Baruch /
-                          // 2 Enoch) open in the right reading pane rather than linking out.
+                          // Embedded prose works (2 Esdras, the Pseudepigrapha, the
+                          // Testaments, and Philo's treatises) open in the right reading
+                          // pane rather than linking out. This runs before the external
+                          // secondTempleUrl fallback, so a well-formed "Philo, Moses 2.70"
+                          // resolves in-pane; only citations that don't match here (e.g. the
+                          // malformed concatenated ones) fall through to an external link.
                           const prose = !c.ref ? matchProseCitation(c.text) : null
                           if (prose) {
                             return (
