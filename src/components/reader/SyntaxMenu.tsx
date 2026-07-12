@@ -9,6 +9,9 @@ import { buildGbiDisplay, type GbiEntry } from '@/lib/gbi-data'
 import { buildAbsDisplay, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-syntax'
 
+export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'strongs' | 'lexicon'
+export type SearchScope = 'GNT' | 'LXX' | 'BOTH'
+
 interface SyntaxMenuProps {
   word: VerseWord
   syntax: SyntaxEntry | null
@@ -21,6 +24,7 @@ interface SyntaxMenuProps {
   proielOn: boolean
   gbiOn: boolean
   absOn: boolean
+  onWordAction: (action: WordSearchAction, scope: SearchScope) => void
   onClose: () => void
 }
 
@@ -55,11 +59,23 @@ const LEVEL_BADGE: Record<WallaceCategory['level'], string> = {
   intermediate: 'bg-indigo-100 text-indigo-700',
 }
 
-export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onClose }: SyntaxMenuProps) {
+export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, onClose }: SyntaxMenuProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   const [selectedPrep, setSelectedPrep] = useState<string>(ctx.governingPrep ?? 'none')
   const [showPrepTooltip, setShowPrepTooltip] = useState(false)
+  // ── "Search this word" section ──
+  const [scope, setScope] = useState<SearchScope>('BOTH')
+  const [copied, setCopied] = useState<string | null>(null)
+  const lemma   = word.lexeme?.lexeme ?? null
+  const freq    = word.lexeme?.frequency
+  const strongs = word.lexeme?.strongs ? String(word.lexeme.strongs).replace(/^0+/, '') : null
+  const reference = (word.verseId ?? '').replace(/^(.*)\.(\d+)\.(\d+)$/, '$1 $2:$3')
+  function copy(text: string, label: string) {
+    navigator.clipboard?.writeText(text)
+      .then(() => { setCopied(label); setTimeout(() => setCopied(null), 1200) })
+      .catch(() => {})
+  }
   // Lazy-init so SSR never touches window
   const [isMobile] = useState<boolean>(() =>
     typeof window !== 'undefined' && window.innerWidth < 640
@@ -157,6 +173,52 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
       {/* ── Body ── */}
       <div className="p-3 space-y-2 overflow-y-auto">
+
+        {/* ── Search this word ── */}
+        <div className="rounded-lg border border-gray-100 bg-gray-50/70 p-2.5 space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
+            <div className="flex rounded-md border border-gray-200 overflow-hidden text-[10px] leading-none">
+              {(['GNT', 'LXX', 'BOTH'] as const).map(s => (
+                <button key={s} type="button" onClick={() => setScope(s)}
+                  className={`px-1.5 py-1 transition-colors ${scope === s ? 'bg-brand-600 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
+                  {s === 'GNT' ? 'NT' : s === 'LXX' ? 'OT' : 'Both'}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-1.5">
+            <button type="button" onClick={() => onWordAction('lemma', scope)}
+              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              All forms{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
+            </button>
+            <button type="button" onClick={() => onWordAction('form', scope)}
+              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              This form
+            </button>
+            <button type="button" onClick={() => onWordAction('morph', scope)}
+              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              By morphology <span className="text-gray-400">· NT</span>
+            </button>
+            {strongs && (
+              <button type="button" onClick={() => onWordAction('strongs', scope)}
+                className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+                Strong&apos;s {strongs} <span className="text-gray-400">· NT</span>
+              </button>
+            )}
+            <button type="button" onClick={() => onWordAction('lexicon', scope)}
+              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              Lexicon entry
+            </button>
+          </div>
+          <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500">
+            <span className="text-gray-400">Copy:</span>
+            <button type="button" onClick={() => copy(word.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">word</button>
+            {lemma && <button type="button" onClick={() => copy(lemma, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">lemma</button>}
+            {reference && <button type="button" onClick={() => copy(reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">reference</button>}
+            {copied && <span className="text-green-600">✓ copied {copied}</span>}
+          </div>
+        </div>
 
         {/* Macula clause structure — shown when data is available */}
         {(() => {

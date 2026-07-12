@@ -12,7 +12,9 @@ import { PassagePicker } from './PassagePicker'
 import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
-import { SyntaxMenu } from './SyntaxMenu'
+import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
+import { MorphSearchPicker } from './MorphSearchPicker'
+import { LexiconPanel } from './LexiconPanel'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { SyntaxEntry, SyntaxContext } from '@/lib/wallace-categories'
@@ -226,6 +228,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const [highlightedVerse, setHighlightedVerse] = useState<string | null>(null)
   const [navKey, setNavKey] = useState(0)   // incremented on every reference search to force scroll
   const [searchLoading, setSearchLoading]   = useState(false)
+  // Right-click "Search this word" (lemma / form / morphology / Strong's) — a label for the
+  // result bar, a concordance (KWIC) toggle, and the open state of the morph picker / lexicon.
+  const [searchLabel, setSearchLabel]       = useState<string | null>(null)
+  const [concordance, setConcordance]       = useState(false)
+  const [morphPickerWord, setMorphPickerWord] = useState<VerseWord | null>(null)
+  const [lexiconWord, setLexiconWord]       = useState<VerseWord | null>(null)
 
   // ── Settings ─────────────────────────────────────────────────────────────────
   const [showSettings, setShowSettings]     = useState(false)
@@ -925,6 +933,8 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       if (handledAsReference) return
     }
 
+    setSearchLabel(null)
+    setConcordance(false)
     setSearchLoading(true)
     setSearchType(type)
     setWordSearchTerm(type === 'word' ? normalizeGreek(trimmed) : null)
@@ -934,6 +944,68 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       setSearchResults(data.results ?? [])
       setHighlightedVerse(null)
     } finally { setSearchLoading(false) }
+  }
+
+  // ── Right-click "Search this word" ──────────────────────────────────────────────
+  // Runs a word-derived search (lemma / exact form / morphology / Strong's) and drops the
+  // reader into results mode with a label describing what was searched.
+  async function runWordSearch(url: string, label: string, highlight: string | null) {
+    setSyntaxMenu(null)
+    setTranslationResults(null); setViewingResultPassage(false)
+    setSearchLabel(label)
+    setConcordance(false)
+    setSearchLoading(true)
+    setSearchType('word')
+    setWordSearchTerm(highlight ? normalizeGreek(highlight) : null)
+    setHighlightedVerse(null)
+    try {
+      const res  = await fetch(url)
+      const data = await res.json()
+      setSearchResults(data.results ?? [])
+    } finally { setSearchLoading(false) }
+  }
+
+  function handleWordAction(action: WordSearchAction, scope: SearchScope) {
+    const w = syntaxMenu?.word
+    if (!w) return
+    const lemma   = w.lexeme?.lexeme
+    const strongs = w.lexeme?.strongs
+    if (action === 'morph')   { setMorphPickerWord(w); setSyntaxMenu(null); return }
+    if (action === 'lexicon') { setLexiconWord(w);     setSyntaxMenu(null); return }
+    if (action === 'lemma') {
+      if (!lemma) return
+      runWordSearch(`/api/search?q=${encodeURIComponent(lemma)}&type=word&lemma=true&corpus=${scope}`, `All forms of ${lemma}`, null)
+    } else if (action === 'form') {
+      runWordSearch(`/api/search?q=${encodeURIComponent(w.surface)}&type=word&corpus=${scope}`, `Exact form: ${w.surface}`, w.surface)
+    } else if (action === 'strongs') {
+      if (!strongs) return
+      const num = String(strongs).replace(/^0+/, '')
+      runWordSearch(`/api/search?q=${encodeURIComponent(num)}&type=strongs&corpus=${scope}`, `Strong's ${num}${lemma ? ` · ${lemma}` : ''}`, null)
+    }
+  }
+
+  function runMorphSearch(features: string[], lemma: string | null) {
+    setMorphPickerWord(null)
+    const params = new URLSearchParams({ type: 'morph', features: features.join(','), corpus: 'GNT' })
+    if (lemma) params.set('lemma', lemma)
+    const label = `Morphology: ${features.length ? features.join(', ') : 'any'}${lemma ? ` · ${lemma}` : ''}`
+    runWordSearch(`/api/search?${params.toString()}`, label, null)
+  }
+
+  // A compact concordance (KWIC) row: reference + the Greek verse text; tap the reference
+  // to jump there. Used when the results "Concordance" toggle is on.
+  function renderConcordanceRow(v: BiblicalVerse) {
+    return (
+      <div key={v.id} className="flex gap-2 items-baseline py-1.5 border-b border-gray-50">
+        <button
+          onClick={() => handleSearch(v.reference, 'reference')}
+          className="shrink-0 w-24 text-right text-xs font-semibold text-brand-600 hover:underline"
+        >
+          {v.reference}
+        </button>
+        <p className="greek-text flex-1 text-gray-700 leading-snug" style={{ fontSize: '0.95rem' }}>{v.text}</p>
+      </div>
+    )
   }
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
@@ -1745,18 +1817,29 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
                 ? 'Searching…'
                 : translationResults !== null
                   ? `${translationResults.length} result${translationResults.length !== 1 ? 's' : ''} in ${PARALLEL_LANGS.find(l => l.code === translationSearchLang)?.label ?? 'translation'}`
-                  : `${searchResults!.length} result${searchResults!.length !== 1 ? 's' : ''}`}
+                  : <>{searchLabel && <span className="font-medium text-gray-700">{searchLabel} · </span>}{searchResults!.length} result{searchResults!.length !== 1 ? 's' : ''}</>}
             </p>
           )}
-          <button
-            className="shrink-0 text-sm text-brand-600 hover:underline"
-            onClick={() => {
-              setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
-              setWordSearchTerm(null); setLockedInfo(null); setHighlightedVerse(null)
-            }}
-          >
-            ← Exit search · return to scrolling
-          </button>
+          <div className="flex items-center gap-3 shrink-0">
+            {searchResults !== null && searchResults.length > 0 && (
+              <button
+                className="text-sm text-brand-600 hover:underline"
+                onClick={() => setConcordance(c => !c)}
+              >
+                {concordance ? 'List view' : 'Concordance'}
+              </button>
+            )}
+            <button
+              className="text-sm text-brand-600 hover:underline"
+              onClick={() => {
+                setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
+                setWordSearchTerm(null); setLockedInfo(null); setHighlightedVerse(null)
+                setSearchLabel(null); setConcordance(false)
+              }}
+            >
+              ← Exit search
+            </button>
+          </div>
         </div>
       )}
 
@@ -1775,7 +1858,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
         ) : searchResults !== null ? (
           searchResults.length === 0
             ? <p className="text-gray-400 text-sm italic">No results found.</p>
-            : <div>{searchResults.map(v => renderVerseRow(v))}</div>
+            : concordance
+              ? <div>{searchResults.map(v => renderConcordanceRow(v))}</div>
+              : <div>{searchResults.map(v => renderVerseRow(v))}</div>
         ) : (
           <div>
             {/* Mobile shows only the active corpus; desktop shows both (lg:block). */}
@@ -1830,8 +1915,23 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           proielOn={proielOn}
           gbiOn={gbiOn}
           absOn={absOn}
+          onWordAction={handleWordAction}
           onClose={() => setSyntaxMenu(null)}
         />
+      )}
+
+      {/* ── "Search by morphology" picker (from the right-click menu) ── */}
+      {morphPickerWord && (
+        <MorphSearchPicker
+          word={morphPickerWord}
+          onSearch={runMorphSearch}
+          onClose={() => setMorphPickerWord(null)}
+        />
+      )}
+
+      {/* ── Full lexicon entry (from the right-click menu) ── */}
+      {lexiconWord && (
+        <LexiconPanel word={lexiconWord} onClose={() => setLexiconWord(null)} />
       )}
 
       {isAuthenticated && highlightSelection.popup && (

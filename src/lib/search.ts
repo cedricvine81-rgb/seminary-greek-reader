@@ -129,6 +129,72 @@ export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promi
   return out
 }
 
+// ─── Per-word search: morphology & Strong's number ────────────────────────────
+
+// word-index.json.gz (scripts/build-word-index.mjs): every GNT word grouped by verse,
+// each as [strongs, lemmaNorm, parsingLower]. GNT only — the parsing trees don't cover
+// the LXX, so morphology / Strong's search is New-Testament scope.
+type WordRow = [string, string, string]          // [strongs, lemmaNorm, parsingLower]
+type WordIndex = Record<string, WordRow[]>       // verseId → words
+let _wordIndex: WordIndex | null = null
+
+function getWordIndex(): WordIndex {
+  if (_wordIndex) return _wordIndex
+  const file = path.join(process.cwd(), 'public', 'data', 'word-index.json.gz')
+  try {
+    _wordIndex = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8'))
+  } catch {
+    _wordIndex = {}
+  }
+  return _wordIndex!
+}
+
+// Collect the matched verse ids in canonical order (via the main index) and apply the
+// corpus filter. Shared by the morphology and Strong's searches below.
+function versesFor(matched: Set<string>, corpus: SearchCorpus): BiblicalVerse[] {
+  const out: BiblicalVerse[] = []
+  for (const v of getIndex()) {
+    if ((corpus === 'BOTH' || v.corpus === corpus) && matched.has(v.id)) out.push(indexToVerse(v))
+  }
+  return out
+}
+
+export interface MorphCriteria {
+  features: string[]     // lowercased parsing tokens that must ALL be present, e.g. ['verb','aorist','participle']
+  lemma?: string         // optional: also require this lexeme (any inflected form)
+}
+
+// Every verse containing a word whose parsing matches all requested features (and, if
+// given, the requested lemma). Feature tokens are matched against the word's parsing
+// string, e.g. 'verb, aorist, active, participle, …'.
+export async function searchByMorph(criteria: MorphCriteria, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
+  const feats = criteria.features.map(f => f.toLowerCase().trim()).filter(Boolean)
+  const lemmaNorm = criteria.lemma ? normalizeGreek(criteria.lemma) : null
+  if (!feats.length && !lemmaNorm) return []
+  const wi = getWordIndex()
+  const matched = new Set<string>()
+  for (const verseId in wi) {
+    for (const [, l, p] of wi[verseId]) {
+      if (lemmaNorm && l !== lemmaNorm) continue
+      const toks = p ? p.split(', ') : []
+      if (feats.every(f => toks.includes(f))) { matched.add(verseId); break }
+    }
+  }
+  return versesFor(matched, corpus)
+}
+
+// Every verse containing a word with the given Strong's number (e.g. '1080' or 'G1080').
+export async function searchByStrongs(strongs: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
+  const s = String(strongs).replace(/^g/i, '').trim()
+  if (!s) return []
+  const wi = getWordIndex()
+  const matched = new Set<string>()
+  for (const verseId in wi) {
+    if (wi[verseId].some(w => w[0] === s)) matched.add(verseId)
+  }
+  return versesFor(matched, corpus)
+}
+
 // ─── Lexicon search (still DB-backed — lexical entries are small) ─────────────
 
 export async function searchLexicon(query: string, limit = 20) {

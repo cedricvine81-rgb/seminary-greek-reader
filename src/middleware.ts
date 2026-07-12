@@ -6,6 +6,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/reader',
   '/api/translation',
   '/api/search',
+  '/api/lexicon',
   '/api/suggest',
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
