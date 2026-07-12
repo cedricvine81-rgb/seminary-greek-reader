@@ -137,6 +137,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
       height: 100vh;
       height: 100svh;
     }
+
+    /* Inline translation uses the same Gentium Plus serif as the Greek on mobile, so the
+       Greek verse and its translation read as one unit (the sans body font looks larger
+       than the Greek serif at the same size). Desktop keeps its two-column layout as-is. */
+    html[data-reader='on'] .reader-inline-trans {
+      font-family: 'Gentium Plus', 'GFS Didot', Georgia, serif;
+    }
   }
 
   /* ── Dashboard layout ───────────────────────────────────── */

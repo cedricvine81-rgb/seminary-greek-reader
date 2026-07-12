@@ -1315,7 +1315,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       const englishCol = !alignVerse ? (
         <p className="leading-relaxed text-gray-400 italic text-xs pt-0.5">Loading…</p>
       ) : (
-        <p className="leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
           {alignVerse.text.split(' ').map((tok, i) => {
             const gkPos = alignVerse.t2g[i]
@@ -1352,7 +1352,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return (
       <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
         <div>{withNote}</div>
-        <p className="leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
