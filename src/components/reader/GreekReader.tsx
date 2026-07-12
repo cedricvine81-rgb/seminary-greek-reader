@@ -1453,7 +1453,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           </button>
 
           {showSettings && (
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+            // Mobile scrolls (nav links make it tall); desktop must NOT clip overflow, or the
+            // left-popping flyouts get hidden — overflow-y-auto forces overflow-x to auto too.
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-800">
                   <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
