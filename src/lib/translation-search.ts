@@ -105,6 +105,37 @@ export async function suggestTranslation(lang: string, prefix: string, limit = 1
   return out
 }
 
+/** For each requested verse, the surrounding verses in the SAME chapter within `radius`
+ *  (clamped to the chapter — context never crosses a chapter/book boundary). Keyed by the
+ *  original "osisId.chapter.verse". Used by the search page's verse-context slider. */
+export async function getTranslationContext(
+  lang: string,
+  refs: { osisId: string; chapter: number; verse: number }[],
+  radius: number,
+): Promise<Record<string, { verse: number; text: string }[]>> {
+  const out: Record<string, { verse: number; text: string }[]> = {}
+  const data = await load(lang)
+  if (!data) return out
+  // Index the whole translation by book.chapter once, then answer every ref from it.
+  const byChapter = new Map<string, { verse: number; text: string }[]>()
+  for (const e of data.entries) {
+    const dot1 = e.id.indexOf('.')
+    const dot2 = e.id.indexOf('.', dot1 + 1)
+    if (dot1 < 0 || dot2 < 0) continue
+    const key = e.id.slice(0, dot2)
+    const verse = Number(e.id.slice(dot2 + 1))
+    let arr = byChapter.get(key)
+    if (!arr) { arr = []; byChapter.set(key, arr) }
+    arr.push({ verse, text: e.t })
+  }
+  for (const arr of Array.from(byChapter.values())) arr.sort((a: { verse: number }, b: { verse: number }) => a.verse - b.verse)
+  for (const r of refs) {
+    const arr = byChapter.get(`${r.osisId}.${r.chapter}`) ?? []
+    out[`${r.osisId}.${r.chapter}.${r.verse}`] = arr.filter(x => x.verse >= r.verse - radius && x.verse <= r.verse + radius)
+  }
+  return out
+}
+
 /** Verses in the given translation whose text contains the query (accent-insensitive).
  *  `books` (osisIds) scopes to one or more books — applied during the scan so their hits
  *  aren't lost to the result cap when they fall late in the canon (e.g. "love" in Matthew). */

@@ -101,6 +101,7 @@ async function fetchLaneCount(val: string, q: string): Promise<number> {
 const SCOPE_STORAGE_KEY = 'masterSearch.scope'
 const RECENT_STORAGE_KEY = 'masterSearch.recent'
 const SORT_STORAGE_KEY = 'masterSearch.sort'
+const CONTEXT_STORAGE_KEY = 'masterSearch.context'
 const RECENT_MAX = 8
 
 type SortMode = 'relevance' | 'canonical'
@@ -146,12 +147,15 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   const [counts, setCounts] = useState<Record<string, number | null>>({})
   const [recent, setRecent] = useState<string[]>([])
   const [sort, setSort] = useState<SortMode>('relevance')
+  const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
+  const [ctxMap, setCtxMap] = useState<Record<string, { verse: number; text: string }[]>>({})
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const reqId = useRef(0)
   const countReq = useRef(0)
+  const ctxReq = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
   const terms = useMemo(() => parseSearchTerms(query), [query])
@@ -223,8 +227,10 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   useEffect(() => {
     try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
     try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
+    try { const c = Number(localStorage.getItem(CONTEXT_STORAGE_KEY)); if (c >= 0 && c <= 3) setContext(c) } catch {}
   }, [])
   useEffect(() => { try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort])
+  useEffect(() => { try { localStorage.setItem(CONTEXT_STORAGE_KEY, String(context)) } catch {} }, [context])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
     if (v.length < 2) return
@@ -301,6 +307,21 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     }, 300)
     return () => clearTimeout(t)
   }, [query, laneList])
+
+  // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
+  // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.
+  useEffect(() => {
+    if (!isBiblical || context === 0 || !displayBib || displayBib.length === 0) { setCtxMap({}); return }
+    const refs = displayBib.map(h => `${h.osisId}.${h.chapter}.${h.verse}`)
+    const body = scope.kind === 'greek'
+      ? { mode: 'greek', corpus: scope.corpus, radius: context, refs }
+      : { mode: 'trans', lang: scope.kind === 'trans' ? scope.lang : 'en', radius: context, refs }
+    const id = ++ctxReq.current
+    fetch('/api/search/context', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(r => r.ok ? r.json() : { context: {} })
+      .then(d => { if (id === ctxReq.current) setCtxMap(d.context || {}) })
+      .catch(() => { if (id === ctxReq.current) setCtxMap({}) })
+  }, [isBiblical, context, displayBib, scope])
 
   const toggleBook = (osisId: string) =>
     setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
@@ -504,24 +525,53 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
         {/* Biblical hits */}
         {!loading && isBiblical && displayBib && displayBib.length > 0 && (
           <div>
-            <div className="flex items-center justify-between pb-2">
+            <div className="flex items-center justify-between gap-3 flex-wrap pb-2">
               <p className="text-xs text-gray-400">{displayBib.length}{displayBib.length >= 300 ? '+' : ''} verse{displayBib.length === 1 ? '' : 's'}</p>
-              <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
-                {(['relevance', 'canonical'] as SortMode[]).map(m => (
-                  <button key={m} type="button" onClick={() => setSort(m)}
-                    className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                    {m === 'relevance' ? 'Relevance' : 'Canonical'}
-                  </button>
-                ))}
+              <div className="flex items-center gap-3">
+                {/* Verse-context slider */}
+                <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                  <span title="Show surrounding verses for context">Context</span>
+                  <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
+                    {[0, 1, 2, 3].map(n => (
+                      <button key={n} type="button" onClick={() => setContext(n)}
+                        className={`rounded-full px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                        {n === 0 ? 'off' : `±${n}`}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                {/* Sort */}
+                <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
+                  {(['relevance', 'canonical'] as SortMode[]).map(m => (
+                    <button key={m} type="button" onClick={() => setSort(m)}
+                      className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                      {m === 'relevance' ? 'Relevance' : 'Canonical'}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
             <div className="divide-y divide-gray-100">
-              {displayBib.map((h, i) => (
-                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
-                  <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
-                  <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
-                </button>
-              ))}
+              {displayBib.map((h, i) => {
+                const ctx = context > 0 ? ctxMap[`${h.osisId}.${h.chapter}.${h.verse}`] : undefined
+                return (
+                  <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                    <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
+                    {ctx && ctx.length > 0 ? (
+                      <span className={`block text-sm leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
+                        {ctx.map(cv => (
+                          <span key={cv.verse} className={cv.verse === h.verse ? 'text-gray-800' : 'text-gray-400'}>
+                            <sup className="text-[10px] text-gray-400 mr-0.5">{cv.verse}</sup>
+                            {hiliteVerse(cv.text, terms)}{' '}
+                          </span>
+                        ))}
+                      </span>
+                    ) : (
+                      <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
+                    )}
+                  </button>
+                )
+              })}
             </div>
           </div>
         )}
