@@ -17,9 +17,10 @@ export interface ProseWork {
   parseCitation: (text: string) => { chapter: number; verse?: number } | null
 }
 
-// The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs and the
-// `philo-<slug>` members are Philo of Alexandria's treatises (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}`
+// The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
+// `philo-<slug>` members are Philo of Alexandria's treatises, and the `af-<slug>` members
+// are the Apostolic Fathers (see below).
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -160,6 +161,58 @@ export const PHILO_CATALOG = PHILO.map(p => ({
   id: `philo-${p.slug}`, source: `philo-${p.slug}` as EmbeddedProseSource, name: p.name, chapters: p.chapters,
 }))
 
+// ── The Apostolic Fathers ─────────────────────────────────────────────────────────────
+// J. B. Lightfoot & J. R. Harmer's public-domain translation, embedded chapter → verse
+// (the standard versification the Backgrounds dataset cites, e.g. "1 Clem. 13:1",
+// "Pol. Phil. 7.1"). Built by scripts/build-apostolic-fathers.py.
+const AF_ATTRIBUTION = 'Text: J. B. Lightfoot & J. R. Harmer’s translation of the Apostolic Fathers (1891), public domain. Source: earlychristianwritings.com.'
+
+// Recognize an Apostolic-Fathers citation, e.g. "1 Clem. 13:1" or "Pol. Phil. 7.1" — the
+// chapter/verse separator is written both ways. Matches the first reference in a compound
+// string ("Ign. Eph. 10.1; Pol. Phil. 4.3" → Ign. Eph. 10:1).
+const afCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of abbrevs) {
+    const m = s.match(new RegExp('^' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)(?:[:.](\\d+))?'))
+    if (m) return { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
+  }
+  return null
+}
+
+// slug (→ /data/apostolic-fathers/<slug>.json and `af-<slug>`), name, note anchor, chapter
+// count, citation abbreviation(s). Kept in sync with scripts/build-apostolic-fathers.py.
+const AF: { slug: string; name: string; noteBook: string; chapters: number; abbrevs: string[] }[] = [
+  { slug: '1clement', name: '1 Clement', noteBook: 'AF1Clem', chapters: 65, abbrevs: ['1 Clem.'] },
+  { slug: '2clement', name: '2 Clement', noteBook: 'AF2Clem', chapters: 20, abbrevs: ['2 Clem.'] },
+  { slug: 'ign-ephesians', name: 'Ignatius to the Ephesians', noteBook: 'AFIgnEph', chapters: 21, abbrevs: ['Ign. Eph.'] },
+  { slug: 'ign-magnesians', name: 'Ignatius to the Magnesians', noteBook: 'AFIgnMag', chapters: 15, abbrevs: ['Ign. Magn.'] },
+  { slug: 'ign-trallians', name: 'Ignatius to the Trallians', noteBook: 'AFIgnTrall', chapters: 13, abbrevs: ['Ign. Trall.'] },
+  { slug: 'ign-romans', name: 'Ignatius to the Romans', noteBook: 'AFIgnRom', chapters: 10, abbrevs: ['Ign. Rom.'] },
+  { slug: 'ign-philadelphians', name: 'Ignatius to the Philadelphians', noteBook: 'AFIgnPhld', chapters: 11, abbrevs: ['Ign. Phld.'] },
+  { slug: 'ign-smyrnaeans', name: 'Ignatius to the Smyrnaeans', noteBook: 'AFIgnSmyrn', chapters: 13, abbrevs: ['Ign. Smyrn.'] },
+  { slug: 'ign-polycarp', name: 'Ignatius to Polycarp', noteBook: 'AFIgnPol', chapters: 8, abbrevs: ['Ign. Pol.'] },
+  { slug: 'polycarp', name: 'Polycarp to the Philippians', noteBook: 'AFPolPhil', chapters: 14, abbrevs: ['Pol. Phil.'] },
+  { slug: 'didache', name: 'The Didache', noteBook: 'AFDid', chapters: 16, abbrevs: ['Did.'] },
+  { slug: 'barnabas', name: 'The Epistle of Barnabas', noteBook: 'AFBarn', chapters: 21, abbrevs: ['Barn.'] },
+  { slug: 'diognetus', name: 'The Epistle to Diognetus', noteBook: 'AFDiogn', chapters: 12, abbrevs: ['Diogn.'] },
+  { slug: 'mart-polycarp', name: 'The Martyrdom of Polycarp', noteBook: 'AFMartPol', chapters: 22, abbrevs: ['Mart. Pol.'] },
+]
+
+const AF_WORKS: ProseWork[] = AF.map(w => ({
+  source: `af-${w.slug}` as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/apostolic-fathers/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: AF_ATTRIBUTION,
+  parseCitation: afCite(w.abbrevs),
+}))
+
+// Ids/names the catalog needs to list the Apostolic Fathers under one Texts category.
+export const AF_CATALOG = AF.map(w => ({
+  id: `af-${w.slug}`, source: `af-${w.slug}` as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -214,6 +267,7 @@ export const PROSE_WORKS: ProseWork[] = [
     } },
   ...TWELVE_PATRIARCHS_WORKS,
   ...PHILO_WORKS,
+  ...AF_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {

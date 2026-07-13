@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -140,6 +140,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
       ...TWELVE_PATRIARCHS_CATALOG,
     ],
+  },
+  {
+    id: 'apostolic-fathers',
+    label: 'Apostolic Fathers',
+    blurb: 'The earliest post-New-Testament Christian writings — 1 &amp; 2 Clement, the letters of Ignatius, Polycarp, the Didache, Barnabas, Diognetus, and the Martyrdom of Polycarp — in Lightfoot’s translation.',
+    works: AF_CATALOG,
   },
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
