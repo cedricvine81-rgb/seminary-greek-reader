@@ -1,6 +1,7 @@
 'use client'
-import { useRef, useState } from 'react'
-import { StickyNote, Loader2, Trash2, X } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { StickyNote, Loader2, Trash2, X, GripVertical } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
@@ -34,6 +35,48 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
   const [place, setPlace] = useState<{ v: 'top' | 'bottom'; h: 'left' | 'right' }>({ v: 'bottom', h: 'left' })
   const wrapRef = useRef<HTMLSpanElement>(null)
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // ── Floating, draggable editor panel ─────────────────────────────────────────
+  // The editor floats over the page (no backdrop) so the text stays readable/scrollable
+  // while writing; drag it by the header to reposition. Position persists across opens.
+  const PANEL_W = 560
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
+  const [mounted, setMounted] = useState(false)
+  const panelRef = useRef<HTMLDivElement>(null)
+  useEffect(() => setMounted(true), [])
+  // On open: default to the right side (so text stays visible), reusing the last position but
+  // clamping it back on-screen if the window has since shrunk.
+  useEffect(() => {
+    if (!open || typeof window === 'undefined') return
+    setPos(p => {
+      const x = p?.x ?? Math.max(16, window.innerWidth - PANEL_W - 32)
+      const y = p?.y ?? 88
+      return { x: Math.min(Math.max(8, x), Math.max(8, window.innerWidth - 80)), y: Math.min(Math.max(8, y), Math.max(8, window.innerHeight - 44)) }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open])
+  // Escape closes.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') close() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  function startDrag(e: React.PointerEvent) {
+    const rect = panelRef.current?.getBoundingClientRect()
+    if (!rect) return
+    const offX = e.clientX - rect.left, offY = e.clientY - rect.top
+    const w = rect.width, h = rect.height
+    const move = (ev: PointerEvent) => {
+      const x = Math.min(Math.max(8, ev.clientX - offX), window.innerWidth - w - 8)
+      const y = Math.min(Math.max(8, ev.clientY - offY), window.innerHeight - 44)
+      setPos({ x, y })
+    }
+    const up = () => { document.removeEventListener('pointermove', move); document.removeEventListener('pointerup', up) }
+    document.addEventListener('pointermove', move)
+    document.addEventListener('pointerup', up)
+  }
 
   const reference = `${book} ${chapter}:${verse}`
 
@@ -143,31 +186,40 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
         </div>
       )}
 
-      {/* Roomy editor modal — opened directly (no small popover step). */}
-      {open && (
-        <div className="fixed inset-0 z-[60] flex items-start sm:items-center justify-center bg-black/30 p-4 overflow-y-auto" onClick={close}>
-          <div className="w-full max-w-2xl rounded-xl bg-white shadow-xl p-4 my-8" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-sm font-semibold text-gray-800">Note · {reference}</h3>
-              <label className="ml-auto flex items-center gap-1 text-xs text-gray-500">
-                <span className="hidden sm:inline">Folder</span>
-                <select
-                  value={folderId ?? ''}
-                  onChange={e => setFolderId(e.target.value || null)}
-                  className="rounded border border-gray-200 text-xs text-gray-600 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
-                  title="File this note in a folder"
-                >
-                  <option value="">Unfiled</option>
-                  {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
-                </select>
-              </label>
-              <button type="button" onClick={close} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
-            </div>
+      {/* Roomy editor — a floating, draggable panel (no backdrop) so the text stays readable
+          and scrollable while writing. Portaled to <body> so ancestor overflow/transforms
+          can't clip or reposition it. */}
+      {open && mounted && createPortal(
+        <div
+          ref={panelRef}
+          className="fixed z-[60] w-[min(92vw,560px)] max-h-[85vh] flex flex-col rounded-xl bg-white shadow-2xl border border-gray-200 overflow-hidden"
+          style={{ left: pos?.x ?? 0, top: pos?.y ?? 0, visibility: pos ? 'visible' : 'hidden' }}
+        >
+          {/* Drag handle / header */}
+          <div onPointerDown={startDrag} className="flex-none flex items-center gap-2 px-3 py-2.5 border-b border-gray-100 cursor-move select-none touch-none">
+            <GripVertical size={14} className="text-gray-300 shrink-0" />
+            <h3 className="text-sm font-semibold text-gray-800 truncate">Note · {reference}</h3>
+            <label className="ml-auto flex items-center gap-1 text-xs text-gray-500" onPointerDown={e => e.stopPropagation()}>
+              <span className="hidden sm:inline">Folder</span>
+              <select
+                value={folderId ?? ''}
+                onChange={e => setFolderId(e.target.value || null)}
+                className="rounded border border-gray-200 text-xs text-gray-600 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+                title="File this note in a folder"
+              >
+                <option value="">Unfiled</option>
+                {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+              </select>
+            </label>
+            <button type="button" onClick={close} onPointerDown={e => e.stopPropagation()} className="text-gray-400 hover:text-gray-600 shrink-0"><X size={18} /></button>
+          </div>
 
+          {/* Body (scrolls if the panel is taller than the viewport) */}
+          <div className="min-h-0 overflow-y-auto p-3">
             {loading ? (
               <p className="text-xs text-gray-400 p-2"><Loader2 size={12} className="inline animate-spin" /> Loading…</p>
             ) : (
-              <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minHeight={320} maxHeight={540} />
+              <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} autoFocus fontScale={fontScale} onFontScale={setFontScale} minHeight={240} maxHeight={480} />
             )}
 
             <div className="flex items-center gap-2 mt-2">
@@ -177,7 +229,8 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
               {note && <button type="button" onClick={remove} className="ml-auto text-gray-400 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </span>
   )
