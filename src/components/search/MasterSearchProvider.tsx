@@ -1,16 +1,17 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
-import { registerMasterSearch } from '@/lib/master-search-bus'
+import { registerMasterSearch, type MasterSearchPreset } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { MasterSearchModal } from './MasterSearchModal'
 
 // Mounted once in the root layout. Hosts the Master Search pane, lets the header icon / mobile
-// menu open it via openMasterSearch(), and binds the ⌘K / Ctrl-K shortcut. Disabled during a
-// lockdown exam.
+// menu / right-click word menu open it via openMasterSearch(), and binds ⌘K / Ctrl-K. Disabled
+// during a lockdown exam.
 export function MasterSearchProvider() {
   const [open, setOpen] = useState(false)
-  const doOpen = useCallback(() => { if (!isExamLocked()) setOpen(true) }, [])
+  const [preset, setPreset] = useState<MasterSearchPreset | null>(null)
+  const doOpen = useCallback((p?: MasterSearchPreset) => { if (!isExamLocked()) { setPreset(p ?? null); setOpen(true) } }, [])
 
   useEffect(() => {
     registerMasterSearch(doOpen)
@@ -28,5 +29,5 @@ export function MasterSearchProvider() {
     return () => document.removeEventListener('keydown', onKey)
   }, [doOpen])
 
-  return <MasterSearchModal open={open} onClose={() => setOpen(false)} />
+  return <MasterSearchModal open={open} preset={preset} onClose={() => setOpen(false)} />
 }

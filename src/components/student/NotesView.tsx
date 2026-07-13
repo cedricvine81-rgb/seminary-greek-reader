@@ -6,7 +6,24 @@ import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { openWordSearch } from '@/lib/word-search-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+
+// Strip leading/trailing punctuation from a token (script-agnostic — no \p{} so it works at
+// the repo's TS target), leaving the bare word to search.
+const EDGE_PUNCT = /^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+$/g
+function stripEdges(s: string): string { return s.replace(EDGE_PUNCT, '') }
+
+// Split a translation string into word spans that open the "search this word" menu on
+// right-click (search-relevant actions for an English/Spanish/… word: translations + backgrounds).
+function TransWords({ text, lang, reference }: { text: string; lang: string; reference: string }) {
+  return <>{text.split(/(\s+)/).map((tok, i) =>
+    /\s/.test(tok) || !tok
+      ? tok
+      : <span key={i} onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: stripEdges(tok), reference, kind: 'translation', transLang: lang }) }}>{tok}</span>,
+  )}</>
+}
 
 // A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
 interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string }
@@ -452,31 +469,42 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               <p className="text-xs text-gray-300 italic">Loading…</p>
             ) : (
               <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek text-xl' : 'text-sm text-gray-700'}`}>
-                {passageVerses.map(v => (
-                  <div key={v.verse} className={isGreek && inlineTrans ? 'mb-2' : ''}>
+                {passageVerses.map(v => {
+                  const ref = `${anchor.name} ${anchor.chapter}:${v.verse}`
+                  const noted = notes.some(n => n.book === anchor.book && n.chapter === anchor.chapter && n.verse === v.verse)
+                  return (
+                  <div key={v.verse} className={`flex items-start gap-1 ${isGreek && inlineTrans ? 'mb-2' : ''}`}>
+                    <span className="pt-1 shrink-0 print:hidden">
+                      <VerseNoteButton book={anchor.book} chapter={anchor.chapter} verse={v.verse} noted={noted} onChanged={load} />
+                    </span>
+                    <div className="min-w-0 flex-1">
                     <p>
                       <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                       {isGreek && v.tokens && v.tokens.length > 0
                         ? v.tokens.map((tok, ti) => {
                             const key = `${v.verse}.${ti}`
-                            const select = () => { setSelectedInfo(toLexicalInfo(tok, `${anchor.name} ${anchor.chapter}:${v.verse}`)); setSelectedKey(key) }
+                            const select = () => { setSelectedInfo(toLexicalInfo(tok, ref)); setSelectedKey(key) }
                             return (
                               <span key={ti} onMouseEnter={select} onClick={select}
+                                onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: ref, kind: 'greek', greekCorpus: 'GNT' }) }}
                                 className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
                                 {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                               </span>
                             )
                           })
-                        : v.text}
+                        : <TransWords text={v.text} lang={version} reference={ref} />}
                     </p>
                     {/* Inline translation of this Greek verse, if one is selected. */}
                     {isGreek && inlineTrans && (
                       <p className="text-sm text-gray-600 font-sans mt-0.5 border-l-2 border-gray-200 pl-2">
-                        {transByVerse[v.verse] ?? <span className="text-gray-300 italic text-xs">—</span>}
+                        {transByVerse[v.verse]
+                          ? <TransWords text={transByVerse[v.verse]} lang={inlineTrans} reference={ref} />
+                          : <span className="text-gray-300 italic text-xs">—</span>}
                       </p>
                     )}
+                    </div>
                   </div>
-                ))}
+                )})}
               </div>
             )}
           </div>

@@ -1,8 +1,10 @@
 'use client'
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X, ZoomIn, ZoomOut, ExternalLink } from 'lucide-react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-prefs'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -78,6 +80,17 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
   const meta = commentaries.find(c => c.id === commentaryId)
   const highlights = useHighlights(isAuthenticated)
   const highlightSelection = useHighlightSelection(scrollRef)
+  // Verses that already have a note (filled note icon), for the loaded passage. Signed-in only.
+  const [notedKeys, setNotedKeys] = useState<Set<number>>(new Set())
+  const loadNoted = useCallback(async () => {
+    if (!isAuthenticated || !anchor) { setNotedKeys(new Set()); return }
+    try {
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(anchor.book)}&chapter=${anchor.chapter}&verseStart=1&verseEnd=500`)
+      const d = await r.json()
+      setNotedKeys(new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)))
+    } catch { /* leave as-is */ }
+  }, [isAuthenticated, anchor])
+  useEffect(() => { void loadNoted() }, [loadNoted])
 
   // Registry of available commentaries.
   useEffect(() => {
@@ -189,9 +202,19 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
               ref={el => { if (el) verseEls.current.set(v.verse, el); else verseEls.current.delete(v.verse) }}
               onClick={() => setActiveVerse(v.verse)}
               className={`rounded-lg px-2 py-1 transition-colors ${v.verse === activeVerse ? 'bg-brand-50 ring-1 ring-brand-200' : 'hover:bg-gray-50'}`}>
-              <GreekVerse verse={v} activeWordId={null} highlighted={false}
-                textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse) : []}
-                onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }} />
+              <div className="flex items-start gap-1">
+                {isAuthenticated && anchor && (
+                  <span className="pt-1 shrink-0 print:hidden" onClick={e => e.stopPropagation()}>
+                    <VerseNoteButton book={anchor.book} chapter={anchor.chapter} verse={v.verse} noted={notedKeys.has(v.verse)} onChanged={loadNoted} />
+                  </span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <GreekVerse verse={v} activeWordId={null} highlighted={false}
+                    textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse) : []}
+                    onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }}
+                    onWordRightClick={anchor ? (word, x, y) => openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT' }) : undefined} />
+                </div>
+              </div>
             </div>
           ))}
         </div>

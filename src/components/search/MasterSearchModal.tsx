@@ -78,7 +78,7 @@ function renderSnippet(text: string, query: string): ReactNode {
 
 interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
 
-export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function MasterSearchModal({ open, preset, onClose }: { open: boolean; preset?: { query: string; scope: string } | null; onClose: () => void }) {
   const router = useRouter()
   const [query, setQuery] = useState('')
   const [scopeVal, setScopeVal] = useState('trans:en')
@@ -124,6 +124,11 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
   const booksKey = books.join(',')
 
   useEffect(() => setMounted(true), [])
+  // A preset (from the right-click "search this word" menu) pre-fills scope + query and runs.
+  useEffect(() => {
+    if (open && preset) { setScopeVal(preset.scope); setQuery(preset.query) }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, preset])
   // Load the real book catalog once (names + canon coverage per corpus).
   useEffect(() => {
     fetch('/data/books.json').then(r => r.ok ? r.json() : null)

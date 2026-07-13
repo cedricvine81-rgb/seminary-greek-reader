@@ -9,6 +9,7 @@ import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
@@ -710,6 +711,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}
+                                          onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: `${refLabel}:${row.num}`, kind: 'greek', greekCorpus: 'LXX' }) }}
                                           {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
                                           className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched || matchedTerm ? SEARCH_RED : hl ? highlightMarkClass(hl.color) : ''}`}>
                                           {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
