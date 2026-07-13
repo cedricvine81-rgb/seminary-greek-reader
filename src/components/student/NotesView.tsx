@@ -8,6 +8,7 @@ import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // Strip leading/trailing punctuation from a token (script-agnostic — no \p{} so it works at
@@ -195,6 +196,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   }, [isAuthenticated])
 
   useEffect(() => { load() }, [load])
+  // Reload when a note is created/edited/deleted anywhere (e.g. a note icon on the Texts or
+  // Commentary tab) — the notebook stays mounted across tabs, so it would otherwise be stale.
+  useEffect(() => onNotesChanged(() => void load()), [load])
 
   /* ── Folder ops ── */
   async function saveNewFolder() {

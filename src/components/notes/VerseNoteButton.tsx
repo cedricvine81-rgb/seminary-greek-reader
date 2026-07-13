@@ -4,6 +4,7 @@ import { StickyNote, Loader2, Trash2, X } from 'lucide-react'
 import { NoteComposer } from './NoteComposer'
 import { useNoteFontScale } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty, sanitizeNoteHtml } from '@/lib/note-html'
+import { emitNotesChanged } from '@/lib/notes-changed-bus'
 
 /**
  * Per-verse note affordance for any reading view. The icon is brand-blue/filled
@@ -95,6 +96,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
       }
       setPreviewBody(null) // note changed — invalidate the hover-preview cache
       onChanged?.()
+      emitNotesChanged()   // let the (mounted-but-inactive) Notes notebook reload
       close()
     } finally { setSaving(false) }
   }
@@ -102,7 +104,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
   async function remove() {
     if (!note) { close(); return }
     setSaving(true)
-    try { await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' }); setPreviewBody(null); onChanged?.(); close() }
+    try { await fetch(`/api/notes?id=${note.id}`, { method: 'DELETE' }); setPreviewBody(null); onChanged?.(); emitNotesChanged(); close() }
     finally { setSaving(false) }
   }
 
