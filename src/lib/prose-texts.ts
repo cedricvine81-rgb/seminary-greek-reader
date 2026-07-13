@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -403,6 +403,52 @@ export const MISHNAH_CATALOG = MISHNAH.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+// ── Greco-Roman (Perseus) ─────────────────────────────────────────────────────────────
+// Epictetus — the Discourses (one work per book) and the Enchiridion — from the Perseus
+// Digital Library's canonical TEI editions, which carry the standard citation numbering
+// ("Epictetus 1.14.12", "Epictetus, Ench. 33.7"). Both the Greek and George Long's English
+// are stored (the Greek per verse), so the reader shows them side by side. Perseus divides
+// the English to chapter only, so citations resolve at the chapter level. Built by
+// scripts/build-perseus.py.
+const EPICTETUS_ATTRIBUTION = 'Text: Epictetus, tr. George Long (1877); Greek ed. Schenkl. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+// Discourses, book B: "Epictetus 1.14.12" (also written "Epictetus, Diatr. 1.14.12") →
+// chapter 14 (the section is dropped).
+const epictetusDiscCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Epictetus(?:,?\\s*Diatr\\.)?\\s+${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+// Enchiridion: "Epictetus, Ench. 33.7" / "Epictetus Ench. 26" → chapter.
+const epictetusEnchCite = (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(/^Epictetus,?\s*Ench\.\s+(\d+)/)
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const GRECO: { slug: string; name: string; noteBook: string; chapters: number; parseCitation: ProseWork['parseCitation'] }[] = [
+  { slug: 'greco-epictetus-discourses-1', name: 'Epictetus, Discourses (Book 1)', noteBook: 'EpictDisc1', chapters: 30, parseCitation: epictetusDiscCite(1) },
+  { slug: 'greco-epictetus-discourses-2', name: 'Epictetus, Discourses (Book 2)', noteBook: 'EpictDisc2', chapters: 26, parseCitation: epictetusDiscCite(2) },
+  { slug: 'greco-epictetus-discourses-3', name: 'Epictetus, Discourses (Book 3)', noteBook: 'EpictDisc3', chapters: 26, parseCitation: epictetusDiscCite(3) },
+  { slug: 'greco-epictetus-discourses-4', name: 'Epictetus, Discourses (Book 4)', noteBook: 'EpictDisc4', chapters: 13, parseCitation: epictetusDiscCite(4) },
+  { slug: 'greco-epictetus-enchiridion', name: 'Epictetus, Enchiridion', noteBook: 'EpictEnch', chapters: 53, parseCitation: epictetusEnchCite },
+]
+
+const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/greco/${w.slug.replace(/^greco-/, '')}.json`,
+  chapters: w.chapters,
+  attribution: EPICTETUS_ATTRIBUTION,
+  parseCitation: w.parseCitation,
+}))
+
+// Ids/names the catalog needs; `greek: true` tells the reader to show the parallel Greek.
+export const GRECO_CATALOG = GRECO.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -462,6 +508,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...ANF_WORKS,
   ...JUSTIN_WORKS,
   ...MISHNAH_WORKS,
+  ...GRECO_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
@@ -479,6 +526,8 @@ export function matchProseCitation(text: string): { work: ProseWork; ref: { chap
 }
 
 // The chapter→verse JSON shape these works share.
-export interface ProseVerse { number: number; text: string }
+// `greek` is present on parallel-text works (e.g. the Perseus Greco-Roman texts), carrying
+// the original Greek alongside the English `text` for side-by-side display.
+export interface ProseVerse { number: number; text: string; greek?: string }
 export interface ProseChapter { number: number; verses: ProseVerse[] }
-export interface ProseDoc { work: string; attribution: string; chapters: ProseChapter[] }
+export interface ProseDoc { work: string; attribution: string; greek?: boolean; chapters: ProseChapter[] }

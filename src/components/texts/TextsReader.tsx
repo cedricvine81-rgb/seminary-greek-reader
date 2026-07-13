@@ -161,6 +161,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const backLoadingRef = useRef(false)
 
   const isGreek = work?.source === 'lxx'
+  // A prose work that carries the original Greek per verse (e.g. Epictetus) — shown in a
+  // parallel Greek | English layout, distinct from the word-parsed lxx Greek path.
+  const greekProse = !!work?.greek
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work)
   const showEnglish = translationId !== null
@@ -210,7 +213,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
     if (!work) { onAttribution?.(''); return }
-    const parts = ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.']
+    const parts = work.source === 'lxx' ? ['Greek text: Rahlfs’ Septuagint (1935) and Nestle 1904, both public domain.'] : []
     if (work.english === 'brenton') parts.push('English: Brenton’s 1851 English Septuagint (public domain).')
     if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
     const prose = findProseWork(work.source)
@@ -264,7 +267,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const r = await fetch(findProseWork(w.source)!.dataUrl)
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
-    return (ch?.verses ?? []).map((v: { number: number; text: string }) => ({ num: v.number, english: v.text }))
+    return (ch?.verses ?? []).map((v: { number: number; text: string; greek?: string }) => ({ num: v.number, english: v.text, greek: v.greek }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -683,7 +686,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num)
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
-                          className={`grid gap-4 ${isGreek && showEnglish && hasEnglish ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                          className={`grid gap-4 ${(isGreek && showEnglish && hasEnglish) || greekProse ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
                           {/* Greek (or, for prose works, the single English column) — the
                               only column highlighting applies to (see render.tsx: a verse's
                               Greek and English text are different canonical strings, so a
@@ -715,6 +718,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                     })
                                   : row.greek}
                               </span>
+                            ) : greekProse ? (
+                              <span className="font-greek" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.85)' }}>
+                                {q ? highlight(row.greek ?? '', search)
+                                  : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
+                                  : row.greek}
+                              </span>
                             ) : (
                               <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
                                 {q ? highlight(row.english ?? '', search)
@@ -724,11 +733,18 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             )}
                           </p>
 
-                          {/* Parallel English column (Greek works only) */}
-                          {isGreek && showEnglish && hasEnglish && (
-                            <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>
+                          {/* Parallel English column — for lxx Greek works and greek-prose
+                              works (Epictetus). For greek-prose this is the primary text, so
+                              it carries the note/highlight anchor. */}
+                          {((isGreek && showEnglish && hasEnglish) || greekProse) && (
+                            <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
+                              {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num) : {})}>
                               <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
-                              {row.english
+                              {greekProse
+                                ? (q ? highlight(row.english ?? '', search)
+                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
+                                   : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights))
+                                : row.english
                                 ? (q ? highlight(row.english, search)
                                    : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
                                    : row.english)

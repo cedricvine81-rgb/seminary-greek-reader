@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, MISHNAH_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -20,6 +20,7 @@ export interface CatalogWork {
   osisId?: string
   chapters?: number
   english?: 'brenton' | 'bsb'   // parallel English available for a Greek (lxx) work
+  greek?: boolean               // parallel Greek stored per verse (prose works, e.g. Epictetus)
   // josephus
   work?: string                 // directory under public/data/josephus/
   books?: number[]              // chapter count per book (index → book number - 1)
@@ -158,6 +159,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     label: 'Church Fathers',
     blurb: 'The Ante-Nicene Fathers — Justin Martyr’s Dialogue and Apologies, and Irenaeus’s Against Heresies — in the Roberts-Donaldson public-domain translation.',
     works: [...JUSTIN_CATALOG, ...ANF_CATALOG],
+  },
+  {
+    id: 'greco-roman',
+    label: 'Greco-Roman',
+    blurb: 'Greco-Roman authors that illuminate the New Testament world — Epictetus’s Discourses and Enchiridion, with the Greek and George Long’s English side by side (Perseus, CC-BY-SA).',
+    works: GRECO_CATALOG,
   },
   {
     id: 'mishnah',

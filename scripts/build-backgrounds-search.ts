@@ -42,6 +42,7 @@ function indexProse(work: CatalogWork) {
   for (const ch of doc.chapters) {
     for (const vs of ch.verses) {
       if (vs.text) en.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.text })
+      if (vs.greek) grc.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.greek })
     }
   }
 }
