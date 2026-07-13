@@ -1,0 +1,276 @@
+'use client'
+
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { createPortal } from 'react-dom'
+import { useRouter } from 'next/navigation'
+import { Search, X, Loader2 } from 'lucide-react'
+import { GNT_BOOKS, LXX_BOOKS } from '@/lib/constants'
+import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
+import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
+import { isExamLocked } from '@/lib/exam-lockdown'
+
+// The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
+// any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
+// scoped to a single book. Matches show in red; clicking a hit opens it in the right reader.
+
+const TRANSLATIONS = [
+  { lang: 'en',  label: 'English (WEB)' },
+  { lang: 'bsb', label: 'English (BSB)' },
+  { lang: 'es',  label: 'Spanish' },
+  { lang: 'fr',  label: 'French' },
+  { lang: 'pt',  label: 'Portuguese' },
+  { lang: 'ru',  label: 'Russian' },
+  { lang: 'ko',  label: 'Korean' },
+  { lang: 'zh',  label: 'Mandarin' },
+]
+const COLLECTIONS = TEXT_CATEGORIES.filter(c => !c.comingSoon && c.works.length > 0)
+
+// osisId → display name (NT + the OT books that exist in the indexes).
+const BOOK_NAME = new Map<string, string>()
+for (const b of [...GNT_BOOKS, ...LXX_BOOKS]) if (!BOOK_NAME.has(b.osisId)) BOOK_NAME.set(b.osisId, b.name)
+
+type Scope =
+  | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
+  | { kind: 'trans'; lang: string }
+  | { kind: 'bg'; category: string | null }
+
+function parseScope(v: string): Scope {
+  if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' }
+  if (v.startsWith('trans:')) return { kind: 'trans', lang: v.slice(6) }
+  const cat = v.slice(3)
+  return { kind: 'bg', category: cat === 'all' ? null : cat }
+}
+
+const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
+function norm(s: string): string { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase() }
+
+// Highlight every word that contains the query (accent/case-insensitive) — for short verses.
+function hiliteVerse(text: string, query: string): ReactNode {
+  const nq = norm(query.trim())
+  if (!nq) return text
+  return text.split(/(\s+)/).map((tok, i) =>
+    /\s/.test(tok) || !norm(tok).includes(nq)
+      ? tok
+      : <mark key={i} className="bg-red-100 text-red-700 font-semibold rounded-sm">{tok}</mark>,
+  )
+}
+
+// A windowed snippet with the raw query highlighted — for long background paragraphs.
+const RADIUS = 110
+function renderSnippet(text: string, query: string): ReactNode {
+  const q = query.trim()
+  const idx = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1
+  if (idx === -1) return text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
+  const start = Math.max(0, idx - RADIUS)
+  const end = Math.min(text.length, idx + q.length + RADIUS)
+  return (
+    <>
+      {start > 0 ? '…' : ''}{text.slice(start, idx)}
+      <mark className="bg-red-100 text-red-700 font-semibold rounded-sm">{text.slice(idx, idx + q.length)}</mark>
+      {text.slice(idx + q.length, end)}{end < text.length ? '…' : ''}
+    </>
+  )
+}
+
+interface BibHit { ref: string; link: string; text: string; greek: boolean }
+
+export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const router = useRouter()
+  const [query, setQuery] = useState('')
+  const [scopeVal, setScopeVal] = useState('trans:en')
+  const [book, setBook] = useState('')
+  const [bib, setBib] = useState<BibHit[] | null>(null)
+  const [bg, setBg] = useState<BgResult | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const inputRef = useRef<HTMLInputElement>(null)
+  const reqId = useRef(0)
+
+  const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
+  const isBiblical = scope.kind !== 'bg'
+  const bookOptions = scope.kind === 'greek'
+    ? (scope.corpus === 'GNT' ? GNT_BOOKS : LXX_BOOKS)
+    : scope.kind === 'trans' ? [...LXX_BOOKS, ...GNT_BOOKS] : []
+
+  useEffect(() => setMounted(true), [])
+  useEffect(() => { if (open) { setBib(null); setBg(null); inputRef.current?.focus() } }, [open])
+  // A scope change can invalidate the chosen book (different canon).
+  useEffect(() => { setBook('') }, [scopeVal])
+
+  const runSearch = useCallback(async (q: string, sv: string, bk: string) => {
+    if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }
+    const s = parseScope(sv)
+    const id = ++reqId.current
+    setLoading(true)
+    try {
+      if (s.kind === 'bg') {
+        const lang: BgLang = GREEK_RE.test(q) ? 'grc' : 'en'
+        const cat = s.category ? `&category=${s.category}` : ''
+        const res = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q.trim())}&lang=${lang}${cat}`)
+        const data: BgResult = res.ok ? await res.json() : { lang, total: 0, truncated: false, groups: [] }
+        if (id === reqId.current) { setBg(data); setBib(null) }
+      } else {
+        const bookParam = bk ? `&book=${bk}` : ''
+        const url = s.kind === 'greek'
+          ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${bookParam}`
+          : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}`
+        const res = await fetch(url)
+        const data = res.ok ? await res.json() : { results: [] }
+        const hits: BibHit[] = s.kind === 'greek'
+          ? (data.results as { bookId: string; chapter: number; verse: number; text: string }[]).map(v => ({
+              ref: `${BOOK_NAME.get(v.bookId) ?? v.bookId} ${v.chapter}:${v.verse}`,
+              link: `${v.bookId} ${v.chapter}:${v.verse}`, text: v.text, greek: true,
+            }))
+          : (data.results as { id: string; text: string }[]).map(r => {
+              const [osis, ch, vs] = r.id.split('.')
+              return { ref: `${BOOK_NAME.get(osis) ?? osis} ${ch}:${vs}`, link: `${osis} ${ch}:${vs}`, text: r.text, greek: false }
+            })
+        if (id === reqId.current) { setBib(hits); setBg(null) }
+      }
+    } catch {
+      if (id === reqId.current) { setBib(null); setBg(null) }
+    } finally {
+      if (id === reqId.current) setLoading(false)
+    }
+  }, [])
+
+  // Debounced search while open.
+  useEffect(() => {
+    if (!open) return
+    const t = setTimeout(() => void runSearch(query, scopeVal, book), 250)
+    return () => clearTimeout(t)
+  }, [open, query, scopeVal, book, runSearch])
+
+  // Escape to close.
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+
+  function openBiblical(link: string) {
+    onClose()
+    router.push(`/reader?ref=${encodeURIComponent(link)}`)
+  }
+  function openBackground(target: OpenInTextsTarget) {
+    onClose()
+    const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
+    if (hasOpenInTextsListener()) emitOpenInTexts(withTerm)
+    else router.push(`/exegesis?tab=texts&open=${encodeURIComponent(JSON.stringify(withTerm))}`)
+  }
+
+  // Never available during a lockdown exam (it would be a lookup backdoor).
+  if (!open || !mounted || isExamLocked()) return null
+
+  const noResults = query.trim().length >= 2 && !loading &&
+    ((isBiblical && bib && bib.length === 0) || (!isBiblical && bg && bg.total === 0))
+
+  return createPortal(
+    <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/40 p-4 sm:pt-16" onMouseDown={onClose}>
+      <div
+        className="w-full max-w-2xl max-h-[80vh] flex flex-col rounded-xl bg-white shadow-2xl overflow-hidden"
+        onMouseDown={e => e.stopPropagation()}
+      >
+        {/* Search bar */}
+        <div className="flex-none flex items-center gap-2 border-b border-gray-200 px-3 py-2.5">
+          <Search size={16} className="text-gray-400 shrink-0" />
+          <input
+            ref={inputRef}
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            placeholder="Search texts…"
+            className="flex-1 min-w-0 text-sm outline-none placeholder:text-gray-400"
+          />
+          <button onClick={onClose} className="flex-none text-gray-400 hover:text-gray-700 p-1" aria-label="Close">
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Scope controls */}
+        <div className="flex-none flex items-center flex-wrap gap-2 px-3 py-2 bg-gray-50/70 border-b border-gray-100 text-xs">
+          <label className="flex items-center gap-1.5 text-gray-500">
+            In
+            <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
+              className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <optgroup label="Greek">
+                <option value="greek:GNT">Greek — New Testament</option>
+                <option value="greek:LXX">Greek — Septuagint</option>
+              </optgroup>
+              <optgroup label="Translations">
+                {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}</option>)}
+              </optgroup>
+              <optgroup label="Background texts">
+                <option value="bg:all">All background texts</option>
+                {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
+              </optgroup>
+            </select>
+          </label>
+          {isBiblical && (
+            <label className="flex items-center gap-1.5 text-gray-500">
+              Book
+              <select value={book} onChange={e => setBook(e.target.value)}
+                className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]">
+                <option value="">Any book</option>
+                {bookOptions.map(b => <option key={b.osisId} value={b.osisId}>{b.name}</option>)}
+              </select>
+            </label>
+          )}
+        </div>
+
+        {/* Results */}
+        <div className="flex-1 min-h-0 overflow-y-auto">
+          {loading && (
+            <div className="flex items-center justify-center gap-2 py-10 text-sm text-gray-400">
+              <Loader2 size={16} className="animate-spin" /> Searching…
+            </div>
+          )}
+          {!loading && query.trim().length < 2 && (
+            <p className="py-10 text-center text-sm text-gray-400 px-6">
+              Search the Greek NT & LXX, the English/Spanish (and more) translations, or any background collection.
+            </p>
+          )}
+          {noResults && (
+            <p className="py-10 text-center text-sm text-gray-400">No matches.</p>
+          )}
+
+          {/* Biblical hits */}
+          {!loading && isBiblical && bib && bib.length > 0 && (
+            <div className="divide-y divide-gray-100">
+              <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">{bib.length}{bib.length >= 300 ? '+' : ''} verse{bib.length === 1 ? '' : 's'}</p>
+              {bib.map((h, i) => (
+                <button key={i} onClick={() => openBiblical(h.link)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
+                  <span className="text-[11px] font-medium text-brand-600">{h.ref}</span>
+                  <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, query)}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Background hits */}
+          {!loading && !isBiblical && bg && bg.total > 0 && (
+            <div className="divide-y divide-gray-100">
+              <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">
+                {bg.total}{bg.truncated ? '+' : ''} match{bg.total === 1 ? '' : 'es'} in {bg.groups.length} work{bg.groups.length === 1 ? '' : 's'}
+              </p>
+              {bg.groups.map(g => (
+                <div key={g.gid} className="py-1.5">
+                  <p className="px-4 py-1 text-xs font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
+                  {g.hits.map((h, i) => (
+                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
+                      <span className="text-[11px] font-medium text-brand-600">{h.ref}</span>
+                      <span className={`block text-xs text-gray-600 leading-snug ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, query)}</span>
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body,
+  )
+}

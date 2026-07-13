@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
+import { MasterSearchButton } from '@/components/search/MasterSearchButton'
 import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
 
 interface AppHeaderProps {
@@ -56,8 +57,11 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           )}
         </nav>
 
-        {/* Right: hamburger menu */}
-        <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
+        {/* Right: search icon (desktop) + hamburger menu */}
+        <div className="flex items-center gap-1">
+          <MasterSearchButton />
+          <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
+        </div>
       </div>
     </header>
   )

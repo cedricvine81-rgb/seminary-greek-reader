@@ -12,8 +12,10 @@ export async function GET(req: NextRequest) {
   if (!q || q.length < 2) return NextResponse.json({ error: 'Query too short' }, { status: 400 })
   const langParam = searchParams.get('lang')
   const lang: BgLang = langParam === 'en' || langParam === 'grc' ? langParam : detectLang(q)
+  // Optional collection scope (a TEXT_CATEGORIES id, e.g. 'josephus', 'pseudepigrapha').
+  const category = searchParams.get('category') || null
   try {
-    const result = await searchBackgrounds(q, lang)
+    const result = await searchBackgrounds(q, lang, 300, category)
     return NextResponse.json(result)
   } catch (err) {
     logError('api/search/backgrounds', err)

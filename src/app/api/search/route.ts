@@ -12,6 +12,8 @@ export async function GET(req: NextRequest) {
   const lang = searchParams.get('lang')
   // When 'true', treat q as a Greek lexeme and find every verse with any of its forms.
   const lemma = searchParams.get('lemma') === 'true'
+  // Optional book scope (osisId, e.g. 'Matt') — used by the master search ("love in Matthew").
+  const book = searchParams.get('book') || null
 
   try {
     // Morphology search: features (comma-separated parsing tokens) + optional lemma. No q.
@@ -26,15 +28,21 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ results: await searchByStrongs(q, corpus) })
     }
     if (type === 'word' && lang) {
-      return NextResponse.json({ results: await searchTranslation(lang, q), translation: true })
+      // Book scope is applied inside the scan (not post-filtered) so late-canon hits aren't
+      // lost to the result cap — e.g. "love" in Matthew, which the OT fills up first.
+      const results = await searchTranslation(lang, q, 300, book)
+      return NextResponse.json({ results, translation: true })
     }
     if (type === 'word' && lemma) {
-      return NextResponse.json({ results: await searchByLemma(q, corpus) })
+      let results = await searchByLemma(q, corpus)
+      if (book) results = results.filter(v => v.bookId === book)
+      return NextResponse.json({ results })
     }
 
-    const results = type === 'reference'
+    let results = type === 'reference'
       ? await searchByReference(q, corpus)
       : await searchByGreekWord(q, corpus)
+    if (book) results = results.filter(v => v.bookId === book)
 
     return NextResponse.json({ results })
   } catch (err) {

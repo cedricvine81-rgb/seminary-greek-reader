@@ -29,10 +29,13 @@ function normalize(s: string): string {
 
 // Catalog metadata for building display labels/targets at query time (keeps it out of the index).
 const _meta = new Map<string, { name: string; chapters: number; order: number }>()
+// Work id → its catalog category id, so the master search can scope to one collection.
+const _categoryOf = new Map<string, string>()
 ;(() => {
   let order = 0
   for (const cat of TEXT_CATEGORIES) for (const w of cat.works) {
     _meta.set(w.id, { name: w.name, chapters: w.chapters ?? 1, order: order++ })
+    _categoryOf.set(w.id, cat.id)
   }
 })()
 
@@ -82,7 +85,7 @@ function labelFor(e: Entry, name: string, chapters: number): string {
  * Search the background corpus. Results are grouped by work, ordered by the catalog, each
  * carrying an OpenInTextsTarget so the caller can open the hit in the Texts reader.
  */
-export async function searchBackgrounds(query: string, lang: BgLang, limit = 300): Promise<BgResult> {
+export async function searchBackgrounds(query: string, lang: BgLang, limit = 300, category?: string | null): Promise<BgResult> {
   const data = await load(lang)
   const q = normalize(query.trim())
   if (!data || q.length < 2) return { lang, total: 0, truncated: false, groups: [] }
@@ -92,6 +95,8 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
   let truncated = false
   for (let i = 0; i < data.entries.length; i++) {
     if (!data.normalized[i].includes(q)) continue
+    // Collection scope: skip hits whose work isn't in the requested category.
+    if (category && _categoryOf.get(data.entries[i].g) !== category) continue
     if (total >= limit) { truncated = true; break }
     const e = data.entries[i]
     const meta = _meta.get(e.g) ?? { name: e.g, chapters: 1, order: 999 }

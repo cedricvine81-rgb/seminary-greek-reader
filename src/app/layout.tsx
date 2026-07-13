@@ -5,6 +5,7 @@ import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { BackgroundsSearchProvider } from '@/components/search/BackgroundsSearchProvider'
+import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { cookies } from 'next/headers'
@@ -77,6 +78,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AppFooter />
         </div>
         <BackgroundsSearchProvider />
+        <MasterSearchProvider />
       </body>
     </html>
   )
