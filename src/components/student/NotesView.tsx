@@ -8,7 +8,7 @@ import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
-import { onNotesChanged } from '@/lib/notes-changed-bus'
+import { onNotesChanged, emitNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // Strip leading/trailing punctuation from a token (script-agnostic — no \p{} so it works at
@@ -676,7 +676,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
           const payload = isGeneral ? { general: true, title, body, folderId } : { ...anchor!, body, folderId }
           const res = await fetch('/api/notes', { method: 'POST', headers: H, body: JSON.stringify(payload) })
           const d = await res.json().catch(() => ({}))
-          if (res.ok && d.note?.id) { idRef.current = d.note.id; saved.current = { body, title } }
+          if (res.ok && d.note?.id) { idRef.current = d.note.id; saved.current = { body, title }; emitNotesChanged() }
         } finally { setSaving(false) }
         if (final && !discarded.current) onChanged()
         return
@@ -687,7 +687,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         setSaving(true)
         try { await fetch(`/api/notes?id=${id}`, { method: 'DELETE' }); saved.current = { body: '', title: '' } }
         finally { setSaving(false) }
-        onChanged()
+        onChanged(); emitNotesChanged()
         return
       }
       const patch: { body?: string; title?: string } = {}
@@ -737,7 +737,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
 
   function discard() {
     discarded.current = true
-    if (idRef.current) { void fetch(`/api/notes?id=${idRef.current}`, { method: 'DELETE' }).then(() => onChanged()) }
+    if (idRef.current) { void fetch(`/api/notes?id=${idRef.current}`, { method: 'DELETE' }).then(() => { onChanged(); emitNotesChanged() }) }
     onCancel?.()
   }
 
@@ -773,7 +773,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
             <option value="">Unfiled</option>
             {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
-          {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
+          {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged(); emitNotesChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
         </span>
       </div>
       <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={() => void save(finalOnBlur)} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />

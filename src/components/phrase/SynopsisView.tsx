@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
@@ -128,6 +129,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     setNotedKeys(keys)
   }, [isAuthenticated, books, columns.join('|')]) // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(() => { refreshNotes() }, [refreshNotes])
+  useEffect(() => onNotesChanged(refreshNotes), [refreshNotes])
 
   useEffect(() => {
     fetch('/api/reader?corpus=GNT').then(r => r.json()).then(d => setBooks(d.books ?? [])).catch(() => {})

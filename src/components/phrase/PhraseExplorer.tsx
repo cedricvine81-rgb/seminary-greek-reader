@@ -2,6 +2,7 @@
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -262,6 +263,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
     } catch { /* ignore */ }
   }, [isAuthenticated, cur])
   useEffect(() => { refreshNotes() }, [refreshNotes])
+  useEffect(() => onNotesChanged(refreshNotes), [refreshNotes])
   // Translation text keyed by lang → verseId ("John.1.1") → text, with a version
   // counter to re-render after async loads. `loaded` dedupes fetches.
   const transCache = useRef<Record<string, Record<string, string>>>({})

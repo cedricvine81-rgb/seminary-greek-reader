@@ -10,6 +10,7 @@ import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
@@ -187,6 +188,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       setNotedMap(prev => ({ ...prev, [`${noteBook}.${ch}`]: new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)) }))
     } catch { /* ignore */ }
   }, [isAuthenticated])
+
+  // Keep note icons in sync when a note is made/removed on another tab — refresh every
+  // currently-loaded chapter of the open work.
+  useEffect(() => {
+    if (!work) return
+    return onNotesChanged(() => seriesRef.current.sections.forEach(s => void refreshNotesFor(noteBookFor(work, s), s.chapter)))
+  }, [work, refreshNotesFor])
 
   // Close the open category's book dropdown on an outside click.
   useEffect(() => {

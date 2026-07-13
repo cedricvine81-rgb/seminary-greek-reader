@@ -5,6 +5,7 @@ import { GreekVerse } from '@/components/reader/GreekVerse'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useCommentaryFontScale, useCommentaryLineSpacing } from '@/lib/note-prefs'
 import type { BiblicalVerse } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -91,6 +92,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
     } catch { /* leave as-is */ }
   }, [isAuthenticated, anchor])
   useEffect(() => { void loadNoted() }, [loadNoted])
+  useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
 
   // Registry of available commentaries.
   useEffect(() => {

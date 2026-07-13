@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
 import { setExamLocked } from '@/lib/exam-lockdown'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
@@ -472,6 +473,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     } catch { /* ignore */ }
   }, [notesEnabled, selectedBook, chapter, verseStart, verseEnd, loadedVerses.length])
   useEffect(() => { refreshNotes() }, [refreshNotes])
+  // Keep the note icons in sync when a note is made/removed on another tab.
+  useEffect(() => onNotesChanged(refreshNotes), [refreshNotes])
 
   // ── Annotation state ──
   const [annotations, setAnnotations] = useState<AnnotationMap>({})

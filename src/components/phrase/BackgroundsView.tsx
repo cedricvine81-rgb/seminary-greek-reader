@@ -2,6 +2,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
+import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
@@ -460,6 +461,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   }, [])
 
   const parsed = parseRef(anchor, gntBooks)
+
+  // Keep the note icons in sync when a note is made/removed on another tab.
+  useEffect(() => {
+    const book = parsed?.book.osisId; const chapter = parsed?.chapter
+    if (!book || chapter == null) return
+    return onNotesChanged(() => refreshNotes(book, chapter))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshNotes, parsed?.book.osisId, parsed?.chapter])
 
   // Load the anchor passage's text (left column) whenever it or the version changes.
   useEffect(() => {
