@@ -59,11 +59,10 @@ const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/p
 const LOCATE_ROW_H = 26
 const LOCATE_HEADER_H = 22
 
-// Highlight every case-insensitive match of `q` inside `text`. `cls` picks the colour:
-// yellow for the in-text search box, red for a term carried in from a background search.
-const SEARCH_YELLOW = 'bg-yellow-200 rounded-sm'
+// Highlight every case-insensitive match of `q` inside `text`, in red — used both for the
+// in-text search box and for a term carried in from a background search.
 const SEARCH_RED = 'bg-red-100 text-red-700 font-semibold rounded-sm'
-function highlight(text: string, q: string, cls: string = SEARCH_YELLOW): ReactNode {
+function highlight(text: string, q: string, cls: string = SEARCH_RED): ReactNode {
   if (!q.trim()) return text
   const idx = text.toLowerCase().indexOf(q.toLowerCase())
   if (idx === -1) return text
@@ -709,7 +708,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}
                                           {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
-                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : matchedTerm ? SEARCH_RED : hl ? highlightMarkClass(hl.color) : ''}`}>
+                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched || matchedTerm ? SEARCH_RED : hl ? highlightMarkClass(hl.color) : ''}`}>
                                           {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
                                         </span>
                                       )
