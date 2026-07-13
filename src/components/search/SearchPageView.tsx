@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
@@ -11,6 +11,7 @@ import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
+import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
 
 // The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
 // or a translation) or any background collection, optionally scoped to books. Matches show in
@@ -38,11 +39,13 @@ interface Catalog { gnt: PickBook[]; lxx: PickBook[] }
 type Scope =
   | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
   | { kind: 'trans'; lang: string }
-  | { kind: 'bg'; category: string | null }
+  | { kind: 'bg'; category: string | null; lang?: 'grc' }
 
 function parseScope(v: string): Scope {
   if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' }
   if (v.startsWith('trans:')) return { kind: 'trans', lang: v.slice(6) }
+  // bggrc: forces the Greek (Septuagint) facet of the background corpus; bg: auto-detects.
+  if (v.startsWith('bggrc:')) { const c = v.slice(6); return { kind: 'bg', category: c === 'all' ? null : c, lang: 'grc' } }
   const cat = v.slice(3)
   return { kind: 'bg', category: cat === 'all' ? null : cat }
 }
@@ -103,6 +106,7 @@ const QUERY_STORAGE_KEY = 'masterSearch.query'
 const RECENT_STORAGE_KEY = 'masterSearch.recent'
 const SORT_STORAGE_KEY = 'masterSearch.sort'
 const CONTEXT_STORAGE_KEY = 'masterSearch.context'
+const GREEKINPUT_STORAGE_KEY = 'masterSearch.greekInput'
 const RECENT_MAX = 8
 
 type SortMode = 'relevance' | 'canonical'
@@ -151,6 +155,10 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
   const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
+  const [greekInput, setGreekInput] = useState(false)   // QWERTY→Greek (Beta Code) typing
+  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string }[]>([])
+  const [showSug, setShowSug] = useState(false)
+  const lastPickedRef = useRef('')
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
@@ -216,6 +224,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
     try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
     try { const c = Number(localStorage.getItem(CONTEXT_STORAGE_KEY)); if (Number.isFinite(c) && c >= 0 && c <= 3) setContext(c) } catch {}
+    try { if (localStorage.getItem(GREEKINPUT_STORAGE_KEY) === '1') setGreekInput(true) } catch {}
     setMounted(true)
     inputRef.current?.focus()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -226,6 +235,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   useEffect(() => { if (mounted) try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal, mounted])
   useEffect(() => { if (mounted) try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort, mounted])
   useEffect(() => { if (mounted) try { localStorage.setItem(CONTEXT_STORAGE_KEY, String(context)) } catch {} }, [context, mounted])
+  useEffect(() => { if (mounted) try { localStorage.setItem(GREEKINPUT_STORAGE_KEY, greekInput ? '1' : '0') } catch {} }, [greekInput, mounted])
   useEffect(() => {
     if (!mounted) return
     try { if (query.trim()) localStorage.setItem(QUERY_STORAGE_KEY, query); else localStorage.removeItem(QUERY_STORAGE_KEY) } catch {}
@@ -263,7 +273,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     setLoading(true)
     try {
       if (s.kind === 'bg') {
-        const lang: BgLang = GREEK_RE.test(q) ? 'grc' : 'en'
+        const lang: BgLang = s.lang ?? (GREEK_RE.test(q) ? 'grc' : 'en')
         const cat = s.category ? `&category=${s.category}` : ''
         const res = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q.trim())}&lang=${lang}${cat}`)
         const data: BgResult = res.ok ? await res.json() : { lang, total: 0, truncated: false, groups: [] }
@@ -331,6 +341,53 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
       .catch(() => { if (id === ctxReq.current) setCtxMap({}) })
   }, [isBiblical, context, displayBib, scope])
 
+  // Predictive typing: autocomplete the last word of the query. Translation scope → that
+  // language's words; Greek scope / Greek text → Greek dictionary lexemes (with glosses).
+  useEffect(() => {
+    const lastWord = query.match(/\S*$/)?.[0] ?? ''
+    if (lastWord.length < 2 || lastWord.startsWith('"') || query.trim() === lastPickedRef.current) { setSuggestions([]); return }
+    // A Greek-script word always gets Greek lexeme suggestions; otherwise a translation's own
+    // words (or English for background text). Greek scope has no lang → Greek lexemes.
+    let langParam = ''
+    if (GREEK_RE.test(lastWord)) langParam = ''
+    else if (scope.kind === 'trans') langParam = `&lang=${scope.lang}`
+    else if (scope.kind === 'bg' && scope.lang !== 'grc') langParam = '&lang=en'
+    const ctrl = new AbortController()
+    const t = setTimeout(() => {
+      fetch(`/api/suggest?q=${encodeURIComponent(lastWord)}${langParam}`, { signal: ctrl.signal })
+        .then(r => (r.ok ? r.json() : { suggestions: [] }))
+        .then(d => { setSuggestions(d.suggestions ?? []); setShowSug(true) })
+        .catch(() => {})
+    }, 150)
+    return () => { clearTimeout(t); ctrl.abort() }
+  }, [query, scope])
+
+  function onQueryChange(e: ChangeEvent<HTMLInputElement>) {
+    const el = e.target
+    const pos = el.selectionStart ?? el.value.length
+    if (greekInput) {
+      setQuery(betaCodeToGreek(el.value))
+      requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
+    } else {
+      setQuery(el.value)
+    }
+  }
+  function pickSuggestion(word: string) {
+    setQuery(q => {
+      const next = q.replace(/\S*$/, word)
+      lastPickedRef.current = next.trim()
+      return next
+    })
+    setSuggestions([]); setShowSug(false)
+    inputRef.current?.focus()
+  }
+  function toggleGreekInput() {
+    const nv = !greekInput
+    setGreekInput(nv)
+    if (nv) setQuery(q => betaCodeToGreek(q))
+    inputRef.current?.focus()
+  }
+
   const toggleBook = (osisId: string) =>
     setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
   const toggleGroup = (ids: string[], select: boolean) =>
@@ -392,23 +449,50 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
       {/* Sticky controls */}
       <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
-        <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
-          <Search size={18} className="text-gray-400 shrink-0" />
-          <input
-            ref={inputRef}
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            onKeyDown={e => { if (e.key === 'Enter') pushRecent(query) }}
-            placeholder="Search the Greek NT & LXX, translations, or background texts…"
-            className="flex-1 min-w-0 text-base outline-none placeholder:text-gray-400"
-          />
-          {query && (
-            <button type="button" onClick={() => { setQuery(''); inputRef.current?.focus() }}
-              className="flex-none text-gray-400 hover:text-gray-700 p-0.5" title="Clear" aria-label="Clear search">
-              <X size={16} />
+        <div className="relative">
+          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
+            <Search size={18} className="text-gray-400 shrink-0" />
+            <input
+              ref={inputRef}
+              value={query}
+              onChange={onQueryChange}
+              onKeyDown={e => { if (e.key === 'Enter') { pushRecent(query); setShowSug(false) } if (e.key === 'Escape') setShowSug(false) }}
+              onFocus={() => { if (suggestions.length) setShowSug(true) }}
+              placeholder="Search the Greek NT & LXX, translations, or background texts…"
+              className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : ''}`}
+            />
+            {query && (
+              <button type="button" onClick={() => { setQuery(''); setSuggestions([]); inputRef.current?.focus() }}
+                className="flex-none text-gray-400 hover:text-gray-700 p-0.5" title="Clear" aria-label="Clear search">
+                <X size={16} />
+              </button>
+            )}
+            <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
+              title="Type Greek with a QWERTY keyboard (Beta Code: l→λ, q→θ …)"
+              className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
+              α
             </button>
+          </div>
+
+          {/* Predictive suggestions (complete the last word) */}
+          {showSug && suggestions.length > 0 && (
+            <>
+              <div className="fixed inset-0 z-30" onClick={() => setShowSug(false)} />
+              <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+                {suggestions.map(s => (
+                  <button key={s.word} type="button" onMouseDown={e => { e.preventDefault(); pickSuggestion(s.word) }}
+                    className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2">
+                    <span className={`text-gray-800 shrink-0 ${GREEK_RE.test(s.word) ? 'greek-text text-base' : 'text-sm'}`}>{s.word}</span>
+                    {s.sub && <span className="text-xs text-gray-400 truncate">{s.sub}</span>}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
         </div>
+        {greekInput && (
+          <p className="mt-1 text-[11px] text-gray-400">Typing Greek (Beta Code): <span className="greek-text">{BETA_LEGEND}</span></p>
+        )}
 
         {/* Scope + book + Search types */}
         <div className="mt-2 flex items-center justify-between gap-2 text-xs">
@@ -426,6 +510,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 </optgroup>
                 <optgroup label="Background texts">
                   <option value="bg:all">All background texts</option>
+                  <option value="bggrc:all">All background texts — Greek (LXX)</option>
                   {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
                 </optgroup>
               </select>
