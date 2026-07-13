@@ -48,6 +48,19 @@ function parseScope(v: string): Scope {
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
 function norm(s: string): string { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase() }
 
+// Accent/case-folded copy of a string plus a map from each folded index back to the original
+// index — lets us find an accent-insensitive match in long text (e.g. a Greek background
+// paragraph) yet still slice/highlight the ORIGINAL, accented text.
+function buildFold(text: string): { folded: string; map: number[] } {
+  let folded = ''
+  const map: number[] = []
+  for (let i = 0; i < text.length; i++) {
+    const f = norm(text[i])
+    for (let j = 0; j < f.length; j++) { folded += f[j]; map.push(i) }
+  }
+  return { folded, map }
+}
+
 // Highlight every word that contains the query (accent/case-insensitive) — for short verses.
 function hiliteVerse(text: string, query: string): ReactNode {
   const nq = norm(query.trim())
@@ -63,15 +76,23 @@ function hiliteVerse(text: string, query: string): ReactNode {
 const RADIUS = 110
 function renderSnippet(text: string, query: string): ReactNode {
   const q = query.trim()
-  const idx = q ? text.toLowerCase().indexOf(q.toLowerCase()) : -1
-  if (idx === -1) return text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
+  const head = () => text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
+  if (!q) return head()
+  // Accent/case-insensitive match (so a Greek query hits accented Greek text), highlighting the
+  // original accented span via the fold→original index map.
+  const { folded, map } = buildFold(text)
+  const fq = buildFold(q).folded
+  const fi = fq ? folded.indexOf(fq) : -1
+  if (fi === -1) return head()
+  const idx = map[fi]
+  const endIdx = map[fi + fq.length - 1] + 1
   const start = Math.max(0, idx - RADIUS)
-  const end = Math.min(text.length, idx + q.length + RADIUS)
+  const end = Math.min(text.length, endIdx + RADIUS)
   return (
     <>
       {start > 0 ? '…' : ''}{text.slice(start, idx)}
-      <mark className="bg-red-100 text-red-700 font-semibold rounded-sm">{text.slice(idx, idx + q.length)}</mark>
-      {text.slice(idx + q.length, end)}{end < text.length ? '…' : ''}
+      <mark className="bg-red-100 text-red-700 font-semibold rounded-sm">{text.slice(idx, endIdx)}</mark>
+      {text.slice(endIdx, end)}{end < text.length ? '…' : ''}
     </>
   )
 }
@@ -100,6 +121,8 @@ async function fetchLaneCount(val: string, q: string): Promise<number> {
 }
 
 const SCOPE_STORAGE_KEY = 'masterSearch.scope'
+const RECENT_STORAGE_KEY = 'masterSearch.recent'
+const RECENT_MAX = 8
 
 export function MasterSearchModal({ open, preset, onClose }: { open: boolean; preset?: { query: string; scope: string } | null; onClose: () => void }) {
   const router = useRouter()
@@ -111,6 +134,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   const [bib, setBib] = useState<BibHit[] | null>(null)
   const [bg, setBg] = useState<BgResult | null>(null)
   const [counts, setCounts] = useState<Record<string, number | null>>({})
+  const [recent, setRecent] = useState<string[]>([])
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
@@ -169,6 +193,21 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {}
   }, [])
   useEffect(() => { try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal])
+  // Recent searches (shown on the empty prompt); recorded when a hit is opened or Enter is hit.
+  useEffect(() => {
+    try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
+  }, [])
+  // Clear the query on close so the box doesn't reopen with stale text (a preset re-fills it).
+  useEffect(() => { if (!open) setQuery('') }, [open])
+  const pushRecent = useCallback((q: string) => {
+    const v = q.trim()
+    if (v.length < 2) return
+    setRecent(prev => {
+      const next = [v, ...prev.filter(x => x.toLowerCase() !== v.toLowerCase())].slice(0, RECENT_MAX)
+      try { localStorage.setItem(RECENT_STORAGE_KEY, JSON.stringify(next)) } catch {}
+      return next
+    })
+  }, [])
   // A preset (from the right-click "search this word" menu) pre-fills scope + query and runs.
   useEffect(() => {
     if (open && preset) { setScopeVal(preset.scope); setQuery(preset.query) }
@@ -260,10 +299,12 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
 
   function openBiblical(link: string) {
+    pushRecent(query)
     onClose()
     router.push(`/reader?ref=${encodeURIComponent(link)}`)
   }
   function openBackground(target: OpenInTextsTarget) {
+    pushRecent(query)
     onClose()
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
     if (hasOpenInTextsListener()) emitOpenInTexts(withTerm)
@@ -289,6 +330,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') pushRecent(query) }}
             placeholder="Search texts…"
             className="flex-1 min-w-0 text-sm outline-none placeholder:text-gray-400"
           />
@@ -368,9 +410,29 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
             </div>
           )}
           {!loading && query.trim().length < 2 && (
-            <p className="py-10 text-center text-sm text-gray-400 px-6">
-              Search the Greek NT & LXX, the English/Spanish (and more) translations, or any background collection.
-            </p>
+            <div className="px-4 py-6">
+              {recent.length > 0 && (
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2 px-1">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Recent</p>
+                    <button type="button"
+                      onClick={() => { setRecent([]); try { localStorage.removeItem(RECENT_STORAGE_KEY) } catch {} }}
+                      className="text-[11px] text-brand-600 hover:underline">Clear</button>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {recent.map(r => (
+                      <button key={r} type="button" onClick={() => { setQuery(r); inputRef.current?.focus() }}
+                        className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
+                        {r}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <p className="text-center text-sm text-gray-400 px-2">
+                Search the Greek NT &amp; LXX, the English/Spanish (and more) translations, or any background collection.
+              </p>
+            </div>
           )}
           {noResults && (
             <p className="py-10 text-center text-sm text-gray-400">No matches.</p>
