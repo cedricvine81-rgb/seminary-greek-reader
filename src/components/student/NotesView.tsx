@@ -43,6 +43,9 @@ const VERSIONS = [
   { code: 'ko', label: 'Korean' },
   { code: 'zh', label: 'Mandarin' },
 ]
+// The non-Greek versions can also be shown INLINE beneath the Greek (like the Reader).
+const TRANSLATIONS = VERSIONS.filter(v => v.code !== 'na1904' && v.code !== 'gnt')
+const INLINE_TRANS_KEY = 'notes-inline-trans'
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
 const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
 function formatGntMorph(m: Record<string, string | null> | undefined): string {
@@ -79,54 +82,83 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const isGreek = version === 'na1904' || version === 'gnt'
+  // Optional translation shown INLINE beneath each Greek verse (only when a Greek version is
+  // active), mirroring the Reader. Persisted so it survives navigation.
+  const [inlineTrans, setInlineTrans] = useState<string | null>(() =>
+    typeof window === 'undefined' ? null : (localStorage.getItem(INLINE_TRANS_KEY) || null))
+  const [transByVerse, setTransByVerse] = useState<Record<number, string>>({})
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (inlineTrans) localStorage.setItem(INLINE_TRANS_KEY, inlineTrans)
+    else localStorage.removeItem(INLINE_TRANS_KEY)
+  }, [inlineTrans])
 
+  // Load a passage in one version → verses (with Greek tokens where available). Shared by the
+  // primary text pane and the inline-translation fetch.
+  const loadVerses = useCallback(async (v: string, osis: string, chapter: number): Promise<{ verse: number; text: string; tokens?: WordToken[] }[]> => {
+    if (v === 'na1904') {
+      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; strongs?: string; c?: Node[] }
+      const r = await fetch(`/data/phrase-tree/${osis}.json`)
+      const d: { sentences?: { tree: Node }[] } = r.ok ? await r.json() : {}
+      const byVerse: Record<number, { i: number; tok: WordToken }[]> = {}
+      const walk = (n: Node) => {
+        if (n.t === 'w' && n.id) {
+          const [bk, ch, vs, wd] = n.id.split('.')
+          if (bk === osis && Number(ch) === chapter) {
+            const vNum = Number(vs)
+            ;(byVerse[vNum] ??= []).push({ i: parseInt(wd || '0', 10), tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss, strongs: n.strongs } })
+          }
+        } else (n.c ?? []).forEach(walk)
+      }
+      for (const s of d.sentences ?? []) walk(s.tree)
+      return Object.entries(byVerse).map(([vs, ws]) => {
+        ws.sort((a, b) => a.i - b.i)
+        return { verse: Number(vs), text: ws.map(x => x.tok.surface).join(' '), tokens: ws.map(x => x.tok) }
+      }).sort((a, b) => a.verse - b.verse)
+    }
+    if (v === 'gnt') {
+      const r = await fetch(`/data/gnt/${osis}_${chapter}.json`)
+      const d: { verses?: { verse: number; text: string; words?: { surface: string; lemma?: string; strongs?: string; morph?: Record<string, string | null> }[] }[] } = r.ok ? await r.json() : {}
+      return (d.verses ?? []).map(vv => ({ verse: vv.verse, text: vv.text, tokens: vv.words?.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '', strongs: w.strongs })) }))
+    }
+    if (v === 'bsb') {
+      const r = await fetch('/data/bsb-alignment.json?v=3')
+      const d: Record<string, { text: string }> = r.ok ? await r.json() : {}
+      return Object.entries(d)
+        .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
+        .map(([vid, val]) => ({ verse: Number(vid.split('.')[2]), text: val.text }))
+        .sort((a, b) => a.verse - b.verse)
+    }
+    const r = await fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${v}`)
+    const d: { verses?: Record<string, string> } = r.ok ? await r.json() : {}
+    return Object.entries(d.verses ?? {}).map(([vid, text]) => ({ verse: Number(vid.split('.')[2]), text })).sort((a, b) => a.verse - b.verse)
+  }, [])
+
+  // Primary text pane.
   useEffect(() => {
     if (!anchor) { setPassageVerses([]); return }
     let cancelled = false
     const { book: osis, chapter, verseStart, verseEnd } = anchor
-    async function run() {
-      let verses: { verse: number; text: string; tokens?: WordToken[] }[] = []
-      if (version === 'na1904') {
-        type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; strongs?: string; c?: Node[] }
-        const r = await fetch(`/data/phrase-tree/${osis}.json`)
-        const d: { sentences?: { tree: Node }[] } = r.ok ? await r.json() : {}
-        const byVerse: Record<number, { i: number; tok: WordToken }[]> = {}
-        const walk = (n: Node) => {
-          if (n.t === 'w' && n.id) {
-            const [bk, ch, vs, wd] = n.id.split('.')
-            if (bk === osis && Number(ch) === chapter) {
-              const vNum = Number(vs)
-              ;(byVerse[vNum] ??= []).push({ i: parseInt(wd || '0', 10), tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss, strongs: n.strongs } })
-            }
-          } else (n.c ?? []).forEach(walk)
-        }
-        for (const s of d.sentences ?? []) walk(s.tree)
-        verses = Object.entries(byVerse).map(([vs, ws]) => {
-          ws.sort((a, b) => a.i - b.i)
-          return { verse: Number(vs), text: ws.map(x => x.tok.surface).join(' '), tokens: ws.map(x => x.tok) }
-        }).sort((a, b) => a.verse - b.verse)
-      } else if (version === 'gnt') {
-        const r = await fetch(`/data/gnt/${osis}_${chapter}.json`)
-        const d: { verses?: { verse: number; text: string; words?: { surface: string; lemma?: string; strongs?: string; morph?: Record<string, string | null> }[] }[] } = r.ok ? await r.json() : {}
-        verses = (d.verses ?? []).map(v => ({ verse: v.verse, text: v.text, tokens: v.words?.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '', strongs: w.strongs })) }))
-      } else if (version === 'bsb') {
-        const r = await fetch('/data/bsb-alignment.json?v=3')
-        const d: Record<string, { text: string }> = r.ok ? await r.json() : {}
-        verses = Object.entries(d)
-          .filter(([vid]) => vid.startsWith(`${osis}.${chapter}.`))
-          .map(([vid, val]) => ({ verse: Number(vid.split('.')[2]), text: val.text }))
-          .sort((a, b) => a.verse - b.verse)
-      } else {
-        const r = await fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${version}`)
-        const d: { verses?: Record<string, string> } = r.ok ? await r.json() : {}
-        verses = Object.entries(d.verses ?? {}).map(([vid, text]) => ({ verse: Number(vid.split('.')[2]), text })).sort((a, b) => a.verse - b.verse)
-      }
-      if (!cancelled) setPassageVerses(verses.filter(v => v.verse >= verseStart && v.verse <= verseEnd))
-    }
     setSelectedInfo(null); setSelectedKey(null)
-    void run()
+    void loadVerses(version, osis, chapter).then(verses => {
+      if (!cancelled) setPassageVerses(verses.filter(v => v.verse >= verseStart && v.verse <= verseEnd))
+    })
     return () => { cancelled = true }
-  }, [anchor, version])
+  }, [anchor, version, loadVerses])
+
+  // Inline translation beneath the Greek (only meaningful while a Greek version is showing).
+  useEffect(() => {
+    if (!anchor || !isGreek || !inlineTrans) { setTransByVerse({}); return }
+    let cancelled = false
+    const { book: osis, chapter } = anchor
+    void loadVerses(inlineTrans, osis, chapter).then(verses => {
+      if (cancelled) return
+      const map: Record<number, string> = {}
+      for (const v of verses) map[v.verse] = v.text
+      setTransByVerse(map)
+    })
+    return () => { cancelled = true }
+  }, [anchor, inlineTrans, isGreek, loadVerses])
 
   // A new passage clears any half-open "add note on verse" editor from the previous one.
   useEffect(() => { setAddVerse(null) }, [anchor])
@@ -390,13 +422,28 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide truncate">
               {anchor ? `${anchor.name} ${anchor.chapter}:${anchor.verseStart}${anchor.verseEnd !== anchor.verseStart ? `–${anchor.verseEnd}` : ''}` : 'No passage'}
             </p>
-            <select
-              value={version}
-              onChange={e => setVersion(e.target.value)}
-              className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400 shrink-0"
-            >
-              {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
-            </select>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <select
+                value={version}
+                onChange={e => setVersion(e.target.value)}
+                title="Text version"
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+              </select>
+              {/* Inline translation beneath the Greek — only offered while a Greek version shows. */}
+              {isGreek && (
+                <select
+                  value={inlineTrans ?? ''}
+                  onChange={e => setInlineTrans(e.target.value || null)}
+                  title="Show a translation inline beneath each Greek verse"
+                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  <option value="">+ translation</option>
+                  {TRANSLATIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                </select>
+              )}
+            </div>
           </div>
           <div className="flex-1 min-h-0 overflow-y-auto p-3">
             {!anchor ? (
@@ -406,21 +453,29 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             ) : (
               <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek text-xl' : 'text-sm text-gray-700'}`}>
                 {passageVerses.map(v => (
-                  <p key={v.verse}>
-                    <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
-                    {isGreek && v.tokens && v.tokens.length > 0
-                      ? v.tokens.map((tok, ti) => {
-                          const key = `${v.verse}.${ti}`
-                          const select = () => { setSelectedInfo(toLexicalInfo(tok, `${anchor.name} ${anchor.chapter}:${v.verse}`)); setSelectedKey(key) }
-                          return (
-                            <span key={ti} onMouseEnter={select} onClick={select}
-                              className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
-                              {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
-                            </span>
-                          )
-                        })
-                      : v.text}
-                  </p>
+                  <div key={v.verse} className={isGreek && inlineTrans ? 'mb-2' : ''}>
+                    <p>
+                      <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
+                      {isGreek && v.tokens && v.tokens.length > 0
+                        ? v.tokens.map((tok, ti) => {
+                            const key = `${v.verse}.${ti}`
+                            const select = () => { setSelectedInfo(toLexicalInfo(tok, `${anchor.name} ${anchor.chapter}:${v.verse}`)); setSelectedKey(key) }
+                            return (
+                              <span key={ti} onMouseEnter={select} onClick={select}
+                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
+                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                              </span>
+                            )
+                          })
+                        : v.text}
+                    </p>
+                    {/* Inline translation of this Greek verse, if one is selected. */}
+                    {isGreek && inlineTrans && (
+                      <p className="text-sm text-gray-600 font-sans mt-0.5 border-l-2 border-gray-200 pl-2">
+                        {transByVerse[v.verse] ?? <span className="text-gray-300 italic text-xs">—</span>}
+                      </p>
+                    )}
+                  </div>
                 ))}
               </div>
             )}
