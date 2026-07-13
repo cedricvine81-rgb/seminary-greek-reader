@@ -11,6 +11,7 @@ import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms } from '@/lib/search-query'
+import { findTermRanges, markSlice } from '@/lib/highlight-terms'
 
 // The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
 // any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
@@ -47,69 +48,13 @@ function parseScope(v: string): Scope {
 }
 
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
-function norm(s: string): string { return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase() }
-
-// Accent/case-folded copy of a string plus a map from each folded index back to the original
-// index — lets us find an accent-insensitive match in long text (e.g. a Greek background
-// paragraph) yet still slice/highlight the ORIGINAL, accented text.
-function buildFold(text: string): { folded: string; map: number[] } {
-  let folded = ''
-  const map: number[] = []
-  for (let i = 0; i < text.length; i++) {
-    const f = norm(text[i])
-    for (let j = 0; j < f.length; j++) { folded += f[j]; map.push(i) }
-  }
-  return { folded, map }
-}
-
 const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
 
-// Merged [start,end) spans (original-text indices) of every occurrence of any (already
-// normalized) term — accent/case-insensitive via the fold→original index map.
-function findRanges(text: string, terms: string[]): Array<[number, number]> {
-  if (!terms.length) return []
-  const { folded, map } = buildFold(text)
-  const ranges: Array<[number, number]> = []
-  for (const t of terms) {
-    if (!t) continue
-    let from = 0
-    for (;;) {
-      const fi = folded.indexOf(t, from)
-      if (fi === -1) break
-      ranges.push([map[fi], map[fi + t.length - 1] + 1])
-      from = fi + t.length
-    }
-  }
-  ranges.sort((a, b) => a[0] - b[0])
-  const merged: Array<[number, number]> = []
-  for (const r of ranges) {
-    const last = merged[merged.length - 1]
-    if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1])
-    else merged.push([r[0], r[1]])
-  }
-  return merged
-}
-
-// Render text[from,to) with the given (original-index) ranges wrapped in <mark>.
-function markSlice(text: string, ranges: Array<[number, number]>, from: number, to: number): ReactNode[] {
-  const out: ReactNode[] = []
-  let pos = from, key = 0
-  for (const [s, e] of ranges) {
-    if (e <= from || s >= to) continue
-    const cs = Math.max(s, from), ce = Math.min(e, to)
-    if (cs > pos) out.push(text.slice(pos, cs))
-    out.push(<mark key={key++} className={MARK}>{text.slice(cs, ce)}</mark>)
-    pos = ce
-  }
-  if (pos < to) out.push(text.slice(pos, to))
-  return out
-}
-
-// A full short verse with every term highlighted.
+// A full short verse with every term highlighted (findTermRanges/markSlice: shared, accent-fold).
 function hiliteVerse(text: string, terms: string[]): ReactNode {
-  const ranges = findRanges(text, terms)
+  const ranges = findTermRanges(text, terms)
   if (!ranges.length) return text
-  return <>{markSlice(text, ranges, 0, text.length)}</>
+  return <>{markSlice(text, ranges, 0, text.length, MARK)}</>
 }
 
 // A windowed snippet around the first match, every term inside the window highlighted — for
@@ -117,14 +62,14 @@ function hiliteVerse(text: string, terms: string[]): ReactNode {
 const RADIUS = 110
 function renderSnippet(text: string, terms: string[]): ReactNode {
   const head = () => text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
-  const ranges = findRanges(text, terms)
+  const ranges = findTermRanges(text, terms)
   if (!ranges.length) return head()
   const start = Math.max(0, ranges[0][0] - RADIUS)
   const end = Math.min(text.length, ranges[0][1] + RADIUS)
   return (
     <>
       {start > 0 ? '…' : ''}
-      {markSlice(text, ranges, start, end)}
+      {markSlice(text, ranges, start, end, MARK)}
       {end < text.length ? '…' : ''}
     </>
   )
@@ -333,10 +278,12 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   const toggleGroup = (ids: string[], select: boolean) =>
     setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
 
-  function openBiblical(link: string) {
+  function openBiblical(link: string, transLang?: string) {
     pushRecent(query)
     onClose()
-    router.push(`/reader?ref=${encodeURIComponent(link)}`)
+    const q = query.trim()
+    const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${transLang ? `&tl=${encodeURIComponent(transLang)}` : ''}`
+    router.push(`/reader?ref=${encodeURIComponent(link)}${extra}`)
   }
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
@@ -481,7 +428,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
             <div className="divide-y divide-gray-100">
               <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">{bib.length}{bib.length >= 300 ? '+' : ''} verse{bib.length === 1 ? '' : 's'}</p>
               {bib.map((h, i) => (
-                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
+                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
                   <span className="text-[11px] font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                   <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
                 </button>

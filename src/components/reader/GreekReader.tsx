@@ -25,6 +25,8 @@ import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
 import { normalizeGreek } from '@/lib/greek-utils'
+import { parseSearchTerms } from '@/lib/search-query'
+import { markTerms, normalizeFold } from '@/lib/highlight-terms'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
@@ -144,7 +146,7 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader({ initialRef, isAuthenticated = false, userRole }: { initialRef?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
+export function GreekReader({ initialRef, initialHighlight, initialTransLang, isAuthenticated = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
   const router = useRouter()
   // On mobile the global header is hidden, so the reader menu carries all navigation.
   const menuAuthed = isAuthenticated || !!userRole
@@ -220,6 +222,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   const [searchResults, setSearchResults]   = useState<BiblicalVerse[] | null>(null)
   const [searchType, setSearchType]         = useState<'word' | 'reference' | null>(null)
   const [wordSearchTerm, setWordSearchTerm] = useState<string | null>(null)   // normalized
+  // Normalized terms to highlight in the inline TRANSLATION when arriving from Master Search
+  // (Greek words are handled by wordSearchTerm). Cleared on any other search/nav.
+  const [arrivalTerms, setArrivalTerms] = useState<string[]>([])
   // Translation word-search results (mobile): matching verses in the shown translation.
   const [translationResults, setTranslationResults] = useState<{ id: string; text: string }[] | null>(null)
   const [translationSearchLang, setTranslationSearchLang] = useState<string | null>(null)
@@ -354,14 +359,20 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   useEffect(() => { gntQueueRef.current = gntQueue },   [gntQueue])
   useEffect(() => { lxxQueueRef.current = lxxQueue },   [lxxQueue])
 
-  // ── Deep link: jump to a passage passed via ?ref= (e.g. from the Exegesis page) ──
-  const initialJumpDone = useRef(false)
+  // ── Deep link: jump to a passage passed via ?ref= (from Exegesis or Master Search) ──
+  // Keyed by ref+highlight (not a one-shot boolean) so a NEW target re-jumps even when the
+  // reader is already mounted — e.g. opening Master Search while reading and clicking a hit.
+  const lastJump = useRef<string | null>(null)
   useEffect(() => {
-    if (initialJumpDone.current || !initialRef || gntQueue.length === 0) return
-    initialJumpDone.current = true
-    handleSearch(initialRef, 'reference')
+    if (!initialRef || gntQueue.length === 0) return
+    const key = `${initialRef}||${initialHighlight ?? ''}||${initialTransLang ?? ''}`
+    if (lastJump.current === key) return
+    lastJump.current = key
+    // Arriving from a translation search? Show that translation so the highlighted word is visible.
+    if (initialTransLang) setParallelLang(initialTransLang)
+    handleSearch(initialRef, 'reference', { highlight: initialHighlight })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialRef, gntQueue.length])
+  }, [initialRef, initialHighlight, initialTransLang, gntQueue.length])
   useEffect(() => { parsingRef.current    = parsingInfo }, [parsingInfo])
   useEffect(() => { lockedRef.current     = lockedInfo },  [lockedInfo])
   useEffect(() => { syntaxMenuRef.current = !!syntaxMenu }, [syntaxMenu])
@@ -831,12 +842,15 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     return false
   }
 
-  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; keepResults?: boolean }) {
+  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; keepResults?: boolean; highlight?: string }) {
     const trimmed = query.trim()
     const lang = opts?.lang
     // A result-click (keepResults) jumps to the passage but keeps the results list so the
     // reader can return to it; any other search clears the list.
     if (!opts?.keepResults) { setTranslationResults(null); setViewingResultPassage(false) }
+    // Per-word highlight on arrival (from Master Search): a Greek query lights up Greek words,
+    // a translation query lights up the inline translation. Only set on a reference jump.
+    if (!(type === 'reference' && opts?.highlight)) setArrivalTerms([])
 
     // ── Translation word search (mobile, while a translation is the current view) ──
     if (type === 'word' && lang) {
@@ -882,7 +896,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           if (opts?.keepResults) setViewingResultPassage(true)  // show the passage; keep the list behind a Back arrow
           setSearchResults(null)   // stay in scrolling mode
           setSearchType(null)
-          setWordSearchTerm(null)
+          // Highlight the arrival term(s): Greek query → Greek words (wordSearchTerm), any query
+          // → inline translation (arrivalTerms). A non-Greek term simply won't match Greek words.
+          const hlq = opts?.highlight?.trim()
+          const isGreekQ = !!hlq && /[Ͱ-Ͽἀ-῿]/.test(hlq)
+          setWordSearchTerm(hlq && isGreekQ ? normalizeGreek(hlq) : null)
+          setArrivalTerms(hlq ? parseSearchTerms(hlq) : [])
           setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // show the corpus we're jumping into, so the jump lands in a short single-corpus scroll
           const isLxx  = ref.book.corpus === 'LXX'
           const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
@@ -1420,7 +1439,9 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
           {alignVerse.text.split(' ').map((tok, i) => {
             const gkPos = alignVerse.t2g[i]
-            const isHlit = highlightIdxs.has(i)
+            // Red when the Greek word above is hovered, OR this token matches the arrival term.
+            const isHlit = highlightIdxs.has(i) ||
+              (arrivalTerms.length > 0 && arrivalTerms.some(t => normalizeFold(tok).includes(t)))
             return (
               <span
                 key={i}
@@ -1457,7 +1478,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{transTxt}</>
+              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : transTxt}</>
               : null}
         </p>
       </div>
@@ -1881,7 +1902,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
               className="text-sm text-brand-600 hover:underline"
               onClick={() => {
                 setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
-                setWordSearchTerm(null); setLockedInfo(null); setHighlightedVerse(null)
+                setWordSearchTerm(null); setArrivalTerms([]); setLockedInfo(null); setHighlightedVerse(null)
                 setSearchLabel(null); setConcordance(false)
               }}
             >
