@@ -292,12 +292,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // reader's top level — NOT inside the collapsible top bar — so hiding the bar on scroll
   // can't affect it.
   const [pickerOpen, setPickerOpen] = useState(false)
-  // Which corpus/corpora the text pane shows. Mobile is always one at a time (GNT or LXX) so
-  // jumps land in a short single-corpus scroll instead of crossing the whole other testament;
-  // it never uses 'BOTH' (the mobile toggle and jumps only set GNT/LXX, and 'BOTH' renders as
-  // GNT on mobile). Desktop adds a third 'BOTH' option — the classic stacked NT-then-LXX view —
-  // and defaults to it, so desktop's continuous-scroll character is preserved out of the box.
-  const [corpus, setCorpus] = useState<'GNT' | 'LXX' | 'BOTH'>('BOTH')
+  // Both readers show ONE corpus at a time (GNT or LXX) so jumps land in a short single-corpus
+  // scroll instead of crossing the whole other testament — and, critically, so the hidden
+  // corpus isn't background-loaded (see the infinite-scroll effect: a display:none sentinel
+  // reports top=0 and would otherwise trigger endless load-more, janking the visible scroll).
+  // Inferred from the passage you open; the NT/LXX toggle switches it manually.
+  const [corpus, setCorpus] = useState<'GNT' | 'LXX'>('GNT')
   const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX'>('GNT')
   const lastScrollTopRef = useRef(0)
 
@@ -532,17 +532,22 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       const rect        = panel!.getBoundingClientRect()
       const panelTop    = rect.top
       const panelBottom = rect.bottom
-      if (gntSentinel.current && !gntRef.current.done) {
-        if (gntSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreGnt()
+      // Only the visible corpus loads. `offsetParent === null` means the sentinel's corpus is
+      // display:none (the other testament) — its getBoundingClientRect() would report top=0 and
+      // spuriously satisfy every "load more" test, background-loading the hidden corpus and
+      // janking the visible scroll. `visible()` gates that out.
+      const visible = (el: HTMLElement | null) => !!el && el.offsetParent !== null
+      if (visible(gntSentinel.current) && !gntRef.current.done) {
+        if (gntSentinel.current!.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreGnt()
       }
-      if (lxxSentinel.current && !lxxRef.current.done) {
-        if (lxxSentinel.current.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreLxx()
+      if (visible(lxxSentinel.current) && !lxxRef.current.done) {
+        if (lxxSentinel.current!.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreLxx()
       }
-      if (gntTopSentinel.current && !gntRef.current.backDone) {
-        if (gntTopSentinel.current.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevGnt()
+      if (visible(gntTopSentinel.current) && !gntRef.current.backDone) {
+        if (gntTopSentinel.current!.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevGnt()
       }
-      if (lxxTopSentinel.current && !lxxRef.current.backDone) {
-        if (lxxTopSentinel.current.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevLxx()
+      if (visible(lxxTopSentinel.current) && !lxxRef.current.backDone) {
+        if (lxxTopSentinel.current!.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevLxx()
       }
     }
 
@@ -874,7 +879,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           setSearchResults(null)   // stay in scrolling mode
           setSearchType(null)
           setWordSearchTerm(null)
-          setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // show the corpus we're jumping into (narrows desktop's 'Both' too, so the jump lands in a short scroll)
+          setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // show the corpus we're jumping into, so the jump lands in a short single-corpus scroll
           const isLxx  = ref.book.corpus === 'LXX'
           const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
           if (!ready) {
@@ -1504,27 +1509,27 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           <SearchBar
             onSearch={handleSearch}
             onVerseClick={c => { setCorpus(c); setPickerCorpus(c); setPickerOpen(true) }}
-            viewCorpus={corpus === 'LXX' ? 'LXX' : 'GNT'}
+            viewCorpus={corpus}
             viewLang={parallelLang}
             viewLangLabel={parallelLangInfo?.label}
           />
         </div>
-        {/* Desktop corpus toggle: NT | LXX | Both. Narrows the text pane so a jump lands in a
-            short single-corpus scroll (like mobile), while 'Both' keeps the classic stacked
-            NT-then-LXX view. Desktop navigates by typing a reference, so — unlike the mobile
-            NT/LXX buttons — this doesn't open the passage picker; it only filters the view. */}
+        {/* Desktop corpus toggle: NT | LXX. Switches which testament the pane shows so a jump
+            lands in a short single-corpus scroll (like mobile). Desktop navigates by typing a
+            reference, so — unlike the mobile NT/LXX buttons — this doesn't open the passage
+            picker; it only switches the view. */}
         <div className="hidden lg:flex shrink-0 self-stretch rounded-lg overflow-hidden border border-gray-300">
-          {(['GNT', 'LXX', 'BOTH'] as const).map(c => (
+          {(['GNT', 'LXX'] as const).map(c => (
             <button
               key={c}
               type="button"
               onClick={() => setCorpus(c)}
-              title={c === 'BOTH' ? 'Show both testaments' : c === 'GNT' ? 'Show the New Testament' : 'Show the Septuagint'}
+              title={c === 'GNT' ? 'Show the New Testament' : 'Show the Septuagint'}
               className={`px-2.5 text-sm font-medium ${
                 corpus === c ? 'bg-brand-600 text-white' : 'bg-white text-brand-700 hover:bg-brand-50'
-              } ${c !== 'GNT' ? 'border-l border-gray-300' : ''}`}
+              } ${c === 'LXX' ? 'border-l border-gray-300' : ''}`}
             >
-              {c === 'GNT' ? 'NT' : c === 'LXX' ? 'LXX' : 'Both'}
+              {c === 'GNT' ? 'NT' : 'LXX'}
             </button>
           ))}
         </div>
@@ -1890,15 +1895,16 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
               : <div>{searchResults.map(v => renderVerseRow(v))}</div>
         ) : (
           <div>
-            {/* Mobile shows exactly one corpus (GNT unless corpus is 'LXX'); desktop honors the
-                NT | LXX | Both toggle. 'lg:hidden'/'lg:block' overrides the mobile class at lg+. */}
-            <div className={`${corpus === 'LXX' ? 'hidden' : ''} ${corpus === 'GNT' || corpus === 'BOTH' ? 'lg:block' : 'lg:hidden'}`}>
+            {/* One corpus at a time on every screen size. The inactive corpus is display:none,
+                and the infinite-scroll effect skips its (zero-rect) sentinels so it isn't
+                background-loaded. */}
+            <div className={corpus === 'GNT' ? '' : 'hidden'}>
               {!gnt.backDone && <div ref={gntTopSentinel} className="h-1" aria-hidden />}
               {renderSections(gnt.sections)}
               {!gnt.done && <div ref={gntSentinel} className="h-1" aria-hidden />}
             </div>
 
-            <div className={`lg:mt-10 ${corpus === 'LXX' ? '' : 'hidden'} ${corpus === 'LXX' || corpus === 'BOTH' ? 'lg:block' : 'lg:hidden'}`}>
+            <div className={corpus === 'LXX' ? '' : 'hidden'}>
               {!lxx.backDone && <div ref={lxxTopSentinel} className="h-1" aria-hidden />}
               {renderSections(lxx.sections)}
               {!lxx.done && <div ref={lxxSentinel} className="h-1" aria-hidden />}
