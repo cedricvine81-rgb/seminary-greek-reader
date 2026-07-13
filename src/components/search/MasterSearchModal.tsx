@@ -4,9 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
 import { Search, X, Loader2, ChevronDown } from 'lucide-react'
-import { GNT_BOOKS, LXX_BOOKS } from '@/lib/constants'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
-import { BookPicker, type BookGroup } from './BookPicker'
+import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
@@ -14,7 +13,7 @@ import { isExamLocked } from '@/lib/exam-lockdown'
 
 // The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
 // any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
-// scoped to a single book. Matches show in red; clicking a hit opens it in the right reader.
+// scoped to one or more books. Matches show in red; clicking a hit opens it in the right reader.
 
 const TRANSLATIONS = [
   { lang: 'en',  label: 'English (WEB)' },
@@ -28,9 +27,11 @@ const TRANSLATIONS = [
 ]
 const COLLECTIONS = TEXT_CATEGORIES.filter(c => !c.comingSoon && c.works.length > 0)
 
-// osisId → display name (NT + the OT books that exist in the indexes).
-const BOOK_NAME = new Map<string, string>()
-for (const b of [...GNT_BOOKS, ...LXX_BOOKS]) if (!BOOK_NAME.has(b.osisId)) BOOK_NAME.set(b.osisId, b.name)
+// LXX books with no Protestant-canon counterpart — shown only for the Greek Septuagint scope,
+// not for translation scopes (whose indexes are the 66-book canon).
+const DEUTERO = new Set(['1Esd', 'Tob', 'Jdt', 'PsSol', 'Wis', 'Sir', 'EpJer', 'Bar', 'Sus', 'Bel', '1Macc', '2Macc', '3Macc', '4Macc', 'Odes'])
+
+interface Catalog { gnt: PickBook[]; lxx: PickBook[] }
 
 type Scope =
   | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
@@ -75,7 +76,7 @@ function renderSnippet(text: string, query: string): ReactNode {
   )
 }
 
-interface BibHit { ref: string; link: string; text: string; greek: boolean }
+interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
 
 export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const router = useRouter()
@@ -87,23 +88,48 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
   const [bg, setBg] = useState<BgResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [catalog, setCatalog] = useState<Catalog | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const reqId = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
   const isBiblical = scope.kind !== 'bg'
-  const bookGroups: BookGroup[] = scope.kind === 'greek'
-    ? [scope.corpus === 'GNT' ? { heading: 'New Testament', books: GNT_BOOKS } : { heading: 'Old Testament', books: LXX_BOOKS }]
-    : scope.kind === 'trans'
-      ? [{ heading: 'Old Testament', books: LXX_BOOKS }, { heading: 'New Testament', books: GNT_BOOKS }]
-      : []
+  // Book groups come from the app's real book catalog (books.json): the GNT (27), the full
+  // Greek LXX incl. deutero-canon (54), and — for translations, whose indexes are the 66-book
+  // canon — the Old Testament minus the deutero-canonical books.
+  const bookGroups: BookGroup[] = useMemo(() => {
+    if (!catalog) return []
+    if (scope.kind === 'greek') {
+      if (scope.corpus === 'GNT') return [{ heading: 'New Testament', books: catalog.gnt }]
+      return [
+        { heading: 'Old Testament', books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
+        { heading: 'Deutero-Canonical', books: catalog.lxx.filter(b => DEUTERO.has(b.osisId)) },
+      ]
+    }
+    if (scope.kind === 'trans') return [
+      { heading: 'Old Testament', books: catalog.lxx.filter(b => !DEUTERO.has(b.osisId)) },
+      { heading: 'New Testament', books: catalog.gnt },
+    ]
+    return []
+  }, [catalog, scope])
+  const bookName = useMemo(() => {
+    const m = new Map<string, string>()
+    if (catalog) for (const b of [...catalog.gnt, ...catalog.lxx]) m.set(b.osisId, b.name)
+    return m
+  }, [catalog])
   const selectedSet = useMemo(() => new Set(books), [books])
   const booksLabel = books.length === 0 ? 'Any book'
-    : books.length === 1 ? (BOOK_NAME.get(books[0]) ?? books[0])
+    : books.length === 1 ? (bookName.get(books[0]) ?? books[0])
     : `${books.length} books`
   const booksKey = books.join(',')
 
   useEffect(() => setMounted(true), [])
+  // Load the real book catalog once (names + canon coverage per corpus).
+  useEffect(() => {
+    fetch('/data/books.json').then(r => r.ok ? r.json() : null)
+      .then((d: Catalog | null) => { if (d) setCatalog({ gnt: d.gnt, lxx: d.lxx }) })
+      .catch(() => {})
+  }, [])
   useEffect(() => { if (open) { setBib(null); setBg(null); inputRef.current?.focus() } }, [open])
   // A scope change can invalidate the chosen books (different canon).
   useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
@@ -129,12 +155,11 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
         const data = res.ok ? await res.json() : { results: [] }
         const hits: BibHit[] = s.kind === 'greek'
           ? (data.results as { bookId: string; chapter: number; verse: number; text: string }[]).map(v => ({
-              ref: `${BOOK_NAME.get(v.bookId) ?? v.bookId} ${v.chapter}:${v.verse}`,
-              link: `${v.bookId} ${v.chapter}:${v.verse}`, text: v.text, greek: true,
+              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: true,
             }))
           : (data.results as { id: string; text: string }[]).map(r => {
               const [osis, ch, vs] = r.id.split('.')
-              return { ref: `${BOOK_NAME.get(osis) ?? osis} ${ch}:${vs}`, link: `${osis} ${ch}:${vs}`, text: r.text, greek: false }
+              return { osisId: osis, chapter: Number(ch), verse: Number(vs), text: r.text, greek: false }
             })
         if (id === reqId.current) { setBib(hits); setBg(null) }
       }
@@ -239,7 +264,9 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
         {/* Book picker (multi-select grid) */}
         {isBiblical && showBooks && (
           <div className="flex-none px-3 py-2 border-b border-gray-100">
-            <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
+            {bookGroups.length > 0
+              ? <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
+              : <p className="text-xs text-gray-400 py-4 text-center">Loading books…</p>}
           </div>
         )}
 
@@ -264,8 +291,8 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
             <div className="divide-y divide-gray-100">
               <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">{bib.length}{bib.length >= 300 ? '+' : ''} verse{bib.length === 1 ? '' : 's'}</p>
               {bib.map((h, i) => (
-                <button key={i} onClick={() => openBiblical(h.link)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
-                  <span className="text-[11px] font-medium text-brand-600">{h.ref}</span>
+                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
+                  <span className="text-[11px] font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                   <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, query)}</span>
                 </button>
               ))}
