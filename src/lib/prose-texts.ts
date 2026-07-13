@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -296,6 +296,37 @@ export const ANF_CATALOG = ANF.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+// Justin Martyr (Roberts-Donaldson / ANF, from newadvent.org — cleaner chapter markup than
+// the earlychristianwritings copy). Chapter-level ("Dial. 32.1" → chapter 32; the ANF
+// English has no section numbers). Built by scripts/build-justin.py.
+const JUSTIN_ATTRIBUTION = 'Text: the Roberts-Donaldson translation of Justin Martyr (Ante-Nicene Fathers, 1885), public domain. Source: newadvent.org.'
+
+const justinCite = (core: string) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp('^Justin(?: Martyr)?, ' + core.replace(/\./g, '\\.') + '\\s+(\\d+)'))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const JUSTIN: { slug: string; name: string; noteBook: string; chapters: number; core: string }[] = [
+  { slug: 'justin-dialogue', name: 'Justin Martyr, Dialogue with Trypho', noteBook: 'JustinDial', chapters: 142, core: 'Dial.' },
+  { slug: 'justin-1apology', name: 'Justin Martyr, First Apology', noteBook: 'Justin1Apol', chapters: 68, core: '1 Apol.' },
+  { slug: 'justin-2apology', name: 'Justin Martyr, Second Apology', noteBook: 'Justin2Apol', chapters: 15, core: '2 Apol.' },
+]
+
+const JUSTIN_WORKS: ProseWork[] = JUSTIN.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/justin/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: JUSTIN_ATTRIBUTION,
+  parseCitation: justinCite(w.core),
+}))
+
+export const JUSTIN_CATALOG = JUSTIN.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 // ── The Mishnah ───────────────────────────────────────────────────────────────────────
 // The cited tractates in Dr. Joshua Kulp's "Mishnah Yomit" translation (CC-BY, via Sefaria),
 // embedded chapter → verse where verse = the mishnah number ("m. Sanh. 4:5" → chapter 4,
@@ -429,6 +460,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...AF_WORKS,
   ...TG_WORKS,
   ...ANF_WORKS,
+  ...JUSTIN_WORKS,
   ...MISHNAH_WORKS,
 ]
 

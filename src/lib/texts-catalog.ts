@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, MISHNAH_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, MISHNAH_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -156,8 +156,8 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'church-fathers',
     label: 'Church Fathers',
-    blurb: 'The Ante-Nicene Fathers — Irenaeus’s Against Heresies (Books 1–5), in the Roberts-Donaldson public-domain translation. More apologists to come.',
-    works: ANF_CATALOG,
+    blurb: 'The Ante-Nicene Fathers — Justin Martyr’s Dialogue and Apologies, and Irenaeus’s Against Heresies — in the Roberts-Donaldson public-domain translation.',
+    works: [...JUSTIN_CATALOG, ...ANF_CATALOG],
   },
   {
     id: 'mishnah',
