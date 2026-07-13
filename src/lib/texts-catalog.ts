@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -140,6 +140,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
       ...TWELVE_PATRIARCHS_CATALOG,
     ],
+  },
+  {
+    id: 'targums',
+    label: 'Targums',
+    blurb: 'Aramaic paraphrases of the Hebrew Bible — Targum Isaiah (Pauli) and Targum Pseudo-Jonathan on the Pentateuch (Etheridge), in their public-domain translations.',
+    works: TG_CATALOG,
   },
   {
     id: 'apostolic-fathers',

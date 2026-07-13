@@ -18,9 +18,9 @@ export interface ProseWork {
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
-// `philo-<slug>` members are Philo of Alexandria's treatises, and the `af-<slug>` members
-// are the Apostolic Fathers (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}`
+// `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
+// the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -213,6 +213,51 @@ export const AF_CATALOG = AF.map(w => ({
   id: `af-${w.slug}`, source: `af-${w.slug}` as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+// ── The Targums ───────────────────────────────────────────────────────────────────────
+// The most-cited public-domain Aramaic Targums: Targum Isaiah (C. W. H. Pauli, 1871) and
+// Targum Pseudo-Jonathan on the Pentateuch (J. W. Etheridge, 1862), embedded chapter →
+// verse against the Masoretic numbering the dataset cites ("Tg. Isa. 6:9",
+// "Tg. Ps.-J. Gen 3:15"). Built by scripts/build-targums.py from the Sefaria API. The
+// Pentateuch targum is one work per book (Genesis … Deuteronomy) since the prose model is
+// chapter → verse. (Targum Onkelos is deferred — no public-domain English on Sefaria.)
+const TG_PAULI = 'Text: C. W. H. Pauli’s translation of the Targum on Isaiah (1871), public domain. Source: Sefaria.'
+const TG_ETHERIDGE = 'Text: J. W. Etheridge’s translation of Targum Pseudo-Jonathan (1862), public domain. Source: Sefaria.'
+
+// Recognize a Targum citation, e.g. "Tg. Isa. 6:9" or "Tg. Ps.-J. Gen 3:15" (the chapter/
+// verse separator is written both ways). The abbreviation includes the book, so each
+// per-book work matches only its own references.
+const tgCite = (abbrev: string) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp('^' + abbrev.replace(/\./g, '\\.') + '\\s+(\\d+)[:.](\\d+)'))
+  return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+}
+
+// slug (→ /data/targums/<slug>.json and `tg-<slug>`), name, note anchor, chapter count,
+// citation abbreviation, attribution. Kept in sync with scripts/build-targums.py.
+const TG: { slug: string; name: string; noteBook: string; chapters: number; abbrev: string; attribution: string }[] = [
+  { slug: 'tg-isaiah', name: 'Targum Isaiah', noteBook: 'TgIsa', chapters: 66, abbrev: 'Tg. Isa.', attribution: TG_PAULI },
+  { slug: 'tg-psj-genesis', name: 'Targum Pseudo-Jonathan (Genesis)', noteBook: 'TgPsJGen', chapters: 50, abbrev: 'Tg. Ps.-J. Gen', attribution: TG_ETHERIDGE },
+  { slug: 'tg-psj-exodus', name: 'Targum Pseudo-Jonathan (Exodus)', noteBook: 'TgPsJExod', chapters: 40, abbrev: 'Tg. Ps.-J. Exod', attribution: TG_ETHERIDGE },
+  { slug: 'tg-psj-leviticus', name: 'Targum Pseudo-Jonathan (Leviticus)', noteBook: 'TgPsJLev', chapters: 27, abbrev: 'Tg. Ps.-J. Lev', attribution: TG_ETHERIDGE },
+  { slug: 'tg-psj-numbers', name: 'Targum Pseudo-Jonathan (Numbers)', noteBook: 'TgPsJNum', chapters: 36, abbrev: 'Tg. Ps.-J. Num', attribution: TG_ETHERIDGE },
+  { slug: 'tg-psj-deuteronomy', name: 'Targum Pseudo-Jonathan (Deuteronomy)', noteBook: 'TgPsJDeut', chapters: 34, abbrev: 'Tg. Ps.-J. Deut', attribution: TG_ETHERIDGE },
+]
+
+const TG_WORKS: ProseWork[] = TG.map(w => ({
+  source: w.slug as EmbeddedProseSource,        // slugs are already `tg-…`
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/targums/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: w.attribution,
+  parseCitation: tgCite(w.abbrev),
+}))
+
+// Ids/names the catalog needs to list the Targums under one Texts category.
+export const TG_CATALOG = TG.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -268,6 +313,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...TWELVE_PATRIARCHS_WORKS,
   ...PHILO_WORKS,
   ...AF_WORKS,
+  ...TG_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
