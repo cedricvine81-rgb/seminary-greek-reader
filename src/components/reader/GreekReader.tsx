@@ -13,6 +13,7 @@ import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
+import type { WordHighlight } from '@/lib/word-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { MorphSearchPicker } from './MorphSearchPicker'
 import { LexiconPanel } from './LexiconPanel'
@@ -283,6 +284,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     ctx: SyntaxContext
     x: number
     y: number
+    highlight?: WordHighlight
   } | null>(null)
 
   // Mobile only: hide the top control row while scrolling down through the text,
@@ -307,6 +309,8 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // ── Persisted text highlights (signed-in readers) — same per-chapter loading pattern
   // as the notes above, and drag-to-select capture scoped to the scrolling text panel.
   const highlights = useHighlights(isAuthenticated)
+  // Latest highlights for the memoized right-click handler (forVerse changes as they load).
+  const highlightsRef = useRef(highlights); highlightsRef.current = highlights
   const highlightSelection = useHighlightSelection(textPanelRef)
   useEffect(() => {
     const chapters = new Map<string, { book: string; chapter: number }>()
@@ -1057,7 +1061,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     if (!lockedRef.current) setParsingInfo(info)
   }, [])
 
-  const handleWordRightClick = useCallback((word: VerseWord, x: number, y: number) => {
+  const handleWordRightClick = useCallback((word: VerseWord, x: number, y: number, start: number, end: number) => {
     Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()]).then(([data, gbiData, absData, maculaData]) => {
       const gbiEntry    = gbiData[word.id]    ?? null
       const absEntry    = absData[word.id]    ?? null
@@ -1344,9 +1348,21 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
       const menuW = 380, menuH = 520
       const nx = x + menuW > window.innerWidth  ? x - menuW : x
       const ny = y + menuH > window.innerHeight ? y - menuH : y
-      setSyntaxMenu({ word, syntax: syn, gbiEntry, absEntry, ctx, x: Math.max(8, nx), y: Math.max(8, ny) })
+
+      // Highlight controls for this word (signed-in readers) — highlights its char range.
+      const [wb, wc, wv] = (word.verseId ?? '').split('.')
+      const hi = highlightsRef.current
+      const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv)).find(h => start < h.endOffset && end > h.startOffset) : undefined
+      const highlight: WordHighlight | undefined = isAuthenticated && wb ? {
+        activeColor: existing?.color ?? null,
+        onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c),
+        onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
+      } : undefined
+
+      setSyntaxMenu({ word, syntax: syn, gbiEntry, absEntry, ctx, x: Math.max(8, nx), y: Math.max(8, ny), highlight })
     })
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
 
   // ── Render helpers ─────────────────────────────────────────────────────────────
 
@@ -1950,6 +1966,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           gbiOn={gbiOn}
           absOn={absOn}
           onWordAction={handleWordAction}
+          highlight={syntaxMenu.highlight}
           onClose={() => setSyntaxMenu(null)}
         />
       )}

@@ -8,6 +8,8 @@ import { getProielRelation } from '@/lib/proiel-relations'
 import { buildGbiDisplay, type GbiEntry } from '@/lib/gbi-data'
 import { buildAbsDisplay, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-syntax'
+import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
+import type { WordHighlight } from '@/lib/word-search-bus'
 
 export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'strongs' | 'lexicon' | 'backgrounds'
 export type SearchScope = 'GNT' | 'LXX' | 'BOTH'
@@ -25,6 +27,7 @@ interface SyntaxMenuProps {
   gbiOn: boolean
   absOn: boolean
   onWordAction: (action: WordSearchAction, scope: SearchScope) => void
+  highlight?: WordHighlight
   onClose: () => void
 }
 
@@ -59,7 +62,7 @@ const LEVEL_BADGE: Record<WallaceCategory['level'], string> = {
   intermediate: 'bg-indigo-100 text-indigo-700',
 }
 
-export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, onClose }: SyntaxMenuProps) {
+export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, highlight, onClose }: SyntaxMenuProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   const [selectedPrep, setSelectedPrep] = useState<string>(ctx.governingPrep ?? 'none')
@@ -173,6 +176,18 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
 
       {/* ── Body ── */}
       <div className="p-3 space-y-2 overflow-y-auto">
+
+        {/* ── Highlight this word ── */}
+        {highlight && (
+          <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
+            <HighlightSwatches
+              activeColor={highlight.activeColor}
+              onPick={c => { highlight.onPick(c); onClose() }}
+              onRemove={() => { highlight.onRemove(); onClose() }}
+            />
+          </div>
+        )}
 
         {/* ── Search this word ── */}
         <div className="rounded-lg border border-gray-100 bg-gray-50/70 p-2.5 space-y-2">

@@ -17,7 +17,8 @@ interface GreekVerseProps {
   textHighlights?: HighlightRecord[]
   onWordHover: (wordId: string | null, info: LexicalInfoPanel | null) => void
   onWordClick: (info: LexicalInfoPanel | null) => void
-  onWordRightClick?: (word: VerseWord, x: number, y: number) => void
+  // start/end are the word's character offsets within the verse (for highlighting it).
+  onWordRightClick?: (word: VerseWord, x: number, y: number, start: number, end: number) => void
   verseRefCallback?: (el: HTMLElement | null) => void
 }
 
@@ -67,7 +68,7 @@ function GreekVerseImpl({
                   hlChapter={verse.chapter}
                   onHover={info => onWordHover(info ? w.id : null, info)}
                   onClick={onWordClick}
-                  onRightClick={onWordRightClick}
+                  onRightClick={onWordRightClick ? (word, x, y) => onWordRightClick(word, x, y, start, end) : undefined}
                 />
                 {i < verse.words!.length - 1 ? ' ' : ''}
               </Fragment>
@@ -107,7 +108,7 @@ function GreekVerseImpl({
                 hlChapter={verse.chapter}
                 onHover={info => onWordHover(info ? fakeWord.id : null, info)}
                 onClick={onWordClick}
-                onRightClick={onWordRightClick}
+                onRightClick={onWordRightClick ? (word, x, y) => onWordRightClick(word, x, y, start, end) : undefined}
               />
               {' '}
             </Fragment>

@@ -5,6 +5,7 @@ import { Search } from 'lucide-react'
 import { registerWordSearch, type WordSearchPayload } from '@/lib/word-search-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
+import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 
 // Mounted once in the root layout. Renders the shared "search this word" popover — the search
 // half of the Reader's right-click menu (no syntax) — and opens it via openWordSearch(). Every
@@ -63,6 +64,17 @@ export function WordSearchProvider() {
       className="fixed z-[110] w-64 rounded-xl border border-gray-200 bg-white shadow-2xl p-2.5 space-y-2"
       style={{ left: Math.min(menu.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 272), top: menu.y }}
     >
+      {/* Highlighter swatches — Greek words in highlight-capable panes. Highlights the word. */}
+      {menu.highlight && (
+        <div className="pb-1.5 border-b border-gray-100">
+          <HighlightSwatches
+            activeColor={menu.highlight.activeColor}
+            onPick={c => { menu.highlight!.onPick(c); setMenu(null) }}
+            onRemove={() => { menu.highlight!.onRemove(); setMenu(null) }}
+          />
+        </div>
+      )}
+
       <div className="flex items-center justify-between gap-2">
         <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
         {isGreek && (

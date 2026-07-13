@@ -728,7 +728,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}
-                                          onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: `${refLabel}:${row.num}`, kind: 'greek', greekCorpus: 'LXX' }) }}
+                                          onContextMenu={e => {
+                                            e.preventDefault()
+                                            const existing = verseHighlights.find(h => start < h.endOffset && end > h.startOffset)
+                                            openWordSearch({
+                                              x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma,
+                                              reference: `${refLabel}:${row.num}`, kind: 'greek', greekCorpus: 'LXX',
+                                              highlight: isAuthenticated ? {
+                                                activeColor: existing?.color ?? null,
+                                                onPick: c => existing ? void highlights.recolor(existing.id, noteBook, section.chapter, c) : void highlights.create(noteBook, section.chapter, row.num, start, end, c),
+                                                onRemove: () => { if (existing) void highlights.remove(existing.id, noteBook, section.chapter) },
+                                              } : undefined,
+                                            })
+                                          }}
                                           {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
                                           className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched || matchedTerm ? SEARCH_RED : hl ? highlightMarkClass(hl.color) : ''}`}>
                                           {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}

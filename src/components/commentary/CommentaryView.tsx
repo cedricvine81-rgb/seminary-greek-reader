@@ -212,7 +212,15 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
                   <GreekVerse verse={v} activeWordId={null} highlighted={false}
                     textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse) : []}
                     onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }}
-                    onWordRightClick={anchor ? (word, x, y) => openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT' }) : undefined} />
+                    onWordRightClick={anchor ? (word, x, y, start, end) => {
+                      const existing = highlights.forVerse(anchor.book, anchor.chapter, v.verse).find(h => start < h.endOffset && end > h.startOffset)
+                      openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT',
+                        highlight: isAuthenticated ? {
+                          activeColor: existing?.color ?? null,
+                          onPick: c => existing ? void highlights.recolor(existing.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c),
+                          onRemove: () => { if (existing) void highlights.remove(existing.id, anchor.book, anchor.chapter) },
+                        } : undefined })
+                    } : undefined} />
                 </div>
               </div>
             </div>

@@ -1,3 +1,14 @@
+import type { HighlightColor } from '@/lib/highlight-colors'
+
+// Highlight controls for the right-clicked word — supplied by the pane (which owns the
+// offsets + its useHighlights instance). Present only for Greek words in panes that support
+// highlighting. Shown as a swatch row at the top of the word menu.
+export interface WordHighlight {
+  activeColor: string | null           // color of an existing highlight on this word, or null
+  onPick: (color: HighlightColor) => void
+  onRemove: () => void
+}
+
 // Lets any reading pane (Reader translation column, Notes/Commentary/Texts text panes) open
 // the shared "search this word" popover — the search half of the Reader's right-click menu,
 // no syntax — hosted once by WordSearchProvider in the root layout.
@@ -10,6 +21,7 @@ export interface WordSearchPayload {
   kind: 'greek' | 'translation'
   greekCorpus?: 'GNT' | 'LXX'         // default scope for Greek words
   transLang?: string                  // language code for translation words (en, es, …)
+  highlight?: WordHighlight           // when set, a highlighter swatch row shows at the top
 }
 type OpenFn = (payload: WordSearchPayload) => void
 let _opener: OpenFn | null = null
