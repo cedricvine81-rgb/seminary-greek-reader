@@ -138,6 +138,9 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14 },
+      { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
+      { id: 'odes-of-solomon', name: 'Odes of Solomon', source: 'odes-of-solomon', chapters: 42 },
+      { id: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with Martyrdom of Isaiah)', source: 'ascension-of-isaiah', chapters: 11 },
       // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
       ...TWELVE_PATRIARCHS_CATALOG,
     ],

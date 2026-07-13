@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -514,6 +514,21 @@ export const PROSE_WORKS: ProseWork[] = [
       const m = text.match(/^(?:Ep\.\s*)?Arist(?:eas)?\.?\s+(\d+)/)
       return m ? { chapter: 1, verse: parseInt(m[1], 10) } : null
     } },
+  // ── Pseudepigrapha "Group B": public-domain works added from clean HTML editions
+  //    (scripts/build-pseudepigrapha-b.py). See texts-catalog.ts. ──
+  { source: 'pseudo-philo', name: 'Pseudo-Philo, Biblical Antiquities (L.A.B.)', noteBook: 'PseudoPhilo',
+    dataUrl: '/data/pseudepigrapha-b/pseudo-philo.json', chapters: 65,
+    attribution: 'Text: M. R. James’ translation of Pseudo-Philo, “The Biblical Antiquities of Philo”, 1917 (public domain). Source: sacred-texts.com.',
+    parseCitation: cite(/^L\.A\.B\.\s+(\d+)(?::(\d+))?/) },
+  { source: 'odes-of-solomon', name: 'Odes of Solomon', noteBook: 'OdesSol',
+    dataUrl: '/data/pseudepigrapha-b/odes-of-solomon.json', chapters: 42,
+    attribution: 'Text: J. Rendel Harris’ translation of the Odes of Solomon, from “The Forgotten Books of Eden”, 1926 (public domain). Source: sacred-texts.com.',
+    parseCitation: cite(/^Odes? Sol\.\s+(\d+)(?::(\d+))?/) },
+  { source: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with the Martyrdom of Isaiah)', noteBook: 'AscenIsa',
+    dataUrl: '/data/pseudepigrapha-b/ascension-of-isaiah.json', chapters: 11,
+    // Cited as "Mart. Isa. 5:2" (the Martyrdom of Isaiah = chapters 1–5) or "Asc. Isa.".
+    attribution: 'Text: R. H. Charles’ translation of the Ascension of Isaiah, 1900 (public domain). Source: earlychristianwritings.com.',
+    parseCitation: cite(/^(?:Mart\.|Asc\.)\s*Isa\.\s+(\d+)(?::(\d+))?/) },
   ...TWELVE_PATRIARCHS_WORKS,
   ...PHILO_WORKS,
   ...AF_WORKS,
