@@ -3,9 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Search, X, Loader2 } from 'lucide-react'
+import { Search, X, Loader2, ChevronDown } from 'lucide-react'
 import { GNT_BOOKS, LXX_BOOKS } from '@/lib/constants'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { BookPicker, type BookGroup } from './BookPicker'
 import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
@@ -80,7 +81,8 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
   const router = useRouter()
   const [query, setQuery] = useState('')
   const [scopeVal, setScopeVal] = useState('trans:en')
-  const [book, setBook] = useState('')
+  const [books, setBooks] = useState<string[]>([])
+  const [showBooks, setShowBooks] = useState(false)
   const [bib, setBib] = useState<BibHit[] | null>(null)
   const [bg, setBg] = useState<BgResult | null>(null)
   const [loading, setLoading] = useState(false)
@@ -90,16 +92,23 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
   const isBiblical = scope.kind !== 'bg'
-  const bookOptions = scope.kind === 'greek'
-    ? (scope.corpus === 'GNT' ? GNT_BOOKS : LXX_BOOKS)
-    : scope.kind === 'trans' ? [...LXX_BOOKS, ...GNT_BOOKS] : []
+  const bookGroups: BookGroup[] = scope.kind === 'greek'
+    ? [scope.corpus === 'GNT' ? { heading: 'New Testament', books: GNT_BOOKS } : { heading: 'Old Testament', books: LXX_BOOKS }]
+    : scope.kind === 'trans'
+      ? [{ heading: 'Old Testament', books: LXX_BOOKS }, { heading: 'New Testament', books: GNT_BOOKS }]
+      : []
+  const selectedSet = useMemo(() => new Set(books), [books])
+  const booksLabel = books.length === 0 ? 'Any book'
+    : books.length === 1 ? (BOOK_NAME.get(books[0]) ?? books[0])
+    : `${books.length} books`
+  const booksKey = books.join(',')
 
   useEffect(() => setMounted(true), [])
   useEffect(() => { if (open) { setBib(null); setBg(null); inputRef.current?.focus() } }, [open])
-  // A scope change can invalidate the chosen book (different canon).
-  useEffect(() => { setBook('') }, [scopeVal])
+  // A scope change can invalidate the chosen books (different canon).
+  useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
 
-  const runSearch = useCallback(async (q: string, sv: string, bk: string) => {
+  const runSearch = useCallback(async (q: string, sv: string, bks: string) => {
     if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }
     const s = parseScope(sv)
     const id = ++reqId.current
@@ -112,7 +121,7 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
         const data: BgResult = res.ok ? await res.json() : { lang, total: 0, truncated: false, groups: [] }
         if (id === reqId.current) { setBg(data); setBib(null) }
       } else {
-        const bookParam = bk ? `&book=${bk}` : ''
+        const bookParam = bks ? `&books=${bks}` : ''
         const url = s.kind === 'greek'
           ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${bookParam}`
           : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}`
@@ -139,9 +148,9 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
   // Debounced search while open.
   useEffect(() => {
     if (!open) return
-    const t = setTimeout(() => void runSearch(query, scopeVal, book), 250)
+    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey), 250)
     return () => clearTimeout(t)
-  }, [open, query, scopeVal, book, runSearch])
+  }, [open, query, scopeVal, booksKey, runSearch])
 
   // Escape to close.
   useEffect(() => {
@@ -150,6 +159,11 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
     document.addEventListener('keydown', onKey)
     return () => document.removeEventListener('keydown', onKey)
   }, [open, onClose])
+
+  const toggleBook = (osisId: string) =>
+    setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
+  const toggleGroup = (ids: string[], select: boolean) =>
+    setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
 
   function openBiblical(link: string) {
     onClose()
@@ -209,16 +223,25 @@ export function MasterSearchModal({ open, onClose }: { open: boolean; onClose: (
             </select>
           </label>
           {isBiblical && (
-            <label className="flex items-center gap-1.5 text-gray-500">
+            <span className="flex items-center gap-1.5 text-gray-500">
               Book
-              <select value={book} onChange={e => setBook(e.target.value)}
-                className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]">
-                <option value="">Any book</option>
-                {bookOptions.map(b => <option key={b.osisId} value={b.osisId}>{b.name}</option>)}
-              </select>
-            </label>
+              <button type="button" onClick={() => setShowBooks(v => !v)}
+                aria-expanded={showBooks}
+                className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
+                  showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+                {booksLabel}
+                <ChevronDown size={13} className={`transition-transform ${showBooks ? 'rotate-180' : ''}`} />
+              </button>
+            </span>
           )}
         </div>
+
+        {/* Book picker (multi-select grid) */}
+        {isBiblical && showBooks && (
+          <div className="flex-none px-3 py-2 border-b border-gray-100">
+            <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
+          </div>
+        )}
 
         {/* Results */}
         <div className="flex-1 min-h-0 overflow-y-auto">

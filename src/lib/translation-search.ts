@@ -105,17 +105,17 @@ export async function suggestTranslation(lang: string, prefix: string, limit = 1
 }
 
 /** Verses in the given translation whose text contains the query (accent-insensitive).
- *  `book` (osisId) scopes to a single book — applied during the scan so its hits aren't lost
- *  to the result cap when they fall late in the canon (e.g. "love" in Matthew). */
-export async function searchTranslation(lang: string, query: string, limit = 300, book?: string | null): Promise<{ id: string; text: string }[]> {
+ *  `books` (osisIds) scopes to one or more books — applied during the scan so their hits
+ *  aren't lost to the result cap when they fall late in the canon (e.g. "love" in Matthew). */
+export async function searchTranslation(lang: string, query: string, limit = 300, books?: string[] | null): Promise<{ id: string; text: string }[]> {
   const data = await load(lang)
   if (!data) return []
   const q = normalize(query.trim())
   if (!q) return []
-  const prefix = book ? `${book}.` : null
+  const bookSet = books && books.length ? new Set(books) : null
   const out: { id: string; text: string }[] = []
   for (let i = 0; i < data.entries.length; i++) {
-    if (prefix && !data.entries[i].id.startsWith(prefix)) continue
+    if (bookSet && !bookSet.has(data.entries[i].id.split('.')[0])) continue
     if (data.normalized[i].includes(q)) {
       out.push({ id: data.entries[i].id, text: data.entries[i].t })
       if (out.length >= limit) break

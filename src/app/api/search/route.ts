@@ -12,8 +12,11 @@ export async function GET(req: NextRequest) {
   const lang = searchParams.get('lang')
   // When 'true', treat q as a Greek lexeme and find every verse with any of its forms.
   const lemma = searchParams.get('lemma') === 'true'
-  // Optional book scope (osisId, e.g. 'Matt') — used by the master search ("love in Matthew").
-  const book = searchParams.get('book') || null
+  // Optional book scope — one or more osisIds (comma-separated 'books', or legacy single
+  // 'book'). Used by the master search ("love in Matthew", or a range of books).
+  const booksList = (searchParams.get('books') || searchParams.get('book') || '')
+    .split(',').map(s => s.trim()).filter(Boolean)
+  const books = booksList.length ? booksList : null
 
   try {
     // Morphology search: features (comma-separated parsing tokens) + optional lemma. No q.
@@ -30,19 +33,19 @@ export async function GET(req: NextRequest) {
     if (type === 'word' && lang) {
       // Book scope is applied inside the scan (not post-filtered) so late-canon hits aren't
       // lost to the result cap — e.g. "love" in Matthew, which the OT fills up first.
-      const results = await searchTranslation(lang, q, 300, book)
+      const results = await searchTranslation(lang, q, 300, books)
       return NextResponse.json({ results, translation: true })
     }
     if (type === 'word' && lemma) {
       let results = await searchByLemma(q, corpus)
-      if (book) results = results.filter(v => v.bookId === book)
+      if (books) results = results.filter(v => books.includes(v.bookId))
       return NextResponse.json({ results })
     }
 
     let results = type === 'reference'
       ? await searchByReference(q, corpus)
       : await searchByGreekWord(q, corpus)
-    if (book) results = results.filter(v => v.bookId === book)
+    if (books) results = results.filter(v => books.includes(v.bookId))
 
     return NextResponse.json({ results })
   } catch (err) {
