@@ -1,17 +1,23 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { registerMasterSearch, type MasterSearchPreset } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
-import { MasterSearchModal } from './MasterSearchModal'
 
-// Mounted once in the root layout. Hosts the Master Search pane, lets the header icon / mobile
-// menu / right-click word menu open it via openMasterSearch(), and binds ⌘K / Ctrl-K. Disabled
-// during a lockdown exam.
+// Mounted once in the root layout. Routes the header icon / mobile menu / right-click word menu
+// (all via openMasterSearch()) and ⌘K / Ctrl-K to the full-page /search. An optional preset
+// pre-fills the query + scope via URL params. Disabled during a lockdown exam.
 export function MasterSearchProvider() {
-  const [open, setOpen] = useState(false)
-  const [preset, setPreset] = useState<MasterSearchPreset | null>(null)
-  const doOpen = useCallback((p?: MasterSearchPreset) => { if (!isExamLocked()) { setPreset(p ?? null); setOpen(true) } }, [])
+  const router = useRouter()
+  const doOpen = useCallback((p?: MasterSearchPreset) => {
+    if (isExamLocked()) return
+    const params = new URLSearchParams()
+    if (p?.query) params.set('q', p.query)
+    if (p?.scope) params.set('in', p.scope)
+    const qs = params.toString()
+    router.push(qs ? `/search?${qs}` : '/search')
+  }, [router])
 
   useEffect(() => {
     registerMasterSearch(doOpen)
@@ -29,5 +35,5 @@ export function MasterSearchProvider() {
     return () => document.removeEventListener('keydown', onKey)
   }, [doOpen])
 
-  return <MasterSearchModal open={open} preset={preset} onClose={() => setOpen(false)} />
+  return null
 }

@@ -1,9 +1,8 @@
 'use client'
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
-import { createPortal } from 'react-dom'
 import { useRouter } from 'next/navigation'
-import { Search, X, Loader2, ChevronDown } from 'lucide-react'
+import { Search, Loader2, ChevronDown } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
@@ -13,9 +12,10 @@ import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
 
-// The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
-// any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
-// scoped to one or more books. Matches show in red; clicking a hit opens it in the right reader.
+// The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
+// or a translation) or any background collection, optionally scoped to books. Matches show in
+// red; clicking a hit opens it in the right reader. Reached from the header icon / ⌘K / the
+// right-click word menu (all via MasterSearchProvider → router.push('/search?…')).
 
 const TRANSLATIONS = [
   { lang: 'en',  label: 'English (WEB)' },
@@ -50,7 +50,7 @@ function parseScope(v: string): Scope {
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
 const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
 
-// A full short verse with every term highlighted (findTermRanges/markSlice: shared, accent-fold).
+// A full verse with every term highlighted (findTermRanges/markSlice: shared, accent-fold).
 function hiliteVerse(text: string, terms: string[]): ReactNode {
   const ranges = findTermRanges(text, terms)
   if (!ranges.length) return text
@@ -59,7 +59,7 @@ function hiliteVerse(text: string, terms: string[]): ReactNode {
 
 // A windowed snippet around the first match, every term inside the window highlighted — for
 // long background paragraphs.
-const RADIUS = 110
+const RADIUS = 140
 function renderSnippet(text: string, terms: string[]): ReactNode {
   const head = () => text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
   const ranges = findTermRanges(text, terms)
@@ -105,11 +105,11 @@ const RECENT_MAX = 8
 
 type SortMode = 'relevance' | 'canonical'
 
-export function MasterSearchModal({ open, preset, onClose }: { open: boolean; preset?: { query: string; scope: string } | null; onClose: () => void }) {
+export function SearchPageView({ initialQuery = '', initialScope }: { initialQuery?: string; initialScope?: string }) {
   const router = useRouter()
-  const [query, setQuery] = useState('')
-  const [scopeVal, setScopeVal] = useState('trans:en')
-  const [transLang, setTransLang] = useState('en')
+  const [query, setQuery] = useState(initialQuery)
+  const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
+  const [transLang, setTransLang] = useState(initialScope?.startsWith('trans:') ? initialScope.slice(6) : 'en')
   const [books, setBooks] = useState<string[]>([])
   const [showBooks, setShowBooks] = useState(false)
   const [bib, setBib] = useState<BibHit[] | null>(null)
@@ -125,7 +125,6 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   const countReq = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
-  // Normalized highlight terms (quoted phrase / AND words) for the results pane.
   const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
   // Greek hits arrive uncapped in canonical order → re-sort client-side for relevance.
@@ -137,9 +136,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
       .sort((a, b) => b.s - a.s)
       .map(x => x.h)
   }, [bib, scope, sort, terms])
-  // Book groups come from the app's real book catalog (books.json): the GNT (27), the full
-  // Greek LXX incl. deutero-canon (54), and — for translations, whose indexes are the 66-book
-  // canon — the Old Testament minus the deutero-canonical books.
+
   const bookGroups: BookGroup[] = useMemo(() => {
     if (!catalog) return []
     if (scope.kind === 'greek') {
@@ -166,8 +163,6 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     : `${books.length} books`
   const booksKey = books.join(',')
 
-  // Result-type tabs: one quick pivot per lane (the current translation, Greek NT, Greek LXX,
-  // all background texts), each showing a live hit count for the query. Clicking switches scope.
   const laneList = useMemo(() => [
     { val: `trans:${transLang}`, label: TRANSLATIONS.find(t => t.lang === transLang)?.label ?? 'Translation' },
     { val: 'greek:GNT', label: 'Greek NT' },
@@ -178,22 +173,29 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     : scope.kind === 'greek' ? `greek:${scope.corpus}`
     : `trans:${transLang}`
 
-  useEffect(() => setMounted(true), [])
-  // Keep the Translations tab pointed at whatever translation is currently selected.
+  useEffect(() => { setMounted(true); inputRef.current?.focus() }, [])
   useEffect(() => { if (scope.kind === 'trans') setTransLang(scope.lang) }, [scope])
-  // Remember the last-used scope across opens (a preset from right-click still overrides it).
+  // Remember the last-used scope — but only when the URL didn't specify one (a right-click preset).
   useEffect(() => {
+    if (initialScope) return
     try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => { try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal])
-  // Recent searches (shown on the empty prompt); recorded when a hit is opened or Enter is hit.
+  // Keep the URL in sync (bookmarkable / shareable) without a server round-trip.
+  useEffect(() => {
+    if (!mounted) return
+    const p = new URLSearchParams()
+    if (query.trim()) p.set('q', query.trim())
+    p.set('in', scopeVal)
+    const qs = p.toString()
+    window.history.replaceState(null, '', qs ? `/search?${qs}` : '/search')
+  }, [query, scopeVal, mounted])
   useEffect(() => {
     try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
     try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
   }, [])
   useEffect(() => { try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort])
-  // Clear the query on close so the box doesn't reopen with stale text (a preset re-fills it).
-  useEffect(() => { if (!open) setQuery('') }, [open])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
     if (v.length < 2) return
@@ -203,18 +205,11 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
       return next
     })
   }, [])
-  // A preset (from the right-click "search this word" menu) pre-fills scope + query and runs.
-  useEffect(() => {
-    if (open && preset) { setScopeVal(preset.scope); setQuery(preset.query) }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, preset])
-  // Load the real book catalog once (names + canon coverage per corpus).
   useEffect(() => {
     fetch('/data/books.json').then(r => r.ok ? r.json() : null)
       .then((d: Catalog | null) => { if (d) setCatalog({ gnt: d.gnt, lxx: d.lxx }) })
       .catch(() => {})
   }, [])
-  useEffect(() => { if (open) { setBib(null); setBg(null); inputRef.current?.focus() } }, [open])
   // A scope change can invalidate the chosen books (different canon).
   useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
 
@@ -232,8 +227,6 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
         if (id === reqId.current) { setBg(data); setBib(null) }
       } else {
         const bookParam = bks ? `&books=${bks}` : ''
-        // Translations are capped at 300, so relevance order must be computed server-side
-        // (rank=1). Greek is returned uncapped and re-sorted client-side (see rankedBib).
         const rankParam = s.kind === 'trans' && srt === 'relevance' ? '&rank=1' : ''
         const url = s.kind === 'greek'
           ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${bookParam}`
@@ -257,17 +250,14 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     }
   }, [])
 
-  // Debounced search while open.
+  // Debounced search.
   useEffect(() => {
-    if (!open) return
     const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort), 250)
     return () => clearTimeout(t)
-  }, [open, query, scopeVal, booksKey, sort, runSearch])
+  }, [query, scopeVal, booksKey, sort, runSearch])
 
-  // Live counts for the result-type tabs (all lanes, in parallel, so the user can see where the
-  // matches are before switching). Debounced; a reqId guard drops stale responses.
+  // Live counts for the result-type tabs (all lanes, in parallel). Debounced; reqId guard.
   useEffect(() => {
-    if (!open) return
     const q = query.trim()
     if (q.length < 2) { setCounts({}); return }
     const id = ++countReq.current
@@ -281,66 +271,56 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
       }
     }, 300)
     return () => clearTimeout(t)
-  }, [open, query, laneList])
-
-  // Escape to close.
-  useEffect(() => {
-    if (!open) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
-    document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
-  }, [open, onClose])
+  }, [query, laneList])
 
   const toggleBook = (osisId: string) =>
     setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
   const toggleGroup = (ids: string[], select: boolean) =>
     setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
 
-  function openBiblical(link: string, transLang?: string) {
+  function openBiblical(link: string, tl?: string) {
     pushRecent(query)
-    onClose()
     const q = query.trim()
-    const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${transLang ? `&tl=${encodeURIComponent(transLang)}` : ''}`
+    const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${tl ? `&tl=${encodeURIComponent(tl)}` : ''}`
     router.push(`/reader?ref=${encodeURIComponent(link)}${extra}`)
   }
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
-    onClose()
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
     if (hasOpenInTextsListener()) emitOpenInTexts(withTerm)
     else router.push(`/exegesis?tab=texts&open=${encodeURIComponent(JSON.stringify(withTerm))}`)
   }
 
   // Never available during a lockdown exam (it would be a lookup backdoor).
-  if (!open || !mounted || isExamLocked()) return null
+  if (mounted && isExamLocked()) {
+    return (
+      <div className="mx-auto w-full max-w-2xl px-4 py-20 text-center text-gray-500">
+        Search is unavailable during a Translation Exam.
+      </div>
+    )
+  }
 
   const noResults = query.trim().length >= 2 && !loading &&
     ((isBiblical && bib && bib.length === 0) || (!isBiblical && bg && bg.total === 0))
 
-  return createPortal(
-    <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/40 p-4 sm:pt-16" onMouseDown={onClose}>
-      <div
-        className="w-full max-w-2xl max-h-[80vh] flex flex-col rounded-xl bg-white shadow-2xl overflow-hidden"
-        onMouseDown={e => e.stopPropagation()}
-      >
-        {/* Search bar */}
-        <div className="flex-none flex items-center gap-2 border-b border-gray-200 px-3 py-2.5">
-          <Search size={16} className="text-gray-400 shrink-0" />
+  return (
+    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
+      {/* Sticky controls */}
+      <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
+        <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
+          <Search size={18} className="text-gray-400 shrink-0" />
           <input
             ref={inputRef}
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') pushRecent(query) }}
-            placeholder="Search texts…"
-            className="flex-1 min-w-0 text-sm outline-none placeholder:text-gray-400"
+            placeholder="Search the Greek NT & LXX, translations, or background texts…"
+            className="flex-1 min-w-0 text-base outline-none placeholder:text-gray-400"
           />
-          <button onClick={onClose} className="flex-none text-gray-400 hover:text-gray-700 p-1" aria-label="Close">
-            <X size={16} />
-          </button>
         </div>
 
-        {/* Scope controls */}
-        <div className="flex-none flex items-center flex-wrap gap-2 px-3 py-2 bg-gray-50/70 border-b border-gray-100 text-xs">
+        {/* Scope + book */}
+        <div className="mt-2 flex items-center flex-wrap gap-2 text-xs">
           <label className="flex items-center gap-1.5 text-gray-500">
             In
             <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
@@ -372,24 +352,23 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
           )}
         </div>
 
-        {/* Book picker (multi-select grid) */}
         {isBiblical && showBooks && (
-          <div className="flex-none px-3 py-2 border-b border-gray-100">
+          <div className="mt-2">
             {bookGroups.length > 0
               ? <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
               : <p className="text-xs text-gray-400 py-4 text-center">Loading books…</p>}
           </div>
         )}
 
-        {/* Result-type tabs (live counts across lanes) */}
+        {/* Result-type tabs (live counts) */}
         {query.trim().length >= 2 && (
-          <div className="flex-none flex items-center gap-1.5 overflow-x-auto px-3 py-1.5 border-b border-gray-100 bg-white">
+          <div className="mt-2 flex items-center gap-1.5 overflow-x-auto pb-0.5">
             {laneList.map(l => {
               const active = l.val === activeLane
               const c = counts[l.val]
               return (
                 <button key={l.val} type="button" onClick={() => setScopeVal(l.val)}
-                  className={`flex-none inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors ${
+                  className={`flex-none inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                     active ? 'border-brand-600 bg-brand-600 text-white'
                            : 'border-gray-200 bg-white text-gray-600 hover:border-brand-200 hover:bg-brand-50'}`}>
                   {l.label}
@@ -401,91 +380,94 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
             })}
           </div>
         )}
+      </div>
 
-        {/* Results */}
-        <div className="flex-1 min-h-0 overflow-y-auto">
-          {loading && (
-            <div className="flex items-center justify-center gap-2 py-10 text-sm text-gray-400">
-              <Loader2 size={16} className="animate-spin" /> Searching…
-            </div>
-          )}
-          {!loading && query.trim().length < 2 && (
-            <div className="px-4 py-6">
-              {recent.length > 0 && (
-                <div className="mb-6">
-                  <div className="flex items-center justify-between mb-2 px-1">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Recent</p>
-                    <button type="button"
-                      onClick={() => { setRecent([]); try { localStorage.removeItem(RECENT_STORAGE_KEY) } catch {} }}
-                      className="text-[11px] text-brand-600 hover:underline">Clear</button>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {recent.map(r => (
-                      <button key={r} type="button" onClick={() => { setQuery(r); inputRef.current?.focus() }}
-                        className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
-                        {r}
-                      </button>
-                    ))}
-                  </div>
+      {/* Results */}
+      <div className="py-4">
+        {loading && (
+          <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
+            <Loader2 size={16} className="animate-spin" /> Searching…
+          </div>
+        )}
+        {!loading && query.trim().length < 2 && (
+          <div className="py-10">
+            {recent.length > 0 && (
+              <div className="mb-8">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-gray-400">Recent</p>
+                  <button type="button"
+                    onClick={() => { setRecent([]); try { localStorage.removeItem(RECENT_STORAGE_KEY) } catch {} }}
+                    className="text-[11px] text-brand-600 hover:underline">Clear</button>
                 </div>
-              )}
-              <p className="text-center text-sm text-gray-400 px-2">
-                Search the Greek NT &amp; LXX, the English/Spanish (and more) translations, or any background collection.
-              </p>
-              <p className="mt-2 text-center text-[11px] text-gray-400 px-2">
-                Type several words to require them all; wrap in <span className="font-medium text-gray-500">&quot;quotes&quot;</span> for an exact phrase.
-              </p>
-            </div>
-          )}
-          {noResults && (
-            <p className="py-10 text-center text-sm text-gray-400">No matches.</p>
-          )}
-
-          {/* Biblical hits */}
-          {!loading && isBiblical && displayBib && displayBib.length > 0 && (
-            <div className="divide-y divide-gray-100">
-              <div className="flex items-center justify-between px-4 pt-2 pb-1">
-                <p className="text-[11px] text-gray-400">{displayBib.length}{displayBib.length >= 300 ? '+' : ''} verse{displayBib.length === 1 ? '' : 's'}</p>
-                <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
-                  {(['relevance', 'canonical'] as SortMode[]).map(m => (
-                    <button key={m} type="button" onClick={() => setSort(m)}
-                      className={`rounded-full px-2 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                      {m === 'relevance' ? 'Relevance' : 'Canonical'}
+                <div className="flex flex-wrap gap-1.5">
+                  {recent.map(r => (
+                    <button key={r} type="button" onClick={() => { setQuery(r); inputRef.current?.focus() }}
+                      className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
+                      {r}
                     </button>
                   ))}
                 </div>
               </div>
+            )}
+            <p className="text-center text-sm text-gray-400">
+              Search the Greek NT &amp; LXX, the English/Spanish (and more) translations, or any background collection.
+            </p>
+            <p className="mt-2 text-center text-[11px] text-gray-400">
+              Type several words to require them all; wrap in <span className="font-medium text-gray-500">&quot;quotes&quot;</span> for an exact phrase.
+            </p>
+          </div>
+        )}
+        {noResults && (
+          <p className="py-16 text-center text-sm text-gray-400">No matches.</p>
+        )}
+
+        {/* Biblical hits */}
+        {!loading && isBiblical && displayBib && displayBib.length > 0 && (
+          <div>
+            <div className="flex items-center justify-between pb-2">
+              <p className="text-xs text-gray-400">{displayBib.length}{displayBib.length >= 300 ? '+' : ''} verse{displayBib.length === 1 ? '' : 's'}</p>
+              <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
+                {(['relevance', 'canonical'] as SortMode[]).map(m => (
+                  <button key={m} type="button" onClick={() => setSort(m)}
+                    className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                    {m === 'relevance' ? 'Relevance' : 'Canonical'}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="divide-y divide-gray-100">
               {displayBib.map((h, i) => (
-                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
-                  <span className="text-[11px] font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
-                  <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
+                <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                  <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
+                  <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
                 </button>
               ))}
             </div>
-          )}
+          </div>
+        )}
 
-          {/* Background hits */}
-          {!loading && !isBiblical && bg && bg.total > 0 && (
-            <div className="divide-y divide-gray-100">
-              <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">
-                {bg.total}{bg.truncated ? '+' : ''} match{bg.total === 1 ? '' : 'es'} in {bg.groups.length} work{bg.groups.length === 1 ? '' : 's'}
-              </p>
-              {bg.groups.map(g => (
-                <div key={g.gid} className="py-1.5">
-                  <p className="px-4 py-1 text-xs font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
+        {/* Background hits */}
+        {!loading && !isBiblical && bg && bg.total > 0 && (
+          <div>
+            <p className="pb-2 text-xs text-gray-400">
+              {bg.total}{bg.truncated ? '+' : ''} match{bg.total === 1 ? '' : 'es'} in {bg.groups.length} work{bg.groups.length === 1 ? '' : 's'}
+            </p>
+            {bg.groups.map(g => (
+              <div key={g.gid} className="py-1.5">
+                <p className="py-1 text-sm font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
+                <div className="divide-y divide-gray-100">
                   {g.hits.map((h, i) => (
-                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
-                      <span className="text-[11px] font-medium text-brand-600">{h.ref}</span>
-                      <span className={`block text-xs text-gray-600 leading-snug ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
+                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                      <span className="text-xs font-medium text-brand-600">{h.ref}</span>
+                      <span className={`block text-sm text-gray-700 leading-relaxed ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
                     </button>
                   ))}
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>,
-    document.body,
+    </div>
   )
 }
