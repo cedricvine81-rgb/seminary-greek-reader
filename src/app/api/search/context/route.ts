@@ -10,6 +10,8 @@ import type { Corpus } from '@/types/biblical-text'
 // POST body: { mode: 'trans'|'greek', lang?, corpus?, radius, refs: string[] }
 const MAX_REFS = 200
 
+interface CtxVerse { chapter: number; verse: number; text: string }
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
@@ -28,19 +30,27 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ context })
     }
 
-    // Greek: load each unique chapter once, then slice the window around each ref.
+    // Greek: load each ref's chapter plus its neighbours (so the window can cross a chapter
+    // boundary within the book — radius ≤ 3, so ±1 chapter is always enough), then slice.
     const corpus = (body.corpus === 'LXX' ? 'LXX' : 'GNT') as Corpus
     const chapters = new Map<string, { osisId: string; chapter: number }>()
-    for (const r of refs) chapters.set(`${r.osisId}.${r.chapter}`, { osisId: r.osisId, chapter: r.chapter })
-    const chapterVerses = new Map<string, { verse: number; text: string }[]>()
+    for (const r of refs) for (const c of [r.chapter - 1, r.chapter, r.chapter + 1]) {
+      if (c >= 1) chapters.set(`${r.osisId}.${c}`, { osisId: r.osisId, chapter: c })
+    }
+    const chapterVerses = new Map<string, CtxVerse[]>()
     await Promise.all(Array.from(chapters.values()).map(async ({ osisId, chapter }) => {
       const data = await getChapter(osisId, chapter, corpus)
-      if (data) chapterVerses.set(`${osisId}.${chapter}`, data.verses.map(v => ({ verse: v.verse, text: v.text })))
+      if (data) chapterVerses.set(`${osisId}.${chapter}`, data.verses.map(v => ({ chapter: v.chapter, verse: v.verse, text: v.text })))
     }))
-    const context: Record<string, { verse: number; text: string }[]> = {}
+    const context: Record<string, CtxVerse[]> = {}
     for (const r of refs) {
-      const arr = chapterVerses.get(`${r.osisId}.${r.chapter}`) ?? []
-      context[`${r.osisId}.${r.chapter}.${r.verse}`] = arr.filter(x => x.verse >= r.verse - radius && x.verse <= r.verse + radius)
+      const seq = [
+        ...(chapterVerses.get(`${r.osisId}.${r.chapter - 1}`) ?? []),
+        ...(chapterVerses.get(`${r.osisId}.${r.chapter}`) ?? []),
+        ...(chapterVerses.get(`${r.osisId}.${r.chapter + 1}`) ?? []),
+      ]
+      const idx = seq.findIndex(x => x.chapter === r.chapter && x.verse === r.verse)
+      context[`${r.osisId}.${r.chapter}.${r.verse}`] = idx < 0 ? [] : seq.slice(Math.max(0, idx - radius), idx + radius + 1)
     }
     return NextResponse.json({ context })
   } catch (err) {

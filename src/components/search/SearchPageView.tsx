@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown, Lightbulb, X } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
@@ -99,6 +99,7 @@ async function fetchLaneCount(val: string, q: string): Promise<number> {
 }
 
 const SCOPE_STORAGE_KEY = 'masterSearch.scope'
+const QUERY_STORAGE_KEY = 'masterSearch.query'
 const RECENT_STORAGE_KEY = 'masterSearch.recent'
 const SORT_STORAGE_KEY = 'masterSearch.sort'
 const CONTEXT_STORAGE_KEY = 'masterSearch.context'
@@ -148,7 +149,8 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   const [recent, setRecent] = useState<string[]>([])
   const [sort, setSort] = useState<SortMode>('relevance')
   const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
-  const [ctxMap, setCtxMap] = useState<Record<string, { verse: number; text: string }[]>>({})
+  const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
+  const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
@@ -206,15 +208,28 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     : scope.kind === 'greek' ? `greek:${scope.corpus}`
     : `trans:${transLang}`
 
-  useEffect(() => { setMounted(true); inputRef.current?.focus() }, [])
-  useEffect(() => { if (scope.kind === 'trans') setTransLang(scope.lang) }, [scope])
-  // Remember the last-used scope — but only when the URL didn't specify one (a right-click preset).
+  // Hydrate persisted state from localStorage ONCE, then mark mounted. Saves are gated on
+  // `mounted` so this restore isn't clobbered by an initial-render write. URL params win.
   useEffect(() => {
-    if (initialScope) return
-    try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {}
+    if (!initialScope) { try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {} }
+    if (!initialQuery) { try { const q = localStorage.getItem(QUERY_STORAGE_KEY); if (q) setQuery(q) } catch {} }
+    try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
+    try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
+    try { const c = Number(localStorage.getItem(CONTEXT_STORAGE_KEY)); if (Number.isFinite(c) && c >= 0 && c <= 3) setContext(c) } catch {}
+    setMounted(true)
+    inputRef.current?.focus()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  useEffect(() => { try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal])
+  useEffect(() => { if (scope.kind === 'trans') setTransLang(scope.lang) }, [scope])
+  // Persist scope / query / sort / context (all gated on `mounted` so they never fire before
+  // hydration). Results are retained when you leave and return to /search — until you Clear.
+  useEffect(() => { if (mounted) try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal, mounted])
+  useEffect(() => { if (mounted) try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort, mounted])
+  useEffect(() => { if (mounted) try { localStorage.setItem(CONTEXT_STORAGE_KEY, String(context)) } catch {} }, [context, mounted])
+  useEffect(() => {
+    if (!mounted) return
+    try { if (query.trim()) localStorage.setItem(QUERY_STORAGE_KEY, query); else localStorage.removeItem(QUERY_STORAGE_KEY) } catch {}
+  }, [query, mounted])
   // Keep the URL in sync (bookmarkable / shareable) without a server round-trip.
   useEffect(() => {
     if (!mounted) return
@@ -224,13 +239,6 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     const qs = p.toString()
     window.history.replaceState(null, '', qs ? `/search?${qs}` : '/search')
   }, [query, scopeVal, mounted])
-  useEffect(() => {
-    try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
-    try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
-    try { const c = Number(localStorage.getItem(CONTEXT_STORAGE_KEY)); if (c >= 0 && c <= 3) setContext(c) } catch {}
-  }, [])
-  useEffect(() => { try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort])
-  useEffect(() => { try { localStorage.setItem(CONTEXT_STORAGE_KEY, String(context)) } catch {} }, [context])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
     if (v.length < 2) return
@@ -347,6 +355,20 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${tl ? `&tl=${encodeURIComponent(tl)}` : ''}`
     router.push(`/reader?ref=${encodeURIComponent(link)}${extra}`)
   }
+  async function copyHit(h: BibHit, ctx?: { chapter: number; verse: number; text: string }[]) {
+    const verses = ctx && ctx.length ? ctx : [{ chapter: h.chapter, verse: h.verse, text: h.text }]
+    const book = bookName.get(h.osisId) ?? h.osisId
+    const first = verses[0], last = verses[verses.length - 1]
+    const ref = verses.length === 1
+      ? `${book} ${h.chapter}:${h.verse}`
+      : `${book} ${first.chapter}:${first.verse}–${last.chapter === first.chapter ? last.verse : `${last.chapter}:${last.verse}`}`
+    const key = `${h.osisId}.${h.chapter}.${h.verse}`
+    try {
+      await navigator.clipboard.writeText(`${ref} — ${verses.map(v => v.text).join(' ')}`)
+      setCopiedKey(key)
+      setTimeout(() => setCopiedKey(k => (k === key ? null : k)), 1500)
+    } catch {}
+  }
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
@@ -380,6 +402,12 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
             placeholder="Search the Greek NT & LXX, translations, or background texts…"
             className="flex-1 min-w-0 text-base outline-none placeholder:text-gray-400"
           />
+          {query && (
+            <button type="button" onClick={() => { setQuery(''); inputRef.current?.focus() }}
+              className="flex-none text-gray-400 hover:text-gray-700 p-0.5" title="Clear" aria-label="Clear search">
+              <X size={16} />
+            </button>
+          )}
         </div>
 
         {/* Scope + book + Search types */}
@@ -553,23 +581,34 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
             </div>
             <div className="divide-y divide-gray-100">
               {displayBib.map((h, i) => {
-                const ctx = context > 0 ? ctxMap[`${h.osisId}.${h.chapter}.${h.verse}`] : undefined
+                const key = `${h.osisId}.${h.chapter}.${h.verse}`
+                const ctx = context > 0 ? ctxMap[key] : undefined
                 return (
-                  <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
-                    <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
-                    {ctx && ctx.length > 0 ? (
-                      <span className={`block text-sm leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
-                        {ctx.map(cv => (
-                          <span key={cv.verse} className={cv.verse === h.verse ? 'text-gray-800' : 'text-gray-400'}>
-                            <sup className="text-[10px] text-gray-400 mr-0.5">{cv.verse}</sup>
-                            {hiliteVerse(cv.text, terms)}{' '}
-                          </span>
-                        ))}
-                      </span>
-                    ) : (
-                      <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
-                    )}
-                  </button>
+                  <div key={i} className="relative group">
+                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
+                      <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
+                      {ctx && ctx.length > 0 ? (
+                        <span className={`block text-sm leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
+                          {ctx.map(cv => {
+                            const isHit = cv.chapter === h.chapter && cv.verse === h.verse
+                            return (
+                              <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
+                                <sup className="text-[10px] text-gray-400 mr-0.5">{cv.chapter === h.chapter ? cv.verse : `${cv.chapter}:${cv.verse}`}</sup>
+                                {hiliteVerse(cv.text, terms)}{' '}
+                              </span>
+                            )
+                          })}
+                        </span>
+                      ) : (
+                        <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
+                      )}
+                    </button>
+                    <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
+                      title="Copy verse(s)" aria-label="Copy verse(s)"
+                      className="absolute top-2 right-2 p-1 rounded text-gray-400 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-brand-700 hover:bg-white transition">
+                      {copiedKey === key ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
+                    </button>
+                  </div>
                 )
               })}
             </div>
