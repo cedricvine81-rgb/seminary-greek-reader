@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, MISHNAH_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -159,7 +159,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     blurb: 'The Ante-Nicene Fathers — Irenaeus’s Against Heresies (Books 1–5), in the Roberts-Donaldson public-domain translation. More apologists to come.',
     works: ANF_CATALOG,
   },
-  { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
+  {
+    id: 'mishnah',
+    label: 'Mishnah',
+    blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
+    works: MISHNAH_CATALOG,
+  },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]
 

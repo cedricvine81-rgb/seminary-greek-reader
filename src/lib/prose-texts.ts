@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -296,6 +296,82 @@ export const ANF_CATALOG = ANF.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+// ── The Mishnah ───────────────────────────────────────────────────────────────────────
+// The cited tractates in Dr. Joshua Kulp's "Mishnah Yomit" translation (CC-BY, via Sefaria),
+// embedded chapter → verse where verse = the mishnah number ("m. Sanh. 4:5" → chapter 4,
+// mishnah 5). One work per tractate. Built by scripts/build-mishnah.py.
+const MISHNAH_ATTRIBUTION = 'Text: the Mishnah translated by Dr. Joshua Kulp (Mishnah Yomit), CC-BY. Source: Sefaria.'
+
+// Recognize an "m. <Tractate> <chapter>:<mishnah>" citation for a tractate's abbreviation(s).
+const mishnahCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    const m = s.match(new RegExp('^' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)(?::(\\d+))?'))
+    if (m) return { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
+  }
+  return null
+}
+
+// slug (→ /data/mishnah/<tractate>.json and `m-<tractate>`), name, note anchor, chapter
+// count, citation abbreviation(s). Kept in sync with scripts/build-mishnah.py.
+const MISHNAH: { slug: string; name: string; noteBook: string; chapters: number; abbrevs: string[] }[] = [
+  { slug: 'm-sanhedrin', name: 'Mishnah Sanhedrin', noteBook: 'MishSanhedrin', chapters: 11, abbrevs: ['m. Sanh.'] },
+  { slug: 'm-nedarim', name: 'Mishnah Nedarim', noteBook: 'MishNedarim', chapters: 11, abbrevs: ['m. Ned.'] },
+  { slug: 'm-berakhot', name: 'Mishnah Berakhot', noteBook: 'MishBerakhot', chapters: 9, abbrevs: ['m. Ber.'] },
+  { slug: 'm-makkot', name: 'Mishnah Makkot', noteBook: 'MishMakkot', chapters: 3, abbrevs: ['m. Mak.'] },
+  { slug: 'm-yoma', name: 'Mishnah Yoma', noteBook: 'MishYoma', chapters: 8, abbrevs: ['m. Yoma'] },
+  { slug: 'm-ketubot', name: 'Mishnah Ketubot', noteBook: 'MishKetubot', chapters: 13, abbrevs: ['m. Ketub.'] },
+  { slug: 'm-keritot', name: 'Mishnah Keritot', noteBook: 'MishKeritot', chapters: 6, abbrevs: ['m. Ker.'] },
+  { slug: 'm-kiddushin', name: 'Mishnah Kiddushin', noteBook: 'MishKiddushin', chapters: 4, abbrevs: ['m. Qidd.'] },
+  { slug: 'm-tamid', name: 'Mishnah Tamid', noteBook: 'MishTamid', chapters: 7, abbrevs: ['m. Tamid'] },
+  { slug: 'm-nazir', name: 'Mishnah Nazir', noteBook: 'MishNazir', chapters: 9, abbrevs: ['m. Naz.'] },
+  { slug: 'm-yevamot', name: 'Mishnah Yevamot', noteBook: 'MishYevamot', chapters: 16, abbrevs: ['m. Yebam.', 'm. Yeb.'] },
+  { slug: 'm-temurah', name: 'Mishnah Temurah', noteBook: 'MishTemurah', chapters: 7, abbrevs: ['m. Temurah'] },
+  { slug: 'm-negaim', name: 'Mishnah Negaim', noteBook: 'MishNegaim', chapters: 14, abbrevs: ['m. Neg.'] },
+  { slug: 'm-bava-batra', name: 'Mishnah Bava Batra', noteBook: 'MishBavaBatra', chapters: 10, abbrevs: ['m. B. Bat.'] },
+  { slug: 'm-terumot', name: 'Mishnah Terumot', noteBook: 'MishTerumot', chapters: 11, abbrevs: ['m. Terumot'] },
+  { slug: 'm-demai', name: 'Mishnah Demai', noteBook: 'MishDemai', chapters: 7, abbrevs: ['m. Demai'] },
+  { slug: 'm-niddah', name: 'Mishnah Niddah', noteBook: 'MishNiddah', chapters: 10, abbrevs: ['m. Nid.'] },
+  { slug: 'm-yadayim', name: 'Mishnah Yadayim', noteBook: 'MishYadayim', chapters: 4, abbrevs: ['m. Yad.'] },
+  { slug: 'm-bava-kamma', name: 'Mishnah Bava Kamma', noteBook: 'MishBavaKamma', chapters: 10, abbrevs: ['m. B. Qam.'] },
+  { slug: 'm-bikkurim', name: 'Mishnah Bikkurim', noteBook: 'MishBikkurim', chapters: 4, abbrevs: ['m. Bik.'] },
+  { slug: 'm-sotah', name: 'Mishnah Sotah', noteBook: 'MishSotah', chapters: 9, abbrevs: ['m. Soṭah'] },
+  { slug: 'm-chullin', name: 'Mishnah Chullin', noteBook: 'MishChullin', chapters: 12, abbrevs: ['m. Ḥul.'] },
+  { slug: 'm-avot', name: 'Pirkei Avot', noteBook: 'MishAvot', chapters: 6, abbrevs: ['m. ʾAbot', 'm. Abot'] },
+  { slug: 'm-gittin', name: 'Mishnah Gittin', noteBook: 'MishGittin', chapters: 9, abbrevs: ['m. Giṭ.'] },
+  { slug: 'm-taanit', name: 'Mishnah Taanit', noteBook: 'MishTaanit', chapters: 4, abbrevs: ['m. Taʿan.'] },
+  { slug: 'm-eduyot', name: 'Mishnah Eduyot', noteBook: 'MishEduyot', chapters: 8, abbrevs: ['m. ʿEd.'] },
+  { slug: 'm-pesachim', name: 'Mishnah Pesachim', noteBook: 'MishPesachim', chapters: 10, abbrevs: ['m. Pesaḥ.'] },
+  { slug: 'm-eruvin', name: 'Mishnah Eruvin', noteBook: 'MishEruvin', chapters: 10, abbrevs: ['m. ʿErub.'] },
+  { slug: 'm-shabbat', name: 'Mishnah Shabbat', noteBook: 'MishShabbat', chapters: 24, abbrevs: ['m. Šabb.'] },
+  { slug: 'm-tahorot', name: 'Mishnah Tahorot', noteBook: 'MishTahorot', chapters: 10, abbrevs: ['m. Ṭohor.'] },
+  { slug: 'm-chagigah', name: 'Mishnah Chagigah', noteBook: 'MishChagigah', chapters: 3, abbrevs: ['m. Ḥag.'] },
+  { slug: 'm-peah', name: 'Mishnah Peah', noteBook: 'MishPeah', chapters: 8, abbrevs: ['m. Peʾah'] },
+  { slug: 'm-beitzah', name: 'Mishnah Beitzah', noteBook: 'MishBeitzah', chapters: 5, abbrevs: ['m. Beṣah'] },
+  { slug: 'm-shevuot', name: 'Mishnah Shevuot', noteBook: 'MishShevuot', chapters: 8, abbrevs: ['m. Šebu.'] },
+  { slug: 'm-zevachim', name: 'Mishnah Zevachim', noteBook: 'MishZevachim', chapters: 14, abbrevs: ['m. Zebaḥ.'] },
+  { slug: 'm-sheviit', name: 'Mishnah Sheviit', noteBook: 'MishSheviit', chapters: 10, abbrevs: ['m. Šeb.'] },
+  { slug: 'm-shekalim', name: 'Mishnah Shekalim', noteBook: 'MishShekalim', chapters: 8, abbrevs: ['m. Šeqal.'] },
+  { slug: 'm-bava-metzia', name: 'Mishnah Bava Metzia', noteBook: 'MishBavaMetzia', chapters: 10, abbrevs: ['m. B. Meṣiʿa'] },
+  { slug: 'm-moed-katan', name: 'Mishnah Moed Katan', noteBook: 'MishMoedKatan', chapters: 3, abbrevs: ['m. Moʾed Qaṭ.'] },
+  { slug: 'm-avodah-zarah', name: 'Mishnah Avodah Zarah', noteBook: 'MishAvodahZarah', chapters: 5, abbrevs: ['m. ʿAbod. Zar.'] },
+]
+
+const MISHNAH_WORKS: ProseWork[] = MISHNAH.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/mishnah/${w.slug.replace(/^m-/, '')}.json`,
+  chapters: w.chapters,
+  attribution: MISHNAH_ATTRIBUTION,
+  parseCitation: mishnahCite(w.abbrevs),
+}))
+
+// Ids/names the catalog needs to list the Mishnah tractates under one Texts category.
+export const MISHNAH_CATALOG = MISHNAH.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -353,6 +429,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...AF_WORKS,
   ...TG_WORKS,
   ...ANF_WORKS,
+  ...MISHNAH_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
