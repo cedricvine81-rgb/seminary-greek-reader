@@ -5,6 +5,7 @@ import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } fr
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { onOpenInTexts } from '@/lib/open-in-texts-bus'
 import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
 import { TextsReader } from '@/components/texts/TextsReader'
 import { NotesView, type NoteAnchor } from './NotesView'
@@ -50,7 +51,7 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
 const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
-export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated: boolean; initialTab?: string }) {
+export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string }) {
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
   const [tab, setTab] = useState<ExegesisTab>(
@@ -92,6 +93,15 @@ export function ExegesisTabs({ isAuthenticated, initialTab }: { isAuthenticated:
     setTextsOpenRequest({ target, token: openRequestToken.current })
     setTab('texts')
   }
+  // Let the app-wide background-sources search open a hit here in place (when this workspace
+  // is mounted), and honour an `open=<encoded target>` deep-link on first mount (used when
+  // the search is triggered from another page and navigates here).
+  useEffect(() => onOpenInTexts(openInTexts), [])
+  useEffect(() => {
+    if (!initialOpen) return
+    try { openInTexts(JSON.parse(initialOpen) as OpenInTextsTarget) } catch { /* ignore malformed */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   // Commentary / Notes text size + line spacing (persisted, shared via the same
   // localStorage-backed hooks the views themselves use — both stay in sync).
   const [commentaryFontScale, setCommentaryFontScale] = useCommentaryFontScale()

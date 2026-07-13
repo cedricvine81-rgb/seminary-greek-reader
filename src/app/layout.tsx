@@ -4,6 +4,7 @@ import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
+import { BackgroundsSearchProvider } from '@/components/search/BackgroundsSearchProvider'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { cookies } from 'next/headers'
@@ -75,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
           <AppFooter />
         </div>
+        <BackgroundsSearchProvider />
       </body>
     </html>
   )

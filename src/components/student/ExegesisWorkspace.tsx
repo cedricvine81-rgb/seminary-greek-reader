@@ -7,6 +7,7 @@ import type { BiblicalBook, VerseWord } from '@/types/biblical-text'
 import { buildParsingLabel } from '@/lib/parsing'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
+import { setExamLocked } from '@/lib/exam-lockdown'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -1642,6 +1643,9 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   // re-entry overlay.
   useEffect(() => {
     if (!lockdownOn || !lockdownStarted) return
+    // Signal app-wide features (e.g. the background-sources right-click search) to stay
+    // disabled while the exam is locked, so they can't be used to circumvent integrity.
+    setExamLocked(true)
     const onVisibility = () => { if (document.hidden) recordViolation('tab-hidden') }
     const onBlur = () => recordViolation('window-blur')
     const onFullscreenChange = () => {
@@ -1665,6 +1669,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
     document.addEventListener('paste', onPaste)
     document.addEventListener('contextmenu', onContextMenu)
     return () => {
+      setExamLocked(false)
       document.removeEventListener('visibilitychange', onVisibility)
       window.removeEventListener('blur', onBlur)
       document.removeEventListener('fullscreenchange', onFullscreenChange)

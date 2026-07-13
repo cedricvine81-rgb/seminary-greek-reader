@@ -8,6 +8,7 @@ import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from
 import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
@@ -58,16 +59,19 @@ const LOOKAHEAD = 1600   // px ahead of the sentinel to start loading the next/p
 const LOCATE_ROW_H = 26
 const LOCATE_HEADER_H = 22
 
-// Highlight every case-insensitive match of `q` inside `text` for the search box.
-function highlight(text: string, q: string): ReactNode {
+// Highlight every case-insensitive match of `q` inside `text`. `cls` picks the colour:
+// yellow for the in-text search box, red for a term carried in from a background search.
+const SEARCH_YELLOW = 'bg-yellow-200 rounded-sm'
+const SEARCH_RED = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+function highlight(text: string, q: string, cls: string = SEARCH_YELLOW): ReactNode {
   if (!q.trim()) return text
   const idx = text.toLowerCase().indexOf(q.toLowerCase())
   if (idx === -1) return text
   return (
     <>
       {text.slice(0, idx)}
-      <mark className="bg-yellow-200 rounded-sm">{text.slice(idx, idx + q.length)}</mark>
-      {highlight(text.slice(idx + q.length), q)}
+      <mark className={cls}>{text.slice(idx, idx + q.length)}</mark>
+      {highlight(text.slice(idx + q.length), q, cls)}
     </>
   )
 }
@@ -126,6 +130,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [translationId, setTranslationId] = useState<string | null>(null)
   const [translationMenuOpen, setTranslationMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
+  // A word to spotlight in red, carried in when the reader is opened from a background
+  // search — highlighted without filtering, and only while the in-text search box is empty.
+  const [termHighlight, setTermHighlight] = useState<string | null>(null)
 
   // Parsing window (Greek only)
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
@@ -404,6 +411,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   function openWork(w: CatalogWork) {
     setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
     setLocateBook(1); setLocateChapter(1)
+    setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
     loadLocateVerses(w, w.source === 'josephus' ? 1 : undefined, 1)
   }
@@ -418,6 +426,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (!w) return
     setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
+    setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
     loadLocateVerses(w, target.book, target.chapter)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -481,6 +490,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   const q = search.trim().toLowerCase()
+  // Accent-insensitive form of the red search-highlight term (only while the in-text search
+  // box is empty), so it also catches accented Greek forms.
+  const stripAccents = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  const termNorm = !q && termHighlight ? stripAccents(termHighlight) : null
   const matchesSearch = (r: Row) =>
     !q ||
     !!r.greek?.toLowerCase().includes(q) ||
@@ -622,17 +635,27 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
           </div>
         )}
 
-        {/* Search this text */}
-        <div className="flex-none relative">
-          <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input
-            type="text"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            disabled={!work}
-            placeholder={work ? 'Search the loaded text…' : 'Select a text above to begin reading'}
-            className="w-full rounded-lg border border-gray-300 pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
-          />
+        {/* Search this text — or all background texts */}
+        <div className="flex-none flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              disabled={!work}
+              placeholder={work ? 'Search the loaded text…' : 'Select a text above to begin reading'}
+              className="w-full rounded-lg border border-gray-300 pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => openBackgroundsSearch(search.trim(), 'en')}
+            title="Search across all background texts (Philo, Josephus, LXX, Apocrypha, Pseudepigrapha)"
+            className="flex-none whitespace-nowrap rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+          >
+            Search all texts
+          </button>
         </div>
 
         <div ref={panelRef} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
@@ -681,11 +704,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       const key = `${section.key}.${row.num}.${ti}`
                                       const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
                                       const matched = !!q && tok.surface.toLowerCase().includes(q)
+                                      const matchedTerm = !!termNorm && stripAccents(tok.surface).includes(termNorm)
                                       const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}
                                           {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': noteBook, 'data-hl-chapter': section.chapter, 'data-hl-color': hl.color } : {})}
-                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : hl ? highlightMarkClass(hl.color) : ''}`}>
+                                          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${matched ? 'bg-yellow-200' : matchedTerm ? SEARCH_RED : hl ? highlightMarkClass(hl.color) : ''}`}>
                                           {tok.surface}{ti < row.tokens!.length - 1 ? ' ' : ''}
                                         </span>
                                       )
@@ -694,7 +718,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               </span>
                             ) : (
                               <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
-                                {q ? highlight(row.english ?? '', search) : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights)}
+                                {q ? highlight(row.english ?? '', search)
+                                  : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
+                                  : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights)}
                               </span>
                             )}
                           </p>
@@ -703,7 +729,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                           {isGreek && showEnglish && hasEnglish && (
                             <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}>
                               <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
-                              {row.english ? highlight(row.english, search) : <span className="text-gray-300 italic">—</span>}
+                              {row.english
+                                ? (q ? highlight(row.english, search)
+                                   : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
+                                   : row.english)
+                                : <span className="text-gray-300 italic">—</span>}
                             </p>
                           )}
                         </div>

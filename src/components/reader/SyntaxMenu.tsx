@@ -9,7 +9,7 @@ import { buildGbiDisplay, type GbiEntry } from '@/lib/gbi-data'
 import { buildAbsDisplay, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-syntax'
 
-export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'strongs' | 'lexicon'
+export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'strongs' | 'lexicon' | 'backgrounds'
 export type SearchScope = 'GNT' | 'LXX' | 'BOTH'
 
 interface SyntaxMenuProps {
@@ -209,6 +209,10 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             <button type="button" onClick={() => onWordAction('lexicon', scope)}
               className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               Lexicon entry
+            </button>
+            <button type="button" onClick={() => onWordAction('backgrounds', scope)}
+              className="col-span-2 text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              Search background sources <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </div>
           <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500">

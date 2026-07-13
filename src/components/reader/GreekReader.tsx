@@ -13,6 +13,7 @@ import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
+import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { MorphSearchPicker } from './MorphSearchPicker'
 import { LexiconPanel } from './LexiconPanel'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
@@ -972,6 +973,11 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
     const strongs = w.lexeme?.strongs
     if (action === 'morph')   { setMorphPickerWord(w); setSyntaxMenu(null); return }
     if (action === 'lexicon') { setLexiconWord(w);     setSyntaxMenu(null); return }
+    if (action === 'backgrounds') {
+      // Search the embedded background texts (Philo, Josephus, LXX, …) for this word,
+      // seeded with its lemma (editable in the modal). Greek facet.
+      openBackgroundsSearch(lemma ?? w.surface, 'grc'); setSyntaxMenu(null); return
+    }
     if (action === 'lemma') {
       if (!lemma) return
       runWordSearch(`/api/search?q=${encodeURIComponent(lemma)}&type=word&lemma=true&corpus=${scope}`, `All forms of ${lemma}`, null)

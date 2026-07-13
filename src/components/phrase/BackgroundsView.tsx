@@ -23,6 +23,9 @@ export interface OpenInTextsTarget {
   book?: number
   chapter: number
   verse?: number
+  // A term to highlight (in red) in the opened text — set when the reader is opened from a
+  // background-sources search, so the reader can point out the word that was searched for.
+  highlight?: string
 }
 
 type BgFontSize = PhraseFontSize
