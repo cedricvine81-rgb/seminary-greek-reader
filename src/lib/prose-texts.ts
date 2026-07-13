@@ -411,6 +411,7 @@ export const MISHNAH_CATALOG = MISHNAH.map(w => ({
 // the English to chapter only, so citations resolve at the chapter level. Built by
 // scripts/build-perseus.py.
 const EPICTETUS_ATTRIBUTION = 'Text: Epictetus, tr. George Long (1877); Greek ed. Schenkl. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const DIOGENES_ATTRIBUTION = 'Text: Diogenes Laertius, Lives of Eminent Philosophers, tr. R. D. Hicks (1925). Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
 
 // Discourses, book B: "Epictetus 1.14.12" (also written "Epictetus, Diatr. 1.14.12") →
 // chapter 14 (the section is dropped).
@@ -425,13 +426,25 @@ const epictetusEnchCite = (text: string): { chapter: number; verse?: number } | 
   const m = s.match(/^Epictetus,?\s*Ench\.\s+(\d+)/)
   return m ? { chapter: parseInt(m[1], 10) } : null
 }
+// Diogenes Laertius: chapter = book, verse = section (which runs continuously through a book).
+// Handles both "7.87" (book.section) and the redundant three-part "7.1.135" (→ 7:135), and
+// the "Vit. phil." style. Both the Greek and Hicks' English divide to section, so it opens
+// verse-precise.
+const diogenesCite = (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(/^Diogenes Laertius(?:, Vit\. phil\.)?\s+(\d+(?:\.\d+)+)/)
+  if (!m) return null
+  const p = m[1].split('.').map(n => parseInt(n, 10))
+  return { chapter: p[0], verse: p[p.length - 1] }
+}
 
-const GRECO: { slug: string; name: string; noteBook: string; chapters: number; parseCitation: ProseWork['parseCitation'] }[] = [
-  { slug: 'greco-epictetus-discourses-1', name: 'Epictetus, Discourses (Book 1)', noteBook: 'EpictDisc1', chapters: 30, parseCitation: epictetusDiscCite(1) },
-  { slug: 'greco-epictetus-discourses-2', name: 'Epictetus, Discourses (Book 2)', noteBook: 'EpictDisc2', chapters: 26, parseCitation: epictetusDiscCite(2) },
-  { slug: 'greco-epictetus-discourses-3', name: 'Epictetus, Discourses (Book 3)', noteBook: 'EpictDisc3', chapters: 26, parseCitation: epictetusDiscCite(3) },
-  { slug: 'greco-epictetus-discourses-4', name: 'Epictetus, Discourses (Book 4)', noteBook: 'EpictDisc4', chapters: 13, parseCitation: epictetusDiscCite(4) },
-  { slug: 'greco-epictetus-enchiridion', name: 'Epictetus, Enchiridion', noteBook: 'EpictEnch', chapters: 53, parseCitation: epictetusEnchCite },
+const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation'] }[] = [
+  { slug: 'greco-epictetus-discourses-1', name: 'Epictetus, Discourses (Book 1)', noteBook: 'EpictDisc1', chapters: 30, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(1) },
+  { slug: 'greco-epictetus-discourses-2', name: 'Epictetus, Discourses (Book 2)', noteBook: 'EpictDisc2', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(2) },
+  { slug: 'greco-epictetus-discourses-3', name: 'Epictetus, Discourses (Book 3)', noteBook: 'EpictDisc3', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(3) },
+  { slug: 'greco-epictetus-discourses-4', name: 'Epictetus, Discourses (Book 4)', noteBook: 'EpictDisc4', chapters: 13, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(4) },
+  { slug: 'greco-epictetus-enchiridion', name: 'Epictetus, Enchiridion', noteBook: 'EpictEnch', chapters: 53, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusEnchCite },
+  { slug: 'greco-diogenes-laertius', name: 'Diogenes Laertius, Lives of the Philosophers', noteBook: 'DiogLaert', chapters: 10, attribution: DIOGENES_ATTRIBUTION, parseCitation: diogenesCite },
 ]
 
 const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
@@ -440,7 +453,7 @@ const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
   noteBook: w.noteBook,
   dataUrl: `/data/greco/${w.slug.replace(/^greco-/, '')}.json`,
   chapters: w.chapters,
-  attribution: EPICTETUS_ATTRIBUTION,
+  attribution: w.attribution,
   parseCitation: w.parseCitation,
 }))
 

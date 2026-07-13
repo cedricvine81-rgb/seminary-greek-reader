@@ -31,6 +31,8 @@ UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 NS = {'t': 'http://www.tei-c.org/ns/1.0'}
 ATTRIB = ('Text: Epictetus, tr. George Long (1877); Greek ed. H. Schenkl. Digital edition: '
           'Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+ATTRIB_DL = ('Text: Diogenes Laertius, Lives of Eminent Philosophers, tr. R. D. Hicks (1925); '
+             'Greek ed. Long. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
 
 try:
     _ctx = ssl.create_default_context(cafile='/etc/ssl/cert.pem')
@@ -81,6 +83,45 @@ def parse_chapters(xml_bytes):
     return out
 
 
+def parse_sections(xml_bytes):
+    """Return {(book|None, section): text} at section granularity, keyed by the book and the
+    (book-continuous) section number — used when both editions divide to section."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    out = {}
+
+    def walk(el, ctx):
+        for div in el.findall('t:div', NS):
+            if div.get('type') != 'textpart':
+                walk(div, ctx); continue
+            c = dict(ctx); c[div.get('subtype')] = div.get('n')
+            if div.get('subtype') == 'section':
+                out[(c.get('book'), div.get('n'))] = chapter_text(div)
+            else:
+                walk(div, c)
+    walk(root.find('.//t:body', NS), {})
+    return out
+
+
+def build_sections(slug, name, urn_dir, urn_base, no_cache):
+    """One work whose chapters are the books and whose verses are the (continuous) sections,
+    with parallel Greek. Both Perseus editions divide to section, so alignment is exact."""
+    grc = parse_sections(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
+    eng = parse_sections(fetch(f'{urn_dir}/{urn_base}.perseus-eng2.xml', no_cache))
+    books = {}
+    for (b, sec), en in eng.items():
+        if not (b and b.isdigit() and sec and sec.isdigit()):
+            continue
+        books.setdefault(int(b), {})[int(sec)] = (en, grc.get((b, sec), ''))
+    chapters = [{'number': bk, 'verses': [
+        {'number': sec, 'text': books[bk][sec][0], **({'greek': books[bk][sec][1]} if books[bk][sec][1] else {})}
+        for sec in sorted(books[bk])]} for bk in sorted(books)]
+    doc = {'work': name, 'attribution': ATTRIB_DL, 'greek': True, 'chapters': chapters}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters),
+             'verses': sum(len(c['verses']) for c in chapters)}]
+
+
 def build(slug_prefix, name_fmt, urn_dir, urn_base, per_book, no_cache):
     grc = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
     eng = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-eng3.xml', no_cache))
@@ -105,15 +146,18 @@ def build(slug_prefix, name_fmt, urn_dir, urn_base, per_book, no_cache):
     return works
 
 
-def resolve(text, results):
-    # Chapter-level (the section is dropped — the English divides only to chapter).
+def resolve(text):
     s = re.sub(r'^cf\.\s*', '', text.strip())
-    m = re.match(r'Epictetus, Ench\.\s+(\d+)', s)
+    m = re.match(r'Epictetus,?\s*Ench\.\s+(\d+)', s)                    # Enchiridion, chapter
     if m:
-        return ('epictetus-enchiridion', int(m.group(1)))
-    m = re.match(r'Epictetus\s+(\d+)\.(\d+)', s)
+        return ('epictetus-enchiridion', int(m.group(1)), None)
+    m = re.match(r'Epictetus(?:,?\s*Diatr\.)?\s+(\d+)\.(\d+)', s)       # Discourses, book.chapter[.sec]
     if m:
-        return (f'epictetus-discourses-{m.group(1)}', int(m.group(2)))
+        return (f'epictetus-discourses-{m.group(1)}', int(m.group(2)), None)
+    m = re.match(r'Diogenes Laertius(?:, Vit\. phil\.)?\s+(\d+(?:\.\d+)+)', s)  # book.…​.section
+    if m:
+        p = [int(x) for x in m.group(1).split('.')]
+        return ('diogenes-laertius', p[0], p[-1])                       # chapter=book, verse=section
     return None
 
 
@@ -121,21 +165,23 @@ def validate(results):
     by_slug = {r['slug']: r for r in results}
     data = json.loads(CROSSREFS.read_text())
     cits = [c['text'] for e in data['entries'] for c in e.get('citations', [])
-            if re.sub(r'^cf\.\s*', '', c['text'].strip()).startswith('Epictetus')]
+            if re.sub(r'^cf\.\s*', '', c['text'].strip()).startswith(('Epictetus', 'Diogenes Laertius'))]
     hit = miss = 0; misses = []
     for text in cits:
-        r = resolve(text, results)
+        r = resolve(text)
         if not r:
             miss += 1; misses.append(('UNMAPPED', text)); continue
-        slug, ch = r
+        slug, ch, v = r
         w = by_slug.get(slug)
-        if w and any(c['number'] == ch for c in w['doc']['chapters']):
+        chap = w and next((c for c in w['doc']['chapters'] if c['number'] == ch), None)
+        ok = chap and (v is None or any(vv['number'] == v for vv in chap['verses']))
+        if ok:
             hit += 1
         else:
-            miss += 1; misses.append((f'{slug} ch {ch} missing', text))
-    print(f'\nValidation: {len(cits)} Epictetus citations | resolved+found={hit} miss={miss} (chapter-level)')
+            miss += 1; misses.append((f'{slug} {ch}:{v} missing', text))
+    print(f'\nValidation: {len(cits)} Epictetus+Diogenes citations | resolved+found={hit} miss={miss}')
     for why, text in misses[:20]:
-        print(f'   MISS  {text:30s} -> {why}')
+        print(f'   MISS  {text:34s} -> {why}')
 
 
 def main():
@@ -146,6 +192,8 @@ def main():
                      'tlg0557/tlg001', 'tlg0557.tlg001', True, no_cache)
     results += build('epictetus-enchiridion', lambda b: 'Epictetus, Enchiridion',
                      'tlg0557/tlg002', 'tlg0557.tlg002', False, no_cache)
+    results += build_sections('diogenes-laertius', 'Diogenes Laertius, Lives of the Philosophers',
+                              'tlg0004/tlg001', 'tlg0004.tlg001', no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
