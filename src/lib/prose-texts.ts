@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -258,6 +258,44 @@ export const TG_CATALOG = TG.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+// ── Ante-Nicene Fathers (apologists) ──────────────────────────────────────────────────
+// Irenaeus, Against Heresies (Roberts-Donaldson, ANF, public domain), embedded book →
+// chapter → numbered section, so "Irenaeus, Haer. 3.11.8" opens book 3, chapter 11,
+// section 8. One work per book (the prose model is chapter → verse). Built by
+// scripts/build-anf.py. (Justin & the other apologists await a cleaner public-domain
+// source — see the text-acquisitions roadmap.)
+const ANF_ATTRIBUTION = 'Text: the Roberts-Donaldson translation of Irenaeus (Ante-Nicene Fathers, 1885), public domain. Source: earlychristianwritings.com.'
+
+// Recognize an "Irenaeus, Haer. <book>.<chapter>[.<section>]" citation for a given book.
+const irenaeusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Irenaeus, Haer\\. ${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const ANF: { slug: string; name: string; noteBook: string; chapters: number; book: number }[] = [
+  { slug: 'anf-irenaeus-1', name: 'Irenaeus, Against Heresies (Book 1)', noteBook: 'IrenHaer1', chapters: 31, book: 1 },
+  { slug: 'anf-irenaeus-2', name: 'Irenaeus, Against Heresies (Book 2)', noteBook: 'IrenHaer2', chapters: 35, book: 2 },
+  { slug: 'anf-irenaeus-3', name: 'Irenaeus, Against Heresies (Book 3)', noteBook: 'IrenHaer3', chapters: 25, book: 3 },
+  { slug: 'anf-irenaeus-4', name: 'Irenaeus, Against Heresies (Book 4)', noteBook: 'IrenHaer4', chapters: 41, book: 4 },
+  { slug: 'anf-irenaeus-5', name: 'Irenaeus, Against Heresies (Book 5)', noteBook: 'IrenHaer5', chapters: 36, book: 5 },
+]
+
+const ANF_WORKS: ProseWork[] = ANF.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/anf/${w.slug.replace(/^anf-/, '')}.json`,
+  chapters: w.chapters,
+  attribution: ANF_ATTRIBUTION,
+  parseCitation: irenaeusCite(w.book),
+}))
+
+// Ids/names the catalog needs to list the Ante-Nicene Fathers under one Texts category.
+export const ANF_CATALOG = ANF.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -314,6 +352,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...PHILO_WORKS,
   ...AF_WORKS,
   ...TG_WORKS,
+  ...ANF_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
