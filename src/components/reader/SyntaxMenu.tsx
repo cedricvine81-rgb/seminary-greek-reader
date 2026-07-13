@@ -198,7 +198,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
               className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              By grammar <span className="text-gray-400">· NT</span>
+              By morphology <span className="text-gray-400">· NT</span>
             </button>
             {strongs && (
               <button type="button" onClick={() => onWordAction('strongs', scope)}
