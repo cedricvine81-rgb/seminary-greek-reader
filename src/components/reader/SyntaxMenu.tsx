@@ -198,7 +198,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
               className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              By morphology <span className="text-gray-400">· NT</span>
+              By grammar <span className="text-gray-400">· NT</span>
             </button>
             {strongs && (
               <button type="button" onClick={() => onWordAction('strongs', scope)}
@@ -208,17 +208,17 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             )}
             <button type="button" onClick={() => onWordAction('lexicon', scope)}
               className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              Lexicon entry
+              Dictionary
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              Search background sources <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </div>
           <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500">
             <span className="text-gray-400">Copy:</span>
             <button type="button" onClick={() => copy(word.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">word</button>
-            {lemma && <button type="button" onClick={() => copy(lemma, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">lemma</button>}
+            {lemma && <button type="button" onClick={() => copy(lemma, 'dictionary form')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">dictionary form</button>}
             {reference && <button type="button" onClick={() => copy(reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700 hover:decoration-brand-400">reference</button>}
             {copied && <span className="text-green-600">✓ copied {copied}</span>}
           </div>

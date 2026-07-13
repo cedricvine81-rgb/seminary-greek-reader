@@ -46,7 +46,7 @@ export function MorphSearchPicker({ word, onSearch, onClose }: {
         {/* Header */}
         <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 shrink-0">
           <div>
-            <p className="text-sm font-semibold text-gray-800">Search by morphology</p>
+            <p className="text-sm font-semibold text-gray-800">Search by grammar</p>
             <p className="text-xs text-gray-400 mt-0.5">
               <span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{word.surface}</span>
               {parse ? ` · ${formatParsing(parse)}` : ''} · New Testament
