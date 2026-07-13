@@ -7,6 +7,7 @@ import { Search, X, Loader2 } from 'lucide-react'
 import type { BgLang, BgResult } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
+import { betaCodeToGreek } from '@/lib/greek-translit'
 
 // App-wide results panel for the background-sources search. Opened by the global
 // right-click ("Search background sources for …") and from the Texts tab's search box.
@@ -115,9 +116,15 @@ export function BackgroundsSearchModal({
           <input
             ref={inputRef}
             value={query}
-            onChange={e => setQuery(e.target.value)}
+            onChange={e => {
+              // Greek facet → transliterate typed Latin to Greek (Beta Code: l→λ, q→θ …).
+              if (lang !== 'grc') { setQuery(e.target.value); return }
+              const el = e.target, pos = el.selectionStart ?? el.value.length
+              setQuery(betaCodeToGreek(el.value))
+              requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
+            }}
             placeholder="Search background sources…"
-            className="flex-1 min-w-0 text-sm outline-none placeholder:text-gray-400"
+            className={`flex-1 min-w-0 text-sm outline-none placeholder:text-gray-400 ${lang === 'grc' ? 'greek-text' : ''}`}
           />
           <div className="flex-none flex rounded-md border border-gray-200 text-xs overflow-hidden">
             {(['en', 'grc'] as BgLang[]).map(l => (

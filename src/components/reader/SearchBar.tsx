@@ -1,6 +1,7 @@
 'use client'
-import { useState, useRef, useEffect, KeyboardEvent } from 'react'
+import { useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
+import { betaCodeToGreek } from '@/lib/greek-translit'
 
 interface SearchBarProps {
   onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) => void
@@ -91,6 +92,17 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
     if (e.key === 'Escape') setShowKeyboard(false)
   }
 
+  // In Greek word mode, transliterate typed Latin → Greek live (TLG Beta Code: l→λ, q→θ …).
+  // Greek text and non-letters pass through, and it's 1:1 so the cursor position is preserved.
+  const greekTyping = effectiveType === 'word' && !effectiveLang
+  function onChange(e: ChangeEvent<HTMLInputElement>) {
+    if (!greekTyping) { setQuery(e.target.value); return }
+    const el = e.target
+    const pos = el.selectionStart ?? el.value.length
+    setQuery(betaCodeToGreek(el.value))
+    requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
+  }
+
   function insertLetter(letter: string) {
     const input = inputRef.current
     if (!input) { setQuery(q => q + letter); return }
@@ -170,15 +182,15 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
         <input
           ref={inputRef}
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={onChange}
           onKeyDown={handleKey}
           placeholder={effectiveLang ? `Search ${viewLangLabel ?? 'translation'}…` : effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
-          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${effectiveType === 'word' && !effectiveLang ? 'pr-10' : 'pr-3'}`}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : ''} ${effectiveType === 'word' && !effectiveLang ? 'pr-10' : 'pr-3'}`}
         />
         {effectiveType === 'word' && !effectiveLang && (
           <button
             type="button"
-            title="Greek keyboard"
+            title="Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)"
             onClick={() => setShowKeyboard(v => !v)}
             className={`absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded text-sm font-semibold transition-colors ${showKeyboard ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}
             style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
