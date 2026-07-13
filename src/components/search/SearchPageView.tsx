@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
@@ -105,6 +105,34 @@ const RECENT_MAX = 8
 
 type SortMode = 'relevance' | 'canonical'
 
+// Sample searches shown in the "Search types" pane — click one to run it (and switch scope
+// where the example needs it, e.g. Greek or background texts).
+interface Example { label: string; query: string; scope?: string }
+const SEARCH_EXAMPLES: { group: string; hint: string; items: Example[] }[] = [
+  { group: 'Single word', hint: 'accent- and case-insensitive', items: [
+    { label: 'love', query: 'love' },
+    { label: 'grace', query: 'grace' },
+    { label: 'covenant', query: 'covenant' },
+  ] },
+  { group: 'All of these words', hint: 'every word must appear (any order)', items: [
+    { label: 'faith hope love', query: 'faith hope love' },
+    { label: 'bread wine', query: 'bread wine' },
+  ] },
+  { group: 'Exact phrase', hint: 'wrap in "quotes"', items: [
+    { label: '"kingdom of God"', query: '"kingdom of God"' },
+    { label: '"eternal life"', query: '"eternal life"' },
+  ] },
+  { group: 'Greek word', hint: 'searches the Greek text (type or paste Greek)', items: [
+    { label: 'ἀγάπη', query: 'ἀγάπη', scope: 'greek:GNT' },
+    { label: 'λόγος', query: 'λόγος', scope: 'greek:GNT' },
+    { label: 'πίστις', query: 'πίστις', scope: 'greek:GNT' },
+  ] },
+  { group: 'Background texts', hint: 'Philo, Josephus, Apocrypha, Mishnah…', items: [
+    { label: 'temple', query: 'temple', scope: 'bg:all' },
+    { label: 'Sabbath', query: 'Sabbath', scope: 'bg:all' },
+  ] },
+]
+
 export function SearchPageView({ initialQuery = '', initialScope }: { initialQuery?: string; initialScope?: string }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
@@ -112,6 +140,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   const [transLang, setTransLang] = useState(initialScope?.startsWith('trans:') ? initialScope.slice(6) : 'en')
   const [books, setBooks] = useState<string[]>([])
   const [showBooks, setShowBooks] = useState(false)
+  const [showTypes, setShowTypes] = useState(false)
   const [bib, setBib] = useState<BibHit[] | null>(null)
   const [bg, setBg] = useState<BgResult | null>(null)
   const [counts, setCounts] = useState<Record<string, number | null>>({})
@@ -277,6 +306,19 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     setBooks(prev => prev.includes(osisId) ? prev.filter(b => b !== osisId) : [...prev, osisId])
   const toggleGroup = (ids: string[], select: boolean) =>
     setBooks(prev => select ? Array.from(new Set([...prev, ...ids])) : prev.filter(b => !ids.includes(b)))
+  const runExample = (ex: Example) => {
+    if (ex.scope) setScopeVal(ex.scope)
+    setQuery(ex.query)
+    setShowTypes(false)
+    inputRef.current?.focus()
+  }
+  // Esc closes the Search-types pane.
+  useEffect(() => {
+    if (!showTypes) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setShowTypes(false) }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [showTypes])
 
   function openBiblical(link: string, tl?: string) {
     pushRecent(query)
@@ -319,37 +361,75 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
           />
         </div>
 
-        {/* Scope + book */}
-        <div className="mt-2 flex items-center flex-wrap gap-2 text-xs">
-          <label className="flex items-center gap-1.5 text-gray-500">
-            In
-            <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
-              className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
-              <optgroup label="Greek">
-                <option value="greek:GNT">Greek — New Testament</option>
-                <option value="greek:LXX">Greek — Septuagint</option>
-              </optgroup>
-              <optgroup label="Translations">
-                {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}</option>)}
-              </optgroup>
-              <optgroup label="Background texts">
-                <option value="bg:all">All background texts</option>
-                {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
-              </optgroup>
-            </select>
-          </label>
-          {isBiblical && (
-            <span className="flex items-center gap-1.5 text-gray-500">
-              Book
-              <button type="button" onClick={() => setShowBooks(v => !v)}
-                aria-expanded={showBooks}
-                className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
-                  showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
-                {booksLabel}
-                <ChevronDown size={13} className={`transition-transform ${showBooks ? 'rotate-180' : ''}`} />
-              </button>
-            </span>
-          )}
+        {/* Scope + book + Search types */}
+        <div className="mt-2 flex items-center justify-between gap-2 text-xs">
+          <div className="flex items-center flex-wrap gap-2">
+            <label className="flex items-center gap-1.5 text-gray-500">
+              In
+              <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
+                className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                <optgroup label="Greek">
+                  <option value="greek:GNT">Greek — New Testament</option>
+                  <option value="greek:LXX">Greek — Septuagint</option>
+                </optgroup>
+                <optgroup label="Translations">
+                  {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}</option>)}
+                </optgroup>
+                <optgroup label="Background texts">
+                  <option value="bg:all">All background texts</option>
+                  {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
+                </optgroup>
+              </select>
+            </label>
+            {isBiblical && (
+              <span className="flex items-center gap-1.5 text-gray-500">
+                Book
+                <button type="button" onClick={() => setShowBooks(v => !v)}
+                  aria-expanded={showBooks}
+                  className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
+                    showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+                  {booksLabel}
+                  <ChevronDown size={13} className={`transition-transform ${showBooks ? 'rotate-180' : ''}`} />
+                </button>
+              </span>
+            )}
+          </div>
+
+          {/* Search types */}
+          <div className="relative flex-none">
+            <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
+              className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
+                showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+              <Lightbulb size={13} /> Search types
+            </button>
+            {showTypes && (
+              <>
+                <div className="fixed inset-0 z-20" onClick={() => setShowTypes(false)} />
+                <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-2xl p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Search types</p>
+                    <button type="button" onClick={() => setShowTypes(false)} className="text-gray-400 hover:text-gray-700 p-0.5" aria-label="Close"><X size={14} /></button>
+                  </div>
+                  <div className="space-y-3">
+                    {SEARCH_EXAMPLES.map(sec => (
+                      <div key={sec.group}>
+                        <p className="text-[13px] font-semibold text-gray-700">{sec.group}</p>
+                        <p className="text-[11px] text-gray-400 mb-1.5">{sec.hint}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {sec.items.map(ex => (
+                            <button key={ex.label} type="button" onClick={() => runExample(ex)}
+                              className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
+                              {ex.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {isBiblical && showBooks && (
