@@ -23,6 +23,13 @@ export interface NoteAnchor { book: string; name: string; chapter: number; verse
 
 const MAX_PASSAGE_VERSES = 80
 
+// Plain text of a note's HTML body, for search matching (notes are stored as a safe HTML subset).
+function noteText(html: string): string {
+  if (typeof document === 'undefined') return html.replace(/<[^>]*>/g, ' ')
+  const d = document.createElement('div'); d.innerHTML = html
+  return d.textContent ?? ''
+}
+
 // Versions the side text pane can be shown in — same list as Backgrounds/Synopsis.
 const VERSIONS = [
   { code: 'na1904', label: 'Greek — Nestle 1904' },
@@ -59,7 +66,10 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [activeFolder, setActiveFolder] = useState<string>('all') // 'all' | 'unfiled' | folderId
-  const [addingNote, setAddingNote] = useState(false) // composing a new general (verse-less) note
+  const [noteKind, setNoteKind] = useState<'all' | 'verse' | 'general'>('all') // notebook filter: verse-anchored vs topic notes
+  const [query, setQuery] = useState('') // free-text search over the notebook list
+  const [addingNote, setAddingNote] = useState(false) // composing a new topic (verse-less) note
+  const [addVerse, setAddVerse] = useState<number | null>(null) // "This passage": verse chosen for a new verse note
   const [newFolder, setNewFolder] = useState<{ name: string; color: NoteColor } | null>(null)
   const [editFolder, setEditFolder] = useState<{ id: string; name: string; color: NoteColor } | null>(null)
 
@@ -117,6 +127,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     void run()
     return () => { cancelled = true }
   }, [anchor, version])
+
+  // A new passage clears any half-open "add note on verse" editor from the previous one.
+  useEffect(() => { setAddVerse(null) }, [anchor])
 
   const bookName = useCallback((osis: string) => books.find(b => b.osisId === osis)?.name ?? osis, [books])
 
@@ -180,27 +193,70 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     ? Array.from({ length: Math.min(anchor.verseEnd - anchor.verseStart + 1, MAX_PASSAGE_VERSES) }, (_, i) => anchor.verseStart + i)
     : []
 
-  const filtered = notes.filter(n =>
-    activeFolder === 'all' ? true : activeFolder === 'unfiled' ? !n.folderId : n.folderId === activeFolder)
+  const inFolder = (n: NoteT) =>
+    activeFolder === 'all' ? true : activeFolder === 'unfiled' ? !n.folderId : n.folderId === activeFolder
+  // Kind + folder counts drive the Verse / Topic / All toggle (scoped to the current folder).
+  const folderNotes = notes.filter(inFolder)
+  const verseCount = folderNotes.filter(n => n.book != null).length
+  const generalCount = folderNotes.filter(n => n.book == null).length
+  const q = query.trim().toLowerCase()
+  const filtered = folderNotes.filter(n => {
+    if (noteKind === 'verse' && n.book == null) return false
+    if (noteKind === 'general' && n.book != null) return false
+    if (q && !((n.title ?? '') + ' ' + noteText(n.body)).toLowerCase().includes(q)) return false
+    return true
+  })
 
   return (
     <div className="flex flex-col lg:flex-row gap-6 pb-10">
       <div className="flex-1 min-w-0 max-w-3xl space-y-8">
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-        {/* ── This passage ── */}
-        {anchor && (
-          <section>
-            <div className="space-y-2">
-              {verseList.map(v => (
-                <NoteEditor key={passageVerseNote(v)?.id ?? `new-${anchor.book}-${anchor.chapter}-${v}`}
-                  existing={passageVerseNote(v)}
-                  anchor={{ book: anchor.book, chapter: anchor.chapter, verse: v, label: `${anchor.name} ${anchor.chapter}:${v}` }}
-                  folders={folders} onChanged={load} />
-              ))}
-            </div>
-          </section>
-        )}
+        {/* ── This passage: verse notes for the loaded passage ──
+            Only verses that already have a note get an editor (no wall of empty boxes for a
+            whole chapter); the picker below opens an editor for any other verse in range. */}
+        {anchor && (() => {
+          const notedVerses = verseList.filter(v => passageVerseNote(v))
+          const addable = verseList.filter(v => !passageVerseNote(v))
+          return (
+            <section>
+              <h3 className="text-sm font-semibold text-gray-800 mb-2">
+                This passage
+                <span className="ml-1.5 font-normal text-gray-400">
+                  {anchor.name} {anchor.chapter}:{anchor.verseStart}{anchor.verseEnd !== anchor.verseStart ? `–${anchor.verseEnd}` : ''}
+                </span>
+              </h3>
+              <div className="space-y-2">
+                {notedVerses.map(v => (
+                  <NoteEditor key={passageVerseNote(v)!.id}
+                    existing={passageVerseNote(v)}
+                    anchor={{ book: anchor.book, chapter: anchor.chapter, verse: v, label: `${anchor.name} ${anchor.chapter}:${v}` }}
+                    folders={folders} onChanged={load} />
+                ))}
+                {addVerse != null && (
+                  <NoteEditor key={`add-${anchor.book}-${anchor.chapter}-${addVerse}`}
+                    anchor={{ book: anchor.book, chapter: anchor.chapter, verse: addVerse, label: `${anchor.name} ${anchor.chapter}:${addVerse}` }}
+                    folders={folders}
+                    onChanged={() => { setAddVerse(null); void load() }} />
+                )}
+              </div>
+              {addable.length > 0 && (
+                <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
+                  <label htmlFor="add-verse-note">Add a note on verse</label>
+                  <select id="add-verse-note" value=""
+                    onChange={e => { const v = Number(e.target.value); if (v) setAddVerse(v) }}
+                    className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                    <option value="">Choose…</option>
+                    {addable.map(v => <option key={v} value={v}>{anchor.chapter}:{v}</option>)}
+                  </select>
+                </div>
+              )}
+              {notedVerses.length === 0 && addVerse == null && (
+                <p className="text-xs text-gray-400 italic mt-1">No verse notes on this passage yet.</p>
+              )}
+            </section>
+          )
+        })()}
 
         {/* ── Course Notes assignments ── */}
         {courseNotes.length > 0 && (
@@ -228,11 +284,36 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <button
               onClick={() => setAddingNote(true)}
               className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
-              title="Write a course note that isn’t tied to a specific verse"
+              title="Write a topic note that isn’t tied to a specific verse"
             >
-              <Plus size={13} /> New note
+              <Plus size={13} /> New topic note
             </button>
           </div>
+
+          {/* Kind toggle (verse-anchored vs topic) + free-text search over the notebook. */}
+          <div className="flex items-center flex-wrap gap-2 mb-2">
+            <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden text-xs">
+              {([['all', `All (${folderNotes.length})`], ['verse', `Verse notes (${verseCount})`], ['general', `Topic notes (${generalCount})`]] as const).map(([k, label], i) => (
+                <button key={k} type="button" onClick={() => setNoteKind(k)}
+                  className={`px-2.5 py-1 font-medium ${i > 0 ? 'border-l border-gray-300' : ''} ${noteKind === k ? 'bg-brand-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="relative flex-1 min-w-[8rem]">
+              <input
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search notes…"
+                className="w-full rounded-lg border border-gray-300 pl-2.5 pr-6 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+              {query && (
+                <button onClick={() => setQuery('')} title="Clear search"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"><X size={13} /></button>
+              )}
+            </div>
+          </div>
+
           <div className="flex items-center flex-wrap gap-1.5 mb-3">
             <Chip active={activeFolder === 'all'} onClick={() => setActiveFolder('all')} label={`All (${notes.length})`} />
             <Chip active={activeFolder === 'unfiled'} onClick={() => setActiveFolder('unfiled')} label={`Unfiled (${notes.filter(n => !n.folderId).length})`} />
@@ -279,9 +360,17 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               />
             )}
             {filtered.length === 0 && !addingNote ? (
-              <p className="text-sm text-gray-400 italic py-6">
-                No notes here yet. Use <span className="font-medium text-gray-600">New note</span> for a course note, or open a passage above to write on a verse.
-              </p>
+              q ? (
+                <p className="text-sm text-gray-400 italic py-6">No notes match “{query}”.</p>
+              ) : noteKind === 'verse' ? (
+                <p className="text-sm text-gray-400 italic py-6">
+                  No verse notes here yet. Open a passage above and write on a verse, or use the note icon beside a verse in the Reader.
+                </p>
+              ) : (
+                <p className="text-sm text-gray-400 italic py-6">
+                  No notes here yet. Use <span className="font-medium text-gray-600">New topic note</span> for a free-standing note, or open a passage above to write on a verse.
+                </p>
+              )
             ) : (
               filtered.map(n => (
                 <NoteEditor key={n.id} existing={n}
@@ -443,7 +532,7 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
 // Editor for a single note. Three shapes:
 //   • existing note (verse-anchored or general) — auto-saves.
 //   • new verse note (`anchor` set, no `existing`) — quick-jot from a passage.
-//   • new general note (`general`, no `anchor`) — a course note with an optional title.
+//   • new general note (`general`, no `anchor`) — a topic note with an optional title.
 // All shapes auto-save: a debounce fires ~0.9s after typing stops, and the draft is
 // also flushed when the editor unmounts (navigating away) or the tab is hidden, so
 // notes can't be lost by leaving the page. New notes adopt the server id from their
@@ -578,7 +667,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
             value={titleDraft}
             onChange={e => setTitleDraft(e.target.value)}
             onBlur={() => void save(finalOnBlur)}
-            placeholder="Course note title (optional)"
+            placeholder="Topic note title (optional)"
             maxLength={200}
             autoFocus={isNew}
             className="flex-1 min-w-0 text-xs font-semibold text-gray-700 bg-transparent rounded border border-transparent hover:border-gray-200 focus:border-brand-400 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
@@ -588,7 +677,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         ) : (
           <span className="text-xs font-semibold text-gray-500">{anchor?.label}</span>
         )}
-        {isGeneral && <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Course note</span>}
+        {isGeneral && <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Topic note</span>}
         {folder && <span className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] ${colorOf(folder.color).chip}`}><span className={`h-1.5 w-1.5 rounded-full ${colorOf(folder.color).dot}`} />{folder.name}</span>}
         <span className="ml-auto flex items-center gap-2">
           {saving && <Loader2 size={12} className="animate-spin text-gray-400" />}
