@@ -292,10 +292,12 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
   // reader's top level — NOT inside the collapsible top bar — so hiding the bar on scroll
   // can't affect it.
   const [pickerOpen, setPickerOpen] = useState(false)
-  // Mobile shows ONE corpus at a time (NT or LXX) so jumps land in a short single-corpus
-  // scroll instead of having to cross the whole other testament. Inferred from the passage
-  // you open; the NT/LXX buttons switch it manually. Desktop still shows both.
-  const [corpus, setCorpus] = useState<'GNT' | 'LXX'>('GNT')
+  // Which corpus/corpora the text pane shows. Mobile is always one at a time (GNT or LXX) so
+  // jumps land in a short single-corpus scroll instead of crossing the whole other testament;
+  // it never uses 'BOTH' (the mobile toggle and jumps only set GNT/LXX, and 'BOTH' renders as
+  // GNT on mobile). Desktop adds a third 'BOTH' option — the classic stacked NT-then-LXX view —
+  // and defaults to it, so desktop's continuous-scroll character is preserved out of the box.
+  const [corpus, setCorpus] = useState<'GNT' | 'LXX' | 'BOTH'>('BOTH')
   const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX'>('GNT')
   const lastScrollTopRef = useRef(0)
 
@@ -872,7 +874,7 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           setSearchResults(null)   // stay in scrolling mode
           setSearchType(null)
           setWordSearchTerm(null)
-          setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // mobile: show the corpus we're jumping into
+          setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // show the corpus we're jumping into (narrows desktop's 'Both' too, so the jump lands in a short scroll)
           const isLxx  = ref.book.corpus === 'LXX'
           const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
           if (!ready) {
@@ -1502,10 +1504,29 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
           <SearchBar
             onSearch={handleSearch}
             onVerseClick={c => { setCorpus(c); setPickerCorpus(c); setPickerOpen(true) }}
-            viewCorpus={corpus}
+            viewCorpus={corpus === 'LXX' ? 'LXX' : 'GNT'}
             viewLang={parallelLang}
             viewLangLabel={parallelLangInfo?.label}
           />
+        </div>
+        {/* Desktop corpus toggle: NT | LXX | Both. Narrows the text pane so a jump lands in a
+            short single-corpus scroll (like mobile), while 'Both' keeps the classic stacked
+            NT-then-LXX view. Desktop navigates by typing a reference, so — unlike the mobile
+            NT/LXX buttons — this doesn't open the passage picker; it only filters the view. */}
+        <div className="hidden lg:flex shrink-0 self-stretch rounded-lg overflow-hidden border border-gray-300">
+          {(['GNT', 'LXX', 'BOTH'] as const).map(c => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCorpus(c)}
+              title={c === 'BOTH' ? 'Show both testaments' : c === 'GNT' ? 'Show the New Testament' : 'Show the Septuagint'}
+              className={`px-2.5 text-sm font-medium ${
+                corpus === c ? 'bg-brand-600 text-white' : 'bg-white text-brand-700 hover:bg-brand-50'
+              } ${c !== 'GNT' ? 'border-l border-gray-300' : ''}`}
+            >
+              {c === 'GNT' ? 'NT' : c === 'LXX' ? 'LXX' : 'Both'}
+            </button>
+          ))}
         </div>
         {/* Parallel translation selector — shows a translation column beside the Greek.
             Desktop only: on mobile the bottom dot-switcher already cycles translations. */}
@@ -1869,14 +1890,15 @@ export function GreekReader({ initialRef, isAuthenticated = false, userRole }: {
               : <div>{searchResults.map(v => renderVerseRow(v))}</div>
         ) : (
           <div>
-            {/* Mobile shows only the active corpus; desktop shows both (lg:block). */}
-            <div className={corpus === 'GNT' ? '' : 'hidden lg:block'}>
+            {/* Mobile shows exactly one corpus (GNT unless corpus is 'LXX'); desktop honors the
+                NT | LXX | Both toggle. 'lg:hidden'/'lg:block' overrides the mobile class at lg+. */}
+            <div className={`${corpus === 'LXX' ? 'hidden' : ''} ${corpus === 'GNT' || corpus === 'BOTH' ? 'lg:block' : 'lg:hidden'}`}>
               {!gnt.backDone && <div ref={gntTopSentinel} className="h-1" aria-hidden />}
               {renderSections(gnt.sections)}
               {!gnt.done && <div ref={gntSentinel} className="h-1" aria-hidden />}
             </div>
 
-            <div className={`lg:mt-10 ${corpus === 'LXX' ? '' : 'hidden lg:block'}`}>
+            <div className={`lg:mt-10 ${corpus === 'LXX' ? '' : 'hidden'} ${corpus === 'LXX' || corpus === 'BOTH' ? 'lg:block' : 'lg:hidden'}`}>
               {!lxx.backDone && <div ref={lxxTopSentinel} className="h-1" aria-hidden />}
               {renderSections(lxx.sections)}
               {!lxx.done && <div ref={lxxSentinel} className="h-1" aria-hidden />}
