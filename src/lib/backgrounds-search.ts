@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { parseSearchTerms, textMatchesTerms } from '@/lib/search-query'
 import { findProseWork } from '@/lib/prose-texts'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import type { BgLang, BgHit, BgGroup, BgResult } from '@/lib/backgrounds-search-types'
@@ -87,14 +88,15 @@ function labelFor(e: Entry, name: string, chapters: number): string {
  */
 export async function searchBackgrounds(query: string, lang: BgLang, limit = 300, category?: string | null): Promise<BgResult> {
   const data = await load(lang)
-  const q = normalize(query.trim())
-  if (!data || q.length < 2) return { lang, total: 0, truncated: false, groups: [] }
+  // Phrase/boolean: "quoted" = exact phrase, bare words = AND (see search-query.ts).
+  const terms = parseSearchTerms(query)
+  if (!data || query.trim().length < 2 || terms.length === 0) return { lang, total: 0, truncated: false, groups: [] }
 
   const byGroup = new Map<string, BgHit[]>()
   let total = 0
   let truncated = false
   for (let i = 0; i < data.entries.length; i++) {
-    if (!data.normalized[i].includes(q)) continue
+    if (!textMatchesTerms(data.normalized[i], terms)) continue
     // Collection scope: skip hits whose work isn't in the requested category.
     if (category && _categoryOf.get(data.entries[i].g) !== category) continue
     if (total >= limit) { truncated = true; break }

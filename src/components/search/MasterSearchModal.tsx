@@ -10,6 +10,7 @@ import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
+import { parseSearchTerms } from '@/lib/search-query'
 
 // The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
 // any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
@@ -61,38 +62,70 @@ function buildFold(text: string): { folded: string; map: number[] } {
   return { folded, map }
 }
 
-// Highlight every word that contains the query (accent/case-insensitive) — for short verses.
-function hiliteVerse(text: string, query: string): ReactNode {
-  const nq = norm(query.trim())
-  if (!nq) return text
-  return text.split(/(\s+)/).map((tok, i) =>
-    /\s/.test(tok) || !norm(tok).includes(nq)
-      ? tok
-      : <mark key={i} className="bg-red-100 text-red-700 font-semibold rounded-sm">{tok}</mark>,
-  )
+const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+
+// Merged [start,end) spans (original-text indices) of every occurrence of any (already
+// normalized) term — accent/case-insensitive via the fold→original index map.
+function findRanges(text: string, terms: string[]): Array<[number, number]> {
+  if (!terms.length) return []
+  const { folded, map } = buildFold(text)
+  const ranges: Array<[number, number]> = []
+  for (const t of terms) {
+    if (!t) continue
+    let from = 0
+    for (;;) {
+      const fi = folded.indexOf(t, from)
+      if (fi === -1) break
+      ranges.push([map[fi], map[fi + t.length - 1] + 1])
+      from = fi + t.length
+    }
+  }
+  ranges.sort((a, b) => a[0] - b[0])
+  const merged: Array<[number, number]> = []
+  for (const r of ranges) {
+    const last = merged[merged.length - 1]
+    if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1])
+    else merged.push([r[0], r[1]])
+  }
+  return merged
 }
 
-// A windowed snippet with the raw query highlighted — for long background paragraphs.
+// Render text[from,to) with the given (original-index) ranges wrapped in <mark>.
+function markSlice(text: string, ranges: Array<[number, number]>, from: number, to: number): ReactNode[] {
+  const out: ReactNode[] = []
+  let pos = from, key = 0
+  for (const [s, e] of ranges) {
+    if (e <= from || s >= to) continue
+    const cs = Math.max(s, from), ce = Math.min(e, to)
+    if (cs > pos) out.push(text.slice(pos, cs))
+    out.push(<mark key={key++} className={MARK}>{text.slice(cs, ce)}</mark>)
+    pos = ce
+  }
+  if (pos < to) out.push(text.slice(pos, to))
+  return out
+}
+
+// A full short verse with every term highlighted.
+function hiliteVerse(text: string, terms: string[]): ReactNode {
+  const ranges = findRanges(text, terms)
+  if (!ranges.length) return text
+  return <>{markSlice(text, ranges, 0, text.length)}</>
+}
+
+// A windowed snippet around the first match, every term inside the window highlighted — for
+// long background paragraphs.
 const RADIUS = 110
-function renderSnippet(text: string, query: string): ReactNode {
-  const q = query.trim()
+function renderSnippet(text: string, terms: string[]): ReactNode {
   const head = () => text.length > 2 * RADIUS ? text.slice(0, 2 * RADIUS).trimEnd() + '…' : text
-  if (!q) return head()
-  // Accent/case-insensitive match (so a Greek query hits accented Greek text), highlighting the
-  // original accented span via the fold→original index map.
-  const { folded, map } = buildFold(text)
-  const fq = buildFold(q).folded
-  const fi = fq ? folded.indexOf(fq) : -1
-  if (fi === -1) return head()
-  const idx = map[fi]
-  const endIdx = map[fi + fq.length - 1] + 1
-  const start = Math.max(0, idx - RADIUS)
-  const end = Math.min(text.length, endIdx + RADIUS)
+  const ranges = findRanges(text, terms)
+  if (!ranges.length) return head()
+  const start = Math.max(0, ranges[0][0] - RADIUS)
+  const end = Math.min(text.length, ranges[0][1] + RADIUS)
   return (
     <>
-      {start > 0 ? '…' : ''}{text.slice(start, idx)}
-      <mark className="bg-red-100 text-red-700 font-semibold rounded-sm">{text.slice(idx, endIdx)}</mark>
-      {text.slice(endIdx, end)}{end < text.length ? '…' : ''}
+      {start > 0 ? '…' : ''}
+      {markSlice(text, ranges, start, end)}
+      {end < text.length ? '…' : ''}
     </>
   )
 }
@@ -143,6 +176,8 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   const countReq = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
+  // Normalized highlight terms (quoted phrase / AND words) for the results pane.
+  const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
   // Book groups come from the app's real book catalog (books.json): the GNT (27), the full
   // Greek LXX incl. deutero-canon (54), and — for translations, whose indexes are the 66-book
@@ -432,6 +467,9 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
               <p className="text-center text-sm text-gray-400 px-2">
                 Search the Greek NT &amp; LXX, the English/Spanish (and more) translations, or any background collection.
               </p>
+              <p className="mt-2 text-center text-[11px] text-gray-400 px-2">
+                Type several words to require them all; wrap in <span className="font-medium text-gray-500">&quot;quotes&quot;</span> for an exact phrase.
+              </p>
             </div>
           )}
           {noResults && (
@@ -445,7 +483,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
               {bib.map((h, i) => (
                 <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
                   <span className="text-[11px] font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
-                  <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, query)}</span>
+                  <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
                 </button>
               ))}
             </div>
@@ -463,7 +501,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
                   {g.hits.map((h, i) => (
                     <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
                       <span className="text-[11px] font-medium text-brand-600">{h.ref}</span>
-                      <span className={`block text-xs text-gray-600 leading-snug ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, query)}</span>
+                      <span className={`block text-xs text-gray-600 leading-snug ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
                     </button>
                   ))}
                 </div>

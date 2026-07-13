@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
+import { parseSearchTerms, textMatchesTerms } from '@/lib/search-query'
 
 // Full-text search over a parallel translation, using the gzipped indexes built by
 // scripts/build-translation-index.mjs (public/data/search-index-<lang>.json.gz).
@@ -110,13 +111,14 @@ export async function suggestTranslation(lang: string, prefix: string, limit = 1
 export async function searchTranslation(lang: string, query: string, limit = 300, books?: string[] | null): Promise<{ id: string; text: string }[]> {
   const data = await load(lang)
   if (!data) return []
-  const q = normalize(query.trim())
-  if (!q) return []
+  // Phrase/boolean: "quoted" = exact phrase, bare words = AND. Single words are unchanged.
+  const terms = parseSearchTerms(query)
+  if (!terms.length) return []
   const bookSet = books && books.length ? new Set(books) : null
   const out: { id: string; text: string }[] = []
   for (let i = 0; i < data.entries.length; i++) {
     if (bookSet && !bookSet.has(data.entries[i].id.split('.')[0])) continue
-    if (data.normalized[i].includes(q)) {
+    if (textMatchesTerms(data.normalized[i], terms)) {
       out.push({ id: data.entries[i].id, text: data.entries[i].t })
       if (out.length >= limit) break
     }
