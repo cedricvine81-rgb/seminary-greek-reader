@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Search, ChevronDown } from 'lucide-react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -126,8 +126,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [series, setSeries] = useState<Series>(EMPTY_SERIES)
   const [initialLoading, setInitialLoading] = useState(false)
-  // Which parallel translation is shown next to the Greek, or null for "No translation".
+  // Which parallel translation is shown next to the Greek, or null for Greek-only.
   const [translationId, setTranslationId] = useState<string | null>(null)
+  // For Greek (lxx) works with a translation, hide the Greek and read the translation alone.
+  const [greekHiddenPref, setGreekHiddenPref] = useState(false)
   const [translationMenuOpen, setTranslationMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
   // A word to spotlight in red, carried in when the reader is opened from a background
@@ -168,9 +170,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work)
   const showEnglish = translationId !== null
-  const currentTranslationLabel = translationId
+  // Greek-hidden only takes effect on an lxx work that actually has a translation showing.
+  const greekHidden = greekHiddenPref && isGreek && showEnglish
+  const translationLabel = translationId
     ? (availableTranslations.find(t => t.id === translationId)?.label ?? 'Translation')
-    : 'No translation'
+    : null
+  const currentTranslationLabel = !translationId
+    ? 'Greek only'
+    : greekHidden ? `${translationLabel} only` : `Greek + ${translationLabel}`
 
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
     if (!isAuthenticated) return
@@ -412,7 +419,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false)
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -427,7 +434,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false)
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -611,23 +618,31 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 </button>
 
                 {translationMenuOpen && (
-                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[10rem] rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
                     <button
                       type="button"
-                      onClick={() => { setTranslationId(null); setTranslationMenuOpen(false) }}
-                      className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
+                      className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${!translationId ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                     >
-                      No translation
+                      Greek only
                     </button>
                     {availableTranslations.map(t => (
-                      <button
-                        key={t.id}
-                        type="button"
-                        onClick={() => { setTranslationId(t.id); setTranslationMenuOpen(false) }}
-                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                      >
-                        {t.label}
-                      </button>
+                      <Fragment key={t.id}>
+                        <button
+                          type="button"
+                          onClick={() => { setTranslationId(t.id); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
+                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id && !greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                        >
+                          Greek + {t.label}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => { setTranslationId(t.id); setGreekHiddenPref(true); setTranslationMenuOpen(false) }}
+                          className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${translationId === t.id && greekHidden ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                        >
+                          {t.label} only
+                        </button>
+                      </Fragment>
                     ))}
                   </div>
                 )}
@@ -687,11 +702,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num)
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
-                          className={`grid gap-4 ${(isGreek && showEnglish && hasEnglish) || greekProse ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                          className={`grid gap-4 ${!greekHidden && ((isGreek && showEnglish && hasEnglish) || greekProse) ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
                           {/* Greek (or, for prose works, the single English column) — the
                               only column highlighting applies to (see render.tsx: a verse's
                               Greek and English text are different canonical strings, so a
-                              highlight can only safely belong to one of them). */}
+                              highlight can only safely belong to one of them). Hidden in
+                              translation-only mode (lxx works, "<translation> only"). */}
+                          {!greekHidden && (
                           <p className="leading-relaxed text-gray-900">
                             {isAuthenticated && (
                               <span className="font-sans align-middle mr-0.5">
@@ -734,13 +751,21 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               </span>
                             )}
                           </p>
+                          )}
 
                           {/* Parallel English column — for lxx Greek works and greek-prose
                               works (Epictetus). For greek-prose this is the primary text, so
-                              it carries the note/highlight anchor. */}
+                              it carries the note/highlight anchor. In translation-only mode
+                              (Greek hidden) it's the sole column and carries the note button. */}
                           {((isGreek && showEnglish && hasEnglish) || greekProse) && (
-                            <p className="leading-relaxed text-gray-600 lg:border-l lg:border-gray-100 lg:pl-4" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
+                            <p className={`leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: greekHidden ? 'calc(var(--tx-fs, 1.45rem) * 0.8)' : 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
                               {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num) : {})}>
+                              {isAuthenticated && greekHidden && (
+                                <span className="font-sans align-middle mr-0.5">
+                                  <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
+                                    onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
+                                </span>
+                              )}
                               <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
                               {greekProse
                                 ? (q ? highlight(row.english ?? '', search)
@@ -767,7 +792,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         </div>
 
         {/* Parsing window — Greek works only */}
-        {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+        {isGreek && !greekHidden && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (
