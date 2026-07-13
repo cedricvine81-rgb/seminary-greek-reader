@@ -12,6 +12,7 @@ interface GreekVerseProps {
   bsbHighlightPos?: number | null  // Greek word position highlighted from BSB English hover
   highlighted: boolean
   searchWord?: string      // normalized — passed to each GreekWord for red highlighting
+  searchLemma?: string     // normalized lemma — highlights every word sharing it ("all forms")
   // Persisted text highlights covering this verse (see src/components/highlights). Also
   // adds the data-hl-* anchor the drag-to-highlight selection capture looks for.
   textHighlights?: HighlightRecord[]
@@ -36,7 +37,7 @@ function VerseRef({ verse }: { verse: BiblicalVerse }) {
 }
 
 function GreekVerseImpl({
-  verse, activeWordId, bsbHighlightPos, highlighted, searchWord, textHighlights = [], onWordHover, onWordClick, onWordRightClick, verseRefCallback
+  verse, activeWordId, bsbHighlightPos, highlighted, searchWord, searchLemma, textHighlights = [], onWordHover, onWordClick, onWordRightClick, verseRefCallback
 }: GreekVerseProps) {
   const baseClass = `greek-text mb-2 rounded px-1 transition-colors ${highlighted ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`
   const anchorProps = verseAnchorProps(verse.bookId, verse.chapter, verse.verse)
@@ -60,6 +61,7 @@ function GreekVerseImpl({
                   reference={verse.reference}
                   isActive={w.id === activeWordId}
                   searchWord={searchWord}
+                  searchLemma={searchLemma}
 
                   isBsbHighlight={bsbHighlightPos != null && w.position === bsbHighlightPos}
                   highlightId={hl?.id}
@@ -128,6 +130,7 @@ function areEqual(prev: GreekVerseProps, next: GreekVerseProps): boolean {
   if (prev.verse !== next.verse) return false
   if (prev.highlighted !== next.highlighted) return false
   if (prev.searchWord !== next.searchWord) return false
+  if (prev.searchLemma !== next.searchLemma) return false
   if (prev.bsbHighlightPos !== next.bsbHighlightPos) return false
 
   // activeWordId only affects this verse when it points at one of its words. If neither

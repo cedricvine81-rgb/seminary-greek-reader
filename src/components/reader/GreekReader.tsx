@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, type PointerEvent as ReactPointerEvent } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  MoreVertical, X, ChevronRight, Menu,
+  MoreVertical, X, ChevronRight, Menu, GripVertical,
   LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
   Settings, LogOut, LogIn, UserPlus,
 } from 'lucide-react'
@@ -111,6 +112,7 @@ const FONT_SIZE_MAP: Record<FontSize, string> = {
   xl: '1.65rem',
 }
 
+const RESULTS_W = 520   // floating results-panel width (px)
 const PARALLEL_LANGS = [
   { code: 'en',  label: 'English', sub: 'World English Bible' },
   { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible' },
@@ -225,6 +227,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // Normalized terms to highlight in the inline TRANSLATION when arriving from Master Search
   // (Greek words are handled by wordSearchTerm). Cleared on any other search/nav.
   const [arrivalTerms, setArrivalTerms] = useState<string[]>([])
+  // Normalized lemma to highlight across results (right-click "all forms" / Strong's, whose
+  // matched surface forms vary, so a single wordSearchTerm can't mark them).
+  const [searchLemma, setSearchLemma] = useState<string | null>(null)
   // Translation word-search results (mobile): matching verses in the shown translation.
   const [translationResults, setTranslationResults] = useState<{ id: string; text: string }[] | null>(null)
   const [translationSearchLang, setTranslationSearchLang] = useState<string | null>(null)
@@ -239,6 +244,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // result bar, a concordance (KWIC) toggle, and the open state of the morph picker / lexicon.
   const [searchLabel, setSearchLabel]       = useState<string | null>(null)
   const [concordance, setConcordance]       = useState(false)
+  // The word/lemma search results show in a floating, draggable panel so the reader text stays
+  // visible behind them. Position is set on open (top-right) and clamped while dragging.
+  const [resultsPos, setResultsPos]         = useState<{ x: number; y: number } | null>(null)
+  const resultsDrag = useRef<{ ox: number; oy: number } | null>(null)
   const [morphPickerWord, setMorphPickerWord] = useState<VerseWord | null>(null)
   const [lexiconWord, setLexiconWord]       = useState<VerseWord | null>(null)
 
@@ -851,6 +860,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     // Per-word highlight on arrival (from Master Search): a Greek query lights up Greek words,
     // a translation query lights up the inline translation. Only set on a reference jump.
     if (!(type === 'reference' && opts?.highlight)) setArrivalTerms([])
+    // A lexeme-suggestion pick is an "all forms" search → highlight every form by lemma.
+    setSearchLemma(type === 'word' && opts?.lemma ? normalizeGreek(trimmed) : null)
 
     // ── Translation word search (mobile, while a translation is the current view) ──
     if (type === 'word' && lang) {
@@ -980,14 +991,15 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // ── Right-click "Search this word" ──────────────────────────────────────────────
   // Runs a word-derived search (lemma / exact form / morphology / Strong's) and drops the
   // reader into results mode with a label describing what was searched.
-  async function runWordSearch(url: string, label: string, highlight: string | null) {
+  async function runWordSearch(url: string, label: string, opts?: { highlight?: string | null; lemma?: string | null }) {
     setSyntaxMenu(null)
     setTranslationResults(null); setViewingResultPassage(false)
     setSearchLabel(label)
     setConcordance(false)
     setSearchLoading(true)
     setSearchType('word')
-    setWordSearchTerm(highlight ? normalizeGreek(highlight) : null)
+    setWordSearchTerm(opts?.highlight ? normalizeGreek(opts.highlight) : null)
+    setSearchLemma(opts?.lemma ? normalizeGreek(opts.lemma) : null)
     setHighlightedVerse(null)
     try {
       const res  = await fetch(url)
@@ -1010,13 +1022,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     }
     if (action === 'lemma') {
       if (!lemma) return
-      runWordSearch(`/api/search?q=${encodeURIComponent(lemma)}&type=word&lemma=true&corpus=${scope}`, `All forms of ${lemma}`, null)
+      runWordSearch(`/api/search?q=${encodeURIComponent(lemma)}&type=word&lemma=true&corpus=${scope}`, `All forms of ${lemma}`, { lemma })
     } else if (action === 'form') {
-      runWordSearch(`/api/search?q=${encodeURIComponent(w.surface)}&type=word&corpus=${scope}`, `Exact form: ${w.surface}`, w.surface)
+      runWordSearch(`/api/search?q=${encodeURIComponent(w.surface)}&type=word&corpus=${scope}`, `Exact form: ${w.surface}`, { highlight: w.surface })
     } else if (action === 'strongs') {
       if (!strongs) return
       const num = String(strongs).replace(/^0+/, '')
-      runWordSearch(`/api/search?q=${encodeURIComponent(num)}&type=strongs&corpus=${scope}`, `Strong's ${num}${lemma ? ` · ${lemma}` : ''}`, null)
+      runWordSearch(`/api/search?q=${encodeURIComponent(num)}&type=strongs&corpus=${scope}`, `Strong's ${num}${lemma ? ` · ${lemma}` : ''}`, { lemma })
     }
   }
 
@@ -1025,7 +1037,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     const params = new URLSearchParams({ type: 'morph', features: features.join(','), corpus: 'GNT' })
     if (lemma) params.set('lemma', lemma)
     const label = `Morphology: ${features.length ? features.join(', ') : 'any'}${lemma ? ` · ${lemma}` : ''}`
-    runWordSearch(`/api/search?${params.toString()}`, label, null)
+    runWordSearch(`/api/search?${params.toString()}`, label, { lemma })
   }
 
   // A compact concordance (KWIC) row: reference + the Greek verse text; tap the reference
@@ -1039,9 +1051,49 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         >
           {v.reference}
         </button>
-        <p className="greek-text flex-1 text-gray-700 leading-snug" style={{ fontSize: '0.95rem' }}>{v.text}</p>
+        <p className="greek-text flex-1 text-gray-700 leading-snug" style={{ fontSize: '0.95rem' }}>
+          {v.words && v.words.length > 0
+            ? v.words.map((w, i) => {
+                const match =
+                  (!!wordSearchTerm && normalizeGreek(w.surface).includes(wordSearchTerm)) ||
+                  (!!searchLemma && normalizeGreek(w.lexeme?.lexeme ?? '') === searchLemma)
+                return <span key={w.id} className={match ? 'text-red-600 font-semibold' : undefined}>{w.surface}{i < v.words!.length - 1 ? ' ' : ''}</span>
+              })
+            : v.text}
+        </p>
       </div>
     )
+  }
+
+  // Place the floating results panel top-right when it first opens.
+  useEffect(() => {
+    if (searchResults !== null && !resultsPos && typeof window !== 'undefined') {
+      setResultsPos({ x: Math.max(12, window.innerWidth - RESULTS_W - 28), y: 92 })
+    }
+    if (searchResults === null) setResultsPos(null)
+  }, [searchResults, resultsPos])
+
+  function startResultsDrag(e: ReactPointerEvent) {
+    e.preventDefault()
+    const panel = (e.currentTarget as HTMLElement).closest('[data-results-panel]') as HTMLElement | null
+    const rect = panel?.getBoundingClientRect()
+    resultsDrag.current = { ox: e.clientX - (rect?.left ?? 0), oy: e.clientY - (rect?.top ?? 0) }
+    const move = (ev: globalThis.PointerEvent) => {
+      if (!resultsDrag.current) return
+      const w = panel?.offsetWidth ?? RESULTS_W
+      const x = Math.min(Math.max(8, ev.clientX - resultsDrag.current.ox), window.innerWidth - w - 8)
+      const y = Math.min(Math.max(8, ev.clientY - resultsDrag.current.oy), window.innerHeight - 44)
+      setResultsPos({ x, y })
+    }
+    const up = () => { resultsDrag.current = null; window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up) }
+    window.addEventListener('pointermove', move)
+    window.addEventListener('pointerup', up)
+  }
+
+  function exitSearch() {
+    setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
+    setWordSearchTerm(null); setSearchLemma(null); setArrivalTerms([]); setLockedInfo(null); setHighlightedVerse(null)
+    setSearchLabel(null); setConcordance(false)
   }
 
   // ── Settings flyout helpers ────────────────────────────────────────────────────
@@ -1399,6 +1451,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         bsbHighlightPos={bsbHighlightPos}
         highlighted={v.id === highlightedVerse}
         searchWord={wordSearchTerm ?? undefined}
+        searchLemma={searchLemma ?? undefined}
         textHighlights={highlights.forVerse(v.bookId, v.chapter, v.verse)}
         onWordHover={handleWordHover}
         onWordClick={handleWordClick}
@@ -1870,10 +1923,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         </div>
       </div>
 
-      {/* ── Search result bar ── */}
-      {(searchResults !== null || translationResults !== null) && (
+      {/* ── Translation-search result bar (mobile; Greek/word results float — see below) ── */}
+      {translationResults !== null && (
         <div className="flex-none flex items-center justify-between gap-2">
-          {translationResults !== null && viewingResultPassage ? (
+          {viewingResultPassage ? (
             <button
               className="text-sm font-medium text-brand-600 hover:underline truncate"
               onClick={() => setViewingResultPassage(false)}
@@ -1884,31 +1937,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
             <p className="text-sm text-gray-600 truncate">
               {searchLoading
                 ? 'Searching…'
-                : translationResults !== null
-                  ? `${translationResults.length} result${translationResults.length !== 1 ? 's' : ''} in ${PARALLEL_LANGS.find(l => l.code === translationSearchLang)?.label ?? 'translation'}`
-                  : <>{searchLabel && <span className="font-medium text-gray-700">{searchLabel} · </span>}{searchResults!.length} result{searchResults!.length !== 1 ? 's' : ''}</>}
+                : `${translationResults.length} result${translationResults.length !== 1 ? 's' : ''} in ${PARALLEL_LANGS.find(l => l.code === translationSearchLang)?.label ?? 'translation'}`}
             </p>
           )}
-          <div className="flex items-center gap-3 shrink-0">
-            {searchResults !== null && searchResults.length > 0 && (
-              <button
-                className="text-sm text-brand-600 hover:underline"
-                onClick={() => setConcordance(c => !c)}
-              >
-                {concordance ? 'List view' : 'Concordance'}
-              </button>
-            )}
-            <button
-              className="text-sm text-brand-600 hover:underline"
-              onClick={() => {
-                setSearchResults(null); setTranslationResults(null); setViewingResultPassage(false); setSearchType(null)
-                setWordSearchTerm(null); setArrivalTerms([]); setLockedInfo(null); setHighlightedVerse(null)
-                setSearchLabel(null); setConcordance(false)
-              }}
-            >
-              ← Exit search
-            </button>
-          </div>
+          <button className="text-sm text-brand-600 hover:underline shrink-0" onClick={exitSearch}>← Exit search</button>
         </div>
       )}
 
@@ -1918,18 +1950,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
         className="flex-1 min-h-0 overflow-y-auto bg-white rounded-xl border border-gray-100 shadow-sm p-5"
       >
-        {searchLoading ? (
-          <div className="flex items-center justify-center h-32 text-gray-400 text-sm">Loading…</div>
-        ) : translationResults !== null && !viewingResultPassage ? (
-          translationResults.length === 0
-            ? <p className="text-gray-400 text-sm italic">No results found.</p>
-            : <div className="space-y-2">{translationResults.map(r => renderTranslationResult(r))}</div>
-        ) : searchResults !== null ? (
-          searchResults.length === 0
-            ? <p className="text-gray-400 text-sm italic">No results found.</p>
-            : concordance
-              ? <div>{searchResults.map(v => renderConcordanceRow(v))}</div>
-              : <div>{searchResults.map(v => renderVerseRow(v))}</div>
+        {translationResults !== null && !viewingResultPassage ? (
+          searchLoading
+            ? <div className="flex items-center justify-center h-32 text-gray-400 text-sm">Loading…</div>
+            : translationResults.length === 0
+              ? <p className="text-gray-400 text-sm italic">No results found.</p>
+              : <div className="space-y-2">{translationResults.map(r => renderTranslationResult(r))}</div>
         ) : (
           <div>
             {/* One corpus at a time on every screen size. The inactive corpus is display:none,
@@ -1949,6 +1975,55 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           </div>
         )}
       </div>
+
+      {/* ── Floating, draggable word/lemma search results ── */}
+      {searchResults !== null && typeof document !== 'undefined' && createPortal(
+        <div
+          data-results-panel
+          className="fixed z-[70] w-[min(94vw,520px)] max-h-[82vh] flex flex-col rounded-xl bg-white shadow-2xl border border-gray-200"
+          style={{ left: resultsPos?.x ?? 0, top: resultsPos?.y ?? 0, visibility: resultsPos ? 'visible' : 'hidden' }}
+        >
+          <div
+            className="flex-none flex items-center gap-2 px-3 py-2 border-b border-gray-200 rounded-t-xl bg-gray-50 cursor-move select-none touch-none"
+            onPointerDown={startResultsDrag}
+          >
+            <GripVertical size={14} className="text-gray-300 shrink-0" />
+            <p className="flex-1 min-w-0 text-sm truncate">
+              {searchLabel && <span className="font-medium text-gray-700">{searchLabel}</span>}
+              <span className="text-gray-400"> · {searchResults.length} result{searchResults.length !== 1 ? 's' : ''}</span>
+            </p>
+            <select
+              value={parallelLang ?? ''}
+              onChange={e => setParallelLang(e.target.value || null)}
+              onPointerDown={e => e.stopPropagation()}
+              title="Show a translation alongside each result"
+              className="flex-none rounded border border-gray-300 bg-white px-1 py-0.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-400"
+            >
+              <option value="">Greek only</option>
+              {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+            </select>
+            {searchResults.length > 0 && (
+              <button type="button" onClick={() => setConcordance(c => !c)} onPointerDown={e => e.stopPropagation()}
+                className="flex-none text-xs text-brand-600 hover:underline">{concordance ? 'List' : 'KWIC'}</button>
+            )}
+            <button type="button" onClick={exitSearch} onPointerDown={e => e.stopPropagation()}
+              className="flex-none text-gray-400 hover:text-gray-700 p-0.5" aria-label="Close results"><X size={15} /></button>
+          </div>
+          <div
+            style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
+            className="flex-1 min-h-0 overflow-y-auto p-3"
+          >
+            {searchLoading
+              ? <div className="flex items-center justify-center h-24 text-gray-400 text-sm">Searching…</div>
+              : searchResults.length === 0
+                ? <p className="text-gray-400 text-sm italic py-6 text-center">No results found.</p>
+                : concordance
+                  ? <div>{searchResults.map(v => renderConcordanceRow(v))}</div>
+                  : <div>{searchResults.map(v => renderVerseRow(v))}</div>}
+          </div>
+        </div>,
+        document.body,
+      )}
 
       {/* ── Parsing panel ── */}
       {/* Desktop: fixed card below the text. */}

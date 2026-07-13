@@ -13,6 +13,7 @@ interface GreekWordProps {
   isActive: boolean
   isBsbHighlight?: boolean  // highlighted because the corresponding BSB English token is hovered
   searchWord?: string   // normalized search term — word is highlighted if it matches
+  searchLemma?: string  // normalized lemma — word highlighted if its lemma matches (e.g. "all forms")
   // Persisted text highlight covering this word, if any (see src/components/highlights).
   highlightId?: string
   highlightColor?: string
@@ -23,7 +24,7 @@ interface GreekWordProps {
   onRightClick?: (word: VerseWord, x: number, y: number) => void
 }
 
-function GreekWordImpl({ word, reference, isActive, isBsbHighlight, searchWord, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: GreekWordProps) {
+function GreekWordImpl({ word, reference, isActive, isBsbHighlight, searchWord, searchLemma, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: GreekWordProps) {
   // Long-press state for touch devices (fires the same handler as desktop right-click)
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
@@ -64,7 +65,9 @@ function GreekWordImpl({ word, reference, isActive, isBsbHighlight, searchWord, 
     }
   }
 
-  const isMatch = searchWord ? normalizeGreek(word.surface).includes(searchWord) : false
+  const isMatch =
+    (!!searchWord && normalizeGreek(word.surface).includes(searchWord)) ||
+    (!!searchLemma && normalizeGreek(word.lexeme?.lexeme ?? '') === searchLemma)
 
   const bsbStyle = isBsbHighlight && !isMatch
     ? { color: 'rgb(220 38 38)', fontWeight: 500 } as React.CSSProperties
@@ -103,6 +106,7 @@ function areEqual(prev: GreekWordProps, next: GreekWordProps): boolean {
     prev.isActive === next.isActive &&
     prev.isBsbHighlight === next.isBsbHighlight &&
     prev.searchWord === next.searchWord &&
+    prev.searchLemma === next.searchLemma &&
     prev.highlightId === next.highlightId &&
     prev.highlightColor === next.highlightColor &&
     prev.hlBook === next.hlBook &&
