@@ -123,7 +123,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'pseudepigrapha',
     label: 'Pseudepigrapha',
-    blurb: 'Old Testament Pseudepigrapha — 1 Enoch, Jubilees, 2 Baruch, and 2 Enoch in their public-domain English translations.',
+    blurb: 'Old Testament Pseudepigrapha — 1 Enoch, Jubilees, the Baruch apocalypses, the Testaments of the Twelve Patriarchs, and more, in their public-domain English translations.',
     works: [
       { id: '1enoch', name: '1 Enoch', source: '1enoch', chapters: 108 },
       { id: 'jubilees', name: 'Jubilees', source: 'jubilees', chapters: 50 },
@@ -137,13 +137,9 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14 },
+      // The Testaments of the Twelve Patriarchs (Ante-Nicene Fathers / Roberts-Donaldson).
+      ...TWELVE_PATRIARCHS_CATALOG,
     ],
-  },
-  {
-    id: 'testaments',
-    label: 'Testaments (12 Patriarchs)',
-    blurb: 'The Testaments of the Twelve Patriarchs — the Ante-Nicene Fathers (Roberts-Donaldson) translation.',
-    works: TWELVE_PATRIARCHS_CATALOG,
   },
   { id: 'rabbinic', label: 'Rabbinic', comingSoon: true, works: [] },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
