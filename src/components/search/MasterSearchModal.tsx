@@ -10,8 +10,8 @@ import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
-import { parseSearchTerms } from '@/lib/search-query'
-import { findTermRanges, markSlice } from '@/lib/highlight-terms'
+import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
+import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
 
 // The app-wide "Master Search" pane (hosted once by MasterSearchProvider). One input searches
 // any biblical text (Greek NT/LXX, or a translation) or any background collection, optionally
@@ -100,7 +100,10 @@ async function fetchLaneCount(val: string, q: string): Promise<number> {
 
 const SCOPE_STORAGE_KEY = 'masterSearch.scope'
 const RECENT_STORAGE_KEY = 'masterSearch.recent'
+const SORT_STORAGE_KEY = 'masterSearch.sort'
 const RECENT_MAX = 8
+
+type SortMode = 'relevance' | 'canonical'
 
 export function MasterSearchModal({ open, preset, onClose }: { open: boolean; preset?: { query: string; scope: string } | null; onClose: () => void }) {
   const router = useRouter()
@@ -113,6 +116,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   const [bg, setBg] = useState<BgResult | null>(null)
   const [counts, setCounts] = useState<Record<string, number | null>>({})
   const [recent, setRecent] = useState<string[]>([])
+  const [sort, setSort] = useState<SortMode>('relevance')
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
@@ -124,6 +128,15 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   // Normalized highlight terms (quoted phrase / AND words) for the results pane.
   const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
+  // Greek hits arrive uncapped in canonical order → re-sort client-side for relevance.
+  // (Translation relevance is computed server-side via rank=1; backgrounds stay grouped.)
+  const displayBib = useMemo(() => {
+    if (!bib || scope.kind !== 'greek' || sort !== 'relevance') return bib
+    return [...bib]
+      .map(h => ({ h, s: scoreRelevance(normalizeFold(h.text), terms) }))
+      .sort((a, b) => b.s - a.s)
+      .map(x => x.h)
+  }, [bib, scope, sort, terms])
   // Book groups come from the app's real book catalog (books.json): the GNT (27), the full
   // Greek LXX incl. deutero-canon (54), and — for translations, whose indexes are the 66-book
   // canon — the Old Testament minus the deutero-canonical books.
@@ -176,7 +189,9 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   // Recent searches (shown on the empty prompt); recorded when a hit is opened or Enter is hit.
   useEffect(() => {
     try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
+    try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
   }, [])
+  useEffect(() => { try { localStorage.setItem(SORT_STORAGE_KEY, sort) } catch {} }, [sort])
   // Clear the query on close so the box doesn't reopen with stale text (a preset re-fills it).
   useEffect(() => { if (!open) setQuery('') }, [open])
   const pushRecent = useCallback((q: string) => {
@@ -203,7 +218,7 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   // A scope change can invalidate the chosen books (different canon).
   useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
 
-  const runSearch = useCallback(async (q: string, sv: string, bks: string) => {
+  const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode) => {
     if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }
     const s = parseScope(sv)
     const id = ++reqId.current
@@ -217,9 +232,12 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
         if (id === reqId.current) { setBg(data); setBib(null) }
       } else {
         const bookParam = bks ? `&books=${bks}` : ''
+        // Translations are capped at 300, so relevance order must be computed server-side
+        // (rank=1). Greek is returned uncapped and re-sorted client-side (see rankedBib).
+        const rankParam = s.kind === 'trans' && srt === 'relevance' ? '&rank=1' : ''
         const url = s.kind === 'greek'
           ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${bookParam}`
-          : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}`
+          : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}${rankParam}`
         const res = await fetch(url)
         const data = res.ok ? await res.json() : { results: [] }
         const hits: BibHit[] = s.kind === 'greek'
@@ -242,9 +260,9 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
   // Debounced search while open.
   useEffect(() => {
     if (!open) return
-    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey), 250)
+    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort), 250)
     return () => clearTimeout(t)
-  }, [open, query, scopeVal, booksKey, runSearch])
+  }, [open, query, scopeVal, booksKey, sort, runSearch])
 
   // Live counts for the result-type tabs (all lanes, in parallel, so the user can see where the
   // matches are before switching). Debounced; a reqId guard drops stale responses.
@@ -424,10 +442,20 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
           )}
 
           {/* Biblical hits */}
-          {!loading && isBiblical && bib && bib.length > 0 && (
+          {!loading && isBiblical && displayBib && displayBib.length > 0 && (
             <div className="divide-y divide-gray-100">
-              <p className="px-4 pt-2 pb-1 text-[11px] text-gray-400">{bib.length}{bib.length >= 300 ? '+' : ''} verse{bib.length === 1 ? '' : 's'}</p>
-              {bib.map((h, i) => (
+              <div className="flex items-center justify-between px-4 pt-2 pb-1">
+                <p className="text-[11px] text-gray-400">{displayBib.length}{displayBib.length >= 300 ? '+' : ''} verse{displayBib.length === 1 ? '' : 's'}</p>
+                <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
+                  {(['relevance', 'canonical'] as SortMode[]).map(m => (
+                    <button key={m} type="button" onClick={() => setSort(m)}
+                      className={`rounded-full px-2 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                      {m === 'relevance' ? 'Relevance' : 'Canonical'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {displayBib.map((h, i) => (
                 <button key={i} onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left px-4 py-1.5 hover:bg-brand-50 transition-colors">
                   <span className="text-[11px] font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                   <span className={`block text-xs text-gray-600 leading-snug ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
-import { parseSearchTerms, textMatchesTerms } from '@/lib/search-query'
+import { parseSearchTerms, textMatchesTerms, scoreRelevance } from '@/lib/search-query'
 
 // Full-text search over a parallel translation, using the gzipped indexes built by
 // scripts/build-translation-index.mjs (public/data/search-index-<lang>.json.gz).
@@ -108,13 +108,28 @@ export async function suggestTranslation(lang: string, prefix: string, limit = 1
 /** Verses in the given translation whose text contains the query (accent-insensitive).
  *  `books` (osisIds) scopes to one or more books — applied during the scan so their hits
  *  aren't lost to the result cap when they fall late in the canon (e.g. "love" in Matthew). */
-export async function searchTranslation(lang: string, query: string, limit = 300, books?: string[] | null): Promise<{ id: string; text: string }[]> {
+export async function searchTranslation(lang: string, query: string, limit = 300, books?: string[] | null, rank = false): Promise<{ id: string; text: string }[]> {
   const data = await load(lang)
   if (!data) return []
   // Phrase/boolean: "quoted" = exact phrase, bare words = AND. Single words are unchanged.
   const terms = parseSearchTerms(query)
   if (!terms.length) return []
   const bookSet = books && books.length ? new Set(books) : null
+
+  // Relevance sort needs every match scored, so it can't early-stop at the cap like the
+  // canonical scan (which returns matches in reading order and stops once it has `limit`).
+  if (rank) {
+    const scored: { id: string; text: string; s: number }[] = []
+    for (let i = 0; i < data.entries.length; i++) {
+      if (bookSet && !bookSet.has(data.entries[i].id.split('.')[0])) continue
+      if (textMatchesTerms(data.normalized[i], terms)) {
+        scored.push({ id: data.entries[i].id, text: data.entries[i].t, s: scoreRelevance(data.normalized[i], terms) })
+      }
+    }
+    scored.sort((a, b) => b.s - a.s)
+    return scored.slice(0, limit).map(({ id, text }) => ({ id, text }))
+  }
+
   const out: { id: string; text: string }[] = []
   for (let i = 0; i < data.entries.length; i++) {
     if (bookSet && !bookSet.has(data.entries[i].id.split('.')[0])) continue

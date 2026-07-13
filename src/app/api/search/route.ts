@@ -33,7 +33,9 @@ export async function GET(req: NextRequest) {
     if (type === 'word' && lang) {
       // Book scope is applied inside the scan (not post-filtered) so late-canon hits aren't
       // lost to the result cap — e.g. "love" in Matthew, which the OT fills up first.
-      const results = await searchTranslation(lang, q, 300, books)
+      // rank=1 → relevance order (Master Search); default → canonical reading order.
+      const rank = searchParams.get('rank') === '1'
+      const results = await searchTranslation(lang, q, 300, books, rank)
       return NextResponse.json({ results, translation: true })
     }
     if (type === 'word' && lemma) {
