@@ -78,19 +78,45 @@ function renderSnippet(text: string, query: string): ReactNode {
 
 interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
 
+// Lightweight per-lane hit count for the result-type tabs — reruns the lane's search and reads
+// its total (no book scope: a tab count is "how many matches exist over there", the active
+// lane's book filter only narrows what's shown). Capped like the real searches (300).
+async function fetchLaneCount(val: string, q: string): Promise<number> {
+  const s = parseScope(val)
+  if (s.kind === 'bg') {
+    const lang: BgLang = GREEK_RE.test(q) ? 'grc' : 'en'
+    const r = await fetch(`/api/search/backgrounds?q=${encodeURIComponent(q)}&lang=${lang}`)
+    if (!r.ok) return 0
+    const d: BgResult = await r.json()
+    return d.total ?? 0
+  }
+  const url = s.kind === 'greek'
+    ? `/api/search?q=${encodeURIComponent(q)}&type=word&corpus=${s.corpus}`
+    : `/api/search?q=${encodeURIComponent(q)}&type=word&lang=${s.lang}`
+  const r = await fetch(url)
+  if (!r.ok) return 0
+  const d = await r.json()
+  return Array.isArray(d.results) ? d.results.length : 0
+}
+
+const SCOPE_STORAGE_KEY = 'masterSearch.scope'
+
 export function MasterSearchModal({ open, preset, onClose }: { open: boolean; preset?: { query: string; scope: string } | null; onClose: () => void }) {
   const router = useRouter()
   const [query, setQuery] = useState('')
   const [scopeVal, setScopeVal] = useState('trans:en')
+  const [transLang, setTransLang] = useState('en')
   const [books, setBooks] = useState<string[]>([])
   const [showBooks, setShowBooks] = useState(false)
   const [bib, setBib] = useState<BibHit[] | null>(null)
   const [bg, setBg] = useState<BgResult | null>(null)
+  const [counts, setCounts] = useState<Record<string, number | null>>({})
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const reqId = useRef(0)
+  const countReq = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
   const isBiblical = scope.kind !== 'bg'
@@ -123,7 +149,26 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     : `${books.length} books`
   const booksKey = books.join(',')
 
+  // Result-type tabs: one quick pivot per lane (the current translation, Greek NT, Greek LXX,
+  // all background texts), each showing a live hit count for the query. Clicking switches scope.
+  const laneList = useMemo(() => [
+    { val: `trans:${transLang}`, label: TRANSLATIONS.find(t => t.lang === transLang)?.label ?? 'Translation' },
+    { val: 'greek:GNT', label: 'Greek NT' },
+    { val: 'greek:LXX', label: 'Greek LXX' },
+    { val: 'bg:all', label: 'Backgrounds' },
+  ], [transLang])
+  const activeLane = scope.kind === 'bg' ? 'bg:all'
+    : scope.kind === 'greek' ? `greek:${scope.corpus}`
+    : `trans:${transLang}`
+
   useEffect(() => setMounted(true), [])
+  // Keep the Translations tab pointed at whatever translation is currently selected.
+  useEffect(() => { if (scope.kind === 'trans') setTransLang(scope.lang) }, [scope])
+  // Remember the last-used scope across opens (a preset from right-click still overrides it).
+  useEffect(() => {
+    try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {}
+  }, [])
+  useEffect(() => { try { localStorage.setItem(SCOPE_STORAGE_KEY, scopeVal) } catch {} }, [scopeVal])
   // A preset (from the right-click "search this word" menu) pre-fills scope + query and runs.
   useEffect(() => {
     if (open && preset) { setScopeVal(preset.scope); setQuery(preset.query) }
@@ -181,6 +226,25 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
     const t = setTimeout(() => void runSearch(query, scopeVal, booksKey), 250)
     return () => clearTimeout(t)
   }, [open, query, scopeVal, booksKey, runSearch])
+
+  // Live counts for the result-type tabs (all lanes, in parallel, so the user can see where the
+  // matches are before switching). Debounced; a reqId guard drops stale responses.
+  useEffect(() => {
+    if (!open) return
+    const q = query.trim()
+    if (q.length < 2) { setCounts({}); return }
+    const id = ++countReq.current
+    const lanes = laneList.map(l => l.val)
+    setCounts(prev => { const n: Record<string, number | null> = {}; for (const v of lanes) n[v] = prev[v] ?? null; return n })
+    const t = setTimeout(() => {
+      for (const val of lanes) {
+        fetchLaneCount(val, q)
+          .then(c => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: c })) })
+          .catch(() => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: 0 })) })
+      }
+    }, 300)
+    return () => clearTimeout(t)
+  }, [open, query, laneList])
 
   // Escape to close.
   useEffect(() => {
@@ -272,6 +336,27 @@ export function MasterSearchModal({ open, preset, onClose }: { open: boolean; pr
             {bookGroups.length > 0
               ? <BookPicker groups={bookGroups} selected={selectedSet} onToggle={toggleBook} onToggleGroup={toggleGroup} onClear={() => setBooks([])} />
               : <p className="text-xs text-gray-400 py-4 text-center">Loading books…</p>}
+          </div>
+        )}
+
+        {/* Result-type tabs (live counts across lanes) */}
+        {query.trim().length >= 2 && (
+          <div className="flex-none flex items-center gap-1.5 overflow-x-auto px-3 py-1.5 border-b border-gray-100 bg-white">
+            {laneList.map(l => {
+              const active = l.val === activeLane
+              const c = counts[l.val]
+              return (
+                <button key={l.val} type="button" onClick={() => setScopeVal(l.val)}
+                  className={`flex-none inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors ${
+                    active ? 'border-brand-600 bg-brand-600 text-white'
+                           : 'border-gray-200 bg-white text-gray-600 hover:border-brand-200 hover:bg-brand-50'}`}>
+                  {l.label}
+                  <span className={`tabular-nums ${active ? 'text-white/80' : 'text-gray-400'}`}>
+                    {c === null || c === undefined ? '…' : c >= 300 ? '300+' : c}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         )}
 
