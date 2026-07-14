@@ -6,6 +6,9 @@ export const HIGHLIGHT_COLORS = {
   blue:   { label: 'Blue',   swatch: 'bg-blue-300',   mark: 'bg-blue-200' },
   pink:   { label: 'Pink',   swatch: 'bg-pink-300',   mark: 'bg-pink-200' },
   purple: { label: 'Purple', swatch: 'bg-purple-300', mark: 'bg-purple-200' },
+  // `neutral` (not the theme-remapped `gray`) so this stays a constant light grey like
+  // the other fixed pastel marks, rather than adapting per theme.
+  grey:   { label: 'Light grey', swatch: 'bg-neutral-300', mark: 'bg-neutral-200' },
 } as const
 
 export type HighlightColor = keyof typeof HIGHLIGHT_COLORS

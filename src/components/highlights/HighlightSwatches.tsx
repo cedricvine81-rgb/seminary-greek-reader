@@ -4,7 +4,8 @@ import { HIGHLIGHT_COLORS, HIGHLIGHT_COLOR_KEYS, type HighlightColor } from '@/l
 
 // Shared highlighter color row — used by both the drag-selection popup and the top of the
 // right-click word menus, so highlighting looks identical everywhere. When `activeColor` is
-// set the matching swatch is ringed and a remove control appears.
+// set the matching swatch is ringed. A remove (eraser) control is shown whenever `onRemove`
+// is provided, so a highlight can always be cleared from the palette.
 export function HighlightSwatches({ activeColor, onPick, onRemove }: {
   activeColor?: string | null
   onPick: (color: HighlightColor) => void
@@ -22,7 +23,7 @@ export function HighlightSwatches({ activeColor, onPick, onRemove }: {
             activeColor === c ? 'ring-2 ring-offset-1 ring-gray-500' : ''}`}
         />
       ))}
-      {activeColor && onRemove && (
+      {onRemove && (
         <button
           type="button"
           title="Remove highlight"

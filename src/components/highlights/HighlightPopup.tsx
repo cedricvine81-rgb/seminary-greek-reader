@@ -22,7 +22,7 @@ export function HighlightPopup({ state, onPick, onRemove, onClose }: {
         <HighlightSwatches
           activeColor={state.kind === 'edit' ? state.color : null}
           onPick={onPick}
-          onRemove={onRemove}
+          onRemove={state.kind === 'edit' ? onRemove : undefined}
         />
       </div>
     </>

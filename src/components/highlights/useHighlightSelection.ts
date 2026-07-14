@@ -40,7 +40,11 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
   const [popup, setPopup] = useState<HighlightPopupState | null>(null)
 
   useEffect(() => {
-    function onMouseUp() {
+    function onMouseUp(e: MouseEvent) {
+      // Only a left-button drag-selection opens the highlight palette. Right-click
+      // (button 2) leaves the word selected but must NOT pop the palette — that word's
+      // right-click menu already carries its own Highlight row.
+      if (e.button !== 0) return
       const container = containerRef.current
       if (!container) return
       const sel = window.getSelection()
