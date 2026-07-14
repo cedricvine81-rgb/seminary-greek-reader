@@ -32,7 +32,7 @@ def baseline_blocks(ch):
     return out
 
 
-total = exact = relocated = altered = 0
+total = exact = relocated = reflowed = altered = 0
 altered_list = []
 for f in sorted(glob.glob('public/data/josephus/*/*.json')):
     if f.endswith('index.json'):
@@ -45,6 +45,7 @@ for f in sorted(glob.glob('public/data/josephus/*/*.json')):
     for bc, cc in zip(base['chapters'], cur['chapters']):
         curtext = {s['number']: s.get('text', '') for s in cc['sections']}
         blocks = [b for b in baseline_blocks(bc) if len(b[0]) >= 2]  # multi-§ blocks only
+        ch_altered = []   # per-block mismatches in THIS chapter, pending chapter-level reconciliation
         i = 0
         while i < len(blocks):
             nums, block_english = blocks[i]
@@ -64,11 +65,25 @@ for f in sorted(glob.glob('public/data/josephus/*/*.json')):
                 relocated += (j - i + 1)   # all blocks in the merged span are text-preserving
                 i = j + 1
             else:
-                altered += 1; altered_list.append((f, cc['number'], nums[0], nums[-1])); i += 1
+                ch_altered.append((f, cc['number'], nums[0], nums[-1])); i += 1
+        # Chapter-level reconciliation. A full-chapter REFLOW (English redistributed across block
+        # boundaries to align each § with its Greek — e.g. Ant 1.19) defeats the block-by-block
+        # merge above because a single-§ block can sit mid-reflow. The invariant that still must
+        # hold if no Whiston word was altered: the whole chapter's English, whitespace-stripped, is
+        # byte-identical before and after (alignment only re-splits, never edits). Check that; if it
+        # holds, the per-block flags were reflow artifacts, not real edits.
+        if ch_altered:
+            base_all = norm(''.join(s.get('text', '') for s in bc['sections']))
+            cur_all = norm(''.join(s.get('text', '') for s in cc['sections']))
+            if base_all == cur_all:
+                reflowed += len(ch_altered)
+            else:
+                altered += len(ch_altered); altered_list += ch_altered
 
 print(f'Multi-§ Whiston blocks checked across the corpus: {total}')
 print(f'  byte-identical to the original Whiston block:            {exact}')
 print(f'  text preserved but a clause relocated across a boundary: {relocated}')
+print(f'  text preserved but redistributed by a chapter reflow:    {reflowed}')
 print(f'  blocks where a WORD was actually changed/added/dropped:  {altered}')
 for m in altered_list[:20]:
     print('   ALTERED:', m)
