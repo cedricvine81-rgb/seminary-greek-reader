@@ -50,13 +50,14 @@ export function WordSearchProvider() {
 
   if (!menu) return null
 
-  const run = (scopeVal: string, query: string) => { setMenu(null); openMasterSearch({ query, scope: scopeVal }) }
   const copy = (text: string, label: string) => {
     navigator.clipboard?.writeText(text).then(() => { setCopied(label); setTimeout(() => setCopied(null), 1200) }).catch(() => {})
   }
   const w = menu.surface
   const isGreek = menu.kind === 'greek'
   const transLabel = TRANS_LABEL[menu.transLang ?? 'en'] ?? 'this translation'
+  // Book name for the "this book" scope, derived from the reference (e.g. "Matthew 5:44" → "Matthew").
+  const bookLabel = menu.reference ? menu.reference.replace(/\s*\d.*$/, '').trim() : null
   const btn = 'w-full text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors'
 
   return (
@@ -112,12 +113,19 @@ export function WordSearchProvider() {
           </>
         ) : (
           <>
-            <button type="button" className={btn} onClick={() => run(`trans:${menu.transLang ?? 'en'}`, w)}>
-              Search {transLabel}
+            {menu.book && (
+              <button type="button" className={btn}
+                onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `trans:${menu.transLang ?? 'en'}`, books: menu.book }) }}>
+                This book{bookLabel ? <span className="text-gray-400"> · {bookLabel}</span> : null}
+              </button>
+            )}
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `trans:${menu.transLang ?? 'en'}` }) }}>
+              Whole Bible <span className="text-gray-400">· {transLabel}</span>
             </button>
             <button type="button" className={btn}
               onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
-              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              All library texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </>
         )}

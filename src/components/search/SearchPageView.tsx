@@ -139,12 +139,12 @@ const SEARCH_EXAMPLES: { group: string; hint: string; items: Example[] }[] = [
   ] },
 ]
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
   const [transLang, setTransLang] = useState(initialScope?.startsWith('trans:') ? initialScope.slice(6) : 'en')
-  const [books, setBooks] = useState<string[]>([])
+  const [books, setBooks] = useState<string[]>(initialBooks ? initialBooks.split(',').filter(Boolean) : [])
   const [showBooks, setShowBooks] = useState(false)
   const [showTypes, setShowTypes] = useState(false)
   const [bib, setBib] = useState<BibHit[] | null>(null)
@@ -249,9 +249,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const p = new URLSearchParams()
     if (query.trim()) p.set('q', query.trim())
     p.set('in', scopeVal)
+    if (books.length) p.set('books', books.join(','))
     const qs = p.toString()
     window.history.replaceState(null, '', qs ? `/search?${qs}` : '/search')
-  }, [query, scopeVal, mounted])
+  }, [query, scopeVal, books, mounted])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
     if (v.length < 2) return
@@ -266,8 +267,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       .then((d: Catalog | null) => { if (d) setCatalog({ gnt: d.gnt, lxx: d.lxx }) })
       .catch(() => {})
   }, [])
-  // A scope change can invalidate the chosen books (different canon).
-  useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
+  // A scope change can invalidate the chosen books (different canon) — but keep the initial
+  // book that arrived via ?books= on the first render (a "this book" search from a word menu).
+  // Reset only when the scope actually changes value (StrictMode-safe: no reset on mount).
+  const prevScope = useRef(scopeVal)
+  useEffect(() => {
+    if (prevScope.current !== scopeVal) { setBooks([]); setShowBooks(false) }
+    prevScope.current = scopeVal
+  }, [scopeVal])
 
   const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode, lemma: boolean) => {
     if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }

@@ -16,6 +16,7 @@ export function MasterSearchProvider() {
     if (p?.query) params.set('q', p.query)
     if (p?.scope) params.set('in', p.scope)
     if (p?.lemma) params.set('mode', 'lemma')   // search all inflected forms of the lemma
+    if (p?.books) params.set('books', p.books)   // restrict to these osisId book(s)
     const qs = params.toString()
     router.push(qs ? `/search?${qs}` : '/search')
   }, [router])

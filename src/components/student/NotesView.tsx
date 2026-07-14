@@ -8,23 +8,10 @@ import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { TransWords } from '@/components/highlights/TransWords'
 import { onNotesChanged, emitNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
-// Strip leading/trailing punctuation from a token (script-agnostic — no \p{} so it works at
-// the repo's TS target), leaving the bare word to search.
-const EDGE_PUNCT = /^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+$/g
-function stripEdges(s: string): string { return s.replace(EDGE_PUNCT, '') }
-
-// Split a translation string into word spans that open the "search this word" menu on
-// right-click (search-relevant actions for an English/Spanish/… word: translations + backgrounds).
-function TransWords({ text, lang, reference }: { text: string; lang: string; reference: string }) {
-  return <>{text.split(/(\s+)/).map((tok, i) =>
-    /\s/.test(tok) || !tok
-      ? tok
-      : <span key={i} onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: stripEdges(tok), reference, kind: 'translation', transLang: lang }) }}>{tok}</span>,
-  )}</>
-}
 
 // A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
 interface NoteT { id: string; folderId: string | null; book: string | null; chapter: number | null; verse: number | null; verseEnd: number | null; title: string | null; body: string }
@@ -548,13 +535,13 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                               </span>
                             )
                           })
-                        : <TransWords text={v.text} lang={version} reference={ref} />}
+                        : <TransWords text={v.text} lang={version} reference={ref} book={anchor.book} />}
                     </p>
                     {/* Inline translation of this Greek verse, if one is selected. */}
                     {isGreek && inlineTrans && (
                       <p className="text-sm text-gray-600 font-sans mt-0.5 border-l-2 border-gray-200 pl-2">
                         {transByVerse[v.verse]
-                          ? <TransWords text={transByVerse[v.verse]} lang={inlineTrans} reference={ref} />
+                          ? <TransWords text={transByVerse[v.verse]} lang={inlineTrans} reference={ref} book={anchor.book} />
                           : <span className="text-gray-300 italic text-xs">—</span>}
                       </p>
                     )}

@@ -12,7 +12,8 @@ import { BACKGROUND_SUMMARIES, type SummaryWork } from '@/lib/backgrounds-summar
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
-import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
+import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
+import { TransWords } from '@/components/highlights/TransWords'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
@@ -819,7 +820,11 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                         </span>
                       ) : (
                         <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse)}>
-                          {renderHighlightedPlainText(v.text, parsed.book.osisId, parsed.chapter, verseHighlights)}
+                          <TransWords text={v.text} lang="en" reference={`${parsed.book.name} ${parsed.chapter}:${v.verse}`} book={parsed.book.osisId}
+                            hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                              create: (s, e, c) => void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, s, e, c),
+                              recolor: (id, c) => void highlights.recolor(id, parsed.book.osisId, parsed.chapter, c),
+                              remove: id => void highlights.remove(id, parsed.book.osisId, parsed.chapter) } : undefined} />
                         </span>
                       )}
                     </p>
@@ -1119,7 +1124,11 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             </span>
                           ) : (
                             <span {...verseAnchorProps(rightBook, rightChapter, v.verse)}>
-                              {renderHighlightedPlainText(v.text, rightBook, rightChapter, verseHighlights)}
+                              <TransWords text={v.text} lang="en" reference={`${rightBookName} ${rightChapter}:${v.verse}`} book={rightBook}
+                                hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                                  create: (s, e, c) => void highlights.create(rightBook, rightChapter, v.verse, s, e, c),
+                                  recolor: (id, c) => void highlights.recolor(id, rightBook, rightChapter, c),
+                                  remove: id => void highlights.remove(id, rightBook, rightChapter) } : undefined} />
                             </span>
                           )}
                         </p>

@@ -21,6 +21,7 @@ export interface WordSearchPayload {
   kind: 'greek' | 'translation'
   greekCorpus?: 'GNT' | 'LXX'         // default scope for Greek words
   transLang?: string                  // language code for translation words (en, es, …)
+  book?: string                       // current book's osisId — enables the "this book" scope
   highlight?: WordHighlight           // when set, a highlighter swatch row shows at the top
 }
 type OpenFn = (payload: WordSearchPayload) => void

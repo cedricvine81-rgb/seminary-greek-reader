@@ -14,7 +14,7 @@ import { GreekVerse } from './GreekVerse'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
-import type { WordHighlight } from '@/lib/word-search-bus'
+import { openWordSearch, type WordHighlight } from '@/lib/word-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { MorphSearchPicker } from './MorphSearchPicker'
 import { LexiconPanel } from './LexiconPanel'
@@ -31,6 +31,9 @@ import { markTerms, normalizeFold } from '@/lib/highlight-terms'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { TransWords } from '@/components/highlights/TransWords'
+import { highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // ── BSB alignment loader ───────────────────────────────────────────────────────
 
@@ -1508,24 +1511,44 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       ) : (
         <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
-          {alignVerse.text.split(' ').map((tok, i) => {
-            const gkPos = alignVerse.t2g[i]
-            // Red when the Greek word above is hovered, OR this token matches the arrival term.
-            const isHlit = highlightIdxs.has(i) ||
-              (arrivalTerms.length > 0 && arrivalTerms.some(t => normalizeFold(tok).includes(t)))
-            return (
-              <span
-                key={i}
-                style={isHlit ? { color: 'rgb(220 38 38)', fontWeight: 500, cursor: 'default' } : { cursor: 'default' }}
-                onMouseEnter={() => {
-                  if (gkPos != null) setBsbHighlightWordId(`${v.id}.${gkPos}`)
-                }}
-                onMouseLeave={() => setBsbHighlightWordId(null)}
-              >
-                {tok}{' '}
-              </span>
-            )
-          })}
+          {(() => {
+            const bsbHl = highlights.forVerse(v.bookId, v.chapter, v.verse)
+            let off = 0
+            return alignVerse.text.split(' ').map((tok, i) => {
+              const start = off; const end = off + tok.length; off = end + 1
+              const gkPos = alignVerse.t2g[i]
+              // Red when the Greek word above is hovered, OR this token matches the arrival term.
+              const isHlit = highlightIdxs.has(i) ||
+                (arrivalTerms.length > 0 && arrivalTerms.some(t => normalizeFold(tok).includes(t)))
+              const mark = highlightAt(start, end, bsbHl)
+              return (
+                <span
+                  key={i}
+                  style={isHlit ? { color: 'rgb(220 38 38)', fontWeight: 500 } : undefined}
+                  className={mark ? highlightMarkClass(mark.color) : undefined}
+                  onMouseEnter={() => {
+                    if (gkPos != null) setBsbHighlightWordId(`${v.id}.${gkPos}`)
+                  }}
+                  onMouseLeave={() => setBsbHighlightWordId(null)}
+                  onContextMenu={e => {
+                    e.preventDefault()
+                    openWordSearch({
+                      x: e.clientX, y: e.clientY,
+                      surface: tok.replace(/^[.,;:!?"“”‘’'()[\]…—–-]+|[.,;:!?"“”‘’'()[\]…—–-]+$/g, ''),
+                      reference: `${v.bookId} ${v.chapter}:${v.verse}`, kind: 'translation', transLang: parallelLang, book: v.bookId,
+                      highlight: isAuthenticated ? {
+                        activeColor: mark?.color ?? null,
+                        onPick: c => mark ? void highlights.recolor(mark.id, v.bookId, v.chapter, c) : void highlights.create(v.bookId, v.chapter, v.verse, start, end, c),
+                        onRemove: () => { if (mark) void highlights.remove(mark.id, v.bookId, v.chapter) },
+                      } : undefined,
+                    })
+                  }}
+                >
+                  {tok}{' '}
+                </span>
+              )
+            })
+          })()}
         </p>
       )
 
@@ -1549,7 +1572,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : transTxt}</>
+              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</>
               : null}
         </p>
       </div>

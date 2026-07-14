@@ -8,6 +8,7 @@ import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { TransWords } from '@/components/highlights/TransWords'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 
@@ -423,7 +424,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                 </span>
                               )
                             })()
-                          : v.text}
+                          : <TransWords text={v.text} lang={version} reference={`${col.bookName} ${v.ref}`} book={col.book}
+                              hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(col.book, col.chapter, v.verse),
+                                create: (s, e, c) => void highlights.create(col.book, col.chapter, v.verse, s, e, c),
+                                recolor: (id, c) => void highlights.recolor(id, col.book, col.chapter, c),
+                                remove: id => void highlights.remove(id, col.book, col.chapter) } : undefined} />}
                       </p>
                     ))}
                   </div>
