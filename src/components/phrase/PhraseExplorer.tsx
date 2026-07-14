@@ -4,6 +4,9 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -16,6 +19,11 @@ type TreeNode =
 // Lets the recursively-rendered words report clicks + know if they're selected,
 // without threading callbacks through every tree level.
 const WordCtx = createContext<{ selectedId: string | null; onWord: (n: WordNodeT) => void }>({ selectedId: null, onWord: () => {} })
+
+// Highlighting for the running Greek column: the highlighter instance + auth flag, so a
+// GreekColWord (given its verse + character offsets) can render its mark and set/clear it.
+type Highlighter = ReturnType<typeof useHighlights>
+const HlCtx = createContext<{ hl: Highlighter | null; isAuth: boolean }>({ hl: null, isAuth: false })
 
 interface Sentence { ref: string; chapter: number; startVerse: number; endVerse: number; tree: TreeNode }
 interface BookData { book: string; attribution: string; sentences: Sentence[] }
@@ -188,9 +196,16 @@ function treeWords(node: TreeNode): WordNodeT[] {
   return node.c.flatMap(treeWords)
 }
 
-/** A Greek word in the running-text column → hover (or click, for touch) opens the lexical panel. */
-function GreekColWord({ node }: { node: WordNodeT }) {
+/** A Greek word in the running-text column → hover (or click, for touch) opens the lexical
+ *  panel; right-click opens the word menu (with highlighting when signed in). `book/chapter/
+ *  verse/start/end` are the word's highlight anchor (character offsets within its verse). */
+function GreekColWord({ node, book, chapter, verse, start, end }: {
+  node: WordNodeT; book?: string; chapter?: number; verse?: number; start?: number; end?: number
+}) {
   const { selectedId, onWord } = useContext(WordCtx)
+  const { hl: highlights, isAuth } = useContext(HlCtx)
+  const canHl = !!highlights && book != null && chapter != null && verse != null && start != null && end != null
+  const mark = canHl ? highlightAt(start!, end!, highlights!.forVerse(book!, chapter!, verse!)) : undefined
   return (
     <button
       type="button"
@@ -199,10 +214,18 @@ function GreekColWord({ node }: { node: WordNodeT }) {
       onContextMenu={e => {
         e.preventDefault()
         const [b, ch, v] = node.id.split('.')
-        openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null,
-          reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT' })
+        openWordSearch({
+          x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null,
+          reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT',
+          highlight: isAuth && canHl ? {
+            activeColor: mark?.color ?? null,
+            onPick: c => mark ? void highlights!.recolor(mark.id, book!, chapter!, c) : void highlights!.create(book!, chapter!, verse!, start!, end!, c),
+            onRemove: () => { if (mark) void highlights!.remove(mark.id, book!, chapter!) },
+          } : undefined,
+        })
       }}
-      className={`rounded px-0.5 transition-colors hover:bg-gray-100 ${selectedId === node.id ? 'bg-brand-100' : ''}`}
+      {...(mark ? { 'data-highlight-id': mark.id, 'data-hl-book': book, 'data-hl-chapter': chapter, 'data-hl-color': mark.color } : {})}
+      className={`rounded px-0.5 transition-colors hover:bg-gray-100 ${selectedId === node.id ? 'bg-brand-100' : mark ? highlightMarkClass(mark.color) : ''}`}
     >
       {node.w}
     </button>
@@ -260,6 +283,11 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
   const [greekEd, setGreekEd] = useState('na1904')
   const [transLang, setTransLang] = useState('bsb')
   const [cur, setCur] = useState<{ osis: string; chapter: number } | null>(null)
+  // Text highlights for the running Greek column (signed-in users).
+  const highlights = useHighlights(isAuthenticated)
+  useEffect(() => {
+    if (isAuthenticated && cur) void highlights.loadFor(cur.osis, cur.chapter)
+  }, [isAuthenticated, cur, highlights.loadFor])
   // Per-verse personal notes (signed-in users).
   const [notedVerses, setNotedVerses] = useState<Set<number>>(new Set())
   const refreshNotes = useCallback(async () => {
@@ -421,6 +449,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
 
   return (
     <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
+    <HlCtx.Provider value={{ hl: highlights, isAuth: isAuthenticated }}>
     <div className="space-y-4" style={{ '--phrase-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
       {/* Passage entry (matches the Reader / Exegesis tools). Hidden in coordinated
           mode — a shared passage box drives all tabs, and settings (text size, sources
@@ -488,7 +517,23 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                       <span className="font-greek leading-relaxed" style={{ fontSize: 'calc(var(--phrase-fs, 1.45rem) * 0.92)' }}>
                         {(() => {
                           const gw = greekWordsFor(s)
-                          if (gw.length) return gw.map((w, wi) => <span key={w.id}>{wi > 0 ? ' ' : ''}<GreekColWord node={w} /></span>)
+                          if (gw.length) {
+                            // Character offset of each word within its verse (same convention as
+                            // withTokenOffsets: single-space joins), so highlights anchor correctly.
+                            const posByVerse: Record<string, number> = {}
+                            return gw.map((w, wi) => {
+                              const [b, ch, v] = w.id.split('.')
+                              const vk = `${b}.${ch}.${v}`
+                              const start = posByVerse[vk] ?? 0
+                              const end = start + w.w.length
+                              posByVerse[vk] = end + 1
+                              return (
+                                <span key={w.id}>{wi > 0 ? ' ' : ''}
+                                  <GreekColWord node={w} book={b} chapter={Number(ch)} verse={Number(v)} start={start} end={end} />
+                                </span>
+                              )
+                            })
+                          }
                           return mid || <span className="font-sans text-sm text-gray-300 italic">—</span>
                         })()}
                       </span>
@@ -508,6 +553,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         })
       )}
     </div>
+    </HlCtx.Provider>
     </WordCtx.Provider>
   )
 }
