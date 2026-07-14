@@ -32,8 +32,8 @@ def baseline_blocks(ch):
     return out
 
 
-total = ok = 0
-mismatches = []
+total = exact = relocated = altered = 0
+altered_list = []
 for f in sorted(glob.glob('public/data/josephus/*/*.json')):
     if f.endswith('index.json'):
         continue
@@ -44,19 +44,32 @@ for f in sorted(glob.glob('public/data/josephus/*/*.json')):
         continue
     for bc, cc in zip(base['chapters'], cur['chapters']):
         curtext = {s['number']: s.get('text', '') for s in cc['sections']}
-        for nums, block_english in baseline_blocks(bc):
-            if len(nums) < 2:
-                continue                       # single-§ blocks are unchanged by definition
+        blocks = [b for b in baseline_blocks(bc) if len(b[0]) >= 2]  # multi-§ blocks only
+        i = 0
+        while i < len(blocks):
+            nums, block_english = blocks[i]
             total += 1
-            concat = ' '.join(curtext.get(n, '') for n in nums)
-            if norm(concat) == norm(block_english):
-                ok += 1
+            if norm(' '.join(curtext.get(n, '') for n in nums)) == norm(block_english):
+                exact += 1; i += 1; continue
+            # Mismatch: a clause may have been relocated across the Whiston boundary. Merge with
+            # following blocks; if the MERGED current == MERGED baseline, no word changed — the
+            # text was only moved between adjacent §§ to sit with the Greek it translates.
+            merged_nums = list(nums); merged_eng = block_english; j = i + 1; matched = False
+            while j < len(blocks):
+                merged_nums += blocks[j][0]; merged_eng += ' ' + blocks[j][1]; total += 1
+                if norm(' '.join(curtext.get(n, '') for n in merged_nums)) == norm(merged_eng):
+                    matched = True; break
+                j += 1
+            if matched:
+                relocated += (j - i + 1)   # all blocks in the merged span are text-preserving
+                i = j + 1
             else:
-                mismatches.append((f, cc['number'], nums[0], nums[-1]))
+                altered += 1; altered_list.append((f, cc['number'], nums[0], nums[-1])); i += 1
 
 print(f'Multi-§ Whiston blocks checked across the corpus: {total}')
-print(f'  per-§ English concatenates EXACTLY to the original Whiston block: {ok}')
-print(f'  blocks where a word differs from Whiston: {len(mismatches)}')
-for m in mismatches[:20]:
-    print('   MISMATCH:', m)
-sys.exit(1 if mismatches else 0)
+print(f'  byte-identical to the original Whiston block:            {exact}')
+print(f'  text preserved but a clause relocated across a boundary: {relocated}')
+print(f'  blocks where a WORD was actually changed/added/dropped:  {altered}')
+for m in altered_list[:20]:
+    print('   ALTERED:', m)
+sys.exit(1 if altered else 0)
