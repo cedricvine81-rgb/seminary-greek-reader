@@ -81,7 +81,7 @@ function WordNode({ node }: { node: WordNodeT }) {
       type="button"
       onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
-      onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null, kind: 'greek', greekCorpus: 'GNT' }) }}
+      onContextMenu={e => { e.preventDefault(); const [b, ch, v] = node.id.split('.'); openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null, reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT' }) }}
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
       className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
     >
@@ -196,6 +196,12 @@ function GreekColWord({ node }: { node: WordNodeT }) {
       type="button"
       onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
+      onContextMenu={e => {
+        e.preventDefault()
+        const [b, ch, v] = node.id.split('.')
+        openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null,
+          reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT' })
+      }}
       className={`rounded px-0.5 transition-colors hover:bg-gray-100 ${selectedId === node.id ? 'bg-brand-100' : ''}`}
     >
       {node.w}

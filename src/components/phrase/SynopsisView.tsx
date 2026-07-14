@@ -4,6 +4,10 @@ import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { openWordSearch } from '@/lib/word-search-bus'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { PhraseFontSize } from './PhraseExplorer'
 
@@ -105,9 +109,21 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const loaded = useRef<Set<string>>(new Set())
   const [, setVer] = useState(0)
   const bump = () => setVer(v => v + 1)
+  const highlights = useHighlights(isAuthenticated)
 
   const anchor = (controlledPassage ?? '').trim()
   const columns = [anchor, ...extraRefs].filter(Boolean)
+
+  // Load persisted highlights for every column's chapter (signed-in users).
+  useEffect(() => {
+    if (!isAuthenticated || books.length === 0) return
+    const seen = new Set<string>()
+    for (const ref of columns) {
+      const c = column(ref)
+      if (c && !seen.has(`${c.book}.${c.chapter}`)) { seen.add(`${c.book}.${c.chapter}`); void highlights.loadFor(c.book, c.chapter) }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, books, columns.join('|'), highlights.loadFor])
 
   // Per-verse personal notes across every column (signed-in users). Keyed "book.chapter.verse".
   const [notedKeys, setNotedKeys] = useState<Set<string>>(new Set())
@@ -372,20 +388,41 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                             pane below — same interaction as the Phrasing tab. Falls back to
                             plain text if word-level tokens haven't loaded (or aren't available). */}
                         {isGreek && v.tokens && v.tokens.length > 0
-                          ? v.tokens.map((tok, ti) => {
-                              const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
-                              const select = () => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }
+                          ? (() => {
+                              const verseHighlights = highlights.forVerse(col.book, col.chapter, v.verse)
                               return (
-                                <span
-                                  key={ti}
-                                  onMouseEnter={select}
-                                  onClick={select}
-                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
-                                >
-                                  {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                                <span {...verseAnchorProps(col.book, col.chapter, v.verse)}>
+                                  {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
+                                    const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
+                                    const select = () => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }
+                                    const hl = highlightAt(start, end, verseHighlights)
+                                    return (
+                                      <span
+                                        key={ti}
+                                        onMouseEnter={select}
+                                        onClick={select}
+                                        onContextMenu={e => {
+                                          e.preventDefault()
+                                          openWordSearch({
+                                            x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
+                                            reference: `${col.bookName} ${v.ref}`, kind: 'greek', greekCorpus: 'GNT',
+                                            highlight: isAuthenticated ? {
+                                              activeColor: hl?.color ?? null,
+                                              onPick: c => hl ? void highlights.recolor(hl.id, col.book, col.chapter, c) : void highlights.create(col.book, col.chapter, v.verse, start, end, c),
+                                              onRemove: () => { if (hl) void highlights.remove(hl.id, col.book, col.chapter) },
+                                            } : undefined,
+                                          })
+                                        }}
+                                        {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': col.book, 'data-hl-chapter': col.chapter, 'data-hl-color': hl.color } : {})}
+                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
+                                      >
+                                        {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                                      </span>
+                                    )
+                                  })}
                                 </span>
                               )
-                            })
+                            })()
                           : v.text}
                       </p>
                     ))}

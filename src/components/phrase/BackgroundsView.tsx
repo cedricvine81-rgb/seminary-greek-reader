@@ -1097,6 +1097,18 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                     key={ti}
                                     onMouseEnter={select}
                                     onClick={select}
+                                    onContextMenu={e => {
+                                      e.preventDefault()
+                                      openWordSearch({
+                                        x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
+                                        reference: `${rightBookName} ${rightChapter}:${v.verse}`, kind: 'greek', greekCorpus: 'LXX',
+                                        highlight: isAuthenticated ? {
+                                          activeColor: hl?.color ?? null,
+                                          onPick: c => hl ? void highlights.recolor(hl.id, rightBook, rightChapter, c) : void highlights.create(rightBook, rightChapter, v.verse, start, end, c),
+                                          onRemove: () => { if (hl) void highlights.remove(hl.id, rightBook, rightChapter) },
+                                        } : undefined,
+                                      })
+                                    }}
                                     {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': rightBook, 'data-hl-chapter': rightChapter, 'data-hl-color': hl.color } : {})}
                                     className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
                                   >
