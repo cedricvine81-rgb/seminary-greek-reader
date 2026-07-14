@@ -59,8 +59,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     payload?.role === 'INSTRUCTOR' &&
     cookies().get('instructor_preview')?.value === '1'
 
+  // Display theme: rendered server-side from the cookie so there's no flash of
+  // the default theme and no hydration mismatch (see src/lib/theme.ts).
+  const themeCookie = cookies().get('display-theme')?.value
+  const dataTheme =
+    themeCookie === 'sepia' || themeCookie === 'dim' || themeCookie === 'dark'
+      ? themeCookie
+      : undefined
+
   return (
-    <html lang="en">
+    <html lang="en" data-theme={dataTheme}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

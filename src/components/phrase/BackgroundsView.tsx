@@ -678,18 +678,18 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               type="button"
               onClick={() => setShowSummaries(v => !v)}
               title="Summaries — overviews of extra-canonical literature"
-              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+              className={`inline-flex items-center gap-1 rounded-none border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
             >
               <BookOpen size={14} /> Summaries
             </button>
             {showSummaries && (
-              <div className="absolute left-0 top-full mt-1 z-30 w-72 max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-white p-1.5 shadow-lg">
+              <div className="absolute left-0 top-full mt-1 z-30 w-72 max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-surface p-1.5 shadow-lg">
                 {BACKGROUND_SUMMARIES.map(cat => (
                   <div key={cat.id}>
                     <button
                       type="button"
                       onClick={() => setExpandedSummaryCat(c => c === cat.id ? null : cat.id)}
-                      className="flex w-full items-start justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                      className="flex w-full items-start justify-between gap-2 rounded-none px-2 py-1.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50"
                     >
                       <span>{cat.label}</span>
                       <ChevronDown size={13} className={`mt-0.5 shrink-0 text-gray-400 transition-transform ${expandedSummaryCat === cat.id ? 'rotate-180' : ''}`} />
@@ -701,7 +701,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             key={w.id}
                             type="button"
                             onClick={() => { setOpenSummary({ work: w, category: cat.label }); setShowSummaries(false) }}
-                            className="block w-full rounded-md px-2 py-1 text-left text-xs text-gray-600 hover:bg-brand-50 hover:text-brand-800"
+                            className="block w-full rounded-none px-2 py-1 text-left text-xs text-gray-600 hover:bg-brand-50 hover:text-brand-800"
                           >
                             {w.title}
                           </button>
@@ -718,7 +718,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             <button
               key={t}
               onClick={() => toggleType(t)}
-              className={`rounded-full border px-2 py-0.5 text-[11px] font-medium transition-opacity ${TYPE_COLORS[t]} ${typeFilter.has(t) ? '' : 'opacity-30'}`}
+              className={`rounded-none border px-2 py-0.5 text-[11px] font-medium transition-opacity ${TYPE_COLORS[t]} ${typeFilter.has(t) ? '' : 'opacity-30'}`}
             >
               {TYPE_LABELS[t]}
             </button>
@@ -729,7 +729,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       {/* Summary card — the "bubble" that opens with a selected work's overview. */}
       {openSummary && (
         <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/30 p-4 overflow-y-auto" onClick={() => setOpenSummary(null)}>
-          <div className="w-full max-w-2xl my-8 rounded-xl bg-white shadow-xl" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-2xl my-8 rounded-xl bg-surface shadow-xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-5 py-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-brand-500">{openSummary.category}</p>
@@ -772,7 +772,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                 <p className="text-xs text-gray-300 italic">Loading…</p>
               ) : (
                 <div
-                  className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : ''}`}
+                  className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`}
                   style={{ fontSize: isGreek ? 'var(--bg-fs, 1.45rem)' : 'calc(var(--bg-fs, 1.45rem) * 0.65)' }}
                 >
                   {leftVerses.map(v => {
@@ -843,7 +843,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 <button
                                   onClick={() => openJosephusRef(entry.label, c, josephusRef)}
                                   title="View text"
-                                  className={`flex-1 block text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightJosephus?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                  className={`flex-1 block text-left rounded-none border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightJosephus?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                                 >
                                   {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
                                 </button>
@@ -874,7 +874,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 key={ci}
                                 onClick={() => openProseRef(prose.work, entry.label, c, prose.ref)}
                                 title="View text"
-                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightProse?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                className={`block w-full text-left rounded-none border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightProse?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                               >
                                 {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
                               </button>
@@ -913,7 +913,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               onClick={() => openRightRef(entry.label, c)}
                               disabled={!openable}
                               title={scholarTitle}
-                              className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                              className={`block w-full text-left rounded-none border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                             >
                               <span className="flex items-baseline justify-between gap-1.5">
                                 <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
@@ -958,7 +958,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     type="button"
                     onClick={() => onOpenInTexts?.(openInTextsTarget)}
                     title="Open in Texts — keep reading this work"
-                    className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-none border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                   >
                     <ExternalLink size={12} /> Open
                   </button>
@@ -985,7 +985,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       {josephusChapter.title && <> — {josephusChapter.title}</>}
                     </p>
                     <div
-                      className="space-y-1 leading-relaxed text-gray-900"
+                      className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
                       {josephusChapter.sections.map(s => (
@@ -1015,7 +1015,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       {rightProse.work.name} {proseChapter.number}
                     </p>
                     <div
-                      className="space-y-1 leading-relaxed text-gray-900"
+                      className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
                       {proseChapter.verses.map(v => (
@@ -1059,7 +1059,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
                   ) : (
                     <div
-                      className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : ''}`}
+                      className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : 'font-reading'}`}
                       style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
                       {rightVerses.map(v => {

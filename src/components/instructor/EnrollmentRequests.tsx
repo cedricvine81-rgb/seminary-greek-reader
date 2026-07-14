@@ -94,7 +94,7 @@ export function EnrollmentRequests({ pending: initial }: Props) {
 
       <div className="space-y-3">
         {pending.map(e => (
-          <div key={e.id} className="bg-white rounded-xl border border-amber-100 overflow-hidden">
+          <div key={e.id} className="bg-surface rounded-xl border border-amber-100 overflow-hidden">
             {/* Main row */}
             <div className="flex items-center justify-between gap-4 px-4 py-3">
               <div className="min-w-0">

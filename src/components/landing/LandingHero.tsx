@@ -18,7 +18,7 @@ export function LandingHero() {
 
       <div className="grid gap-5 md:grid-cols-3 max-w-5xl mx-auto">
         {/* Free — no account needed */}
-        <div className="rounded-xl border border-parchment-200 bg-white p-6">
+        <div className="rounded-xl border border-parchment-200 bg-surface p-6">
           <p className="font-semibold text-gray-900">Free</p>
           <p className="text-sm text-gray-400 mb-4">No account needed</p>
           <ul className="space-y-3 text-sm text-gray-600">
@@ -36,7 +36,7 @@ export function LandingHero() {
         </div>
 
         {/* Student account — $10/year */}
-        <div className="rounded-xl border-2 border-brand-600 bg-white p-6">
+        <div className="rounded-xl border-2 border-brand-600 bg-surface p-6">
           <div className="flex items-center justify-between">
             <p className="font-semibold text-gray-900">Student account</p>
             <span className="rounded-lg bg-brand-50 px-2.5 py-1 text-xs font-medium text-brand-800">$10 / year</span>
@@ -58,7 +58,7 @@ export function LandingHero() {
         </div>
 
         {/* Instructor account — free, admin-approved */}
-        <div className="rounded-xl border border-parchment-200 bg-white p-6">
+        <div className="rounded-xl border border-parchment-200 bg-surface p-6">
           <div className="flex items-center justify-between">
             <p className="font-semibold text-gray-900">Instructor account</p>
             <span className="rounded-lg bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">Free</span>

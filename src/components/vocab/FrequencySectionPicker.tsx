@@ -22,7 +22,7 @@ function Checkbox({
       className={clsx(
         'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
         checked || indeterminate
-          ? 'bg-white border-gray-300'
+          ? 'bg-surface border-gray-300'
           : 'border-gray-300 hover:border-gray-400',
       )}
       aria-checked={indeterminate ? 'mixed' : checked}
@@ -124,7 +124,7 @@ export function FrequencySectionPicker({
               className="rounded-lg border overflow-hidden transition-colors border-gray-200"
             >
               {/* Section row */}
-              <div className="flex items-center px-4 py-3 gap-3 bg-white">
+              <div className="flex items-center px-4 py-3 gap-3 bg-surface">
                 <Checkbox
                   checked={state === 'all'}
                   indeterminate={state === 'partial'}
@@ -147,7 +147,7 @@ export function FrequencySectionPicker({
 
               {/* Subsection chips */}
               {isExpanded && (
-                <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-white space-y-3">
+                <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-surface space-y-3">
                   <div className="grid grid-cols-8 gap-2">
                     {subs.map(sub => {
                       const isSubSelected = subSet.has(sub.key)
@@ -159,10 +159,10 @@ export function FrequencySectionPicker({
                             type="button"
                             onClick={() => toggleSubsection(sub.key)}
                             className={clsx(
-                              'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                              'flex flex-col items-center justify-center py-2.5 rounded-none border text-center transition-colors',
                               isSubSelected
                                 ? 'bg-gray-100 border-gray-300 text-gray-900'
-                                : 'bg-white border-gray-200 text-gray-600 hover:text-gray-900',
+                                : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900',
                             )}
                           >
                             <span className="text-base font-semibold leading-none">{sub.label}</span>
@@ -220,7 +220,7 @@ export function FrequencySectionPicker({
                                   className={clsx(
                                     'px-2 py-0.5 rounded text-xs font-medium transition-colors',
                                     mode === m
-                                      ? 'bg-white text-gray-900 shadow-sm'
+                                      ? 'bg-surface text-gray-900 shadow-sm'
                                       : 'text-gray-400 hover:text-gray-600',
                                   )}
                                 >

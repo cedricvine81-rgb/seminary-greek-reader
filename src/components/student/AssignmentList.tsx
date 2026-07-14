@@ -60,7 +60,7 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
           <Link
             key={a.id}
             href={hrefFor(a)}
-            className="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 bg-white hover:border-brand-200 hover:shadow-sm transition-all group"
+            className="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-100 bg-surface hover:border-brand-200 hover:shadow-sm transition-all group"
           >
             <div className="flex flex-col gap-1 min-w-0">
               <p className="text-sm font-semibold text-gray-900 truncate">{a.title}</p>

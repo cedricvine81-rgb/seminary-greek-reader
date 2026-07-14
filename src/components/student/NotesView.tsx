@@ -336,7 +336,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
             <button
               onClick={() => setAddingNote(true)}
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+              className="inline-flex items-center gap-1 rounded-none border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
               title="Write a topic note that isn’t tied to a specific verse"
             >
               <Plus size={13} /> New topic note
@@ -348,7 +348,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden text-xs">
               {([['all', `All (${folderNotes.length})`], ['verse', `Verse notes (${verseCount})`], ['general', `Topic notes (${generalCount})`]] as const).map(([k, label], i) => (
                 <button key={k} type="button" onClick={() => setNoteKind(k)}
-                  className={`px-2.5 py-1 font-medium ${i > 0 ? 'border-l border-gray-300' : ''} ${noteKind === k ? 'bg-brand-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}>
+                  className={`px-2.5 py-1 font-medium ${i > 0 ? 'border-l border-gray-300' : ''} ${noteKind === k ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}>
                   {label}
                 </button>
               ))}
@@ -373,7 +373,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             {folders.map(f => (
               <span key={f.id} className="inline-flex items-center">
                 <button onClick={() => setActiveFolder(f.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs ${activeFolder === f.id ? colorOf(f.color).chip : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                  className={`inline-flex items-center gap-1.5 rounded-none border px-2.5 py-1 text-xs ${activeFolder === f.id ? colorOf(f.color).chip : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
                   <span className={`h-2 w-2 rounded-full ${colorOf(f.color).dot}`} /> {f.name} ({f._count.notes})
                 </button>
                 {activeFolder === f.id && (
@@ -382,7 +382,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               </span>
             ))}
             {newFolder === null
-              ? <button onClick={() => setNewFolder({ name: '', color: 'blue' })} className="inline-flex items-center gap-1 rounded-full border border-dashed border-gray-300 px-2.5 py-1 text-xs text-gray-500 hover:bg-gray-50"><FolderPlus size={12} /> New folder</button>
+              ? <button onClick={() => setNewFolder({ name: '', color: 'blue' })} className="inline-flex items-center gap-1 rounded-none border border-dashed border-gray-300 px-2.5 py-1 text-xs text-gray-500 hover:bg-gray-50"><FolderPlus size={12} /> New folder</button>
               : null}
           </div>
 
@@ -523,7 +523,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 function Chip({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
   return (
     <button onClick={onClick}
-      className={`rounded-full border px-2.5 py-1 text-xs ${active ? 'bg-brand-50 border-brand-200 text-brand-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+      className={`rounded-none border px-2.5 py-1 text-xs ${active ? 'bg-brand-50 border-brand-200 text-brand-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
       {label}
     </button>
   )
@@ -547,7 +547,7 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
   const overdue = !entry.submittedAt && new Date(entry.dueDate).getTime() < Date.now()
   const graded = entry.grade != null
   return (
-    <div className={`rounded-lg border bg-white p-3 ${isActive ? 'border-brand-300 ring-1 ring-brand-200' : 'border-gray-200'}`}>
+    <div className={`rounded-lg border bg-surface p-3 ${isActive ? 'border-brand-300 ring-1 ring-brand-200' : 'border-gray-200'}`}>
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <button onClick={onOpen} className="text-sm font-semibold text-brand-700 hover:underline text-left">
@@ -567,7 +567,7 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
             </span>
           )}
           <button onClick={onSubmit} disabled={submitting}
-            className="inline-flex items-center gap-1 rounded-md bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
+            className="inline-flex items-center gap-1 rounded-none bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
             {submitting ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
             {entry.submittedAt ? 'Resubmit' : 'Submit'}
           </button>
@@ -607,7 +607,7 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
             className={`h-5 w-5 rounded-full ${NOTE_COLORS[c].dot} ${value.color === c ? 'ring-2 ring-offset-1 ring-gray-500' : ''}`} />
         ))}
       </div>
-      <button onClick={onSave} className="inline-flex items-center gap-1 rounded-md bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
+      <button onClick={onSave} className="inline-flex items-center gap-1 rounded-none bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
       <button onClick={onCancel} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
       {onDelete
         ? <button onClick={onDelete} className="ml-auto inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800"><Trash2 size={13} /> Delete folder</button>
@@ -747,7 +747,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
   const finalOnBlur = !(isNew && isGeneral)
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-2.5">
+    <div className="rounded-lg border border-gray-200 bg-surface p-2.5">
       <div className="flex items-center gap-2 mb-1">
         {isGeneral ? (
           <input
@@ -781,7 +781,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         <div className="flex items-center justify-end gap-2 mt-2">
           <span className="mr-auto text-[11px] text-gray-400">Saves automatically</span>
           <button onClick={discard} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
-          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
+          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-none px-3 py-1 disabled:opacity-50">Save note</button>
         </div>
       )}
     </div>

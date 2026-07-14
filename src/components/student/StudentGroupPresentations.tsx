@@ -159,7 +159,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
         {entry.locked ? (
           isHtmlEmpty(sanitizeNoteHtml(toNoteHtml(body)))
             ? <p className="text-sm text-gray-400 italic">You didn&rsquo;t write a section.</p>
-            : <div className="prose-notes text-sm text-gray-700 rounded-lg border border-gray-200 bg-white p-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(body)) }} />
+            : <div className="prose-notes text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(body)) }} />
         ) : (
           <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={saveSection} fontScale={1} minHeight={120} maxHeight={480} />
         )}
@@ -172,7 +172,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           Declare any use of AI tools, collaboration, and sources for your section, and confirm the work is your own.
         </p>
         {entry.locked ? (
-          <p className="text-sm text-gray-700 rounded-lg border border-gray-200 bg-white p-3 whitespace-pre-line">{ai || <span className="text-gray-400 italic">No statement provided.</span>}</p>
+          <p className="text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 whitespace-pre-line">{ai || <span className="text-gray-400 italic">No statement provided.</span>}</p>
         ) : (
           <textarea
             value={ai}
@@ -201,7 +201,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
             {entry.members.filter(m => !m.isMe).map(m => {
               const html = sanitizeNoteHtml(toNoteHtml(m.body))
               return (
-                <div key={m.userId} className="rounded-lg border border-gray-200 bg-white p-3">
+                <div key={m.userId} className="rounded-lg border border-gray-200 bg-surface p-3">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium text-gray-800">{m.name}</span>
                     {m.contributed

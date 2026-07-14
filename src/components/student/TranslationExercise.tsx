@@ -51,7 +51,7 @@ export function TranslationExercise({ assignmentId, questions }: TranslationExer
   return (
     <div className="space-y-6">
       {questions.map((q, i) => (
-        <div key={q.id} className="bg-white rounded-xl border border-gray-100 p-6 space-y-4">
+        <div key={q.id} className="bg-surface rounded-xl border border-gray-100 p-6 space-y-4">
           <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wide">
             <span>Question {i + 1}</span>
             <span>·</span>

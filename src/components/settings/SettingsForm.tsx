@@ -4,6 +4,7 @@ import { CheckCircle2, ChevronDown, Building2, UserCircle } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { DisplaySettings } from '@/components/settings/DisplaySettings'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -116,7 +117,7 @@ function ProfileSection({
             <select
               value={selectValue}
               onChange={e => { setSelectValue(e.target.value); setError('') }}
-              className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 pr-9 text-sm
+              className="w-full appearance-none rounded-lg border border-gray-300 bg-surface px-3 py-2 pr-9 text-sm
                 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             >
               <option value={PRIVATE_USER}>Private User (no institution)</option>
@@ -147,7 +148,7 @@ function ProfileSection({
               value={customValue}
               onChange={e => setCustomValue(e.target.value)}
               placeholder="e.g. Andrews University"
-              className="mt-2 w-full rounded-lg border border-brand-300 bg-white px-3 py-2 text-sm
+              className="mt-2 w-full rounded-lg border border-brand-300 bg-surface px-3 py-2 text-sm
                 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           )}
@@ -239,6 +240,7 @@ function PasswordSection() {
 export function SettingsForm(props: ProfileProps) {
   return (
     <div className="space-y-6 max-w-2xl">
+      <DisplaySettings />
       <ProfileSection {...props} />
       <PasswordSection />
     </div>

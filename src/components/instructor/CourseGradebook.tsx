@@ -231,7 +231,7 @@ export async function CourseGradebook({ courseId }: Props) {
 
             return (
               <tr key={student.id} className="hover:bg-gray-50">
-                <td className="sticky left-0 z-10 bg-white px-4 py-2.5 border-r border-gray-100 shadow-[1px_0_0_0_#e5e7eb]">
+                <td className="sticky left-0 z-10 bg-surface px-4 py-2.5 border-r border-gray-100 shadow-[1px_0_0_0_#e5e7eb]">
                   <p className="font-medium text-gray-800 whitespace-nowrap truncate">
                     {[student.firstName, student.surname].filter(Boolean).join(' ') || student.email}
                   </p>

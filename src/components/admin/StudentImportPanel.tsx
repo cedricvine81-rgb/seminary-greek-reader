@@ -119,7 +119,7 @@ export function StudentImportPanel({ onCreated }: { onCreated: () => void }) {
                 onChange={e => { setInput(e.target.value); setPreview(null); setError('') }}
                 rows={8}
                 placeholder={'Jane Doe, jane.doe@andrews.edu\nJohn Smith, john.smith@andrews.edu'}
-                className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 bg-surface px-3 py-2 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 

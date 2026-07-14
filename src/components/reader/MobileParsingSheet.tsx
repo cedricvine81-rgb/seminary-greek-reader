@@ -42,8 +42,8 @@ export function MobileParsingSheet({ info, locked }: MobileParsingSheetProps) {
         onClick={() => { if (info) setExpanded(true) }}
         disabled={!info}
         aria-expanded={expanded}
-        className={`w-full text-left rounded-xl border px-4 py-2.5 flex items-center gap-3 transition-colors ${
-          info ? 'bg-white border-brand-300 active:bg-brand-50' : 'bg-white border-gray-200'
+        className={`w-full text-left rounded-none border px-4 py-2.5 flex items-center gap-3 transition-colors ${
+          info ? 'bg-surface border-brand-300 active:bg-brand-50' : 'bg-surface border-gray-200'
         }`}
       >
         {!info ? (
@@ -74,7 +74,7 @@ export function MobileParsingSheet({ info, locked }: MobileParsingSheetProps) {
               onClick={() => setExpanded(false)}
             />
             <motion.div
-              className="fixed inset-x-0 bottom-0 z-50 bg-white rounded-t-2xl shadow-xl flex flex-col max-h-[75vh]"
+              className="fixed inset-x-0 bottom-0 z-50 bg-surface rounded-t-2xl shadow-xl flex flex-col max-h-[75vh]"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}

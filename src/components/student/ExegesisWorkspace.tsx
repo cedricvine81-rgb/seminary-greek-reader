@@ -94,7 +94,7 @@ function Round2WordPopover({
   ]
 
   return (
-    <div className="mt-2 mb-3 w-full max-w-xl rounded-xl border border-brand-300 bg-white shadow-lg overflow-hidden print:hidden">
+    <div className="mt-2 mb-3 w-full max-w-xl rounded-xl border border-brand-300 bg-surface shadow-lg overflow-hidden print:hidden">
       {/* Header */}
       <div className="flex items-baseline justify-between gap-3 bg-brand-50 px-3 py-2 border-b border-brand-200">
         <div className="flex items-baseline gap-2 min-w-0">
@@ -1736,7 +1736,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {lockdownOn && !lockdownStarted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90 px-6 print:hidden">
           {canLockdown ? (
-            <div className="max-w-lg w-full rounded-2xl bg-white p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="max-w-lg w-full rounded-2xl bg-surface p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="text-center">
                 <div className="text-4xl mb-2">🔒</div>
                 <h2 className="text-xl font-bold text-gray-900">Locked exam — please read before you begin</h2>
@@ -1792,7 +1792,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <button
                 onClick={enterLockdown}
                 disabled={!rulesAck}
-                className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                className="mt-5 w-full rounded-none bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
                 {isIPadDevice ? 'Begin exam' : 'Enter fullscreen & begin'}
               </button>
@@ -1801,7 +1801,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               )}
             </div>
           ) : (
-            <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+            <div className="max-w-md rounded-2xl bg-surface p-6 text-center shadow-2xl">
               <div className="text-4xl mb-3">🖥️</div>
               <h2 className="text-xl font-bold text-gray-900">Use a computer for this exam</h2>
               <p className="mt-2 text-sm text-gray-600">
@@ -1816,7 +1816,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Lockdown: re-entry overlay (exited fullscreen mid-exam) ── */}
       {lockdownOn && lockdownStarted && fullscreenLost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-red-900/90 px-6 print:hidden">
-          <div className="max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl">
+          <div className="max-w-md rounded-2xl bg-surface p-6 text-center shadow-2xl">
             <div className="text-4xl mb-3">⚠️</div>
             <h2 className="text-xl font-bold text-red-700">You left fullscreen</h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -1824,7 +1824,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             </p>
             <button
               onClick={enterLockdown}
-              className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+              className="mt-5 w-full rounded-none bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
             >
               Return to exam
             </button>
@@ -1902,7 +1902,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       )}
 
       {/* ── Toolbar ── */}
-      <div className="print:hidden bg-white border-b border-gray-200 py-3 flex flex-wrap items-end gap-3">
+      <div className="print:hidden bg-surface border-b border-gray-200 py-3 flex flex-wrap items-end gap-3">
 
         {/* Passage box — hidden in assignment mode (fixed passage) and in coordinated
             mode (a shared passage box in ExegesisTabs drives all the tabs). */}
@@ -2046,7 +2046,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         {!isSessionsControlled && loadedVerses.length > 0 && !isExam && (
           <button
             onClick={exportPDF}
-            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-md text-sm font-medium hover:bg-gray-300 transition"
+            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-none text-sm font-medium hover:bg-gray-300 transition"
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -2062,7 +2062,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <button
               onClick={() => submitAssignment()}
               disabled={isSubmitting || isSaving || correctionLocked}
-              className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-md text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
+              className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-none text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
             >
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -2078,7 +2078,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         {propAssignmentId && submitted && (
           <button
             onClick={() => router.push('/student/assignments')}
-            className="self-end px-4 py-1.5 border border-brand-300 text-brand-700 rounded-md text-sm font-medium hover:bg-brand-50 transition"
+            className="self-end px-4 py-1.5 border border-brand-300 text-brand-700 rounded-none text-sm font-medium hover:bg-brand-50 transition"
           >
             ← Back to Assignments
           </button>
@@ -2091,12 +2091,12 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           <div className="relative" ref={sessionListRef}>
             <button
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
-              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md text-sm font-medium hover:bg-gray-50 transition"
+              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-none text-sm font-medium hover:bg-gray-50 transition"
             >
               My Sessions
             </button>
             {showSessionList && (
-              <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
+              <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-surface border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
                 {savedSessions.length === 0 ? (
                   <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
                 ) : (
@@ -2435,7 +2435,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   className={`w-full rounded-lg px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 disabled:bg-gray-50 disabled:text-gray-500 ${
                     !submitted && !notes.trim()
                       ? 'border-2 border-amber-300 bg-amber-50 focus:ring-amber-400'
-                      : 'border border-gray-300 bg-white focus:ring-brand-500 focus:border-transparent'
+                      : 'border border-gray-300 bg-surface focus:ring-brand-500 focus:border-transparent'
                   }`}
                 />
                 {!submitted && !notes.trim() && (

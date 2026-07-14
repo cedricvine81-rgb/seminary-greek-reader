@@ -1594,7 +1594,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       <button
         key={r.id}
         onClick={() => handleSearch(`${osis} ${ch}:${vs}`, 'reference', { keepResults: true })}
-        className="w-full text-left rounded-lg border border-gray-100 hover:bg-brand-50 p-3 transition-colors group"
+        className="w-full text-left rounded-none border border-gray-100 hover:bg-brand-50 p-3 transition-colors group"
       >
         <span className="block text-xs font-semibold text-brand-700 mb-0.5 underline decoration-brand-300 underline-offset-2 group-hover:decoration-brand-600">{bookName} {ch}:{vs} →</span>
         <span className="block text-sm text-gray-700 leading-relaxed">{body}</span>
@@ -1634,7 +1634,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               onClick={() => setCorpus(c)}
               title={c === 'GNT' ? 'Show the New Testament' : 'Show the Septuagint'}
               className={`px-2.5 text-sm font-medium ${
-                corpus === c ? 'bg-brand-600 text-white' : 'bg-white text-brand-700 hover:bg-brand-50'
+                corpus === c ? 'bg-brand-600 text-white' : 'bg-surface text-brand-700 hover:bg-brand-50'
               } ${c === 'LXX' ? 'border-l border-gray-300' : ''}`}
             >
               {c === 'GNT' ? 'NT' : 'LXX'}
@@ -1657,7 +1657,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
             title="Menu"
             aria-label="Menu"
             onClick={() => setShowSettings(v => !v)}
-            className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+            className={`p-1.5 rounded-none transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
           >
             {/* Hamburger on mobile (it holds all navigation there); ⋮ on desktop (settings only). */}
             <Menu size={20} className="lg:hidden" />
@@ -1667,7 +1667,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {showSettings && (
             // Mobile scrolls (nav links make it tall); desktop must NOT clip overflow, or the
             // left-popping flyouts get hidden — overflow-y-auto forces overflow-x to auto too.
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-white border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-surface border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-800">
                   <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
@@ -1698,7 +1698,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                     <Link href="/settings" onClick={() => setShowSettings(false)} className="flex items-center gap-2.5 py-1.5 rounded-md text-sm text-gray-700 hover:bg-gray-50">
                       <Settings size={16} className="text-gray-400 shrink-0" /> Settings
                     </Link>
-                    <button onClick={handleReaderSignOut} className="flex w-full items-center gap-2.5 py-1.5 rounded-md text-sm text-red-600 hover:bg-red-50">
+                    <button onClick={handleReaderSignOut} className="flex w-full items-center gap-2.5 py-1.5 rounded-none text-sm text-red-600 hover:bg-red-50">
                       <LogOut size={16} className="shrink-0" /> Sign out
                     </button>
                   </>
@@ -1740,7 +1740,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('contents')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-none transition-colors ${settingsFlyout === 'contents' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
                     Contents
@@ -1751,7 +1751,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'contents' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-surface border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
@@ -1762,7 +1762,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                         <button
                           key={value}
                           onClick={() => setGntEdition(value)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
+                          className={`w-full text-left px-4 py-2.5 rounded-none text-base transition-colors ${
                             gntEdition === value
                               ? 'bg-brand-50 text-brand-700 font-medium'
                               : 'text-gray-600 hover:bg-gray-50'
@@ -1801,7 +1801,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('syntax')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'syntax' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-none transition-colors ${settingsFlyout === 'syntax' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   {/* On mobile the menu also lists a "Syntax" nav item (the Exegesis tab),
                       so disambiguate this settings flyout there; desktop keeps "Syntax". */}
@@ -1813,7 +1813,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'syntax' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-surface border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
                     <div className="space-y-3">
@@ -1851,13 +1851,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('controls')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'controls' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-none transition-colors ${settingsFlyout === 'controls' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">Controls</p>
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'controls' && (
-                  <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-white border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
+                  <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-surface border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
@@ -1889,7 +1889,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
                 <button
                   onClick={() => toggleFlyout('translations')}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
+                  className={`w-full flex items-center justify-between px-3 py-2 rounded-none transition-colors ${settingsFlyout === 'translations' ? 'bg-brand-50 text-brand-700' : 'hover:bg-gray-50'}`}
                 >
                   <p className="text-xs font-semibold uppercase tracking-wide">
                     Translation
@@ -1900,12 +1900,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'translations' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-white border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-surface border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
                     <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">Shown inline beneath each Greek verse.</p>
                     <button
                       onClick={() => switchView(null)}
-                      className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
+                      className={`w-full text-left px-4 py-2.5 rounded-none text-base transition-colors ${
                         parallelLang === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
@@ -1915,7 +1915,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                       <button
                         key={l.code}
                         onClick={() => switchView(l.code)}
-                        className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
+                        className={`w-full text-left px-4 py-2.5 rounded-none transition-colors ${
                           parallelLang === l.code ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                         }`}
                       >
@@ -1966,7 +1966,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       <div
         ref={textPanelRef}
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
-        className="flex-1 min-h-0 overflow-y-auto bg-white rounded-xl border border-gray-100 shadow-sm p-5"
+        className="flex-1 min-h-0 overflow-y-auto bg-surface rounded-xl border border-gray-100 shadow-sm p-5"
       >
         {translationResults !== null && !viewingResultPassage ? (
           searchLoading
@@ -1998,7 +1998,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {searchResults !== null && typeof document !== 'undefined' && createPortal(
         <div
           data-results-panel
-          className="fixed z-[70] w-[min(94vw,520px)] max-h-[82vh] flex flex-col rounded-xl bg-white shadow-2xl border border-gray-200"
+          className="fixed z-[70] w-[min(94vw,520px)] max-h-[82vh] flex flex-col rounded-xl bg-surface shadow-2xl border border-gray-200"
           style={{ left: resultsPos?.x ?? 0, top: resultsPos?.y ?? 0, visibility: resultsPos ? 'visible' : 'hidden' }}
         >
           <div
@@ -2015,7 +2015,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               onChange={e => setParallelLang(e.target.value || null)}
               onPointerDown={e => e.stopPropagation()}
               title="Show a translation alongside each result"
-              className="flex-none rounded border border-gray-300 bg-white px-1 py-0.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="flex-none rounded border border-gray-300 bg-surface px-1 py-0.5 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-400"
             >
               <option value="">Greek only</option>
               {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
@@ -2051,7 +2051,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {/* Mobile: a larger inline parsing pane. The Greek is always on screen now (with the
           optional translation stacked beneath each verse), so tapping any word shows its
           parsing here regardless of whether a translation is selected. */}
-      <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-white flex flex-col overflow-hidden">
+      <div className="lg:hidden flex-none h-56 rounded-xl border border-gray-200 shadow-sm bg-surface flex flex-col overflow-hidden">
         <ParsingPanel info={parsingInfo} locked={!!lockedInfo} variant="sheet" />
       </div>
 

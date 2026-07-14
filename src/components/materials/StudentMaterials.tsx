@@ -81,7 +81,7 @@ export function StudentMaterials() {
         <div className="rounded-xl border border-gray-200 divide-y divide-gray-100 overflow-hidden">
           {sortMaterials(folders, sort).map(f => (
             <button key={f.id} onClick={() => setFolderId(f.id)}
-              className="w-full flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50 text-left">
+              className="w-full flex items-center gap-3 px-3 py-2.5 bg-surface hover:bg-gray-50 text-left">
               <Folder size={18} className="text-amber-500 shrink-0" />
               <span className="min-w-0 flex-1">
                 <span className="block text-sm font-medium text-gray-900 truncate">{f.name}</span>
@@ -111,9 +111,9 @@ export function StudentMaterials() {
             // The whole row is the link, so clicking the name (not just the icon) opens it.
             return downloadable ? (
               <a key={m.id} href={`/api/materials/download?id=${m.id}`} target="_blank" rel="noopener noreferrer"
-                className="flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50">{inner}</a>
+                className="flex items-center gap-3 px-3 py-2.5 bg-surface hover:bg-gray-50">{inner}</a>
             ) : (
-              <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 bg-white">{inner}</div>
+              <div key={m.id} className="flex items-center gap-3 px-3 py-2.5 bg-surface">{inner}</div>
             )
           })}
         </div>

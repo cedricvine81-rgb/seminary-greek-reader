@@ -52,7 +52,7 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
   const liveRequests = requestsData ? requestsData.pending.length : pendingRequests
 
   return (
-    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white border-t border-gray-200 flex">
+    <nav className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-surface border-t border-gray-200 flex">
       {tabs.map(({ label, href, icon: Icon }) => {
         const active = pathname === href || (href !== '/instructor' && href !== '/student' && href !== '/admin' && pathname.startsWith(href))
         const isRequests = href === '/instructor/requests'

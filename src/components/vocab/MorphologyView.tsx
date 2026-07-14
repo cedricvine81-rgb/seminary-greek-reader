@@ -43,7 +43,7 @@ function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsDa
             {rows.map((row, ri) => {
               const isDivider = divSet.has(ri)
               return (
-                <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-white', !isDivider && ri > 0 && 'border-t border-gray-100')}>
+                <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-surface', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
                     <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
                       {cell ?? ''}
@@ -96,7 +96,7 @@ function ColsTable({ title, headers, rows, note }: {
           </thead>
           <tbody>
             {rows.map((row, ri) => (
-              <tr key={ri} className={clsx('bg-white align-top', ri > 0 && 'border-t border-gray-100')}>
+              <tr key={ri} className={clsx('bg-surface align-top', ri > 0 && 'border-t border-gray-100')}>
                 {row.map((cell, ci) => (
                   <td key={ci} className="px-3 py-2 text-left text-gray-900">{cell ?? ''}</td>
                 ))}
@@ -1069,7 +1069,7 @@ export function MorphologyView() {
       <div ref={menuRef} className="lg:hidden relative">
         <button
           onClick={() => setMenuOpen(o => !o)}
-          className="w-full flex items-center justify-between gap-2 py-2 border-b border-gray-100 bg-white text-left"
+          className="w-full flex items-center justify-between gap-2 py-2 border-b border-gray-100 bg-surface text-left"
         >
           <span className="text-sm font-semibold text-gray-900 truncate">
             {MAIN_TABS.find(t => t.id === mainTab)?.label}
@@ -1078,7 +1078,7 @@ export function MorphologyView() {
           <Menu size={18} className="text-gray-500 shrink-0" />
         </button>
         {menuOpen && (
-          <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-white border border-gray-200 rounded-xl p-3 shadow-lg space-y-3">
+          <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-surface border border-gray-200 rounded-xl p-3 shadow-lg space-y-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">Topics</p>
               <div className="flex flex-wrap gap-1.5">
@@ -1087,7 +1087,7 @@ export function MorphologyView() {
                     key={t.id}
                     onClick={() => { setMainTab(t.id); if (t.id !== 'essentials') setMenuOpen(false) }}
                     className={clsx(
-                      'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
+                      'px-3 py-1.5 rounded-none text-sm font-medium transition-colors',
                       mainTab === t.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
                     )}
                   >
@@ -1105,7 +1105,7 @@ export function MorphologyView() {
                       key={s.id}
                       onClick={() => { setEssId(s.id); setMenuOpen(false) }}
                       className={clsx(
-                        'px-2.5 py-1 rounded-full text-sm font-medium transition-colors',
+                        'px-2.5 py-1 rounded-none text-sm font-medium transition-colors',
                         essId === s.id ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
                       )}
                     >
@@ -1121,13 +1121,13 @@ export function MorphologyView() {
 
       {/* Desktop: inline topic tab bar. */}
       <div className="hidden lg:block">
-        <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-white">
+        <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-surface">
           {MAIN_TABS.map(t => (
             <button
               key={t.id}
               onClick={() => setMainTab(t.id)}
               className={clsx(
-                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
+                'px-3 py-1.5 rounded-none text-sm font-medium transition-colors whitespace-nowrap',
                 t.id === 'essentials'
                   ? 'bg-brand-600 text-white'
                   : mainTab === t.id
@@ -1146,13 +1146,13 @@ export function MorphologyView() {
         {mainTab === 'essentials' ? (
           <>
             {/* Ess. 1–8 sub-navigation (desktop; mobile uses the hamburger) */}
-            <div className="hidden lg:flex gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-white">
+            <div className="hidden lg:flex gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-surface">
               {ESS_SECTIONS.map(s => (
                 <button
                   key={s.id}
                   onClick={() => setEssId(s.id)}
                   className={clsx(
-                    'px-2.5 py-1 rounded-full text-sm font-medium transition-colors',
+                    'px-2.5 py-1 rounded-none text-sm font-medium transition-colors',
                     essId === s.id ? 'text-gray-900 font-semibold underline underline-offset-4' : 'text-gray-600 hover:text-gray-900'
                   )}
                 >

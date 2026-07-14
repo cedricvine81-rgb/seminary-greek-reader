@@ -93,7 +93,7 @@ function PasswordField({ label, value, onChange, placeholder, error, required, s
           value={value}
           onChange={onChange}
           placeholder={placeholder}
-          className={`w-full rounded-lg border bg-white px-3 py-2 pr-10 text-sm placeholder:text-gray-400
+          className={`w-full rounded-lg border bg-surface px-3 py-2 pr-10 text-sm placeholder:text-gray-400
             focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent
             ${error ? 'border-red-400' : 'border-gray-300'}`}
         />
@@ -306,7 +306,7 @@ export function SignUpForm({ lockedRole }: { lockedRole?: Role } = {}) {
           <select
             value={form.institution}
             onChange={e => setForm(prev => ({ ...prev, institution: e.target.value }))}
-            className="w-full appearance-none rounded-lg border border-gray-300 bg-white px-3 py-2 pr-9 text-sm
+            className="w-full appearance-none rounded-lg border border-gray-300 bg-surface px-3 py-2 pr-9 text-sm
               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           >
             <option value="">No institution</option>

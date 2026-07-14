@@ -18,7 +18,7 @@ export function PreviewBannerInner({ show }: PreviewBannerInnerProps) {
       </div>
       <a
         href="/api/preview?mode=exit"
-        className="shrink-0 text-sm font-semibold bg-white text-amber-700 hover:bg-amber-50 px-3 py-1 rounded-lg transition-colors"
+        className="shrink-0 text-sm font-semibold bg-surface text-amber-700 hover:bg-amber-50 px-3 py-1 rounded-lg transition-colors"
       >
         ← Return to Dashboard
       </a>

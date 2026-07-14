@@ -169,7 +169,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
           className={`absolute z-50 ${place.h === 'right' ? 'right-0' : 'left-0'} ${place.v === 'top' ? 'bottom-full pb-1' : 'top-full pt-1'}`}
           role="tooltip"
         >
-          <div className="w-72 max-w-[80vw] rounded-lg border border-gray-200 bg-white p-2.5 shadow-lg">
+          <div className="w-72 max-w-[80vw] rounded-lg border border-gray-200 bg-surface p-2.5 shadow-lg">
             <div className="mb-1 text-[10px] font-semibold uppercase tracking-wide text-gray-400">{reference}</div>
             {previewBody === null ? (
               <p className="text-xs text-gray-400"><Loader2 size={12} className="inline animate-spin" /> Loading…</p>
@@ -192,7 +192,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
       {open && mounted && createPortal(
         <div
           ref={panelRef}
-          className="fixed z-[60] w-[min(92vw,560px)] max-h-[85vh] flex flex-col rounded-xl bg-white shadow-2xl border border-gray-200 overflow-hidden"
+          className="fixed z-[60] w-[min(92vw,560px)] max-h-[85vh] flex flex-col rounded-xl bg-surface shadow-2xl border border-gray-200 overflow-hidden"
           style={{ left: pos?.x ?? 0, top: pos?.y ?? 0, visibility: pos ? 'visible' : 'hidden' }}
         >
           {/* Drag handle / header */}

@@ -108,7 +108,7 @@ export function CopyAssignmentsPanel({
                 {items.map(a => (
                   <div
                     key={a.id}
-                    className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-white px-4 py-3"
+                    className="flex items-center justify-between gap-4 rounded-xl border border-gray-100 bg-surface px-4 py-3"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <Badge variant={typeVariant[a.type] ?? 'gray'}>

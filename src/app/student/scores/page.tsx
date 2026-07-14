@@ -158,21 +158,21 @@ export default async function StudentScoresPage() {
 
         {/* Summary cards */}
         <div className="grid grid-cols-3 gap-4">
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+          <div className="bg-surface rounded-xl border border-gray-100 p-5 text-center">
             <p className="text-3xl font-bold text-brand-700">
               {runningPct !== null ? `${runningPct}%` : '—'}
             </p>
             <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">Running Average</p>
             <p className="text-xs text-gray-400 mt-0.5">assignments taken so far</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+          <div className="bg-surface rounded-xl border border-gray-100 p-5 text-center">
             <p className={`text-3xl font-bold ${semesterPct !== null && semesterPct >= 70 ? 'text-green-600' : semesterPct !== null ? 'text-red-600' : 'text-gray-400'}`}>
               {semesterPct !== null ? `${semesterPct}%` : '—'}
             </p>
             <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">Semester Grade</p>
             <p className="text-xs text-gray-400 mt-0.5">all assignments including not taken</p>
           </div>
-          <div className="bg-white rounded-xl border border-gray-100 p-5 text-center">
+          <div className="bg-surface rounded-xl border border-gray-100 p-5 text-center">
             <p className="text-3xl font-bold text-gray-700">
               {takenRows.length}<span className="text-lg text-gray-400"> / {rows.length}</span>
             </p>

@@ -44,7 +44,7 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
         className={clsx(
           // Cap height and scroll internally so tall dialogs stay usable on short
           // (phone) screens — the page body is scroll-locked while a modal is open.
-          'relative w-full bg-white rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto',
+          'relative w-full bg-surface rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto',
           sizeClasses[size]
         )}
       >
@@ -52,7 +52,7 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
           {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
           <button
             onClick={onClose}
-            className="ml-auto p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="ml-auto p-1 rounded-none text-gray-400 hover:bg-gray-100 hover:text-gray-600"
             aria-label="Close"
           >
             <X size={18} />

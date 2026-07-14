@@ -27,10 +27,10 @@ function PageScanModal({ pages, pagesPath, book, sourceName, onClose }: {
         <span className="text-white text-sm font-medium">{sourceName} &mdash; {book} (p.{pages.join(', ')})</span>
         <div className="flex items-center gap-2">
           <button onClick={() => setZoomed(z => !z)} title={zoomed ? 'Fit to width' : 'Full resolution'}
-            className="p-1.5 rounded text-white hover:bg-white/20">
+            className="p-1.5 rounded text-white hover:bg-surface/20">
             {zoomed ? <ZoomOut size={18} /> : <ZoomIn size={18} />}
           </button>
-          <button onClick={onClose} title="Close" className="p-1.5 rounded text-white hover:bg-white/20"><X size={18} /></button>
+          <button onClick={onClose} title="Close" className="p-1.5 rounded text-white hover:bg-surface/20"><X size={18} /></button>
         </div>
       </div>
       <div className="flex-1 overflow-auto p-4" onClick={e => e.stopPropagation()}>
@@ -243,7 +243,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           </select>
         </div>
         {isOriginalView ? (
-          <div className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-white p-4">
+          <div className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-4">
             {availableScans.length === 0 ? (
               <p className="text-sm text-gray-400 italic">
                 No original-source scan for this verse{activeVerse != null ? ` (${anchor.name} ${anchor.chapter}:${activeVerse})` : ''}.
@@ -266,7 +266,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
         ) : (
           <div
             style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}
-            className="flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-white p-4 text-ink-900 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-ink-900 [&_i]:italic"
+            className="font-reading flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-4 text-ink-900 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-ink-900 [&_i]:italic"
           >
             {html
               ? <div dangerouslySetInnerHTML={{ __html: html }} />

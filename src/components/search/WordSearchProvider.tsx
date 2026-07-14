@@ -56,12 +56,12 @@ export function WordSearchProvider() {
   const w = menu.surface
   const isGreek = menu.kind === 'greek'
   const transLabel = TRANS_LABEL[menu.transLang ?? 'en'] ?? 'this translation'
-  const btn = 'w-full text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors'
+  const btn = 'w-full text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors'
 
   return (
     <div
       ref={ref}
-      className="fixed z-[110] w-64 rounded-xl border border-gray-200 bg-white shadow-2xl p-2.5 space-y-2"
+      className="fixed z-[110] w-64 rounded-xl border border-gray-200 bg-surface shadow-2xl p-2.5 space-y-2"
       style={{ left: Math.min(menu.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 272), top: menu.y }}
     >
       {/* Highlighter swatches — Greek words in highlight-capable panes. Highlights the word. */}
@@ -81,7 +81,7 @@ export function WordSearchProvider() {
           <div className="flex rounded-md border border-gray-200 overflow-hidden text-[10px] leading-none">
             {(['GNT', 'LXX'] as const).map(s => (
               <button key={s} type="button" onClick={() => setScope(s)}
-                className={`px-1.5 py-1 transition-colors ${scope === s ? 'bg-brand-600 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
+                className={`px-1.5 py-1 transition-colors ${scope === s ? 'bg-brand-600 text-white' : 'bg-surface text-gray-500 hover:bg-gray-50'}`}>
                 {s === 'GNT' ? 'NT' : 'OT'}
               </button>
             ))}

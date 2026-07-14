@@ -88,7 +88,7 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
   const settingsActive = pathname === '/settings'
 
   return (
-    <aside className="w-56 shrink-0 hidden lg:flex flex-col bg-white border-r border-gray-100 min-h-screen pt-6">
+    <aside className="w-56 shrink-0 hidden lg:flex flex-col bg-surface border-r border-gray-100 min-h-screen pt-6">
       <nav className="flex flex-col gap-0.5 px-3 flex-1">
         {items.map(item => {
           const active = pathname === item.href || (item.href !== '/instructor' && item.href !== '/student' && item.href !== '/admin' && pathname.startsWith(item.href))

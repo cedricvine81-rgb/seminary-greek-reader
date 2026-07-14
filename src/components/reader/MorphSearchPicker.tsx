@@ -42,7 +42,7 @@ export function MorphSearchPicker({ word, onSearch, onClose }: {
 
   return (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/30 p-0 sm:p-4">
-      <div ref={ref} className="w-full sm:max-w-lg max-h-[85vh] bg-white rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div ref={ref} className="w-full sm:max-w-lg max-h-[85vh] bg-surface rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 shrink-0">
           <div>
@@ -65,9 +65,9 @@ export function MorphSearchPicker({ word, onSearch, onClose }: {
                   const on = selected.has(feat.value)
                   return (
                     <button key={feat.value} type="button" onClick={() => toggle(feat.value)}
-                      className={`px-2.5 py-1 rounded-full text-xs border transition-colors ${on
+                      className={`px-2.5 py-1 rounded-none text-xs border transition-colors ${on
                         ? 'bg-brand-600 border-brand-600 text-white'
-                        : 'bg-white border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-700'}`}>
+                        : 'bg-surface border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-700'}`}>
                       {feat.label}
                     </button>
                   )
@@ -90,7 +90,7 @@ export function MorphSearchPicker({ word, onSearch, onClose }: {
             className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
           <button type="button" disabled={!canSearch}
             onClick={() => onSearch(features, restrictLemma ? lemma : null)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-brand-600 text-white disabled:opacity-40 hover:bg-brand-700 transition-colors">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-none text-sm font-medium bg-brand-600 text-white disabled:opacity-40 hover:bg-brand-700 transition-colors">
             <Search size={15} /> Search
           </button>
         </div>

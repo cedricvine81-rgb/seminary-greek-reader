@@ -264,7 +264,7 @@ export function VocabBuilder() {
             key={id}
             onClick={action}
             className={clsx(
-              'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+              'flex items-center px-4 py-2 rounded-none text-sm font-medium transition-colors',
               tab === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
@@ -345,7 +345,7 @@ function FlashcardPlayer({
       <div className="text-center py-16 space-y-3 max-w-lg mx-auto">
         <p className="text-xl font-semibold text-gray-700">No cards match</p>
         <p className="text-gray-600 text-sm">Try selecting different sections or parts of speech.</p>
-        <button onClick={onGoBack} className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
+        <button onClick={onGoBack} className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm mt-2">← Back to settings</button>
       </div>
     )
   }
@@ -385,10 +385,10 @@ function FlashcardPlayer({
         )}
 
         <div className="flex gap-2 flex-wrap">
-          <button className="btn bg-white border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Return</button>
-          <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>Review again</button>
+          <button className="btn bg-surface border border-gray-300 text-gray-700 hover:bg-gray-50" onClick={onGoBack}>← Return</button>
+          <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onRestart}>Review again</button>
           {missedWords.length > 0 && (
-            <button className="btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
+            <button className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 flex-1 justify-center" onClick={onStudyMissed}>
               Study missed ({missedWords.length})
             </button>
           )}
@@ -417,8 +417,8 @@ function FlashcardPlayer({
                 key={m}
                 onClick={() => onConfigChange({ ...config, mode: m })}
                 className={clsx(
-                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
-                  config.mode === m ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                  'px-3 py-1.5 rounded-none text-sm font-medium transition-colors',
+                  config.mode === m ? 'bg-surface text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
                 {m === 'greek-to-english' ? 'Gk → En' : 'En → Gk'}
@@ -446,7 +446,7 @@ function FlashcardPlayer({
           aria-label="Flip card"
         >
           {!flipped ? (
-            <div className="bg-white rounded-2xl h-full flex flex-col items-center justify-center p-8 shadow-sm border border-gray-100 overflow-hidden">
+            <div className="bg-surface rounded-2xl h-full flex flex-col items-center justify-center p-8 shadow-sm border border-gray-100 overflow-hidden">
               {greekFirst ? (
                 <>
                   <p className="greek-text text-6xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
@@ -461,7 +461,7 @@ function FlashcardPlayer({
               <p className="text-gray-400 text-xs tracking-wide mt-4">Tap to reveal</p>
             </div>
           ) : (
-            <div className="bg-white rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-center p-8 shadow-sm gap-2 overflow-hidden">
+            <div className="bg-surface rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-center p-8 shadow-sm gap-2 overflow-hidden">
               {greekFirst ? (
                 <>
                   <p className="greek-text text-3xl text-gray-900 font-medium text-center">{word.word}</p>
@@ -488,19 +488,19 @@ function FlashcardPlayer({
         <div className="flex flex-col gap-2 w-28 shrink-0">
           <button
             onClick={() => onAdvance(4)}
-            className="py-3 text-sm font-semibold rounded-lg bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
+            className="py-3 text-sm font-semibold rounded-none bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
           >
             Got it
           </button>
           <button
             onClick={() => onAdvance(1)}
-            className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
+            className="py-2.5 text-xs font-medium rounded-none bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
           >
             Again
           </button>
           <button
             onClick={() => onAdvance(3)}
-            className="py-2.5 text-xs font-medium rounded-lg bg-white text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
+            className="py-2.5 text-xs font-medium rounded-none bg-surface text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
           >
             Hard
           </button>
@@ -524,7 +524,7 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
       className={clsx(
         'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
         checked || indeterminate
-          ? 'bg-white border-gray-300'
+          ? 'bg-surface border-gray-300'
           : 'border-gray-300 hover:border-gray-400'
       )}
       aria-checked={indeterminate ? 'mixed' : checked}
@@ -600,13 +600,13 @@ function StudySettings({
       <button
         onClick={onStart}
         disabled={disabled}
-        className="w-full btn bg-white border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {disabled ? 'No cards match — adjust filters' : 'Flashcards'}
       </button>
 
       {/* Single settings panel */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
+      <div className="bg-surface border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
 
         {/* Frequency Sections */}
         <div className="p-5">
@@ -644,7 +644,7 @@ function StudySettings({
                   )}
                 >
                   {/* Section row */}
-                  <div className="flex items-center px-4 py-3 gap-3 bg-white">
+                  <div className="flex items-center px-4 py-3 gap-3 bg-surface">
                     <Checkbox
                       checked={state === 'all'}
                       indeterminate={state === 'partial'}
@@ -663,7 +663,7 @@ function StudySettings({
                   </div>
 
                   {isExpanded && (
-                    <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-white space-y-3">
+                    <div className="px-4 pb-4 pt-3 border-t border-gray-100 bg-surface space-y-3">
                       {/* Chip grid — each chip has a selection button + list toggle */}
                       <div className="grid grid-cols-8 gap-2">
                         {subs.map(sub => {
@@ -675,10 +675,10 @@ function StudySettings({
                               <button
                                 onClick={() => toggleSubsection(sub.key)}
                                 className={clsx(
-                                  'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
+                                  'flex flex-col items-center justify-center py-2.5 rounded-none border text-center transition-colors',
                                   isSubSelected
                                     ? 'bg-gray-100 border-gray-300 text-gray-900'
-                                    : 'bg-white border-gray-200 text-gray-600 hover:text-gray-900'
+                                    : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900'
                                 )}
                               >
                                 <span className="text-base font-semibold leading-none">{sub.label}</span>
@@ -729,7 +729,7 @@ function StudySettings({
                                       className={clsx(
                                         'px-2 py-0.5 rounded text-xs font-medium transition-colors',
                                         mode === m
-                                          ? 'bg-white text-gray-900 shadow-sm'
+                                          ? 'bg-surface text-gray-900 shadow-sm'
                                           : 'text-gray-400 hover:text-gray-600'
                                       )}
                                     >
@@ -812,15 +812,15 @@ function StudySettings({
                   key={p}
                   onClick={() => togglePos(p)}
                   className={clsx(
-                    'flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left transition-colors',
+                    'flex items-center gap-3 px-4 py-2.5 rounded-none border text-left transition-colors',
                     isSelected
                       ? 'border-gray-300 bg-gray-100 text-gray-900'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                      : 'border-gray-200 bg-surface text-gray-700 hover:border-gray-300'
                   )}
                 >
                   <div className={clsx(
                     'w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors',
-                    isSelected ? 'bg-white border-gray-300' : 'border-gray-300'
+                    isSelected ? 'bg-surface border-gray-300' : 'border-gray-300'
                   )}>
                     {isSelected && <Check size={11} className="text-gray-700" strokeWidth={3} />}
                   </div>
@@ -891,7 +891,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               key={w.word}
               className={clsx(
                 'border rounded-lg p-3 flex justify-between items-start gap-2',
-                mastered ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-white'
+                mastered ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-surface'
               )}
             >
               <div className="min-w-0">

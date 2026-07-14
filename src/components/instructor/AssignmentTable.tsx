@@ -83,7 +83,7 @@ export function AssignmentTable({
           <select
             value={courseFilter}
             onChange={e => setCourseFilter(e.target.value)}
-            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 bg-surface text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500"
           >
             <option value="all">All courses</option>
             {allCourses.map(([id, name]) => (
@@ -96,7 +96,7 @@ export function AssignmentTable({
             <button
               key={v}
               onClick={() => setStatusFilter(v)}
-              className={`px-3 py-1.5 capitalize transition-colors ${statusFilter === v ? 'bg-brand-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-50'}`}
+              className={`px-3 py-1.5 capitalize transition-colors ${statusFilter === v ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}
             >
               {v}
             </button>

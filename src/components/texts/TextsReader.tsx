@@ -543,7 +543,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </button>
 
               {openCat === cat.id && (
-                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-white border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
+                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-surface border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
                   {cat.works.map(w => (
                     <button
                       key={w.id}
@@ -581,7 +581,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </button>
 
               {locateOpen && (
-                <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-white border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
+                <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-surface border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
                   {buildLocateColumns().map(col => (
                     <div key={col.key} style={{ marginTop: col.marginTop }} className="w-14 shrink-0">
                       <p
@@ -626,7 +626,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 </button>
 
                 {translationMenuOpen && (
-                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-white py-1 shadow-lg">
+                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-surface py-1 shadow-lg">
                     <button
                       type="button"
                       onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}
@@ -678,7 +678,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             type="button"
             onClick={() => openBackgroundsSearch(search.trim(), 'en')}
             title="Search across all background texts (Philo, Josephus, LXX, Apocrypha, Pseudepigrapha)"
-            className="flex-none whitespace-nowrap rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+            className="flex-none whitespace-nowrap rounded-none border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
           >
             Search all texts
           </button>
@@ -717,7 +717,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               highlight can only safely belong to one of them). Hidden in
                               translation-only mode (lxx works, "<translation> only"). */}
                           {!greekHidden && (
-                          <p className="leading-relaxed text-gray-900">
+                          <p className="leading-relaxed text-gray-900 font-reading">
                             {isAuthenticated && (
                               <span className="font-sans align-middle mr-0.5">
                                 <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
@@ -778,7 +778,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               it carries the note/highlight anchor. In translation-only mode
                               (Greek hidden) it's the sole column and carries the note button. */}
                           {((isGreek && showEnglish && hasEnglish) || greekProse) && (
-                            <p className={`leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: greekHidden ? 'calc(var(--tx-fs, 1.45rem) * 0.8)' : 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
+                            <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: greekHidden ? 'calc(var(--tx-fs, 1.45rem) * 0.8)' : 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
                               {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num) : {})}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">

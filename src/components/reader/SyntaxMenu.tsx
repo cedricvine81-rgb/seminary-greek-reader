@@ -127,8 +127,8 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
     : { position: 'fixed', top: y, left: Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 396), zIndex: 1000, width: 380, maxHeight: '75vh' }
 
   const menuClass = isMobile
-    ? 'bg-white border-t border-gray-200 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden'
-    : 'bg-white border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden'
+    ? 'bg-surface border-t border-gray-200 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden'
+    : 'bg-surface border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden'
 
   return (
     <div
@@ -167,7 +167,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         </div>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-lg hover:bg-gray-100 touch-manipulation"
+          className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-none hover:bg-gray-100 touch-manipulation"
           aria-label="Close"
         >
           <X size={isMobile ? 22 : 16} />
@@ -196,7 +196,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             <div className="flex rounded-md border border-gray-200 overflow-hidden text-[10px] leading-none">
               {(['GNT', 'LXX', 'BOTH'] as const).map(s => (
                 <button key={s} type="button" onClick={() => setScope(s)}
-                  className={`px-1.5 py-1 transition-colors ${scope === s ? 'bg-brand-600 text-white' : 'bg-white text-gray-500 hover:bg-gray-50'}`}>
+                  className={`px-1.5 py-1 transition-colors ${scope === s ? 'bg-brand-600 text-white' : 'bg-surface text-gray-500 hover:bg-gray-50'}`}>
                   {s === 'GNT' ? 'NT' : s === 'LXX' ? 'OT' : 'Both'}
                 </button>
               ))}
@@ -204,29 +204,29 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             <button type="button" onClick={() => onWordAction('lemma', scope)}
-              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               All forms{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
             </button>
             <button type="button" onClick={() => onWordAction('form', scope)}
-              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               This form
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
-              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               By morphology <span className="text-gray-400">· NT</span>
             </button>
             {strongs && (
               <button type="button" onClick={() => onWordAction('strongs', scope)}
-                className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+                className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
                 Strong&apos;s {strongs} <span className="text-gray-400">· NT</span>
               </button>
             )}
             <button type="button" onClick={() => onWordAction('lexicon', scope)}
-              className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               Dictionary
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
-              className="col-span-2 text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-white text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="col-span-2 text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </div>
@@ -392,7 +392,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           <select
             value={selectedPrep}
             onChange={e => setSelectedPrep(e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+            className="w-full text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
             style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
           >
             {PREP_OPTIONS.map(opt => (

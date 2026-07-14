@@ -68,7 +68,7 @@ interface ParsingPanelProps {
   variant?: 'panel' | 'sheet'
 }
 
-export function ParsingPanel({ info, locked, bgClass = 'bg-white', variant = 'panel' }: ParsingPanelProps) {
+export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = 'panel' }: ParsingPanelProps) {
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
   const vocabGloss = lookupVocabGloss(info?.lexeme)

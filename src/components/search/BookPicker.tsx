@@ -16,7 +16,7 @@ export function BookPicker({ groups, selected, onToggle, onToggleGroup, onClear 
   onClear: () => void
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white">
+    <div className="rounded-lg border border-gray-200 bg-surface">
       <div className="flex items-center justify-between px-2.5 py-1.5 border-b border-gray-100">
         <span className="text-[11px] text-gray-500">
           {selected.size === 0 ? 'Searching all books' : `${selected.size} book${selected.size === 1 ? '' : 's'} selected`}
@@ -42,9 +42,9 @@ export function BookPicker({ groups, selected, onToggle, onToggleGroup, onClear 
                   return (
                     <button key={b.osisId} type="button" onClick={() => onToggle(b.osisId)}
                       title={b.name}
-                      className={`rounded-md border px-0.5 py-1 text-[11px] leading-none font-medium transition-colors ${
+                      className={`rounded-none border px-0.5 py-1 text-[11px] leading-none font-medium transition-colors ${
                         on ? 'bg-brand-600 border-brand-600 text-white'
-                           : 'bg-white border-gray-200 text-gray-700 hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700'}`}>
+                           : 'bg-surface border-gray-200 text-gray-700 hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700'}`}>
                       {b.abbrev}
                     </button>
                   )

@@ -95,7 +95,7 @@ export function GradeBook({ courses }: { courses: Course[] }) {
             <tbody className="divide-y divide-gray-100">
               {data.rows.map(row => (
                 <tr key={row.userId} className="hover:bg-gray-50">
-                  <td className="px-4 py-2.5 sticky left-0 bg-white">
+                  <td className="px-4 py-2.5 sticky left-0 bg-surface">
                     <p className="font-medium text-gray-800 whitespace-nowrap">{row.name}</p>
                     <p className="text-xs text-gray-400">{row.email}</p>
                   </td>

@@ -263,7 +263,7 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-3">
+    <div className="rounded-lg border border-gray-200 bg-surface p-3">
       <div className="flex items-center gap-2 mb-1.5 flex-wrap">
         <span className="text-sm font-semibold text-gray-800">{member.name}</span>
         {member.contributed

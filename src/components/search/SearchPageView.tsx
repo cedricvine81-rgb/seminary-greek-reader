@@ -450,7 +450,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
       {/* Sticky controls */}
       <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
         <div className="relative">
-          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2.5 shadow-sm">
+          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-surface px-3 py-2.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
             <input
               ref={inputRef}
@@ -469,7 +469,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
             )}
             <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
               title="Type Greek with a QWERTY keyboard (Beta Code: l→λ, q→θ …)"
-              className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
+              className={`flex-none w-7 h-7 flex items-center justify-center rounded-none text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
               α
             </button>
           </div>
@@ -478,7 +478,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
           {showSug && suggestions.length > 0 && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setShowSug(false)} />
-              <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-lg">
+              <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-surface shadow-lg">
                 {suggestions.map(s => (
                   <button key={s.word} type="button" onMouseDown={e => { e.preventDefault(); pickSuggestion(s.word) }}
                     className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2">
@@ -500,7 +500,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
             <label className="flex items-center gap-1.5 text-gray-500">
               In
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
-                className="rounded border border-gray-300 bg-white px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <optgroup label="Greek">
                   <option value="greek:GNT">Greek — New Testament</option>
                   <option value="greek:LXX">Greek — Septuagint</option>
@@ -521,7 +521,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 <button type="button" onClick={() => setShowBooks(v => !v)}
                   aria-expanded={showBooks}
                   className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
-                    showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+                    showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
                   {booksLabel}
                   <ChevronDown size={13} className={`transition-transform ${showBooks ? 'rotate-180' : ''}`} />
                 </button>
@@ -533,13 +533,13 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
           <div className="relative flex-none">
             <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
               className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
-                showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-white text-gray-600 hover:bg-gray-50'}`}>
+                showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
               <Lightbulb size={13} /> Search types
             </button>
             {showTypes && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setShowTypes(false)} />
-                <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-white shadow-2xl p-3">
+                <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-surface shadow-2xl p-3">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Search types</p>
                     <button type="button" onClick={() => setShowTypes(false)} className="text-gray-400 hover:text-gray-700 p-0.5" aria-label="Close"><X size={14} /></button>
@@ -552,7 +552,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                         <div className="flex flex-wrap gap-1.5">
                           {sec.items.map(ex => (
                             <button key={ex.label} type="button" onClick={() => runExample(ex)}
-                              className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
+                              className={`inline-flex items-center rounded-none border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
                               {ex.label}
                             </button>
                           ))}
@@ -582,9 +582,9 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
               const c = counts[l.val]
               return (
                 <button key={l.val} type="button" onClick={() => setScopeVal(l.val)}
-                  className={`flex-none inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+                  className={`flex-none inline-flex items-center gap-1 rounded-none border px-3 py-1 text-xs font-medium transition-colors ${
                     active ? 'border-brand-600 bg-brand-600 text-white'
-                           : 'border-gray-200 bg-white text-gray-600 hover:border-brand-200 hover:bg-brand-50'}`}>
+                           : 'border-gray-200 bg-surface text-gray-600 hover:border-brand-200 hover:bg-brand-50'}`}>
                   {l.label}
                   <span className={`tabular-nums ${active ? 'text-white/80' : 'text-gray-400'}`}>
                     {c === null || c === undefined ? '…' : c >= 300 ? '300+' : c}
@@ -616,7 +616,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 <div className="flex flex-wrap gap-1.5">
                   {recent.map(r => (
                     <button key={r} type="button" onClick={() => { setQuery(r); inputRef.current?.focus() }}
-                      className={`inline-flex items-center rounded-full border border-gray-200 bg-white px-3 py-1 text-sm text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
+                      className={`inline-flex items-center rounded-none border border-gray-200 bg-surface px-3 py-1 text-sm text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
                       {r}
                     </button>
                   ))}
@@ -647,7 +647,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                   <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
                     {[0, 1, 2, 3].map(n => (
                       <button key={n} type="button" onClick={() => setContext(n)}
-                        className={`rounded-full px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                        className={`rounded-none px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
                         {n === 0 ? 'off' : `±${n}`}
                       </button>
                     ))}
@@ -657,7 +657,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
                   {(['relevance', 'canonical'] as SortMode[]).map(m => (
                     <button key={m} type="button" onClick={() => setSort(m)}
-                      className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-white text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                      className={`rounded-none px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
                       {m === 'relevance' ? 'Relevance' : 'Canonical'}
                     </button>
                   ))}
@@ -670,7 +670,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 const ctx = context > 0 ? ctxMap[key] : undefined
                 return (
                   <div key={i} className="relative group">
-                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
+                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-none hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                       {ctx && ctx.length > 0 ? (
                         <span className={`block text-sm leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
@@ -690,7 +690,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                     </button>
                     <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
                       title="Copy verse(s)" aria-label="Copy verse(s)"
-                      className="absolute top-2 right-2 p-1 rounded text-gray-400 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-brand-700 hover:bg-white transition">
+                      className="absolute top-2 right-2 p-1 rounded text-gray-400 opacity-0 group-hover:opacity-100 focus:opacity-100 hover:text-brand-700 hover:bg-surface transition">
                       {copiedKey === key ? <Check size={14} className="text-green-600" /> : <Copy size={14} />}
                     </button>
                   </div>
@@ -711,7 +711,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 <p className="py-1 text-sm font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
                 <div className="divide-y divide-gray-100">
                   {g.hits.map((h, i) => (
-                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
+                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{h.ref}</span>
                       <span className={`block text-sm text-gray-700 leading-relaxed ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
                     </button>

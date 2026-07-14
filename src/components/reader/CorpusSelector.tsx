@@ -8,7 +8,7 @@ interface CorpusSelectorProps {
 
 export function CorpusSelector({ value, onChange }: CorpusSelectorProps) {
   return (
-    <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden bg-white">
+    <div className="inline-flex rounded-lg border border-gray-200 overflow-hidden bg-surface">
       {(['GNT', 'LXX'] as Corpus[]).map(corpus => (
         <button
           key={corpus}

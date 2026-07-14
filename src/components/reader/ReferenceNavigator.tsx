@@ -42,7 +42,7 @@ export function ReferenceNavigator({
           const book = books.find(b => b.id === e.target.value)
           if (book) onNavigate(book, 1)
         }}
-        className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+        className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
       >
         <option value="">Select book…</option>
         {books.map(b => (
@@ -55,7 +55,7 @@ export function ReferenceNavigator({
         <select
           value={selectedChapter}
           onChange={e => onNavigate(selectedBook, Number(e.target.value))}
-          className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+          className="text-sm border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
         >
           {Array.from({ length: selectedBook.totalChapters }, (_, i) => i + 1).map(ch => (
             <option key={ch} value={ch}>Chapter {ch}</option>
@@ -64,10 +64,10 @@ export function ReferenceNavigator({
       )}
 
       {/* Prev / Next */}
-      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Previous chapter">
+      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-none border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Previous chapter">
         <ChevronLeft size={16} />
       </button>
-      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Next chapter">
+      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-none border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Next chapter">
         <ChevronRight size={16} />
       </button>
     </div>

@@ -103,7 +103,7 @@ export function StudentGradebook({ studentName, rows, weights = null }: { studen
         </thead>
         <tbody>
           <tr className="hover:bg-gray-50">
-            <td className="sticky left-0 z-10 bg-white px-4 py-2.5 border-r border-gray-100 font-medium text-gray-800 whitespace-nowrap truncate">
+            <td className="sticky left-0 z-10 bg-surface px-4 py-2.5 border-r border-gray-100 font-medium text-gray-800 whitespace-nowrap truncate">
               {studentName}
             </td>
             {activeGroups.map(g => {

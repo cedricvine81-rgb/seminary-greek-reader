@@ -67,14 +67,14 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
       )}
       <button
         onClick={() => setOpen(v => !v)}
-        className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+        className="p-2 rounded-none text-gray-600 hover:bg-gray-100 transition-colors"
         aria-label="Open menu"
       >
         {open ? <X size={22} /> : <Menu size={22} />}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
+        <div className="absolute right-0 top-11 w-56 bg-surface rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
           {/* Search — mobile only (desktop uses the header search icon). */}
           <button
             onClick={() => { setOpen(false); openMasterSearch() }}

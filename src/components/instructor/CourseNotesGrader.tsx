@@ -173,7 +173,7 @@ function StudentRow({ row, assignmentId, expanded, onToggle, onSaved }: {
                 // sanitize is text-only).
                 const html = sanitizeNoteHtml(toNoteHtml(n.body))
                 return (
-                  <div key={i} className="rounded-lg border border-gray-200 bg-white p-3">
+                  <div key={i} className="rounded-lg border border-gray-200 bg-surface p-3">
                     <div className="flex items-center gap-2 mb-1.5">
                       {n.ref
                         ? <span className="text-xs font-semibold text-brand-700">{n.ref}</span>

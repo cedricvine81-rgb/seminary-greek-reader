@@ -536,7 +536,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           grow/shrink between a short typed question and a tall 4-option multiple-choice
           one. This keeps the prompt and the Check/Next buttons in a fixed position as
           the student advances (especially important on a phone). */}
-      <div className={`bg-white rounded-xl border border-gray-100 p-6 space-y-5${type === 'VOCABULARY_QUIZ' ? ' min-h-[22rem]' : ''}`}>
+      <div className={`bg-surface rounded-xl border border-gray-100 p-6 space-y-5${type === 'VOCABULARY_QUIZ' ? ' min-h-[22rem]' : ''}`}>
 
         {/* Timer display */}
         {timePerQuestion && phase === 'answering' && timeLeft !== null && (
@@ -578,7 +578,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                   <button
                     key={opt}
                     onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                    className={`text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
+                    className={`text-left px-4 py-3 rounded-none border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
                   >
                     {opt}
                   </button>
@@ -614,7 +614,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               <button
                 key={opt}
                 onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                className="text-left px-4 py-3 rounded-xl border border-gray-200 bg-white hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
+                className="text-left px-4 py-3 rounded-none border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
               >
                 {/* Morphology MC options are never Greek — no font-greek needed */}
                 {opt}

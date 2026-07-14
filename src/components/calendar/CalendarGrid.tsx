@@ -119,20 +119,20 @@ export function CalendarGrid({ events, initialDate }: Props) {
         <div className="flex items-center gap-1">
           <button
             onClick={() => setCurrent(d => subMonths(d, 1))}
-            className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+            className="p-1.5 rounded-none hover:bg-gray-100 transition-colors text-gray-600"
             aria-label="Previous month"
           >
             <ChevronLeft size={18} />
           </button>
           <button
             onClick={() => setCurrent(new Date())}
-            className="px-3 py-1 text-xs font-medium rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+            className="px-3 py-1 text-xs font-medium rounded-none hover:bg-gray-100 transition-colors text-gray-600"
           >
             Today
           </button>
           <button
             onClick={() => setCurrent(d => addMonths(d, 1))}
-            className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors text-gray-600"
+            className="p-1.5 rounded-none hover:bg-gray-100 transition-colors text-gray-600"
             aria-label="Next month"
           >
             <ChevronRight size={18} />
@@ -163,7 +163,7 @@ export function CalendarGrid({ events, initialDate }: Props) {
                 key={key}
                 className={`
                   min-h-[90px] border-r border-b border-gray-200 p-1.5 flex flex-col gap-1
-                  ${!inMonth ? 'bg-gray-50' : 'bg-white'}
+                  ${!inMonth ? 'bg-gray-50' : 'bg-surface'}
                 `}
               >
                 {/* Date number */}

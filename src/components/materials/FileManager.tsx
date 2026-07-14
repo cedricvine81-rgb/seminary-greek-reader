@@ -325,7 +325,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
       {/* Share dialog */}
       {share && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShare(null)}>
-          <div className="w-full max-w-md rounded-xl bg-white shadow-xl p-5" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-xl bg-surface shadow-xl p-5" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-1">
               <h3 className="font-semibold text-gray-900">Share with courses</h3>
               <button onClick={() => setShare(null)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>
@@ -341,7 +341,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
                   const on = share.courseIds.has(c.id)
                   return (
                     <button key={c.id} onClick={() => toggleShare(c.id)}
-                      className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50">
+                      className="w-full flex items-center gap-3 rounded-none px-3 py-2 text-left text-sm hover:bg-gray-50">
                       <span className={`flex h-5 w-5 items-center justify-center rounded border ${on ? 'bg-brand-600 border-brand-600 text-white' : 'border-gray-300'}`}>
                         {on && <Check size={13} />}
                       </span>
@@ -375,7 +375,7 @@ function Row({ icon, title, subtitle, onOpen, href, onShare, onDelete, shareCoun
     </>
   )
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5 bg-white hover:bg-gray-50">
+    <div className="flex items-center gap-3 px-3 py-2.5 bg-surface hover:bg-gray-50">
       {href ? (
         // Files: a real anchor (opens reliably, never popup-blocked).
         <a href={href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 min-w-0 flex-1 text-left">{label}</a>
@@ -384,7 +384,7 @@ function Row({ icon, title, subtitle, onOpen, href, onShare, onDelete, shareCoun
         <button onClick={onOpen} className="flex items-center gap-3 min-w-0 flex-1 text-left">{label}</button>
       )}
       <button onClick={onShare} title="Share with courses"
-        className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs ${shareCount > 0 ? 'bg-brand-50 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
+        className={`inline-flex items-center gap-1 rounded-none px-2 py-1 text-xs ${shareCount > 0 ? 'bg-brand-50 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
         <Share2 size={13} /> {shareCount > 0 ? shareCount : 'Share'}
       </button>
       <button onClick={onDelete} title="Delete" className="text-gray-400 hover:text-red-600 p-1"><Trash2 size={15} /></button>

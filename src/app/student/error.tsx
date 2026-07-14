@@ -16,7 +16,7 @@ export default function StudentError({
 
   return (
     <div className="flex-1 flex items-center justify-center p-8 bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center space-y-4">
+      <div className="max-w-md w-full bg-surface rounded-2xl shadow-sm border border-gray-100 p-8 text-center space-y-4">
         <div className="flex justify-center">
           <div className="p-3 bg-red-50 rounded-xl">
             <AlertTriangle size={28} className="text-red-500" />
@@ -32,13 +32,13 @@ export default function StudentError({
         <div className="flex gap-3 justify-center pt-2">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-lg hover:bg-brand-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-none hover:bg-brand-800 transition-colors"
           >
             <RefreshCw size={14} /> Try again
           </button>
           <Link
             href="/student"
-            className="inline-flex items-center gap-2 px-4 py-2 bg-white text-brand-700 border border-brand-200 text-sm font-medium rounded-lg hover:bg-brand-50 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-surface text-brand-700 border border-brand-200 text-sm font-medium rounded-lg hover:bg-brand-50 transition-colors"
           >
             <LayoutDashboard size={14} /> Dashboard
           </Link>

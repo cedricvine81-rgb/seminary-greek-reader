@@ -28,7 +28,7 @@ export function CourseTranslationGrader({ assignments }: Props) {
         return (
           <div key={a.id} className="rounded-xl border border-gray-200 overflow-hidden">
             {/* Header row */}
-            <div className="flex items-center justify-between px-4 py-3 bg-white hover:bg-gray-50 transition-colors">
+            <div className="flex items-center justify-between px-4 py-3 bg-surface hover:bg-gray-50 transition-colors">
               <div className="flex items-center gap-2 min-w-0">
                 <ClipboardCheck size={15} className="shrink-0 text-brand-500" />
                 <div className="min-w-0">

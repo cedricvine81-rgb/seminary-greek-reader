@@ -71,7 +71,7 @@ export function ExamOpensNotice({ opensAtIso }: { opensAtIso: string }) {
         <p className="text-lg font-semibold text-emerald-800">The exam is now open.</p>
         <button
           onClick={() => router.refresh()}
-          className="mt-4 rounded-lg bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
+          className="mt-4 rounded-none bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700"
         >
           Start exam
         </button>

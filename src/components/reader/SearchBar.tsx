@@ -151,7 +151,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
             className={
               type === t
                 ? 'px-3 py-2 bg-brand-600 text-white font-medium'
-                : 'px-3 py-2 bg-white text-gray-600 hover:bg-gray-50'
+                : 'px-3 py-2 bg-surface text-gray-600 hover:bg-gray-50'
             }
           >
             {t === 'word' ? 'Word' : 'Verse'}
@@ -168,7 +168,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
             type="button"
             onClick={() => onVerseClick?.(c)}
             className={`px-2.5 py-2 text-sm font-medium ${
-              viewCorpus === c ? 'bg-brand-600 text-white' : 'bg-white text-brand-700'
+              viewCorpus === c ? 'bg-brand-600 text-white' : 'bg-surface text-brand-700'
             } ${c === 'LXX' ? 'border-l border-brand-600' : ''}`}
           >
             {c === 'GNT' ? 'NT' : 'LXX'}
@@ -201,7 +201,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
 
         {/* Predictive word suggestions */}
         {suggestions.length > 0 && !showKeyboard && (
-          <div className="absolute left-0 right-0 top-full mt-1 z-40 bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-64 overflow-y-auto">
+          <div className="absolute left-0 right-0 top-full mt-1 z-40 bg-surface border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-64 overflow-y-auto">
             {suggestions.map(s => (
               <button
                 key={s.word}
@@ -224,7 +224,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
 
       {/* Greek keyboard popup */}
       {showKeyboard && effectiveType === 'word' && !effectiveLang && (
-        <div className="absolute right-0 top-full mt-1 z-50 bg-white border border-gray-200 rounded-xl shadow-lg p-2 select-none">
+        <div className="absolute right-0 top-full mt-1 z-50 bg-surface border border-gray-200 rounded-xl shadow-lg p-2 select-none">
           {GREEK_ROWS.map((row, ri) => (
             <div key={ri} className="flex gap-1 mb-1">
               {row.map(letter => (

@@ -21,7 +21,7 @@ export function DeckSelector({ value, onChange, counts }: DeckSelectorProps) {
           key={level}
           onClick={() => onChange(level)}
           className={clsx(
-            'p-4 rounded-xl border-2 text-left transition-colors',
+            'p-4 rounded-none border-2 text-left transition-colors',
             value === level
               ? 'border-brand-600 bg-brand-50'
               : 'border-gray-200 hover:border-gray-300'
