@@ -113,6 +113,7 @@ const FONT_SIZE_MAP: Record<FontSize, string> = {
 }
 
 const RESULTS_W = 520   // floating results-panel width (px)
+const RESULTS_POS_KEY = 'reader.resultsPos'   // remembered floating-results position
 const PARALLEL_LANGS = [
   { code: 'en',  label: 'English', sub: 'World English Bible' },
   { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible' },
@@ -1065,10 +1066,21 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     )
   }
 
-  // Place the floating results panel top-right when it first opens.
+  // Restore the floating results panel's last position when it opens (clamped to the current
+  // viewport in case the window shrank); fall back to top-right for the first-ever open.
   useEffect(() => {
     if (searchResults !== null && !resultsPos && typeof window !== 'undefined') {
-      setResultsPos({ x: Math.max(12, window.innerWidth - RESULTS_W - 28), y: 92 })
+      let pos: { x: number; y: number } | null = null
+      try {
+        const p = JSON.parse(localStorage.getItem(RESULTS_POS_KEY) || 'null')
+        if (p && typeof p.x === 'number' && typeof p.y === 'number') {
+          pos = {
+            x: Math.min(Math.max(8, p.x), Math.max(8, window.innerWidth - RESULTS_W - 8)),
+            y: Math.min(Math.max(8, p.y), Math.max(8, window.innerHeight - 44)),
+          }
+        }
+      } catch {}
+      setResultsPos(pos ?? { x: Math.max(12, window.innerWidth - RESULTS_W - 28), y: 92 })
     }
     if (searchResults === null) setResultsPos(null)
   }, [searchResults, resultsPos])
@@ -1085,7 +1097,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       const y = Math.min(Math.max(8, ev.clientY - resultsDrag.current.oy), window.innerHeight - 44)
       setResultsPos({ x, y })
     }
-    const up = () => { resultsDrag.current = null; window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up) }
+    const up = () => {
+      resultsDrag.current = null
+      window.removeEventListener('pointermove', move)
+      window.removeEventListener('pointerup', up)
+      const r = panel?.getBoundingClientRect()
+      if (r) try { localStorage.setItem(RESULTS_POS_KEY, JSON.stringify({ x: r.left, y: r.top })) } catch {}
+    }
     window.addEventListener('pointermove', move)
     window.addEventListener('pointerup', up)
   }
