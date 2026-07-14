@@ -53,8 +53,8 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
             </p>
           </div>
           <p className="text-gray-400 text-xs tracking-wide mt-4 text-center leading-relaxed">
-            <span className="font-medium">Return</span> key to reveal
-            <span className="hidden sm:inline"> · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+            <span className="sm:hidden">Tap to reveal</span>
+            <span className="hidden sm:inline"><span className="font-medium">Return</span> key to reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
           </p>
         </div>
       ) : (
@@ -76,8 +76,8 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
             )}
           </div>
           <p className="text-gray-400 text-xs tracking-wide mt-4 text-center leading-relaxed">
-            <span className="font-medium">Return</span> key for Greek only
-            <span className="hidden sm:inline"> · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+            <span className="sm:hidden">Tap for Greek only</span>
+            <span className="hidden sm:inline"><span className="font-medium">Return</span> key for Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
           </p>
         </div>
       )}
