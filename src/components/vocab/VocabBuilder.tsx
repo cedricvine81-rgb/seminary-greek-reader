@@ -295,6 +295,8 @@ export function VocabBuilder() {
           onConfigChange={setConfig}
           onFlip={() => setFlipped(f => !f)}
           onAdvance={advance}
+          onPrev={() => { setIdx(i => Math.max(0, i - 1)); setFlipped(false) }}
+          onNext={() => { setIdx(i => Math.min((sessionWords?.length ?? 1) - 1, i + 1)); setFlipped(false) }}
           onGoBack={() => setTab('study')}
           onRestart={() => { setSessionWords(prev => prev ? shuffled(prev) : prev); setIdx(0); setFlipped(false); setFinished(false); setSessionStats({ correct: 0, total: 0 }); setMissedWordKeys(new Set()) }}
           onStudyMissed={startMissed}
@@ -310,7 +312,7 @@ export function VocabBuilder() {
 
 function FlashcardPlayer({
   sessionWords, directions, idx, flipped, finished, sessionStats, missedWordKeys,
-  config, onConfigChange, onFlip, onAdvance, onGoBack, onRestart, onStudyMissed,
+  config, onConfigChange, onFlip, onAdvance, onPrev, onNext, onGoBack, onRestart, onStudyMissed,
 }: {
   sessionWords: BgvbWord[]
   directions: boolean[]
@@ -323,22 +325,27 @@ function FlashcardPlayer({
   onConfigChange: (c: StudyConfig) => void
   onFlip: () => void
   onAdvance: (quality: 1 | 3 | 4) => void
+  onPrev: () => void
+  onNext: () => void
   onGoBack: () => void
   onRestart: () => void
   onStudyMissed: () => void
 }) {
-  // Keyboard shortcuts: Space/Enter to flip; 1/2/3 to rate (flip first if needed)
+  // Keyboard shortcuts: Enter/Space flips (Greek ⇄ Greek + translation);
+  // ← / → move to the previous / next card; 1/2/3 to rate.
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); onFlip() }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); onPrev() }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); onNext() }
       else if (e.key === '1') { e.preventDefault(); onAdvance(1) }
       else if (e.key === '2') { e.preventDefault(); onAdvance(3) }
       else if (e.key === '3') { e.preventDefault(); onAdvance(4) }
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [flipped, onFlip, onAdvance])
+  }, [flipped, onFlip, onAdvance, onPrev, onNext])
 
   if (sessionWords.length === 0) {
     return (
@@ -446,40 +453,51 @@ function FlashcardPlayer({
           aria-label="Flip card"
         >
           {!flipped ? (
-            <div className="bg-surface rounded-2xl h-full flex flex-col items-center justify-center p-8 shadow-sm border border-gray-100 overflow-hidden">
-              {greekFirst ? (
-                <>
-                  <p className="greek-text text-6xl text-gray-900 font-medium text-center leading-snug">{word.word}</p>
-                  {word.inflection && <p className="greek-text text-xl text-gray-500 mt-3">{word.inflection}</p>}
-                </>
-              ) : (
-                <>
-                  <p className="text-4xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                  <p className="text-gray-500 text-base mt-3">{POS_LABELS[word.pos] ?? word.pos}</p>
-                </>
-              )}
-              <p className="text-gray-400 text-xs tracking-wide mt-4">Tap to reveal</p>
+            <div className="bg-surface rounded-2xl h-full flex flex-col items-center justify-between p-6 shadow-sm border border-gray-100 overflow-hidden">
+              <div className="flex-1 flex flex-col items-center justify-center">
+                {greekFirst ? (
+                  <>
+                    <p className="greek-text text-3xl text-gray-900 font-bold text-center leading-snug">{word.word}</p>
+                    {word.inflection && <p className="greek-text text-sm text-gray-500 mt-2">{word.inflection}</p>}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                    <p className="text-gray-500 text-sm mt-2">{POS_LABELS[word.pos] ?? word.pos}</p>
+                  </>
+                )}
+              </div>
+              <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
+                <span className="sm:hidden">Tap to reveal</span>
+                <span className="hidden sm:inline"><span className="font-medium">Return</span> key to reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+              </p>
             </div>
           ) : (
-            <div className="bg-surface rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-center p-8 shadow-sm gap-2 overflow-hidden">
-              {greekFirst ? (
-                <>
-                  <p className="greek-text text-3xl text-gray-900 font-medium text-center">{word.word}</p>
-                  {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
-                  <div className="my-2 w-12 h-px bg-gray-200" />
-                  <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                  <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
-                  {word.freq && <p className="text-xs text-gray-300 mt-1">{word.freq.toLocaleString()}× in GNT</p>}
-                </>
-              ) : (
-                <>
-                  <p className="text-xl text-gray-500 font-medium text-center">{word.gloss}</p>
-                  <div className="my-2 w-12 h-px bg-gray-200" />
-                  <p className="greek-text text-5xl text-gray-900 font-medium text-center">{word.word}</p>
-                  {word.inflection && <p className="greek-text text-sm text-gray-500 mt-1">{word.inflection}</p>}
-                  {word.freq && <p className="text-xs text-gray-300 mt-2">{word.freq.toLocaleString()}× in GNT</p>}
-                </>
-              )}
+            <div className="bg-surface rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-between p-6 shadow-sm overflow-hidden">
+              <div className="flex-1 flex flex-col items-center justify-center gap-1">
+                {greekFirst ? (
+                  <>
+                    <p className="greek-text text-3xl text-gray-900 font-bold text-center">{word.word}</p>
+                    {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
+                    <div className="my-1.5 w-12 h-px bg-gray-200" />
+                    <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                    <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
+                    {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
+                  </>
+                ) : (
+                  <>
+                    <p className="text-3xl text-gray-500 font-medium text-center">{word.gloss}</p>
+                    <div className="my-1.5 w-12 h-px bg-gray-200" />
+                    <p className="greek-text text-3xl text-gray-900 font-bold text-center">{word.word}</p>
+                    {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
+                    {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
+                  </>
+                )}
+              </div>
+              <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
+                <span className="sm:hidden">Tap for Greek only</span>
+                <span className="hidden sm:inline"><span className="font-medium">Return</span> key for Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+              </p>
             </div>
           )}
         </div>
@@ -506,10 +524,6 @@ function FlashcardPlayer({
           </button>
         </div>
       </div>
-
-      {!flipped && (
-        <p className="text-center text-sm text-gray-400">Tap the card or press Space to reveal</p>
-      )}
 
     </div>
   )
