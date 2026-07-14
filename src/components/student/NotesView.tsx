@@ -790,7 +790,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
   const finalOnBlur = !(isNew && isGeneral)
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-surface p-2.5">
+    <div className="rounded-lg border border-gray-200 bg-input p-2.5">
       <div className="flex items-center gap-2 mb-1">
         {isGeneral ? (
           <input
