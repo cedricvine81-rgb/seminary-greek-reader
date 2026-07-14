@@ -69,6 +69,9 @@ export function BackgroundsSearchProvider() {
     function onContextMenu(e: MouseEvent) {
       if (e.defaultPrevented || isExamLocked()) return   // yield to component menus / exams
       if (inEditable(e.target)) return                   // keep the native menu in fields
+      // The parsing pane is a lexical-detail readout, not a reading surface — a word search
+      // from there serves no purpose, so let the native menu through instead.
+      if ((e.target as HTMLElement | null)?.closest?.('[data-parsing-pane]')) return
       const selection = window.getSelection()?.toString().trim() ?? ''
       const term = selection.length >= 2 ? selection : wordAtPoint(e.clientX, e.clientY)
       if (!term || !LETTER_RE.test(term)) return

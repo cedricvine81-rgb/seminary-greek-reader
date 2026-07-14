@@ -97,7 +97,8 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
     ? `flex-1 min-h-0 flex flex-col ${bgClass}`
     : `h-64 ${bgClass} rounded-xl border shadow-sm flex flex-col ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`
   return (
-    <div className={containerClass}>
+    <div className={containerClass} data-parsing-pane>
+
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
           Hover or click any Greek word to see lexical information.
