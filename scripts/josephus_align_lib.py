@@ -8,7 +8,10 @@ from pathlib import Path
 
 
 def _norm(s):
-    return re.sub(r'\s+', ' ', s or '').strip()
+    # Compare on non-whitespace characters only: guarantees no text is added, removed, or
+    # altered, while tolerating whitespace at a section boundary (invisible across the § break,
+    # e.g. Whiston's "following:—They" where an em-dash abuts the next word with no space).
+    return re.sub(r'\s+', '', s or '')
 
 
 def _chapter(work, book, chapter):
