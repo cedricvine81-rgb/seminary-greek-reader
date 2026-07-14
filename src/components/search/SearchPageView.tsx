@@ -83,7 +83,7 @@ interface BibHit { osisId: string; chapter: number; verse: number; text: string;
 // Lightweight per-lane hit count for the result-type tabs — reruns the lane's search and reads
 // its total (no book scope: a tab count is "how many matches exist over there", the active
 // lane's book filter only narrows what's shown). Capped like the real searches (300).
-async function fetchLaneCount(val: string, q: string): Promise<number> {
+async function fetchLaneCount(val: string, q: string, lemma = false): Promise<number> {
   const s = parseScope(val)
   if (s.kind === 'bg') {
     const lang: BgLang = GREEK_RE.test(q) ? 'grc' : 'en'
@@ -93,7 +93,7 @@ async function fetchLaneCount(val: string, q: string): Promise<number> {
     return d.total ?? 0
   }
   const url = s.kind === 'greek'
-    ? `/api/search?q=${encodeURIComponent(q)}&type=word&corpus=${s.corpus}`
+    ? `/api/search?q=${encodeURIComponent(q)}&type=word&corpus=${s.corpus}${lemma ? '&lemma=true' : ''}`
     : `/api/search?q=${encodeURIComponent(q)}&type=word&lang=${s.lang}`
   const r = await fetch(url)
   if (!r.ok) return 0
@@ -139,7 +139,7 @@ const SEARCH_EXAMPLES: { group: string; hint: string; items: Example[] }[] = [
   ] },
 ]
 
-export function SearchPageView({ initialQuery = '', initialScope }: { initialQuery?: string; initialScope?: string }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -168,6 +168,9 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   const ctxReq = useRef(0)
 
   const scope = useMemo(() => parseScope(scopeVal), [scopeVal])
+  // Lemma ("all forms") search stays active only while the query is unchanged from the lemma
+  // we were handed via ?mode=lemma; editing the query drops back to a normal word search.
+  const lemmaMode = initialLemma && query.trim() === initialQuery.trim()
   const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
   // Greek hits arrive uncapped in canonical order → re-sort client-side for relevance.
@@ -266,7 +269,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
   // A scope change can invalidate the chosen books (different canon).
   useEffect(() => { setBooks([]); setShowBooks(false) }, [scopeVal])
 
-  const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode) => {
+  const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode, lemma: boolean) => {
     if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }
     const s = parseScope(sv)
     const id = ++reqId.current
@@ -282,7 +285,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
         const bookParam = bks ? `&books=${bks}` : ''
         const rankParam = s.kind === 'trans' && srt === 'relevance' ? '&rank=1' : ''
         const url = s.kind === 'greek'
-          ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${bookParam}`
+          ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${lemma ? '&lemma=true' : ''}${bookParam}`
           : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}${rankParam}`
         const res = await fetch(url)
         const data = res.ok ? await res.json() : { results: [] }
@@ -305,9 +308,9 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
 
   // Debounced search.
   useEffect(() => {
-    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort), 250)
+    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort, lemmaMode), 250)
     return () => clearTimeout(t)
-  }, [query, scopeVal, booksKey, sort, runSearch])
+  }, [query, scopeVal, booksKey, sort, lemmaMode, runSearch])
 
   // Live counts for the result-type tabs (all lanes, in parallel). Debounced; reqId guard.
   useEffect(() => {
@@ -318,13 +321,13 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
     setCounts(prev => { const n: Record<string, number | null> = {}; for (const v of lanes) n[v] = prev[v] ?? null; return n })
     const t = setTimeout(() => {
       for (const val of lanes) {
-        fetchLaneCount(val, q)
+        fetchLaneCount(val, q, lemmaMode)
           .then(c => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: c })) })
           .catch(() => { if (id === countReq.current) setCounts(prev => ({ ...prev, [val]: 0 })) })
       }
     }, 300)
     return () => clearTimeout(t)
-  }, [query, laneList])
+  }, [query, laneList, lemmaMode])
 
   // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
   // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.

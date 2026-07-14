@@ -13,6 +13,7 @@ import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // A reference the "Open in Texts" button can hand off to the Texts tab — only shown when
@@ -796,6 +797,18 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 key={ti}
                                 onMouseEnter={select}
                                 onClick={select}
+                                onContextMenu={e => {
+                                  e.preventDefault()
+                                  openWordSearch({
+                                    x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
+                                    reference: `${parsed.book.name} ${parsed.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT',
+                                    highlight: isAuthenticated ? {
+                                      activeColor: hl?.color ?? null,
+                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed.book.osisId, parsed.chapter, c) : void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, start, end, c),
+                                      onRemove: () => { if (hl) void highlights.remove(hl.id, parsed.book.osisId, parsed.chapter) },
+                                    } : undefined,
+                                  })
+                                }}
                                 {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': parsed.book.osisId, 'data-hl-chapter': parsed.chapter, 'data-hl-color': hl.color } : {})}
                                 className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
                               >

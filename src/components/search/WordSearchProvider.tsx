@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Search } from 'lucide-react'
 import { registerWordSearch, type WordSearchPayload } from '@/lib/word-search-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
+import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 
@@ -93,17 +94,33 @@ export function WordSearchProvider() {
 
       <div className="space-y-1.5">
         {isGreek ? (
-          <button type="button" className={btn} onClick={() => run(`greek:${scope}`, w)}>
-            Search Greek <span className="text-gray-400">· {scope === 'GNT' ? 'NT' : 'LXX'}</span>
-          </button>
+          <>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button type="button" className={btn}
+                onClick={() => { setMenu(null); openMasterSearch({ query: menu.lemma ?? w, scope: `greek:${scope}`, lemma: !!menu.lemma }) }}>
+                All forms
+              </button>
+              <button type="button" className={btn}
+                onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `greek:${scope}` }) }}>
+                This form
+              </button>
+            </div>
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openBackgroundsSearch(menu.lemma ?? w, 'grc') }}>
+              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+            </button>
+          </>
         ) : (
-          <button type="button" className={btn} onClick={() => run(`trans:${menu.transLang ?? 'en'}`, w)}>
-            Search {transLabel}
-          </button>
+          <>
+            <button type="button" className={btn} onClick={() => run(`trans:${menu.transLang ?? 'en'}`, w)}>
+              Search {transLabel}
+            </button>
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
+              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+            </button>
+          </>
         )}
-        <button type="button" className={btn} onClick={() => run('bg:all', w)}>
-          Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
-        </button>
       </div>
 
       <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500 pt-0.5">

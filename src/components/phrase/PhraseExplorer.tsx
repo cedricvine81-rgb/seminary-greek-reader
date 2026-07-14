@@ -3,6 +3,7 @@ import { createContext, useContext, useCallback, useEffect, useRef, useState, ty
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { formatParsing } from '@/lib/morph-formatting'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -80,6 +81,7 @@ function WordNode({ node }: { node: WordNodeT }) {
       type="button"
       onMouseEnter={() => onWord(node)}
       onClick={() => onWord(node)}
+      onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: node.w, lemma: node.lemma ?? null, kind: 'greek', greekCorpus: 'GNT' }) }}
       title={[node.lemma && `lemma: ${node.lemma}`, node.morph && `morph: ${node.morph}`, node.role && `role: ${node.role}`].filter(Boolean).join('\n')}
       className={`inline-flex flex-col items-start mr-3 mb-1 align-top rounded px-1 -mx-1 transition-colors ${active ? 'bg-brand-100' : 'hover:bg-gray-100'}`}
     >

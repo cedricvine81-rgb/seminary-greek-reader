@@ -1,7 +1,7 @@
 // Lets the header search icon, the mobile menu, and the right-click word menu open the
 // app-wide Master Search pane (hosted once by MasterSearchProvider in the root layout)
 // without prop-drilling. An optional preset pre-fills + runs a specific search.
-export interface MasterSearchPreset { query: string; scope: string }
+export interface MasterSearchPreset { query: string; scope: string; lemma?: boolean }
 type OpenFn = (preset?: MasterSearchPreset) => void
 let _opener: OpenFn | null = null
 
