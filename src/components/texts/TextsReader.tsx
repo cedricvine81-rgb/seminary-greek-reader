@@ -16,6 +16,7 @@ import { useHighlightSelection } from '@/components/highlights/useHighlightSelec
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
 import { TransWords } from '@/components/highlights/TransWords'
+import { GreekWords } from '@/components/highlights/GreekWords'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // A clickable Greek word carries what the shared parsing pane needs.
@@ -509,7 +510,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       })
     }
     cols.push({
-      key: 'vs', label: 'Vs.', marginTop: 0,
+      // Josephus verses are the Niese sections — label the column so readers know the scheme.
+      key: 'vs', label: work?.source === 'josephus' ? 'Vs. (Niese)' : 'Vs.', marginTop: 0,
       items: locateVerseNums === null ? 'loading'
         : locateVerseNums.map(vn => ({ n: vn, selected: false, onClick: () => selectLocateVerse(vn) })),
     })
@@ -592,7 +594,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               {locateOpen && (
                 <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-popover border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
                   {buildLocateColumns().map(col => (
-                    <div key={col.key} style={{ marginTop: col.marginTop }} className="w-14 shrink-0">
+                    <div key={col.key} style={{ marginTop: col.marginTop }} className={`shrink-0 ${col.key === 'vs' && work?.source === 'josephus' ? 'w-[4.5rem]' : 'w-14'}`}>
                       <p
                         className="px-2 text-[10px] font-semibold uppercase tracking-wide text-gray-400"
                         style={{ height: LOCATE_HEADER_H, lineHeight: `${LOCATE_HEADER_H}px` }}
@@ -799,13 +801,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   : row.greek}
                               </span>
                             ) : greekProse ? (
-                              <span className="font-greek" style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.85)' }}>
+                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
                                 {q ? highlight(row.greek ?? '', search)
                                   : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
-                                  : row.greek}
+                                  : <GreekWords text={row.greek ?? ''} reference={`${refLabel}:${row.num}`} />}
                               </span>
                             ) : (
-                              <span style={{ fontSize: 'calc(var(--tx-fs, 1.45rem) * 0.65)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
+                              <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
                                 {q ? highlight(row.english ?? '', search)
                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
                                   : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights)}
@@ -819,7 +821,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               it carries the note/highlight anchor. In translation-only mode
                               (Greek hidden) it's the sole column and carries the note button. */}
                           {englishColShown && (
-                            <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: greekHidden ? 'calc(var(--tx-fs, 1.45rem) * 0.8)' : 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
+                            <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
                               {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num) : {})}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">
