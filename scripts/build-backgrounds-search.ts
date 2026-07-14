@@ -75,6 +75,7 @@ function indexJosephus(work: CatalogWork) {
     for (const ch of book.chapters) {
       for (const sec of ch.sections) {
         if (sec.text) en.push({ g: work.id, s: 'josephus', w: workDir, b, c: ch.number, v: sec.number, t: sec.text })
+        if (sec.greek) grc.push({ g: work.id, s: 'josephus', w: workDir, b, c: ch.number, v: sec.number, t: sec.greek })
       }
     }
   }

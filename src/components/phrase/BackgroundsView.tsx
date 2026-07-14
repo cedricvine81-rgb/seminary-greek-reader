@@ -142,16 +142,26 @@ type JosephusWork = 'Ant' | 'JW' | 'AgAp' | 'Life'
 type JosephusRef = { work: JosephusWork; book: number; chapter: number; section: number }
 const JOSEPHUS_WORK_DIR: Record<JosephusWork, string> = { Ant: 'antiquities', JW: 'jewish-war', AgAp: 'against-apion', Life: 'life' }
 const JOSEPHUS_WORK_LABEL: Record<JosephusWork, string> = { Ant: 'Antiquities', JW: 'War', AgAp: 'Against Apion', Life: 'The Life' }
+// The embedded Josephus is numbered by Niese section (chapter = Whiston chapter; §§ within
+// it are the Niese sections). Evans's citations print BOTH the Whiston book.chapter.section
+// and the Niese "§N", so we take the Whiston chapter for locating the chapter and the Niese
+// § (start of any range) for the section to scroll to. A citation missing an explicit § falls
+// back to the trailing Whiston section number.
+function nieseSection(text: string): number | null {
+  const m = text.match(/§+\s*(\d+)/)
+  return m ? parseInt(m[1], 10) : null
+}
 function parseJosephusRef(citationText: string): JosephusRef | null {
-  const bcs = citationText.match(/Josephus,\s*(Ant\.|J\.W\.)\s*(\d+)\.(\d+)\.(\d+)/)
-  if (bcs) return { work: bcs[1] === 'Ant.' ? 'Ant' : 'JW', book: parseInt(bcs[2], 10), chapter: parseInt(bcs[3], 10), section: parseInt(bcs[4], 10) }
-  const agap = citationText.match(/Ag\.\s*Ap\.\s*(\d+)\.(\d+)/)
-  if (agap) return { work: 'AgAp', book: parseInt(agap[1], 10), chapter: 1, section: parseInt(agap[2], 10) }
+  const sec = nieseSection(citationText)
+  const bcs = citationText.match(/Josephus,\s*(Ant\.|J\.W\.)\s*(\d+)\.(\d+)(?:\.(\d+))?/)
+  if (bcs) return { work: bcs[1] === 'Ant.' ? 'Ant' : 'JW', book: parseInt(bcs[2], 10), chapter: parseInt(bcs[3], 10), section: sec ?? (bcs[4] ? parseInt(bcs[4], 10) : 1) }
+  const agap = citationText.match(/Ag\.\s*Ap\.\s*(\d+)(?:\.(\d+))?/)
+  if (agap) return { work: 'AgAp', book: parseInt(agap[1], 10), chapter: 1, section: sec ?? (agap[2] ? parseInt(agap[2], 10) : 1) }
   const life = citationText.match(/\bLife\s+(\d+)/)
-  if (life) return { work: 'Life', book: 1, chapter: 1, section: parseInt(life[1], 10) }
+  if (life) return { work: 'Life', book: 1, chapter: 1, section: sec ?? parseInt(life[1], 10) }
   return null
 }
-interface JosephusSection { number: number; text: string }
+interface JosephusSection { number: number; text: string; greek?: string }
 interface JosephusChapter { number: number; title: string; sections: JosephusSection[] }
 interface JosephusBook { number: number; title: string; chapters: JosephusChapter[] }
 
@@ -1006,16 +1016,24 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
                     >
-                      {josephusChapter.sections.map(s => (
-                        <p
-                          key={s.number}
-                          ref={s.number === rightJosephus.ref.section ? josephusHighlightRef : undefined}
-                          className={s.number === rightJosephus.ref.section ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
-                        >
-                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
-                          {s.text}
-                        </p>
-                      ))}
+                      {(() => {
+                        // English is stored once per Whiston section (its first Niese §), so
+                        // render only the text-bearing blocks and highlight the block that
+                        // contains the cited § (the last block whose § ≤ the reference).
+                        const blocks = josephusChapter.sections.filter(s => s.text)
+                        let target = -1
+                        for (const s of blocks) if (s.number <= rightJosephus.ref.section) target = s.number
+                        return blocks.map(s => (
+                          <p
+                            key={s.number}
+                            ref={s.number === target ? josephusHighlightRef : undefined}
+                            className={s.number === target ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
+                          >
+                            <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
+                            {s.text}
+                          </p>
+                        ))
+                      })()}
                     </div>
                     {josephusAttribution[rightJosephus.ref.work] && (
                       <p className="text-[10px] text-gray-400 italic">{josephusAttribution[rightJosephus.ref.work]}</p>

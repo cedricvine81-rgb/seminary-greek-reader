@@ -184,7 +184,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
     if (!isAuthenticated) return
     try {
-      const r = await fetch(`/api/notes?book=${encodeURIComponent(noteBook)}&chapter=${ch}&verseStart=1&verseEnd=500`)
+      const r = await fetch(`/api/notes?book=${encodeURIComponent(noteBook)}&chapter=${ch}&verseStart=1&verseEnd=700`)
       const d = await r.json()
       setNotedMap(prev => ({ ...prev, [`${noteBook}.${ch}`]: new Set((d.notes ?? []).map((n: { verse: number }) => n.verse)) }))
     } catch { /* ignore */ }
@@ -235,7 +235,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (work.english === 'bsb') parts.push('English: the Berean Standard Bible (public domain).')
     const prose = findProseWork(work.source)
     if (prose) parts.push(prose.attribution)
-    if (work.source === 'josephus') parts.push('Text: William Whiston’s translation of Josephus, 1737 (public domain).')
+    if (work.source === 'josephus') parts.push('Greek: B. Niese’s edition (1885–1895); English: William Whiston’s translation (1737); both public domain. Sections numbered per Niese. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
     onAttribution?.(parts.join(' '))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [work, onAttribution])
@@ -277,7 +277,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const r = await fetch(`/data/josephus/${w.work}/${item.book}.json`)
       const d = r.ok ? await r.json() : null
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
-      return (ch?.sections ?? []).map((s: { number: number; text: string }) => ({ num: s.number, english: s.text }))
+      // Niese §§ carry parallel Greek; the Whiston English is attached once per Whiston
+      // section (its first §), so most §§ have Greek only in the English column.
+      return (ch?.sections ?? []).map((s: { number: number; text: string; greek?: string }) => ({ num: s.number, english: s.text, greek: s.greek }))
     }
     // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
     // chapter→verses; the registry knows where each one's JSON lives.

@@ -63,12 +63,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'josephus',
     label: 'Josephus',
-    blurb: 'The complete works of Flavius Josephus, in Whiston’s English translation.',
+    blurb: 'The complete works of Flavius Josephus — the Greek (Niese) with Whiston’s English alongside, numbered by the standard Niese sections (Perseus, CC-BY-SA).',
     works: [
-      { id: 'antiquities', name: 'Antiquities of the Jews', source: 'josephus', work: 'antiquities', books: [22, 16, 15, 8, 11, 14, 15, 15, 14, 11, 8, 11, 16, 16, 11, 11, 13, 9, 9, 11] },
-      { id: 'jewish-war', name: 'The Jewish War', source: 'josephus', work: 'jewish-war', books: [33, 22, 10, 11, 13, 10, 11] },
-      { id: 'against-apion', name: 'Against Apion', source: 'josephus', work: 'against-apion', books: [1, 1] },
-      { id: 'life', name: 'The Life', source: 'josephus', work: 'life', books: [1] },
+      { id: 'antiquities', name: 'Antiquities of the Jews', source: 'josephus', work: 'antiquities', greek: true, books: [22, 16, 15, 8, 11, 14, 15, 15, 14, 11, 8, 11, 16, 16, 11, 11, 13, 9, 9, 12] },
+      { id: 'jewish-war', name: 'The Jewish War', source: 'josephus', work: 'jewish-war', greek: true, books: [33, 22, 10, 11, 13, 10, 11] },
+      { id: 'against-apion', name: 'Against Apion', source: 'josephus', work: 'against-apion', greek: true, books: [1, 1] },
+      { id: 'life', name: 'The Life', source: 'josephus', work: 'life', greek: true, books: [1] },
     ],
   },
   {
