@@ -52,24 +52,33 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
               {card.front}
             </p>
           </div>
-          <p className="text-gray-400 text-xs tracking-wide mt-4">Tap to reveal</p>
+          <p className="text-gray-400 text-xs tracking-wide mt-4 text-center leading-relaxed">
+            Tap or <span className="font-medium">Enter</span> to reveal
+            <span className="hidden sm:inline"> · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+          </p>
         </div>
       ) : (
         <div
-          className="bg-surface flex flex-col items-center justify-center px-8 h-full cursor-pointer"
+          className="bg-surface flex flex-col items-center justify-between py-6 px-8 h-full cursor-pointer"
           onClick={handleFlip}
           role="button"
           tabIndex={0}
           aria-label="Flip flashcard back"
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleFlip()}
         >
-          <p className="greek-text text-2xl text-brand-800 font-bold text-center mb-1">
-            {card.backLexeme}
+          <div className="flex-1 flex flex-col items-center justify-center w-full">
+            <p className="greek-text text-2xl text-brand-800 font-bold text-center mb-1">
+              {card.backLexeme}
+            </p>
+            <p className="text-2xl text-gray-800 font-medium text-center">{card.backGloss}</p>
+            {card.backParsing && (
+              <p className="text-2xl text-gray-500 text-center mt-2">{card.backParsing}</p>
+            )}
+          </div>
+          <p className="text-gray-400 text-xs tracking-wide mt-4 text-center leading-relaxed">
+            Tap or <span className="font-medium">Enter</span> for Greek only
+            <span className="hidden sm:inline"> · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
           </p>
-          <p className="text-2xl text-gray-800 font-medium text-center">{card.backGloss}</p>
-          {card.backParsing && (
-            <p className="text-2xl text-gray-500 text-center mt-2">{card.backParsing}</p>
-          )}
         </div>
       )}
     </div>

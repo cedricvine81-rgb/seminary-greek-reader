@@ -86,36 +86,35 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
     }
   }, [card, idx, cards.length, isFlipped])
 
-  // Desktop keyboard controls: arrow keys drive progress through the deck.
-  //  ↓ / Space — flip (reveal); →  Got it; ←  Again; ↑  Hard
+  // Desktop keyboard controls:
+  //  Enter — flip between Greek and Greek + translation
+  //  ←     — previous card
+  //  →     — next card
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (finished || !card) return
       const t = e.target as HTMLElement | null
       if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
       switch (e.key) {
-        case 'ArrowDown':
-        case ' ':
+        case 'Enter':
           e.preventDefault()
           setIsFlipped(f => !f)
           break
-        case 'ArrowRight':
-          e.preventDefault()
-          advance('know')
-          break
         case 'ArrowLeft':
           e.preventDefault()
-          advance('again')
+          setIdx(i => Math.max(0, i - 1))
+          setIsFlipped(false)
           break
-        case 'ArrowUp':
+        case 'ArrowRight':
           e.preventDefault()
-          advance('hard')
+          setIdx(i => Math.min(cards.length - 1, i + 1))
+          setIsFlipped(false)
           break
       }
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [advance, finished, card])
+  }, [finished, card, cards.length])
 
   if (finished) {
     return (
@@ -186,11 +185,6 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
               </Button>
             </div>
           </div>
-
-          {/* Keyboard hint — desktop only */}
-          <p className="hidden sm:block text-center text-xs text-gray-400">
-            Keys: <span className="font-medium">↓ / Space</span> reveal · <span className="font-medium">→</span> Got it · <span className="font-medium">←</span> Again · <span className="font-medium">↑</span> Hard
-          </p>
         </>
       ) : (
         <p className="text-gray-400 italic text-sm text-center py-8">No cards in this deck.</p>
