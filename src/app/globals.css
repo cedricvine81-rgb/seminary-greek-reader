@@ -70,21 +70,21 @@ body.exam-lockdown nav.fixed.bottom-0 {
 
   /* ── Sepia (warm beige, light) ───────────────────────────── */
   [data-theme='sepia'] {
-    --gray-50:  250 243 227;
-    --gray-100: 244 234 213;
-    --gray-200: 232 219 191;
-    --gray-300: 214 197 162;
-    --gray-400: 172 154 120;
-    --gray-500: 126 108 80;
-    --gray-600: 96 80 56;
-    --gray-700: 74 60 42;
-    --gray-800: 58 46 32;
-    --gray-900: 43 33 22;
+    --gray-50:  253 247 234;
+    --gray-100: 248 240 222;
+    --gray-200: 237 225 199;
+    --gray-300: 218 202 168;
+    --gray-400: 166 146 110;
+    --gray-500: 112 94 66;
+    --gray-600: 84 68 46;
+    --gray-700: 62 49 33;
+    --gray-800: 47 36 24;
+    --gray-900: 33 24 15;
 
-    --surface: 254 249 239;
+    --surface: 255 252 245;
 
-    --ink-50:  244 234 213;
-    --ink-900: 43 33 22;
+    --ink-50:  248 240 222;
+    --ink-900: 33 24 15;
 
     /* Keep the brand blue on warm paper — crisp accents, consistent identity. */
     --brand-50:  239 246 255;
