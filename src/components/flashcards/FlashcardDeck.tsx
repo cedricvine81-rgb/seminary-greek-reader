@@ -1,5 +1,5 @@
 'use client'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Flashcard } from './Flashcard'
 import { DeckSelector } from './DeckSelector'
 import { Button } from '@/components/ui/Button'
@@ -86,6 +86,37 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
     }
   }, [card, idx, cards.length, isFlipped])
 
+  // Desktop keyboard controls: arrow keys drive progress through the deck.
+  //  ↓ / Space — flip (reveal); →  Got it; ←  Again; ↑  Hard
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (finished || !card) return
+      const t = e.target as HTMLElement | null
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return
+      switch (e.key) {
+        case 'ArrowDown':
+        case ' ':
+          e.preventDefault()
+          setIsFlipped(f => !f)
+          break
+        case 'ArrowRight':
+          e.preventDefault()
+          advance('know')
+          break
+        case 'ArrowLeft':
+          e.preventDefault()
+          advance('again')
+          break
+        case 'ArrowUp':
+          e.preventDefault()
+          advance('hard')
+          break
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [advance, finished, card])
+
   if (finished) {
     return (
       <div className="text-center py-12 space-y-4">
@@ -155,6 +186,11 @@ export function FlashcardDeck({ initialCards, initialLevel, onLevelChange, deckC
               </Button>
             </div>
           </div>
+
+          {/* Keyboard hint — desktop only */}
+          <p className="hidden sm:block text-center text-xs text-gray-400">
+            Keys: <span className="font-medium">↓ / Space</span> reveal · <span className="font-medium">→</span> Got it · <span className="font-medium">←</span> Again · <span className="font-medium">↑</span> Hard
+          </p>
         </>
       ) : (
         <p className="text-gray-400 italic text-sm text-center py-8">No cards in this deck.</p>

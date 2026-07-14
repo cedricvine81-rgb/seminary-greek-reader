@@ -48,7 +48,7 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleFlip()}
         >
           <div className="flex-1 flex flex-col items-center justify-center w-full">
-            <p className="greek-text text-5xl text-brand-800 font-medium text-center leading-tight">
+            <p className="greek-text text-2xl text-brand-800 font-bold text-center leading-tight">
               {card.front}
             </p>
           </div>
@@ -63,12 +63,12 @@ export function Flashcard({ card, isFlipped, onFlip }: FlashcardProps) {
           aria-label="Flip flashcard back"
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && handleFlip()}
         >
-          <p className="greek-text text-2xl text-brand-800 font-semibold text-center mb-1">
+          <p className="greek-text text-2xl text-brand-800 font-bold text-center mb-1">
             {card.backLexeme}
           </p>
-          <p className="text-xl text-gray-800 font-semibold text-center">{card.backGloss}</p>
+          <p className="text-2xl text-gray-800 font-medium text-center">{card.backGloss}</p>
           {card.backParsing && (
-            <p className="text-sm text-gray-500 text-center mt-2">{card.backParsing}</p>
+            <p className="text-2xl text-gray-500 text-center mt-2">{card.backParsing}</p>
           )}
         </div>
       )}
