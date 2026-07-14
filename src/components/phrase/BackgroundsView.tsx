@@ -683,7 +683,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               <BookOpen size={14} /> Summaries
             </button>
             {showSummaries && (
-              <div className="absolute left-0 top-full mt-1 z-30 w-72 max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-surface p-1.5 shadow-lg">
+              <div className="absolute left-0 top-full mt-1 z-30 w-72 max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover p-1.5 shadow-lg">
                 {BACKGROUND_SUMMARIES.map(cat => (
                   <div key={cat.id}>
                     <button
@@ -729,7 +729,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       {/* Summary card — the "bubble" that opens with a selected work's overview. */}
       {openSummary && (
         <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center bg-black/30 p-4 overflow-y-auto" onClick={() => setOpenSummary(null)}>
-          <div className="w-full max-w-2xl my-8 rounded-xl bg-surface shadow-xl" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-2xl my-8 rounded-xl bg-popover shadow-xl" onClick={e => e.stopPropagation()}>
             <div className="flex items-start justify-between gap-3 border-b border-gray-100 px-5 py-3">
               <div>
                 <p className="text-[10px] font-semibold uppercase tracking-wide text-brand-500">{openSummary.category}</p>

@@ -74,7 +74,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
       </button>
 
       {open && (
-        <div className="absolute right-0 top-11 w-56 bg-surface rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
+        <div className="absolute right-0 top-11 w-56 bg-popover rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
           {/* Search — mobile only (desktop uses the header search icon). */}
           <button
             onClick={() => { setOpen(false); openMasterSearch() }}

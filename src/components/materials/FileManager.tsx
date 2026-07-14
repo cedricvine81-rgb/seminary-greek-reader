@@ -325,7 +325,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
       {/* Share dialog */}
       {share && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4" onClick={() => setShare(null)}>
-          <div className="w-full max-w-md rounded-xl bg-surface shadow-xl p-5" onClick={e => e.stopPropagation()}>
+          <div className="w-full max-w-md rounded-xl bg-popover shadow-xl p-5" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-1">
               <h3 className="font-semibold text-gray-900">Share with courses</h3>
               <button onClick={() => setShare(null)} className="text-gray-400 hover:text-gray-600"><X size={18} /></button>

@@ -16,7 +16,7 @@ export function HighlightPopup({ state, onPick, onRemove, onClose }: {
     <>
       <div className="fixed inset-0 z-40" onClick={onClose} />
       <div
-        className="fixed z-50 -translate-x-1/2 -translate-y-full rounded-xl border border-gray-200 bg-surface px-2.5 py-2 shadow-2xl"
+        className="fixed z-50 -translate-x-1/2 -translate-y-full rounded-xl border border-gray-200 bg-popover px-2.5 py-2 shadow-2xl"
         style={{ left: state.x, top: state.y - 8 }}
       >
         <HighlightSwatches

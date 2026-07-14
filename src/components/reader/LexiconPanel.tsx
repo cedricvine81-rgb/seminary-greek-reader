@@ -43,7 +43,7 @@ export function LexiconPanel({ word, onClose }: { word: VerseWord; onClose: () =
 
   return (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/30 p-0 sm:p-4">
-      <div ref={ref} className="w-full sm:max-w-lg max-h-[85vh] bg-surface rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+      <div ref={ref} className="w-full sm:max-w-lg max-h-[85vh] bg-popover rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 shrink-0">
           <div>

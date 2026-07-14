@@ -74,7 +74,7 @@ export function MobileParsingSheet({ info, locked }: MobileParsingSheetProps) {
               onClick={() => setExpanded(false)}
             />
             <motion.div
-              className="fixed inset-x-0 bottom-0 z-50 bg-surface rounded-t-2xl shadow-xl flex flex-col max-h-[75vh]"
+              className="fixed inset-x-0 bottom-0 z-50 bg-popover rounded-t-2xl shadow-xl flex flex-col max-h-[75vh]"
               initial={{ y: '100%' }}
               animate={{ y: 0 }}
               exit={{ y: '100%' }}

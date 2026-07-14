@@ -127,8 +127,8 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
     : { position: 'fixed', top: y, left: Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - 396), zIndex: 1000, width: 380, maxHeight: '75vh' }
 
   const menuClass = isMobile
-    ? 'bg-surface border-t border-gray-200 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden'
-    : 'bg-surface border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden'
+    ? 'bg-popover border-t border-gray-200 rounded-t-2xl shadow-2xl flex flex-col overflow-hidden'
+    : 'bg-popover border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden'
 
   return (
     <div

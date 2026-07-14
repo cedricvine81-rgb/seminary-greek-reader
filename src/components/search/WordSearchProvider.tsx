@@ -61,7 +61,7 @@ export function WordSearchProvider() {
   return (
     <div
       ref={ref}
-      className="fixed z-[110] w-64 rounded-xl border border-gray-200 bg-surface shadow-2xl p-2.5 space-y-2"
+      className="fixed z-[110] w-64 rounded-xl border border-gray-200 bg-popover shadow-2xl p-2.5 space-y-2"
       style={{ left: Math.min(menu.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 272), top: menu.y }}
     >
       {/* Highlighter swatches — Greek words in highlight-capable panes. Highlights the word. */}

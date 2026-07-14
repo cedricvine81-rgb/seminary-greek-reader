@@ -99,7 +99,7 @@ export function BackgroundsSearchProvider() {
       {menu && (
         <div
           ref={menuRef}
-          className="fixed z-[100] rounded-lg border border-gray-200 bg-surface shadow-lg py-1 text-sm"
+          className="fixed z-[100] rounded-lg border border-gray-200 bg-popover shadow-lg py-1 text-sm"
           style={{ left: Math.min(menu.x, (typeof window !== 'undefined' ? window.innerWidth : 9999) - 280), top: menu.y }}
         >
           <button

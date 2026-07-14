@@ -34,6 +34,11 @@ const config: Config = {
         },
         // Card / panel background (was literal bg-white; swept to bg-surface).
         surface: 'rgb(var(--surface) / <alpha-value>)',
+        // Floating pop-outs (menus, note & right-click popovers, dialogs) — a
+        // distinct raised surface so they stand out from the page/cards.
+        popover: 'rgb(var(--popover) / <alpha-value>)',
+        // App header bar — a touch lighter than the page in every theme.
+        topbar: 'rgb(var(--topbar) / <alpha-value>)',
         parchment: {
           50:  'rgb(var(--parchment-50) / <alpha-value>)',
           100: 'rgb(var(--parchment-100) / <alpha-value>)',

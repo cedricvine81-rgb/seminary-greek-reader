@@ -478,7 +478,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
           {showSug && suggestions.length > 0 && (
             <>
               <div className="fixed inset-0 z-30" onClick={() => setShowSug(false)} />
-              <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-surface shadow-lg">
+              <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg">
                 {suggestions.map(s => (
                   <button key={s.word} type="button" onMouseDown={e => { e.preventDefault(); pickSuggestion(s.word) }}
                     className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2">
@@ -539,7 +539,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
             {showTypes && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setShowTypes(false)} />
-                <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-surface shadow-2xl p-3">
+                <div className="absolute right-0 top-full mt-2 z-30 w-[min(92vw,26rem)] max-h-[70vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-2xl p-3">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs font-bold uppercase tracking-widest text-gray-400">Search types</p>
                     <button type="button" onClick={() => setShowTypes(false)} className="text-gray-400 hover:text-gray-700 p-0.5" aria-label="Close"><X size={14} /></button>

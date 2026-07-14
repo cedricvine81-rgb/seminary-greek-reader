@@ -1667,7 +1667,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {showSettings && (
             // Mobile scrolls (nav links make it tall); desktop must NOT clip overflow, or the
             // left-popping flyouts get hidden — overflow-y-auto forces overflow-x to auto too.
-            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-surface border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+            <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-popover border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-800">
                   <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
@@ -1751,7 +1751,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'contents' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-surface border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[75vh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">GNT Edition</p>
                     <div className="space-y-2">
@@ -1813,7 +1813,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'syntax' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-surface border border-gray-200 rounded-xl p-5 shadow-lg"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-popover border border-gray-200 rounded-xl p-5 shadow-lg"
                   >
                     <p className="text-sm font-semibold uppercase tracking-wide text-gray-500 mb-3">Syntax Sources</p>
                     <div className="space-y-3">
@@ -1857,7 +1857,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                   <ChevronRight size={14} className={`transition-transform ${settingsFlyout === 'controls' ? 'text-brand-500 -rotate-90' : 'text-gray-400'}`} />
                 </button>
                 {settingsFlyout === 'controls' && (
-                  <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-surface border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
+                  <div onMouseEnter={cancelFlyoutClose} className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] bg-popover border border-gray-200 rounded-xl p-5 shadow-lg space-y-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-700 mb-1">Parsing Panel</p>
                       <ul className="space-y-1.5 text-sm text-gray-500 leading-relaxed">
@@ -1900,7 +1900,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 {settingsFlyout === 'translations' && (
                   <div
                     onMouseEnter={cancelFlyoutClose}
-                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-surface border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
+                    className="z-[51] w-full mt-2 lg:mt-0 lg:absolute lg:right-full lg:top-0 lg:mr-2 lg:w-[400px] max-h-[60vh] lg:max-h-60 overflow-y-auto bg-popover border border-gray-200 rounded-xl p-4 shadow-lg space-y-1"
                   >
                     <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">Shown inline beneath each Greek verse.</p>
                     <button
@@ -1998,7 +1998,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {searchResults !== null && typeof document !== 'undefined' && createPortal(
         <div
           data-results-panel
-          className="fixed z-[70] w-[min(94vw,520px)] max-h-[82vh] flex flex-col rounded-xl bg-surface shadow-2xl border border-gray-200"
+          className="fixed z-[70] w-[min(94vw,520px)] max-h-[82vh] flex flex-col rounded-xl bg-popover shadow-2xl border border-gray-200"
           style={{ left: resultsPos?.x ?? 0, top: resultsPos?.y ?? 0, visibility: resultsPos ? 'visible' : 'hidden' }}
         >
           <div

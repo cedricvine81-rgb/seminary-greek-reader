@@ -41,6 +41,8 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --gray-900: 17 24 39;
 
     --surface: 255 255 255;   /* cards / panels (was literal white) */
+    --popover: 255 255 255;   /* floating pop-outs (menus, note/right-click popovers) */
+    --topbar:  255 255 255;   /* app header — lighter/brighter than the page */
 
     --ink-50:  244 244 245;
     --ink-900: 24 24 27;
@@ -70,10 +72,10 @@ body.exam-lockdown nav.fixed.bottom-0 {
 
   /* ── Sepia (warm beige, light) ───────────────────────────── */
   [data-theme='sepia'] {
-    --gray-50:  253 247 234;
-    --gray-100: 248 240 222;
-    --gray-200: 237 225 199;
-    --gray-300: 218 202 168;
+    --gray-50:  255 251 245;
+    --gray-100: 250 243 228;
+    --gray-200: 240 229 205;
+    --gray-300: 220 205 171;
     --gray-400: 166 146 110;
     --gray-500: 112 94 66;
     --gray-600: 84 68 46;
@@ -81,9 +83,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --gray-800: 47 36 24;
     --gray-900: 33 24 15;
 
-    --surface: 255 252 245;
+    --surface: 252 246 235;
+    /* Pop-outs are a deeper warm off-white so they read as raised against the
+       near-white sepia page. */
+    --popover: 245 236 219;
+    --topbar:  255 255 255;   /* header brighter than the warm page */
 
-    --ink-50:  248 240 222;
+    --ink-50:  250 243 228;
     --ink-900: 33 24 15;
 
     /* Keep the brand blue on warm paper — crisp accents, consistent identity. */
@@ -120,6 +126,8 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --gray-900: 241 245 249;  /* strong text */
 
     --surface: 40 52 74;      /* cards sit just above the page */
+    --popover: 51 66 92;      /* pop-outs sit higher still (lighter) */
+    --topbar:  58 74 104;     /* header lighter than the page */
 
     --ink-50:  39 51 73;
     --ink-900: 241 245 249;
@@ -157,6 +165,8 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --gray-900: 250 250 250;  /* strong text */
 
     --surface: 35 35 39;      /* cards sit just above the page */
+    --popover: 46 46 52;      /* pop-outs sit higher still (lighter) */
+    --topbar:  52 52 58;      /* header lighter than the page */
 
     --ink-50:  39 39 42;
     --ink-900: 244 244 245;

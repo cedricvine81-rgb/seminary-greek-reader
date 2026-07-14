@@ -1078,7 +1078,7 @@ export function MorphologyView() {
           <Menu size={18} className="text-gray-500 shrink-0" />
         </button>
         {menuOpen && (
-          <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-surface border border-gray-200 rounded-xl p-3 shadow-lg space-y-3">
+          <div className="absolute left-0 right-0 top-full mt-1 z-50 max-h-[70svh] overflow-y-auto bg-popover border border-gray-200 rounded-xl p-3 shadow-lg space-y-3">
             <div>
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-1.5 px-1">Topics</p>
               <div className="flex flex-wrap gap-1.5">

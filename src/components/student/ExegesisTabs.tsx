@@ -265,7 +265,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen }: { isA
             </button>
 
             {showToolsMenu && (
-              <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-surface border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+              <div className="absolute right-0 top-full mt-1 z-50 w-72 bg-popover border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold text-gray-800">{toolsMenuTitle}</span>
                   <button onClick={() => setShowToolsMenu(false)} className="text-gray-400 hover:text-gray-600"><X size={15} /></button>

@@ -543,7 +543,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </button>
 
               {openCat === cat.id && (
-                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-surface border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
+                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-popover border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
                   {cat.works.map(w => (
                     <button
                       key={w.id}
@@ -581,7 +581,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </button>
 
               {locateOpen && (
-                <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-surface border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
+                <div className="absolute left-0 top-full z-30 mt-1 flex items-start bg-popover border border-gray-200 rounded-lg shadow-lg p-2 max-h-[70vh] overflow-y-auto">
                   {buildLocateColumns().map(col => (
                     <div key={col.key} style={{ marginTop: col.marginTop }} className="w-14 shrink-0">
                       <p
@@ -626,7 +626,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 </button>
 
                 {translationMenuOpen && (
-                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-surface py-1 shadow-lg">
+                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
                     <button
                       type="button"
                       onClick={() => { setTranslationId(null); setGreekHiddenPref(false); setTranslationMenuOpen(false) }}

@@ -44,7 +44,7 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
         className={clsx(
           // Cap height and scroll internally so tall dialogs stay usable on short
           // (phone) screens — the page body is scroll-locked while a modal is open.
-          'relative w-full bg-surface rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto',
+          'relative w-full bg-popover rounded-2xl shadow-xl p-6 max-h-[90vh] overflow-y-auto',
           sizeClasses[size]
         )}
       >

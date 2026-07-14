@@ -94,7 +94,7 @@ function Round2WordPopover({
   ]
 
   return (
-    <div className="mt-2 mb-3 w-full max-w-xl rounded-xl border border-brand-300 bg-surface shadow-lg overflow-hidden print:hidden">
+    <div className="mt-2 mb-3 w-full max-w-xl rounded-xl border border-brand-300 bg-popover shadow-lg overflow-hidden print:hidden">
       {/* Header */}
       <div className="flex items-baseline justify-between gap-3 bg-brand-50 px-3 py-2 border-b border-brand-200">
         <div className="flex items-baseline gap-2 min-w-0">
@@ -1736,7 +1736,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {lockdownOn && !lockdownStarted && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/90 px-6 print:hidden">
           {canLockdown ? (
-            <div className="max-w-lg w-full rounded-2xl bg-surface p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="max-w-lg w-full rounded-2xl bg-popover p-6 shadow-2xl max-h-[90vh] overflow-y-auto">
               <div className="text-center">
                 <div className="text-4xl mb-2">🔒</div>
                 <h2 className="text-xl font-bold text-gray-900">Locked exam — please read before you begin</h2>
@@ -1801,7 +1801,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               )}
             </div>
           ) : (
-            <div className="max-w-md rounded-2xl bg-surface p-6 text-center shadow-2xl">
+            <div className="max-w-md rounded-2xl bg-popover p-6 text-center shadow-2xl">
               <div className="text-4xl mb-3">🖥️</div>
               <h2 className="text-xl font-bold text-gray-900">Use a computer for this exam</h2>
               <p className="mt-2 text-sm text-gray-600">
@@ -1816,7 +1816,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       {/* ── Lockdown: re-entry overlay (exited fullscreen mid-exam) ── */}
       {lockdownOn && lockdownStarted && fullscreenLost && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-red-900/90 px-6 print:hidden">
-          <div className="max-w-md rounded-2xl bg-surface p-6 text-center shadow-2xl">
+          <div className="max-w-md rounded-2xl bg-popover p-6 text-center shadow-2xl">
             <div className="text-4xl mb-3">⚠️</div>
             <h2 className="text-xl font-bold text-red-700">You left fullscreen</h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -2096,7 +2096,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               My Sessions
             </button>
             {showSessionList && (
-              <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-surface border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
+              <div ref={sessionPanelRef} className="absolute right-0 top-full mt-1 z-50 bg-popover border border-gray-200 rounded-xl shadow-xl w-80 max-w-[calc(100vw-1rem)] max-h-80 overflow-y-auto">
                 {savedSessions.length === 0 ? (
                   <p className="px-4 py-3 text-sm text-gray-400">No saved sessions yet.</p>
                 ) : (
