@@ -132,6 +132,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [translationId, setTranslationId] = useState<string | null>(null)
   // For Greek (lxx) works with a translation, hide the Greek and read the translation alone.
   const [greekHiddenPref, setGreekHiddenPref] = useState(false)
+  // Display mode for greek-prose works (Josephus, Epictetus): Greek | Greek+English | English.
+  const [proseMode, setProseMode] = useState<'greek' | 'both' | 'english'>('both')
   const [translationMenuOpen, setTranslationMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
   // A word to spotlight in red, carried in when the reader is opened from a background
@@ -172,14 +174,18 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work)
   const showEnglish = translationId !== null
-  // Greek-hidden only takes effect on an lxx work that actually has a translation showing.
-  const greekHidden = greekHiddenPref && isGreek && showEnglish
+  // Greek-hidden (English-only): an lxx work with its translation showing, or a greek-prose
+  // work whose mode is 'english'.
+  const greekHidden = (greekHiddenPref && isGreek && showEnglish) || (greekProse && proseMode === 'english')
+  // Whether the parallel English column is rendered at all.
+  const englishColShown = (isGreek && showEnglish && hasEnglish) || (greekProse && proseMode !== 'greek')
   const translationLabel = translationId
     ? (availableTranslations.find(t => t.id === translationId)?.label ?? 'Translation')
     : null
   const currentTranslationLabel = !translationId
     ? 'Greek only'
     : greekHidden ? `${translationLabel} only` : `Greek + ${translationLabel}`
+  const proseModeLabel = proseMode === 'greek' ? 'Greek only' : proseMode === 'english' ? 'English only' : 'Greek + English'
 
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
     if (!isAuthenticated) return
@@ -430,7 +436,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false); setProseMode('both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -445,7 +451,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false)
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false); setProseMode('both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -660,6 +666,35 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </div>
             )}
 
+            {greekProse && (
+              <div className="relative" ref={translationMenuRef}>
+                <button
+                  type="button"
+                  onClick={() => setTranslationMenuOpen(o => !o)}
+                  className={`inline-flex items-center gap-1 rounded border border-gray-300 px-2 py-1 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-100 ${
+                    translationMenuOpen ? 'bg-gray-100' : ''}`}
+                >
+                  {proseModeLabel}
+                  <ChevronDown size={13} className={`transition-transform ${translationMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {translationMenuOpen && (
+                  <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
+                    {([['greek', 'Greek only'], ['both', 'Greek + English'], ['english', 'English only']] as const).map(([mode, label]) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => { setProseMode(mode); setTranslationMenuOpen(false) }}
+                        className={`block w-full px-3 py-1.5 text-left text-xs transition-colors ${proseMode === mode ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
           </div>
         )}
@@ -698,7 +733,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               {!series.backDone && <p className="text-xs text-gray-300 italic text-center">Loading previous chapter…</p>}
 
               {series.sections.map(section => {
+                // In a greek-prose work's English-only mode, drop the Greek-only §§ (Josephus
+                // English lives once per Whiston section) so the translation reads continuously.
                 const filteredRows = section.rows.filter(matchesSearch)
+                  .filter(r => !(greekProse && proseMode === 'english') || !!r.english)
                 if (q && filteredRows.length === 0) return null
                 const noteBook = noteBookFor(work, section)
                 const refLabel = refLabelFor(work, section)
@@ -713,7 +751,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num)
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
-                          className={`grid gap-4 ${!greekHidden && ((isGreek && showEnglish && hasEnglish) || greekProse) ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
+                          className={`grid gap-4 ${!greekHidden && englishColShown ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
                           {/* Greek (or, for prose works, the single English column) — the
                               only column highlighting applies to (see render.tsx: a verse's
                               Greek and English text are different canonical strings, so a
@@ -780,7 +818,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               works (Epictetus). For greek-prose this is the primary text, so
                               it carries the note/highlight anchor. In translation-only mode
                               (Greek hidden) it's the sole column and carries the note button. */}
-                          {((isGreek && showEnglish && hasEnglish) || greekProse) && (
+                          {englishColShown && (
                             <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: greekHidden ? 'calc(var(--tx-fs, 1.45rem) * 0.8)' : 'calc(var(--tx-fs, 1.45rem) * 0.65)' }}
                               {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num) : {})}>
                               {isAuthenticated && greekHidden && (
