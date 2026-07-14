@@ -72,7 +72,6 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
   const [copied, setCopied] = useState<string | null>(null)
   const lemma   = word.lexeme?.lexeme ?? null
   const freq    = word.lexeme?.frequency
-  const strongs = word.lexeme?.strongs ? String(word.lexeme.strongs).replace(/^0+/, '') : null
   const reference = (word.verseId ?? '').replace(/^(.*)\.(\d+)\.(\d+)$/, '$1 $2:$3')
   function copy(text: string, label: string) {
     navigator.clipboard?.writeText(text)
@@ -212,18 +211,8 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
               This form
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
-              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="col-span-2 text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               By morphology <span className="text-gray-400">· NT</span>
-            </button>
-            {strongs && (
-              <button type="button" onClick={() => onWordAction('strongs', scope)}
-                className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-                Strong&apos;s {strongs} <span className="text-gray-400">· NT</span>
-              </button>
-            )}
-            <button type="button" onClick={() => onWordAction('lexicon', scope)}
-              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
-              Dictionary
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
               className="col-span-2 text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">

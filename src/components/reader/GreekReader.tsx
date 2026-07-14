@@ -2099,7 +2099,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         <LexiconPanel word={lexiconWord} onClose={() => setLexiconWord(null)} />
       )}
 
-      {isAuthenticated && highlightSelection.popup && (
+      {/* Suppress the floating highlight palette while the right-click word menu is open —
+          that menu carries its own Highlight row, so showing both is redundant. Drag-select
+          highlighting (no word menu) still shows this palette. */}
+      {isAuthenticated && highlightSelection.popup && !syntaxMenu && (
         <HighlightPopup
           state={highlightSelection.popup}
           onPick={color => {
