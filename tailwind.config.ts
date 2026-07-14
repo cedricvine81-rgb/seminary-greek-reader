@@ -39,6 +39,8 @@ const config: Config = {
         popover: 'rgb(var(--popover) / <alpha-value>)',
         // App header bar — a touch lighter than the page in every theme.
         topbar: 'rgb(var(--topbar) / <alpha-value>)',
+        // Text-entry fields (matches the header off-white on the sepia palette).
+        input: 'rgb(var(--input) / <alpha-value>)',
         parchment: {
           50:  'rgb(var(--parchment-50) / <alpha-value>)',
           100: 'rgb(var(--parchment-100) / <alpha-value>)',

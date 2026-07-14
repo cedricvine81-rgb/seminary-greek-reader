@@ -89,7 +89,7 @@ export function ProfileForm({ initialFirstName, initialSurname, initialInstituti
           <select
             value={selectValue}
             onChange={e => { setSelectValue(e.target.value); setError('') }}
-            className="w-full appearance-none rounded-lg border border-gray-300 bg-surface px-3 py-2 pr-9 text-sm
+            className="w-full appearance-none rounded-lg border border-gray-300 bg-input px-3 py-2 pr-9 text-sm
               focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           >
             <option value={PRIVATE_USER}>No institution</option>

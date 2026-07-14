@@ -252,7 +252,7 @@ function GroupComposer({ courseId, group, onBack, onClose }: { courseId: string;
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
         <textarea value={body} onChange={e => setBody(e.target.value)} rows={6} placeholder={`Write your message to ${group.name}…`}
-          className="w-full rounded-lg border border-gray-300 bg-surface px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent" />
+          className="w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent" />
       </div>
       {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
       <div className="flex justify-end gap-2">

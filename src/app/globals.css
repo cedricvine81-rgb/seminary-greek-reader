@@ -43,6 +43,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --surface: 255 255 255;   /* cards / panels (was literal white) */
     --popover: 255 255 255;   /* floating pop-outs (menus, note/right-click popovers) */
     --topbar:  255 255 255;   /* app header — lighter/brighter than the page */
+    --input:   255 255 255;   /* text-entry fields */
 
     --ink-50:  244 244 245;
     --ink-900: 24 24 27;
@@ -88,6 +89,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
        near-white sepia page. */
     --popover: 245 236 219;
     --topbar:  255 255 255;   /* header brighter than the warm page */
+    --input:   255 255 255;   /* text-entry fields match the header off-white */
 
     --ink-50:  250 243 228;
     --ink-900: 33 24 15;
@@ -128,6 +130,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --surface: 40 52 74;      /* cards sit just above the page */
     --popover: 51 66 92;      /* pop-outs sit higher still (lighter) */
     --topbar:  58 74 104;     /* header lighter than the page */
+    --input:   40 52 74;      /* text-entry fields (= surface in this theme) */
 
     --ink-50:  39 51 73;
     --ink-900: 241 245 249;
@@ -167,6 +170,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --surface: 35 35 39;      /* cards sit just above the page */
     --popover: 46 46 52;      /* pop-outs sit higher still (lighter) */
     --topbar:  52 52 58;      /* header lighter than the page */
+    --input:   35 35 39;      /* text-entry fields (= surface in this theme) */
 
     --ink-50:  39 39 42;
     --ink-900: 244 244 245;
@@ -257,7 +261,7 @@ body.exam-lockdown nav.fixed.bottom-0 {
 
   /* ── Form inputs ────────────────────────────────────────── */
   .input {
-    @apply w-full rounded-lg border border-gray-300 bg-surface px-3 py-2 text-sm
+    @apply w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm
            placeholder:text-gray-400 focus:outline-none focus:ring-2
            focus:ring-brand-500 focus:border-transparent
            disabled:bg-gray-50 disabled:text-gray-500;

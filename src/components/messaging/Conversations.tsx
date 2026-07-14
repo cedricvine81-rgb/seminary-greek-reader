@@ -98,7 +98,7 @@ function ComposeButton({ courses, onSent }: { courses: ComposeCourse[]; onSent: 
                 onChange={e => setBody(e.target.value)}
                 rows={6}
                 placeholder="Write your message…"
-                className="w-full rounded-lg border border-gray-300 bg-surface px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
             {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
@@ -203,7 +203,7 @@ function ThreadView({ rootId, meId, onChanged, isBroadcast }: { rootId: string; 
             onChange={e => setReply(e.target.value)}
             rows={2}
             placeholder="Write a reply…"
-            className="flex-1 rounded-lg border border-gray-300 bg-surface px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            className="flex-1 rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           <Button onClick={send} loading={sending} size="sm">Reply</Button>
         </div>

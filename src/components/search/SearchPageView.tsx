@@ -450,7 +450,7 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
       {/* Sticky controls */}
       <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
         <div className="relative">
-          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-surface px-3 py-2.5 shadow-sm">
+          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-2.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
             <input
               ref={inputRef}
@@ -623,12 +623,6 @@ export function SearchPageView({ initialQuery = '', initialScope }: { initialQue
                 </div>
               </div>
             )}
-            <p className="text-center text-sm text-gray-400">
-              Search the Greek NT &amp; LXX, the English/Spanish (and more) translations, or any background collection.
-            </p>
-            <p className="mt-2 text-center text-[11px] text-gray-400">
-              Type several words to require them all; wrap in <span className="font-medium text-gray-500">&quot;quotes&quot;</span> for an exact phrase.
-            </p>
           </div>
         )}
         {noResults && (
