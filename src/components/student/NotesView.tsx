@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock, Plus } from 'lucide-react'
+import { Folder, FolderPlus, Trash2, Pencil, Check, X, StickyNote, Loader2, GraduationCap, Send, CheckCircle2, Clock, Plus, ChevronDown } from 'lucide-react'
 import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/note-colors'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
@@ -88,11 +88,23 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const [error, setError] = useState('')
   const [activeFolder, setActiveFolder] = useState<string>('all') // 'all' | 'unfiled' | folderId
   const [noteKind, setNoteKind] = useState<'all' | 'verse' | 'general'>('all') // notebook filter: verse-anchored vs topic notes
+  const [openKind, setOpenKind] = useState<null | 'verse' | 'general'>(null)   // which kind's folder dropdown is open
+  const kindTabsRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('') // free-text search over the notebook list
   const [addingNote, setAddingNote] = useState(false) // composing a new topic (verse-less) note
   const [addVerse, setAddVerse] = useState<number | null>(null) // "This passage": verse chosen for a new verse note
   const [newFolder, setNewFolder] = useState<{ name: string; color: NoteColor } | null>(null)
   const [editFolder, setEditFolder] = useState<{ id: string; name: string; color: NoteColor } | null>(null)
+
+  // Close an open Verse/Topic folder dropdown on outside click or Escape.
+  useEffect(() => {
+    if (!openKind) return
+    const onDown = (e: MouseEvent) => { if (!kindTabsRef.current?.contains(e.target as Node)) setOpenKind(null) }
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpenKind(null) }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey) }
+  }, [openKind])
 
   // ── Side text pane: the anchor passage, in a chosen version, with click-to-parse ──
   const [version, setVersion] = useState('na1904')
@@ -248,10 +260,15 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
   const inFolder = (n: NoteT) =>
     activeFolder === 'all' ? true : activeFolder === 'unfiled' ? !n.folderId : n.folderId === activeFolder
-  // Kind + folder counts drive the Verse / Topic / All toggle (scoped to the current folder).
+  // Notes in the active folder — drives the displayed list (filtered below).
   const folderNotes = notes.filter(inFolder)
-  const verseCount = folderNotes.filter(n => n.book != null).length
-  const generalCount = folderNotes.filter(n => n.book == null).length
+  // Count notes of a given kind within a given folder — drives the tab labels and the
+  // per-folder counts inside the Verse / Topic dropdowns.
+  const countKindFolder = (kind: 'verse' | 'general', folder: string) =>
+    notes.filter(n =>
+      (kind === 'verse' ? n.book != null : n.book == null) &&
+      (folder === 'all' ? true : folder === 'unfiled' ? !n.folderId : n.folderId === folder)
+    ).length
   const q = query.trim().toLowerCase()
   const filtered = folderNotes.filter(n => {
     if (noteKind === 'verse' && n.book == null) return false
@@ -343,15 +360,69 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             </button>
           </div>
 
-          {/* Kind toggle (verse-anchored vs topic) + free-text search over the notebook. */}
-          <div className="flex items-center flex-wrap gap-2 mb-2">
-            <div className="inline-flex rounded-lg border border-gray-300 overflow-hidden text-xs">
-              {([['all', `All (${folderNotes.length})`], ['verse', `Verse notes (${verseCount})`], ['general', `Topic notes (${generalCount})`]] as const).map(([k, label], i) => (
-                <button key={k} type="button" onClick={() => setNoteKind(k)}
-                  className={`px-2.5 py-1 font-medium ${i > 0 ? 'border-l border-gray-300' : ''} ${noteKind === k ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}>
-                  {label}
-                </button>
-              ))}
+          {/* Kind tabs — "All" is plain; "Verse notes" and "Topic notes" each open a folder
+              dropdown (folders used to be a separate second row). Plus free-text search. */}
+          <div className="flex items-center flex-wrap gap-2 mb-3">
+            <div ref={kindTabsRef} className="inline-flex rounded-lg border border-gray-300 text-xs">
+              <button type="button"
+                onClick={() => { setNoteKind('all'); setActiveFolder('all'); setOpenKind(null) }}
+                className={`rounded-l-lg px-2.5 py-1 font-medium ${noteKind === 'all' ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}>
+                All ({notes.length})
+              </button>
+              {([['verse', 'Verse notes'], ['general', 'Topic notes']] as const).map(([kind, label]) => {
+                const activeHere = noteKind === kind
+                const activeF = activeHere && activeFolder !== 'all'
+                  ? (activeFolder === 'unfiled'
+                      ? { name: 'Unfiled', color: null as string | null }
+                      : folders.find(f => f.id === activeFolder) ?? null)
+                  : null
+                return (
+                  <div key={kind} className="relative flex">
+                    <button type="button"
+                      onClick={() => { setNoteKind(kind); setActiveFolder('all'); setOpenKind(openKind === kind ? null : kind) }}
+                      className={`inline-flex items-center gap-1 border-l border-gray-300 px-2.5 py-1 font-medium ${kind === 'general' ? 'rounded-r-lg' : ''} ${activeHere ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}>
+                      {label} ({countKindFolder(kind, 'all')})
+                      {activeF && (
+                        <span className={`h-1.5 w-1.5 rounded-full ${activeF.color ? colorOf(activeF.color as NoteColor).dot : 'bg-current opacity-70'}`} />
+                      )}
+                      <ChevronDown size={12} className={`transition-transform ${openKind === kind ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openKind === kind && (
+                      <div className="absolute left-0 top-full mt-1 z-30 min-w-[13rem] rounded-lg border border-gray-200 bg-popover shadow-lg py-1">
+                        {([['all', 'All folders'], ['unfiled', 'Unfiled']] as const).map(([fk, flabel]) => (
+                          <button key={fk} type="button"
+                            onClick={() => { setNoteKind(kind); setActiveFolder(fk); setOpenKind(null) }}
+                            className={`flex w-full items-center gap-2 px-3 py-1.5 text-xs text-left hover:bg-gray-50 ${activeHere && activeFolder === fk ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
+                            <span className="flex-1">{flabel}</span>
+                            <span className="text-gray-400">{countKindFolder(kind, fk)}</span>
+                          </button>
+                        ))}
+                        {folders.length > 0 && <div className="my-1 border-t border-gray-100" />}
+                        {folders.map(f => (
+                          <div key={f.id} className="flex items-center">
+                            <button type="button"
+                              onClick={() => { setNoteKind(kind); setActiveFolder(f.id); setOpenKind(null) }}
+                              className={`flex flex-1 items-center gap-2 px-3 py-1.5 text-xs text-left hover:bg-gray-50 ${activeHere && activeFolder === f.id ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
+                              <span className={`h-2 w-2 rounded-full ${colorOf(f.color).dot}`} />
+                              <span className="flex-1 truncate">{f.name}</span>
+                              <span className="text-gray-400">{countKindFolder(kind, f.id)}</span>
+                            </button>
+                            <button type="button" title="Edit folder"
+                              onClick={() => { setEditFolder({ id: f.id, name: f.name, color: (f.color as NoteColor) }); setOpenKind(null) }}
+                              className="px-2 py-1.5 text-gray-300 hover:text-gray-600"><Pencil size={11} /></button>
+                          </div>
+                        ))}
+                        <div className="my-1 border-t border-gray-100" />
+                        <button type="button"
+                          onClick={() => { setNewFolder({ name: '', color: 'blue' }); setOpenKind(null) }}
+                          className="flex w-full items-center gap-2 px-3 py-1.5 text-xs text-gray-500 hover:bg-gray-50">
+                          <FolderPlus size={12} /> New folder
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
             <div className="relative flex-1 min-w-[8rem]">
               <input
@@ -365,25 +436,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                   className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"><X size={13} /></button>
               )}
             </div>
-          </div>
-
-          <div className="flex items-center flex-wrap gap-1.5 mb-3">
-            <Chip active={activeFolder === 'all'} onClick={() => setActiveFolder('all')} label={`All (${notes.length})`} />
-            <Chip active={activeFolder === 'unfiled'} onClick={() => setActiveFolder('unfiled')} label={`Unfiled (${notes.filter(n => !n.folderId).length})`} />
-            {folders.map(f => (
-              <span key={f.id} className="inline-flex items-center">
-                <button onClick={() => setActiveFolder(f.id)}
-                  className={`inline-flex items-center gap-1.5 rounded-none border px-2.5 py-1 text-xs ${activeFolder === f.id ? colorOf(f.color).chip : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
-                  <span className={`h-2 w-2 rounded-full ${colorOf(f.color).dot}`} /> {f.name} ({f._count.notes})
-                </button>
-                {activeFolder === f.id && (
-                  <button onClick={() => setEditFolder({ id: f.id, name: f.name, color: (f.color as NoteColor) })} className="ml-1 text-gray-400 hover:text-gray-700" title="Edit folder"><Pencil size={12} /></button>
-                )}
-              </span>
-            ))}
-            {newFolder === null
-              ? <button onClick={() => setNewFolder({ name: '', color: 'blue' })} className="inline-flex items-center gap-1 rounded-none border border-dashed border-gray-300 px-2.5 py-1 text-xs text-gray-500 hover:bg-gray-50"><FolderPlus size={12} /> New folder</button>
-              : null}
           </div>
 
           {/* New / edit folder inline form */}
@@ -517,15 +569,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
         {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
     </div>
-  )
-}
-
-function Chip({ active, onClick, label }: { active: boolean; onClick: () => void; label: string }) {
-  return (
-    <button onClick={onClick}
-      className={`rounded-none border px-2.5 py-1 text-xs ${active ? 'bg-brand-50 border-brand-200 text-brand-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
-      {label}
-    </button>
   )
 }
 
