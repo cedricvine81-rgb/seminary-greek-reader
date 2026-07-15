@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
@@ -146,7 +146,22 @@ const SEARCH_EXAMPLES: { group: string; hint: string; items: Example[] }[] = [
   ] },
 ]
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string }) {
+// Friendly name for the page a search was launched from (its path), for the "Return to" button.
+const RETURN_LABELS: { test: RegExp; label: string }[] = [
+  { test: /^\/reader/, label: 'Reader' },
+  { test: /^\/exegesis\?.*tab=texts/, label: 'Texts' },
+  { test: /^\/exegesis\?.*tab=backgrounds/, label: 'Backgrounds' },
+  { test: /^\/exegesis\?.*tab=commentary/, label: 'Commentary' },
+  { test: /^\/exegesis\?.*tab=notes/, label: 'Notes' },
+  { test: /^\/exegesis/, label: 'Exegesis' },
+  { test: /^\/vocab/, label: 'Vocabulary' },
+  { test: /^\/morphology/, label: 'Morphology' },
+]
+function returnLabelFor(from: string): string {
+  return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
+}
+
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, returnTo }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; returnTo?: string }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -540,6 +555,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
       {/* Sticky controls */}
       <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
+        {/* When the search was launched from another page (right-click / ⌘K), offer a way back
+            to exactly where they were — router.back() reverses the push and restores scroll. */}
+        {returnTo && (
+          <button type="button" onClick={() => router.back()}
+            className="mb-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 transition-colors">
+            <ArrowLeft size={16} /> Return to {returnLabelFor(returnTo)}
+          </button>
+        )}
         <div className="relative">
           <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-2.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
