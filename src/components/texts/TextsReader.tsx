@@ -30,8 +30,12 @@ function toLexicalInfo(tok: WordToken, ref: string): LexicalInfoPanel {
   return { surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: ref }
 }
 
+// Per-word analysis for untagged Greek prose, aligned 1:1 with the reader's whitespace
+// tokenization of `greek` (element = [lemma, parse] or null for punctuation). Loaded from a
+// sidecar (<book>.morph.json) so the parsing pane works on Josephus etc.
+type MorphEntry = [string, string] | null
 // One rendered line of text: a verse (lxx / 2esdras) or a section (Josephus).
-type Row = { num: number; tokens?: WordToken[]; greek?: string; english?: string }
+type Row = { num: number; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[] }
 
 // A single chapter (or, for Josephus, book+chapter) worth of loaded rows.
 type QueueItem = { book?: number; chapter: number }
@@ -171,6 +175,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   const brentonCache = useRef<Record<string, Record<string, string>>>({})
   const bsbCache = useRef<Record<string, string> | null>(null)
+  // Per-word morphology sidecars, keyed by "<work>.<book>" → { "<section>": MorphEntry[] }.
+  // Fetched once per book (lazily, alongside content) so the parsing pane works on Greek prose.
+  const morphCache = useRef<Record<string, Record<string, MorphEntry[]> | null>>({})
 
   const panelRef = useRef<HTMLDivElement>(null)
   const highlights = useHighlights(isAuthenticated)
@@ -281,6 +288,34 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     bsbCache.current = Object.fromEntries(Object.entries(d).map(([k, v]) => [k, v.text]))
     return bsbCache.current
   }
+  // Lazily fetch a book's per-word morphology sidecar (once, cached). null when the book has
+  // no sidecar yet (the parsing pane simply stays empty for those words).
+  async function loadMorph(work: string, book: number): Promise<Record<string, MorphEntry[]> | null> {
+    const key = `${work}.${book}`
+    if (key in morphCache.current) return morphCache.current[key]
+    try {
+      const r = await fetch(`/data/josephus/${work}/${book}.morph.json`)
+      morphCache.current[key] = r.ok ? await r.json() : null
+    } catch {
+      morphCache.current[key] = null
+    }
+    return morphCache.current[key]
+  }
+  // Same, for embedded Greek-prose works (Epictetus etc.): one sidecar per work, keyed
+  // "<chapter>.<verse>" (verses restart per chapter, unlike Josephus's book-unique §§).
+  async function loadProseMorph(w: CatalogWork): Promise<Record<string, MorphEntry[]> | null> {
+    const prose = findProseWork(w.source)
+    if (!w.greek || !prose) return null
+    const url = prose.dataUrl.replace(/\.json$/, '.morph.json')
+    if (url in morphCache.current) return morphCache.current[url]
+    try {
+      const r = await fetch(url)
+      morphCache.current[url] = r.ok ? await r.json() : null
+    } catch {
+      morphCache.current[url] = null
+    }
+    return morphCache.current[url]
+  }
 
   const fetchChapterRows = useCallback(async (w: CatalogWork, item: QueueItem): Promise<Row[]> => {
     if (w.source === 'lxx') {
@@ -304,16 +339,20 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const r = await fetch(`/data/josephus/${w.work}/${item.book}.json`)
       const d = r.ok ? await r.json() : null
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
+      const morph = await loadMorph(w.work!, item.book!)
       // Niese §§ carry parallel Greek; the Whiston English is attached once per Whiston
       // section (its first §), so most §§ have Greek only in the English column.
-      return (ch?.sections ?? []).map((s: { number: number; text: string; greek?: string }) => ({ num: s.number, english: s.text, greek: s.greek }))
+      return (ch?.sections ?? []).map((s: { number: number; text: string; greek?: string }) =>
+        ({ num: s.number, english: s.text, greek: s.greek, morph: morph?.[String(s.number)] }))
     }
     // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
     // chapter→verses; the registry knows where each one's JSON lives.
     const r = await fetch(findProseWork(w.source)!.dataUrl)
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
-    return (ch?.verses ?? []).map((v: { number: number; text: string; greek?: string }) => ({ num: v.number, english: v.text, greek: v.greek }))
+    const morph = await loadProseMorph(w)
+    return (ch?.verses ?? []).map((v: { number: number; text: string; greek?: string }) =>
+      ({ num: v.number, english: v.text, greek: v.greek, morph: morph?.[`${item.chapter}.${v.number}`] }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -865,7 +904,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
                                 {q ? highlight(row.greek ?? '', search)
                                   : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
-                                  : <GreekWords text={row.greek ?? ''} reference={`${refLabel}:${row.num}`} />}
+                                  : <GreekWords text={row.greek ?? ''} reference={`${refLabel}:${row.num}`}
+                                      analyses={row.morph} selectedKey={selectedKey} keyBase={`${section.key}.${row.num}`}
+                                      onPick={(pick, key) => {
+                                        setSelectedInfo(pick ? { surface: pick.surface, lexeme: pick.lemma, gloss: '', partOfSpeech: '', parsing: pick.parsing, reference: `${refLabel}:${row.num}` } : null)
+                                        setSelectedKey(key)
+                                      }} />}
                               </span>
                             ) : (
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
@@ -924,7 +968,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         </div>
 
         {/* Parsing window — Greek works only */}
-        {isGreek && !greekHidden && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+        {(isGreek || greekProse) && !greekHidden && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (
