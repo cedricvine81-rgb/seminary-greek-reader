@@ -115,6 +115,51 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
   return { lang, total, truncated, groups }
 }
 
+// ── Verse/section context for the search page's slider ──────────────────────────────────────
+// A hit's neighbours are simply the adjacent entries in the same group `g` (the builder writes
+// each work's sections contiguously, in document order), so no per-source JSON parsing is needed.
+export interface BgCtxVerse { chapter: number; verse: number; text: string }
+// Key identifying an entry from an OpenInTextsTarget (which carries no group id) — the client
+// builds the same key from a hit's target so the response can be matched back.
+function entryKey(e: { s: string; o?: string; w?: string; b?: number; c: number; v: number }): string {
+  return `${e.s}|${e.o ?? ''}|${e.w ?? ''}|${e.b ?? ''}|${e.c}|${e.v}`
+}
+const _posCache = new Map<BgLang, Map<string, number>>()
+async function positions(lang: BgLang): Promise<{ loaded: Loaded; pos: Map<string, number> } | null> {
+  const loaded = await load(lang)
+  if (!loaded) return null
+  let pos = _posCache.get(lang)
+  if (!pos) {
+    pos = new Map()
+    for (let i = 0; i < loaded.entries.length; i++) pos.set(entryKey(loaded.entries[i]), i)
+    _posCache.set(lang, pos)
+  }
+  return { loaded, pos }
+}
+
+/** Given entry keys ("source|osis|work|book|chapter|verse") return each one's ±radius neighbouring
+ *  sections within the same work, so a background hit can be read in context. */
+export async function getBackgroundContext(lang: BgLang, refKeys: string[], radius: number): Promise<Record<string, BgCtxVerse[]>> {
+  const p = await positions(lang)
+  if (!p) return {}
+  const { loaded, pos } = p
+  const r = Math.max(1, Math.min(3, radius))
+  const out: Record<string, BgCtxVerse[]> = {}
+  for (const key of refKeys) {
+    const i = pos.get(key)
+    if (i === undefined) { out[key] = []; continue }
+    const g = loaded.entries[i].g
+    const arr: BgCtxVerse[] = []
+    for (let j = Math.max(0, i - r); j <= Math.min(loaded.entries.length - 1, i + r); j++) {
+      const e = loaded.entries[j]
+      if (e.g !== g) continue
+      arr.push({ chapter: e.c, verse: e.v, text: e.t })
+    }
+    out[key] = arr
+  }
+  return out
+}
+
 // Greek script detection so callers can pick the facet automatically.
 export function detectLang(s: string): BgLang {
   return /[Ͱ-Ͽἀ-῿]/.test(s) ? 'grc' : 'en'

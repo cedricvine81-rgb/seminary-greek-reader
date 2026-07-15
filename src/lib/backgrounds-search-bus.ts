@@ -1,9 +1,10 @@
 import type { BgLang } from '@/lib/backgrounds-search-types'
+import { openMasterSearch } from '@/lib/master-search-bus'
 
-// Lets any component open the app-wide background-sources search modal (hosted once by
-// BackgroundsSearchProvider in the root layout) without prop-drilling or a wrapping context.
-type OpenFn = (query: string, lang: BgLang) => void
-let _opener: OpenFn | null = null
-
-export function registerBackgroundsSearch(fn: OpenFn | null): void { _opener = fn }
-export function openBackgroundsSearch(query: string, lang: BgLang): void { _opener?.(query, lang) }
+// Background-sources search now runs on the full /search page (one unified search surface with
+// context + sort controls), not a separate modal. This shim keeps the existing call sites — the
+// right-click "Background texts / All library texts" and the Texts-tab search box — working by
+// routing to Master Search with a background scope (the /search scope list has bg:all / bggrc:all).
+export function openBackgroundsSearch(query: string, lang: BgLang): void {
+  openMasterSearch({ query, scope: lang === 'grc' ? 'bggrc:all' : 'bg:all' })
+}

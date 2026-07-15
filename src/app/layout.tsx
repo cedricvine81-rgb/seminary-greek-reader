@@ -4,7 +4,6 @@ import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
-import { BackgroundsSearchProvider } from '@/components/search/BackgroundsSearchProvider'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
@@ -86,7 +85,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
           <AppFooter />
         </div>
-        <BackgroundsSearchProvider />
         <MasterSearchProvider />
         <WordSearchProvider />
       </body>

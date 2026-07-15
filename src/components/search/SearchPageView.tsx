@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
-import type { BgResult, BgLang } from '@/lib/backgrounds-search-types'
+import { GreekSearchResults } from './GreekSearchResults'
+import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
@@ -79,6 +80,12 @@ function renderSnippet(text: string, terms: string[]): ReactNode {
 }
 
 interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
+
+// The opaque key the bg-context endpoint (mode:'bg') uses to identify a hit's entry — mirrors
+// entryKey() in src/lib/backgrounds-search.ts, built from a hit's OpenInTextsTarget.
+function bgCtxKey(t: OpenInTextsTarget): string {
+  return `${t.source}|${t.osisId ?? ''}|${t.workDir ?? ''}|${t.book ?? ''}|${t.chapter}|${t.verse}`
+}
 
 // Lightweight per-lane hit count for the result-type tabs — reruns the lane's search and reads
 // its total (no book scope: a tab count is "how many matches exist over there", the active
@@ -182,6 +189,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       .sort((a, b) => b.s - a.s)
       .map(x => x.h)
   }, [bib, scope, sort, terms])
+  // Background hits: relevance flattens across works and sorts by score; document order keeps
+  // the catalog grouping. (Biblical relevance for translations is already ranked server-side.)
+  const displayBg = useMemo(() => {
+    if (!bg) return null
+    if (sort !== 'relevance') return { mode: 'grouped' as const, groups: bg.groups }
+    const hits = bg.groups.flatMap(g => g.hits.map(h => ({ h, work: g.name })))
+      .map(x => ({ ...x, s: scoreRelevance(normalizeFold(x.h.text), terms) }))
+      .sort((a, b) => b.s - a.s)
+    return { mode: 'flat' as const, hits }
+  }, [bg, sort, terms])
 
   const bookGroups: BookGroup[] = useMemo(() => {
     if (!catalog) return []
@@ -339,17 +356,25 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
   // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.
   useEffect(() => {
-    if (!isBiblical || context === 0 || !displayBib || displayBib.length === 0) { setCtxMap({}); return }
-    const refs = displayBib.map(h => `${h.osisId}.${h.chapter}.${h.verse}`)
-    const body = scope.kind === 'greek'
-      ? { mode: 'greek', corpus: scope.corpus, radius: context, refs }
-      : { mode: 'trans', lang: scope.kind === 'trans' ? scope.lang : 'en', radius: context, refs }
+    if (context === 0) { setCtxMap({}); return }
+    let body: Record<string, unknown> | null = null
+    if (isBiblical) {
+      if (!displayBib || displayBib.length === 0) { setCtxMap({}); return }
+      const refs = displayBib.map(h => `${h.osisId}.${h.chapter}.${h.verse}`)
+      body = scope.kind === 'greek'
+        ? { mode: 'greek', corpus: scope.corpus, radius: context, refs }
+        : { mode: 'trans', lang: scope.kind === 'trans' ? scope.lang : 'en', radius: context, refs }
+    } else {
+      if (!bg || bg.total === 0) { setCtxMap({}); return }
+      const refs = bg.groups.flatMap(g => g.hits.map(h => bgCtxKey(h.target)))
+      body = { mode: 'bg', lang: bg.lang, radius: context, refs }
+    }
     const id = ++ctxReq.current
     fetch('/api/search/context', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
       .then(r => r.ok ? r.json() : { context: {} })
       .then(d => { if (id === ctxReq.current) setCtxMap(d.context || {}) })
       .catch(() => { if (id === ctxReq.current) setCtxMap({}) })
-  }, [isBiblical, context, displayBib, scope])
+  }, [isBiblical, context, displayBib, bg, scope])
 
   // Predictive typing: autocomplete the last word of the query. Translation scope → that
   // language's words; Greek scope / Greek text → Greek dictionary lexemes (with glosses).
@@ -446,6 +471,57 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
     if (hasOpenInTextsListener()) emitOpenInTexts(withTerm)
     else router.push(`/exegesis?tab=texts&open=${encodeURIComponent(JSON.stringify(withTerm))}`)
+  }
+
+  // Context slider + sort toggle, shown above every result set (biblical and background). The
+  // second sort mode is "Canonical" for Scripture, "Document order" for non-canonical works.
+  const canonicalLabel = isBiblical ? 'Canonical' : 'Document order'
+  const controlsBar = (countLabel: string) => (
+    <div className="flex items-center justify-between gap-3 flex-wrap pb-2">
+      <p className="text-xs text-gray-400">{countLabel}</p>
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
+          <span title="Show surrounding verses for context">Context</span>
+          <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
+            {[0, 1, 2, 3].map(n => (
+              <button key={n} type="button" onClick={() => setContext(n)}
+                className={`rounded-none px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                {n === 0 ? 'off' : `±${n}`}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
+          {(['relevance', 'canonical'] as SortMode[]).map(m => (
+            <button key={m} type="button" onClick={() => setSort(m)}
+              className={`rounded-none px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+              {m === 'relevance' ? 'Relevance' : canonicalLabel}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
+  // A background hit's text: neighbouring sections when Context is on, else the windowed snippet.
+  const bgHitText = (h: BgHit) => {
+    const isGrc = bg?.lang === 'grc'
+    const ctx = context > 0 ? ctxMap[bgCtxKey(h.target)] : undefined
+    if (ctx && ctx.length > 0) {
+      return (
+        <span className={`block text-sm leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+          {ctx.map(cv => {
+            const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
+            return (
+              <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
+                {hiliteVerse(cv.text, terms)}{' '}
+              </span>
+            )
+          })}
+        </span>
+      )
+    }
+    return <span className={`block text-sm text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
   }
 
   // Never available during a lockdown exam (it would be a lookup backdoor).
@@ -647,32 +723,18 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         {/* Biblical hits */}
         {!loading && isBiblical && displayBib && displayBib.length > 0 && (
           <div>
-            <div className="flex items-center justify-between gap-3 flex-wrap pb-2">
-              <p className="text-xs text-gray-400">{displayBib.length}{displayBib.length >= 300 ? '+' : ''} verse{displayBib.length === 1 ? '' : 's'}</p>
-              <div className="flex items-center gap-3">
-                {/* Verse-context slider */}
-                <div className="flex items-center gap-1.5 text-[11px] text-gray-500">
-                  <span title="Show surrounding verses for context">Context</span>
-                  <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
-                    {[0, 1, 2, 3].map(n => (
-                      <button key={n} type="button" onClick={() => setContext(n)}
-                        className={`rounded-none px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                        {n === 0 ? 'off' : `±${n}`}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                {/* Sort */}
-                <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
-                  {(['relevance', 'canonical'] as SortMode[]).map(m => (
-                    <button key={m} type="button" onClick={() => setSort(m)}
-                      className={`rounded-none px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
-                      {m === 'relevance' ? 'Relevance' : 'Canonical'}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
+            {controlsBar(`${displayBib.length}${displayBib.length >= 300 ? '+' : ''} verse${displayBib.length === 1 ? '' : 's'}`)}
+            {scope.kind === 'greek' ? (
+              <GreekSearchResults
+                hits={displayBib}
+                terms={terms}
+                corpus={scope.corpus}
+                bookName={bookName}
+                context={context}
+                ctxMap={ctxMap}
+                onOpen={h => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)}
+              />
+            ) : (
             <div className="divide-y divide-gray-100">
               {displayBib.map((h, i) => {
                 const key = `${h.osisId}.${h.chapter}.${h.verse}`
@@ -706,28 +768,41 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 )
               })}
             </div>
+            )}
           </div>
         )}
 
         {/* Background hits */}
-        {!loading && !isBiblical && bg && bg.total > 0 && (
+        {!loading && !isBiblical && bg && bg.total > 0 && displayBg && (
           <div>
-            <p className="pb-2 text-xs text-gray-400">
-              {bg.total}{bg.truncated ? '+' : ''} match{bg.total === 1 ? '' : 'es'} in {bg.groups.length} work{bg.groups.length === 1 ? '' : 's'}
-            </p>
-            {bg.groups.map(g => (
-              <div key={g.gid} className="py-1.5">
-                <p className="py-1 text-sm font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
-                <div className="divide-y divide-gray-100">
-                  {g.hits.map((h, i) => (
-                    <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
-                      <span className="text-xs font-medium text-brand-600">{h.ref}</span>
-                      <span className={`block text-sm text-gray-700 leading-relaxed ${bg.lang === 'grc' ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
-                    </button>
-                  ))}
-                </div>
+            {controlsBar(`${bg.total}${bg.truncated ? '+' : ''} match${bg.total === 1 ? '' : 'es'} in ${bg.groups.length} work${bg.groups.length === 1 ? '' : 's'}`)}
+            {displayBg.mode === 'flat' ? (
+              // Relevance: a single list across works, each row labelled with its work.
+              <div className="divide-y divide-gray-100">
+                {displayBg.hits.map(({ h, work }, i) => (
+                  <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
+                    <span className="text-xs font-medium text-brand-600">{h.ref}</span>
+                    <span className="text-xs text-gray-400"> · {work}</span>
+                    {bgHitText(h)}
+                  </button>
+                ))}
               </div>
-            ))}
+            ) : (
+              // Document order: grouped by work, in catalog order.
+              displayBg.groups.map(g => (
+                <div key={g.gid} className="py-1.5">
+                  <p className="py-1 text-sm font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
+                  <div className="divide-y divide-gray-100">
+                    {g.hits.map((h, i) => (
+                      <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
+                        <span className="text-xs font-medium text-brand-600">{h.ref}</span>
+                        {bgHitText(h)}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
