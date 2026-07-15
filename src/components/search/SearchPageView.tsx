@@ -366,7 +366,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const t = setTimeout(() => {
       fetch(`/api/suggest?q=${encodeURIComponent(lastWord)}${langParam}`, { signal: ctrl.signal })
         .then(r => (r.ok ? r.json() : { suggestions: [] }))
-        .then(d => { setSuggestions(d.suggestions ?? []); setShowSug(true) })
+        .then(d => {
+          // A fetch already in flight when the user submitted (Enter) or picked a suggestion
+          // would otherwise re-open the dropdown; the ref marks that query as handled.
+          if (query.trim() === lastPickedRef.current) return
+          setSuggestions(d.suggestions ?? []); setShowSug(true)
+        })
         .catch(() => {})
     }, 150)
     return () => { clearTimeout(t); ctrl.abort() }
@@ -466,7 +471,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               ref={inputRef}
               value={query}
               onChange={onQueryChange}
-              onKeyDown={e => { if (e.key === 'Enter') { pushRecent(query); setShowSug(false) } if (e.key === 'Escape') setShowSug(false) }}
+              onKeyDown={e => { if (e.key === 'Enter') { lastPickedRef.current = query.trim(); pushRecent(query); setShowSug(false) } if (e.key === 'Escape') setShowSug(false) }}
               onFocus={() => { if (suggestions.length) setShowSug(true) }}
               placeholder="Search the Greek NT & LXX, translations, or background texts…"
               className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : ''}`}
