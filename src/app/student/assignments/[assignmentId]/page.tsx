@@ -42,6 +42,11 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   ])
   if (!assignment) notFound()
 
+  // Group presentations have their own page (per-member sections + attestation) — this generic
+  // quiz/exercise page can't render them. Reachable here via a course-link that doesn't special-
+  // case the type, so send them to the right place instead of an empty quiz.
+  if (assignment.type === 'GROUP_PRESENTATION') redirect('/student/group-presentations')
+
   const previewMode = isPreviewMode() && payload.role === 'INSTRUCTOR'
 
   // Determine submission window.

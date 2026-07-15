@@ -24,6 +24,12 @@ const TYPE_LABELS: Record<string, string> = {
   TRANSLATION_EXERCISE: 'Translation', PASSAGE_VOCABULARY: 'Passage',
 }
 
+// Group presentations live on their own page (per-member sections + attestation); everything
+// else opens the generic assignment page. Mirrors AssignmentList so both entry points agree.
+function assignmentHref(a: { id: string; type: string }): string {
+  return a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
+}
+
 function DueLabel({ dueDate }: { dueDate: string }) {
   const days = differenceInCalendarDays(new Date(dueDate), new Date())
   if (days === 0) return <span className="text-xs text-red-500 font-semibold">Due today</span>
@@ -97,7 +103,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                   {sortedAssignments.map(a => (
                     <Link
                       key={a.id}
-                      href={`/student/assignments/${a.id}`}
+                      href={assignmentHref(a)}
                       className={`flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3 ${a.completed ? 'opacity-60' : ''}`}
                     >
                       <div className="min-w-0">
@@ -141,7 +147,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                     title: a.title,
                     type: a.type,
                     dueDate: a.dueDate,
-                    href: `/student/assignments/${a.id}`,
+                    href: assignmentHref(a),
                     isCompleted: a.completed,
                   }))}
                   initialDate={sortedAssignments[0]?.dueDate}

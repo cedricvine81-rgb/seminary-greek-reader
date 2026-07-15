@@ -6,15 +6,15 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Users, CheckCircle2 } from 'lucide-react'
 
-interface Group { id: string; name: string; members: { id: string; name: string }[] }
+interface Group { id: string; name: string; memberCount: number }
 
 /**
- * Per-course "Message group" entry point on a student's course card. Only renders when the
- * student has been assigned to a group; messages the group's other members via /api/messages
- * (groupId), which fans out to each of them.
+ * "Message group" entry point. On a course card it fetches the student's group for the course;
+ * given a `group` (e.g. a specific presentation's group) it uses that one directly. Messages the
+ * group's other members via /api/messages (groupId), which fans out to each of them.
  */
-export function MessageGroupButton({ courseId, onSent }: { courseId: string; onSent?: () => void }) {
-  const [group, setGroup] = useState<Group | null>(null)
+export function MessageGroupButton({ courseId, group: preset, onSent }: { courseId: string; group?: Group; onSent?: () => void }) {
+  const [group, setGroup] = useState<Group | null>(preset ?? null)
   const [open, setOpen] = useState(false)
   const [subject, setSubject] = useState('')
   const [body, setBody] = useState('')
@@ -23,19 +23,22 @@ export function MessageGroupButton({ courseId, onSent }: { courseId: string; onS
   const [sent, setSent] = useState<number | null>(null)
 
   useEffect(() => {
+    if (preset) { setGroup(preset); return }   // a specific group was supplied — no lookup needed
     let alive = true
     fetch(`/api/courses/${courseId}/groups`)
       .then(r => r.ok ? r.json() : { groups: [] })
-      .then(d => { if (alive) setGroup((d.groups ?? [])[0] ?? null) })
+      .then((d: { groups?: { id: string; name: string; members: unknown[] }[] }) => {
+        const g = (d.groups ?? [])[0]
+        if (alive) setGroup(g ? { id: g.id, name: g.name, memberCount: g.members.length } : null)
+      })
       .catch(() => {})
     return () => { alive = false }
-  }, [courseId])
+  }, [courseId, preset])
 
   if (!group) return null
 
-  // The student always belongs to the group they fetched, so the recipient count is
-  // everyone in the group except themselves.
-  const otherCount = Math.max(0, group.members.length - 1)
+  // The student always belongs to the group, so the recipient count is everyone but themselves.
+  const otherCount = Math.max(0, group.memberCount - 1)
   const reset = () => { setSubject(''); setBody(''); setError(''); setSent(null) }
 
   async function send() {

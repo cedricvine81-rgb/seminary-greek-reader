@@ -5,6 +5,7 @@ import { NoteComposer } from '@/components/notes/NoteComposer'
 import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { Users, Loader2, CheckCircle2, Clock, Lock, ShieldCheck, Send, RotateCcw } from 'lucide-react'
 
 interface Member {
@@ -20,6 +21,7 @@ interface Entry {
   groupName: string
   assignmentId: string
   title: string
+  courseId: string
   courseName: string
   instructions: string | null
   deadline: string
@@ -130,12 +132,14 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           <h3 className="text-base font-semibold text-gray-900">{entry.title}</h3>
           <p className="text-xs text-gray-400">{entry.courseName} · {entry.groupName}</p>
         </div>
-        <div className="text-right">
+        <div className="flex flex-col items-end gap-1.5">
           {entry.submitted
             ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> Submitted</span>
             : entry.pastDeadline
               ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> Past deadline</span>
               : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> Due {deadline.toLocaleDateString()}</span>}
+          <MessageGroupButton courseId={entry.courseId}
+            group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }} />
         </div>
       </div>
 

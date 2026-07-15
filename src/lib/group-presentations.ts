@@ -84,7 +84,7 @@ export async function getGroupPresentationsForStudent(userId: string) {
   const groups = await prisma.courseGroup.findMany({
     where: { id: { in: groupIds } },
     include: {
-      assignment: { select: { id: true, title: true, instructions: true, dueDate: true, submissionDeadline: true, course: { select: { name: true } } } },
+      assignment: { select: { id: true, title: true, instructions: true, dueDate: true, submissionDeadline: true, course: { select: { id: true, name: true } } } },
       members: { include: { user: { select: { id: true, firstName: true, surname: true, email: true } } } },
       contributions: true,
       submission: true,
@@ -104,6 +104,7 @@ export async function getGroupPresentationsForStudent(userId: string) {
         groupName: g.name,
         assignmentId: a.id,
         title: a.title,
+        courseId: a.course.id,
         courseName: a.course.name,
         instructions: a.instructions,
         deadline: deadline.toISOString(),
