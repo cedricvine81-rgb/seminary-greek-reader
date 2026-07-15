@@ -33,6 +33,11 @@ export interface OpenInTextsTarget {
 
 type BgFontSize = PhraseFontSize
 const FONT_SIZE_MAP: Record<BgFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+// Shared text sizes so every pane (left source column and the right referenced-text column —
+// Bible/LXX, Josephus, prose) renders at the SAME scale and the two columns line up. Greek is
+// shown a bit larger than translations (diacritics need the room); both scale off --bg-fs.
+const GREEK_FS = 'var(--bg-fs, 1.45rem)'
+const TRANS_FS = 'calc(var(--bg-fs, 1.45rem) * 0.65)'
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 
@@ -785,7 +790,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               ) : (
                 <div
                   className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`}
-                  style={{ fontSize: isGreek ? 'var(--bg-fs, 1.45rem)' : 'calc(var(--bg-fs, 1.45rem) * 0.65)' }}
+                  style={{ fontSize: isGreek ? GREEK_FS : TRANS_FS }}
                 >
                   {leftVerses.map(v => {
                     const verseHighlights = highlights.forVerse(parsed.book.osisId, parsed.chapter, v.verse)
@@ -1014,7 +1019,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     </p>
                     <div
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
-                      style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                      style={{ fontSize: TRANS_FS }}
                     >
                       {(() => {
                         // English is stored once per Whiston section (its first Niese §), so
@@ -1052,7 +1057,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     </p>
                     <div
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
-                      style={{ fontSize: 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                      style={{ fontSize: TRANS_FS }}
                     >
                       {proseChapter.verses.map(v => (
                         <p
@@ -1096,7 +1101,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   ) : (
                     <div
                       className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : 'font-reading'}`}
-                      style={{ fontSize: isRightGreek ? 'calc(var(--bg-fs, 1.45rem) * 0.85)' : 'calc(var(--bg-fs, 1.45rem) * 0.6)' }}
+                      style={{ fontSize: isRightGreek ? GREEK_FS : TRANS_FS }}
                     >
                       {rightVerses.map(v => {
                         const rightBook = rightRef.citation.ref!.book, rightChapter = rightRef.citation.ref!.chapter
