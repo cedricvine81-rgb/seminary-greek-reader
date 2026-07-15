@@ -34,10 +34,11 @@ export interface OpenInTextsTarget {
 type BgFontSize = PhraseFontSize
 const FONT_SIZE_MAP: Record<BgFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 // Shared text sizes so every pane (left source column and the right referenced-text column —
-// Bible/LXX, Josephus, prose) renders at the SAME scale and the two columns line up. Greek is
-// shown a bit larger than translations (diacritics need the room); both scale off --bg-fs.
+// Bible/LXX, Josephus, prose) renders at the SAME scale and the two columns line up. Greek and
+// translations both render at the full --bg-fs so a translation reads at the same size as the
+// Greek source column beside it (drop TRANS_FS below GREEK_FS to shrink translations again).
 const GREEK_FS = 'var(--bg-fs, 1.45rem)'
-const TRANS_FS = 'calc(var(--bg-fs, 1.45rem) * 0.65)'
+const TRANS_FS = 'var(--bg-fs, 1.45rem)'
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number; corpus?: string }
 
