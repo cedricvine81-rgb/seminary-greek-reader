@@ -14,7 +14,7 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
-import { verseAnchorProps, withTokenOffsets, highlightAt, renderHighlightedPlainText } from '@/components/highlights/render'
+import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { TransWords } from '@/components/highlights/TransWords'
 import { GreekWords } from '@/components/highlights/GreekWords'
 import { highlightMarkClass } from '@/lib/highlight-colors'
@@ -915,7 +915,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num)}>
                                 {q ? highlight(row.english ?? '', search)
                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                  : renderHighlightedPlainText(row.english ?? '', noteBook, section.chapter, verseHighlights)}
+                                  : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook}
+                                      hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                                        create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c),
+                                        recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
+                                        remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />}
                               </span>
                             )}
                           </p>
