@@ -2139,6 +2139,11 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <p className="text-lg font-medium">Loading your passage…</p>
               <p className="text-sm mt-1">If the passage doesn&apos;t appear, try refreshing the page.</p>
             </>
+          ) : (controlledPassage?.trim() || books.length === 0) ? (
+            // A passage is on its way (a controlled passage is set, or the book list is still
+            // loading and will trigger it) — show a loading state, not the "select a passage"
+            // prompt, so the empty state doesn't flash on the way in.
+            <p className="text-lg font-medium">Loading passage…</p>
           ) : (
             <>
               <p className="text-lg font-medium">Select a book, chapter, and verses above</p>
