@@ -6,6 +6,7 @@ import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
+import { ScrollRestorer } from '@/components/search/ScrollRestorer'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { cookies } from 'next/headers'
@@ -87,6 +88,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </div>
         <MasterSearchProvider />
         <WordSearchProvider />
+        <ScrollRestorer />
       </body>
     </html>
   )

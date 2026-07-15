@@ -4,6 +4,7 @@ import { useCallback, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { registerMasterSearch, type MasterSearchPreset } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
+import { snapshotScroll } from '@/lib/scroll-restore'
 
 // Mounted once in the root layout. Routes the header icon / mobile menu / right-click word menu
 // (all via openMasterSearch()) and ⌘K / Ctrl-K to the full-page /search. An optional preset
@@ -20,7 +21,10 @@ export function MasterSearchProvider() {
     // Remember the page the search was launched from (Reader, Texts, …) so /search can offer a
     // "Return to page" that goes back to exactly where they were (router.back → restored scroll).
     const here = typeof window !== 'undefined' ? window.location.pathname + window.location.search : ''
-    if (here && !here.startsWith('/search')) params.set('from', here)
+    if (here && !here.startsWith('/search')) {
+      params.set('from', here)
+      snapshotScroll(here)   // remember where we were so "Return to page" can restore it
+    }
     const qs = params.toString()
     router.push(qs ? `/search?${qs}` : '/search')
   }, [router])

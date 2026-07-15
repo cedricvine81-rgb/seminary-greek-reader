@@ -6,6 +6,7 @@ import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft } fr
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
+import { markScrollRestore } from '@/lib/scroll-restore'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
@@ -558,7 +559,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         {/* When the search was launched from another page (right-click / ⌘K), offer a way back
             to exactly where they were — router.back() reverses the push and restores scroll. */}
         {returnTo && (
-          <button type="button" onClick={() => router.back()}
+          <button type="button" onClick={() => { markScrollRestore(returnTo); router.back() }}
             className="mb-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 transition-colors">
             <ArrowLeft size={16} /> Return to {returnLabelFor(returnTo)}
           </button>
