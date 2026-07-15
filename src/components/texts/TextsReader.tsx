@@ -98,7 +98,22 @@ function noteBookFor(w: CatalogWork, item: QueueItem): string {
   return `${JOS_SHORT[w.work!] ?? w.work}.${item.book}`
 }
 function refLabelFor(w: CatalogWork, item: QueueItem): string {
-  return w.source === 'josephus' ? `${w.name} ${item.book}.${item.chapter}` : `${w.name} ${item.chapter}`
+  // Callers append `:${section}`, so Josephus reads "<name> <book>:<§>" (pure Niese, e.g.
+  // "Antiquities 1:120") — the Whiston chapter is no longer part of the citation.
+  return w.source === 'josephus' ? `${w.name} ${item.book}` : `${w.name} ${item.chapter}`
+}
+
+// Heading over each rendered block. Josephus is pure Niese — show the § span the block covers
+// (prefixed with its book, for multi-book works) instead of the internal Whiston chapter.
+function blockHeadingFor(w: CatalogWork, block: ChapterBlock): string {
+  if (w.source === 'josephus') {
+    const nums = block.rows.map(r => r.num)
+    const span = nums.length === 0 ? ''
+      : nums[0] === nums[nums.length - 1] ? `§${nums[0]}`
+      : `§§${nums[0]}–${nums[nums.length - 1]}`
+    return w.books!.length > 1 ? `Book ${block.book} · ${span}` : span
+  }
+  return `Chapter ${block.chapter}`
 }
 
 interface TextsReaderProps {
@@ -125,6 +140,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [locateBook, setLocateBook] = useState(1)
   const [locateChapter, setLocateChapter] = useState<number | null>(null)
   const [locateVerseNums, setLocateVerseNums] = useState<number[] | null>(null)
+  // Josephus is navigated by pure Niese §: the sections run continuously through a whole
+  // book (ch1 = §§1–51, ch2 = §§52–71, …), so a § alone locates the passage and there is no
+  // chapter column. We still remember each §'s home chapter (content is fetched per chapter)
+  // so selecting a § can open it. Null while the book's §§ are loading.
+  const [locateSections, setLocateSections] = useState<{ n: number; chapter: number }[] | null>(null)
   const fetchTokenRef = useRef(0)
   const [queue, setQueue] = useState<QueueItem[]>([])
   const [series, setSeries] = useState<Series>(EMPTY_SERIES)
@@ -436,12 +456,30 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     }).catch(() => { if (fetchTokenRef.current === token) setLocateVerseNums([]) })
   }
 
+  // Josephus: load a whole book's Niese §§ in one fetch (the JSON is stored per book), keeping
+  // each §'s home chapter so selecting a § can open the right chapter. Fills the single § column.
+  function loadLocateSections(w: CatalogWork, book: number) {
+    setLocateSections(null)
+    const token = ++fetchTokenRef.current
+    fetch(`/data/josephus/${w.work}/${book}.json`)
+      .then(r => (r.ok ? r.json() : null))
+      .then((d: { chapters?: { number: number; sections?: { number: number }[] }[] } | null) => {
+        if (fetchTokenRef.current !== token) return
+        const secs: { n: number; chapter: number }[] = []
+        for (const ch of d?.chapters ?? [])
+          for (const s of ch.sections ?? []) secs.push({ n: s.number, chapter: ch.number })
+        setLocateSections(secs)
+      })
+      .catch(() => { if (fetchTokenRef.current === token) setLocateSections([]) })
+  }
+
   function openWork(w: CatalogWork) {
     setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false); setProseMode('both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
-    loadLocateVerses(w, w.source === 'josephus' ? 1 : undefined, 1)
+    if (w.source === 'josephus') loadLocateSections(w, 1)
+    else loadLocateVerses(w, undefined, 1)
   }
 
   // "Open in Texts" hand-off from another tab (e.g. Backgrounds' cross-reference pane).
@@ -456,7 +494,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
-    loadLocateVerses(w, target.book, target.chapter)
+    if (w.source === 'josephus') loadLocateSections(w, target.book ?? 1)
+    else loadLocateVerses(w, target.book, target.chapter)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [openRequest])
 
@@ -467,7 +506,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (!work) return
     setLocateBook(book); setLocateChapter(1)
     void openAt(work, book, 1)
-    loadLocateVerses(work, book, 1)
+    // The Book column only exists for Josephus, which now goes straight to a whole-book § list.
+    if (work.source === 'josephus') loadLocateSections(work, book)
+    else loadLocateVerses(work, book, 1)
   }
 
   function selectLocateChapter(chapter: number) {
@@ -485,6 +526,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     setLocateOpen(false)
   }
 
+  // Josephus: a bare § resolves to its home chapter (content is still fetched per chapter),
+  // then opens there. The § is unique within the book, so this mapping is unambiguous.
+  function selectLocateSection(section: number) {
+    if (!work) return
+    const chapter = locateSections?.find(s => s.n === section)?.chapter ?? 1
+    void openAt(work, locateBook, chapter, section)
+    setLocateOpen(false)
+  }
+
   // Build the cascade's columns (Book → Chapter → Verse) in order. All columns are
   // top-aligned so the numbers sit in neat parallel columns; the selected row in each is
   // highlighted (rather than offsetting the next column) to show the current location.
@@ -492,17 +542,29 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   type LocateColumn = { key: string; label: string; marginTop: number; items: 'loading' | LocateItem[] }
   function buildLocateColumns(): LocateColumn[] {
     if (!work) return []
+
+    // Josephus: pure Niese — Book (multi-book works only) → § (the whole book's sections in
+    // one column). No chapter column; the § numbers run continuously so they alone locate.
+    if (work.source === 'josephus') {
+      const cols: LocateColumn[] = []
+      if (work.books!.length > 1) {
+        cols.push({
+          key: 'book', label: 'Book', marginTop: 0,
+          items: work.books!.map((_, i) => ({ n: i + 1, selected: locateBook === i + 1, onClick: () => selectLocateBook(i + 1) })),
+        })
+      }
+      cols.push({
+        key: 'vs', label: '§', marginTop: 0,
+        items: locateSections === null ? 'loading'
+          : locateSections.map(s => ({ n: s.n, selected: false, onClick: () => selectLocateSection(s.n) })),
+      })
+      return cols
+    }
+
     const cols: LocateColumn[] = []
-    const bookPresent = work.source === 'josephus' && work.books!.length > 1
-    const chapterCount = work.source === 'josephus' ? (work.books![locateBook - 1] ?? 1) : (work.chapters ?? 1)
+    const chapterCount = work.chapters ?? 1
     const chPresent = chapterCount > 1
 
-    if (bookPresent) {
-      cols.push({
-        key: 'book', label: 'Book', marginTop: 0,
-        items: work.books!.map((_, i) => ({ n: i + 1, selected: locateBook === i + 1, onClick: () => selectLocateBook(i + 1) })),
-      })
-    }
     if (chPresent) {
       cols.push({
         key: 'ch', label: 'Ch.', marginTop: 0,
@@ -510,8 +572,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       })
     }
     cols.push({
-      // Josephus verses are the Niese sections — label the column so readers know the scheme.
-      key: 'vs', label: work?.source === 'josephus' ? 'Vs. (Niese)' : 'Vs.', marginTop: 0,
+      key: 'vs', label: 'Vs.', marginTop: 0,
       items: locateVerseNums === null ? 'loading'
         : locateVerseNums.map(vn => ({ n: vn, selected: false, onClick: () => selectLocateVerse(vn) })),
     })
@@ -746,7 +807,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 return (
                   <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
                     <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
-                      {work.source === 'josephus' && work.books!.length > 1 ? `Book ${section.book} · Chapter ${section.chapter}` : `Chapter ${section.chapter}`}
+                      {blockHeadingFor(work, section)}
                     </p>
                     <div className="space-y-2">
                       {filteredRows.map(row => {
