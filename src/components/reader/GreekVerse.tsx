@@ -4,7 +4,16 @@ import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
+
+// The space between two words, painted with the highlight when the run continues across it —
+// so consecutive highlighted words read as one continuous stroke, not separate marks. `end` is
+// the preceding word's end offset; the space occupies [end, end+1].
+function wordGap(end: number, highlights: HighlightRecord[]) {
+  const g = highlightAt(end, end + 1, highlights)
+  return g ? <span className={highlightMarkClass(g.color)}> </span> : ' '
+}
 
 interface GreekVerseProps {
   verse: BiblicalVerse
@@ -72,7 +81,7 @@ function GreekVerseImpl({
                   onClick={onWordClick}
                   onRightClick={onWordRightClick ? (word, x, y) => onWordRightClick(word, x, y, start, end) : undefined}
                 />
-                {i < verse.words!.length - 1 ? ' ' : ''}
+                {i < verse.words!.length - 1 ? wordGap(end, textHighlights) : ''}
               </Fragment>
             )
           })}
@@ -112,7 +121,7 @@ function GreekVerseImpl({
                 onClick={onWordClick}
                 onRightClick={onWordRightClick ? (word, x, y) => onWordRightClick(word, x, y, start, end) : undefined}
               />
-              {' '}
+              {i < tokens.length - 1 ? wordGap(end, textHighlights) : ' '}
             </Fragment>
           )
         })}

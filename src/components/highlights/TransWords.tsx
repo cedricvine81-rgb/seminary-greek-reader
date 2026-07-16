@@ -39,8 +39,14 @@ export function TransWords({ text, lang, reference, book, hl }: {
       {text.split(/(\s+)/).map((tok, i) => {
         const start = pos
         pos += tok.length
-        if (/\s/.test(tok) || !tok) return tok
+        if (!tok) return tok
         const end = start + tok.length
+        if (/\s/.test(tok)) {
+          // Paint whitespace that sits INSIDE a highlight so consecutive highlighted words read
+          // as one continuous stroke rather than separate marks with a gap between them.
+          const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
+          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
+        }
         const mark = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
         return (
           <span

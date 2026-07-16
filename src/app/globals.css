@@ -404,3 +404,32 @@ body.exam-lockdown nav.fixed.bottom-0 {
     opacity: 0;
   }
 }
+
+/* Highlighter marks — a translucent "marker" ink over the selected text, shared by every
+   reading pane (Reader, Texts, Backgrounds, Synopsis, Notes, Commentary) via
+   highlightMarkClass(). The per-colour class only sets --hl-ink, so the look is defined once
+   here. A vertical gradient gives the stroke subtle depth and tiles seamlessly across the
+   per-word spans; `multiply` lets the ink tint the paper while the (opaque) letters stay crisp
+   and overlapping marks darken; `box-decoration-break: clone` keeps a highlight that wraps
+   across lines rounded on each line. Kept OUTSIDE @layer so Tailwind's content scan can't
+   tree-shake the per-colour classes (their names are built dynamically as `hl-${colour}`). */
+.hl-mark {
+  background-image: linear-gradient(rgb(var(--hl-ink) / 0.45), rgb(var(--hl-ink) / 0.62));
+  border-radius: 0.14em;
+  mix-blend-mode: multiply;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.hl-yellow { --hl-ink: 250 204 21; }
+.hl-green  { --hl-ink: 74 222 128; }
+.hl-blue   { --hl-ink: 96 165 250; }
+.hl-pink   { --hl-ink: 244 114 182; }
+.hl-purple { --hl-ink: 192 132 252; }
+.hl-grey   { --hl-ink: 168 162 158; }
+/* Dim/dark reading themes: multiply would sink the ink into the dark paper, so switch to
+   screen (which lightens) with a slightly softer ink. */
+[data-theme='dim'] .hl-mark,
+[data-theme='dark'] .hl-mark {
+  background-image: linear-gradient(rgb(var(--hl-ink) / 0.34), rgb(var(--hl-ink) / 0.5));
+  mix-blend-mode: screen;
+}
