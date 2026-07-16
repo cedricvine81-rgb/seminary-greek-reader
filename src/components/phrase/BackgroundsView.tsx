@@ -709,17 +709,15 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     const codes = book
       ? rightVersionOptions(book, gntBooks.some(b => b.osisId === book)).map(v => v.code)
       : ['na1904']
-    // Default the right pane to English text: Brenton (the Septuagint's own English) for an LXX
-    // citation, otherwise WEB English. A base script edition (Hebrew/Greek) counts as "no
-    // translation chosen" and snaps to that English default; a translation the reader actually
-    // picked stays sticky across references whenever the new one supports it.
-    const englishDefault =
+    // Open each cross-reference in the English version that fits its type: an LXX citation in
+    // Brenton (the Septuagint's own English), an OT (or NT) citation in WEB English. Fall back
+    // through Brenton / the base script edition only when those aren't available for the book
+    // (e.g. a deuterocanonical book has Brenton but no WEB).
+    const effectiveVersion =
       citation.type === 'LXX' && codes.includes('brenton') ? 'brenton'
       : codes.includes('en') ? 'en'
       : codes.includes('brenton') ? 'brenton'
       : codes.includes('mt') ? 'mt' : 'na1904'
-    const isScriptEdition = rightVersion === 'mt' || rightVersion === 'na1904' || rightVersion === 'gnt'
-    const effectiveVersion = !isScriptEdition && codes.includes(rightVersion) ? rightVersion : englishDefault
     if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
     void loadRightRef(citation, effectiveVersion)
   }
