@@ -294,6 +294,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     x: number
     y: number
     highlight?: WordHighlight
+    loading?: boolean   // syntax datasets still downloading (menu is already open)
   } | null>(null)
   // Hebrew word right-click menu (highlight + full lexicon entry).
   const [hebrewMenu, setHebrewMenu] = useState<{ info: LexicalInfoPanel; x: number; y: number; highlight?: WordHighlight } | null>(null)
@@ -323,13 +324,19 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // Latest highlights for the memoized right-click handler (forVerse changes as they load).
   const highlightsRef = useRef(highlights); highlightsRef.current = highlights
   const highlightSelection = useHighlightSelection(textPanelRef)
+  // Chapters whose highlights we've already requested — so an infinite-scroll append doesn't
+  // re-fetch highlights for every chapter still on screen. Local create/edit/remove already
+  // update state directly, so a chapter never needs re-loading once fetched.
+  const loadedHlChapters = useRef<Set<string>>(new Set())
   useEffect(() => {
-    const chapters = new Map<string, { book: string; chapter: number }>()
     for (const s of [...gnt.sections, ...lxx.sections, ...mt.sections]) {
       const v0 = s.verses[0]
-      if (v0) chapters.set(`${v0.bookId}.${v0.chapter}`, { book: v0.bookId, chapter: v0.chapter })
+      if (!v0) continue
+      const key = `${v0.bookId}.${v0.chapter}`
+      if (loadedHlChapters.current.has(key)) continue
+      loadedHlChapters.current.add(key)
+      void highlights.loadFor(v0.bookId, v0.chapter)
     }
-    chapters.forEach(({ book, chapter }) => void highlights.loadFor(book, chapter))
   }, [gnt.sections, lxx.sections, mt.sections, highlights.loadFor])
 
   const settingsRef   = useRef<HTMLDivElement>(null)
@@ -1055,8 +1062,30 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   }, [])
 
   const handleWordRightClick = useCallback((word: VerseWord, x: number, y: number, start: number, end: number) => {
+    // Open the menu IMMEDIATELY with the Highlight + Search rows (neither needs any data). The
+    // Wallace/GBI/ABS/Macula syntax datasets total ~31MB and used to be awaited before the menu
+    // appeared at all — so the first right-click of a session stalled for seconds while they
+    // downloaded, which made highlighting feel slow and temperamental. They now load in the
+    // background and fill the syntax panels in when ready.
+    const menuW = 380, menuH = 520
+    const nx = x + menuW > window.innerWidth  ? x - menuW : x
+    const ny = y + menuH > window.innerHeight ? y - menuH : y
+
+    // Highlight controls for this word (signed-in readers) — highlights its char range.
+    const [wb, wc, wv] = (word.verseId ?? '').split('.')
+    const hi = highlightsRef.current
+    const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv), 'grc').find(h => start < h.endOffset && end > h.startOffset) : undefined
+    const highlight: WordHighlight | undefined = isAuthenticated && wb ? {
+      activeColor: existing?.color ?? null,
+      onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c, 'grc'),
+      onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
+    } : undefined
+
+    const px = Math.max(8, nx), py = Math.max(8, ny)
+    setSyntaxMenu({ word, syntax: null, gbiEntry: null, absEntry: null, ctx: {}, x: px, y: py, highlight, loading: true })
+
     // If any syntax dataset fails to load, fall back to empty maps rather than rejecting — the
-    // menu (with its Highlight + Search rows) must still open; the syntax panels simply stay empty.
+    // menu must stay open; the syntax panels simply stay empty.
     Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()])
       .catch(() => [{}, {}, {}, {}] as [Record<string, SyntaxEntry>, Record<string, GbiEntry>, Record<string, AbsSyntaxEntry>, Awaited<ReturnType<typeof loadMaculaSyntax>>])
       .then(([data, gbiData, absData, maculaData]) => {
@@ -1338,21 +1367,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
 
       const ctx: SyntaxContext = { governingPrep, precedingConj, emphNeg, hasPrecedingMh, nearbyLinkingVerb, clauseHasO2, hasGenitiveAbsSubject, precedingArticle, nounBeforeArticle, enclosingHeadCase, enclosingHeadPos, enclosingHeadLexeme, nearbyConjunctionRole, prevHeadNounExists, isArticular, maculaRole, maculaPhraseClass, maculaClauseRule, maculaClauseRole, mainVerbTense, nearbyModalVerb }
 
-      const menuW = 380, menuH = 520
-      const nx = x + menuW > window.innerWidth  ? x - menuW : x
-      const ny = y + menuH > window.innerHeight ? y - menuH : y
-
-      // Highlight controls for this word (signed-in readers) — highlights its char range.
-      const [wb, wc, wv] = (word.verseId ?? '').split('.')
-      const hi = highlightsRef.current
-      const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv), 'grc').find(h => start < h.endOffset && end > h.startOffset) : undefined
-      const highlight: WordHighlight | undefined = isAuthenticated && wb ? {
-        activeColor: existing?.color ?? null,
-        onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c, 'grc'),
-        onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
-      } : undefined
-
-      setSyntaxMenu({ word, syntax: syn, gbiEntry, absEntry, ctx, x: Math.max(8, nx), y: Math.max(8, ny), highlight })
+      // Fill the syntax content into the already-open menu — but only if it's still showing this
+      // same word (the user may have closed it or right-clicked elsewhere while data loaded).
+      setSyntaxMenu(prev => prev && prev.word === word ? { ...prev, syntax: syn, gbiEntry, absEntry, ctx, loading: false } : prev)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
@@ -1994,6 +2011,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           absOn={absOn}
           onWordAction={handleWordAction}
           highlight={syntaxMenu.highlight}
+          loading={syntaxMenu.loading}
           onClose={() => setSyntaxMenu(null)}
         />
       )}

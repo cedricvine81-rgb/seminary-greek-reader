@@ -28,6 +28,7 @@ interface SyntaxMenuProps {
   absOn: boolean
   onWordAction: (action: WordSearchAction, scope: SearchScope) => void
   highlight?: WordHighlight
+  loading?: boolean   // syntax datasets still downloading — show a placeholder, not the empty state
   onClose: () => void
 }
 
@@ -62,7 +63,7 @@ const LEVEL_BADGE: Record<WallaceCategory['level'], string> = {
   intermediate: 'bg-indigo-100 text-indigo-700',
 }
 
-export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, highlight, onClose }: SyntaxMenuProps) {
+export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallaceOn, proielOn, gbiOn, absOn, onWordAction, highlight, loading, onClose }: SyntaxMenuProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   const [selectedPrep, setSelectedPrep] = useState<string>(ctx.governingPrep ?? 'none')
@@ -347,8 +348,13 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           )
         )}
 
-        {/* Empty state */}
-        {!hasContent && (
+        {/* Loading state — the syntax datasets are still downloading (first use of a session). */}
+        {loading && (wallaceOn || proielOn || gbiOn || absOn) && !hasContent && (
+          <p className="text-xs text-gray-400 italic px-1">Loading syntactic analysis…</p>
+        )}
+
+        {/* Empty state — data is loaded but no syntax layers are enabled. */}
+        {!loading && !hasContent && (
           <p className="text-xs text-gray-400 italic px-1">
             Enable Wallace, PROIEL, GBI, or ABS Syntax in settings to see syntactical analysis.
           </p>
