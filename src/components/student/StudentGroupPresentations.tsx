@@ -35,6 +35,16 @@ interface Entry {
   gradeNote: string | null
   me: { body: string; aiDeclaration: string; attestedAt: string | null }
   members: Member[]
+  messages: GroupMessage[]
+}
+interface GroupMessage {
+  id: string
+  senderId: string
+  senderName: string
+  subject: string
+  body: string
+  createdAt: string
+  mine: boolean
 }
 
 export function StudentGroupPresentations() {
@@ -139,7 +149,8 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
               ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> Past deadline</span>
               : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> Due {deadline.toLocaleDateString()}</span>}
           <MessageGroupButton courseId={entry.courseId}
-            group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }} />
+            group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }}
+            onSent={onChanged} />
         </div>
       </div>
 
@@ -222,6 +233,33 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           </div>
         </div>
       )}
+
+      {/* Group messages — visible to this group's members only. */}
+      <div className="mt-4 border-t border-gray-100 pt-3">
+        <div className="flex items-center justify-between gap-2 mb-2">
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><Users size={14} /> Group messages</h4>
+          <MessageGroupButton courseId={entry.courseId}
+            group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }}
+            onSent={onChanged} />
+        </div>
+        <p className="text-[11px] text-gray-400 mb-2">Only your group members can see these messages.</p>
+        {entry.messages.length === 0 ? (
+          <p className="text-sm text-gray-400 italic">No group messages yet. Use “Message Group” to start the conversation.</p>
+        ) : (
+          <div className="space-y-2">
+            {entry.messages.map(m => (
+              <div key={m.id} className={`rounded-lg border p-3 ${m.mine ? 'border-brand-200 bg-brand-50' : 'border-gray-200 bg-surface'}`}>
+                <div className="flex items-baseline justify-between gap-2 mb-1">
+                  <span className="text-sm font-medium text-gray-800">{m.mine ? 'You' : m.senderName}</span>
+                  <span className="text-[11px] text-gray-400">{new Date(m.createdAt).toLocaleString()}</span>
+                </div>
+                {m.subject && <p className="text-sm font-semibold text-gray-700">{m.subject}</p>}
+                <p className="text-sm text-gray-600 whitespace-pre-line break-words">{m.body}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {error && <p className="mt-3 text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 

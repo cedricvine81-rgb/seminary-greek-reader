@@ -91,6 +91,41 @@ export async function getGroupPresentationsForStudent(userId: string) {
     },
   })
 
+  // The group's shared message board: the "Message Group" sends among its members. Each send
+  // fans out into one 1:1 Message per recipient sharing a broadcastId, so we gather every course
+  // message where BOTH ends are current members and a broadcastId is set, then dedupe by
+  // broadcastId to one entry per send. Requiring a broadcastId excludes private classmate DMs
+  // (created without one); requiring the sender to be a member excludes instructor broadcasts;
+  // and only this student's own groups are ever queried — so nothing leaks to non-members.
+  const messagesByGroup = new Map<string, {
+    id: string; senderId: string; senderName: string; subject: string; body: string; createdAt: string; mine: boolean
+  }[]>()
+  await Promise.all(groups.filter(g => g.assignment).map(async g => {
+    const memberIds = g.members.map(m => m.user.id)
+    const nameById = new Map(g.members.map(m => [m.user.id, studentName(m.user)]))
+    const rows = await prisma.message.findMany({
+      where: {
+        courseId: g.assignment!.course.id,
+        broadcastId: { not: null },
+        senderId: { in: memberIds },
+        recipientId: { in: memberIds },
+      },
+      orderBy: { createdAt: 'asc' },
+      select: { id: true, subject: true, body: true, broadcastId: true, senderId: true, createdAt: true },
+    })
+    const seen = new Set<string>()
+    const board: { id: string; senderId: string; senderName: string; subject: string; body: string; createdAt: string; mine: boolean }[] = []
+    for (const m of rows) {
+      if (seen.has(m.broadcastId!)) continue   // one entry per fan-out send
+      seen.add(m.broadcastId!)
+      board.push({
+        id: m.id, senderId: m.senderId, senderName: nameById.get(m.senderId) ?? 'A member',
+        subject: m.subject, body: m.body, createdAt: m.createdAt.toISOString(), mine: m.senderId === userId,
+      })
+    }
+    messagesByGroup.set(g.id, board)
+  }))
+
   return groups
     .filter(g => g.assignment)
     .map(g => {
@@ -137,6 +172,8 @@ export async function getGroupPresentationsForStudent(userId: string) {
             attested: !!c?.attestedAt,
           }
         }),
+        // Group-only message board (see messagesByGroup above) — visible to members only.
+        messages: messagesByGroup.get(g.id) ?? [],
       }
     })
 }
