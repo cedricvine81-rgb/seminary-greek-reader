@@ -66,6 +66,24 @@ function parseRef(ref: string, books: RefBook[]): { book: RefBook; chapter: numb
   return { book, chapter, verseStart: vs, verseEnd: ve }
 }
 
+// Some cross-reference citations arrive from the dataset without a parsed `ref` because its
+// builder couldn't read the citation text — e.g. a leading "LXX "/"MT " qualifier, or a verse
+// list like "Deut 6:16, 13". Derive a reference at runtime so the link still opens: strip the
+// qualifier, reduce a verse list to its first verse, and resolve the book against the LXX list
+// (OT/LXX citations) or the GNT list (NT). Scriptural types only — DSS/Josephus/prose/etc. have
+// their own handlers. Returns undefined when nothing resolves (the link stays non-openable).
+function deriveCitationRef(c: CrossRefCitation, lxxBooks: RefBook[], gntBooks: RefBook[]): { book: string; chapter: number; verse: number } | undefined {
+  if (c.ref) return c.ref
+  if (c.type !== 'OT' && c.type !== 'LXX' && c.type !== 'NT') return undefined
+  const cleaned = c.text
+    .replace(/^cf\.\s*/i, '')
+    .replace(/^(?:LXX|MT)\s+/i, '')
+    .replace(/(\d+\s*[:.]\s*\d+)\s*,[\s\d,]*$/, '$1')   // "6:16, 13" → "6:16"
+    .trim()
+  const p = parseRef(cleaned, c.type === 'NT' ? gntBooks : lxxBooks)
+  return p ? { book: p.book.osisId, chapter: p.chapter, verse: p.verseStart } : undefined
+}
+
 // A clickable Greek word carries enough to fill the shared parsing pane (Strong's,
 // Thayer's, Mounce, Abbott-Smith, LSJ lookups happen inside ParsingPanel itself).
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -691,23 +709,17 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     const codes = book
       ? rightVersionOptions(book, gntBooks.some(b => b.osisId === book)).map(v => v.code)
       : ['na1904']
-    // Default an OT reference to Hebrew and an NT one to Greek, but keep a chosen *translation*
-    // (English/Spanish/… or Brenton) sticky across references. So the base script edition snaps
-    // to the testament (Hebrew for OT, Greek for NT) while a reader comparing translations stays
-    // in their translation.
-    const scriptFallback = codes.includes('mt') ? 'mt' : 'na1904'
+    // Default the right pane to English text: Brenton (the Septuagint's own English) for an LXX
+    // citation, otherwise WEB English. A base script edition (Hebrew/Greek) counts as "no
+    // translation chosen" and snaps to that English default; a translation the reader actually
+    // picked stays sticky across references whenever the new one supports it.
+    const englishDefault =
+      citation.type === 'LXX' && codes.includes('brenton') ? 'brenton'
+      : codes.includes('en') ? 'en'
+      : codes.includes('brenton') ? 'brenton'
+      : codes.includes('mt') ? 'mt' : 'na1904'
     const isScriptEdition = rightVersion === 'mt' || rightVersion === 'na1904' || rightVersion === 'gnt'
-    let effectiveVersion: string
-    if (isScriptEdition) {
-      effectiveVersion = scriptFallback   // base script snaps to the testament (Hebrew OT / Greek NT)
-    } else if (codes.includes(rightVersion)) {
-      effectiveVersion = rightVersion     // a chosen translation stays sticky across references
-    } else {
-      // The chosen translation has no text for this reference (e.g. BSB on an OT/LXX ref). Keep
-      // the reader in English rather than dropping them into Hebrew/Greek: prefer Brenton (the
-      // LXX's own English) for a Septuagint reference, then WEB English, then the script base.
-      effectiveVersion = codes.includes('brenton') ? 'brenton' : codes.includes('en') ? 'en' : scriptFallback
-    }
+    const effectiveVersion = !isScriptEdition && codes.includes(rightVersion) ? rightVersion : englishDefault
     if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
     void loadRightRef(citation, effectiveVersion)
   }
@@ -933,6 +945,11 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       <p className="text-[11px] font-semibold text-gray-500 mb-1">{entry.label}</p>
                       <div className="space-y-1">
                         {cites.map((c, ci) => {
+                          // Resolve a reference even for citations the dataset left unparsed, so
+                          // links like "LXX Isa 58:6" and "Deut 6:16, 13" still open (see
+                          // deriveCitationRef). Non-scriptural types resolve to undefined and keep
+                          // their existing Josephus/prose/external handling below.
+                          const cref = deriveCitationRef(c, lxxBooks, gntBooks)
                           const josephusRef = !c.ref ? parseJosephusRef(c.text) : null
                           if (josephusRef) {
                             const perseusHref = josephusUrl(c.text)
@@ -1000,15 +1017,15 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           }
                           const scholarTitle = c.note
                             ? `${c.kind ? `${c.kind}. ` : ''}${c.note}${c.source ? ` — ${c.source}` : ''}`
-                            : (c.ref ? 'View text' : 'Full text not yet available for this source')
-                          // Clickable when there is embedded text (ref) OR a scholarly note to
-                          // show in the right pane — patristic/commentary entries carry a note
-                          // but no embedded text of their own.
-                          const openable = !!c.ref || !!c.note
+                            : (cref ? 'View text' : 'Full text not yet available for this source')
+                          // Clickable when there is embedded text (a resolved ref) OR a scholarly
+                          // note to show in the right pane — patristic/commentary entries carry a
+                          // note but no embedded text of their own.
+                          const openable = !!cref || !!c.note
                           return (
                             <button
                               key={ci}
-                              onClick={() => openRightRef(entry.label, c)}
+                              onClick={() => openRightRef(entry.label, c.ref ? c : { ...c, ref: cref })}
                               disabled={!openable}
                               title={scholarTitle}
                               className={`block w-full text-left rounded-none border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
