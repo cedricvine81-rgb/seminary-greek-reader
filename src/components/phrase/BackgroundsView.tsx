@@ -94,12 +94,20 @@ const VERSIONS = [
   { code: 'zh', label: 'Mandarin' },
 ]
 
-// The deuterocanonical / Apocrypha books have no BSB/WEB English (those are Protestant-
-// canon only), so for them the right column also offers Brenton's 1851 English of the
-// Septuagint (public-domain, from ebible.org — see scripts/build-brenton-apocrypha.py).
-// Because it's translated from the same Greek the app shows, it sits verse-aligned next
-// to it. Only these books have Brenton data; the option is shown only when one is open.
-const BRENTON_BOOKS = new Set(['Tob', 'Jdt', 'EsthGr', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc'])
+// Brenton's 1851 English of the Septuagint (public-domain, from ebible.org) is the right
+// English parallel for a Septuagint reference — it's translated from the same Greek the app
+// shows, so it sits verse-aligned next to it. We hold it for the whole LXX (canonical OT +
+// deuterocanonical), one file per book under public/data/brenton/. This set must stay in sync
+// with those files; the option is offered only for a book we actually have. For the
+// deuterocanonical books this is also the ONLY English available (BSB/WEB are Protestant-canon).
+const BRENTON_BOOKS = new Set([
+  // Canonical OT
+  'Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs',
+  '1Chr', '2Chr', 'Ezra', 'Neh', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek',
+  'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal',
+  // Deuterocanonical / Apocrypha
+  'Tob', 'Jdt', 'EsthGr', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '1Esd', '3Macc', '4Macc',
+])
 const BRENTON_VERSION = { code: 'brenton', label: 'English — Brenton (LXX)' }
 
 // Which right-column versions actually have text for a given reference. The bsb/web/es/…
@@ -119,8 +127,16 @@ function rightVersionOptions(osisId: string, isNT: boolean): { code: string; lab
   // A cross-reference into the Hebrew OT reads best from the Hebrew itself — its versification
   // matches the citation far better than the (reordered/renumbered) Septuagint. Offer it first.
   if (!isNT && MT_BOOKS.has(osisId)) out.unshift({ code: 'mt', label: 'Hebrew — Masoretic' })
-  if (!DEUTEROCANONICAL.has(osisId)) out.push(...VERSIONS.filter(v => PROTESTANT_CODES.has(v.code)))
-  if (BRENTON_BOOKS.has(osisId)) out.push(BRENTON_VERSION)
+  // Brenton's English of the LXX — the faithful English for a Septuagint reference. Offer it
+  // right after the Greek/Hebrew, ahead of the Masoretic-based modern translations.
+  if (!isNT && BRENTON_BOOKS.has(osisId)) out.push(BRENTON_VERSION)
+  // Modern translations render the Masoretic/Protestant canon. Skip them for the
+  // deuterocanonical books (not in those translations), and drop BSB specifically for OT refs:
+  // the in-app BSB is the NT-only Greek↔English alignment file, so it has no OT text and would
+  // only ever show "No text found."
+  if (!DEUTEROCANONICAL.has(osisId)) {
+    out.push(...VERSIONS.filter(v => PROTESTANT_CODES.has(v.code) && (isNT || v.code !== 'bsb')))
+  }
   return out
 }
 
@@ -670,9 +686,19 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     // (English/Spanish/… or Brenton) sticky across references. So the base script edition snaps
     // to the testament (Hebrew for OT, Greek for NT) while a reader comparing translations stays
     // in their translation.
-    const fallback = codes.includes('mt') ? 'mt' : 'na1904'
+    const scriptFallback = codes.includes('mt') ? 'mt' : 'na1904'
     const isScriptEdition = rightVersion === 'mt' || rightVersion === 'na1904' || rightVersion === 'gnt'
-    const effectiveVersion = !isScriptEdition && codes.includes(rightVersion) ? rightVersion : fallback
+    let effectiveVersion: string
+    if (isScriptEdition) {
+      effectiveVersion = scriptFallback   // base script snaps to the testament (Hebrew OT / Greek NT)
+    } else if (codes.includes(rightVersion)) {
+      effectiveVersion = rightVersion     // a chosen translation stays sticky across references
+    } else {
+      // The chosen translation has no text for this reference (e.g. BSB on an OT/LXX ref). Keep
+      // the reader in English rather than dropping them into Hebrew/Greek: prefer Brenton (the
+      // LXX's own English) for a Septuagint reference, then WEB English, then the script base.
+      effectiveVersion = codes.includes('brenton') ? 'brenton' : codes.includes('en') ? 'en' : scriptFallback
+    }
     if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
     void loadRightRef(citation, effectiveVersion)
   }
