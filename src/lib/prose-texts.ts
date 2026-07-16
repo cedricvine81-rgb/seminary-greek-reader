@@ -89,13 +89,14 @@ const philoCite = (abbrevs: string[], multi: boolean) => (text: string): { chapt
   for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
     if (!tail.startsWith(ab)) continue
     const rest = tail.slice(ab.length)
-    if (!/^\s+(?:\d|§)/.test(rest)) continue
+    // Allow a stray comma between the work name and its section number ("Sobriety, 55–56").
+    if (!/^[,\s]+(?:\d|§)/.test(rest)) continue
     const sec = rest.match(/§\s*(\d+)/)
     if (sec) {
-      const lead = rest.match(/^\s*(\d+)/)
+      const lead = rest.match(/^[,\s]*(\d+)/)
       return { chapter: multi && lead ? parseInt(lead[1], 10) : 1, verse: parseInt(sec[1], 10) }
     }
-    const nums = rest.match(/^\s*(\d+(?:\.\d+)*)/)
+    const nums = rest.match(/^[,\s]*(\d+(?:\.\d+)*)/)
     if (!nums) continue
     const parts = nums[1].split('.').map(n => parseInt(n, 10))
     if (multi) return { chapter: parts.length >= 2 ? parts[0] : 1, verse: parts[parts.length - 1] }
@@ -509,12 +510,14 @@ export const PROSE_WORKS: ProseWork[] = [
       const m = text.match(/^Sib\. Or\.\s+(\d+)/)
       return m ? { chapter: parseInt(m[1], 10) } : null
     } },
-  // The Letter of Aristeas is one continuous letter (§§1–322), stored as a single chapter,
-  // so a bare "Arist. 305" section reference maps to verse 305 of chapter 1.
+  // The Letter of Aristeas is one continuous letter (§§1–322), stored as a single chapter, so a
+  // bare section reference maps to that verse of chapter 1. The dataset cites it several ways —
+  // "Let. Aris. 207", "Ep. Arist. 305", "Arist. 96" — so accept the "Aris(t)." stem with either
+  // a "Let." or "Ep." prefix.
   { source: 'aristeas', name: 'Letter of Aristeas', noteBook: 'Aristeas', dataUrl: '/data/pseudepigrapha/aristeas.json', chapters: 1,
     attribution: 'Text: H. T. Andrews’ translation of the Letter of Aristeas, 1913 (public domain). The work is a single run of numbered sections, shown here as one chapter.',
     parseCitation: (text: string) => {
-      const m = text.match(/^(?:Ep\.\s*)?Arist(?:eas)?\.?\s+(\d+)/)
+      const m = text.match(/^(?:Ep\.\s*|Let\.\s*)?Aris(?:t(?:eas)?)?\.?\s+(\d+)/)
       return m ? { chapter: 1, verse: parseInt(m[1], 10) } : null
     } },
   // ── Pseudepigrapha "Group B": public-domain works added from clean HTML editions

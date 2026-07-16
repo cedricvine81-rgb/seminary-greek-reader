@@ -35,7 +35,8 @@ def valid(tail: str) -> bool:
     """True when `tail` starts with a work abbrev immediately followed by a section number —
     the same shape philoCite() accepts."""
     for ab in _BY_LEN:
-        if tail.startswith(ab) and re.match(r'\s+[\d§]', tail[len(ab):]):
+        # Allow a stray comma between the work name and its section number ("Sobriety, 55–56").
+        if tail.startswith(ab) and re.match(r'[,\s]+[\d§]', tail[len(ab):]):
             return True
     return False
 

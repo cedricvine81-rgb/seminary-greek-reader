@@ -1220,7 +1220,12 @@
         },
         {
           "text": "2 Macc 7:19",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 7,
+            "verse": 19
+          }
         },
         {
           "text": "4 Macc 5:19, 33",
@@ -7657,7 +7662,12 @@
         },
         {
           "text": "4 Macc 16:25",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 16,
+            "verse": 25
+          }
         },
         {
           "text": "T. Jud. 25:1",
@@ -8434,7 +8444,12 @@
         },
         {
           "text": "1 Macc 6:7",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 6,
+            "verse": 7
+          }
         },
         {
           "text": "2 Macc 8:17",
@@ -15850,11 +15865,21 @@
         },
         {
           "text": "4 Macc 17:21–22",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 21
+          }
         },
         {
           "text": "4 Macc 18:3–4",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 18,
+            "verse": 3
+          }
         },
         {
           "text": "1QS 8:3–4",
@@ -23308,7 +23333,12 @@
         },
         {
           "text": "4 Macc 16:25",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 16,
+            "verse": 25
+          }
         }
       ]
     },
@@ -28537,7 +28567,7 @@
           "type": "Philo"
         },
         {
-          "text": "Philo, Migration Sobriety, 55–56",
+          "text": "Philo, Sobriety, 55–56",
           "type": "Philo"
         }
       ]
@@ -31460,7 +31490,12 @@
         },
         {
           "text": "1 Macc 11:30, 33",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 11,
+            "verse": 30
+          }
         }
       ]
     },
@@ -34703,7 +34738,12 @@
         },
         {
           "text": "4 Macc 17:22",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 22
+          }
         }
       ]
     },
@@ -40708,7 +40748,12 @@
         },
         {
           "text": "2 Macc 14:46",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 14,
+            "verse": 46
+          }
         }
       ]
     },
@@ -46847,11 +46892,21 @@
         },
         {
           "text": "4 Macc 7:16",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 7,
+            "verse": 16
+          }
         },
         {
           "text": "4 Macc 16:1",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 16,
+            "verse": 1
+          }
         },
         {
           "text": "Virgil, Ecl. 4.15–17",
@@ -51318,7 +51373,12 @@
         },
         {
           "text": "1 Macc 6:18–31",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "1Macc",
+            "chapter": 6,
+            "verse": 18
+          }
         }
       ]
     },
@@ -51469,7 +51529,12 @@
         },
         {
           "text": "4 Macc 17:10–15",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "4Macc",
+            "chapter": 17,
+            "verse": 10
+          }
         }
       ]
     },
@@ -60918,7 +60983,12 @@
         },
         {
           "text": "2 Macc 11:8",
-          "type": "Apocrypha"
+          "type": "Apocrypha",
+          "ref": {
+            "book": "2Macc",
+            "chapter": 11,
+            "verse": 8
+          }
         }
       ]
     },
