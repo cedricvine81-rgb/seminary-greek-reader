@@ -10,6 +10,8 @@ import {
 import { SearchBar } from './SearchBar'
 import { PassagePicker } from './PassagePicker'
 import { GreekVerse } from './GreekVerse'
+import { HebrewVerse } from './HebrewVerse'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
@@ -182,6 +184,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
   const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
   const [mt, setMt]   = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
+  // Hebrew Strong's lexicon for the parsing pane — loaded lazily alongside the first MT chapter.
+  const [hebrewLex, setHebrewLex] = useState<HebrewLexicon | null>(null)
 
   // ── Full book list (both corpora) for resolving a typed reference like "Gen 1" ──
   // Fetched once from the static /data/books.json asset — the same file the reader API's
@@ -399,6 +403,15 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
 
   const fetchChapter = useCallback(async (item: ChapterItem): Promise<TextSection | null> => {
     try {
+      // Hebrew (MT) chapters already ship fully formed (surface + Strong's + OSHB morphology +
+      // morpheme breakdown) as static assets, and the /api/reader lexicon join is Greek-shaped,
+      // so load them straight from the CDN and keep the Hebrew word fields intact.
+      if (item.corpus === 'MT') {
+        const res  = await fetch(`/data/mt/${item.osisId}_${item.chapter}.json`)
+        const data = await res.json()
+        if (!data.verses?.length) return null
+        return { key: `${item.osisId}-${item.chapter}`, bookName: item.bookName, corpus: 'MT', verses: data.verses }
+      }
       // Pass the queue item's corpus so the selected GNT edition (Tischendorf vs Nestle
       // 1904) actually loads its own text; the API falls back to the book's native corpus
       // if a chapter file is missing.
@@ -558,6 +571,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   //    never open it, and it's the largest corpus). ─────────────────────────────
   useEffect(() => {
     if (corpus !== 'MT' || mtQueueRef.current.length > 0) return
+    // Parsing-pane lexicon: load once, in parallel with the first chapter.
+    loadHebrewLexicon().then(setHebrewLex).catch(() => {})
     fetch('/api/reader?corpus=MT')
       .then(r => r.json())
       .then(data => {
@@ -1498,12 +1513,16 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
             <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">Chapter {chapter}</h4>
           )}
           {sec.verses.map(v => (
-            <p key={v.id} ref={greekVerseRef(v.id)}
-              className={`font-hebrew leading-loose mb-1 px-1 rounded ${v.id === highlightedVerse ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`}
-              style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
-              <sup className="text-[11px] text-gray-400 mx-1 font-sans align-super">{v.verse}</sup>
-              {v.text}
-            </p>
+            <HebrewVerse
+              key={v.id}
+              verse={v}
+              activeWordId={activeWordId}
+              highlighted={v.id === highlightedVerse}
+              lexicon={hebrewLex}
+              onWordHover={handleWordHover}
+              onWordClick={handleWordClick}
+              verseRefCallback={greekVerseRef(v.id)}
+            />
           ))}
         </div>
       )

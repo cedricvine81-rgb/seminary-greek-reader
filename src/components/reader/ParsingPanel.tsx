@@ -71,25 +71,26 @@ interface ParsingPanelProps {
 export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = 'panel' }: ParsingPanelProps) {
   const [entry, setEntry] = useState<LexiconEntry | null>(null)
   const [lsjEntry, setLsjEntry] = useState<string | null>(null)
-  const vocabGloss = lookupVocabGloss(info?.lexeme)
+  const isHebrew = info?.script === 'hebrew'
+  const vocabGloss = isHebrew ? null : lookupVocabGloss(info?.lexeme)
 
-  // Load Strong's-keyed lexicon (Thayer, Mounce, Abbott-Smith)
+  // Load Strong's-keyed lexicon (Thayer, Mounce, Abbott-Smith) — Greek only.
   useEffect(() => {
-    if (!info?.strongs) { setEntry(null); return }
+    if (isHebrew || !info?.strongs) { setEntry(null); return }
     const key = info.strongs.startsWith('G') ? info.strongs : `G${info.strongs}`
     loadLexicon()
       .then(dict => setEntry(dict[key] ?? null))
       .catch(() => setEntry(null))
-  }, [info?.strongs])
+  }, [info?.strongs, isHebrew])
 
-  // Load LSJ by normalized lemma
+  // Load LSJ by normalized lemma — Greek only.
   useEffect(() => {
-    if (!info?.lexeme) { setLsjEntry(null); return }
+    if (isHebrew || !info?.lexeme) { setLsjEntry(null); return }
     const norm = normalizeLemma(info.lexeme)
     loadLsj()
       .then(dict => setLsjEntry(dict[norm] ?? null))
       .catch(() => setLsjEntry(null))
-  }, [info?.lexeme])
+  }, [info?.lexeme, isHebrew])
 
   // 'panel': fixed outer container — height never changes, content scrolls inside.
   // 'sheet': parent (the mobile bottom sheet) owns height/scroll, so grow to fill.
@@ -101,14 +102,17 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
 
       {!info ? (
         <div className="flex items-center justify-center h-full text-sm text-gray-400 italic px-5">
-          Hover or click any Greek word to see lexical information.
+          Hover or click any word to see lexical information.
         </div>
       ) : (
         <div className="flex-1 min-h-0 overflow-y-auto px-5 py-3 text-sm leading-snug">
           {/* Word + parsing header */}
           <div className="flex items-baseline gap-2 flex-wrap mb-1">
-            <span className="greek-text text-lg font-semibold text-brand-800">{info.surface}</span>
-            <span className="greek-text text-base text-gray-500">{info.lexeme}</span>
+            <span className={`${isHebrew ? 'font-hebrew' : 'greek-text'} text-lg font-semibold text-brand-800`} dir={isHebrew ? 'rtl' : undefined}>{info.surface}</span>
+            <span className={`${isHebrew ? 'font-hebrew' : 'greek-text'} text-base text-gray-500`} dir={isHebrew ? 'rtl' : undefined}>{info.lexeme}</span>
+            {isHebrew && info.transliteration && (
+              <span className="text-xs text-gray-400 italic">{info.transliteration}</span>
+            )}
             {info.strongs && (
               <span className="font-mono text-xs text-gray-400 bg-gray-50 rounded px-1">{info.strongs}</span>
             )}
@@ -121,8 +125,40 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
             {info.parsing}
           </p>
 
-          {/* Lexical definitions */}
-          <div className="text-gray-800">
+          {/* Hebrew: morpheme segment breakdown (prefixes/suffixes) */}
+          {isHebrew && info.segments && info.segments.length > 0 && (
+            <p className="mb-2 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Segments</span>
+              {info.segments.map((s, i) => (
+                <span key={i} className="inline-flex items-baseline gap-1">
+                  <span className="font-hebrew text-base text-brand-800" dir="rtl">{s.text}</span>
+                  <span className="text-xs text-gray-500">{s.label}{s.gloss ? ` · ${s.gloss}` : ''}</span>
+                  {i < info.segments!.length - 1 && <span className="text-gray-300">+</span>}
+                </span>
+              ))}
+            </p>
+          )}
+
+          {/* Hebrew: Strong's gloss + full concise definition */}
+          {isHebrew && (
+            <div className="text-gray-800">
+              {info.gloss && (
+                <p className="mb-0">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Gloss</span>
+                  {info.gloss}
+                </p>
+              )}
+              {info.definition && info.definition !== info.gloss && (
+                <p className="mb-0">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Strong&apos;s</span>
+                  {info.definition}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Lexical definitions (Greek) */}
+          <div className={`text-gray-800 ${isHebrew ? 'hidden' : ''}`}>
             {entry?.thayer && (
               <p className="mb-0">
                 <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Thayer&apos;s</span>

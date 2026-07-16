@@ -118,6 +118,8 @@ def build(osis: str) -> int:
             elif tag == 'seg' and el.get('type') == 'x-maqqef':
                 if parts:
                     parts[-1] += '־'           # attach the maqqef to the preceding word's text
+                if words:
+                    words[-1]['after'] = '־'   # so per-word rendering rejoins the maqqef (no space)
         # Join with spaces, except a maqqef (־) connects directly to the next word (no space).
         text = ''
         for p in parts:

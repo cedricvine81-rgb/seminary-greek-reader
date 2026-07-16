@@ -17,4 +17,16 @@ export interface LexicalInfoPanel {
   parsing: string
   strongs?: string
   reference: string
+  // Hebrew (MT) enrichment — set only for Masoretic words so the parsing pane renders in the
+  // Hebrew font, shows the transliteration + full definition, and lists prefix/suffix segments.
+  script?: 'hebrew'
+  transliteration?: string
+  definition?: string
+  segments?: HebrewSegment[]
+}
+
+export interface HebrewSegment {
+  text: string    // the morpheme's surface (e.g. the prefixed בְּ)
+  label: string   // its role (e.g. "preposition", "definite article", "3ms suffix")
+  gloss?: string  // dictionary gloss, when the morpheme has a Strong's entry
 }
