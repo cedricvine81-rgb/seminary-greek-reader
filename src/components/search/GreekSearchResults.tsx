@@ -34,9 +34,12 @@ function hilite(text: string, terms: string[]): ReactNode {
   return ranges.length ? <>{markSlice(text, ranges, 0, text.length, MARK)}</> : text
 }
 
-export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctxMap, onOpen }: {
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, onOpen }: {
   hits: GreekHit[]
   terms: string[]
+  // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
+  // the lemma string, so they're highlighted by their lemma instead of their surface.
+  searchLemma?: string
   corpus: 'GNT' | 'LXX'
   bookName: Map<string, string>
   context: number
@@ -133,7 +136,7 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
     }
     return toks.map((tok, ti) => {
       const key = `${rowKey}.${ti}`
-      const matched = termSet.has(normalizeFold(tok.surface))
+      const matched = termSet.has(normalizeFold(tok.surface)) || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
       const select = () => {
         setInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
         setSelKey(key)

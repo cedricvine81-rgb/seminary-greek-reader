@@ -770,6 +770,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               <GreekSearchResults
                 hits={displayBib}
                 terms={terms}
+                searchLemma={lemmaMode ? normalizeFold(query.trim()) : undefined}
                 corpus={scope.corpus}
                 bookName={bookName}
                 context={context}
