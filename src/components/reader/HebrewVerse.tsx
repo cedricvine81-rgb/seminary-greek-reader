@@ -4,6 +4,7 @@ import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { HebrewWord } from './HebrewWord'
+import { verseContextMenu } from './GreekVerse'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
@@ -48,7 +49,8 @@ function HebrewVerseImpl({
 
   const withOffsets = withTokenOffsets(verse.words)
   return (
-    <p dir="rtl" ref={verseRefCallback} className={cls} style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+    <p dir="rtl" ref={verseRefCallback} className={cls} style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
+      onContextMenu={e => verseContextMenu(e, verse.words!, withOffsets, onWordRightClick)}>
       <sup className="text-[11px] text-gray-400 mx-1 font-sans align-super">{verse.verse}</sup>
       {/* Anchor wraps only the words (not the verse-number sup) so drag-to-highlight offsets
           measured off this element line up with the stored ones; the 'he' layer keeps Hebrew

@@ -1,5 +1,5 @@
 'use client'
-import { Fragment, memo } from 'react'
+import { Fragment, memo, type MouseEvent } from 'react'
 import type { BiblicalVerse, VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { GreekWord } from './GreekWord'
@@ -13,6 +13,41 @@ import type { HighlightRecord } from '@/components/highlights/useHighlights'
 function wordGap(end: number, highlights: HighlightRecord[]) {
   const g = highlightAt(end, end + 1, highlights)
   return g ? <span className={highlightMarkClass(g.color)}> </span> : ' '
+}
+
+// Index of the `.greek-word` span nearest the click point (0 when the point is inside a box),
+// so a right-click that lands in the gap between words, on the verse number, or in the line
+// padding still resolves to a word instead of doing nothing.
+function nearestWordIndex(spans: HTMLElement[], x: number, y: number): number {
+  let best = -1, bestD = Infinity
+  spans.forEach((el, i) => {
+    const r = el.getBoundingClientRect()
+    const dx = x < r.left ? r.left - x : x > r.right ? x - r.right : 0
+    const dy = y < r.top ? r.top - y : y > r.bottom ? y - r.bottom : 0
+    const d = dx * dx + dy * dy
+    if (d < bestD) { bestD = d; best = i }
+  })
+  return best
+}
+
+// Verse-level right-click fallback: if the click didn't land on a word span, route it to the
+// nearest word so the word menu (and its Highlight palette) still opens. The word's own
+// onContextMenu handles direct hits, so we only act when the target isn't a word. Exported so
+// HebrewVerse (whose words also carry the `.greek-word` class) can reuse it.
+export function verseContextMenu(
+  e: MouseEvent<HTMLElement>,
+  words: VerseWord[],
+  offsets: { start: number; end: number }[],
+  onWordRightClick?: (word: VerseWord, x: number, y: number, start: number, end: number) => void,
+) {
+  if (!onWordRightClick) return
+  if ((e.target as HTMLElement).closest('.greek-word')) return   // a real word will handle it
+  const spans = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('.greek-word'))
+  if (spans.length === 0) return
+  const idx = nearestWordIndex(spans, e.clientX, e.clientY)
+  if (idx < 0 || idx >= words.length || idx >= offsets.length) return
+  e.preventDefault()
+  onWordRightClick(words[idx], e.clientX, e.clientY, offsets[idx].start, offsets[idx].end)
 }
 
 interface GreekVerseProps {
@@ -54,7 +89,8 @@ function GreekVerseImpl({
   if (verse.words && verse.words.length > 0) {
     const withOffsets = withTokenOffsets(verse.words)
     return (
-      <p className={baseClass} ref={verseRefCallback}>
+      <p className={baseClass} ref={verseRefCallback}
+        onContextMenu={e => verseContextMenu(e, verse.words!, withOffsets, onWordRightClick)}>
         <VerseRef verse={verse} />
         {/* Anchor only wraps the words themselves — VerseRef's "Matt 1:1" label above
             must NOT be inside it, or its text would shift every offset computed against
@@ -92,17 +128,14 @@ function GreekVerseImpl({
 
   const tokens = verse.text.split(/\s+/)
   const withOffsets = withTokenOffsets(tokens.map(t => ({ surface: t })))
+  const fakeWords: VerseWord[] = tokens.map((token, i) => ({ id: `${verse.id}-${i}`, verseId: verse.id, position: i, surface: token }))
   return (
-    <p className={baseClass} ref={verseRefCallback}>
+    <p className={baseClass} ref={verseRefCallback}
+      onContextMenu={e => verseContextMenu(e, fakeWords, withOffsets, onWordRightClick)}>
       <VerseRef verse={verse} />
       <span {...anchorProps}>
         {tokens.map((token, i) => {
-          const fakeWord: VerseWord = {
-            id: `${verse.id}-${i}`,
-            verseId: verse.id,
-            position: i,
-            surface: token,
-          }
+          const fakeWord = fakeWords[i]
           const { start, end } = withOffsets[i]
           const hl = highlightAt(start, end, textHighlights)
           return (
