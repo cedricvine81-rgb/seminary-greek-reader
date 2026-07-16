@@ -79,7 +79,7 @@ export function getBooks(corpus: Corpus): BiblicalBook[] {
     // from the GNT books with the corpus relabelled — otherwise selecting the Nestle 1904
     // edition would build an empty reader queue and nothing would load.
     if (corpus === 'NA1904') return index.na1904 ?? index.gnt.map(b => ({ ...b, corpus: 'NA1904' as Corpus }))
-    if (corpus === 'MT') return index.mt ?? []   // Hebrew Masoretic OT (public/data/MT)
+    if (corpus === 'MT') return index.mt ?? []   // Hebrew Masoretic OT (public/data/mt)
     return index.lxx
   } catch {
     return []

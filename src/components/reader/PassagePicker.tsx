@@ -29,6 +29,8 @@ const SBL_ABBR: Record<string, string> = {
   Gen: 'Gen', Exod: 'Exod', Lev: 'Lev', Num: 'Num', Deut: 'Deut',
   JoshB: 'Josh', JudgB: 'Judg', Ruth: 'Ruth', '1Sam': '1 Sam', '2Sam': '2 Sam', '1Kgs': '1 Kgs', '2Kgs': '2 Kgs',
   '1Chr': '1 Chr', '2Chr': '2 Chr', Ezra: 'Ezra', Neh: 'Neh', '1Esd': '1 Esd', Tob: 'Tob', Jdt: 'Jdt', EsthGr: 'Add Esth',
+  // Hebrew (MT) osisIds that differ from the LXX book keys above.
+  Josh: 'Josh', Judg: 'Judg', Esth: 'Esth', Dan: 'Dan',
   Job: 'Job', Ps: 'Ps', PsSol: 'Pss. Sol.', Prov: 'Prov', Eccl: 'Eccl', Song: 'Song', Wis: 'Wis', Sir: 'Sir',
   Isa: 'Isa', Jer: 'Jer', Lam: 'Lam', EpJer: 'Ep Jer', Bar: 'Bar', Sus: 'Sus', Ezek: 'Ezek', DanLXX: 'Dan', Bel: 'Bel',
   Hos: 'Hos', Joel: 'Joel', Amos: 'Amos', Obad: 'Obad', Jonah: 'Jonah', Mic: 'Mic', Nah: 'Nah', Hab: 'Hab',
@@ -54,21 +56,25 @@ const COLOR_OF: Record<string, ColorKey> = {
   Job: 'amber', Ps: 'amber', Prov: 'amber', Eccl: 'amber', Song: 'amber',
   Isa: 'violet', Jer: 'violet', Lam: 'violet', Ezek: 'violet', DanLXX: 'violet', Hos: 'violet', Joel: 'violet', Amos: 'violet',
   Obad: 'violet', Jonah: 'violet', Mic: 'violet', Nah: 'violet', Hab: 'violet', Zeph: 'violet', Hag: 'violet', Zech: 'violet', Mal: 'violet',
+  // Hebrew (MT) osisIds that differ from the LXX book keys above.
+  Josh: 'emerald', Judg: 'emerald', Esth: 'emerald', Dan: 'violet',
   // Deutero-Canonical
   '1Esd': 'emerald', Tob: 'emerald', Jdt: 'emerald', '1Macc': 'emerald', '2Macc': 'emerald', '3Macc': 'emerald', '4Macc': 'emerald',
   Wis: 'amber', Sir: 'amber', PsSol: 'amber', Odes: 'amber',
   Bar: 'violet', EpJer: 'violet', Sus: 'violet', Bel: 'violet',
 }
 
-const GROUPS: { heading: string; corpus: 'GNT' | 'LXX'; order: string[] }[] = [
+const GROUPS: { heading: string; corpus: 'GNT' | 'LXX' | 'MT'; order: string[] }[] = [
   { heading: 'Old Testament', corpus: 'LXX', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'JoshB', 'JudgB', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'EsthGr', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'DanLXX', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
   { heading: 'Deutero-Canonical', corpus: 'LXX', order: ['1Esd', 'Tob', 'Jdt', '1Macc', '2Macc', '3Macc', '4Macc', 'Wis', 'Sir', 'PsSol', 'Odes', 'Bar', 'EpJer', 'Sus', 'Bel'] },
   { heading: 'New Testament', corpus: 'GNT', order: ['Matt', 'Mark', 'Luke', 'John', 'Acts', 'Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim', '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John', 'Jude', 'Rev'] },
+  // Hebrew Masoretic OT — the standard 39-book Hebrew canon (MT osisIds).
+  { heading: 'Hebrew Bible', corpus: 'MT', order: ['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'Josh', 'Judg', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'Esth', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'Dan', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'] },
 ]
 
 export function PassagePicker({ books, corpus, onPick, onClose }: {
   books: BiblicalBook[]
-  corpus: 'GNT' | 'LXX'
+  corpus: 'GNT' | 'LXX' | 'MT'
   onPick: (ref: string) => void
   onClose: () => void
 }) {
@@ -92,7 +98,9 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
     return () => { alive = false }
   }, [book, chapter])
 
-  const byId = new Map(books.map(b => [b.osisId, b]))
+  // Scope to the active corpus: MT and LXX share osisIds (both have "Gen"), so an
+  // unscoped map would collide and the OT picker could fetch the wrong corpus's book.
+  const byId = new Map(books.filter(b => b.corpus === corpus).map(b => [b.osisId, b]))
   function renderGroup(order: string[]) {
     const gBooks = order.map(id => byId.get(id)).filter((b): b is BiblicalBook => !!b)
     if (gBooks.length === 0) return null
@@ -123,7 +131,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
             <ChevronLeft size={18} /> Back
           </button>
         ) : (
-          <span className="text-sm font-semibold text-gray-800">Select {corpus === 'GNT' ? 'an NT' : 'an LXX'} passage</span>
+          <span className="text-sm font-semibold text-gray-800">Select {corpus === 'GNT' ? 'an NT' : corpus === 'MT' ? 'a Hebrew' : 'an LXX'} passage</span>
         )}
         <span className="ml-auto text-sm text-gray-500 truncate">
           {book ? `${sbl(book)}${chapter ? ` ${chapter}` : ''}` : ''}

@@ -3,7 +3,7 @@
 Bible (OSHB / MorphHB — WLC text + Strong's + ETCBC morphology, CC BY 4.0).
 
 Fetches one OSIS XML per book from github.com/openscriptures/morphhb, parses the tagged words,
-and writes public/data/MT/<osisId>_<chapter>.json in the same top-level shape as the Greek
+and writes public/data/mt/<osisId>_<chapter>.json in the same top-level shape as the Greek
 corpus files (book / chapter / verses[] / words[]) so /api/reader can serve it. Each Hebrew
 word keeps the full pointed+cantillated surface plus its morpheme breakdown — OSHB tags a
 written word as one or more "/"-separated morphemes (prefix conjunctions/prepositions/article +
@@ -24,7 +24,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-OUT = REPO / 'public' / 'data' / 'MT'
+OUT = REPO / 'public' / 'data' / 'mt'
 CACHE = REPO / 'scripts' / 'data' / 'oshb-cache'
 RAW = 'https://raw.githubusercontent.com/openscriptures/morphhb/master/wlc/{}.xml'
 OSIS_NS = '{http://www.bibletechnologies.net/2003/OSIS/namespace}'
@@ -140,7 +140,7 @@ def main():
         n = build(osis)
         total += n
         print(f'  {osis:6} {n} chapters')
-    print(f'MT corpus: {len(todo)} books, {total} chapter files → public/data/MT/')
+    print(f'MT corpus: {len(todo)} books, {total} chapter files → public/data/mt/')
 
 
 if __name__ == '__main__':

@@ -5,9 +5,9 @@ import { betaCodeToGreek } from '@/lib/greek-translit'
 
 interface SearchBarProps {
   onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) => void
-  // Mobile NT/LXX buttons switch the reader's corpus and open that corpus's passage picker.
-  onVerseClick?: (corpus: 'GNT' | 'LXX') => void
-  viewCorpus?: 'GNT' | 'LXX'
+  // Mobile NT/LXX/HB buttons switch the reader's corpus and open that corpus's passage picker.
+  onVerseClick?: (corpus: 'GNT' | 'LXX' | 'MT') => void
+  viewCorpus?: 'GNT' | 'LXX' | 'MT'
   // The translation currently in view on mobile (null = Greek). When set, the search box
   // searches that translation's text instead of Greek.
   viewLang?: string | null
@@ -159,19 +159,19 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
         ))}
       </div>
 
-      {/* Mobile: NT / LXX each open that corpus's visual passage picker (and switch the
+      {/* Mobile: NT / LXX / HB each open that corpus's visual passage picker (and switch the
           reader to it). The active corpus is highlighted. Search box stays word-only. */}
       <div className="lg:hidden flex shrink-0 rounded-lg overflow-hidden border border-brand-600">
-        {(['GNT', 'LXX'] as const).map(c => (
+        {(['GNT', 'LXX', 'MT'] as const).map(c => (
           <button
             key={c}
             type="button"
             onClick={() => onVerseClick?.(c)}
             className={`px-2.5 py-2 text-sm font-medium ${
               viewCorpus === c ? 'bg-brand-600 text-white' : 'bg-surface text-brand-700'
-            } ${c === 'LXX' ? 'border-l border-brand-600' : ''}`}
+            } ${c !== 'GNT' ? 'border-l border-brand-600' : ''}`}
           >
-            {c === 'GNT' ? 'NT' : 'LXX'}
+            {c === 'GNT' ? 'NT' : c === 'LXX' ? 'LXX' : 'HB'}
           </button>
         ))}
       </div>

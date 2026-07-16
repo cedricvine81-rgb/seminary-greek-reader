@@ -178,8 +178,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // ── Corpus queues & loaded sections ─────────────────────────────────────────
   const [gntQueue, setGntQueue] = useState<ChapterItem[]>([])
   const [lxxQueue, setLxxQueue] = useState<ChapterItem[]>([])
+  const [mtQueue, setMtQueue]   = useState<ChapterItem[]>([])   // Hebrew Masoretic OT (RTL)
   const [gnt, setGnt] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
   const [lxx, setLxx] = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
+  const [mt, setMt]   = useState<CorpusSeries>({ sections: [], queueIdx: 0, backIdx: -1, done: false, backDone: true })
 
   // ── Full book list (both corpora) for resolving a typed reference like "Gen 1" ──
   // Fetched once from the static /data/books.json asset — the same file the reader API's
@@ -193,7 +195,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   useEffect(() => {
     fetch('/data/books.json')
       .then(r => r.json())
-      .then((d: { gnt?: BiblicalBook[]; lxx?: BiblicalBook[] }) => setAllBooks([...(d.gnt ?? []), ...(d.lxx ?? [])]))
+      .then((d: { gnt?: BiblicalBook[]; lxx?: BiblicalBook[]; mt?: BiblicalBook[] }) => setAllBooks([...(d.gnt ?? []), ...(d.lxx ?? []), ...(d.mt ?? [])]))
       .catch(() => {})
   }, [])
 
@@ -300,8 +302,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // corpus isn't background-loaded (see the infinite-scroll effect: a display:none sentinel
   // reports top=0 and would otherwise trigger endless load-more, janking the visible scroll).
   // Inferred from the passage you open; the NT/LXX toggle switches it manually.
-  const [corpus, setCorpus] = useState<'GNT' | 'LXX'>('GNT')
-  const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX'>('GNT')
+  const [corpus, setCorpus] = useState<'GNT' | 'LXX' | 'MT'>('GNT')
+  const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX' | 'MT'>('GNT')
   const lastScrollTopRef = useRef(0)
 
   // ── Refs ─────────────────────────────────────────────────────────────────────
@@ -325,8 +327,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   const settingsRef   = useRef<HTMLDivElement>(null)
   const gntSentinel      = useRef<HTMLDivElement>(null)
   const lxxSentinel      = useRef<HTMLDivElement>(null)
+  const mtSentinel       = useRef<HTMLDivElement>(null)
   const gntTopSentinel   = useRef<HTMLDivElement>(null)
   const lxxTopSentinel   = useRef<HTMLDivElement>(null)
+  const mtTopSentinel    = useRef<HTMLDivElement>(null)
   const verseRefs     = useRef<Record<string, HTMLElement>>({})
   // Verse to re-scroll to after switching the inline translation, captured before the switch
   // so the reader stays on the same verse as the layout re-flows.
@@ -334,16 +338,20 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
 
   const gntLoading     = useRef(false)
   const lxxLoading     = useRef(false)
+  const mtLoading      = useRef(false)
   const gntBackLoading = useRef(false)
   const lxxBackLoading = useRef(false)
+  const mtBackLoading  = useRef(false)
   // While true, infinite-scroll loading is paused so a jump (esp. into the LXX, which
   // sits below the whole NT) isn't fought by chapters loading above and shifting it.
   const navLockRef     = useRef(false)
 
   const gntRef      = useRef(gnt)
   const lxxRef      = useRef(lxx)
+  const mtRef       = useRef(mt)
   const gntQueueRef = useRef(gntQueue)
   const lxxQueueRef = useRef(lxxQueue)
+  const mtQueueRef  = useRef(mtQueue)
   const parsingRef    = useRef(parsingInfo)
   const lockedRef     = useRef(lockedInfo)
   const syntaxMenuRef = useRef(false)
@@ -352,8 +360,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
 
   useEffect(() => { gntRef.current      = gnt },        [gnt])
   useEffect(() => { lxxRef.current      = lxx },        [lxx])
+  useEffect(() => { mtRef.current       = mt },         [mt])
   useEffect(() => { gntQueueRef.current = gntQueue },   [gntQueue])
   useEffect(() => { lxxQueueRef.current = lxxQueue },   [lxxQueue])
+  useEffect(() => { mtQueueRef.current  = mtQueue },    [mtQueue])
 
   // ── Deep link: jump to a passage passed via ?ref= (from Exegesis or Master Search) ──
   // Keyed by ref+highlight (not a one-shot boolean) so a NEW target re-jumps even when the
@@ -433,6 +443,23 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     lxxLoading.current = false
   }, [fetchChapter])
 
+  const loadMoreMt = useCallback(async () => {
+    const series = mtRef.current
+    const queue  = mtQueueRef.current
+    if (mtLoading.current || series.done || !queue.length) return
+    const item = queue[series.queueIdx]
+    if (!item) { setMt(s => ({ ...s, done: true })); return }
+    mtLoading.current = true
+    const section = await fetchChapter(item)
+    setMt(s => ({
+      ...s,
+      sections: section ? [...s.sections, section] : s.sections,
+      queueIdx: s.queueIdx + 1,
+      done: s.queueIdx + 1 >= queue.length,
+    }))
+    mtLoading.current = false
+  }, [fetchChapter])
+
   // ── Backward (upward) chapter loading ────────────────────────────────────────
 
   const loadPrevGnt = useCallback(async () => {
@@ -485,6 +512,29 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     })
   }, [fetchChapter])
 
+  const loadPrevMt = useCallback(async () => {
+    const series = mtRef.current
+    const queue  = mtQueueRef.current
+    if (mtBackLoading.current || series.backDone || series.backIdx < 0 || !queue.length) return
+    const item = queue[series.backIdx]
+    if (!item) { setMt(s => ({ ...s, backDone: true })); return }
+    mtBackLoading.current = true
+    const panel            = textPanelRef.current
+    const prevScrollHeight = panel?.scrollHeight ?? 0
+    const prevScrollTop    = panel?.scrollTop    ?? 0
+    const section = await fetchChapter(item)
+    setMt(s => ({
+      ...s,
+      sections: section ? [section, ...s.sections] : s.sections,
+      backIdx:  s.backIdx - 1,
+      backDone: s.backIdx - 1 < 0,
+    }))
+    requestAnimationFrame(() => {
+      if (panel) panel.scrollTop = prevScrollTop + (panel.scrollHeight - prevScrollHeight)
+      mtBackLoading.current = false
+    })
+  }, [fetchChapter])
+
   // ── Mount: seed LXX corpus ───────────────────────────────────────────────────
 
   useEffect(() => {
@@ -503,6 +553,27 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       })
       .catch(() => {})
   }, [fetchChapter])
+
+  // ── Seed the Hebrew OT the first time the reader switches to it (lazy — most sessions
+  //    never open it, and it's the largest corpus). ─────────────────────────────
+  useEffect(() => {
+    if (corpus !== 'MT' || mtQueueRef.current.length > 0) return
+    fetch('/api/reader?corpus=MT')
+      .then(r => r.json())
+      .then(data => {
+        const q = buildQueue(data.books ?? [])
+        setMtQueue(q)
+        if (q[0]) {
+          mtLoading.current = true
+          fetchChapter(q[0]).then(section => {
+            setMt({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
+            mtLoading.current = false
+          })
+        }
+      })
+      .catch(() => {})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [corpus])
 
   // ── GNT edition: load/reload GNT corpus when edition changes ─────────────────
   // Also runs on mount (initial value 'nestle1904') to seed the first GNT chapter.
@@ -554,6 +625,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       }
       if (visible(lxxTopSentinel.current) && !lxxRef.current.backDone) {
         if (lxxTopSentinel.current!.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevLxx()
+      }
+      if (visible(mtSentinel.current) && !mtRef.current.done) {
+        if (mtSentinel.current!.getBoundingClientRect().top < panelBottom + LOOKAHEAD) loadMoreMt()
+      }
+      if (visible(mtTopSentinel.current) && !mtRef.current.backDone) {
+        if (mtTopSentinel.current!.getBoundingClientRect().bottom > panelTop - LOOKAHEAD) loadPrevMt()
       }
     }
 
@@ -793,10 +870,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // give up after a timeout. gntQueue/lxxQueue populate from their own background
   // fetches on mount (LXX is the larger of the two), so a reference into a corpus that
   // hasn't finished loading yet would otherwise find no match and silently do nothing.
-  async function waitForChapterInQueue(isLxx: boolean, osisId: string, chapter: number, timeoutMs = 10_000): Promise<boolean> {
+  async function waitForChapterInQueue(cor: 'GNT' | 'LXX' | 'MT', osisId: string, chapter: number, timeoutMs = 10_000): Promise<boolean> {
     const start = Date.now()
     while (Date.now() - start < timeoutMs) {
-      const queue = isLxx ? lxxQueueRef.current : gntQueueRef.current
+      const queue = cor === 'MT' ? mtQueueRef.current : cor === 'LXX' ? lxxQueueRef.current : gntQueueRef.current
       if (queue.some(item => item.osisId === osisId && item.chapter === chapter)) return true
       await new Promise(resolve => setTimeout(resolve, 150))
     }
@@ -830,13 +907,22 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     // reference into a corpus that hadn't finished loading yet (LXX is the larger fetch) would
     // find no matching book and silently fail.
     const books = await waitForBooksReady()
-    const ref = parseReference(trimmed, books)
+    // When the reader is already showing Hebrew, resolve OT references against the MT book
+    // list first so an OT jump stays in Hebrew — even for books whose MT osisId differs from
+    // the LXX (Josh/Judg/Esth/Dan). A miss (e.g. an NT reference) falls back to the full list,
+    // which switches the view to the resolved book's own corpus.
+    const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT')) : null)
+      ?? parseReference(trimmed, books)
     if (!ref) return
-    setCorpus(ref.book.corpus === 'LXX' ? 'LXX' : 'GNT')   // land the jump in a short single-corpus scroll
-    const isLxx  = ref.book.corpus === 'LXX'
-    const ready  = await waitForChapterInQueue(isLxx, ref.book.osisId, ref.chapter)
+    const targetCorpus: 'GNT' | 'LXX' | 'MT' =
+      ref.book.corpus === 'MT' ? 'MT' : ref.book.corpus === 'LXX' ? 'LXX' : 'GNT'
+    setCorpus(targetCorpus)   // land the jump in a short single-corpus scroll (also seeds MT lazily)
+    const queueRef   = targetCorpus === 'MT' ? mtQueueRef : targetCorpus === 'LXX' ? lxxQueueRef : gntQueueRef
+    const loadingRef = targetCorpus === 'MT' ? mtLoading  : targetCorpus === 'LXX' ? lxxLoading  : gntLoading
+    const setSeries  = targetCorpus === 'MT' ? setMt      : targetCorpus === 'LXX' ? setLxx      : setGnt
+    const ready  = await waitForChapterInQueue(targetCorpus, ref.book.osisId, ref.chapter)
     if (!ready) return   // the corpus never finished loading — nothing to jump to
-    const queue     = isLxx ? lxxQueueRef.current : gntQueueRef.current
+    const queue     = queueRef.current
     const targetIdx = queue.findIndex(
       item => item.osisId === ref.book.osisId && item.chapter === ref.chapter
     )
@@ -848,8 +934,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     const preloadEnd   = Math.min(queue.length - 1, targetIdx + NAV_FWD)
     const idxsToFetch  = Array.from({ length: preloadEnd - preloadStart + 1 }, (_, i) => preloadStart + i)
 
-    if (isLxx) lxxLoading.current = true
-    else       gntLoading.current = true
+    loadingRef.current = true
 
     const fetched = await Promise.all(idxsToFetch.map(i => fetchChapter(queue[i])))
 
@@ -860,8 +945,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       const newBackIdx  = preloadStart - 1        // next chapter to prepend going backward
       const backDone    = newBackIdx < 0
 
-      if (isLxx) setLxx({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
-      else       setGnt({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
+      setSeries({ sections: validSections, queueIdx: newQueueIdx, backIdx: newBackIdx, done: isDone, backDone })
 
       // Identify the target section by key (not by position in validSections).
       const targetKey     = `${queue[targetIdx].osisId}-${queue[targetIdx].chapter}`
@@ -876,10 +960,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       setNavKey(k => k + 1)
     }
 
-    // Release loading lock only after state has been set so loadMoreGnt/Lxx cannot fire with
+    // Release loading lock only after state has been set so loadMore* cannot fire with
     // a stale queueIdx during the re-render window.
-    if (isLxx) lxxLoading.current = false
-    else       gntLoading.current = false
+    loadingRef.current = false
   }
 
   function handleWordAction(action: WordSearchAction, scope: SearchScope) {
@@ -1398,6 +1481,35 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     })
   }
 
+  // Hebrew OT sections — right-to-left, verse text only (word-level parsing is a later phase).
+  // Headings stay LTR/sans (they're English labels); the Hebrew verses flow RTL.
+  function renderHebrewSections(sections: TextSection[]) {
+    let lastBook = ''
+    return sections.map(sec => {
+      const bookChanged = sec.bookName !== lastBook
+      lastBook = sec.bookName
+      const chapter = sec.verses[0]?.chapter ?? null
+      return (
+        <div key={sec.key}>
+          {bookChanged && (
+            <h3 dir="ltr" className="text-xs font-semibold uppercase tracking-widest text-gray-400 mt-5 mb-1 pb-1 border-b border-gray-100 font-sans">{sec.bookName}</h3>
+          )}
+          {chapter !== null && (
+            <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">Chapter {chapter}</h4>
+          )}
+          {sec.verses.map(v => (
+            <p key={v.id} ref={greekVerseRef(v.id)}
+              className={`font-hebrew leading-loose mb-1 px-1 rounded ${v.id === highlightedVerse ? 'bg-brand-50 ring-1 ring-brand-300' : ''}`}
+              style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+              <sup className="text-[11px] text-gray-400 mx-1 font-sans align-super">{v.verse}</sup>
+              {v.text}
+            </p>
+          ))}
+        </div>
+      )
+    })
+  }
+
   // ── Layout ──────────────────────────────────────────────────────────────────────
 
   const parallelLangInfo = PARALLEL_LANGS.find(l => l.code === parallelLang)
@@ -1409,7 +1521,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {/* On mobile this row hides while scrolling down and returns on scroll up;
           desktop pins it with `lg:flex`. */}
       <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 lg:flex-none lg:w-72">
           <SearchBar
             onSearch={handleSearch}
             onVerseClick={c => { setCorpus(c); setPickerCorpus(c); setPickerOpen(true) }}
@@ -1423,17 +1535,17 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
             reference, so — unlike the mobile NT/LXX buttons — this doesn't open the passage
             picker; it only switches the view. */}
         <div className="hidden lg:flex shrink-0 self-stretch rounded-lg overflow-hidden border border-gray-300">
-          {(['GNT', 'LXX'] as const).map(c => (
+          {(['GNT', 'LXX', 'MT'] as const).map(c => (
             <button
               key={c}
               type="button"
               onClick={() => setCorpus(c)}
-              title={c === 'GNT' ? 'Show the New Testament' : 'Show the Septuagint'}
+              title={c === 'GNT' ? 'Show the New Testament' : c === 'LXX' ? 'Show the Septuagint' : 'Show the Hebrew Old Testament'}
               className={`px-2.5 text-sm font-medium ${
                 corpus === c ? 'bg-brand-600 text-white' : 'bg-surface text-brand-700 hover:bg-brand-50'
-              } ${c === 'LXX' ? 'border-l border-gray-300' : ''}`}
+              } ${c !== 'GNT' ? 'border-l border-gray-300' : ''}`}
             >
-              {c === 'GNT' ? 'NT' : 'LXX'}
+              {c === 'GNT' ? 'NT' : c === 'LXX' ? 'LXX' : 'HB'}
             </button>
           ))}
         </div>
@@ -1760,6 +1872,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {!lxx.backDone && <div ref={lxxTopSentinel} className="h-1" aria-hidden />}
           {renderSections(lxx.sections)}
           {!lxx.done && <div ref={lxxSentinel} className="h-1" aria-hidden />}
+        </div>
+
+        <div dir="rtl" className={corpus === 'MT' ? '' : 'hidden'}>
+          {!mt.backDone && <div ref={mtTopSentinel} className="h-1" aria-hidden />}
+          {renderHebrewSections(mt.sections)}
+          {!mt.done && <div ref={mtSentinel} className="h-1" aria-hidden />}
         </div>
       </div>
 

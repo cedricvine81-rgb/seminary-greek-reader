@@ -1,4 +1,4 @@
-// MT = the Hebrew Masoretic Old Testament (public/data/MT, from OSHB/MorphHB).
+// MT = the Hebrew Masoretic Old Testament (public/data/mt, from OSHB/MorphHB).
 export type Corpus = 'LXX' | 'GNT' | 'NA1904' | 'MT'
 
 export interface BiblicalBook {
