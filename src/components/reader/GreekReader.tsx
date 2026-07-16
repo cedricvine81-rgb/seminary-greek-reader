@@ -1530,7 +1530,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : transTxt}</>
+              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
               : null}
         </p>
       </div>
