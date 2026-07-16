@@ -156,8 +156,19 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader({ initialRef, initialHighlight, initialTransLang, isAuthenticated = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
+export function GreekReader({ initialRef, initialHighlight, initialTransLang, isAuthenticated: isAuthenticatedInitial = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
   const router = useRouter()
+  // The server bakes isAuthenticated into the page from the session cookie at render time — but
+  // a browser cold start (relaunching the app / restoring tabs) can fire that first document
+  // request before the cookie store is ready, so a signed-in reader gets a "signed out" render
+  // and every highlight/note control silently disappears until the page is re-rendered by
+  // navigating away and back. Re-check once on the client and flip to authenticated if the
+  // cookie is actually valid, so the page heals itself instead of needing that round trip.
+  const [isAuthenticated, setIsAuthenticated] = useState(isAuthenticatedInitial)
+  useEffect(() => {
+    if (isAuthenticatedInitial) return
+    fetch('/api/profile').then(r => { if (r.ok) setIsAuthenticated(true) }).catch(() => {})
+  }, [isAuthenticatedInitial])
   // On mobile the global header is hidden, so the reader menu carries all navigation.
   const menuAuthed = isAuthenticated || !!userRole
   const dashboardHref = userRole === 'INSTRUCTOR' ? '/instructor'
@@ -329,6 +340,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // update state directly, so a chapter never needs re-loading once fetched.
   const loadedHlChapters = useRef<Set<string>>(new Set())
   useEffect(() => {
+    // Don't mark chapters as loaded while signed out — loadFor bails without fetching, and if
+    // the client-side auth probe then flips us to authenticated (see the top of the component),
+    // chapters already in the set would never get their existing highlights fetched.
+    if (!isAuthenticated) return
     for (const s of [...gnt.sections, ...lxx.sections, ...mt.sections]) {
       const v0 = s.verses[0]
       if (!v0) continue
@@ -337,7 +352,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       loadedHlChapters.current.add(key)
       void highlights.loadFor(v0.bookId, v0.chapter)
     }
-  }, [gnt.sections, lxx.sections, mt.sections, highlights.loadFor])
+  }, [isAuthenticated, gnt.sections, lxx.sections, mt.sections, highlights.loadFor])
 
   const settingsRef   = useRef<HTMLDivElement>(null)
   const gntSentinel      = useRef<HTMLDivElement>(null)
