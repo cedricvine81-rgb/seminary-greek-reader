@@ -5,6 +5,7 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
+import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
@@ -189,6 +190,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const catRowRef = useRef<HTMLDivElement>(null)
   const locateMenuRef = useRef<HTMLDivElement>(null)
   const translationMenuRef = useRef<HTMLDivElement>(null)
+  // Which "about this work" popover is open (Authorship / Contents), and its anchor.
+  const [infoPanel, setInfoPanel] = useState<'authorship' | 'contents' | null>(null)
+  const infoMenuRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
   const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
@@ -260,6 +264,20 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
   }, [translationMenuOpen])
+
+  // Close the Authorship / Contents popover on an outside click or Escape.
+  useEffect(() => {
+    if (!infoPanel) return
+    function onMouseDown(e: MouseEvent) {
+      if (infoMenuRef.current && !infoMenuRef.current.contains(e.target as Node)) setInfoPanel(null)
+    }
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') setInfoPanel(null) }
+    document.addEventListener('mousedown', onMouseDown)
+    document.addEventListener('keydown', onKey)
+    return () => { document.removeEventListener('mousedown', onMouseDown); document.removeEventListener('keydown', onKey) }
+  }, [infoPanel])
+  // A different work was opened → close any open popover.
+  useEffect(() => { setInfoPanel(null) }, [work])
 
   // Sources & copyright, lifted to the shared tools menu (matches Backgrounds/Synopsis).
   useEffect(() => {
@@ -723,6 +741,47 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 </div>
               )}
             </div>
+
+            {/* "About this work" — Authorship + Contents popovers, when a blurb is available. */}
+            {(() => {
+              const summary = getTextSummary(work)
+              if (!summary || (!summary.authorship && !summary.contents)) return null
+              return (
+                <div className="relative" ref={infoMenuRef}>
+                  <div className="flex items-center gap-1.5">
+                    {summary.authorship && (
+                      <button
+                        type="button"
+                        onClick={() => setInfoPanel(p => (p === 'authorship' ? null : 'authorship'))}
+                        className={`text-xs font-medium transition-colors ${infoPanel === 'authorship' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
+                      >
+                        Authorship
+                      </button>
+                    )}
+                    {summary.authorship && summary.contents && <span className="text-gray-300 text-xs">·</span>}
+                    {summary.contents && (
+                      <button
+                        type="button"
+                        onClick={() => setInfoPanel(p => (p === 'contents' ? null : 'contents'))}
+                        className={`text-xs font-medium transition-colors ${infoPanel === 'contents' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
+                      >
+                        Contents
+                      </button>
+                    )}
+                  </div>
+                  {infoPanel && (
+                    <div className="absolute left-0 top-full z-30 mt-1 w-80 max-w-[90vw] rounded-lg border border-gray-200 bg-popover shadow-lg p-3">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
+                        {infoPanel === 'authorship' ? 'Authorship' : 'Contents'}
+                      </p>
+                      <p className="text-sm leading-relaxed text-gray-700">
+                        {infoPanel === 'authorship' ? summary.authorship : summary.contents}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )
+            })()}
 
             {isGreek && availableTranslations.length > 0 && (
               <div className="relative" ref={translationMenuRef}>
