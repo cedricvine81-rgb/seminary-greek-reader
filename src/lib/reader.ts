@@ -12,7 +12,7 @@ const DATA_ROOT = path.join(process.cwd(), 'public', 'data')
 
 // ─── In-memory caches ─────────────────────────────────────────────────────────
 
-let _booksCache: { gnt: BiblicalBook[]; lxx: BiblicalBook[]; na1904?: BiblicalBook[] } | null = null
+let _booksCache: { gnt: BiblicalBook[]; lxx: BiblicalBook[]; na1904?: BiblicalBook[]; mt?: BiblicalBook[] } | null = null
 const _chapterCache = new Map<string, { book: BiblicalBook; chapter: number; verses: BiblicalVerse[] }>()
 
 // ─── Gloss lookup (vocabulary-frequency words from seed data) ─────────────────
@@ -79,6 +79,7 @@ export function getBooks(corpus: Corpus): BiblicalBook[] {
     // from the GNT books with the corpus relabelled — otherwise selecting the Nestle 1904
     // edition would build an empty reader queue and nothing would load.
     if (corpus === 'NA1904') return index.na1904 ?? index.gnt.map(b => ({ ...b, corpus: 'NA1904' as Corpus }))
+    if (corpus === 'MT') return index.mt ?? []   // Hebrew Masoretic OT (public/data/MT)
     return index.lxx
   } catch {
     return []
@@ -88,7 +89,7 @@ export function getBooks(corpus: Corpus): BiblicalBook[] {
 export function getAllBooks(): BiblicalBook[] {
   try {
     const index = loadBooksIndex()
-    return [...index.gnt, ...index.lxx, ...(index.na1904 ?? [])]
+    return [...index.gnt, ...index.lxx, ...(index.na1904 ?? []), ...(index.mt ?? [])]
   } catch {
     return []
   }

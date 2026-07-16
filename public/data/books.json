@@ -650,5 +650,319 @@
       "abbrev": "Odes",
       "totalChapters": 14
     }
+  ],
+  "mt": [
+    {
+      "id": "Gen",
+      "corpus": "MT",
+      "osisId": "Gen",
+      "name": "Genesis",
+      "abbrev": "Gen",
+      "totalChapters": 50
+    },
+    {
+      "id": "Exod",
+      "corpus": "MT",
+      "osisId": "Exod",
+      "name": "Exodus",
+      "abbrev": "Exod",
+      "totalChapters": 40
+    },
+    {
+      "id": "Lev",
+      "corpus": "MT",
+      "osisId": "Lev",
+      "name": "Leviticus",
+      "abbrev": "Lev",
+      "totalChapters": 27
+    },
+    {
+      "id": "Num",
+      "corpus": "MT",
+      "osisId": "Num",
+      "name": "Numbers",
+      "abbrev": "Num",
+      "totalChapters": 36
+    },
+    {
+      "id": "Deut",
+      "corpus": "MT",
+      "osisId": "Deut",
+      "name": "Deuteronomy",
+      "abbrev": "Deut",
+      "totalChapters": 34
+    },
+    {
+      "id": "Josh",
+      "corpus": "MT",
+      "osisId": "Josh",
+      "name": "Joshua",
+      "abbrev": "Josh",
+      "totalChapters": 24
+    },
+    {
+      "id": "Judg",
+      "corpus": "MT",
+      "osisId": "Judg",
+      "name": "Judges",
+      "abbrev": "Judg",
+      "totalChapters": 21
+    },
+    {
+      "id": "Ruth",
+      "corpus": "MT",
+      "osisId": "Ruth",
+      "name": "Ruth",
+      "abbrev": "Ruth",
+      "totalChapters": 4
+    },
+    {
+      "id": "1Sam",
+      "corpus": "MT",
+      "osisId": "1Sam",
+      "name": "1 Samuel",
+      "abbrev": "1Sam",
+      "totalChapters": 31
+    },
+    {
+      "id": "2Sam",
+      "corpus": "MT",
+      "osisId": "2Sam",
+      "name": "2 Samuel",
+      "abbrev": "2Sam",
+      "totalChapters": 24
+    },
+    {
+      "id": "1Kgs",
+      "corpus": "MT",
+      "osisId": "1Kgs",
+      "name": "1 Kings",
+      "abbrev": "1Kgs",
+      "totalChapters": 22
+    },
+    {
+      "id": "2Kgs",
+      "corpus": "MT",
+      "osisId": "2Kgs",
+      "name": "2 Kings",
+      "abbrev": "2Kgs",
+      "totalChapters": 25
+    },
+    {
+      "id": "1Chr",
+      "corpus": "MT",
+      "osisId": "1Chr",
+      "name": "1 Chronicles",
+      "abbrev": "1Chr",
+      "totalChapters": 29
+    },
+    {
+      "id": "2Chr",
+      "corpus": "MT",
+      "osisId": "2Chr",
+      "name": "2 Chronicles",
+      "abbrev": "2Chr",
+      "totalChapters": 36
+    },
+    {
+      "id": "Ezra",
+      "corpus": "MT",
+      "osisId": "Ezra",
+      "name": "Ezra",
+      "abbrev": "Ezra",
+      "totalChapters": 10
+    },
+    {
+      "id": "Neh",
+      "corpus": "MT",
+      "osisId": "Neh",
+      "name": "Nehemiah",
+      "abbrev": "Neh",
+      "totalChapters": 13
+    },
+    {
+      "id": "Esth",
+      "corpus": "MT",
+      "osisId": "Esth",
+      "name": "Esther",
+      "abbrev": "Esth",
+      "totalChapters": 10
+    },
+    {
+      "id": "Job",
+      "corpus": "MT",
+      "osisId": "Job",
+      "name": "Job",
+      "abbrev": "Job",
+      "totalChapters": 42
+    },
+    {
+      "id": "Ps",
+      "corpus": "MT",
+      "osisId": "Ps",
+      "name": "Psalms",
+      "abbrev": "Ps",
+      "totalChapters": 150
+    },
+    {
+      "id": "Prov",
+      "corpus": "MT",
+      "osisId": "Prov",
+      "name": "Proverbs",
+      "abbrev": "Prov",
+      "totalChapters": 31
+    },
+    {
+      "id": "Eccl",
+      "corpus": "MT",
+      "osisId": "Eccl",
+      "name": "Ecclesiastes",
+      "abbrev": "Eccl",
+      "totalChapters": 12
+    },
+    {
+      "id": "Song",
+      "corpus": "MT",
+      "osisId": "Song",
+      "name": "Song of Songs",
+      "abbrev": "Song",
+      "totalChapters": 8
+    },
+    {
+      "id": "Isa",
+      "corpus": "MT",
+      "osisId": "Isa",
+      "name": "Isaiah",
+      "abbrev": "Isa",
+      "totalChapters": 66
+    },
+    {
+      "id": "Jer",
+      "corpus": "MT",
+      "osisId": "Jer",
+      "name": "Jeremiah",
+      "abbrev": "Jer",
+      "totalChapters": 52
+    },
+    {
+      "id": "Lam",
+      "corpus": "MT",
+      "osisId": "Lam",
+      "name": "Lamentations",
+      "abbrev": "Lam",
+      "totalChapters": 5
+    },
+    {
+      "id": "Ezek",
+      "corpus": "MT",
+      "osisId": "Ezek",
+      "name": "Ezekiel",
+      "abbrev": "Ezek",
+      "totalChapters": 48
+    },
+    {
+      "id": "Dan",
+      "corpus": "MT",
+      "osisId": "Dan",
+      "name": "Daniel",
+      "abbrev": "Dan",
+      "totalChapters": 12
+    },
+    {
+      "id": "Hos",
+      "corpus": "MT",
+      "osisId": "Hos",
+      "name": "Hosea",
+      "abbrev": "Hos",
+      "totalChapters": 14
+    },
+    {
+      "id": "Joel",
+      "corpus": "MT",
+      "osisId": "Joel",
+      "name": "Joel",
+      "abbrev": "Joel",
+      "totalChapters": 4
+    },
+    {
+      "id": "Amos",
+      "corpus": "MT",
+      "osisId": "Amos",
+      "name": "Amos",
+      "abbrev": "Amos",
+      "totalChapters": 9
+    },
+    {
+      "id": "Obad",
+      "corpus": "MT",
+      "osisId": "Obad",
+      "name": "Obadiah",
+      "abbrev": "Obad",
+      "totalChapters": 1
+    },
+    {
+      "id": "Jonah",
+      "corpus": "MT",
+      "osisId": "Jonah",
+      "name": "Jonah",
+      "abbrev": "Jonah",
+      "totalChapters": 4
+    },
+    {
+      "id": "Mic",
+      "corpus": "MT",
+      "osisId": "Mic",
+      "name": "Micah",
+      "abbrev": "Mic",
+      "totalChapters": 7
+    },
+    {
+      "id": "Nah",
+      "corpus": "MT",
+      "osisId": "Nah",
+      "name": "Nahum",
+      "abbrev": "Nah",
+      "totalChapters": 3
+    },
+    {
+      "id": "Hab",
+      "corpus": "MT",
+      "osisId": "Hab",
+      "name": "Habakkuk",
+      "abbrev": "Hab",
+      "totalChapters": 3
+    },
+    {
+      "id": "Zeph",
+      "corpus": "MT",
+      "osisId": "Zeph",
+      "name": "Zephaniah",
+      "abbrev": "Zeph",
+      "totalChapters": 3
+    },
+    {
+      "id": "Hag",
+      "corpus": "MT",
+      "osisId": "Hag",
+      "name": "Haggai",
+      "abbrev": "Hag",
+      "totalChapters": 2
+    },
+    {
+      "id": "Zech",
+      "corpus": "MT",
+      "osisId": "Zech",
+      "name": "Zechariah",
+      "abbrev": "Zech",
+      "totalChapters": 14
+    },
+    {
+      "id": "Mal",
+      "corpus": "MT",
+      "osisId": "Mal",
+      "name": "Malachi",
+      "abbrev": "Mal",
+      "totalChapters": 3
+    }
   ]
 }

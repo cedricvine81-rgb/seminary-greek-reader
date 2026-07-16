@@ -1,4 +1,5 @@
-export type Corpus = 'LXX' | 'GNT' | 'NA1904'
+// MT = the Hebrew Masoretic Old Testament (public/data/MT, from OSHB/MorphHB).
+export type Corpus = 'LXX' | 'GNT' | 'NA1904' | 'MT'
 
 export interface BiblicalBook {
   id: string
