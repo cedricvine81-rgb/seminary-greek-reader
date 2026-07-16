@@ -165,7 +165,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
             ? <p className="text-sm text-gray-400 italic">You didn&rsquo;t write a section.</p>
             : <div className="prose-notes text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(body)) }} />
         ) : (
-          <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={saveSection} fontScale={1} minHeight={120} maxHeight={480} />
+          <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={saveSection} fontScale={1} minHeight={360} maxHeight={1000} />
         )}
       </div>
 
