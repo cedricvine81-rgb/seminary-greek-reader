@@ -76,8 +76,10 @@ export function WordSearchProvider() {
         <div className="pb-1.5 border-b border-gray-100">
           <HighlightSwatches
             activeColor={menu.highlight.activeColor}
-            onPick={c => { menu.highlight!.onPick(c); setMenu(null) }}
-            onRemove={() => { menu.highlight!.onRemove(); setMenu(null) }}
+            // Clear the word selection the right-click left behind, so the blue selection
+            // doesn't sit on top of the highlight we just applied.
+            onPick={c => { menu.highlight!.onPick(c); setMenu(null); window.getSelection()?.removeAllRanges() }}
+            onRemove={() => { menu.highlight!.onRemove(); setMenu(null); window.getSelection()?.removeAllRanges() }}
           />
         </div>
       )}

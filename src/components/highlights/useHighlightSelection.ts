@@ -47,6 +47,11 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       if (e.button !== 0) return
       const container = containerRef.current
       if (!container) return
+      // The mouse must be RELEASED inside the reading surface. Otherwise a left-click in a
+      // floating menu — e.g. picking a colour in a word's right-click menu, where the word is
+      // still selected from the earlier right-click — would be mistaken for a fresh drag and
+      // pop this palette on top of (or instead of) the menu's own highlight action.
+      if (!container.contains(e.target as Node)) return
       const sel = window.getSelection()
       if (!sel || sel.isCollapsed || sel.rangeCount === 0) return
       const range = sel.getRangeAt(0)

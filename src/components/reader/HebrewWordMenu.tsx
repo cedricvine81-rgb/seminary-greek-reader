@@ -69,8 +69,10 @@ export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
             <HighlightSwatches
               activeColor={highlight.activeColor}
-              onPick={c => { highlight.onPick(c); onClose() }}
-              onRemove={() => { highlight.onRemove(); onClose() }}
+              // Clear the word selection the right-click left behind, so the blue selection
+              // doesn't sit on top of the highlight we just applied.
+              onPick={c => { highlight.onPick(c); onClose(); window.getSelection()?.removeAllRanges() }}
+              onRemove={() => { highlight.onRemove(); onClose(); window.getSelection()?.removeAllRanges() }}
             />
           </div>
         )}
