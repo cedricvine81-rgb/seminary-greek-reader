@@ -11,7 +11,7 @@ import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-s
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import type { WordHighlight } from '@/lib/word-search-bus'
 
-export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'strongs' | 'lexicon' | 'backgrounds'
+export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'lexicon' | 'backgrounds'
 export type SearchScope = 'GNT' | 'LXX' | 'BOTH'
 
 interface SyntaxMenuProps {

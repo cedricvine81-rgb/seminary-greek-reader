@@ -16,6 +16,7 @@ import { ParsingPanel } from './ParsingPanel'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
 import { openWordSearch, type WordHighlight } from '@/lib/word-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
+import { openMasterSearch } from '@/lib/master-search-bus'
 import { MorphSearchPicker } from './MorphSearchPicker'
 import { LexiconPanel } from './LexiconPanel'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
@@ -1015,24 +1016,23 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   function handleWordAction(action: WordSearchAction, scope: SearchScope) {
     const w = syntaxMenu?.word
     if (!w) return
-    const lemma   = w.lexeme?.lexeme
-    const strongs = w.lexeme?.strongs
+    const lemma = w.lexeme?.lexeme
+    // /search's Greek scope is one corpus at a time (NT or OT), so "Both" lands on NT with the
+    // LXX tab one click away.
+    const greekScope = `greek:${scope === 'LXX' ? 'LXX' : 'GNT'}` as const
     if (action === 'morph')   { setMorphPickerWord(w); setSyntaxMenu(null); return }
     if (action === 'lexicon') { setLexiconWord(w);     setSyntaxMenu(null); return }
     if (action === 'backgrounds') {
       // Search the embedded background texts (Philo, Josephus, LXX, …) for this word,
-      // seeded with its lemma (editable in the modal). Greek facet.
+      // seeded with its lemma (editable on /search). Greek facet.
       openBackgroundsSearch(lemma ?? w.surface, 'grc'); setSyntaxMenu(null); return
     }
+    // Word searches go to the full /search page (like every other pane) — no in-reader panel.
     if (action === 'lemma') {
       if (!lemma) return
-      runWordSearch(`/api/search?q=${encodeURIComponent(lemma)}&type=word&lemma=true&corpus=${scope}`, `All forms of ${lemma}`, { lemma })
+      openMasterSearch({ query: lemma, scope: greekScope, lemma: true }); setSyntaxMenu(null)
     } else if (action === 'form') {
-      runWordSearch(`/api/search?q=${encodeURIComponent(w.surface)}&type=word&corpus=${scope}`, `Exact form: ${w.surface}`, { highlight: w.surface })
-    } else if (action === 'strongs') {
-      if (!strongs) return
-      const num = String(strongs).replace(/^0+/, '')
-      runWordSearch(`/api/search?q=${encodeURIComponent(num)}&type=strongs&corpus=${scope}`, `Strong's ${num}${lemma ? ` · ${lemma}` : ''}`, { lemma })
+      openMasterSearch({ query: w.surface, scope: greekScope }); setSyntaxMenu(null)
     }
   }
 
