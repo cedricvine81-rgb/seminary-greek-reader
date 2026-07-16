@@ -474,6 +474,17 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   const [passageError, setPassageError] = useState(false)
   const [loadedVerses, setLoadedVerses] = useState<LoadedVerse[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  // On entry the passage is already on its way, so a "Loading passage…" screen would just flash
+  // for the split second before it arrives. Only reveal that placeholder if the wait actually
+  // runs long, so a normal (fast) load shows nothing on the way in.
+  const [showLoadingHint, setShowLoadingHint] = useState(false)
+  useEffect(() => {
+    const pending = !!propAssignmentId || !!controlledPassage?.trim() || books.length === 0
+    const placeholder = loadedVerses.length === 0 && !isLoading
+    if (!(placeholder && pending)) { setShowLoadingHint(false); return }
+    const t = setTimeout(() => setShowLoadingHint(true), 350)
+    return () => clearTimeout(t)
+  }, [propAssignmentId, controlledPassage, books.length, loadedVerses.length, isLoading])
   // Per-verse personal notes (free-study only — kept out of graded assignments/exams).
   const [notedVerses, setNotedVerses] = useState<Set<number>>(new Set())
   const notesEnabled = isAuthenticated && !propAssignmentId
@@ -2141,7 +2152,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
       </div>
 
       {/* ── Main workspace ── */}
-      {loadedVerses.length === 0 && !isLoading && (
+      {loadedVerses.length === 0 && !isLoading && (() => {
+        // A passage is on its way (an assignment, a controlled passage, or the book list is
+        // still loading and will trigger one). Keep the placeholder hidden until showLoadingHint
+        // flips, so a quick load doesn't flash a loading screen on the way in; the genuine
+        // "select a passage" prompt (no pending passage) still shows immediately.
+        const passagePending = !!propAssignmentId || !!controlledPassage?.trim() || books.length === 0
+        if (passagePending && !showLoadingHint) return null
+        return (
         <div className="flex flex-col items-center justify-center py-20 text-gray-400 print:hidden">
           <svg className="w-16 h-16 mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
@@ -2152,10 +2170,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <p className="text-lg font-medium">Loading your passage…</p>
               <p className="text-sm mt-1">If the passage doesn&apos;t appear, try refreshing the page.</p>
             </>
-          ) : (controlledPassage?.trim() || books.length === 0) ? (
-            // A passage is on its way (a controlled passage is set, or the book list is still
-            // loading and will trigger it) — show a loading state, not the "select a passage"
-            // prompt, so the empty state doesn't flash on the way in.
+          ) : passagePending ? (
             <p className="text-lg font-medium">Loading passage…</p>
           ) : (
             <>
@@ -2164,7 +2179,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             </>
           )}
         </div>
-      )}
+        )
+      })()}
 
       {loadedVerses.length > 0 && (
         <div className="flex flex-1 gap-0 print:block min-h-0 flex-col lg:flex-row">
