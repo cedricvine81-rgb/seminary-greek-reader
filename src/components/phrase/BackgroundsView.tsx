@@ -4,7 +4,11 @@ import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { buildHebrewInfo } from '@/components/reader/HebrewWord'
+import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import type { VerseWord } from '@/types/biblical-text'
 import type { PhraseFontSize } from './PhraseExplorer'
 import { findLxxWork } from '@/lib/texts-catalog'
 import { matchProseCitation, type ProseWork, type ProseChapter, type EmbeddedProseSource } from '@/lib/prose-texts'
@@ -383,9 +387,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   // source and show a citation only, unaffected by this dropdown.
   const [rightRef, setRightRef] = useState<{ label: string; citation: CrossRefCitation } | null>(null)
   const [rightVersion, setRightVersion] = useState('na1904')
-  const rightCache = useRef<Record<string, Record<string, { verse: number; text: string }[]>>>({}) // version -> "book.chapter" -> verses
-  const [rightVerses, setRightVerses] = useState<{ verse: number; text: string; tokens?: WordToken[] }[] | null>(null)
+  const rightCache = useRef<Record<string, Record<string, { verse: number; text: string; hebrewWords?: VerseWord[] }[]>>>({}) // version -> "book.chapter" -> verses
+  const [rightVerses, setRightVerses] = useState<{ verse: number; text: string; tokens?: WordToken[]; hebrewWords?: VerseWord[] }[] | null>(null)
   const [rightLoading, setRightLoading] = useState(false)
+  // Hebrew Strong's lexicon for the Masoretic parsing pane — loaded lazily when a Hebrew
+  // cross-reference is first shown (mirrors the reader).
+  const [hebrewLex, setHebrewLex] = useState<HebrewLexicon | null>(null)
 
   // ── Right column, alternate mode: an embedded Josephus citation (Antiquities, Jewish
   // War, Against Apion, or the Life). Mutually exclusive with rightRef above — opening
@@ -623,10 +630,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     try {
       if (!cacheForVersion[ck]) {
         if (rv === 'mt') {
-          // Hebrew Masoretic OT — verse text only for now (word-level parsing is a later phase).
-          const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}&corpus=MT`)
-          const d = await r.json()
-          cacheForVersion[ck] = (d.verses ?? []).map((v: { verse: number; text?: string }) => ({ verse: v.verse, text: v.text ?? '' }))
+          // Hebrew Masoretic OT — load the same static OSHB chapter file the reader uses (words
+          // carry surface + Strong's + morph + morpheme segments), so each word is clickable and
+          // feeds the Hebrew parsing pane. (The generic /api/reader MT shape lacks these fields.)
+          const r = await fetch(`/data/mt/${osis}_${chapter}.json`)
+          const d: { verses?: { verse: number; text?: string; words?: VerseWord[] }[] } = r.ok ? await r.json() : {}
+          cacheForVersion[ck] = (d.verses ?? []).map(v => ({ verse: v.verse, text: v.text ?? '', hebrewWords: v.words }))
         } else if (rv === 'na1904' || rv === 'gnt') {
           const corpus = rv === 'na1904' ? 'NA1904' : 'GNT'
           const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}&corpus=${corpus}`)
@@ -707,6 +716,11 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     if (rightRef?.citation.ref) void loadRightRef(rightRef.citation, rightVersion)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rightVersion])
+  // Load the Hebrew Strong's lexicon the first time a Masoretic reference is shown, so the
+  // parsing pane can render lemma/transliteration/definition for each Hebrew word.
+  useEffect(() => {
+    if (rightVersion === 'mt' && !hebrewLex) loadHebrewLexicon().then(setHebrewLex).catch(() => {})
+  }, [rightVersion, hebrewLex])
 
   const isGreek = version === 'gnt' || version === 'na1904'
   const isRightGreek = rightVersion === 'gnt' || rightVersion === 'na1904'
@@ -1175,7 +1189,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     >
                       {rightVerses.map(v => {
                         const rightBook = rightRef.citation.ref!.book, rightChapter = rightRef.citation.ref!.chapter
-                        const rightLayer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
+                        const rightLayer = isRightHebrew ? HEBREW_LAYER : v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
                         const verseHighlights = highlights.forVerse(rightBook, rightChapter, v.verse, rightLayer)
                         return (
                         <p key={v.verse} className={v.verse === rightRef.citation.ref!.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}>
@@ -1186,7 +1200,28 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           )}
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                           {isRightHebrew ? (
-                            <span className="font-hebrew">{v.text}</span>
+                            v.hebrewWords && v.hebrewWords.length > 0 ? (
+                              <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
+                                {withTokenOffsets(v.hebrewWords).map(({ token: w, start, end }, ti) => {
+                                  const key = `right.he.${rightBook}.${rightChapter}.${v.verse}.${ti}`
+                                  const select = () => { setSelectedInfo(buildHebrewInfo(w, `${rightBookName} ${rightChapter}:${v.verse}`, hebrewLex)); setSelectedKey(key) }
+                                  const hl = highlightAt(start, end, verseHighlights)
+                                  return (
+                                    <span
+                                      key={ti}
+                                      onMouseEnter={select}
+                                      onClick={select}
+                                      {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': rightBook, 'data-hl-chapter': rightChapter, 'data-hl-color': hl.color } : {})}
+                                      className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
+                                    >
+                                      {w.surface}{ti < v.hebrewWords!.length - 1 ? ' ' : ''}
+                                    </span>
+                                  )
+                                })}
+                              </span>
+                            ) : (
+                              <span className="font-hebrew">{v.text}</span>
+                            )
                           ) : v.tokens && v.tokens.length > 0 ? (
                             <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
                               {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
@@ -1240,9 +1275,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
 
       {/* Parsing pane — shared by both the left (passage) and right (cross-reference)
           columns; same component used on Phrasing and Synopsis. Show it whenever EITHER
-          column is showing parseable Greek, so a Greek cross-reference (e.g. an LXX passage)
-          gets the pane even when the left passage is in a translation. */}
-      {(isGreek || isRightGreek) && (
+          column is showing parseable Greek OR the right column is showing the Masoretic
+          Hebrew, so a Greek/Hebrew cross-reference gets the pane even when the left passage
+          is in a translation. The panel renders Hebrew info in the Hebrew font (info.script). */}
+      {(isGreek || isRightGreek || isRightHebrew) && (
         <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
       )}
 
