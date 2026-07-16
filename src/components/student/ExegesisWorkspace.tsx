@@ -9,6 +9,7 @@ import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft } from '@/lib/exam-draft'
 import { setExamLocked } from '@/lib/exam-lockdown'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -305,7 +306,10 @@ function ReviewPassagePanel({
         <p className="text-xs text-brand-500 ml-1">Click any word to annotate</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      {/* Suppress the native (OS) context menu across this pure-reading pane; Greek words
+          open the app's reduced-Greek word-search menu instead (below). No form fields live
+          here, so preventing default costs nothing. */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-6" onContextMenu={e => e.preventDefault()}>
         {verses.map(v => (
           <div key={v.id}>
             <p className="text-xs text-gray-400 font-medium mb-1">{v.reference}</p>
@@ -317,6 +321,15 @@ function ReviewPassagePanel({
                   <button
                     key={w.id}
                     onClick={() => onWordClick(w, v.verse)}
+                    onContextMenu={e => {
+                      e.preventDefault()
+                      // Reduced-Greek menu (search only, no syntax). Disabled automatically
+                      // during a lockdown exam by WordSearchProvider (isExamLocked).
+                      openWordSearch({
+                        x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lexeme?.lexeme,
+                        reference: v.reference, kind: 'greek', greekCorpus: 'GNT',
+                      })
+                    }}
                     onMouseEnter={() => setHoveredKey(key)}
                     onMouseLeave={() => setHoveredKey(null)}
                     className={[
@@ -2192,7 +2205,10 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                     </span>
                   )}
                 </p>
-                <div className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose">
+                {/* Native-menu guard on the word row only (the whole-verse translation box
+                    below needs the OS menu for paste, so it stays outside this div). Words open
+                    the reduced-Greek search menu on right-click. */}
+                <div className="flex flex-wrap items-end gap-x-3 gap-y-1 print:gap-1.5 print:leading-loose" onContextMenu={e => e.preventDefault()}>
                   {v.words.map(w => {
                     const key = wordKey(v.verse, w.id)
                     const hasAnn = annotations[key] &&
@@ -2205,6 +2221,15 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                         key={w.id}
                         data-greek-word
                         onClick={() => handleWordClick(w, v.verse)}
+                        onContextMenu={e => {
+                          e.preventDefault()
+                          // Reduced-Greek menu (search only). No-op during a lockdown exam
+                          // (WordSearchProvider checks isExamLocked).
+                          openWordSearch({
+                            x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lexeme?.lexeme,
+                            reference: v.reference, kind: 'greek', greekCorpus: 'GNT',
+                          })
+                        }}
                         className={[
                           'flex flex-col items-center px-1.5 py-0.5 rounded font-greek transition print:cursor-default print:px-0',
                           isSelected

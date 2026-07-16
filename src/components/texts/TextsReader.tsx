@@ -824,7 +824,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
           </button>
         </div>
 
-        <div ref={panelRef} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
+        <div ref={panelRef} onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
             <p className="text-sm text-gray-400 italic">Choose a category above and select a text to start reading.</p>
           ) : initialLoading || series.sections.length === 0 ? (

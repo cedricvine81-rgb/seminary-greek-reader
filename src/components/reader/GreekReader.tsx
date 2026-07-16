@@ -1986,8 +1986,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       )}
 
       {/* ── Text panel ── */}
+      {/* Words handle their own right-click (Full-Greek syntax menu / translation menu); this
+          container-level guard suppresses the native OS menu on the gaps between words. No form
+          fields live in the scroll area, so preventing default is safe. */}
       <div
         ref={textPanelRef}
+        onContextMenu={e => e.preventDefault()}
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
         className="flex-1 min-h-0 overflow-y-auto bg-surface rounded-xl border border-gray-100 shadow-sm p-5"
       >
