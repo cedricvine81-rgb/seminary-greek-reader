@@ -53,6 +53,17 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
   const trans = useRef<Record<string, Record<string, string>>>({})
   const fetchedTok = useRef<Set<string>>(new Set())
   const fetchedTr = useRef<Set<string>>(new Set())
+  // Brenton's Septuagint English, cached per book — the fallback for deuterocanonical / LXX-only
+  // books (Judith, Sirach, Tobit, Maccabees…) that WEB/BSB (66-book canon) don't include. Keyed
+  // `<osisId>.<chapter>.<verse>`, the same key the translation API and these results use.
+  const brentonCache = useRef<Record<string, Record<string, string> | null>>({})
+  function loadBrenton(osis: string): Promise<Record<string, string> | null> {
+    if (osis in brentonCache.current) return Promise.resolve(brentonCache.current[osis])
+    return fetch(`/data/brenton/${osis}.json`)
+      .then(r => (r.ok ? r.json() : null))
+      .then((d: Record<string, string> | null) => (brentonCache.current[osis] = d))
+      .catch(() => (brentonCache.current[osis] = null))
+  }
 
   // Folded single-word query terms, to red-highlight the matching Greek token(s).
   const termSet = new Set(terms.map(t => normalizeFold(t.replace(/"/g, ''))).filter(Boolean))
@@ -92,7 +103,17 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
         fetch(`/api/translation?book=${osis}&chapter=${ch}&lang=${transLang}`)
           .then(r => (r.ok ? r.json() : { verses: {} }))
           .then((d: { verses?: Record<string, string> }) => {
-            Object.assign((trans.current[transLang] ??= {}), d.verses ?? {})
+            const verses = d.verses ?? {}
+            // WEB/BSB are the 66-book canon, so deuterocanonical / LXX-only books come back empty.
+            // Fall back to Brenton's Septuagint English there so those texts still show a
+            // translation (English options only — the foreign translations have no LXX text).
+            if (Object.keys(verses).length === 0 && (transLang === 'en' || transLang === 'bsb')) {
+              return loadBrenton(osis).then(br => {
+                Object.assign((trans.current[transLang] ??= {}), br ?? {})
+                bump(x => x + 1)
+              })
+            }
+            Object.assign((trans.current[transLang] ??= {}), verses)
             bump(x => x + 1)
           }).catch(() => { fetchedTr.current.delete(trKey) })
       }
