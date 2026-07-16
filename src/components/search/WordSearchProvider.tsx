@@ -37,7 +37,12 @@ export function WordSearchProvider() {
     if (!menu) return
     const close = (e: Event) => { if (!ref.current?.contains(e.target as Node)) setMenu(null) }
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setMenu(null) }
-    const onScroll = () => setMenu(null)
+    // The menu is position:fixed, so scrolling the text would leave it floating detached — close
+    // it on scroll. But ignore scrolls in the first moment after opening: the right-click itself
+    // (and trackpad momentum) can emit a scroll event that would otherwise dismiss the menu
+    // instantly, which made it feel like the menu "sometimes doesn't appear."
+    const openedAt = Date.now()
+    const onScroll = () => { if (Date.now() - openedAt > 400) setMenu(null) }
     document.addEventListener('mousedown', close)
     document.addEventListener('scroll', onScroll, true)
     document.addEventListener('keydown', onKey)

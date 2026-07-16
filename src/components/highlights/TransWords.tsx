@@ -1,4 +1,5 @@
 'use client'
+import type { MouseEvent } from 'react'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass, type HighlightColor } from '@/lib/highlight-colors'
@@ -8,6 +9,28 @@ import type { HighlightRecord } from '@/components/highlights/useHighlights'
 // TS target), leaving the bare word to search.
 const EDGE_PUNCT = /^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–-]+$/g
 function stripEdges(s: string): string { return s.replace(EDGE_PUNCT, '') }
+
+// Translation words render as individual `.trans-word` spans separated by whitespace, so a
+// right-click that lands between words (or in the line padding) hits no word and does nothing.
+// Put this on the enclosing element: a direct hit on a word is left to the word's own handler;
+// any other click is forwarded to the nearest word span so its menu (and highlight palette)
+// still opens.
+export function forwardContextMenuToNearestTransWord(e: MouseEvent<HTMLElement>) {
+  if ((e.target as HTMLElement).closest('.trans-word')) return
+  const spans = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('.trans-word'))
+  if (spans.length === 0) return
+  let best: HTMLElement | null = null, bestD = Infinity
+  for (const el of spans) {
+    const r = el.getBoundingClientRect()
+    const dx = e.clientX < r.left ? r.left - e.clientX : e.clientX > r.right ? e.clientX - r.right : 0
+    const dy = e.clientY < r.top ? r.top - e.clientY : e.clientY > r.bottom ? e.clientY - r.bottom : 0
+    const d = dx * dx + dy * dy
+    if (d < bestD) { bestD = d; best = el }
+  }
+  if (!best) return
+  e.preventDefault()
+  best.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: e.clientX, clientY: e.clientY }))
+}
 
 // Per-word highlight adapter a pane supplies (its useHighlights instance, bound to this verse)
 // so a translation word can render + toggle its mark. Offsets are into the plain string.
@@ -64,7 +87,7 @@ export function TransWords({ text, lang, reference, book, hl }: {
               })
             }}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
-            className={mark ? highlightMarkClass(mark.color) : undefined}
+            className={`trans-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
           >
             {tok}
           </span>

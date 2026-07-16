@@ -37,7 +37,7 @@ import { markTerms, normalizeFold } from '@/lib/highlight-terms'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
-import { TransWords } from '@/components/highlights/TransWords'
+import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
@@ -1427,7 +1427,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       const englishCol = !alignVerse ? (
         <p className="leading-relaxed text-gray-400 italic text-xs pt-0.5">Loading…</p>
       ) : (
-        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
+          onContextMenu={forwardContextMenuToNearestTransWord}>
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
           {/* Anchor wraps only the translation words (not the verse-number sup) so drag-select
               offsets line up with the stored ones, and the layer scopes them to this language. */}
@@ -1446,7 +1447,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                 <span
                   key={i}
                   style={isHlit ? { color: 'rgb(220 38 38)', fontWeight: 500 } : undefined}
-                  className={mark ? highlightMarkClass(mark.color) : undefined}
+                  className={`trans-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
                   onMouseEnter={() => {
                     if (gkPos != null) setBsbHighlightWordId(`${v.id}.${gkPos}`)
                   }}
@@ -1490,7 +1491,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     return (
       <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
         <div>{withNote}</div>
-        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
+          onContextMenu={forwardContextMenuToNearestTransWord}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
@@ -1569,7 +1571,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     return (
       <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
         <div>{hebrew}</div>
-        <p dir="ltr" className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0 text-left" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+        <p dir="ltr" className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0 text-left" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
+          onContextMenu={forwardContextMenuToNearestTransWord}>
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
