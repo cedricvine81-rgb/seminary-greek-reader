@@ -841,10 +841,14 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // instant. fetchedTransKeys (namespaced by lang) dedupes across chapters.
   useEffect(() => {
     if (!parallelLang) return
-    // BSB is rendered from its alignment file, not the translation API.
-    if (parallelLang === 'bsb') { if (!bsbAlignment) loadBsbAlignment().then(setBsbAlignment); return }
     const lang = parallelLang
-    const allSections = [...gnt.sections, ...lxx.sections]
+    // For Greek, BSB is rendered from its word-alignment file, not the translation API.
+    if (lang === 'bsb' && !bsbAlignment) loadBsbAlignment().then(setBsbAlignment)
+    // Sections needing plain translation text: Greek sections for every language except BSB
+    // (which the Greek view renders from alignment), plus ALL Hebrew sections — the Hebrew
+    // view has no Greek-word alignment, so it shows even BSB as plain text.
+    const greekSections = lang === 'bsb' ? [] : [...gnt.sections, ...lxx.sections]
+    const allSections = [...greekSections, ...mt.sections]
     for (const sec of allSections) {
       const key = `${lang}.${sec.key}`
       if (fetchedTransKeys.current.has(key)) continue
@@ -867,7 +871,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
     }
-  }, [parallelLang, gnt.sections, lxx.sections, bsbAlignment])
+  }, [parallelLang, gnt.sections, lxx.sections, mt.sections, bsbAlignment])
 
   // ── Search / navigation ────────────────────────────────────────────────────────
 
@@ -1496,8 +1500,45 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     })
   }
 
-  // Hebrew OT sections — right-to-left, verse text only (word-level parsing is a later phase).
-  // Headings stay LTR/sans (they're English labels); the Hebrew verses flow RTL.
+  // One Hebrew verse and, when a translation is selected, its inline rendering beside it —
+  // the RTL Hebrew column on the left, the LTR translation on the right (same two-column
+  // layout as the Greek path). BSB shows as plain text here (no Greek-word alignment exists
+  // for Hebrew).
+  function renderHebrewVerseRow(v: BiblicalVerse) {
+    const hebrew = (
+      <HebrewVerse
+        key={v.id}
+        verse={v}
+        activeWordId={activeWordId}
+        highlighted={v.id === highlightedVerse}
+        lexicon={hebrewLex}
+        onWordHover={handleWordHover}
+        onWordClick={handleWordClick}
+        verseRefCallback={greekVerseRef(v.id)}
+      />
+    )
+    if (!parallelLang) return hebrew
+
+    const transTxt = transByLang[parallelLang]?.[v.id]
+    // The grid inherits the parent's RTL flow, so the Hebrew (first child) sits on the right and
+    // the translation on the left — the natural order for a Hebrew source. The translation
+    // paragraph is forced back to LTR so its own punctuation renders correctly.
+    return (
+      <div key={v.id} className="grid grid-cols-1 lg:grid-cols-2 lg:gap-6 mb-2 lg:mb-1">
+        <div>{hebrew}</div>
+        <p dir="ltr" className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5 mt-0.5 border-l-2 border-gray-200 pl-3 lg:mt-0 lg:border-0 lg:pl-0 text-left" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
+          {transTxt === undefined
+            ? <span className="text-gray-300 italic text-xs">Loading…</span>
+            : transTxt
+              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : transTxt}</>
+              : null}
+        </p>
+      </div>
+    )
+  }
+
+  // Hebrew OT sections — right-to-left, with clickable per-word parsing (see HebrewVerse) and
+  // an optional inline translation column. Headings stay LTR/sans (English labels).
   function renderHebrewSections(sections: TextSection[]) {
     let lastBook = ''
     return sections.map(sec => {
@@ -1512,18 +1553,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {chapter !== null && (
             <h4 dir="ltr" className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mt-4 mb-1 select-none font-sans">Chapter {chapter}</h4>
           )}
-          {sec.verses.map(v => (
-            <HebrewVerse
-              key={v.id}
-              verse={v}
-              activeWordId={activeWordId}
-              highlighted={v.id === highlightedVerse}
-              lexicon={hebrewLex}
-              onWordHover={handleWordHover}
-              onWordClick={handleWordClick}
-              verseRefCallback={greekVerseRef(v.id)}
-            />
-          ))}
+          {sec.verses.map(v => renderHebrewVerseRow(v))}
         </div>
       )
     })
