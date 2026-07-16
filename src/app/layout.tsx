@@ -4,6 +4,7 @@ import './globals.css'
 import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
+import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
 import { ScrollRestorer } from '@/components/search/ScrollRestorer'
@@ -86,6 +87,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
           <AppFooter />
         </div>
+        <NativeMenuGuard />
         <MasterSearchProvider />
         <WordSearchProvider />
         <ScrollRestorer />
