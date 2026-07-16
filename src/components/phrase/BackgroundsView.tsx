@@ -1239,8 +1239,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       )}
 
       {/* Parsing pane — shared by both the left (passage) and right (cross-reference)
-          columns; same component used on Phrasing and Synopsis. */}
-      {isGreek && (
+          columns; same component used on Phrasing and Synopsis. Show it whenever EITHER
+          column is showing parseable Greek, so a Greek cross-reference (e.g. an LXX passage)
+          gets the pane even when the left passage is in a translation. */}
+      {(isGreek || isRightGreek) && (
         <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
       )}
 
