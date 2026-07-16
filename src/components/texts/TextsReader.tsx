@@ -9,7 +9,6 @@ import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
-import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
@@ -775,6 +774,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               )
             })()}
 
+            {/* Compact search over the loaded text — sits inline with the title/Summary to keep
+                the reading pane tall. (Cross-corpus search is now the global right-click action.) */}
+            <div className="relative">
+              <Search size={13} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search this text…"
+                className="w-40 sm:w-52 rounded-md border border-gray-300 pl-7 pr-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+              />
+            </div>
+
             {isGreek && availableTranslations.length > 0 && (
               <div className="relative" ref={translationMenuRef}>
                 <button
@@ -851,29 +863,6 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
           </div>
         )}
-
-        {/* Search this text — or all background texts */}
-        <div className="flex-none flex items-center gap-2">
-          <div className="relative flex-1">
-            <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              disabled={!work}
-              placeholder={work ? 'Search the loaded text…' : 'Select a text above to begin reading'}
-              className="w-full rounded-lg border border-gray-300 pl-8 pr-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
-            />
-          </div>
-          <button
-            type="button"
-            onClick={() => openBackgroundsSearch(search.trim(), 'en')}
-            title="Search across all background texts (Philo, Josephus, LXX, Apocrypha, Pseudepigrapha)"
-            className="flex-none whitespace-nowrap rounded-none border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-100 transition-colors"
-          >
-            Search all texts
-          </button>
-        </div>
 
         <div ref={panelRef} onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
