@@ -404,6 +404,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
     font-family: 'Gentium Plus', 'GFS Didot', Georgia, serif;
   }
 
+  /* Hebrew (the MT corpus) — a traditional Hebrew Bible serif with full nikud + cantillation
+     coverage. `direction: rtl` is set on the container in JSX; a fallback stack covers the few
+     systems without the webfont (SBL Hebrew / Ezra SIL if installed, else the OS Hebrew serif). */
+  .font-hebrew {
+    font-family: 'Noto Serif Hebrew', 'SBL Hebrew', 'Ezra SIL', 'Taamey Frank CLM', 'Times New Roman', serif;
+    line-height: 1.9;
+  }
+
   /* ── Flashcard ──────────────────────────────────────────── */
   .flashcard-flip {
     transition: transform 0.18s ease-in, opacity 0.18s ease-in;

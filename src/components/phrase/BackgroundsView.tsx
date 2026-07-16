@@ -110,10 +110,15 @@ const BRENTON_VERSION = { code: 'brenton', label: 'English — Brenton (LXX)' }
 // accurately-labelled "Greek — Septuagint" option.
 const PROTESTANT_CODES = new Set(['bsb', 'en', 'es', 'fr', 'pt', 'ru', 'ko', 'zh'])
 const DEUTEROCANONICAL = new Set(['Tob', 'Jdt', 'Wis', 'Sir', 'Bar', 'EpJer', 'Sus', 'Bel', '1Macc', '2Macc', '3Macc', '4Macc', '1Esd', 'Odes', 'PsSol'])
+// Canonical OT books we hold in Hebrew (public/data/MT, from OSHB/MorphHB — see the MT corpus).
+const MT_BOOKS = new Set(['Gen', 'Exod', 'Lev', 'Num', 'Deut', 'Josh', 'Judg', 'Ruth', '1Sam', '2Sam', '1Kgs', '2Kgs', '1Chr', '2Chr', 'Ezra', 'Neh', 'Esth', 'Job', 'Ps', 'Prov', 'Eccl', 'Song', 'Isa', 'Jer', 'Lam', 'Ezek', 'Dan', 'Hos', 'Joel', 'Amos', 'Obad', 'Jonah', 'Mic', 'Nah', 'Hab', 'Zeph', 'Hag', 'Zech', 'Mal'])
 function rightVersionOptions(osisId: string, isNT: boolean): { code: string; label: string }[] {
   const out: { code: string; label: string }[] = isNT
     ? [{ code: 'na1904', label: 'Greek — Nestle 1904' }, { code: 'gnt', label: 'Greek — Tischendorf' }]
     : [{ code: 'na1904', label: 'Greek — Septuagint' }]
+  // A cross-reference into the Hebrew OT reads best from the Hebrew itself — its versification
+  // matches the citation far better than the (reordered/renumbered) Septuagint. Offer it first.
+  if (!isNT && MT_BOOKS.has(osisId)) out.unshift({ code: 'mt', label: 'Hebrew — Masoretic' })
   if (!DEUTEROCANONICAL.has(osisId)) out.push(...VERSIONS.filter(v => PROTESTANT_CODES.has(v.code)))
   if (BRENTON_BOOKS.has(osisId)) out.push(BRENTON_VERSION)
   return out
@@ -601,7 +606,12 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     setRightLoading(true)
     try {
       if (!cacheForVersion[ck]) {
-        if (rv === 'na1904' || rv === 'gnt') {
+        if (rv === 'mt') {
+          // Hebrew Masoretic OT — verse text only for now (word-level parsing is a later phase).
+          const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}&corpus=MT`)
+          const d = await r.json()
+          cacheForVersion[ck] = (d.verses ?? []).map((v: { verse: number; text?: string }) => ({ verse: v.verse, text: v.text ?? '' }))
+        } else if (rv === 'na1904' || rv === 'gnt') {
           const corpus = rv === 'na1904' ? 'NA1904' : 'GNT'
           const r = await fetch(`/api/reader?book=${osis}&chapter=${chapter}&corpus=${corpus}`)
           const d = await r.json()
@@ -656,7 +666,13 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
     const codes = book
       ? rightVersionOptions(book, gntBooks.some(b => b.osisId === book)).map(v => v.code)
       : ['na1904']
-    const effectiveVersion = codes.includes(rightVersion) ? rightVersion : 'na1904'
+    // Default an OT reference to Hebrew and an NT one to Greek, but keep a chosen *translation*
+    // (English/Spanish/… or Brenton) sticky across references. So the base script edition snaps
+    // to the testament (Hebrew for OT, Greek for NT) while a reader comparing translations stays
+    // in their translation.
+    const fallback = codes.includes('mt') ? 'mt' : 'na1904'
+    const isScriptEdition = rightVersion === 'mt' || rightVersion === 'na1904' || rightVersion === 'gnt'
+    const effectiveVersion = !isScriptEdition && codes.includes(rightVersion) ? rightVersion : fallback
     if (effectiveVersion !== rightVersion) setRightVersion(effectiveVersion)
     void loadRightRef(citation, effectiveVersion)
   }
@@ -668,6 +684,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
 
   const isGreek = version === 'gnt' || version === 'na1904'
   const isRightGreek = rightVersion === 'gnt' || rightVersion === 'na1904'
+  const isRightHebrew = rightVersion === 'mt'
   const rightBookName = rightRef?.citation.ref
     ? (lxxBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? gntBooks.find(b => b.osisId === rightRef.citation.ref!.book)?.name ?? rightRef.citation.ref.book)
     : ''
@@ -1126,22 +1143,25 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <p className="text-xs text-gray-400 italic">No text found for this reference.</p>
                   ) : (
                     <div
-                      className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : 'font-reading'}`}
-                      style={{ fontSize: isRightGreek ? GREEK_FS : TRANS_FS }}
+                      dir={isRightHebrew ? 'rtl' : undefined}
+                      className={`space-y-1 leading-relaxed text-gray-900 ${isRightGreek ? 'font-greek' : isRightHebrew ? 'font-hebrew' : 'font-reading'}`}
+                      style={{ fontSize: isRightGreek || isRightHebrew ? GREEK_FS : TRANS_FS }}
                     >
                       {rightVerses.map(v => {
                         const rightBook = rightRef.citation.ref!.book, rightChapter = rightRef.citation.ref!.chapter
                         const rightLayer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
                         const verseHighlights = highlights.forVerse(rightBook, rightChapter, v.verse, rightLayer)
                         return (
-                        <p key={v.verse}>
+                        <p key={v.verse} className={v.verse === rightRef.citation.ref!.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}>
                           {isAuthenticated && rightRef.citation.ref && (
                             <span className="font-sans align-middle mr-0.5">
                               <VerseNoteButton book={rightRef.citation.ref.book} chapter={rightRef.citation.ref.chapter} verse={v.verse} noted={false} />
                             </span>
                           )}
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
-                          {v.tokens && v.tokens.length > 0 ? (
+                          {isRightHebrew ? (
+                            <span className="font-hebrew">{v.text}</span>
+                          ) : v.tokens && v.tokens.length > 0 ? (
                             <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
                               {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                                 const key = `right.${rightBook}.${rightChapter}.${v.verse}.${ti}`
