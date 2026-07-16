@@ -77,3 +77,5 @@ All biblical texts used in this application are public domain. No copyrighted le
 ## License
 
 MIT
+
+<!-- deploy check: 2026-07-16T23:55:36Z -->
