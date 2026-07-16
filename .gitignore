@@ -45,3 +45,4 @@ prisma/migrations/
 .idea/
 # secret backups — never commit
 .env*.bak*
+scripts/data/oshb-cache/
