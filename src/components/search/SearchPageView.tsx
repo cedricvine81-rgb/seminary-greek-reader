@@ -283,8 +283,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     if (query.trim()) p.set('q', query.trim())
     p.set('in', scopeVal)
     if (books.length) p.set('books', books.join(','))
+    // Keep the origin (`from`) in the URL so "Return to page" survives a refresh / deep-link /
+    // bookmark of /search — without it, a reload would strip the origin and strand the user here.
+    // `returnTo` is a stable prop (set once from searchParams), so it's read from the closure and
+    // deliberately not a dep — keeping this deps array a constant length.
+    if (returnTo) p.set('from', returnTo)
     const qs = p.toString()
     window.history.replaceState(null, '', qs ? `/search?${qs}` : '/search')
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query, scopeVal, books, mounted])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
@@ -557,9 +563,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       {/* Sticky controls */}
       <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
         {/* When the search was launched from another page (right-click / ⌘K), offer a way back
-            to exactly where they were — router.back() reverses the push and restores scroll. */}
+            to exactly where they were. Navigate to the origin URL directly (not router.back())
+            so it's reliable after a refresh / intermediate navigation, where history-relative
+            back would misfire; the scroll snapshot (sessionStorage, keyed by URL) restores. */}
         {returnTo && (
-          <button type="button" onClick={() => { markScrollRestore(returnTo); router.back() }}
+          <button type="button" onClick={() => { markScrollRestore(returnTo); router.push(returnTo) }}
             className="mb-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 transition-colors">
             <ArrowLeft size={16} /> Return to {returnLabelFor(returnTo)}
           </button>
