@@ -114,6 +114,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
     if (passage) params.set('ref', passage)
     window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
   }, [tab, passage])
+  // Full-height tool page: hide the marketing footer while the workspace is mounted so its
+  // height doesn't push the layout past the viewport — which would let the whole body scroll
+  // and carry the tab bar up under the sticky header. Mirrors the reader's html[data-reader].
+  useEffect(() => {
+    document.documentElement.setAttribute('data-exegesis', 'on')
+    return () => document.documentElement.removeAttribute('data-exegesis')
+  }, [])
   // Commentary / Notes text size + line spacing (persisted, shared via the same
   // localStorage-backed hooks the views themselves use — both stay in sync).
   const [commentaryFontScale, setCommentaryFontScale] = useCommentaryFontScale()
