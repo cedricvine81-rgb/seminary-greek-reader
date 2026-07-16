@@ -92,6 +92,11 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
   const terms = parseSearchTerms(query)
   if (!data || query.trim().length < 2 || terms.length === 0) return { lang, total: 0, truncated: false, groups: [] }
 
+  // For a Greek search, look up each hit's aligned English (same entryKey in the `en` index) so
+  // the result can show its translation. Only Josephus/Greco-Roman have a matching English entry;
+  // English-only works simply have none (left undefined). Cheap map lookups; index is cached.
+  const enPos = lang === 'grc' ? await positions('en') : null
+
   const byGroup = new Map<string, BgHit[]>()
   let total = 0
   let truncated = false
@@ -103,6 +108,10 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
     const e = data.entries[i]
     const meta = _meta.get(e.g) ?? { name: e.g, chapters: 1, order: 999 }
     const hit: BgHit = { ref: labelFor(e, meta.name, meta.chapters), text: e.t, target: targetFor(e) }
+    if (enPos) {
+      const ei = enPos.pos.get(entryKey(e))
+      if (ei !== undefined) hit.trans = enPos.loaded.entries[ei].t
+    }
     const arr = byGroup.get(e.g)
     if (arr) arr.push(hit)
     else byGroup.set(e.g, [hit])

@@ -529,21 +529,31 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const bgHitText = (h: BgHit) => {
     const isGrc = bg?.lang === 'grc'
     const ctx = context > 0 ? ctxMap[bgCtxKey(h.target)] : undefined
-    if (ctx && ctx.length > 0) {
+    const primary = ctx && ctx.length > 0 ? (
+      <span className={`block text-sm leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+        {ctx.map(cv => {
+          const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
+          return (
+            <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
+              {hiliteVerse(cv.text, terms)}{' '}
+            </span>
+          )
+        })}
+      </span>
+    ) : (
+      <span className={`block text-sm text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
+    )
+    // Greek works with an aligned English (Josephus / Whiston, Greco-Roman / Perseus) show their
+    // translation of the matched section beside the Greek — mirroring the biblical results.
+    if (isGrc && h.trans) {
       return (
-        <span className={`block text-sm leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
-          {ctx.map(cv => {
-            const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
-            return (
-              <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
-                {hiliteVerse(cv.text, terms)}{' '}
-              </span>
-            )
-          })}
+        <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
+          {primary}
+          <span className="block text-sm text-gray-500 leading-relaxed">{h.trans}</span>
         </span>
       )
     }
-    return <span className={`block text-sm text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
+    return primary
   }
 
   // Never available during a lockdown exam (it would be a lookup backdoor).
