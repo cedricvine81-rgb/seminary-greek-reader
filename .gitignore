@@ -46,3 +46,7 @@ prisma/migrations/
 # secret backups — never commit
 .env*.bak*
 scripts/data/oshb-cache/
+
+# Python bytecode cache
+__pycache__/
+*.pyc
