@@ -9,6 +9,11 @@ import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { TransWords } from '@/components/highlights/TransWords'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 import { onNotesChanged, emitNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -94,6 +99,11 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   }, [openKind])
 
   // ── Side text pane: the anchor passage, in a chosen version, with click-to-parse ──
+  // Highlighting is keyed by (anchor.book, anchor.chapter, verse) — the same anchors the
+  // Reader/Texts/other panes use, so a mark made here shows up everywhere and vice versa.
+  const highlights = useHighlights(isAuthenticated)
+  const passagePaneRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(passagePaneRef)
   const [version, setVersion] = useState('na1904')
   const [passageVerses, setPassageVerses] = useState<{ verse: number; text: string; tokens?: WordToken[] }[]>([])
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
@@ -160,8 +170,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     void loadVerses(version, osis, chapter).then(verses => {
       if (!cancelled) setPassageVerses(verses.filter(v => v.verse >= verseStart && v.verse <= verseEnd))
     })
+    void highlights.loadFor(osis, chapter)
     return () => { cancelled = true }
-  }, [anchor, version, loadVerses])
+  }, [anchor, version, loadVerses, highlights.loadFor])
 
   // Inline translation beneath the Greek (only meaningful while a Greek version is showing).
   useEffect(() => {
@@ -505,7 +516,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               )}
             </div>
           </div>
-          <div className="flex-1 min-h-0 overflow-y-auto p-3">
+          <div ref={passagePaneRef} className="flex-1 min-h-0 overflow-y-auto p-3">
             {!anchor ? (
               <p className="text-xs text-gray-400 italic">Enter a passage above to read it here.</p>
             ) : passageVerses.length === 0 ? (
@@ -515,6 +526,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 {passageVerses.map(v => {
                   const ref = `${anchor.name} ${anchor.chapter}:${v.verse}`
                   const noted = notes.some(n => n.book === anchor.book && n.chapter === anchor.chapter && n.verse === v.verse)
+                  const verseHighlights = highlights.forVerse(anchor.book, anchor.chapter, v.verse)
                   return (
                   <div key={v.verse} className={`flex items-start gap-1 ${isGreek && inlineTrans ? 'mb-2' : ''}`}>
                     <span className="pt-1 shrink-0 print:hidden">
@@ -524,18 +536,33 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     <p>
                       <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                       {isGreek && v.tokens && v.tokens.length > 0
-                        ? v.tokens.map((tok, ti) => {
-                            const key = `${v.verse}.${ti}`
-                            const select = () => { setSelectedInfo(toLexicalInfo(tok, ref)); setSelectedKey(key) }
-                            return (
-                              <span key={ti} onMouseEnter={select} onClick={select}
-                                onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: ref, kind: 'greek', greekCorpus: 'GNT' }) }}
-                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
-                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
-                              </span>
-                            )
-                          })
-                        : <TransWords text={v.text} lang={version} reference={ref} book={anchor.book} />}
+                        ? <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse)}>
+                            {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
+                              const key = `${v.verse}.${ti}`
+                              const select = () => { setSelectedInfo(toLexicalInfo(tok, ref)); setSelectedKey(key) }
+                              const hl = highlightAt(start, end, verseHighlights)
+                              return (
+                                <span key={ti} onMouseEnter={select} onClick={select}
+                                  onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: ref, kind: 'greek', greekCorpus: 'GNT',
+                                    highlight: isAuthenticated ? {
+                                      activeColor: hl?.color ?? null,
+                                      onPick: c => hl ? void highlights.recolor(hl.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c),
+                                      onRemove: () => { if (hl) void highlights.remove(hl.id, anchor.book, anchor.chapter) },
+                                    } : undefined }) }}
+                                  {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': anchor.book, 'data-hl-chapter': anchor.chapter, 'data-hl-color': hl.color } : {})}
+                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}>
+                                  {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                                </span>
+                              )
+                            })}
+                          </span>
+                        : <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse)}>
+                            <TransWords text={v.text} lang={version} reference={ref} book={anchor.book}
+                              hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                                create: (s, e, c) => void highlights.create(anchor.book, anchor.chapter, v.verse, s, e, c),
+                                recolor: (id, c) => void highlights.recolor(id, anchor.book, anchor.chapter, c),
+                                remove: id => void highlights.remove(id, anchor.book, anchor.chapter) } : undefined} />
+                          </span>}
                     </p>
                     {/* Inline translation of this Greek verse, if one is selected. */}
                     {isGreek && inlineTrans && (
@@ -555,6 +582,24 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
         {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
+      )}
     </div>
   )
 }

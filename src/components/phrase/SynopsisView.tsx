@@ -6,6 +6,8 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { TransWords } from '@/components/highlights/TransWords'
@@ -111,6 +113,8 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [, setVer] = useState(0)
   const bump = () => setVer(v => v + 1)
   const highlights = useHighlights(isAuthenticated)
+  const synPaneRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(synPaneRef)
 
   const anchor = (controlledPassage ?? '').trim()
   const columns = [anchor, ...extraRefs].filter(Boolean)
@@ -354,7 +358,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         // Capped height with its own scroll (rather than letting the page grow), so a
         // long passage can't push the parsing pane below the fold — it stays visible
         // right after the columns without the user needing to scroll to find it.
-        <div className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+        <div ref={synPaneRef} className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
@@ -463,6 +467,24 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           so the text ends cleanly above it instead of the pane floating over it. */}
       {isGreek && (
         <ParsingPanel info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
+      )}
+
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            else void highlights.recolor(state.id, state.book, state.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const state = highlightSelection.popup!
+            if (state.kind === 'edit') void highlights.remove(state.id, state.book, state.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
       )}
     </div>
   )

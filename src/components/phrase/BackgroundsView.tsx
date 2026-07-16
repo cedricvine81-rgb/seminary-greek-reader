@@ -401,12 +401,15 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
         josephusBookCache.current[cacheKey] = book
       }
       setJosephusChapter(book?.chapters.find(c => c.number === ref.chapter) ?? null)
+      // Load any highlights for this work/chapter — keyed identically to the Texts reader
+      // (`${JOS_SHORT}.${book}`) so a mark made here shows there and vice versa.
+      void highlights.loadFor(`${ref.work}.${ref.book}`, ref.chapter)
     } catch {
       setJosephusChapter(null)
     } finally {
       setJosephusLoading(false)
     }
-  }, [])
+  }, [highlights.loadFor])
 
   function openJosephusRef(label: string, citation: CrossRefCitation, ref: JosephusRef) {
     setRightRef(null); setRightVerses(null)
@@ -437,12 +440,15 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
       }
       setProseAttribution(cached.attribution)
       setProseChapter(cached.chapters.find(c => c.number === ref.chapter) ?? null)
+      // Load highlights for this prose work/chapter — keyed by the same stable noteBook the
+      // Texts reader uses, so marks are shared across panes.
+      void highlights.loadFor(work.noteBook, ref.chapter)
     } catch {
       setProseChapter(null)
     } finally {
       setProseLoading(false)
     }
-  }, [])
+  }, [highlights.loadFor])
 
   function openProseRef(work: ProseWork, label: string, citation: CrossRefCitation, ref: { chapter: number; verse?: number }) {
     setRightRef(null); setRightVerses(null)
@@ -1029,16 +1035,26 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                         const blocks = josephusChapter.sections.filter(s => s.text)
                         let target = -1
                         for (const s of blocks) if (s.number <= rightJosephus.ref.section) target = s.number
-                        return blocks.map(s => (
+                        const josBook = `${rightJosephus.ref.work}.${rightJosephus.ref.book}`
+                        const josRefLabel = `${JOSEPHUS_WORK_LABEL[rightJosephus.ref.work]} ${rightJosephus.ref.book}`
+                        return blocks.map(s => {
+                          const verseHighlights = highlights.forVerse(josBook, josephusChapter.number, s.number)
+                          return (
                           <p
                             key={s.number}
                             ref={s.number === target ? josephusHighlightRef : undefined}
                             className={s.number === target ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                           >
                             <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
-                            {s.text}
+                            <span {...verseAnchorProps(josBook, josephusChapter.number, s.number)}>
+                              <TransWords text={s.text ?? ''} lang="en" reference={`${josRefLabel}:${s.number}`} book={josBook}
+                                hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                                  create: (st, e, c) => void highlights.create(josBook, josephusChapter.number, s.number, st, e, c),
+                                  recolor: (id, c) => void highlights.recolor(id, josBook, josephusChapter.number, c),
+                                  remove: id => void highlights.remove(id, josBook, josephusChapter.number) } : undefined} />
+                            </span>
                           </p>
-                        ))
+                        )})
                       })()}
                     </div>
                     {josephusAttribution[rightJosephus.ref.work] && (
@@ -1060,15 +1076,23 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       className="space-y-1 leading-relaxed text-gray-900 font-reading"
                       style={{ fontSize: TRANS_FS }}
                     >
-                      {proseChapter.verses.map(v => (
+                      {proseChapter.verses.map(v => {
+                        const verseHighlights = highlights.forVerse(rightProse.work.noteBook, proseChapter.number, v.number)
+                        return (
                         <p
                           key={v.number}
                           className={v.number === rightProse.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
-                          {v.text}
+                          <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number)}>
+                            <TransWords text={v.text} lang="en" reference={`${rightProse.work.name} ${proseChapter.number}:${v.number}`} book={rightProse.work.noteBook}
+                              hl={isAuthenticated ? { isAuthenticated, verseHighlights,
+                                create: (s, e, c) => void highlights.create(rightProse.work.noteBook, proseChapter.number, v.number, s, e, c),
+                                recolor: (id, c) => void highlights.recolor(id, rightProse.work.noteBook, proseChapter.number, c),
+                                remove: id => void highlights.remove(id, rightProse.work.noteBook, proseChapter.number) } : undefined} />
+                          </span>
                         </p>
-                      ))}
+                      )})}
                     </div>
                     {proseAttribution && (
                       <p className="text-[10px] text-gray-400 italic">{proseAttribution}</p>

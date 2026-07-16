@@ -46,6 +46,32 @@ function PageScanModal({ pages, pagesPath, book, sourceName, onClose }: {
   )
 }
 
+// The commentary body is third-party HTML (dangerouslySetInnerHTML), not tokenized into word
+// spans like the Greek/translation panes, so we resolve the word to search from the caret at
+// right-click time: the current selection if the user selected one, else the word under the
+// cursor. Greek words route to the Greek search, everything else to the translation search.
+const CV_EDGE_PUNCT = /^[.,;:!?·"“”‘’'ʼ`()[\]{}<>«»…—–-]+|[.,;:!?·"“”‘’'ʼ`()[\]{}<>«»…—–-]+$/g
+function wordAtPoint(x: number, y: number): string {
+  const doc = document as Document & {
+    caretRangeFromPoint?: (x: number, y: number) => Range | null
+    caretPositionFromPoint?: (x: number, y: number) => { offsetNode: Node; offset: number } | null
+  }
+  let node: Node | null = null, offset = 0
+  if (doc.caretRangeFromPoint) {                       // WebKit / Blink (Safari, Chrome)
+    const r = doc.caretRangeFromPoint(x, y)
+    if (r) { node = r.startContainer; offset = r.startOffset }
+  } else if (doc.caretPositionFromPoint) {             // standards / Firefox fallback
+    const p = doc.caretPositionFromPoint(x, y)
+    if (p) { node = p.offsetNode; offset = p.offset }
+  }
+  if (!node || node.nodeType !== Node.TEXT_NODE) return ''
+  const text = node.textContent ?? ''
+  let a = offset, b = offset
+  while (a > 0 && !/\s/.test(text[a - 1])) a--
+  while (b < text.length && !/\s/.test(text[b])) b++
+  return text.slice(a, b)
+}
+
 interface CommentaryMeta { id: string; name: string; author?: string; attribution?: string; books?: string[]; kind?: 'original-view' }
 interface OriginalSource { id: string; name: string; attribution: string; pagesPath: string; books: string[] }
 
@@ -93,6 +119,23 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
   }, [isAuthenticated, anchor])
   useEffect(() => { void loadNoted() }, [loadNoted])
   useEffect(() => onNotesChanged(() => void loadNoted()), [loadNoted])
+
+  // Right-click inside the commentary prose → search the word under the cursor (or the current
+  // selection). Greek → Greek search, otherwise the translation search — same menu the reading
+  // panes use. Falls through to the native menu only when there's no word (e.g. blank space).
+  const onCommentaryContextMenu = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const sel = window.getSelection()
+    let word = sel && !sel.isCollapsed ? sel.toString().trim() : ''
+    if (!word) word = wordAtPoint(e.clientX, e.clientY)
+    word = word.replace(CV_EDGE_PUNCT, '').trim()
+    if (!word) return
+    e.preventDefault()
+    const isGreek = /[Ͱ-Ͽἀ-῿]/.test(word)
+    const reference = anchor && activeVerse != null ? `${anchor.name} ${anchor.chapter}:${activeVerse}` : (meta?.name ?? 'Commentary')
+    openWordSearch(isGreek
+      ? { x: e.clientX, y: e.clientY, surface: word, lemma: null, reference, kind: 'greek', greekCorpus: 'GNT' }
+      : { x: e.clientX, y: e.clientY, surface: word, reference, kind: 'translation', transLang: 'en' })
+  }, [anchor, activeVerse, meta])
 
   // Registry of available commentaries.
   useEffect(() => {
@@ -265,6 +308,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           </div>
         ) : (
           <div
+            onContextMenu={onCommentaryContextMenu}
             style={{ fontSize: `${0.875 * fontScale}rem`, lineHeight: lineSpacing }}
             className="font-reading flex-1 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-4 text-ink-900 [&_p]:mb-2.5 [&_b]:font-semibold [&_b]:text-ink-900 [&_i]:italic"
           >

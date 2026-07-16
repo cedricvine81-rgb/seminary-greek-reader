@@ -51,16 +51,17 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
 const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
-export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string }) {
+export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
   const [tab, setTab] = useState<ExegesisTab>(
     EXEGESIS_TABS.includes(initialTab as ExegesisTab) ? (initialTab as ExegesisTab) : 'workspace'
   )
   // The single passage that coordinates every tab. `input` is the live box text;
-  // `passage` is committed on Enter/blur and pushed to the tabs.
-  const [input, setInput] = useState('John 1:1-5')
-  const [passage, setPassage] = useState('John 1:1-5')
+  // `passage` is committed on Enter/blur and pushed to the tabs. Both seed from `?ref=`
+  // so a "Return to page" from the Search page lands back on the same passage.
+  const [input, setInput] = useState(initialRef || 'John 1:1-5')
+  const [passage, setPassage] = useState(initialRef || 'John 1:1-5')
   // Grey ghost-text completion of the current pericope.
   const [ghost, setGhost] = useState('')
   const suggestionRef = useRef('')        // full accepted string when ghost is shown
@@ -102,6 +103,17 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen }: { isA
     try { openInTexts(JSON.parse(initialOpen) as OpenInTextsTarget) } catch { /* ignore malformed */ }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  // Keep the URL in sync with the active tab + committed passage (replaceState, so it
+  // doesn't add history entries or trigger a navigation). This is what lets a right-click
+  // search — which snapshots window.location for its "Return to page" — bring the user back
+  // to the exact tab and passage they searched from, instead of the default landing tab.
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const params = new URLSearchParams()
+    params.set('tab', tab)
+    if (passage) params.set('ref', passage)
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
+  }, [tab, passage])
   // Commentary / Notes text size + line spacing (persisted, shared via the same
   // localStorage-backed hooks the views themselves use — both stay in sync).
   const [commentaryFontScale, setCommentaryFontScale] = useCommentaryFontScale()
