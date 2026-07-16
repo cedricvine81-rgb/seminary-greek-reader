@@ -394,9 +394,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                             plain text if word-level tokens haven't loaded (or aren't available). */}
                         {isGreek && v.tokens && v.tokens.length > 0
                           ? (() => {
-                              const verseHighlights = highlights.forVerse(col.book, col.chapter, v.verse)
+                              const verseHighlights = highlights.forVerse(col.book, col.chapter, v.verse, 'grc')
                               return (
-                                <span {...verseAnchorProps(col.book, col.chapter, v.verse)}>
+                                <span {...verseAnchorProps(col.book, col.chapter, v.verse, 'grc')}>
                                   {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                                     const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
                                     const select = () => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }
@@ -413,7 +413,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                             reference: `${col.bookName} ${v.ref}`, kind: 'greek', greekCorpus: 'GNT',
                                             highlight: isAuthenticated ? {
                                               activeColor: hl?.color ?? null,
-                                              onPick: c => hl ? void highlights.recolor(hl.id, col.book, col.chapter, c) : void highlights.create(col.book, col.chapter, v.verse, start, end, c),
+                                              onPick: c => hl ? void highlights.recolor(hl.id, col.book, col.chapter, c) : void highlights.create(col.book, col.chapter, v.verse, start, end, c, 'grc'),
                                               onRemove: () => { if (hl) void highlights.remove(hl.id, col.book, col.chapter) },
                                             } : undefined,
                                           })
@@ -428,11 +428,13 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                 </span>
                               )
                             })()
-                          : <TransWords text={v.text} lang={version} reference={`${col.bookName} ${v.ref}`} book={col.book}
-                              hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(col.book, col.chapter, v.verse),
-                                create: (s, e, c) => void highlights.create(col.book, col.chapter, v.verse, s, e, c),
-                                recolor: (id, c) => void highlights.recolor(id, col.book, col.chapter, c),
-                                remove: id => void highlights.remove(id, col.book, col.chapter) } : undefined} />}
+                          : <span {...verseAnchorProps(col.book, col.chapter, v.verse, version)}>
+                              <TransWords text={v.text} lang={version} reference={`${col.bookName} ${v.ref}`} book={col.book}
+                                hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(col.book, col.chapter, v.verse, version),
+                                  create: (s, e, c) => void highlights.create(col.book, col.chapter, v.verse, s, e, c, version),
+                                  recolor: (id, c) => void highlights.recolor(id, col.book, col.chapter, c),
+                                  remove: id => void highlights.remove(id, col.book, col.chapter) } : undefined} />
+                            </span>}
                       </p>
                     ))}
                   </div>
@@ -474,7 +476,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           state={highlightSelection.popup}
           onPick={color => {
             const state = highlightSelection.popup!
-            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
             else void highlights.recolor(state.id, state.book, state.chapter, color)
             highlightSelection.close()
           }}

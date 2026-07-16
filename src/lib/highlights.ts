@@ -10,12 +10,13 @@ export async function highlightsForPassage(userId: string, book: string, chapter
 }
 
 export async function createHighlight(userId: string, data: {
-  book: string; chapter: number; verse: number; startOffset: number; endOffset: number; color?: string
+  book: string; chapter: number; verse: number; startOffset: number; endOffset: number; color?: string; layer?: string
 }) {
   return prisma.highlight.create({
     data: {
       userId, book: data.book, chapter: data.chapter, verse: data.verse,
       startOffset: data.startOffset, endOffset: data.endOffset, color: data.color ?? DEFAULT_HIGHLIGHT_COLOR,
+      layer: data.layer ?? 'grc',
     },
   })
 }

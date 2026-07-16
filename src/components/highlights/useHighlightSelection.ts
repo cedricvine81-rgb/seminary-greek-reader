@@ -1,6 +1,6 @@
 import { useEffect, useState, type RefObject } from 'react'
 
-export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number }
+export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number; layer: string }
 
 export type HighlightPopupState =
   | { kind: 'new'; x: number; y: number; splits: HighlightSplit[] }
@@ -63,7 +63,7 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
         const start = offsetWithin(el, clipped.startContainer, clipped.startOffset)
         const end = offsetWithin(el, clipped.endContainer, clipped.endOffset)
         if (end <= start) continue
-        splits.push({ book: el.dataset.hlBook!, chapter: Number(el.dataset.hlChapter), verse: Number(el.dataset.hlVerse), start, end })
+        splits.push({ book: el.dataset.hlBook!, chapter: Number(el.dataset.hlChapter), verse: Number(el.dataset.hlVerse), start, end, layer: el.dataset.hlLayer ?? 'grc' })
       }
       if (splits.length === 0) return
 

@@ -205,7 +205,7 @@ function GreekColWord({ node, book, chapter, verse, start, end }: {
   const { selectedId, onWord } = useContext(WordCtx)
   const { hl: highlights, isAuth } = useContext(HlCtx)
   const canHl = !!highlights && book != null && chapter != null && verse != null && start != null && end != null
-  const mark = canHl ? highlightAt(start!, end!, highlights!.forVerse(book!, chapter!, verse!)) : undefined
+  const mark = canHl ? highlightAt(start!, end!, highlights!.forVerse(book!, chapter!, verse!, 'grc')) : undefined
   return (
     <button
       type="button"
@@ -219,7 +219,7 @@ function GreekColWord({ node, book, chapter, verse, start, end }: {
           reference: b && ch && v ? `${b} ${ch}:${v}` : undefined, kind: 'greek', greekCorpus: 'GNT',
           highlight: isAuth && canHl ? {
             activeColor: mark?.color ?? null,
-            onPick: c => mark ? void highlights!.recolor(mark.id, book!, chapter!, c) : void highlights!.create(book!, chapter!, verse!, start!, end!, c),
+            onPick: c => mark ? void highlights!.recolor(mark.id, book!, chapter!, c) : void highlights!.create(book!, chapter!, verse!, start!, end!, c, 'grc'),
             onRemove: () => { if (mark) void highlights!.remove(mark.id, book!, chapter!) },
           } : undefined,
         })

@@ -526,7 +526,8 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 {passageVerses.map(v => {
                   const ref = `${anchor.name} ${anchor.chapter}:${v.verse}`
                   const noted = notes.some(n => n.book === anchor.book && n.chapter === anchor.chapter && n.verse === v.verse)
-                  const verseHighlights = highlights.forVerse(anchor.book, anchor.chapter, v.verse)
+                  const layer = isGreek ? 'grc' : version
+                  const verseHighlights = highlights.forVerse(anchor.book, anchor.chapter, v.verse, layer)
                   return (
                   <div key={v.verse} className={`flex items-start gap-1 ${isGreek && inlineTrans ? 'mb-2' : ''}`}>
                     <span className="pt-1 shrink-0 print:hidden">
@@ -536,7 +537,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     <p>
                       <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                       {isGreek && v.tokens && v.tokens.length > 0
-                        ? <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse)}>
+                        ? <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse, layer)}>
                             {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                               const key = `${v.verse}.${ti}`
                               const select = () => { setSelectedInfo(toLexicalInfo(tok, ref)); setSelectedKey(key) }
@@ -546,7 +547,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                                   onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma, reference: ref, kind: 'greek', greekCorpus: 'GNT',
                                     highlight: isAuthenticated ? {
                                       activeColor: hl?.color ?? null,
-                                      onPick: c => hl ? void highlights.recolor(hl.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c),
+                                      onPick: c => hl ? void highlights.recolor(hl.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c, layer),
                                       onRemove: () => { if (hl) void highlights.remove(hl.id, anchor.book, anchor.chapter) },
                                     } : undefined }) }}
                                   {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': anchor.book, 'data-hl-chapter': anchor.chapter, 'data-hl-color': hl.color } : {})}
@@ -556,10 +557,10 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                               )
                             })}
                           </span>
-                        : <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse)}>
+                        : <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse, layer)}>
                             <TransWords text={v.text} lang={version} reference={ref} book={anchor.book}
                               hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                create: (s, e, c) => void highlights.create(anchor.book, anchor.chapter, v.verse, s, e, c),
+                                create: (s, e, c) => void highlights.create(anchor.book, anchor.chapter, v.verse, s, e, c, layer),
                                 recolor: (id, c) => void highlights.recolor(id, anchor.book, anchor.chapter, c),
                                 remove: id => void highlights.remove(id, anchor.book, anchor.chapter) } : undefined} />
                           </span>}
@@ -588,7 +589,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           state={highlightSelection.popup}
           onPick={color => {
             const state = highlightSelection.popup!
-            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
             else void highlights.recolor(state.id, state.book, state.chapter, color)
             highlightSelection.close()
           }}

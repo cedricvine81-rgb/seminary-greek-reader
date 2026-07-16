@@ -8,6 +8,9 @@ export interface HighlightRecord {
   startOffset: number
   endOffset: number
   color: string
+  // "grc" for the Greek, otherwise the translation's language/version code. Offsets are into
+  // that text, so filtering by layer keeps Greek and translation highlights independent.
+  layer: string
 }
 
 /**
@@ -34,14 +37,16 @@ export function useHighlights(isAuthenticated: boolean) {
   // Creating a highlight "paints over" any existing highlight it overlaps within the
   // same verse — the intuitive behavior for a highlighter, and avoids stacked/overlapping
   // ranges that would be ambiguous to render.
-  const create = useCallback(async (book: string, chapter: number, verse: number, start: number, end: number, color: string) => {
+  const create = useCallback(async (book: string, chapter: number, verse: number, start: number, end: number, color: string, layer = 'grc') => {
     const key = `${book}.${chapter}`
     const current = byKeyRef.current[key] ?? []
-    const overlapping = current.filter(h => h.verse === verse && start < h.endOffset && end > h.startOffset)
+    // Only paint over overlaps in the SAME layer — a Greek highlight must not delete an
+    // overlapping translation highlight that happens to share offsets, and vice versa.
+    const overlapping = current.filter(h => h.layer === layer && h.verse === verse && start < h.endOffset && end > h.startOffset)
     await Promise.all(overlapping.map(h => fetch(`/api/highlights?id=${h.id}`, { method: 'DELETE' })))
     const r = await fetch('/api/highlights', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ book, chapter, verse, startOffset: start, endOffset: end, color }),
+      body: JSON.stringify({ book, chapter, verse, startOffset: start, endOffset: end, color, layer }),
     })
     const d = await r.json()
     if (d.highlight) {
@@ -64,8 +69,11 @@ export function useHighlights(isAuthenticated: boolean) {
     setByKey(prev => ({ ...prev, [key]: (prev[key] ?? []).filter(h => h.id !== id) }))
   }, [])
 
-  const forVerse = useCallback((book: string, chapter: number, verse: number): HighlightRecord[] => {
-    return (byKey[`${book}.${chapter}`] ?? []).filter(h => h.verse === verse)
+  // `layer` scopes the result to one text (e.g. "grc" for the Greek, "en"/"bsb"/… for a
+  // translation) so a column only renders the highlights made on its own text. Omit to get
+  // every layer (legacy behaviour).
+  const forVerse = useCallback((book: string, chapter: number, verse: number, layer?: string): HighlightRecord[] => {
+    return (byKey[`${book}.${chapter}`] ?? []).filter(h => h.verse === verse && (layer === undefined || h.layer === layer))
   }, [byKey])
 
   return { loadFor, create, recolor, remove, forVerse }

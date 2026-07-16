@@ -800,7 +800,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   style={{ fontSize: isGreek ? GREEK_FS : TRANS_FS }}
                 >
                   {leftVerses.map(v => {
-                    const verseHighlights = highlights.forVerse(parsed.book.osisId, parsed.chapter, v.verse)
+                    const layer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
+                    const verseHighlights = highlights.forVerse(parsed.book.osisId, parsed.chapter, v.verse, layer)
                     return (
                     <p key={v.verse}>
                       {isAuthenticated && (
@@ -810,7 +811,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       )}
                       <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                       {v.tokens && v.tokens.length > 0 ? (
-                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse)}>
+                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse, layer)}>
                           {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                             const key = `left.${parsed.book.osisId}.${parsed.chapter}.${v.verse}.${ti}`
                             const select = () => { setSelectedInfo(toLexicalInfo(tok, parsed.book.name, `${parsed.chapter}:${v.verse}`)); setSelectedKey(key) }
@@ -827,7 +828,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                     reference: `${parsed.book.name} ${parsed.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT',
                                     highlight: isAuthenticated ? {
                                       activeColor: hl?.color ?? null,
-                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed.book.osisId, parsed.chapter, c) : void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, start, end, c),
+                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed.book.osisId, parsed.chapter, c) : void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, start, end, c, layer),
                                       onRemove: () => { if (hl) void highlights.remove(hl.id, parsed.book.osisId, parsed.chapter) },
                                     } : undefined,
                                   })
@@ -841,10 +842,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           })}
                         </span>
                       ) : (
-                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse)}>
+                        <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse, layer)}>
                           <TransWords text={v.text} lang="en" reference={`${parsed.book.name} ${parsed.chapter}:${v.verse}`} book={parsed.book.osisId}
                             hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                              create: (s, e, c) => void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, s, e, c),
+                              create: (s, e, c) => void highlights.create(parsed.book.osisId, parsed.chapter, v.verse, s, e, c, layer),
                               recolor: (id, c) => void highlights.recolor(id, parsed.book.osisId, parsed.chapter, c),
                               remove: id => void highlights.remove(id, parsed.book.osisId, parsed.chapter) } : undefined} />
                         </span>
@@ -1038,7 +1039,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                         const josBook = `${rightJosephus.ref.work}.${rightJosephus.ref.book}`
                         const josRefLabel = `${JOSEPHUS_WORK_LABEL[rightJosephus.ref.work]} ${rightJosephus.ref.book}`
                         return blocks.map(s => {
-                          const verseHighlights = highlights.forVerse(josBook, josephusChapter.number, s.number)
+                          const verseHighlights = highlights.forVerse(josBook, josephusChapter.number, s.number, 'en')
                           return (
                           <p
                             key={s.number}
@@ -1046,10 +1047,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             className={s.number === target ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                           >
                             <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
-                            <span {...verseAnchorProps(josBook, josephusChapter.number, s.number)}>
+                            <span {...verseAnchorProps(josBook, josephusChapter.number, s.number, 'en')}>
                               <TransWords text={s.text ?? ''} lang="en" reference={`${josRefLabel}:${s.number}`} book={josBook}
                                 hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                  create: (st, e, c) => void highlights.create(josBook, josephusChapter.number, s.number, st, e, c),
+                                  create: (st, e, c) => void highlights.create(josBook, josephusChapter.number, s.number, st, e, c, 'en'),
                                   recolor: (id, c) => void highlights.recolor(id, josBook, josephusChapter.number, c),
                                   remove: id => void highlights.remove(id, josBook, josephusChapter.number) } : undefined} />
                             </span>
@@ -1077,17 +1078,17 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                       style={{ fontSize: TRANS_FS }}
                     >
                       {proseChapter.verses.map(v => {
-                        const verseHighlights = highlights.forVerse(rightProse.work.noteBook, proseChapter.number, v.number)
+                        const verseHighlights = highlights.forVerse(rightProse.work.noteBook, proseChapter.number, v.number, 'en')
                         return (
                         <p
                           key={v.number}
                           className={v.number === rightProse.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
-                          <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number)}>
+                          <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
                             <TransWords text={v.text} lang="en" reference={`${rightProse.work.name} ${proseChapter.number}:${v.number}`} book={rightProse.work.noteBook}
                               hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                create: (s, e, c) => void highlights.create(rightProse.work.noteBook, proseChapter.number, v.number, s, e, c),
+                                create: (s, e, c) => void highlights.create(rightProse.work.noteBook, proseChapter.number, v.number, s, e, c, 'en'),
                                 recolor: (id, c) => void highlights.recolor(id, rightProse.work.noteBook, proseChapter.number, c),
                                 remove: id => void highlights.remove(id, rightProse.work.noteBook, proseChapter.number) } : undefined} />
                           </span>
@@ -1130,7 +1131,8 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     >
                       {rightVerses.map(v => {
                         const rightBook = rightRef.citation.ref!.book, rightChapter = rightRef.citation.ref!.chapter
-                        const verseHighlights = highlights.forVerse(rightBook, rightChapter, v.verse)
+                        const rightLayer = v.tokens && v.tokens.length > 0 ? 'grc' : 'en'
+                        const verseHighlights = highlights.forVerse(rightBook, rightChapter, v.verse, rightLayer)
                         return (
                         <p key={v.verse}>
                           {isAuthenticated && rightRef.citation.ref && (
@@ -1140,7 +1142,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           )}
                           <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
                           {v.tokens && v.tokens.length > 0 ? (
-                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse)}>
+                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
                               {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
                                 const key = `right.${rightBook}.${rightChapter}.${v.verse}.${ti}`
                                 const select = () => { setSelectedInfo(toLexicalInfo(tok, rightBookName, `${rightChapter}:${v.verse}`)); setSelectedKey(key) }
@@ -1157,7 +1159,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                         reference: `${rightBookName} ${rightChapter}:${v.verse}`, kind: 'greek', greekCorpus: 'LXX',
                                         highlight: isAuthenticated ? {
                                           activeColor: hl?.color ?? null,
-                                          onPick: c => hl ? void highlights.recolor(hl.id, rightBook, rightChapter, c) : void highlights.create(rightBook, rightChapter, v.verse, start, end, c),
+                                          onPick: c => hl ? void highlights.recolor(hl.id, rightBook, rightChapter, c) : void highlights.create(rightBook, rightChapter, v.verse, start, end, c, rightLayer),
                                           onRemove: () => { if (hl) void highlights.remove(hl.id, rightBook, rightChapter) },
                                         } : undefined,
                                       })
@@ -1171,10 +1173,10 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               })}
                             </span>
                           ) : (
-                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse)}>
+                            <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
                               <TransWords text={v.text} lang="en" reference={`${rightBookName} ${rightChapter}:${v.verse}`} book={rightBook}
                                 hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                  create: (s, e, c) => void highlights.create(rightBook, rightChapter, v.verse, s, e, c),
+                                  create: (s, e, c) => void highlights.create(rightBook, rightChapter, v.verse, s, e, c, rightLayer),
                                   recolor: (id, c) => void highlights.recolor(id, rightBook, rightChapter, c),
                                   remove: id => void highlights.remove(id, rightBook, rightChapter) } : undefined} />
                             </span>
@@ -1201,7 +1203,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           state={highlightSelection.popup}
           onPick={color => {
             const state = highlightSelection.popup!
-            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
             else void highlights.recolor(state.id, state.book, state.chapter, color)
             highlightSelection.close()
           }}

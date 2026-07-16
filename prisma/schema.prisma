@@ -898,6 +898,10 @@ model Highlight {
   startOffset Int
   endOffset   Int
   color       String   @default("yellow")
+  // Which text the offsets are into: "grc" for the Greek, otherwise the translation's
+  // language/version code (e.g. "en", "bsb", "es"). Keeps Greek and translation highlights
+  // independent even though they share the same verse anchor. Existing rows default to Greek.
+  layer       String   @default("grc")
   createdAt   DateTime @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)

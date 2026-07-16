@@ -4,8 +4,8 @@ import type { HighlightRecord } from './useHighlights'
 
 // Spread onto each verse's wrapper element so useHighlightSelection can find verse
 // boundaries and measure offsets relative to that verse's own text.
-export function verseAnchorProps(book: string, chapter: number, verse: number) {
-  return { 'data-hl-book': book, 'data-hl-chapter': chapter, 'data-hl-verse': verse } as const
+export function verseAnchorProps(book: string, chapter: number, verse: number, layer: string = 'grc') {
+  return { 'data-hl-book': book, 'data-hl-chapter': chapter, 'data-hl-verse': verse, 'data-hl-layer': layer } as const
 }
 
 // Precomputes each token's [start, end) offset into the verse's canonical text (tokens

@@ -255,14 +255,14 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
                 )}
                 <div className="min-w-0 flex-1">
                   <GreekVerse verse={v} activeWordId={null} highlighted={false}
-                    textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse) : []}
+                    textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse, 'grc') : []}
                     onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }}
                     onWordRightClick={anchor ? (word, x, y, start, end) => {
-                      const existing = highlights.forVerse(anchor.book, anchor.chapter, v.verse).find(h => start < h.endOffset && end > h.startOffset)
+                      const existing = highlights.forVerse(anchor.book, anchor.chapter, v.verse, 'grc').find(h => start < h.endOffset && end > h.startOffset)
                       openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT',
                         highlight: isAuthenticated ? {
                           activeColor: existing?.color ?? null,
-                          onPick: c => existing ? void highlights.recolor(existing.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c),
+                          onPick: c => existing ? void highlights.recolor(existing.id, anchor.book, anchor.chapter, c) : void highlights.create(anchor.book, anchor.chapter, v.verse, start, end, c, 'grc'),
                           onRemove: () => { if (existing) void highlights.remove(existing.id, anchor.book, anchor.chapter) },
                         } : undefined })
                     } : undefined} />
@@ -328,7 +328,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           state={highlightSelection.popup}
           onPick={color => {
             const state = highlightSelection.popup!
-            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
             else void highlights.recolor(state.id, state.book, state.chapter, color)
             highlightSelection.close()
           }}

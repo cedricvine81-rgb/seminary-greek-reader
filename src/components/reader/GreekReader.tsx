@@ -34,7 +34,7 @@ import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
 import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { TransWords } from '@/components/highlights/TransWords'
-import { highlightAt } from '@/components/highlights/render'
+import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // ── BSB alignment loader ───────────────────────────────────────────────────────
@@ -1235,10 +1235,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       // Highlight controls for this word (signed-in readers) — highlights its char range.
       const [wb, wc, wv] = (word.verseId ?? '').split('.')
       const hi = highlightsRef.current
-      const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv)).find(h => start < h.endOffset && end > h.startOffset) : undefined
+      const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv), 'grc').find(h => start < h.endOffset && end > h.startOffset) : undefined
       const highlight: WordHighlight | undefined = isAuthenticated && wb ? {
         activeColor: existing?.color ?? null,
-        onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c),
+        onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c, 'grc'),
         onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
       } : undefined
 
@@ -1264,7 +1264,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         highlighted={v.id === highlightedVerse}
         searchWord={wordSearchTerm ?? undefined}
         searchLemma={searchLemma ?? undefined}
-        textHighlights={highlights.forVerse(v.bookId, v.chapter, v.verse)}
+        textHighlights={highlights.forVerse(v.bookId, v.chapter, v.verse, 'grc')}
         onWordHover={handleWordHover}
         onWordClick={handleWordClick}
         onWordRightClick={handleWordRightClick}
@@ -1302,8 +1302,11 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       ) : (
         <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
           <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
+          {/* Anchor wraps only the translation words (not the verse-number sup) so drag-select
+              offsets line up with the stored ones, and the layer scopes them to this language. */}
+          <span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>
           {(() => {
-            const bsbHl = highlights.forVerse(v.bookId, v.chapter, v.verse)
+            const bsbHl = highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang)
             let off = 0
             return alignVerse.text.split(' ').map((tok, i) => {
               const start = off; const end = off + tok.length; off = end + 1
@@ -1329,7 +1332,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
                       reference: `${v.bookId} ${v.chapter}:${v.verse}`, kind: 'translation', transLang: parallelLang, book: v.bookId,
                       highlight: isAuthenticated ? {
                         activeColor: mark?.color ?? null,
-                        onPick: c => mark ? void highlights.recolor(mark.id, v.bookId, v.chapter, c) : void highlights.create(v.bookId, v.chapter, v.verse, start, end, c),
+                        onPick: c => mark ? void highlights.recolor(mark.id, v.bookId, v.chapter, c) : void highlights.create(v.bookId, v.chapter, v.verse, start, end, c, parallelLang),
                         onRemove: () => { if (mark) void highlights.remove(mark.id, v.bookId, v.chapter) },
                       } : undefined,
                     })
@@ -1340,6 +1343,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
               )
             })
           })()}
+          </span>
         </p>
       )
 
@@ -1363,7 +1367,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</>
+              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, 'bg-red-100 text-red-700 font-semibold rounded-sm') : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
               : null}
         </p>
       </div>
@@ -1822,7 +1826,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
           state={highlightSelection.popup}
           onPick={color => {
             const state = highlightSelection.popup!
-            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color)
+            if (state.kind === 'new') for (const s of state.splits) void highlights.create(s.book, s.chapter, s.verse, s.start, s.end, color, s.layer)
             else void highlights.recolor(state.id, state.book, state.chapter, color)
             highlightSelection.close()
           }}

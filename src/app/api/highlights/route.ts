@@ -36,6 +36,7 @@ export async function POST(req: NextRequest) {
     const highlight = await createHighlight(payload.sub, {
       book: b.book, chapter: Number(b.chapter), verse: Number(b.verse),
       startOffset: Number(b.startOffset), endOffset: Number(b.endOffset), color: b.color,
+      layer: typeof b.layer === 'string' ? b.layer : undefined,
     })
     return NextResponse.json({ highlight }, { status: 201 })
   } catch (err) {
