@@ -8,34 +8,37 @@
 import { BACKGROUND_SUMMARIES } from './backgrounds-summaries'
 import type { CatalogWork } from './texts-catalog'
 
-export interface TextSummary {
-  authorship: string
-  contents: string
-}
+export interface TextSummarySection { heading: string; body: string }
+/** A work's summary as an ordered list of sections (the "Summary" popover renders all of them;
+ *  the "Contents" popover renders just the Contents section). */
+export interface TextSummary { sections: TextSummarySection[] }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '')
 
-// Index the vetted Backgrounds summaries by normalized title so a Texts work can borrow its
-// Authorship + Contents sections when the names match.
-const _bgByName = new Map<string, { authorship: string; contents: string }>()
+// Index the vetted Backgrounds summaries by normalized title so a Texts work can show that work's
+// full multi-section summary (Authorship, Historical Context, Contents, Theological Significance,
+// Relationship to New Testament) when the names match.
+const _bgByName = new Map<string, TextSummarySection[]>()
 for (const cat of BACKGROUND_SUMMARIES) {
   for (const w of cat.works) {
-    const body = (h: string) => w.sections.find(s => s.heading.toLowerCase() === h)?.body ?? ''
-    _bgByName.set(norm(w.title), { authorship: body('authorship'), contents: body('contents') })
+    _bgByName.set(norm(w.title), w.sections.map(s => ({ heading: s.heading, body: s.body })))
   }
 }
 
-/** Authorship + Contents blurbs for an open Texts work, or null if none is known. */
+/** Full summary sections for an open Texts work, or null if none is known. Works with a vetted
+ *  Backgrounds summary get its full section set; the rest get the two authored sections below. */
 export function getTextSummary(work: Pick<CatalogWork, 'id' | 'name'>): TextSummary | null {
-  const authored = TEXT_SUMMARIES[work.id]
-  if (authored) return authored
   const bg = _bgByName.get(norm(work.name)) ?? _bgByName.get(norm(work.name.replace(/\s*\(.*\)$/, '')))
-  if (bg && (bg.authorship || bg.contents)) return { authorship: bg.authorship, contents: bg.contents }
+  if (bg && bg.length) return { sections: bg }
+  const authored = TEXT_SUMMARIES[work.id]
+  if (authored) return { sections: [{ heading: 'Authorship', body: authored.authorship }, { heading: 'Contents', body: authored.contents }] }
   return null
 }
 
+interface AuthoredSummary { authorship: string; contents: string }
+
 // Authored blurbs, keyed by CatalogWork.id, for works not covered by backgrounds-summaries.ts.
-export const TEXT_SUMMARIES: Record<string, TextSummary> = {
+export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
   // ── Apocrypha (works without an existing summary) ──────────────────────────────
   EsthGr: {
     authorship: 'The Greek version of Esther expands the Hebrew book with six substantial "Additions" of unknown authorship, likely composed in the 2nd–1st century BCE. A colophon attributes the translation to a Lysimachus of Jerusalem.',

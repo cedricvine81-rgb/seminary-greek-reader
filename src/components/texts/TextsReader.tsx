@@ -190,8 +190,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const catRowRef = useRef<HTMLDivElement>(null)
   const locateMenuRef = useRef<HTMLDivElement>(null)
   const translationMenuRef = useRef<HTMLDivElement>(null)
-  // Which "about this work" popover is open (Authorship / Contents), and its anchor.
-  const [infoPanel, setInfoPanel] = useState<'authorship' | 'contents' | null>(null)
+  // Which "about this work" popover is open (Summary / Contents), and its anchor.
+  const [infoPanel, setInfoPanel] = useState<'summary' | 'contents' | null>(null)
   const infoMenuRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
@@ -742,41 +742,42 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               )}
             </div>
 
-            {/* "About this work" — Authorship + Contents popovers, when a blurb is available. */}
+            {/* "About this work" — Summary (all sections) + Contents popovers, when available. */}
             {(() => {
               const summary = getTextSummary(work)
-              if (!summary || (!summary.authorship && !summary.contents)) return null
+              if (!summary || summary.sections.length === 0) return null
+              const contents = summary.sections.find(s => /contents/i.test(s.heading))
               return (
                 <div className="relative" ref={infoMenuRef}>
                   <div className="flex items-center gap-1.5">
-                    {summary.authorship && (
-                      <button
-                        type="button"
-                        onClick={() => setInfoPanel(p => (p === 'authorship' ? null : 'authorship'))}
-                        className={`text-xs font-medium transition-colors ${infoPanel === 'authorship' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
-                      >
-                        Authorship
-                      </button>
-                    )}
-                    {summary.authorship && summary.contents && <span className="text-gray-300 text-xs">·</span>}
-                    {summary.contents && (
-                      <button
-                        type="button"
-                        onClick={() => setInfoPanel(p => (p === 'contents' ? null : 'contents'))}
-                        className={`text-xs font-medium transition-colors ${infoPanel === 'contents' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
-                      >
-                        Contents
-                      </button>
+                    <button
+                      type="button"
+                      onClick={() => setInfoPanel(p => (p === 'summary' ? null : 'summary'))}
+                      className={`text-xs font-medium transition-colors ${infoPanel === 'summary' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
+                    >
+                      Summary
+                    </button>
+                    {contents && (
+                      <>
+                        <span className="text-gray-300 text-xs">·</span>
+                        <button
+                          type="button"
+                          onClick={() => setInfoPanel(p => (p === 'contents' ? null : 'contents'))}
+                          className={`text-xs font-medium transition-colors ${infoPanel === 'contents' ? 'text-brand-700' : 'text-gray-500 hover:text-brand-700'}`}
+                        >
+                          Contents
+                        </button>
+                      </>
                     )}
                   </div>
                   {infoPanel && (
-                    <div className="absolute left-0 top-full z-30 mt-1 w-80 max-w-[90vw] rounded-lg border border-gray-200 bg-popover shadow-lg p-3">
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">
-                        {infoPanel === 'authorship' ? 'Authorship' : 'Contents'}
-                      </p>
-                      <p className="text-sm leading-relaxed text-gray-700">
-                        {infoPanel === 'authorship' ? summary.authorship : summary.contents}
-                      </p>
+                    <div className="absolute left-0 top-full z-30 mt-1 w-96 max-w-[90vw] max-h-[60vh] overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-lg p-3 space-y-2.5">
+                      {(infoPanel === 'contents' && contents ? [contents] : summary.sections).map((s, i) => (
+                        <div key={i}>
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-0.5">{s.heading}</p>
+                          <p className="text-sm leading-relaxed text-gray-700">{s.body}</p>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>
