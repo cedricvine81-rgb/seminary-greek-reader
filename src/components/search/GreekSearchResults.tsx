@@ -12,7 +12,10 @@ import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
 
 const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
 const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
+// First option turns the parallel column off (Greek-only); the rest are the available
+// translations. `none` is a sentinel — never fetched, never rendered as a column.
 const TRANSLATIONS = [
+  { lang: 'none', label: 'No translation' },
   { lang: 'en', label: 'English (WEB)' }, { lang: 'bsb', label: 'English (BSB)' },
   { lang: 'es', label: 'Spanish' }, { lang: 'fr', label: 'French' }, { lang: 'pt', label: 'Portuguese' },
   { lang: 'ru', label: 'Russian' }, { lang: 'ko', label: 'Korean' }, { lang: 'zh', label: 'Mandarin' },
@@ -84,7 +87,7 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
           }).catch(() => { fetchedTok.current.delete(tokKey) })
       }
       const trKey = `${transLang}.${ck}`
-      if (!fetchedTr.current.has(trKey)) {
+      if (transLang !== 'none' && !fetchedTr.current.has(trKey)) {
         fetchedTr.current.add(trKey)
         fetch(`/api/translation?book=${osis}&chapter=${ch}&lang=${transLang}`)
           .then(r => (r.ok ? r.json() : { verses: {} }))
@@ -97,7 +100,8 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hits, context, ctxMap, corpus, transLang])
 
-  const trMap = trans.current[transLang] ?? {}
+  const showTrans = transLang !== 'none'
+  const trMap = showTrans ? trans.current[transLang] ?? {} : {}
 
   function greekCell(h: GreekHit, cv: CtxVerse, isHit: boolean, rowKey: string): ReactNode {
     const vid = `${h.osisId}.${cv.chapter}.${cv.verse}`
@@ -147,14 +151,16 @@ export function GreekSearchResults({ hits, terms, corpus, bookName, context, ctx
                   const vid = `${h.osisId}.${cv.chapter}.${cv.verse}`
                   const rowKey = `${i}.${cv.chapter}.${cv.verse}`
                   return (
-                    <div key={rowKey} className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-0.5">
+                    <div key={rowKey} className={`grid gap-x-4 gap-y-0.5 ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
                       <p className={`greek-text leading-relaxed ${isHit ? 'text-gray-900' : 'text-gray-400'}`}>
                         <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{cv.verse}</sup>
                         {greekCell(h, cv, isHit, rowKey)}
                       </p>
-                      <p className={`leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
-                        {trMap[vid] ? hilite(trMap[vid], isHit ? terms : []) : <span className="text-gray-300 italic">…</span>}
-                      </p>
+                      {showTrans && (
+                        <p className={`leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
+                          {trMap[vid] ? hilite(trMap[vid], isHit ? terms : []) : <span className="text-gray-300 italic">…</span>}
+                        </p>
+                      )}
                     </div>
                   )
                 })}
