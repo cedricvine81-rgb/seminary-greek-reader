@@ -1,0 +1,122 @@
+'use client'
+import { useEffect, useRef, useState } from 'react'
+import { X } from 'lucide-react'
+import type { LexicalInfoPanel } from '@/types/lexicon'
+import type { WordHighlight } from '@/lib/word-search-bus'
+import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
+
+// The right-click menu for a Hebrew word: an optional Highlight row (signed-in readers) plus the
+// full Strong's lexicon entry — the parity counterpart to the Greek word's syntax/search menu.
+// Left-clicking a word still populates the inline parsing pane; this pins a fuller reference view.
+export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
+  info: LexicalInfoPanel
+  x: number
+  y: number
+  highlight?: WordHighlight
+  onClose: () => void
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [copied, setCopied] = useState<string | null>(null)
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
+    function onOutside(e: MouseEvent | TouchEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClose()
+    }
+    document.addEventListener('keydown', onKey)
+    document.addEventListener('mousedown', onOutside)
+    document.addEventListener('touchstart', onOutside)
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('mousedown', onOutside)
+      document.removeEventListener('touchstart', onOutside)
+    }
+  }, [onClose])
+
+  const copy = (text: string, label: string) => {
+    navigator.clipboard?.writeText(text).then(() => { setCopied(label); setTimeout(() => setCopied(null), 1200) }).catch(() => {})
+  }
+
+  const menuW = 320
+  const left = Math.min(x, (typeof window !== 'undefined' ? window.innerWidth : 1200) - menuW - 8)
+  const top  = Math.min(y, (typeof window !== 'undefined' ? window.innerHeight : 800) - 360)
+
+  return (
+    <div
+      ref={ref}
+      style={{ position: 'fixed', top: Math.max(8, top), left: Math.max(8, left), zIndex: 1000, width: menuW, maxHeight: '75vh' }}
+      className="bg-popover border border-gray-200 rounded-xl shadow-2xl flex flex-col overflow-hidden"
+    >
+      {/* Header */}
+      <div className="flex items-start justify-between gap-2 px-4 pt-3 pb-2 border-b border-gray-100 shrink-0">
+        <div className="min-w-0">
+          <span className="font-hebrew text-xl font-semibold text-brand-800 leading-tight block" dir="rtl">{info.surface}</span>
+          <span className="text-xs text-gray-500 flex flex-wrap items-baseline gap-x-1.5">
+            <span className="font-hebrew text-sm" dir="rtl">{info.lexeme}</span>
+            {info.transliteration && <span className="italic">{info.transliteration}</span>}
+            {info.strongs && <span className="font-mono text-gray-400">{info.strongs}</span>}
+          </span>
+        </div>
+        <button onClick={onClose} className="text-gray-400 hover:text-gray-600 shrink-0 p-1 -mr-1 rounded hover:bg-gray-100" aria-label="Close">
+          <X size={16} />
+        </button>
+      </div>
+
+      <div className="p-3 space-y-2 overflow-y-auto text-sm">
+        {/* Highlight this word (signed-in readers) */}
+        {highlight && (
+          <div className="flex items-center gap-2 rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-2">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
+            <HighlightSwatches
+              activeColor={highlight.activeColor}
+              onPick={c => { highlight.onPick(c); onClose() }}
+              onRemove={() => { highlight.onRemove(); onClose() }}
+            />
+          </div>
+        )}
+
+        {/* Parsing */}
+        <p className="text-gray-600">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Parsing</span>
+          {info.parsing}
+        </p>
+
+        {/* Morpheme segments (compounds) */}
+        {info.segments && info.segments.length > 0 && (
+          <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Segments</span>
+            {info.segments.map((s, i) => (
+              <span key={i} className="inline-flex items-baseline gap-1">
+                <span className="font-hebrew text-base text-brand-800" dir="rtl">{s.text}</span>
+                <span className="text-xs text-gray-500">{s.label}{s.gloss ? ` · ${s.gloss}` : ''}</span>
+              </span>
+            ))}
+          </p>
+        )}
+
+        {/* Lexicon entry */}
+        {info.gloss && (
+          <p className="text-gray-800">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Gloss</span>
+            {info.gloss}
+          </p>
+        )}
+        {info.definition && info.definition !== info.gloss && (
+          <p className="text-gray-800">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Strong&apos;s</span>
+            {info.definition}
+          </p>
+        )}
+
+        {/* Copy */}
+        <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500 pt-1 border-t border-gray-100">
+          <span className="text-gray-400">Copy:</span>
+          <button type="button" onClick={() => copy(info.surface, 'word')} className="underline decoration-gray-300 hover:text-brand-700">word</button>
+          <button type="button" onClick={() => copy(info.lexeme, 'lemma')} className="underline decoration-gray-300 hover:text-brand-700">lemma</button>
+          <button type="button" onClick={() => copy(info.reference, 'reference')} className="underline decoration-gray-300 hover:text-brand-700">reference</button>
+          {copied && <span className="text-green-600">✓ copied {copied}</span>}
+        </div>
+      </div>
+    </div>
+  )
+}

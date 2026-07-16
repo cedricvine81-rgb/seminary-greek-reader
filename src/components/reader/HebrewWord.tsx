@@ -5,6 +5,7 @@ import type { VerseWord } from '@/types/biblical-text'
 import type { LexicalInfoPanel, HebrewSegment } from '@/types/lexicon'
 import { formatHebrewParse, hebrewMorphRole, hebrewPartOfSpeech } from '@/lib/hebrew-morph'
 import { lookupHebrewStrongs, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // Build the parsing-pane payload for a Hebrew word: dictionary lemma + transliteration + gloss
 // from the Strong's lexicon, the decoded OSHB parse, and (for compounds) the prefix/suffix
@@ -41,12 +42,17 @@ interface HebrewWordProps {
   reference: string
   isActive: boolean
   lexicon: HebrewLexicon | null
+  // Persisted highlight covering this word, if any (see src/components/highlights).
+  highlightId?: string
+  highlightColor?: string
+  hlBook?: string
+  hlChapter?: number
   onHover: (info: LexicalInfoPanel | null) => void
   onClick: (info: LexicalInfoPanel | null) => void
   onRightClick?: (word: VerseWord, x: number, y: number) => void
 }
 
-function HebrewWordImpl({ word, reference, isActive, lexicon, onHover, onClick, onRightClick }: HebrewWordProps) {
+function HebrewWordImpl({ word, reference, isActive, lexicon, highlightId, highlightColor, hlBook, hlChapter, onHover, onClick, onRightClick }: HebrewWordProps) {
   const longPressTimer  = useRef<ReturnType<typeof setTimeout> | null>(null)
   const longPressCoords = useRef<{ x: number; y: number } | null>(null)
 
@@ -69,7 +75,8 @@ function HebrewWordImpl({ word, reference, isActive, lexicon, onHover, onClick, 
 
   return (
     <span
-      className={clsx('greek-word cursor-pointer', isActive && 'active')}
+      className={clsx('greek-word cursor-pointer', isActive && 'active', highlightColor && highlightMarkClass(highlightColor))}
+      {...(highlightId ? { 'data-highlight-id': highlightId, 'data-hl-book': hlBook, 'data-hl-chapter': hlChapter, 'data-hl-color': highlightColor } : {})}
       onMouseEnter={() => onHover(info())}
       onMouseLeave={() => onHover(null)}
       onClick={() => onClick(info())}
@@ -88,7 +95,9 @@ function areEqual(prev: HebrewWordProps, next: HebrewWordProps): boolean {
     prev.word === next.word &&
     prev.reference === next.reference &&
     prev.isActive === next.isActive &&
-    prev.lexicon === next.lexicon
+    prev.lexicon === next.lexicon &&
+    prev.highlightId === next.highlightId &&
+    prev.highlightColor === next.highlightColor
   )
 }
 

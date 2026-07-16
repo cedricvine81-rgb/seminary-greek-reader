@@ -39,6 +39,11 @@ export function loadGbi(): Promise<Record<string, GbiEntry>> {
   _loading = fetch('/data/gbi.json')
     .then(r => r.json() as Promise<Record<string, GbiEntry>>)
     .then(data => { _cache = data; return data })
+    // Never let a failed load reject: a rejected promise would be cached in `_loading` and
+    // returned to every future caller, and the reader's right-click handler awaits this in a
+    // Promise.all — a rejection there would stop the word menu (and its Highlight row) from
+    // ever opening for the rest of the session.
+    .catch(() => { _cache = {}; return {} as Record<string, GbiEntry> })
   return _loading
 }
 

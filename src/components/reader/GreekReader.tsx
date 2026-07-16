@@ -10,7 +10,9 @@ import {
 import { SearchBar } from './SearchBar'
 import { PassagePicker } from './PassagePicker'
 import { GreekVerse } from './GreekVerse'
-import { HebrewVerse } from './HebrewVerse'
+import { HebrewVerse, HEBREW_LAYER } from './HebrewVerse'
+import { buildHebrewInfo } from './HebrewWord'
+import { HebrewWordMenu } from './HebrewWordMenu'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
@@ -293,6 +295,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     y: number
     highlight?: WordHighlight
   } | null>(null)
+  // Hebrew word right-click menu (highlight + full lexicon entry).
+  const [hebrewMenu, setHebrewMenu] = useState<{ info: LexicalInfoPanel; x: number; y: number; highlight?: WordHighlight } | null>(null)
 
   // Mobile only: hide the top control row while scrolling down through the text,
   // reveal it again on any scroll up (desktop keeps it pinned via `lg:flex`).
@@ -321,12 +325,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   const highlightSelection = useHighlightSelection(textPanelRef)
   useEffect(() => {
     const chapters = new Map<string, { book: string; chapter: number }>()
-    for (const s of [...gnt.sections, ...lxx.sections]) {
+    for (const s of [...gnt.sections, ...lxx.sections, ...mt.sections]) {
       const v0 = s.verses[0]
       if (v0) chapters.set(`${v0.bookId}.${v0.chapter}`, { book: v0.bookId, chapter: v0.chapter })
     }
     chapters.forEach(({ book, chapter }) => void highlights.loadFor(book, chapter))
-  }, [gnt.sections, lxx.sections, highlights.loadFor])
+  }, [gnt.sections, lxx.sections, mt.sections, highlights.loadFor])
 
   const settingsRef   = useRef<HTMLDivElement>(null)
   const gntSentinel      = useRef<HTMLDivElement>(null)
@@ -1051,7 +1055,11 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   }, [])
 
   const handleWordRightClick = useCallback((word: VerseWord, x: number, y: number, start: number, end: number) => {
-    Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()]).then(([data, gbiData, absData, maculaData]) => {
+    // If any syntax dataset fails to load, fall back to empty maps rather than rejecting — the
+    // menu (with its Highlight + Search rows) must still open; the syntax panels simply stay empty.
+    Promise.all([loadSyntax(), loadGbi(), loadAbsSyntax(), loadMaculaSyntax()])
+      .catch(() => [{}, {}, {}, {}] as [Record<string, SyntaxEntry>, Record<string, GbiEntry>, Record<string, AbsSyntaxEntry>, Awaited<ReturnType<typeof loadMaculaSyntax>>])
+      .then(([data, gbiData, absData, maculaData]) => {
       const gbiEntry    = gbiData[word.id]    ?? null
       const absEntry    = absData[word.id]    ?? null
       const maculaEntry = maculaData[word.id] ?? null
@@ -1500,6 +1508,22 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     })
   }
 
+  // Right-click a Hebrew word → the highlight + full-lexicon menu. Mirrors the Greek word
+  // handler's highlight wiring, but on the 'he' layer and with no syntax lookups.
+  function handleHebrewWordRightClick(word: VerseWord, x: number, y: number, start: number, end: number) {
+    const reference = (word.verseId ?? '').replace(/^(.*)\.(\d+)\.(\d+)$/, '$1 $2:$3')
+    const info = buildHebrewInfo(word, reference, hebrewLex)
+    const [wb, wc, wv] = (word.verseId ?? '').split('.')
+    const hi = highlightsRef.current
+    const existing = wb ? hi.forVerse(wb, Number(wc), Number(wv), HEBREW_LAYER).find(h => start < h.endOffset && end > h.startOffset) : undefined
+    const highlight: WordHighlight | undefined = isAuthenticated && wb ? {
+      activeColor: existing?.color ?? null,
+      onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c, HEBREW_LAYER),
+      onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
+    } : undefined
+    setHebrewMenu({ info, x, y, highlight })
+  }
+
   // One Hebrew verse and, when a translation is selected, its inline rendering beside it —
   // the RTL Hebrew column on the left, the LTR translation on the right (same two-column
   // layout as the Greek path). BSB shows as plain text here (no Greek-word alignment exists
@@ -1512,8 +1536,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
         activeWordId={activeWordId}
         highlighted={v.id === highlightedVerse}
         lexicon={hebrewLex}
+        textHighlights={highlights.forVerse(v.bookId, v.chapter, v.verse, HEBREW_LAYER)}
         onWordHover={handleWordHover}
         onWordClick={handleWordClick}
+        onWordRightClick={handleHebrewWordRightClick}
         verseRefCallback={greekVerseRef(v.id)}
       />
     )
@@ -1986,6 +2012,17 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {/* ── Full lexicon entry (from the right-click menu) ── */}
       {lexiconWord && (
         <LexiconPanel word={lexiconWord} onClose={() => setLexiconWord(null)} />
+      )}
+
+      {/* ── Hebrew word right-click menu (highlight + lexicon) ── */}
+      {hebrewMenu && (
+        <HebrewWordMenu
+          info={hebrewMenu.info}
+          x={hebrewMenu.x}
+          y={hebrewMenu.y}
+          highlight={hebrewMenu.highlight}
+          onClose={() => setHebrewMenu(null)}
+        />
       )}
 
       {isAuthenticated && highlightSelection.popup && (
