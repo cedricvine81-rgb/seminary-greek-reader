@@ -1,25 +1,23 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { X, Search } from 'lucide-react'
-import type { VerseWord } from '@/types/biblical-text'
-import { formatParsing } from '@/lib/morph-formatting'
-import { MORPH_GROUPS, parsingToFeatures } from '@/lib/morph-features'
+import { MORPH_GROUPS } from '@/lib/morph-features'
 
-// "Search by morphology" (#5/#6). Opens pre-filled with the right-clicked word's own
-// features; toggle which to keep, optionally restrict to this lemma, then search the GNT
-// for every verse containing a word that matches. NT-only (the parsing trees are GNT).
-export function MorphSearchPicker({ word, onSearch, onClose }: {
-  word: VerseWord
+// "Search by morphology". Opens pre-filled with some initial features (e.g. the right-clicked
+// word's own parsing); toggle which to keep, optionally restrict to a lemma, then search the GNT
+// for every verse containing a word that matches. NT-only (the parsing trees are GNT). Decoupled
+// from a live word so both the Reader and the /search page (Edit criteria) can drive it.
+export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRestrictLemma = false, onSearch, onClose }: {
+  initialFeatures: string[]
+  lemma: string | null              // a lemma available to restrict to (null → no lemma option)
+  subject?: string                  // header caption, e.g. "γενέσεως · Noun, Genitive, Singular"
+  initialRestrictLemma?: boolean
   onSearch: (features: string[], lemma: string | null) => void
   onClose: () => void
 }) {
   const ref = useRef<HTMLDivElement>(null)
-  const parse = word.parses?.[0]
-  const lemma = word.lexeme?.lexeme ?? null
-  // Pre-select the word's own morphology.
-  const [selected, setSelected] = useState<Set<string>>(() =>
-    new Set(parsingToFeatures(parse ? formatParsing(parse) : '')))
-  const [restrictLemma, setRestrictLemma] = useState(false)
+  const [selected, setSelected] = useState<Set<string>>(() => new Set(initialFeatures))
+  const [restrictLemma, setRestrictLemma] = useState(initialRestrictLemma)
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
@@ -48,8 +46,8 @@ export function MorphSearchPicker({ word, onSearch, onClose }: {
           <div>
             <p className="text-sm font-semibold text-gray-800">Search by morphology</p>
             <p className="text-xs text-gray-400 mt-0.5">
-              <span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{word.surface}</span>
-              {parse ? ` · ${formatParsing(parse)}` : ''} · New Testament
+              {subject ? <span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{subject}</span> : null}
+              {subject ? ' · ' : ''}New Testament
             </p>
           </div>
           <button onClick={onClose} aria-label="Close" className="text-gray-400 hover:text-gray-600 p-1 -mr-1"><X size={18} /></button>

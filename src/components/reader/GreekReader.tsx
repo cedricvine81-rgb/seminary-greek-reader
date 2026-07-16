@@ -17,6 +17,8 @@ import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMen
 import { openWordSearch, type WordHighlight } from '@/lib/word-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
+import { formatParsing } from '@/lib/morph-formatting'
+import { parsingToFeatures } from '@/lib/morph-features'
 import { MorphSearchPicker } from './MorphSearchPicker'
 import { LexiconPanel } from './LexiconPanel'
 import type { BiblicalBook, BiblicalVerse, VerseWord } from '@/types/biblical-text'
@@ -1038,10 +1040,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
 
   function runMorphSearch(features: string[], lemma: string | null) {
     setMorphPickerWord(null)
-    const params = new URLSearchParams({ type: 'morph', features: features.join(','), corpus: 'GNT' })
-    if (lemma) params.set('lemma', lemma)
-    const label = `Morphology: ${features.length ? features.join(', ') : 'any'}${lemma ? ` · ${lemma}` : ''}`
-    runWordSearch(`/api/search?${params.toString()}`, label, { lemma })
+    // Morphology search runs on the full /search page (Greek NT). lemma (if restricting) rides in
+    // the query slot; the criteria ride in `features`.
+    openMasterSearch({ query: lemma ?? '', scope: 'morph:GNT', features: features.join(',') })
   }
 
   // A compact concordance (KWIC) row: reference + the Greek verse text; tap the reference
@@ -2115,7 +2116,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {/* ── "Search by morphology" picker (from the right-click menu) ── */}
       {morphPickerWord && (
         <MorphSearchPicker
-          word={morphPickerWord}
+          initialFeatures={parsingToFeatures(morphPickerWord.parses?.[0] ? formatParsing(morphPickerWord.parses[0]) : '')}
+          lemma={morphPickerWord.lexeme?.lexeme ?? null}
+          subject={`${morphPickerWord.surface}${morphPickerWord.parses?.[0] ? ` · ${formatParsing(morphPickerWord.parses[0])}` : ''}`}
           onSearch={runMorphSearch}
           onClose={() => setMorphPickerWord(null)}
         />
