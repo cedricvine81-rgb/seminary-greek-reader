@@ -778,6 +778,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                           <p className="text-sm leading-relaxed text-gray-700">{s.body}</p>
                         </div>
                       ))}
+                      {summary.aiDrafted && (
+                        <p className="pt-1.5 border-t border-gray-100 text-[11px] italic text-gray-400">
+                          AI-drafted overview reflecting general scholarship — not verified against sources; please double-check before relying on it.
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
