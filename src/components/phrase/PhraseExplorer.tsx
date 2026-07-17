@@ -129,7 +129,8 @@ const greekLabel = (code: string) => GREEK_EDITIONS.find(g => g.code === code)?.
 // --phrase-fs CSS variable set on the container.
 export type PhraseFontSize = 'sm' | 'md' | 'lg' | 'xl'
 export const FONT_SIZES: PhraseFontSize[] = ['sm', 'md', 'lg', 'xl']
-const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
+// Exported so other reading surfaces (e.g. the Search results) share the same size steps.
+export const FONT_SIZE_MAP: Record<PhraseFontSize, string> = { sm: '1.05rem', md: '1.25rem', lg: '1.45rem', xl: '1.7rem' }
 
 /** Static "Sources & copyright" content for the Phrasing tab's settings menu. */
 export function PhrasingSourcesPanel() {

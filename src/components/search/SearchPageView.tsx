@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type
 import { useRouter } from 'next/navigation'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, MoreVertical } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
 import { ParsingDock } from './ParsingDock'
@@ -58,15 +59,10 @@ function parseScope(v: string): Scope {
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
 const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
 
-// Result-text sizes for the ⋮ display menu — a rem size applied to the results container, which
-// the result rows inherit (metadata like refs/counts keeps its own fixed small sizes).
-const FONT_SIZES: { label: string; scale: number }[] = [
-  { label: 'Small', scale: 0.875 },
-  { label: 'Normal', scale: 1 },
-  { label: 'Large', scale: 1.15 },
-  { label: 'Extra large', scale: 1.3 },
-]
-const FONT_SCALE_KEY = 'search:fontScale'
+// Result-text size for the ⋮ display menu — the same sm/md/lg/xl steps and Α-slider control the
+// exegesis panes use (see PhraseExplorer/ExegesisTabs), applied to the results container and
+// inherited by the rows (metadata like refs/counts keeps its own fixed small sizes).
+const FONT_SIZE_KEY = 'search:fontSize'
 
 // A full verse with every term highlighted (findTermRanges/markSlice: shared, accent-fold).
 function hiliteVerse(text: string, terms: string[]): ReactNode {
@@ -195,18 +191,18 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [books, setBooks] = useState<string[]>(initialBooks ? initialBooks.split(',').filter(Boolean) : [])
   const [showBooks, setShowBooks] = useState(false)
   const [showTypes, setShowTypes] = useState(false)
-  // ⋮ display menu: result-text size, persisted across visits.
+  // ⋮ display menu: result-text size (defaults to Large, like the exegesis panes), persisted.
   const [showDisplay, setShowDisplay] = useState(false)
-  const [fontScale, setFontScale] = useState(1)
+  const [fontSize, setFontSize] = useState<PhraseFontSize>('lg')
   useEffect(() => {
     try {
-      const v = parseFloat(localStorage.getItem(FONT_SCALE_KEY) ?? '')
-      if (FONT_SIZES.some(f => f.scale === v)) setFontScale(v)
+      const v = localStorage.getItem(FONT_SIZE_KEY) as PhraseFontSize | null
+      if (v && FONT_SIZES.includes(v)) setFontSize(v)
     } catch { /* ignore */ }
   }, [])
-  function pickFontScale(v: number) {
-    setFontScale(v)
-    try { localStorage.setItem(FONT_SCALE_KEY, String(v)) } catch { /* ignore */ }
+  function pickFontSize(v: PhraseFontSize) {
+    setFontSize(v)
+    try { localStorage.setItem(FONT_SIZE_KEY, v) } catch { /* ignore */ }
   }
   // Parsing pane for Greek background results (the Greek NT/LXX lanes have their own inside
   // GreekSearchResults). Filled by hovering/clicking a word; word data is fetched lazily —
@@ -788,8 +784,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             </label>
             {isBiblical && (
               <span className="flex items-center gap-1.5 text-xs text-gray-500">
-                Book
-                <button type="button" onClick={() => setShowBooks(v => !v)}
+                <button type="button" onClick={() => setShowBooks(v => !v)} title="Limit the search to specific books"
                   aria-expanded={showBooks}
                   className={`inline-flex items-center gap-1 rounded border px-1.5 py-1 text-xs transition-colors ${
                     showBooks || books.length > 0 ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
@@ -799,8 +794,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </span>
             )}
 
-          {/* Search types */}
-          <div className="relative flex-none">
+          {/* Search types — ml-auto pins it (and the ⋮ next to it) to the row's right edge. */}
+          <div className="relative flex-none ml-auto">
             <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
               className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
                 showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
@@ -845,15 +840,19 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             {showDisplay && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setShowDisplay(false)} />
-                <div className="absolute right-0 top-full mt-2 z-30 w-44 rounded-xl border border-gray-200 bg-popover p-2 shadow-2xl">
-                  <p className="px-1 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">Text size</p>
-                  {FONT_SIZES.map(f => (
-                    <button key={f.label} type="button" onClick={() => pickFontScale(f.scale)}
-                      className={`block w-full rounded px-2 py-1 text-left text-sm transition-colors ${
-                        fontScale === f.scale ? 'bg-brand-50 font-medium text-brand-700' : 'text-gray-700 hover:bg-gray-50'}`}>
-                      {f.label}
-                    </button>
-                  ))}
+                <div className="absolute right-0 top-full mt-2 z-30 w-60 rounded-xl border border-gray-200 bg-popover p-3 shadow-2xl">
+                  {/* Same Α-slider text-size control as the exegesis panes' tools menu. */}
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Text Size</p>
+                  <div className="flex items-center gap-3">
+                    <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+                    <input
+                      type="range" min={0} max={FONT_SIZES.length - 1} step={1}
+                      value={FONT_SIZES.indexOf(fontSize)}
+                      onChange={e => pickFontSize(FONT_SIZES[e.target.valueAsNumber])}
+                      className="flex-1 accent-brand-600 cursor-pointer"
+                    />
+                    <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+                  </div>
                 </div>
               </>
             )}
@@ -894,7 +893,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       </div>
 
       {/* Results — result text inherits this font size (the ⋮ display menu's Text size). */}
-      <div className="py-4" style={{ fontSize: `${fontScale}rem` }}>
+      <div className="py-4" style={{ fontSize: FONT_SIZE_MAP[fontSize] }}>
         {loading && (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
             <Loader2 size={16} className="animate-spin" /> Searching…
