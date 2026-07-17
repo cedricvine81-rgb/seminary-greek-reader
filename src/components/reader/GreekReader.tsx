@@ -589,7 +589,11 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         if (lxxQ[0]) {
           lxxLoading.current = true
           fetchChapter(lxxQ[0]).then(section => {
-            setLxx({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= lxxQ.length, backDone: true })
+            // Yield if a ?ref= jump populated the series while this seed fetch was in flight —
+            // a plain overwrite here raced the deep-link jump and stranded it on the seed
+            // chapter (the reported "Return to page landed on Matthew 1" bug, GNT variant).
+            setLxx(s => s.sections.length > 0 ? s
+              : { sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= lxxQ.length, backDone: true })
             lxxLoading.current = false
           })
         }
@@ -611,7 +615,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         if (q[0]) {
           mtLoading.current = true
           fetchChapter(q[0]).then(section => {
-            setMt({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
+            // Yield if a ?ref= jump populated the series while this seed fetch was in flight
+            // (same clobber race as the GNT seed above — e.g. arriving at ?ref=Isa 61&corpus=MT).
+            setMt(s => s.sections.length > 0 ? s
+              : { sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
             mtLoading.current = false
           })
         }
@@ -635,7 +642,14 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         if (q[0]) {
           gntLoading.current = true
           fetchChapter(q[0]).then(section => {
-            setGnt({ sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
+            // Yield if a ?ref= jump populated the series while this seed fetch was in flight.
+            // This plain overwrite raced the deep-link jump: the queue arrives → the jump effect
+            // fires handleSearch → sections become the target window (e.g. Luke 15–17) → THEN
+            // this Matt-1 fetch resolved and clobbered them, restarting the reader at Matthew 1
+            // (the reported "Return to page landed on Matthew 1:1" bug). The effect resets
+            // sections synchronously above, so a normal (re)seed still sees them empty.
+            setGnt(s => s.sections.length > 0 ? s
+              : { sections: section ? [section] : [], queueIdx: 1, backIdx: -1, done: 1 >= q.length, backDone: true })
             gntLoading.current = false
           })
         }
