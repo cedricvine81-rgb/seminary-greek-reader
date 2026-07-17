@@ -1786,7 +1786,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
                 <div className="flex items-center gap-3">
-                  <span className="text-gray-400 select-none leading-none" style={{ fontFamily: 'Gentium Plus, Georgia, serif', fontSize: '0.8rem' }}>A</span>
+                  <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
                   <input
                     type="range"
                     min={0}
@@ -1796,7 +1796,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     onChange={e => setFontSize((['sm','md','lg','xl'] as FontSize[])[e.target.valueAsNumber])}
                     className="flex-1 accent-brand-600 cursor-pointer"
                   />
-                  <span className="text-gray-400 select-none leading-none" style={{ fontFamily: 'Gentium Plus, Georgia, serif', fontSize: '1.35rem' }}>A</span>
+                  <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '1.35rem' }}>A</span>
                 </div>
                 <div className="flex justify-between text-xs text-gray-400 mt-1 px-1">
                   <span>Small</span><span>Med</span><span>Large</span><span>X-Lg</span>

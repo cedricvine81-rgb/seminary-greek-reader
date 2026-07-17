@@ -39,15 +39,13 @@ export function LexiconPanel({ word, onClose }: { word: VerseWord; onClose: () =
     return () => { alive = false }
   }, [strongs])
 
-  const serif = { fontFamily: "'Gentium Plus', Georgia, serif" }
-
   return (
     <div className="fixed inset-0 z-[80] flex items-end sm:items-center justify-center bg-black/30 p-0 sm:p-4">
       <div ref={ref} className="w-full sm:max-w-lg max-h-[85vh] bg-popover rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden">
         {/* Header */}
         <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 shrink-0">
           <div>
-            <span className="text-2xl font-semibold text-brand-800 leading-tight block" style={serif}>
+            <span className="font-reading text-2xl font-semibold text-brand-800 leading-tight block">
               {lex?.lexeme ?? word.surface}
             </span>
             <span className="text-xs text-gray-500">
@@ -62,7 +60,7 @@ export function LexiconPanel({ word, onClose }: { word: VerseWord; onClose: () =
         <div className="p-4 space-y-4 overflow-y-auto text-sm">
           <div>
             <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-1">This form</p>
-            <p className="text-gray-800"><span style={serif} className="text-base">{word.surface}</span>{parse ? ` — ${formatParsing(parse)}` : ''}</p>
+            <p className="text-gray-800"><span className="font-reading text-base">{word.surface}</span>{parse ? ` — ${formatParsing(parse)}` : ''}</p>
           </div>
 
           {lex?.gloss && (

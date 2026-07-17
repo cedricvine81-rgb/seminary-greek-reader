@@ -103,7 +103,7 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
               ))}
               {lemma && (
                 <span className="rounded-md bg-gray-100 border border-gray-200 px-2 py-0.5 text-xs text-gray-600">
-                  lemma: <span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{lemma}</span>
+                  lemma: <span className="greek-text">{lemma}</span>
                 </span>
               )}
             </div>

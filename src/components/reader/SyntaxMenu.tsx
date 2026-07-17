@@ -147,8 +147,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
       <div className="flex items-start justify-between gap-2 px-4 pt-3 pb-2 border-b border-gray-100 shrink-0">
         <div>
           <span
-            className="text-xl font-semibold text-brand-800 leading-tight block"
-            style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
+            className="font-reading text-xl font-semibold text-brand-800 leading-tight block"
           >
             {word.surface}
           </span>
@@ -389,8 +388,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           <select
             value={selectedPrep}
             onChange={e => setSelectedPrep(e.target.value)}
-            className="w-full text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
-            style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
+            className="font-reading w-full text-sm border border-gray-300 rounded-lg px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-brand-500 bg-surface"
           >
             {PREP_OPTIONS.map(opt => (
               <option key={opt.value} value={opt.value}>{opt.label}</option>

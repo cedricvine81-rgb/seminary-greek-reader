@@ -960,8 +960,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   type="button"
                   onClick={() => { setSearchLangPref(searchLang === 'grc' ? 'en' : 'grc'); setSearch(''); setSuggestions([]); searchInputRef.current?.focus() }}
                   title={greekTyping ? 'Searching Greek — click for English' : 'Searching English — click for Greek'}
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded text-xs font-semibold text-brand-600 hover:bg-brand-50 transition-colors"
-                  style={greekTyping ? { fontFamily: "'Gentium Plus', Georgia, serif" } : undefined}
+                  className={`absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded text-xs font-semibold text-brand-600 hover:bg-brand-50 transition-colors ${greekTyping ? 'font-reading' : ''}`}
                 >
                   {greekTyping ? 'α' : 'A'}
                 </button>

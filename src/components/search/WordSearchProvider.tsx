@@ -98,7 +98,7 @@ export function WordSearchProvider() {
         )}
       </div>
 
-      <div className="truncate text-sm font-semibold text-brand-800" style={{ fontFamily: isGreek ? "'Gentium Plus', Georgia, serif" : undefined }}>{w}</div>
+      <div className={`truncate text-sm font-semibold text-brand-800 ${isGreek ? 'font-reading' : ''}`}>{w}</div>
 
       <div className="space-y-1.5">
         {isGreek ? (

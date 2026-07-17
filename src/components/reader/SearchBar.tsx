@@ -192,8 +192,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
             type="button"
             title="Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)"
             onClick={() => setShowKeyboard(v => !v)}
-            className={`absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded text-sm font-semibold transition-colors ${showKeyboard ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}
-            style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
+            className={`font-reading absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center rounded text-sm font-semibold transition-colors ${showKeyboard ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}
           >
             α
           </button>
@@ -210,8 +209,8 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
                 className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2"
               >
                 <span
-                  className="text-gray-800 shrink-0"
-                  style={effectiveLang ? { fontSize: '0.875rem' } : { fontFamily: "'Gentium Plus', Georgia, serif", fontSize: '1rem' }}
+                  className={`text-gray-800 shrink-0 ${effectiveLang ? '' : 'font-reading'}`}
+                  style={{ fontSize: effectiveLang ? '0.875rem' : '1rem' }}
                 >
                   {s.word}
                 </span>
@@ -232,8 +231,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
                   key={letter}
                   type="button"
                   onMouseDown={e => { e.preventDefault(); insertLetter(letter) }}
-                  className="w-8 h-8 flex items-center justify-center rounded text-base text-brand-800 hover:bg-brand-50 active:bg-brand-100 transition-colors"
-                  style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}
+                  className="font-reading w-8 h-8 flex items-center justify-center rounded text-base text-brand-800 hover:bg-brand-50 active:bg-brand-100 transition-colors"
                 >
                   {letter}
                 </button>

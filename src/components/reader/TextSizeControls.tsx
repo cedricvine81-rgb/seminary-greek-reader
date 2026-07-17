@@ -24,13 +24,13 @@ export function TextSizeControls({
       <div>
         <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
         <div className="flex items-center gap-3">
-          <span className="text-gray-400 select-none leading-none" style={{ fontFamily: 'Gentium Plus, Georgia, serif', fontSize: '0.8rem' }}>A</span>
+          <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
           <input
             type="range" min={0} max={FONT_SCALES.length - 1} step={1} value={fontIdx}
             onChange={e => onFontScale(FONT_SCALES[e.target.valueAsNumber])}
             className="flex-1 accent-brand-600 cursor-pointer"
           />
-          <span className="text-gray-400 select-none leading-none" style={{ fontFamily: 'Gentium Plus, Georgia, serif', fontSize: '1.35rem' }}>A</span>
+          <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '1.35rem' }}>A</span>
         </div>
       </div>
 

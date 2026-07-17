@@ -46,7 +46,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
           <div>
             <p className="text-sm font-semibold text-gray-800">Search by morphology</p>
             <p className="text-xs text-gray-400 mt-0.5">
-              {subject ? <span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{subject}</span> : null}
+              {subject ? <span className="greek-text">{subject}</span> : null}
               {subject ? ' · ' : ''}New Testament
             </p>
           </div>
@@ -77,7 +77,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
             <label className="flex items-center gap-2 pt-1 text-sm text-gray-700 cursor-pointer">
               <input type="checkbox" checked={restrictLemma} onChange={e => setRestrictLemma(e.target.checked)}
                 className="accent-brand-600" />
-              Only this lemma (<span className="greek-text" style={{ fontFamily: "'Gentium Plus', Georgia, serif" }}>{lemma}</span>)
+              Only this lemma (<span className="greek-text">{lemma}</span>)
             </label>
           )}
         </div>
