@@ -892,8 +892,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         )}
       </div>
 
-      {/* Results — result text inherits this font size (the ⋮ display menu's Text size). */}
-      <div className="py-4" style={{ fontSize: FONT_SIZE_MAP[fontSize] }}>
+      {/* Results — result text inherits this font size (the ⋮ display menu's Text size).
+          --greek-fs must be set too: .greek-text pins its size to that variable (default
+          1.125rem), so without it the Greek column stayed small while the translation column
+          scaled — the two columns now track the same size. */}
+      <div className="py-4" style={{ fontSize: FONT_SIZE_MAP[fontSize], '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}>
         {loading && (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
             <Loader2 size={16} className="animate-spin" /> Searching…
