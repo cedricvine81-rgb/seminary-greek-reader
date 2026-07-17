@@ -22,12 +22,16 @@ function useIsDesktop() {
   return d
 }
 
-export function ResizableParsingPane({ storageKey, info, locked = false, bgClass = 'bg-surface', className = '' }: {
+export function ResizableParsingPane({ storageKey, info, locked = false, bgClass = 'bg-surface', className = '', growDown = false }: {
   storageKey: string   // per-surface key so each pane keeps its own height (e.g. 'reader', 'texts')
   info: LexicalInfoPanel | null
   locked?: boolean
   bgClass?: string
   className?: string   // e.g. 'hidden lg:block' for the Reader's desktop-only pane
+  growDown?: boolean   // top-anchored placements (Synopsis, Notes) where the box grows downward
+                       // in normal flow: put the handle below the box and let drag-down enlarge it,
+                       // so the grab bar tracks the edge that actually moves. Bottom-anchored panes
+                       // (Reader, Texts, …) leave this off: handle on top, drag-up enlarges.
 }) {
   const isDesktop = useIsDesktop()
   const [height, setHeight, persist] = useParsingPaneHeight(storageKey)
@@ -38,7 +42,8 @@ export function ResizableParsingPane({ storageKey, info, locked = false, bgClass
     function onMove(e: PointerEvent) {
       if (!drag.current) return
       e.preventDefault()
-      setHeight(drag.current.startH + (drag.current.startY - e.clientY))   // drag up = taller
+      const delta = growDown ? e.clientY - drag.current.startY : drag.current.startY - e.clientY
+      setHeight(drag.current.startH + delta)
     }
     function onUp() {
       if (!drag.current) return
@@ -54,25 +59,28 @@ export function ResizableParsingPane({ storageKey, info, locked = false, bgClass
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)
     }
-  }, [setHeight, persist])
+  }, [setHeight, persist, growDown])
+
+  const handle = isDesktop && (
+    <div
+      onPointerDown={e => { e.preventDefault(); drag.current = { startY: e.clientY, startH: hRef.current }; document.body.style.userSelect = 'none' }}
+      title="Drag to resize the parsing pane"
+      className="mx-auto flex h-3 w-full max-w-[10rem] cursor-row-resize touch-none items-center justify-center"
+    >
+      <div className="h-1 w-12 rounded-full bg-gray-300 transition-colors hover:bg-gray-400" />
+    </div>
+  )
 
   return (
     <div className={`flex-none ${className}`}>
-      {isDesktop && (
-        <div
-          onPointerDown={e => { e.preventDefault(); drag.current = { startY: e.clientY, startH: hRef.current }; document.body.style.userSelect = 'none' }}
-          title="Drag to resize the parsing pane"
-          className="mx-auto flex h-3 w-full max-w-[10rem] cursor-row-resize touch-none items-center justify-center"
-        >
-          <div className="h-1 w-12 rounded-full bg-gray-300 transition-colors hover:bg-gray-400" />
-        </div>
-      )}
+      {!growDown && handle}
       <div
         style={isDesktop ? { height } : undefined}
         className={`flex flex-col overflow-hidden rounded-xl border shadow-sm ${bgClass} ${isDesktop ? '' : 'h-64'} ${locked ? 'border-brand-400 ring-1 ring-brand-300' : 'border-gray-200'}`}
       >
         <ParsingPanel info={info} locked={locked} bgClass={bgClass} variant="sheet" />
       </div>
+      {growDown && handle}
     </div>
   )
 }
