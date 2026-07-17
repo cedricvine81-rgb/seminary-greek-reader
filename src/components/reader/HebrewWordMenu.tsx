@@ -97,19 +97,25 @@ export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
           </p>
         )}
 
-        {/* Lexicon entry */}
+        {/* Lexicon entry — short gloss, then the fuller Brown-Driver-Briggs entry (or Strong's
+            concise definition where BDB has no matching entry). */}
         {info.gloss && (
           <p className="text-gray-800">
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Gloss</span>
             {info.gloss}
           </p>
         )}
-        {info.definition && info.definition !== info.gloss && (
+        {info.bdbDefinition ? (
+          <p className="text-gray-800 leading-relaxed" dir="ltr">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">BDB</span>
+            {info.bdbDefinition}
+          </p>
+        ) : info.definition && info.definition !== info.gloss ? (
           <p className="text-gray-800">
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Strong&apos;s</span>
             {info.definition}
           </p>
-        )}
+        ) : null}
 
         {/* Copy */}
         <div className="flex items-center flex-wrap gap-x-2 gap-y-1 text-[11px] text-gray-500 pt-1 border-t border-gray-100">

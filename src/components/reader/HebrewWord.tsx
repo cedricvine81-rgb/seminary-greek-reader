@@ -33,6 +33,7 @@ export function buildHebrewInfo(word: VerseWord, reference: string, lex: HebrewL
     script: 'hebrew',
     transliteration: entry?.xlit || undefined,
     definition: entry?.def || undefined,
+    bdbDefinition: entry?.bdb || undefined,
     segments,
   }
 }

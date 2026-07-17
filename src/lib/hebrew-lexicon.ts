@@ -6,8 +6,9 @@
 export interface HebrewLexEntry {
   lemma: string
   xlit: string
-  gloss: string
-  def: string
+  gloss: string   // short sense (quick parsing pane)
+  def: string     // Strong's concise definition
+  bdb?: string    // Brown-Driver-Briggs entry (the fuller scholarly definition, in the word menu)
 }
 
 export type HebrewLexicon = Record<string, HebrewLexEntry>

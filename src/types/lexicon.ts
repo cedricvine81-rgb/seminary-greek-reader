@@ -21,7 +21,8 @@ export interface LexicalInfoPanel {
   // Hebrew font, shows the transliteration + full definition, and lists prefix/suffix segments.
   script?: 'hebrew'
   transliteration?: string
-  definition?: string
+  definition?: string       // Strong's concise definition
+  bdbDefinition?: string    // Brown-Driver-Briggs entry (fuller, shown in the Hebrew word menu)
   segments?: HebrewSegment[]
 }
 
