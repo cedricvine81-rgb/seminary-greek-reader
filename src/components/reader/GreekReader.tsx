@@ -310,12 +310,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   // Hebrew word right-click menu (highlight + full lexicon entry).
   const [hebrewMenu, setHebrewMenu] = useState<{ info: LexicalInfoPanel; x: number; y: number; highlight?: WordHighlight } | null>(null)
 
-  // Mobile only: hide the top control row while scrolling down through the text,
-  // reveal it again on any scroll up (desktop keeps it pinned via `lg:flex`).
-  const [showTopBar, setShowTopBar] = useState(true)
   // Mobile passage picker (opened by the SearchBar's NT/LXX buttons). Rendered at the
-  // reader's top level — NOT inside the collapsible top bar — so hiding the bar on scroll
-  // can't affect it.
+  // reader's top level so overlays/menus can't affect it.
   const [pickerOpen, setPickerOpen] = useState(false)
   // Both readers show ONE corpus at a time (GNT or LXX) so jumps land in a short single-corpus
   // scroll instead of crossing the whole other testament — and, critically, so the hidden
@@ -328,7 +324,6 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     initialCorpus === 'MT' || initialCorpus === 'LXX' ? initialCorpus : 'GNT'
   )
   const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX' | 'MT'>('GNT')
-  const lastScrollTopRef = useRef(0)
 
   // ── Refs ─────────────────────────────────────────────────────────────────────
   const textPanelRef  = useRef<HTMLDivElement>(null)
@@ -697,23 +692,6 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     onScroll()
     return () => panel.removeEventListener('scroll', onScroll)
   }, [loadMoreGnt, loadMoreLxx, loadPrevGnt, loadPrevLxx])
-
-  useEffect(() => {
-    const panel = textPanelRef.current
-    if (!panel) return
-    const DELTA = 8
-    const REVEAL_TOP = 24
-    function onScroll() {
-      const y = panel!.scrollTop
-      const last = lastScrollTopRef.current
-      if (y <= REVEAL_TOP) setShowTopBar(true)
-      else if (y - last > DELTA) setShowTopBar(false)
-      else if (last - y > DELTA) setShowTopBar(true)
-      lastScrollTopRef.current = y
-    }
-    panel.addEventListener('scroll', onScroll, { passive: true })
-    return () => panel.removeEventListener('scroll', onScroll)
-  }, [])
 
   // ── Immersive reading (mobile only): mark the Reader mounted ──────────────────
   // globals.css uses html[data-reader="on"] to drop the global header on phones and
@@ -1698,9 +1676,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     <div className="flex flex-col h-full gap-2">
 
       {/* ── Search + settings row ── */}
-      {/* On mobile this row hides while scrolling down and returns on scroll up;
-          desktop pins it with `lg:flex`. */}
-      <div className={`flex-none items-center gap-2 lg:flex ${showTopBar ? 'flex' : 'hidden'}`}>
+      {/* Pinned at every size — it used to auto-hide while scrolling down on small/medium
+          screens, which made the controls feel like they randomly disappeared. */}
+      <div className="flex-none flex items-center gap-2">
         <div className="flex-1 min-w-0 lg:flex-none lg:w-72">
           <SearchBar
             onSearch={handleSearch}

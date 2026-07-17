@@ -582,20 +582,25 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
-      {/* Sticky controls */}
-      <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
+      {/* Sticky controls — pinned BELOW the app header (top-14 = its 3.5rem height): sticking at
+          top-0 slid this block underneath the z-40 sticky header, which covered the search input
+          as soon as the page scrolled. One wrapping row keeps the block compact: return link +
+          query + scope + book + search types together, with the result-type tabs beneath. */}
+      <div className="sticky top-14 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-1.5 bg-gray-50/95 backdrop-blur border-b border-gray-100">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
         {/* When the search was launched from another page (right-click / ⌘K), offer a way back
             to exactly where they were. Navigate to the origin URL directly (not router.back())
             so it's reliable after a refresh / intermediate navigation, where history-relative
             back would misfire; the scroll snapshot (sessionStorage, keyed by URL) restores. */}
         {returnTo && (
           <button type="button" onClick={() => { markScrollRestore(returnTo); router.push(returnTo) }}
-            className="mb-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 transition-colors">
-            <ArrowLeft size={16} /> Return to {returnLabelFor(returnTo)}
+            title={`Return to ${returnLabelFor(returnTo)}`}
+            className="flex-none inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 transition-colors">
+            <ArrowLeft size={16} /> {returnLabelFor(returnTo)}
           </button>
         )}
-        <div className="relative">
-          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-2.5 shadow-sm">
+        <div className="relative flex-1 min-w-[16rem]">
+          <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-1.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
             <input
               ref={inputRef}
@@ -635,14 +640,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             </>
           )}
         </div>
-        {greekInput && (
-          <p className="mt-1 text-[11px] text-gray-400">Typing Greek (Beta Code): <span className="greek-text">{BETA_LEGEND}</span></p>
-        )}
-
-        {/* Scope + book + Search types */}
-        <div className="mt-2 flex items-center justify-between gap-2 text-xs">
-          <div className="flex items-center flex-wrap gap-2">
-            <label className="flex items-center gap-1.5 text-gray-500">
+            <label className="flex items-center gap-1.5 text-xs text-gray-500">
               In
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
                 className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
@@ -661,7 +659,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </select>
             </label>
             {isBiblical && (
-              <span className="flex items-center gap-1.5 text-gray-500">
+              <span className="flex items-center gap-1.5 text-xs text-gray-500">
                 Book
                 <button type="button" onClick={() => setShowBooks(v => !v)}
                   aria-expanded={showBooks}
@@ -672,7 +670,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 </button>
               </span>
             )}
-          </div>
 
           {/* Search types */}
           <div className="relative flex-none">
@@ -710,6 +707,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             )}
           </div>
         </div>
+        {greekInput && (
+          <p className="mt-1 text-[11px] text-gray-400">Typing Greek (Beta Code): <span className="greek-text">{BETA_LEGEND}</span></p>
+        )}
 
         {isBiblical && showBooks && (
           <div className="mt-2">
