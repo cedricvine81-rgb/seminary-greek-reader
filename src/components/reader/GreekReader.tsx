@@ -1493,7 +1493,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       ) : (
         <p className="reader-inline-trans leading-relaxed text-gray-700 pt-0.5" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
           onContextMenu={forwardContextMenuToNearestTransWord}>
-          <sup className="text-xs text-gray-400 mr-1">{v.verse}</sup>
+          <sup className="text-xs text-brand-500 mr-1">{v.verse}</sup>
           {/* Anchor wraps only the translation words (not the verse-number sup) so drag-select
               offsets line up with the stored ones, and the layer scopes them to this language. */}
           <span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>
@@ -1560,7 +1560,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, SEARCH_MARK) : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
+              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, SEARCH_MARK) : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
               : null}
         </p>
       </div>
@@ -1640,7 +1640,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           {transTxt === undefined
             ? <span className="text-gray-300 italic text-xs">Loading…</span>
             : transTxt
-              ? <><sup className="text-xs text-gray-400 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, SEARCH_MARK) : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
+              ? <><sup className="text-xs text-brand-500 mr-1">{v.verse}</sup><span {...verseAnchorProps(v.bookId, v.chapter, v.verse, parallelLang)}>{arrivalTerms.length ? markTerms(transTxt, arrivalTerms, SEARCH_MARK) : <TransWords text={transTxt} lang={parallelLang} reference={`${v.bookId} ${v.chapter}:${v.verse}`} book={v.bookId} hl={isAuthenticated ? { isAuthenticated, verseHighlights: highlights.forVerse(v.bookId, v.chapter, v.verse, parallelLang), create: (s, e, c) => void highlights.create(v.bookId, v.chapter, v.verse, s, e, c, parallelLang), recolor: (id, c) => void highlights.recolor(id, v.bookId, v.chapter, c), remove: id => void highlights.remove(id, v.bookId, v.chapter) } : undefined} />}</span></>
               : null}
         </p>
       </div>

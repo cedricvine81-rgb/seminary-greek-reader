@@ -177,7 +177,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                   return (
                     <div key={rowKey} className={`grid gap-x-4 gap-y-0.5 ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
                       <p className={`greek-text leading-relaxed ${isHit ? 'text-gray-900' : 'text-gray-400'}`}>
-                        <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{cv.verse}</sup>
+                        <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{cv.verse}</sup>
                         {greekCell(h, cv, isHit, rowKey)}
                       </p>
                       {showTrans && (

@@ -535,7 +535,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     </span>
                     <div className="min-w-0 flex-1">
                     <p>
-                      <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
+                      <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                       {isGreek && v.tokens && v.tokens.length > 0
                         ? <span {...verseAnchorProps(anchor.book, anchor.chapter, v.verse, layer)}>
                             {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {

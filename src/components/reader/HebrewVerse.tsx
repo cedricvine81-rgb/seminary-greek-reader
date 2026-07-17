@@ -41,7 +41,7 @@ function HebrewVerseImpl({
   if (!verse.words || verse.words.length === 0) {
     return (
       <p dir="rtl" ref={verseRefCallback} className={cls} style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
-        <sup className="text-[11px] text-gray-400 mx-1 font-sans align-super">{verse.verse}</sup>
+        <sup className="text-[11px] text-brand-500 mx-1 font-sans align-super">{verse.verse}</sup>
         {verse.text}
       </p>
     )
@@ -51,7 +51,7 @@ function HebrewVerseImpl({
   return (
     <p dir="rtl" ref={verseRefCallback} className={cls} style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}
       onContextMenu={e => verseContextMenu(e, verse.words!, withOffsets, onWordRightClick)}>
-      <sup className="text-[11px] text-gray-400 mx-1 font-sans align-super">{verse.verse}</sup>
+      <sup className="text-[11px] text-brand-500 mx-1 font-sans align-super">{verse.verse}</sup>
       {/* Anchor wraps only the words (not the verse-number sup) so drag-to-highlight offsets
           measured off this element line up with the stored ones; the 'he' layer keeps Hebrew
           marks independent from any translation column. */}

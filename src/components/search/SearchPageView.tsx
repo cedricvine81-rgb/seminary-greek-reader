@@ -954,7 +954,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                             const isHit = cv.chapter === h.chapter && cv.verse === h.verse
                             return (
                               <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
-                                <sup className="text-[10px] text-gray-400 mr-0.5">{cv.chapter === h.chapter ? cv.verse : `${cv.chapter}:${cv.verse}`}</sup>
+                                <sup className="text-[10px] text-brand-500 mr-0.5">{cv.chapter === h.chapter ? cv.verse : `${cv.chapter}:${cv.verse}`}</sup>
                                 {hiliteVerse(cv.text, terms)}{' '}
                               </span>
                             )

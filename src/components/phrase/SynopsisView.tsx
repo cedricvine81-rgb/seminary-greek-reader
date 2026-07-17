@@ -388,7 +388,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                         {isAuthenticated && (
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
                         )}
-                        <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
+                        <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
                         {/* Greek: hovering (or clicking, for touch) a word updates the parsing
                             pane below — same interaction as the Phrasing tab. Falls back to
                             plain text if word-level tokens haven't loaded (or aren't available). */}

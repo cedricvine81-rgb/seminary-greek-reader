@@ -1108,7 +1108,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
                               </span>
                             )}
-                            <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{row.num}</sup>
+                            <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.num}</sup>
                             {isGreek ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
                                 {row.tokens && row.tokens.length > 0
@@ -1179,7 +1179,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                     onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
                                 </span>
                               )}
-                              <sup className="text-[10px] text-gray-300 mr-0.5 font-sans">{row.num}</sup>
+                              <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.num}</sup>
                               {greekProse
                                 ? (q ? highlight(row.english ?? '', search)
                                    : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)

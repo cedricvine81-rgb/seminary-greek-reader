@@ -876,7 +876,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           <VerseNoteButton book={parsed.book.osisId} chapter={parsed.chapter} verse={v.verse} noted={notedKeys.has(v.verse)} onChanged={() => refreshNotes(parsed.book.osisId, parsed.chapter)} />
                         </span>
                       )}
-                      <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
+                      <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                       {v.tokens && v.tokens.length > 0 ? (
                         <span {...verseAnchorProps(parsed.book.osisId, parsed.chapter, v.verse, layer)}>
                           {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
@@ -1118,7 +1118,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             ref={s.number === target ? josephusHighlightRef : undefined}
                             className={s.number === target ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                           >
-                            <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{s.number}</sup>
+                            <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{s.number}</sup>
                             <span {...verseAnchorProps(josBook, josephusChapter.number, s.number, 'en')}>
                               <TransWords text={s.text ?? ''} lang="en" reference={`${josRefLabel}:${s.number}`} book={josBook}
                                 hl={isAuthenticated ? { isAuthenticated, verseHighlights,
@@ -1156,7 +1156,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           key={v.number}
                           className={v.number === rightProse.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
-                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.number}</sup>
+                          <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.number}</sup>
                           <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
                             <TransWords text={v.text} lang="en" reference={`${rightProse.work.name} ${proseChapter.number}:${v.number}`} book={rightProse.work.noteBook}
                               hl={isAuthenticated ? { isAuthenticated, verseHighlights,
@@ -1213,7 +1213,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               <VerseNoteButton book={rightRef.citation.ref.book} chapter={rightRef.citation.ref.chapter} verse={v.verse} noted={false} />
                             </span>
                           )}
-                          <sup className="text-[10px] text-gray-400 mr-0.5 font-sans">{v.verse}</sup>
+                          <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                           {isRightHebrew ? (
                             v.hebrewWords && v.hebrewWords.length > 0 ? (
                               <span {...verseAnchorProps(rightBook, rightChapter, v.verse, rightLayer)}>
