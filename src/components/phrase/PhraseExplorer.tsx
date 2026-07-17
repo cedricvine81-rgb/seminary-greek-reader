@@ -546,7 +546,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                   </div>
                   {/* Parsing box, always shown under the text — defaults to the verse's
                       first word so its presence is obvious; updates on word click. */}
-                  <ResizableParsingPane info={panelInfo(s)} bgClass="bg-gray-50" />
+                  <ResizableParsingPane storageKey="phrasing" info={panelInfo(s)} bgClass="bg-gray-50" />
                 </div>
               </div>
             </div>

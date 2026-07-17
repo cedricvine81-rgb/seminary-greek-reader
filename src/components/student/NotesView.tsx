@@ -581,7 +581,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           </div>
         </div>
 
-        {isGreek && <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />}
+        {isGreek && <ResizableParsingPane storageKey="notes" info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (

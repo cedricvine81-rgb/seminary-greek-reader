@@ -12,7 +12,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 // the whole page rather than using a fixed-height flex column.
 
 export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
-  const [height, setHeight, persist] = useParsingPaneHeight()
+  const [height, setHeight, persist] = useParsingPaneHeight('search')
   const heightRef = useRef(height); heightRef.current = height
   const drag = useRef<{ startY: number; startH: number } | null>(null)
 

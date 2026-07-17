@@ -2047,7 +2047,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
 
       {/* ── Parsing panel ── */}
       {/* Desktop: resizable card below the text (drag its grab-bar; height shared app-wide). */}
-      <ResizableParsingPane info={parsingInfo} locked={!!lockedInfo} className="hidden lg:block" />
+      <ResizableParsingPane storageKey="reader" info={parsingInfo} locked={!!lockedInfo} className="hidden lg:block" />
       {/* Mobile: a larger inline parsing pane. The Greek is always on screen now (with the
           optional translation stacked beneath each verse), so tapping any word shows its
           parsing here regardless of whether a translation is selected. */}

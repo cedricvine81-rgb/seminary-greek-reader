@@ -1294,7 +1294,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           Hebrew, so a Greek/Hebrew cross-reference gets the pane even when the left passage
           is in a translation. The panel renders Hebrew info in the Hebrew font (info.script). */}
       {(isGreek || isRightGreek || isRightHebrew) && (
-        <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />
+        <ResizableParsingPane storageKey="backgrounds" info={selectedInfo} bgClass="bg-gray-50" />
       )}
 
       {isAuthenticated && highlightSelection.popup && (

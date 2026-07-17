@@ -22,14 +22,15 @@ function useIsDesktop() {
   return d
 }
 
-export function ResizableParsingPane({ info, locked = false, bgClass = 'bg-surface', className = '' }: {
+export function ResizableParsingPane({ storageKey, info, locked = false, bgClass = 'bg-surface', className = '' }: {
+  storageKey: string   // per-surface key so each pane keeps its own height (e.g. 'reader', 'texts')
   info: LexicalInfoPanel | null
   locked?: boolean
   bgClass?: string
   className?: string   // e.g. 'hidden lg:block' for the Reader's desktop-only pane
 }) {
   const isDesktop = useIsDesktop()
-  const [height, setHeight, persist] = useParsingPaneHeight()
+  const [height, setHeight, persist] = useParsingPaneHeight(storageKey)
   const hRef = useRef(height); hRef.current = height
   const drag = useRef<{ startY: number; startH: number } | null>(null)
 

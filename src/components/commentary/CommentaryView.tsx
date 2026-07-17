@@ -226,7 +226,10 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
     : []
 
   return (
-    <div className="grid lg:grid-cols-2 gap-4 h-full min-h-0">
+    // Two equal bounded rows when stacked (below lg) so the Greek+parsing pane and the commentary
+    // each keep a scrollable share — a plain single-column grid let the Greek column's flex-1
+    // collapse to nothing. Side-by-side (lg+) is one row, two columns.
+    <div className="grid gap-4 h-full min-h-0 grid-rows-[minmax(0,1.45fr)_minmax(0,1fr)] lg:grid-rows-1 lg:grid-cols-2">
       {/* Left: Greek text (scrolls) + parsing box (fixed, bottom-left) */}
       <div className="flex flex-col min-h-0">
         <div className="flex items-center gap-2 mb-2">
@@ -272,7 +275,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           ))}
         </div>
         <div className="shrink-0 mt-3">
-          <ResizableParsingPane info={info} bgClass="bg-gray-50" />
+          <ResizableParsingPane storageKey="commentary" info={info} bgClass="bg-gray-50" />
         </div>
       </div>
 

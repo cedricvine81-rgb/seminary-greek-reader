@@ -468,7 +468,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           clicked. Placed in normal flow directly under the columns (not sticky/overlaid),
           so the text ends cleanly above it instead of the pane floating over it. */}
       {isGreek && (
-        <ResizableParsingPane info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
+        <ResizableParsingPane storageKey="synopsis" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
 
       {isAuthenticated && highlightSelection.popup && (

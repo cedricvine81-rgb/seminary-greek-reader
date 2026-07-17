@@ -1085,7 +1085,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         </div>
 
         {/* Parsing window — Greek works only */}
-        {(isGreek || greekProse) && !greekHidden && <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />}
+        {(isGreek || greekProse) && !greekHidden && <ResizableParsingPane storageKey="texts" info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (
