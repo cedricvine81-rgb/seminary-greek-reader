@@ -181,7 +181,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                         {greekCell(h, cv, isHit, rowKey)}
                       </p>
                       {showTrans && (
-                        <p className={`leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
+                        <p className={`font-reading leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
                           {trMap[vid] ? hilite(trMap[vid], isHit ? terms : []) : <span className="text-gray-300 italic">…</span>}
                         </p>
                       )}

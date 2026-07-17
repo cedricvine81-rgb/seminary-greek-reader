@@ -17,7 +17,7 @@ import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
-import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
+import { betaCodeToGreek } from '@/lib/greek-translit'
 
 // The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
 // or a translation) or any background collection, optionally scoped to books. Matches show in
@@ -662,7 +662,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const isGrc = bg?.lang === 'grc'
     const ctx = context > 0 ? ctxMap[bgCtxKey(h.target)] : undefined
     const primary = ctx && ctx.length > 0 ? (
-      <span className={`block leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+      <span className={`block leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
         {ctx.map(cv => {
           const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
           return (
@@ -675,7 +675,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         })}
       </span>
     ) : (
-      <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+      <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
         {isGrc ? bgGreekTokens(h, rowKey, h.text) : renderSnippet(h.text, terms)}
       </span>
     )
@@ -685,7 +685,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       return (
         <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
           {primary}
-          <span className="block text-gray-500 leading-relaxed">{clampTrans(h.trans)}</span>
+          <span className="block text-gray-500 leading-relaxed font-reading">{clampTrans(h.trans)}</span>
         </span>
       )
     }
@@ -858,10 +858,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             )}
           </div>
         </div>
-        {greekInput && (
-          <p className="mt-1 text-[11px] text-gray-400">Typing Greek (Beta Code): <span className="greek-text">{BETA_LEGEND}</span></p>
-        )}
-
         {isBiblical && showBooks && (
           <div className="mt-2">
             {bookGroups.length > 0
@@ -953,7 +949,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                     <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-none hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                       {ctx && ctx.length > 0 ? (
-                        <span className={`block leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
+                        <span className={`block leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>
                           {ctx.map(cv => {
                             const isHit = cv.chapter === h.chapter && cv.verse === h.verse
                             return (
@@ -965,7 +961,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                           })}
                         </span>
                       ) : (
-                        <span className={`block text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
+                        <span className={`block text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>{hiliteVerse(h.text, terms)}</span>
                       )}
                     </button>
                     <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
