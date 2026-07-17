@@ -424,6 +424,57 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     })
   }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
+  // Reflect the current reading position (work + top-visible chapter/verse) into the URL's
+  // `open=` deep-link param via replaceState (no navigation, no history entries). A right-click
+  // search snapshots window.location for its "Return to page" — with the position in the URL,
+  // returning re-opens this work at the same spot instead of an empty pane. Runs on scroll-idle
+  // and after a chapter series (re)loads.
+  const lastOpenRequestAt = useRef(0)   // suppress writes while an openRequest jump is in flight
+  const writePositionToUrl = useCallback(() => {
+    if (typeof window === 'undefined') return
+    // An "open in Texts" request scrolls to its target over several frames (plus a font-ready
+    // correction). Writing the position during that window would capture the pre-jump view and
+    // overwrite the very target being restored — so hold off until the jump has settled.
+    if (Date.now() - lastOpenRequestAt.current < 2000) return
+    const w = workRef.current
+    const params = new URLSearchParams(window.location.search)
+    const put = () => window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
+    if (!w) { if (params.has('open')) { params.delete('open'); put() } return }
+    const panel = panelRef.current
+    if (!panel || seriesRef.current.sections.length === 0) return
+    const panelTop = panel.getBoundingClientRect().top
+    // Top-visible section = the lowest section header at/above the panel top (fallback: first).
+    let bestKey: string | null = null, bestTop = -Infinity, firstKey: string | null = null, firstTop = Infinity
+    for (const [key, el] of Object.entries(sectionRefs.current)) {
+      if (!el?.isConnected) continue
+      const t = el.getBoundingClientRect().top
+      if (t < firstTop) { firstTop = t; firstKey = key }
+      if (t <= panelTop + 12 && t > bestTop) { bestTop = t; bestKey = key }
+    }
+    const key = bestKey ?? firstKey
+    if (!key) return
+    // First verse of that section at/below the panel top — the verse the reader is looking at.
+    let verse: number | undefined, vBest = Infinity
+    const prefix = `${key}.`
+    for (const [vk, el] of Object.entries(verseRefs.current)) {
+      if (!vk.startsWith(prefix) || !el?.isConnected) continue
+      const t = el.getBoundingClientRect().top
+      if (t >= panelTop - 8 && t < vBest) { vBest = t; verse = parseInt(vk.slice(prefix.length), 10) }
+    }
+    const [bookStr, chapStr] = key.split('.')
+    const chapter = parseInt(chapStr, 10)
+    const book = bookStr ? parseInt(bookStr, 10) : undefined
+    if (!Number.isFinite(chapter)) return
+    const target: OpenInTextsTarget = w.source === 'lxx'
+      ? { source: 'lxx', osisId: w.osisId, chapter, verse }
+      : w.source === 'josephus'
+        ? { source: 'josephus', workDir: w.work, book, chapter, verse }
+        : { source: w.source, book, chapter, verse }
+    const json = JSON.stringify(target)
+    if (params.get('open') !== json) { params.set('open', json); put() }
+  }, [])
+  const positionIdleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useEffect(() => {
     const panel = panelRef.current
     if (!panel) return
@@ -435,11 +486,23 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       if (topSentinel.current && !seriesRef.current.backDone) {
         if (topSentinel.current.getBoundingClientRect().bottom > rect.top - LOOKAHEAD) void loadPrev()
       }
+      // Update the URL's reading position once scrolling pauses (see writePositionToUrl).
+      if (positionIdleTimer.current) clearTimeout(positionIdleTimer.current)
+      positionIdleTimer.current = setTimeout(writePositionToUrl, 400)
     }
     panel.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
-    return () => panel.removeEventListener('scroll', onScroll)
-  }, [loadMore, loadPrev])
+    return () => {
+      panel.removeEventListener('scroll', onScroll)
+      if (positionIdleTimer.current) clearTimeout(positionIdleTimer.current)
+    }
+  }, [loadMore, loadPrev, writePositionToUrl])
+
+  // Also record the position when a work opens/changes (before any scrolling happens).
+  useEffect(() => {
+    const t = setTimeout(writePositionToUrl, 250)
+    return () => clearTimeout(t)
+  }, [work, series.sections.length, writePositionToUrl])
 
   // Jump to a specific (book, chapter[, verse]) — reseeds the whole scroll series from
   // there, preloading a small window on both sides (mirroring the Reader page's
@@ -489,15 +552,19 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     // The target row may not be laid out on the very next frame, and the Greek web-font
     // reflows the text after it finishes loading — either of which can leave the jump a
     // chapter or several verses off. So retry until the row exists, correct once more on
-    // the following frame, and re-align after the font is ready.
+    // the following frame, and re-align after the font is ready. Timer-based fallbacks run
+    // alongside the rAF loop because browsers suspend rAF entirely in background/occluded
+    // tabs — the same failure mode as the Reader's old jump-stranding — which would leave
+    // a restored "Return to page" sitting at the top of the preloaded window.
     let tries = 0
     const attempt = () => {
       if (!doScroll() && tries++ < 20) { requestAnimationFrame(attempt); return }
       requestAnimationFrame(doScroll)
     }
     requestAnimationFrame(attempt)
+    for (const ms of [120, 350, 800]) setTimeout(doScroll, ms)
     if (typeof document !== 'undefined' && document.fonts?.ready) {
-      document.fonts.ready.then(() => requestAnimationFrame(doScroll))
+      document.fonts.ready.then(() => { requestAnimationFrame(doScroll); setTimeout(doScroll, 60) })
     }
   }, [fetchChapterRows, refreshNotesFor, highlights.loadFor])
 
@@ -542,6 +609,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // "Open in Texts" hand-off from another tab (e.g. Backgrounds' cross-reference pane).
   useEffect(() => {
     if (!openRequest) return
+    lastOpenRequestAt.current = Date.now()   // see writePositionToUrl
     const { target } = openRequest
     const w = target.source === 'lxx' ? findLxxWork(target.osisId!)
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
@@ -864,7 +932,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
           </div>
         )}
 
-        <div ref={panelRef} onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
+        {/* data-scroll-restore="skip": this pane restores its own position via the `open=` URL
+            param (chapter/verse-precise), so the generic pixel-restorer must not fight it. */}
+        <div ref={panelRef} data-scroll-restore="skip" onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
             <p className="text-sm text-gray-400 italic">Choose a category above and select a text to start reading.</p>
           ) : initialLoading || series.sections.length === 0 ? (

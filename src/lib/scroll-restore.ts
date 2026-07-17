@@ -68,7 +68,11 @@ export function consumeScrollRestore(currentKey: string): void {
     if (Math.abs(window.scrollY - snap.win) > 4) window.scrollTo(0, snap.win)
     for (const { path, top } of snap.els) {
       const el = document.querySelector<HTMLElement>(path)
-      if (el && Math.abs(el.scrollTop - top) > 4) el.scrollTop = top   // only nudge when off (no flicker when stable)
+      // data-scroll-restore="skip" opts a container out of pixel-nudging — used by panes that
+      // restore their own position semantically (e.g. the Texts pane re-opens at the same
+      // chapter/verse via its `open=` URL param; the loaded content window differs on return,
+      // so an absolute scrollTop would land somewhere else and fight that jump).
+      if (el && el.dataset.scrollRestore !== 'skip' && Math.abs(el.scrollTop - top) > 4) el.scrollTop = top   // only nudge when off (no flicker when stable)
     }
   }
   const onInteract = () => stop()   // the user takes over → never fight them

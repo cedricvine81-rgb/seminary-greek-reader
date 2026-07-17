@@ -100,18 +100,32 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
   useEffect(() => onOpenInTexts(openInTexts), [])
   useEffect(() => {
     if (!initialOpen) return
-    try { openInTexts(JSON.parse(initialOpen) as OpenInTextsTarget) } catch { /* ignore malformed */ }
+    try {
+      const target = JSON.parse(initialOpen) as OpenInTextsTarget
+      // Restore the Texts pane's content, but only switch TO the Texts tab when the deep-link
+      // didn't name another tab — a "Return to page" from a search launched on, say, Backgrounds
+      // carries open= (the Texts position) alongside tab=backgrounds, and must land on Backgrounds.
+      if (!initialTab || initialTab === 'texts') {
+        openInTexts(target)
+      } else {
+        openRequestToken.current += 1
+        setTextsOpenRequest({ target, token: openRequestToken.current })
+      }
+    } catch { /* ignore malformed */ }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   // Keep the URL in sync with the active tab + committed passage (replaceState, so it
   // doesn't add history entries or trigger a navigation). This is what lets a right-click
   // search — which snapshots window.location for its "Return to page" — bring the user back
   // to the exact tab and passage they searched from, instead of the default landing tab.
+  // Start from the CURRENT query so params owned by others survive — chiefly `open=`, the
+  // Texts pane's reading position (written by TextsReader as the user reads).
   useEffect(() => {
     if (typeof window === 'undefined') return
-    const params = new URLSearchParams()
+    const params = new URLSearchParams(window.location.search)
     params.set('tab', tab)
     if (passage) params.set('ref', passage)
+    else params.delete('ref')
     window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
   }, [tab, passage])
   // Full-height tool page: hide the marketing footer while the workspace is mounted so its
