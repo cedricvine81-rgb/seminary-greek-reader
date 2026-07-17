@@ -1002,11 +1002,21 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT')) : null)
       ?? parseReference(trimmed, books)
     if (!ref) return
-    // A jump scrolls over several frames (and font reflow) — hold the URL position-sync off so
-    // it can't capture the pre-jump view and overwrite the very target being jumped to.
+    // A jump scrolls over several frames (and font reflow) — hold the scroll-driven URL
+    // position-sync off so it can't capture the pre-jump view and overwrite the target.
     lastRefJumpAt.current = Date.now()
     const targetCorpus: 'GNT' | 'LXX' | 'MT' =
       ref.book.corpus === 'MT' ? 'MT' : ref.book.corpus === 'LXX' ? 'LXX' : 'GNT'
+    // Write the jump TARGET to the URL immediately: the scroll-driven sync only fires on later
+    // scrolling, so without this a passage-box jump followed straight by a right-click search
+    // captured a bare /reader and "Return to page" fell back to Matthew 1.
+    if (typeof window !== 'undefined' && window.location.pathname === '/reader') {
+      const params = new URLSearchParams(window.location.search)
+      params.set('ref', `${ref.book.osisId} ${ref.chapter}${ref.verse ? `:${ref.verse}` : ''}`)
+      params.set('corpus', targetCorpus)
+      params.delete('q')
+      window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
+    }
     setCorpus(targetCorpus)   // land the jump in a short single-corpus scroll (also seeds MT lazily)
     const queueRef   = targetCorpus === 'MT' ? mtQueueRef : targetCorpus === 'LXX' ? lxxQueueRef : gntQueueRef
     const loadingRef = targetCorpus === 'MT' ? mtLoading  : targetCorpus === 'LXX' ? lxxLoading  : gntLoading
