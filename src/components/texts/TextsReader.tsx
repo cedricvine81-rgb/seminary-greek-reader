@@ -1,6 +1,7 @@
 'use client'
-import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Search, ChevronDown } from 'lucide-react'
+import { betaCodeToGreek } from '@/lib/greek-translit'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -70,9 +71,16 @@ const LOCATE_HEADER_H = 22
 // Highlight every case-insensitive match of `q` inside `text`, in red — used both for the
 // in-text search box and for a term carried in from a background search.
 const SEARCH_RED = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+
+// Accent- and case-insensitive fold, one output char per input char so offsets stay aligned
+// with the original string (Greek is all BMP, and precomposed NFC letters collapse 1:1). This
+// lets a query typed without accents — e.g. Beta-Code "λογοσ" — match accented text ("λόγος").
+const foldCh = (c: string) => { const s = c.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); return s.length === 1 ? s : c.toLowerCase() }
+const fold = (s: string) => Array.from(s, foldCh).join('')
+
 function highlight(text: string, q: string, cls: string = SEARCH_RED): ReactNode {
   if (!q.trim()) return text
-  const idx = text.toLowerCase().indexOf(q.toLowerCase())
+  const idx = fold(text).indexOf(fold(q))
   if (idx === -1) return text
   return (
     <>
@@ -161,6 +169,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [proseMode, setProseMode] = useState<'greek' | 'both' | 'english'>('both')
   const [translationMenuOpen, setTranslationMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
+  // The user's explicit choice of search script (null = follow the default, which prefers Greek
+  // whenever a Greek column is on screen). Greek transliterates typed Beta Code → Greek letters
+  // (l→λ, q→θ …) like the Reader/Search word search; English is plain.
+  const [searchLangPref, setSearchLangPref] = useState<'grc' | 'en' | null>(null)
+  // Predictive words drawn from the loaded text, offered as you type (both scripts).
+  const [suggestions, setSuggestions] = useState<string[]>([])
+  const [suggestOpen, setSuggestOpen] = useState(false)
   // A word to spotlight in red, carried in when the reader is opened from a background
   // search — highlighted without filtering, and only while the in-text search box is empty.
   const [termHighlight, setTermHighlight] = useState<string | null>(null)
@@ -187,6 +202,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const sectionRefs = useRef<Record<string, HTMLDivElement>>({})
   const verseRefs = useRef<Record<string, HTMLDivElement>>({})
   const catRowRef = useRef<HTMLDivElement>(null)
+  const searchWrapRef = useRef<HTMLDivElement>(null)
+  const searchInputRef = useRef<HTMLInputElement>(null)
   const locateMenuRef = useRef<HTMLDivElement>(null)
   const translationMenuRef = useRef<HTMLDivElement>(null)
   // Whether the "Summary" popover is open, and its anchor. (A "Contents" popover was removed;
@@ -218,6 +235,80 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     ? 'Greek only'
     : greekHidden ? `${translationLabel} only` : `Greek + ${translationLabel}`
   const proseModeLabel = proseMode === 'greek' ? 'Greek only' : proseMode === 'english' ? 'English only' : 'Greek + English'
+
+  // Which scripts the in-text search can target, given what's on screen.
+  const greekSearchable = (isGreek || greekProse) && !greekHidden
+  const englishSearchable = !!work && (englishColShown || (!isGreek && !greekProse))
+  // Effective script: honour the user's pick while it's still valid, else default to Greek
+  // whenever a Greek column is shown. Derived (not stored) so it can never get stuck on a
+  // script that isn't on screen — e.g. the empty pre-load state, or a display-mode switch.
+  const searchLang: 'grc' | 'en' =
+    searchLangPref === 'grc' && greekSearchable ? 'grc'
+    : searchLangPref === 'en' && englishSearchable ? 'en'
+    : greekSearchable ? 'grc' : 'en'
+  const greekTyping = searchLang === 'grc' && greekSearchable
+
+  // Unique words present in the loaded text, per script, for predictive suggestions. Greek is
+  // tokenized from the parsed tokens where available (else whitespace-split); English from the
+  // translation strings. Folded once so lookups are accent/case-insensitive.
+  const wordIndex = useMemo(() => {
+    const grc = new Map<string, string>(), en = new Map<string, string>()
+    const trim = /^[^A-Za-zͰ-Ͽἀ-῿]+|[^A-Za-zͰ-Ͽἀ-῿]+$/g
+    const add = (map: Map<string, string>, raw: string) => {
+      const w = raw.replace(trim, '')
+      if (w.length < 2) return
+      const k = fold(w)
+      if (!map.has(k)) map.set(k, w)
+    }
+    for (const section of series.sections) for (const r of section.rows) {
+      if (r.tokens) for (const t of r.tokens) add(grc, t.surface)
+      else if (r.greek) for (const w of r.greek.split(/\s+/)) add(grc, w)
+      if (r.english) for (const w of r.english.split(/\s+/)) add(en, w)
+    }
+    return { grc: Array.from(grc.values()), en: Array.from(en.values()) }
+  }, [series.sections])
+
+  // Offer up to 8 words that start with what's typed (2+ chars), from the active script.
+  useEffect(() => {
+    const raw = search.trim()
+    if (raw.length < 2) { setSuggestions([]); return }
+    const needle = fold(raw)
+    const pool = searchLang === 'grc' ? wordIndex.grc : wordIndex.en
+    const starts: string[] = [], contains: string[] = []
+    for (const w of pool) {
+      const fw = fold(w)
+      if (fw === needle) continue
+      if (fw.startsWith(needle)) starts.push(w)
+      else if (fw.includes(needle)) contains.push(w)
+      if (starts.length >= 8) break
+    }
+    setSuggestions([...starts, ...contains].slice(0, 8))
+  }, [search, searchLang, wordIndex])
+
+  // Close the suggestion dropdown on an outside click.
+  useEffect(() => {
+    function onDown(e: MouseEvent) {
+      if (searchWrapRef.current && !searchWrapRef.current.contains(e.target as Node)) setSuggestOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [])
+
+  // In Greek mode, transliterate typed Latin → Greek live (Beta Code), preserving the caret.
+  function onSearchChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setSuggestOpen(true)
+    if (!greekTyping) { setSearch(e.target.value); return }
+    const el = e.target
+    const pos = el.selectionStart ?? el.value.length
+    setSearch(betaCodeToGreek(el.value))
+    requestAnimationFrame(() => { try { el.setSelectionRange(pos, pos) } catch {} })
+  }
+  function pickSuggestion(word: string) {
+    setSearch(word)
+    setSuggestions([])
+    setSuggestOpen(false)
+    searchInputRef.current?.focus()
+  }
 
   const refreshNotesFor = useCallback(async (noteBook: string, ch: number) => {
     if (!isAuthenticated) return
@@ -705,15 +796,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   const q = search.trim().toLowerCase()
-  // Accent-insensitive form of the red search-highlight term (only while the in-text search
-  // box is empty), so it also catches accented Greek forms.
+  // Accent-insensitive query, so Beta-Code Greek typed without accents ("λογοσ") still matches
+  // the accented text ("λόγος").
   const stripAccents = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+  const qNorm = q ? fold(q) : ''
   const termNorm = !q && termHighlight ? stripAccents(termHighlight) : null
   const matchesSearch = (r: Row) =>
     !q ||
-    !!r.greek?.toLowerCase().includes(q) ||
-    !!r.english?.toLowerCase().includes(q) ||
-    !!r.tokens?.some(t => t.surface.toLowerCase().includes(q))
+    !!r.greek && fold(r.greek).includes(qNorm) ||
+    !!r.english && fold(r.english).includes(qNorm) ||
+    !!r.tokens?.some(t => fold(t.surface).includes(qNorm))
 
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
@@ -843,16 +935,52 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             })()}
 
             {/* Compact search over the loaded text — sits inline with the title/Summary to keep
-                the reading pane tall. (Cross-corpus search is now the global right-click action.) */}
-            <div className="relative">
+                the reading pane tall. Greek works transliterate Beta Code → Greek (like the Reader
+                and Search word search); both scripts get predictive words from the loaded text.
+                (Cross-corpus search is now the global right-click action.) */}
+            <div className="relative" ref={searchWrapRef}>
               <Search size={13} className="absolute left-2 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
+                ref={searchInputRef}
                 type="text"
                 value={search}
-                onChange={e => setSearch(e.target.value)}
-                placeholder="Search this text…"
-                className="w-40 sm:w-52 rounded-md border border-gray-300 pl-7 pr-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                onChange={onSearchChange}
+                onFocus={() => { if (suggestions.length) setSuggestOpen(true) }}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' && suggestOpen && suggestions[0]) { e.preventDefault(); pickSuggestion(suggestions[0]) }
+                  else if (e.key === 'Escape') setSuggestOpen(false)
+                }}
+                placeholder={greekTyping ? 'Search Greek…' : 'Search this text…'}
+                className={`w-40 sm:w-52 rounded-md border border-gray-300 pl-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekSearchable && englishSearchable ? 'pr-8' : 'pr-2'} ${greekTyping ? 'greek-text' : ''}`}
               />
+              {/* Greek ⇄ English input toggle, shown only when both are on screen. */}
+              {greekSearchable && englishSearchable && (
+                <button
+                  type="button"
+                  onClick={() => { setSearchLangPref(searchLang === 'grc' ? 'en' : 'grc'); setSearch(''); setSuggestions([]); searchInputRef.current?.focus() }}
+                  title={greekTyping ? 'Searching Greek — click for English' : 'Searching English — click for Greek'}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded text-xs font-semibold text-brand-600 hover:bg-brand-50 transition-colors"
+                  style={greekTyping ? { fontFamily: "'Gentium Plus', Georgia, serif" } : undefined}
+                >
+                  {greekTyping ? 'α' : 'A'}
+                </button>
+              )}
+
+              {/* Predictive words from the loaded text */}
+              {suggestOpen && suggestions.length > 0 && (
+                <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-56 overflow-y-auto rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
+                  {suggestions.map(w => (
+                    <button
+                      key={w}
+                      type="button"
+                      onMouseDown={e => { e.preventDefault(); pickSuggestion(w) }}
+                      className={`block w-full px-3 py-1 text-left text-xs text-gray-700 hover:bg-brand-50 ${greekTyping ? 'greek-text' : ''}`}
+                    >
+                      {w}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {isGreek && availableTranslations.length > 0 && (
