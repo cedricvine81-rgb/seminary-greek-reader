@@ -23,6 +23,7 @@ export function HighlightPopup({ state, onPick, onRemove, onClose }: {
           activeColor={state.kind === 'edit' ? state.color : null}
           onPick={onPick}
           onRemove={state.kind === 'edit' ? onRemove : undefined}
+          copyValue={state.text}
         />
       </div>
     </>

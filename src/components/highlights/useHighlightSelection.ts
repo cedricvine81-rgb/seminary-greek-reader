@@ -3,8 +3,8 @@ import { useEffect, useState, type RefObject } from 'react'
 export interface HighlightSplit { book: string; chapter: number; verse: number; start: number; end: number; layer: string }
 
 export type HighlightPopupState =
-  | { kind: 'new'; x: number; y: number; splits: HighlightSplit[] }
-  | { kind: 'edit'; x: number; y: number; id: string; book: string; chapter: number; color: string }
+  | { kind: 'new'; x: number; y: number; splits: HighlightSplit[]; text: string }
+  | { kind: 'edit'; x: number; y: number; id: string; book: string; chapter: number; color: string; text: string }
 
 // Character offset of `point` within `container`'s concatenated text content — the
 // standard DOM trick (a Range from the container's start to the point, measured as a
@@ -73,7 +73,7 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       if (splits.length === 0) return
 
       const rect = range.getBoundingClientRect()
-      setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits })
+      setPopup({ kind: 'new', x: rect.left + rect.width / 2, y: rect.top, splits, text: sel.toString() })
     }
 
     // Click-to-edit an existing highlight — only when the click didn't just create (or
@@ -88,6 +88,7 @@ export function useHighlightSelection(containerRef: RefObject<HTMLElement | null
       setPopup({
         kind: 'edit', x: rect.left + rect.width / 2, y: rect.top,
         id: mark.dataset.highlightId!, book: mark.dataset.hlBook!, chapter: Number(mark.dataset.hlChapter), color: mark.dataset.hlColor!,
+        text: mark.textContent ?? '',
       })
     }
 
