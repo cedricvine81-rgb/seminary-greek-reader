@@ -133,6 +133,13 @@ const PARALLEL_LANGS = [
   { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version' },
 ]
 
+// BSB is shown beside the Greek NT from a word-alignment file (GNT-only), and beside the
+// Hebrew as plain text — but the LXX has no alignment and different versification, so BSB
+// can't render there (it used to hang on "Loading…"). Filter it out of the LXX picker.
+function transCompatible(code: string, corpus: 'GNT' | 'LXX' | 'MT'): boolean {
+  return !(code === 'bsb' && corpus === 'LXX')
+}
+
 // The reader shows the Greek text and, optionally, ONE translation inline beneath each
 // verse (Greek verse → its translation → next verse …). parallelLang holds the chosen
 // translation code, or null for Greek only. The choice is persisted under this key.
@@ -742,6 +749,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     anchorVerseRef.current = visibleVerseId()
     setParallelLang(next)
   }
+
+  // If the shown translation isn't compatible with the corpus we've switched to (BSB + LXX),
+  // drop back to Greek-only rather than leave a column stuck on "Loading…".
+  useEffect(() => {
+    if (parallelLang && !transCompatible(parallelLang, corpus)) setParallelLang(null)
+  }, [corpus, parallelLang])
 
   // Mirror the reading position (top-visible verse + corpus) into the URL via replaceState,
   // once scrolling pauses — same pattern as the Texts pane. A right-click search snapshots
@@ -1717,7 +1730,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
         >
           <option value="">Greek only</option>
-          {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
+          {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
         </select>
         <div ref={settingsRef} className="relative shrink-0">
           <button
@@ -1978,7 +1991,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     >
                       None
                     </button>
-                    {PARALLEL_LANGS.map(l => (
+                    {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => (
                       <button
                         key={l.code}
                         onClick={() => switchView(l.code)}
