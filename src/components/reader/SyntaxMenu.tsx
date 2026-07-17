@@ -182,6 +182,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
             <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 shrink-0">Highlight</span>
             <HighlightSwatches
               activeColor={highlight.activeColor}
+              copyValue={word.surface}
               // Clear the word selection the right-click left behind, so the blue selection
               // doesn't sit on top of the highlight we just applied.
               onPick={c => { highlight.onPick(c); onClose(); window.getSelection()?.removeAllRanges() }}
