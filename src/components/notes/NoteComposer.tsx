@@ -42,8 +42,20 @@ export function NoteComposer({
 
   function exec(cmd: string) {
     ref.current?.focus()
-    document.execCommand(cmd) // bold | italic | insertUnorderedList
+    // Force tag output (<b>/<i>/<u>) rather than styled spans, so it survives the note
+    // sanitizer (which keeps b/strong/i/em/u/ul/ol/li and strips all attributes).
+    try { document.execCommand('styleWithCSS', false, 'false') } catch { /* not supported */ }
+    document.execCommand(cmd) // bold | italic | underline | insertUnorderedList
     emit()
+  }
+
+  // Standard formatting shortcuts (⌘/Ctrl + B / I / U), so users don't have to reach for
+  // the toolbar. We handle them explicitly to guarantee consistent, sanitizer-safe output
+  // across browsers (esp. Safari) rather than relying on contentEditable's native behavior.
+  function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (!(e.metaKey || e.ctrlKey) || e.altKey) return
+    const cmd = { b: 'bold', i: 'italic', u: 'underline' }[e.key.toLowerCase()]
+    if (cmd) { e.preventDefault(); exec(cmd) }
   }
 
   const idx = NOTE_FONT_SCALES.indexOf(fontScale)
@@ -71,10 +83,11 @@ export function NoteComposer({
         suppressContentEditableWarning
         onInput={emit}
         onBlur={onBlur}
+        onKeyDown={onKeyDown}
         role="textbox"
         aria-multiline
         style={{ fontSize: `${fontScale}rem`, lineHeight: lineScale, minHeight, maxHeight }}
-        className="prose-notes w-full overflow-y-auto rounded-md border border-gray-200 px-2 py-1.5 leading-snug focus:outline-none focus:ring-2 focus:ring-brand-400 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+        className="prose-notes w-full overflow-y-auto rounded-md border border-gray-300 bg-input px-2 py-1.5 leading-snug shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-400 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
       />
     </div>
   )
