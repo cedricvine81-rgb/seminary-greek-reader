@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
 
@@ -194,10 +194,8 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
         })}
       </div>
 
-      {/* Parsing pane pinned at the bottom of the results — fills on Greek word hover/click. */}
-      <div className="sticky bottom-0 pt-3 pb-1 bg-gray-50/95 backdrop-blur">
-        <ParsingPanel info={info} bgClass="bg-surface" />
-      </div>
+      {/* Parsing pane docked at the bottom — fills on Greek word hover/click, drag to resize. */}
+      <ParsingDock info={info} />
     </div>
   )
 }

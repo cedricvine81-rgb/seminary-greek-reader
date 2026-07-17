@@ -2,11 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, MoreVertical } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
+import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
+import { findProseWork } from '@/lib/prose-texts'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
@@ -54,6 +57,16 @@ function parseScope(v: string): Scope {
 
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
 const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+
+// Result-text sizes for the ⋮ display menu — a rem size applied to the results container, which
+// the result rows inherit (metadata like refs/counts keeps its own fixed small sizes).
+const FONT_SIZES: { label: string; scale: number }[] = [
+  { label: 'Small', scale: 0.875 },
+  { label: 'Normal', scale: 1 },
+  { label: 'Large', scale: 1.15 },
+  { label: 'Extra large', scale: 1.3 },
+]
+const FONT_SCALE_KEY = 'search:fontScale'
 
 // A full verse with every term highlighted (findTermRanges/markSlice: shared, accent-fold).
 function hiliteVerse(text: string, terms: string[]): ReactNode {
@@ -182,6 +195,27 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [books, setBooks] = useState<string[]>(initialBooks ? initialBooks.split(',').filter(Boolean) : [])
   const [showBooks, setShowBooks] = useState(false)
   const [showTypes, setShowTypes] = useState(false)
+  // ⋮ display menu: result-text size, persisted across visits.
+  const [showDisplay, setShowDisplay] = useState(false)
+  const [fontScale, setFontScale] = useState(1)
+  useEffect(() => {
+    try {
+      const v = parseFloat(localStorage.getItem(FONT_SCALE_KEY) ?? '')
+      if (FONT_SIZES.some(f => f.scale === v)) setFontScale(v)
+    } catch { /* ignore */ }
+  }, [])
+  function pickFontScale(v: number) {
+    setFontScale(v)
+    try { localStorage.setItem(FONT_SCALE_KEY, String(v)) } catch { /* ignore */ }
+  }
+  // Parsing pane for Greek background results (the Greek NT/LXX lanes have their own inside
+  // GreekSearchResults). Filled by hovering/clicking a word; word data is fetched lazily —
+  // LXX hits from the reader API, Josephus / Greco-Roman prose from their morph sidecars.
+  const [bgInfo, setBgInfo] = useState<LexicalInfoPanel | null>(null)
+  const [bgSelKey, setBgSelKey] = useState<string | null>(null)
+  const lxxWords = useRef<Record<string, { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }[]>>({})
+  const morphMaps = useRef<Record<string, Record<string, ([string, string] | null)[]> | null>>({})
+  const bgFetching = useRef<Set<string>>(new Set())
   const [bib, setBib] = useState<BibHit[] | null>(null)
   const [bg, setBg] = useState<BgResult | null>(null)
   const [counts, setCounts] = useState<Record<string, number | null>>({})
@@ -537,23 +571,117 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     </div>
   )
 
+  // ── Greek background hits: click-to-parse ─────────────────────────────────────────────
+  // Resolve the word data for a hit's token and fill the parsing dock. LXX hits load their
+  // chapter from the reader API (full lexeme + morphology); Josephus / Greco-Roman prose load
+  // the work's morph sidecar ([lemma, parsing] aligned with the section's whitespace tokens).
+  async function selectBgToken(h: BgHit, ti: number, surface: string, key: string) {
+    setBgSelKey(key)
+    const t = h.target
+    // Literal punctuation class (no \p{} — the repo's TS target predates the u-flag).
+    const clean = surface.replace(/^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+$/g, '')
+    const base: LexicalInfoPanel = { surface: clean || surface, lexeme: '', gloss: '', partOfSpeech: '', parsing: '', reference: h.ref }
+    if (t.source === 'lxx' && t.osisId) {
+      const ck = `${t.osisId}.${t.chapter}`
+      if (!(`lxx.${ck}.1` in lxxWords.current) && !bgFetching.current.has(ck)) {
+        bgFetching.current.add(ck)
+        try {
+          const r = await fetch(`/api/reader?book=${t.osisId}&chapter=${t.chapter}&corpus=LXX`)
+          const d = r.ok ? await r.json() : null
+          for (const v of d?.verses ?? []) {
+            lxxWords.current[`lxx.${ck}.${v.verse}`] = (v.words ?? []).map((w: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }) => ({
+              surface: w.surface, lemma: w.lexeme?.lexeme ?? '', gloss: w.lexeme?.gloss, strongs: w.lexeme?.strongs,
+              parsing: w.parses?.[0]
+                ? (['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const)
+                    .map(k => w.parses![0][k]).filter(Boolean).join(', ')
+                : '',
+            }))
+          }
+        } catch { bgFetching.current.delete(ck) }
+      }
+      const words = lxxWords.current[`lxx.${ck}.${t.verse}`]
+      // Align by token index; if punctuation/crasis skews the split, fall back to the surface.
+      const w = words?.[ti] && normalizeFold(words[ti].surface).includes(normalizeFold(clean))
+        ? words[ti]
+        : words?.find(x => normalizeFold(x.surface) === normalizeFold(clean) || normalizeFold(x.surface).includes(normalizeFold(clean)))
+      setBgInfo(w
+        ? { ...base, surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', parsing: w.parsing, strongs: w.strongs }
+        : base)
+      return
+    }
+    // Prose morph sidecars (Josephus per-book; other Greek prose one per work).
+    const url = t.source === 'josephus' && t.workDir && t.book != null
+      ? `/data/josephus/${t.workDir}/${t.book}.morph.json`
+      : (() => { const pw = findProseWork(t.source as Exclude<OpenInTextsTarget['source'], 'lxx' | 'josephus'>); return pw ? pw.dataUrl.replace(/\.json$/, '.morph.json') : null })()
+    if (!url) { setBgInfo(base); return }
+    if (!(url in morphMaps.current) && !bgFetching.current.has(url)) {
+      bgFetching.current.add(url)
+      try {
+        const r = await fetch(url)
+        morphMaps.current[url] = r.ok ? await r.json() : null
+      } catch { morphMaps.current[url] = null }
+    }
+    const map = morphMaps.current[url]
+    // Josephus §§ are book-unique (keyed by section); prose works key by "<chapter>.<verse>".
+    const entries = map ? (map[String(t.verse)] ?? map[`${t.chapter}.${t.verse}`]) : undefined
+    const entry = entries?.[ti]
+    setBgInfo(entry ? { ...base, lexeme: entry[0], parsing: entry[1] } : base)
+  }
+
+  // Windowed, clickable Greek tokens for a background hit — same window budget as the plain
+  // snippet, but each word feeds the parsing dock (token index preserved for morph alignment).
+  const bgGreekTokens = (h: BgHit, rowKey: string, text: string, dim = false) => {
+    const toks = text.split(/\s+/).filter(Boolean)
+    const folded = toks.map(x => normalizeFold(x))
+    const bares = terms.map(x => normalizeFold(x.replace(/"/g, ''))).filter(Boolean)
+    const isMatch = (f: string) => bares.some(b => f.includes(b))
+    let first = folded.findIndex(isMatch)
+    if (first < 0) first = 0
+    const from = Math.max(0, first - 18)
+    const to = Math.min(toks.length, first + 26)
+    return (
+      <>
+        {from > 0 ? '… ' : ''}
+        {toks.slice(from, to).map((tok, i) => {
+          const ti = from + i
+          const key = `${rowKey}.${ti}`
+          return (
+            <span key={ti}
+              onMouseEnter={() => void selectBgToken(h, ti, tok, key)}
+              onClick={() => void selectBgToken(h, ti, tok, key)}
+              className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${bgSelKey === key ? 'bg-brand-100' : ''} ${isMatch(folded[ti]) && !dim ? MARK : ''}`}>
+              {tok}{' '}
+            </span>
+          )
+        })}
+        {to < toks.length ? '…' : ''}
+      </>
+    )
+  }
+
   // A background hit's text: neighbouring sections when Context is on, else the windowed snippet.
-  const bgHitText = (h: BgHit) => {
+  // Greek hits render as clickable words feeding the parsing dock; result text inherits the
+  // container font size (the ⋮ display menu), so no absolute text-size classes here.
+  const bgHitText = (h: BgHit, rowKey: string) => {
     const isGrc = bg?.lang === 'grc'
     const ctx = context > 0 ? ctxMap[bgCtxKey(h.target)] : undefined
     const primary = ctx && ctx.length > 0 ? (
-      <span className={`block text-sm leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+      <span className={`block leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
         {ctx.map(cv => {
           const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
           return (
             <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
-              {hiliteVerse(cv.text, terms)}{' '}
+              {isGrc && isHit
+                ? bgGreekTokens(h, `${rowKey}.${cv.chapter}.${cv.verse}`, cv.text)
+                : <>{hiliteVerse(cv.text, terms)}{' '}</>}
             </span>
           )
         })}
       </span>
     ) : (
-      <span className={`block text-sm text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>{renderSnippet(h.text, terms)}</span>
+      <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : ''}`}>
+        {isGrc ? bgGreekTokens(h, rowKey, h.text) : renderSnippet(h.text, terms)}
+      </span>
     )
     // Greek works with an aligned English (Josephus / Whiston, Greco-Roman / Perseus) show their
     // translation of the matched section beside the Greek — mirroring the biblical results.
@@ -561,7 +689,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       return (
         <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
           {primary}
-          <span className="block text-sm text-gray-500 leading-relaxed">{clampTrans(h.trans)}</span>
+          <span className="block text-gray-500 leading-relaxed">{clampTrans(h.trans)}</span>
         </span>
       )
     }
@@ -706,6 +834,30 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </>
             )}
           </div>
+
+          {/* ⋮ display options (result-text size) */}
+          <div className="relative flex-none">
+            <button type="button" onClick={() => setShowDisplay(v => !v)} aria-expanded={showDisplay} title="Display options"
+              className={`inline-flex h-7 w-7 items-center justify-center rounded border transition-colors ${
+                showDisplay ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
+              <MoreVertical size={14} />
+            </button>
+            {showDisplay && (
+              <>
+                <div className="fixed inset-0 z-20" onClick={() => setShowDisplay(false)} />
+                <div className="absolute right-0 top-full mt-2 z-30 w-44 rounded-xl border border-gray-200 bg-popover p-2 shadow-2xl">
+                  <p className="px-1 pb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">Text size</p>
+                  {FONT_SIZES.map(f => (
+                    <button key={f.label} type="button" onClick={() => pickFontScale(f.scale)}
+                      className={`block w-full rounded px-2 py-1 text-left text-sm transition-colors ${
+                        fontScale === f.scale ? 'bg-brand-50 font-medium text-brand-700' : 'text-gray-700 hover:bg-gray-50'}`}>
+                      {f.label}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+          </div>
         </div>
         {greekInput && (
           <p className="mt-1 text-[11px] text-gray-400">Typing Greek (Beta Code): <span className="greek-text">{BETA_LEGEND}</span></p>
@@ -741,8 +893,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         )}
       </div>
 
-      {/* Results */}
-      <div className="py-4">
+      {/* Results — result text inherits this font size (the ⋮ display menu's Text size). */}
+      <div className="py-4" style={{ fontSize: `${fontScale}rem` }}>
         {loading && (
           <div className="flex items-center justify-center gap-2 py-16 text-sm text-gray-400">
             <Loader2 size={16} className="animate-spin" /> Searching…
@@ -799,7 +951,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                     <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-none hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                       {ctx && ctx.length > 0 ? (
-                        <span className={`block text-sm leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
+                        <span className={`block leading-relaxed ${h.greek ? 'greek-text' : ''}`}>
                           {ctx.map(cv => {
                             const isHit = cv.chapter === h.chapter && cv.verse === h.verse
                             return (
@@ -811,7 +963,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                           })}
                         </span>
                       ) : (
-                        <span className={`block text-sm text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
+                        <span className={`block text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : ''}`}>{hiliteVerse(h.text, terms)}</span>
                       )}
                     </button>
                     <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
@@ -833,12 +985,20 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             {controlsBar(`${bg.total}${bg.truncated ? '+' : ''} match${bg.total === 1 ? '' : 'es'} in ${bg.groups.length} work${bg.groups.length === 1 ? '' : 's'}`)}
             {displayBg.mode === 'flat' ? (
               // Relevance: a single list across works, each row labelled with its work.
+              // Greek rows are divs (their words are clickable → parsing dock); the ref label
+              // opens the hit. English rows keep the whole-row-opens-it button.
               <div className="divide-y divide-gray-100">
-                {displayBg.hits.map(({ h, work }, i) => (
+                {displayBg.hits.map(({ h, work }, i) => bg.lang === 'grc' ? (
+                  <div key={i} className="py-2.5 px-2">
+                    <button onClick={() => openBackground(h.target)} className="text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
+                    <span className="text-xs text-gray-400"> · {work}</span>
+                    {bgHitText(h, `f.${i}`)}
+                  </div>
+                ) : (
                   <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
                     <span className="text-xs font-medium text-brand-600">{h.ref}</span>
                     <span className="text-xs text-gray-400"> · {work}</span>
-                    {bgHitText(h)}
+                    {bgHitText(h, `f.${i}`)}
                   </button>
                 ))}
               </div>
@@ -848,10 +1008,15 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <div key={g.gid} className="py-1.5">
                   <p className="py-1 text-sm font-semibold text-gray-600">{g.name} <span className="text-gray-400 font-normal">· {g.count}</span></p>
                   <div className="divide-y divide-gray-100">
-                    {g.hits.map((h, i) => (
+                    {g.hits.map((h, i) => bg.lang === 'grc' ? (
+                      <div key={i} className="py-2.5 px-2">
+                        <button onClick={() => openBackground(h.target)} className="text-xs font-medium text-brand-600 hover:underline">{h.ref}</button>
+                        {bgHitText(h, `${g.gid}.${i}`)}
+                      </div>
+                    ) : (
                       <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
                         <span className="text-xs font-medium text-brand-600">{h.ref}</span>
-                        {bgHitText(h)}
+                        {bgHitText(h, `${g.gid}.${i}`)}
                       </button>
                     ))}
                   </div>
@@ -860,6 +1025,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             )}
           </div>
         )}
+
+        {/* Parsing dock for Greek background results (the Greek NT/LXX lanes carry their own
+            inside GreekSearchResults) — visible whenever Greek text is on screen. */}
+        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && <ParsingDock info={bgInfo} />}
       </div>
     </div>
   )
