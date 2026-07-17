@@ -285,7 +285,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             whole chapter); the picker below opens an editor for any other verse in range. */}
         {anchor && (() => {
           const notedVerses = verseList.filter(v => passageVerseNote(v))
-          const addable = verseList.filter(v => !passageVerseNote(v))
           return (
             <section>
               <h3 className="text-sm font-semibold text-gray-800 mb-2">
@@ -308,19 +307,10 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     onChanged={() => { setAddVerse(null); void load() }} />
                 )}
               </div>
-              {addable.length > 0 && (
-                <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
-                  <label htmlFor="add-verse-note">Add a note on verse</label>
-                  <select id="add-verse-note" value=""
-                    onChange={e => { const v = Number(e.target.value); if (v) setAddVerse(v) }}
-                    className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
-                    <option value="">Choose…</option>
-                    {addable.map(v => <option key={v} value={v}>{anchor.chapter}:{v}</option>)}
-                  </select>
-                </div>
-              )}
               {notedVerses.length === 0 && addVerse == null && (
-                <p className="text-xs text-gray-400 italic mt-1">No verse notes on this passage yet.</p>
+                <p className="text-xs text-gray-400 italic mt-1">
+                  No verse notes on this passage yet — use <span className="font-medium text-gray-600">New verse note</span> below.
+                </p>
               )}
             </section>
           )
@@ -349,13 +339,32 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
         <section>
           <div className="flex items-center justify-between gap-2 mb-2">
             <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
-            <button
-              onClick={() => setAddingNote(true)}
-              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
-              title="Write a topic note that isn’t tied to a specific verse"
-            >
-              <Plus size={13} /> New topic note
-            </button>
+            <div className="flex items-center gap-2">
+              {/* New verse note — a dropdown of the current passage's verses (that don't yet
+                  have a note). Picking one opens its editor up in the "This passage" section. */}
+              {anchor && (() => {
+                const addable = verseList.filter(v => !passageVerseNote(v))
+                if (addable.length === 0) return null
+                return (
+                  <select
+                    value=""
+                    onChange={e => { const v = Number(e.target.value); if (v) setAddVerse(v) }}
+                    title="Add a note on a verse of the current passage"
+                    className="rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  >
+                    <option value="">+ New verse note</option>
+                    {addable.map(v => <option key={v} value={v}>{anchor.name} {anchor.chapter}:{v}</option>)}
+                  </select>
+                )
+              })()}
+              <button
+                onClick={() => setAddingNote(true)}
+                className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+                title="Write a topic note that isn’t tied to a specific verse"
+              >
+                <Plus size={13} /> New topic note
+              </button>
+            </div>
           </div>
 
           {/* Kind tabs — "All" is plain; "Verse notes" and "Topic notes" each open a folder
