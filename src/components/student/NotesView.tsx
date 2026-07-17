@@ -300,12 +300,6 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     anchor={{ book: anchor.book, chapter: anchor.chapter, verse: v, label: `${anchor.name} ${anchor.chapter}:${v}` }}
                     folders={folders} onChanged={load} />
                 ))}
-                {addVerse != null && (
-                  <NoteEditor key={`add-${anchor.book}-${anchor.chapter}-${addVerse}`}
-                    anchor={{ book: anchor.book, chapter: anchor.chapter, verse: addVerse, label: `${anchor.name} ${anchor.chapter}:${addVerse}` }}
-                    folders={folders}
-                    onChanged={() => { setAddVerse(null); void load() }} />
-                )}
               </div>
               {notedVerses.length === 0 && addVerse == null && (
                 <p className="text-xs text-gray-400 italic mt-1">
@@ -462,6 +456,14 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           })()}
 
           <div className="space-y-2">
+            {/* New verse note opens its editor right here, beside the trigger (once saved it
+                also shows up under "This passage" above). */}
+            {anchor && addVerse != null && (
+              <NoteEditor key={`add-${anchor.book}-${anchor.chapter}-${addVerse}`}
+                anchor={{ book: anchor.book, chapter: anchor.chapter, verse: addVerse, label: `${anchor.name} ${anchor.chapter}:${addVerse}` }}
+                folders={folders}
+                onChanged={() => { setAddVerse(null); void load() }} />
+            )}
             {addingNote && (
               <NoteEditor
                 general
@@ -471,7 +473,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 onCancel={() => setAddingNote(false)}
               />
             )}
-            {filtered.length === 0 && !addingNote ? (
+            {filtered.length === 0 && !addingNote && addVerse == null ? (
               q ? (
                 <p className="text-sm text-gray-400 italic py-6">No notes match “{query}”.</p>
               ) : noteKind === 'verse' ? (
