@@ -32,7 +32,7 @@ export default function StudentError({
         <div className="flex gap-3 justify-center pt-2">
           <button
             onClick={reset}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-none hover:bg-brand-800 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-700 text-white text-sm font-medium rounded-lg hover:bg-brand-800 transition-colors"
           >
             <RefreshCw size={14} /> Try again
           </button>

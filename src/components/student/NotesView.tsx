@@ -351,7 +351,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
             <button
               onClick={() => setAddingNote(true)}
-              className="inline-flex items-center gap-1 rounded-none border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
+              className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
               title="Write a topic note that isn’t tied to a specific verse"
             >
               <Plus size={13} /> New topic note
@@ -643,7 +643,7 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
             </span>
           )}
           <button onClick={onSubmit} disabled={submitting}
-            className="inline-flex items-center gap-1 rounded-none bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
+            className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
             {submitting ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
             {entry.submittedAt ? 'Resubmit' : 'Submit'}
           </button>
@@ -683,7 +683,7 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
             className={`h-5 w-5 rounded-full ${NOTE_COLORS[c].dot} ${value.color === c ? 'ring-2 ring-offset-1 ring-gray-500' : ''}`} />
         ))}
       </div>
-      <button onClick={onSave} className="inline-flex items-center gap-1 rounded-none bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
+      <button onClick={onSave} className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"><Check size={13} /> Save</button>
       <button onClick={onCancel} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
       {onDelete
         ? <button onClick={onDelete} className="ml-auto inline-flex items-center gap-1 text-xs text-red-600 hover:text-red-800"><Trash2 size={13} /> Delete folder</button>
@@ -857,7 +857,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         <div className="flex items-center justify-end gap-2 mt-2">
           <span className="mr-auto text-[11px] text-gray-400">Saves automatically</span>
           <button onClick={discard} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
-          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-none px-3 py-1 disabled:opacity-50">Save note</button>
+          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
         </div>
       )}
     </div>

@@ -20,8 +20,8 @@ function ThemePreview({ theme }: { theme: Theme }) {
         <div className="h-1.5 w-full rounded-sm bg-gray-700" />
         <div className="h-1.5 w-4/5 rounded-sm bg-gray-500" />
         <div className="mt-1 flex items-center gap-1.5">
-          <div className="h-3 w-8 rounded-none bg-brand-700" />
-          <div className="h-3 w-6 rounded-none border border-brand-200 bg-surface" />
+          <div className="h-3 w-8 rounded-sm bg-brand-700" />
+          <div className="h-3 w-6 rounded-sm border border-brand-200 bg-surface" />
         </div>
       </div>
     </div>

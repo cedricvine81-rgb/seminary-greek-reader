@@ -63,7 +63,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
                   const on = selected.has(feat.value)
                   return (
                     <button key={feat.value} type="button" onClick={() => toggle(feat.value)}
-                      className={`px-2.5 py-1 rounded-none text-xs border transition-colors ${on
+                      className={`px-2.5 py-1 rounded-lg text-xs border transition-colors ${on
                         ? 'bg-brand-600 border-brand-600 text-white'
                         : 'bg-surface border-gray-200 text-gray-600 hover:border-brand-300 hover:text-brand-700'}`}>
                       {feat.label}
@@ -88,7 +88,7 @@ export function MorphSearchPicker({ initialFeatures, lemma, subject, initialRest
             className="text-xs text-gray-500 hover:text-gray-700">Clear</button>
           <button type="button" disabled={!canSearch}
             onClick={() => onSearch(features, restrictLemma ? lemma : null)}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-none text-sm font-medium bg-brand-600 text-white disabled:opacity-40 hover:bg-brand-700 transition-colors">
+            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium bg-brand-600 text-white disabled:opacity-40 hover:bg-brand-700 transition-colors">
             <Search size={15} /> Search
           </button>
         </div>

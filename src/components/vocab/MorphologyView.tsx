@@ -1087,7 +1087,7 @@ export function MorphologyView() {
                     key={t.id}
                     onClick={() => { setMainTab(t.id); if (t.id !== 'essentials') setMenuOpen(false) }}
                     className={clsx(
-                      'px-3 py-1.5 rounded-none text-sm font-medium transition-colors',
+                      'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
                       mainTab === t.id ? 'bg-brand-600 text-white' : 'text-gray-600 hover:bg-gray-50'
                     )}
                   >
@@ -1105,7 +1105,7 @@ export function MorphologyView() {
                       key={s.id}
                       onClick={() => { setEssId(s.id); setMenuOpen(false) }}
                       className={clsx(
-                        'px-2.5 py-1 rounded-none text-sm font-medium transition-colors',
+                        'px-2.5 py-1 rounded-lg text-sm font-medium transition-colors',
                         essId === s.id ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-600 hover:bg-gray-50'
                       )}
                     >
@@ -1127,7 +1127,7 @@ export function MorphologyView() {
               key={t.id}
               onClick={() => setMainTab(t.id)}
               className={clsx(
-                'px-3 py-1.5 rounded-none text-sm font-medium transition-colors whitespace-nowrap',
+                'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors whitespace-nowrap',
                 t.id === 'essentials'
                   ? 'bg-brand-600 text-white'
                   : mainTab === t.id
@@ -1152,7 +1152,7 @@ export function MorphologyView() {
                   key={s.id}
                   onClick={() => setEssId(s.id)}
                   className={clsx(
-                    'px-2.5 py-1 rounded-none text-sm font-medium transition-colors',
+                    'px-2.5 py-1 rounded-lg text-sm font-medium transition-colors',
                     essId === s.id ? 'text-gray-900 font-semibold underline underline-offset-4' : 'text-gray-600 hover:text-gray-900'
                   )}
                 >

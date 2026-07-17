@@ -76,13 +76,13 @@ export function AppealsTable() {
         <div className="flex gap-2">
           <button
             onClick={() => setStatus('PENDING')}
-            className={`px-3 py-1 rounded-none text-sm ${status === 'PENDING' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`px-3 py-1 rounded-lg text-sm ${status === 'PENDING' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
           >
             Pending
           </button>
           <button
             onClick={() => setStatus('DECIDED')}
-            className={`px-3 py-1 rounded-none text-sm ${status === 'DECIDED' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
+            className={`px-3 py-1 rounded-lg text-sm ${status === 'DECIDED' ? 'bg-brand-50 text-brand-700 font-semibold' : 'text-gray-500 hover:bg-gray-50'}`}
           >
             History
           </button>

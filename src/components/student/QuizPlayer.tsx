@@ -578,7 +578,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                   <button
                     key={opt}
                     onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                    className={`text-left px-4 py-3 rounded-none border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
+                    className={`text-left px-4 py-3 rounded-lg border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors${optionsAreGreek ? ' font-greek text-base' : ''}`}
                   >
                     {opt}
                   </button>
@@ -614,7 +614,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               <button
                 key={opt}
                 onClick={() => { setDraft(opt); handleCheck(false, opt) }}
-                className="text-left px-4 py-3 rounded-none border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
+                className="text-left px-4 py-3 rounded-lg border border-gray-200 bg-surface hover:border-brand-400 hover:bg-brand-50 text-sm transition-colors"
               >
                 {/* Morphology MC options are never Greek — no font-greek needed */}
                 {opt}

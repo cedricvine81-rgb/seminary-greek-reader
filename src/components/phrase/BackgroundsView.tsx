@@ -769,7 +769,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               type="button"
               onClick={() => setShowSummaries(v => !v)}
               title="Summaries — overviews of extra-canonical literature"
-              className={`inline-flex items-center gap-1 rounded-none border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+              className={`inline-flex items-center gap-1 rounded-lg border px-2 py-1 text-[11px] font-medium transition-colors ${showSummaries ? 'bg-brand-100 border-brand-300 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
             >
               <BookOpen size={14} /> Summaries
             </button>
@@ -780,7 +780,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     <button
                       type="button"
                       onClick={() => setExpandedSummaryCat(c => c === cat.id ? null : cat.id)}
-                      className="flex w-full items-start justify-between gap-2 rounded-none px-2 py-1.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50"
+                      className="flex w-full items-start justify-between gap-2 rounded-lg px-2 py-1.5 text-left text-xs font-semibold text-gray-700 hover:bg-gray-50"
                     >
                       <span>{cat.label}</span>
                       <ChevronDown size={13} className={`mt-0.5 shrink-0 text-gray-400 transition-transform ${expandedSummaryCat === cat.id ? 'rotate-180' : ''}`} />
@@ -792,7 +792,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                             key={w.id}
                             type="button"
                             onClick={() => { setOpenSummary({ work: w, category: cat.label }); setShowSummaries(false) }}
-                            className="block w-full rounded-none px-2 py-1 text-left text-xs text-gray-600 hover:bg-brand-50 hover:text-brand-800"
+                            className="block w-full rounded-lg px-2 py-1 text-left text-xs text-gray-600 hover:bg-brand-50 hover:text-brand-800"
                           >
                             {w.title}
                           </button>
@@ -809,7 +809,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
             <button
               key={t}
               onClick={() => toggleType(t)}
-              className={`rounded-none border px-2 py-0.5 text-[11px] font-medium transition-opacity ${TYPE_COLORS[t]} ${typeFilter.has(t) ? '' : 'opacity-30'}`}
+              className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition-opacity ${TYPE_COLORS[t]} ${typeFilter.has(t) ? '' : 'opacity-30'}`}
             >
               {TYPE_LABELS[t]}
             </button>
@@ -956,7 +956,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 <button
                                   onClick={() => openJosephusRef(entry.label, c, josephusRef)}
                                   title="View text"
-                                  className={`flex-1 block text-left rounded-none border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightJosephus?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                  className={`flex-1 block text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightJosephus?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                                 >
                                   {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
                                 </button>
@@ -987,7 +987,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 key={ci}
                                 onClick={() => openProseRef(prose.work, entry.label, c, prose.ref)}
                                 title="View text"
-                                className={`block w-full text-left rounded-none border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightProse?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                                className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors hover:brightness-95 cursor-pointer ${TYPE_COLORS[c.type]} ${rightProse?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                               >
                                 {c.cf && <span className="italic mr-1">cf.</span>}{c.text}
                               </button>
@@ -1026,7 +1026,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                               onClick={() => openRightRef(entry.label, c.ref ? c : { ...c, ref: cref })}
                               disabled={!openable}
                               title={scholarTitle}
-                              className={`block w-full text-left rounded-none border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
+                              className={`block w-full text-left rounded-lg border px-2 py-1 text-xs transition-colors ${TYPE_COLORS[c.type]} ${openable ? 'hover:brightness-95 cursor-pointer' : 'cursor-default opacity-80'} ${rightRef?.citation === c ? 'ring-2 ring-brand-400' : ''}`}
                             >
                               <span className="flex items-baseline justify-between gap-1.5">
                                 <span>{c.cf && <span className="italic mr-1">cf.</span>}{c.text}</span>
@@ -1071,7 +1071,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                     type="button"
                     onClick={() => onOpenInTexts?.(openInTextsTarget)}
                     title="Open in Texts — keep reading this work"
-                    className="inline-flex items-center gap-1 rounded-none border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                    className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-[11px] font-medium text-gray-600 hover:bg-gray-100 transition-colors"
                   >
                     <ExternalLink size={12} /> Open
                   </button>

@@ -341,7 +341,7 @@ export function FileManager({ courses }: { courses: Course[] }) {
                   const on = share.courseIds.has(c.id)
                   return (
                     <button key={c.id} onClick={() => toggleShare(c.id)}
-                      className="w-full flex items-center gap-3 rounded-none px-3 py-2 text-left text-sm hover:bg-gray-50">
+                      className="w-full flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm hover:bg-gray-50">
                       <span className={`flex h-5 w-5 items-center justify-center rounded border ${on ? 'bg-brand-600 border-brand-600 text-white' : 'border-gray-300'}`}>
                         {on && <Check size={13} />}
                       </span>
@@ -384,7 +384,7 @@ function Row({ icon, title, subtitle, onOpen, href, onShare, onDelete, shareCoun
         <button onClick={onOpen} className="flex items-center gap-3 min-w-0 flex-1 text-left">{label}</button>
       )}
       <button onClick={onShare} title="Share with courses"
-        className={`inline-flex items-center gap-1 rounded-none px-2 py-1 text-xs ${shareCount > 0 ? 'bg-brand-50 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
+        className={`inline-flex items-center gap-1 rounded-lg px-2 py-1 text-xs ${shareCount > 0 ? 'bg-brand-50 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}>
         <Share2 size={13} /> {shareCount > 0 ? shareCount : 'Share'}
       </button>
       <button onClick={onDelete} title="Delete" className="text-gray-400 hover:text-red-600 p-1"><Trash2 size={15} /></button>

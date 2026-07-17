@@ -159,7 +159,7 @@ export function FrequencySectionPicker({
                             type="button"
                             onClick={() => toggleSubsection(sub.key)}
                             className={clsx(
-                              'flex flex-col items-center justify-center py-2.5 rounded-none border text-center transition-colors',
+                              'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
                               isSubSelected
                                 ? 'bg-gray-100 border-gray-300 text-gray-900'
                                 : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900',

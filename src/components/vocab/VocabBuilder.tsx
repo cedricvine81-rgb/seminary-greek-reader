@@ -264,7 +264,7 @@ export function VocabBuilder() {
             key={id}
             onClick={action}
             className={clsx(
-              'flex items-center px-4 py-2 rounded-none text-sm font-medium transition-colors',
+              'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors',
               tab === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
             )}
           >
@@ -424,7 +424,7 @@ function FlashcardPlayer({
                 key={m}
                 onClick={() => onConfigChange({ ...config, mode: m })}
                 className={clsx(
-                  'px-3 py-1.5 rounded-none text-sm font-medium transition-colors',
+                  'px-3 py-1.5 rounded-lg text-sm font-medium transition-colors',
                   config.mode === m ? 'bg-surface text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
@@ -506,19 +506,19 @@ function FlashcardPlayer({
         <div className="flex flex-col gap-2 w-28 shrink-0">
           <button
             onClick={() => onAdvance(4)}
-            className="py-3 text-sm font-semibold rounded-none bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
+            className="py-3 text-sm font-semibold rounded-lg bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
           >
             Got it
           </button>
           <button
             onClick={() => onAdvance(1)}
-            className="py-2.5 text-xs font-medium rounded-none bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
+            className="py-2.5 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 active:bg-red-800 transition-colors"
           >
             Again
           </button>
           <button
             onClick={() => onAdvance(3)}
-            className="py-2.5 text-xs font-medium rounded-none bg-surface text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
+            className="py-2.5 text-xs font-medium rounded-lg bg-surface text-brand-700 border border-brand-200 hover:bg-brand-50 transition-colors"
           >
             Hard
           </button>
@@ -689,7 +689,7 @@ function StudySettings({
                               <button
                                 onClick={() => toggleSubsection(sub.key)}
                                 className={clsx(
-                                  'flex flex-col items-center justify-center py-2.5 rounded-none border text-center transition-colors',
+                                  'flex flex-col items-center justify-center py-2.5 rounded-lg border text-center transition-colors',
                                   isSubSelected
                                     ? 'bg-gray-100 border-gray-300 text-gray-900'
                                     : 'bg-surface border-gray-200 text-gray-600 hover:text-gray-900'
@@ -826,7 +826,7 @@ function StudySettings({
                   key={p}
                   onClick={() => togglePos(p)}
                   className={clsx(
-                    'flex items-center gap-3 px-4 py-2.5 rounded-none border text-left transition-colors',
+                    'flex items-center gap-3 px-4 py-2.5 rounded-lg border text-left transition-colors',
                     isSelected
                       ? 'border-gray-300 bg-gray-100 text-gray-900'
                       : 'border-gray-200 bg-surface text-gray-700 hover:border-gray-300'

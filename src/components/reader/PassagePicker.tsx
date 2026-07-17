@@ -111,7 +111,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
           return (
             <button key={b.osisId} type="button"
               onClick={() => { setBook(b); setChapter(null); setVerses(null) }}
-              className={`rounded-none border px-1 py-2 text-[13px] leading-tight font-medium bg-surface transition-colors ${c.btn}`}>
+              className={`rounded-lg border px-1 py-2 text-[13px] leading-tight font-medium bg-surface transition-colors ${c.btn}`}>
               {sbl(b)}
             </button>
           )
@@ -165,7 +165,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
               <div className="grid grid-cols-5 gap-1.5">
                 {Array.from({ length: book.totalChapters }, (_, i) => i + 1).map(ch => (
                   <button key={ch} type="button" onClick={() => setChapter(ch)}
-                    className="rounded-none border border-gray-200 py-2.5 text-sm font-medium text-gray-700 bg-surface hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700 transition-colors">
+                    className="rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-700 bg-surface hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700 transition-colors">
                     {ch}
                   </button>
                 ))}
@@ -181,7 +181,7 @@ export function PassagePicker({ books, corpus, onPick, onClose }: {
                 {verses.map(vn => (
                   <button key={vn} type="button"
                     onClick={() => { if (book && chapter) onPick(`${book.osisId} ${chapter}:${vn}`) }}
-                    className="rounded-none border border-gray-200 py-2.5 text-sm font-medium text-gray-700 bg-surface hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700 transition-colors">
+                    className="rounded-lg border border-gray-200 py-2.5 text-sm font-medium text-gray-700 bg-surface hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700 transition-colors">
                     {vn}
                   </button>
                 ))}

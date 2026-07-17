@@ -32,7 +32,7 @@ export function RoleSelector({ value, onChange }: RoleSelectorProps) {
           type="button"
           onClick={() => onChange(v)}
           className={clsx(
-            'flex flex-col items-center gap-2 p-4 rounded-none border-2 text-center transition-colors',
+            'flex flex-col items-center gap-2 p-4 rounded-lg border-2 text-center transition-colors',
             value === v
               ? 'border-brand-600 bg-brand-50 text-brand-800'
               : 'border-gray-200 hover:border-gray-300 text-gray-700'

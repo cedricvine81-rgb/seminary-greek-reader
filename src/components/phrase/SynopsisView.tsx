@@ -344,7 +344,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
             <button
               key={r}
               onClick={() => setExtraRefs(prev => prev.includes(r) ? prev : [...prev, r])}
-              className="inline-flex items-center gap-1 rounded-none border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs text-brand-700 hover:bg-brand-100"
+              className="inline-flex items-center gap-1 rounded-lg border border-brand-200 bg-brand-50 px-2.5 py-1 text-xs text-brand-700 hover:bg-brand-100"
             >
               + {r}
             </button>
@@ -456,7 +456,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               placeholder="e.g. Mark 1:9-11"
               className={`w-full border rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 ${addError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
             />
-            <button onClick={addRef} className="mt-2 w-full rounded-none bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
+            <button onClick={addRef} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
           </div>
         </div>

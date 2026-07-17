@@ -42,7 +42,7 @@ export function MobileParsingSheet({ info, locked }: MobileParsingSheetProps) {
         onClick={() => { if (info) setExpanded(true) }}
         disabled={!info}
         aria-expanded={expanded}
-        className={`w-full text-left rounded-none border px-4 py-2.5 flex items-center gap-3 transition-colors ${
+        className={`w-full text-left rounded-lg border px-4 py-2.5 flex items-center gap-3 transition-colors ${
           info ? 'bg-surface border-brand-300 active:bg-brand-50' : 'bg-surface border-gray-200'
         }`}
       >

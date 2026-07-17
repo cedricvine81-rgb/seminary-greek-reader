@@ -195,7 +195,7 @@ function MorphologySubtypePicker({
             key={opt.value}
             type="button"
             onClick={() => onChange(opt.value)}
-            className={`text-left px-3 py-2.5 rounded-none border transition-colors ${
+            className={`text-left px-3 py-2.5 rounded-lg border transition-colors ${
               value === opt.value
                 ? 'bg-brand-50 border-brand-400 ring-1 ring-brand-300'
                 : 'bg-surface border-gray-200 hover:border-brand-300'
@@ -829,7 +829,7 @@ function FilterChipGroup({
               key={opt}
               type="button"
               onClick={() => toggle(opt)}
-              className={`${compact ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs'} rounded-none border font-medium transition-colors ${
+              className={`${compact ? 'px-2 py-0.5 text-xs' : 'px-2.5 py-1 text-xs'} rounded-lg border font-medium transition-colors ${
                 selected.includes(opt)
                   ? 'bg-brand-600 border-brand-600 text-white'
                   : 'bg-surface border-gray-300 text-gray-500 hover:border-gray-400'
@@ -841,7 +841,7 @@ function FilterChipGroup({
           <button
             type="button"
             onClick={() => onChange(allOn ? [] : [...options])}
-            className="px-2 py-0.5 text-xs rounded-none border border-dashed border-gray-300 text-gray-400 hover:border-gray-500 transition-colors"
+            className="px-2 py-0.5 text-xs rounded-lg border border-dashed border-gray-300 text-gray-400 hover:border-gray-500 transition-colors"
           >
             {allOn ? 'none' : 'all'}
           </button>
@@ -979,14 +979,14 @@ function MorphSeriesBuilder({
             type="button"
             onClick={() => setCount(series.length - 1)}
             disabled={series.length <= 1}
-            className="w-7 h-7 rounded-none border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
+            className="w-7 h-7 rounded-lg border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
           >−</button>
           <span className="text-sm font-semibold text-gray-900 w-6 text-center">{series.length}</span>
           <button
             type="button"
             onClick={() => setCount(series.length + 1)}
             disabled={series.length >= 20}
-            className="w-7 h-7 rounded-none border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
+            className="w-7 h-7 rounded-lg border border-gray-300 text-gray-600 text-lg leading-none hover:border-brand-400 disabled:opacity-40 flex items-center justify-center"
           >+</button>
         </div>
       </div>
@@ -1028,7 +1028,7 @@ function MorphSeriesBuilder({
                     fields: SUBTYPE_FIELD_OPTIONS[opt.value].map(f => f.key),
                     parseFilter: opt.value === 'VERB_PARSING' ? { ...DEFAULT_VERB_FILTER } : undefined,
                   })}
-                  className={`text-left px-2.5 py-2 rounded-none border text-xs transition-colors ${
+                  className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
                     test.subtype === opt.value
                       ? 'bg-brand-50 border-brand-400 text-brand-800 font-medium'
                       : 'bg-surface border-gray-200 text-gray-700 hover:border-brand-300'
@@ -1454,7 +1454,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                   key={d.value}
                   type="button"
                   onClick={() => toggleDay(d.value)}
-                  className={`px-3 py-1.5 rounded-none text-sm font-medium border transition-colors ${
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors ${
                     form.days.includes(d.value)
                       ? 'bg-brand-600 border-brand-600 text-white'
                       : 'bg-surface border-gray-300 text-gray-600 hover:border-brand-400'
@@ -1721,7 +1721,7 @@ export function AssignmentBuilder({ courses, defaultCourseId }: AssignmentBuilde
             key={value}
             type="button"
             onClick={() => setMode(value)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-none text-sm font-medium transition-colors ${
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
               mode === value
                 ? 'bg-surface text-brand-700 shadow-sm'
                 : 'text-gray-500 hover:text-gray-700'

@@ -67,7 +67,7 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
       )}
       <button
         onClick={() => setOpen(v => !v)}
-        className="p-2 rounded-none text-gray-600 hover:bg-gray-100 transition-colors"
+        className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
         aria-label="Open menu"
       >
         {open ? <X size={22} /> : <Menu size={22} />}

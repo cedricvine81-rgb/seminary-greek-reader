@@ -52,7 +52,7 @@ export function Modal({ open, onClose, title, children, size = 'md' }: ModalProp
           {title && <h2 className="text-lg font-semibold text-gray-900">{title}</h2>}
           <button
             onClick={onClose}
-            className="ml-auto p-1 rounded-none text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+            className="ml-auto p-1 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600"
             aria-label="Close"
           >
             <X size={18} />

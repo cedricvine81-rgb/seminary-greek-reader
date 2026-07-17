@@ -166,7 +166,7 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         </div>
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-none hover:bg-gray-100 touch-manipulation"
+          className="text-gray-400 hover:text-gray-600 shrink-0 p-2 -mr-1 rounded-lg hover:bg-gray-100 touch-manipulation"
           aria-label="Close"
         >
           <X size={isMobile ? 22 : 16} />
@@ -205,19 +205,19 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
           </div>
           <div className="grid grid-cols-2 gap-1.5">
             <button type="button" onClick={() => onWordAction('lemma', scope)}
-              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               All forms{typeof freq === 'number' ? <span className="text-gray-400"> · {freq}×</span> : null}
             </button>
             <button type="button" onClick={() => onWordAction('form', scope)}
-              className="text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               This form
             </button>
             <button type="button" onClick={() => onWordAction('morph', scope)}
-              className="col-span-2 text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               By morphology <span className="text-gray-400">· NT</span>
             </button>
             <button type="button" onClick={() => onWordAction('backgrounds', scope)}
-              className="col-span-2 text-left px-2.5 py-1.5 rounded-none border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              className="col-span-2 text-left px-2.5 py-1.5 rounded-lg border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
               Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </div>

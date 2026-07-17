@@ -64,10 +64,10 @@ export function ReferenceNavigator({
       )}
 
       {/* Prev / Next */}
-      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-none border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Previous chapter">
+      <button onClick={prevChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Previous chapter">
         <ChevronLeft size={16} />
       </button>
-      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-none border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Next chapter">
+      <button onClick={nextChapter} disabled={!selectedBook} className="p-1.5 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40" aria-label="Next chapter">
         <ChevronRight size={16} />
       </button>
     </div>

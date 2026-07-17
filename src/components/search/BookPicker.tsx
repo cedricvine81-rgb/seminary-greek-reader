@@ -42,7 +42,7 @@ export function BookPicker({ groups, selected, onToggle, onToggleGroup, onClear 
                   return (
                     <button key={b.osisId} type="button" onClick={() => onToggle(b.osisId)}
                       title={b.name}
-                      className={`rounded-none border px-0.5 py-1 text-[11px] leading-none font-medium transition-colors ${
+                      className={`rounded-lg border px-0.5 py-1 text-[11px] leading-none font-medium transition-colors ${
                         on ? 'bg-brand-600 border-brand-600 text-white'
                            : 'bg-surface border-gray-200 text-gray-700 hover:bg-brand-50 hover:border-brand-200 hover:text-brand-700'}`}>
                       {b.abbrev}

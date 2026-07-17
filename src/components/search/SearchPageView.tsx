@@ -549,7 +549,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5">
             {[0, 1, 2, 3].map(n => (
               <button key={n} type="button" onClick={() => setContext(n)}
-                className={`rounded-none px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+                className={`rounded-full px-2 py-0.5 tabular-nums transition-colors ${context === n ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
                 {n === 0 ? 'off' : `±${n}`}
               </button>
             ))}
@@ -558,7 +558,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
           {(['relevance', 'canonical'] as SortMode[]).map(m => (
             <button key={m} type="button" onClick={() => setSort(m)}
-              className={`rounded-none px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
+              className={`rounded-full px-2.5 py-0.5 transition-colors ${sort === m ? 'bg-surface text-brand-700 shadow-sm font-medium' : 'text-gray-500 hover:text-gray-700'}`}>
               {m === 'relevance' ? 'Relevance' : canonicalLabel}
             </button>
           ))}
@@ -743,7 +743,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             )}
             <button type="button" onClick={toggleGreekInput} aria-pressed={greekInput}
               title="Type Greek with a QWERTY keyboard (Beta Code: l→λ, q→θ …)"
-              className={`flex-none w-7 h-7 flex items-center justify-center rounded-none text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
+              className={`flex-none w-7 h-7 flex items-center justify-center rounded-lg text-base font-semibold transition-colors greek-text ${greekInput ? 'bg-brand-600 text-white' : 'text-brand-600 hover:bg-brand-50'}`}>
               α
             </button>
           </div>
@@ -817,7 +817,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                         <div className="flex flex-wrap gap-1.5">
                           {sec.items.map(ex => (
                             <button key={ex.label} type="button" onClick={() => runExample(ex)}
-                              className={`inline-flex items-center rounded-none border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
+                              className={`inline-flex items-center rounded-lg border border-gray-200 bg-surface px-2.5 py-1 text-xs text-gray-700 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(ex.label) ? 'greek-text' : ''}`}>
                               {ex.label}
                             </button>
                           ))}
@@ -874,7 +874,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               const c = counts[l.val]
               return (
                 <button key={l.val} type="button" onClick={() => setScopeVal(l.val)}
-                  className={`flex-none inline-flex items-center gap-1 rounded-none border px-3 py-1 text-xs font-medium transition-colors ${
+                  className={`flex-none inline-flex items-center gap-1 rounded-lg border px-3 py-1 text-xs font-medium transition-colors ${
                     active ? 'border-brand-600 bg-brand-600 text-white'
                            : 'border-gray-200 bg-surface text-gray-600 hover:border-brand-200 hover:bg-brand-50'}`}>
                   {l.label}
@@ -911,7 +911,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <div className="flex flex-wrap gap-1.5">
                   {recent.map(r => (
                     <button key={r} type="button" onClick={() => { setQuery(r); inputRef.current?.focus() }}
-                      className={`inline-flex items-center rounded-none border border-gray-200 bg-surface px-3 py-1 text-sm text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
+                      className={`inline-flex items-center rounded-lg border border-gray-200 bg-surface px-3 py-1 text-sm text-gray-600 hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 transition-colors ${GREEK_RE.test(r) ? 'greek-text' : ''}`}>
                       {r}
                     </button>
                   ))}
@@ -946,7 +946,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 const ctx = context > 0 ? ctxMap[key] : undefined
                 return (
                   <div key={i} className="relative group">
-                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-none hover:bg-brand-50 transition-colors">
+                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                       {ctx && ctx.length > 0 ? (
                         <span className={`block leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>
@@ -993,7 +993,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                     {bgHitText(h, `f.${i}`)}
                   </div>
                 ) : (
-                  <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
+                  <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
                     <span className="text-xs font-medium text-brand-600">{h.ref}</span>
                     <span className="text-xs text-gray-400"> · {work}</span>
                     {bgHitText(h, `f.${i}`)}
@@ -1012,7 +1012,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                         {bgHitText(h, `${g.gid}.${i}`)}
                       </div>
                     ) : (
-                      <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-none hover:bg-brand-50 transition-colors">
+                      <button key={i} onClick={() => openBackground(h.target)} className="block w-full text-left py-2.5 px-2 rounded-lg hover:bg-brand-50 transition-colors">
                         <span className="text-xs font-medium text-brand-600">{h.ref}</span>
                         {bgHitText(h, `${g.gid}.${i}`)}
                       </button>

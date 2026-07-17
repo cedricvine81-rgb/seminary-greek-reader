@@ -339,7 +339,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
               type="button"
               title={toolsMenuTitle}
               onClick={() => setShowToolsMenu(v => !v)}
-              className={`p-1.5 rounded-none transition-colors ${showToolsMenu ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+              className={`p-1.5 rounded-lg transition-colors ${showToolsMenu ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
             >
               <MoreVertical size={18} />
             </button>
@@ -361,7 +361,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
                         key={id}
                         type="button"
                         onClick={() => { setTab(id); setShowToolsMenu(false) }}
-                        className={`flex items-center gap-2 px-3 py-2 rounded-none text-sm text-left transition-colors ${
+                        className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-left transition-colors ${
                           tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
                         }`}
                       >
@@ -393,7 +393,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
                     <button
                       type="button"
                       onClick={() => { setShowToolsMenu(false); setTimeout(() => workspaceRef.current?.exportPDF(), 0) }}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-none text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <Download size={15} className="text-gray-400" /> Download as PDF
                     </button>

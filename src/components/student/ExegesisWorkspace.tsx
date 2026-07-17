@@ -1816,7 +1816,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <button
                 onClick={enterLockdown}
                 disabled={!rulesAck}
-                className="mt-5 w-full rounded-none bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+                className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed"
               >
                 {isIPadDevice ? 'Begin exam' : 'Enter fullscreen & begin'}
               </button>
@@ -1848,7 +1848,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             </p>
             <button
               onClick={enterLockdown}
-              className="mt-5 w-full rounded-none bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
+              className="mt-5 w-full rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition"
             >
               Return to exam
             </button>
@@ -2070,7 +2070,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         {!isSessionsControlled && loadedVerses.length > 0 && !isExam && (
           <button
             onClick={exportPDF}
-            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-none text-sm font-medium hover:bg-gray-300 transition"
+            className="self-end flex items-center gap-1.5 px-4 py-1.5 bg-gray-200 text-gray-800 rounded-lg text-sm font-medium hover:bg-gray-300 transition"
           >
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -2086,7 +2086,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <button
               onClick={() => submitAssignment()}
               disabled={isSubmitting || isSaving || correctionLocked}
-              className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-none text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
+              className="flex items-center gap-1.5 px-5 py-1.5 bg-brand-600 text-white rounded-lg text-sm font-semibold hover:bg-brand-700 disabled:opacity-50 transition"
             >
               <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -2102,7 +2102,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
         {propAssignmentId && submitted && (
           <button
             onClick={() => router.push('/student/assignments')}
-            className="self-end px-4 py-1.5 border border-brand-300 text-brand-700 rounded-none text-sm font-medium hover:bg-brand-50 transition"
+            className="self-end px-4 py-1.5 border border-brand-300 text-brand-700 rounded-lg text-sm font-medium hover:bg-brand-50 transition"
           >
             ← Back to Assignments
           </button>
@@ -2115,7 +2115,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
           <div className="relative" ref={sessionListRef}>
             <button
               onClick={() => { loadSessionList(); setShowSessionList(v => !v) }}
-              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-none text-sm font-medium hover:bg-gray-50 transition"
+              className="self-end px-3 py-1.5 border border-gray-300 text-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 transition"
             >
               My Sessions
             </button>
