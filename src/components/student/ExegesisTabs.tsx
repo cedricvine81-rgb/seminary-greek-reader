@@ -65,6 +65,11 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
   // Grey ghost-text completion of the current pericope.
   const [ghost, setGhost] = useState('')
   const suggestionRef = useRef('')        // full accepted string when ghost is shown
+  // Predictive list of the chapter's sections (pericopes) with their titles, shown once the
+  // box resolves to a Book + chapter (e.g. "Matt 5" → every labelled section of Matthew 5).
+  const [chapterSecs, setChapterSecs] = useState<{ ref: string; title: string }[]>([])
+  const [predOpen, setPredOpen] = useState(false)
+  const passageBoxRef = useRef<HTMLDivElement>(null)
   const dataRef = useRef<{ books: Book[]; pericopes: Pericopes } | null>(null)
   const [books, setBooks] = useState<Book[]>([])
   const [anchor, setAnchor] = useState<NoteAnchor | null>(null)  // committed passage → verse anchor for Notes
@@ -220,7 +225,29 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
     }
   }
 
-  function onChange(value: string) { setInput(value); computeGhost(value) }
+  // Every labelled section overlapping the Book + chapter the box currently resolves to.
+  function computeChapterSections(value: string) {
+    const data = dataRef.current
+    // Book, chapter, then optionally a verse/range we ignore — we list the whole chapter.
+    const m = data && value.match(/^\s*(.+?)\s+(\d+)(?::\d+)?\s*(?:-.*)?$/)
+    if (!m) { setChapterSecs([]); return }
+    const bookStr = norm(m[1])
+    const chapter = parseInt(m[2], 10)
+    const book = data!.books.find(b =>
+      norm(b.osisId) === bookStr || (b.abbrev && norm(b.abbrev) === bookStr) || norm(b.name) === bookStr ||
+      norm(b.name).startsWith(bookStr) || norm(b.osisId).startsWith(bookStr))
+    if (!book) { setChapterSecs([]); return }
+    const secs = (data!.pericopes[book.osisId] ?? [])
+      .filter(s => s.c <= chapter && chapter <= s.ec)
+      .map(s => ({
+        ref: `${book.name} ${s.c}:${s.v}${s.c === s.ec ? `-${s.ev}` : `-${s.ec}:${s.ev}`}`,
+        title: s.t,
+      }))
+    setChapterSecs(secs)
+  }
+
+  function onChange(value: string) { setInput(value); computeGhost(value); computeChapterSections(value); setPredOpen(true) }
+  function pickSection(ref: string) { setInput(ref); setGhost(''); setPredOpen(false); commitPassage(ref) }
   function accept() { const s = suggestionRef.current; setInput(s); setGhost(''); suggestionRef.current = ''; return s }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
@@ -228,10 +255,12 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
     if (ghost && (e.key === 'Tab' || (e.key === 'ArrowRight' && atEnd))) {
       e.preventDefault(); accept(); return
     }
+    if (e.key === 'Escape') { setPredOpen(false); return }
     if (e.key === 'Enter') {
       e.preventDefault()
       const final = (ghost ? accept() : input).trim()
       commitPassage(final)
+      setPredOpen(false)
       e.currentTarget.blur()
     }
   }
@@ -256,7 +285,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
         <div className="flex items-center min-w-0 flex-1 lg:flex-none">
           <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">Passage</span>
           {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}
-          <div className="relative flex-1 min-w-0 lg:flex-none">
+          <div ref={passageBoxRef} className="relative flex-1 min-w-0 lg:flex-none">
             {ghost && (
               <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-full lg:w-56 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
                 <span className="invisible">{input}</span><span className="text-gray-400">{ghost}</span>
@@ -267,10 +296,28 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
               value={input}
               onChange={e => onChange(e.target.value)}
               onKeyDown={onKeyDown}
-              onBlur={() => { commitPassage(input.trim()); setGhost('') }}
+              onFocus={() => { if (chapterSecs.length) setPredOpen(true) }}
+              onBlur={() => { commitPassage(input.trim()); setGhost(''); setPredOpen(false) }}
               placeholder="e.g. Matthew 3:1-3"
               className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-56 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
+
+            {/* Predictive chapter sections — click one to jump straight to that pericope. */}
+            {predOpen && chapterSecs.length > 0 && (
+              <div className="absolute left-0 top-full z-40 mt-1 w-72 max-w-[90vw] overflow-hidden rounded-lg border border-gray-200 bg-popover py-1 shadow-lg max-h-72 overflow-y-auto">
+                {chapterSecs.map(s => (
+                  <button
+                    key={s.ref}
+                    type="button"
+                    onMouseDown={e => { e.preventDefault(); pickSection(s.ref) }}
+                    className="block w-full px-3 py-1.5 text-left hover:bg-brand-50"
+                  >
+                    <span className="text-xs font-medium text-brand-700">{s.ref}</span>
+                    <span className="ml-2 text-xs text-gray-500">{s.title}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
         {/* On narrow screens the 5 tabs can be wider than the viewport — let them scroll
