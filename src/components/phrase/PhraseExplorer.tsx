@@ -1,6 +1,6 @@
 'use client'
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -546,7 +546,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
                   </div>
                   {/* Parsing box, always shown under the text — defaults to the verse's
                       first word so its presence is obvious; updates on word click. */}
-                  <ParsingPanel info={panelInfo(s)} bgClass="bg-gray-50" />
+                  <ResizableParsingPane info={panelInfo(s)} bgClass="bg-gray-50" />
                 </div>
               </div>
             </div>

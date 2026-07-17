@@ -5,7 +5,7 @@ import { NOTE_COLORS, NOTE_COLOR_KEYS, colorOf, type NoteColor } from '@/lib/not
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { TransWords } from '@/components/highlights/TransWords'
@@ -581,7 +581,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           </div>
         </div>
 
-        {isGreek && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+        {isGreek && <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import { ExternalLink, BookOpen, ChevronDown, X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
@@ -1294,7 +1294,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
           Hebrew, so a Greek/Hebrew cross-reference gets the pane even when the left passage
           is in a translation. The panel renders Hebrew info in the Hebrew font (info.script). */}
       {(isGreek || isRightGreek || isRightHebrew) && (
-        <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />
+        <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />
       )}
 
       {isAuthenticated && highlightSelection.popup && (

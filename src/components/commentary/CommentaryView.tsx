@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X, ZoomIn, ZoomOut, ExternalLink } from 'lucide-react'
 import { GreekVerse } from '@/components/reader/GreekVerse'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
@@ -272,7 +272,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           ))}
         </div>
         <div className="shrink-0 mt-3">
-          <ParsingPanel info={info} bgClass="bg-gray-50" />
+          <ResizableParsingPane info={info} bgClass="bg-gray-50" />
         </div>
       </div>
 

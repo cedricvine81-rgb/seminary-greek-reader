@@ -16,6 +16,7 @@ import { HebrewWordMenu } from './HebrewWordMenu'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { ParsingPanel } from './ParsingPanel'
+import { ResizableParsingPane } from './ResizableParsingPane'
 import { SyntaxMenu, type WordSearchAction, type SearchScope } from './SyntaxMenu'
 import { openWordSearch, type WordHighlight } from '@/lib/word-search-bus'
 import { openBackgroundsSearch } from '@/lib/backgrounds-search-bus'
@@ -2045,10 +2046,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       </div>
 
       {/* ── Parsing panel ── */}
-      {/* Desktop: fixed card below the text. */}
-      <div className="hidden lg:block flex-none">
-        <ParsingPanel info={parsingInfo} locked={!!lockedInfo} />
-      </div>
+      {/* Desktop: resizable card below the text (drag its grab-bar; height shared app-wide). */}
+      <ResizableParsingPane info={parsingInfo} locked={!!lockedInfo} className="hidden lg:block" />
       {/* Mobile: a larger inline parsing pane. The Greek is always on screen now (with the
           optional translation stacked beneath each verse), so tapping any word shows its
           parsing here regardless of whether a translation is selected. */}

@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -468,7 +468,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           clicked. Placed in normal flow directly under the columns (not sticky/overlaid),
           so the text ends cleanly above it instead of the pane floating over it. */}
       {isGreek && (
-        <ParsingPanel info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
+        <ResizableParsingPane info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
 
       {isAuthenticated && highlightSelection.popup && (

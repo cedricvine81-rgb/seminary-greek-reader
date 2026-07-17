@@ -1,7 +1,7 @@
 'use client'
 import { Fragment, useCallback, useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Search, ChevronDown } from 'lucide-react'
-import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
@@ -1085,7 +1085,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         </div>
 
         {/* Parsing window — Greek works only */}
-        {(isGreek || greekProse) && !greekHidden && <ParsingPanel info={selectedInfo} bgClass="bg-gray-50" />}
+        {(isGreek || greekProse) && !greekHidden && <ResizableParsingPane info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (

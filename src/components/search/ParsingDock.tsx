@@ -1,43 +1,32 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { ParsingPanel } from '@/components/reader/ParsingPanel'
+import { useParsingPaneHeight } from '@/lib/parsing-pane-height'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // The search page's parsing pane: docked to the bottom of the viewport whenever Greek results
-// are shown, filled by hovering/clicking a Greek word. The grab-bar above it drags to resize
-// the pane against the results (height persisted, shared by every search lane).
-
-const STORAGE_KEY = 'search:parsingPaneH'
-const MIN_H = 88
-const MAX_H = 480
-const DEFAULT_H = 176
+// are shown, filled by hovering/clicking a Greek word. The grab-bar drags to resize; height is
+// the app-wide shared parsing-pane height (useParsingPaneHeight), so it matches the Reader and
+// Exegesis panes. Unlike those (flex rows), this one is a sticky overlay because /search scrolls
+// the whole page rather than using a fixed-height flex column.
 
 export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
-  const [height, setHeight] = useState(DEFAULT_H)
+  const [height, setHeight, persist] = useParsingPaneHeight()
   const heightRef = useRef(height); heightRef.current = height
   const drag = useRef<{ startY: number; startH: number } | null>(null)
-
-  useEffect(() => {
-    try {
-      const v = parseInt(localStorage.getItem(STORAGE_KEY) ?? '', 10)
-      if (v >= MIN_H && v <= MAX_H) setHeight(v)
-    } catch { /* ignore */ }
-  }, [])
 
   useEffect(() => {
     function onMove(e: PointerEvent) {
       if (!drag.current) return
       e.preventDefault()
-      const next = Math.min(MAX_H, Math.max(MIN_H, drag.current.startH + (drag.current.startY - e.clientY)))
-      heightRef.current = next   // keep the ref current NOW — onUp persists before React re-renders
-      setHeight(next)
+      setHeight(drag.current.startH + (drag.current.startY - e.clientY))
     }
     function onUp() {
       if (!drag.current) return
       drag.current = null
       document.body.style.userSelect = ''
-      try { localStorage.setItem(STORAGE_KEY, String(heightRef.current)) } catch { /* ignore */ }
+      persist()
     }
     window.addEventListener('pointermove', onMove)
     window.addEventListener('pointerup', onUp)
@@ -47,7 +36,7 @@ export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
       window.removeEventListener('pointerup', onUp)
       window.removeEventListener('pointercancel', onUp)
     }
-  }, [])
+  }, [setHeight, persist])
 
   return (
     // bottom-14 below lg keeps the dock above the fixed mobile bottom nav.
@@ -61,7 +50,7 @@ export function ParsingDock({ info }: { info: LexicalInfoPanel | null }) {
         title="Drag to resize the parsing pane"
         className="flex h-3 cursor-row-resize touch-none items-center justify-center bg-gray-50/95 backdrop-blur"
       >
-        <div className="h-1 w-12 rounded-full bg-gray-300" />
+        <div className="h-1 w-12 rounded-full bg-gray-300 transition-colors hover:bg-gray-400" />
       </div>
       <div style={{ height }} className="overflow-y-auto bg-gray-50/95 pb-1 backdrop-blur">
         <ParsingPanel info={info} bgClass="bg-surface" />
