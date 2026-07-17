@@ -80,6 +80,18 @@ function renderSnippet(text: string, terms: string[]): ReactNode {
   )
 }
 
+// A background Greek hit's aligned English (Josephus/Whiston, Greco-Roman/Perseus) is stored per
+// whole section, so it can be many times longer than the windowed Greek snippet shown beside it —
+// which made results wildly uneven (most Greek-only, the occasional section-start hit a huge wall
+// of English). Clamp it to a comparable preview so every row stays roughly the same height.
+function clampTrans(text: string): string {
+  const MAX = 2 * RADIUS   // ~280 chars, matching renderSnippet's no-match head() bound
+  if (text.length <= MAX) return text
+  const cut = text.slice(0, MAX)
+  const sp = cut.lastIndexOf(' ')
+  return (sp > MAX * 0.7 ? cut.slice(0, sp) : cut).trimEnd() + '…'
+}
+
 interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
 
 // The opaque key the bg-context endpoint (mode:'bg') uses to identify a hit's entry — mirrors
@@ -549,7 +561,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       return (
         <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
           {primary}
-          <span className="block text-sm text-gray-500 leading-relaxed">{h.trans}</span>
+          <span className="block text-sm text-gray-500 leading-relaxed">{clampTrans(h.trans)}</span>
         </span>
       )
     }
