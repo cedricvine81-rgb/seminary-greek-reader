@@ -84,7 +84,10 @@ interface OriginalSource { id: string; name: string; attribution: string; pagesP
 export function CommentaryView({ anchor, isAuthenticated = false, onAttribution }: { anchor: NoteAnchor | null; isAuthenticated?: boolean; onAttribution?: (a: string | null) => void }) {
   const [verses, setVerses] = useState<BiblicalVerse[]>([])
   const [activeVerse, setActiveVerse] = useState<number | null>(null)
+  // The parsing pane shows the hovered word (transient) and falls back to the last clicked word
+  // (sticky) when the mouse leaves — so hovering inspects, clicking pins and jumps the commentary.
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
+  const [hoverInfo, setHoverInfo] = useState<LexicalInfoPanel | null>(null)
   const [commentaries, setCommentaries] = useState<CommentaryMeta[]>([])
   const [commentaryId, setCommentaryId] = useState('robertson')
   const [verseMap, setVerseMap] = useState<Record<string, string>>({})
@@ -150,7 +153,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
   // Greek text for the passage (Nestle 1904 or Tischendorf, per the dropdown).
   useEffect(() => {
     if (!anchor) { setVerses([]); setActiveVerse(null); return }
-    setLoading(true); setInfo(null)
+    setLoading(true); setInfo(null); setHoverInfo(null)
     const corpus = gntEdition === 'nestle1904' ? 'NA1904' : 'GNT'
     fetch(`/api/reader?corpus=${corpus}&book=${anchor.book}&chapter=${anchor.chapter}`)
       .then(r => r.json())
@@ -259,7 +262,8 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
                 <div className="min-w-0 flex-1">
                   <GreekVerse verse={v} activeWordId={null} highlighted={false}
                     textHighlights={anchor ? highlights.forVerse(anchor.book, anchor.chapter, v.verse, 'grc') : []}
-                    onWordHover={() => {}} onWordClick={i => { setInfo(i); setActiveVerse(v.verse) }}
+                    onWordHover={(_id, hi) => setHoverInfo(hi)}
+                    onWordClick={i => { setInfo(i); setHoverInfo(null); if (i) setActiveVerse(v.verse) }}
                     onWordRightClick={anchor ? (word, x, y, start, end) => {
                       const existing = highlights.forVerse(anchor.book, anchor.chapter, v.verse, 'grc').find(h => start < h.endOffset && end > h.startOffset)
                       openWordSearch({ x, y, surface: word.surface, lemma: word.lexeme?.lexeme ?? null, reference: `${anchor.name} ${anchor.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT',
@@ -275,7 +279,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           ))}
         </div>
         <div className="shrink-0 mt-3">
-          <ResizableParsingPane storageKey="commentary" info={info} bgClass="bg-gray-50" />
+          <ResizableParsingPane storageKey="commentary" info={hoverInfo ?? info} bgClass="bg-gray-50" />
         </div>
       </div>
 
