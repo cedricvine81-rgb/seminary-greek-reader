@@ -4,6 +4,8 @@ import { X } from 'lucide-react'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { WordHighlight } from '@/lib/word-search-bus'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
+import { openMasterSearch } from '@/lib/master-search-bus'
+import { isExamLocked } from '@/lib/exam-lockdown'
 
 // The right-click menu for a Hebrew word: an optional Highlight row (signed-in readers) plus the
 // full Strong's lexicon entry — the parity counterpart to the Greek word's syntax/search menu.
@@ -75,6 +77,26 @@ export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
               onPick={c => { highlight.onPick(c); onClose(); window.getSelection()?.removeAllRanges() }}
               onRemove={() => { highlight.onRemove(); onClose(); window.getSelection()?.removeAllRanges() }}
             />
+          </div>
+        )}
+
+        {/* Search this word across the Hebrew Bible — "all forms" (by Strong's number, so every
+            inflection) or "this form" (the consonantal surface). Routes into Master Search. */}
+        {!isExamLocked() && info.strongs && (
+          <div className="space-y-1.5">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400">Search this word</span>
+            <div className="grid grid-cols-2 gap-1.5">
+              <button type="button"
+                onClick={() => { onClose(); openMasterSearch({ query: info.lexeme, scope: 'hebrew:MT', strongs: info.strongs!.replace(/[^0-9]/g, '') }) }}
+                className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+                All forms
+              </button>
+              <button type="button"
+                onClick={() => { onClose(); openMasterSearch({ query: info.surface, scope: 'hebrew:MT' }) }}
+                className="text-left px-2.5 py-1.5 rounded-md border border-gray-200 bg-surface text-xs text-gray-700 hover:border-brand-300 hover:text-brand-700 transition-colors">
+                This form
+              </button>
+            </div>
           </div>
         )}
 

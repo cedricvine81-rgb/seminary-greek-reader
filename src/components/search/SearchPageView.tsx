@@ -44,11 +44,13 @@ interface Catalog { gnt: PickBook[]; lxx: PickBook[] }
 
 type Scope =
   | { kind: 'greek'; corpus: 'GNT' | 'LXX' }
+  | { kind: 'hebrew' }
   | { kind: 'trans'; lang: string }
   | { kind: 'bg'; category: string | null; lang?: 'grc' }
 
 function parseScope(v: string): Scope {
   if (v.startsWith('greek:')) return { kind: 'greek', corpus: v.slice(6) as 'GNT' | 'LXX' }
+  if (v.startsWith('hebrew:')) return { kind: 'hebrew' }
   if (v.startsWith('trans:')) return { kind: 'trans', lang: v.slice(6) }
   // bggrc: forces the Greek (Septuagint) facet of the background corpus; bg: auto-detects.
   if (v.startsWith('bggrc:')) { const c = v.slice(6); return { kind: 'bg', category: c === 'all' ? null : c, lang: 'grc' } }
@@ -101,7 +103,7 @@ function clampTrans(text: string): string {
   return (sp > MAX * 0.7 ? cut.slice(0, sp) : cut).trimEnd() + '…'
 }
 
-interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean }
+interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean; hebrew?: boolean }
 
 // The opaque key the bg-context endpoint (mode:'bg') uses to identify a hit's entry — mirrors
 // entryKey() in src/lib/backgrounds-search.ts, built from a hit's OpenInTextsTarget.
@@ -123,6 +125,8 @@ async function fetchLaneCount(val: string, q: string, lemma = false): Promise<nu
   }
   const url = s.kind === 'greek'
     ? `/api/search?q=${encodeURIComponent(q)}&type=word&corpus=${s.corpus}${lemma ? '&lemma=true' : ''}`
+    : s.kind === 'hebrew'
+    ? `/api/search?q=${encodeURIComponent(q)}&type=word&corpus=MT`
     : `/api/search?q=${encodeURIComponent(q)}&type=word&lang=${s.lang}`
   const r = await fetch(url)
   if (!r.ok) return 0
@@ -183,7 +187,7 @@ function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
 }
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, returnTo }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; returnTo?: string }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -236,6 +240,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // Lemma ("all forms") search stays active only while the query is unchanged from the lemma
   // we were handed via ?mode=lemma; editing the query drops back to a normal word search.
   const lemmaMode = initialLemma && query.trim() === initialQuery.trim()
+  // Hebrew "all forms": the clicked word's Strong's number, active only while the query still
+  // matches what the word menu prefilled (edit the box → fall back to a surface search).
+  const hebStrongs = initialStrongs && query.trim() === initialQuery.trim() ? initialStrongs : null
   const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
   // Greek hits arrive uncapped in canonical order → re-sort client-side for relevance.
@@ -292,6 +299,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   ], [transLang])
   const activeLane = scope.kind === 'bg' ? 'bg:all'
     : scope.kind === 'greek' ? `greek:${scope.corpus}`
+    : scope.kind === 'hebrew' ? 'hebrew:MT'
     : `trans:${transLang}`
 
   // Hydrate persisted state from localStorage ONCE, then mark mounted. Saves are gated on
@@ -330,10 +338,13 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     // `returnTo` is a stable prop (set once from searchParams), so it's read from the closure and
     // deliberately not a dep — keeping this deps array a constant length.
     if (returnTo) p.set('from', returnTo)
+    // Keep the Hebrew "all forms" Strong's number in the URL while it's active, so a reload
+    // re-runs the same by-lemma search instead of falling back to a surface search.
+    if (hebStrongs) p.set('strongs', hebStrongs)
     const qs = p.toString()
     window.history.replaceState(null, '', qs ? `/search?${qs}` : '/search')
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [query, scopeVal, books, mounted])
+  }, [query, scopeVal, books, hebStrongs, mounted])
   const pushRecent = useCallback((q: string) => {
     const v = q.trim()
     if (v.length < 2) return
@@ -357,8 +368,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     prevScope.current = scopeVal
   }, [scopeVal])
 
-  const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode, lemma: boolean) => {
-    if (q.trim().length < 2) { setBib(null); setBg(null); setLoading(false); return }
+  const runSearch = useCallback(async (q: string, sv: string, bks: string, srt: SortMode, lemma: boolean, strongs: string | null) => {
+    if (q.trim().length < 2 && !strongs) { setBib(null); setBg(null); setLoading(false); return }
     const s = parseScope(sv)
     const id = ++reqId.current
     setLoading(true)
@@ -372,7 +383,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       } else {
         const bookParam = bks ? `&books=${bks}` : ''
         const rankParam = s.kind === 'trans' && srt === 'relevance' ? '&rank=1' : ''
-        const url = s.kind === 'greek'
+        // Hebrew: "all forms" (a Strong's number, from the word menu) vs "this form" (surface).
+        const url = s.kind === 'hebrew'
+          ? (strongs
+              ? `/api/search?q=${encodeURIComponent(strongs)}&type=strongs&corpus=MT`
+              : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=MT`)
+          : s.kind === 'greek'
           ? `/api/search?q=${encodeURIComponent(q.trim())}&type=word&corpus=${s.corpus}${lemma ? '&lemma=true' : ''}${bookParam}`
           : `/api/search?q=${encodeURIComponent(q.trim())}&type=word&lang=${s.lang}${bookParam}${rankParam}`
         const res = await fetch(url)
@@ -380,6 +396,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         const hits: BibHit[] = s.kind === 'greek'
           ? (data.results as { bookId: string; chapter: number; verse: number; text: string }[]).map(v => ({
               osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: true,
+            }))
+          : s.kind === 'hebrew'
+          ? (data.results as { bookId: string; chapter: number; verse: number; text: string }[]).map(v => ({
+              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: false, hebrew: true,
             }))
           : (data.results as { id: string; text: string }[]).map(r => {
               const [osis, ch, vs] = r.id.split('.')
@@ -396,9 +416,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   // Debounced search.
   useEffect(() => {
-    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort, lemmaMode), 250)
+    const t = setTimeout(() => void runSearch(query, scopeVal, booksKey, sort, lemmaMode, hebStrongs), 250)
     return () => clearTimeout(t)
-  }, [query, scopeVal, booksKey, sort, lemmaMode, runSearch])
+  }, [query, scopeVal, booksKey, sort, lemmaMode, hebStrongs, runSearch])
 
   // Live counts for the result-type tabs (all lanes, in parallel). Debounced; reqId guard.
   useEffect(() => {
@@ -420,7 +440,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
   // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.
   useEffect(() => {
-    if (context === 0) { setCtxMap({}); return }
+    // Neighbour-verse context isn't wired for the MT yet — Hebrew hits show without it.
+    if (context === 0 || scope.kind === 'hebrew') { setCtxMap({}); return }
     let body: Record<string, unknown> | null = null
     if (isBiblical) {
       if (!displayBib || displayBib.length === 0) { setCtxMap({}); return }
@@ -510,10 +531,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     return () => document.removeEventListener('keydown', onKey)
   }, [showTypes])
 
-  function openBiblical(link: string, tl?: string) {
+  function openBiblical(link: string, tl?: string, corpus?: 'MT') {
     pushRecent(query)
     const q = query.trim()
-    const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${tl ? `&tl=${encodeURIComponent(tl)}` : ''}`
+    const extra = `${q ? `&q=${encodeURIComponent(q)}` : ''}${tl ? `&tl=${encodeURIComponent(tl)}` : ''}${corpus ? `&corpus=${corpus}` : ''}`
     router.push(`/reader?ref=${encodeURIComponent(link)}${extra}`)
   }
   async function copyHit(h: BibHit, ctx?: { chapter: number; verse: number; text: string }[]) {
@@ -772,6 +793,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                   <option value="greek:GNT">Greek — New Testament</option>
                   <option value="greek:LXX">Greek — Septuagint</option>
                 </optgroup>
+                <optgroup label="Hebrew">
+                  <option value="hebrew:MT">Hebrew — Old Testament</option>
+                </optgroup>
                 <optgroup label="Translations">
                   {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}</option>)}
                 </optgroup>
@@ -866,8 +890,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           </div>
         )}
 
-        {/* Result-type tabs (live counts) */}
-        {query.trim().length >= 2 && (
+        {/* Result-type tabs (live counts) — not shown for a Hebrew word search, which is its
+            own scope (searching the other lanes for a Hebrew string would just return zero). */}
+        {query.trim().length >= 2 && scope.kind !== 'hebrew' && (
           <div className="mt-2 flex items-center gap-1.5 overflow-x-auto pb-0.5">
             {laneList.map(l => {
               const active = l.val === activeLane
@@ -946,9 +971,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 const ctx = context > 0 ? ctxMap[key] : undefined
                 return (
                   <div key={i} className="relative group">
-                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek ? undefined : (scope.kind === 'trans' ? scope.lang : undefined))} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
+                    <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek || h.hebrew ? undefined : (scope.kind === 'trans' ? scope.lang : undefined), h.hebrew ? 'MT' : undefined)} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
-                      {ctx && ctx.length > 0 ? (
+                      {h.hebrew ? (
+                        <span dir="rtl" className="block text-gray-700 leading-loose font-hebrew" style={{ fontSize: '1.35em' }}>{h.text}</span>
+                      ) : ctx && ctx.length > 0 ? (
                         <span className={`block leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>
                           {ctx.map(cv => {
                             const isHit = cv.chapter === h.chapter && cv.verse === h.verse

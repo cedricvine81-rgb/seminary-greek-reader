@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
-import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, type SearchCorpus } from '@/lib/search'
+import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, type SearchCorpus } from '@/lib/search'
 import { searchTranslation } from '@/lib/translation-search'
 
 export async function GET(req: NextRequest) {
@@ -26,6 +26,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ results: await searchByMorph({ features, lemma: lemmaFilter }, corpus) })
     }
     if (!q) return NextResponse.json({ error: 'Missing query' }, { status: 400 })
+    // Hebrew (Masoretic Text) word search: "all forms" (type=strongs) covers every inflection of
+    // a lexeme via its Strong's number; "this form" (type=word) is a consonantal surface match.
+    if (corpus === 'MT') {
+      const results = type === 'strongs' ? await searchHebrewByStrongs(q) : await searchHebrewBySurface(q)
+      return NextResponse.json({ results, hebrew: true })
+    }
     // Strong's-number search: q is the number (e.g. '1080' or 'G1080').
     if (type === 'strongs') {
       return NextResponse.json({ results: await searchByStrongs(q, corpus) })

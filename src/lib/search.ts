@@ -195,6 +195,68 @@ export async function searchByStrongs(strongs: string, corpus: SearchCorpus): Pr
   return versesFor(matched, corpus)
 }
 
+// ─── Hebrew (Masoretic Text) search ───────────────────────────────────────────
+
+// hebrew-search-index.json.gz (scripts/build-hebrew-search-index.mjs): one entry per MT verse
+// with the pointed text (for display + surface search) and the distinct Strong's numbers in it
+// (for "all forms"). Loaded once and cached, like the Greek index.
+interface HebIndexVerse { id: string; bookId: string; chapter: number; verse: number; reference: string; text: string; strongs: string[] }
+let _hebIndex: HebIndexVerse[] | null = null
+let _hebNorm: string[] | null = null
+
+// Fold a Hebrew string for the "this form" search: strip the vowel points and cantillation
+// (leaving the consonantal skeleton, which matches the same written form regardless of the
+// contextual pointing), normalise word-final letters to their medial forms, and treat the
+// maqqef as a word break.
+const HEB_FINALS: Record<string, string> = { '\u05DA': '\u05DB', '\u05DD': '\u05DE', '\u05DF': '\u05E0', '\u05E3': '\u05E4', '\u05E5': '\u05E6' }
+export function normalizeHebrew(s: string): string {
+  return s
+    .replace(/\u05BE/g, ' ')                          // maqqef -> space
+    .replace(/[\u0591-\u05C7]/g, '')                  // strip vowel points + cantillation -> consonants
+    .replace(/[\u05DA\u05DD\u05DF\u05E3\u05E5]/g, ch => HEB_FINALS[ch])  // final -> medial letters
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function getHebIndex(): HebIndexVerse[] {
+  if (_hebIndex) return _hebIndex
+  const file = path.join(process.cwd(), 'public', 'data', 'hebrew-search-index.json.gz')
+  try {
+    _hebIndex = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8'))
+  } catch {
+    _hebIndex = []
+  }
+  return _hebIndex!
+}
+function getHebNorm(): string[] {
+  if (_hebNorm) return _hebNorm
+  _hebNorm = getHebIndex().map(v => normalizeHebrew(v.text))
+  return _hebNorm
+}
+function hebToVerse(v: HebIndexVerse): BiblicalVerse {
+  return { id: v.id, bookId: v.bookId, chapter: v.chapter, verse: v.verse, reference: v.reference, text: v.text }
+}
+
+// Every MT verse containing the given Strong's number (e.g. 'H430', '430') — the "all forms"
+// search, since one Strong's number covers all inflections of a Hebrew lexeme.
+export async function searchHebrewByStrongs(strongs: string): Promise<BiblicalVerse[]> {
+  const s = String(strongs).replace(/[^0-9]/g, '')
+  if (!s) return []
+  return getHebIndex().filter(v => v.strongs.includes(s)).map(hebToVerse)
+}
+
+// Every MT verse whose text contains the given form — the "this form" search, cantillation-
+// insensitive so it isn't defeated by differing accent marks.
+export async function searchHebrewBySurface(query: string): Promise<BiblicalVerse[]> {
+  const q = normalizeHebrew(query)
+  if (!q) return []
+  const norm = getHebNorm()
+  const idx = getHebIndex()
+  const out: BiblicalVerse[] = []
+  for (let i = 0; i < idx.length; i++) if (norm[i].includes(q)) out.push(hebToVerse(idx[i]))
+  return out
+}
+
 // ─── Lexicon search (still DB-backed — lexical entries are small) ─────────────
 
 export async function searchLexicon(query: string, limit = 20) {
