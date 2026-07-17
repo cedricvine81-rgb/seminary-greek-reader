@@ -1,13 +1,14 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 
-// Display themes. `light` is the default (:root in globals.css); the other three
-// override the CSS-variable ramps via [data-theme='…'] on <html>.
+// Display themes. `sepia` is the default (rendered when no cookie is set); `light`
+// is :root in globals.css and the other three override the CSS-variable ramps via
+// [data-theme='…'] on <html>.
 export type Theme = 'light' | 'sepia' | 'dim' | 'dark'
 
 export const THEMES: { id: Theme; label: string; hint: string }[] = [
-  { id: 'light', label: 'Light',  hint: 'Bright white — the classic default.' },
-  { id: 'sepia', label: 'Sepia',  hint: 'Warm beige, easy on the eyes in daylight.' },
+  { id: 'light', label: 'Light',  hint: 'Bright white.' },
+  { id: 'sepia', label: 'Sepia',  hint: 'Warm beige, easy on the eyes — the default.' },
   { id: 'dim',   label: 'Dim',    hint: 'Soft slate blue-grey — gentle low light.' },
   { id: 'dark',  label: 'Dark',   hint: 'Near-black, high contrast for night reading.' },
 ]
@@ -25,7 +26,7 @@ export function isTheme(v: unknown): v is Theme {
 function readThemeCookie(): Theme {
   const m = document.cookie.match(/(?:^|;\s*)display-theme=([^;]+)/)
   const v = m?.[1]
-  return isTheme(v) ? v : 'light'
+  return isTheme(v) ? v : 'sepia'   // no cookie yet → sepia (the default scheme)
 }
 
 /** Apply a theme to <html> (light removes the attribute so :root applies). */
@@ -40,7 +41,7 @@ export function applyTheme(theme: Theme) {
  * event so every open pane stays in sync live, and applied to <html> instantly.
  */
 export function useTheme(): [Theme, (t: Theme) => void] {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [theme, setTheme] = useState<Theme>('sepia')
 
   useEffect(() => {
     setTheme(readThemeCookie())

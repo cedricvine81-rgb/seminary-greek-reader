@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: '#fffbf5',   // sepia page background (the default scheme)
 }
 
 async function getHeaderProps() {
@@ -61,12 +61,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     cookies().get('instructor_preview')?.value === '1'
 
   // Display theme: rendered server-side from the cookie so there's no flash of
-  // the default theme and no hydration mismatch (see src/lib/theme.ts).
+  // the default theme and no hydration mismatch (see src/lib/theme.ts). Sepia is
+  // the default for anyone who hasn't chosen a scheme; an explicit 'light' choice
+  // removes the attribute so :root (light) applies.
   const themeCookie = cookies().get('display-theme')?.value
   const dataTheme =
-    themeCookie === 'sepia' || themeCookie === 'dim' || themeCookie === 'dark'
-      ? themeCookie
-      : undefined
+    themeCookie === 'light' ? undefined
+    : themeCookie === 'dim' || themeCookie === 'dark' ? themeCookie
+    : 'sepia'
 
   return (
     <html lang="en" data-theme={dataTheme}>
