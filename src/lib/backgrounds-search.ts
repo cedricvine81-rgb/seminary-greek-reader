@@ -95,6 +95,12 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
   // For a Greek search, look up each hit's aligned English (same entryKey in the `en` index) so
   // the result can show its translation. Only Josephus/Greco-Roman have a matching English entry;
   // English-only works simply have none (left undefined). Cheap map lookups; index is cached.
+  //
+  // Josephus needs one extra step: its Greek is indexed per Niese §, but Whiston's English exists
+  // only at each translator-section's FIRST § (e.g. Ant 15.1 has Greek §§1–10 but English at §§1
+  // and 5 only). An exact same-§ lookup therefore missed for most hits and Josephus results
+  // showed no translation at all — so on a miss, borrow the English of the CONTAINING Whiston
+  // section: the greatest English § ≤ the hit's § within the same work/book/chapter.
   const enPos = lang === 'grc' ? await positions('en') : null
 
   const byGroup = new Map<string, BgHit[]>()
@@ -109,7 +115,11 @@ export async function searchBackgrounds(query: string, lang: BgLang, limit = 300
     const meta = _meta.get(e.g) ?? { name: e.g, chapters: 1, order: 999 }
     const hit: BgHit = { ref: labelFor(e, meta.name, meta.chapters), text: e.t, target: targetFor(e) }
     if (enPos) {
-      const ei = enPos.pos.get(entryKey(e))
+      let ei = enPos.pos.get(entryKey(e))
+      if (ei === undefined && e.s === 'josephus') {
+        const sec = josephusContainingSection(enPos.loaded, e)
+        if (sec !== null) ei = enPos.pos.get(entryKey({ ...e, v: sec }))
+      }
       if (ei !== undefined) hit.trans = enPos.loaded.entries[ei].t
     }
     const arr = byGroup.get(e.g)
@@ -133,6 +143,28 @@ export interface BgCtxVerse { chapter: number; verse: number; text: string }
 function entryKey(e: { s: string; o?: string; w?: string; b?: number; c: number; v: number }): string {
   return `${e.s}|${e.o ?? ''}|${e.w ?? ''}|${e.b ?? ''}|${e.c}|${e.v}`
 }
+// Sorted English (Whiston) section-start §§ per Josephus (work, book, chapter), built lazily
+// from the `en` index — see the Josephus note above searchBackgrounds' enPos.
+let _josEnSections: Map<string, number[]> | null = null
+function josephusContainingSection(enLoaded: Loaded, e: Entry): number | null {
+  if (!_josEnSections) {
+    _josEnSections = new Map()
+    for (const en of enLoaded.entries) {
+      if (en.s !== 'josephus') continue
+      const k = `${en.w}|${en.b}|${en.c}`
+      const arr = _josEnSections.get(k)
+      if (arr) arr.push(en.v)
+      else _josEnSections.set(k, [en.v])
+    }
+    for (const arr of Array.from(_josEnSections.values())) arr.sort((a, b) => a - b)
+  }
+  const arr = _josEnSections.get(`${e.w}|${e.b}|${e.c}`)
+  if (!arr) return null
+  let sec: number | null = null
+  for (const v of arr) { if (v <= e.v) sec = v; else break }
+  return sec
+}
+
 const _posCache = new Map<BgLang, Map<string, number>>()
 async function positions(lang: BgLang): Promise<{ loaded: Loaded; pos: Map<string, number> } | null> {
   const loaded = await load(lang)
