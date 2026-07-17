@@ -156,7 +156,7 @@ function buildQueue(books: BiblicalBook[]): ChapterItem[] {
 
 // ── Component ──────────────────────────────────────────────────────────────────
 
-export function GreekReader({ initialRef, initialHighlight, initialTransLang, isAuthenticated: isAuthenticatedInitial = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
+export function GreekReader({ initialRef, initialHighlight, initialTransLang, initialCorpus, isAuthenticated: isAuthenticatedInitial = false, userRole }: { initialRef?: string; initialHighlight?: string; initialTransLang?: string; initialCorpus?: string; isAuthenticated?: boolean; userRole?: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN' } = {}) {
   const router = useRouter()
   // The server bakes isAuthenticated into the page from the session cookie at render time — but
   // a browser cold start (relaunching the app / restoring tabs) can fire that first document
@@ -321,8 +321,12 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
   // scroll instead of crossing the whole other testament — and, critically, so the hidden
   // corpus isn't background-loaded (see the infinite-scroll effect: a display:none sentinel
   // reports top=0 and would otherwise trigger endless load-more, janking the visible scroll).
-  // Inferred from the passage you open; the NT/LXX toggle switches it manually.
-  const [corpus, setCorpus] = useState<'GNT' | 'LXX' | 'MT'>('GNT')
+  // Inferred from the passage you open; the NT/LXX toggle switches it manually. Seeded from
+  // ?corpus= so a "Return to page" from the Search page lands back in the same corpus — the
+  // MT and LXX share book names (Gen, Isa, …), so the ref alone can't disambiguate Hebrew.
+  const [corpus, setCorpus] = useState<'GNT' | 'LXX' | 'MT'>(
+    initialCorpus === 'MT' || initialCorpus === 'LXX' ? initialCorpus : 'GNT'
+  )
   const [pickerCorpus, setPickerCorpus] = useState<'GNT' | 'LXX' | 'MT'>('GNT')
   const lastScrollTopRef = useRef(0)
 
@@ -746,6 +750,45 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     setParallelLang(next)
   }
 
+  // Mirror the reading position (top-visible verse + corpus) into the URL via replaceState,
+  // once scrolling pauses — same pattern as the Texts pane. A right-click search snapshots
+  // window.location for its "Return to page", so with ?ref=&corpus= in the URL, returning
+  // re-opens the reader at the same verse (initialRef jump) and in the same corpus (the MT and
+  // LXX share book names, so the ref alone can't disambiguate Hebrew). /reader only — the same
+  // component also renders the home-page demo, whose URL must stay clean.
+  const corpusStateRef = useRef(corpus); corpusStateRef.current = corpus
+  const lastRefJumpAt = useRef(0)   // suppress writes while a reference jump is settling
+  const writeReaderPosition = useCallback(() => {
+    if (typeof window === 'undefined' || window.location.pathname !== '/reader') return
+    if (Date.now() - lastRefJumpAt.current < 2500) return
+    const id = visibleVerseId()
+    if (!id) return
+    const [book, ch, vs] = id.split('.')
+    if (!book || !ch || !vs) return
+    const params = new URLSearchParams(window.location.search)
+    const refStr = `${book} ${ch}:${vs}`
+    if (params.get('ref') === refStr && params.get('corpus') === corpusStateRef.current) return
+    params.set('ref', refStr)
+    params.set('corpus', corpusStateRef.current)
+    params.delete('q')   // a search-arrival highlight shouldn't re-fire on a later return
+    window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const readerPosIdleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  useEffect(() => {
+    const panel = textPanelRef.current
+    if (!panel || typeof window === 'undefined' || window.location.pathname !== '/reader') return
+    const onScroll = () => {
+      if (readerPosIdleTimer.current) clearTimeout(readerPosIdleTimer.current)
+      readerPosIdleTimer.current = setTimeout(writeReaderPosition, 500)
+    }
+    panel.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      panel.removeEventListener('scroll', onScroll)
+      if (readerPosIdleTimer.current) clearTimeout(readerPosIdleTimer.current)
+    }
+  }, [writeReaderPosition])
+
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
 
   useEffect(() => {
@@ -959,6 +1002,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
     const ref = (corpus === 'MT' ? parseReference(trimmed, books.filter(b => b.corpus === 'MT')) : null)
       ?? parseReference(trimmed, books)
     if (!ref) return
+    // A jump scrolls over several frames (and font reflow) — hold the URL position-sync off so
+    // it can't capture the pre-jump view and overwrite the very target being jumped to.
+    lastRefJumpAt.current = Date.now()
     const targetCorpus: 'GNT' | 'LXX' | 'MT' =
       ref.book.corpus === 'MT' ? 'MT' : ref.book.corpus === 'LXX' ? 'LXX' : 'GNT'
     setCorpus(targetCorpus)   // land the jump in a short single-corpus scroll (also seeds MT lazily)
@@ -1963,8 +2009,13 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, is
       {/* Words handle their own right-click (Full-Greek syntax menu / translation menu); this
           container-level guard suppresses the native OS menu on the gaps between words. No form
           fields live in the scroll area, so preventing default is safe. */}
+      {/* data-scroll-restore="skip": the reader restores its position semantically via the
+          ?ref=&corpus= URL params (see writeReaderPosition) — the generic pixel-restorer's
+          absolute scrollTop is measured against a different loaded-chapter window and would
+          fight the verse jump. */}
       <div
         ref={textPanelRef}
+        data-scroll-restore="skip"
         onContextMenu={e => e.preventDefault()}
         style={{ '--greek-fs': FONT_SIZE_MAP[fontSize] } as React.CSSProperties}
         className="flex-1 min-h-0 overflow-y-auto bg-surface rounded-xl border border-gray-100 shadow-sm p-5"
