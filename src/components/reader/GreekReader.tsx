@@ -1714,7 +1714,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           value={parallelLang ?? ''}
           onChange={e => switchView(e.target.value || null)}
           title="Show a parallel translation column"
-          className="hidden lg:block shrink-0 self-stretch rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
+          className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
         >
           <option value="">Greek only</option>
           {PARALLEL_LANGS.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
