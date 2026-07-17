@@ -4,10 +4,10 @@
 //   • bare words     → individual terms; a verse must contain them ALL (AND, any order)
 // Single-word queries behave exactly as before. Greek word/lemma search is unaffected.
 
-// Lowercase + strip combining diacritics (identical to the engines' own normalize()).
-export function normalizeSearch(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-}
+import { normalizeGreek } from './greek-utils'
+
+// Lowercase + strip combining diacritics (the one shared fold, from greek-utils).
+export const normalizeSearch = normalizeGreek
 
 // Trim quotes/punctuation that cling to the edges of a typed term (so "love." → "love").
 const EDGE = /^[\s"'.,;:!?()[\]{}«»·—–]+|[\s"'.,;:!?()[\]{}«»·—–]+$/g

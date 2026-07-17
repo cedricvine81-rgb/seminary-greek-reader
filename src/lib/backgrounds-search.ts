@@ -3,6 +3,7 @@ import path from 'path'
 import zlib from 'zlib'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { parseSearchTerms, textMatchesTerms } from '@/lib/search-query'
+import { normalizeGreek as normalize } from '@/lib/greek-utils'
 import { findProseWork } from '@/lib/prose-texts'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import type { BgLang, BgHit, BgGroup, BgResult } from '@/lib/backgrounds-search-types'
@@ -21,12 +22,6 @@ interface Entry { g: string; s: string; o?: string; w?: string; b?: number; c: n
 interface Loaded { entries: Entry[]; normalized: string[] }
 
 const _cache = new Map<BgLang, Loaded | null>()
-
-// Lowercase + strip combining diacritics (identical to normalizeGreek) so accents and case
-// don't matter for either facet.
-function normalize(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-}
 
 // Catalog metadata for building display labels/targets at query time (keeps it out of the index).
 const _meta = new Map<string, { name: string; chapters: number; order: number }>()

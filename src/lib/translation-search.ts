@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
 import { parseSearchTerms, textMatchesTerms, scoreRelevance } from '@/lib/search-query'
+import { normalizeGreek as normalize } from '@/lib/greek-utils'
 
 // Full-text search over a parallel translation, using the gzipped indexes built by
 // scripts/build-translation-index.mjs (public/data/search-index-<lang>.json.gz).
@@ -16,11 +17,6 @@ interface Loaded { entries: TransEntry[]; normalized: string[] }
 const _cache = new Map<string, Loaded | null>()
 // BSB has no separate index; it's English, so it searches the WEB ('en') index.
 const LANG_ALIAS: Record<string, string> = { bsb: 'en' }
-
-// Lowercase + strip combining diacritics so "principio" matches "Principió" etc.
-function normalize(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-}
 
 async function readIndexRaw(key: string): Promise<string | null> {
   const rel = `search-index-${key}.json.gz`

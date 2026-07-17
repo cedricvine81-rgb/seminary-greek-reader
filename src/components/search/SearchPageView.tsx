@@ -16,7 +16,7 @@ import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
-import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
+import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 
 // The full-page "Master Search" (/search). One input searches any biblical text (Greek NT/LXX,
@@ -57,7 +57,7 @@ function parseScope(v: string): Scope {
 }
 
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
-const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+const MARK = SEARCH_MARK
 
 // Result-text size for the ⋮ display menu — the same sm/md/lg/xl steps and Α-slider control the
 // exegesis panes use (see PhraseExplorer/ExegesisTabs), applied to the results container and

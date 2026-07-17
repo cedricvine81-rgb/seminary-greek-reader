@@ -2,6 +2,8 @@
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
 import { Search, ChevronDown } from 'lucide-react'
 import { betaCodeToGreek } from '@/lib/greek-translit'
+import { SEARCH_MARK } from '@/lib/highlight-terms'
+import { normalizeGreek } from '@/lib/greek-utils'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -70,12 +72,12 @@ const LOCATE_HEADER_H = 22
 
 // Highlight every case-insensitive match of `q` inside `text`, in red — used both for the
 // in-text search box and for a term carried in from a background search.
-const SEARCH_RED = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+const SEARCH_RED = SEARCH_MARK
 
 // Accent- and case-insensitive fold, one output char per input char so offsets stay aligned
 // with the original string (Greek is all BMP, and precomposed NFC letters collapse 1:1). This
 // lets a query typed without accents — e.g. Beta-Code "λογοσ" — match accented text ("λόγος").
-const foldCh = (c: string) => { const s = c.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); return s.length === 1 ? s : c.toLowerCase() }
+const foldCh = (c: string) => { const s = normalizeGreek(c); return s.length === 1 ? s : c.toLowerCase() }
 const fold = (s: string) => Array.from(s, foldCh).join('')
 
 function highlight(text: string, q: string, cls: string = SEARCH_RED): ReactNode {
@@ -798,9 +800,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const q = search.trim().toLowerCase()
   // Accent-insensitive query, so Beta-Code Greek typed without accents ("λογοσ") still matches
   // the accented text ("λόγος").
-  const stripAccents = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
   const qNorm = q ? fold(q) : ''
-  const termNorm = !q && termHighlight ? stripAccents(termHighlight) : null
+  const termNorm = !q && termHighlight ? normalizeGreek(termHighlight) : null
   const matchesSearch = (r: Row) =>
     !q ||
     !!r.greek && fold(r.greek).includes(qNorm) ||
@@ -1116,7 +1117,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       const key = `${section.key}.${row.num}.${ti}`
                                       const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
                                       const matched = !!q && tok.surface.toLowerCase().includes(q)
-                                      const matchedTerm = !!termNorm && stripAccents(tok.surface).includes(termNorm)
+                                      const matchedTerm = !!termNorm && normalizeGreek(tok.surface).includes(termNorm)
                                       const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
                                       return (
                                         <span key={ti} onMouseEnter={select} onClick={select}

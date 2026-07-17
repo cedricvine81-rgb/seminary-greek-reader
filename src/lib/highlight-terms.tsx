@@ -1,11 +1,14 @@
 import type { ReactNode } from 'react'
+import { normalizeGreek } from './greek-utils'
 
 // Accent/case-insensitive term highlighting shared by the Master Search results pane and the
 // Reader's inline translations. Terms passed in are already normalized (see parseSearchTerms).
 
-export function normalizeFold(s: string): string {
-  return s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
-}
+// The one red style for search-term matches, everywhere a search highlights text
+// (Master Search, Greek results, Texts in-text search, Reader arrival terms).
+export const SEARCH_MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+
+export const normalizeFold = normalizeGreek
 
 // Folded (accent/case-stripped) copy of the text plus a map from each folded index back to the
 // original index, so a match found in folded space can be sliced from the ORIGINAL text.

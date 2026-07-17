@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
-import { findTermRanges, markSlice, normalizeFold } from '@/lib/highlight-terms'
+import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 
 // Two-column parallel view for a Greek search: each hit verse shows the Greek (word-by-word,
 // clickable → parsing pane) beside a parallel translation, with one ParsingPanel pinned at the
 // bottom. Reuses the reader's per-chapter word data (/api/reader) and translation index
 // (/api/translation), fetched lazily per shown chapter. See SearchPageView for the flat list.
 
-const MARK = 'bg-red-100 text-red-700 font-semibold rounded-sm'
+const MARK = SEARCH_MARK
 const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
 // First option turns the parallel column off (Greek-only); the rest are the available
 // translations. `none` is a sentinel — never fetched, never rendered as a column.
