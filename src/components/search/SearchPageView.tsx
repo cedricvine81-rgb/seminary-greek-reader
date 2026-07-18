@@ -188,7 +188,7 @@ function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
 }
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -329,7 +329,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   }, [query, mounted])
   // Keep the URL in sync (bookmarkable / shareable) without a server round-trip.
   useEffect(() => {
-    if (!mounted) return
+    // Embedded (the side panel over another page): the URL belongs to the page underneath —
+    // rewriting it to /search?… would clobber the host page's address (and the reader's
+    // ?ref=&corpus= position). The full /search page is the only owner of the URL.
+    if (!mounted || embedded) return
     const p = new URLSearchParams()
     if (query.trim()) p.set('q', query.trim())
     p.set('in', scopeVal)
@@ -732,7 +735,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           top-0 slid this block underneath the z-40 sticky header, which covered the search input
           as soon as the page scrolled. One wrapping row keeps the block compact: return link +
           query + scope + book + search types together, with the result-type tabs beneath. */}
-      <div className="sticky top-14 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-1.5 bg-gray-50/95 backdrop-blur border-b border-gray-100">
+      <div className={`sticky ${embedded ? 'top-0' : 'top-14'} z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-2 pb-1.5 bg-gray-50/95 backdrop-blur border-b border-gray-100`}>
         <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5">
         {/* When the search was launched from another page (right-click / ⌘K), offer a way back
             to exactly where they were. Navigate to the origin URL directly (not router.back())
@@ -752,7 +755,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               ref={inputRef}
               value={query}
               onChange={onQueryChange}
-              onKeyDown={e => { if (e.key === 'Enter') { lastPickedRef.current = query.trim(); pushRecent(query); setShowSug(false) } if (e.key === 'Escape') setShowSug(false) }}
+              onKeyDown={e => { if (e.key === 'Enter') { lastPickedRef.current = query.trim(); pushRecent(query); setShowSug(false) } if (e.key === 'Escape') { if (showSug) e.stopPropagation(); setShowSug(false) } }}
               onFocus={() => { if (suggestions.length) setShowSug(true) }}
               placeholder="Search the Greek NT & LXX, translations, or background texts…"
               className={`flex-1 min-w-0 text-base outline-none placeholder:text-gray-400 ${greekInput ? 'greek-text' : ''}`}
