@@ -1,7 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react'
 import { mtToEnglish } from '@/lib/versification'
+import { normalizeHebrew } from '@/lib/hebrew-fold'
+import { SEARCH_MARK } from '@/lib/highlight-terms'
 
 // Two-column parallel view for a Hebrew (MT) search: each hit verse shows the pointed Hebrew
 // beside a parallel translation — mirroring GreekSearchResults, minus the word-level parsing.
@@ -20,18 +22,42 @@ const TRANSLATIONS = [
   { lang: 'ru', label: 'Russian' }, { lang: 'ko', label: 'Korean' }, { lang: 'zh', label: 'Mandarin' },
 ]
 
-export type HebrewHit = { osisId: string; chapter: number; verse: number; text: string }
+// matchWords: the matched word surfaces of an "all forms" (Strong's) hit, computed server-side
+// from the index's per-word Strong's — the query is a lexeme, so its inflected forms can't be
+// found by text matching.
+export type HebrewHit = { osisId: string; chapter: number; verse: number; text: string; matchWords?: string[] }
 
-export function HebrewSearchResults({ hits, bookName, onOpen }: {
+export function HebrewSearchResults({ hits, bookName, onOpen, query = '' }: {
   hits: HebrewHit[]
   bookName: Map<string, string>
   onOpen: (h: HebrewHit, transLang: string) => void
+  query?: string
 }) {
   const [transLang, setTransLang] = useState('en')
   const [, bump] = useState(0)
   // verseId → translation text (per lang), lazily filled; a ref so late fetches always store.
   const trans = useRef<Record<string, Record<string, string>>>({})
   const fetchedTr = useRef<Set<string>>(new Set())
+
+  // The verse as visual tokens (maqqef-joined chains stay one token) with the searched word(s)
+  // marked red: an "all forms" hit marks the surfaces the server matched by Strong's number
+  // (h.matchWords); a surface search marks by consonantal containment of the folded query —
+  // the SAME fold the server index matched with (normalizeHebrew), so exactly the words that
+  // produced the hit get the mark.
+  const qParts = normalizeHebrew(query).split(' ').filter(Boolean)
+  function hebrewVerse(h: HebrewHit): ReactNode {
+    const tokenMatched: (tok: string) => boolean = h.matchWords?.length
+      ? tok => tok.split('־').some(part => h.matchWords!.includes(part))
+      : tok => qParts.length > 0 && qParts.some(p => normalizeHebrew(tok).includes(p))
+    if (!h.matchWords?.length && qParts.length === 0) return h.text
+    const toks = h.text.split(/\s+/)
+    return toks.map((t, i) => (
+      <Fragment key={i}>
+        <span className={tokenMatched(t) ? SEARCH_MARK : undefined}>{t}</span>
+        {i < toks.length - 1 ? ' ' : ''}
+      </Fragment>
+    ))
+  }
 
   // Fetch the English chapters the hits map ONTO (which can differ from the Hebrew chapter, e.g.
   // Heb Joel 4 → Eng Joel 3), so the right chapter's verses are on hand for the lookup.
@@ -85,7 +111,7 @@ export function HebrewSearchResults({ hits, bookName, onOpen }: {
                     font-size setting is scoped to its container), so the split view reads as
                     one continuous surface rather than the results shouting. */}
                 <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
-                  {h.text}
+                  {hebrewVerse(h)}
                 </p>
                 {showTrans && (
                   <p className="font-reading leading-relaxed text-gray-700 sm:border-l sm:border-gray-100 sm:pl-4">

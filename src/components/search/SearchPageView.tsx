@@ -105,7 +105,7 @@ function clampTrans(text: string): string {
   return (sp > MAX * 0.7 ? cut.slice(0, sp) : cut).trimEnd() + '…'
 }
 
-interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean; hebrew?: boolean }
+interface BibHit { osisId: string; chapter: number; verse: number; text: string; greek: boolean; hebrew?: boolean; matchWords?: string[] }
 
 // The opaque key the bg-context endpoint (mode:'bg') uses to identify a hit's entry — mirrors
 // entryKey() in src/lib/backgrounds-search.ts, built from a hit's OpenInTextsTarget.
@@ -407,8 +407,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: true,
             }))
           : s.kind === 'hebrew'
-          ? (data.results as { bookId: string; chapter: number; verse: number; text: string }[]).map(v => ({
-              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: false, hebrew: true,
+          ? (data.results as { bookId: string; chapter: number; verse: number; text: string; matchWords?: string[] }[]).map(v => ({
+              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, greek: false, hebrew: true, matchWords: v.matchWords,
             }))
           : (data.results as { id: string; text: string }[]).map(r => {
               const [osis, ch, vs] = r.id.split('.')
@@ -978,6 +978,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               <HebrewSearchResults
                 hits={displayBib}
                 bookName={bookName}
+                query={query}
                 onOpen={(h, tl) => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, tl !== 'none' ? tl : undefined, 'MT')}
               />
             ) : (

@@ -200,23 +200,14 @@ export async function searchByStrongs(strongs: string, corpus: SearchCorpus): Pr
 // hebrew-search-index.json.gz (scripts/build-hebrew-search-index.mjs): one entry per MT verse
 // with the pointed text (for display + surface search) and the distinct Strong's numbers in it
 // (for "all forms"). Loaded once and cached, like the Greek index.
-interface HebIndexVerse { id: string; bookId: string; chapter: number; verse: number; reference: string; text: string; strongs: string[] }
+interface HebIndexVerse { id: string; bookId: string; chapter: number; verse: number; reference: string; text: string; strongs: string[]; ws?: string[] }
 let _hebIndex: HebIndexVerse[] | null = null
 let _hebNorm: string[] | null = null
 
-// Fold a Hebrew string for the "this form" search: strip the vowel points and cantillation
-// (leaving the consonantal skeleton, which matches the same written form regardless of the
-// contextual pointing), normalise word-final letters to their medial forms, and treat the
-// maqqef as a word break.
-const HEB_FINALS: Record<string, string> = { '\u05DA': '\u05DB', '\u05DD': '\u05DE', '\u05DF': '\u05E0', '\u05E3': '\u05E4', '\u05E5': '\u05E6' }
-export function normalizeHebrew(s: string): string {
-  return s
-    .replace(/\u05BE/g, ' ')                          // maqqef -> space
-    .replace(/[\u0591-\u05C7]/g, '')                  // strip vowel points + cantillation -> consonants
-    .replace(/[\u05DA\u05DD\u05DF\u05E3\u05E5]/g, ch => HEB_FINALS[ch])  // final -> medial letters
-    .replace(/\s+/g, ' ')
-    .trim()
-}
+// The Hebrew fold lives in hebrew-fold.ts (client-safe) so the search-results highlighter
+// marks exactly what this index matched; re-exported here for existing importers.
+import { normalizeHebrew } from './hebrew-fold'
+export { normalizeHebrew }
 
 function getHebIndex(): HebIndexVerse[] {
   if (_hebIndex) return _hebIndex
@@ -238,11 +229,17 @@ function hebToVerse(v: HebIndexVerse): BiblicalVerse {
 }
 
 // Every MT verse containing the given Strong's number (e.g. 'H430', '430') — the "all forms"
-// search, since one Strong's number covers all inflections of a Hebrew lexeme.
-export async function searchHebrewByStrongs(strongs: string): Promise<BiblicalVerse[]> {
+// search, since one Strong's number covers all inflections of a Hebrew lexeme. Each hit also
+// carries the matched word SURFACES (`matchWords`) so the results pane can highlight the
+// inflected forms: the index's `ws` is per-word Strong's aligned with text.split(/[\s־]+/).
+export async function searchHebrewByStrongs(strongs: string): Promise<(BiblicalVerse & { matchWords?: string[] })[]> {
   const s = String(strongs).replace(/[^0-9]/g, '')
   if (!s) return []
-  return getHebIndex().filter(v => v.strongs.includes(s)).map(hebToVerse)
+  return getHebIndex().filter(v => v.strongs.includes(s)).map(v => {
+    const parts = v.text.split(/[\s־]+/).filter(Boolean)
+    const matchWords = v.ws ? Array.from(new Set(parts.filter((_, i) => v.ws![i] === s))) : undefined
+    return { ...hebToVerse(v), ...(matchWords && matchWords.length ? { matchWords } : {}) }
+  })
 }
 
 // Every MT verse whose text contains the given form — the "this form" search, cantillation-
