@@ -10,6 +10,7 @@ import { GreekSearchResults } from './GreekSearchResults'
 import { HebrewSearchResults } from './HebrewSearchResults'
 import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
+import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import { findProseWork } from '@/lib/prose-texts'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
@@ -214,6 +215,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // LXX hits from the reader API, Josephus / Greco-Roman prose from their morph sidecars.
   const [bgInfo, setBgInfo] = useState<LexicalInfoPanel | null>(null)
   const [bgSelKey, setBgSelKey] = useState<string | null>(null)
+  // Embedded over a page with a parsing pane (the Reader): send background-Greek parses there
+  // (parsing-info-bus) and skip the internal dock — same routing GreekSearchResults uses.
+  const [parseViaSink] = useState(() => embedded && hasParsingSink())
+  const showBgInfo = (i: LexicalInfoPanel | null) => { if (parseViaSink) emitParsingInfo(i); else setBgInfo(i) }
   const lxxWords = useRef<Record<string, { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }[]>>({})
   const morphMaps = useRef<Record<string, Record<string, ([string, string] | null)[]> | null>>({})
   const bgFetching = useRef<Set<string>>(new Set())
@@ -625,7 +630,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       const w = words?.[ti] && normalizeFold(words[ti].surface).includes(normalizeFold(clean))
         ? words[ti]
         : words?.find(x => normalizeFold(x.surface) === normalizeFold(clean) || normalizeFold(x.surface).includes(normalizeFold(clean)))
-      setBgInfo(w
+      showBgInfo(w
         ? { ...base, surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', parsing: w.parsing, strongs: w.strongs }
         : base)
       return
@@ -634,7 +639,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     const url = t.source === 'josephus' && t.workDir && t.book != null
       ? `/data/josephus/${t.workDir}/${t.book}.morph.json`
       : (() => { const pw = findProseWork(t.source as Exclude<OpenInTextsTarget['source'], 'lxx' | 'josephus'>); return pw ? pw.dataUrl.replace(/\.json$/, '.morph.json') : null })()
-    if (!url) { setBgInfo(base); return }
+    if (!url) { showBgInfo(base); return }
     if (!(url in morphMaps.current) && !bgFetching.current.has(url)) {
       bgFetching.current.add(url)
       try {
@@ -646,7 +651,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     // Josephus §§ are book-unique (keyed by section); prose works key by "<chapter>.<verse>".
     const entries = map ? (map[String(t.verse)] ?? map[`${t.chapter}.${t.verse}`]) : undefined
     const entry = entries?.[ti]
-    setBgInfo(entry ? { ...base, lexeme: entry[0], parsing: entry[1] } : base)
+    showBgInfo(entry ? { ...base, lexeme: entry[0], parsing: entry[1] } : base)
   }
 
   // Windowed, clickable Greek tokens for a background hit — same window budget as the plain
@@ -967,6 +972,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 context={context}
                 ctxMap={ctxMap}
                 onOpen={h => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)}
+                embedded={embedded}
               />
             ) : scope.kind === 'hebrew' ? (
               <HebrewSearchResults
@@ -1063,7 +1069,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
         {/* Parsing dock for Greek background results (the Greek NT/LXX lanes carry their own
             inside GreekSearchResults) — visible whenever Greek text is on screen. */}
-        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && <ParsingDock info={bgInfo} />}
+        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && !parseViaSink && <ParsingDock info={bgInfo} />}
       </div>
     </div>
   )

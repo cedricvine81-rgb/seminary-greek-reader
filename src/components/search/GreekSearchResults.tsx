@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
+import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 
 // Two-column parallel view for a Greek search: each hit verse shows the Greek (word-by-word,
 // clickable → parsing pane) beside a parallel translation, with one ParsingPanel pinned at the
@@ -34,7 +35,7 @@ function hilite(text: string, terms: string[]): ReactNode {
   return ranges.length ? <>{markSlice(text, ranges, 0, text.length, MARK)}</> : text
 }
 
-export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, onOpen }: {
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, onOpen, embedded = false }: {
   hits: GreekHit[]
   terms: string[]
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
@@ -45,11 +46,17 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   context: number
   ctxMap: Record<string, CtxVerse[]>
   onOpen: (h: GreekHit) => void
+  embedded?: boolean
 }) {
   const [transLang, setTransLang] = useState('en')
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
   const [selKey, setSelKey] = useState<string | null>(null)
   const [, bump] = useState(0)
+  // Embedded in the side panel over a page with its own parsing pane (the Reader): feed word
+  // parses THERE via the bus and drop the panel's internal dock — one pane, no duplication.
+  // Decided once at mount (the host page registers its sink before the panel can open).
+  const [useSink] = useState(() => embedded && hasParsingSink())
+  const showInfo = (i: LexicalInfoPanel | null) => { if (useSink) emitParsingInfo(i); else setInfo(i) }
 
   // verseId → tokens (Greek, per corpus) and verseId → translation text (per lang), lazily filled.
   const tokens = useRef<Record<string, Token[]>>({})
@@ -138,7 +145,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       const key = `${rowKey}.${ti}`
       const matched = termSet.has(normalizeFold(tok.surface)) || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
       const select = () => {
-        setInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
+        showInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
         setSelKey(key)
       }
       return (
@@ -194,8 +201,9 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
         })}
       </div>
 
-      {/* Parsing pane docked at the bottom — fills on Greek word hover/click, drag to resize. */}
-      <ParsingDock info={info} />
+      {/* Parsing pane docked at the bottom — fills on Greek word hover/click, drag to resize.
+          Hidden when the host page's pane is serving (useSink) — see parsing-info-bus. */}
+      {!useSink && <ParsingDock info={info} />}
     </div>
   )
 }

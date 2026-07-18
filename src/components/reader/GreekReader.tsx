@@ -33,6 +33,7 @@ import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
 import { mtToEnglish } from '@/lib/versification'
+import { registerParsingSink } from '@/lib/parsing-info-bus'
 import { normalizeGreek } from '@/lib/greek-utils'
 import { parseSearchTerms } from '@/lib/search-query'
 import { markTerms, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
@@ -1188,6 +1189,14 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       // Don't clear the panel when the mouse leaves due to the syntax menu appearing on top
       if (info !== null || !syntaxMenuRef.current) setParsingInfo(info)
     }
+  }, [])
+
+  // While the reader is mounted, the Master Search side panel routes its Greek-word parses
+  // here (parsing-info-bus) instead of stacking its own dock inside the panel — the reader's
+  // parsing pane serves both surfaces in the split view. Respects the Shift-lock.
+  useEffect(() => {
+    registerParsingSink(info => { if (!lockedRef.current) setParsingInfo(info) })
+    return () => registerParsingSink(null)
   }, [])
 
   const handleWordClick = useCallback((info: LexicalInfoPanel | null) => {
