@@ -84,7 +84,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <div className="min-h-screen flex flex-col">
           <PreviewBannerInner show={isInstructorPreview} />
           <AppHeader {...headerProps} />
-          <div className="flex flex-1 flex-col">
+          {/* id="app-content": the Master Search side panel squeezes this leftward (padding-right
+              via --search-panel-w in globals.css) so search + page read as a split view. */}
+          <div id="app-content" className="flex flex-1 flex-col">
             {children}
           </div>
           <AppFooter />

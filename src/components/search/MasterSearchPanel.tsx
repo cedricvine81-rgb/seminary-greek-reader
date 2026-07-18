@@ -5,19 +5,22 @@ import { X } from 'lucide-react'
 import { SearchPageView } from './SearchPageView'
 import type { MasterSearchPreset } from '@/lib/master-search-bus'
 
-// The Master Search as a side panel over the current page (Reader, Texts, …) instead of a
-// navigation: the page underneath stays mounted and visible, so there is nothing to "return"
-// to and a search can be read side-by-side with the passage it came from. Desktop: a right-hand
-// panel with a draggable left edge; mobile: a full-screen sheet. The full /search page still
-// exists for direct visits / deep links — this hosts the same SearchPageView in embedded mode
-// (no URL writes; the page underneath owns the address bar).
+// The Master Search as a side panel beside the current page (Reader, Texts, …) instead of a
+// navigation: the page stays mounted and visible, so there is nothing to "return" to and a
+// search can be read side-by-side with the passage it came from. Desktop: a right-hand panel
+// below the app header with a draggable left edge — the panel publishes its width on <html>
+// (data-search-panel + --search-panel-w) and globals.css shifts #app-content left by the same
+// amount, so it's a true SPLIT VIEW (the page is squeezed, not covered). Mobile: a full-screen
+// sheet. The full /search page still exists for direct visits / deep links — this hosts the
+// same SearchPageView in embedded mode (no URL writes; the page underneath owns the address bar).
 
 const WIDTH_KEY = 'masterSearchPanel.width'
 const MIN_W = 400
 const DEFAULT_W = 620
 
 function clampWidth(w: number): number {
-  const max = Math.round(window.innerWidth * 0.75)
+  // Cap at 60vw so the squeezed page keeps a usable reading column.
+  const max = Math.round(window.innerWidth * 0.6)
   return Math.min(Math.max(w, MIN_W), Math.max(max, MIN_W))
 }
 
@@ -33,6 +36,18 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
       if (Number.isFinite(v)) setWidth(clampWidth(v))
     } catch { /* ignore */ }
   }, [])
+
+  // Publish the open panel + its width on <html> so globals.css can squeeze #app-content left
+  // by the same amount (the split view). Removed on close so the page springs back.
+  useEffect(() => {
+    const root = document.documentElement
+    root.setAttribute('data-search-panel', '1')
+    root.style.setProperty('--search-panel-w', `${width}px`)
+    return () => {
+      root.removeAttribute('data-search-panel')
+      root.style.removeProperty('--search-panel-w')
+    }
+  }, [width])
 
   // Drag the left edge to resize (desktop only — the handle is hidden below lg).
   useEffect(() => {
@@ -69,7 +84,7 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
 
   return (
     <div
-      className="fixed inset-0 lg:inset-auto lg:top-0 lg:right-0 lg:h-screen lg:w-[var(--panel-w)] z-50 flex flex-col bg-gray-50 border-l border-gray-200 shadow-2xl"
+      className="fixed inset-0 z-50 lg:inset-auto lg:top-14 lg:right-0 lg:z-30 lg:h-[calc(100vh-3.5rem)] lg:w-[var(--panel-w)] flex flex-col bg-gray-50 border-l border-gray-200 shadow-xl"
       style={{ '--panel-w': `${width}px` } as React.CSSProperties}
       role="dialog"
       aria-label="Search"

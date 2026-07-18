@@ -81,7 +81,10 @@ export function HebrewSearchResults({ hits, bookName, onOpen }: {
                 {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
               </button>
               <div className={`mt-1 grid gap-x-4 gap-y-1 items-baseline ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
-                <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: '1.35em' }}>
+                {/* Same size the Reader's Hebrew column uses (its default — the reader's own
+                    font-size setting is scoped to its container), so the split view reads as
+                    one continuous surface rather than the results shouting. */}
+                <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
                   {h.text}
                 </p>
                 {showTrans && (

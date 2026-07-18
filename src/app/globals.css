@@ -450,3 +450,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
   background-image: linear-gradient(rgb(var(--hl-ink) / 0.34), rgb(var(--hl-ink) / 0.5));
   mix-blend-mode: screen;
 }
+
+/* ── Master Search side panel (desktop): split view, not overlay ─────────────────────────
+   While the panel is open, MasterSearchPanel sets data-search-panel + --search-panel-w on
+   <html>; the app content then shifts left into the remaining space instead of being covered,
+   so the page (e.g. the Reader's Hebrew column) stays fully visible beside the results.
+   Desktop only — the mobile panel is a full-screen sheet. */
+@media (min-width: 1024px) {
+  html[data-search-panel] #app-content {
+    padding-right: var(--search-panel-w, 620px);
+  }
+}

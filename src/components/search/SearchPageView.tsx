@@ -984,7 +984,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                     <button onClick={() => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, h.greek || h.hebrew ? undefined : (scope.kind === 'trans' ? scope.lang : undefined), h.hebrew ? 'MT' : undefined)} className="block w-full text-left py-2.5 px-2 pr-9 rounded-lg hover:bg-brand-50 transition-colors">
                       <span className="text-xs font-medium text-brand-600">{bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}</span>
                       {h.hebrew ? (
-                        <span dir="rtl" className="block text-gray-700 leading-loose font-hebrew" style={{ fontSize: '1.35em' }}>{h.text}</span>
+                        <span dir="rtl" className="block text-gray-700 leading-loose font-hebrew" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>{h.text}</span>
                       ) : ctx && ctx.length > 0 ? (
                         <span className={`block leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>
                           {ctx.map(cv => {
