@@ -3,8 +3,10 @@ import { useState, useRef, useEffect, KeyboardEvent, ChangeEvent } from 'react'
 import { Search, Delete } from 'lucide-react'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 
+const HEBREW_RE = /[֐-׿]/
+
 interface SearchBarProps {
-  onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean }) => void
+  onSearch: (query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; strongs?: string }) => void
   // Mobile NT/LXX/HB buttons switch the reader's corpus and open that corpus's passage picker.
   onVerseClick?: (corpus: 'GNT' | 'LXX' | 'MT') => void
   viewCorpus?: 'GNT' | 'LXX' | 'MT'
@@ -25,7 +27,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
   const [query, setQuery]             = useState('')
   const [type, setType]               = useState<'word' | 'reference'>('reference')
   const [showKeyboard, setShowKeyboard] = useState(false)
-  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string }[]>([])
+  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string; strongs?: string }[]>([])
 
   const inputRef    = useRef<HTMLInputElement>(null)
   const wrapperRef  = useRef<HTMLDivElement>(null)
@@ -45,20 +47,23 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
   const effectiveType = isMobile ? 'word' : type
   // On mobile, a non-null viewLang means a translation is showing → search that language.
   const effectiveLang = isMobile && effectiveType === 'word' ? (viewLang ?? null) : null
+  // Hebrew word mode: the HB corpus is in view (or Hebrew has been typed/pasted) → suggest
+  // pointed Hebrew lemmas and skip the Greek Beta-Code transliteration.
+  const hebrewMode = effectiveType === 'word' && !effectiveLang && (viewCorpus === 'MT' || HEBREW_RE.test(query))
 
   // Predictive word suggestions: after 2+ letters of a word search, fetch matching words.
   useEffect(() => {
     if (effectiveType !== 'word' || query.trim().length < 2 || query.trim() === lastSubmittedRef.current) { setSuggestions([]); return }
     const ctrl = new AbortController()
     const t = setTimeout(() => {
-      const url = `/api/suggest?q=${encodeURIComponent(query.trim())}${effectiveLang ? `&lang=${effectiveLang}` : ''}`
+      const url = `/api/suggest?q=${encodeURIComponent(query.trim())}${effectiveLang ? `&lang=${effectiveLang}` : hebrewMode ? '&hebrew=1' : ''}`
       fetch(url, { signal: ctrl.signal })
         .then(r => (r.ok ? r.json() : { suggestions: [] }))
         .then(d => setSuggestions(d.suggestions ?? []))
         .catch(() => { /* aborted / offline */ })
     }, 150)
     return () => { clearTimeout(t); ctrl.abort() }
-  }, [query, effectiveType, effectiveLang])
+  }, [query, effectiveType, effectiveLang, hebrewMode])
 
   // Close keyboard + suggestions when clicking outside the whole component
   useEffect(() => {
@@ -78,13 +83,14 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
   }
 
   // Pick a suggestion → fill it and search. A Greek pick is a lexeme, so search all its
-  // forms; a translation pick is a plain word in that language.
-  function pick(word: string) {
+  // forms; a Hebrew pick carries its Strong's number ("all forms" for Hebrew); a translation
+  // pick is a plain word in that language.
+  function pick(word: string, strongs?: string) {
     lastSubmittedRef.current = word
     setQuery(word)
     setSuggestions([])
     setShowKeyboard(false)
-    onSearch(word, effectiveType, effectiveLang ? { lang: effectiveLang } : { lemma: true })
+    onSearch(word, effectiveType, effectiveLang ? { lang: effectiveLang } : strongs ? { strongs } : { lemma: true })
   }
 
   function handleKey(e: KeyboardEvent<HTMLInputElement>) {
@@ -94,7 +100,8 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
 
   // In Greek word mode, transliterate typed Latin → Greek live (TLG Beta Code: l→λ, q→θ …).
   // Greek text and non-letters pass through, and it's 1:1 so the cursor position is preserved.
-  const greekTyping = effectiveType === 'word' && !effectiveLang
+  // Hebrew mode types raw (an OS Hebrew keyboard / paste), so no transliteration there.
+  const greekTyping = effectiveType === 'word' && !effectiveLang && !hebrewMode
   function onChange(e: ChangeEvent<HTMLInputElement>) {
     if (!greekTyping) { setQuery(e.target.value); return }
     const el = e.target
@@ -184,10 +191,11 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
           value={query}
           onChange={onChange}
           onKeyDown={handleKey}
-          placeholder={effectiveLang ? `Search ${viewLangLabel ?? 'translation'}…` : effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
-          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : ''} ${effectiveType === 'word' && !effectiveLang ? 'pr-10' : 'pr-3'}`}
+          placeholder={effectiveLang ? `Search ${viewLangLabel ?? 'translation'}…` : hebrewMode ? 'Search Hebrew word…' : effectiveType === 'word' ? 'Search Greek word…' : 'e.g. John 3:16'}
+          dir={HEBREW_RE.test(query) ? 'rtl' : undefined}
+          className={`w-full pl-9 py-2 text-base sm:text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekTyping ? 'greek-text' : hebrewMode ? 'font-hebrew' : ''} ${greekTyping ? 'pr-10' : 'pr-3'}`}
         />
-        {effectiveType === 'word' && !effectiveLang && (
+        {greekTyping && (
           <button
             type="button"
             title="Greek keyboard — or just type Beta Code (l→λ, q→θ, h→η …)"
@@ -201,15 +209,16 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
         {/* Predictive word suggestions */}
         {suggestions.length > 0 && !showKeyboard && (
           <div className="absolute left-0 right-0 top-full mt-1 z-40 bg-popover border border-gray-200 rounded-xl shadow-lg overflow-hidden max-h-64 overflow-y-auto">
-            {suggestions.map(s => (
+            {suggestions.map((s, i) => (
               <button
-                key={s.word}
+                key={`${s.word}|${i}`}
                 type="button"
-                onMouseDown={e => { e.preventDefault(); pick(s.word) }}
+                onMouseDown={e => { e.preventDefault(); pick(s.word, s.strongs) }}
                 className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2"
               >
                 <span
-                  className={`text-gray-800 shrink-0 ${effectiveLang ? '' : 'font-reading'}`}
+                  dir={HEBREW_RE.test(s.word) ? 'rtl' : undefined}
+                  className={`text-gray-800 shrink-0 ${effectiveLang ? '' : HEBREW_RE.test(s.word) ? 'font-hebrew' : 'font-reading'}`}
                   style={{ fontSize: effectiveLang ? '0.875rem' : '1rem' }}
                 >
                   {s.word}
@@ -222,7 +231,7 @@ export function SearchBar({ onSearch, onVerseClick, viewCorpus, viewLang, viewLa
       </div>
 
       {/* Greek keyboard popup */}
-      {showKeyboard && effectiveType === 'word' && !effectiveLang && (
+      {showKeyboard && greekTyping && (
         <div className="absolute right-0 top-full mt-1 z-50 bg-popover border border-gray-200 rounded-xl shadow-lg p-2 select-none">
           {GREEK_ROWS.map((row, ri) => (
             <div key={ri} className="flex gap-1 mb-1">

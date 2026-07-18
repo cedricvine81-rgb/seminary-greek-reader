@@ -61,6 +61,7 @@ function parseScope(v: string): Scope {
 }
 
 const GREEK_RE = /[Ͱ-Ͽἀ-῿]/
+const HEBREW_RE = /[֐-׿]/
 const MARK = SEARCH_MARK
 
 // Result-text size for the ⋮ display menu — the same sm/md/lg/xl steps and Α-slider control the
@@ -231,9 +232,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [greekInput, setGreekInput] = useState(false)   // QWERTY→Greek (Beta Code) typing
-  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string }[]>([])
+  const [suggestions, setSuggestions] = useState<{ word: string; sub?: string; strongs?: string }[]>([])
   const [showSug, setShowSug] = useState(false)
-  const lastPickedRef = useRef('')
+  // Seeded with the arrival query (preset / deep link) so the suggestions dropdown doesn't
+  // auto-open over the results the moment the page/panel loads with a prefilled search.
+  const lastPickedRef = useRef(initialQuery.trim())
   const [loading, setLoading] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [catalog, setCatalog] = useState<Catalog | null>(null)
@@ -247,8 +250,13 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // we were handed via ?mode=lemma; editing the query drops back to a normal word search.
   const lemmaMode = initialLemma && query.trim() === initialQuery.trim()
   // Hebrew "all forms": the clicked word's Strong's number, active only while the query still
-  // matches what the word menu prefilled (edit the box → fall back to a surface search).
-  const hebStrongs = initialStrongs && query.trim() === initialQuery.trim() ? initialStrongs : null
+  // matches what set it — either the word-menu preset (initialStrongs) or a picked lexeme
+  // suggestion (hebPick, which carries the suggestion's Strong's). Editing the box drops back
+  // to a surface search.
+  const [hebPick, setHebPick] = useState<{ q: string; strongs: string } | null>(null)
+  const hebStrongs = hebPick && query.trim() === hebPick.q
+    ? hebPick.strongs
+    : initialStrongs && query.trim() === initialQuery.trim() ? initialStrongs : null
   const terms = useMemo(() => parseSearchTerms(query), [query])
   const isBiblical = scope.kind !== 'bg'
   // Greek hits arrive uncapped in canonical order → re-sort client-side for relevance.
@@ -470,15 +478,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       .catch(() => { if (id === ctxReq.current) setCtxMap({}) })
   }, [isBiblical, context, displayBib, bg, scope])
 
-  // Predictive typing: autocomplete the last word of the query. Translation scope → that
-  // language's words; Greek scope / Greek text → Greek dictionary lexemes (with glosses).
+  // Predictive typing: autocomplete the last word of the query. Hebrew scope / Hebrew text →
+  // pointed Hebrew lemmas (with glosses + Strong's, so a pick runs "all forms"); translation
+  // scope → that language's words; Greek scope / Greek text → Greek dictionary lexemes.
   useEffect(() => {
     const lastWord = query.match(/\S*$/)?.[0] ?? ''
     if (lastWord.length < 2 || lastWord.startsWith('"') || query.trim() === lastPickedRef.current) { setSuggestions([]); return }
-    // A Greek-script word always gets Greek lexeme suggestions; otherwise a translation's own
-    // words (or English for background text). Greek scope has no lang → Greek lexemes.
+    // Script wins over scope (a Hebrew/Greek word gets its own dictionary anywhere); otherwise
+    // a translation's own words (or English for background text). Greek scope has no lang.
     let langParam = ''
-    if (GREEK_RE.test(lastWord)) langParam = ''
+    if (HEBREW_RE.test(lastWord) || scope.kind === 'hebrew') langParam = '&hebrew=1'
+    else if (GREEK_RE.test(lastWord)) langParam = ''
     else if (scope.kind === 'trans') langParam = `&lang=${scope.lang}`
     else if (scope.kind === 'bg' && scope.lang !== 'grc') langParam = '&lang=en'
     const ctrl = new AbortController()
@@ -506,12 +516,13 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       setQuery(el.value)
     }
   }
-  function pickSuggestion(word: string) {
-    setQuery(q => {
-      const next = q.replace(/\S*$/, word)
-      lastPickedRef.current = next.trim()
-      return next
-    })
+  function pickSuggestion(word: string, strongs?: string) {
+    const next = query.replace(/\S*$/, word)
+    lastPickedRef.current = next.trim()
+    setQuery(next)
+    // A Hebrew lexeme pick carries its Strong's number → run the "all forms" search for it
+    // (a plain text search would miss construct/suffixed inflections).
+    setHebPick(strongs ? { q: next.trim(), strongs } : null)
     setSuggestions([]); setShowSug(false)
     inputRef.current?.focus()
   }
@@ -783,10 +794,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <>
               <div className="fixed inset-0 z-30" onClick={() => setShowSug(false)} />
               <div className="absolute left-0 right-0 top-full mt-1 z-40 max-h-72 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg">
-                {suggestions.map(s => (
-                  <button key={s.word} type="button" onMouseDown={e => { e.preventDefault(); pickSuggestion(s.word) }}
+                {suggestions.map((s, i) => (
+                  <button key={`${s.word}|${i}`} type="button" onMouseDown={e => { e.preventDefault(); pickSuggestion(s.word, s.strongs) }}
                     className="w-full text-left px-3 py-2 hover:bg-brand-50 border-b border-gray-50 last:border-0 flex items-baseline gap-2">
-                    <span className={`text-gray-800 shrink-0 ${GREEK_RE.test(s.word) ? 'greek-text text-base' : 'text-sm'}`}>{s.word}</span>
+                    <span dir={HEBREW_RE.test(s.word) ? 'rtl' : undefined}
+                      className={`text-gray-800 shrink-0 ${HEBREW_RE.test(s.word) ? 'font-hebrew text-base' : GREEK_RE.test(s.word) ? 'greek-text text-base' : 'text-sm'}`}>{s.word}</span>
                     {s.sub && <span className="text-xs text-gray-400 truncate">{s.sub}</span>}
                   </button>
                 ))}

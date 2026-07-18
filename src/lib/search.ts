@@ -254,6 +254,44 @@ export async function searchHebrewBySurface(query: string): Promise<BiblicalVers
   return out
 }
 
+// ─── Hebrew suggestions ───────────────────────────────────────────────────────
+// Dictionary suggestions for a typed Hebrew prefix (the parallel of suggestGreekLexemes):
+// pointed lemmas from the Hebrew lexicon, matched on the consonantal fold and ordered by
+// corpus frequency (counted from the verse index's per-word Strong's). Each suggestion
+// carries its Strong's number so a pick can run the "all forms" search.
+interface HebLemmaEntry { l: string; g: string; n: string; s: string; f: number }
+let _hebLemmas: HebLemmaEntry[] | null = null
+function getHebLemmaIndex(): HebLemmaEntry[] {
+  if (_hebLemmas) return _hebLemmas
+  const freq = new Map<string, number>()
+  for (const v of getHebIndex()) for (const s of v.ws ?? []) if (s) freq.set(s, (freq.get(s) ?? 0) + 1)
+  let lex: Record<string, { lemma?: string; gloss?: string }> = {}
+  try {
+    lex = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'data', 'hebrew-lexicon.json'), 'utf8'))
+  } catch { /* no lexicon → no suggestions */ }
+  const out: HebLemmaEntry[] = []
+  for (const [s, e] of Object.entries(lex)) {
+    const f = freq.get(s) ?? 0
+    if (!e.lemma || f === 0) continue          // not attested in the MT corpus
+    out.push({ l: e.lemma, g: e.gloss ?? '', n: normalizeHebrew(e.lemma), s, f })
+  }
+  out.sort((a, b) => b.f - a.f)
+  _hebLemmas = out
+  return out
+}
+export function suggestHebrewLexemes(prefix: string, limit = 12): { word: string; sub: string; strongs: string }[] {
+  const p = normalizeHebrew(prefix)
+  if (!p) return []
+  const out: { word: string; sub: string; strongs: string }[] = []
+  for (const e of getHebLemmaIndex()) {          // pre-sorted by frequency
+    if (!e.n.startsWith(p)) continue
+    if (out.some(x => x.word === e.l && x.sub === e.g)) continue   // exact duplicate entry
+    out.push({ word: e.l, sub: e.g, strongs: e.s })
+    if (out.length >= limit) break
+  }
+  return out
+}
+
 // ─── Lexicon search (still DB-backed — lexical entries are small) ─────────────
 
 export async function searchLexicon(query: string, limit = 20) {

@@ -1031,17 +1031,20 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     return false
   }
 
-  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; highlight?: string }) {
+  async function handleSearch(query: string, type: 'word' | 'reference', opts?: { lang?: string; lemma?: boolean; highlight?: string; strongs?: string }) {
     const trimmed = query.trim()
     if (!trimmed) return
 
     // Word searches — the box's "Word" mode, a lexeme-suggestion pick, or a mobile
-    // translation-word search — go to the full /search page like every other pane. The reader
-    // no longer hosts an in-page results panel. Greek words scope to the corpus in view; a
-    // translation word (opts.lang, mobile) scopes to that language; a picked lexeme is "all forms".
+    // translation-word search — open Master Search like every other pane. The reader no longer
+    // hosts an in-page results panel. A Hebrew-script word scopes to the MT (with the picked
+    // suggestion's Strong's = "all forms"); Greek words scope to the corpus in view; a
+    // translation word (opts.lang, mobile) scopes to that language; a Greek lexeme pick is
+    // "all forms" via lemma.
     if (type === 'word') {
-      const scope = opts?.lang ? `trans:${opts.lang}` : `greek:${corpus === 'LXX' ? 'LXX' : 'GNT'}`
-      openMasterSearch({ query: trimmed, scope, lemma: opts?.lemma })
+      const heb = /[֐-׿]/.test(trimmed)
+      const scope = opts?.lang ? `trans:${opts.lang}` : heb ? 'hebrew:MT' : `greek:${corpus === 'LXX' ? 'LXX' : 'GNT'}`
+      openMasterSearch({ query: trimmed, scope, lemma: heb ? undefined : opts?.lemma, strongs: heb ? opts?.strongs : undefined })
       return
     }
 
