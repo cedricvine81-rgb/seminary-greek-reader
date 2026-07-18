@@ -782,6 +782,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const noResults = query.trim().length >= 2 && !loading &&
     ((isBiblical && bib && bib.length === 0) || (!isBiblical && bg && bg.total === 0))
 
+  // The result controls (count + Context + translation + sort) live in the sticky header so
+  // they stay pinned while the results scroll. Shown once results exist; the count label
+  // depends on the result kind.
+  const hasResults = !loading && ((isBiblical && !!displayBib && displayBib.length > 0) || (!isBiblical && !!bg && bg.total > 0))
+  const resultCountLabel = isBiblical && displayBib
+    ? `${displayBib.length}${displayBib.length >= 300 ? '+' : ''} verse${displayBib.length === 1 ? '' : 's'}`
+    : bg
+    ? `${bg.total}${bg.truncated ? '+' : ''} match${bg.total === 1 ? '' : 'es'} in ${bg.groups.length} work${bg.groups.length === 1 ? '' : 's'}`
+    : ''
+
   return (
     <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
       {/* Sticky controls — pinned BELOW the app header (top-14 = its 3.5rem height): sticking at
@@ -994,6 +1004,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             })}
           </div>
         )}
+
+        {/* Result controls — inside the sticky header so they stay pinned while results scroll. */}
+        {hasResults && <div className="mt-1.5">{controlsBar(resultCountLabel)}</div>}
       </div>
 
       {/* Results — result text inherits this font size (the ⋮ display menu's Text size).
@@ -1035,7 +1048,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         {/* Biblical hits */}
         {!loading && isBiblical && displayBib && displayBib.length > 0 && (
           <div>
-            {controlsBar(`${displayBib.length}${displayBib.length >= 300 ? '+' : ''} verse${displayBib.length === 1 ? '' : 's'}`)}
             {scope.kind === 'greek' ? (
               <GreekSearchResults
                 hits={displayBib}
@@ -1100,7 +1112,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         {/* Background hits */}
         {!loading && !isBiblical && bg && bg.total > 0 && displayBg && (
           <div>
-            {controlsBar(`${bg.total}${bg.truncated ? '+' : ''} match${bg.total === 1 ? '' : 'es'} in ${bg.groups.length} work${bg.groups.length === 1 ? '' : 's'}`)}
             {displayBg.mode === 'flat' ? (
               // Relevance: a single list across works, each row labelled with its work.
               // Greek rows are divs (their words are clickable → parsing dock); the ref label
