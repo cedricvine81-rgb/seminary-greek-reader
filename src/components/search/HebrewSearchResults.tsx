@@ -1,11 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { mtToEnglish } from '@/lib/versification'
 
 // Two-column parallel view for a Hebrew (MT) search: each hit verse shows the pointed Hebrew
 // beside a parallel translation — mirroring GreekSearchResults, minus the word-level parsing.
 // Translations are the reader's per-chapter index (/api/translation), fetched lazily per shown
-// chapter. See SearchPageView for how this slots into the biblical-results render.
+// chapter. Hebrew (BHS) and English versification diverge in ~30 chapters (Psalm titles, Joel,
+// Malachi, …), so each hit is mapped through mtToEnglish before the translation is fetched and
+// looked up — otherwise the neighbouring English verse would show. See SearchPageView.
 
 // First option turns the parallel column off; the rest are the available translations. Every MT
 // book is in the 66-book canon, so all of these have Old-Testament coverage (unlike the LXX-only
@@ -30,8 +33,13 @@ export function HebrewSearchResults({ hits, bookName, onOpen }: {
   const trans = useRef<Record<string, Record<string, string>>>({})
   const fetchedTr = useRef<Set<string>>(new Set())
 
+  // Fetch the English chapters the hits map ONTO (which can differ from the Hebrew chapter, e.g.
+  // Heb Joel 4 → Eng Joel 3), so the right chapter's verses are on hand for the lookup.
   const chapters = new Set<string>()
-  for (const h of hits) chapters.add(`${h.osisId}.${h.chapter}`)
+  for (const h of hits) {
+    const eng = mtToEnglish(h.osisId, h.chapter, h.verse)
+    if (eng) chapters.add(`${h.osisId}.${eng.chapter}`)
+  }
 
   useEffect(() => {
     if (transLang === 'none') return
@@ -65,7 +73,8 @@ export function HebrewSearchResults({ hits, bookName, onOpen }: {
 
       <div className="divide-y divide-gray-100">
         {hits.map((h, i) => {
-          const vid = `${h.osisId}.${h.chapter}.${h.verse}`
+          const eng = mtToEnglish(h.osisId, h.chapter, h.verse)
+          const vid = eng ? `${h.osisId}.${eng.chapter}.${eng.verse}` : null
           return (
             <div key={i} className="py-2.5">
               <button onClick={() => onOpen(h, transLang)} className="text-xs font-medium text-brand-600 hover:underline">
@@ -77,7 +86,9 @@ export function HebrewSearchResults({ hits, bookName, onOpen }: {
                 </p>
                 {showTrans && (
                   <p className="font-reading leading-relaxed text-gray-700 sm:border-l sm:border-gray-100 sm:pl-4">
-                    {trMap[vid] ?? <span className="text-gray-300 italic">…</span>}
+                    {vid === null
+                      ? <span className="text-gray-400 italic">(superscription)</span>
+                      : trMap[vid] ?? <span className="text-gray-300 italic">…</span>}
                   </p>
                 )}
               </div>
