@@ -1,9 +1,12 @@
 'use client'
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, createContext, useContext } from 'react'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
+import hebrewData from '@/data/hebrew-vocabulary.json'
+
+export type VocabLang = 'greek' | 'hebrew'
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -47,8 +50,6 @@ interface StudyConfig {
 
 // ── Constants ────────────────────────────────────────────────────────────────
 
-const WORDS = bgvbData as BgvbWord[]
-
 // Fisher–Yates: an unbiased shuffle (unlike `sort(() => Math.random() - 0.5)`,
 // which skews toward the original order).
 function shuffled<T>(arr: T[]): T[] {
@@ -59,13 +60,6 @@ function shuffled<T>(arr: T[]): T[] {
   }
   return a
 }
-const STORAGE_KEY = 'bgvb-progress-v1'
-const ALL_SECTIONS = [1, 2, 3, 4, 5, 6, 7]
-const ALL_POS = Array.from(new Set(WORDS.map(w => w.pos))).sort()
-
-const SECTION_CUMULATIVE_COVERAGE: Record<number, number> = {
-  1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2,
-}
 
 const POS_LABELS: Record<string, string> = {
   Verb: 'Verb', Noun: 'Noun', Adj: 'Adjective', Adv: 'Adverb',
@@ -73,42 +67,76 @@ const POS_LABELS: Record<string, string> = {
   Art: 'Article', Interj: 'Interjection', Particle: 'Particle',
 }
 
-// Pre-compute subsections: 20-word chunks per section, sorted by PDF frequency rank
-// Words with an `order` field (1 = most frequent) are sorted ascending by order.
-// Words without order fall after ranked words, sorted by freq desc as fallback.
-// WORD_SUBSECTION maps each word → its subsection key (e.g. "1-A")
-const SECTION_SUBSECTIONS: Record<number, Subsection[]> = {}
-const WORD_SUBSECTION: Record<string, string> = {}
+// ── Per-language vocabulary datasets ──────────────────────────────────────────
+// The Greek (Biblical Greek Vocabulary Builder) and Hebrew (frequency-ranked from the MT,
+// scripts/build-hebrew-vocabulary.py) decks share the same shape and UI; a VocabData bundles a
+// deck with everything the components need (font/direction, storage key, section coverage).
 
-ALL_SECTIONS.forEach(s => {
-  const sectionWords = [...WORDS.filter(w => w.section === s)]
-    .sort((a, b) => {
-      // Primary: order field (ascending: lower order = more frequent = first)
+interface VocabData {
+  words: BgvbWord[]
+  sections: number[]
+  allPos: string[]
+  coverage: Record<number, number>            // cumulative % of the corpus through section N
+  subsections: Record<number, Subsection[]>
+  wordSubsection: Record<string, string>      // word → its subsection key ("1-A")
+  allSubsectionKeys: string[]
+  scriptClass: string                          // headword font class: greek-text | font-hebrew
+  rtl: boolean
+  storageKey: string
+  scriptLabel: string                          // 'Gk' / 'Heb' for the direction toggle
+  scriptName: string                           // 'Greek' / 'Hebrew' for hints
+  corpusLabel: string                          // 'GNT' / 'the Hebrew Bible' for the frequency line
+}
+
+function buildVocab(
+  words: BgvbWord[],
+  coverage: Record<number, number>,
+  opts: { scriptClass: string; rtl: boolean; storageKey: string; scriptLabel: string; scriptName: string; corpusLabel: string },
+): VocabData {
+  const sections = Array.from(new Set(words.map(w => w.section))).sort((a, b) => a - b)
+  const allPos = Array.from(new Set(words.map(w => w.pos))).sort()
+  // 20-word subsections per section, ordered by frequency rank (the `order` field; freq desc as
+  // a fallback). WORD_SUBSECTION maps each word to its subsection key ("1-A").
+  const subsections: Record<number, Subsection[]> = {}
+  const wordSubsection: Record<string, string> = {}
+  sections.forEach(s => {
+    const sectionWords = [...words.filter(w => w.section === s)].sort((a, b) => {
       if (a.order !== undefined && b.order !== undefined) return a.order - b.order
-      if (a.order !== undefined) return -1   // a has order, comes first
-      if (b.order !== undefined) return 1    // b has order, comes first
-      // Fallback: freq descending
+      if (a.order !== undefined) return -1
+      if (b.order !== undefined) return 1
       return (b.freq ?? 0) - (a.freq ?? 0)
     })
-  const subs: Subsection[] = []
-  for (let i = 0; i < sectionWords.length; i += 20) {
-    const chunk = sectionWords.slice(i, i + 20)
-    const label = String.fromCharCode(65 + subs.length) // A, B, C…
-    const start = i + 1
-    const end = Math.min(i + 20, sectionWords.length)
-    const key = `${s}-${label}`
-    subs.push({ key, label, rankRange: `${start}–${end}`, words: chunk })
-    chunk.forEach(w => { WORD_SUBSECTION[w.word] = key })
-  }
-  SECTION_SUBSECTIONS[s] = subs
-})
+    const subs: Subsection[] = []
+    for (let i = 0; i < sectionWords.length; i += 20) {
+      const chunk = sectionWords.slice(i, i + 20)
+      const label = String.fromCharCode(65 + subs.length) // A, B, C…
+      const key = `${s}-${label}`
+      subs.push({ key, label, rankRange: `${i + 1}–${Math.min(i + 20, sectionWords.length)}`, words: chunk })
+      chunk.forEach(w => { wordSubsection[w.word] = key })
+    }
+    subsections[s] = subs
+  })
+  const allSubsectionKeys = sections.flatMap(s => subsections[s].map(sub => sub.key))
+  return { words, sections, allPos, coverage, subsections, wordSubsection, allSubsectionKeys, ...opts }
+}
 
-const ALL_SUBSECTION_KEYS = ALL_SECTIONS.flatMap(s => SECTION_SUBSECTIONS[s].map(sub => sub.key))
+const GREEK_VOCAB = buildVocab(
+  bgvbData as BgvbWord[],
+  { 1: 69.5, 2: 77.2, 3: 81.6, 4: 84.4, 5: 86.4, 6: 87.8, 7: 89.2 },
+  { scriptClass: 'greek-text', rtl: false, storageKey: 'bgvb-progress-v1', scriptLabel: 'Gk', scriptName: 'Greek', corpusLabel: 'GNT' },
+)
+const HEBREW_VOCAB = buildVocab(
+  hebrewData as BgvbWord[],
+  { 1: 60.8, 2: 71.1, 3: 76.9, 4: 80.3, 5: 82.8, 6: 84.9, 7: 86.8 },
+  { scriptClass: 'font-hebrew', rtl: true, storageKey: 'hebrew-vocab-progress-v1', scriptLabel: 'Heb', scriptName: 'Hebrew', corpusLabel: 'the Hebrew Bible' },
+)
+const VOCAB: Record<VocabLang, VocabData> = { greek: GREEK_VOCAB, hebrew: HEBREW_VOCAB }
 
-const DEFAULT_CONFIG: StudyConfig = {
-  mode: 'greek-to-english',
-  subsections: [],
-  pos: [...ALL_POS],
+const VocabCtx = createContext<VocabData>(GREEK_VOCAB)
+const useVocab = () => useContext(VocabCtx)
+
+function defaultConfig(V: VocabData): StudyConfig {
+  return { mode: 'greek-to-english', subsections: [], pos: [...V.allPos] }
 }
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -121,23 +149,23 @@ function isDue(p: WordProgress) {
   return p.dueDate <= todayStr()
 }
 
-function loadProgress(): ProgressMap {
+function loadProgress(storageKey: string): ProgressMap {
   if (typeof window === 'undefined') return {}
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') } catch { return {} }
+  try { return JSON.parse(localStorage.getItem(storageKey) || '{}') } catch { return {} }
 }
 
-function saveProgress(p: ProgressMap) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(p))
+function saveProgress(storageKey: string, p: ProgressMap) {
+  localStorage.setItem(storageKey, JSON.stringify(p))
 }
 
-function filterWords(words: BgvbWord[], config: StudyConfig): BgvbWord[] {
+function filterWords(config: StudyConfig, V: VocabData): BgvbWord[] {
   // No sections selected → treat as all sections selected
   const effectiveSubSet = config.subsections.length === 0
-    ? new Set(ALL_SUBSECTION_KEYS)
+    ? new Set(V.allSubsectionKeys)
     : new Set(config.subsections)
 
-  return words.filter(w => {
-    if (!effectiveSubSet.has(WORD_SUBSECTION[w.word] ?? '')) return false
+  return V.words.filter(w => {
+    if (!effectiveSubSet.has(V.wordSubsection[w.word] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
     return true
   })
@@ -145,10 +173,13 @@ function filterWords(words: BgvbWord[], config: StudyConfig): BgvbWord[] {
 
 // ── Main component ───────────────────────────────────────────────────────────
 
-export function VocabBuilder() {
+export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLang; onLangChange?: (l: VocabLang) => void }) {
+  // The active deck. VocabBuilder is remounted (key={lang}) when the language switches, so
+  // per-language state (config, session, progress) simply starts fresh — no cross-over.
+  const V = VOCAB[lang]
   const [tab, setTab] = useState<Tab>('study')
   const [progress, setProgress] = useState<ProgressMap>({})
-  const [config, setConfig] = useState<StudyConfig>(DEFAULT_CONFIG)
+  const [config, setConfig] = useState<StudyConfig>(() => defaultConfig(V))
   const [sessionWords, setSessionWords] = useState<BgvbWord[] | null>(null)
   const [directions, setDirections] = useState<boolean[]>([])
   const [idx, setIdx] = useState(0)
@@ -157,12 +188,12 @@ export function VocabBuilder() {
   const [finished, setFinished] = useState(false)
   const [missedWordKeys, setMissedWordKeys] = useState<Set<string>>(new Set())
 
-  useEffect(() => { setProgress(loadProgress()) }, [])
+  useEffect(() => { setProgress(loadProgress(V.storageKey)) }, [V.storageKey])
 
-  const previewWords = useMemo(() => filterWords(WORDS, config), [config])
+  const previewWords = useMemo(() => filterWords(config, V), [config, V])
 
   const startStudying = (shuffle = true) => {
-    let words = filterWords(WORDS, config)
+    let words = filterWords(config, V)
     if (shuffle) words = shuffled(words)
     const dirs = words.map(() => config.mode !== 'english-to-greek')
     setSessionWords(words)
@@ -213,7 +244,7 @@ export function VocabBuilder() {
         total: (prev?.total ?? 0) + 1,
       },
     }
-    saveProgress(updated)
+    saveProgress(V.storageKey, updated)
     setProgress(updated)
     setSessionStats(s => ({ correct: s.correct + (quality >= 3 ? 1 : 0), total: s.total + 1 }))
 
@@ -257,20 +288,40 @@ export function VocabBuilder() {
   ]
 
   return (
+    <VocabCtx.Provider value={V}>
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6 space-y-6">
-      <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
-        {TABS.map(({ id, label, action }) => (
-          <button
-            key={id}
-            onClick={action}
-            className={clsx(
-              'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors',
-              tab === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
-            )}
-          >
-            {label}
-          </button>
-        ))}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+          {TABS.map(({ id, label, action }) => (
+            <button
+              key={id}
+              onClick={action}
+              className={clsx(
+                'flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors',
+                tab === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {onLangChange && (
+          <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">
+            {([['greek', 'Greek'], ['hebrew', 'Hebrew']] as const).map(([id, label]) => (
+              <button
+                key={id}
+                onClick={() => onLangChange(id)}
+                className={clsx(
+                  'px-3 py-2 rounded-lg text-sm font-medium transition-colors',
+                  lang === id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700'
+                )}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {tab === 'study' && (
@@ -307,6 +358,7 @@ export function VocabBuilder() {
 
       {tab === 'browse' && <BrowseView progress={progress} />}
     </div>
+    </VocabCtx.Provider>
   )
 }
 
@@ -335,8 +387,9 @@ function FlashcardPlayer({
   onRestart: () => void
   onStudyMissed: () => void
 }) {
+  const V = useVocab()
   // Keyboard shortcuts (the desktop controls): ← / → move to the previous / next card,
-  // ↑ reveals the translation and ↓ hides it (Greek only). Enter/Space still flip, and 1/2/3
+  // ↑ reveals the translation and ↓ hides it (script only). Enter/Space still flip, and 1/2/3
   // still rate for anyone who wants spaced-repetition grading from the keyboard.
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -390,7 +443,7 @@ function FlashcardPlayer({
             <div className="divide-y divide-gray-100 max-h-60 overflow-y-auto">
               {missedWords.map(w => (
                 <div key={w.word} className="px-4 py-2.5 flex items-baseline justify-between gap-4">
-                  <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                  <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
                   <span className="text-sm text-gray-600">{w.gloss}</span>
                 </div>
               ))}
@@ -435,7 +488,7 @@ function FlashcardPlayer({
                   config.mode === m ? 'bg-surface text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'
                 )}
               >
-                {m === 'greek-to-english' ? 'Gk → En' : 'En → Gk'}
+                {m === 'greek-to-english' ? `${V.scriptLabel} → En` : `En → ${V.scriptLabel}`}
               </button>
             ))}
           </div>
@@ -467,8 +520,8 @@ function FlashcardPlayer({
               {/* Front — never moves */}
               {greekFirst ? (
                 <>
-                  <p className="greek-text text-3xl text-gray-900 font-bold text-center leading-snug">{word.word}</p>
-                  {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
+                  <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center leading-snug`}>{word.word}</p>
+                  {word.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-sm text-gray-500`}>{word.inflection}</p>}
                 </>
               ) : (
                 <>
@@ -486,18 +539,18 @@ function FlashcardPlayer({
                   </>
                 ) : (
                   <>
-                    <p className="greek-text text-3xl text-gray-900 font-bold text-center">{word.word}</p>
-                    {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
+                    <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-3xl text-gray-900 font-bold text-center`}>{word.word}</p>
+                    {word.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-sm text-gray-500`}>{word.inflection}</p>}
                   </>
                 )}
-                {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
+                {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in {V.corpusLabel}</p>}
               </div>
             </div>
             <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-              <span className="lg:hidden">{flipped ? 'Tap for Greek only' : 'Tap to reveal'}</span>
+              <span className="lg:hidden">{flipped ? `Tap for ${V.scriptName} only` : 'Tap to reveal'}</span>
               <span className="hidden lg:inline">
                 {flipped
-                  ? <><span className="font-medium">↓</span> Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>
+                  ? <><span className="font-medium">↓</span> {V.scriptName} only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>
                   : <><span className="font-medium">↑</span> reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>}
               </span>
             </p>
@@ -563,7 +616,8 @@ function StudySettings({
   cardCount: number
   onStart: () => void
 }) {
-  const [expandedSections, setExpandedSections] = useState<number[]>(ALL_SECTIONS)
+  const V = useVocab()
+  const [expandedSections, setExpandedSections] = useState<number[]>(V.sections)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
   const [subListMode, setSubListMode] = useState<Record<string, SectionListMode>>({})
 
@@ -571,7 +625,7 @@ function StudySettings({
 
   // Section-level selection state: 'all' | 'none' | 'partial'
   const sectionState = (s: number): 'all' | 'none' | 'partial' => {
-    const keys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const keys = V.subsections[s].map(sub => sub.key)
     const selectedCount = keys.filter(k => subSet.has(k)).length
     if (selectedCount === 0) return 'none'
     if (selectedCount === keys.length) return 'all'
@@ -579,7 +633,7 @@ function StudySettings({
   }
 
   const toggleSection = (s: number) => {
-    const sectionKeys = SECTION_SUBSECTIONS[s].map(sub => sub.key)
+    const sectionKeys = V.subsections[s].map(sub => sub.key)
     const state = sectionState(s)
     if (state === 'all') {
       onChange({ ...config, subsections: config.subsections.filter(k => !sectionKeys.includes(k)) })
@@ -631,7 +685,7 @@ function StudySettings({
             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">Frequency Sections</p>
             <div className="flex gap-3">
               <button
-                onClick={() => onChange({ ...config, subsections: [...ALL_SUBSECTION_KEYS] })}
+                onClick={() => onChange({ ...config, subsections: [...V.allSubsectionKeys] })}
                 className="text-sm text-gray-700 hover:underline font-medium"
               >
                 All
@@ -646,11 +700,11 @@ function StudySettings({
           </div>
 
           <div className="space-y-1.5">
-            {ALL_SECTIONS.map(s => {
+            {V.sections.map(s => {
               const state = sectionState(s)
               const isExpanded = expandedSections.includes(s)
-              const subs = SECTION_SUBSECTIONS[s]
-              const coverage = SECTION_CUMULATIVE_COVERAGE[s]
+              const subs = V.subsections[s]
+              const coverage = V.coverage[s]
 
               return (
                 <div
@@ -669,7 +723,7 @@ function StudySettings({
                     />
                     <div className="flex-1 min-w-0">
                       <span className="text-base font-medium text-gray-900">Section §{s}</span>
-                      <span className="text-sm text-gray-500 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT</span>
+                      <span className="text-sm text-gray-500 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% of {V.corpusLabel}</span>
                     </div>
                     <button
                       onClick={() => toggleExpand(s)}
@@ -750,7 +804,7 @@ function StudySettings({
                                           : 'text-gray-400 hover:text-gray-600'
                                       )}
                                     >
-                                      {m === 'greek-english' ? 'Greek-English' : m === 'greek' ? 'Greek' : 'English'}
+                                      {m === 'greek-english' ? `${V.scriptName}-English` : m === 'greek' ? V.scriptName : 'English'}
                                     </button>
                                   ))}
                                 </div>
@@ -776,9 +830,9 @@ function StudySettings({
                                   {mode === 'greek-english' && (
                                     <div className="flex items-baseline justify-between gap-2 min-w-0">
                                       <div className="min-w-0 flex-1 truncate">
-                                        <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                        <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
                                         {w.inflection && (
-                                          <span className="greek-text text-xs text-gray-400 ml-1">{w.inflection}</span>
+                                          <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400 ml-1`}>{w.inflection}</span>
                                         )}
                                         <span className="text-sm text-gray-600 ml-1.5">{w.gloss}</span>
                                       </div>
@@ -789,9 +843,9 @@ function StudySettings({
                                   )}
                                   {mode === 'greek' && (
                                     <div className="flex items-baseline gap-1.5 min-w-0">
-                                      <span className="greek-text text-base font-semibold text-gray-900">{w.word}</span>
+                                      <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
                                       {w.inflection && (
-                                        <span className="greek-text text-xs text-gray-400">{w.inflection}</span>
+                                        <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400`}>{w.inflection}</span>
                                       )}
                                     </div>
                                   )}
@@ -817,12 +871,12 @@ function StudySettings({
           <div className="flex items-center justify-between mb-3">
             <p className="text-sm font-semibold text-gray-600 uppercase tracking-wide">Part of Speech</p>
             <div className="flex gap-3">
-              <button onClick={() => onChange({ ...config, pos: [...ALL_POS] })} className="text-sm text-gray-700 hover:underline font-medium">All</button>
+              <button onClick={() => onChange({ ...config, pos: [...V.allPos] })} className="text-sm text-gray-700 hover:underline font-medium">All</button>
               <button onClick={() => onChange({ ...config, pos: [] })} className="text-sm text-gray-500 hover:text-gray-700">Clear</button>
             </div>
           </div>
           <div className="grid grid-cols-3 gap-2">
-            {ALL_POS.map(p => {
+            {V.allPos.map(p => {
               const isSelected = config.pos.includes(p)
               return (
                 <button
@@ -856,13 +910,14 @@ function StudySettings({
 // ── Browse view ──────────────────────────────────────────────────────────────
 
 function BrowseView({ progress }: { progress: ProgressMap }) {
+  const V = useVocab()
   const [query, setQuery] = useState('')
   const [filterSection, setFilterSection] = useState<string>('all')
   const [filterPos, setFilterPos] = useState<string>('all')
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase()
-    return WORDS.filter(w => {
+    return V.words.filter(w => {
       if (filterSection !== 'all' && w.section !== Number(filterSection)) return false
       if (filterPos !== 'all' && w.pos !== filterPos) return false
       if (!q) return true
@@ -872,7 +927,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
         (w.inflection ?? '').toLowerCase().includes(q)
       )
     })
-  }, [query, filterSection, filterPos])
+  }, [query, filterSection, filterPos, V.words])
 
   return (
     <div className="space-y-4">
@@ -881,7 +936,7 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
           <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
-            placeholder="Search Greek or English..."
+            placeholder={`Search ${V.scriptName} or English...`}
             value={query}
             onChange={e => setQuery(e.target.value)}
             className="input pl-8 text-sm w-full"
@@ -889,11 +944,11 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
         </div>
         <select value={filterSection} onChange={e => setFilterSection(e.target.value)} className="input text-sm w-auto">
           <option value="all">All Sections</option>
-          {ALL_SECTIONS.map(s => <option key={s} value={s}>Section {s}</option>)}
+          {V.sections.map(s => <option key={s} value={s}>Section {s}</option>)}
         </select>
         <select value={filterPos} onChange={e => setFilterPos(e.target.value)} className="input text-sm w-auto">
           <option value="all">All Parts</option>
-          {ALL_POS.map(p => <option key={p} value={p}>{POS_LABELS[p] ?? p}</option>)}
+          {V.allPos.map(p => <option key={p} value={p}>{POS_LABELS[p] ?? p}</option>)}
         </select>
       </div>
 
@@ -912,8 +967,8 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
               )}
             >
               <div className="min-w-0">
-                <p className="greek-text text-base font-medium text-gray-900 leading-tight">{w.word}</p>
-                {w.inflection && <p className="greek-text text-xs text-gray-400">{w.inflection}</p>}
+                <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-medium text-gray-900 leading-tight`}>{w.word}</p>
+                {w.inflection && <p dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-xs text-gray-400`}>{w.inflection}</p>}
                 <p className="text-sm text-gray-700 mt-0.5 leading-snug">{w.gloss}</p>
               </div>
               <div className="flex flex-col items-end gap-1 shrink-0">

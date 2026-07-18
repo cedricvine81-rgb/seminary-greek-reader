@@ -1,0 +1,9326 @@
+[
+{
+"word": "אֵת",
+"inflection": null,
+"gloss": "mark of the accusative",
+"pos": "Particle",
+"section": 1,
+"freq": 9254,
+"order": 1
+},
+{
+"word": "יְהֹוָה",
+"inflection": null,
+"gloss": "Jehovah",
+"pos": "Noun",
+"section": 1,
+"freq": 6521,
+"order": 2
+},
+{
+"word": "אֲשֶׁר",
+"inflection": null,
+"gloss": "who",
+"pos": "Particle",
+"section": 1,
+"freq": 5502,
+"order": 3
+},
+{
+"word": "אָמַר",
+"inflection": null,
+"gloss": "utter",
+"pos": "Verb",
+"section": 1,
+"freq": 5263,
+"order": 4
+},
+{
+"word": "כֹּל",
+"inflection": null,
+"gloss": "the whole",
+"pos": "Noun",
+"section": 1,
+"freq": 5198,
+"order": 5
+},
+{
+"word": "לֹא",
+"inflection": null,
+"gloss": "not",
+"pos": "Particle",
+"section": 1,
+"freq": 5186,
+"order": 6
+},
+{
+"word": "כִּי",
+"inflection": null,
+"gloss": "that",
+"pos": "Conj",
+"section": 1,
+"freq": 4487,
+"order": 7
+},
+{
+"word": "עַל",
+"inflection": null,
+"gloss": "above",
+"pos": "Prep",
+"section": 1,
+"freq": 4250,
+"order": 8
+},
+{
+"word": "בֵּן",
+"inflection": null,
+"gloss": "son",
+"pos": "Noun",
+"section": 1,
+"freq": 4006,
+"order": 9
+},
+{
+"word": "אֵל",
+"inflection": null,
+"gloss": "motion to",
+"pos": "Prep",
+"section": 1,
+"freq": 3879,
+"order": 10
+},
+{
+"word": "הָיָה",
+"inflection": null,
+"gloss": "fall out",
+"pos": "Verb",
+"section": 1,
+"freq": 3528,
+"order": 11
+},
+{
+"word": "עָשָׂה",
+"inflection": null,
+"gloss": "do",
+"pos": "Verb",
+"section": 1,
+"freq": 2511,
+"order": 12
+},
+{
+"word": "יִשְׂרָאֵל",
+"inflection": null,
+"gloss": "Israel",
+"pos": "Noun",
+"section": 1,
+"freq": 2506,
+"order": 13
+},
+{
+"word": "מֶלֶךְ",
+"inflection": null,
+"gloss": "king",
+"pos": "Noun",
+"section": 1,
+"freq": 2439,
+"order": 14
+},
+{
+"word": "בּוֹא",
+"inflection": null,
+"gloss": "come in",
+"pos": "Verb",
+"section": 1,
+"freq": 2297,
+"order": 15
+},
+{
+"word": "אֶרֶץ",
+"inflection": null,
+"gloss": "earth",
+"pos": "Noun",
+"section": 1,
+"freq": 2229,
+"order": 16
+},
+{
+"word": "יוֹם",
+"inflection": null,
+"gloss": "day",
+"pos": "Noun",
+"section": 1,
+"freq": 2173,
+"order": 17
+},
+{
+"word": "אִישׁ",
+"inflection": null,
+"gloss": "man",
+"pos": "Noun",
+"section": 1,
+"freq": 2077,
+"order": 18
+},
+{
+"word": "הוּא",
+"inflection": null,
+"gloss": "he",
+"pos": "Pron",
+"section": 1,
+"freq": 1879,
+"order": 19
+},
+{
+"word": "נָתַן",
+"inflection": null,
+"gloss": "give",
+"pos": "Verb",
+"section": 1,
+"freq": 1708,
+"order": 20
+},
+{
+"word": "בַּיִת",
+"inflection": null,
+"gloss": "between",
+"pos": "Noun",
+"section": 1,
+"freq": 1662,
+"order": 21
+},
+{
+"word": "אֱלֹהִים",
+"inflection": null,
+"gloss": "gods",
+"pos": "Noun",
+"section": 1,
+"freq": 1615,
+"order": 22
+},
+{
+"word": "עַם",
+"inflection": null,
+"gloss": "people",
+"pos": "Noun",
+"section": 1,
+"freq": 1358,
+"order": 23
+},
+{
+"word": "פָּנִים",
+"inflection": null,
+"gloss": "face",
+"pos": "Noun",
+"section": 1,
+"freq": 1250,
+"order": 24
+},
+{
+"word": "דָּבָר",
+"inflection": null,
+"gloss": "speech",
+"pos": "Noun",
+"section": 1,
+"freq": 1249,
+"order": 25
+},
+{
+"word": "עַד",
+"inflection": null,
+"gloss": "as far as",
+"pos": "Prep",
+"section": 1,
+"freq": 1245,
+"order": 26
+},
+{
+"word": "זֶה",
+"inflection": null,
+"gloss": "this",
+"pos": "Pron",
+"section": 1,
+"freq": 1177,
+"order": 27
+},
+{
+"word": "רָאָה",
+"inflection": null,
+"gloss": "see",
+"pos": "Verb",
+"section": 1,
+"freq": 1170,
+"order": 28
+},
+{
+"word": "דָבַר",
+"inflection": null,
+"gloss": "speak",
+"pos": "Verb",
+"section": 1,
+"freq": 1110,
+"order": 29
+},
+{
+"word": "אַתָּה",
+"inflection": null,
+"gloss": "thou",
+"pos": "Pron",
+"section": 1,
+"freq": 1092,
+"order": 30
+},
+{
+"word": "דָּוִד",
+"inflection": null,
+"gloss": "David",
+"pos": "Noun",
+"section": 1,
+"freq": 1075,
+"order": 31
+},
+{
+"word": "אִם",
+"inflection": null,
+"gloss": "if",
+"pos": "Conj",
+"section": 1,
+"freq": 1070,
+"order": 32
+},
+{
+"word": "שָׁמַע",
+"inflection": null,
+"gloss": "hear",
+"pos": "Verb",
+"section": 1,
+"freq": 1066,
+"order": 33
+},
+{
+"word": "יָשַׁב",
+"inflection": null,
+"gloss": "sit",
+"pos": "Verb",
+"section": 1,
+"freq": 1005,
+"order": 34
+},
+{
+"word": "אֶחָד",
+"inflection": null,
+"gloss": "one",
+"pos": "Adj",
+"section": 1,
+"freq": 970,
+"order": 35
+},
+{
+"word": "עִיר",
+"inflection": null,
+"gloss": "excitement",
+"pos": "Noun",
+"section": 1,
+"freq": 969,
+"order": 36
+},
+{
+"word": "יָלַךְ",
+"inflection": null,
+"gloss": "go",
+"pos": "Verb",
+"section": 1,
+"freq": 965,
+"order": 37
+},
+{
+"word": "יָצָא",
+"inflection": null,
+"gloss": "go out",
+"pos": "Verb",
+"section": 1,
+"freq": 933,
+"order": 38
+},
+{
+"word": "שׁוּב",
+"inflection": null,
+"gloss": "turn back",
+"pos": "Verb",
+"section": 1,
+"freq": 918,
+"order": 39
+},
+{
+"word": "לָקַח",
+"inflection": null,
+"gloss": "take",
+"pos": "Verb",
+"section": 1,
+"freq": 874,
+"order": 40
+},
+{
+"word": "אֲנִי",
+"inflection": null,
+"gloss": "I",
+"pos": "Pron",
+"section": 1,
+"freq": 874,
+"order": 41
+},
+{
+"word": "שָׁנֶה",
+"inflection": null,
+"gloss": "year",
+"pos": "Noun",
+"section": 1,
+"freq": 841,
+"order": 42
+},
+{
+"word": "יָדַע",
+"inflection": null,
+"gloss": "know",
+"pos": "Verb",
+"section": 1,
+"freq": 838,
+"order": 43
+},
+{
+"word": "עָלָה",
+"inflection": null,
+"gloss": "go up",
+"pos": "Verb",
+"section": 1,
+"freq": 828,
+"order": 44
+},
+{
+"word": "מִן",
+"inflection": null,
+"gloss": "out of",
+"pos": "Prep",
+"section": 1,
+"freq": 820,
+"order": 45
+},
+{
+"word": "יְהוּדָה",
+"inflection": null,
+"gloss": "Judah",
+"pos": "Noun",
+"section": 1,
+"freq": 819,
+"order": 46
+},
+{
+"word": "הִנֵּה",
+"inflection": null,
+"gloss": "lo!",
+"pos": "Particle",
+"section": 1,
+"freq": 807,
+"order": 47
+},
+{
+"word": "כֵּן",
+"inflection": null,
+"gloss": "right",
+"pos": "Particle",
+"section": 1,
+"freq": 770,
+"order": 48
+},
+{
+"word": "גַּם",
+"inflection": null,
+"gloss": "also",
+"pos": "Particle",
+"section": 1,
+"freq": 769,
+"order": 49
+},
+{
+"word": "מֹשֶׁה",
+"inflection": null,
+"gloss": "Moses",
+"pos": "Noun",
+"section": 1,
+"freq": 766,
+"order": 50
+},
+{
+"word": "אֵלֶּה",
+"inflection": null,
+"gloss": "these",
+"pos": "Pron",
+"section": 1,
+"freq": 746,
+"order": 51
+},
+{
+"word": "מָה",
+"inflection": null,
+"gloss": "what?",
+"pos": "Particle",
+"section": 1,
+"freq": 746,
+"order": 52
+},
+{
+"word": "מוּת",
+"inflection": null,
+"gloss": "die",
+"pos": "Verb",
+"section": 1,
+"freq": 738,
+"order": 53
+},
+{
+"word": "כֹּהֵן",
+"inflection": null,
+"gloss": "priest",
+"pos": "Noun",
+"section": 1,
+"freq": 727,
+"order": 54
+},
+{
+"word": "אַל",
+"inflection": null,
+"gloss": "not",
+"pos": "Particle",
+"section": 1,
+"freq": 724,
+"order": 55
+},
+{
+"word": "יָד",
+"inflection": null,
+"gloss": "hand",
+"pos": "Noun",
+"section": 1,
+"freq": 709,
+"order": 56
+},
+{
+"word": "אָכַל",
+"inflection": null,
+"gloss": "eat",
+"pos": "Verb",
+"section": 1,
+"freq": 701,
+"order": 57
+},
+{
+"word": "שְׁנַיִם",
+"inflection": null,
+"gloss": "two",
+"pos": "Adj",
+"section": 1,
+"freq": 695,
+"order": 58
+},
+{
+"word": "שָׁם",
+"inflection": null,
+"gloss": "there",
+"pos": "Adv",
+"section": 1,
+"freq": 693,
+"order": 59
+},
+{
+"word": "קָרָא",
+"inflection": null,
+"gloss": "call",
+"pos": "Verb",
+"section": 1,
+"freq": 688,
+"order": 60
+},
+{
+"word": "אַיִן",
+"inflection": null,
+"gloss": "nothing",
+"pos": "Particle",
+"section": 1,
+"freq": 685,
+"order": 61
+},
+{
+"word": "שָׁלַח",
+"inflection": null,
+"gloss": "send",
+"pos": "Verb",
+"section": 1,
+"freq": 671,
+"order": 62
+},
+{
+"word": "יְרוּשָׁלַ͏ִם",
+"inflection": null,
+"gloss": "Jerusalem",
+"pos": "Noun",
+"section": 1,
+"freq": 638,
+"order": 63
+},
+{
+"word": "אִשָּׁה",
+"inflection": null,
+"gloss": "woman",
+"pos": "Noun",
+"section": 1,
+"freq": 611,
+"order": 64
+},
+{
+"word": "מִצְרַיִם",
+"inflection": null,
+"gloss": "Egypt",
+"pos": "Noun",
+"section": 1,
+"freq": 607,
+"order": 65
+},
+{
+"word": "זֹאת",
+"inflection": null,
+"gloss": "this",
+"pos": "Pron",
+"section": 1,
+"freq": 604,
+"order": 66
+},
+{
+"word": "רַע",
+"inflection": null,
+"gloss": "bad",
+"pos": "Adj",
+"section": 1,
+"freq": 604,
+"order": 67
+},
+{
+"word": "נָשָׂא",
+"inflection": null,
+"gloss": "lift",
+"pos": "Verb",
+"section": 1,
+"freq": 591,
+"order": 68
+},
+{
+"word": "מֵאָה",
+"inflection": null,
+"gloss": "hundred",
+"pos": "Adj",
+"section": 1,
+"freq": 578,
+"order": 69
+},
+{
+"word": "כֹּה",
+"inflection": null,
+"gloss": "thus",
+"pos": "Adv",
+"section": 1,
+"freq": 576,
+"order": 70
+},
+{
+"word": "קוּם",
+"inflection": null,
+"gloss": "Leb Qamay",
+"pos": "Verb",
+"section": 1,
+"freq": 569,
+"order": 71
+},
+{
+"word": "הֵם",
+"inflection": null,
+"gloss": "they",
+"pos": "Pron",
+"section": 1,
+"freq": 563,
+"order": 72
+},
+{
+"word": "מַיִם",
+"inflection": null,
+"gloss": "waters",
+"pos": "Noun",
+"section": 1,
+"freq": 557,
+"order": 73
+},
+{
+"word": "טוֹב",
+"inflection": null,
+"gloss": "pleasant",
+"pos": "Adj",
+"section": 1,
+"freq": 557,
+"order": 74
+},
+{
+"word": "גּוֹי",
+"inflection": null,
+"gloss": "nation",
+"pos": "Noun",
+"section": 1,
+"freq": 553,
+"order": 75
+},
+{
+"word": "אָדָם",
+"inflection": null,
+"gloss": "man",
+"pos": "Noun",
+"section": 1,
+"freq": 552,
+"order": 76
+},
+{
+"word": "הַר",
+"inflection": null,
+"gloss": "mountain",
+"pos": "Noun",
+"section": 1,
+"freq": 524,
+"order": 77
+},
+{
+"word": "גָּדוֹל",
+"inflection": null,
+"gloss": "great",
+"pos": "Adj",
+"section": 1,
+"freq": 521,
+"order": 78
+},
+{
+"word": "עִם",
+"inflection": null,
+"gloss": "with",
+"pos": "Prep",
+"section": 1,
+"freq": 517,
+"order": 79
+},
+{
+"word": "עָבַר",
+"inflection": null,
+"gloss": "pass over",
+"pos": "Verb",
+"section": 1,
+"freq": 515,
+"order": 80
+},
+{
+"word": "אֶלֶף",
+"inflection": null,
+"gloss": "thousand",
+"pos": "Adj",
+"section": 1,
+"freq": 501,
+"order": 81
+},
+{
+"word": "הָלַךְ",
+"inflection": null,
+"gloss": "go",
+"pos": "Verb",
+"section": 1,
+"freq": 499,
+"order": 82
+},
+{
+"word": "שׂוּם",
+"inflection": null,
+"gloss": "put",
+"pos": "Verb",
+"section": 1,
+"freq": 490,
+"order": 83
+},
+{
+"word": "עָמַד",
+"inflection": null,
+"gloss": "take one’s stand",
+"pos": "Verb",
+"section": 1,
+"freq": 485,
+"order": 84
+},
+{
+"word": "רַב",
+"inflection": null,
+"gloss": "much",
+"pos": "Adj",
+"section": 1,
+"freq": 461,
+"order": 85
+},
+{
+"word": "דֶּרֶךְ",
+"inflection": null,
+"gloss": "way",
+"pos": "Noun",
+"section": 1,
+"freq": 457,
+"order": 86
+},
+{
+"word": "יָלַד",
+"inflection": null,
+"gloss": "bear",
+"pos": "Verb",
+"section": 1,
+"freq": 450,
+"order": 87
+},
+{
+"word": "עוֹד",
+"inflection": null,
+"gloss": "a going round",
+"pos": "Adv",
+"section": 1,
+"freq": 449,
+"order": 88
+},
+{
+"word": "אַחַר",
+"inflection": null,
+"gloss": "the hinder",
+"pos": "Prep",
+"section": 1,
+"freq": 447,
+"order": 89
+},
+{
+"word": "עוֹלָם",
+"inflection": null,
+"gloss": "long duration",
+"pos": "Noun",
+"section": 1,
+"freq": 437,
+"order": 90
+},
+{
+"word": "עַתָּה",
+"inflection": null,
+"gloss": "now",
+"pos": "Adv",
+"section": 1,
+"freq": 433,
+"order": 91
+},
+{
+"word": "אֵת",
+"inflection": null,
+"gloss": "with",
+"pos": "Prep",
+"section": 1,
+"freq": 429,
+"order": 92
+},
+{
+"word": "שָׁלוֹשׁ",
+"inflection": null,
+"gloss": "a three",
+"pos": "Adj",
+"section": 1,
+"freq": 425,
+"order": 93
+},
+{
+"word": "צָבָא",
+"inflection": null,
+"gloss": "army",
+"pos": "Noun",
+"section": 1,
+"freq": 425,
+"order": 94
+},
+{
+"word": "שָׁמַר",
+"inflection": null,
+"gloss": "keep",
+"pos": "Verb",
+"section": 1,
+"freq": 424,
+"order": 95
+},
+{
+"word": "מִי",
+"inflection": null,
+"gloss": "who?",
+"pos": "Particle",
+"section": 1,
+"freq": 423,
+"order": 96
+},
+{
+"word": "שֵׁם",
+"inflection": null,
+"gloss": "name",
+"pos": "Noun",
+"section": 1,
+"freq": 420,
+"order": 97
+},
+{
+"word": "נָפַל",
+"inflection": null,
+"gloss": "fall",
+"pos": "Verb",
+"section": 1,
+"freq": 418,
+"order": 98
+},
+{
+"word": "חַי",
+"inflection": null,
+"gloss": "alive",
+"pos": "Adj",
+"section": 1,
+"freq": 415,
+"order": 99
+},
+{
+"word": "שָׁאוּל",
+"inflection": null,
+"gloss": "Saul",
+"pos": "Noun",
+"section": 1,
+"freq": 406,
+"order": 100
+},
+{
+"word": "שָׁמַיִם",
+"inflection": null,
+"gloss": "heavens",
+"pos": "Noun",
+"section": 1,
+"freq": 405,
+"order": 101
+},
+{
+"word": "נָא",
+"inflection": null,
+"gloss": "I",
+"pos": "Particle",
+"section": 1,
+"freq": 403,
+"order": 102
+},
+{
+"word": "רֹאשׁ",
+"inflection": null,
+"gloss": "head",
+"pos": "Noun",
+"section": 1,
+"freq": 398,
+"order": 103
+},
+{
+"word": "שֶׁבַע",
+"inflection": null,
+"gloss": "seven",
+"pos": "Adj",
+"section": 1,
+"freq": 393,
+"order": 104
+},
+{
+"word": "מָצָא",
+"inflection": null,
+"gloss": "attain to",
+"pos": "Verb",
+"section": 1,
+"freq": 382,
+"order": 105
+},
+{
+"word": "זָהָב",
+"inflection": null,
+"gloss": "gold",
+"pos": "Noun",
+"section": 1,
+"freq": 376,
+"order": 106
+},
+{
+"word": "נְאֻם",
+"inflection": null,
+"gloss": "utterance",
+"pos": "Noun",
+"section": 1,
+"freq": 376,
+"order": 107
+},
+{
+"word": "אֵשׁ",
+"inflection": null,
+"gloss": "fire",
+"pos": "Noun",
+"section": 1,
+"freq": 372,
+"order": 108
+},
+{
+"word": "קֹדֶשׁ",
+"inflection": null,
+"gloss": "apartness",
+"pos": "Noun",
+"section": 1,
+"freq": 371,
+"order": 109
+},
+{
+"word": "כֶּסֶף",
+"inflection": null,
+"gloss": "silver",
+"pos": "Noun",
+"section": 1,
+"freq": 371,
+"order": 110
+},
+{
+"word": "צָוָה",
+"inflection": null,
+"gloss": "lay charge",
+"pos": "Verb",
+"section": 1,
+"freq": 370,
+"order": 111
+},
+{
+"word": "בַּת",
+"inflection": null,
+"gloss": "daughter",
+"pos": "Noun",
+"section": 1,
+"freq": 364,
+"order": 112
+},
+{
+"word": "שַׂר",
+"inflection": null,
+"gloss": "chieftain",
+"pos": "Noun",
+"section": 1,
+"freq": 364,
+"order": 113
+},
+{
+"word": "אָנֹכִי",
+"inflection": null,
+"gloss": "I",
+"pos": "Pron",
+"section": 1,
+"freq": 359,
+"order": 114
+},
+{
+"word": "בָּנָה",
+"inflection": null,
+"gloss": "build",
+"pos": "Verb",
+"section": 1,
+"freq": 357,
+"order": 115
+},
+{
+"word": "נָכָה",
+"inflection": null,
+"gloss": "smite",
+"pos": "Verb",
+"section": 1,
+"freq": 356,
+"order": 116
+},
+{
+"word": "עַיִן",
+"inflection": null,
+"gloss": "eye",
+"pos": "Noun",
+"section": 1,
+"freq": 355,
+"order": 117
+},
+{
+"word": "נָגַד",
+"inflection": null,
+"gloss": "be conspicuous",
+"pos": "Verb",
+"section": 1,
+"freq": 351,
+"order": 118
+},
+{
+"word": "חֶרֶב",
+"inflection": null,
+"gloss": "sword",
+"pos": "Noun",
+"section": 1,
+"freq": 350,
+"order": 119
+},
+{
+"word": "יַעֲקֹב",
+"inflection": null,
+"gloss": "Jacob",
+"pos": "Noun",
+"section": 1,
+"freq": 349,
+"order": 120
+},
+{
+"word": "קוֹל",
+"inflection": null,
+"gloss": "sound",
+"pos": "Noun",
+"section": 1,
+"freq": 348,
+"order": 121
+},
+{
+"word": "יָרַד",
+"inflection": null,
+"gloss": "come down",
+"pos": "Verb",
+"section": 1,
+"freq": 347,
+"order": 122
+},
+{
+"word": "אַהֲרוֹן",
+"inflection": null,
+"gloss": "Aaron",
+"pos": "Noun",
+"section": 1,
+"freq": 347,
+"order": 123
+},
+{
+"word": "תַּחַת",
+"inflection": null,
+"gloss": "the under part",
+"pos": "Prep",
+"section": 1,
+"freq": 344,
+"order": 124
+},
+{
+"word": "חָמֵשׁ",
+"inflection": null,
+"gloss": "five",
+"pos": "Adj",
+"section": 1,
+"freq": 344,
+"order": 125
+},
+{
+"word": "עָשָׂר",
+"inflection": null,
+"gloss": "ten",
+"pos": "Adj",
+"section": 1,
+"freq": 338,
+"order": 126
+},
+{
+"word": "מִזְבֵּחַ",
+"inflection": null,
+"gloss": "altar",
+"pos": "Noun",
+"section": 1,
+"freq": 332,
+"order": 127
+},
+{
+"word": "יָם",
+"inflection": null,
+"gloss": "sea",
+"pos": "Noun",
+"section": 1,
+"freq": 331,
+"order": 128
+},
+{
+"word": "אוֹ",
+"inflection": null,
+"gloss": "or",
+"pos": "Conj",
+"section": 1,
+"freq": 321,
+"order": 129
+},
+{
+"word": "מָקוֹם",
+"inflection": null,
+"gloss": "standing-place",
+"pos": "Noun",
+"section": 1,
+"freq": 320,
+"order": 130
+},
+{
+"word": "עֵץ",
+"inflection": null,
+"gloss": "tree",
+"pos": "Noun",
+"section": 1,
+"freq": 319,
+"order": 131
+},
+{
+"word": "שַׁעַר",
+"inflection": null,
+"gloss": "gate",
+"pos": "Noun",
+"section": 1,
+"freq": 317,
+"order": 132
+},
+{
+"word": "בֵּין",
+"inflection": null,
+"gloss": "interval",
+"pos": "Prep",
+"section": 1,
+"freq": 316,
+"order": 133
+},
+{
+"word": "עֶשְׂרִים",
+"inflection": null,
+"gloss": "twenty",
+"pos": "Adj",
+"section": 1,
+"freq": 315,
+"order": 134
+},
+{
+"word": "יָרֵא",
+"inflection": null,
+"gloss": "fear",
+"pos": "Verb",
+"section": 1,
+"freq": 309,
+"order": 135
+},
+{
+"word": "אַרְבַּע",
+"inflection": null,
+"gloss": "four",
+"pos": "Adj",
+"section": 1,
+"freq": 307,
+"order": 136
+},
+{
+"word": "מִלְחָמָה",
+"inflection": null,
+"gloss": "battle",
+"pos": "Noun",
+"section": 1,
+"freq": 306,
+"order": 137
+},
+{
+"word": "יְהֹוִה",
+"inflection": null,
+"gloss": "God",
+"pos": "Noun",
+"section": 1,
+"freq": 306,
+"order": 138
+},
+{
+"word": "שָׂדֶה",
+"inflection": null,
+"gloss": "field",
+"pos": "Noun",
+"section": 1,
+"freq": 305,
+"order": 139
+},
+{
+"word": "רוּחַ",
+"inflection": null,
+"gloss": "breath",
+"pos": "Noun",
+"section": 1,
+"freq": 304,
+"order": 140
+},
+{
+"word": "מִשְׁפָּט",
+"inflection": null,
+"gloss": "judgment",
+"pos": "Noun",
+"section": 1,
+"freq": 302,
+"order": 141
+},
+{
+"word": "מְאֹד",
+"inflection": null,
+"gloss": "muchness",
+"pos": "Adv",
+"section": 1,
+"freq": 298,
+"order": 142
+},
+{
+"word": "שְׁלֹמֹה",
+"inflection": null,
+"gloss": "Solomon",
+"pos": "Noun",
+"section": 1,
+"freq": 293,
+"order": 143
+},
+{
+"word": "פְּלִשְׁתִּי",
+"inflection": null,
+"gloss": "Philistine",
+"pos": "Noun",
+"section": 1,
+"freq": 288,
+"order": 144
+},
+{
+"word": "מָלַךְ",
+"inflection": null,
+"gloss": "be king",
+"pos": "Verb",
+"section": 1,
+"freq": 285,
+"order": 145
+},
+{
+"word": "לֵוִיִּי",
+"inflection": null,
+"gloss": "Levite",
+"pos": "Noun",
+"section": 1,
+"freq": 285,
+"order": 146
+},
+{
+"word": "נָבִיא",
+"inflection": null,
+"gloss": "spokesman",
+"pos": "Noun",
+"section": 1,
+"freq": 284,
+"order": 147
+},
+{
+"word": "תָּוֶךְ",
+"inflection": null,
+"gloss": "midst",
+"pos": "Noun",
+"section": 1,
+"freq": 281,
+"order": 148
+},
+{
+"word": "סוּר",
+"inflection": null,
+"gloss": "turn aside",
+"pos": "Verb",
+"section": 1,
+"freq": 281,
+"order": 149
+},
+{
+"word": "סָבִיב",
+"inflection": null,
+"gloss": "circuit",
+"pos": "Noun",
+"section": 1,
+"freq": 277,
+"order": 150
+},
+{
+"word": "כָּרַת",
+"inflection": null,
+"gloss": "cut off",
+"pos": "Verb",
+"section": 1,
+"freq": 274,
+"order": 151
+},
+{
+"word": "דָּם",
+"inflection": null,
+"gloss": "blood",
+"pos": "Noun",
+"section": 1,
+"freq": 273,
+"order": 152
+},
+{
+"word": "עֵת",
+"inflection": null,
+"gloss": "time",
+"pos": "Noun",
+"section": 1,
+"freq": 273,
+"order": 153
+},
+{
+"word": "חֹדֶשׁ",
+"inflection": null,
+"gloss": "newness",
+"pos": "Noun",
+"section": 1,
+"freq": 272,
+"order": 154
+},
+{
+"word": "פַּרְעֹה",
+"inflection": null,
+"gloss": "Pharaoh",
+"pos": "Noun",
+"section": 1,
+"freq": 268,
+"order": 155
+},
+{
+"word": "חָזַק",
+"inflection": null,
+"gloss": "be firm",
+"pos": "Verb",
+"section": 1,
+"freq": 267,
+"order": 156
+},
+{
+"word": "נֶפֶשׁ",
+"inflection": null,
+"gloss": "soul",
+"pos": "Noun",
+"section": 1,
+"freq": 263,
+"order": 157
+},
+{
+"word": "רָשָׁע",
+"inflection": null,
+"gloss": "wicked",
+"pos": "Adj",
+"section": 1,
+"freq": 262,
+"order": 158
+},
+{
+"word": "אֶבֶן",
+"inflection": null,
+"gloss": "stone",
+"pos": "Noun",
+"section": 2,
+"freq": 261,
+"order": 159
+},
+{
+"word": "מַעַן",
+"inflection": null,
+"gloss": "purpose",
+"pos": "Prep",
+"section": 2,
+"freq": 260,
+"order": 160
+},
+{
+"word": "אֹהֶל",
+"inflection": null,
+"gloss": "tent",
+"pos": "Noun",
+"section": 2,
+"freq": 259,
+"order": 161
+},
+{
+"word": "עֹלָה",
+"inflection": null,
+"gloss": "whole burnt-offering",
+"pos": "Noun",
+"section": 2,
+"freq": 259,
+"order": 162
+},
+{
+"word": "עֶבֶד",
+"inflection": null,
+"gloss": "slave",
+"pos": "Noun",
+"section": 2,
+"freq": 259,
+"order": 163
+},
+{
+"word": "לֵב",
+"inflection": null,
+"gloss": "inner man",
+"pos": "Noun",
+"section": 2,
+"freq": 256,
+"order": 164
+},
+{
+"word": "קָרַב",
+"inflection": null,
+"gloss": "come near",
+"pos": "Verb",
+"section": 2,
+"freq": 256,
+"order": 165
+},
+{
+"word": "מִדְבָּר",
+"inflection": null,
+"gloss": "mouth",
+"pos": "Noun",
+"section": 2,
+"freq": 252,
+"order": 166
+},
+{
+"word": "עָנָה",
+"inflection": null,
+"gloss": "dwell",
+"pos": "Verb",
+"section": 2,
+"freq": 251,
+"order": 167
+},
+{
+"word": "לֶחֶם",
+"inflection": null,
+"gloss": "bread",
+"pos": "Noun",
+"section": 2,
+"freq": 251,
+"order": 168
+},
+{
+"word": "אַמָּה",
+"inflection": null,
+"gloss": "ell",
+"pos": "Noun",
+"section": 2,
+"freq": 248,
+"order": 169
+},
+{
+"word": "כְּלִי",
+"inflection": null,
+"gloss": "article",
+"pos": "Noun",
+"section": 2,
+"freq": 244,
+"order": 170
+},
+{
+"word": "פֶּה",
+"inflection": null,
+"gloss": "mouth",
+"pos": "Noun",
+"section": 2,
+"freq": 244,
+"order": 171
+},
+{
+"word": "בָרַךְ",
+"inflection": null,
+"gloss": "kneel",
+"pos": "Verb",
+"section": 2,
+"freq": 244,
+"order": 172
+},
+{
+"word": "מָלֵא",
+"inflection": null,
+"gloss": "be full",
+"pos": "Verb",
+"section": 2,
+"freq": 236,
+"order": 173
+},
+{
+"word": "לַיִל",
+"inflection": null,
+"gloss": "night",
+"pos": "Noun",
+"section": 2,
+"freq": 233,
+"order": 174
+},
+{
+"word": "בָּבֶל",
+"inflection": null,
+"gloss": "Babel",
+"pos": "Noun",
+"section": 2,
+"freq": 233,
+"order": 175
+},
+{
+"word": "אֵל",
+"inflection": null,
+"gloss": "god",
+"pos": "Noun",
+"section": 2,
+"freq": 233,
+"order": 176
+},
+{
+"word": "מַטֶּה",
+"inflection": null,
+"gloss": "branch",
+"pos": "Noun",
+"section": 2,
+"freq": 231,
+"order": 177
+},
+{
+"word": "חָטָא",
+"inflection": null,
+"gloss": "miss",
+"pos": "Verb",
+"section": 2,
+"freq": 231,
+"order": 178
+},
+{
+"word": "פָּקַד",
+"inflection": null,
+"gloss": "attend to",
+"pos": "Verb",
+"section": 2,
+"freq": 229,
+"order": 179
+},
+{
+"word": "חָיָה",
+"inflection": null,
+"gloss": "live",
+"pos": "Verb",
+"section": 2,
+"freq": 228,
+"order": 180
+},
+{
+"word": "שָׁלוֹם",
+"inflection": null,
+"gloss": "completeness",
+"pos": "Noun",
+"section": 2,
+"freq": 225,
+"order": 181
+},
+{
+"word": "יְהוֹשׁוּעַ",
+"inflection": null,
+"gloss": "Jehoshua",
+"pos": "Noun",
+"section": 2,
+"freq": 218,
+"order": 182
+},
+{
+"word": "רָבָה",
+"inflection": null,
+"gloss": "be much",
+"pos": "Verb",
+"section": 2,
+"freq": 217,
+"order": 183
+},
+{
+"word": "שֵׁשׁ",
+"inflection": null,
+"gloss": "six",
+"pos": "Adj",
+"section": 2,
+"freq": 215,
+"order": 184
+},
+{
+"word": "בֹּקֶר",
+"inflection": null,
+"gloss": "morning",
+"pos": "Noun",
+"section": 2,
+"freq": 214,
+"order": 185
+},
+{
+"word": "יוֹסֵף",
+"inflection": null,
+"gloss": "Joseph. Compare",
+"pos": "Noun",
+"section": 2,
+"freq": 213,
+"order": 186
+},
+{
+"word": "כָּתַב",
+"inflection": null,
+"gloss": "write",
+"pos": "Verb",
+"section": 2,
+"freq": 211,
+"order": 187
+},
+{
+"word": "אָב",
+"inflection": null,
+"gloss": "father",
+"pos": "Noun",
+"section": 2,
+"freq": 209,
+"order": 188
+},
+{
+"word": "שָׁתָה",
+"inflection": null,
+"gloss": "drink",
+"pos": "Verb",
+"section": 2,
+"freq": 208,
+"order": 189
+},
+{
+"word": "עָבַד",
+"inflection": null,
+"gloss": "work",
+"pos": "Verb",
+"section": 2,
+"freq": 207,
+"order": 190
+},
+{
+"word": "צַדִּיק",
+"inflection": null,
+"gloss": "just",
+"pos": "Adj",
+"section": 2,
+"freq": 206,
+"order": 191
+},
+{
+"word": "צֹאן",
+"inflection": null,
+"gloss": "small cattle",
+"pos": "Noun",
+"section": 2,
+"freq": 204,
+"order": 192
+},
+{
+"word": "יָסַף",
+"inflection": null,
+"gloss": "add",
+"pos": "Verb",
+"section": 2,
+"freq": 204,
+"order": 193
+},
+{
+"word": "מוֹעֵד",
+"inflection": null,
+"gloss": "appointed time",
+"pos": "Noun",
+"section": 2,
+"freq": 203,
+"order": 194
+},
+{
+"word": "אָרוֹן",
+"inflection": null,
+"gloss": "chest",
+"pos": "Noun",
+"section": 2,
+"freq": 202,
+"order": 195
+},
+{
+"word": "נָטָה",
+"inflection": null,
+"gloss": "stretch out",
+"pos": "Verb",
+"section": 2,
+"freq": 202,
+"order": 196
+},
+{
+"word": "זָכַר",
+"inflection": null,
+"gloss": "remember",
+"pos": "Verb",
+"section": 2,
+"freq": 202,
+"order": 197
+},
+{
+"word": "כּוּן",
+"inflection": null,
+"gloss": "be firm",
+"pos": "Verb",
+"section": 2,
+"freq": 200,
+"order": 198
+},
+{
+"word": "בְּרִית",
+"inflection": null,
+"gloss": "covenant",
+"pos": "Noun",
+"section": 2,
+"freq": 199,
+"order": 199
+},
+{
+"word": "נַעַר",
+"inflection": null,
+"gloss": "boy",
+"pos": "Noun",
+"section": 2,
+"freq": 199,
+"order": 200
+},
+{
+"word": "מַחֲנֶה",
+"inflection": null,
+"gloss": "encampment",
+"pos": "Noun",
+"section": 2,
+"freq": 198,
+"order": 201
+},
+{
+"word": "בָּקַשׁ",
+"inflection": null,
+"gloss": "seek",
+"pos": "Verb",
+"section": 2,
+"freq": 196,
+"order": 202
+},
+{
+"word": "מֲלְאָךְ",
+"inflection": null,
+"gloss": "messenger",
+"pos": "Noun",
+"section": 2,
+"freq": 195,
+"order": 203
+},
+{
+"word": "מִשְׁפָּחָה",
+"inflection": null,
+"gloss": "clan",
+"pos": "Noun",
+"section": 2,
+"freq": 193,
+"order": 204
+},
+{
+"word": "יָכֹל",
+"inflection": null,
+"gloss": "be able",
+"pos": "Verb",
+"section": 2,
+"freq": 190,
+"order": 205
+},
+{
+"word": "שָׁכַב",
+"inflection": null,
+"gloss": "lie down",
+"pos": "Verb",
+"section": 2,
+"freq": 189,
+"order": 206
+},
+{
+"word": "חַיִל",
+"inflection": null,
+"gloss": "strength",
+"pos": "Noun",
+"section": 2,
+"freq": 188,
+"order": 207
+},
+{
+"word": "שֶׁמֶן",
+"inflection": null,
+"gloss": "fat",
+"pos": "Noun",
+"section": 2,
+"freq": 184,
+"order": 208
+},
+{
+"word": "אָסַף",
+"inflection": null,
+"gloss": "gather",
+"pos": "Verb",
+"section": 2,
+"freq": 183,
+"order": 209
+},
+{
+"word": "רִאשׁוֹן",
+"inflection": null,
+"gloss": "former",
+"pos": "Adj",
+"section": 2,
+"freq": 182,
+"order": 210
+},
+{
+"word": "גְּבוּל",
+"inflection": null,
+"gloss": "border",
+"pos": "Noun",
+"section": 2,
+"freq": 182,
+"order": 211
+},
+{
+"word": "סֵפֶר",
+"inflection": null,
+"gloss": "missive",
+"pos": "Noun",
+"section": 2,
+"freq": 182,
+"order": 212
+},
+{
+"word": "מוֹאָב",
+"inflection": null,
+"gloss": "Moab",
+"pos": "Noun",
+"section": 2,
+"freq": 181,
+"order": 213
+},
+{
+"word": "אֶפְרַיִם",
+"inflection": null,
+"gloss": "Ephraim",
+"pos": "Noun",
+"section": 2,
+"freq": 180,
+"order": 214
+},
+{
+"word": "יַרְדֵּן",
+"inflection": null,
+"gloss": "Jordan",
+"pos": "Noun",
+"section": 2,
+"freq": 178,
+"order": 215
+},
+{
+"word": "חַטָּאָה",
+"inflection": null,
+"gloss": "sinful thing",
+"pos": "Noun",
+"section": 2,
+"freq": 177,
+"order": 216
+},
+{
+"word": "גָּלָה",
+"inflection": null,
+"gloss": "uncover",
+"pos": "Verb",
+"section": 2,
+"freq": 176,
+"order": 217
+},
+{
+"word": "עֶשֶׂר",
+"inflection": null,
+"gloss": "ten",
+"pos": "Adj",
+"section": 2,
+"freq": 176,
+"order": 218
+},
+{
+"word": "אַבְרָהָם",
+"inflection": null,
+"gloss": "Abraham",
+"pos": "Noun",
+"section": 2,
+"freq": 175,
+"order": 219
+},
+{
+"word": "שְׁלוֹשִׁים",
+"inflection": null,
+"gloss": "thirty",
+"pos": "Adj",
+"section": 2,
+"freq": 174,
+"order": 220
+},
+{
+"word": "אַיִל",
+"inflection": null,
+"gloss": "ram",
+"pos": "Noun",
+"section": 2,
+"freq": 171,
+"order": 221
+},
+{
+"word": "בָּשָׂר",
+"inflection": null,
+"gloss": "flesh",
+"pos": "Noun",
+"section": 2,
+"freq": 171,
+"order": 222
+},
+{
+"word": "לָחַם",
+"inflection": null,
+"gloss": "fight",
+"pos": "Verb",
+"section": 2,
+"freq": 170,
+"order": 223
+},
+{
+"word": "שָׁחָה",
+"inflection": null,
+"gloss": "bow down",
+"pos": "Verb",
+"section": 2,
+"freq": 170,
+"order": 224
+},
+{
+"word": "שָׁבַע",
+"inflection": null,
+"gloss": "swear",
+"pos": "Verb",
+"section": 2,
+"freq": 168,
+"order": 225
+},
+{
+"word": "שֵׁבֶט",
+"inflection": null,
+"gloss": "rod",
+"pos": "Noun",
+"section": 2,
+"freq": 166,
+"order": 226
+},
+{
+"word": "אַחֵר",
+"inflection": null,
+"gloss": "another",
+"pos": "Adj",
+"section": 2,
+"freq": 166,
+"order": 227
+},
+{
+"word": "אֲדָמָה",
+"inflection": null,
+"gloss": "ground",
+"pos": "Noun",
+"section": 2,
+"freq": 166,
+"order": 228
+},
+{
+"word": "זָקֵן",
+"inflection": null,
+"gloss": "old",
+"pos": "Adj",
+"section": 2,
+"freq": 165,
+"order": 229
+},
+{
+"word": "בִּנְיָמִין",
+"inflection": null,
+"gloss": "Benjamin",
+"pos": "Noun",
+"section": 2,
+"freq": 165,
+"order": 230
+},
+{
+"word": "בְּהֵמָה",
+"inflection": null,
+"gloss": "beast",
+"pos": "Noun",
+"section": 2,
+"freq": 164,
+"order": 231
+},
+{
+"word": "בָּחַר",
+"inflection": null,
+"gloss": "choose",
+"pos": "Verb",
+"section": 2,
+"freq": 163,
+"order": 232
+},
+{
+"word": "בָּקָר",
+"inflection": null,
+"gloss": "cattle",
+"pos": "Noun",
+"section": 2,
+"freq": 162,
+"order": 233
+},
+{
+"word": "רוּם",
+"inflection": null,
+"gloss": "be high",
+"pos": "Verb",
+"section": 2,
+"freq": 162,
+"order": 234
+},
+{
+"word": "מִנְחָה",
+"inflection": null,
+"gloss": "gift",
+"pos": "Noun",
+"section": 2,
+"freq": 162,
+"order": 235
+},
+{
+"word": "אַךְ",
+"inflection": null,
+"gloss": "surely",
+"pos": "Particle",
+"section": 2,
+"freq": 161,
+"order": 236
+},
+{
+"word": "שָׁפַט",
+"inflection": null,
+"gloss": "judge",
+"pos": "Verb",
+"section": 2,
+"freq": 160,
+"order": 237
+},
+{
+"word": "מַעֲשֶׂה",
+"inflection": null,
+"gloss": "deed",
+"pos": "Noun",
+"section": 2,
+"freq": 160,
+"order": 238
+},
+{
+"word": "כָּלָה",
+"inflection": null,
+"gloss": "be complete",
+"pos": "Verb",
+"section": 2,
+"freq": 159,
+"order": 239
+},
+{
+"word": "תּוֹרָה",
+"inflection": null,
+"gloss": "direction",
+"pos": "Noun",
+"section": 2,
+"freq": 158,
+"order": 240
+},
+{
+"word": "שֵׁנִי",
+"inflection": null,
+"gloss": "second",
+"pos": "Adj",
+"section": 2,
+"freq": 156,
+"order": 241
+},
+{
+"word": "חֲמִשִּׁים",
+"inflection": null,
+"gloss": "fifty",
+"pos": "Adj",
+"section": 2,
+"freq": 155,
+"order": 242
+},
+{
+"word": "בִּין",
+"inflection": null,
+"gloss": "discern",
+"pos": "Verb",
+"section": 2,
+"freq": 155,
+"order": 243
+},
+{
+"word": "פֶּתַח",
+"inflection": null,
+"gloss": "opening",
+"pos": "Noun",
+"section": 2,
+"freq": 155,
+"order": 244
+},
+{
+"word": "אָבַד",
+"inflection": null,
+"gloss": "perish",
+"pos": "Verb",
+"section": 2,
+"freq": 155,
+"order": 245
+},
+{
+"word": "נוּס",
+"inflection": null,
+"gloss": "flee",
+"pos": "Verb",
+"section": 2,
+"freq": 154,
+"order": 246
+},
+{
+"word": "סָפַר",
+"inflection": null,
+"gloss": "count",
+"pos": "Verb",
+"section": 2,
+"freq": 153,
+"order": 247
+},
+{
+"word": "עָזַב",
+"inflection": null,
+"gloss": "leave",
+"pos": "Verb",
+"section": 2,
+"freq": 152,
+"order": 248
+},
+{
+"word": "צִיּוֹן",
+"inflection": null,
+"gloss": "Zion",
+"pos": "Noun",
+"section": 2,
+"freq": 152,
+"order": 249
+},
+{
+"word": "יָרַשׁ",
+"inflection": null,
+"gloss": "take possession of",
+"pos": "Verb",
+"section": 2,
+"freq": 152,
+"order": 250
+},
+{
+"word": "טָמֵא",
+"inflection": null,
+"gloss": "be unclean",
+"pos": "Verb",
+"section": 2,
+"freq": 150,
+"order": 251
+},
+{
+"word": "שָׁאַל",
+"inflection": null,
+"gloss": "ask",
+"pos": "Verb",
+"section": 2,
+"freq": 148,
+"order": 252
+},
+{
+"word": "מְלָאכָה",
+"inflection": null,
+"gloss": "occupation",
+"pos": "Noun",
+"section": 2,
+"freq": 148,
+"order": 253
+},
+{
+"word": "גִּבּוֹר",
+"inflection": null,
+"gloss": "strong",
+"pos": "Adj",
+"section": 2,
+"freq": 147,
+"order": 254
+},
+{
+"word": "יִרְמְיָה",
+"inflection": null,
+"gloss": "Jeremiah",
+"pos": "Noun",
+"section": 2,
+"freq": 147,
+"order": 255
+},
+{
+"word": "רָעָה",
+"inflection": null,
+"gloss": "binding-house of the shepherds",
+"pos": "Verb",
+"section": 2,
+"freq": 146,
+"order": 256
+},
+{
+"word": "מְנַשֶּׁה",
+"inflection": null,
+"gloss": "Manasseh",
+"pos": "Noun",
+"section": 2,
+"freq": 146,
+"order": 257
+},
+{
+"word": "רֹב",
+"inflection": null,
+"gloss": "multitude",
+"pos": "Noun",
+"section": 2,
+"freq": 146,
+"order": 258
+},
+{
+"word": "שָׂמַח",
+"inflection": null,
+"gloss": "rejoice",
+"pos": "Verb",
+"section": 2,
+"freq": 146,
+"order": 259
+},
+{
+"word": "אַשּׁוּר",
+"inflection": null,
+"gloss": "Asshur",
+"pos": "Noun",
+"section": 2,
+"freq": 145,
+"order": 260
+},
+{
+"word": "יוֹאָב",
+"inflection": null,
+"gloss": "Joab",
+"pos": "Noun",
+"section": 2,
+"freq": 145,
+"order": 261
+},
+{
+"word": "בֵּית־אֵל",
+"inflection": null,
+"gloss": "Beth-el",
+"pos": "Noun",
+"section": 2,
+"freq": 144,
+"order": 262
+},
+{
+"word": "נָגַע",
+"inflection": null,
+"gloss": "touch",
+"pos": "Verb",
+"section": 2,
+"freq": 143,
+"order": 263
+},
+{
+"word": "נָסַע",
+"inflection": null,
+"gloss": "pull out",
+"pos": "Verb",
+"section": 2,
+"freq": 142,
+"order": 264
+},
+{
+"word": "יַחַד",
+"inflection": null,
+"gloss": "unitedness",
+"pos": "Adv",
+"section": 2,
+"freq": 141,
+"order": 265
+},
+{
+"word": "אָז",
+"inflection": null,
+"gloss": "at that time",
+"pos": "Adv",
+"section": 2,
+"freq": 141,
+"order": 266
+},
+{
+"word": "דָּרַשׁ",
+"inflection": null,
+"gloss": "resort to",
+"pos": "Verb",
+"section": 2,
+"freq": 140,
+"order": 267
+},
+{
+"word": "שְׁמוּאֵל",
+"inflection": null,
+"gloss": "Samuel",
+"pos": "Noun",
+"section": 2,
+"freq": 140,
+"order": 268
+},
+{
+"word": "חָצֵר",
+"inflection": null,
+"gloss": "enclosure",
+"pos": "Noun",
+"section": 2,
+"freq": 140,
+"order": 269
+},
+{
+"word": "חָנָה",
+"inflection": null,
+"gloss": "decline",
+"pos": "Verb",
+"section": 2,
+"freq": 139,
+"order": 270
+},
+{
+"word": "עֵדָה",
+"inflection": null,
+"gloss": "congregation",
+"pos": "Noun",
+"section": 2,
+"freq": 139,
+"order": 271
+},
+{
+"word": "נַחַל",
+"inflection": null,
+"gloss": "torrent",
+"pos": "Noun",
+"section": 2,
+"freq": 138,
+"order": 272
+},
+{
+"word": "קָדַשׁ",
+"inflection": null,
+"gloss": "be set apart",
+"pos": "Verb",
+"section": 2,
+"freq": 138,
+"order": 273
+},
+{
+"word": "כָּבוֹד",
+"inflection": null,
+"gloss": "abundance",
+"pos": "Noun",
+"section": 2,
+"freq": 138,
+"order": 274
+},
+{
+"word": "אָהַב",
+"inflection": null,
+"gloss": "love",
+"pos": "Verb",
+"section": 2,
+"freq": 138,
+"order": 275
+},
+{
+"word": "פָּתַח",
+"inflection": null,
+"gloss": "open",
+"pos": "Verb",
+"section": 2,
+"freq": 138,
+"order": 276
+},
+{
+"word": "זֶבַח",
+"inflection": null,
+"gloss": "sacrifice",
+"pos": "Noun",
+"section": 2,
+"freq": 136,
+"order": 277
+},
+{
+"word": "שָׁבַר",
+"inflection": null,
+"gloss": "break",
+"pos": "Verb",
+"section": 2,
+"freq": 136,
+"order": 278
+},
+{
+"word": "אַרְבָּעִים",
+"inflection": null,
+"gloss": "forty",
+"pos": "Adj",
+"section": 2,
+"freq": 135,
+"order": 279
+},
+{
+"word": "נְחֹשֶׁת",
+"inflection": null,
+"gloss": "copper",
+"pos": "Noun",
+"section": 2,
+"freq": 134,
+"order": 280
+},
+{
+"word": "אַף",
+"inflection": null,
+"gloss": "also",
+"pos": "Particle",
+"section": 2,
+"freq": 134,
+"order": 281
+},
+{
+"word": "עֶרֶב",
+"inflection": null,
+"gloss": "set",
+"pos": "Noun",
+"section": 2,
+"freq": 134,
+"order": 282
+},
+{
+"word": "אֲרָם",
+"inflection": null,
+"gloss": "Aram",
+"pos": "Noun",
+"section": 2,
+"freq": 133,
+"order": 283
+},
+{
+"word": "פֵּן",
+"inflection": null,
+"gloss": "lest",
+"pos": "Conj",
+"section": 2,
+"freq": 133,
+"order": 284
+},
+{
+"word": "שָׁאַר",
+"inflection": null,
+"gloss": "remain",
+"pos": "Verb",
+"section": 2,
+"freq": 133,
+"order": 285
+},
+{
+"word": "הָלַל",
+"inflection": null,
+"gloss": "shine",
+"pos": "Verb",
+"section": 2,
+"freq": 133,
+"order": 286
+},
+{
+"word": "פָּנָה",
+"inflection": null,
+"gloss": "turn",
+"pos": "Verb",
+"section": 2,
+"freq": 133,
+"order": 287
+},
+{
+"word": "נָצַל",
+"inflection": null,
+"gloss": "strip",
+"pos": "Verb",
+"section": 2,
+"freq": 133,
+"order": 288
+},
+{
+"word": "סָבַב",
+"inflection": null,
+"gloss": "turn about",
+"pos": "Verb",
+"section": 2,
+"freq": 132,
+"order": 289
+},
+{
+"word": "פַּר",
+"inflection": null,
+"gloss": "young bull",
+"pos": "Noun",
+"section": 2,
+"freq": 132,
+"order": 290
+},
+{
+"word": "גִּלְעָד",
+"inflection": null,
+"gloss": "Gilead",
+"pos": "Noun",
+"section": 2,
+"freq": 131,
+"order": 291
+},
+{
+"word": "יַיִן",
+"inflection": null,
+"gloss": "wine",
+"pos": "Noun",
+"section": 2,
+"freq": 131,
+"order": 292
+},
+{
+"word": "שֶׁמֶשׁ",
+"inflection": null,
+"gloss": "sun",
+"pos": "Noun",
+"section": 2,
+"freq": 131,
+"order": 293
+},
+{
+"word": "נָשִׂיא",
+"inflection": null,
+"gloss": "one lifted up",
+"pos": "Noun",
+"section": 2,
+"freq": 130,
+"order": 294
+},
+{
+"word": "חִזְקִיָּה",
+"inflection": null,
+"gloss": "Hezekiah",
+"pos": "Noun",
+"section": 2,
+"freq": 130,
+"order": 295
+},
+{
+"word": "חוּץ",
+"inflection": null,
+"gloss": "the outside",
+"pos": "Noun",
+"section": 2,
+"freq": 130,
+"order": 296
+},
+{
+"word": "יֵשׁ",
+"inflection": null,
+"gloss": "being",
+"pos": "Particle",
+"section": 2,
+"freq": 129,
+"order": 297
+},
+{
+"word": "זָבַח",
+"inflection": null,
+"gloss": "slaughter for sacrifice",
+"pos": "Verb",
+"section": 2,
+"freq": 128,
+"order": 298
+},
+{
+"word": "חָכָם",
+"inflection": null,
+"gloss": "wise",
+"pos": "Adj",
+"section": 2,
+"freq": 128,
+"order": 299
+},
+{
+"word": "שָׁכַן",
+"inflection": null,
+"gloss": "settle down",
+"pos": "Verb",
+"section": 2,
+"freq": 126,
+"order": 300
+},
+{
+"word": "מָוֶת",
+"inflection": null,
+"gloss": "death",
+"pos": "Noun",
+"section": 2,
+"freq": 125,
+"order": 301
+},
+{
+"word": "חָלַל",
+"inflection": null,
+"gloss": "bore",
+"pos": "Verb",
+"section": 2,
+"freq": 123,
+"order": 302
+},
+{
+"word": "מִשְׁכָּן",
+"inflection": null,
+"gloss": "dwelling-place",
+"pos": "Noun",
+"section": 2,
+"freq": 123,
+"order": 303
+},
+{
+"word": "חׇכְמָה",
+"inflection": null,
+"gloss": "wisdom",
+"pos": "Noun",
+"section": 2,
+"freq": 123,
+"order": 304
+},
+{
+"word": "דּוֹר",
+"inflection": null,
+"gloss": "period",
+"pos": "Noun",
+"section": 2,
+"freq": 122,
+"order": 305
+},
+{
+"word": "אַף",
+"inflection": null,
+"gloss": "nostril",
+"pos": "Noun",
+"section": 2,
+"freq": 121,
+"order": 306
+},
+{
+"word": "נַחֲלָה",
+"inflection": null,
+"gloss": "possession",
+"pos": "Noun",
+"section": 2,
+"freq": 121,
+"order": 307
+},
+{
+"word": "הָרַג",
+"inflection": null,
+"gloss": "kill",
+"pos": "Verb",
+"section": 2,
+"freq": 120,
+"order": 308
+},
+{
+"word": "כָּסָה",
+"inflection": null,
+"gloss": "cover",
+"pos": "Verb",
+"section": 2,
+"freq": 120,
+"order": 309
+},
+{
+"word": "אֲנַחְנוּ",
+"inflection": null,
+"gloss": "we",
+"pos": "Pron",
+"section": 2,
+"freq": 119,
+"order": 310
+},
+{
+"word": "יָשַׁע",
+"inflection": null,
+"gloss": "deliver",
+"pos": "Verb",
+"section": 3,
+"freq": 119,
+"order": 311
+},
+{
+"word": "יָשָׁר",
+"inflection": null,
+"gloss": "straight",
+"pos": "Adj",
+"section": 3,
+"freq": 119,
+"order": 312
+},
+{
+"word": "שָׁחַת",
+"inflection": null,
+"gloss": "go to ruin",
+"pos": "Verb",
+"section": 3,
+"freq": 118,
+"order": 313
+},
+{
+"word": "בָּטַח",
+"inflection": null,
+"gloss": "trust",
+"pos": "Verb",
+"section": 3,
+"freq": 118,
+"order": 314
+},
+{
+"word": "בֶּגֶד",
+"inflection": null,
+"gloss": "treachery",
+"pos": "Noun",
+"section": 3,
+"freq": 117,
+"order": 315
+},
+{
+"word": "סוּס",
+"inflection": null,
+"gloss": "swallow",
+"pos": "Noun",
+"section": 3,
+"freq": 117,
+"order": 316
+},
+{
+"word": "חוֹמָה",
+"inflection": null,
+"gloss": "wall",
+"pos": "Noun",
+"section": 3,
+"freq": 116,
+"order": 317
+},
+{
+"word": "מִסְפָּר",
+"inflection": null,
+"gloss": "number",
+"pos": "Noun",
+"section": 3,
+"freq": 115,
+"order": 318
+},
+{
+"word": "קָהָל",
+"inflection": null,
+"gloss": "assembly",
+"pos": "Noun",
+"section": 3,
+"freq": 115,
+"order": 319
+},
+{
+"word": "חֵסֵד",
+"inflection": null,
+"gloss": "goodness",
+"pos": "Noun",
+"section": 3,
+"freq": 115,
+"order": 320
+},
+{
+"word": "כַּף",
+"inflection": null,
+"gloss": "hollow",
+"pos": "Noun",
+"section": 3,
+"freq": 113,
+"order": 321
+},
+{
+"word": "בָּכָה",
+"inflection": null,
+"gloss": "weep",
+"pos": "Verb",
+"section": 3,
+"freq": 113,
+"order": 322
+},
+{
+"word": "נָהָר",
+"inflection": null,
+"gloss": "stream",
+"pos": "Noun",
+"section": 3,
+"freq": 112,
+"order": 323
+},
+{
+"word": "שֶׁקֶר",
+"inflection": null,
+"gloss": "deception",
+"pos": "Noun",
+"section": 3,
+"freq": 112,
+"order": 324
+},
+{
+"word": "אֲבִישָׁלוֹם",
+"inflection": null,
+"gloss": "Abishalom",
+"pos": "Noun",
+"section": 3,
+"freq": 111,
+"order": 325
+},
+{
+"word": "קָדוֹשׁ",
+"inflection": null,
+"gloss": "sacred",
+"pos": "Adj",
+"section": 3,
+"freq": 111,
+"order": 326
+},
+{
+"word": "בּוּשׁ",
+"inflection": null,
+"gloss": "be ashamed",
+"pos": "Verb",
+"section": 3,
+"freq": 111,
+"order": 327
+},
+{
+"word": "נָבָא",
+"inflection": null,
+"gloss": "prophesy",
+"pos": "Verb",
+"section": 3,
+"freq": 110,
+"order": 328
+},
+{
+"word": "בִּלְתִּי",
+"inflection": null,
+"gloss": "failure",
+"pos": "Conj",
+"section": 3,
+"freq": 110,
+"order": 329
+},
+{
+"word": "חָשַׁב",
+"inflection": null,
+"gloss": "think",
+"pos": "Verb",
+"section": 3,
+"freq": 110,
+"order": 330
+},
+{
+"word": "שְׁמֹנֶה",
+"inflection": null,
+"gloss": "eight",
+"pos": "Adj",
+"section": 3,
+"freq": 109,
+"order": 331
+},
+{
+"word": "רַק",
+"inflection": null,
+"gloss": "leanness",
+"pos": "Particle",
+"section": 3,
+"freq": 109,
+"order": 332
+},
+{
+"word": "יִצְחָק",
+"inflection": null,
+"gloss": "Isaac. Compare",
+"pos": "Noun",
+"section": 3,
+"freq": 108,
+"order": 333
+},
+{
+"word": "חֵצִי",
+"inflection": null,
+"gloss": "half",
+"pos": "Noun",
+"section": 3,
+"freq": 108,
+"order": 334
+},
+{
+"word": "נָגַשׁ",
+"inflection": null,
+"gloss": "draw near",
+"pos": "Verb",
+"section": 3,
+"freq": 108,
+"order": 335
+},
+{
+"word": "קָטַר",
+"inflection": null,
+"gloss": "make sacrifices smoke",
+"pos": "Verb",
+"section": 3,
+"freq": 108,
+"order": 336
+},
+{
+"word": "עֲבֹדָה",
+"inflection": null,
+"gloss": "labour",
+"pos": "Noun",
+"section": 3,
+"freq": 108,
+"order": 337
+},
+{
+"word": "אֶמֶת",
+"inflection": null,
+"gloss": "firmness",
+"pos": "Noun",
+"section": 3,
+"freq": 108,
+"order": 338
+},
+{
+"word": "שָׁפַךְ",
+"inflection": null,
+"gloss": "pour out",
+"pos": "Verb",
+"section": 3,
+"freq": 107,
+"order": 339
+},
+{
+"word": "שְׁלִישִׁי",
+"inflection": null,
+"gloss": "third",
+"pos": "Adj",
+"section": 3,
+"freq": 106,
+"order": 340
+},
+{
+"word": "אָמַן",
+"inflection": null,
+"gloss": "confirm",
+"pos": "Verb",
+"section": 3,
+"freq": 106,
+"order": 341
+},
+{
+"word": "עַמּוֹן",
+"inflection": null,
+"gloss": "Ammon",
+"pos": "Noun",
+"section": 3,
+"freq": 106,
+"order": 342
+},
+{
+"word": "כֶּבֶשׂ",
+"inflection": null,
+"gloss": "lamb",
+"pos": "Noun",
+"section": 3,
+"freq": 106,
+"order": 343
+},
+{
+"word": "יָטַב",
+"inflection": null,
+"gloss": "be good",
+"pos": "Verb",
+"section": 3,
+"freq": 106,
+"order": 344
+},
+{
+"word": "שֹׁמְרוֹן",
+"inflection": null,
+"gloss": "Samaria",
+"pos": "Noun",
+"section": 3,
+"freq": 106,
+"order": 345
+},
+{
+"word": "זֶרַע",
+"inflection": null,
+"gloss": "sowing",
+"pos": "Noun",
+"section": 3,
+"freq": 105,
+"order": 346
+},
+{
+"word": "גָּדַל",
+"inflection": null,
+"gloss": "grow up",
+"pos": "Verb",
+"section": 3,
+"freq": 105,
+"order": 347
+},
+{
+"word": "יָתַר",
+"inflection": null,
+"gloss": "remain over",
+"pos": "Verb",
+"section": 3,
+"freq": 105,
+"order": 348
+},
+{
+"word": "שָׁלַם",
+"inflection": null,
+"gloss": "be complete",
+"pos": "Verb",
+"section": 3,
+"freq": 105,
+"order": 349
+},
+{
+"word": "קָבַר",
+"inflection": null,
+"gloss": "bury",
+"pos": "Verb",
+"section": 3,
+"freq": 104,
+"order": 350
+},
+{
+"word": "פַּעַם",
+"inflection": null,
+"gloss": "beat",
+"pos": "Noun",
+"section": 3,
+"freq": 104,
+"order": 351
+},
+{
+"word": "תָּמִיד",
+"inflection": null,
+"gloss": "continuity",
+"pos": "Noun",
+"section": 3,
+"freq": 104,
+"order": 352
+},
+{
+"word": "מַמְלָכָה",
+"inflection": null,
+"gloss": "kingdom",
+"pos": "Noun",
+"section": 3,
+"freq": 104,
+"order": 353
+},
+{
+"word": "יָרׇבְעָם",
+"inflection": null,
+"gloss": "Jeroboam",
+"pos": "Noun",
+"section": 3,
+"freq": 104,
+"order": 354
+},
+{
+"word": "אוֹר",
+"inflection": null,
+"gloss": "light",
+"pos": "Noun",
+"section": 3,
+"freq": 104,
+"order": 355
+},
+{
+"word": "עָוֺן",
+"inflection": null,
+"gloss": "iniquity",
+"pos": "Noun",
+"section": 3,
+"freq": 103,
+"order": 356
+},
+{
+"word": "מְעַט",
+"inflection": null,
+"gloss": "a little",
+"pos": "Noun",
+"section": 3,
+"freq": 101,
+"order": 357
+},
+{
+"word": "רָעַע",
+"inflection": null,
+"gloss": "be evil",
+"pos": "Verb",
+"section": 3,
+"freq": 101,
+"order": 358
+},
+{
+"word": "רָדַף",
+"inflection": null,
+"gloss": "pursue",
+"pos": "Verb",
+"section": 3,
+"freq": 101,
+"order": 359
+},
+{
+"word": "אֱדֹם",
+"inflection": null,
+"gloss": "Edom",
+"pos": "Noun",
+"section": 3,
+"freq": 100,
+"order": 360
+},
+{
+"word": "רָעָב",
+"inflection": null,
+"gloss": "famine",
+"pos": "Noun",
+"section": 3,
+"freq": 100,
+"order": 361
+},
+{
+"word": "עָפָר",
+"inflection": null,
+"gloss": "dry earth",
+"pos": "Noun",
+"section": 3,
+"freq": 100,
+"order": 362
+},
+{
+"word": "צָפוֹן",
+"inflection": null,
+"gloss": "north",
+"pos": "Noun",
+"section": 3,
+"freq": 100,
+"order": 363
+},
+{
+"word": "הֵן",
+"inflection": null,
+"gloss": "lo!",
+"pos": "Particle",
+"section": 3,
+"freq": 100,
+"order": 364
+},
+{
+"word": "יַעַן",
+"inflection": null,
+"gloss": "purpose",
+"pos": "Conj",
+"section": 3,
+"freq": 99,
+"order": 365
+},
+{
+"word": "בְּכוֹר",
+"inflection": null,
+"gloss": "first-born",
+"pos": "Noun",
+"section": 3,
+"freq": 98,
+"order": 366
+},
+{
+"word": "קָבַץ",
+"inflection": null,
+"gloss": "gather",
+"pos": "Verb",
+"section": 3,
+"freq": 98,
+"order": 367
+},
+{
+"word": "שְׁבִיעִי",
+"inflection": null,
+"gloss": "seventh",
+"pos": "Adj",
+"section": 3,
+"freq": 98,
+"order": 368
+},
+{
+"word": "קָטָן",
+"inflection": null,
+"gloss": "small",
+"pos": "Adj",
+"section": 3,
+"freq": 98,
+"order": 369
+},
+{
+"word": "שָׁלַךְ",
+"inflection": null,
+"gloss": "throw",
+"pos": "Verb",
+"section": 3,
+"freq": 98,
+"order": 370
+},
+{
+"word": "עֵשָׂו",
+"inflection": null,
+"gloss": "Esau",
+"pos": "Noun",
+"section": 3,
+"freq": 97,
+"order": 371
+},
+{
+"word": "שָׂרַף",
+"inflection": null,
+"gloss": "burn",
+"pos": "Verb",
+"section": 3,
+"freq": 97,
+"order": 372
+},
+{
+"word": "גּוּר",
+"inflection": null,
+"gloss": "sojourn",
+"pos": "Verb",
+"section": 3,
+"freq": 97,
+"order": 373
+},
+{
+"word": "רֶכֶב",
+"inflection": null,
+"gloss": "chariotry",
+"pos": "Noun",
+"section": 3,
+"freq": 97,
+"order": 374
+},
+{
+"word": "כָּפַר",
+"inflection": null,
+"gloss": "cover over",
+"pos": "Verb",
+"section": 3,
+"freq": 97,
+"order": 375
+},
+{
+"word": "צְדָקָה",
+"inflection": null,
+"gloss": "righteousness",
+"pos": "Noun",
+"section": 3,
+"freq": 96,
+"order": 376
+},
+{
+"word": "בַּד",
+"inflection": null,
+"gloss": "separation",
+"pos": "Noun",
+"section": 3,
+"freq": 96,
+"order": 377
+},
+{
+"word": "נֶגֶד",
+"inflection": null,
+"gloss": "what is conspicuous",
+"pos": "Prep",
+"section": 3,
+"freq": 96,
+"order": 378
+},
+{
+"word": "לָבַשׁ",
+"inflection": null,
+"gloss": "put on",
+"pos": "Verb",
+"section": 3,
+"freq": 95,
+"order": 379
+},
+{
+"word": "יֶתֶר",
+"inflection": null,
+"gloss": "remainder",
+"pos": "Noun",
+"section": 3,
+"freq": 95,
+"order": 380
+},
+{
+"word": "רוּץ",
+"inflection": null,
+"gloss": "run",
+"pos": "Verb",
+"section": 3,
+"freq": 95,
+"order": 381
+},
+{
+"word": "כְּנַעַן",
+"inflection": null,
+"gloss": "Canaan",
+"pos": "Noun",
+"section": 3,
+"freq": 93,
+"order": 382
+},
+{
+"word": "טָהוֹר",
+"inflection": null,
+"gloss": "clean",
+"pos": "Adj",
+"section": 3,
+"freq": 93,
+"order": 383
+},
+{
+"word": "אַחְאָב",
+"inflection": null,
+"gloss": "Ahab",
+"pos": "Noun",
+"section": 3,
+"freq": 93,
+"order": 384
+},
+{
+"word": "שָׂפָה",
+"inflection": null,
+"gloss": "lip",
+"pos": "Noun",
+"section": 3,
+"freq": 93,
+"order": 385
+},
+{
+"word": "כָּבַד",
+"inflection": null,
+"gloss": "be heavy",
+"pos": "Verb",
+"section": 3,
+"freq": 92,
+"order": 386
+},
+{
+"word": "בָּעַר",
+"inflection": null,
+"gloss": "burn",
+"pos": "Verb",
+"section": 3,
+"freq": 92,
+"order": 387
+},
+{
+"word": "כְּרוּב",
+"inflection": null,
+"gloss": "cherub",
+"pos": "Noun",
+"section": 3,
+"freq": 91,
+"order": 388
+},
+{
+"word": "שִׁבְעִים",
+"inflection": null,
+"gloss": "seventy",
+"pos": "Adj",
+"section": 3,
+"freq": 91,
+"order": 389
+},
+{
+"word": "מִצְוָה",
+"inflection": null,
+"gloss": "commandment",
+"pos": "Noun",
+"section": 3,
+"freq": 91,
+"order": 390
+},
+{
+"word": "קָצֶה",
+"inflection": null,
+"gloss": "end",
+"pos": "Noun",
+"section": 3,
+"freq": 91,
+"order": 391
+},
+{
+"word": "תָּמִים",
+"inflection": null,
+"gloss": "complete",
+"pos": "Adj",
+"section": 3,
+"freq": 91,
+"order": 392
+},
+{
+"word": "לָכַד",
+"inflection": null,
+"gloss": "capture",
+"pos": "Verb",
+"section": 3,
+"freq": 90,
+"order": 393
+},
+{
+"word": "אָח",
+"inflection": null,
+"gloss": "brother",
+"pos": "Noun",
+"section": 3,
+"freq": 90,
+"order": 394
+},
+{
+"word": "חָרָה",
+"inflection": null,
+"gloss": "burn",
+"pos": "Verb",
+"section": 3,
+"freq": 90,
+"order": 395
+},
+{
+"word": "הָפַךְ",
+"inflection": null,
+"gloss": "turn",
+"pos": "Verb",
+"section": 3,
+"freq": 90,
+"order": 396
+},
+{
+"word": "שִׂמְחָה",
+"inflection": null,
+"gloss": "joy",
+"pos": "Noun",
+"section": 3,
+"freq": 89,
+"order": 397
+},
+{
+"word": "זָנָה",
+"inflection": null,
+"gloss": "commit fornication",
+"pos": "Verb",
+"section": 3,
+"freq": 89,
+"order": 398
+},
+{
+"word": "קֶרֶב",
+"inflection": null,
+"gloss": "inward part",
+"pos": "Noun",
+"section": 3,
+"freq": 89,
+"order": 399
+},
+{
+"word": "צֶדֶק",
+"inflection": null,
+"gloss": "rightness",
+"pos": "Noun",
+"section": 3,
+"freq": 89,
+"order": 400
+},
+{
+"word": "שֶׁקֶל",
+"inflection": null,
+"gloss": "a weight",
+"pos": "Noun",
+"section": 3,
+"freq": 88,
+"order": 401
+},
+{
+"word": "שָׁכַח",
+"inflection": null,
+"gloss": "forget",
+"pos": "Verb",
+"section": 3,
+"freq": 88,
+"order": 402
+},
+{
+"word": "טָמֵא",
+"inflection": null,
+"gloss": "unclean",
+"pos": "Adj",
+"section": 3,
+"freq": 88,
+"order": 403
+},
+{
+"word": "אֱמֹרִי",
+"inflection": null,
+"gloss": "Amorite",
+"pos": "Noun",
+"section": 3,
+"freq": 87,
+"order": 404
+},
+{
+"word": "שִׁיר",
+"inflection": null,
+"gloss": "sing",
+"pos": "Verb",
+"section": 3,
+"freq": 87,
+"order": 405
+},
+{
+"word": "שָׂבַע",
+"inflection": null,
+"gloss": "be sated",
+"pos": "Verb",
+"section": 3,
+"freq": 87,
+"order": 406
+},
+{
+"word": "שַׁבָּת",
+"inflection": null,
+"gloss": "Sabbath",
+"pos": "Noun",
+"section": 3,
+"freq": 87,
+"order": 407
+},
+{
+"word": "עֵבֶר",
+"inflection": null,
+"gloss": "region across",
+"pos": "Noun",
+"section": 3,
+"freq": 86,
+"order": 408
+},
+{
+"word": "בָּמָה",
+"inflection": null,
+"gloss": "high place",
+"pos": "Noun",
+"section": 3,
+"freq": 86,
+"order": 409
+},
+{
+"word": "עַמּוּד",
+"inflection": null,
+"gloss": "pillar",
+"pos": "Noun",
+"section": 3,
+"freq": 86,
+"order": 410
+},
+{
+"word": "גֵּר",
+"inflection": null,
+"gloss": "sojourner",
+"pos": "Noun",
+"section": 3,
+"freq": 86,
+"order": 411
+},
+{
+"word": "פֵּאָה",
+"inflection": null,
+"gloss": "corner",
+"pos": "Noun",
+"section": 3,
+"freq": 86,
+"order": 412
+},
+{
+"word": "רָחוֹק",
+"inflection": null,
+"gloss": "distant",
+"pos": "Adj",
+"section": 3,
+"freq": 85,
+"order": 413
+},
+{
+"word": "מָלַט",
+"inflection": null,
+"gloss": "slip away",
+"pos": "Verb",
+"section": 3,
+"freq": 85,
+"order": 414
+},
+{
+"word": "דַּעַת",
+"inflection": null,
+"gloss": "knowledge",
+"pos": "Noun",
+"section": 3,
+"freq": 85,
+"order": 415
+},
+{
+"word": "שָׂנֵא",
+"inflection": null,
+"gloss": "hate",
+"pos": "Verb",
+"section": 3,
+"freq": 85,
+"order": 416
+},
+{
+"word": "שִׁיר",
+"inflection": null,
+"gloss": "song",
+"pos": "Noun",
+"section": 3,
+"freq": 84,
+"order": 417
+},
+{
+"word": "יְהוֹשָׁפָט",
+"inflection": null,
+"gloss": "Jehoshaphat. Compare",
+"pos": "Noun",
+"section": 3,
+"freq": 84,
+"order": 418
+},
+{
+"word": "תּוֹעֵבַה",
+"inflection": null,
+"gloss": "abomination",
+"pos": "Noun",
+"section": 3,
+"freq": 84,
+"order": 419
+},
+{
+"word": "עָנָן",
+"inflection": null,
+"gloss": "cloud-mass",
+"pos": "Noun",
+"section": 3,
+"freq": 84,
+"order": 420
+},
+{
+"word": "לוּן",
+"inflection": null,
+"gloss": "lodge",
+"pos": "Verb",
+"section": 3,
+"freq": 83,
+"order": 421
+},
+{
+"word": "חָלָל",
+"inflection": null,
+"gloss": "pierced",
+"pos": "Adj",
+"section": 3,
+"freq": 82,
+"order": 422
+},
+{
+"word": "בֵּית לֶחֶם",
+"inflection": null,
+"gloss": "Bethlehem",
+"pos": "Noun",
+"section": 3,
+"freq": 82,
+"order": 423
+},
+{
+"word": "נָחַם",
+"inflection": null,
+"gloss": "be sorry",
+"pos": "Verb",
+"section": 3,
+"freq": 82,
+"order": 424
+},
+{
+"word": "פֹּה",
+"inflection": null,
+"gloss": "here",
+"pos": "Adv",
+"section": 3,
+"freq": 82,
+"order": 425
+},
+{
+"word": "זָכָר",
+"inflection": null,
+"gloss": "male",
+"pos": "Adj",
+"section": 3,
+"freq": 82,
+"order": 426
+},
+{
+"word": "אֵיךְ",
+"inflection": null,
+"gloss": "how?",
+"pos": "Particle",
+"section": 3,
+"freq": 82,
+"order": 427
+},
+{
+"word": "נֶגֶב",
+"inflection": null,
+"gloss": "south-country",
+"pos": "Noun",
+"section": 3,
+"freq": 82,
+"order": 428
+},
+{
+"word": "פָּלַל",
+"inflection": null,
+"gloss": "intervene",
+"pos": "Verb",
+"section": 3,
+"freq": 81,
+"order": 429
+},
+{
+"word": "יְהוֹנָתָן",
+"inflection": null,
+"gloss": "Jonathan. Compare",
+"pos": "Noun",
+"section": 3,
+"freq": 80,
+"order": 430
+},
+{
+"word": "בַּעַל",
+"inflection": null,
+"gloss": "Baal",
+"pos": "Noun",
+"section": 3,
+"freq": 80,
+"order": 431
+},
+{
+"word": "עוֹר",
+"inflection": null,
+"gloss": "skin",
+"pos": "Noun",
+"section": 3,
+"freq": 80,
+"order": 432
+},
+{
+"word": "אֲרִי",
+"inflection": null,
+"gloss": "lion",
+"pos": "Noun",
+"section": 3,
+"freq": 79,
+"order": 433
+},
+{
+"word": "טָהֵר",
+"inflection": null,
+"gloss": "be clean",
+"pos": "Verb",
+"section": 3,
+"freq": 79,
+"order": 434
+},
+{
+"word": "פְּרִי",
+"inflection": null,
+"gloss": "fruit",
+"pos": "Noun",
+"section": 3,
+"freq": 79,
+"order": 435
+},
+{
+"word": "יָדָה",
+"inflection": null,
+"gloss": "throw",
+"pos": "Verb",
+"section": 3,
+"freq": 78,
+"order": 436
+},
+{
+"word": "אֹזֶן",
+"inflection": null,
+"gloss": "ear",
+"pos": "Noun",
+"section": 3,
+"freq": 78,
+"order": 437
+},
+{
+"word": "מַרְאֶה",
+"inflection": null,
+"gloss": "sight",
+"pos": "Noun",
+"section": 3,
+"freq": 78,
+"order": 438
+},
+{
+"word": "חֹשֶׁךְ",
+"inflection": null,
+"gloss": "darkness",
+"pos": "Noun",
+"section": 3,
+"freq": 78,
+"order": 439
+},
+{
+"word": "כִּסֵּא",
+"inflection": null,
+"gloss": "seat",
+"pos": "Noun",
+"section": 3,
+"freq": 77,
+"order": 440
+},
+{
+"word": "מָשַׁל",
+"inflection": null,
+"gloss": "rule",
+"pos": "Verb",
+"section": 3,
+"freq": 77,
+"order": 441
+},
+{
+"word": "סָגַר",
+"inflection": null,
+"gloss": "shut",
+"pos": "Verb",
+"section": 3,
+"freq": 77,
+"order": 442
+},
+{
+"word": "חֶלֶב",
+"inflection": null,
+"gloss": "fat",
+"pos": "Noun",
+"section": 3,
+"freq": 77,
+"order": 443
+},
+{
+"word": "שָׁמֵם",
+"inflection": null,
+"gloss": "be desolated",
+"pos": "Verb",
+"section": 3,
+"freq": 77,
+"order": 444
+},
+{
+"word": "כַּשְׂדִּי",
+"inflection": null,
+"gloss": "Chaldeans",
+"pos": "Noun",
+"section": 3,
+"freq": 77,
+"order": 445
+},
+{
+"word": "מִצְרִי",
+"inflection": null,
+"gloss": "Egyptian",
+"pos": "Noun",
+"section": 3,
+"freq": 76,
+"order": 446
+},
+{
+"word": "בַּרְזֶל",
+"inflection": null,
+"gloss": "iron",
+"pos": "Noun",
+"section": 3,
+"freq": 76,
+"order": 447
+},
+{
+"word": "קָנָה",
+"inflection": null,
+"gloss": "get",
+"pos": "Verb",
+"section": 3,
+"freq": 76,
+"order": 448
+},
+{
+"word": "זוּר",
+"inflection": null,
+"gloss": "be a stranger",
+"pos": "Adj",
+"section": 3,
+"freq": 76,
+"order": 449
+},
+{
+"word": "אָוֶן",
+"inflection": null,
+"gloss": "trouble",
+"pos": "Noun",
+"section": 3,
+"freq": 76,
+"order": 450
+},
+{
+"word": "חֲמוֹר",
+"inflection": null,
+"gloss": "(he)-ass",
+"pos": "Noun",
+"section": 3,
+"freq": 75,
+"order": 451
+},
+{
+"word": "יְהוּדִי",
+"inflection": null,
+"gloss": "Jew",
+"pos": "Noun",
+"section": 3,
+"freq": 75,
+"order": 452
+},
+{
+"word": "נֶגַע",
+"inflection": null,
+"gloss": "stroke",
+"pos": "Noun",
+"section": 3,
+"freq": 74,
+"order": 453
+},
+{
+"word": "סֶלָה",
+"inflection": null,
+"gloss": "lift up",
+"pos": "Particle",
+"section": 3,
+"freq": 74,
+"order": 454
+},
+{
+"word": "כְּנַעַנִי",
+"inflection": null,
+"gloss": "Kenaanite",
+"pos": "Noun",
+"section": 3,
+"freq": 73,
+"order": 455
+},
+{
+"word": "חָפֵץ",
+"inflection": null,
+"gloss": "delight in",
+"pos": "Verb",
+"section": 3,
+"freq": 73,
+"order": 456
+},
+{
+"word": "יֶלֶד",
+"inflection": null,
+"gloss": "child",
+"pos": "Noun",
+"section": 3,
+"freq": 73,
+"order": 457
+},
+{
+"word": "סָתַר",
+"inflection": null,
+"gloss": "hide",
+"pos": "Verb",
+"section": 3,
+"freq": 73,
+"order": 458
+},
+{
+"word": "עֵז",
+"inflection": null,
+"gloss": "she-goat",
+"pos": "Noun",
+"section": 3,
+"freq": 73,
+"order": 459
+},
+{
+"word": "אֶלְעָזָר",
+"inflection": null,
+"gloss": "Eleazar",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 460
+},
+{
+"word": "גָּד",
+"inflection": null,
+"gloss": "Gad",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 461
+},
+{
+"word": "קָרוֹב",
+"inflection": null,
+"gloss": "near",
+"pos": "Adj",
+"section": 3,
+"freq": 72,
+"order": 462
+},
+{
+"word": "שֶׁלֶם",
+"inflection": null,
+"gloss": "sacrifice for alliance",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 463
+},
+{
+"word": "חֹק",
+"inflection": null,
+"gloss": "something prescribed",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 464
+},
+{
+"word": "נָצַב",
+"inflection": null,
+"gloss": "take one’s stand",
+"pos": "Verb",
+"section": 3,
+"freq": 72,
+"order": 465
+},
+{
+"word": "רְאוּבֵן",
+"inflection": null,
+"gloss": "Reuben",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 466
+},
+{
+"word": "דֶּלֶת",
+"inflection": null,
+"gloss": "door",
+"pos": "Noun",
+"section": 3,
+"freq": 72,
+"order": 467
+},
+{
+"word": "מַדּוּעַ",
+"inflection": null,
+"gloss": "wherefore?",
+"pos": "Particle",
+"section": 3,
+"freq": 72,
+"order": 468
+},
+{
+"word": "יָבֵשׁ",
+"inflection": null,
+"gloss": "be dry",
+"pos": "Verb",
+"section": 4,
+"freq": 72,
+"order": 469
+},
+{
+"word": "חָלָה",
+"inflection": null,
+"gloss": "be weak",
+"pos": "Verb",
+"section": 4,
+"freq": 72,
+"order": 470
+},
+{
+"word": "רֹחַב",
+"inflection": null,
+"gloss": "breadth",
+"pos": "Noun",
+"section": 4,
+"freq": 72,
+"order": 471
+},
+{
+"word": "אֹיֵב",
+"inflection": null,
+"gloss": "be hostile to",
+"pos": "Verb",
+"section": 4,
+"freq": 72,
+"order": 472
+},
+{
+"word": "שָׁחַט",
+"inflection": null,
+"gloss": "slaughter",
+"pos": "Verb",
+"section": 4,
+"freq": 72,
+"order": 473
+},
+{
+"word": "עָנִי",
+"inflection": null,
+"gloss": "poor",
+"pos": "Adj",
+"section": 4,
+"freq": 72,
+"order": 474
+},
+{
+"word": "שׁוֹפָר",
+"inflection": null,
+"gloss": "horn",
+"pos": "Noun",
+"section": 4,
+"freq": 71,
+"order": 475
+},
+{
+"word": "בַּל",
+"inflection": null,
+"gloss": "not",
+"pos": "Particle",
+"section": 4,
+"freq": 71,
+"order": 476
+},
+{
+"word": "אֵלִיָּה",
+"inflection": null,
+"gloss": "Elijah",
+"pos": "Noun",
+"section": 4,
+"freq": 71,
+"order": 477
+},
+{
+"word": "עוֹף",
+"inflection": null,
+"gloss": "flying creatures",
+"pos": "Noun",
+"section": 4,
+"freq": 71,
+"order": 478
+},
+{
+"word": "רָחַץ",
+"inflection": null,
+"gloss": "wash",
+"pos": "Verb",
+"section": 4,
+"freq": 71,
+"order": 479
+},
+{
+"word": "דָּן",
+"inflection": null,
+"gloss": "Daniel",
+"pos": "Noun",
+"section": 4,
+"freq": 70,
+"order": 480
+},
+{
+"word": "כֹּחַ",
+"inflection": null,
+"gloss": "chameleon",
+"pos": "Noun",
+"section": 4,
+"freq": 70,
+"order": 481
+},
+{
+"word": "זָעַק",
+"inflection": null,
+"gloss": "cry",
+"pos": "Verb",
+"section": 4,
+"freq": 70,
+"order": 482
+},
+{
+"word": "לְבָנוֹן",
+"inflection": null,
+"gloss": "Lebanon",
+"pos": "Noun",
+"section": 4,
+"freq": 70,
+"order": 483
+},
+{
+"word": "קָלַל",
+"inflection": null,
+"gloss": "be slight",
+"pos": "Verb",
+"section": 4,
+"freq": 70,
+"order": 484
+},
+{
+"word": "חָרַשׁ",
+"inflection": null,
+"gloss": "cut in",
+"pos": "Verb",
+"section": 4,
+"freq": 70,
+"order": 485
+},
+{
+"word": "כְּסִיל",
+"inflection": null,
+"gloss": "stupid fellow",
+"pos": "Adj",
+"section": 4,
+"freq": 70,
+"order": 486
+},
+{
+"word": "אֶרֶז",
+"inflection": null,
+"gloss": "cedar",
+"pos": "Noun",
+"section": 4,
+"freq": 69,
+"order": 487
+},
+{
+"word": "קִיר",
+"inflection": null,
+"gloss": "wall",
+"pos": "Noun",
+"section": 4,
+"freq": 69,
+"order": 488
+},
+{
+"word": "כָּנָף",
+"inflection": null,
+"gloss": "wing",
+"pos": "Noun",
+"section": 4,
+"freq": 69,
+"order": 489
+},
+{
+"word": "שָׁבַת",
+"inflection": null,
+"gloss": "cease",
+"pos": "Verb",
+"section": 4,
+"freq": 69,
+"order": 490
+},
+{
+"word": "תְּרוּמָה",
+"inflection": null,
+"gloss": "contribution",
+"pos": "Noun",
+"section": 4,
+"freq": 69,
+"order": 491
+},
+{
+"word": "עָרַךְ",
+"inflection": null,
+"gloss": "arrange in order",
+"pos": "Verb",
+"section": 4,
+"freq": 68,
+"order": 492
+},
+{
+"word": "כִּכָּר",
+"inflection": null,
+"gloss": "a round",
+"pos": "Noun",
+"section": 4,
+"freq": 68,
+"order": 493
+},
+{
+"word": "חֵן",
+"inflection": null,
+"gloss": "favour",
+"pos": "Noun",
+"section": 4,
+"freq": 68,
+"order": 494
+},
+{
+"word": "הֵיכָל",
+"inflection": null,
+"gloss": "palace",
+"pos": "Noun",
+"section": 4,
+"freq": 68,
+"order": 495
+},
+{
+"word": "אוֹת",
+"inflection": null,
+"gloss": "sign",
+"pos": "Noun",
+"section": 4,
+"freq": 68,
+"order": 496
+},
+{
+"word": "עוּר",
+"inflection": null,
+"gloss": "rouse oneself",
+"pos": "Verb",
+"section": 4,
+"freq": 67,
+"order": 497
+},
+{
+"word": "עֵצָה",
+"inflection": null,
+"gloss": "counsel",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 498
+},
+{
+"word": "בְּעַד",
+"inflection": null,
+"gloss": "separation",
+"pos": "Prep",
+"section": 4,
+"freq": 67,
+"order": 499
+},
+{
+"word": "אֲבִימֶלֶךְ",
+"inflection": null,
+"gloss": "Abimelech",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 500
+},
+{
+"word": "בְּאֵר שֶׁבַע",
+"inflection": null,
+"gloss": "Beer-shebah",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 501
+},
+{
+"word": "עֶצֶם",
+"inflection": null,
+"gloss": "bone",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 502
+},
+{
+"word": "גִּבְעָה",
+"inflection": null,
+"gloss": "hill",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 503
+},
+{
+"word": "חֵמָה",
+"inflection": null,
+"gloss": "heat",
+"pos": "Noun",
+"section": 4,
+"freq": 67,
+"order": 504
+},
+{
+"word": "עֵמֶק",
+"inflection": null,
+"gloss": "vale",
+"pos": "Noun",
+"section": 4,
+"freq": 66,
+"order": 505
+},
+{
+"word": "גּוֹרָל",
+"inflection": null,
+"gloss": "lot",
+"pos": "Noun",
+"section": 4,
+"freq": 66,
+"order": 506
+},
+{
+"word": "שׁוֹר",
+"inflection": null,
+"gloss": "a head of cattle",
+"pos": "Noun",
+"section": 4,
+"freq": 66,
+"order": 507
+},
+{
+"word": "הֶבֶל",
+"inflection": null,
+"gloss": "vapour",
+"pos": "Noun",
+"section": 4,
+"freq": 66,
+"order": 508
+},
+{
+"word": "גָּאַל",
+"inflection": null,
+"gloss": "redeem",
+"pos": "Verb",
+"section": 4,
+"freq": 66,
+"order": 509
+},
+{
+"word": "אַלּוּף",
+"inflection": null,
+"gloss": "tame",
+"pos": "Noun",
+"section": 4,
+"freq": 65,
+"order": 510
+},
+{
+"word": "יָעַץ",
+"inflection": null,
+"gloss": "advise",
+"pos": "Verb",
+"section": 4,
+"freq": 65,
+"order": 511
+},
+{
+"word": "נָצַח",
+"inflection": null,
+"gloss": "be pre-eminent",
+"pos": "Verb",
+"section": 4,
+"freq": 65,
+"order": 512
+},
+{
+"word": "גֶּבֶר",
+"inflection": null,
+"gloss": "man",
+"pos": "Noun",
+"section": 4,
+"freq": 65,
+"order": 513
+},
+{
+"word": "שָׁכַם",
+"inflection": null,
+"gloss": "start",
+"pos": "Verb",
+"section": 4,
+"freq": 65,
+"order": 514
+},
+{
+"word": "תָּקַע",
+"inflection": null,
+"gloss": "thrust",
+"pos": "Verb",
+"section": 4,
+"freq": 64,
+"order": 515
+},
+{
+"word": "לֵוִי",
+"inflection": null,
+"gloss": "Levi",
+"pos": "Noun",
+"section": 4,
+"freq": 64,
+"order": 516
+},
+{
+"word": "שָׁרַת",
+"inflection": null,
+"gloss": "minister",
+"pos": "Verb",
+"section": 4,
+"freq": 64,
+"order": 517
+},
+{
+"word": "כֶּרֶם",
+"inflection": null,
+"gloss": "vineyard",
+"pos": "Noun",
+"section": 4,
+"freq": 64,
+"order": 518
+},
+{
+"word": "צוּר",
+"inflection": null,
+"gloss": "rock",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 519
+},
+{
+"word": "בּוֹר",
+"inflection": null,
+"gloss": "pit",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 520
+},
+{
+"word": "נָבַט",
+"inflection": null,
+"gloss": "look",
+"pos": "Verb",
+"section": 4,
+"freq": 63,
+"order": 521
+},
+{
+"word": "אַבְנֵר",
+"inflection": null,
+"gloss": "Abner",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 522
+},
+{
+"word": "פָּרַשׂ",
+"inflection": null,
+"gloss": "spread out",
+"pos": "Verb",
+"section": 4,
+"freq": 63,
+"order": 523
+},
+{
+"word": "צִדְקִיָּה",
+"inflection": null,
+"gloss": "Zedekiah",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 524
+},
+{
+"word": "עֵד",
+"inflection": null,
+"gloss": "witness",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 525
+},
+{
+"word": "שִׁית",
+"inflection": null,
+"gloss": "put",
+"pos": "Verb",
+"section": 4,
+"freq": 63,
+"order": 526
+},
+{
+"word": "אִשָּׁה",
+"inflection": null,
+"gloss": "an offering made by fire",
+"pos": "Noun",
+"section": 4,
+"freq": 63,
+"order": 527
+},
+{
+"word": "חֶבְרוֹן",
+"inflection": null,
+"gloss": "Hebron",
+"pos": "Noun",
+"section": 4,
+"freq": 62,
+"order": 528
+},
+{
+"word": "מָהַר",
+"inflection": null,
+"gloss": "hasten",
+"pos": "Verb",
+"section": 4,
+"freq": 62,
+"order": 529
+},
+{
+"word": "שְׁאֵרִית",
+"inflection": null,
+"gloss": "rest",
+"pos": "Noun",
+"section": 4,
+"freq": 62,
+"order": 530
+},
+{
+"word": "צַר",
+"inflection": null,
+"gloss": "narrow",
+"pos": "Adj",
+"section": 4,
+"freq": 62,
+"order": 531
+},
+{
+"word": "צָלַח",
+"inflection": null,
+"gloss": "rush",
+"pos": "Verb",
+"section": 4,
+"freq": 62,
+"order": 532
+},
+{
+"word": "אֹרֶךְ",
+"inflection": null,
+"gloss": "length",
+"pos": "Noun",
+"section": 4,
+"freq": 62,
+"order": 533
+},
+{
+"word": "יָמִין",
+"inflection": null,
+"gloss": "right hand",
+"pos": "Noun",
+"section": 4,
+"freq": 62,
+"order": 534
+},
+{
+"word": "מָאַס",
+"inflection": null,
+"gloss": "reject",
+"pos": "Verb",
+"section": 4,
+"freq": 62,
+"order": 535
+},
+{
+"word": "אַבְרָם",
+"inflection": null,
+"gloss": "Abram",
+"pos": "Noun",
+"section": 4,
+"freq": 61,
+"order": 536
+},
+{
+"word": "רָכַב",
+"inflection": null,
+"gloss": "mount and ride",
+"pos": "Verb",
+"section": 4,
+"freq": 61,
+"order": 537
+},
+{
+"word": "נוּחַ",
+"inflection": null,
+"gloss": "rest",
+"pos": "Verb",
+"section": 4,
+"freq": 61,
+"order": 538
+},
+{
+"word": "בִּלְעָם",
+"inflection": null,
+"gloss": "Balaam",
+"pos": "Noun",
+"section": 4,
+"freq": 61,
+"order": 539
+},
+{
+"word": "מָכַר",
+"inflection": null,
+"gloss": "sell",
+"pos": "Verb",
+"section": 4,
+"freq": 61,
+"order": 540
+},
+{
+"word": "קֶדֶם",
+"inflection": null,
+"gloss": "front",
+"pos": "Noun",
+"section": 4,
+"freq": 61,
+"order": 541
+},
+{
+"word": "שָׂכַל",
+"inflection": null,
+"gloss": "be prudent",
+"pos": "Verb",
+"section": 4,
+"freq": 60,
+"order": 542
+},
+{
+"word": "הָמוֹן",
+"inflection": null,
+"gloss": "sound",
+"pos": "Noun",
+"section": 4,
+"freq": 60,
+"order": 543
+},
+{
+"word": "בָּשָׁן",
+"inflection": null,
+"gloss": "Bashan",
+"pos": "Noun",
+"section": 4,
+"freq": 60,
+"order": 544
+},
+{
+"word": "כָּתֵף",
+"inflection": null,
+"gloss": "shoulder",
+"pos": "Noun",
+"section": 4,
+"freq": 60,
+"order": 545
+},
+{
+"word": "בְּרָכָה",
+"inflection": null,
+"gloss": "blessing",
+"pos": "Noun",
+"section": 4,
+"freq": 60,
+"order": 546
+},
+{
+"word": "מׇרְדְּכַי",
+"inflection": null,
+"gloss": "Mordecai",
+"pos": "Noun",
+"section": 4,
+"freq": 60,
+"order": 547
+},
+{
+"word": "מִדְיָן",
+"inflection": null,
+"gloss": "Midian",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 548
+},
+{
+"word": "שִׁשִּׁים",
+"inflection": null,
+"gloss": "sixty",
+"pos": "Adj",
+"section": 4,
+"freq": 59,
+"order": 549
+},
+{
+"word": "גַּיְא",
+"inflection": null,
+"gloss": "valley",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 550
+},
+{
+"word": "שָׁלָל",
+"inflection": null,
+"gloss": "prey",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 551
+},
+{
+"word": "אוֹצָר",
+"inflection": null,
+"gloss": "treasure",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 552
+},
+{
+"word": "נְבוּכַדְנֶאצַּר",
+"inflection": null,
+"gloss": "Nebuchadnezzar",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 553
+},
+{
+"word": "שָׂעִיר",
+"inflection": null,
+"gloss": "hairy",
+"pos": "Noun",
+"section": 4,
+"freq": 59,
+"order": 554
+},
+{
+"word": "מָלֵא",
+"inflection": null,
+"gloss": "full",
+"pos": "Adj",
+"section": 4,
+"freq": 58,
+"order": 555
+},
+{
+"word": "יֵהוּא",
+"inflection": null,
+"gloss": "Jehu",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 556
+},
+{
+"word": "בָּרַח",
+"inflection": null,
+"gloss": "go through",
+"pos": "Verb",
+"section": 4,
+"freq": 58,
+"order": 557
+},
+{
+"word": "תֵּשַׁע",
+"inflection": null,
+"gloss": "a nine",
+"pos": "Adj",
+"section": 4,
+"freq": 58,
+"order": 558
+},
+{
+"word": "קְטֹרֶת",
+"inflection": null,
+"gloss": "smoke",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 559
+},
+{
+"word": "אָסָא",
+"inflection": null,
+"gloss": "Asa",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 560
+},
+{
+"word": "צָרָה",
+"inflection": null,
+"gloss": "dearth",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 561
+},
+{
+"word": "קֵץ",
+"inflection": null,
+"gloss": "end",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 562
+},
+{
+"word": "אֱלִישָׁע",
+"inflection": null,
+"gloss": "Elisha",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 563
+},
+{
+"word": "אֶבְיוֹן",
+"inflection": null,
+"gloss": "in want",
+"pos": "Adj",
+"section": 4,
+"freq": 58,
+"order": 564
+},
+{
+"word": "עֲרָבָה",
+"inflection": null,
+"gloss": "desert-plain",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 565
+},
+{
+"word": "אֱלוֹהַּ",
+"inflection": null,
+"gloss": "god",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 566
+},
+{
+"word": "בְּלִי",
+"inflection": null,
+"gloss": "wearing out",
+"pos": "Particle",
+"section": 4,
+"freq": 58,
+"order": 567
+},
+{
+"word": "כְּמוֹ",
+"inflection": null,
+"gloss": "like",
+"pos": "Prep",
+"section": 4,
+"freq": 58,
+"order": 568
+},
+{
+"word": "אִיּוֹב",
+"inflection": null,
+"gloss": "Job",
+"pos": "Noun",
+"section": 4,
+"freq": 58,
+"order": 569
+},
+{
+"word": "חָמָס",
+"inflection": null,
+"gloss": "violence",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 570
+},
+{
+"word": "מִשְׁמֶרֶת",
+"inflection": null,
+"gloss": "guard",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 571
+},
+{
+"word": "מַשָּׂא",
+"inflection": null,
+"gloss": "load",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 572
+},
+{
+"word": "חֶבֶל",
+"inflection": null,
+"gloss": "cord",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 573
+},
+{
+"word": "יְרִיחוֹ",
+"inflection": null,
+"gloss": "Jericho",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 574
+},
+{
+"word": "קָרַע",
+"inflection": null,
+"gloss": "tear",
+"pos": "Verb",
+"section": 4,
+"freq": 57,
+"order": 575
+},
+{
+"word": "קָנֶה",
+"inflection": null,
+"gloss": "stalk",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 576
+},
+{
+"word": "חָדַל",
+"inflection": null,
+"gloss": "cease",
+"pos": "Verb",
+"section": 4,
+"freq": 57,
+"order": 577
+},
+{
+"word": "אָרַר",
+"inflection": null,
+"gloss": "curse",
+"pos": "Verb",
+"section": 4,
+"freq": 57,
+"order": 578
+},
+{
+"word": "כָּשַׁל",
+"inflection": null,
+"gloss": "stumble",
+"pos": "Verb",
+"section": 4,
+"freq": 57,
+"order": 579
+},
+{
+"word": "בַּעַל",
+"inflection": null,
+"gloss": "owner",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 580
+},
+{
+"word": "שְׁמָמָה",
+"inflection": null,
+"gloss": "a devastation",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 581
+},
+{
+"word": "מִזְמוֹר",
+"inflection": null,
+"gloss": "melody",
+"pos": "Noun",
+"section": 4,
+"freq": 57,
+"order": 582
+},
+{
+"word": "חוּל",
+"inflection": null,
+"gloss": "whirl",
+"pos": "Verb",
+"section": 4,
+"freq": 56,
+"order": 583
+},
+{
+"word": "לֵבָב",
+"inflection": null,
+"gloss": "inner man",
+"pos": "Noun",
+"section": 4,
+"freq": 56,
+"order": 584
+},
+{
+"word": "שֻׁלְחָן",
+"inflection": null,
+"gloss": "table",
+"pos": "Noun",
+"section": 4,
+"freq": 56,
+"order": 585
+},
+{
+"word": "שְׁכֶם",
+"inflection": null,
+"gloss": "Shechem",
+"pos": "Noun",
+"section": 4,
+"freq": 56,
+"order": 586
+},
+{
+"word": "חָזָק",
+"inflection": null,
+"gloss": "strong",
+"pos": "Adj",
+"section": 4,
+"freq": 56,
+"order": 587
+},
+{
+"word": "שְׁאוֹל",
+"inflection": null,
+"gloss": "Shᵉ’ōl",
+"pos": "Noun",
+"section": 4,
+"freq": 56,
+"order": 588
+},
+{
+"word": "טֶרֶם",
+"inflection": null,
+"gloss": "not yet",
+"pos": "Adv",
+"section": 4,
+"freq": 56,
+"order": 589
+},
+{
+"word": "רְבִיעִי",
+"inflection": null,
+"gloss": "fourth",
+"pos": "Adj",
+"section": 4,
+"freq": 55,
+"order": 590
+},
+{
+"word": "אָחַז",
+"inflection": null,
+"gloss": "grasp",
+"pos": "Verb",
+"section": 4,
+"freq": 55,
+"order": 591
+},
+{
+"word": "רֶגֶל",
+"inflection": null,
+"gloss": "foot",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 592
+},
+{
+"word": "שָׁמַד",
+"inflection": null,
+"gloss": "be exterminated",
+"pos": "Verb",
+"section": 4,
+"freq": 55,
+"order": 593
+},
+{
+"word": "צָעַק",
+"inflection": null,
+"gloss": "cry",
+"pos": "Verb",
+"section": 4,
+"freq": 55,
+"order": 594
+},
+{
+"word": "חֶרְפָּה",
+"inflection": null,
+"gloss": "reproach",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 595
+},
+{
+"word": "יְאֹר",
+"inflection": null,
+"gloss": "stream of the Nile",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 596
+},
+{
+"word": "לָשׁוֹן",
+"inflection": null,
+"gloss": "tongue",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 597
+},
+{
+"word": "לָבָן",
+"inflection": null,
+"gloss": "Laban",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 598
+},
+{
+"word": "אֶסְתֵּר",
+"inflection": null,
+"gloss": "Esther",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 599
+},
+{
+"word": "רֵיחַ",
+"inflection": null,
+"gloss": "scent",
+"pos": "Noun",
+"section": 4,
+"freq": 55,
+"order": 600
+},
+{
+"word": "קֶשֶׁת",
+"inflection": null,
+"gloss": "bow",
+"pos": "Noun",
+"section": 4,
+"freq": 54,
+"order": 601
+},
+{
+"word": "אָבָה",
+"inflection": null,
+"gloss": "be willing",
+"pos": "Verb",
+"section": 4,
+"freq": 54,
+"order": 602
+},
+{
+"word": "חָלַק",
+"inflection": null,
+"gloss": "divide",
+"pos": "Verb",
+"section": 4,
+"freq": 54,
+"order": 603
+},
+{
+"word": "לָמַד",
+"inflection": null,
+"gloss": "exercise in",
+"pos": "Verb",
+"section": 4,
+"freq": 54,
+"order": 604
+},
+{
+"word": "חַג",
+"inflection": null,
+"gloss": "festival-gathering",
+"pos": "Noun",
+"section": 4,
+"freq": 54,
+"order": 605
+},
+{
+"word": "רָחַק",
+"inflection": null,
+"gloss": "be far",
+"pos": "Verb",
+"section": 4,
+"freq": 54,
+"order": 606
+},
+{
+"word": "הָמָן",
+"inflection": null,
+"gloss": "Haman",
+"pos": "Noun",
+"section": 4,
+"freq": 54,
+"order": 607
+},
+{
+"word": "שָׁדַד",
+"inflection": null,
+"gloss": "deal violently with",
+"pos": "Verb",
+"section": 4,
+"freq": 54,
+"order": 608
+},
+{
+"word": "מָשַׁח",
+"inflection": null,
+"gloss": "smear",
+"pos": "Verb",
+"section": 4,
+"freq": 53,
+"order": 609
+},
+{
+"word": "מִדָּה",
+"inflection": null,
+"gloss": "measure",
+"pos": "Noun",
+"section": 4,
+"freq": 53,
+"order": 610
+},
+{
+"word": "צָדוֹק",
+"inflection": null,
+"gloss": "Zadok",
+"pos": "Noun",
+"section": 4,
+"freq": 53,
+"order": 611
+},
+{
+"word": "חָדָשׁ",
+"inflection": null,
+"gloss": "new",
+"pos": "Adj",
+"section": 5,
+"freq": 53,
+"order": 612
+},
+{
+"word": "רָנַן",
+"inflection": null,
+"gloss": "overcome",
+"pos": "Verb",
+"section": 5,
+"freq": 53,
+"order": 613
+},
+{
+"word": "יַעַר",
+"inflection": null,
+"gloss": "wood",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 614
+},
+{
+"word": "מַצָּה",
+"inflection": null,
+"gloss": "unleavened bread",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 615
+},
+{
+"word": "קֶרֶן",
+"inflection": null,
+"gloss": "horn",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 616
+},
+{
+"word": "יֹאשִׁיָּה",
+"inflection": null,
+"gloss": "Josiah",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 617
+},
+{
+"word": "עֶלְיוֹן",
+"inflection": null,
+"gloss": "high",
+"pos": "Adj",
+"section": 5,
+"freq": 53,
+"order": 618
+},
+{
+"word": "דְּבַשׁ",
+"inflection": null,
+"gloss": "honey",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 619
+},
+{
+"word": "סֶלַע",
+"inflection": null,
+"gloss": "crag",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 620
+},
+{
+"word": "מְדִינָה",
+"inflection": null,
+"gloss": "province",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 621
+},
+{
+"word": "מָרוֹם",
+"inflection": null,
+"gloss": "height",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 622
+},
+{
+"word": "פָּעַל",
+"inflection": null,
+"gloss": "do",
+"pos": "Verb",
+"section": 5,
+"freq": 53,
+"order": 623
+},
+{
+"word": "שָׁוְא",
+"inflection": null,
+"gloss": "emptiness",
+"pos": "Noun",
+"section": 5,
+"freq": 53,
+"order": 624
+},
+{
+"word": "סֹלֶת",
+"inflection": null,
+"gloss": "fine flour",
+"pos": "Noun",
+"section": 5,
+"freq": 52,
+"order": 625
+},
+{
+"word": "רָפָא",
+"inflection": null,
+"gloss": "heal",
+"pos": "Verb",
+"section": 5,
+"freq": 52,
+"order": 626
+},
+{
+"word": "מָחָר",
+"inflection": null,
+"gloss": "to-morrow",
+"pos": "Noun",
+"section": 5,
+"freq": 52,
+"order": 627
+},
+{
+"word": "תָּמַם",
+"inflection": null,
+"gloss": "be complete",
+"pos": "Verb",
+"section": 5,
+"freq": 52,
+"order": 628
+},
+{
+"word": "זָרַע",
+"inflection": null,
+"gloss": "sow",
+"pos": "Verb",
+"section": 5,
+"freq": 52,
+"order": 629
+},
+{
+"word": "יְהוֹיָדָע",
+"inflection": null,
+"gloss": "Jehoiada. Compare",
+"pos": "Noun",
+"section": 5,
+"freq": 51,
+"order": 630
+},
+{
+"word": "נַפְתָּלִי",
+"inflection": null,
+"gloss": "Naphtali",
+"pos": "Noun",
+"section": 5,
+"freq": 51,
+"order": 631
+},
+{
+"word": "יָנַח",
+"inflection": null,
+"gloss": "rest",
+"pos": "Verb",
+"section": 5,
+"freq": 51,
+"order": 632
+},
+{
+"word": "יְרִיעָה",
+"inflection": null,
+"gloss": "curtain",
+"pos": "Noun",
+"section": 5,
+"freq": 51,
+"order": 633
+},
+{
+"word": "אַחֲרוֹן",
+"inflection": null,
+"gloss": "coming after",
+"pos": "Adj",
+"section": 5,
+"freq": 51,
+"order": 634
+},
+{
+"word": "עַד",
+"inflection": null,
+"gloss": "perpetuity",
+"pos": "Noun",
+"section": 5,
+"freq": 51,
+"order": 635
+},
+{
+"word": "דָּרַךְ",
+"inflection": null,
+"gloss": "tread",
+"pos": "Verb",
+"section": 5,
+"freq": 51,
+"order": 636
+},
+{
+"word": "יוֹמָם",
+"inflection": null,
+"gloss": "daytime",
+"pos": "Adv",
+"section": 5,
+"freq": 51,
+"order": 637
+},
+{
+"word": "נַעֲרָה",
+"inflection": null,
+"gloss": "girl",
+"pos": "Noun",
+"section": 5,
+"freq": 51,
+"order": 638
+},
+{
+"word": "עָנָה",
+"inflection": null,
+"gloss": "be occupied",
+"pos": "Verb",
+"section": 5,
+"freq": 51,
+"order": 639
+},
+{
+"word": "הוֹי",
+"inflection": null,
+"gloss": "Ah",
+"pos": "Particle",
+"section": 5,
+"freq": 51,
+"order": 640
+},
+{
+"word": "אָסַר",
+"inflection": null,
+"gloss": "tie",
+"pos": "Verb",
+"section": 5,
+"freq": 51,
+"order": 641
+},
+{
+"word": "יָרָה",
+"inflection": null,
+"gloss": "shoot",
+"pos": "Verb",
+"section": 5,
+"freq": 50,
+"order": 642
+},
+{
+"word": "הֵנָּה",
+"inflection": null,
+"gloss": "hither",
+"pos": "Adv",
+"section": 5,
+"freq": 50,
+"order": 643
+},
+{
+"word": "יָכַח",
+"inflection": null,
+"gloss": "decide",
+"pos": "Verb",
+"section": 5,
+"freq": 50,
+"order": 644
+},
+{
+"word": "נָחַל",
+"inflection": null,
+"gloss": "get as a possession",
+"pos": "Verb",
+"section": 5,
+"freq": 50,
+"order": 645
+},
+{
+"word": "רְחַבְעָם",
+"inflection": null,
+"gloss": "Rehoboam",
+"pos": "Noun",
+"section": 5,
+"freq": 50,
+"order": 646
+},
+{
+"word": "בֶּן־הֲדַד",
+"inflection": null,
+"gloss": "Benhadad",
+"pos": "Noun",
+"section": 5,
+"freq": 50,
+"order": 647
+},
+{
+"word": "פּוּץ",
+"inflection": null,
+"gloss": "be dispersed",
+"pos": "Verb",
+"section": 5,
+"freq": 50,
+"order": 648
+},
+{
+"word": "רִיב",
+"inflection": null,
+"gloss": "strive",
+"pos": "Verb",
+"section": 5,
+"freq": 50,
+"order": 649
+},
+{
+"word": "יָהּ",
+"inflection": null,
+"gloss": "Jah",
+"pos": "Noun",
+"section": 5,
+"freq": 50,
+"order": 650
+},
+{
+"word": "אֵפוֹד",
+"inflection": null,
+"gloss": "ephod",
+"pos": "Noun",
+"section": 5,
+"freq": 49,
+"order": 651
+},
+{
+"word": "תְּכֵלֶת",
+"inflection": null,
+"gloss": "violet",
+"pos": "Noun",
+"section": 5,
+"freq": 49,
+"order": 652
+},
+{
+"word": "פֶּסַח",
+"inflection": null,
+"gloss": "passover",
+"pos": "Noun",
+"section": 5,
+"freq": 49,
+"order": 653
+},
+{
+"word": "כָּבַס",
+"inflection": null,
+"gloss": "tread",
+"pos": "Verb",
+"section": 5,
+"freq": 49,
+"order": 654
+},
+{
+"word": "חָזָה",
+"inflection": null,
+"gloss": "see",
+"pos": "Verb",
+"section": 5,
+"freq": 49,
+"order": 655
+},
+{
+"word": "יִשְׁמָעֵאל",
+"inflection": null,
+"gloss": "Ishmael",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 656
+},
+{
+"word": "דָּבַק",
+"inflection": null,
+"gloss": "cling",
+"pos": "Verb",
+"section": 5,
+"freq": 48,
+"order": 657
+},
+{
+"word": "חִתִּי",
+"inflection": null,
+"gloss": "Hittite",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 658
+},
+{
+"word": "עֲזַרְיָה",
+"inflection": null,
+"gloss": "Azariah",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 659
+},
+{
+"word": "הֵנָּה",
+"inflection": null,
+"gloss": "themselves (often used emphatic for the copula",
+"pos": "Pron",
+"section": 5,
+"freq": 48,
+"order": 660
+},
+{
+"word": "דֶּבֶר",
+"inflection": null,
+"gloss": "pestilence",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 661
+},
+{
+"word": "מָגֵן",
+"inflection": null,
+"gloss": "shield",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 662
+},
+{
+"word": "אַלְמָנָה",
+"inflection": null,
+"gloss": "widow",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 663
+},
+{
+"word": "תָּפַשׂ",
+"inflection": null,
+"gloss": "lay hold of",
+"pos": "Verb",
+"section": 5,
+"freq": 48,
+"order": 664
+},
+{
+"word": "מָדַד",
+"inflection": null,
+"gloss": "measure",
+"pos": "Verb",
+"section": 5,
+"freq": 48,
+"order": 665
+},
+{
+"word": "יָצַק",
+"inflection": null,
+"gloss": "pour",
+"pos": "Verb",
+"section": 5,
+"freq": 48,
+"order": 666
+},
+{
+"word": "בָּגַד",
+"inflection": null,
+"gloss": "act treacherously",
+"pos": "Verb",
+"section": 5,
+"freq": 48,
+"order": 667
+},
+{
+"word": "מוּסָר",
+"inflection": null,
+"gloss": "discipline",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 668
+},
+{
+"word": "קָדִים",
+"inflection": null,
+"gloss": "East",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 669
+},
+{
+"word": "שַׁדַּי",
+"inflection": null,
+"gloss": "sufficient",
+"pos": "Noun",
+"section": 5,
+"freq": 48,
+"order": 670
+},
+{
+"word": "יָצַב",
+"inflection": null,
+"gloss": "set oneself",
+"pos": "Verb",
+"section": 5,
+"freq": 47,
+"order": 671
+},
+{
+"word": "יוֹאָשׁ",
+"inflection": null,
+"gloss": "Joash",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 672
+},
+{
+"word": "מַלְכוּת",
+"inflection": null,
+"gloss": "royalty",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 673
+},
+{
+"word": "פָּרַץ",
+"inflection": null,
+"gloss": "break through",
+"pos": "Verb",
+"section": 5,
+"freq": 47,
+"order": 674
+},
+{
+"word": "חָתַת",
+"inflection": null,
+"gloss": "be shattered",
+"pos": "Verb",
+"section": 5,
+"freq": 47,
+"order": 675
+},
+{
+"word": "חֻקָּה",
+"inflection": null,
+"gloss": "something prescribed",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 676
+},
+{
+"word": "חֲלוֹם",
+"inflection": null,
+"gloss": "dream",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 677
+},
+{
+"word": "רָחֵל",
+"inflection": null,
+"gloss": "Rachel",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 678
+},
+{
+"word": "דַּל",
+"inflection": null,
+"gloss": "low",
+"pos": "Adj",
+"section": 5,
+"freq": 47,
+"order": 679
+},
+{
+"word": "נָטַע",
+"inflection": null,
+"gloss": "plant",
+"pos": "Verb",
+"section": 5,
+"freq": 47,
+"order": 680
+},
+{
+"word": "קֶרֶשׁ",
+"inflection": null,
+"gloss": "board",
+"pos": "Noun",
+"section": 5,
+"freq": 47,
+"order": 681
+},
+{
+"word": "נֹחַ",
+"inflection": null,
+"gloss": "Noah",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 682
+},
+{
+"word": "אָסָף",
+"inflection": null,
+"gloss": "Asaph",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 683
+},
+{
+"word": "עֶוֶל",
+"inflection": null,
+"gloss": "injustice",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 684
+},
+{
+"word": "לִשְׁכָּה",
+"inflection": null,
+"gloss": "room",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 685
+},
+{
+"word": "בְּתוּלָה",
+"inflection": null,
+"gloss": "virgin",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 686
+},
+{
+"word": "קֶבֶר",
+"inflection": null,
+"gloss": "grave",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 687
+},
+{
+"word": "רָצַח",
+"inflection": null,
+"gloss": "murder",
+"pos": "Verb",
+"section": 5,
+"freq": 46,
+"order": 688
+},
+{
+"word": "סָלַח",
+"inflection": null,
+"gloss": "forgive",
+"pos": "Verb",
+"section": 5,
+"freq": 46,
+"order": 689
+},
+{
+"word": "רֵאשִׁית",
+"inflection": null,
+"gloss": "beginning",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 690
+},
+{
+"word": "זְרוֹעַ",
+"inflection": null,
+"gloss": "arm",
+"pos": "Noun",
+"section": 5,
+"freq": 46,
+"order": 691
+},
+{
+"word": "בָּקַע",
+"inflection": null,
+"gloss": "cleave",
+"pos": "Verb",
+"section": 5,
+"freq": 45,
+"order": 692
+},
+{
+"word": "עָזַר",
+"inflection": null,
+"gloss": "help",
+"pos": "Verb",
+"section": 5,
+"freq": 45,
+"order": 693
+},
+{
+"word": "זְבוּלוּן",
+"inflection": null,
+"gloss": "Zebulun",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 694
+},
+{
+"word": "עֹז",
+"inflection": null,
+"gloss": "strength",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 695
+},
+{
+"word": "מַעֲלָה",
+"inflection": null,
+"gloss": "what comes up",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 696
+},
+{
+"word": "דַּמֶּשֶׂק",
+"inflection": null,
+"gloss": "Damascus",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 697
+},
+{
+"word": "מִגְדָּל",
+"inflection": null,
+"gloss": "tower",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 698
+},
+{
+"word": "רָצָה",
+"inflection": null,
+"gloss": "be pleased with",
+"pos": "Verb",
+"section": 5,
+"freq": 45,
+"order": 699
+},
+{
+"word": "נׇכְרִי",
+"inflection": null,
+"gloss": "foreign",
+"pos": "Adj",
+"section": 5,
+"freq": 45,
+"order": 700
+},
+{
+"word": "חֵלֶק",
+"inflection": null,
+"gloss": "portion",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 701
+},
+{
+"word": "אוּלַי",
+"inflection": null,
+"gloss": "if not",
+"pos": "Adv",
+"section": 5,
+"freq": 45,
+"order": 702
+},
+{
+"word": "שֶׂה",
+"inflection": null,
+"gloss": "one of a flock",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 703
+},
+{
+"word": "פָּרַר",
+"inflection": null,
+"gloss": "break",
+"pos": "Verb",
+"section": 5,
+"freq": 45,
+"order": 704
+},
+{
+"word": "גֶּפֶן",
+"inflection": null,
+"gloss": "vine",
+"pos": "Noun",
+"section": 5,
+"freq": 45,
+"order": 705
+},
+{
+"word": "יוֹנָתָן",
+"inflection": null,
+"gloss": "Jonathan",
+"pos": "Noun",
+"section": 5,
+"freq": 44,
+"order": 706
+},
+{
+"word": "נָגִיד",
+"inflection": null,
+"gloss": "leader",
+"pos": "Noun",
+"section": 5,
+"freq": 44,
+"order": 707
+},
+{
+"word": "שִׁמְעוֹן",
+"inflection": null,
+"gloss": "Simeon",
+"pos": "Noun",
+"section": 5,
+"freq": 44,
+"order": 708
+},
+{
+"word": "נָגַף",
+"inflection": null,
+"gloss": "strike",
+"pos": "Verb",
+"section": 5,
+"freq": 44,
+"order": 709
+},
+{
+"word": "שִׁמְעִי",
+"inflection": null,
+"gloss": "Shimeah (from the margin)",
+"pos": "Noun",
+"section": 5,
+"freq": 44,
+"order": 710
+},
+{
+"word": "רוּעַ",
+"inflection": null,
+"gloss": "raise a shout",
+"pos": "Verb",
+"section": 5,
+"freq": 44,
+"order": 711
+},
+{
+"word": "קָצַר",
+"inflection": null,
+"gloss": "be short",
+"pos": "Verb",
+"section": 5,
+"freq": 44,
+"order": 712
+},
+{
+"word": "פָּלָא",
+"inflection": null,
+"gloss": "be surpassing",
+"pos": "Verb",
+"section": 5,
+"freq": 44,
+"order": 713
+},
+{
+"word": "עֵדוּת",
+"inflection": null,
+"gloss": "testimony",
+"pos": "Noun",
+"section": 5,
+"freq": 44,
+"order": 714
+},
+{
+"word": "יִשָּׂשכָר",
+"inflection": null,
+"gloss": "Issachar",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 715
+},
+{
+"word": "אָשֵׁר",
+"inflection": null,
+"gloss": "Asher",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 716
+},
+{
+"word": "עָבוּר",
+"inflection": null,
+"gloss": "for the sake of",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 717
+},
+{
+"word": "גִּיל",
+"inflection": null,
+"gloss": "rejoice",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 718
+},
+{
+"word": "פָּרָשׁ",
+"inflection": null,
+"gloss": "horse",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 719
+},
+{
+"word": "יָצַר",
+"inflection": null,
+"gloss": "form",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 720
+},
+{
+"word": "גּוֹלָה",
+"inflection": null,
+"gloss": "exiles",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 721
+},
+{
+"word": "מָרָה",
+"inflection": null,
+"gloss": "be contentious",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 722
+},
+{
+"word": "נָקִי",
+"inflection": null,
+"gloss": "clean",
+"pos": "Adj",
+"section": 5,
+"freq": 43,
+"order": 723
+},
+{
+"word": "מָתַי",
+"inflection": null,
+"gloss": "when",
+"pos": "Particle",
+"section": 5,
+"freq": 43,
+"order": 724
+},
+{
+"word": "חָגַר",
+"inflection": null,
+"gloss": "gird",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 725
+},
+{
+"word": "לוּחַ",
+"inflection": null,
+"gloss": "tablet",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 726
+},
+{
+"word": "פֶּשַׁע",
+"inflection": null,
+"gloss": "transgression",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 727
+},
+{
+"word": "נָצַר",
+"inflection": null,
+"gloss": "watch",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 728
+},
+{
+"word": "אַיֵּה",
+"inflection": null,
+"gloss": "where?",
+"pos": "Particle",
+"section": 5,
+"freq": 43,
+"order": 729
+},
+{
+"word": "בָּלַל",
+"inflection": null,
+"gloss": "mingle",
+"pos": "Verb",
+"section": 5,
+"freq": 43,
+"order": 730
+},
+{
+"word": "אֹרַח",
+"inflection": null,
+"gloss": "way",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 731
+},
+{
+"word": "בָּלָק",
+"inflection": null,
+"gloss": "Balak",
+"pos": "Noun",
+"section": 5,
+"freq": 43,
+"order": 732
+},
+{
+"word": "יִשַׁי",
+"inflection": null,
+"gloss": "Jesse",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 733
+},
+{
+"word": "בְּנָיָה",
+"inflection": null,
+"gloss": "Benaiah",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 734
+},
+{
+"word": "נָתָן",
+"inflection": null,
+"gloss": "Nathan",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 735
+},
+{
+"word": "עָצָר",
+"inflection": null,
+"gloss": "restrain",
+"pos": "Verb",
+"section": 5,
+"freq": 42,
+"order": 736
+},
+{
+"word": "מִזְרָח",
+"inflection": null,
+"gloss": "place of sunrise",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 737
+},
+{
+"word": "צֹר",
+"inflection": null,
+"gloss": "Tyre",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 738
+},
+{
+"word": "שַׂק",
+"inflection": null,
+"gloss": "sack",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 739
+},
+{
+"word": "מְנוֹרָה",
+"inflection": null,
+"gloss": "lampstand",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 740
+},
+{
+"word": "נֶצַח",
+"inflection": null,
+"gloss": "eminence",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 741
+},
+{
+"word": "בֵּית שֶׁמֶשׁ",
+"inflection": null,
+"gloss": "Beth-shemesh",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 742
+},
+{
+"word": "אֵצֶל",
+"inflection": null,
+"gloss": "conjunction",
+"pos": "Prep",
+"section": 5,
+"freq": 42,
+"order": 743
+},
+{
+"word": "אָן",
+"inflection": null,
+"gloss": "where?",
+"pos": "Adv",
+"section": 5,
+"freq": 42,
+"order": 744
+},
+{
+"word": "בֶּטַח",
+"inflection": null,
+"gloss": "security",
+"pos": "Noun",
+"section": 5,
+"freq": 42,
+"order": 745
+},
+{
+"word": "חָלָב",
+"inflection": null,
+"gloss": "milk",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 746
+},
+{
+"word": "אֱנוֹשׁ",
+"inflection": null,
+"gloss": "man",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 747
+},
+{
+"word": "שְׁבִי",
+"inflection": null,
+"gloss": "captivity",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 748
+},
+{
+"word": "שָׁנִי",
+"inflection": null,
+"gloss": "scarlet",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 749
+},
+{
+"word": "תּוֹלָע",
+"inflection": null,
+"gloss": "worm",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 750
+},
+{
+"word": "טַבַּעַת",
+"inflection": null,
+"gloss": "signet",
+"pos": "Noun",
+"section": 6,
+"freq": 42,
+"order": 751
+},
+{
+"word": "קָוָה",
+"inflection": null,
+"gloss": "wait for",
+"pos": "Verb",
+"section": 6,
+"freq": 42,
+"order": 752
+},
+{
+"word": "יְבוּסִי",
+"inflection": null,
+"gloss": "Jebusite",
+"pos": "Noun",
+"section": 6,
+"freq": 41,
+"order": 753
+},
+{
+"word": "שְׁמַעְיָה",
+"inflection": null,
+"gloss": "Shemaiah",
+"pos": "Noun",
+"section": 6,
+"freq": 41,
+"order": 754
+},
+{
+"word": "זְכַרְיָה",
+"inflection": null,
+"gloss": "Zachariah",
+"pos": "Noun",
+"section": 6,
+"freq": 41,
+"order": 755
+},
+{
+"word": "זָמַר",
+"inflection": null,
+"gloss": "make music",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 756
+},
+{
+"word": "פָּדָה",
+"inflection": null,
+"gloss": "ransom",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 757
+},
+{
+"word": "אָחָז",
+"inflection": null,
+"gloss": "Ahaz",
+"pos": "Noun",
+"section": 6,
+"freq": 41,
+"order": 758
+},
+{
+"word": "שָׁקַט",
+"inflection": null,
+"gloss": "be quiet",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 759
+},
+{
+"word": "יָפֶה",
+"inflection": null,
+"gloss": "fair",
+"pos": "Adj",
+"section": 6,
+"freq": 41,
+"order": 760
+},
+{
+"word": "פָּשַׁע",
+"inflection": null,
+"gloss": "rebel",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 761
+},
+{
+"word": "מָאֵן",
+"inflection": null,
+"gloss": "refuse",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 762
+},
+{
+"word": "חָמַל",
+"inflection": null,
+"gloss": "spare",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 763
+},
+{
+"word": "אֶפֶס",
+"inflection": null,
+"gloss": "ceasing",
+"pos": "Noun",
+"section": 6,
+"freq": 41,
+"order": 764
+},
+{
+"word": "סָמַךְ",
+"inflection": null,
+"gloss": "lean",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 765
+},
+{
+"word": "תָּעָה",
+"inflection": null,
+"gloss": "err",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 766
+},
+{
+"word": "חָרַב",
+"inflection": null,
+"gloss": "be dry",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 767
+},
+{
+"word": "זוּב",
+"inflection": null,
+"gloss": "flow",
+"pos": "Verb",
+"section": 6,
+"freq": 41,
+"order": 768
+},
+{
+"word": "שֵׁשׁ",
+"inflection": null,
+"gloss": "alabaster",
+"pos": "Adj",
+"section": 6,
+"freq": 41,
+"order": 769
+},
+{
+"word": "גָּמָל",
+"inflection": null,
+"gloss": "camel",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 770
+},
+{
+"word": "עֹבֵד אֱדוֹם",
+"inflection": null,
+"gloss": "Obed-edom",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 771
+},
+{
+"word": "קִרְאָה",
+"inflection": null,
+"gloss": "encounter",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 772
+},
+{
+"word": "אֲמַצְיָה",
+"inflection": null,
+"gloss": "Amaziah",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 773
+},
+{
+"word": "הָרָה",
+"inflection": null,
+"gloss": "conceive",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 774
+},
+{
+"word": "פָּגַע",
+"inflection": null,
+"gloss": "meet",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 775
+},
+{
+"word": "מִשְׁתֶּה",
+"inflection": null,
+"gloss": "feast",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 776
+},
+{
+"word": "תְּפִלָּה",
+"inflection": null,
+"gloss": "prayer",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 777
+},
+{
+"word": "אֵיפָה",
+"inflection": null,
+"gloss": "ephah",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 778
+},
+{
+"word": "פַּחַד",
+"inflection": null,
+"gloss": "dread",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 779
+},
+{
+"word": "קָצִיר",
+"inflection": null,
+"gloss": "harvesting",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 780
+},
+{
+"word": "אוֹר",
+"inflection": null,
+"gloss": "be light",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 781
+},
+{
+"word": "חָרַם",
+"inflection": null,
+"gloss": "ban",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 782
+},
+{
+"word": "אָרַב",
+"inflection": null,
+"gloss": "lie in wait",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 783
+},
+{
+"word": "רִיב",
+"inflection": null,
+"gloss": "strife",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 784
+},
+{
+"word": "שַׁמָּה",
+"inflection": null,
+"gloss": "waste",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 785
+},
+{
+"word": "שָׁקָה",
+"inflection": null,
+"gloss": "cause to drink water",
+"pos": "Verb",
+"section": 6,
+"freq": 40,
+"order": 786
+},
+{
+"word": "צִפּוֹר",
+"inflection": null,
+"gloss": "bird",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 787
+},
+{
+"word": "נִיחוֹחַ",
+"inflection": null,
+"gloss": "a quieting",
+"pos": "Noun",
+"section": 6,
+"freq": 40,
+"order": 788
+},
+{
+"word": "עֲמָלֵק",
+"inflection": null,
+"gloss": "Amalek",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 789
+},
+{
+"word": "פָּשַׁט",
+"inflection": null,
+"gloss": "strip off",
+"pos": "Verb",
+"section": 6,
+"freq": 39,
+"order": 790
+},
+{
+"word": "מְעָרָה",
+"inflection": null,
+"gloss": "cave",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 791
+},
+{
+"word": "אוּרִיָּה",
+"inflection": null,
+"gloss": "Uriah",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 792
+},
+{
+"word": "קִרְיַת יְעָרִים",
+"inflection": null,
+"gloss": "Kirjath",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 793
+},
+{
+"word": "כִּנּוֹר",
+"inflection": null,
+"gloss": "lyre",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 794
+},
+{
+"word": "מְרָרִי",
+"inflection": null,
+"gloss": "Merari. See also",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 795
+},
+{
+"word": "יְשַׁעְיָה",
+"inflection": null,
+"gloss": "Isaiah",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 796
+},
+{
+"word": "מִקְנֶה",
+"inflection": null,
+"gloss": "cattle",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 797
+},
+{
+"word": "חָרַד",
+"inflection": null,
+"gloss": "tremble",
+"pos": "Verb",
+"section": 6,
+"freq": 39,
+"order": 798
+},
+{
+"word": "כָּבֵד",
+"inflection": null,
+"gloss": "heavy",
+"pos": "Adj",
+"section": 6,
+"freq": 39,
+"order": 799
+},
+{
+"word": "צָפָה",
+"inflection": null,
+"gloss": "lay out",
+"pos": "Verb",
+"section": 6,
+"freq": 39,
+"order": 800
+},
+{
+"word": "חָנַן",
+"inflection": null,
+"gloss": "shew favour",
+"pos": "Verb",
+"section": 6,
+"freq": 39,
+"order": 801
+},
+{
+"word": "צָרַר",
+"inflection": null,
+"gloss": "confine",
+"pos": "Verb",
+"section": 6,
+"freq": 39,
+"order": 802
+},
+{
+"word": "מַר",
+"inflection": null,
+"gloss": "bitter",
+"pos": "Adj",
+"section": 6,
+"freq": 39,
+"order": 803
+},
+{
+"word": "מִרְמָה",
+"inflection": null,
+"gloss": "deceit",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 804
+},
+{
+"word": "יָתוֹם",
+"inflection": null,
+"gloss": "orphan",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 805
+},
+{
+"word": "עַי",
+"inflection": null,
+"gloss": "Ai",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 806
+},
+{
+"word": "גִּדְעוֹן",
+"inflection": null,
+"gloss": "Gideon",
+"pos": "Noun",
+"section": 6,
+"freq": 39,
+"order": 807
+},
+{
+"word": "חֲמִישִׁי",
+"inflection": null,
+"gloss": "fifth",
+"pos": "Adj",
+"section": 6,
+"freq": 38,
+"order": 808
+},
+{
+"word": "קָהַל",
+"inflection": null,
+"gloss": "assemble as an assembly",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 809
+},
+{
+"word": "שְׁמֹנִים",
+"inflection": null,
+"gloss": "an eighty",
+"pos": "Adj",
+"section": 6,
+"freq": 38,
+"order": 810
+},
+{
+"word": "בָּזָה",
+"inflection": null,
+"gloss": "despise",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 811
+},
+{
+"word": "מוֹט",
+"inflection": null,
+"gloss": "totter",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 812
+},
+{
+"word": "מִקְדָּשׁ",
+"inflection": null,
+"gloss": "sacred place",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 813
+},
+{
+"word": "חֶשְׁבּוֹן",
+"inflection": null,
+"gloss": "Heshbon",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 814
+},
+{
+"word": "אָבַל",
+"inflection": null,
+"gloss": "mourn",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 815
+},
+{
+"word": "אֶשֶׁר",
+"inflection": null,
+"gloss": "happiness",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 816
+},
+{
+"word": "קָשַׁר",
+"inflection": null,
+"gloss": "bind",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 817
+},
+{
+"word": "מָטַר",
+"inflection": null,
+"gloss": "rain",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 818
+},
+{
+"word": "עוּד",
+"inflection": null,
+"gloss": "return",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 819
+},
+{
+"word": "גַּן",
+"inflection": null,
+"gloss": "enclosure",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 820
+},
+{
+"word": "יָחַל",
+"inflection": null,
+"gloss": "wait",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 821
+},
+{
+"word": "בָּזַז",
+"inflection": null,
+"gloss": "spoil",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 822
+},
+{
+"word": "נָקָה",
+"inflection": null,
+"gloss": "be empty",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 823
+},
+{
+"word": "אָשָׁם",
+"inflection": null,
+"gloss": "offence",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 824
+},
+{
+"word": "אַרְגָּמָן",
+"inflection": null,
+"gloss": "purple",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 825
+},
+{
+"word": "בָּרָא",
+"inflection": null,
+"gloss": "shape",
+"pos": "Verb",
+"section": 6,
+"freq": 38,
+"order": 826
+},
+{
+"word": "גָּאוֹן",
+"inflection": null,
+"gloss": "exaltation",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 827
+},
+{
+"word": "שָׂרָה",
+"inflection": null,
+"gloss": "Sarah",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 828
+},
+{
+"word": "שִׁמְשׁוֹן",
+"inflection": null,
+"gloss": "Samson",
+"pos": "Noun",
+"section": 6,
+"freq": 38,
+"order": 829
+},
+{
+"word": "קֹרַח",
+"inflection": null,
+"gloss": "Korah",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 830
+},
+{
+"word": "גִּבְעָה",
+"inflection": null,
+"gloss": "Gibeah",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 831
+},
+{
+"word": "בָּדַל",
+"inflection": null,
+"gloss": "be divided",
+"pos": "Verb",
+"section": 6,
+"freq": 37,
+"order": 832
+},
+{
+"word": "שׁוֹעֵר",
+"inflection": null,
+"gloss": "porter",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 833
+},
+{
+"word": "אָחוֹר",
+"inflection": null,
+"gloss": "the hinder side",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 834
+},
+{
+"word": "רָפָה",
+"inflection": null,
+"gloss": "sink",
+"pos": "Verb",
+"section": 6,
+"freq": 37,
+"order": 835
+},
+{
+"word": "אֲחַזְיָה",
+"inflection": null,
+"gloss": "Ahaziah",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 836
+},
+{
+"word": "יְהוֹיָקִים",
+"inflection": null,
+"gloss": "Jehoiakim. Compare",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 837
+},
+{
+"word": "כָּכָה",
+"inflection": null,
+"gloss": "thus",
+"pos": "Adv",
+"section": 6,
+"freq": 37,
+"order": 838
+},
+{
+"word": "גָּבֹהַּ",
+"inflection": null,
+"gloss": "high",
+"pos": "Adj",
+"section": 6,
+"freq": 37,
+"order": 839
+},
+{
+"word": "יָרֵא",
+"inflection": null,
+"gloss": "fearing",
+"pos": "Adj",
+"section": 6,
+"freq": 37,
+"order": 840
+},
+{
+"word": "סִיחוֹן",
+"inflection": null,
+"gloss": "Sihon",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 841
+},
+{
+"word": "חָרוֹן",
+"inflection": null,
+"gloss": "anger",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 842
+},
+{
+"word": "בָּצַר",
+"inflection": null,
+"gloss": "cut off",
+"pos": "Adj",
+"section": 6,
+"freq": 37,
+"order": 843
+},
+{
+"word": "חׇרְבָּה",
+"inflection": null,
+"gloss": "waste",
+"pos": "Noun",
+"section": 6,
+"freq": 37,
+"order": 844
+},
+{
+"word": "שֵׂעִיר",
+"inflection": null,
+"gloss": "Seir",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 845
+},
+{
+"word": "שָׂחַק",
+"inflection": null,
+"gloss": "laugh",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 846
+},
+{
+"word": "חָרָשׁ",
+"inflection": null,
+"gloss": "graver",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 847
+},
+{
+"word": "תְּרוּעָה",
+"inflection": null,
+"gloss": "shout of war",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 848
+},
+{
+"word": "תֵּבֵל",
+"inflection": null,
+"gloss": "world",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 849
+},
+{
+"word": "כּוֹכָב",
+"inflection": null,
+"gloss": "star",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 850
+},
+{
+"word": "סָרִיס",
+"inflection": null,
+"gloss": "eunuch",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 851
+},
+{
+"word": "צֵל",
+"inflection": null,
+"gloss": "shadow",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 852
+},
+{
+"word": "קָשֶׁה",
+"inflection": null,
+"gloss": "hard",
+"pos": "Adj",
+"section": 6,
+"freq": 36,
+"order": 853
+},
+{
+"word": "נָכַר",
+"inflection": null,
+"gloss": "regard",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 854
+},
+{
+"word": "מַכָּה",
+"inflection": null,
+"gloss": "blow",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 855
+},
+{
+"word": "בֶּטֶן",
+"inflection": null,
+"gloss": "belly",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 856
+},
+{
+"word": "צָדַק",
+"inflection": null,
+"gloss": "be just",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 857
+},
+{
+"word": "קָשַׁב",
+"inflection": null,
+"gloss": "incline",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 858
+},
+{
+"word": "נֵכָר",
+"inflection": null,
+"gloss": "that which is foreign",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 859
+},
+{
+"word": "גָּנַב",
+"inflection": null,
+"gloss": "steal",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 860
+},
+{
+"word": "נָתַץ",
+"inflection": null,
+"gloss": "pull down",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 861
+},
+{
+"word": "בְּאֵר",
+"inflection": null,
+"gloss": "well",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 862
+},
+{
+"word": "חָסָה",
+"inflection": null,
+"gloss": "seek refuge",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 863
+},
+{
+"word": "סְדֹם",
+"inflection": null,
+"gloss": "Sodom",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 864
+},
+{
+"word": "תְּהוֹם",
+"inflection": null,
+"gloss": "deep",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 865
+},
+{
+"word": "אִי",
+"inflection": null,
+"gloss": "coast",
+"pos": "Noun",
+"section": 6,
+"freq": 36,
+"order": 866
+},
+{
+"word": "פָּרַח",
+"inflection": null,
+"gloss": "bud",
+"pos": "Verb",
+"section": 6,
+"freq": 36,
+"order": 867
+},
+{
+"word": "עָרֵל",
+"inflection": null,
+"gloss": "having foreskin",
+"pos": "Adj",
+"section": 6,
+"freq": 35,
+"order": 868
+},
+{
+"word": "מָעַל",
+"inflection": null,
+"gloss": "act unfaithfully",
+"pos": "Verb",
+"section": 6,
+"freq": 35,
+"order": 869
+},
+{
+"word": "נֶבֶל",
+"inflection": null,
+"gloss": "bag",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 870
+},
+{
+"word": "מוּל",
+"inflection": null,
+"gloss": "(over) against",
+"pos": "Prep",
+"section": 6,
+"freq": 35,
+"order": 871
+},
+{
+"word": "גִּבְעוֹן",
+"inflection": null,
+"gloss": "Gibeon",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 872
+},
+{
+"word": "חָזוֹן",
+"inflection": null,
+"gloss": "vision",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 873
+},
+{
+"word": "כָּלֵב",
+"inflection": null,
+"gloss": "Caleb",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 874
+},
+{
+"word": "אָמַץ",
+"inflection": null,
+"gloss": "be stout",
+"pos": "Verb",
+"section": 6,
+"freq": 35,
+"order": 875
+},
+{
+"word": "מַלְכָּה",
+"inflection": null,
+"gloss": "queen",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 876
+},
+{
+"word": "דַּי",
+"inflection": null,
+"gloss": "sufficiency",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 877
+},
+{
+"word": "גִּלְגָּל",
+"inflection": null,
+"gloss": "Gilgal",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 878
+},
+{
+"word": "יְשׁוּעָה",
+"inflection": null,
+"gloss": "salvation",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 879
+},
+{
+"word": "לָקַט",
+"inflection": null,
+"gloss": "pick",
+"pos": "Verb",
+"section": 6,
+"freq": 35,
+"order": 880
+},
+{
+"word": "שִׁפְחָה",
+"inflection": null,
+"gloss": "maid",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 881
+},
+{
+"word": "שֶׁבֶר",
+"inflection": null,
+"gloss": "breaking",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 882
+},
+{
+"word": "סִינַי",
+"inflection": null,
+"gloss": "Sinai",
+"pos": "Noun",
+"section": 6,
+"freq": 35,
+"order": 883
+},
+{
+"word": "לְאֹם",
+"inflection": null,
+"gloss": "people",
+"pos": "Noun",
+"section": 7,
+"freq": 35,
+"order": 884
+},
+{
+"word": "שְׂעֹרָה",
+"inflection": null,
+"gloss": "barley",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 885
+},
+{
+"word": "חֲמָת",
+"inflection": null,
+"gloss": "Hamath",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 886
+},
+{
+"word": "רָגַז",
+"inflection": null,
+"gloss": "be agitated",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 887
+},
+{
+"word": "צוּר",
+"inflection": null,
+"gloss": "confine",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 888
+},
+{
+"word": "יָקָר",
+"inflection": null,
+"gloss": "precious",
+"pos": "Adj",
+"section": 7,
+"freq": 34,
+"order": 889
+},
+{
+"word": "חִלְקִיָּה",
+"inflection": null,
+"gloss": "Hillkiah",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 890
+},
+{
+"word": "מַחֲשָׁבָה",
+"inflection": null,
+"gloss": "thought",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 891
+},
+{
+"word": "אוּלָם",
+"inflection": null,
+"gloss": "porch",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 892
+},
+{
+"word": "שֵׁן",
+"inflection": null,
+"gloss": "tooth",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 893
+},
+{
+"word": "עֵגֶל",
+"inflection": null,
+"gloss": "calf",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 894
+},
+{
+"word": "אֲשֵׁרָה",
+"inflection": null,
+"gloss": "grove. Compare",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 895
+},
+{
+"word": "הָרַס",
+"inflection": null,
+"gloss": "throw down",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 896
+},
+{
+"word": "אוֹפָן",
+"inflection": null,
+"gloss": "wheel",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 897
+},
+{
+"word": "נוּעַ",
+"inflection": null,
+"gloss": "quiver",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 898
+},
+{
+"word": "עִבְרִי",
+"inflection": null,
+"gloss": "Hebrew",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 899
+},
+{
+"word": "נָקַם",
+"inflection": null,
+"gloss": "avenge",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 900
+},
+{
+"word": "סֵתֶר",
+"inflection": null,
+"gloss": "covering",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 901
+},
+{
+"word": "קָצַף",
+"inflection": null,
+"gloss": "be wroth",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 902
+},
+{
+"word": "אָשַׁם",
+"inflection": null,
+"gloss": "offend",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 903
+},
+{
+"word": "שָׁפָן",
+"inflection": null,
+"gloss": "rock-badger",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 904
+},
+{
+"word": "מָחָה",
+"inflection": null,
+"gloss": "wipe",
+"pos": "Verb",
+"section": 7,
+"freq": 34,
+"order": 905
+},
+{
+"word": "אֲחֻזָּה",
+"inflection": null,
+"gloss": "possession",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 906
+},
+{
+"word": "עָמָל",
+"inflection": null,
+"gloss": "trouble",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 907
+},
+{
+"word": "לֵאָה",
+"inflection": null,
+"gloss": "Leah",
+"pos": "Noun",
+"section": 7,
+"freq": 34,
+"order": 908
+},
+{
+"word": "בִּינָה",
+"inflection": null,
+"gloss": "understanding",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 909
+},
+{
+"word": "כָּלַם",
+"inflection": null,
+"gloss": "be humiliated",
+"pos": "Verb",
+"section": 7,
+"freq": 33,
+"order": 910
+},
+{
+"word": "מִיכָה",
+"inflection": null,
+"gloss": "Micah",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 911
+},
+{
+"word": "שָׁבָה",
+"inflection": null,
+"gloss": "take captive",
+"pos": "Verb",
+"section": 7,
+"freq": 33,
+"order": 912
+},
+{
+"word": "גֶּשֶׁם",
+"inflection": null,
+"gloss": "rain",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 913
+},
+{
+"word": "עֵלִי",
+"inflection": null,
+"gloss": "Eli",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 914
+},
+{
+"word": "תָּבוּן",
+"inflection": null,
+"gloss": "understanding",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 915
+},
+{
+"word": "צֵלָע",
+"inflection": null,
+"gloss": "rib",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 916
+},
+{
+"word": "גָּבַהּ",
+"inflection": null,
+"gloss": "be high",
+"pos": "Verb",
+"section": 7,
+"freq": 33,
+"order": 917
+},
+{
+"word": "צָפָה",
+"inflection": null,
+"gloss": "look out",
+"pos": "Verb",
+"section": 7,
+"freq": 33,
+"order": 918
+},
+{
+"word": "יִרְאָה",
+"inflection": null,
+"gloss": "fear",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 919
+},
+{
+"word": "רְחֹב",
+"inflection": null,
+"gloss": "broad open place",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 920
+},
+{
+"word": "נוּף",
+"inflection": null,
+"gloss": "move to and fro",
+"pos": "Verb",
+"section": 7,
+"freq": 33,
+"order": 921
+},
+{
+"word": "לוֹט",
+"inflection": null,
+"gloss": "Lot",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 922
+},
+{
+"word": "עִשָּׂרוֹן",
+"inflection": null,
+"gloss": "tenth part",
+"pos": "Noun",
+"section": 7,
+"freq": 33,
+"order": 923
+},
+{
+"word": "צְבִי",
+"inflection": null,
+"gloss": "beauty",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 924
+},
+{
+"word": "חָלַץ",
+"inflection": null,
+"gloss": "draw off",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 925
+},
+{
+"word": "קְהָת",
+"inflection": null,
+"gloss": "Kohath",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 926
+},
+{
+"word": "גָּרַשׁ",
+"inflection": null,
+"gloss": "drive out",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 927
+},
+{
+"word": "גַּת",
+"inflection": null,
+"gloss": "Gath",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 928
+},
+{
+"word": "צָמַח",
+"inflection": null,
+"gloss": "sprout",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 929
+},
+{
+"word": "חֵרֶם",
+"inflection": null,
+"gloss": "devoted thing",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 930
+},
+{
+"word": "מִשְׁקָל",
+"inflection": null,
+"gloss": "weight",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 931
+},
+{
+"word": "נָשַׂג",
+"inflection": null,
+"gloss": "reach",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 932
+},
+{
+"word": "חִנָּם",
+"inflection": null,
+"gloss": "out of favour",
+"pos": "Adv",
+"section": 7,
+"freq": 32,
+"order": 933
+},
+{
+"word": "גְּדַּלְיָה",
+"inflection": null,
+"gloss": "Gedaliah",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 934
+},
+{
+"word": "זַיִת",
+"inflection": null,
+"gloss": "olive-tree",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 935
+},
+{
+"word": "פְּנִימִי",
+"inflection": null,
+"gloss": "inner",
+"pos": "Adj",
+"section": 7,
+"freq": 32,
+"order": 936
+},
+{
+"word": "מְאוּמָה",
+"inflection": null,
+"gloss": "anything",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 937
+},
+{
+"word": "סָפַד",
+"inflection": null,
+"gloss": "wail",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 938
+},
+{
+"word": "שִׁילֹה",
+"inflection": null,
+"gloss": "Shiloh",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 939
+},
+{
+"word": "מִצְפָּה",
+"inflection": null,
+"gloss": "Mitspah",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 940
+},
+{
+"word": "כָּרַע",
+"inflection": null,
+"gloss": "bow down",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 941
+},
+{
+"word": "סִיר",
+"inflection": null,
+"gloss": "pot",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 942
+},
+{
+"word": "עֵדֶר",
+"inflection": null,
+"gloss": "flock",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 943
+},
+{
+"word": "עֶרְוָה",
+"inflection": null,
+"gloss": "nakedness",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 944
+},
+{
+"word": "טַבָּח",
+"inflection": null,
+"gloss": "cook",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 945
+},
+{
+"word": "צָרַעַת",
+"inflection": null,
+"gloss": "leprosy",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 946
+},
+{
+"word": "זָרַק",
+"inflection": null,
+"gloss": "to toss",
+"pos": "Verb",
+"section": 7,
+"freq": 32,
+"order": 947
+},
+{
+"word": "תּוֹדָה",
+"inflection": null,
+"gloss": "thanksgiving",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 948
+},
+{
+"word": "רַבְשָׁקֵה",
+"inflection": null,
+"gloss": "chief",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 949
+},
+{
+"word": "עֶשֶׂב",
+"inflection": null,
+"gloss": "herb",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 950
+},
+{
+"word": "קׇרְבָּן",
+"inflection": null,
+"gloss": "offering",
+"pos": "Noun",
+"section": 7,
+"freq": 32,
+"order": 951
+},
+{
+"word": "מׇחֳרָת",
+"inflection": null,
+"gloss": "the morrow",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 952
+},
+{
+"word": "חֲנִית",
+"inflection": null,
+"gloss": "spear",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 953
+},
+{
+"word": "גְּדוּד",
+"inflection": null,
+"gloss": "band",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 954
+},
+{
+"word": "גֹּרֶן",
+"inflection": null,
+"gloss": "threshing-floor",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 955
+},
+{
+"word": "מִשְׁנֶה",
+"inflection": null,
+"gloss": "double",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 956
+},
+{
+"word": "אֵם",
+"inflection": null,
+"gloss": "mother",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 957
+},
+{
+"word": "חָרַף",
+"inflection": null,
+"gloss": "reproach",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 958
+},
+{
+"word": "חָבָא",
+"inflection": null,
+"gloss": "withdraw",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 959
+},
+{
+"word": "מִזְרָק",
+"inflection": null,
+"gloss": "bowl",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 960
+},
+{
+"word": "מֶרְכָּבָה",
+"inflection": null,
+"gloss": "chariot",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 961
+},
+{
+"word": "שְׂמֹאול",
+"inflection": null,
+"gloss": "the left",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 962
+},
+{
+"word": "הָמָה",
+"inflection": null,
+"gloss": "murmur",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 963
+},
+{
+"word": "אַי",
+"inflection": null,
+"gloss": "where?",
+"pos": "Particle",
+"section": 7,
+"freq": 31,
+"order": 964
+},
+{
+"word": "כֶּלֶב",
+"inflection": null,
+"gloss": "dog",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 965
+},
+{
+"word": "אָדוֹן",
+"inflection": null,
+"gloss": "lord",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 966
+},
+{
+"word": "קְלָלָה",
+"inflection": null,
+"gloss": "curse",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 967
+},
+{
+"word": "מָשַׁךְ",
+"inflection": null,
+"gloss": "draw",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 968
+},
+{
+"word": "יְמָנִי",
+"inflection": null,
+"gloss": "right hand",
+"pos": "Adj",
+"section": 7,
+"freq": 31,
+"order": 969
+},
+{
+"word": "רִמּוֹן",
+"inflection": null,
+"gloss": "pomegranate",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 970
+},
+{
+"word": "נָדַר",
+"inflection": null,
+"gloss": "vow",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 971
+},
+{
+"word": "נָטַשׁ",
+"inflection": null,
+"gloss": "leave",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 972
+},
+{
+"word": "דָּגָן",
+"inflection": null,
+"gloss": "corn",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 973
+},
+{
+"word": "נָחָשׁ",
+"inflection": null,
+"gloss": "serpent",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 974
+},
+{
+"word": "בָּלַע",
+"inflection": null,
+"gloss": "swallow down",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 975
+},
+{
+"word": "אֲחַשְׁוֵרוֹשׁ",
+"inflection": null,
+"gloss": "Ahasuerus",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 976
+},
+{
+"word": "מוּל",
+"inflection": null,
+"gloss": "circumcise",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 977
+},
+{
+"word": "אֹכֶל",
+"inflection": null,
+"gloss": "food",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 978
+},
+{
+"word": "אֵמֶר",
+"inflection": null,
+"gloss": "utterance",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 979
+},
+{
+"word": "נָאַף",
+"inflection": null,
+"gloss": "commit adultery",
+"pos": "Verb",
+"section": 7,
+"freq": 31,
+"order": 980
+},
+{
+"word": "חֹמֶר",
+"inflection": null,
+"gloss": "cement",
+"pos": "Noun",
+"section": 7,
+"freq": 31,
+"order": 981
+},
+{
+"word": "כּוּשׁ",
+"inflection": null,
+"gloss": "Cush",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 982
+},
+{
+"word": "אֶבְיָתָר",
+"inflection": null,
+"gloss": "Abiathar",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 983
+},
+{
+"word": "אָמֵן",
+"inflection": null,
+"gloss": "verily",
+"pos": "Adv",
+"section": 7,
+"freq": 30,
+"order": 984
+},
+{
+"word": "כָּנַע",
+"inflection": null,
+"gloss": "be humble",
+"pos": "Verb",
+"section": 7,
+"freq": 30,
+"order": 985
+},
+{
+"word": "חִטָּה",
+"inflection": null,
+"gloss": "wheat",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 986
+},
+{
+"word": "תִּפְאָרָה",
+"inflection": null,
+"gloss": "beauty",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 987
+},
+{
+"word": "נוּן",
+"inflection": null,
+"gloss": "Non",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 988
+},
+{
+"word": "סַף",
+"inflection": null,
+"gloss": "basin",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 989
+},
+{
+"word": "אַהֲבָה",
+"inflection": null,
+"gloss": "love",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 990
+},
+{
+"word": "מוֹפֵת",
+"inflection": null,
+"gloss": "wonder",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 991
+},
+{
+"word": "חָבַשׁ",
+"inflection": null,
+"gloss": "bind",
+"pos": "Verb",
+"section": 7,
+"freq": 30,
+"order": 992
+},
+{
+"word": "עָב",
+"inflection": null,
+"gloss": "dark cloud",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 993
+},
+{
+"word": "חֶדֶר",
+"inflection": null,
+"gloss": "chamber",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 994
+},
+{
+"word": "אֳנִיָּה",
+"inflection": null,
+"gloss": "a ship",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 995
+},
+{
+"word": "מָשָׁל",
+"inflection": null,
+"gloss": "proverb",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 996
+},
+{
+"word": "אָלָה",
+"inflection": null,
+"gloss": "oath",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 997
+},
+{
+"word": "יִפְתָּח",
+"inflection": null,
+"gloss": "Jephthah",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 998
+},
+{
+"word": "נָדַח",
+"inflection": null,
+"gloss": "impel",
+"pos": "Verb",
+"section": 7,
+"freq": 30,
+"order": 999
+},
+{
+"word": "תְּאֵן",
+"inflection": null,
+"gloss": "fig-tree",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1000
+},
+{
+"word": "יוֹנָה",
+"inflection": null,
+"gloss": "dove",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1001
+},
+{
+"word": "כְּפִיר",
+"inflection": null,
+"gloss": "young lion",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1002
+},
+{
+"word": "עָצוּם",
+"inflection": null,
+"gloss": "mighty",
+"pos": "Adj",
+"section": 7,
+"freq": 30,
+"order": 1003
+},
+{
+"word": "יָלַל",
+"inflection": null,
+"gloss": "howl",
+"pos": "Verb",
+"section": 7,
+"freq": 30,
+"order": 1004
+},
+{
+"word": "אַחֲרִית",
+"inflection": null,
+"gloss": "after-part",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1005
+},
+{
+"word": "תְּנוּפָה",
+"inflection": null,
+"gloss": "a swinging",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1006
+},
+{
+"word": "רָחַם",
+"inflection": null,
+"gloss": "love",
+"pos": "Verb",
+"section": 7,
+"freq": 30,
+"order": 1007
+},
+{
+"word": "רִבְקָה",
+"inflection": null,
+"gloss": "Rebekah",
+"pos": "Noun",
+"section": 7,
+"freq": 30,
+"order": 1008
+},
+{
+"word": "גָּזַל",
+"inflection": null,
+"gloss": "tear away",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1009
+},
+{
+"word": "נָשַׁק",
+"inflection": null,
+"gloss": "kiss",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1010
+},
+{
+"word": "עֲשִׂירִי",
+"inflection": null,
+"gloss": "tenth",
+"pos": "Adj",
+"section": 7,
+"freq": 29,
+"order": 1011
+},
+{
+"word": "חֲצֹצְרָה",
+"inflection": null,
+"gloss": "clarion",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1012
+},
+{
+"word": "יֵשׁוּעַ",
+"inflection": null,
+"gloss": "Jeshua",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1013
+},
+{
+"word": "אָתוֹן",
+"inflection": null,
+"gloss": "she-ass",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1014
+},
+{
+"word": "עֹשֶׁר",
+"inflection": null,
+"gloss": "riches",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1015
+},
+{
+"word": "דָנִיֵּאל",
+"inflection": null,
+"gloss": "Daniel",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1016
+},
+{
+"word": "יִזְרְעֵאל",
+"inflection": null,
+"gloss": "Jezreel",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1017
+},
+{
+"word": "קִרְיָה",
+"inflection": null,
+"gloss": "town",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1018
+},
+{
+"word": "כָּחַד",
+"inflection": null,
+"gloss": "hide",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1019
+},
+{
+"word": "טַל",
+"inflection": null,
+"gloss": "night-mist",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1020
+},
+{
+"word": "סֻכָּה",
+"inflection": null,
+"gloss": "thicket",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1021
+},
+{
+"word": "יְהוֹרָם",
+"inflection": null,
+"gloss": "Jehoram",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1022
+},
+{
+"word": "אָרַךְ",
+"inflection": null,
+"gloss": "be long",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1023
+},
+{
+"word": "מַעַל",
+"inflection": null,
+"gloss": "higher part",
+"pos": "Adv",
+"section": 7,
+"freq": 29,
+"order": 1024
+},
+{
+"word": "עָשַׁק",
+"inflection": null,
+"gloss": "oppress",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1025
+},
+{
+"word": "דָּמַם",
+"inflection": null,
+"gloss": "be dumb",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1026
+},
+{
+"word": "בָּחוּר",
+"inflection": null,
+"gloss": "young man",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1027
+},
+{
+"word": "תְּהִלָּה",
+"inflection": null,
+"gloss": "praise",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1028
+},
+{
+"word": "תִּירוֹשׁ",
+"inflection": null,
+"gloss": "must",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1029
+},
+{
+"word": "רָעַשׁ",
+"inflection": null,
+"gloss": "quake",
+"pos": "Verb",
+"section": 7,
+"freq": 29,
+"order": 1030
+},
+{
+"word": "עַתּוּד",
+"inflection": null,
+"gloss": "he-goat",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1031
+},
+{
+"word": "לָבָן",
+"inflection": null,
+"gloss": "white",
+"pos": "Adj",
+"section": 7,
+"freq": 29,
+"order": 1032
+},
+{
+"word": "בָּרָד",
+"inflection": null,
+"gloss": "hail",
+"pos": "Noun",
+"section": 7,
+"freq": 29,
+"order": 1033
+},
+{
+"word": "עֵילָם",
+"inflection": null,
+"gloss": "Elam",
+"pos": "Noun",
+"section": 7,
+"freq": 28,
+"order": 1034
+},
+{
+"word": "שִׁשִּׁי",
+"inflection": null,
+"gloss": "sixth",
+"pos": "Adj",
+"section": 7,
+"freq": 28,
+"order": 1035
+},
+{
+"word": "שְׁמִינִי",
+"inflection": null,
+"gloss": "eighth",
+"pos": "Adj",
+"section": 7,
+"freq": 28,
+"order": 1036
+}
+]
