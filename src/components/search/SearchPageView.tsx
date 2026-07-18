@@ -316,6 +316,15 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     : scope.kind === 'hebrew' ? 'hebrew:MT'
     : `trans:${transLang}`
 
+  // Embedded: the scope dropdown's options carry the live lane counts (the panel has no tab
+  // row). Lanes without a fetched count (other translations, single collections) stay plain.
+  const optCount = (val: string): string => {
+    if (!embedded) return ''
+    const c = counts[val]
+    if (c === null || c === undefined) return ''
+    return ` (${c >= 300 ? '300+' : c})`
+  }
+
   // Hydrate persisted state from localStorage ONCE, then mark mounted. Saves are gated on
   // `mounted` so this restore isn't clobbered by an initial-render write. URL params win.
   useEffect(() => {
@@ -438,11 +447,13 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   }, [query, scopeVal, booksKey, sort, lemmaMode, hebStrongs, runSearch])
 
   // Live counts for the result-type tabs (all lanes, in parallel). Debounced; reqId guard.
+  // Embedded (the side panel) shows no tab row — the counts go into the scope dropdown's
+  // option labels instead — and additionally counts the Hebrew lane (the tabs never had one).
   useEffect(() => {
     const q = query.trim()
     if (q.length < 2) { setCounts({}); return }
     const id = ++countReq.current
-    const lanes = laneList.map(l => l.val)
+    const lanes = [...laneList.map(l => l.val), ...(embedded ? ['hebrew:MT'] : [])]
     setCounts(prev => { const n: Record<string, number | null> = {}; for (const v of lanes) n[v] = prev[v] ?? null; return n })
     const t = setTimeout(() => {
       for (const val of lanes) {
@@ -452,7 +463,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       }
     }, 300)
     return () => clearTimeout(t)
-  }, [query, laneList, lemmaMode])
+  }, [query, laneList, lemmaMode, embedded])
 
   // Verse context for biblical hits: when the slider is > 0, fetch each shown hit's neighbouring
   // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.
@@ -844,17 +855,17 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
                 className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
                 <optgroup label="Greek">
-                  <option value="greek:GNT">Greek — New Testament</option>
-                  <option value="greek:LXX">Greek — Septuagint</option>
+                  <option value="greek:GNT">Greek — New Testament{optCount('greek:GNT')}</option>
+                  <option value="greek:LXX">Greek — Septuagint{optCount('greek:LXX')}</option>
                 </optgroup>
                 <optgroup label="Hebrew">
-                  <option value="hebrew:MT">Hebrew — Old Testament</option>
+                  <option value="hebrew:MT">Hebrew — Old Testament{optCount('hebrew:MT')}</option>
                 </optgroup>
                 <optgroup label="Translations">
-                  {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}</option>)}
+                  {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}{optCount(`trans:${t.lang}`)}</option>)}
                 </optgroup>
                 <optgroup label="Background texts">
-                  <option value="bg:all">All background texts</option>
+                  <option value="bg:all">All background texts{optCount('bg:all')}</option>
                   <option value="bggrc:all">All background texts — Greek (LXX)</option>
                   {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
                 </optgroup>
@@ -948,9 +959,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           </div>
         )}
 
-        {/* Result-type tabs (live counts) — not shown for a Hebrew word search, which is its
-            own scope (searching the other lanes for a Hebrew string would just return zero). */}
-        {query.trim().length >= 2 && scope.kind !== 'hebrew' && (
+        {/* Result-type tabs (live counts) — full page only (the panel shows the counts inside
+            the scope dropdown's options instead, saving a row). Not shown for a Hebrew word
+            search, which is its own scope (the other lanes would just return zero). */}
+        {!embedded && query.trim().length >= 2 && scope.kind !== 'hebrew' && (
           <div className="mt-2 flex items-center gap-1.5 overflow-x-auto pb-0.5">
             {laneList.map(l => {
               const active = l.val === activeLane
