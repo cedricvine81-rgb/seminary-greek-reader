@@ -1067,6 +1067,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 bookName={bookName}
                 query={query}
                 transLang={parallelLang}
+                embedded={embedded}
                 onOpen={(h, tl) => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, tl !== 'none' ? tl : undefined, 'MT')}
               />
             ) : (

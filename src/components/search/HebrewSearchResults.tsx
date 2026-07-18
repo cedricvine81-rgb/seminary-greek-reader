@@ -1,19 +1,25 @@
 'use client'
 
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { mtToEnglish } from '@/lib/versification'
 import { normalizeHebrew } from '@/lib/hebrew-fold'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { buildHebrewInfo } from '@/components/reader/HebrewWord'
+import { ParsingDock } from './ParsingDock'
+import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
+import type { LexicalInfoPanel } from '@/types/lexicon'
+import type { VerseWord } from '@/types/biblical-text'
 
 // Two-column parallel view for a Hebrew (MT) search: each hit verse shows the pointed Hebrew
-// beside a parallel translation — mirroring GreekSearchResults, minus the word-level parsing.
-// Translations are the reader's per-chapter index (/api/translation), fetched lazily per shown
-// chapter. Hebrew (BHS) and English versification diverge in ~30 chapters (Psalm titles, Joel,
-// Malachi, …), so each hit is mapped through mtToEnglish before the translation is fetched and
-// looked up — otherwise the neighbouring English verse would show. See SearchPageView.
+// beside a parallel translation. Each Hebrew word is clickable → the parsing pane (same as the
+// Reader): the word's MT data (surface / Strong's / OSHB morph / morphemes) + the Hebrew lexicon
+// build the panel via buildHebrewInfo. Embedded over the Reader, parses route to the Reader's
+// pane (parsing-info-bus); on the full /search page a ParsingDock is docked here. Translations
+// are the reader's per-chapter index (/api/translation); BHS↔English versification diverges in
+// ~30 chapters, so each hit maps through mtToEnglish before the translation is looked up.
 
-// `transLang === 'none'` turns the parallel column off. Every MT book is in the 66-book canon,
-// so all translations have Old-Testament coverage. The selector lives in SearchPageView's
+// `transLang === 'none'` turns the parallel column off. The selector lives in SearchPageView's
 // controls bar (shared with the Greek results).
 
 // matchWords: the matched word surfaces of an "all forms" (Strong's) hit, computed server-side
@@ -21,37 +27,87 @@ import { SEARCH_MARK } from '@/lib/highlight-terms'
 // found by text matching.
 export type HebrewHit = { osisId: string; chapter: number; verse: number; text: string; matchWords?: string[] }
 
-export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transLang }: {
+type MtVerse = { id: string; words?: VerseWord[] }
+
+export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transLang, embedded = false }: {
   hits: HebrewHit[]
   bookName: Map<string, string>
   onOpen: (h: HebrewHit, transLang: string) => void
   query?: string
   // Parallel-translation column language ('none' = Hebrew only); owned by SearchPageView.
   transLang: string
+  embedded?: boolean
 }) {
   const [, bump] = useState(0)
+  const [selKey, setSelKey] = useState<string | null>(null)
+  const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
+  // Embedded over a page with its own parsing pane (the Reader): send parses THERE and skip the
+  // local dock. Decided once at mount (the host registers its sink before the panel can open).
+  const [useSink] = useState(() => embedded && hasParsingSink())
+  const showInfo = (i: LexicalInfoPanel | null) => { if (useSink) emitParsingInfo(i); else setInfo(i) }
+
+  // Hebrew Strong's lexicon (lemma / gloss / BDB / transliteration for the parse), loaded once.
+  const lexRef = useRef<HebrewLexicon | null>(null)
+  useEffect(() => { loadHebrewLexicon().then(l => { lexRef.current = l }).catch(() => {}) }, [])
+
+  // verseId → MT word data, filled lazily the first time a word in that chapter is touched (the
+  // verse text alone drives the *rendering*, so this only loads for chapters actually parsed).
+  const mtWords = useRef<Record<string, VerseWord[]>>({})
+  const fetchedCh = useRef<Set<string>>(new Set())
+
   // verseId → translation text (per lang), lazily filled; a ref so late fetches always store.
   const trans = useRef<Record<string, Record<string, string>>>({})
   const fetchedTr = useRef<Set<string>>(new Set())
 
-  // The verse as visual tokens (maqqef-joined chains stay one token) with the searched word(s)
-  // marked red: an "all forms" hit marks the surfaces the server matched by Strong's number
-  // (h.matchWords); a surface search marks by consonantal containment of the folded query —
-  // the SAME fold the server index matched with (normalizeHebrew), so exactly the words that
-  // produced the hit get the mark.
+  // A word is the searched one (this-form search) if its consonantal fold contains the folded
+  // query — the same fold the index matched with. (All-forms hits use h.matchWords instead.)
   const qParts = normalizeHebrew(query).split(' ').filter(Boolean)
-  function hebrewVerse(h: HebrewHit): ReactNode {
-    const tokenMatched: (tok: string) => boolean = h.matchWords?.length
-      ? tok => tok.split('־').some(part => h.matchWords!.includes(part))
-      : tok => qParts.length > 0 && qParts.some(p => normalizeHebrew(tok).includes(p))
-    if (!h.matchWords?.length && qParts.length === 0) return h.text
-    const toks = h.text.split(/\s+/)
-    return toks.map((t, i) => (
-      <Fragment key={i}>
-        <span className={tokenMatched(t) ? SEARCH_MARK : undefined}>{t}</span>
-        {i < toks.length - 1 ? ' ' : ''}
-      </Fragment>
-    ))
+  const isMatch = (surface: string): boolean => qParts.length > 0 && qParts.some(p => normalizeHebrew(surface).includes(p))
+
+  async function selectWord(h: HebrewHit, wordIdx: number, surface: string, key: string) {
+    setSelKey(key)
+    const reference = `${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`
+    const verseId = `${h.osisId}.${h.chapter}.${h.verse}`
+    if (!mtWords.current[verseId]) {
+      const ck = `${h.osisId}.${h.chapter}`
+      if (!fetchedCh.current.has(ck)) {
+        fetchedCh.current.add(ck)
+        try {
+          const r = await fetch(`/data/mt/${h.osisId}_${h.chapter}.json`)
+          const d: { verses?: MtVerse[] } | null = r.ok ? await r.json() : null
+          for (const v of d?.verses ?? []) mtWords.current[v.id] = v.words ?? []
+        } catch { fetchedCh.current.delete(ck) }
+      }
+    }
+    const w = mtWords.current[verseId]?.[wordIdx]
+    showInfo(w
+      ? buildHebrewInfo(w, reference, lexRef.current)
+      : { surface, lexeme: surface, gloss: '', partOfSpeech: '', parsing: '', reference, script: 'hebrew' })
+  }
+
+  // The verse rendered word-by-word from its text (split on whitespace / maqqef, separators
+  // preserved so maqqef joins directly). Each word is clickable → parse; the searched word(s)
+  // carry the red search mark. Word index counts only word tokens, aligning with the MT words
+  // array (validated corpus-wide) so a click resolves the right word's data.
+  function hebrewVerse(h: HebrewHit) {
+    const verseId = `${h.osisId}.${h.chapter}.${h.verse}`
+    const parts = h.text.split(/(\s+|־)/)
+    let wi = -1
+    return parts.map((part, pi) => {
+      if (part === '') return null
+      if (/^(?:\s+|־)$/.test(part)) return <span key={pi}>{part}</span>   // separator (space or maqqef)
+      wi += 1
+      const idx = wi
+      const key = `${verseId}.${idx}`
+      const matched = h.matchWords?.length ? h.matchWords.includes(part) : isMatch(part)
+      const pick = () => void selectWord(h, idx, part, key)
+      return (
+        <span key={pi} onMouseEnter={pick} onClick={pick}
+          className={`cursor-pointer rounded transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''}${matched ? ` ${SEARCH_MARK}` : ''}`}>
+          {part}
+        </span>
+      )
+    })
   }
 
   // Fetch the English chapters the hits map ONTO (which can differ from the Hebrew chapter, e.g.
@@ -95,9 +151,7 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
                 {bookName.get(h.osisId) ?? h.osisId} {h.chapter}:{h.verse}
               </button>
               <div className={`mt-1 grid gap-x-4 gap-y-1 items-baseline ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
-                {/* Same size the Reader's Hebrew column uses (its default — the reader's own
-                    font-size setting is scoped to its container), so the split view reads as
-                    one continuous surface rather than the results shouting. */}
+                {/* Same size the Reader's Hebrew column uses so the split view reads as one surface. */}
                 <p dir="rtl" className="font-hebrew leading-loose text-gray-800" style={{ fontSize: 'var(--greek-fs, 1.125rem)' }}>
                   {hebrewVerse(h)}
                 </p>
@@ -113,6 +167,9 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
           )
         })}
       </div>
+
+      {/* Full page (no host pane): dock the parsing pane here, like the Greek results. */}
+      {!useSink && <ParsingDock info={info} />}
     </div>
   )
 }
