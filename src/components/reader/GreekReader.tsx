@@ -764,20 +764,24 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   // component also renders the home-page demo, whose URL must stay clean.
   const corpusStateRef = useRef(corpus); corpusStateRef.current = corpus
   const lastRefJumpAt = useRef(0)   // suppress writes while a reference jump is settling
-  const writeReaderPosition = useCallback(() => {
-    if (typeof window === 'undefined' || window.location.pathname !== '/reader') return
-    if (Date.now() - lastRefJumpAt.current < 2500) return
+  // Returns true once the URL reflects the current view (wrote it, or it was already in sync, or
+  // a reference jump owns the URL) — false only when there's no visible verse to key off yet, so
+  // callers (the corpus-change poll below) can retry until the new corpus has rendered.
+  const writeReaderPosition = useCallback((): boolean => {
+    if (typeof window === 'undefined' || window.location.pathname !== '/reader') return true
+    if (Date.now() - lastRefJumpAt.current < 2500) return true   // a ref jump already wrote the URL
     const id = visibleVerseId()
-    if (!id) return
+    if (!id) return false
     const [book, ch, vs] = id.split('.')
-    if (!book || !ch || !vs) return
+    if (!book || !ch || !vs) return false
     const params = new URLSearchParams(window.location.search)
     const refStr = `${book} ${ch}:${vs}`
-    if (params.get('ref') === refStr && params.get('corpus') === corpusStateRef.current) return
+    if (params.get('ref') === refStr && params.get('corpus') === corpusStateRef.current) return true
     params.set('ref', refStr)
     params.set('corpus', corpusStateRef.current)
     params.delete('q')   // a search-arrival highlight shouldn't re-fire on a later return
     window.history.replaceState(window.history.state, '', `${window.location.pathname}?${params.toString()}`)
+    return true
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const readerPosIdleTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -794,6 +798,27 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       if (readerPosIdleTimer.current) clearTimeout(readerPosIdleTimer.current)
     }
   }, [writeReaderPosition])
+
+  // The desktop NT|LXX|HB toggle switches testaments without scrolling, so the scroll mirror
+  // above never fires and the URL keeps pointing at the old corpus. A right-click search launched
+  // straight after would then snapshot the wrong testament, and "Return to page" landed in the
+  // NT instead of the Hebrew Bible. So whenever the shown corpus changes, capture the new view's
+  // position as soon as its verses have rendered. (A reference jump also changes `corpus`, but it
+  // writes the URL itself and holds writeReaderPosition off via lastRefJumpAt, so this no-ops for
+  // it.) Skip the initial mount so a freshly-opened /reader keeps its clean URL until you move.
+  const corpusMirrorReady = useRef(false)
+  useEffect(() => {
+    if (typeof window === 'undefined' || window.location.pathname !== '/reader') return
+    if (!corpusMirrorReady.current) { corpusMirrorReady.current = true; return }
+    let tries = 0
+    let timer: ReturnType<typeof setTimeout>
+    const tick = () => {
+      if (writeReaderPosition()) return          // synced (or a ref jump owns the URL) → done
+      if (++tries < 20) timer = setTimeout(tick, 100)   // new corpus not on screen yet → retry ~2s
+    }
+    timer = setTimeout(tick, 100)
+    return () => clearTimeout(timer)
+  }, [corpus, writeReaderPosition])
 
   // ── Shift: freeze / unfreeze parsing panel ───────────────────────────────────
 
