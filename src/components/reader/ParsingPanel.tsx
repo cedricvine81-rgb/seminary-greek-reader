@@ -139,7 +139,8 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
             </p>
           )}
 
-          {/* Hebrew: Strong's gloss + full concise definition */}
+          {/* Hebrew: short gloss, then the fuller Brown-Driver-Briggs entry as the primary
+              lexicon (falling back to the Strong's concise definition where BDB has none). */}
           {isHebrew && (
             <div className="text-gray-800">
               {info.gloss && (
@@ -148,12 +149,17 @@ export function ParsingPanel({ info, locked, bgClass = 'bg-surface', variant = '
                   {info.gloss}
                 </p>
               )}
-              {info.definition && info.definition !== info.gloss && (
+              {info.bdbDefinition ? (
+                <p className="mb-0 leading-relaxed">
+                  <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">BDB</span>
+                  {info.bdbDefinition}
+                </p>
+              ) : info.definition && info.definition !== info.gloss ? (
                 <p className="mb-0">
                   <span className="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Strong&apos;s</span>
                   {info.definition}
                 </p>
-              )}
+              ) : null}
             </div>
           )}
 
