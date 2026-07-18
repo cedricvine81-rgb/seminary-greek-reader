@@ -1,5 +1,8 @@
 'use client'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
+import type { TransHl } from '@/components/highlights/TransWords'
 
 // Strip leading/trailing punctuation (literal class — no \p{} for the repo's TS target),
 // including the Greek ano teleia (·) and elision mark (ʼ), leaving the bare word to search.
@@ -16,21 +19,33 @@ type WordPick = { lemma: string; parsing: string; surface: string }
  * sidecar, aligned 1:1 with the words here), hovering/clicking a word also feeds the parsing
  * pane via `onPick` — this is how untagged prose (e.g. Josephus) gets a parsing pane without
  * disturbing the exact text/punctuation. `analyses` indexes the *words* (non-whitespace tokens)
- * in order.
+ * in order. When `hl` is supplied, each word also renders + toggles a highlight (character
+ * offsets into `text`) and the right-click menu carries the highlight palette — the same model
+ * the Greek reader and translation panes use.
  */
-export function GreekWords({ text, reference, analyses, onPick, selectedKey, keyBase }: {
+export function GreekWords({ text, reference, analyses, onPick, selectedKey, keyBase, hl }: {
   text: string
   reference: string
   analyses?: MorphEntry[]
   onPick?: (pick: WordPick | null, key: string) => void
   selectedKey?: string | null
   keyBase?: string
+  hl?: TransHl
 }) {
   let wi = -1  // running index over words only (whitespace tokens don't advance it)
+  let pos = 0  // running character offset into `text` (for highlight anchors)
   return (
     <>
       {text.split(/(\s+)/).map((tok, i) => {
-        if (/\s/.test(tok) || !tok) return tok
+        const start = pos
+        pos += tok.length
+        if (!tok) return tok
+        const end = start + tok.length
+        if (/\s/.test(tok)) {
+          // Paint whitespace inside a highlight so consecutive words read as one continuous stroke.
+          const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
+          return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok
+        }
         wi += 1
         const entry = analyses?.[wi]
         const key = `${keyBase ?? ''}.${wi}`
@@ -38,14 +53,23 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
           ? () => onPick(entry ? { lemma: entry[0], parsing: entry[1], surface: stripEdges(tok) } : null, key)
           : undefined
         const selected = selectedKey === key
+        const mark = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
         return (
           <span
             key={i}
-            className={`rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}`}
+            className={`rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
             {...(select ? { onMouseEnter: select, onClick: select } : {})}
+            {...(mark ? { 'data-highlight-id': mark.id } : {})}
             onContextMenu={e => {
               e.preventDefault()
-              openWordSearch({ x: e.clientX, y: e.clientY, surface: stripEdges(tok), reference, kind: 'greek', greekCorpus: 'LXX' })
+              openWordSearch({
+                x: e.clientX, y: e.clientY, surface: stripEdges(tok), reference, kind: 'greek', greekCorpus: 'LXX',
+                highlight: hl?.isAuthenticated ? {
+                  activeColor: mark?.color ?? null,
+                  onPick: c => mark ? hl.recolor(mark.id, c) : hl.create(start, end, c),
+                  onRemove: () => { if (mark) hl.remove(mark.id) },
+                } : undefined,
+              })
             }}
           >
             {tok}

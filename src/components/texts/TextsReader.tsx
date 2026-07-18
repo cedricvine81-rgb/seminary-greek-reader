@@ -1088,10 +1088,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     </p>
                     <div className="space-y-2">
                       {filteredRows.map(row => {
-                        // Only one column per work carries the highlight anchor (Greek for
-                        // Greek works, English for greek-prose/translation), so one layer fits.
+                        // The English/primary column's highlight layer (Greek works anchor on
+                        // the Greek; translation-only works on the English). Greek-prose works
+                        // (Josephus, Epictetus) highlight BOTH columns independently — the Greek
+                        // on its own 'grc' layer (greekHighlights), the English on 'en'.
                         const layer = isGreek ? 'grc' : 'en'
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num, layer)
+                        const greekHighlights = greekProse ? highlights.forVerse(noteBook, section.chapter, row.num, 'grc') : verseHighlights
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
                           className={`grid gap-4 ${!greekHidden && englishColShown ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
@@ -1142,7 +1145,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   : row.greek}
                               </span>
                             ) : greekProse ? (
-                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}>
+                              <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
+                                {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
                                 {q ? highlight(row.greek ?? '', search)
                                   : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
                                   : <GreekWords text={row.greek ?? ''} reference={`${refLabel}:${row.num}`}
@@ -1150,7 +1154,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       onPick={(pick, key) => {
                                         setSelectedInfo(pick ? { surface: pick.surface, lexeme: pick.lemma, gloss: '', partOfSpeech: '', parsing: pick.parsing, reference: `${refLabel}:${row.num}` } : null)
                                         setSelectedKey(key)
-                                      }} />}
+                                      }}
+                                      hl={isAuthenticated ? { isAuthenticated, verseHighlights: greekHighlights,
+                                        create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'grc'),
+                                        recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
+                                        remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />}
                               </span>
                             ) : (
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
