@@ -142,6 +142,16 @@ function transCompatible(code: string, corpus: 'GNT' | 'LXX' | 'MT'): boolean {
   return !(code === 'bsb' && corpus === 'LXX')
 }
 
+// Scroll a verse to the top of the reader's OWN scroll container, never the window. Element
+// .scrollIntoView() walks up every scrollable ancestor — and the page (app header + full-height
+// reader + footer) is taller than the viewport, so it also scrolls the body, sliding the app
+// header and the reader's toolbar off the top. Nudging only the panel's scrollTop by the
+// element↔panel top delta lands the verse identically without ever moving the page.
+function scrollPanelToVerse(panel: HTMLElement | null, el: HTMLElement): void {
+  if (!panel) { el.scrollIntoView({ behavior: 'instant', block: 'start' }); return }
+  panel.scrollTop += el.getBoundingClientRect().top - panel.getBoundingClientRect().top
+}
+
 // The reader shows the Greek text and, optionally, ONE translation inline beneath each
 // verse (Greek verse → its translation → next verse …). parallelLang holds the chosen
 // translation code, or null for Greek only. The choice is persisted under this key.
@@ -854,7 +864,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     const scrollToVerse = () => {
       const el = verseRefs.current[highlightedVerse]
       if (!el || !el.isConnected) return
-      el.scrollIntoView({ behavior: 'instant', block: 'start' })
+      scrollPanelToVerse(textPanelRef.current, el)
       if (!landed) { landed = true; landedAt = Date.now() }
     }
     navLockRef.current = true
@@ -915,7 +925,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     const panel = textPanelRef.current
     const scrollToAnchor = () => {
       const el = verseRefs.current[id]
-      if (el && el.isConnected) el.scrollIntoView({ behavior: 'instant', block: 'start' })
+      if (el && el.isConnected) scrollPanelToVerse(panel, el)
     }
     scrollToAnchor()
     const raf = requestAnimationFrame(scrollToAnchor)
