@@ -12,28 +12,23 @@ import { SEARCH_MARK } from '@/lib/highlight-terms'
 // Malachi, …), so each hit is mapped through mtToEnglish before the translation is fetched and
 // looked up — otherwise the neighbouring English verse would show. See SearchPageView.
 
-// First option turns the parallel column off; the rest are the available translations. Every MT
-// book is in the 66-book canon, so all of these have Old-Testament coverage (unlike the LXX-only
-// books on the Greek side, which need a Brenton fallback).
-const TRANSLATIONS = [
-  { lang: 'none', label: 'No translation' },
-  { lang: 'en', label: 'English (WEB)' }, { lang: 'bsb', label: 'English (BSB)' },
-  { lang: 'es', label: 'Spanish' }, { lang: 'fr', label: 'French' }, { lang: 'pt', label: 'Portuguese' },
-  { lang: 'ru', label: 'Russian' }, { lang: 'ko', label: 'Korean' }, { lang: 'zh', label: 'Mandarin' },
-]
+// `transLang === 'none'` turns the parallel column off. Every MT book is in the 66-book canon,
+// so all translations have Old-Testament coverage. The selector lives in SearchPageView's
+// controls bar (shared with the Greek results).
 
 // matchWords: the matched word surfaces of an "all forms" (Strong's) hit, computed server-side
 // from the index's per-word Strong's — the query is a lexeme, so its inflected forms can't be
 // found by text matching.
 export type HebrewHit = { osisId: string; chapter: number; verse: number; text: string; matchWords?: string[] }
 
-export function HebrewSearchResults({ hits, bookName, onOpen, query = '' }: {
+export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transLang }: {
   hits: HebrewHit[]
   bookName: Map<string, string>
   onOpen: (h: HebrewHit, transLang: string) => void
   query?: string
+  // Parallel-translation column language ('none' = Hebrew only); owned by SearchPageView.
+  transLang: string
 }) {
-  const [transLang, setTransLang] = useState('en')
   const [, bump] = useState(0)
   // verseId → translation text (per lang), lazily filled; a ref so late fetches always store.
   const trans = useRef<Record<string, Record<string, string>>>({})
@@ -90,13 +85,6 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '' }: {
 
   return (
     <div>
-      <div className="flex justify-end pb-2">
-        <select value={transLang} onChange={e => setTransLang(e.target.value)}
-          className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-xs text-gray-600">
-          {TRANSLATIONS.map(t => <option key={t.lang} value={t.lang}>{t.label}</option>)}
-        </select>
-      </div>
-
       <div className="divide-y divide-gray-100">
         {hits.map((h, i) => {
           const eng = mtToEnglish(h.osisId, h.chapter, h.verse)

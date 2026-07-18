@@ -34,6 +34,7 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
   const [loading, setLoading] = useState(true)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
   const [editing, setEditing] = useState(false)
+  const [transLang, setTransLang] = useState('en')   // parallel-translation column (GreekSearchResults)
 
   // Book display names (osisId → name), like SearchPageView.
   useEffect(() => {
@@ -122,7 +123,17 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
           <p className="py-16 text-center text-sm text-gray-400">No matches.</p>
         ) : (
           <>
-            <p className="pb-2 text-xs text-gray-400">{hits.length}{hits.length >= 300 ? '+' : ''} verse{hits.length === 1 ? '' : 's'}</p>
+            <div className="flex items-center justify-between gap-3 pb-2">
+              <p className="text-xs text-gray-400">{hits.length}{hits.length >= 300 ? '+' : ''} verse{hits.length === 1 ? '' : 's'}</p>
+              <select value={transLang} onChange={e => setTransLang(e.target.value)}
+                title="Parallel translation column"
+                className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-[11px] text-gray-600">
+                <option value="none">No translation</option>
+                <option value="en">English (WEB)</option><option value="bsb">English (BSB)</option>
+                <option value="es">Spanish</option><option value="fr">French</option><option value="pt">Portuguese</option>
+                <option value="ru">Russian</option><option value="ko">Korean</option><option value="zh">Mandarin</option>
+              </select>
+            </div>
             <GreekSearchResults
               hits={hits}
               terms={[]}
@@ -130,6 +141,7 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
               bookName={bookName}
               context={0}
               ctxMap={{}}
+              transLang={transLang}
               onOpen={openHit}
             />
           </>

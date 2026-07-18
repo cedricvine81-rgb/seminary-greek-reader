@@ -13,14 +13,8 @@ import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 
 const MARK = SEARCH_MARK
 const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
-// First option turns the parallel column off (Greek-only); the rest are the available
-// translations. `none` is a sentinel — never fetched, never rendered as a column.
-const TRANSLATIONS = [
-  { lang: 'none', label: 'No translation' },
-  { lang: 'en', label: 'English (WEB)' }, { lang: 'bsb', label: 'English (BSB)' },
-  { lang: 'es', label: 'Spanish' }, { lang: 'fr', label: 'French' }, { lang: 'pt', label: 'Portuguese' },
-  { lang: 'ru', label: 'Russian' }, { lang: 'ko', label: 'Korean' }, { lang: 'zh', label: 'Mandarin' },
-]
+// `transLang === 'none'` turns the parallel column off (Greek only) — never fetched, never
+// rendered as a column. The selector itself lives in SearchPageView's controls bar.
 
 type Token = { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }
 export type GreekHit = { osisId: string; chapter: number; verse: number; text: string }
@@ -35,7 +29,7 @@ function hilite(text: string, terms: string[]): ReactNode {
   return ranges.length ? <>{markSlice(text, ranges, 0, text.length, MARK)}</> : text
 }
 
-export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, onOpen, embedded = false }: {
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false }: {
   hits: GreekHit[]
   terms: string[]
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
@@ -45,10 +39,12 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   bookName: Map<string, string>
   context: number
   ctxMap: Record<string, CtxVerse[]>
+  // Parallel-translation column language ('none' = Greek only); owned by SearchPageView's
+  // controls bar so the selector sits with Context / Relevance, above the results.
+  transLang: string
   onOpen: (h: GreekHit) => void
   embedded?: boolean
 }) {
-  const [transLang, setTransLang] = useState('en')
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
   const [selKey, setSelKey] = useState<string | null>(null)
   const [, bump] = useState(0)
@@ -159,13 +155,6 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
 
   return (
     <div>
-      <div className="flex justify-end pb-2">
-        <select value={transLang} onChange={e => setTransLang(e.target.value)}
-          className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-xs text-gray-600">
-          {TRANSLATIONS.map(t => <option key={t.lang} value={t.lang}>{t.label}</option>)}
-        </select>
-      </div>
-
       <div className="divide-y divide-gray-100">
         {hits.map((h, i) => {
           const verses: CtxVerse[] = context > 0 && (ctxMap[`${h.osisId}.${h.chapter}.${h.verse}`]?.length ?? 0) > 0

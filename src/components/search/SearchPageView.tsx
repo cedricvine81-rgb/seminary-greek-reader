@@ -228,6 +228,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [counts, setCounts] = useState<Record<string, number | null>>({})
   const [recent, setRecent] = useState<string[]>([])
   const [sort, setSort] = useState<SortMode>('relevance')
+  // Parallel-translation column language for the Greek / Hebrew results (the selector lives in
+  // the controls bar; the results components receive it as a prop). 'none' = source only.
+  const [parallelLang, setParallelLang] = useState('en')
   const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
   const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
@@ -620,6 +623,16 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             ))}
           </div>
         </div>
+        {/* Parallel-translation selector — only where the results show a source|translation
+            column (Greek / Hebrew scopes). Sits before the sort toggle so it reads above it. */}
+        {(scope.kind === 'greek' || scope.kind === 'hebrew') && (
+          <select value={parallelLang} onChange={e => setParallelLang(e.target.value)}
+            title="Parallel translation column"
+            className="rounded-md border border-gray-200 bg-surface px-2 py-1 text-[11px] text-gray-600">
+            <option value="none">No translation</option>
+            {TRANSLATIONS.map(t => <option key={t.lang} value={t.lang}>{t.label}</option>)}
+          </select>
+        )}
         <div className="flex items-center gap-0.5 rounded-full bg-gray-100 p-0.5 text-[11px]">
           {(['relevance', 'canonical'] as SortMode[]).map(m => (
             <button key={m} type="button" onClick={() => setSort(m)}
@@ -1032,6 +1045,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 bookName={bookName}
                 context={context}
                 ctxMap={ctxMap}
+                transLang={parallelLang}
                 onOpen={h => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)}
                 embedded={embedded}
               />
@@ -1040,6 +1054,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 hits={displayBib}
                 bookName={bookName}
                 query={query}
+                transLang={parallelLang}
                 onOpen={(h, tl) => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, tl !== 'none' ? tl : undefined, 'MT')}
               />
             ) : (
