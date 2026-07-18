@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { X } from 'lucide-react'
 import { SearchPageView } from './SearchPageView'
 import type { MasterSearchPreset } from '@/lib/master-search-bus'
 
@@ -102,23 +101,11 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
         <div className="h-12 w-1 rounded-full bg-gray-300 group-hover:bg-brand-400 transition-colors" />
       </div>
 
-      {/* Panel header */}
-      <div className="flex-none flex items-center justify-between pl-4 pr-2 py-1.5 border-b border-gray-200 bg-surface">
-        <span className="text-sm font-semibold text-gray-700">Search</span>
-        <button
-          type="button"
-          onClick={onClose}
-          title="Close search (Esc)"
-          aria-label="Close search"
-          className="p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors"
-        >
-          <X size={18} />
-        </button>
-      </div>
-
+      {/* No separate header row — SearchPageView's sticky controls double as the header in
+          embedded mode ("Search" title + query box + Full search + close ✕ on one line). */}
       {/* The search itself — its own scroll container (the sticky controls + parsing dock
           stick within it). pb-16 mirrors the /search page's bottom clearance. */}
-      <div className="flex-1 min-h-0 overflow-y-auto py-2 pb-16">
+      <div className="flex-1 min-h-0 overflow-y-auto pb-16">
         <SearchPageView
           embedded
           onRequestClose={onClose}

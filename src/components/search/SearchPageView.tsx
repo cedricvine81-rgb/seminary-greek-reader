@@ -777,6 +777,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <ArrowLeft size={16} /> {returnLabelFor(returnTo)}
           </button>
         )}
+        {/* Embedded: this sticky row doubles as the panel header — title, then the query box,
+            with Full search + close ✕ pinned at the row's right edge. */}
+        {embedded && <span className="flex-none text-sm font-semibold text-gray-700">Search</span>}
         <div className="relative flex-1 min-w-[16rem]">
           <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-input px-3 py-1.5 shadow-sm">
             <Search size={18} className="text-gray-400 shrink-0" />
@@ -819,6 +822,23 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             </>
           )}
         </div>
+        {/* Embedded: Full search + close ✕ follow the query box, so they sit at the right
+            edge of the header line (the scope/book pickers wrap to the next line). The
+            discovery/settings extras — Search types, the ⋮ display menu — stay on the FULL
+            /search page; Full search jumps there carrying the current query/scope/books
+            (and lemma / Strong's mode) and closes the panel. */}
+        {embedded && (
+          <>
+            <button type="button" onClick={openFullSearch} title="Open this search in the full Search page"
+              className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+              <ArrowUpRight size={13} /> Full search
+            </button>
+            <button type="button" onClick={() => onRequestClose?.()} title="Close search (Esc)" aria-label="Close search"
+              className="flex-none p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors">
+              <X size={18} />
+            </button>
+          </>
+        )}
             <label className="flex items-center gap-1.5 text-xs text-gray-500">
               In
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
@@ -851,17 +871,6 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 </button>
               </span>
             )}
-
-          {/* Embedded (the side panel): the discovery/settings extras — Search types, the ⋮
-              display menu — stay on the FULL /search page; the panel is the quick-lookup
-              surface. In their place, one button jumps to the full page carrying the current
-              query/scope/books (and lemma / Strong's mode) and closes the panel. */}
-          {embedded && (
-            <button type="button" onClick={openFullSearch} title="Open this search in the full Search page"
-              className="flex-none ml-auto inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-              <ArrowUpRight size={13} /> Full search
-            </button>
-          )}
 
           {/* Search types — ml-auto pins it (and the ⋮ next to it) to the row's right edge. */}
           {!embedded && (
