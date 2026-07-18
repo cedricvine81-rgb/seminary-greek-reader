@@ -7,6 +7,7 @@ import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
+import { HebrewSearchResults } from './HebrewSearchResults'
 import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
 import { findProseWork } from '@/lib/prose-texts'
@@ -963,6 +964,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 context={context}
                 ctxMap={ctxMap}
                 onOpen={h => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)}
+              />
+            ) : scope.kind === 'hebrew' ? (
+              <HebrewSearchResults
+                hits={displayBib}
+                bookName={bookName}
+                onOpen={(h, tl) => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`, tl !== 'none' ? tl : undefined, 'MT')}
               />
             ) : (
             <div className="divide-y divide-gray-100">
