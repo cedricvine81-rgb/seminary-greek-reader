@@ -294,6 +294,8 @@ export function VocabBuilder() {
           config={config}
           onConfigChange={setConfig}
           onFlip={() => setFlipped(f => !f)}
+          onReveal={() => setFlipped(true)}
+          onHide={() => setFlipped(false)}
           onAdvance={advance}
           onPrev={() => { setIdx(i => Math.max(0, i - 1)); setFlipped(false) }}
           onNext={() => { setIdx(i => Math.min((sessionWords?.length ?? 1) - 1, i + 1)); setFlipped(false) }}
@@ -312,7 +314,7 @@ export function VocabBuilder() {
 
 function FlashcardPlayer({
   sessionWords, directions, idx, flipped, finished, sessionStats, missedWordKeys,
-  config, onConfigChange, onFlip, onAdvance, onPrev, onNext, onGoBack, onRestart, onStudyMissed,
+  config, onConfigChange, onFlip, onReveal, onHide, onAdvance, onPrev, onNext, onGoBack, onRestart, onStudyMissed,
 }: {
   sessionWords: BgvbWord[]
   directions: boolean[]
@@ -324,6 +326,8 @@ function FlashcardPlayer({
   config: StudyConfig
   onConfigChange: (c: StudyConfig) => void
   onFlip: () => void
+  onReveal: () => void
+  onHide: () => void
   onAdvance: (quality: 1 | 3 | 4) => void
   onPrev: () => void
   onNext: () => void
@@ -331,21 +335,24 @@ function FlashcardPlayer({
   onRestart: () => void
   onStudyMissed: () => void
 }) {
-  // Keyboard shortcuts: Enter/Space flips (Greek ⇄ Greek + translation);
-  // ← / → move to the previous / next card; 1/2/3 to rate.
+  // Keyboard shortcuts (the desktop controls): ← / → move to the previous / next card,
+  // ↑ reveals the translation and ↓ hides it (Greek only). Enter/Space still flip, and 1/2/3
+  // still rate for anyone who wants spaced-repetition grading from the keyboard.
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return
       if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); onFlip() }
       else if (e.key === 'ArrowLeft') { e.preventDefault(); onPrev() }
       else if (e.key === 'ArrowRight') { e.preventDefault(); onNext() }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); onReveal() }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); onHide() }
       else if (e.key === '1') { e.preventDefault(); onAdvance(1) }
       else if (e.key === '2') { e.preventDefault(); onAdvance(3) }
       else if (e.key === '3') { e.preventDefault(); onAdvance(4) }
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [flipped, onFlip, onAdvance, onPrev, onNext])
+  }, [flipped, onFlip, onReveal, onHide, onAdvance, onPrev, onNext])
 
   if (sessionWords.length === 0) {
     return (
@@ -468,8 +475,8 @@ function FlashcardPlayer({
                 )}
               </div>
               <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-                <span className="sm:hidden">Tap to reveal</span>
-                <span className="hidden sm:inline"><span className="font-medium">Return</span> key to reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+                <span className="lg:hidden">Tap to reveal</span>
+                <span className="hidden lg:inline"><span className="font-medium">↑</span> reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
               </p>
             </div>
           ) : (
@@ -495,15 +502,16 @@ function FlashcardPlayer({
                 )}
               </div>
               <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-                <span className="sm:hidden">Tap for Greek only</span>
-                <span className="hidden sm:inline"><span className="font-medium">Return</span> key for Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
+                <span className="lg:hidden">Tap for Greek only</span>
+                <span className="hidden lg:inline"><span className="font-medium">↓</span> Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
               </p>
             </div>
           )}
         </div>
 
-        {/* Response buttons — always visible to the right */}
-        <div className="flex flex-col gap-2 w-28 shrink-0">
+        {/* Response buttons — mobile/touch only. On desktop the four arrow keys drive
+            everything (← → navigate, ↑ ↓ reveal/hide), so the grading buttons are hidden. */}
+        <div className="lg:hidden flex flex-col gap-2 w-28 shrink-0">
           <button
             onClick={() => onAdvance(4)}
             className="py-3 text-sm font-semibold rounded-lg bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900 transition-colors"
