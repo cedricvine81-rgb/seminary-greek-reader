@@ -32,6 +32,7 @@ import { loadGbi, type GbiEntry } from '@/lib/gbi-data'
 import { loadAbsSyntax, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { loadMaculaSyntax } from '@/lib/macula-syntax'
 import { parseReference } from '@/lib/parseReference'
+import { mtToEnglish } from '@/lib/versification'
 import { normalizeGreek } from '@/lib/greek-utils'
 import { parseSearchTerms } from '@/lib/search-query'
 import { markTerms, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
@@ -944,12 +945,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     const lang = parallelLang
     // For Greek, BSB is rendered from its word-alignment file, not the translation API.
     if (lang === 'bsb' && !bsbAlignment) loadBsbAlignment().then(setBsbAlignment)
-    // Sections needing plain translation text: Greek sections for every language except BSB
-    // (which the Greek view renders from alignment), plus ALL Hebrew sections — the Hebrew
-    // view has no Greek-word alignment, so it shows even BSB as plain text.
+    // Greek sections for every language except BSB (which the Greek view renders from its
+    // word-alignment file, not the translation API).
     const greekSections = lang === 'bsb' ? [] : [...gnt.sections, ...lxx.sections]
-    const allSections = [...greekSections, ...mt.sections]
-    for (const sec of allSections) {
+    for (const sec of greekSections) {
       const key = `${lang}.${sec.key}`
       if (fetchedTransKeys.current.has(key)) continue
       fetchedTransKeys.current.add(key)
@@ -968,6 +967,38 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
         })
         .catch(() => {
           const patch = Object.fromEntries(verseIds.map(id => [id, '']))
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
+        })
+    }
+
+    // Hebrew (MT) sections. The Hebrew view has no word-alignment, so every language (incl. BSB)
+    // shows as plain text. BHS and English versification diverge in ~30 chapters (Psalm titles,
+    // Joel, Malachi, …), so fetch the ENGLISH chapters these Hebrew verses map onto and store each
+    // translation under its Hebrew verse id — the key the render looks up. See lib/versification.
+    for (const sec of mt.sections) {
+      const key = `${lang}.${sec.key}`
+      if (fetchedTransKeys.current.has(key)) continue
+      fetchedTransKeys.current.add(key)
+      const [osisId, chapterStr] = sec.key.split('-')
+      const mtChapter = parseInt(chapterStr, 10)
+      const engByVerseId = new Map(sec.verses.map(v => [v.id, mtToEnglish(osisId, mtChapter, v.verse)]))
+      const engChapters = Array.from(new Set(sec.verses.map(v => engByVerseId.get(v.id)?.chapter).filter((c): c is number => c != null)))
+      Promise.all(engChapters.map(ec =>
+        fetch(`/api/translation?book=${osisId}&chapter=${ec}&lang=${lang}`)
+          .then(r => r.json()).then((d: { verses?: Record<string, string> }) => d.verses ?? {})
+      ))
+        .then(maps => {
+          const merged: Record<string, string> = Object.assign({}, ...maps)
+          const patch: Record<string, string> = {}
+          // A Hebrew superscription (eng === null) has no English verse — leave it blank.
+          for (const v of sec.verses) {
+            const eng = engByVerseId.get(v.id)
+            patch[v.id] = eng ? merged[`${osisId}.${eng.chapter}.${eng.verse}`] ?? '' : ''
+          }
+          setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
+        })
+        .catch(() => {
+          const patch = Object.fromEntries(sec.verses.map(v => [v.id, '']))
           setTransByLang(prev => ({ ...prev, [lang]: { ...(prev[lang] ?? {}), ...patch } }))
         })
     }
