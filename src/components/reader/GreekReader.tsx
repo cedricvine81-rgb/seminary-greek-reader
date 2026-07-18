@@ -316,7 +316,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     loading?: boolean   // syntax datasets still downloading (menu is already open)
   } | null>(null)
   // Hebrew word right-click menu (highlight + full lexicon entry).
-  const [hebrewMenu, setHebrewMenu] = useState<{ info: LexicalInfoPanel; x: number; y: number; highlight?: WordHighlight } | null>(null)
+  const [hebrewMenu, setHebrewMenu] = useState<{ info: LexicalInfoPanel; wordId: string; x: number; y: number; highlight?: WordHighlight } | null>(null)
 
   // Mobile passage picker (opened by the SearchBar's NT/LXX buttons). Rendered at the
   // reader's top level so overlays/menus can't affect it.
@@ -1617,7 +1617,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       onPick: c => existing ? void hi.recolor(existing.id, wb, Number(wc), c) : void hi.create(wb, Number(wc), Number(wv), start, end, c, HEBREW_LAYER),
       onRemove: () => { if (existing) void hi.remove(existing.id, wb, Number(wc)) },
     } : undefined
-    setHebrewMenu({ info, x, y, highlight })
+    setHebrewMenu({ info, wordId: word.id, x, y, highlight })
   }
 
   // One Hebrew verse and, when a translation is selected, its inline rendering beside it —
@@ -2119,6 +2119,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
       {hebrewMenu && (
         <HebrewWordMenu
           info={hebrewMenu.info}
+          wordId={hebrewMenu.wordId}
           x={hebrewMenu.x}
           y={hebrewMenu.y}
           highlight={hebrewMenu.highlight}

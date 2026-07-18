@@ -6,12 +6,14 @@ import type { WordHighlight } from '@/lib/word-search-bus'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import { openMasterSearch } from '@/lib/master-search-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
+import { loadMaculaHebrew, lookupMaculaHebrew, maculaRole, maculaClause, type MaculaHebrewEntry } from '@/lib/macula-hebrew'
 
 // The right-click menu for a Hebrew word: an optional Highlight row (signed-in readers) plus the
 // full Strong's lexicon entry — the parity counterpart to the Greek word's syntax/search menu.
 // Left-clicking a word still populates the inline parsing pane; this pins a fuller reference view.
-export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
+export function HebrewWordMenu({ info, wordId, x, y, highlight, onClose }: {
   info: LexicalInfoPanel
+  wordId: string          // reader word id, e.g. "Gen.1.1.3" — for the Macula syntax lookup
   x: number
   y: number
   highlight?: WordHighlight
@@ -19,6 +21,17 @@ export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
 }) {
   const ref = useRef<HTMLDivElement>(null)
   const [copied, setCopied] = useState<string | null>(null)
+  const [syntax, setSyntax] = useState<MaculaHebrewEntry | null>(null)
+
+  // Macula Hebrew syntax for this word (loaded per book, lazily).
+  useEffect(() => {
+    let alive = true
+    const osisId = wordId.split('.')[0]
+    loadMaculaHebrew(osisId).then(book => { if (alive) setSyntax(lookupMaculaHebrew(book, wordId)) })
+    return () => { alive = false }
+  }, [wordId])
+  const syntaxRole = syntax ? maculaRole(syntax) : null
+  const syntaxClause = syntax ? maculaClause(syntax) : null
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
@@ -117,6 +130,24 @@ export function HebrewWordMenu({ info, x, y, highlight, onClose }: {
               </span>
             ))}
           </p>
+        )}
+
+        {/* Macula Hebrew syntax — the word's role in its phrase and the enclosing clause's shape. */}
+        {(syntaxRole || syntaxClause) && (
+          <div className="rounded-lg border border-gray-100 bg-gray-50/70 px-2.5 py-1.5 space-y-0.5">
+            {syntaxRole && (
+              <p className="text-gray-700">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Syntax</span>
+                {syntaxRole}
+              </p>
+            )}
+            {syntaxClause && (
+              <p className="text-xs text-gray-500">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mr-1.5">Clause</span>
+                {syntaxClause}
+              </p>
+            )}
+          </div>
         )}
 
         {/* Lexicon entry — short gloss, then the fuller Brown-Driver-Briggs entry (or Strong's
