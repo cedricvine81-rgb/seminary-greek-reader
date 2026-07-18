@@ -452,61 +452,56 @@ function FlashcardPlayer({
       <div className="flex items-center gap-4">
         {/* Card (clickable to flip) — fixed height so buttons never shift */}
         <div
-          className="flex-1 cursor-pointer select-none h-40"
+          className="flex-1 cursor-pointer select-none h-52"
           onClick={onFlip}
           role="button"
           tabIndex={0}
           onKeyDown={e => (e.key === 'Enter' || e.key === ' ') && onFlip()}
           aria-label="Flip card"
         >
-          {!flipped ? (
-            <div className="bg-surface rounded-2xl h-full flex flex-col items-center justify-between p-6 shadow-sm border border-gray-100 overflow-hidden">
-              <div className="flex-1 flex flex-col items-center justify-center">
+          {/* One card, one layout: the front term stays locked in place and the translation
+              simply fades in below it (its space is always reserved, so nothing shifts). Primary
+              terms share one size (text-3xl); secondary lines share text-sm. */}
+          <div className="bg-surface rounded-2xl h-full flex flex-col items-center justify-between p-6 shadow-sm border border-gray-100 overflow-hidden">
+            <div className="flex-1 flex flex-col items-center justify-center gap-1">
+              {/* Front — never moves */}
+              {greekFirst ? (
+                <>
+                  <p className="greek-text text-3xl text-gray-900 font-bold text-center leading-snug">{word.word}</p>
+                  {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
+                </>
+              ) : (
+                <>
+                  <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
+                  <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
+                </>
+              )}
+              {/* Back — space always reserved; fades in on reveal */}
+              <div className={`flex flex-col items-center gap-1 transition-opacity duration-150 ${flipped ? 'opacity-100' : 'opacity-0'}`} aria-hidden={!flipped}>
+                <div className="my-1 w-12 h-px bg-gray-200" />
                 {greekFirst ? (
                   <>
-                    <p className="greek-text text-3xl text-gray-900 font-bold text-center leading-snug">{word.word}</p>
-                    {word.inflection && <p className="greek-text text-sm text-gray-500 mt-2">{word.inflection}</p>}
-                  </>
-                ) : (
-                  <>
-                    <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
-                    <p className="text-gray-500 text-sm mt-2">{POS_LABELS[word.pos] ?? word.pos}</p>
-                  </>
-                )}
-              </div>
-              <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-                <span className="lg:hidden">Tap to reveal</span>
-                <span className="hidden lg:inline"><span className="font-medium">↑</span> reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
-              </p>
-            </div>
-          ) : (
-            <div className="bg-surface rounded-2xl h-full border border-gray-100 flex flex-col items-center justify-between p-6 shadow-sm overflow-hidden">
-              <div className="flex-1 flex flex-col items-center justify-center gap-1">
-                {greekFirst ? (
-                  <>
-                    <p className="greek-text text-3xl text-gray-900 font-bold text-center">{word.word}</p>
-                    {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
-                    <div className="my-1.5 w-12 h-px bg-gray-200" />
                     <p className="text-3xl text-gray-900 font-semibold text-center">{word.gloss}</p>
                     <p className="text-sm text-gray-500">{POS_LABELS[word.pos] ?? word.pos}</p>
-                    {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
                   </>
                 ) : (
                   <>
-                    <p className="text-3xl text-gray-500 font-medium text-center">{word.gloss}</p>
-                    <div className="my-1.5 w-12 h-px bg-gray-200" />
                     <p className="greek-text text-3xl text-gray-900 font-bold text-center">{word.word}</p>
                     {word.inflection && <p className="greek-text text-sm text-gray-500">{word.inflection}</p>}
-                    {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
                   </>
                 )}
+                {word.freq && <p className="text-xs text-gray-300 mt-0.5">{word.freq.toLocaleString()}× in GNT</p>}
               </div>
-              <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
-                <span className="lg:hidden">Tap for Greek only</span>
-                <span className="hidden lg:inline"><span className="font-medium">↓</span> Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</span>
-              </p>
             </div>
-          )}
+            <p className="text-gray-400 text-xs tracking-wide mt-3 text-center leading-relaxed">
+              <span className="lg:hidden">{flipped ? 'Tap for Greek only' : 'Tap to reveal'}</span>
+              <span className="hidden lg:inline">
+                {flipped
+                  ? <><span className="font-medium">↓</span> Greek only · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>
+                  : <><span className="font-medium">↑</span> reveal · <span className="font-medium">←</span> back · <span className="font-medium">→</span> next</>}
+              </span>
+            </p>
+          </div>
         </div>
 
         {/* Response buttons — mobile/touch only. On desktop the four arrow keys drive
