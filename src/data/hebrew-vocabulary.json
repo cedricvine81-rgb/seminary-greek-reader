@@ -2,7 +2,7 @@
 {
 "word": "אֵת",
 "inflection": null,
-"gloss": "mark of the accusative",
+"gloss": "(direct object marker)",
 "pos": "Particle",
 "section": 1,
 "freq": 9254,
@@ -11,7 +11,7 @@
 {
 "word": "יְהֹוָה",
 "inflection": null,
-"gloss": "Jehovah",
+"gloss": "the LORD (Yahweh)",
 "pos": "Noun",
 "section": 1,
 "freq": 6521,
@@ -20,7 +20,7 @@
 {
 "word": "אֲשֶׁר",
 "inflection": null,
-"gloss": "who",
+"gloss": "who, which, that",
 "pos": "Particle",
 "section": 1,
 "freq": 5502,
@@ -29,7 +29,7 @@
 {
 "word": "אָמַר",
 "inflection": null,
-"gloss": "utter",
+"gloss": "to say",
 "pos": "Verb",
 "section": 1,
 "freq": 5263,
@@ -38,7 +38,7 @@
 {
 "word": "כֹּל",
 "inflection": null,
-"gloss": "the whole",
+"gloss": "all, every, whole",
 "pos": "Noun",
 "section": 1,
 "freq": 5198,
@@ -47,7 +47,7 @@
 {
 "word": "לֹא",
 "inflection": null,
-"gloss": "not",
+"gloss": "no, not",
 "pos": "Particle",
 "section": 1,
 "freq": 5186,
@@ -56,7 +56,7 @@
 {
 "word": "כִּי",
 "inflection": null,
-"gloss": "that",
+"gloss": "that, because, for; when",
 "pos": "Conj",
 "section": 1,
 "freq": 4487,
@@ -65,7 +65,7 @@
 {
 "word": "עַל",
 "inflection": null,
-"gloss": "above",
+"gloss": "on, upon, over, above",
 "pos": "Prep",
 "section": 1,
 "freq": 4250,
@@ -81,9 +81,9 @@
 "order": 9
 },
 {
-"word": "אֵל",
+"word": "אֶל",
 "inflection": null,
-"gloss": "motion to",
+"gloss": "to, toward, unto",
 "pos": "Prep",
 "section": 1,
 "freq": 3879,
@@ -92,7 +92,7 @@
 {
 "word": "הָיָה",
 "inflection": null,
-"gloss": "fall out",
+"gloss": "to be, become, happen",
 "pos": "Verb",
 "section": 1,
 "freq": 3528,
@@ -101,7 +101,7 @@
 {
 "word": "עָשָׂה",
 "inflection": null,
-"gloss": "do",
+"gloss": "to do, make",
 "pos": "Verb",
 "section": 1,
 "freq": 2511,
@@ -128,7 +128,7 @@
 {
 "word": "בּוֹא",
 "inflection": null,
-"gloss": "come in",
+"gloss": "to come, go in, enter",
 "pos": "Verb",
 "section": 1,
 "freq": 2297,
@@ -137,7 +137,7 @@
 {
 "word": "אֶרֶץ",
 "inflection": null,
-"gloss": "earth",
+"gloss": "earth, land",
 "pos": "Noun",
 "section": 1,
 "freq": 2229,
@@ -155,7 +155,7 @@
 {
 "word": "אִישׁ",
 "inflection": null,
-"gloss": "man",
+"gloss": "man, husband",
 "pos": "Noun",
 "section": 1,
 "freq": 2077,
@@ -164,7 +164,7 @@
 {
 "word": "הוּא",
 "inflection": null,
-"gloss": "he",
+"gloss": "he, it; that",
 "pos": "Pron",
 "section": 1,
 "freq": 1879,
@@ -173,7 +173,7 @@
 {
 "word": "נָתַן",
 "inflection": null,
-"gloss": "give",
+"gloss": "to give, put, set",
 "pos": "Verb",
 "section": 1,
 "freq": 1708,
@@ -182,7 +182,7 @@
 {
 "word": "בַּיִת",
 "inflection": null,
-"gloss": "between",
+"gloss": "house",
 "pos": "Noun",
 "section": 1,
 "freq": 1662,
@@ -191,7 +191,7 @@
 {
 "word": "אֱלֹהִים",
 "inflection": null,
-"gloss": "gods",
+"gloss": "God; gods",
 "pos": "Noun",
 "section": 1,
 "freq": 1615,
@@ -200,7 +200,7 @@
 {
 "word": "עַם",
 "inflection": null,
-"gloss": "people",
+"gloss": "people, nation",
 "pos": "Noun",
 "section": 1,
 "freq": 1358,
@@ -209,7 +209,7 @@
 {
 "word": "פָּנִים",
 "inflection": null,
-"gloss": "face",
+"gloss": "face, presence",
 "pos": "Noun",
 "section": 1,
 "freq": 1250,
@@ -218,7 +218,7 @@
 {
 "word": "דָּבָר",
 "inflection": null,
-"gloss": "speech",
+"gloss": "word, thing, matter",
 "pos": "Noun",
 "section": 1,
 "freq": 1249,
@@ -227,7 +227,7 @@
 {
 "word": "עַד",
 "inflection": null,
-"gloss": "as far as",
+"gloss": "until, as far as",
 "pos": "Prep",
 "section": 1,
 "freq": 1245,
@@ -245,7 +245,7 @@
 {
 "word": "רָאָה",
 "inflection": null,
-"gloss": "see",
+"gloss": "to see",
 "pos": "Verb",
 "section": 1,
 "freq": 1170,
@@ -254,7 +254,7 @@
 {
 "word": "דָבַר",
 "inflection": null,
-"gloss": "speak",
+"gloss": "to speak",
 "pos": "Verb",
 "section": 1,
 "freq": 1110,
@@ -263,7 +263,7 @@
 {
 "word": "אַתָּה",
 "inflection": null,
-"gloss": "thou",
+"gloss": "you (m.s.)",
 "pos": "Pron",
 "section": 1,
 "freq": 1092,
@@ -281,7 +281,7 @@
 {
 "word": "אִם",
 "inflection": null,
-"gloss": "if",
+"gloss": "if; whether",
 "pos": "Conj",
 "section": 1,
 "freq": 1070,
@@ -290,7 +290,7 @@
 {
 "word": "שָׁמַע",
 "inflection": null,
-"gloss": "hear",
+"gloss": "to hear, listen, obey",
 "pos": "Verb",
 "section": 1,
 "freq": 1066,
@@ -299,7 +299,7 @@
 {
 "word": "יָשַׁב",
 "inflection": null,
-"gloss": "sit",
+"gloss": "to sit, dwell, remain",
 "pos": "Verb",
 "section": 1,
 "freq": 1005,
@@ -317,7 +317,7 @@
 {
 "word": "עִיר",
 "inflection": null,
-"gloss": "excitement",
+"gloss": "city",
 "pos": "Noun",
 "section": 1,
 "freq": 969,
@@ -326,7 +326,7 @@
 {
 "word": "יָלַךְ",
 "inflection": null,
-"gloss": "go",
+"gloss": "to go, walk",
 "pos": "Verb",
 "section": 1,
 "freq": 965,
@@ -335,7 +335,7 @@
 {
 "word": "יָצָא",
 "inflection": null,
-"gloss": "go out",
+"gloss": "to go out, come out",
 "pos": "Verb",
 "section": 1,
 "freq": 933,
@@ -344,7 +344,7 @@
 {
 "word": "שׁוּב",
 "inflection": null,
-"gloss": "turn back",
+"gloss": "to return, turn back",
 "pos": "Verb",
 "section": 1,
 "freq": 918,
@@ -353,7 +353,7 @@
 {
 "word": "לָקַח",
 "inflection": null,
-"gloss": "take",
+"gloss": "to take, receive",
 "pos": "Verb",
 "section": 1,
 "freq": 874,
@@ -380,7 +380,7 @@
 {
 "word": "יָדַע",
 "inflection": null,
-"gloss": "know",
+"gloss": "to know",
 "pos": "Verb",
 "section": 1,
 "freq": 838,
@@ -389,7 +389,7 @@
 {
 "word": "עָלָה",
 "inflection": null,
-"gloss": "go up",
+"gloss": "to go up, ascend",
 "pos": "Verb",
 "section": 1,
 "freq": 828,
@@ -398,7 +398,7 @@
 {
 "word": "מִן",
 "inflection": null,
-"gloss": "out of",
+"gloss": "from, out of",
 "pos": "Prep",
 "section": 1,
 "freq": 820,
@@ -416,7 +416,7 @@
 {
 "word": "הִנֵּה",
 "inflection": null,
-"gloss": "lo!",
+"gloss": "behold, look",
 "pos": "Particle",
 "section": 1,
 "freq": 807,
@@ -425,7 +425,7 @@
 {
 "word": "כֵּן",
 "inflection": null,
-"gloss": "right",
+"gloss": "so, thus; right",
 "pos": "Particle",
 "section": 1,
 "freq": 770,
@@ -434,7 +434,7 @@
 {
 "word": "גַּם",
 "inflection": null,
-"gloss": "also",
+"gloss": "also, even, too",
 "pos": "Particle",
 "section": 1,
 "freq": 769,
@@ -461,7 +461,7 @@
 {
 "word": "מָה",
 "inflection": null,
-"gloss": "what?",
+"gloss": "what? how?",
 "pos": "Particle",
 "section": 1,
 "freq": 746,
@@ -470,7 +470,7 @@
 {
 "word": "מוּת",
 "inflection": null,
-"gloss": "die",
+"gloss": "to die",
 "pos": "Verb",
 "section": 1,
 "freq": 738,
@@ -488,7 +488,7 @@
 {
 "word": "אַל",
 "inflection": null,
-"gloss": "not",
+"gloss": "not, do not (with jussive)",
 "pos": "Particle",
 "section": 1,
 "freq": 724,
@@ -506,7 +506,7 @@
 {
 "word": "אָכַל",
 "inflection": null,
-"gloss": "eat",
+"gloss": "to eat",
 "pos": "Verb",
 "section": 1,
 "freq": 701,
@@ -533,7 +533,7 @@
 {
 "word": "קָרָא",
 "inflection": null,
-"gloss": "call",
+"gloss": "to call, proclaim, read",
 "pos": "Verb",
 "section": 1,
 "freq": 688,
@@ -542,7 +542,7 @@
 {
 "word": "אַיִן",
 "inflection": null,
-"gloss": "nothing",
+"gloss": "there is not, nothing",
 "pos": "Particle",
 "section": 1,
 "freq": 685,
@@ -551,7 +551,7 @@
 {
 "word": "שָׁלַח",
 "inflection": null,
-"gloss": "send",
+"gloss": "to send, stretch out",
 "pos": "Verb",
 "section": 1,
 "freq": 671,
@@ -569,7 +569,7 @@
 {
 "word": "אִשָּׁה",
 "inflection": null,
-"gloss": "woman",
+"gloss": "woman, wife",
 "pos": "Noun",
 "section": 1,
 "freq": 611,
@@ -587,7 +587,7 @@
 {
 "word": "זֹאת",
 "inflection": null,
-"gloss": "this",
+"gloss": "this (f.)",
 "pos": "Pron",
 "section": 1,
 "freq": 604,
@@ -596,7 +596,7 @@
 {
 "word": "רַע",
 "inflection": null,
-"gloss": "bad",
+"gloss": "evil, bad",
 "pos": "Adj",
 "section": 1,
 "freq": 604,
@@ -605,7 +605,7 @@
 {
 "word": "נָשָׂא",
 "inflection": null,
-"gloss": "lift",
+"gloss": "to lift, carry, bear",
 "pos": "Verb",
 "section": 1,
 "freq": 591,
@@ -623,7 +623,7 @@
 {
 "word": "כֹּה",
 "inflection": null,
-"gloss": "thus",
+"gloss": "thus, so",
 "pos": "Adv",
 "section": 1,
 "freq": 576,
@@ -632,7 +632,7 @@
 {
 "word": "קוּם",
 "inflection": null,
-"gloss": "Leb Qamay",
+"gloss": "to arise, stand up",
 "pos": "Verb",
 "section": 1,
 "freq": 569,
@@ -641,7 +641,7 @@
 {
 "word": "הֵם",
 "inflection": null,
-"gloss": "they",
+"gloss": "they (m.)",
 "pos": "Pron",
 "section": 1,
 "freq": 563,
@@ -650,7 +650,7 @@
 {
 "word": "מַיִם",
 "inflection": null,
-"gloss": "waters",
+"gloss": "water",
 "pos": "Noun",
 "section": 1,
 "freq": 557,
@@ -659,7 +659,7 @@
 {
 "word": "טוֹב",
 "inflection": null,
-"gloss": "pleasant",
+"gloss": "good",
 "pos": "Adj",
 "section": 1,
 "freq": 557,
@@ -668,7 +668,7 @@
 {
 "word": "גּוֹי",
 "inflection": null,
-"gloss": "nation",
+"gloss": "nation, people",
 "pos": "Noun",
 "section": 1,
 "freq": 553,
@@ -677,7 +677,7 @@
 {
 "word": "אָדָם",
 "inflection": null,
-"gloss": "man",
+"gloss": "man, mankind, Adam",
 "pos": "Noun",
 "section": 1,
 "freq": 552,
@@ -686,7 +686,7 @@
 {
 "word": "הַר",
 "inflection": null,
-"gloss": "mountain",
+"gloss": "mountain, hill",
 "pos": "Noun",
 "section": 1,
 "freq": 524,
@@ -695,7 +695,7 @@
 {
 "word": "גָּדוֹל",
 "inflection": null,
-"gloss": "great",
+"gloss": "great, large",
 "pos": "Adj",
 "section": 1,
 "freq": 521,
@@ -713,7 +713,7 @@
 {
 "word": "עָבַר",
 "inflection": null,
-"gloss": "pass over",
+"gloss": "to pass over, cross",
 "pos": "Verb",
 "section": 1,
 "freq": 515,
@@ -731,7 +731,7 @@
 {
 "word": "הָלַךְ",
 "inflection": null,
-"gloss": "go",
+"gloss": "to go, walk",
 "pos": "Verb",
 "section": 1,
 "freq": 499,
@@ -740,7 +740,7 @@
 {
 "word": "שׂוּם",
 "inflection": null,
-"gloss": "put",
+"gloss": "to put, place, set",
 "pos": "Verb",
 "section": 1,
 "freq": 490,
@@ -749,7 +749,7 @@
 {
 "word": "עָמַד",
 "inflection": null,
-"gloss": "take one’s stand",
+"gloss": "to stand",
 "pos": "Verb",
 "section": 1,
 "freq": 485,
@@ -758,7 +758,7 @@
 {
 "word": "רַב",
 "inflection": null,
-"gloss": "much",
+"gloss": "many, much, great",
 "pos": "Adj",
 "section": 1,
 "freq": 461,
@@ -767,7 +767,7 @@
 {
 "word": "דֶּרֶךְ",
 "inflection": null,
-"gloss": "way",
+"gloss": "way, road, journey",
 "pos": "Noun",
 "section": 1,
 "freq": 457,
@@ -776,7 +776,7 @@
 {
 "word": "יָלַד",
 "inflection": null,
-"gloss": "bear",
+"gloss": "to bear, beget",
 "pos": "Verb",
 "section": 1,
 "freq": 450,
@@ -785,7 +785,7 @@
 {
 "word": "עוֹד",
 "inflection": null,
-"gloss": "a going round",
+"gloss": "still, yet, again",
 "pos": "Adv",
 "section": 1,
 "freq": 449,
@@ -794,7 +794,7 @@
 {
 "word": "אַחַר",
 "inflection": null,
-"gloss": "the hinder",
+"gloss": "after, behind",
 "pos": "Prep",
 "section": 1,
 "freq": 447,
@@ -803,7 +803,7 @@
 {
 "word": "עוֹלָם",
 "inflection": null,
-"gloss": "long duration",
+"gloss": "eternity, forever, everlasting",
 "pos": "Noun",
 "section": 1,
 "freq": 437,
@@ -830,7 +830,7 @@
 {
 "word": "שָׁלוֹשׁ",
 "inflection": null,
-"gloss": "a three",
+"gloss": "three",
 "pos": "Adj",
 "section": 1,
 "freq": 425,
@@ -839,7 +839,7 @@
 {
 "word": "צָבָא",
 "inflection": null,
-"gloss": "army",
+"gloss": "army, host",
 "pos": "Noun",
 "section": 1,
 "freq": 425,
@@ -848,7 +848,7 @@
 {
 "word": "שָׁמַר",
 "inflection": null,
-"gloss": "keep",
+"gloss": "to keep, guard, watch",
 "pos": "Verb",
 "section": 1,
 "freq": 424,
@@ -875,7 +875,7 @@
 {
 "word": "נָפַל",
 "inflection": null,
-"gloss": "fall",
+"gloss": "to fall",
 "pos": "Verb",
 "section": 1,
 "freq": 418,
@@ -884,7 +884,7 @@
 {
 "word": "חַי",
 "inflection": null,
-"gloss": "alive",
+"gloss": "living, alive",
 "pos": "Adj",
 "section": 1,
 "freq": 415,
@@ -902,7 +902,7 @@
 {
 "word": "שָׁמַיִם",
 "inflection": null,
-"gloss": "heavens",
+"gloss": "heavens, sky",
 "pos": "Noun",
 "section": 1,
 "freq": 405,
@@ -911,7 +911,7 @@
 {
 "word": "נָא",
 "inflection": null,
-"gloss": "I",
+"gloss": "please (particle of entreaty)",
 "pos": "Particle",
 "section": 1,
 "freq": 403,
@@ -920,7 +920,7 @@
 {
 "word": "רֹאשׁ",
 "inflection": null,
-"gloss": "head",
+"gloss": "head, top, chief",
 "pos": "Noun",
 "section": 1,
 "freq": 398,
@@ -938,7 +938,7 @@
 {
 "word": "מָצָא",
 "inflection": null,
-"gloss": "attain to",
+"gloss": "to find, attain",
 "pos": "Verb",
 "section": 1,
 "freq": 382,
@@ -956,7 +956,7 @@
 {
 "word": "נְאֻם",
 "inflection": null,
-"gloss": "utterance",
+"gloss": "utterance, declaration (of)",
 "pos": "Noun",
 "section": 1,
 "freq": 376,
@@ -974,7 +974,7 @@
 {
 "word": "קֹדֶשׁ",
 "inflection": null,
-"gloss": "apartness",
+"gloss": "holiness, holy thing",
 "pos": "Noun",
 "section": 1,
 "freq": 371,
@@ -983,7 +983,7 @@
 {
 "word": "כֶּסֶף",
 "inflection": null,
-"gloss": "silver",
+"gloss": "silver, money",
 "pos": "Noun",
 "section": 1,
 "freq": 371,
@@ -992,7 +992,7 @@
 {
 "word": "צָוָה",
 "inflection": null,
-"gloss": "lay charge",
+"gloss": "to command, charge",
 "pos": "Verb",
 "section": 1,
 "freq": 370,
@@ -1010,7 +1010,7 @@
 {
 "word": "שַׂר",
 "inflection": null,
-"gloss": "chieftain",
+"gloss": "prince, chief, official",
 "pos": "Noun",
 "section": 1,
 "freq": 364,
@@ -1028,7 +1028,7 @@
 {
 "word": "בָּנָה",
 "inflection": null,
-"gloss": "build",
+"gloss": "to build",
 "pos": "Verb",
 "section": 1,
 "freq": 357,
@@ -1037,7 +1037,7 @@
 {
 "word": "נָכָה",
 "inflection": null,
-"gloss": "smite",
+"gloss": "to strike, smite",
 "pos": "Verb",
 "section": 1,
 "freq": 356,
@@ -1046,7 +1046,7 @@
 {
 "word": "עַיִן",
 "inflection": null,
-"gloss": "eye",
+"gloss": "eye; spring",
 "pos": "Noun",
 "section": 1,
 "freq": 355,
@@ -1055,7 +1055,7 @@
 {
 "word": "נָגַד",
 "inflection": null,
-"gloss": "be conspicuous",
+"gloss": "to tell, declare",
 "pos": "Verb",
 "section": 1,
 "freq": 351,
@@ -1082,7 +1082,7 @@
 {
 "word": "קוֹל",
 "inflection": null,
-"gloss": "sound",
+"gloss": "voice, sound",
 "pos": "Noun",
 "section": 1,
 "freq": 348,
@@ -1091,7 +1091,7 @@
 {
 "word": "יָרַד",
 "inflection": null,
-"gloss": "come down",
+"gloss": "to go down, descend",
 "pos": "Verb",
 "section": 1,
 "freq": 347,
@@ -1109,7 +1109,7 @@
 {
 "word": "תַּחַת",
 "inflection": null,
-"gloss": "the under part",
+"gloss": "under, instead of; beneath",
 "pos": "Prep",
 "section": 1,
 "freq": 344,
@@ -1127,7 +1127,7 @@
 {
 "word": "עָשָׂר",
 "inflection": null,
-"gloss": "ten",
+"gloss": "ten (in the teens)",
 "pos": "Adj",
 "section": 1,
 "freq": 338,
@@ -1145,7 +1145,7 @@
 {
 "word": "יָם",
 "inflection": null,
-"gloss": "sea",
+"gloss": "sea; west",
 "pos": "Noun",
 "section": 1,
 "freq": 331,
@@ -1163,7 +1163,7 @@
 {
 "word": "מָקוֹם",
 "inflection": null,
-"gloss": "standing-place",
+"gloss": "place",
 "pos": "Noun",
 "section": 1,
 "freq": 320,
@@ -1172,7 +1172,7 @@
 {
 "word": "עֵץ",
 "inflection": null,
-"gloss": "tree",
+"gloss": "tree, wood",
 "pos": "Noun",
 "section": 1,
 "freq": 319,
@@ -1190,7 +1190,7 @@
 {
 "word": "בֵּין",
 "inflection": null,
-"gloss": "interval",
+"gloss": "between",
 "pos": "Prep",
 "section": 1,
 "freq": 316,
@@ -1208,7 +1208,7 @@
 {
 "word": "יָרֵא",
 "inflection": null,
-"gloss": "fear",
+"gloss": "to fear, be afraid",
 "pos": "Verb",
 "section": 1,
 "freq": 309,
@@ -1226,7 +1226,7 @@
 {
 "word": "מִלְחָמָה",
 "inflection": null,
-"gloss": "battle",
+"gloss": "war, battle",
 "pos": "Noun",
 "section": 1,
 "freq": 306,
@@ -1235,7 +1235,7 @@
 {
 "word": "יְהֹוִה",
 "inflection": null,
-"gloss": "God",
+"gloss": "the LORD (GOD)",
 "pos": "Noun",
 "section": 1,
 "freq": 306,
@@ -1253,7 +1253,7 @@
 {
 "word": "רוּחַ",
 "inflection": null,
-"gloss": "breath",
+"gloss": "spirit, wind, breath",
 "pos": "Noun",
 "section": 1,
 "freq": 304,
@@ -1262,7 +1262,7 @@
 {
 "word": "מִשְׁפָּט",
 "inflection": null,
-"gloss": "judgment",
+"gloss": "judgment, justice, ordinance",
 "pos": "Noun",
 "section": 1,
 "freq": 302,
@@ -1271,7 +1271,7 @@
 {
 "word": "מְאֹד",
 "inflection": null,
-"gloss": "muchness",
+"gloss": "very, exceedingly",
 "pos": "Adv",
 "section": 1,
 "freq": 298,
@@ -1298,7 +1298,7 @@
 {
 "word": "מָלַךְ",
 "inflection": null,
-"gloss": "be king",
+"gloss": "to reign, be king",
 "pos": "Verb",
 "section": 1,
 "freq": 285,
@@ -1316,7 +1316,7 @@
 {
 "word": "נָבִיא",
 "inflection": null,
-"gloss": "spokesman",
+"gloss": "prophet",
 "pos": "Noun",
 "section": 1,
 "freq": 284,
@@ -1325,7 +1325,7 @@
 {
 "word": "תָּוֶךְ",
 "inflection": null,
-"gloss": "midst",
+"gloss": "midst, middle",
 "pos": "Noun",
 "section": 1,
 "freq": 281,
@@ -1334,7 +1334,7 @@
 {
 "word": "סוּר",
 "inflection": null,
-"gloss": "turn aside",
+"gloss": "to turn aside, depart",
 "pos": "Verb",
 "section": 1,
 "freq": 281,
@@ -1343,7 +1343,7 @@
 {
 "word": "סָבִיב",
 "inflection": null,
-"gloss": "circuit",
+"gloss": "around, surrounding",
 "pos": "Noun",
 "section": 1,
 "freq": 277,
@@ -1352,7 +1352,7 @@
 {
 "word": "כָּרַת",
 "inflection": null,
-"gloss": "cut off",
+"gloss": "to cut, cut off; make (a covenant)",
 "pos": "Verb",
 "section": 1,
 "freq": 274,
@@ -1379,7 +1379,7 @@
 {
 "word": "חֹדֶשׁ",
 "inflection": null,
-"gloss": "newness",
+"gloss": "month; new moon",
 "pos": "Noun",
 "section": 1,
 "freq": 272,
@@ -1397,7 +1397,7 @@
 {
 "word": "חָזַק",
 "inflection": null,
-"gloss": "be firm",
+"gloss": "to be strong, firm; grasp",
 "pos": "Verb",
 "section": 1,
 "freq": 267,
@@ -1406,7 +1406,7 @@
 {
 "word": "נֶפֶשׁ",
 "inflection": null,
-"gloss": "soul",
+"gloss": "soul, life, self, person",
 "pos": "Noun",
 "section": 1,
 "freq": 263,
@@ -1415,7 +1415,7 @@
 {
 "word": "רָשָׁע",
 "inflection": null,
-"gloss": "wicked",
+"gloss": "wicked, guilty",
 "pos": "Adj",
 "section": 1,
 "freq": 262,
@@ -1433,7 +1433,7 @@
 {
 "word": "מַעַן",
 "inflection": null,
-"gloss": "purpose",
+"gloss": "for the sake of, in order that",
 "pos": "Prep",
 "section": 2,
 "freq": 260,
@@ -1451,7 +1451,7 @@
 {
 "word": "עֹלָה",
 "inflection": null,
-"gloss": "whole burnt-offering",
+"gloss": "burnt offering",
 "pos": "Noun",
 "section": 2,
 "freq": 259,
@@ -1460,7 +1460,7 @@
 {
 "word": "עֶבֶד",
 "inflection": null,
-"gloss": "slave",
+"gloss": "servant, slave",
 "pos": "Noun",
 "section": 2,
 "freq": 259,
@@ -1469,7 +1469,7 @@
 {
 "word": "לֵב",
 "inflection": null,
-"gloss": "inner man",
+"gloss": "heart, mind",
 "pos": "Noun",
 "section": 2,
 "freq": 256,
@@ -1478,7 +1478,7 @@
 {
 "word": "קָרַב",
 "inflection": null,
-"gloss": "come near",
+"gloss": "to come near, approach",
 "pos": "Verb",
 "section": 2,
 "freq": 256,
@@ -1487,7 +1487,7 @@
 {
 "word": "מִדְבָּר",
 "inflection": null,
-"gloss": "mouth",
+"gloss": "wilderness, desert",
 "pos": "Noun",
 "section": 2,
 "freq": 252,
@@ -1496,7 +1496,7 @@
 {
 "word": "עָנָה",
 "inflection": null,
-"gloss": "dwell",
+"gloss": "to answer, respond",
 "pos": "Verb",
 "section": 2,
 "freq": 251,
@@ -1505,7 +1505,7 @@
 {
 "word": "לֶחֶם",
 "inflection": null,
-"gloss": "bread",
+"gloss": "bread, food",
 "pos": "Noun",
 "section": 2,
 "freq": 251,
@@ -1514,7 +1514,7 @@
 {
 "word": "אַמָּה",
 "inflection": null,
-"gloss": "ell",
+"gloss": "cubit",
 "pos": "Noun",
 "section": 2,
 "freq": 248,
@@ -1523,7 +1523,7 @@
 {
 "word": "כְּלִי",
 "inflection": null,
-"gloss": "article",
+"gloss": "vessel, article, implement",
 "pos": "Noun",
 "section": 2,
 "freq": 244,
@@ -1541,7 +1541,7 @@
 {
 "word": "בָרַךְ",
 "inflection": null,
-"gloss": "kneel",
+"gloss": "to bless, kneel",
 "pos": "Verb",
 "section": 2,
 "freq": 244,
@@ -1550,7 +1550,7 @@
 {
 "word": "מָלֵא",
 "inflection": null,
-"gloss": "be full",
+"gloss": "to be full, fill",
 "pos": "Verb",
 "section": 2,
 "freq": 236,
@@ -1568,7 +1568,7 @@
 {
 "word": "בָּבֶל",
 "inflection": null,
-"gloss": "Babel",
+"gloss": "Babylon",
 "pos": "Noun",
 "section": 2,
 "freq": 233,
@@ -1577,7 +1577,7 @@
 {
 "word": "אֵל",
 "inflection": null,
-"gloss": "god",
+"gloss": "God, god",
 "pos": "Noun",
 "section": 2,
 "freq": 233,
@@ -1586,7 +1586,7 @@
 {
 "word": "מַטֶּה",
 "inflection": null,
-"gloss": "branch",
+"gloss": "staff, rod; tribe",
 "pos": "Noun",
 "section": 2,
 "freq": 231,
@@ -1595,7 +1595,7 @@
 {
 "word": "חָטָא",
 "inflection": null,
-"gloss": "miss",
+"gloss": "to sin, miss",
 "pos": "Verb",
 "section": 2,
 "freq": 231,
@@ -1604,7 +1604,7 @@
 {
 "word": "פָּקַד",
 "inflection": null,
-"gloss": "attend to",
+"gloss": "to attend to, appoint, muster",
 "pos": "Verb",
 "section": 2,
 "freq": 229,
@@ -1613,7 +1613,7 @@
 {
 "word": "חָיָה",
 "inflection": null,
-"gloss": "live",
+"gloss": "to live, revive",
 "pos": "Verb",
 "section": 2,
 "freq": 228,
@@ -1622,7 +1622,7 @@
 {
 "word": "שָׁלוֹם",
 "inflection": null,
-"gloss": "completeness",
+"gloss": "peace, welfare, wholeness",
 "pos": "Noun",
 "section": 2,
 "freq": 225,
@@ -1631,7 +1631,7 @@
 {
 "word": "יְהוֹשׁוּעַ",
 "inflection": null,
-"gloss": "Jehoshua",
+"gloss": "Joshua",
 "pos": "Noun",
 "section": 2,
 "freq": 218,
@@ -1640,7 +1640,7 @@
 {
 "word": "רָבָה",
 "inflection": null,
-"gloss": "be much",
+"gloss": "to be(come) many, multiply",
 "pos": "Verb",
 "section": 2,
 "freq": 217,
@@ -1667,7 +1667,7 @@
 {
 "word": "יוֹסֵף",
 "inflection": null,
-"gloss": "Joseph. Compare",
+"gloss": "Joseph",
 "pos": "Noun",
 "section": 2,
 "freq": 213,
@@ -1676,7 +1676,7 @@
 {
 "word": "כָּתַב",
 "inflection": null,
-"gloss": "write",
+"gloss": "to write",
 "pos": "Verb",
 "section": 2,
 "freq": 211,
@@ -1694,7 +1694,7 @@
 {
 "word": "שָׁתָה",
 "inflection": null,
-"gloss": "drink",
+"gloss": "to drink",
 "pos": "Verb",
 "section": 2,
 "freq": 208,
@@ -1703,7 +1703,7 @@
 {
 "word": "עָבַד",
 "inflection": null,
-"gloss": "work",
+"gloss": "to serve, work",
 "pos": "Verb",
 "section": 2,
 "freq": 207,
@@ -1712,7 +1712,7 @@
 {
 "word": "צַדִּיק",
 "inflection": null,
-"gloss": "just",
+"gloss": "righteous, just",
 "pos": "Adj",
 "section": 2,
 "freq": 206,
@@ -1721,7 +1721,7 @@
 {
 "word": "צֹאן",
 "inflection": null,
-"gloss": "small cattle",
+"gloss": "flock, sheep",
 "pos": "Noun",
 "section": 2,
 "freq": 204,
@@ -1730,7 +1730,7 @@
 {
 "word": "יָסַף",
 "inflection": null,
-"gloss": "add",
+"gloss": "to add, do again",
 "pos": "Verb",
 "section": 2,
 "freq": 204,
@@ -1739,7 +1739,7 @@
 {
 "word": "מוֹעֵד",
 "inflection": null,
-"gloss": "appointed time",
+"gloss": "appointed time, meeting; festival",
 "pos": "Noun",
 "section": 2,
 "freq": 203,
@@ -1748,7 +1748,7 @@
 {
 "word": "אָרוֹן",
 "inflection": null,
-"gloss": "chest",
+"gloss": "ark, chest",
 "pos": "Noun",
 "section": 2,
 "freq": 202,
@@ -1757,7 +1757,7 @@
 {
 "word": "נָטָה",
 "inflection": null,
-"gloss": "stretch out",
+"gloss": "to stretch out, extend, turn",
 "pos": "Verb",
 "section": 2,
 "freq": 202,
@@ -1766,7 +1766,7 @@
 {
 "word": "זָכַר",
 "inflection": null,
-"gloss": "remember",
+"gloss": "to remember",
 "pos": "Verb",
 "section": 2,
 "freq": 202,
@@ -1775,7 +1775,7 @@
 {
 "word": "כּוּן",
 "inflection": null,
-"gloss": "be firm",
+"gloss": "to be firm, established; prepare",
 "pos": "Verb",
 "section": 2,
 "freq": 200,
@@ -1793,7 +1793,7 @@
 {
 "word": "נַעַר",
 "inflection": null,
-"gloss": "boy",
+"gloss": "boy, youth, servant",
 "pos": "Noun",
 "section": 2,
 "freq": 199,
@@ -1802,7 +1802,7 @@
 {
 "word": "מַחֲנֶה",
 "inflection": null,
-"gloss": "encampment",
+"gloss": "camp, encampment",
 "pos": "Noun",
 "section": 2,
 "freq": 198,
@@ -1811,7 +1811,7 @@
 {
 "word": "בָּקַשׁ",
 "inflection": null,
-"gloss": "seek",
+"gloss": "to seek, search for",
 "pos": "Verb",
 "section": 2,
 "freq": 196,
@@ -1820,7 +1820,7 @@
 {
 "word": "מֲלְאָךְ",
 "inflection": null,
-"gloss": "messenger",
+"gloss": "messenger, angel",
 "pos": "Noun",
 "section": 2,
 "freq": 195,
@@ -1829,7 +1829,7 @@
 {
 "word": "מִשְׁפָּחָה",
 "inflection": null,
-"gloss": "clan",
+"gloss": "family, clan",
 "pos": "Noun",
 "section": 2,
 "freq": 193,
@@ -1838,7 +1838,7 @@
 {
 "word": "יָכֹל",
 "inflection": null,
-"gloss": "be able",
+"gloss": "to be able, prevail",
 "pos": "Verb",
 "section": 2,
 "freq": 190,
@@ -1847,7 +1847,7 @@
 {
 "word": "שָׁכַב",
 "inflection": null,
-"gloss": "lie down",
+"gloss": "to lie down",
 "pos": "Verb",
 "section": 2,
 "freq": 189,
@@ -1856,7 +1856,7 @@
 {
 "word": "חַיִל",
 "inflection": null,
-"gloss": "strength",
+"gloss": "strength, army, wealth",
 "pos": "Noun",
 "section": 2,
 "freq": 188,
@@ -1865,7 +1865,7 @@
 {
 "word": "שֶׁמֶן",
 "inflection": null,
-"gloss": "fat",
+"gloss": "oil, fat",
 "pos": "Noun",
 "section": 2,
 "freq": 184,
@@ -1874,7 +1874,7 @@
 {
 "word": "אָסַף",
 "inflection": null,
-"gloss": "gather",
+"gloss": "to gather, collect",
 "pos": "Verb",
 "section": 2,
 "freq": 183,
@@ -1883,7 +1883,7 @@
 {
 "word": "רִאשׁוֹן",
 "inflection": null,
-"gloss": "former",
+"gloss": "first, former",
 "pos": "Adj",
 "section": 2,
 "freq": 182,
@@ -1892,7 +1892,7 @@
 {
 "word": "גְּבוּל",
 "inflection": null,
-"gloss": "border",
+"gloss": "border, boundary, territory",
 "pos": "Noun",
 "section": 2,
 "freq": 182,
@@ -1901,7 +1901,7 @@
 {
 "word": "סֵפֶר",
 "inflection": null,
-"gloss": "missive",
+"gloss": "book, document, scroll",
 "pos": "Noun",
 "section": 2,
 "freq": 182,
@@ -1937,7 +1937,7 @@
 {
 "word": "חַטָּאָה",
 "inflection": null,
-"gloss": "sinful thing",
+"gloss": "sin, sin offering",
 "pos": "Noun",
 "section": 2,
 "freq": 177,
@@ -1946,7 +1946,7 @@
 {
 "word": "גָּלָה",
 "inflection": null,
-"gloss": "uncover",
+"gloss": "to uncover, reveal; go into exile",
 "pos": "Verb",
 "section": 2,
 "freq": 176,
@@ -1991,7 +1991,7 @@
 {
 "word": "בָּשָׂר",
 "inflection": null,
-"gloss": "flesh",
+"gloss": "flesh, meat",
 "pos": "Noun",
 "section": 2,
 "freq": 171,
@@ -2000,7 +2000,7 @@
 {
 "word": "לָחַם",
 "inflection": null,
-"gloss": "fight",
+"gloss": "to fight, do battle",
 "pos": "Verb",
 "section": 2,
 "freq": 170,
@@ -2009,7 +2009,7 @@
 {
 "word": "שָׁחָה",
 "inflection": null,
-"gloss": "bow down",
+"gloss": "to bow down, worship",
 "pos": "Verb",
 "section": 2,
 "freq": 170,
@@ -2018,7 +2018,7 @@
 {
 "word": "שָׁבַע",
 "inflection": null,
-"gloss": "swear",
+"gloss": "to swear, take an oath",
 "pos": "Verb",
 "section": 2,
 "freq": 168,
@@ -2027,7 +2027,7 @@
 {
 "word": "שֵׁבֶט",
 "inflection": null,
-"gloss": "rod",
+"gloss": "tribe; rod, scepter",
 "pos": "Noun",
 "section": 2,
 "freq": 166,
@@ -2036,7 +2036,7 @@
 {
 "word": "אַחֵר",
 "inflection": null,
-"gloss": "another",
+"gloss": "another, other",
 "pos": "Adj",
 "section": 2,
 "freq": 166,
@@ -2045,7 +2045,7 @@
 {
 "word": "אֲדָמָה",
 "inflection": null,
-"gloss": "ground",
+"gloss": "ground, land, soil",
 "pos": "Noun",
 "section": 2,
 "freq": 166,
@@ -2054,7 +2054,7 @@
 {
 "word": "זָקֵן",
 "inflection": null,
-"gloss": "old",
+"gloss": "old; elder",
 "pos": "Adj",
 "section": 2,
 "freq": 165,
@@ -2072,7 +2072,7 @@
 {
 "word": "בְּהֵמָה",
 "inflection": null,
-"gloss": "beast",
+"gloss": "beast, cattle, animal",
 "pos": "Noun",
 "section": 2,
 "freq": 164,
@@ -2081,7 +2081,7 @@
 {
 "word": "בָּחַר",
 "inflection": null,
-"gloss": "choose",
+"gloss": "to choose",
 "pos": "Verb",
 "section": 2,
 "freq": 163,
@@ -2090,7 +2090,7 @@
 {
 "word": "בָּקָר",
 "inflection": null,
-"gloss": "cattle",
+"gloss": "cattle, herd, ox",
 "pos": "Noun",
 "section": 2,
 "freq": 162,
@@ -2099,7 +2099,7 @@
 {
 "word": "רוּם",
 "inflection": null,
-"gloss": "be high",
+"gloss": "to be high, exalted; rise",
 "pos": "Verb",
 "section": 2,
 "freq": 162,
@@ -2108,7 +2108,7 @@
 {
 "word": "מִנְחָה",
 "inflection": null,
-"gloss": "gift",
+"gloss": "gift, offering, tribute",
 "pos": "Noun",
 "section": 2,
 "freq": 162,
@@ -2117,7 +2117,7 @@
 {
 "word": "אַךְ",
 "inflection": null,
-"gloss": "surely",
+"gloss": "surely, only, however",
 "pos": "Particle",
 "section": 2,
 "freq": 161,
@@ -2126,7 +2126,7 @@
 {
 "word": "שָׁפַט",
 "inflection": null,
-"gloss": "judge",
+"gloss": "to judge, govern",
 "pos": "Verb",
 "section": 2,
 "freq": 160,
@@ -2135,7 +2135,7 @@
 {
 "word": "מַעֲשֶׂה",
 "inflection": null,
-"gloss": "deed",
+"gloss": "deed, work, act",
 "pos": "Noun",
 "section": 2,
 "freq": 160,
@@ -2144,7 +2144,7 @@
 {
 "word": "כָּלָה",
 "inflection": null,
-"gloss": "be complete",
+"gloss": "to be complete, finished; end",
 "pos": "Verb",
 "section": 2,
 "freq": 159,
@@ -2153,7 +2153,7 @@
 {
 "word": "תּוֹרָה",
 "inflection": null,
-"gloss": "direction",
+"gloss": "law, instruction, teaching",
 "pos": "Noun",
 "section": 2,
 "freq": 158,
@@ -2180,7 +2180,7 @@
 {
 "word": "בִּין",
 "inflection": null,
-"gloss": "discern",
+"gloss": "to discern, understand",
 "pos": "Verb",
 "section": 2,
 "freq": 155,
@@ -2189,7 +2189,7 @@
 {
 "word": "פֶּתַח",
 "inflection": null,
-"gloss": "opening",
+"gloss": "opening, entrance, doorway",
 "pos": "Noun",
 "section": 2,
 "freq": 155,
@@ -2198,7 +2198,7 @@
 {
 "word": "אָבַד",
 "inflection": null,
-"gloss": "perish",
+"gloss": "to perish, be lost; destroy",
 "pos": "Verb",
 "section": 2,
 "freq": 155,
@@ -2207,7 +2207,7 @@
 {
 "word": "נוּס",
 "inflection": null,
-"gloss": "flee",
+"gloss": "to flee",
 "pos": "Verb",
 "section": 2,
 "freq": 154,
@@ -2216,7 +2216,7 @@
 {
 "word": "סָפַר",
 "inflection": null,
-"gloss": "count",
+"gloss": "to count, recount, tell",
 "pos": "Verb",
 "section": 2,
 "freq": 153,
@@ -2225,7 +2225,7 @@
 {
 "word": "עָזַב",
 "inflection": null,
-"gloss": "leave",
+"gloss": "to leave, forsake, abandon",
 "pos": "Verb",
 "section": 2,
 "freq": 152,
@@ -2243,7 +2243,7 @@
 {
 "word": "יָרַשׁ",
 "inflection": null,
-"gloss": "take possession of",
+"gloss": "to possess, inherit, dispossess",
 "pos": "Verb",
 "section": 2,
 "freq": 152,
@@ -2252,7 +2252,7 @@
 {
 "word": "טָמֵא",
 "inflection": null,
-"gloss": "be unclean",
+"gloss": "to be(come) unclean",
 "pos": "Verb",
 "section": 2,
 "freq": 150,
@@ -2261,7 +2261,7 @@
 {
 "word": "שָׁאַל",
 "inflection": null,
-"gloss": "ask",
+"gloss": "to ask, inquire, request",
 "pos": "Verb",
 "section": 2,
 "freq": 148,
@@ -2270,7 +2270,7 @@
 {
 "word": "מְלָאכָה",
 "inflection": null,
-"gloss": "occupation",
+"gloss": "work, occupation, service",
 "pos": "Noun",
 "section": 2,
 "freq": 148,
@@ -2279,7 +2279,7 @@
 {
 "word": "גִּבּוֹר",
 "inflection": null,
-"gloss": "strong",
+"gloss": "mighty, strong; warrior",
 "pos": "Adj",
 "section": 2,
 "freq": 147,
@@ -2297,7 +2297,7 @@
 {
 "word": "רָעָה",
 "inflection": null,
-"gloss": "binding-house of the shepherds",
+"gloss": "to pasture, tend, shepherd",
 "pos": "Verb",
 "section": 2,
 "freq": 146,
@@ -2315,7 +2315,7 @@
 {
 "word": "רֹב",
 "inflection": null,
-"gloss": "multitude",
+"gloss": "multitude, abundance",
 "pos": "Noun",
 "section": 2,
 "freq": 146,
@@ -2324,7 +2324,7 @@
 {
 "word": "שָׂמַח",
 "inflection": null,
-"gloss": "rejoice",
+"gloss": "to rejoice, be glad",
 "pos": "Verb",
 "section": 2,
 "freq": 146,
@@ -2333,7 +2333,7 @@
 {
 "word": "אַשּׁוּר",
 "inflection": null,
-"gloss": "Asshur",
+"gloss": "Assyria, Asshur",
 "pos": "Noun",
 "section": 2,
 "freq": 145,
@@ -2351,7 +2351,7 @@
 {
 "word": "בֵּית־אֵל",
 "inflection": null,
-"gloss": "Beth-el",
+"gloss": "Bethel",
 "pos": "Noun",
 "section": 2,
 "freq": 144,
@@ -2360,7 +2360,7 @@
 {
 "word": "נָגַע",
 "inflection": null,
-"gloss": "touch",
+"gloss": "to touch, strike, reach",
 "pos": "Verb",
 "section": 2,
 "freq": 143,
@@ -2369,7 +2369,7 @@
 {
 "word": "נָסַע",
 "inflection": null,
-"gloss": "pull out",
+"gloss": "to set out, journey, pull up",
 "pos": "Verb",
 "section": 2,
 "freq": 142,
@@ -2378,7 +2378,7 @@
 {
 "word": "יַחַד",
 "inflection": null,
-"gloss": "unitedness",
+"gloss": "together",
 "pos": "Adv",
 "section": 2,
 "freq": 141,
@@ -2387,7 +2387,7 @@
 {
 "word": "אָז",
 "inflection": null,
-"gloss": "at that time",
+"gloss": "then, at that time",
 "pos": "Adv",
 "section": 2,
 "freq": 141,
@@ -2396,7 +2396,7 @@
 {
 "word": "דָּרַשׁ",
 "inflection": null,
-"gloss": "resort to",
+"gloss": "to seek, inquire, require",
 "pos": "Verb",
 "section": 2,
 "freq": 140,
@@ -2414,7 +2414,7 @@
 {
 "word": "חָצֵר",
 "inflection": null,
-"gloss": "enclosure",
+"gloss": "courtyard, court; settlement",
 "pos": "Noun",
 "section": 2,
 "freq": 140,
@@ -2423,7 +2423,7 @@
 {
 "word": "חָנָה",
 "inflection": null,
-"gloss": "decline",
+"gloss": "to encamp, camp",
 "pos": "Verb",
 "section": 2,
 "freq": 139,
@@ -2432,7 +2432,7 @@
 {
 "word": "עֵדָה",
 "inflection": null,
-"gloss": "congregation",
+"gloss": "congregation, assembly",
 "pos": "Noun",
 "section": 2,
 "freq": 139,
@@ -2441,7 +2441,7 @@
 {
 "word": "נַחַל",
 "inflection": null,
-"gloss": "torrent",
+"gloss": "wadi, stream, torrent",
 "pos": "Noun",
 "section": 2,
 "freq": 138,
@@ -2450,7 +2450,7 @@
 {
 "word": "קָדַשׁ",
 "inflection": null,
-"gloss": "be set apart",
+"gloss": "to be holy, consecrate, sanctify",
 "pos": "Verb",
 "section": 2,
 "freq": 138,
@@ -2459,7 +2459,7 @@
 {
 "word": "כָּבוֹד",
 "inflection": null,
-"gloss": "abundance",
+"gloss": "glory, honor, abundance",
 "pos": "Noun",
 "section": 2,
 "freq": 138,
@@ -2468,7 +2468,7 @@
 {
 "word": "אָהַב",
 "inflection": null,
-"gloss": "love",
+"gloss": "to love",
 "pos": "Verb",
 "section": 2,
 "freq": 138,
@@ -2477,7 +2477,7 @@
 {
 "word": "פָּתַח",
 "inflection": null,
-"gloss": "open",
+"gloss": "to open",
 "pos": "Verb",
 "section": 2,
 "freq": 138,
@@ -2495,7 +2495,7 @@
 {
 "word": "שָׁבַר",
 "inflection": null,
-"gloss": "break",
+"gloss": "to break, shatter",
 "pos": "Verb",
 "section": 2,
 "freq": 136,
@@ -2513,7 +2513,7 @@
 {
 "word": "נְחֹשֶׁת",
 "inflection": null,
-"gloss": "copper",
+"gloss": "bronze, copper",
 "pos": "Noun",
 "section": 2,
 "freq": 134,
@@ -2522,7 +2522,7 @@
 {
 "word": "אַף",
 "inflection": null,
-"gloss": "also",
+"gloss": "also, even, indeed",
 "pos": "Particle",
 "section": 2,
 "freq": 134,
@@ -2531,7 +2531,7 @@
 {
 "word": "עֶרֶב",
 "inflection": null,
-"gloss": "set",
+"gloss": "evening",
 "pos": "Noun",
 "section": 2,
 "freq": 134,
@@ -2540,7 +2540,7 @@
 {
 "word": "אֲרָם",
 "inflection": null,
-"gloss": "Aram",
+"gloss": "Aram, Syria",
 "pos": "Noun",
 "section": 2,
 "freq": 133,
@@ -2558,7 +2558,7 @@
 {
 "word": "שָׁאַר",
 "inflection": null,
-"gloss": "remain",
+"gloss": "to remain, be left over",
 "pos": "Verb",
 "section": 2,
 "freq": 133,
@@ -2567,7 +2567,7 @@
 {
 "word": "הָלַל",
 "inflection": null,
-"gloss": "shine",
+"gloss": "to praise; shine",
 "pos": "Verb",
 "section": 2,
 "freq": 133,
@@ -2576,7 +2576,7 @@
 {
 "word": "פָּנָה",
 "inflection": null,
-"gloss": "turn",
+"gloss": "to turn",
 "pos": "Verb",
 "section": 2,
 "freq": 133,
@@ -2585,7 +2585,7 @@
 {
 "word": "נָצַל",
 "inflection": null,
-"gloss": "strip",
+"gloss": "to deliver, rescue, snatch away",
 "pos": "Verb",
 "section": 2,
 "freq": 133,
@@ -2594,7 +2594,7 @@
 {
 "word": "סָבַב",
 "inflection": null,
-"gloss": "turn about",
+"gloss": "to turn, surround, go around",
 "pos": "Verb",
 "section": 2,
 "freq": 132,
@@ -2603,7 +2603,7 @@
 {
 "word": "פַּר",
 "inflection": null,
-"gloss": "young bull",
+"gloss": "bull, young bull",
 "pos": "Noun",
 "section": 2,
 "freq": 132,
@@ -2639,7 +2639,7 @@
 {
 "word": "נָשִׂיא",
 "inflection": null,
-"gloss": "one lifted up",
+"gloss": "leader, chief, prince",
 "pos": "Noun",
 "section": 2,
 "freq": 130,
@@ -2657,7 +2657,7 @@
 {
 "word": "חוּץ",
 "inflection": null,
-"gloss": "the outside",
+"gloss": "outside, street",
 "pos": "Noun",
 "section": 2,
 "freq": 130,
@@ -2666,7 +2666,7 @@
 {
 "word": "יֵשׁ",
 "inflection": null,
-"gloss": "being",
+"gloss": "there is/are, existence",
 "pos": "Particle",
 "section": 2,
 "freq": 129,
@@ -2675,7 +2675,7 @@
 {
 "word": "זָבַח",
 "inflection": null,
-"gloss": "slaughter for sacrifice",
+"gloss": "to slaughter, sacrifice",
 "pos": "Verb",
 "section": 2,
 "freq": 128,
@@ -2693,7 +2693,7 @@
 {
 "word": "שָׁכַן",
 "inflection": null,
-"gloss": "settle down",
+"gloss": "to dwell, settle, abide",
 "pos": "Verb",
 "section": 2,
 "freq": 126,
