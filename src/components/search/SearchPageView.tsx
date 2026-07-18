@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, MoreVertical } from 'lucide-react'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
@@ -190,7 +190,7 @@ function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
 }
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -320,7 +320,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // `mounted` so this restore isn't clobbered by an initial-render write. URL params win.
   useEffect(() => {
     if (!initialScope) { try { const s = localStorage.getItem(SCOPE_STORAGE_KEY); if (s) setScopeVal(s) } catch {} }
-    if (!initialQuery) { try { const q = localStorage.getItem(QUERY_STORAGE_KEY); if (q) setQuery(q) } catch {} }
+    if (!initialQuery) { try { const q = localStorage.getItem(QUERY_STORAGE_KEY); if (q) { setQuery(q); lastPickedRef.current = q.trim() } } catch {} }   // seeded → no dropdown over restored results
     try { const r = JSON.parse(localStorage.getItem(RECENT_STORAGE_KEY) || '[]'); if (Array.isArray(r)) setRecent(r.filter(x => typeof x === 'string')) } catch {}
     try { const s = localStorage.getItem(SORT_STORAGE_KEY); if (s === 'canonical' || s === 'relevance') setSort(s) } catch {}
     try { const c = Number(localStorage.getItem(CONTEXT_STORAGE_KEY)); if (Number.isFinite(c) && c >= 0 && c <= 3) setContext(c) } catch {}
@@ -516,6 +516,19 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       setQuery(el.value)
     }
   }
+  // Embedded panel → the full /search page, carrying the current search whole (query, scope,
+  // book restriction, lemma / Strong's "all forms" mode) and closing the panel behind it.
+  function openFullSearch() {
+    const p = new URLSearchParams()
+    if (query.trim()) p.set('q', query.trim())
+    p.set('in', scopeVal)
+    if (books.length > 0) p.set('books', books.join(','))
+    if (lemmaMode) p.set('mode', 'lemma')
+    if (hebStrongs) p.set('strongs', hebStrongs)
+    router.push(`/search?${p.toString()}`)
+    onRequestClose?.()
+  }
+
   function pickSuggestion(word: string, strongs?: string) {
     const next = query.replace(/\S*$/, word)
     lastPickedRef.current = next.trim()
@@ -839,7 +852,19 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </span>
             )}
 
+          {/* Embedded (the side panel): the discovery/settings extras — Search types, the ⋮
+              display menu — stay on the FULL /search page; the panel is the quick-lookup
+              surface. In their place, one button jumps to the full page carrying the current
+              query/scope/books (and lemma / Strong's mode) and closes the panel. */}
+          {embedded && (
+            <button type="button" onClick={openFullSearch} title="Open this search in the full Search page"
+              className="flex-none ml-auto inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+              <ArrowUpRight size={13} /> Full search
+            </button>
+          )}
+
           {/* Search types — ml-auto pins it (and the ⋮ next to it) to the row's right edge. */}
+          {!embedded && (
           <div className="relative flex-none ml-auto">
             <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
               className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
@@ -874,8 +899,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </>
             )}
           </div>
+          )}
 
           {/* ⋮ display options (result-text size) */}
+          {!embedded && (
           <div className="relative flex-none">
             <button type="button" onClick={() => setShowDisplay(v => !v)} aria-expanded={showDisplay} title="Display options"
               className={`inline-flex h-7 w-7 items-center justify-center rounded border transition-colors ${
@@ -902,6 +929,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </>
             )}
           </div>
+          )}
         </div>
         {isBiblical && showBooks && (
           <div className="mt-2">

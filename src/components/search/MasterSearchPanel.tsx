@@ -121,6 +121,7 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
       <div className="flex-1 min-h-0 overflow-y-auto py-2 pb-16">
         <SearchPageView
           embedded
+          onRequestClose={onClose}
           initialQuery={preset?.query}
           initialScope={preset?.scope}
           initialLemma={preset?.lemma}
