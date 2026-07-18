@@ -18,7 +18,14 @@ interface BgvbWord {
   section: number
   freq: number | null
   order?: number  // PDF frequency rank (1 = most frequent); used for subsection sorting
+  id?: string     // stable unique key. Greek lemmas are unique so it falls back to `word`;
+                  // Hebrew has homographs (same pointing, different Strong's) so the data
+                  // supplies an explicit id to keep React keys and progress from colliding.
 }
+
+// Identity of a card, for React keys, the progress map, and subsection lookup. Must be unique
+// within a deck — see the `id` note above (Hebrew homographs would otherwise share a key).
+const wid = (w: BgvbWord): string => w.id ?? w.word
 
 interface WordProgress {
   easeFactor: number
@@ -112,7 +119,7 @@ function buildVocab(
       const label = String.fromCharCode(65 + subs.length) // A, B, C…
       const key = `${s}-${label}`
       subs.push({ key, label, rankRange: `${i + 1}–${Math.min(i + 20, sectionWords.length)}`, words: chunk })
-      chunk.forEach(w => { wordSubsection[w.word] = key })
+      chunk.forEach(w => { wordSubsection[wid(w)] = key })
     }
     subsections[s] = subs
   })
@@ -165,7 +172,7 @@ function filterWords(config: StudyConfig, V: VocabData): BgvbWord[] {
     : new Set(config.subsections)
 
   return V.words.filter(w => {
-    if (!effectiveSubSet.has(V.wordSubsection[w.word] ?? '')) return false
+    if (!effectiveSubSet.has(V.wordSubsection[wid(w)] ?? '')) return false
     if (!config.pos.includes(w.pos)) return false
     return true
   })
@@ -216,7 +223,7 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
 
     // Re-queue this card 4 positions ahead when answered "Again"
     if (isAgain) {
-      setMissedWordKeys(prev => { const s = new Set(prev); s.add(word.word); return s })
+      setMissedWordKeys(prev => { const s = new Set(prev); s.add(wid(word)); return s })
       setSessionWords(prev => {
         if (!prev) return prev
         const next = [...prev]
@@ -226,7 +233,7 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
     }
 
     // Update SM-2 progress
-    const prev = progress[word.word]
+    const prev = progress[wid(word)]
     const result = sm2({
       easeFactor: prev?.easeFactor ?? 2.5,
       interval: prev?.interval ?? 1,
@@ -235,7 +242,7 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
     })
     const updated: ProgressMap = {
       ...progress,
-      [word.word]: {
+      [wid(word)]: {
         easeFactor: result.easeFactor,
         interval: result.interval,
         repetitions: result.repetitions,
@@ -262,8 +269,8 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
     if (!sessionWords) return
     const seen = new Set<string>()
     const missed = sessionWords.filter(w => {
-      if (!missedWordKeys.has(w.word) || seen.has(w.word)) return false
-      seen.add(w.word)
+      if (!missedWordKeys.has(wid(w)) || seen.has(wid(w))) return false
+      seen.add(wid(w))
       return true
     })
     if (missed.length === 0) return
@@ -422,8 +429,8 @@ function FlashcardPlayer({
     // Deduplicate missed words preserving order of first occurrence
     const seen = new Set<string>()
     const missedWords = sessionWords.filter(w => {
-      if (!missedWordKeys.has(w.word) || seen.has(w.word)) return false
-      seen.add(w.word); return true
+      if (!missedWordKeys.has(wid(w)) || seen.has(wid(w))) return false
+      seen.add(wid(w)); return true
     })
     return (
       <div className="max-w-lg mx-auto py-12 space-y-6">
@@ -442,7 +449,7 @@ function FlashcardPlayer({
             </div>
             <div className="divide-y divide-gray-100 max-h-60 overflow-y-auto">
               {missedWords.map(w => (
-                <div key={w.word} className="px-4 py-2.5 flex items-baseline justify-between gap-4">
+                <div key={wid(w)} className="px-4 py-2.5 flex items-baseline justify-between gap-4">
                   <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} text-base font-semibold text-gray-900`}>{w.word}</span>
                   <span className="text-sm text-gray-600">{w.gloss}</span>
                 </div>
@@ -820,7 +827,7 @@ function StudySettings({
                             <div className={mode === 'greek-english' ? 'grid grid-cols-2' : 'grid grid-cols-3'}>
                               {sub.words.map((w, i) => (
                                 <div
-                                  key={w.word}
+                                  key={wid(w)}
                                   className={clsx(
                                     'px-4 py-2.5',
                                     i % cols !== cols - 1 ? 'border-r border-gray-100' : '',
@@ -956,11 +963,11 @@ function BrowseView({ progress }: { progress: ProgressMap }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         {filtered.map(w => {
-          const p = progress[w.word]
+          const p = progress[wid(w)]
           const mastered = p && p.repetitions >= 3 && !isDue(p)
           return (
             <div
-              key={w.word}
+              key={wid(w)}
               className={clsx(
                 'border rounded-lg p-3 flex justify-between items-start gap-2',
                 mastered ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-surface'
