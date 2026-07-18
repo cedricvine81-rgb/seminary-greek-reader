@@ -303,7 +303,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     return m
   }, [catalog])
   const selectedSet = useMemo(() => new Set(books), [books])
-  const booksLabel = books.length === 0 ? 'Any book'
+  const booksLabel = books.length === 0 ? 'Any Biblical book'
     : books.length === 1 ? (bookName.get(books[0]) ?? books[0])
     : `${books.length} books`
   const booksKey = books.join(',')
@@ -884,12 +884,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 <optgroup label="Hebrew">
                   <option value="hebrew:MT">Hebrew — Old Testament{optCount('hebrew:MT')}</option>
                 </optgroup>
-                <optgroup label="Translations">
+                <optgroup label="Bible Translations">
                   {TRANSLATIONS.map(t => <option key={t.lang} value={`trans:${t.lang}`}>{t.label}{optCount(`trans:${t.lang}`)}</option>)}
                 </optgroup>
                 <optgroup label="Background texts">
-                  <option value="bg:all">All background texts{optCount('bg:all')}</option>
-                  <option value="bggrc:all">All background texts — Greek (LXX)</option>
+                  <option value="bg:all">All Background Texts: English{optCount('bg:all')}</option>
+                  <option value="bggrc:all">All Background Texts: Greek</option>
                   {COLLECTIONS.map(c => <option key={c.id} value={`bg:${c.id}`}>{c.label}</option>)}
                 </optgroup>
               </select>
