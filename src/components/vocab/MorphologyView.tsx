@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
-import { Menu } from 'lucide-react'
+import { Menu, GraduationCap } from 'lucide-react'
+import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type MorphLevel, type Explanation } from './morphology-explanations'
 
 /* ─────────────────────────────────────────────
    Reusable helpers
@@ -65,6 +66,53 @@ function InfoBox({ title, children }: { title?: string; children: React.ReactNod
     <div className="mb-5 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-700">
       {title && <p className="font-semibold text-gray-800 mb-1.5">{title}</p>}
       {children}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   Beginning / Intermediate explanations
+───────────────────────────────────────────── */
+
+const LEVELS: { id: MorphLevel; label: string }[] = [
+  { id: 'beginning',    label: 'Beginning'    },
+  { id: 'intermediate', label: 'Intermediate' },
+]
+
+/** Segmented Beginning ⇄ Intermediate control. */
+function LevelToggle({ level, onChange }: { level: MorphLevel; onChange: (l: MorphLevel) => void }) {
+  return (
+    <div className="inline-flex shrink-0 rounded-lg border border-gray-200 bg-gray-50 p-0.5" role="tablist" aria-label="Explanation level">
+      {LEVELS.map(l => (
+        <button
+          key={l.id}
+          role="tab"
+          aria-selected={level === l.id}
+          onClick={() => onChange(l.id)}
+          className={clsx(
+            'px-3 py-1 rounded-md text-sm font-medium transition-colors',
+            level === l.id ? 'bg-brand-600 text-white shadow-sm' : 'text-gray-600 hover:text-gray-900'
+          )}
+        >
+          {l.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/** Teaching-note card that renders the current level's explanation. */
+function ExplanationCard({ explanation, level }: { explanation?: Explanation; level: MorphLevel }) {
+  if (!explanation) return null
+  return (
+    <div className="mb-6 rounded-xl border border-brand-100 bg-brand-50/60 px-4 py-3.5">
+      <div className="flex items-center gap-1.5 mb-2">
+        <GraduationCap size={15} className="text-brand-600 shrink-0" />
+        <span className="text-xs font-semibold uppercase tracking-wide text-brand-700">
+          {level === 'beginning' ? 'Getting started' : 'Going deeper'}
+        </span>
+      </div>
+      {level === 'beginning' ? explanation.beginning : explanation.intermediate}
     </div>
   )
 }
@@ -1048,6 +1096,19 @@ export function MorphologyView() {
   const [mainTab, setMainTab] = useState<MainTab>('essentials')
   const [essId, setEssId]     = useState(1)
 
+  // Beginning / Intermediate explanation level, remembered across visits.
+  // Default to 'beginning' on first render (server + first client paint) to
+  // avoid a hydration mismatch, then hydrate from localStorage.
+  const [level, setLevel] = useState<MorphLevel>('beginning')
+  useEffect(() => {
+    const saved = localStorage.getItem('morph-level')
+    if (saved === 'beginning' || saved === 'intermediate') setLevel(saved)
+  }, [])
+  function changeLevel(l: MorphLevel) {
+    setLevel(l)
+    try { localStorage.setItem('morph-level', l) } catch { /* ignore */ }
+  }
+
   // Mobile only: the topic tabs + Essentials sections collapse into a hamburger menu
   // (desktop keeps the inline bars). Close it on an outside click.
   const [menuOpen, setMenuOpen] = useState(false)
@@ -1161,15 +1222,23 @@ export function MorphologyView() {
               ))}
             </div>
             <div className="py-4">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">{activeEss.title}</h2>
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <h2 className="text-base font-semibold text-gray-900">{activeEss.title}</h2>
+                <LevelToggle level={level} onChange={changeLevel} />
+              </div>
+              <ExplanationCard explanation={ESS_EXPLANATIONS[essId]} level={level} />
               {activeEss.content}
             </div>
           </>
         ) : (
           <div className="py-4">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">
-              {MAIN_TABS.find(t => t.id === mainTab)?.label}
-            </h2>
+            <div className="flex items-center justify-between gap-3 mb-4">
+              <h2 className="text-base font-semibold text-gray-900">
+                {MAIN_TABS.find(t => t.id === mainTab)?.label}
+              </h2>
+              <LevelToggle level={level} onChange={changeLevel} />
+            </div>
+            <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
             {REVISION_CONTENT[mainTab]}
           </div>
         )}
