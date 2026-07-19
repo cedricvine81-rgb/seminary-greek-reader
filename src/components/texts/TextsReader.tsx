@@ -145,7 +145,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
 
   const [work, setWork] = useState<CatalogWork | null>(null)
-  const [openCat, setOpenCat] = useState<string | null>(null)  // which category's dropdown is expanded
+  // The single "Texts" dropdown (replaced the row of category chips to give the reading panes
+  // more height): menuOpen shows the category list; menuCat drills into one category's works.
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuCat, setMenuCat] = useState<string | null>(null)
   // "Locate a passage" cascade, opened by clicking the work title (like the translation
   // menus). Columns are Book (Josephus multi-book works only) → Chapter → Verse; each new
   // column appears to the right with its first row aligned to the selected row of the one
@@ -328,15 +331,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     return onNotesChanged(() => seriesRef.current.sections.forEach(s => void refreshNotesFor(noteBookFor(work, s), s.chapter)))
   }, [work, refreshNotesFor])
 
-  // Close the open category's book dropdown on an outside click.
+  // Close the Texts dropdown on an outside click.
   useEffect(() => {
-    if (!openCat) return
+    if (!menuOpen) return
     function onMouseDown(e: MouseEvent) {
-      if (catRowRef.current && !catRowRef.current.contains(e.target as Node)) setOpenCat(null)
+      if (catRowRef.current && !catRowRef.current.contains(e.target as Node)) setMenuOpen(false)
     }
     document.addEventListener('mousedown', onMouseDown)
     return () => document.removeEventListener('mousedown', onMouseDown)
-  }, [openCat])
+  }, [menuOpen])
 
   // Close the Book/Chapter/Verse locate cascade on an outside click.
   useEffect(() => {
@@ -691,7 +694,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false); setProseMode('both')
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode('both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -708,7 +711,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setOpenCat(null); setGreekHiddenPref(false); setProseMode('both')
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode('both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -810,46 +813,69 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
-      {/* ── Category headings — click one to drop its work list below it ── */}
-      <div ref={catRowRef} className="flex-none flex flex-wrap items-start gap-1.5">
-        {TEXT_CATEGORIES.map(cat => {
-          const isActive = !!work && cat.works.some(w => w.id === work.id)
-          return (
-            <div key={cat.id} className="relative">
-              <button
-                type="button"
-                disabled={cat.comingSoon}
-                onClick={() => setOpenCat(c => c === cat.id ? null : cat.id)}
-                className={`px-2 py-1 text-xs font-medium border transition-colors ${
-                  openCat === cat.id ? 'rounded-t border-b-0 bg-brand-100 border-brand-300 text-brand-800'
-                  : 'rounded border-gray-300'
-                } ${
-                  cat.comingSoon ? 'border-gray-200 text-gray-300 cursor-default'
-                  : openCat === cat.id ? ''
-                  : isActive ? 'border-brand-300 text-brand-700'
-                  : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
-              >
-                {cat.label}{cat.comingSoon && <span className="ml-1 text-[10px]">soon</span>}
-              </button>
+      {/* ── One "Texts" dropdown (was a full row of category chips — this frees a row for the
+             reading panes). Level 1 lists the categories; clicking one drills into its works
+             (with a back row), since flat would be unusable (Philo 36, Mishnah 40). ── */}
+      <div ref={catRowRef} className="flex-none relative self-start">
+        <button
+          type="button"
+          onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
+          className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
+            menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+        >
+          Texts
+          <ChevronDown size={13} className={`text-gray-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
+        </button>
 
-              {openCat === cat.id && (
-                <div className="absolute left-0 top-full z-20 w-56 max-h-72 overflow-y-auto bg-popover border border-brand-300 rounded-b-lg rounded-tr-lg shadow-lg py-1">
+        {menuOpen && (
+          <div className="absolute left-0 top-full z-20 mt-1 w-64 max-h-[70vh] overflow-y-auto bg-popover border border-gray-200 rounded-lg shadow-lg py-1">
+            {menuCat === null ? (
+              TEXT_CATEGORIES.map(cat => {
+                const isActive = !!work && cat.works.some(w => w.id === work.id)
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    disabled={cat.comingSoon}
+                    onClick={() => setMenuCat(cat.id)}
+                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
+                      cat.comingSoon ? 'text-gray-300 cursor-default'
+                      : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
+                      : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
+                    {!cat.comingSoon && <ChevronDown size={13} className="-rotate-90 text-gray-300" />}
+                  </button>
+                )
+              })
+            ) : (() => {
+              const cat = TEXT_CATEGORIES.find(c => c.id === menuCat)
+              if (!cat) return null
+              return (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setMenuCat(null)}
+                    className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                  >
+                    <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
+                  </button>
                   {cat.works.map(w => (
                     <button
                       key={w.id}
                       type="button"
-                      onClick={() => { openWork(w); setOpenCat(null) }}
+                      onClick={() => { openWork(w); setMenuOpen(false) }}
                       className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
                         work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
                     >
                       {w.name}
                     </button>
                   ))}
-                </div>
-              )}
-            </div>
-          )
-        })}
+                </>
+              )
+            })()}
+          </div>
+        )}
       </div>
 
       {/* ── Reading pane — always visible ── */}
@@ -1064,7 +1090,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             param (chapter/verse-precise), so the generic pixel-restorer must not fight it. */}
         <div ref={panelRef} data-scroll-restore="skip" onContextMenu={e => e.preventDefault()} className="flex-1 min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-4">
           {!work ? (
-            <p className="text-sm text-gray-400 italic">Choose a category above and select a text to start reading.</p>
+            <p className="text-sm text-gray-400 italic">Open the Texts menu above and select a text to start reading.</p>
           ) : initialLoading || series.sections.length === 0 ? (
             <p className="text-xs text-gray-300 italic">Loading…</p>
           ) : (
