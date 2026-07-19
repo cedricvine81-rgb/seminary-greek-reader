@@ -811,77 +811,84 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     !!r.english && fold(r.english).includes(qNorm) ||
     !!r.tokens?.some(t => fold(t.surface).includes(qNorm))
 
+  // The one "Texts" dropdown (was a full row of category chips). Rendered inline at the start of
+  // the controls row below so it shares a line with the work title, freeing the row it used to
+  // own. Level 1 lists the categories; clicking one drills into its works (with a back row),
+  // since flat would be unusable (Philo 36, Mishnah 40).
+  const textsMenu = (
+    <div ref={catRowRef} className="relative flex-none">
+      <button
+        type="button"
+        onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
+        className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
+          menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
+      >
+        Texts
+        <ChevronDown size={13} className={`text-gray-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
+      </button>
+
+      {menuOpen && (
+        <div className="absolute left-0 top-full z-30 mt-1 w-64 max-h-[70vh] overflow-y-auto bg-popover border border-gray-200 rounded-lg shadow-lg py-1">
+          {menuCat === null ? (
+            TEXT_CATEGORIES.map(cat => {
+              const isActive = !!work && cat.works.some(w => w.id === work.id)
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  disabled={cat.comingSoon}
+                  onClick={() => setMenuCat(cat.id)}
+                  className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
+                    cat.comingSoon ? 'text-gray-300 cursor-default'
+                    : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
+                    : 'text-gray-700 hover:bg-gray-50'}`}
+                >
+                  <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
+                  {!cat.comingSoon && <ChevronDown size={13} className="-rotate-90 text-gray-300" />}
+                </button>
+              )
+            })
+          ) : (() => {
+            const cat = TEXT_CATEGORIES.find(c => c.id === menuCat)
+            if (!cat) return null
+            return (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setMenuCat(null)}
+                  className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                >
+                  <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
+                </button>
+                {cat.works.map(w => (
+                  <button
+                    key={w.id}
+                    type="button"
+                    onClick={() => { openWork(w); setMenuOpen(false) }}
+                    className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                      work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {w.name}
+                  </button>
+                ))}
+              </>
+            )
+          })()}
+        </div>
+      )}
+    </div>
+  )
+
   return (
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
-      {/* ── One "Texts" dropdown (was a full row of category chips — this frees a row for the
-             reading panes). Level 1 lists the categories; clicking one drills into its works
-             (with a back row), since flat would be unusable (Philo 36, Mishnah 40). ── */}
-      <div ref={catRowRef} className="flex-none relative self-start">
-        <button
-          type="button"
-          onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
-          className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
-            menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
-        >
-          Texts
-          <ChevronDown size={13} className={`text-gray-400 transition-transform ${menuOpen ? 'rotate-180' : ''}`} />
-        </button>
-
-        {menuOpen && (
-          <div className="absolute left-0 top-full z-20 mt-1 w-64 max-h-[70vh] overflow-y-auto bg-popover border border-gray-200 rounded-lg shadow-lg py-1">
-            {menuCat === null ? (
-              TEXT_CATEGORIES.map(cat => {
-                const isActive = !!work && cat.works.some(w => w.id === work.id)
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    disabled={cat.comingSoon}
-                    onClick={() => setMenuCat(cat.id)}
-                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
-                      cat.comingSoon ? 'text-gray-300 cursor-default'
-                      : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
-                      : 'text-gray-700 hover:bg-gray-50'}`}
-                  >
-                    <span>{cat.label}{cat.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
-                    {!cat.comingSoon && <ChevronDown size={13} className="-rotate-90 text-gray-300" />}
-                  </button>
-                )
-              })
-            ) : (() => {
-              const cat = TEXT_CATEGORIES.find(c => c.id === menuCat)
-              if (!cat) return null
-              return (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setMenuCat(null)}
-                    className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
-                  >
-                    <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
-                  </button>
-                  {cat.works.map(w => (
-                    <button
-                      key={w.id}
-                      type="button"
-                      onClick={() => { openWork(w); setMenuOpen(false) }}
-                      className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                        work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                    >
-                      {w.name}
-                    </button>
-                  ))}
-                </>
-              )
-            })()}
-          </div>
-        )}
-      </div>
-
       {/* ── Reading pane — always visible ── */}
       <div className="flex-1 min-h-0 flex flex-col gap-3">
-        {work && (
-          <div className="flex-none flex flex-wrap items-center gap-2">
+        {/* Controls row — always shown so the Texts dropdown is reachable even with no work
+            open; the work-specific controls (title, Summary, search, view menus) appear once a
+            work is loaded, inline after Texts. */}
+        <div className="flex-none flex flex-wrap items-center gap-2">
+          {textsMenu}
+          {work && (<>
             {/* Click the work title to drop down the Book/Chapter/Verse locate cascade
                 (same click-to-open pattern as the category menus above). Each column
                 appears to the right of the last, its first row aligned with the row you
@@ -1083,8 +1090,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             )}
 
             <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
-          </div>
-        )}
+          </>)}
+        </div>
 
         {/* data-scroll-restore="skip": this pane restores its own position via the `open=` URL
             param (chapter/verse-precise), so the generic pixel-restorer must not fight it. */}
