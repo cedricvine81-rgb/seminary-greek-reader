@@ -530,18 +530,20 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       setQuery(el.value)
     }
   }
-  // Embedded panel → the full /search page, carrying the current search whole (query, scope,
-  // book restriction, lemma / Strong's "all forms" mode) and closing the panel behind it.
-  function openFullSearch() {
+  // Embedded panel → the full /search page in a NEW BROWSER TAB, carrying the current search
+  // whole (query, scope, book restriction, lemma / Strong's "all forms" mode). The original tab
+  // keeps the reader + panel untouched, so the two contexts live side by side — browser tabs as
+  // panes. Recomputed each render so the href always reflects the current search (and URL
+  // params win over the shared retained-search localStorage in the new tab).
+  const fullSearchHref = (() => {
     const p = new URLSearchParams()
     if (query.trim()) p.set('q', query.trim())
     p.set('in', scopeVal)
     if (books.length > 0) p.set('books', books.join(','))
     if (lemmaMode) p.set('mode', 'lemma')
     if (hebStrongs) p.set('strongs', hebStrongs)
-    router.push(`/search?${p.toString()}`)
-    onRequestClose?.()
-  }
+    return `/search?${p.toString()}`
+  })()
 
   function pickSuggestion(word: string, strongs?: string) {
     const next = query.replace(/\S*$/, word)
@@ -859,14 +861,14 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         {/* Embedded: Full search + close ✕ follow the query box, so they sit at the right
             edge of the header line (the scope/book pickers wrap to the next line). The
             discovery/settings extras — Search types, the ⋮ display menu — stay on the FULL
-            /search page; Full search jumps there carrying the current query/scope/books
-            (and lemma / Strong's mode) and closes the panel. */}
+            /search page; Full search opens there in a NEW browser tab carrying the current
+            query/scope/books (and lemma / Strong's mode) — the reader + panel stay put here. */}
         {embedded && (
           <>
-            <button type="button" onClick={openFullSearch} title="Open this search in the full Search page"
+            <a href={fullSearchHref} target="_blank" rel="noopener" title="Open this search in the full Search page (new tab)"
               className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
               <ArrowUpRight size={13} /> Full search
-            </button>
+            </a>
             <button type="button" onClick={() => onRequestClose?.()} title="Close search (Esc)" aria-label="Close search"
               className="flex-none p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors">
               <X size={18} />
