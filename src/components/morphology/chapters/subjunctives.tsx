@@ -1,7 +1,41 @@
-import { MorphTable, InfoBox, TableAside, Gk, Ex, gt } from '../shared'
+/* ─────────────────────────────────────────────
+   Chapter: Subjunctives
+
+   Textbook chapter (see chapters/nouns.tsx for the template).
+───────────────────────────────────────────── */
+
+import {
+  MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
+  P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+} from '../shared'
 
 export const SUBJUNCTIVES_CONTENT = (
   <>
+    {/* ── 1 · English first (Beginning only) ─────────────── */}
+    <LevelOnly level="beginning">
+      <SectionHeading>Start with English: the maybe-mood</SectionHeading>
+      <P>
+        Not everything we say is a statement of fact. "She <em>may</em> come." "<em>Let's</em> go."
+        "What <em>should</em> we do?" "…so that he <em>might</em> learn." Each of these steps back from
+        plain assertion into possibility, intention, or purpose. English marks that step with helper
+        words — <em>may, might, should, let's</em>.
+      </P>
+      <P>
+        Greek marks it with a <Term t="mood">mood</Term>: the <strong>subjunctive</strong>. And instead of
+        adding helper words, Greek changes the verb <em>inside</em>, in the simplest way imaginable — it
+        <strong> lengthens the connecting vowel</strong>. Where the indicative has <Gk>ο/ε</Gk>, the
+        subjunctive has <Gk>ω/η</Gk>: indicative <Gk>λύομεν</Gk> "we loose" → subjunctive
+        <Gk> λύωμεν</Gk> "let us loose / we may loose." One long vowel is the whole disguise.
+      </P>
+      <P>
+        One more liberation: the subjunctive has <strong>no time</strong>. Even its aorist is not past —
+        the tense difference is purely <Term t="aspect">aspect</Term> (ongoing vs. a single whole action),
+        and there is never an augment.
+      </P>
+    </LevelOnly>
+
+    {/* ── 2 · The forms ──────────────────────────────────── */}
+    <SectionHeading>The forms: one long vowel</SectionHeading>
     <TableAside
       beginning={<>
         <p>The subjunctive = "may / might / should." Its flag is the <strong>long vowel</strong> <Gk>ω/η</Gk> where the indicative had <Gk>ο/ε</Gk>.</p>
@@ -36,15 +70,119 @@ export const SUBJUNCTIVES_CONTENT = (
         note="I may (might) loose / I may be loosed"
       />
     </TableAside>
-    <InfoBox title="Uses of the Subjunctive">
-      <ol className="text-xs text-gray-600 space-y-1.5 list-decimal list-inside">
-        <li><span className="font-medium">Indefinite clauses:</span> ἄν + subj — ὃς ἄν (whoever), ὅπου ἄν (wherever), ὅταν (whenever)</li>
-        <li><span className="font-medium">Purpose clauses:</span> ἵνα / ὅπως + subj — "in order that…"</li>
-        <li><span className="font-medium">Exhortations (Hortatory):</span> 1st pl. subj — "Let us…"</li>
-        <li><span className="font-medium">Deliberation (Deliberative):</span> 1st pl. subj — "What should we…?"</li>
-        <li><span className="font-medium">Prohibitions:</span> μή + aorist subj — "Do not…"</li>
-        <li><span className="font-medium">Emphatic negation:</span> οὐ μή + aorist subj — "will definitely not…"</li>
-      </ol>
+    <LevelOnly level="beginning">
+      <P>
+        Note the family resemblance: the aorist subjunctive is just the aorist's <Gk>σ</Gk> + the same long
+        vowels — <em>without</em> the augment (augments live only in the indicative). So
+        <Gk> λύσωμεν</Gk> looks confusingly like the future <Gk>λύσομεν</Gk>: the long <Gk>ω</Gk> is the
+        only difference, and it is enough.
+      </P>
+    </LevelOnly>
+
+    {/* ── 3 · Flag words ─────────────────────────────────── */}
+    <SectionHeading>How you'll actually meet it: flag words</SectionHeading>
+    <P>
+      The subjunctive rarely walks alone. In practice, a small set of "flag words" announces it a word or
+      two in advance — see one of these, and expect a subjunctive verb to follow:
+    </P>
+    <TableAside
+      beginning={<>
+        <AsideLabel>Flag word in action</AsideLabel>
+        <Ex grc="ἵνα πιστεύητε" en="in order that you may believe" />
+        <Ex grc="ἐὰν εἴπωμεν" en="if we say…" />
+        <Ex grc="ὃς ἂν ἀκούσῃ" en="whoever hears" />
+      </>}
+      intermediate={<>
+        <p>The logic: <Gk>ἵνα/ὅπως</Gk> project intention (not yet fact); <Gk>ἐάν/ἄν/ὅταν</Gk> mark indefiniteness. Both are non-assertions — exactly the subjunctive's territory.</p>
+      </>}
+    >
+      <MorphTable flush title="The flag words" headers={['Flag', 'Introduces', 'Translate']} firstColIsData
+        rows={[
+          ['ἵνα, ὅπως', 'purpose clause', 'in order that … may'],
+          ['ἐάν', '3rd-class condition', 'if (maybe / future)'],
+          ['ὅταν', 'indefinite time', 'whenever'],
+          ['ὃς ἄν', 'indefinite person', 'whoever'],
+          ['ἕως (ἄν)', 'indefinite limit', 'until'],
+        ]}
+      />
+    </TableAside>
+
+    {/* ── 4 · Independent uses ───────────────────────────── */}
+    <SectionHeading>When it does walk alone</SectionHeading>
+    <P>
+      Four uses need no flag word — the subjunctive itself carries the meaning:
+    </P>
+    <InfoBox>
+      <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
+        <li><strong>Hortatory</strong> (1st plural): <Gk>ἀγαπῶμεν ἀλλήλους</Gk> — "<em>let us</em> love one another." You exhort the group you belong to.</li>
+        <li><strong>Deliberative</strong> (questions): <Gk>τί εἴπω;</Gk> — "what <em>should</em> I say?"</li>
+        <li><strong>Prohibition</strong>: <Gk>μή</Gk> + aorist subjunctive — <Gk>μὴ φοβηθῇς</Gk>, "do not fear."</li>
+        <li><strong>Emphatic negation</strong>: <Gk>οὐ μή</Gk> + aorist subjunctive — the strongest "no" Greek can say: "certainly never."</li>
+      </ul>
     </InfoBox>
+
+    {/* ── 5 · Watch out ──────────────────────────────────── */}
+    <SectionHeading>Watch out</SectionHeading>
+    <InfoBox>
+      <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
+        <li>Aorist subjunctive vs. future indicative: <Gk>λύσητε</Gk> vs. <Gk>λύσετε</Gk> — the long vowel decides, so read vowels carefully after a <Gk>σ</Gk>.</li>
+        <li>1st sg. <Gk>λύω</Gk> is identical in indicative and subjunctive — let the flag word or context decide.</li>
+        <li>No augment, ever: <Gk>ἐὰν λύσῃ</Gk>, not <Gk>ἐὰν ἐλύσῃ</Gk>.</li>
+        <li>Contract (-εω) verbs are easy here: the long vowels swallow the <Gk>ε</Gk>, so <Gk>ποιῇς, ποιῆτε</Gk> follow the regular pattern.</li>
+      </ul>
+    </InfoBox>
+
+    {/* ── 6 · Try it ─────────────────────────────────────── */}
+    <SectionHeading>Try it</SectionHeading>
+    <Practice
+      title="Practice — parse and translate"
+      intro={<>Watch for the flag word and the long vowel. Vocabulary: <span className="normal-case">πιστεύω</span> "believe" · <span className="normal-case">φάγωμεν</span> (aor. subj. of "eat") · <span className="normal-case">σωθῇ</span> (aor. pass. subj. of "save").</>}
+      items={[
+        { q: <span className="normal-case">ἵνα πιστεύσητε</span>,
+          a: <>"In order that you may believe" — ἵνα + aorist subjunctive (a whole act of believing).</> },
+        { q: <span className="normal-case">ἐὰν ὁ κύριος θέλῃ</span>,
+          a: <>"If the Lord wills" — ἐάν + present subjunctive: 3rd-class condition (Jas 4:15's sentiment).</> },
+        { q: <span className="normal-case">φάγωμεν καὶ πίωμεν.</span>,
+          a: <>"Let us eat and drink" — hortatory subjunctives, no flag word needed (1 Cor 15:32).</> },
+        { q: <span className="normal-case">ὃς ἂν ἀκούσῃ τὸν λόγον</span>,
+          a: <>"Whoever hears the word" — indefinite relative clause with ἄν.</> },
+        { q: <span className="normal-case">οὐ μὴ ἀπολῶνται.</span>,
+          a: <>"They shall certainly never perish" — οὐ μή + aorist subjunctive, the emphatic negation of John 10:28.</> },
+      ]}
+    />
+
+    {/* ── 7 · See it in the NT ───────────────────────────── */}
+    <LiveExamples
+      intro={<>Track the flag words to their subjunctives in the text itself.</>}
+      links={[
+        { label: 'Every subjunctive in the NT — scan for the long vowels', features: ['verb', 'subjunctive'] },
+        { label: 'Aorist subjunctives — prohibitions, conditions, purpose clauses', features: ['verb', 'subjunctive', 'aorist'] },
+        { label: <>Every <span className="normal-case">ἵνα</span> — check the subjunctive that follows each one</>, lemma: 'ἵνα' },
+      ]}
+    />
+
+    {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
+    <LevelOnly level="intermediate">
+      <SectionHeading>Going deeper: purpose, promise, and the strongest no</SectionHeading>
+      <P>
+        <strong>ἵνα beyond purpose.</strong> Classical ἵνα meant "in order that"; Koine stretched it. It can
+        mark <em>result</em> ("so that"), <em>content</em> (answering "what?" after verbs of asking —
+        "I ask that you…"), even stand where an infinitive would. When John writes
+        <Gk> αὕτη ἐστὶν ἡ ἐντολή, ἵνα ἀγαπᾶτε</Gk> (John 15:12), the ἵνα clause is not the command's
+        purpose — it <em>is</em> the command's content. Always ask which job ἵνα is doing.
+      </P>
+      <P>
+        <strong>The emphatic οὐ μή.</strong> Piling both negatives onto an aorist subjunctive produces
+        Greek's most absolute denial — about 85 NT occurrences, heavily in sayings of Jesus:
+        <Gk> οὐ μὴ ἀπόλωνται εἰς τὸν αἰῶνα</Gk>, "they shall <em>by no means ever</em> perish" (John 10:28).
+        English "never" undersells it; translators reach for "certainly not," "by no means."
+      </P>
+      <P>
+        <strong>Prohibition aspect.</strong> <Gk>μή</Gk> + <em>aorist</em> subjunctive forbids as a whole
+        ("don't do it / don't start"); <Gk>μή</Gk> + <em>present</em> imperative leans "stop doing / don't
+        keep doing." The distinction is a tendency, not a law — check context before preaching it — but it
+        often illuminates: <Gk>μὴ φοβοῦ</Gk> (pres.) to the fearing disciple, "stop being afraid."
+      </P>
+    </LevelOnly>
   </>
 )
