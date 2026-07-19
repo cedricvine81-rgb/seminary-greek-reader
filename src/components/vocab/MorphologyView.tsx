@@ -190,10 +190,12 @@ function gt(text: string): React.ReactNode {
 
 const LevelContext = createContext<MorphLevel>('beginning')
 
-function TableAside({ beginning, intermediate, children }: {
+function TableAside({ beginning, intermediate, children, sticky = false }: {
   beginning?: React.ReactNode
   intermediate?: React.ReactNode
   children: React.ReactNode
+  /** Keep the aside pinned in view while a long table scrolls past it. */
+  sticky?: boolean
 }) {
   const level = useContext(LevelContext)
   const aside = level === 'beginning' ? beginning : intermediate
@@ -201,7 +203,10 @@ function TableAside({ beginning, intermediate, children }: {
     <div className="mb-5 flex flex-col lg:flex-row lg:items-start gap-3 lg:gap-6">
       <div className="w-fit max-w-full lg:shrink-0">{children}</div>
       {aside && (
-        <aside className="lg:flex-1 min-w-0 lg:pl-6 lg:border-l lg:border-gray-100 space-y-2 text-sm leading-relaxed text-gray-600">
+        <aside className={clsx(
+          'lg:flex-1 min-w-0 lg:pl-6 lg:border-l lg:border-gray-100 space-y-2 text-sm leading-relaxed text-gray-600',
+          sticky && 'lg:sticky lg:top-2 lg:self-start'
+        )}>
           {aside}
         </aside>
       )}
@@ -646,125 +651,219 @@ const NOUNS_CONTENT = (
 
 const PRONOUNS_CONTENT = (
   <>
-    <MorphTable title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
-      rows={[
-        ['Sg.','Nom.','αὐτός','he','αὐτή','she','αὐτό','it'],
-        ['','Gen.','αὐτοῦ','his','αὐτῆς','her','αὐτοῦ','its'],
-        ['','Dat.','αὐτῷ','to him','αὐτῇ','to her','αὐτῷ','to it'],
-        ['','Acc.','αὐτόν','him','αὐτήν','her','αὐτό','it'],
-        ['Pl.','Nom.','αὐτοί','they','αὐταί','they','αὐτά','they'],
-        ['','Gen.','αὐτῶν','their','αὐτῶν','their','αὐτῶν','their'],
-        ['','Dat.','αὐτοῖς','to them','αὐταῖς','to them','αὐτοῖς','to them'],
-        ['','Acc.','αὐτούς','them','αὐτάς','them','αὐτά','them'],
-      ]}
-    />
-    <MorphTable title="1st & 2nd Person Pronouns" headers={['Case','1st Sg.','Eng.','1st Pl.','Eng.','2nd Sg.','Eng.','2nd Pl.']}
-      rows={[
-        ['Nom.','ἐγώ','I','ἡμεῖς','we','σύ','you','ὑμεῖς'],
-        ['Gen.','ἐμοῦ / μου','of me','ἡμῶν','of us','σοῦ','of you','ὑμῶν'],
-        ['Dat.','ἐμοί / μοι','to/for me','ἡμῖν','to/for us','σοί','to/for you','ὑμῖν'],
-        ['Acc.','ἐμέ / με','me','ἡμᾶς','us','σέ','you','ὑμᾶς'],
-      ]}
-    />
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-      <MorphTable title={gt("οὐδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+    <TableAside
+      beginning={<>
+        <p><Gk>αὐτός</Gk> is the everyday "he / she / it, they." It agrees in gender with the noun it stands for.</p>
+        <Ex grc="βλέπω αὐτόν" en="I see him" />
+        <Ex grc="ὁ λόγος αὐτοῦ" en="his word" />
+      </>}
+      intermediate={<>
+        <p><Gk>αὐτός</Gk> does triple duty: alone in an oblique case = "him"; in the attributive position (<Gk>ὁ αὐτός</Gk>) = "the same"; in the predicate position (<Gk>αὐτὸς ὁ…</Gk>) = intensive "himself."</p>
+      </>}
+    >
+      <MorphTable flush title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
         rows={[
-          ['Nom.','οὐδείς','οὐδεμία','οὐδέν'],
-          ['Gen.','οὐδενός','οὐδεμιᾶς','οὐδενός'],
-          ['Dat.','οὐδενί','οὐδεμιᾷ','οὐδενί'],
-          ['Acc.','οὐδένα','οὐδεμίαν','οὐδέν'],
+          ['Sg.','Nom.','αὐτός','he','αὐτή','she','αὐτό','it'],
+          ['','Gen.','αὐτοῦ','his','αὐτῆς','her','αὐτοῦ','its'],
+          ['','Dat.','αὐτῷ','to him','αὐτῇ','to her','αὐτῷ','to it'],
+          ['','Acc.','αὐτόν','him','αὐτήν','her','αὐτό','it'],
+          ['Pl.','Nom.','αὐτοί','they','αὐταί','they','αὐτά','they'],
+          ['','Gen.','αὐτῶν','their','αὐτῶν','their','αὐτῶν','their'],
+          ['','Dat.','αὐτοῖς','to them','αὐταῖς','to them','αὐτοῖς','to them'],
+          ['','Acc.','αὐτούς','them','αὐτάς','them','αὐτά','them'],
         ]}
-        note="Used with indicative mood."
       />
-      <MorphTable title={gt("μηδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Greek usually leaves out "I / you" — the verb ending already says who acts. So when <Gk>ἐγώ</Gk> or <Gk>σύ</Gk> <em>do</em> appear, they add emphasis.</p>
+        <Ex grc="ἐγὼ λέγω" en="I (myself) say" />
+      </>}
+      intermediate={<>
+        <p>Each has an emphatic and an unemphatic (enclitic) form: <Gk>ἐμοῦ / μου</Gk>, <Gk>ἐμοί / μοι</Gk>, <Gk>ἐμέ / με</Gk>. The longer form is used for stress or after a preposition.</p>
+      </>}
+    >
+      <MorphTable flush title="1st & 2nd Person Pronouns" headers={['Case','1st Sg.','Eng.','1st Pl.','Eng.','2nd Sg.','Eng.','2nd Pl.']}
         rows={[
-          ['Nom.','μηδείς','μηδεμία','μηδέν'],
-          ['Gen.','μηδενός','μηδεμιᾶς','μηδενός'],
-          ['Dat.','μηδενί','μηδεμιᾷ','μηδενί'],
-          ['Acc.','μηδένα','μηδεμίαν','μηδέν'],
+          ['Nom.','ἐγώ','I','ἡμεῖς','we','σύ','you','ὑμεῖς'],
+          ['Gen.','ἐμοῦ / μου','of me','ἡμῶν','of us','σοῦ','of you','ὑμῶν'],
+          ['Dat.','ἐμοί / μοι','to/for me','ἡμῖν','to/for us','σοί','to/for you','ὑμῖν'],
+          ['Acc.','ἐμέ / με','me','ἡμᾶς','us','σέ','you','ὑμᾶς'],
         ]}
-        note="Used with non-indicative moods."
       />
-    </div>
-    <MorphTable title={gt("τις — Indefinite Pronoun (someone, anyone)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
-      rows={[
-        ['Sg. Nom.','τις','someone','τι','something'],
-        ['Gen.','τινος','of someone','τινος','of something'],
-        ['Dat.','τινι','to someone','τινι','to something'],
-        ['Acc.','τινα','someone','τι','something'],
-        ['Pl. Nom.','τινες','some (people)','τινα','some things'],
-        ['Gen.','τινων','of some','τινων','of some things'],
-        ['Dat.','τισι','to some','τισι','to some things'],
-        ['Acc.','τινας','some (people)','τινα','some things'],
-      ]}
-      note="Enclitic — no accent on first syllable."
-    />
-    <MorphTable title={gt("τίς — Interrogative Pronoun (who? what?)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
-      rows={[
-        ['Sg. Nom.','τίς','who?','τί','which? what? why?'],
-        ['Gen.','τίνος','whose?','τίνος','of which? what?'],
-        ['Dat.','τίνι','to whom?','τίνι','to which?'],
-        ['Acc.','τίνα','whom?','τί','which? what?'],
-        ['Pl. Nom.','τίνες','who?','τίνα','which? what?'],
-        ['Gen.','τίνων','whose?','τίνων','of which? what?'],
-        ['Dat.','τίσι','to whom?','τίσι','to which?'],
-        ['Acc.','τίνας','who?','τίνα','which? what?'],
-      ]}
-      note="Always accented — distinguished from τις by accent."
-    />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Both mean "no one / nothing." Use <Gk>οὐδείς</Gk> with the indicative (statements of fact); use <Gk>μηδείς</Gk> with the other moods (commands, subjunctives, infinitives, participles).</p>
+        <Ex grc="οὐδεὶς οἶδεν" en="no one knows" />
+      </>}
+      intermediate={<>
+        <p>Both are built from a negative + <Gk>εἷς</Gk> ("not even one"). Unlike English, Greek can stack negatives for <em>emphasis</em> — two negatives do not cancel (<Gk>οὐκ … οὐδείς</Gk> = "not … anyone").</p>
+      </>}
+    >
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <MorphTable flush title={gt("οὐδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+          rows={[
+            ['Nom.','οὐδείς','οὐδεμία','οὐδέν'],
+            ['Gen.','οὐδενός','οὐδεμιᾶς','οὐδενός'],
+            ['Dat.','οὐδενί','οὐδεμιᾷ','οὐδενί'],
+            ['Acc.','οὐδένα','οὐδεμίαν','οὐδέν'],
+          ]}
+          note="Used with indicative mood."
+        />
+        <MorphTable flush title={gt("μηδείς — no one, nothing")} headers={['','Masc.','Fem.','Neut.']}
+          rows={[
+            ['Nom.','μηδείς','μηδεμία','μηδέν'],
+            ['Gen.','μηδενός','μηδεμιᾶς','μηδενός'],
+            ['Dat.','μηδενί','μηδεμιᾷ','μηδενί'],
+            ['Acc.','μηδένα','μηδεμίαν','μηδέν'],
+          ]}
+          note="Used with non-indicative moods."
+        />
+      </div>
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Unaccented <Gk>τις</Gk> = "someone, anyone, a certain." It is <em>enclitic</em> — it leans on the previous word and has no accent of its own.</p>
+        <Ex grc="ἄνθρωπός τις" en="a certain man" />
+      </>}
+      intermediate={<>
+        <p><Gk>τις</Gk> can be a pronoun ("someone") or an adjective ("a certain …"). Tell it from the question word <Gk>τίς</Gk> purely by the <strong>accent</strong>.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("τις — Indefinite Pronoun (someone, anyone)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+        rows={[
+          ['Sg. Nom.','τις','someone','τι','something'],
+          ['Gen.','τινος','of someone','τινος','of something'],
+          ['Dat.','τινι','to someone','τινι','to something'],
+          ['Acc.','τινα','someone','τι','something'],
+          ['Pl. Nom.','τινες','some (people)','τινα','some things'],
+          ['Gen.','τινων','of some','τινων','of some things'],
+          ['Dat.','τισι','to some','τισι','to some things'],
+          ['Acc.','τινας','some (people)','τινα','some things'],
+        ]}
+        note="Enclitic — no accent on first syllable."
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Accented <Gk>τίς</Gk> asks a question: "who? what?" The accent is the <em>only</em> difference from indefinite <Gk>τις</Gk>.</p>
+        <Ex grc="τίς εἶ;" en="Who are you?" />
+      </>}
+      intermediate={<>
+        <p>The neuter <Gk>τί</Gk> often means "why?" as well as "what?" (<Gk>τί ποιεῖτε;</Gk> "why are you doing this?").</p>
+      </>}
+    >
+      <MorphTable flush title={gt("τίς — Interrogative Pronoun (who? what?)")} headers={['','Masc. & Fem.','Eng.','Neut.','Eng.']}
+        rows={[
+          ['Sg. Nom.','τίς','who?','τί','which? what? why?'],
+          ['Gen.','τίνος','whose?','τίνος','of which? what?'],
+          ['Dat.','τίνι','to whom?','τίνι','to which?'],
+          ['Acc.','τίνα','whom?','τί','which? what?'],
+          ['Pl. Nom.','τίνες','who?','τίνα','which? what?'],
+          ['Gen.','τίνων','whose?','τίνων','of which? what?'],
+          ['Dat.','τίσι','to whom?','τίσι','to which?'],
+          ['Acc.','τίνας','who?','τίνα','which? what?'],
+        ]}
+        note="Always accented — distinguished from τις by accent."
+      />
+    </TableAside>
   </>
 )
 
 const PREPOSITIONS_CONTENT = (
   <>
-    <MorphTable title="One-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
-      rows={[
-        ['ἀντί',    '+ genitive',   'instead of, in place of'],
-        ['ἀπό',     '+ genitive',   'from, away from'],
-        ['ἐκ / ἐξ', '+ genitive',   'out of, from'],
-        ['εἰς',     '+ accusative', 'into, to'],
-        ['πρός',    '+ accusative', 'to, toward'],
-        ['ἐν',      '+ dative',     'in, among'],
-        ['σύν',     '+ dative',     'with'],
-      ]}
-    />
-    <MorphTable title="Two-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
-      rows={[
-        ['διά',  '+ genitive',  'through'],
-        ['',     '+ accusative','because of'],
-        ['κατά', '+ genitive',  'against, down from'],
-        ['',     '+ accusative','according to, along'],
-        ['μετά', '+ genitive',  'with'],
-        ['',     '+ accusative','after'],
-        ['ὑπό',  '+ genitive',  'by (agent)'],
-        ['',     '+ accusative','under'],
-      ]}
-    />
-    <MorphTable title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
-      rows={[
-        ['ἐπί',  '+ genitive',  'on, over'],
-        ['',     '+ dative',    'on, at'],
-        ['',     '+ accusative','on, against'],
-        ['παρά', '+ genitive',  'from beside'],
-        ['',     '+ dative',    'beside, with'],
-        ['',     '+ accusative','alongside'],
-        ['περί', '+ genitive',  'about, concerning'],
-        ['',     '+ dative',    'around, near'],
-        ['',     '+ accusative','around'],
-      ]}
-    />
+    <TableAside
+      beginning={<>
+        <p>A preposition <strong>governs a case</strong> — the noun after it must be in the case shown. Learn each preposition with its case and gloss.</p>
+        <Ex grc="ἐν τῷ οἴκῳ" en="in the house (dative)" />
+        <Ex grc="εἰς τὸν οἶκον" en="into the house (accusative)" />
+      </>}
+      intermediate={<>
+        <p>A rough logic underlies the cases: <strong>genitive</strong> = away / source, <strong>dative</strong> = rest / position, <strong>accusative</strong> = motion toward. These same words also fuse onto verbs as prefixes.</p>
+      </>}
+    >
+      <MorphTable flush title="One-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+        rows={[
+          ['ἀντί',    '+ genitive',   'instead of, in place of'],
+          ['ἀπό',     '+ genitive',   'from, away from'],
+          ['ἐκ / ἐξ', '+ genitive',   'out of, from'],
+          ['εἰς',     '+ accusative', 'into, to'],
+          ['πρός',    '+ accusative', 'to, toward'],
+          ['ἐν',      '+ dative',     'in, among'],
+          ['σύν',     '+ dative',     'with'],
+        ]}
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>These take <em>two</em> cases — and the case changes the meaning. Always check the ending of the following noun.</p>
+        <Ex grc="διὰ τοῦ ἀγγέλου" en="through the messenger (gen.)" />
+        <Ex grc="διὰ τὸν ὄχλον" en="because of the crowd (acc.)" />
+      </>}
+      intermediate={<>
+        <p>The genitive typically keeps the "source / through" sense, the accusative the "toward / because-of" sense — the same gen.-vs-acc. logic you meet everywhere.</p>
+      </>}
+    >
+      <MorphTable flush title="Two-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+        rows={[
+          ['διά',  '+ genitive',  'through'],
+          ['',     '+ accusative','because of'],
+          ['κατά', '+ genitive',  'against, down from'],
+          ['',     '+ accusative','according to, along'],
+          ['μετά', '+ genitive',  'with'],
+          ['',     '+ accusative','after'],
+          ['ὑπό',  '+ genitive',  'by (agent)'],
+          ['',     '+ accusative','under'],
+        ]}
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>These take <em>three</em> cases — three senses. Let the case of the noun tell you which.</p>
+        <Ex grc="ἐπὶ τῆς γῆς" en="on the earth (gen.)" />
+        <Ex grc="ἐπὶ τὸ βιβλίον" en="onto the book (acc.)" />
+      </>}
+      intermediate={<>
+        <p>In Koine the edges blur — <Gk>εἰς</Gk> and <Gk>ἐν</Gk> sometimes overlap — so weigh context alongside the case rather than trusting a one-word gloss.</p>
+      </>}
+    >
+      <MorphTable flush title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
+        rows={[
+          ['ἐπί',  '+ genitive',  'on, over'],
+          ['',     '+ dative',    'on, at'],
+          ['',     '+ accusative','on, against'],
+          ['παρά', '+ genitive',  'from beside'],
+          ['',     '+ dative',    'beside, with'],
+          ['',     '+ accusative','alongside'],
+          ['περί', '+ genitive',  'about, concerning'],
+          ['',     '+ dative',    'around, near'],
+          ['',     '+ accusative','around'],
+        ]}
+      />
+    </TableAside>
   </>
 )
 
 const CONJUNCTIONS_CONTENT = (
   <>
-    <MorphTable title="Conditional Sentences" headers={['Class','Protasis','Apodosis']}
-      rows={[
-        ['First Class (Assumed True)','εἰ + Indicative','Any mood or tense'],
-        ['Second Class (Contrary to Fact)','εἰ + Indicative','ἄν + Indicative'],
-        ['Third Class (Probable / Future)','ἐάν + Subjunctive','Any mood or tense'],
-      ]}
-    />
+    <TableAside
+      beginning={<>
+        <p>A conditional has an "if" clause (protasis) and a "then" clause (apodosis). Count the words to classify it: <Gk>εἰ</Gk> = One Word (1st) · <Gk>εἰ … ἄν</Gk> = Two Words (2nd) · <Gk>ἐάν</Gk> = Three Letters (3rd).</p>
+        <Ex grc="εἰ υἱὸς εἶ τοῦ θεοῦ…" en="if you are the Son of God… (1st class)" />
+      </>}
+      intermediate={<>
+        <p>Classify by the <em>protasis</em>. The class shows the speaker's rhetorical stance, not objective fact — a 1st-class condition can frame something known to be false. A <strong>"would"</strong> in English (and <Gk>ἄν</Gk> in Greek) flags the contrary-to-fact 2nd class.</p>
+      </>}
+    >
+      <MorphTable flush title="Conditional Sentences" headers={['Class','Protasis','Apodosis']}
+        rows={[
+          ['First Class (Assumed True)','εἰ + Indicative','Any mood or tense'],
+          ['Second Class (Contrary to Fact)','εἰ + Indicative','ἄν + Indicative'],
+          ['Third Class (Probable / Future)','ἐάν + Subjunctive','Any mood or tense'],
+        ]}
+      />
+    </TableAside>
   </>
 )
 
@@ -965,9 +1064,20 @@ const INDICATIVES_CONTENT = (
 
 const INFINITIVES_CONTENT = (
   <>
-    <MorphTable title={gt("Most Common Infinitive Forms — λύω")} headers={['','Present Active','Aorist Active']}
-      rows={[['Infinitive','λύειν','λύσαι']]}
-    />
+    <TableAside
+      beginning={<>
+        <p>The infinitive is the "to ‒" form. It has no person or number, so it never changes for "I / you / he."</p>
+        <Ex grc="θέλω λύειν" en="I want to loose" />
+        <Ex grc="λύσαι" en="to loose (aorist — σ, but no augment)" />
+      </>}
+      intermediate={<>
+        <p>It's a <strong>verbal noun</strong>: it can take an article (<Gk>τό</Gk>) and even an accusative subject (<Gk>θέλω τὸν ἄγγελον ἀπελθεῖν</Gk> "I want the messenger to depart"). Present vs. aorist = aspect, not time.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Most Common Infinitive Forms — λύω")} headers={['','Present Active','Aorist Active']}
+        rows={[['Infinitive','λύειν','λύσαι']]}
+      />
+    </TableAside>
     <InfoBox title="Notes">
       <ul className="text-xs text-gray-600 space-y-1 list-disc list-inside">
         <li>The infinitive is translated as "to…"</li>
@@ -980,12 +1090,24 @@ const INFINITIVES_CONTENT = (
 
 const IMPERATIVES_CONTENT = (
   <>
-    <MorphTable title={gt("Most Common Imperative Forms — λύω")} headers={['','Present Active','Aorist Active']}
-      rows={[
-        ['2nd Person Singular','λῦε','λύσον'],
-        ['2nd Person Plural','λύετε','λύσατε'],
-      ]}
-    />
+    <TableAside
+      beginning={<>
+        <p>The imperative gives a command. Learn the 2nd-person forms first.</p>
+        <Ex grc="λῦε" en="loose! (you, sg.)" />
+        <Ex grc="λύετε" en="loose! (you all)" />
+        <Ex grc="πίστευε" en="believe! (keep believing)" />
+      </>}
+      intermediate={<>
+        <p>Present vs. aorist imperative is aspect: present = ongoing / general, aorist = a single specific act. Beware the look-alike future indicative — the ending decides (<Gk>πίστευσον</Gk> "believe!" vs. <Gk>πιστεύσομεν</Gk> "we will believe").</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Most Common Imperative Forms — λύω")} headers={['','Present Active','Aorist Active']}
+        rows={[
+          ['2nd Person Singular','λῦε','λύσον'],
+          ['2nd Person Plural','λύετε','λύσατε'],
+        ]}
+      />
+    </TableAside>
     <InfoBox title="Notes">
       <ul className="text-xs text-gray-600 space-y-1 list-disc list-inside">
         <li>These are 2nd person imperatives</li>
@@ -1000,55 +1122,106 @@ const IMPERATIVES_CONTENT = (
 
 const PARTICIPLES_CONTENT = (
   <>
-    <MorphTable title={gt("Present Participle of εἰμί (ὤν, οὖσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
-      rows={[
-        ['Singular','','',''],
-        ['Nom.','ὤν','ὄν','οὖσα'],['Gen.','ὄντος','ὄντος','οὔσης'],
-        ['Dat.','ὄντι','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],
-        ['Plural','','',''],
-        ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων','ὄντων','οὐσῶν'],
-        ['Dat.','οὖσι','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας'],
-      ]}
-      note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
-    />
-    <MorphTable title={gt("Present Active Participle — λύων, λύουσα, λύον")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
-      rows={[
-        ['Singular','','',''],
-        ['Nom.','λύων','λύουσα','λύον'],['Gen.','λύοντος','λυούσης','λύοντος'],
-        ['Dat.','λύοντι','λυούσῃ','λύοντι'],['Acc.','λύοντα','λύουσαν','λύον'],
-        ['Plural','','',''],
-        ['Nom.','λύοντες','λύουσαι','λύοντα'],['Gen.','λυόντων','λυουσῶν','λυόντων'],
-        ['Dat.','λύουσιν','λυούσαις','λύουσιν'],['Acc.','λύοντας','λυούσας','λύοντα'],
-      ]}
-    />
-    <MorphTable title={gt("Aorist Active Participle — λύσας, λύσασα, λύσαν")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
-      rows={[
-        ['Singular','','',''],
-        ['Nom.','λύσας','λύσασα','λύσαν'],['Gen.','λύσαντος','λυσάσης','λύσαντος'],
-        ['Dat.','λύσαντι','λυσάσῃ','λύσαντι'],['Acc.','λύσαντα','λύσασαν','λύσαν'],
-        ['Plural','','',''],
-        ['Nom.','λύσαντες','λύσασαι','λύσαντα'],['Gen.','λυσάντων','λυσασῶν','λυσάντων'],
-        ['Dat.','λύσασιν','λυσάσαις','λύσασιν'],['Acc.','λύσαντας','λυσάσας','λύσαντα'],
-      ]}
-    />
-    <MorphTable title={gt("Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
-      rows={[
-        ['Singular','','',''],
-        ['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','‒μενου','‒μενης'],
-        ['Dat.','‒μενῳ','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],
-        ['Plural','','',''],
-        ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων','‒μενων','‒μενων'],
-        ['Dat.','‒μενοις','‒μενοις','‒μεναις'],['Acc.','‒μενους','= Nom.','‒μενας'],
-      ]}
-      note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
-    />
-    <MorphTable title={gt("Middle/Passive Participle — Tense Identifier + ‒μεν‒")} headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
-      rows={[
-        ['Present m/p','‒ο‒μεν','λυόμενος'],
-        ['Aorist middle','‒σα‒μεν','λυσάμενος'],
-        ['Perfect m/p','(no c.v.)‒μεν','λελυμένος'],
-      ]}
-    />
+    <TableAside
+      beginning={<>
+        <p><Gk>ὤν, οὖσα, ὄν</Gk> = "being." Translate the article + participle as "the one who is…"</p>
+        <Ex grc="ὁ ὢν ἐν τῷ οὐρανῷ" en="the one who is in heaven" />
+      </>}
+      intermediate={<>
+        <p><Gk>εἰμί</Gk> has only a present participle; it helps build <em>periphrastic</em> tenses (<Gk>ἦν διδάσκων</Gk> "he was teaching").</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Present Participle of εἰμί (ὤν, οὖσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+        rows={[
+          ['Singular','','',''],
+          ['Nom.','ὤν','ὄν','οὖσα'],['Gen.','ὄντος','ὄντος','οὔσης'],
+          ['Dat.','ὄντι','ὄντι','οὔσῃ'],['Acc.','ὄντα','ὄν','οὖσαν'],
+          ['Plural','','',''],
+          ['Nom.','ὄντες','ὄντα','οὖσαι'],['Gen.','ὄντων','ὄντων','οὐσῶν'],
+          ['Dat.','οὖσι','οὖσι','οὔσαις'],['Acc.','ὄντας','ὄντα','οὔσας'],
+        ]}
+        note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Present active participle = "loosing" — action going on at the <em>same time</em> as the main verb (Simultaneous).</p>
+        <Ex grc="ὁ λύων τὸν δοῦλον" en="the one loosing the slave" />
+      </>}
+      intermediate={<>
+        <p>It declines on a 3rd-declension pattern for masc./neut. (note the <Gk>‒ντ‒</Gk>) plus 1st-declension for the feminine — the same split as <Gk>πᾶς</Gk>.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Present Active Participle — λύων, λύουσα, λύον")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+        rows={[
+          ['Singular','','',''],
+          ['Nom.','λύων','λύουσα','λύον'],['Gen.','λύοντος','λυούσης','λύοντος'],
+          ['Dat.','λύοντι','λυούσῃ','λύοντι'],['Acc.','λύοντα','λύουσαν','λύον'],
+          ['Plural','','',''],
+          ['Nom.','λύοντες','λύουσαι','λύοντα'],['Gen.','λυόντων','λυουσῶν','λυόντων'],
+          ['Dat.','λύουσιν','λυούσαις','λύουσιν'],['Acc.','λύοντας','λυούσας','λύοντα'],
+        ]}
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Aorist active participle = "having loosed" — action that happened <em>before</em> the main verb (Sequence).</p>
+        <Ex grc="λύσας τὸν δοῦλον ἀπῆλθεν" en="having loosed the slave, he left" />
+      </>}
+      intermediate={<>
+        <p>Note there is <strong>no augment</strong> (augments live only in the indicative). The aorist participle marks relative time, not absolute past.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Aorist Active Participle — λύσας, λύσασα, λύσαν")} headers={['','Masc.','Fem.','Neut.']} dividerRows={[0,5]}
+        rows={[
+          ['Singular','','',''],
+          ['Nom.','λύσας','λύσασα','λύσαν'],['Gen.','λύσαντος','λυσάσης','λύσαντος'],
+          ['Dat.','λύσαντι','λυσάσῃ','λύσαντι'],['Acc.','λύσαντα','λύσασαν','λύσαν'],
+          ['Plural','','',''],
+          ['Nom.','λύσαντες','λύσασαι','λύσαντα'],['Gen.','λυσάντων','λυσασῶν','λυσάντων'],
+          ['Dat.','λύσασιν','λυσάσαις','λύσασιν'],['Acc.','λύσαντας','λυσάσας','λύσαντα'],
+        ]}
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>The chunk <Gk>‒μεν‒</Gk> marks a middle/passive participle: "being loosed."</p>
+        <Ex grc="ὁ λυόμενος" en="the one being loosed" />
+      </>}
+      intermediate={<>
+        <p>These take the regular 1st/2nd-declension endings of <Gk>ἀγαθός</Gk> — fully predictable, unlike the active's 3rd-declension pattern.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Middle / Passive Participle Endings (‒μεν‒ + endings of ἀγαθός)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}
+        rows={[
+          ['Singular','','',''],
+          ['Nom.','‒μενος','‒μενον','‒μενη'],['Gen.','‒μενου','‒μενου','‒μενης'],
+          ['Dat.','‒μενῳ','‒μενῳ','‒μενῃ'],['Acc.','‒μενον','= Nom.','‒μενην'],
+          ['Plural','','',''],
+          ['Nom.','‒μενοι','‒μενα','‒μεναι'],['Gen.','‒μενων','‒μενων','‒μενων'],
+          ['Dat.','‒μενοις','‒μενοις','‒μεναις'],['Acc.','‒μενους','= Nom.','‒μενας'],
+        ]}
+        note="Neuter Gen. & Dat. = Masculine  ·  Neuter Acc. = Neuter Nom."
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>Build a middle/passive participle from tense marker + <Gk>‒μεν‒</Gk>. The connecting vowel tells the tense.</p>
+        <Ex grc="λυόμενος" en="being loosed (present)" />
+        <Ex grc="λελυμένος" en="having been loosed (perfect)" />
+      </>}
+      intermediate={<>
+        <p>Reading it in reverse: <Gk>ο</Gk> before <Gk>‒μεν‒</Gk> = present, <Gk>σα</Gk> = aorist middle, and no connecting vowel (with reduplication) = perfect.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Middle/Passive Participle — Tense Identifier + ‒μεν‒")} headers={['Tense','Identifier','Example (Masc. Nom. Sg.)']}
+        rows={[
+          ['Present m/p','‒ο‒μεν','λυόμενος'],
+          ['Aorist middle','‒σα‒μεν','λυσάμενος'],
+          ['Perfect m/p','(no c.v.)‒μεν','λελυμένος'],
+        ]}
+      />
+    </TableAside>
     <InfoBox title="Parsing a Participle — Decision Process">
       <ol className="text-xs text-gray-600 space-y-1 list-decimal list-inside">
         <li>Has the stem been changed? No → regular; Yes → 2nd aorist (uses ‛o' present endings)</li>
@@ -1061,20 +1234,40 @@ const PARTICIPLES_CONTENT = (
 
 const SUBJUNCTIVES_CONTENT = (
   <>
-    <MorphTable title={gt("Present Subjunctive — λύω")} headers={['','Pers.','Active','Mid./Pass.']}
-      rows={[
-        ['SG','1','λύω','λύωμαι'],['','2','λύῃς','λύῃ'],['','3','λύῃ','λύηται'],
-        ['PL','1','λύωμεν','λυώμεθα'],['','2','λύητε','λύησθε'],['','3','λύωσιν','λύωνται'],
-      ]}
-      note="I may (might) be loosing / I may be loosed"
-    />
-    <MorphTable title={gt("Aorist Subjunctive — λύω")} headers={['','Pers.','Active','Middle','Passive']}
-      rows={[
-        ['SG','1','λύσω','λύσωμαι','λυθῶ'],['','2','λύσῃς','λύσῃ','λυθῇς'],['','3','λύσῃ','λύσηται','λυθῇ'],
-        ['PL','1','λύσωμεν','λυσώμεθα','λυθῶμεν'],['','2','λύσητε','λύσησθε','λυθῆτε'],['','3','λύσωσιν','λύσωνται','λυθῶσιν'],
-      ]}
-      note="I may (might) loose / I may be loosed"
-    />
+    <TableAside
+      beginning={<>
+        <p>The subjunctive = "may / might / should." Its flag is the <strong>long vowel</strong> <Gk>ω/η</Gk> where the indicative had <Gk>ο/ε</Gk>.</p>
+        <Ex grc="ἵνα λύῃ" en="in order that he may loose" />
+      </>}
+      intermediate={<>
+        <p>The present subjunctive carries <em>imperfective</em> aspect (ongoing) — never past time. It usually follows a "flag word" like <Gk>ἵνα</Gk> or <Gk>ἐάν</Gk>.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Present Subjunctive — λύω")} headers={['','Pers.','Active','Mid./Pass.']}
+        rows={[
+          ['SG','1','λύω','λύωμαι'],['','2','λύῃς','λύῃ'],['','3','λύῃ','λύηται'],
+          ['PL','1','λύωμεν','λυώμεθα'],['','2','λύητε','λύησθε'],['','3','λύωσιν','λύωνται'],
+        ]}
+        note="I may (might) be loosing / I may be loosed"
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>The aorist subjunctive views the action as a single whole — but it is <em>not</em> past (no augment).</p>
+        <Ex grc="ἐὰν λύσῃ" en="if he looses" />
+      </>}
+      intermediate={<>
+        <p>Aspect only: aorist = perfective (a whole action), present = ongoing. Prohibitions use <Gk>μή</Gk> + aorist subjunctive ("don't ever…"), and <Gk>οὐ μή</Gk> + aorist subjunctive is the strongest "no."</p>
+      </>}
+    >
+      <MorphTable flush title={gt("Aorist Subjunctive — λύω")} headers={['','Pers.','Active','Middle','Passive']}
+        rows={[
+          ['SG','1','λύσω','λύσωμαι','λυθῶ'],['','2','λύσῃς','λύσῃ','λυθῇς'],['','3','λύσῃ','λύσηται','λυθῇ'],
+          ['PL','1','λύσωμεν','λυσώμεθα','λυθῶμεν'],['','2','λύσητε','λύσησθε','λυθῆτε'],['','3','λύσωσιν','λύσωνται','λυθῶσιν'],
+        ]}
+        note="I may (might) loose / I may be loosed"
+      />
+    </TableAside>
     <InfoBox title="Uses of the Subjunctive">
       <ol className="text-xs text-gray-600 space-y-1.5 list-decimal list-inside">
         <li><span className="font-medium">Indefinite clauses:</span> ἄν + subj — ὃς ἄν (whoever), ὅπου ἄν (wherever), ὅταν (whenever)</li>
@@ -1090,34 +1283,67 @@ const SUBJUNCTIVES_CONTENT = (
 
 const MI_VERBS_CONTENT = (
   <>
-    <MorphTable title={gt("‒μι Verb Stems")} headers={['-μι verb','Verb stem','Present stem']}
-      rows={[
-        ['δίδωμι','δο / δω','διδο / διδω'],
-        ['τίθημι','θε / θη','τιθε / τιθη'],
-        ['ἵστημι','στα / στη','ἱστα / ἱστη'],
-      ]}
-      note="The reduplicated present stem is lengthened in the singular (διδο → διδω, τιθε → τιθη, ἱστα → ἱστη)."
-    />
-    <MorphTable title="Present Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
-      rows={[
-        ['Sg.','1.','δίδωμι','τίθημι','ἵστημι'],
-        ['','2.','δίδως','τίθης','ἵστης'],
-        ['','3.','δίδωσι(ν)','τίθησι(ν)','ἵστησι(ν)'],
-        ['Pl.','1.','δίδομεν','τίθεμεν','ἵσταμεν'],
-        ['','2.','δίδοτε','τίθετε','ἵστατε'],
-        ['','3.','διδόασι(ν)','τιθέασι(ν)','ἱστᾶσι(ν)'],
-      ]}
-    />
-    <MorphTable title="Aorist Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
-      rows={[
-        ['Sg.','1.','ἔδωκα','ἔθηκα','ἔστησα'],
-        ['','2.','ἔδωκας','ἔθηκας','ἔστησας'],
-        ['','3.','ἔδωκε(ν)','ἔθηκε(ν)','ἔστησε(ν)'],
-        ['Pl.','1.','ἐδώκαμεν','ἐθήκαμεν','ἐστήσαμεν'],
-        ['','2.','ἐδώκατε','ἐθήκατε','ἐστήσατε'],
-        ['','3.','ἔδωκαν','ἔθηκαν','ἔστησαν'],
-      ]}
-    />
+    <TableAside
+      beginning={<>
+        <AsideLabel>Meanings</AsideLabel>
+        <Ex grc="δίδωμι" en="I give" />
+        <Ex grc="τίθημι" en="I put / place" />
+        <Ex grc="ἵστημι" en="I stand / set" />
+      </>}
+      intermediate={<>
+        <p>Each has <strong>two stems</strong>: the reduplicated <em>present</em> stem (longer) for present + imperfect, and the shorter <em>verb</em> stem for future, aorist + perfect.</p>
+      </>}
+    >
+      <MorphTable flush title={gt("‒μι Verb Stems")} headers={['-μι verb','Verb stem','Present stem']}
+        rows={[
+          ['δίδωμι','δο / δω','διδο / διδω'],
+          ['τίθημι','θε / θη','τιθε / τιθη'],
+          ['ἵστημι','στα / στη','ἱστα / ἱστη'],
+        ]}
+        note="The reduplicated present stem is lengthened in the singular (διδο → διδω, τιθε → τιθη, ἱστα → ἱστη)."
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>The iota reduplication (<Gk>δι‒, τι‒, ἱ‒</Gk>) marks the present. See it → the verb is present or imperfect.</p>
+        <Ex grc="δίδωμί σοι" en="I give to you" />
+      </>}
+      intermediate={<>
+        <p>Endings attach directly to the long stem (no connecting vowel), which is why the singular looks so different from <Gk>‒ω</Gk> verbs; the plural shortens the stem again.</p>
+      </>}
+    >
+      <MorphTable flush title="Present Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
+        rows={[
+          ['Sg.','1.','δίδωμι','τίθημι','ἵστημι'],
+          ['','2.','δίδως','τίθης','ἵστης'],
+          ['','3.','δίδωσι(ν)','τίθησι(ν)','ἵστησι(ν)'],
+          ['Pl.','1.','δίδομεν','τίθεμεν','ἵσταμεν'],
+          ['','2.','δίδοτε','τίθετε','ἵστατε'],
+          ['','3.','διδόασι(ν)','τιθέασι(ν)','ἱστᾶσι(ν)'],
+        ]}
+      />
+    </TableAside>
+    <TableAside
+      beginning={<>
+        <p>No iota here — the aorist drops the reduplication and takes a <Gk>‒κα</Gk> marker (not <Gk>‒σα</Gk>).</p>
+        <Ex grc="ἔδωκα" en="I gave" />
+        <Ex grc="ἔθηκα" en="I put" />
+      </>}
+      intermediate={<>
+        <p>The <Gk>‒κα</Gk> aorist can look like a perfect — tell them apart by reduplication (perfect) and context. <Gk>ἵστημι</Gk> keeps its <Gk>‒σα</Gk> (<Gk>ἔστησα</Gk>) and is transitive here ("I set up").</p>
+      </>}
+    >
+      <MorphTable flush title="Aorist Active Indicative" headers={['','Pers.','δίδωμι','τίθημι','ἵστημι']}
+        rows={[
+          ['Sg.','1.','ἔδωκα','ἔθηκα','ἔστησα'],
+          ['','2.','ἔδωκας','ἔθηκας','ἔστησας'],
+          ['','3.','ἔδωκε(ν)','ἔθηκε(ν)','ἔστησε(ν)'],
+          ['Pl.','1.','ἐδώκαμεν','ἐθήκαμεν','ἐστήσαμεν'],
+          ['','2.','ἐδώκατε','ἐθήκατε','ἐστήσατε'],
+          ['','3.','ἔδωκαν','ἔθηκαν','ἔστησαν'],
+        ]}
+      />
+    </TableAside>
     <InfoBox title="Key Features of ‒μι Verbs">
       <ul className="text-xs text-gray-600 space-y-1 list-disc list-inside">
         <li>Stem vowel alternates short/long: δο/δω, θε/θη, στα/στη</li>
@@ -1135,17 +1361,20 @@ const MI_VERBS_CONTENT = (
 
 const SECOND_AORISTS_CONTENT = (
   <>
-    <InfoBox title="What is a 2nd Aorist?">
-      <p>A <strong>2nd aorist</strong> (also called a strong aorist) uses a <em>different stem</em> rather than the σα suffix of the 1st aorist.
-        The endings are identical to the imperfect indicative, but the stem is changed.
-        The 2nd aorist stem is typically shorter or different from the present stem (e.g., λαμβάνω → ἔλαβον).</p>
-      <ul className="mt-2 space-y-1 text-xs text-gray-600 list-disc list-inside">
-        <li>Active: uses imperfect active endings (‒ον, ‒ες, ‒ε, ‒ομεν, ‒ετε, ‒ον)</li>
-        <li>Middle: uses imperfect middle/passive endings (‒ομην, ‒ου, ‒ετο…)</li>
-        <li>Key identifier: no σα suffix; stem change; augment still present</li>
-      </ul>
-    </InfoBox>
+    <TableAside
+      sticky
+      beginning={<>
+        <p>A <strong>2nd (strong) aorist</strong> is still just a simple past ("I did"), but it forms by <em>changing the stem</em> instead of adding <Gk>σα</Gk>. You memorize these like vocabulary.</p>
+        <Ex grc="λαμβάνω → ἔλαβον" en="I take → I took" />
+        <p>It uses the imperfect's endings, but with a changed stem — read the row left to right: present → aorist → meaning.</p>
+      </>}
+      intermediate={<>
+        <p>Three clues together identify it: an <strong>augment</strong>, a stem <strong>different from the present</strong>, and <strong>no σα/θη</strong> marker.</p>
+        <p>Some are <em>suppletive</em> — they borrow a whole different root (<Gk>λέγω → εἶπον</Gk>, <Gk>ὁράω → εἶδον</Gk>). Learn the aorist stem as part of the verb's principal parts.</p>
+      </>}
+    >
     <MorphTable
+      flush
       title="40 Most Common 2nd Aorist Verbs"
       headers={['Present', '2nd Aorist', 'Definition']}
       firstColIsData
@@ -1193,6 +1422,7 @@ const SECOND_AORISTS_CONTENT = (
       ]}
       note="Some verbs have both 1st and 2nd aorist forms. Where both exist, the more common form is listed."
     />
+    </TableAside>
     <InfoBox>
       <p className="font-semibold text-gray-800 mb-1">Parsing a 2nd Aorist</p>
       <p>Look for: (1) augment on the verb, (2) no σα/θη suffix, (3) a different stem from the present.
@@ -1207,17 +1437,20 @@ const SECOND_AORISTS_CONTENT = (
 
 const DEPONENTS_CONTENT = (
   <>
-    <InfoBox title="What is a Deponent Verb?">
-      <p>A <strong>deponent verb</strong> has only middle or passive forms but carries an <em>active meaning</em>.
-        There is no active voice form for these verbs. Deponents are identified by their lexical form ending in
-        <strong> ‒ομαι</strong> (present middle/passive).</p>
-      <ul className="mt-2 space-y-1 text-xs text-gray-600 list-disc list-inside">
-        <li><strong>Middle deponents</strong>: future and aorist are middle voice (ἔρχομαι, ἤρχομην)</li>
-        <li><strong>Passive deponents</strong>: aorist is passive in form (ἀποκρίνομαι, ἀπεκρίθην)</li>
-        <li>Key indicator: present lexical form ends in ‒ομαι with active translation</li>
-      </ul>
-    </InfoBox>
+    <TableAside
+      sticky
+      beginning={<>
+        <p>A <strong>deponent</strong> looks middle/passive (ending in <Gk>‒ομαι</Gk>) but means something <em>active</em>. Just translate it actively — the middle/passive form is its only form.</p>
+        <Ex grc="ἔρχομαι" en="I come / go" />
+        <Ex grc="ἀποκρίνομαι" en="I answer" />
+      </>}
+      intermediate={<>
+        <p>Parse it exactly as a middle/passive (tense, person, number), then use the active gloss. Some are <strong>middle</strong> in the future/aorist, others <strong>passive</strong> (<Gk>ἀποκρίνομαι → ἀπεκρίθην</Gk>).</p>
+        <p>Many now argue the Greek <strong>middle voice</strong> genuinely fits these verbs (subject-affectedness) rather than being a defective active — but the practical rule (active meaning) still holds.</p>
+      </>}
+    >
     <MorphTable
+      flush
       title="40 Most Common Deponent Verbs"
       headers={['Pres. (1st sg.)', 'Fut.', 'Aor.', 'Definition']}
       firstColIsData
@@ -1265,6 +1498,7 @@ const DEPONENTS_CONTENT = (
       ]}
       note="Dash (—) indicates no separate form exists or it is not attested in the NT. Some verbs are semi-deponent (active forms exist in some tenses)."
     />
+    </TableAside>
     <InfoBox>
       <p className="font-semibold text-gray-800 mb-1">Parsing Deponents</p>
       <p>When you see a verb with middle/passive endings but an active meaning in your lexicon, you have a deponent.
