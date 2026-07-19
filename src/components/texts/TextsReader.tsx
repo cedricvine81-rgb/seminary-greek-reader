@@ -7,7 +7,7 @@ import { normalizeGreek } from '@/lib/greek-utils'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
-import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, type CatalogWork } from '@/lib/texts-catalog'
+import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
@@ -137,9 +137,11 @@ interface TextsReaderProps {
   onAttribution?: (a: string) => void
   // Set (with a bumped token) when another tab hands off a reference via "Open in Texts".
   openRequest?: { target: OpenInTextsTarget; token: number } | null
+  // Standalone /texts page: open this work's id on mount (from the header Texts menu / ?work=).
+  initialWorkId?: string
 }
 
-export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest }: TextsReaderProps) {
+export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest, initialWorkId }: TextsReaderProps) {
   const isFontSizeControlled = onFontSize !== undefined
   const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
   const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
@@ -701,6 +703,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (w.source === 'josephus') loadLocateSections(w, 1)
     else loadLocateVerses(w, undefined, 1)
   }
+
+  // Standalone /texts page: open the work named by ?work= (the header Texts menu links here).
+  // Runs once; a later menu pick just calls openWork directly. openRequest (a Backgrounds
+  // hand-off with a position) takes precedence when both are present.
+  useEffect(() => {
+    if (!initialWorkId || openRequest) return
+    const found = findWork(initialWorkId)
+    if (found) openWork(found.work)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialWorkId])
 
   // "Open in Texts" hand-off from another tab (e.g. Backgrounds' cross-reference pane).
   useEffect(() => {

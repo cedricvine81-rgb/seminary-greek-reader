@@ -1,13 +1,12 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Library, type LucideIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
-import { onOpenInTexts } from '@/lib/open-in-texts-bus'
 import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
-import { TextsReader } from '@/components/texts/TextsReader'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
 import { TextSizeControls } from '@/components/reader/TextSizeControls'
@@ -32,8 +31,10 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  * data (public/data/pericopes.json). Accept with Tab / → / Enter. NT boundaries are
  * exact; OT is approximate (BSB Masoretic vs the app's LXX versification).
  */
-type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'texts' | 'notes' | 'commentary'
-const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'backgrounds', 'texts', 'notes', 'commentary']
+// Texts moved out to its own top-level page (/texts) + header nav item (2026-07-19), freeing a
+// workspace slot; the Backgrounds "open in Texts" hand-off now navigates to /texts.
+type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'notes' | 'commentary'
+const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'backgrounds', 'notes', 'commentary']
 
 // Tab id → label + icon, shared by the desktop tab bar and the mobile hamburger menu.
 const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
@@ -41,7 +42,6 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'phrasing',    label: 'Phrasing',    Icon: ListTree },
   { id: 'synopsis',    label: 'Synopsis',    Icon: Columns3 },
   { id: 'backgrounds', label: 'Backgrounds', Icon: Scroll },
-  { id: 'texts',       label: 'Texts',       Icon: Library },
   { id: 'commentary',  label: 'Commentary',  Icon: BookOpen },
   { id: 'notes',       label: 'Notes',       Icon: StickyNote },
 ]
@@ -51,7 +51,8 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
 const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
-export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
+export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
+  const router = useRouter()
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
   const [tab, setTab] = useState<ExegesisTab>(
@@ -88,37 +89,11 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
   const [synopsisAttribution, setSynopsisAttribution] = useState('')
   const [bgFontSize, setBgFontSize] = useState<PhraseFontSize>('lg')
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
-  const [textsFontSize, setTextsFontSize] = useState<PhraseFontSize>('lg')
-  const [textsAttribution, setTextsAttribution] = useState('')
-  // "Open in Texts" hand-off from Backgrounds — bumping the token forces the effect in
-  // TextsReader to re-fire even if the same target is requested twice in a row.
-  const [textsOpenRequest, setTextsOpenRequest] = useState<{ target: OpenInTextsTarget; token: number } | null>(null)
-  const openRequestToken = useRef(0)
+  // A Backgrounds cross-reference "Open in Texts" now navigates to the standalone /texts page
+  // (Texts left the workspace), carrying the passage as ?open=<encoded target>.
   function openInTexts(target: OpenInTextsTarget) {
-    openRequestToken.current += 1
-    setTextsOpenRequest({ target, token: openRequestToken.current })
-    setTab('texts')
+    router.push(`/texts?open=${encodeURIComponent(JSON.stringify(target))}`)
   }
-  // Let the app-wide background-sources search open a hit here in place (when this workspace
-  // is mounted), and honour an `open=<encoded target>` deep-link on first mount (used when
-  // the search is triggered from another page and navigates here).
-  useEffect(() => onOpenInTexts(openInTexts), [])
-  useEffect(() => {
-    if (!initialOpen) return
-    try {
-      const target = JSON.parse(initialOpen) as OpenInTextsTarget
-      // Restore the Texts pane's content, but only switch TO the Texts tab when the deep-link
-      // didn't name another tab — a "Return to page" from a search launched on, say, Backgrounds
-      // carries open= (the Texts position) alongside tab=backgrounds, and must land on Backgrounds.
-      if (!initialTab || initialTab === 'texts') {
-        openInTexts(target)
-      } else {
-        openRequestToken.current += 1
-        setTextsOpenRequest({ target, token: openRequestToken.current })
-      }
-    } catch { /* ignore malformed */ }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
   // Keep the URL in sync with the active tab + committed passage (replaceState, so it
   // doesn't add history entries or trigger a navigation). This is what lets a right-click
   // search — which snapshots window.location for its "Return to page" — bring the user back
@@ -272,7 +247,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
 
   const toolsMenuTitles: Record<typeof tab, string> = {
     workspace: 'Syntax tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
-    backgrounds: 'Settings & sources', texts: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
+    backgrounds: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
 
@@ -535,30 +510,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
                   </>
                 )}
 
-                {tab === 'texts' && (
-                  <>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                        <input
-                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                          value={FONT_SIZES.indexOf(textsFontSize)}
-                          onChange={e => setTextsFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                          className="flex-1 accent-brand-600"
-                        />
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                      </div>
-                    </div>
-                    {textsAttribution && (
-                      <details className="border-t border-gray-100 pt-2">
-                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
-                        <p className="text-xs text-gray-600 mt-2">{textsAttribution}</p>
-                      </details>
-                    )}
-                  </>
-                )}
-
                 {tab === 'commentary' && (
                   <>
                     <TextSizeControls
@@ -601,10 +552,6 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialOpen, initial
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
           fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} onOpenInTexts={openInTexts} />
-      </div>
-      <div className={`flex-1 min-h-0 flex flex-col ${tab === 'texts' ? '' : 'hidden'}`}>
-        <TextsReader isAuthenticated={isAuthenticated} openRequest={textsOpenRequest}
-          fontSize={textsFontSize} onFontSize={setTextsFontSize} onAttribution={setTextsAttribution} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>
         <CommentaryView anchor={anchor} isAuthenticated={isAuthenticated} onAttribution={setCommentaryAttribution} />

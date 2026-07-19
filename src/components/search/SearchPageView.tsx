@@ -15,7 +15,6 @@ import { findProseWork } from '@/lib/prose-texts'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
-import { emitOpenInTexts, hasOpenInTextsListener } from '@/lib/open-in-texts-bus'
 import { isExamLocked } from '@/lib/exam-lockdown'
 import { parseSearchTerms, scoreRelevance } from '@/lib/search-query'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
@@ -603,8 +602,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   function openBackground(target: OpenInTextsTarget) {
     pushRecent(query)
     const withTerm: OpenInTextsTarget = { ...target, highlight: query.trim() || undefined }
-    if (hasOpenInTextsListener()) emitOpenInTexts(withTerm)
-    else router.push(`/exegesis?tab=texts&open=${encodeURIComponent(JSON.stringify(withTerm))}`)
+    // Texts is its own page now — open the hit there directly.
+    router.push(`/texts?open=${encodeURIComponent(JSON.stringify(withTerm))}`)
   }
 
   // Context slider + sort toggle, shown above every result set (biblical and background). The

@@ -194,3 +194,13 @@ export function findJosephusWork(workDir: string): CatalogWork | undefined {
   const josephus = TEXT_CATEGORIES.find(c => c.id === 'josephus')
   return josephus?.works.find(w => w.work === workDir)
 }
+
+// Look up a catalog work by its unique id (used by the /texts page's ?work= deep-link and the
+// header Texts menu). The category is returned too, for opening the menu on the right section.
+export function findWork(id: string): { work: CatalogWork; category: TextCategory } | undefined {
+  for (const category of TEXT_CATEGORIES) {
+    const work = category.works.find(w => w.id === id)
+    if (work) return { work, category }
+  }
+  return undefined
+}

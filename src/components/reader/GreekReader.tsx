@@ -202,7 +202,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     { href: '/morphology', label: 'Morphology', icon: Table2 },
     { href: '/exegesis', label: 'Syntax', icon: PencilLine },
     { href: '/exegesis?tab=phrasing', label: 'Phrasing', icon: ListTree },
-    { href: '/exegesis?tab=texts', label: 'Texts', icon: Library },
+    { href: '/texts', label: 'Texts', icon: Library },
     { href: '/exegesis?tab=notes', label: 'Notes', icon: StickyNote },
   ]
   async function handleReaderSignOut() {

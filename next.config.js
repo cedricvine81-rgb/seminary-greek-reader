@@ -35,12 +35,12 @@ const nextConfig = {
   images: {
     remotePatterns: [],
   },
-  // The standalone Phrase tool and Texts library were folded into the Exegesis page
-  // (Phrasing / Texts tabs).
+  // The standalone Phrase tool was folded into the Exegesis page (Phrasing tab). Texts, by
+  // contrast, is now its OWN top-level page (/texts) + header nav item again, so it is NOT
+  // redirected here — see src/app/texts/page.tsx.
   async redirects() {
     return [
       { source: '/phrase', destination: '/exegesis', permanent: false },
-      { source: '/texts', destination: '/exegesis', permanent: false },
       // Browsers and crawlers blindly probe these legacy favicon paths; point them at
       // the real icon so they resolve to a 200 instead of cluttering logs with 404s.
       { source: '/favicon.ico', destination: '/icon.svg', permanent: false },
