@@ -17,6 +17,11 @@ import { LevelContext, type MorphLevel } from '@/components/morphology/shared'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
 import { NOUNS_CONTENT } from '@/components/morphology/chapters/nouns'
 import { PRONOUNS_CONTENT } from '@/components/morphology/chapters/pronouns'
+import { DEMONSTRATIVES_CONTENT } from '@/components/morphology/chapters/demonstratives'
+import { RELATIVES_CONTENT } from '@/components/morphology/chapters/relatives'
+import { CONTRACT_VERBS_CONTENT } from '@/components/morphology/chapters/contract-verbs'
+import { LIQUIDS_CONTENT } from '@/components/morphology/chapters/liquids'
+import { PRINCIPAL_PARTS_CONTENT } from '@/components/morphology/chapters/principal-parts'
 import { PREPOSITIONS_CONTENT } from '@/components/morphology/chapters/prepositions'
 import { CONJUNCTIONS_CONTENT } from '@/components/morphology/chapters/conditionals'
 import { CONJ_ADV_CONTENT } from '@/components/morphology/chapters/conj-adv'
@@ -80,46 +85,60 @@ function ExplanationCard({ explanation, level }: { explanation?: Explanation; le
    Top-level tab definitions
 ───────────────────────────────────────────── */
 
-type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'prepositions' | 'conjunctions' | 'conj-adv' |
-               'indicatives' | 'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
+type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
+               'conjunctions' | 'conj-adv' | 'indicatives' | 'contract-verbs' | 'liquids' | 'principal-parts' |
+               'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
 
 // Tab order follows the Beginning Greek course sequence (Lessons 1–10,
 // working through the Eight Minimums): nouns & friends (L3–4), the verb
 // system (L5–6), participles (L7), the other moods (L8), μι-verbs (L9),
 // basic syntax (L10), with the Black-based Conj. & Adv. as the capstone.
+// Phase-4 topics slot into their natural lesson positions: demonstratives
+// and relatives after Pronouns, contract verbs after Indicatives, liquids
+// beside 2nd Aorists, and Principal Parts closing the verb block.
 const MAIN_TABS: { id: MainTab; label: string }[] = [
-  { id: 'essentials',   label: 'Essentials'      },
-  { id: 'nouns',        label: 'Nouns/Adj.'      },
-  { id: 'prepositions', label: 'Prepositions'    },
-  { id: 'pronouns',     label: 'Pronouns'        },
-  { id: 'indicatives',  label: 'Indicatives'     },
-  { id: 'deponents',    label: 'Deponents'       },
-  { id: '2nd-aorists',  label: '2nd Aorists'     },
-  { id: 'participles',  label: 'Participles'     },
-  { id: 'subjunctives', label: 'Subjunctives'    },
-  { id: 'imperatives',  label: 'Imperatives'     },
-  { id: 'infinitives',  label: 'Infinitives'     },
-  { id: 'mi-verbs',     label: 'μι-Verbs'        },
-  { id: 'conjunctions', label: 'Conditionals'    },
-  { id: 'conj-adv',     label: 'Conj. & Adv.'    },
+  { id: 'essentials',      label: 'Essentials'      },
+  { id: 'nouns',           label: 'Nouns/Adj.'      },
+  { id: 'prepositions',    label: 'Prepositions'    },
+  { id: 'pronouns',        label: 'Pronouns'        },
+  { id: 'demonstratives',  label: 'Demonstratives'  },
+  { id: 'relatives',       label: 'Relatives'       },
+  { id: 'indicatives',     label: 'Indicatives'     },
+  { id: 'contract-verbs',  label: 'Contract Verbs'  },
+  { id: 'deponents',       label: 'Deponents'       },
+  { id: '2nd-aorists',     label: '2nd Aorists'     },
+  { id: 'liquids',         label: 'Liquid Verbs'    },
+  { id: 'principal-parts', label: 'Principal Parts' },
+  { id: 'participles',     label: 'Participles'     },
+  { id: 'subjunctives',    label: 'Subjunctives'    },
+  { id: 'imperatives',     label: 'Imperatives'     },
+  { id: 'infinitives',     label: 'Infinitives'     },
+  { id: 'mi-verbs',        label: 'μι-Verbs'        },
+  { id: 'conjunctions',    label: 'Conditionals'    },
+  { id: 'conj-adv',        label: 'Conj. & Adv.'    },
 ]
 
 const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
-  essentials:    null,
-  nouns:         NOUNS_CONTENT,
-  pronouns:      PRONOUNS_CONTENT,
-  prepositions:  PREPOSITIONS_CONTENT,
-  conjunctions:  CONJUNCTIONS_CONTENT,
-  'conj-adv':    CONJ_ADV_CONTENT,
-  indicatives:   INDICATIVES_CONTENT,
-  infinitives:   INFINITIVES_CONTENT,
-  imperatives:   IMPERATIVES_CONTENT,
-  participles:   PARTICIPLES_CONTENT,
-  subjunctives:  SUBJUNCTIVES_CONTENT,
-  'mi-verbs':    MI_VERBS_CONTENT,
-  '2nd-aorists': SECOND_AORISTS_CONTENT,
-  deponents:     DEPONENTS_CONTENT,
+  essentials:        null,
+  nouns:             NOUNS_CONTENT,
+  pronouns:          PRONOUNS_CONTENT,
+  demonstratives:    DEMONSTRATIVES_CONTENT,
+  relatives:         RELATIVES_CONTENT,
+  prepositions:      PREPOSITIONS_CONTENT,
+  conjunctions:      CONJUNCTIONS_CONTENT,
+  'conj-adv':        CONJ_ADV_CONTENT,
+  indicatives:       INDICATIVES_CONTENT,
+  'contract-verbs':  CONTRACT_VERBS_CONTENT,
+  liquids:           LIQUIDS_CONTENT,
+  'principal-parts': PRINCIPAL_PARTS_CONTENT,
+  infinitives:       INFINITIVES_CONTENT,
+  imperatives:       IMPERATIVES_CONTENT,
+  participles:       PARTICIPLES_CONTENT,
+  subjunctives:      SUBJUNCTIVES_CONTENT,
+  'mi-verbs':        MI_VERBS_CONTENT,
+  '2nd-aorists':     SECOND_AORISTS_CONTENT,
+  deponents:         DEPONENTS_CONTENT,
 }
 
 /* ─────────────────────────────────────────────

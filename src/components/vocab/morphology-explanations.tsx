@@ -526,4 +526,79 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       </Note>
     ),
   },
+  demonstratives: {
+    beginning: (
+      <Note>
+        <P>The <strong>demonstratives</strong> are the pointing words: <G>οὗτος</G> "this" (near) and <G>ἐκεῖνος</G> "that" (far). They agree with their noun in gender, case, and number — and unlike adjectives, they stand <em>outside</em> the article-noun unit: <G>οὗτος ὁ ἄνθρωπος</G> = "this man."</P>
+        <Hook>Watch the breathing: <G>αὕτη</G> (rough) = "this woman"; <G>αὐτή</G> (smooth) = "she." One mark, two different words.</Hook>
+        <Eg><G>ταῦτα</G> = "these things" — one of the most common words in the NT.</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P><G>οὗτος</G> follows the article's front-end pattern (rough breathing in the nom. masc./fem., <G>τ‑</G> elsewhere) with 1st/2nd-declension endings. Standing alone it is a full pronoun (<G>οὗτός ἐστιν ὁ υἱός μου</G>).</P>
+        <P>It can point backward (anaphoric, <G>μετὰ ταῦτα</G>) or forward to a coming definition (cataphoric — John's <G>αὕτη ἐστὶν ἡ ἐντολή, ἵνα…</G>), and on hostile lips it sneers: "this fellow." The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</P>
+      </Note>
+    ),
+  },
+  relatives: {
+    beginning: (
+      <Note>
+        <P>The <strong>relative pronoun</strong> <G>ὅς, ἥ, ὅ</G> ("who, which, that") folds one clause inside another: <G>ὁ ἀνὴρ ὃν εἶδον</G>, "the man whom I saw." It looks like the article without the <G>τ</G> — but always with a rough breathing <em>and</em> an accent.</P>
+        <Hook>A very short word with a rough breathing and an accent is almost certainly a relative pronoun (<G>ἥ</G> ≠ <G>ἡ</G>, <G>οἵ</G> ≠ <G>οἱ</G>).</Hook>
+        <Eg>Gender &amp; number come from the noun it points back to; its <em>case</em> comes from its own job in its clause.</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P>The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong>: a genitive or dative antecedent often pulls the relative into its own case (<G>πάντων ὧν ἐποίησεν</G>, Luke 3:19). Headless relatives act as nouns ("whoever / whatever"), and <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</P>
+        <P>Bare-relative openings (<G>ὅς ἐστιν εἰκὼν τοῦ θεοῦ</G>, Col 1:15) are a fingerprint of quoted hymnic material.</P>
+      </Note>
+    ),
+  },
+  'contract-verbs': {
+    beginning: (
+      <Note>
+        <P><strong>Contract verbs</strong> have stems ending in <G>ε, α,</G> or <G>ο</G>, which fuse with the connecting vowel — like English "do not → don't": <G>φιλέ‑ομεν → φιλοῦμεν</G>. Dictionaries list the uncontracted form (<G>φιλέω</G>), but texts always show the contracted one (<G>φιλῶ</G>).</P>
+        <Hook>A <strong>circumflex</strong> on a present-tense ending (<G>ποιεῖ, ἀγαπᾷ, πληροῖ</G>) is contraction's scar — you're looking at a contract verb.</Hook>
+        <Eg>Outside the present/imperfect the stem vowel just lengthens (<G>ἀγαπάω → ἠγάπησα</G>) and the verb behaves like <G>λύω</G>.</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P>Master shortcuts: like vowels → the long version (<G>ε+ε=ει</G>); an o-sound anywhere wins (<G>→ ου/ω/οι</G>); <G>α</G> + e-sound → <G>α/ᾳ</G>; long vowels swallow short ones. Only the present and imperfect contract — every other tense lengthens and regularizes.</P>
+        <P>Exceptions worth flagging: <G>καλέω</G> refuses to lengthen (<G>ἐκάλεσα</G>), <G>ζάω</G> contracts with η (<G>ζῇ</G>), and liquid futures mimic -έω presents (see Liquid Verbs).</P>
+      </Note>
+    ),
+  },
+  liquids: {
+    beginning: (
+      <Note>
+        <P><strong>Liquid verbs</strong> have stems ending in the flowing consonants <G>λ, μ, ν, ρ</G> — sounds that refuse to sit next to <G>σ</G>. So their future and aorist form <em>without</em> the σ: future <G>μενῶ</G> "I will remain," aorist <G>ἔμεινα</G> "I remained."</P>
+        <Hook>In liquid verbs there is <strong>no σ in the future or aorist</strong>. The future wears φιλέω-style contract endings — often only the <em>accent</em> separates <G>μένω</G> "I remain" from <G>μενῶ</G> "I will remain."</Hook>
+        <Eg><G>ἀποστέλλω → ἀπέστειλα</G> "I sent" — double λ slims to one, stem vowel stretches.</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P>The stem-stretch (<G>μεν → μειν</G>) is <em>compensatory lengthening</em> — the lost σ's weight preserved in the vowel. Distinguish the liquid 1st aorist (<G>ἔκρινα</G>, α-endings) from the imperfect (<G>ἔκρινον</G>) by the ending vowel.</P>
+        <P>Key liquid vocabulary is theologically loaded: <G>ἐγείρω</G> (divine-passive <G>ἠγέρθη</G> "he was raised"), <G>ἀποστέλλω</G> (the apostle-verb), <G>μένω</G> (John's "abide").</P>
+      </Note>
+    ),
+  },
+  'principal-parts': {
+    beginning: (
+      <Note>
+        <P>Greek dictionaries describe a verb by its six <strong>principal parts</strong> — like English "sing, sang, sung," but six slots: present, future, aorist, perfect active, perfect middle/passive, aorist passive (<G>λύω, λύσω, ἔλυσα, λέλυκα, λέλυμαι, ἐλύθην</G>). Every form you will ever meet descends from one of the six.</P>
+        <Hook>Learn a rebel verb's row as a <strong>chant</strong>, left to right — <G>λέγω, ἐρῶ, εἶπον, εἴρηκα, εἴρημαι, ἐρρέθην</G> — exactly as you learned <em>sing, sang, sung</em>.</Hook>
+        <Eg>Regular verbs are predictable; memorize only the rebels (<G>ἔρχομαι, ὁράω, φέρω</G>…) — which are the very verbs on every page.</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P>Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system (part 3 minus the augment gives the aorist participle, infinitive, subjunctive, imperative). The future passive grows from part <em>6</em>, not part 2 (<G>λυθήσομαι</G> ← <G>ἐλύθην</G>).</P>
+        <P>Where parts come from different roots (<G>λέγω / ἐρῶ / εἶπον</G>) you're seeing <em>suppletion</em> — ancient verbs merged into one paradigm, like go/went.</P>
+      </Note>
+    ),
+  },
 }
