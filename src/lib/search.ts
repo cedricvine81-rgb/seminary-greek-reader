@@ -117,6 +117,13 @@ export function suggestGreekLexemes(prefix: string, limit = 12): { word: string;
   return out
 }
 
+// Verse IDs (e.g. "Matt.1.1") containing any inflected form of a Greek lemma, or null if the
+// lemma is unknown. Used by /api/vocab-sentence to pick a real sentence for the vocab drill.
+export function lemmaVerseIds(lemma: string): string[] | null {
+  const entry = getLemmaByNorm().get(normalizeGreek(lemma))
+  return entry ? entry.v : null
+}
+
 // Every verse containing any inflected form of a lexeme — straight from the lemma index.
 export async function searchByLemma(lexeme: string, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
   const entry = getLemmaByNorm().get(normalizeGreek(lexeme))
@@ -240,6 +247,16 @@ export async function searchHebrewByStrongs(strongs: string): Promise<(BiblicalV
     const matchWords = v.ws ? Array.from(new Set(parts.filter((_, i) => v.ws![i] === s))) : undefined
     return { ...hebToVerse(v), ...(matchWords && matchWords.length ? { matchWords } : {}) }
   })
+}
+
+// MT verses containing a given Strong's number, with per-word Strong's (`ws`) aligned to
+// text.split(/[\s־]+/) — so /api/vocab-sentence can mark which words are the target form.
+export function hebrewVersesByStrongs(strongs: string): { reference: string; text: string; ws: string[] }[] {
+  const s = String(strongs).replace(/[^0-9]/g, '')
+  if (!s) return []
+  return getHebIndex()
+    .filter(v => (v.ws ?? []).includes(s))
+    .map(v => ({ reference: v.reference, text: v.text, ws: v.ws ?? [] }))
 }
 
 // Every MT verse whose text contains the given form — the "this form" search, cantillation-

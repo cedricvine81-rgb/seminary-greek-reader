@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, useEffect, createContext, useContext } from 'react'
+import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
@@ -37,7 +37,11 @@ interface WordProgress {
 }
 
 type ProgressMap = Record<string, WordProgress>
-type Tab = 'study' | 'flashcards' | 'browse'
+// 'flashcards' / 'test' / 'identify' are the three study MODES launched from the mode row; they
+// all study the same selected vocab (filterWords(config)). 'study' = the setup screen, 'browse'
+// = the word list.
+type Tab = 'study' | 'flashcards' | 'browse' | 'test' | 'identify'
+type LaunchMode = 'flashcards' | 'test' | 'identify'
 type StudyMode = 'greek-to-english' | 'english-to-greek'
 
 interface Subsection {
@@ -199,18 +203,20 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
 
   const previewWords = useMemo(() => filterWords(config, V), [config, V])
 
-  const startStudying = (shuffle = true) => {
-    let words = filterWords(config, V)
-    if (shuffle) words = shuffled(words)
-    const dirs = words.map(() => config.mode !== 'english-to-greek')
+  // Launch one of the three study modes on the currently-selected vocab. Flashcards keeps its
+  // SM-2 session machinery; Test yourself / Identify the word just take the shuffled word list.
+  const startStudying = (mode: LaunchMode = 'flashcards') => {
+    const words = shuffled(filterWords(config, V))
     setSessionWords(words)
-    setDirections(dirs)
-    setIdx(0)
-    setFlipped(false)
-    setFinished(false)
-    setSessionStats({ correct: 0, total: 0 })
-    setMissedWordKeys(new Set())
-    setTab('flashcards')
+    if (mode === 'flashcards') {
+      setDirections(words.map(() => config.mode !== 'english-to-greek'))
+      setIdx(0)
+      setFlipped(false)
+      setFinished(false)
+      setSessionStats({ correct: 0, total: 0 })
+      setMissedWordKeys(new Set())
+    }
+    setTab(mode)
   }
 
   // quality: 1 = Again, 3 = Hard (correct but difficult), 4 = Got it
@@ -336,8 +342,16 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
           config={config}
           onChange={setConfig}
           cardCount={previewWords.length}
-          onStart={() => startStudying(true)}
+          onStart={startStudying}
         />
+      )}
+
+      {tab === 'test' && (
+        <TestYourself words={sessionWords ?? []} onGoBack={() => setTab('study')} />
+      )}
+
+      {tab === 'identify' && (
+        <IdentifyWord words={sessionWords ?? []} lang={lang} onGoBack={() => setTab('study')} />
       )}
 
       {tab === 'flashcards' && (
@@ -613,6 +627,262 @@ function Checkbox({ checked, indeterminate = false, onChange }: { checked: boole
   )
 }
 
+// ── Test yourself: multiple-choice quiz ───────────────────────────────────────
+// A one-question-at-a-time MC quiz over the selected words. Greek→English shows the word and
+// asks for its meaning; English→Greek shows the meaning and asks for the word. Distractors are
+// drawn from the whole deck (same part of speech first, so the choices are plausible). Fully
+// client-side — no progress writes; it's a quick self-check on top of the flashcard SRS.
+type QuizDir = 'greek-to-english' | 'english-to-greek'
+
+function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => void }) {
+  const V = useVocab()
+  const [dir, setDir] = useState<QuizDir>('greek-to-english')
+  const [qIdx, setQIdx] = useState(0)
+  const [chosen, setChosen] = useState<BgvbWord | null>(null)
+  const [correct, setCorrect] = useState(0)
+
+  const questions = useMemo(() => {
+    const key = (w: BgvbWord) => (dir === 'greek-to-english' ? w.gloss : wid(w))
+    return words.map(word => {
+      const correctKey = key(word)
+      const pool = shuffled(V.words.filter(w => key(w) !== correctKey))
+      const distractors: BgvbWord[] = []
+      const seen = new Set([correctKey])
+      for (const c of [...pool.filter(w => w.pos === word.pos), ...pool]) {
+        const k = key(c)
+        if (seen.has(k)) continue
+        seen.add(k); distractors.push(c)
+        if (distractors.length >= 3) break
+      }
+      return { word, options: shuffled([word, ...distractors]) }
+    })
+  }, [words, dir, V.words])
+
+  // Restart the run when the direction flips.
+  useEffect(() => { setQIdx(0); setChosen(null); setCorrect(0) }, [dir])
+
+  if (words.length === 0) {
+    return <ModeShell title="Test yourself" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
+  }
+
+  const showWord = (w: BgvbWord) => (
+    <span dir={V.rtl ? 'rtl' : undefined} className={`${V.scriptClass} font-semibold`}>{w.word}</span>
+  )
+
+  // Finished summary.
+  if (qIdx >= questions.length) {
+    const pct = Math.round((correct / questions.length) * 100)
+    return (
+      <ModeShell title="Test yourself" onGoBack={onGoBack}>
+        <div className="max-w-md mx-auto py-12 text-center space-y-4">
+          <p className="text-2xl font-bold text-gray-700">Quiz complete</p>
+          <p className="text-6xl font-bold text-gray-900">{pct}%</p>
+          <p className="text-sm text-gray-500">{correct} of {questions.length} correct</p>
+          <button onClick={() => { setQIdx(0); setChosen(null); setCorrect(0) }}
+            className="btn btn-primary px-6 py-2">Try again</button>
+        </div>
+      </ModeShell>
+    )
+  }
+
+  const q = questions[qIdx]
+  const promptIsWord = dir === 'greek-to-english'
+  const answer = (opt: BgvbWord) => {
+    if (chosen) return
+    setChosen(opt)
+    if (opt === q.word) setCorrect(c => c + 1)
+  }
+
+  return (
+    <ModeShell title="Test yourself" onGoBack={onGoBack}
+      right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {questions.length} · {correct} correct</span>}>
+      <div className="flex justify-center mb-4">
+        <div className="flex gap-1 bg-gray-100 rounded-lg p-1 text-xs">
+          {([['greek-to-english', `${V.scriptName} → English`], ['english-to-greek', `English → ${V.scriptName}`]] as const).map(([d, label]) => (
+            <button key={d} onClick={() => setDir(d)}
+              className={clsx('px-3 py-1 rounded-md font-medium transition-colors', dir === d ? 'bg-surface text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700')}>
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-xl mx-auto space-y-4">
+        <div className="bg-surface border border-gray-200 rounded-2xl px-6 py-8 text-center">
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-2">
+            {promptIsWord ? 'What does this mean?' : `Which ${V.scriptName} word?`}
+          </p>
+          <p className="text-3xl leading-snug text-gray-900" dir={promptIsWord && V.rtl ? 'rtl' : undefined}>
+            {promptIsWord
+              ? <span className={V.scriptClass}>{q.word.word}</span>
+              : <>{q.word.gloss} <span className="text-sm text-gray-400">({POS_LABELS[q.word.pos] ?? q.word.pos})</span></>}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-2">
+          {q.options.map((opt, i) => {
+            const isCorrect = opt === q.word
+            const isChosen = chosen === opt
+            const state = !chosen ? 'idle' : isCorrect ? 'correct' : isChosen ? 'wrong' : 'dim'
+            return (
+              <button key={i} onClick={() => answer(opt)} disabled={!!chosen}
+                className={clsx('rounded-xl border px-4 py-3 text-left text-lg transition-colors',
+                  state === 'idle' && 'bg-surface border-gray-200 hover:border-brand-300 hover:bg-brand-50',
+                  state === 'correct' && 'bg-green-50 border-green-300 text-green-800',
+                  state === 'wrong' && 'bg-red-50 border-red-300 text-red-800',
+                  state === 'dim' && 'bg-surface border-gray-100 text-gray-400')}>
+                {promptIsWord
+                  ? opt.gloss
+                  : <span dir={V.rtl ? 'rtl' : undefined} className={V.scriptClass}>{opt.word}</span>}
+              </button>
+            )
+          })}
+        </div>
+
+        {chosen && (
+          <div className="flex justify-end">
+            <button onClick={() => { setChosen(null); setQIdx(i => i + 1) }} className="btn btn-primary px-6 py-2">
+              {qIdx + 1 >= questions.length ? 'See results' : 'Next'} <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+    </ModeShell>
+  )
+}
+
+// ── Identify the word: find the target word in a real sentence ─────────────────
+// Given the English meaning of a selected word, the student clicks the word in a real NT (Greek)
+// or MT (Hebrew) sentence that has that meaning. Sentences come from /api/vocab-sentence (a verse
+// containing an inflected form of the word, with the target position(s) marked). Trains
+// recognition of the lexeme across its inflections, in context.
+interface SentenceItem { ref: string; tokens: string[]; targets: number[]; rtl: boolean }
+
+function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: VocabLang; onGoBack: () => void }) {
+  const V = useVocab()
+  const [qIdx, setQIdx] = useState(0)
+  const [item, setItem] = useState<SentenceItem | null | 'loading' | 'none'>('loading')
+  const [picked, setPicked] = useState<number | null>(null)
+  const [correct, setCorrect] = useState(0)
+  const [asked, setAsked] = useState(0)
+
+  const word = words[qIdx]
+
+  useEffect(() => {
+    if (!word) return
+    setItem('loading'); setPicked(null)
+    const param = lang === 'hebrew'
+      ? `corpus=MT&strongs=${encodeURIComponent((word.id ?? '').split('|')[1] ?? '')}`
+      : `corpus=GNT&lemma=${encodeURIComponent(word.word)}`
+    const ctrl = new AbortController()
+    fetch(`/api/vocab-sentence?${param}`, { signal: ctrl.signal })
+      .then(r => (r.ok ? r.json() : null))
+      .then((d: SentenceItem | { error: string } | null) => {
+        setItem(d && 'tokens' in d ? d : 'none')
+      })
+      .catch(() => {})
+    return () => ctrl.abort()
+  }, [qIdx, word, lang])
+
+  if (words.length === 0) {
+    return <ModeShell title="Identify the word" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
+  }
+
+  if (qIdx >= words.length) {
+    const pct = asked > 0 ? Math.round((correct / asked) * 100) : 0
+    return (
+      <ModeShell title="Identify the word" onGoBack={onGoBack}>
+        <div className="max-w-md mx-auto py-12 text-center space-y-4">
+          <p className="text-2xl font-bold text-gray-700">Done</p>
+          <p className="text-6xl font-bold text-gray-900">{pct}%</p>
+          <p className="text-sm text-gray-500">{correct} of {asked} correct{asked < words.length ? ` · ${words.length - asked} had no example` : ''}</p>
+          <button onClick={() => { setQIdx(0); setCorrect(0); setAsked(0) }} className="btn btn-primary px-6 py-2">Start over</button>
+        </div>
+      </ModeShell>
+    )
+  }
+
+  const next = () => { setPicked(null); setQIdx(i => i + 1) }
+  const pick = (i: number) => {
+    if (picked != null || item === 'loading' || item === 'none' || !item) return
+    setPicked(i)
+    setAsked(a => a + 1)
+    if (item.targets.includes(i)) setCorrect(c => c + 1)
+  }
+
+  return (
+    <ModeShell title="Identify the word" onGoBack={onGoBack}
+      right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {words.length} · {correct}/{asked}</span>}>
+      <div className="max-w-2xl mx-auto space-y-5">
+        <div className="text-center">
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Find the word meaning</p>
+          <p className="text-2xl font-semibold text-gray-900">
+            {word.gloss} <span className="text-sm font-normal text-gray-400">({POS_LABELS[word.pos] ?? word.pos})</span>
+          </p>
+        </div>
+
+        {item === 'loading' ? (
+          <p className="py-10 text-center text-sm text-gray-400">Finding a sentence…</p>
+        ) : item === 'none' || !item ? (
+          <div className="py-10 text-center space-y-3">
+            <p className="text-sm text-gray-400">No example sentence available for this word.</p>
+            <button onClick={next} className="btn btn-primary px-6 py-2">Skip <ChevronRight size={16} /></button>
+          </div>
+        ) : (
+          <>
+            <div dir={item.rtl ? 'rtl' : undefined}
+              className={`bg-surface border border-gray-200 rounded-2xl px-5 py-6 text-2xl leading-loose text-center ${item.rtl ? 'font-hebrew' : 'greek-text'}`}>
+              {item.tokens.map((tok, i) => {
+                const isTarget = item.targets.includes(i)
+                const state = picked == null ? 'idle' : isTarget ? 'correct' : picked === i ? 'wrong' : 'idle'
+                return (
+                  <span key={i}>
+                    <span onClick={() => pick(i)}
+                      className={clsx('rounded px-0.5 transition-colors',
+                        picked == null && 'cursor-pointer hover:bg-brand-100',
+                        state === 'correct' && 'bg-green-200 text-green-900',
+                        state === 'wrong' && 'bg-red-200 text-red-900')}>
+                      {tok}
+                    </span>
+                    {i < item.tokens.length - 1 ? ' ' : ''}
+                  </span>
+                )
+              })}
+            </div>
+            <p className="text-center text-xs text-gray-400">{item.ref}</p>
+            {picked != null && (
+              <div className="flex items-center justify-between">
+                <span className={clsx('text-sm font-medium', item.targets.includes(picked) ? 'text-green-700' : 'text-red-700')}>
+                  {item.targets.includes(picked) ? 'Correct!' : 'Not quite — the answer is highlighted.'}
+                </span>
+                <button onClick={next} className="btn btn-primary px-6 py-2">
+                  {qIdx + 1 >= words.length ? 'See results' : 'Next'} <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    </ModeShell>
+  )
+}
+
+// Shared frame for the Test/Identify modes: a back button + title, an optional right slot.
+function ModeShell({ title, right, onGoBack, children }: { title: string; right?: ReactNode; onGoBack: () => void; children: ReactNode }) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-4">
+        <button onClick={onGoBack} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800">
+          <ChevronRight size={16} className="rotate-180" /> Back
+        </button>
+        <span className="text-sm font-semibold text-gray-700">{title}</span>
+        <span className="min-w-[6rem] text-right">{right}</span>
+      </div>
+      {children}
+    </div>
+  )
+}
+
 // ── Study Settings ────────────────────────────────────────────────────────────
 
 function StudySettings({
@@ -621,7 +891,7 @@ function StudySettings({
   config: StudyConfig
   onChange: (c: StudyConfig) => void
   cardCount: number
-  onStart: () => void
+  onStart: (mode: LaunchMode) => void
 }) {
   const V = useVocab()
   const [expandedSections, setExpandedSections] = useState<number[]>(V.sections)
@@ -674,14 +944,38 @@ function StudySettings({
 
   return (
     <div className="space-y-5">
-      {/* Flashcards button */}
-      <button
-        onClick={onStart}
-        disabled={disabled}
-        className="w-full btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-lg justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        {disabled ? 'No cards match — adjust filters' : 'Flashcards'}
-      </button>
+      {/* Study-mode row: three ways to drill the selected vocab. Flashcards keeps the far-left
+          third (its original spot); Test yourself + Identify the word share the rest. All three
+          run on the same section/POS selection below. */}
+      {disabled ? (
+        <button disabled
+          className="w-full btn bg-surface border border-gray-300 text-gray-400 py-4 text-lg justify-center opacity-60 cursor-not-allowed">
+          No cards match — adjust filters
+        </button>
+      ) : (
+        <div className="grid grid-cols-3 gap-2">
+          <button
+            onClick={() => onStart('flashcards')}
+            className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
+          >
+            Flashcards
+          </button>
+          <button
+            onClick={() => onStart('test')}
+            title="Multiple-choice quiz on the selected words"
+            className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
+          >
+            Test yourself
+          </button>
+          <button
+            onClick={() => onStart('identify')}
+            title="Find the word in a real sentence that matches the given meaning"
+            className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
+          >
+            Identify the word
+          </button>
+        </div>
+      )}
 
       {/* Single settings panel */}
       <div className="bg-surface border border-gray-200 rounded-xl overflow-hidden divide-y divide-gray-100">
