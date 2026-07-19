@@ -845,7 +845,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // own. Level 1 lists the categories; clicking one drills into its works (with a back row),
   // since flat would be unusable (Philo 36, Mishnah 40).
   const textsMenu = (
-    <div ref={catRowRef} className="relative flex-none">
+    // Redundant with the header's Texts mega-menu on desktop once a work is open, so hidden there.
+    // Kept on mobile (the header menu is hover-only / hidden) and in the empty state (the labeled
+    // entry point, and the empty-state hint points at it) so a work is always reachable.
+    <div ref={catRowRef} className={`relative flex-none ${work ? 'md:hidden' : ''}`}>
       <button
         type="button"
         onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
