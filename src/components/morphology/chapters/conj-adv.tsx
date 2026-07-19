@@ -1,7 +1,35 @@
-import { ColsTable, InfoBox } from '../shared'
+/* ─────────────────────────────────────────────
+   Chapter: Conjunctions & Adverbs
+   (after David Alan Black, It's Still Greek to Me, 1998)
+
+   Textbook chapter (see chapters/nouns.tsx for the template).
+───────────────────────────────────────────── */
+
+import {
+  ColsTable, InfoBox, TableAside, Gk, Ex,
+  P, SectionHeading, LevelOnly, Term, Practice, LiveExamples,
+} from '../shared'
 
 export const CONJ_ADV_CONTENT = (
   <>
+    {/* ── 1 · English first (Beginning only) ─────────────── */}
+    <LevelOnly level="beginning">
+      <SectionHeading>Start with English: the road signs of a text</SectionHeading>
+      <P>
+        Strip a paragraph of its little connecting words — <em>and, but, therefore, because, however</em> —
+        and the facts survive but the <em>logic</em> vanishes: you can no longer tell what follows from
+        what, what contrasts with what, what explains what. Those little words are the road signs of
+        thought, and reading well means watching them.
+      </P>
+      <P>
+        Greek is unusually generous with road signs. Nearly every sentence begins with a connective, and
+        because Greek word order is free, these signs — <strong>conjunctions</strong> — carry even more of
+        the logical load than in English. This chapter is your sign-catalogue: conjunctions that join
+        equals, conjunctions that subordinate, and the <strong>adverbs</strong> (how? when? where? words)
+        that fill out a verb's circumstances.
+      </P>
+    </LevelOnly>
+
     <InfoBox title="Key terms">
       <ul className="space-y-1.5 list-disc list-inside">
         <li><strong>Phrase</strong> — a group of words that cannot stand alone as a sentence because it lacks a subject, a predicate, or both.</li>
@@ -11,6 +39,13 @@ export const CONJ_ADV_CONTENT = (
       </ul>
     </InfoBox>
 
+    {/* ── 2 · Coordinating ───────────────────────────────── */}
+    <SectionHeading>Joining equals: the coordinating conjunctions</SectionHeading>
+    <P>
+      These link clause to clause on the level — and, but, or, therefore, for. The frequency counts are
+      worth a glance: <Gk>καί</Gk> alone occurs over nine thousand times, and the four giants
+      (<Gk>καί, δέ, γάρ, οὖν</Gk>) steer almost every NT paragraph.
+    </P>
     <ColsTable
       title="Independent clauses — coordinating conjunctions"
       headers={['Function', 'Conjunctions']}
@@ -25,6 +60,12 @@ export const CONJ_ADV_CONTENT = (
       ]}
     />
 
+    {/* ── 3 · Subordinating ──────────────────────────────── */}
+    <SectionHeading>Joining unequals: the subordinate conjunctions</SectionHeading>
+    <P>
+      These open a dependent <Term t="clause">clause</Term> — one that hangs on the main clause and answers
+      a question about it: why? when? where? to what end? Meet the sign, ask the question:
+    </P>
     <ColsTable
       title="Dependent clauses — subordinate conjunctions"
       headers={['Function', 'Conjunctions']}
@@ -40,7 +81,6 @@ export const CONJ_ADV_CONTENT = (
         ['Time', 'ὅτε (103×) — “when”; ὅταν (123×) — “whenever”; ἕως (146×) — “until”'],
       ]}
     />
-
     <InfoBox title="Mood indicators">
       <p>Certain conjunctions tend to signal the mood of the verb in their clause:</p>
       <ul className="mt-1.5 space-y-1 list-disc list-inside">
@@ -48,7 +88,6 @@ export const CONJ_ADV_CONTENT = (
         <li>Usually with the <strong>subjunctive</strong>: ἵνα, ἐάν, μή, ἕως, ὅπως &amp; ὅταν</li>
       </ul>
     </InfoBox>
-
     <ColsTable
       title="Expressions that introduce independent clauses"
       headers={['Demonstrative', 'Interrogative']}
@@ -61,8 +100,13 @@ export const CONJ_ADV_CONTENT = (
       note="These prepositional phrases open sentences as set expressions — they are not modifiers. They also introduce commands, lists, or a new topic."
     />
 
-    <p className="text-sm font-semibold text-gray-800 mt-6 mb-1">Adverbs</p>
-    <p className="text-sm text-gray-600 mb-3">Adverbs are not conjunctions — they modify verbs (they help explain the action).</p>
+    {/* ── 4 · Adverbs ────────────────────────────────────── */}
+    <SectionHeading>Adverbs: how, when, where</SectionHeading>
+    <P>
+      Adverbs are not conjunctions — they modify verbs, filling in the action's circumstances. Most Greek
+      adverbs of manner end in <Gk>‑ως</Gk> (from adjectives: <Gk>καλός</Gk> "good" → <Gk>καλῶς</Gk>
+      "well"), which makes them easy to spot on sight.
+    </P>
     <ColsTable
       headers={['How', 'When', 'Where']}
       rows={[
@@ -80,23 +124,83 @@ export const CONJ_ADV_CONTENT = (
       ]}
     />
 
-    <p className="text-sm font-semibold text-gray-800 mt-6 mb-1">Semantic labels</p>
-    <p className="text-sm text-gray-600 mb-3">Semantic labels trace the logic of an argument — the main idea, then the basis for it — by showing how sentences connect. The columns group labels by logic, form, and clarification.</p>
-    <ColsTable
-      title="Proposition labels (in addition to the conjunction labels above)"
-      headers={['Logic', 'Form', 'Clarification']}
-      rows={[
-        ['Event or Action', 'Situation – Response', 'Introduction'],
-        ['Assertion', 'Problem – Resolution', 'Conclusion'],
-        ['– Idea – Ground', 'Rhetorical question', 'Summary'],
-        ['Expansion', 'Entreaty', 'List, Series'],
-        ['Restatement', 'Exhortation or Warning', 'Parallel'],
-        ['– Alternative', 'Exclamation', 'Apposition'],
-        ['– Explanation', 'Desire (wish or hope)', 'Identification'],
-        ['– Manner', 'Promise', 'Description'],
-        ['– Question – Answer', 'Illustration / Example', 'Verification'],
+    {/* ── 5 · Semantic labels ────────────────────────────── */}
+    <LevelOnly level="intermediate">
+      <SectionHeading>Semantic labels: naming the moves of an argument</SectionHeading>
+      <P>
+        Beyond naming conjunctions, discourse analysis names what each <em>sentence</em> is doing — the
+        move it makes in the argument. These labels (after Black) let you outline a paragraph's logic: the
+        main assertion, its grounds, restatements, illustrations, and so on.
+      </P>
+      <ColsTable
+        title="Proposition labels (in addition to the conjunction labels above)"
+        headers={['Logic', 'Form', 'Clarification']}
+        rows={[
+          ['Event or Action', 'Situation – Response', 'Introduction'],
+          ['Assertion', 'Problem – Resolution', 'Conclusion'],
+          ['– Idea – Ground', 'Rhetorical question', 'Summary'],
+          ['Expansion', 'Entreaty', 'List, Series'],
+          ['Restatement', 'Exhortation or Warning', 'Parallel'],
+          ['– Alternative', 'Exclamation', 'Apposition'],
+          ['– Explanation', 'Desire (wish or hope)', 'Identification'],
+          ['– Manner', 'Promise', 'Description'],
+          ['– Question – Answer', 'Illustration / Example', 'Verification'],
+        ]}
+      />
+    </LevelOnly>
+
+    {/* ── 6 · Try it ─────────────────────────────────────── */}
+    <SectionHeading>Try it</SectionHeading>
+    <Practice
+      title="Practice — name the sign's function"
+      intro={<>For each connective: coordinating or subordinating? And what logical move does it make?</>}
+      items={[
+        { q: <span className="normal-case">ἐγὼ ἐβάπτισα ὑμᾶς ὕδατι, αὐτὸς δὲ βαπτίσει ὑμᾶς πνεύματι.</span>,
+          a: <>δέ — coordinating, here contrastive: "I baptized you with water, <em>but</em> he will baptize you with the Spirit" (Mark 1:8).</> },
+        { q: <span className="normal-case">πιστεύω· βοήθει μου τῇ ἀπιστίᾳ.</span>,
+          a: <>No conjunction at all (asyndeton) — the abrupt jump mirrors the father's urgency: "I believe; help my unbelief!" (Mark 9:24).</> },
+        { q: <span className="normal-case">ὅτι ἠγάπησεν πολύ</span>,
+          a: <>ὅτι — subordinating, causal: "<em>because</em> she loved much" (Luke 7:47).</> },
+        { q: <span className="normal-case">σπουδάσωμεν οὖν εἰσελθεῖν.</span>,
+          a: <>οὖν — coordinating, inferential: "<em>therefore</em> let us strive to enter" (Heb 4:11) — drawing the conclusion of the argument before it.</> },
+        { q: <span className="normal-case">ἡ γὰρ ἀγάπη τοῦ Χριστοῦ συνέχει ἡμᾶς.</span>,
+          a: <>γάρ — coordinating, explanatory: "<em>for</em> the love of Christ compels us" (2 Cor 5:14) — grounding what was just said.</> },
       ]}
     />
+
+    {/* ── 7 · See it in the NT ───────────────────────────── */}
+    <LiveExamples
+      intro={<>Follow one connective through a whole book and watch an author's habits emerge.</>}
+      links={[
+        { label: <>Every <span className="normal-case">οὖν</span> — "therefore": the hinge of arguments (John and Romans love it)</>, lemma: 'οὖν' },
+        { label: <>Every <span className="normal-case">γάρ</span> — "for": the grounds beneath each claim</>, lemma: 'γάρ' },
+        { label: <>Every <span className="normal-case">ἀλλά</span> — "but": strong contrast</>, lemma: 'ἀλλά' },
+        { label: <>Every <span className="normal-case">καθώς</span> — "just as": comparison and pattern</>, lemma: 'καθώς' },
+      ]}
+    />
+
+    {/* ── 8 · Going deeper (Intermediate only) ───────────── */}
+    <LevelOnly level="intermediate">
+      <SectionHeading>Going deeper: reading by the signs</SectionHeading>
+      <P>
+        <strong>δέ vs. καί.</strong> Both translate "and," but they are not twins: <Gk>καί</Gk> simply
+        adds; <Gk>δέ</Gk> marks a new development — a step forward in the story or argument. Mark strings
+        scenes with <Gk>καί</Gk> (breathless, paratactic); Matthew and Luke often re-edit the same scenes
+        with <Gk>δέ</Gk> (structured, developmental). An author's connective habits are part of his voice.
+      </P>
+      <P>
+        <strong>γάρ chains.</strong> Paul reasons in <Gk>γάρ</Gk>: claim, ground, ground of the ground.
+        Romans 1:16–18 hangs three <Gk>γάρ</Gk> clauses in a row — outline them and the argument's skeleton
+        stands out. When you preach a Pauline text, the <Gk>γάρ</Gk> chain often <em>is</em> the sermon
+        outline.
+      </P>
+      <P>
+        <strong>Asyndeton.</strong> Because Greek so regularly connects sentences, the <em>absence</em> of
+        a connective (asyndeton) is itself a signal — abruptness, solemnity, a new section (common in John;
+        striking in commands: <Gk>ἐγείρεσθε, ἄγωμεν</Gk>, "Rise, let us go," Mark 14:42). When the road
+        signs suddenly stop, slow down.
+      </P>
+    </LevelOnly>
 
     <p className="mt-5 text-xs text-gray-400 italic">
       Source: David Alan Black, <span className="not-italic">It&rsquo;s Still Greek to Me: An Easy-to-Understand Guide to Intermediate Greek</span> (Grand Rapids: Baker, 1998).

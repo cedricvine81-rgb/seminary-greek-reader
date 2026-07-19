@@ -1,11 +1,45 @@
-import { MorphTable, InfoBox, TableAside, Gk, Ex } from '../shared'
+/* ─────────────────────────────────────────────
+   Chapter: Deponent Verbs
+
+   Textbook chapter (see chapters/nouns.tsx for the template).
+───────────────────────────────────────────── */
+
+import {
+  MorphTable, TableAside, Gk, Ex, AsideLabel,
+  P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+} from '../shared'
 
 export const DEPONENTS_CONTENT = (
   <>
+    {/* ── 1 · English first (Beginning only) ─────────────── */}
+    <LevelOnly level="beginning">
+      <SectionHeading>Start with English: forms that don't mean what they look like</SectionHeading>
+      <P>
+        English has verbs whose form and meaning part company. "I <em>was born</em> in June" — passive in
+        form, but you aren't picturing anyone doing the "borning"; it just tells what happened to you.
+        Nobody is misled, because you learned the expression whole.
+      </P>
+      <P>
+        Greek has a whole club like that: verbs that wear <strong>middle/passive endings</strong>
+        (their dictionary form ends in <Gk>‑ομαι</Gk>, not <Gk>‑ω</Gk>) but carry a plain
+        <strong> active meaning</strong>. <Gk>ἔρχομαι</Gk> <em>looks</em> like "I am being come" — it just
+        means "I come / go." These are <strong>deponent</strong> verbs, from the Latin for "laid aside":
+        they have laid their active forms aside. Your job is simple: parse the form as the middle/passive
+        it is, then translate with the active meaning the lexicon gives. No hidden passiveness to hunt for.
+      </P>
+    </LevelOnly>
+
+    {/* ── 2 · Spotting them ──────────────────────────────── */}
+    <SectionHeading>How you spot one</SectionHeading>
+    <P>
+      The dictionary form tells you. A normal verb's lexical form ends in <Gk>‑ω</Gk> (<Gk>λύω</Gk>); a
+      deponent's ends in <Gk>‑ομαι</Gk> (<Gk>ἔρχομαι, γίνομαι, δύναμαι</Gk>). And frequency is on your
+      side — a handful of deponents are among the most common verbs in the entire New Testament:
+    </P>
     <TableAside
       sticky
       beginning={<>
-        <p>A <strong>deponent</strong> looks middle/passive (ending in <Gk>‒ομαι</Gk>) but means something <em>active</em>. Just translate it actively — the middle/passive form is its only form.</p>
+        <p>A <strong>deponent</strong> looks middle/passive (ending in <Gk>‑ομαι</Gk>) but means something <em>active</em>. Just translate it actively — the middle/passive form is its only form.</p>
         <Ex grc="ἔρχομαι" en="I come / go" />
         <Ex grc="ἀποκρίνομαι" en="I answer" />
       </>}
@@ -64,10 +98,99 @@ export const DEPONENTS_CONTENT = (
       note="Dash (—) indicates no separate form exists or it is not attested in the NT. Some verbs are semi-deponent (active forms exist in some tenses)."
     />
     </TableAside>
+
+    {/* ── 3 · Middle vs passive deponents ────────────────── */}
+    <SectionHeading>Two sub-clubs: middle and passive deponents</SectionHeading>
+    <P>
+      Deponents split by which non-active forms they use in the aorist. <strong>Middle deponents</strong> take
+      middle aorists: <Gk>ἐδεξάμην</Gk> "I received." <strong>Passive deponents</strong> take passive-looking
+      aorists — with the <Gk>θη</Gk> marker — still meaning active: <Gk>ἀπεκρίθη</Gk> "he answered,"
+      <Gk> ἐπορεύθην</Gk> "I went." So a <Gk>θη</Gk> form is not automatically passive in meaning; check
+      whether the verb is deponent before translating "was …ed."
+    </P>
+    <TableAside
+      beginning={<>
+        <Ex grc="ἀπεκρίθη ὁ Ἰησοῦς" en="Jesus answered (not “was answered”!)" />
+        <Ex grc="ἐπορεύθησαν" en="they went / journeyed" />
+      </>}
+      intermediate={<>
+        <p>Oddities worth knowing: <Gk>ἔρχομαι</Gk> is deponent in the present but its aorist <Gk>ἦλθον</Gk> is a plain 2nd-aorist <em>active</em>; and <Gk>θέλω</Gk> is active in the present but deponent-futured. "Semi-deponent" covers these mixed careers.</p>
+      </>}
+    >
+      <MorphTable flush title="The two sub-clubs" headers={['Type', 'Aorist looks', 'Example', 'Means']} firstColIsData
+        rows={[
+          ['Middle deponent', 'middle (‑σάμην)', 'ἐδεξάμην', 'I received'],
+          ['Passive deponent', 'passive (‑θην)', 'ἀπεκρίθην', 'I answered'],
+        ]}
+      />
+    </TableAside>
+
+    {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
-      <p className="font-semibold text-gray-800 mb-1">Parsing Deponents</p>
-      <p>When you see a verb with middle/passive endings but an active meaning in your lexicon, you have a deponent.
-        Parse as you would any middle or passive form, but translate with the active meaning given in the lexicon.</p>
+      <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
+        <li>Not every <Gk>‑ομαι</Gk> form is deponent! <Gk>λύομαι</Gk> is the genuine middle/passive of <Gk>λύω</Gk>. The test is the <em>lexicon</em>: if no active form exists, it's deponent.</li>
+        <li>A <Gk>θη</Gk> aorist from a passive deponent means <em>active</em>: <Gk>ἀπεκρίθη</Gk> "he answered." Don't force "was answered."</li>
+        <li><Gk>ἐγένετο</Gk> (from <Gk>γίνομαι</Gk>) is everywhere: "became, happened, came to be, was." Small verb, wide range.</li>
+        <li>Deponent participles keep the <Gk>‑μεν‑</Gk>/middle look with active meaning: <Gk>ἐρχόμενος</Gk> "coming," <Gk>πορευθέντες</Gk> "having gone" (Matt 28:19!).</li>
+        <li>Semi-deponents change club mid-career: active present, deponent future (<Gk>λαμβάνω → λήμψομαι</Gk>; <Gk>γινώσκω → γνώσομαι</Gk>).</li>
+      </ul>
     </InfoBox>
+
+    {/* ── 5 · Try it ─────────────────────────────────────── */}
+    <SectionHeading>Try it</SectionHeading>
+    <Practice
+      title="Practice — parse and translate"
+      intro={<>Parse the form honestly (middle/passive!), then translate actively.</>}
+      items={[
+        { q: <span className="normal-case">ἔρχεται πρὸς αὐτόν.</span>,
+          a: <>"He comes to him" — present deponent, 3rd sg.</> },
+        { q: <span className="normal-case">ἀπεκρίθη αὐτοῖς ὁ Ἰησοῦς.</span>,
+          a: <>"Jesus answered them" — aorist <em>passive in form</em> (θη), active in meaning: passive deponent.</> },
+        { q: <span className="normal-case">οὐ δύναμαι ποιεῖν οὐδέν.</span>,
+          a: <>"I can do nothing" — δύναμαι + infinitive (John 5:30; note the stacked negatives reinforcing, not cancelling).</> },
+        { q: <span className="normal-case">ἐγένετο ἄνθρωπος ἀπεσταλμένος παρὰ θεοῦ.</span>,
+          a: <>"There came (arose) a man sent from God" — ἐγένετο, aorist middle deponent (John 1:6).</> },
+        { q: <span className="normal-case">προσηύξατο τῷ θεῷ.</span>,
+          a: <>"He prayed to God" — aorist middle of the deponent προσεύχομαι.</> },
+      ]}
+    />
+
+    {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <LiveExamples
+      intro={<>Four deponents you cannot read a page without.</>}
+      links={[
+        { label: <>Every form of <span className="normal-case">γίνομαι</span> — become / happen / be</>, lemma: 'γίνομαι' },
+        { label: <>Every form of <span className="normal-case">ἔρχομαι</span> — come / go (with its compounds)</>, lemma: 'ἔρχομαι' },
+        { label: <>Every form of <span className="normal-case">ἀποκρίνομαι</span> — the Gospels' "answered"</>, lemma: 'ἀποκρίνομαι' },
+        { label: <>Every form of <span className="normal-case">πορεύομαι</span> — go / journey</>, lemma: 'πορεύομαι' },
+      ]}
+    />
+
+    {/* ── 7 · Going deeper (Intermediate only) ───────────── */}
+    <LevelOnly level="intermediate">
+      <SectionHeading>Going deeper: is "deponent" the right name?</SectionHeading>
+      <P>
+        <strong>The middle-voice reappraisal.</strong> A growing consensus in Greek linguistics holds that
+        most "deponents" never laid anything aside — their middle form fits their meaning. Verbs of motion
+        (<Gk>ἔρχομαι, πορεύομαι</Gk>), emotion (<Gk>φοβέομαι</Gk>), perception, and self-involving action
+        are exactly where languages with a middle voice use it: the subject is inside the event, affected
+        by it. On this view the label "deponent" describes <em>English's</em> lack of a middle voice, not a
+        defect in the Greek. For translation nothing changes; for feel, much does — <Gk>δέχομαι</Gk> "I
+        receive (into my own hands)" is middle to its bones.
+      </P>
+      <P>
+        <strong>γίνομαι at full stretch.</strong> One verb spans "be born," "become," "happen," "come to
+        be," even "be" — John 1:14's <Gk>ὁ λόγος σὰρξ ἐγένετο</Gk>, "the Word <em>became</em> flesh," leans
+        on the verb's sense of entering a new state, deliberately unlike the <Gk>ἦν</Gk> ("was") of 1:1.
+        The contrast between εἰμί and γίνομαι carries the prologue's theology.
+      </P>
+      <P>
+        <strong>Watch σώζομαι.</strong> The passive of <Gk>σῴζω</Gk> functions almost as a deponent in
+        texts like Acts 2:47 ("those being saved") — but here the passive is real and theological: God is
+        the unstated saver. Divine passive and deponency can look identical; the lexicon and context
+        separate them.
+      </P>
+    </LevelOnly>
   </>
 )
