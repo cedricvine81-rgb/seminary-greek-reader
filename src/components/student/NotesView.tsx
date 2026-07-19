@@ -280,35 +280,10 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
       <div className="flex-1 min-w-0 max-w-3xl space-y-8">
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-        {/* ── This passage: verse notes for the loaded passage ──
-            Only verses that already have a note get an editor (no wall of empty boxes for a
-            whole chapter); the picker below opens an editor for any other verse in range. */}
-        {anchor && (() => {
-          const notedVerses = verseList.filter(v => passageVerseNote(v))
-          return (
-            <section>
-              <h3 className="text-sm font-semibold text-gray-800 mb-2">
-                This passage
-                <span className="ml-1.5 font-normal text-gray-400">
-                  {anchor.name} {anchor.chapter}:{anchor.verseStart}{anchor.verseEnd !== anchor.verseStart ? `–${anchor.verseEnd}` : ''}
-                </span>
-              </h3>
-              <div className="space-y-2">
-                {notedVerses.map(v => (
-                  <NoteEditor key={passageVerseNote(v)!.id}
-                    existing={passageVerseNote(v)}
-                    anchor={{ book: anchor.book, chapter: anchor.chapter, verse: v, label: `${anchor.name} ${anchor.chapter}:${v}` }}
-                    folders={folders} onChanged={load} />
-                ))}
-              </div>
-              {notedVerses.length === 0 && addVerse == null && (
-                <p className="text-xs text-gray-400 italic mt-1">
-                  No verse notes on this passage yet — use <span className="font-medium text-gray-600">New verse note</span> below.
-                </p>
-              )}
-            </section>
-          )
-        })()}
+        {/* (The old "This passage" section — editors for the loaded passage's noted verses +
+            an empty-state hint — was cut 2026-07-18 (user request: reclaim the space). Those
+            notes still appear in the notebook list below, and "+ New verse note" still opens
+            its editor there.) */}
 
         {/* ── Course Notes assignments ── */}
         {courseNotes.length > 0 && (
@@ -335,7 +310,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
             <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
             <div className="flex items-center gap-2">
               {/* New verse note — a dropdown of the current passage's verses (that don't yet
-                  have a note). Picking one opens its editor up in the "This passage" section. */}
+                  have a note). Picking one opens its editor at the top of the notebook list. */}
               {anchor && (() => {
                 const addable = verseList.filter(v => !passageVerseNote(v))
                 if (addable.length === 0) return null
@@ -457,7 +432,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
 
           <div className="space-y-2">
             {/* New verse note opens its editor right here, beside the trigger (once saved it
-                also shows up under "This passage" above). */}
+                joins the notebook list like any other verse note). */}
             {anchor && addVerse != null && (
               <NoteEditor key={`add-${anchor.book}-${anchor.chapter}-${addVerse}`}
                 anchor={{ book: anchor.book, chapter: anchor.chapter, verse: addVerse, label: `${anchor.name} ${anchor.chapter}:${addVerse}` }}
