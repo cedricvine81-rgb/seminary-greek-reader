@@ -333,6 +333,15 @@ body.exam-lockdown nav.fixed.bottom-0 {
     display: none;
   }
 
+  /* ── Texts: full-height tool page ──
+     TextsReader sets html[data-texts="on"] while mounted. Same reason as Exegesis above — the
+     reading pane is sized to the viewport minus the header (.reader-container-h), so the marketing
+     footer would push the body past the viewport, letting it scroll and carry the controls row
+     (Texts picker, work title, search) up under the sticky header. Hiding it locks the row. */
+  html[data-texts='on'] footer {
+    display: none;
+  }
+
   /* The inline/parallel translation uses the same Gentium Plus serif as the Greek, so the
      Greek verse and its translation read as one unit (the sans body font looks larger than
      the Greek serif at the same size). Applies to both readers: mobile stacks the two, and

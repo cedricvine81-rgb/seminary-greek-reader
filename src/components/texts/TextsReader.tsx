@@ -231,6 +231,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const loadingRef = useRef(false)
   const backLoadingRef = useRef(false)
 
+  // Full-height tool page: hide the marketing footer while the reader is mounted so its height
+  // doesn't push the layout past the viewport — which would let the whole body scroll and carry
+  // the controls row (Texts picker, work title, search) up under the sticky header. Mirrors
+  // ExegesisTabs' html[data-exegesis] and the reader's html[data-reader]. See globals.css.
+  useEffect(() => {
+    document.documentElement.setAttribute('data-texts', 'on')
+    return () => document.documentElement.removeAttribute('data-texts')
+  }, [])
+
   const isGreek = work?.source === 'lxx'
   // A prose work that carries the original Greek per verse (e.g. Epictetus) — shown in a
   // parallel Greek | English layout, distinct from the word-parsed lxx Greek path.
@@ -836,11 +845,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // own. Level 1 lists the categories; clicking one drills into its works (with a back row),
   // since flat would be unusable (Philo 36, Mishnah 40).
   const textsMenu = (
-    // Once a work is open the picker is redundant with the header's Texts mega-menu on desktop,
-    // so it's hidden there (the user's "remove the selector next to the title" request). On
-    // mobile the header menu is hover-only (hidden), so the in-pane picker stays as the sole way
-    // to switch works. With no work open it's shown everywhere (the empty-state entry point).
-    <div ref={catRowRef} className={`relative flex-none ${work ? 'md:hidden' : ''}`}>
+    <div ref={catRowRef} className="relative flex-none">
       <button
         type="button"
         onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
@@ -907,9 +912,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
       {/* ── Reading pane — always visible ── */}
       <div className="flex-1 min-h-0 flex flex-col gap-3">
-        {/* Controls row. The in-pane Texts picker hides on desktop once a work is open (the
-            header mega-menu covers selection there — see textsMenu), but stays on mobile, where
-            that menu is hover-only. With no work open it starts the row as the empty-state entry. */}
+        {/* Controls row — Texts picker, work title, Summary, search. flex-none so it stays
+            pinned above the scrolling reading pane (never slides under the app header). */}
         <div className="flex-none flex flex-wrap items-center gap-2">
           {textsMenu}
           {work && (<>
