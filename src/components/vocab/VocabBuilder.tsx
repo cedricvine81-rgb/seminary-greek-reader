@@ -756,13 +756,14 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
 // or MT (Hebrew) sentence that has that meaning. Sentences come from /api/vocab-sentence (a verse
 // containing an inflected form of the word, with the target position(s) marked). Trains
 // recognition of the lexeme across its inflections, in context.
-interface SentenceItem { ref: string; tokens: string[]; targets: number[]; rtl: boolean }
+interface SentenceItem { ref: string; tokens: string[]; targets: number[]; rtl: boolean; loc?: { book: string; chapter: number; verse: number } | null }
 
 function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: VocabLang; onGoBack: () => void }) {
   const V = useVocab()
   const [qIdx, setQIdx] = useState(0)
   const [item, setItem] = useState<SentenceItem | null | 'loading' | 'none'>('loading')
   const [picked, setPicked] = useState<number | null>(null)
+  const [translation, setTranslation] = useState<string | null | 'loading'>(null)
   const [correct, setCorrect] = useState(0)
   const [asked, setAsked] = useState(0)
 
@@ -770,7 +771,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
 
   useEffect(() => {
     if (!word) return
-    setItem('loading'); setPicked(null)
+    setItem('loading'); setPicked(null); setTranslation(null)
     const param = lang === 'hebrew'
       ? `corpus=MT&strongs=${encodeURIComponent((word.id ?? '').split('|')[1] ?? '')}`
       : `corpus=GNT&lemma=${encodeURIComponent(word.word)}`
@@ -783,6 +784,22 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
       .catch(() => {})
     return () => ctrl.abort()
   }, [qIdx, word, lang])
+
+  // Once the student answers, fetch the English translation of the verse to show below it.
+  useEffect(() => {
+    if (picked == null || typeof item === 'string' || !item?.loc) return
+    const { book, chapter, verse } = item.loc
+    setTranslation('loading')
+    const ctrl = new AbortController()
+    fetch(`/api/translation?book=${encodeURIComponent(book)}&chapter=${chapter}&lang=en`, { signal: ctrl.signal })
+      .then(r => (r.ok ? r.json() : null))
+      .then((d: { verses?: Record<string, string> } | null) => {
+        // The translation API keys verses by full OSIS id (e.g. "Rom.4.2").
+        setTranslation(d?.verses?.[`${book}.${chapter}.${verse}`] ?? null)
+      })
+      .catch(() => {})
+    return () => ctrl.abort()
+  }, [picked, item])
 
   if (words.length === 0) {
     return <ModeShell title="Identify the word" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
@@ -831,7 +848,7 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
         ) : (
           <>
             <div dir={item.rtl ? 'rtl' : undefined}
-              className={`bg-surface border border-gray-200 rounded-2xl px-5 py-6 text-2xl leading-loose text-center ${item.rtl ? 'font-hebrew' : 'greek-text'}`}>
+              className={`bg-surface border border-gray-200 rounded-2xl px-5 py-6 text-5xl leading-loose text-center ${item.rtl ? 'font-hebrew' : 'greek-text'}`}>
               {item.tokens.map((tok, i) => {
                 const isTarget = item.targets.includes(i)
                 const state = picked == null ? 'idle' : isTarget ? 'correct' : picked === i ? 'wrong' : 'idle'
@@ -850,6 +867,11 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
               })}
             </div>
             <p className="text-center text-xs text-gray-400">{item.ref}</p>
+            {picked != null && translation && translation !== 'loading' && (
+              <p className="text-center text-base text-gray-600 italic max-w-xl mx-auto">
+                {translation}
+              </p>
+            )}
             {picked != null && (
               <div className="flex items-center justify-between">
                 <span className={clsx('text-sm font-medium', item.targets.includes(picked) ? 'text-green-700' : 'text-red-700')}>
@@ -867,15 +889,16 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
   )
 }
 
-// Shared frame for the Test/Identify modes: a back button + title, an optional right slot.
+// Shared frame for the Test/Identify modes: a back button and an optional right slot. The page
+// header is intentionally omitted — the mode is already obvious from the launch button and the
+// clue on screen, so a centered title just repeated it.
 function ModeShell({ title, right, onGoBack, children }: { title: string; right?: ReactNode; onGoBack: () => void; children: ReactNode }) {
   return (
-    <div>
+    <div aria-label={title}>
       <div className="flex items-center justify-between mb-4">
         <button onClick={onGoBack} className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-gray-800">
           <ChevronRight size={16} className="rotate-180" /> Back
         </button>
-        <span className="text-sm font-semibold text-gray-700">{title}</span>
         <span className="min-w-[6rem] text-right">{right}</span>
       </div>
       {children}

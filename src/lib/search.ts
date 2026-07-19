@@ -251,12 +251,12 @@ export async function searchHebrewByStrongs(strongs: string): Promise<(BiblicalV
 
 // MT verses containing a given Strong's number, with per-word Strong's (`ws`) aligned to
 // text.split(/[\s־]+/) — so /api/vocab-sentence can mark which words are the target form.
-export function hebrewVersesByStrongs(strongs: string): { reference: string; text: string; ws: string[] }[] {
+export function hebrewVersesByStrongs(strongs: string): { reference: string; text: string; ws: string[]; bookId: string; chapter: number; verse: number }[] {
   const s = String(strongs).replace(/[^0-9]/g, '')
   if (!s) return []
   return getHebIndex()
     .filter(v => (v.ws ?? []).includes(s))
-    .map(v => ({ reference: v.reference, text: v.text, ws: v.ws ?? [] }))
+    .map(v => ({ reference: v.reference, text: v.text, ws: v.ws ?? [], bookId: v.bookId, chapter: v.chapter, verse: v.verse }))
 }
 
 // Every MT verse whose text contains the given form — the "this form" search, cantillation-

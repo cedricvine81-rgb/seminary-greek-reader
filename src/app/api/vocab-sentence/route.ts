@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { lemmaVerseIds, hebrewVersesByStrongs } from '@/lib/search'
 import { getChapter } from '@/lib/reader'
-import { normalizeGreek } from '@/lib/greek-utils'
+import { normalizeGreek, foldGreekKeepBreathing } from '@/lib/greek-utils'
+import { mtToEnglish } from '@/lib/versification'
 import { logError } from '@/lib/logger'
 
 // GET /api/vocab-sentence?corpus=GNT&lemma=<greek lemma>
@@ -75,7 +76,10 @@ export async function GET(req: NextRequest) {
         if (tokens.length < MIN_WORDS || tokens.length > MAX_WORDS) continue
         const targets = v.ws.flatMap((s, i) => (s === strongs ? [i] : []))
         if (targets.length === 0) continue
-        return NextResponse.json({ ref: v.reference, tokens, targets, rtl: true })
+        // Map MT (BHS) versification to the English Bible so the client can fetch a translation.
+        const en = mtToEnglish(v.bookId, v.chapter, v.verse)
+        const loc = en ? { book: v.bookId, chapter: en.chapter, verse: en.verse } : null
+        return NextResponse.json({ ref: v.reference, tokens, targets, rtl: true, loc })
       }
       return NextResponse.json({ error: 'no sentence' })
     }
@@ -83,6 +87,10 @@ export async function GET(req: NextRequest) {
     // ── Greek (GNT): match by lemma across its inflected forms ──
     const lemma = p.get('lemma') ?? ''
     const norm = normalizeGreek(lemma)
+    // Breathing-aware key: the lemma index merges εἷς "one" and εἰς "into" under the same
+    // accent-stripped key, so the candidate verses cover both — but the target word must be
+    // matched with breathing kept so we never mark εἰς when the clue is εἷς (and vice versa).
+    const bnorm = foldGreekKeepBreathing(lemma)
     if (!norm) return NextResponse.json({ error: 'missing lemma' }, { status: 400 })
     const ids = lemmaVerseIds(lemma)
     if (!ids || ids.length === 0) return NextResponse.json({ error: 'no sentence' })
@@ -90,7 +98,7 @@ export async function GET(req: NextRequest) {
     // word is found (getChapter is cached, so repeats within a chapter are cheap). Prefer a verse
     // with no rival word sharing the target's gloss; keep the first valid one as a fallback so a
     // sentence is always returned even when every candidate has a rival.
-    type Hit = { ref: string; tokens: string[]; targets: number[]; rtl: false }
+    type Hit = { ref: string; tokens: string[]; targets: number[]; rtl: false; loc: { book: string; chapter: number; verse: number } }
     let fallback: Hit | null = null
     for (const vid of shuffle(ids).slice(0, 40)) {
       const [book, chStr, vsStr] = vid.split('.')
@@ -98,9 +106,9 @@ export async function GET(req: NextRequest) {
       const verse = chapter?.verses.find(v => v.verse === Number(vsStr))
       const words = verse?.words
       if (!words || words.length < MIN_WORDS || words.length > MAX_WORDS) continue
-      const targets = words.flatMap((w, i) => (normalizeGreek(w.lexeme?.lexeme ?? '') === norm ? [i] : []))
+      const targets = words.flatMap((w, i) => (foldGreekKeepBreathing(w.lexeme?.lexeme ?? '') === bnorm ? [i] : []))
       if (targets.length === 0) continue
-      const hit: Hit = { ref: verse!.reference, tokens: words.map(w => w.surface), targets, rtl: false }
+      const hit: Hit = { ref: verse!.reference, tokens: words.map(w => w.surface), targets, rtl: false, loc: { book, chapter: Number(chStr), verse: Number(vsStr) } }
       const targetGloss = glossTokens(words[targets[0]].lexeme?.gloss)
       const targetGroup = GROUP_OF.get(norm)
       const hasRival = words.some((w, i) => {
