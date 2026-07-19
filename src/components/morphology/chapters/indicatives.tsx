@@ -374,7 +374,7 @@ export const INDICATIVES_CONTENT = (
       <SectionHeading>Going deeper: tense as interpretation</SectionHeading>
       <P>
         <strong>Aspect over time.</strong> In the indicative Greek tense marks both time and
-        <Term t="aspect"> aspect</Term>, but aspect is the deeper category: the imperfect paints a process,
+        {' '}<Term t="aspect">aspect</Term>, but aspect is the deeper category: the imperfect paints a process,
         the aorist reports a whole, the perfect asserts a standing result. When Mark writes
         <Gk> ἐδίδασκεν</Gk> ("he was teaching"), he is setting a scene; when he switches to aorists, events
         march. Watching an author alternate imperfect and aorist is watching him direct your attention.

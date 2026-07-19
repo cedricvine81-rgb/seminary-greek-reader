@@ -17,7 +17,7 @@ export const PREPOSITIONS_CONTENT = (
       <P>
         "The cat is <em>in</em> the box. The cat jumped <em>onto</em> the box. The cat came <em>out of</em> the
         box." Those little words — <em>in, onto, out of, with, from, through</em> — are
-        <Term t="preposition"> prepositions</Term>: they pin down the relationship (usually of place, time, or
+        {' '}<Term t="preposition">prepositions</Term>: they pin down the relationship (usually of place, time, or
         means) between the action and a noun. "Pre-position" is literal: they sit <em>before</em> the noun.
       </P>
       <P>
