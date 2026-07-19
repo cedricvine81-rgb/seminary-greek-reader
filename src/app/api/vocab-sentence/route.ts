@@ -32,6 +32,34 @@ function shareToken(a: Set<string>, b: Set<string>): boolean {
   return Array.from(a).some(t => b.has(t))
 }
 
+// Near-synonym groups whose English glosses DON'T overlap literally (so the gloss-token check
+// above misses them), yet a student could reasonably click either — e.g. clue "speak, say"
+// (λαλέω) sitting beside λέγω. A verse where a different word shares the target's group is
+// deprioritised (with fallback). Curated to the common NT confusables; extend as needed.
+const CONFUSABLE_GROUPS: string[][] = [
+  ['λέγω', 'λαλέω', 'φημί'],                       // say / speak
+  ['ἀγαπάω', 'φιλέω'],                              // love
+  ['γινώσκω', 'οἶδα', 'ἐπίσταμαι'],                // know
+  ['βλέπω', 'ὁράω', 'θεωρέω', 'θεάομαι'],          // see / behold
+  ['ἔρχομαι', 'πορεύομαι', 'ὑπάγω'],               // come / go
+  ['πέμπω', 'ἀποστέλλω'],                          // send
+  ['ποιέω', 'πράσσω'],                             // do / make
+  ['λόγος', 'ῥῆμα'],                               // word
+  ['καιρός', 'χρόνος'],                            // time
+  ['ἄλλος', 'ἕτερος'],                             // (an)other
+  ['δοῦλος', 'διάκονος', 'παῖς'],                  // servant
+  ['κύριος', 'δεσπότης'],                          // lord / master
+  ['δύναμις', 'ἐξουσία'],                          // power / authority
+  ['ἁμαρτία', 'παράπτωμα', 'ἀνομία'],              // sin
+  ['ἀγαθός', 'καλός', 'χρηστός'],                  // good
+  ['καινός', 'νέος'],                              // new
+  ['ζωή', 'βίος'],                                 // life
+  ['πᾶς', 'ὅλος'],                                 // all / whole
+  ['λαός', 'ὄχλος', 'ἔθνος'],                      // people / crowd / nation
+]
+const GROUP_OF = new Map<string, number>()
+CONFUSABLE_GROUPS.forEach((group, i) => group.forEach(w => GROUP_OF.set(normalizeGreek(w), i)))
+
 export async function GET(req: NextRequest) {
   try {
     const p = req.nextUrl.searchParams
@@ -74,8 +102,14 @@ export async function GET(req: NextRequest) {
       if (targets.length === 0) continue
       const hit: Hit = { ref: verse!.reference, tokens: words.map(w => w.surface), targets, rtl: false }
       const targetGloss = glossTokens(words[targets[0]].lexeme?.gloss)
-      const hasRival = words.some((w, i) =>
-        !targets.includes(i) && normalizeGreek(w.lexeme?.lexeme ?? '') !== norm && shareToken(glossTokens(w.lexeme?.gloss), targetGloss))
+      const targetGroup = GROUP_OF.get(norm)
+      const hasRival = words.some((w, i) => {
+        if (targets.includes(i)) return false
+        const wn = normalizeGreek(w.lexeme?.lexeme ?? '')
+        if (wn === norm) return false
+        // A rival shares the clue's exact English word, OR is a curated near-synonym of it.
+        return shareToken(glossTokens(w.lexeme?.gloss), targetGloss) || (targetGroup !== undefined && GROUP_OF.get(wn) === targetGroup)
+      })
       if (!hasRival) return NextResponse.json(hit)
       fallback ??= hit
     }
