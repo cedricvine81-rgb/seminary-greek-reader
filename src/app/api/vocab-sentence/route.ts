@@ -20,6 +20,18 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
+// Content words of a gloss, for spotting a rival word in the same verse that shares the target's
+// meaning (e.g. clue "love" with both ἀγάπη and ἀγαπάω present — clicking either is defensible).
+// Such verses are deprioritised so the answer isn't ambiguous.
+const GLOSS_STOP = new Set(['the', 'a', 'an', 'of', 'to', 'and', 'with', 'in', 'on', 'for', 'by', 'or', 'be', 'is',
+  'that', 'this', 'his', 'her', 'its', 'it', 'as', 'at', 'from', 'into', 'not', 'who', 'was', 'are', 'one', 'you'])
+function glossTokens(g?: string): Set<string> {
+  return new Set((g ?? '').toLowerCase().split(/[^a-z]+/).filter(t => t.length > 2 && !GLOSS_STOP.has(t)))
+}
+function shareToken(a: Set<string>, b: Set<string>): boolean {
+  return Array.from(a).some(t => b.has(t))
+}
+
 export async function GET(req: NextRequest) {
   try {
     const p = req.nextUrl.searchParams
@@ -47,7 +59,11 @@ export async function GET(req: NextRequest) {
     const ids = lemmaVerseIds(lemma)
     if (!ids || ids.length === 0) return NextResponse.json({ error: 'no sentence' })
     // Try a bounded number of random occurrences until one is the right length and its target
-    // word is found (getChapter is cached, so repeats within a chapter are cheap).
+    // word is found (getChapter is cached, so repeats within a chapter are cheap). Prefer a verse
+    // with no rival word sharing the target's gloss; keep the first valid one as a fallback so a
+    // sentence is always returned even when every candidate has a rival.
+    type Hit = { ref: string; tokens: string[]; targets: number[]; rtl: false }
+    let fallback: Hit | null = null
     for (const vid of shuffle(ids).slice(0, 40)) {
       const [book, chStr, vsStr] = vid.split('.')
       const chapter = await getChapter(book, Number(chStr), 'GNT')
@@ -56,8 +72,14 @@ export async function GET(req: NextRequest) {
       if (!words || words.length < MIN_WORDS || words.length > MAX_WORDS) continue
       const targets = words.flatMap((w, i) => (normalizeGreek(w.lexeme?.lexeme ?? '') === norm ? [i] : []))
       if (targets.length === 0) continue
-      return NextResponse.json({ ref: verse!.reference, tokens: words.map(w => w.surface), targets, rtl: false })
+      const hit: Hit = { ref: verse!.reference, tokens: words.map(w => w.surface), targets, rtl: false }
+      const targetGloss = glossTokens(words[targets[0]].lexeme?.gloss)
+      const hasRival = words.some((w, i) =>
+        !targets.includes(i) && normalizeGreek(w.lexeme?.lexeme ?? '') !== norm && shareToken(glossTokens(w.lexeme?.gloss), targetGloss))
+      if (!hasRival) return NextResponse.json(hit)
+      fallback ??= hit
     }
+    if (fallback) return NextResponse.json(fallback)
     return NextResponse.json({ error: 'no sentence' })
   } catch (err) {
     logError('api/vocab-sentence', err)
