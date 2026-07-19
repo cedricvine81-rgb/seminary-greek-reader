@@ -22,6 +22,11 @@ export interface WordSearchPayload {
   greekCorpus?: 'GNT' | 'LXX'         // default scope for Greek words
   transLang?: string                  // language code for translation words (en, es, …)
   book?: string                       // current book's osisId — enables the "this book" scope
+  // Set when the word lives in a background/Texts work (Philo, Josephus, Epictetus, …). The word
+  // isn't in a Bible book, so the menu searches the background collection (bg:<category>) instead
+  // of a Bible translation — otherwise "this book" scopes the WEB Bible to a non-existent book.
+  bgCollection?: string               // catalog category id, e.g. 'philo'
+  bgCollectionLabel?: string          // human label for the menu, e.g. 'Philo'
   highlight?: WordHighlight           // when set, a highlighter swatch row shows at the top
 }
 type OpenFn = (payload: WordSearchPayload) => void

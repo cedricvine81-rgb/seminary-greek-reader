@@ -49,11 +49,14 @@ export interface TransHl {
  * string — the same anchor the Greek side uses, per the Highlight model). Used by every
  * non-Greek reading pane so the interaction is identical everywhere.
  */
-export function TransWords({ text, lang, reference, book, hl }: {
+export function TransWords({ text, lang, reference, book, bgCollection, hl }: {
   text: string
   lang: string
   reference: string
   book?: string          // current book's osisId — enables the "this book" search scope
+  // When the text is a background/Texts work, its collection (category id + label) so the word
+  // menu searches that collection instead of the Bible (see WordSearchPayload.bgCollection).
+  bgCollection?: { id: string; label: string }
   hl?: TransHl
 }) {
   let pos = 0
@@ -79,6 +82,7 @@ export function TransWords({ text, lang, reference, book, hl }: {
               openWordSearch({
                 x: e.clientX, y: e.clientY, surface: stripEdges(tok), reference,
                 kind: 'translation', transLang: lang, book,
+                bgCollection: bgCollection?.id, bgCollectionLabel: bgCollection?.label,
                 highlight: hl?.isAuthenticated ? {
                   activeColor: mark?.color ?? null,
                   onPick: c => mark ? hl.recolor(mark.id, c) : hl.create(start, end, c),

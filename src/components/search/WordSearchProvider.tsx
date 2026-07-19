@@ -115,8 +115,25 @@ export function WordSearchProvider() {
               </button>
             </div>
             <button type="button" className={btn}
-              onClick={() => { setMenu(null); openBackgroundsSearch(menu.lemma ?? w, 'grc') }}>
-              Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
+              onClick={() => { setMenu(null); menu.bgCollection
+                ? openMasterSearch({ query: menu.lemma ?? w, scope: `bg:${menu.bgCollection}` })
+                : openBackgroundsSearch(menu.lemma ?? w, 'grc') }}>
+              {menu.bgCollection
+                ? <>This collection{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}</>
+                : <>Background texts <span className="text-gray-400">· Philo, Josephus, LXX…</span></>}
+            </button>
+          </>
+        ) : menu.bgCollection ? (
+          // Word from a background/Texts work — search its collection, not the Bible (the word
+          // isn't in a Bible book, so a translation scope would find nothing).
+          <>
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openMasterSearch({ query: w, scope: `bg:${menu.bgCollection}` }) }}>
+              This collection{menu.bgCollectionLabel ? <span className="text-gray-400"> · {menu.bgCollectionLabel}</span> : null}
+            </button>
+            <button type="button" className={btn}
+              onClick={() => { setMenu(null); openBackgroundsSearch(w, 'en') }}>
+              All library texts <span className="text-gray-400">· Philo, Josephus, LXX…</span>
             </button>
           </>
         ) : (

@@ -218,6 +218,14 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [infoPanel, setInfoPanel] = useState<'summary' | null>(null)
   const infoMenuRef = useRef<HTMLDivElement>(null)
   const workRef = useRef(work); useEffect(() => { workRef.current = work }, [work])
+  // The open work's background collection (category id + label) — passed to the word menu so a
+  // right-click searches this collection (bg:<id>) rather than the Bible (the words aren't in a
+  // Bible book). null while no work is open.
+  const bgCollection = useMemo(() => {
+    if (!work) return undefined
+    const cat = TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))
+    return cat ? { id: cat.id, label: cat.label } : undefined
+  }, [work])
   const queueRef = useRef(queue); useEffect(() => { queueRef.current = queue }, [queue])
   const seriesRef = useRef(series); useEffect(() => { seriesRef.current = series }, [series])
   const loadingRef = useRef(false)
@@ -828,7 +836,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // own. Level 1 lists the categories; clicking one drills into its works (with a back row),
   // since flat would be unusable (Philo 36, Mishnah 40).
   const textsMenu = (
-    <div ref={catRowRef} className="relative flex-none">
+    // Once a work is open the picker is redundant with the header's Texts mega-menu on desktop,
+    // so it's hidden there (the user's "remove the selector next to the title" request). On
+    // mobile the header menu is hover-only (hidden), so the in-pane picker stays as the sole way
+    // to switch works. With no work open it's shown everywhere (the empty-state entry point).
+    <div ref={catRowRef} className={`relative flex-none ${work ? 'md:hidden' : ''}`}>
       <button
         type="button"
         onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
@@ -895,9 +907,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     <div className="flex flex-col gap-3 h-full min-h-0" style={{ '--tx-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
       {/* ── Reading pane — always visible ── */}
       <div className="flex-1 min-h-0 flex flex-col gap-3">
-        {/* Controls row — always shown so the Texts dropdown is reachable even with no work
-            open; the work-specific controls (title, Summary, search, view menus) appear once a
-            work is loaded, inline after Texts. */}
+        {/* Controls row. The in-pane Texts picker hides on desktop once a work is open (the
+            header mega-menu covers selection there — see textsMenu), but stays on mobile, where
+            that menu is hover-only. With no work open it starts the row as the empty-state entry. */}
         <div className="flex-none flex flex-wrap items-center gap-2">
           {textsMenu}
           {work && (<>
@@ -1174,6 +1186,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                             openWordSearch({
                                               x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma,
                                               reference: `${refLabel}:${row.num}`, kind: 'greek', greekCorpus: 'LXX',
+                                              bgCollection: bgCollection?.id, bgCollectionLabel: bgCollection?.label,
                                               highlight: isAuthenticated ? {
                                                 activeColor: existing?.color ?? null,
                                                 onPick: c => existing ? void highlights.recolor(existing.id, noteBook, section.chapter, c) : void highlights.create(noteBook, section.chapter, row.num, start, end, c, layer),
@@ -1209,7 +1222,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
                                 {q ? highlight(row.english ?? '', search)
                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                  : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook}
+                                  : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                         recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1236,7 +1249,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               {greekProse
                                 ? (q ? highlight(row.english ?? '', search)
                                    : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook}
+                                   : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1244,7 +1257,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 : row.english
                                 ? (q ? highlight(row.english, search)
                                    : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook}
+                                   : <TransWords text={row.english} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
