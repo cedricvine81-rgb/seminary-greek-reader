@@ -84,21 +84,25 @@ type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'prepositions' | 'conjuncti
                'indicatives' | 'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
 
+// Tab order follows the Beginning Greek course sequence (Lessons 1–10,
+// working through the Eight Minimums): nouns & friends (L3–4), the verb
+// system (L5–6), participles (L7), the other moods (L8), μι-verbs (L9),
+// basic syntax (L10), with the Black-based Conj. & Adv. as the capstone.
 const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'essentials',   label: 'Essentials'      },
   { id: 'nouns',        label: 'Nouns/Adj.'      },
-  { id: 'pronouns',     label: 'Pronouns'        },
   { id: 'prepositions', label: 'Prepositions'    },
-  { id: 'conjunctions', label: 'Conditionals'    },
-  { id: 'conj-adv',     label: 'Conj. & Adv.'    },
+  { id: 'pronouns',     label: 'Pronouns'        },
   { id: 'indicatives',  label: 'Indicatives'     },
-  { id: 'infinitives',  label: 'Infinitives'     },
-  { id: 'imperatives',  label: 'Imperatives'     },
+  { id: 'deponents',    label: 'Deponents'       },
+  { id: '2nd-aorists',  label: '2nd Aorists'     },
   { id: 'participles',  label: 'Participles'     },
   { id: 'subjunctives', label: 'Subjunctives'    },
+  { id: 'imperatives',  label: 'Imperatives'     },
+  { id: 'infinitives',  label: 'Infinitives'     },
   { id: 'mi-verbs',     label: 'μι-Verbs'        },
-  { id: '2nd-aorists',  label: '2nd Aorists'     },
-  { id: 'deponents',    label: 'Deponents'       },
+  { id: 'conjunctions', label: 'Conditionals'    },
+  { id: 'conj-adv',     label: 'Conj. & Adv.'    },
 ]
 
 const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
