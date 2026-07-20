@@ -601,4 +601,19 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       </Note>
     ),
   },
+  pronunciation: {
+    beginning: (
+      <Note>
+        <P>Greek's 24 letters are the ancestors of your own alphabet — many are old friends (<G>α β δ κ τ</G>), a few are impostors (<G>ν</G> is n, not v; <G>ρ</G> is r, not p), and three are genuinely new (<G>ξ χ ψ</G>). This course reads Greek with the <strong>Erasmian</strong> pronunciation: one distinct sound per letter, so spelling and sound always match.</P>
+        <Hook><strong>Breathings are essential; accents are unimportant</strong> (for now). Every vowel-initial word carries a breathing — rough <G>῾</G> = h-sound, smooth <G>᾿</G> = silent but still required.</Hook>
+        <Eg><G>ἅγιος</G> = <em>hagios</em> "holy" · <G>ἄγγελος</G> = <em>angelos</em> "angel" (and γγ = "ng").</Eg>
+      </Note>
+    ),
+    intermediate: (
+      <Note>
+        <P>Three schemes coexist: <strong>Erasmian</strong> (classroom convention — maximally distinct), <strong>reconstructed Koine</strong> (closest to first-century speech), and <strong>Modern Greek</strong> (the living tradition, with <em>itacism</em>: <G>η ι υ ει οι υι</G> all sounding "ee").</P>
+        <P>The mergers matter beyond the classroom: scribes spelled by ear, so itacism drives manuscript variants — <G>ἡμεῖς</G>/<G>ὑμεῖς</G> ("we/you") became homophones, splitting the witnesses at places like 1 John 1:4. Pronunciation history doubles as a text-critical tool.</P>
+      </Note>
+    ),
+  },
 }

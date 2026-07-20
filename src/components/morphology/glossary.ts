@@ -122,4 +122,12 @@ export const GLOSSARY: Record<string, GlossaryEntry> = {
     title: 'Voice',
     def: 'Whether the subject does the action (active: "I loose"), receives it (passive: "I am loosed"), or acts with self-involvement (middle).',
   },
+  diphthong: {
+    title: 'Diphthong',
+    def: 'Two vowels pronounced as one gliding sound — English has them too: "oil," "how," "eye." Greek writes its diphthongs with two letters: οι, αυ, αι.',
+  },
+  transliteration: {
+    title: 'Transliteration',
+    def: 'Writing a word letter-for-letter in another alphabet: λόγος → logos. Not translation (which gives the meaning, "word") — just the sounds.',
+  },
 }

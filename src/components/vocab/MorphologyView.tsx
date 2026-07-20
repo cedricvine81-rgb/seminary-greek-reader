@@ -16,6 +16,7 @@ import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morpholo
 import { LevelContext, type MorphLevel } from '@/components/morphology/shared'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
+import { PRONUNCIATION_CONTENT } from '@/components/morphology/chapters/pronunciation'
 import { NOUNS_CONTENT } from '@/components/morphology/chapters/nouns'
 import { PRONOUNS_CONTENT } from '@/components/morphology/chapters/pronouns'
 import { DEMONSTRATIVES_CONTENT } from '@/components/morphology/chapters/demonstratives'
@@ -86,7 +87,7 @@ function ExplanationCard({ explanation, level }: { explanation?: Explanation; le
    Top-level tab definitions
 ───────────────────────────────────────────── */
 
-type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
+type MainTab = 'essentials' | 'pronunciation' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
                'conjunctions' | 'conj-adv' | 'indicatives' | 'contract-verbs' | 'liquids' | 'principal-parts' |
                'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
@@ -100,6 +101,7 @@ type MainTab = 'essentials' | 'nouns' | 'pronouns' | 'demonstratives' | 'relativ
 // beside 2nd Aorists, and Principal Parts closing the verb block.
 const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'essentials',      label: 'Essentials'      },
+  { id: 'pronunciation',   label: 'Pronunciation'   },
   { id: 'nouns',           label: 'Nouns/Adj.'      },
   { id: 'prepositions',    label: 'Prepositions'    },
   { id: 'pronouns',        label: 'Pronouns'        },
@@ -122,6 +124,7 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
 
 const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
   essentials:        null,
+  pronunciation:     PRONUNCIATION_CONTENT,
   nouns:             NOUNS_CONTENT,
   pronouns:          PRONOUNS_CONTENT,
   demonstratives:    DEMONSTRATIVES_CONTENT,
