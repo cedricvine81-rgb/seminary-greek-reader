@@ -11,9 +11,10 @@
 
 import { useState, useRef, useEffect } from 'react'
 import clsx from 'clsx'
-import { Menu, GraduationCap } from 'lucide-react'
+import { Menu, GraduationCap, ListChecks, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morphology-explanations'
 import { LevelContext, type MorphLevel } from '@/components/morphology/shared'
+import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
 import { NOUNS_CONTENT } from '@/components/morphology/chapters/nouns'
 import { PRONOUNS_CONTENT } from '@/components/morphology/chapters/pronouns'
@@ -142,6 +143,111 @@ const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
 }
 
 /* ─────────────────────────────────────────────
+   Course mode (Phase 5a/5b)
+
+   An opt-in overlay that turns the ordered tabs into a guided course:
+   progress header, chapter numbering, prev/next navigation, and a
+   per-chapter "mark complete". Completion state comes from
+   useCourseProgress (localStorage + the signed-in user's account).
+   Essentials stays outside the path as the reference spine.
+───────────────────────────────────────────── */
+
+const COURSE_CHAPTERS = MAIN_TABS.filter(t => t.id !== 'essentials')
+
+/** Small pill that switches course mode on/off, next to the level toggle. */
+function CourseToggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      aria-pressed={on}
+      className={clsx(
+        'inline-flex items-center gap-1.5 shrink-0 rounded-lg border px-2.5 py-1 text-sm font-medium transition-colors',
+        on ? 'bg-brand-600 border-brand-600 text-white shadow-sm' : 'border-gray-200 bg-gray-50 text-gray-600 hover:text-gray-900'
+      )}
+    >
+      <ListChecks size={14} />
+      Course
+    </button>
+  )
+}
+
+/** Progress bar + continue button shown above the content in course mode. */
+function CourseHeader({ completed, goTo }: { completed: Set<string>; goTo: (id: MainTab) => void }) {
+  const done = COURSE_CHAPTERS.filter(c => completed.has(c.id)).length
+  const next = COURSE_CHAPTERS.find(c => !completed.has(c.id))
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3">
+      <ListChecks size={16} className="text-brand-600 shrink-0" />
+      <div className="flex-1 min-w-[10rem]">
+        <p className="text-sm font-medium text-gray-800">
+          Course progress · {done} of {COURSE_CHAPTERS.length} chapters
+        </p>
+        <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-gray-200">
+          <div
+            className="h-full rounded-full bg-brand-600 transition-all"
+            style={{ width: `${(done / COURSE_CHAPTERS.length) * 100}%` }}
+          />
+        </div>
+      </div>
+      {next ? (
+        <button
+          onClick={() => goTo(next.id)}
+          className="shrink-0 rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700"
+        >
+          {done > 0 ? 'Continue' : 'Start'}: {next.label} →
+        </button>
+      ) : (
+        <span className="text-sm font-medium text-green-600">All chapters complete 🎉</span>
+      )}
+    </div>
+  )
+}
+
+/** Prev / mark-complete / next bar at the foot of each chapter in course mode. */
+function CourseNav({ index, completed, onComplete, goTo }: {
+  index: number
+  completed: Set<string>
+  onComplete: (id: MainTab, done: boolean) => void
+  goTo: (id: MainTab) => void
+}) {
+  const cur = COURSE_CHAPTERS[index]
+  const prev = index > 0 ? COURSE_CHAPTERS[index - 1] : null
+  const next = index < COURSE_CHAPTERS.length - 1 ? COURSE_CHAPTERS[index + 1] : null
+  const done = completed.has(cur.id)
+  return (
+    <div className="mt-8 flex flex-wrap items-center gap-2 border-t border-gray-100 pt-4">
+      {prev && (
+        <button
+          onClick={() => goTo(prev.id)}
+          className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
+        >
+          <ChevronLeft size={15} /> {prev.label}
+        </button>
+      )}
+      <div className="flex-1" />
+      <button
+        onClick={() => onComplete(cur.id, !done)}
+        className={clsx(
+          'inline-flex items-center gap-1.5 rounded-lg px-3.5 py-1.5 text-sm font-medium text-white transition-colors',
+          done ? 'bg-green-600 hover:bg-green-700' : 'bg-brand-600 hover:bg-brand-700'
+        )}
+      >
+        <Check size={15} /> {done ? 'Completed — tap to undo' : 'Mark chapter complete'}
+      </button>
+      <div className="flex-1" />
+      {next && (
+        <button
+          onClick={() => goTo(next.id)}
+          className="inline-flex items-center gap-1 rounded-lg border border-gray-200 px-3 py-1.5 text-sm text-gray-600 hover:text-gray-900"
+        >
+          {next.label} <ChevronRight size={15} />
+        </button>
+      )}
+    </div>
+  )
+}
+
+/* ─────────────────────────────────────────────
    Main export
 ───────────────────────────────────────────── */
 
@@ -161,6 +267,25 @@ export function MorphologyView() {
     setLevel(l)
     try { localStorage.setItem('morph-level', l) } catch { /* ignore */ }
   }
+
+  // Course mode (opt-in overlay). Same hydrate-from-localStorage pattern as
+  // the level toggle; completion state via useCourseProgress (local + account).
+  const [courseMode, setCourseMode] = useState(false)
+  useEffect(() => {
+    if (localStorage.getItem('morph-course-mode') === '1') setCourseMode(true)
+  }, [])
+  function toggleCourse() {
+    setCourseMode(on => {
+      try { localStorage.setItem('morph-course-mode', on ? '0' : '1') } catch { /* ignore */ }
+      return !on
+    })
+  }
+  const { completed, setChapter } = useCourseProgress()
+  function goToChapter(id: MainTab) {
+    setMainTab(id)
+    window.scrollTo({ top: 0 })
+  }
+  const chapterIndex = COURSE_CHAPTERS.findIndex(c => c.id === mainTab)
 
   // Mobile only: the topic tabs + Essentials sections collapse into a hamburger menu
   // (desktop keeps the inline bars). Close it on an outside click.
@@ -206,6 +331,9 @@ export function MorphologyView() {
                     )}
                   >
                     {t.label}
+                    {courseMode && completed.has(t.id) && (
+                      <span className={clsx('ml-1', mainTab === t.id ? 'text-white' : 'text-green-600')}>✓</span>
+                    )}
                   </button>
                 ))}
               </div>
@@ -250,6 +378,7 @@ export function MorphologyView() {
               )}
             >
               {t.label}
+              {courseMode && completed.has(t.id) && <span className="ml-1 text-green-600">✓</span>}
             </button>
           ))}
         </div>
@@ -258,6 +387,7 @@ export function MorphologyView() {
       {/* Content */}
       <LevelContext.Provider value={level}>
       <div className="flex-1 overflow-y-auto">
+        {courseMode && <CourseHeader completed={completed} goTo={goToChapter} />}
         {mainTab === 'essentials' ? (
           <>
             {/* Ess. 1–8 sub-navigation (desktop; mobile uses the hamburger) */}
@@ -278,7 +408,10 @@ export function MorphologyView() {
             <div className="py-4">
               <div className="flex items-center justify-between gap-3 mb-4">
                 <h2 className="text-base font-semibold text-gray-900">{activeEss.title}</h2>
-                <LevelToggle level={level} onChange={changeLevel} />
+                <div className="flex items-center gap-2">
+                  <CourseToggle on={courseMode} onToggle={toggleCourse} />
+                  <LevelToggle level={level} onChange={changeLevel} />
+                </div>
               </div>
               <ExplanationCard explanation={ESS_EXPLANATIONS[essId]} level={level} />
               {activeEss.content}
@@ -288,12 +421,21 @@ export function MorphologyView() {
           <div className="py-4">
             <div className="flex items-center justify-between gap-3 mb-4">
               <h2 className="text-base font-semibold text-gray-900">
+                {courseMode && chapterIndex >= 0 && (
+                  <span className="text-gray-400 font-normal">Ch. {chapterIndex + 1} · </span>
+                )}
                 {MAIN_TABS.find(t => t.id === mainTab)?.label}
               </h2>
-              <LevelToggle level={level} onChange={changeLevel} />
+              <div className="flex items-center gap-2">
+                <CourseToggle on={courseMode} onToggle={toggleCourse} />
+                <LevelToggle level={level} onChange={changeLevel} />
+              </div>
             </div>
             <ExplanationCard explanation={TAB_EXPLANATIONS[mainTab]} level={level} />
             {REVISION_CONTENT[mainTab]}
+            {courseMode && chapterIndex >= 0 && (
+              <CourseNav index={chapterIndex} completed={completed} onComplete={setChapter} goTo={goToChapter} />
+            )}
           </div>
         )}
       </div>

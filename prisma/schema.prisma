@@ -91,6 +91,7 @@ model User {
   highlights         Highlight[]
   groupMemberships   CourseGroupMember[]
   groupContributions GroupContribution[]
+  morphologyProgress MorphologyProgress[]
 
   @@index([email])
   @@index([paddleCustomerId])
@@ -907,4 +908,21 @@ model Highlight {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, book, chapter])
+}
+
+// ─── Morphology course-mode progress ─────────────────────────────
+
+// One row per chapter a user has marked complete in the Morphology page's
+// course mode. chapterId is the stable tab id ("nouns", "liquids", …) —
+// chapter *content* edits never touch these rows; only renaming or removing
+// a chapter id does (clean up orphans with a one-line delete if that happens).
+model MorphologyProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  chapterId   String
+  completedAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, chapterId])
 }
