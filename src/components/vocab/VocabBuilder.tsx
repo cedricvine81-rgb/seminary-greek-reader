@@ -1,6 +1,7 @@
 'use client'
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
-import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X } from 'lucide-react'
+import Link from 'next/link'
+import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import bgvbData from '@/data/bgvb-vocabulary.json'
@@ -662,7 +663,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   useEffect(() => { setQIdx(0); setChosen(null); setCorrect(0) }, [dir])
 
   if (words.length === 0) {
-    return <ModeShell title="Test yourself" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
+    return <ModeShell title="Multiple Choice" onGoBack={onGoBack}><p className="py-16 text-center text-sm text-gray-400">No words selected.</p></ModeShell>
   }
 
   const showWord = (w: BgvbWord) => (
@@ -673,7 +674,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   if (qIdx >= questions.length) {
     const pct = Math.round((correct / questions.length) * 100)
     return (
-      <ModeShell title="Test yourself" onGoBack={onGoBack}>
+      <ModeShell title="Multiple Choice" onGoBack={onGoBack}>
         <div className="max-w-md mx-auto py-12 text-center space-y-4">
           <p className="text-2xl font-bold text-gray-700">Quiz complete</p>
           <p className="text-6xl font-bold text-gray-900">{pct}%</p>
@@ -694,7 +695,7 @@ function TestYourself({ words, onGoBack }: { words: BgvbWord[]; onGoBack: () => 
   }
 
   return (
-    <ModeShell title="Test yourself" onGoBack={onGoBack}
+    <ModeShell title="Multiple Choice" onGoBack={onGoBack}
       right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {questions.length} · {correct} correct</span>}>
       <div className="flex justify-center mb-4">
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 text-xs">
@@ -830,9 +831,10 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
   return (
     <ModeShell title="Identify the word" onGoBack={onGoBack}
       right={<span className="text-sm text-gray-500 tabular-nums">{qIdx + 1} / {words.length} · {correct}/{asked}</span>}>
-      <div className="max-w-4xl mx-auto space-y-5">
+      <div className="max-w-2xl mx-auto space-y-5">
+        {/* Clue: given this English meaning, click the matching word in the verse below. */}
         <div className="text-center">
-          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Find the word meaning</p>
+          <p className="text-xs uppercase tracking-wide text-gray-400 mb-1">Which word means</p>
           <p className="text-2xl font-semibold text-gray-900">
             {word.gloss} <span className="text-sm font-normal text-gray-400">({POS_LABELS[word.pos] ?? word.pos})</span>
           </p>
@@ -847,52 +849,61 @@ function IdentifyWord({ words, lang, onGoBack }: { words: BgvbWord[]; lang: Voca
           </div>
         ) : (
           <>
-            <div className="grid gap-6 md:grid-cols-2 md:items-center">
-              {/* The sentence — click the word that matches the clue. */}
-              <div className="space-y-2">
-                <div dir={item.rtl ? 'rtl' : undefined}
-                  className={`bg-surface border border-gray-200 rounded-2xl px-5 py-6 text-3xl leading-relaxed text-center ${item.rtl ? 'font-hebrew' : 'greek-text'}`}>
-                  {item.tokens.map((tok, i) => {
-                    const isTarget = item.targets.includes(i)
-                    const state = picked == null ? 'idle' : isTarget ? 'correct' : picked === i ? 'wrong' : 'idle'
-                    return (
-                      <span key={i}>
-                        <span onClick={() => pick(i)}
-                          className={clsx('rounded px-0.5 transition-colors',
-                            picked == null && 'cursor-pointer hover:bg-brand-100',
-                            state === 'correct' && 'bg-green-200 text-green-900',
-                            state === 'wrong' && 'bg-red-200 text-red-900')}>
-                          {tok}
-                        </span>
-                        {i < item.tokens.length - 1 ? ' ' : ''}
-                      </span>
-                    )
-                  })}
-                </div>
-                <p className="text-center text-xs text-gray-400">{item.ref}</p>
-              </div>
-
-              {/* Answer column — the translation + result appear to the right once a word is picked. */}
-              <div className="space-y-4">
-                {picked == null ? (
-                  <p className="text-center text-sm text-gray-400 italic">Click the word that matches the meaning above.</p>
-                ) : (
-                  <>
-                    {translation && translation !== 'loading' && (
-                      <p className="text-lg text-gray-600 italic leading-relaxed">{translation}</p>
-                    )}
-                    <div className="flex items-center justify-between gap-3">
-                      <span className={clsx('text-sm font-medium', item.targets.includes(picked) ? 'text-green-700' : 'text-red-700')}>
-                        {item.targets.includes(picked) ? 'Correct!' : 'Not quite — the answer is highlighted.'}
-                      </span>
-                      <button onClick={next} className="btn btn-primary px-6 py-2 flex-none">
-                        {qIdx + 1 >= words.length ? 'See results' : 'Next'} <ChevronRight size={16} />
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+            {/* The sentence — click the word that matches the clue. */}
+            <div dir={item.rtl ? 'rtl' : undefined}
+              className={`bg-surface border border-gray-200 rounded-2xl px-5 py-7 text-3xl leading-relaxed text-center ${item.rtl ? 'font-hebrew' : 'greek-text'}`}>
+              {item.tokens.map((tok, i) => {
+                const isTarget = item.targets.includes(i)
+                const state = picked == null ? 'idle' : isTarget ? 'correct' : picked === i ? 'wrong' : 'idle'
+                return (
+                  <span key={i}>
+                    <span onClick={() => pick(i)}
+                      className={clsx('rounded-md px-1 py-0.5 transition-colors',
+                        picked == null && 'cursor-pointer hover:bg-brand-100',
+                        state === 'correct' && 'bg-green-100 text-green-800',
+                        state === 'wrong' && 'bg-red-100 text-red-800')}>
+                      {tok}
+                    </span>
+                    {i < item.tokens.length - 1 ? ' ' : ''}
+                  </span>
+                )
+              })}
             </div>
+
+            {/* Before answering: a hint. After: a reveal panel grouping the result, the verse
+                translation, and its reference (which deep-links into the Reader). */}
+            {picked == null ? (
+              <p className="text-center text-sm text-gray-400 italic">Click the word above that matches the meaning.</p>
+            ) : (
+              <div className="rounded-2xl border border-gray-200 bg-surface p-4">
+                <div className="flex items-center gap-2">
+                  {item.targets.includes(picked)
+                    ? <CheckCircle2 size={18} className="flex-none text-green-600" />
+                    : <XCircle size={18} className="flex-none text-red-600" />}
+                  <span className={clsx('text-base font-semibold', item.targets.includes(picked) ? 'text-green-700' : 'text-red-700')}>
+                    {item.targets.includes(picked) ? 'Correct!' : 'Not quite — the answer is highlighted.'}
+                  </span>
+                </div>
+
+                {translation && translation !== 'loading' && (
+                  <p className="mt-3 text-lg italic leading-relaxed text-gray-600">{translation}</p>
+                )}
+
+                <div className="mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
+                  {item.rtl ? (
+                    <span className="text-xs text-gray-400">{item.ref}</span>
+                  ) : (
+                    <Link href={`/reader?ref=${encodeURIComponent(item.ref)}`}
+                      className="inline-flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 hover:underline">
+                      <BookOpen size={12} /> {item.ref} · open in Reader
+                    </Link>
+                  )}
+                  <button onClick={next} className="btn btn-primary px-6 py-2 flex-none">
+                    {qIdx + 1 >= words.length ? 'See results' : 'Next'} <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </div>
@@ -999,7 +1010,7 @@ function StudySettings({
             title="Multiple-choice quiz on the selected words"
             className="btn bg-surface border border-gray-300 text-gray-800 hover:bg-gray-50 active:bg-gray-100 py-4 text-base sm:text-lg justify-center"
           >
-            Test yourself
+            Multiple Choice
           </button>
           <button
             onClick={() => onStart('identify')}
