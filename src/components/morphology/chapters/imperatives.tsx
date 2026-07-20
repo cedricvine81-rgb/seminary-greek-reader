@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const IMPERATIVES_CONTENT = (
@@ -124,6 +125,34 @@ export const IMPERATIVES_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 8 · The imperative"
+      items={[
+        { words: [
+          { w: "ζητεῖτε", parsing: "Pres Act Impv 2 Pl — ζητέω", gloss: "seek! (keep seeking)" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "ἀλήθειαν.", parsing: "Acc Sg Fem — ἀλήθεια", syntax: "Direct Object", gloss: "truth" },
+        ],
+          translation: "Seek (pl.) the truth!",
+          note: "Present imperative = continuous command.",
+        },
+        { words: [
+          { w: "πέμψον", parsing: "Aor Act Impv 2 Sg — πέμπω", gloss: "send!" },
+          { w: "αὐτῷ.", parsing: "Dat Sg Masc — αὐτός", syntax: "Dative of Indirect Object", gloss: "to him" },
+        ],
+          translation: "Send to him!",
+          note: "Aorist imperative = simple (\"default\") command.",
+        },
+        { words: [
+          { w: "διδάσκετε", parsing: "Pres Act Impv 2 Pl — διδάσκω", gloss: "teach!" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λαόν.", parsing: "Acc Sg Masc — λαός", syntax: "Direct Object", gloss: "people" },
+        ],
+          translation: "Teach (pl.) the people!",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>The NT is full of commands — compare how present and aorist feel in context.</>}
       links={[

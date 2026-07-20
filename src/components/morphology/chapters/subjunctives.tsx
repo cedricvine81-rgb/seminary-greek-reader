@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const SUBJUNCTIVES_CONTENT = (
@@ -152,6 +153,60 @@ export const SUBJUNCTIVES_CONTENT = (
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 8 · The subjunctive"
+      items={[
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταὶ", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "ἀπεστάλησαν", parsing: "Aor Pass Ind 3 Pl — ἀποστέλλω", gloss: "were sent" },
+          { w: "ἵνα", parsing: "Conjunction + subjunctive", syntax: "Purpose Clause", gloss: "in order that" },
+          { w: "κηρύσσωσιν", parsing: "Pres Act Subj 3 Pl — κηρύσσω", gloss: "they might preach" },
+          { w: "τὸ", parsing: "Article — Acc Sg Neut", gloss: "the" },
+          { w: "εὐαγγέλιον.", parsing: "Acc Sg Neut — εὐαγγέλιον", syntax: "Direct Object", gloss: "gospel" },
+        ],
+          translation: "The disciples were sent in order that they might preach the gospel.",
+        },
+        { words: [
+          { w: "ὃς", parsing: "Nom Sg Masc — ὅς (relative)", gloss: "who" },
+          { w: "ἂν", parsing: "Particle (+ subjunctive = indefinite)", gloss: "-ever" },
+          { w: "ἀκούῃ", parsing: "Pres Act Subj 3 Sg — ἀκούω", gloss: "hears" },
+          { w: "μου,", parsing: "Gen Sg — ἐγώ", syntax: "Genitive of Direct Object", gloss: "me" },
+          { w: "ἀκούει", parsing: "Pres Act Ind 3 Sg — ἀκούω", gloss: "hears" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "the one" },
+          { w: "πέμψαντός", parsing: "Aor Act Ptcp Gen Sg Masc — πέμπω", syntax: "Substantival Participle", gloss: "who sent" },
+          { w: "με.", parsing: "Acc Sg — ἐγώ", syntax: "Direct Object", gloss: "me" },
+        ],
+          translation: "Whoever hears me hears the one who sent me.",
+          note: "ὃς ἄν + subjunctive = \"whoever\"; ἀκούω takes a genitive object.",
+        },
+        { words: [
+          { w: "μὴ", parsing: "Negative particle (+ aor. subj. = prohibition)", gloss: "do not" },
+          { w: "φοβηθῆτε.", parsing: "Aor Pass Subj 2 Pl — φοβέομαι", gloss: "be afraid" },
+        ],
+          translation: "Do not be afraid.",
+          note: "μή + aorist subjunctive forbids an action as a whole.",
+        },
+        { words: [
+          { w: "οὐ", parsing: "Negative particle", gloss: "not" },
+          { w: "μὴ", parsing: "Negative particle", gloss: "never" },
+          { w: "εἰσέλθωσιν.", parsing: "2nd Aor Act Subj 3 Pl — εἰσέρχομαι", gloss: "they will enter" },
+        ],
+          translation: "They will never enter.",
+          note: "οὐ μή + aorist subjunctive is the strongest possible denial.",
+        },
+        { words: [
+          { w: "ζητῶμεν", parsing: "Pres Act Subj 1 Pl — ζητέω (hortatory)", gloss: "let us seek" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "βασιλείαν", parsing: "Acc Sg Fem — βασιλεία", syntax: "Direct Object", gloss: "kingdom" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of" },
+          { w: "θεοῦ.", parsing: "Gen Sg Masc — θεός", syntax: "Genitive of Possession", gloss: "God" },
+        ],
+          translation: "Let us seek the kingdom of God.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Track the flag words to their subjunctives in the text itself.</>}
       links={[

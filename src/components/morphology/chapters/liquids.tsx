@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const LIQUIDS_CONTENT = (
@@ -124,6 +125,43 @@ export const LIQUIDS_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 6 · Liquid futures and aorists"
+      items={[
+        { words: [
+          { w: "ἀποστελοῦμεν", parsing: "Fut Act Ind 1 Pl — ἀποστέλλω (liquid)", gloss: "we will send" },
+          { w: "ἀγγέλους", parsing: "Acc Pl Masc — ἄγγελος", syntax: "Direct Object", gloss: "messengers" },
+          { w: "πρὸς", parsing: "Preposition + accusative", gloss: "to" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "πόλιν,", parsing: "Acc Sg Fem — πόλις", gloss: "city" },
+          { w: "ἀλλ᾿", parsing: "Conjunction", gloss: "but" },
+          { w: "οὐ", parsing: "Negative particle", gloss: "not" },
+          { w: "μένουσιν", parsing: "Fut Act Ind 3 Pl — μένω (liquid)", gloss: "they will remain" },
+          { w: "ἐκεῖ.", parsing: "Adverb", gloss: "there" },
+        ],
+          translation: "We will send messengers to the city, but they will not remain there.",
+          note: "Both futures are liquid: no σ, contract endings. Only the accent distinguishes μενοῦσιν (future) from μένουσιν (present).",
+        },
+        { words: [
+          { w: "ἤγειρεν", parsing: "Aor Act Ind 3 Sg — ἐγείρω (liquid)", gloss: "he raised" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "Ἰησοῦν", parsing: "Acc Sg Masc — Ἰησοῦς", syntax: "Direct Object", gloss: "Jesus" },
+          { w: "ἐκ", parsing: "Preposition + genitive", gloss: "from" },
+          { w: "νεκρῶν.", parsing: "Gen Pl Masc — νεκρός", gloss: "the dead" },
+        ],
+          translation: "He raised Jesus from the dead.",
+          note: "Liquid aorist: ἤγειρα has no σ — the stem vowel lengthens instead.",
+        },
+        { words: [
+          { w: "ἐγερεῖ", parsing: "Fut Act Ind 3 Sg — ἐγείρω (liquid)", gloss: "he will raise" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "νεκρούς.", parsing: "Acc Pl Masc — νεκρός", syntax: "Direct Object", gloss: "dead" },
+        ],
+          translation: "He will raise the dead.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Four liquid verbs that carry resurrection, mission, judgment, and abiding.</>}
       links={[

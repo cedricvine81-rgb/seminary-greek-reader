@@ -13,6 +13,7 @@ import { useState, useContext, createContext } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
+import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -331,6 +332,54 @@ export function GuidedExample({ title = 'Together: work it through', sentence, s
           Start over
         </button>
       )}
+    </div>
+  )
+}
+
+/**
+ * Classroom translation sentences — step ④ "you do" of the teaching cycle,
+ * mirrored 1:1 from the lesson PowerPoint decks (deck ⇄ page parity). Each
+ * sentence can be opened in the Translation Workbench side panel, where the
+ * student clicks each word and enters its parsing, syntax and translation.
+ * A "Show translation" fallback keeps the block usable as plain reading.
+ */
+export function ClassSentences({ lesson, intro, items }: {
+  /** Which deck these mirror, e.g. "Lesson 3 · Prepositions". */
+  lesson: string
+  intro?: React.ReactNode
+  items: Omit<WorkbenchSentence, 'lesson'>[]
+}) {
+  return (
+    <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-0.5">
+        Translate — from class
+      </p>
+      <p className="text-xs text-gray-500 mb-2">{lesson}</p>
+      {intro && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
+      <ol className="space-y-2.5 list-decimal list-inside">
+        {items.map((it, i) => (
+          <li key={i} className="text-sm text-gray-800">
+            <span className="font-reading normal-case text-base text-gray-900">
+              {it.words.map(w => w.w).join(' ')}
+            </span>
+            <div className="ml-5 mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5">
+              <button
+                type="button"
+                onClick={() => openTranslationWorkbench({ ...it, lesson })}
+                className="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                Open in the workbench →
+              </button>
+              <details className="inline-block">
+                <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-gray-400 hover:text-gray-600">
+                  Show translation
+                </summary>
+                <span className="text-sm text-gray-700">{it.translation}</span>
+              </details>
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   )
 }

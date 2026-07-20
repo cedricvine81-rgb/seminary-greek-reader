@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const PARTICIPLES_CONTENT = (
@@ -308,6 +309,78 @@ export const PARTICIPLES_CONTENT = (
     />
 
     {/* ── 8 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 7 · Participles"
+      items={[
+        { words: [
+          { w: "γράφων", parsing: "Pres Act Ptcp Nom Sg Masc — γράφω", syntax: "Adverbial Participle (Temporal)", gloss: "while writing" },
+          { w: "ταῦτα", parsing: "Acc Pl Neut — οὗτος", syntax: "Direct Object", gloss: "these things" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "προφήτης", parsing: "Nom Sg Masc — προφήτης", syntax: "Subject", gloss: "prophet" },
+          { w: "ἀκούει", parsing: "Pres Act Ind 3 Sg — ἀκούω", gloss: "hears" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "μαθητήν.", parsing: "Acc Sg Masc — μαθητής", syntax: "Direct Object", gloss: "disciple" },
+        ],
+          translation: "While writing these things, the prophet hears the disciple.",
+          note: "Present participle = action at the same time as the main verb.",
+        },
+        { words: [
+          { w: "γράψας", parsing: "Aor Act Ptcp Nom Sg Masc — γράφω", syntax: "Adverbial Participle (Temporal)", gloss: "having written" },
+          { w: "ταῦτα", parsing: "Acc Pl Neut — οὗτος", syntax: "Direct Object", gloss: "these things" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "προφήτης", parsing: "Nom Sg Masc — προφήτης", syntax: "Subject", gloss: "prophet" },
+          { w: "ἤκουσε", parsing: "Aor Act Ind 3 Sg — ἀκούω", gloss: "heard" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "μαθητήν.", parsing: "Acc Sg Masc — μαθητής", syntax: "Direct Object", gloss: "disciple" },
+        ],
+          translation: "Having written these things, the prophet heard the disciple.",
+          note: "Aorist participle = action before the main verb.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "μαθητὴς", parsing: "Nom Sg Masc — μαθητής", syntax: "Subject", gloss: "disciple" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "who" },
+          { w: "διδασκόμενος", parsing: "Pres Pass Ptcp Nom Sg Masc — διδάσκω", syntax: "Attributive Participle", gloss: "is being taught" },
+          { w: "ὑπὸ", parsing: "Preposition + genitive (agent)", gloss: "by" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "the" },
+          { w: "προφήτου", parsing: "Gen Sg Masc — προφήτης", gloss: "prophet" },
+          { w: "πιστός", parsing: "Nom Sg Masc — πιστός", gloss: "faithful" },
+          { w: "ἐστιν.", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "is" },
+        ],
+          translation: "The disciple who is being taught by the prophet is faithful.",
+          note: "Article + participle after the noun = attributive: translate as a relative clause.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the ones" },
+          { w: "ζητοῦντες", parsing: "Pres Act Ptcp Nom Pl Masc — ζητέω", syntax: "Substantival Participle", gloss: "who seek" },
+          { w: "εὑρήσουσιν.", parsing: "Fut Act Ind 3 Pl — εὑρίσκω", gloss: "will find" },
+        ],
+          translation: "The ones who seek will find.",
+        },
+        { words: [
+          { w: "ἐλθοῦσα", parsing: "2nd Aor Act Ptcp Nom Sg Fem — ἔρχομαι", syntax: "Adverbial Participle (Temporal)", gloss: "when she had come" },
+          { w: "προσεκύνησεν", parsing: "Aor Act Ind 3 Sg — προσκυνέω", gloss: "she worshipped" },
+          { w: "αὐτῷ.", parsing: "Dat Sg Masc — αὐτός", gloss: "him" },
+        ],
+          translation: "When she had come, she worshipped him.",
+          note: "προσκυνέω takes its object in the dative.",
+        },
+        { words: [
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "the" },
+          { w: "δὲ", parsing: "Conjunction (postpositive)", gloss: "and/now" },
+          { w: "προφήτου", parsing: "Gen Sg Masc — προφήτης", syntax: "Genitive Absolute", gloss: "prophet" },
+          { w: "ἀποθανόντος", parsing: "2nd Aor Act Ptcp Gen Sg Masc — ἀποθνῄσκω", syntax: "Genitive Absolute", gloss: "having died" },
+          { w: "ἔφυγον", parsing: "2nd Aor Act Ind 3 Pl — φεύγω", gloss: "they fled" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "into" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "ἔρημον.", parsing: "Acc Sg Fem — ἔρημος", gloss: "desert" },
+        ],
+          translation: "After the prophet died, they fled into the desert.",
+          note: "Genitive absolute: noun + participle both genitive, grammatically disconnected from the main clause.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Participles are everywhere — roughly one NT word in twenty. Watch the patterns repeat.</>}
       links={[

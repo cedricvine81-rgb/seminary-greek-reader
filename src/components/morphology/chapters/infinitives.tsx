@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const INFINITIVES_CONTENT = (
@@ -175,6 +176,39 @@ export const INFINITIVES_CONTENT = (
     />
 
     {/* ── 8 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lessons 5 & 8 · The infinitive"
+      items={[
+        { words: [
+          { w: "θέλεις", parsing: "Pres Act Ind 2 Sg — θέλω", gloss: "do you wish" },
+          { w: "ἀκοῦσαι;", parsing: "Aor Act Infinitive — ἀκούω", syntax: "Complementary Infinitive", gloss: "to hear" },
+        ],
+          translation: "Do you (s.) wish to hear?",
+        },
+        { words: [
+          { w: "δεῖ", parsing: "Pres Act Ind 3 Sg — δεῖ (impersonal)", gloss: "it is necessary" },
+          { w: "προσεύχεσθαι.", parsing: "Pres Mid Infinitive — προσεύχομαι", syntax: "Subject Infinitive", gloss: "to pray" },
+        ],
+          translation: "It is necessary to pray.",
+          note: "With impersonal δεῖ the infinitive is the grammatical subject.",
+        },
+        { words: [
+          { w: "ἐμέλλετε", parsing: "Impf Act Ind 2 Pl — μέλλω", gloss: "you were about" },
+          { w: "ἔρχεσθαι.", parsing: "Pres Mid Infinitive — ἔρχομαι", syntax: "Complementary Infinitive", gloss: "to come" },
+        ],
+          translation: "You (pl.) were about to come.",
+        },
+        { words: [
+          { w: "δεῖ", parsing: "Pres Act Ind 3 Sg — δεῖ (impersonal)", gloss: "it is necessary" },
+          { w: "τηρεῖν", parsing: "Pres Act Infinitive — τηρέω", syntax: "Subject Infinitive", gloss: "to keep" },
+          { w: "τὰς", parsing: "Article — Acc Pl Fem", gloss: "the" },
+          { w: "ἐντολάς.", parsing: "Acc Pl Fem — ἐντολή", syntax: "Direct Object", gloss: "commandments" },
+        ],
+          translation: "It is necessary to keep the commandments.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Watch the patterns — helper + infinitive, preposition + articular infinitive — repeat page after page.</>}
       links={[

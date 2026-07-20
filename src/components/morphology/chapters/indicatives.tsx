@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const INDICATIVES_CONTENT = (
@@ -359,6 +360,59 @@ export const INDICATIVES_CONTENT = (
     />
 
     {/* ── 10 · See it in the NT ──────────────────────────── */}
+    <ClassSentences
+      lesson="Lessons 5–6 · The tenses"
+      items={[
+        { words: [
+          { w: "ἐβάπτιζεν", parsing: "Impf Act Ind 3 Sg — βαπτίζω", gloss: "he was baptising" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "μαθητάς.", parsing: "Acc Pl Masc — μαθητής", syntax: "Direct Object", gloss: "disciples" },
+        ],
+          translation: "He was baptising the disciples.",
+          note: "Imperfect: the ἐ- augment + primary stem = ongoing past action.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "σώσει", parsing: "Fut Act Ind 3 Sg — σῴζω", gloss: "will save" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λαὸν", parsing: "Acc Sg Masc — λαός", syntax: "Direct Object", gloss: "people" },
+          { w: "αὐτοῦ.", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive of Possession", gloss: "his" },
+        ],
+          translation: "God will save his people.",
+        },
+        { words: [
+          { w: "διὰ", parsing: "Preposition + accusative", gloss: "because of" },
+          { w: "τὸ", parsing: "Article — Acc Sg Neut", gloss: "the" },
+          { w: "εὐαγγέλιον", parsing: "Acc Sg Neut — εὐαγγέλιον", gloss: "gospel" },
+          { w: "ἐπιστεύσαμεν.", parsing: "Aor Act Ind 1 Pl — πιστεύω", gloss: "we believed" },
+        ],
+          translation: "We believed because of the gospel.",
+        },
+        { words: [
+          { w: "βεβαπτίσμεθα", parsing: "Perf Mid/Pass Ind 1 Pl — βαπτίζω", gloss: "we have been baptised" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "into" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "Χριστόν.", parsing: "Acc Sg Masc — Χριστός", gloss: "Christ" },
+        ],
+          translation: "We have been baptised into Christ.",
+          note: "Perfect: reduplication (βε-) + completed action with continuing result.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "ἀσθενὴς", parsing: "Nom Sg Masc — ἀσθενής (adjective as noun)", syntax: "Subject", gloss: "weak man" },
+          { w: "ἠνέχθη", parsing: "Aor Pass Ind 3 Sg — φέρω (irregular)", gloss: "was carried" },
+          { w: "ὑπὸ", parsing: "Preposition + genitive (agent)", gloss: "by" },
+          { w: "τῶν", parsing: "Article — Gen Pl Masc", gloss: "the" },
+          { w: "ἀδελφῶν", parsing: "Gen Pl Masc — ἀδελφός", gloss: "brothers" },
+          { w: "αὐτοῦ.", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive of Possession", gloss: "his" },
+        ],
+          translation: "The weak man was carried by his brothers.",
+          note: "ὑπό + genitive marks the agent of a passive verb.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>The tense system in the wild — every hit is a real NT verb you can now decode.</>}
       links={[

@@ -14,6 +14,7 @@ import clsx from 'clsx'
 import { Menu, GraduationCap, ListChecks, Check, ChevronLeft, ChevronRight } from 'lucide-react'
 import { ESS_EXPLANATIONS, TAB_EXPLANATIONS, type Explanation } from './morphology-explanations'
 import { LevelContext, type MorphLevel } from '@/components/morphology/shared'
+import { TranslationWorkbench } from '@/components/morphology/TranslationWorkbench'
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
 import { PRONUNCIATION_CONTENT } from '@/components/morphology/chapters/pronunciation'
@@ -307,6 +308,8 @@ export function MorphologyView() {
 
   return (
     <div className="flex flex-col min-h-0">
+      {/* Translation Workbench side panel (opened from ClassSentences blocks). */}
+      <TranslationWorkbench />
       {/* Mobile: topic tabs + section sub-nav collapse into a hamburger. */}
       <div ref={menuRef} className="lg:hidden relative">
         <button

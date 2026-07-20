@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { MorphologyView } from '@/components/vocab/MorphologyView'
 
-export const metadata: Metadata = { title: 'Morphology' }
+export const metadata: Metadata = { title: 'Grammar' }
 
 export default function MorphologyPage() {
   return (

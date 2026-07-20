@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const SECOND_AORISTS_CONTENT = (
@@ -164,6 +165,31 @@ export const SECOND_AORISTS_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 6 · Second aorists (Mark 14:16)"
+      items={[
+        { words: [
+          { w: "καὶ", parsing: "Conjunction", gloss: "and" },
+          { w: "ἐξῆλθον", parsing: "2nd Aor Act Ind 3 Pl — ἐξέρχομαι", gloss: "went out" },
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταὶ", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "καὶ", parsing: "Conjunction", gloss: "and" },
+          { w: "ἦλθον", parsing: "2nd Aor Act Ind 3 Pl — ἔρχομαι", gloss: "came" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "into" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "πόλιν", parsing: "Acc Sg Fem — πόλις", gloss: "city" },
+          { w: "καὶ", parsing: "Conjunction", gloss: "and" },
+          { w: "εὗρον", parsing: "2nd Aor Act Ind 3 Pl — εὑρίσκω", gloss: "found" },
+          { w: "καθὼς", parsing: "Conjunction", gloss: "just as" },
+          { w: "εἶπεν", parsing: "2nd Aor Act Ind 3 Sg — λέγω", gloss: "he had said" },
+          { w: "αὐτοῖς.", parsing: "Dat Pl Masc — αὐτός", syntax: "Dative of Indirect Object", gloss: "to them" },
+        ],
+          translation: "And the disciples went out and came into the city and found (it) just as he had told them. (Mark 14:16)",
+          note: "Four second aorists in one verse — every one a changed stem with imperfect-style endings.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>The 2nd-aorist club dominates NT narrative — every story runs on these forms.</>}
       links={[

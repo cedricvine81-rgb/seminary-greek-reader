@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const DEPONENTS_CONTENT = (
@@ -157,6 +158,45 @@ export const DEPONENTS_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 5 · Middles and deponents"
+      items={[
+        { words: [
+          { w: "ἔρχονται", parsing: "Pres Mid Ind 3 Pl — ἔρχομαι (deponent)", gloss: "they are coming" },
+          { w: "πρὸς", parsing: "Preposition + accusative", gloss: "to/toward" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "θάλασσαν.", parsing: "Acc Sg Fem — θάλασσα", gloss: "sea" },
+        ],
+          translation: "They are coming to the sea.",
+        },
+        { words: [
+          { w: "δεχόμεθα", parsing: "Pres Mid Ind 1 Pl — δέχομαι (deponent)", gloss: "we are receiving" },
+          { w: "τὸ", parsing: "Article — Acc Sg Neut", gloss: "the" },
+          { w: "εὐαγγέλιον.", parsing: "Acc Sg Neut — εὐαγγέλιον", syntax: "Direct Object", gloss: "gospel" },
+        ],
+          translation: "We are receiving the gospel.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταὶ", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "ἐξέρχονται", parsing: "Pres Mid Ind 3 Pl — ἐξέρχομαι (deponent)", gloss: "are going out" },
+          { w: "ἐκ", parsing: "Preposition + genitive", gloss: "out of" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Neut", gloss: "the" },
+          { w: "ἱεροῦ.", parsing: "Gen Sg Neut — ἱερόν", gloss: "temple" },
+        ],
+          translation: "The disciples are leaving the temple.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "γραμματεῖς", parsing: "Nom Pl Masc — γραμματεύς", syntax: "Subject", gloss: "scribes" },
+          { w: "ἤρξαντο", parsing: "Aor Mid Ind 3 Pl — ἄρχομαι (deponent)", gloss: "began" },
+          { w: "λαλῆσαι.", parsing: "Aor Act Infinitive — λαλέω", syntax: "Complementary Infinitive", gloss: "to speak" },
+        ],
+          translation: "The scribes began to speak.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Four deponents you cannot read a page without.</>}
       links={[

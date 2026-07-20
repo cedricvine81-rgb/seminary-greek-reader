@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const PREPOSITIONS_CONTENT = (
@@ -181,6 +182,56 @@ export const PREPOSITIONS_CONTENT = (
     />
 
     {/* ── 8 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 3 · Prepositions"
+      items={[
+        { words: [
+          { w: "διὰ", parsing: "Preposition + accusative", gloss: "because of" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "ἀγάπην", parsing: "Acc Sg Fem — ἀγάπη", gloss: "love" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of" },
+          { w: "θεοῦ", parsing: "Gen Sg Masc — θεός", syntax: "Subjective Genitive", gloss: "God" },
+          { w: "πιστεύομεν.", parsing: "Pres Act Ind 1 Pl — πιστεύω", gloss: "we believe" },
+        ],
+          translation: "We believe because of the love of God.",
+          note: "τοῦ θεοῦ could be subjective (\"God loves us\") or objective (\"we love God\") — context decides.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "Ἰησοῦς", parsing: "Nom Sg Masc — Ἰησοῦς", syntax: "Subject", gloss: "Jesus" },
+          { w: "λαμβάνει", parsing: "Pres Act Ind 3 Sg — λαμβάνω", gloss: "takes" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "μαθητὰς", parsing: "Acc Pl Masc — μαθητής", syntax: "Direct Object", gloss: "disciples" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "into" },
+          { w: "τὰ", parsing: "Article — Acc Pl Neut", gloss: "the" },
+          { w: "πλοῖα.", parsing: "Acc Pl Neut — πλοῖον", gloss: "boats" },
+        ],
+          translation: "Jesus takes the disciples into the boats.",
+        },
+        { words: [
+          { w: "λαλοῦσιν", parsing: "Pres Act Ind 3 Pl — λαλέω", gloss: "they are speaking" },
+          { w: "αὐταῖς", parsing: "Dat Pl Fem — αὐτός", syntax: "Dative of Indirect Object", gloss: "to them (f.)" },
+          { w: "περὶ", parsing: "Preposition + genitive", gloss: "about" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "the" },
+          { w: "βασιλείας.", parsing: "Gen Sg Fem — βασιλεία", gloss: "kingdom" },
+        ],
+          translation: "They are speaking to them (f.) about the kingdom.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "γινώσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "knows" },
+          { w: "τὰς", parsing: "Article — Acc Pl Fem", gloss: "the" },
+          { w: "καρδίας", parsing: "Acc Pl Fem — καρδία", syntax: "Direct Object", gloss: "hearts" },
+          { w: "κατὰ", parsing: "Preposition + accusative", gloss: "according to" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λόγον.", parsing: "Acc Sg Masc — λόγος", gloss: "word" },
+        ],
+          translation: "God knows the hearts according to the word.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Prepositions saturate the NT — watch the same word shift meaning with its case.</>}
       links={[

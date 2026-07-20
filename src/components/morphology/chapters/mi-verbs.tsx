@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const MI_VERBS_CONTENT = (
@@ -170,6 +171,53 @@ export const MI_VERBS_CONTENT = (
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 9 · μι-verbs"
+      items={[
+        { words: [
+          { w: "διδόασιν", parsing: "Pres Act Ind 3 Pl — δίδωμι", gloss: "they are giving" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "ἄρτον", parsing: "Acc Sg Masc — ἄρτος", syntax: "Direct Object", gloss: "bread" },
+          { w: "τοῖς", parsing: "Article — Dat Pl Neut", gloss: "to the" },
+          { w: "τέκνοις.", parsing: "Dat Pl Neut — τέκνον", syntax: "Dative of Indirect Object", gloss: "children" },
+        ],
+          translation: "They are giving the bread to the children.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "ἀνέστησεν", parsing: "Aor Act Ind 3 Sg — ἀνίστημι (transitive)", gloss: "raised" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "Χριστὸν", parsing: "Acc Sg Masc — Χριστός", syntax: "Direct Object", gloss: "Christ" },
+          { w: "ἐκ", parsing: "Preposition + genitive", gloss: "from" },
+          { w: "νεκρῶν.", parsing: "Gen Pl Masc — νεκρός", gloss: "the dead" },
+        ],
+          translation: "God raised Christ from the dead.",
+        },
+        { words: [
+          { w: "ἔστημεν", parsing: "2nd Aor Act Ind 1 Pl — ἵστημι (intransitive)", gloss: "we stood" },
+          { w: "μετὰ", parsing: "Preposition + genitive", gloss: "with" },
+          { w: "τῶν", parsing: "Article — Gen Pl Masc", gloss: "the" },
+          { w: "μαθητῶν", parsing: "Gen Pl Masc — μαθητής", gloss: "disciples" },
+          { w: "ἐν", parsing: "Preposition + dative", gloss: "in" },
+          { w: "τῷ", parsing: "Article — Dat Sg Neut", gloss: "the" },
+          { w: "ἱερῷ.", parsing: "Dat Sg Neut — ἱερόν", gloss: "temple" },
+        ],
+          translation: "We stood with the disciples in the temple.",
+        },
+        { words: [
+          { w: "ἀφέντες", parsing: "2nd Aor Act Ptcp Nom Pl Masc — ἀφίημι", syntax: "Adverbial Participle (Temporal)", gloss: "having left" },
+          { w: "τὰ", parsing: "Article — Acc Pl Neut", gloss: "the" },
+          { w: "πλοῖα", parsing: "Acc Pl Neut — πλοῖον", syntax: "Direct Object", gloss: "boats" },
+          { w: "ἠκολούθησαν", parsing: "Aor Act Ind 3 Pl — ἀκολουθέω", gloss: "they followed" },
+          { w: "αὐτῷ.", parsing: "Dat Sg Masc — αὐτός", gloss: "him" },
+        ],
+          translation: "When they had left the boats, they followed him.",
+          note: "ἀκολουθέω takes its object in the dative.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>The μι-club in the wild — watch for iota vs. augment vs. reduplication at the front.</>}
       links={[

@@ -138,6 +138,21 @@ export const CONTRACT_VERBS_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <Practice
+      title="From class — parse the αω/οω forms (Lesson 9)"
+      intro={<>The parse drill from the classroom deck. Say the full parsing out loud before revealing.</>}
+      items={[
+        { q: <span className="normal-case">ἀγαπᾶται</span>, a: <>Pres Mid/Pass Ind 3 Sg — ἀγαπάω, &ldquo;he/she is loved&rdquo;</> },
+        { q: <span className="normal-case">δεδικαιωμένος</span>, a: <>Perf Mid/Pass Ptcp Nom Sg Masc — δικαιόω, &ldquo;having been justified&rdquo; (Luke 18:14)</> },
+        { q: <span className="normal-case">ἐρωτῶ</span>, a: <>Pres Act Ind 1 Sg — ἐρωτάω, &ldquo;I ask&rdquo;</> },
+        { q: <span className="normal-case">ἐπλήρουν</span>, a: <>Impf Act Ind 3 Pl <em>or</em> 1 Sg — πληρόω, &ldquo;they were / I was fulfilling&rdquo;</> },
+        { q: <span className="normal-case">ἀγαπήσεις</span>, a: <>Fut Act Ind 2 Sg — ἀγαπάω, &ldquo;you will love&rdquo; (Matt 22:39)</> },
+        { q: <span className="normal-case">ζῆν</span>, a: <>Pres Act Infinitive — ζάω, &ldquo;to live&rdquo;</> },
+        { q: <span className="normal-case">δικαιοῦται</span>, a: <>Pres Mid/Pass Ind 3 Sg — δικαιόω, &ldquo;he/she is justified&rdquo;</> },
+        { q: <span className="normal-case">διψᾷ</span>, a: <>Pres Act Ind 3 Sg — διψάω, &ldquo;he/she thirsts&rdquo; (John 4)</> },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Contract verbs carry the NT's biggest themes — love, doing, speaking, fulfilling.</>}
       links={[

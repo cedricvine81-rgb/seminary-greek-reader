@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const PRONOUNS_CONTENT = (
@@ -242,6 +243,43 @@ export const PRONOUNS_CONTENT = (
     />
 
     {/* ── 8 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 3 · Pronouns (first and second person)"
+      items={[
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "λόγος", parsing: "Nom Sg Masc — λόγος", syntax: "Subject", gloss: "word" },
+          { w: "σου", parsing: "Gen Sg — σύ", syntax: "Genitive of Possession", gloss: "your" },
+          { w: "σῴζει.", parsing: "Pres Act Ind 3 Sg — σῴζω", gloss: "saves" },
+        ],
+          translation: "Your word saves.",
+        },
+        { words: [
+          { w: "ὑμεῖς", parsing: "Nom Pl — σύ", syntax: "Subject", gloss: "you (pl.)" },
+          { w: "ἠκούσατε", parsing: "Aor Act Ind 2 Pl — ἀκούω", gloss: "heard" },
+          { w: "ἀλλὰ", parsing: "Conjunction", gloss: "but" },
+          { w: "ἡμεῖς", parsing: "Nom Pl — ἐγώ", syntax: "Subject", gloss: "we" },
+          { w: "οὐκ", parsing: "Negative particle", gloss: "not" },
+          { w: "ἐπιστεύσαμεν.", parsing: "Aor Act Ind 1 Pl — πιστεύω", gloss: "believed" },
+        ],
+          translation: "You (pl.) heard, but we did not believe.",
+          note: "The emphatic pronouns ὑμεῖς and ἡμεῖς sharpen the contrast — Greek only adds them for emphasis.",
+        },
+        { words: [
+          { w: "σὺ", parsing: "Nom Sg — σύ", syntax: "Subject", gloss: "you" },
+          { w: "φιλεῖς", parsing: "Pres Act Ind 2 Sg — φιλέω", gloss: "love" },
+          { w: "σεαυτόν,", parsing: "Acc Sg Masc — σεαυτοῦ (reflexive)", syntax: "Direct Object", gloss: "yourself" },
+          { w: "ἀλλ᾿", parsing: "Conjunction", gloss: "but" },
+          { w: "ἐγὼ", parsing: "Nom Sg — ἐγώ", syntax: "Subject", gloss: "I" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "ἄλλους.", parsing: "Acc Pl Masc — ἄλλος", syntax: "Direct Object", gloss: "others" },
+        ],
+          translation: "You love yourself, but I (love) the others.",
+          note: "The second verb is left out (ellipsis) — supply it from the first clause.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Pronouns are the highest-frequency words in the NT after the article — see them at work.</>}
       links={[

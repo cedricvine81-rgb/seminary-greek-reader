@@ -16,6 +16,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const NOUNS_CONTENT = (
@@ -373,6 +374,46 @@ export const NOUNS_CONTENT = (
     />
 
     {/* ── 9 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lessons 3–4 · Declensions and adjectives"
+      items={[
+        { words: [
+          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+          { w: "θυγάτηρ", parsing: "Nom Sg Fem — θυγάτηρ (3rd decl.)", syntax: "Subject", gloss: "daughter" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "of the" },
+          { w: "μητρὸς", parsing: "Gen Sg Fem — μήτηρ (3rd decl.)", syntax: "Genitive of Relationship", gloss: "mother" },
+          { w: "ἔφυγεν.", parsing: "Aor Act Ind 3 Sg — φεύγω", gloss: "fled" },
+        ],
+          translation: "The mother's daughter fled.",
+        },
+        { words: [
+          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
+          { w: "πιστὸν", parsing: "Acc Sg Masc — πιστός (adjective)", gloss: "faithful" },
+          { w: "πατέρα.", parsing: "Acc Sg Masc — πατήρ (3rd decl.)", syntax: "Direct Object", gloss: "father" },
+        ],
+          translation: "We have a faithful father.",
+          note: "πιστόν (1st/2nd-declension adjective) agrees with πατέρα (3rd-declension noun) in case, number and gender — not in ending.",
+        },
+        { words: [
+          { w: "διὰ", parsing: "Preposition + genitive", gloss: "through" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "the" },
+          { w: "χάριτος", parsing: "Gen Sg Fem — χάρις (3rd decl.)", gloss: "grace" },
+          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
+          { w: "ἐλπίδα", parsing: "Acc Sg Fem — ἐλπίς (3rd decl.)", syntax: "Direct Object", gloss: "hope" },
+          { w: "ζωῆς.", parsing: "Gen Sg Fem — ζωή", syntax: "Genitive of Description/Quality", gloss: "of life" },
+        ],
+          translation: "Through grace we have hope of life.",
+        },
+        { words: [
+          { w: "πλείονες", parsing: "Nom Pl Fem — πλείων (comparative)", gloss: "more" },
+          { w: "γυναῖκες", parsing: "Nom Pl Fem — γυνή (3rd decl.)", syntax: "Subject", gloss: "women" },
+          { w: "ἔρχονται.", parsing: "Pres Mid Ind 3 Pl — ἔρχομαι", gloss: "are coming" },
+        ],
+          translation: "More women are coming.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Don't take the textbook's word for it — these links search the tagged Greek New Testament itself.</>}
       links={[

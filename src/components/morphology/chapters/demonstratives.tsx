@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const DEMONSTRATIVES_CONTENT = (
@@ -164,6 +165,52 @@ export const DEMONSTRATIVES_CONTENT = (
     />
 
     {/* ── 7 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 3 · Pronouns (οὗτος and ἐκεῖνος)"
+      items={[
+        { words: [
+          { w: "αὕτη", parsing: "Nom Sg Fem — οὗτος", syntax: "Subject", gloss: "this" },
+          { w: "ἐστὶν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "is" },
+          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+          { w: "ἡμέρα.", parsing: "Nom Sg Fem — ἡμέρα", syntax: "Predicate Nominative", gloss: "day" },
+        ],
+          translation: "This is the day.",
+        },
+        { words: [
+          { w: "γινώσκω", parsing: "Pres Act Ind 1 Sg — γινώσκω", gloss: "I know" },
+          { w: "ἐκεῖνον", parsing: "Acc Sg Masc — ἐκεῖνος", gloss: "that" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "ἄνθρωπον.", parsing: "Acc Sg Masc — ἄνθρωπος", syntax: "Direct Object", gloss: "man" },
+        ],
+          translation: "I know that man.",
+        },
+        { words: [
+          { w: "ἐν", parsing: "Preposition + dative", gloss: "at/in" },
+          { w: "τῇ", parsing: "Article — Dat Sg Fem", gloss: "the" },
+          { w: "αὐτῇ", parsing: "Dat Sg Fem — αὐτός", gloss: "same" },
+          { w: "ὥρᾳ", parsing: "Dat Sg Fem — ὥρα", syntax: "Dative of Time", gloss: "hour" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "Πέτρος", parsing: "Nom Sg Masc — Πέτρος", syntax: "Subject", gloss: "Peter" },
+          { w: "ἔβλεψεν", parsing: "Aor Act Ind 3 Sg — βλέπω", gloss: "saw" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "Ἰησοῦν.", parsing: "Acc Sg Masc — Ἰησοῦς", syntax: "Direct Object", gloss: "Jesus" },
+        ],
+          translation: "At the same hour Peter saw Jesus.",
+          note: "αὐτός in attributive position (article–αὐτός–noun) means \"same\".",
+        },
+        { words: [
+          { w: "διὰ", parsing: "Preposition + accusative", gloss: "because of" },
+          { w: "ταῦτα", parsing: "Acc Pl Neut — οὗτος", gloss: "these things" },
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταὶ", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "ἔλεγον", parsing: "Impf Act Ind 3 Pl — λέγω", gloss: "were speaking" },
+          { w: "ἀλλήλοις.", parsing: "Dat Pl Masc — ἀλλήλων", syntax: "Dative of Indirect Object", gloss: "to one another" },
+        ],
+          translation: "Because of these things the disciples were speaking to one another.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>The pointing words in place — notice how often they open or close an argument.</>}
       links={[

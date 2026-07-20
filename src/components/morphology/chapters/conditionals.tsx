@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  ClassSentences,
 } from '../shared'
 
 export const CONJUNCTIONS_CONTENT = (
@@ -153,6 +154,45 @@ export const CONJUNCTIONS_CONTENT = (
     />
 
     {/* ── 6 · See it in the NT ───────────────────────────── */}
+    <ClassSentences
+      lesson="Lesson 10 · Conditionals"
+      items={[
+        { words: [
+          { w: "εἰ", parsing: "Conjunction (+ indicative)", syntax: "Conditional Clause (First Class)", gloss: "if" },
+          { w: "πιστεύεις", parsing: "Pres Act Ind 2 Sg — πιστεύω", gloss: "you believe" },
+          { w: "τῷ", parsing: "Article — Dat Sg Masc", gloss: "the" },
+          { w: "λόγῳ,", parsing: "Dat Sg Masc — λόγος", gloss: "word" },
+          { w: "μακάριός", parsing: "Nom Sg Masc — μακάριος", syntax: "Predicate Nominative", gloss: "blessed" },
+          { w: "εἶ.", parsing: "Pres Act Ind 2 Sg — εἰμί", gloss: "you are" },
+        ],
+          translation: "If you (s.) believe the word, you are blessed.",
+          note: "First class: assumed true for the sake of argument.",
+        },
+        { words: [
+          { w: "εἰ", parsing: "Conjunction (+ past indicative)", syntax: "Conditional Clause (Second Class)", gloss: "if" },
+          { w: "ἐπίστευσας", parsing: "Aor Act Ind 2 Sg — πιστεύω", gloss: "you had believed" },
+          { w: "οὐκ", parsing: "Negative particle", gloss: "not" },
+          { w: "ἂν", parsing: "Particle (marks contrary-to-fact)", gloss: "would" },
+          { w: "ἐφοβήθης.", parsing: "Aor Pass Ind 2 Sg — φοβέομαι", gloss: "you were afraid" },
+        ],
+          translation: "If you (s.) had believed, you would not have been afraid.",
+          note: "Second class: contrary to fact — past indicative in both halves, ἄν in the main clause.",
+        },
+        { words: [
+          { w: "ἐὰν", parsing: "Conjunction (+ subjunctive)", syntax: "Conditional Clause (Third Class)", gloss: "if" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "κύριος", parsing: "Nom Sg Masc — κύριος", syntax: "Subject", gloss: "Lord" },
+          { w: "ἔλθῃ,", parsing: "2nd Aor Act Subj 3 Sg — ἔρχομαι", gloss: "comes" },
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "πιστοὶ", parsing: "Nom Pl Masc — πιστός", syntax: "Subject", gloss: "faithful" },
+          { w: "σωθήσονται.", parsing: "Fut Pass Ind 3 Pl — σῴζω", gloss: "will be saved" },
+        ],
+          translation: "If the Lord comes, the faithful will be saved.",
+          note: "Third class: future condition — ἐάν + subjunctive.",
+        },
+      ]}
+    />
+
     <LiveExamples
       intro={<>Hunt the classes in the wild — check each protasis's mood as you go.</>}
       links={[
