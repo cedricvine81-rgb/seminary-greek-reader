@@ -41,6 +41,8 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/phrase', destination: '/exegesis', permanent: false },
+      // The Morphology page became the Grammar page (it covers syntax too).
+      { source: '/morphology', destination: '/grammar', permanent: true },
       // Browsers and crawlers blindly probe these legacy favicon paths; point them at
       // the real icon so they resolve to a 200 instead of cluttering logs with 404s.
       { source: '/favicon.ico', destination: '/icon.svg', permanent: false },

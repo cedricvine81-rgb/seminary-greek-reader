@@ -297,7 +297,7 @@ export function LiveExamples({ intro, links }: {
           const p = new URLSearchParams({ in: 'morph:GNT' })
           if (l.features?.length) p.set('features', l.features.join(','))
           if (l.lemma) p.set('q', l.lemma)
-          p.set('from', '/morphology')
+          p.set('from', '/grammar')
           return (
             <li key={i}>
               <Link href={`/search?${p.toString()}`} className="text-sm text-brand-600 hover:text-brand-700 hover:underline">

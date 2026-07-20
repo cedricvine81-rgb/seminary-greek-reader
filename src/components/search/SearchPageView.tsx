@@ -183,7 +183,7 @@ const RETURN_LABELS: { test: RegExp; label: string }[] = [
   { test: /^\/exegesis\?.*tab=notes/, label: 'Notes' },
   { test: /^\/exegesis/, label: 'Exegesis' },
   { test: /^\/vocab/, label: 'Vocabulary' },
-  { test: /^\/morphology/, label: 'Morphology' },
+  { test: /^\/(grammar|morphology)/, label: 'Grammar' },
 ]
 function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'

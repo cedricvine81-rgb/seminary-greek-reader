@@ -20,7 +20,7 @@ function returnLabelFor(from?: string): string {
   if (!from) return 'page'
   if (from.startsWith('/reader')) return 'Reader'
   if (from.startsWith('/exegesis')) return 'Exegesis'
-  if (from.startsWith('/morphology')) return 'Morphology'
+  if (from.startsWith('/grammar') || from.startsWith('/morphology')) return 'Grammar'
   return 'page'
 }
 

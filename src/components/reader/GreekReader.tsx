@@ -199,7 +199,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
     { href: dashboardHref, label: 'Dashboard', icon: LayoutDashboard, authOnly: true },
     { href: '/reader', label: 'Reader', icon: BookOpen },
     { href: '/vocab', label: 'Vocab', icon: BookMarked },
-    { href: '/morphology', label: 'Morphology', icon: Table2 },
+    { href: '/grammar', label: 'Grammar', icon: Table2 },
     { href: '/exegesis', label: 'Syntax', icon: PencilLine },
     { href: '/exegesis?tab=phrasing', label: 'Phrasing', icon: ListTree },
     { href: '/texts', label: 'Texts', icon: Library },
