@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useApi } from '@/lib/api-client'
 import { NoteComposer } from '@/components/notes/NoteComposer'
 import { sanitizeNoteHtml, toNoteHtml, isHtmlEmpty } from '@/lib/note-html'
@@ -72,11 +72,18 @@ export function StudentGroupPresentations() {
 function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () => void }) {
   const [body, setBody] = useState(entry.me.body)
   const [ai, setAi] = useState(entry.me.aiDeclaration)
-  const [savingSection, setSavingSection] = useState(false)
+  const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const [busy, setBusy] = useState<'attest' | 'submit' | 'reopen' | null>(null)
   const [error, setError] = useState('')
 
   const attested = entry.me.attestedAt !== null
+
+  // Autosave bookkeeping. savedRef holds what the server currently has, so we only send
+  // real changes; the live refs let the debounce and exit handlers read the latest text
+  // without capturing a stale closure.
+  const savedRef = useRef({ body: entry.me.body, ai: entry.me.aiDeclaration })
+  const bodyRef = useRef(body); bodyRef.current = body
+  const aiRef = useRef(ai); aiRef.current = ai
 
   async function act(payload: Record<string, unknown>): Promise<boolean> {
     setError('')
@@ -91,23 +98,74 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
     return true
   }
 
-  async function saveSection() {
-    if (entry.locked) return
-    setSavingSection(true)
-    try { await act({ action: 'save', body }) } finally { setSavingSection(false) }
-    onChanged()
+  // Save the section + statement when they differ from what the server has. Returns true
+  // when there's nothing to save or the save succeeds. Both fields are sent together; the
+  // API writes each only when present, so this never clobbers the other or the attestation.
+  async function persist(): Promise<boolean> {
+    if (entry.locked) return true
+    const snap = { body: bodyRef.current, ai: aiRef.current }
+    if (snap.body === savedRef.current.body && snap.ai === savedRef.current.ai) return true
+    setSaveState('saving'); setError('')
+    try {
+      const res = await fetch(`/api/group-presentations/${entry.groupId}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', body: snap.body, aiDeclaration: snap.ai }),
+      })
+      if (!res.ok) {
+        const b = await res.json().catch(() => ({}))
+        setError(b.error ?? 'Couldn’t save. We’ll retry as you keep editing.')
+        setSaveState('error')
+        return false
+      }
+      savedRef.current = snap
+      setSaveState('saved')
+      onChanged()
+      return true
+    } catch {
+      setError('Couldn’t save — check your connection. We’ll retry as you keep editing.')
+      setSaveState('error')
+      return false
+    }
   }
 
-  async function saveAi() {
+  // Debounced autosave: persist ~1.2s after the last edit to either field.
+  useEffect(() => {
     if (entry.locked) return
-    await act({ action: 'save', aiDeclaration: ai })
-    onChanged()
-  }
+    if (body === savedRef.current.body && ai === savedRef.current.ai) return
+    const t = setTimeout(() => { void persist() }, 1200)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [body, ai, entry.locked])
+
+  // Flush unsaved edits when the tab is hidden or closed, or when this card unmounts (e.g.
+  // the student navigates away mid-sentence). keepalive lets the request outlive the page,
+  // closing the data-loss window that a plain save-on-blur leaves open.
+  useEffect(() => {
+    const flush = () => {
+      if (entry.locked) return
+      const snap = { body: bodyRef.current, ai: aiRef.current }
+      if (snap.body === savedRef.current.body && snap.ai === savedRef.current.ai) return
+      fetch(`/api/group-presentations/${entry.groupId}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', body: snap.body, aiDeclaration: snap.ai }),
+        keepalive: true,
+      }).then(res => { if (res.ok) savedRef.current = snap }).catch(() => {})
+    }
+    const onVisibility = () => { if (document.visibilityState === 'hidden') flush() }
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pagehide', flush)
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibility)
+      window.removeEventListener('pagehide', flush)
+      flush()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [entry.locked, entry.groupId])
 
   async function sign() {
     setBusy('attest')
-    // Persist the current statement first so the server signs off on real content.
-    if (await act({ action: 'save', aiDeclaration: ai }) && await act({ action: 'attest' })) onChanged()
+    // Save first so the server signs off on the real, current statement.
+    if (await persist() && await act({ action: 'attest' })) onChanged()
     setBusy(null)
   }
 
@@ -122,7 +180,8 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       if (!window.confirm(`${bits.join(' and ')} (of ${entry.members.length} members). Submitting locks everyone’s work for grading. Submit anyway?`)) return
     }
     setBusy('submit')
-    if (await act({ action: 'submit' })) onChanged()
+    // Flush any pending edits before the submission locks the section for grading.
+    if (await persist() && await act({ action: 'submit' })) onChanged()
     setBusy(null)
   }
 
@@ -133,6 +192,14 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
   }
 
   const deadline = new Date(entry.deadline)
+
+  function renderSaveStatus() {
+    if (entry.locked) return null
+    if (saveState === 'saving') return <span className="text-[11px] text-gray-400">Saving…</span>
+    if (saveState === 'error') return <span className="text-[11px] text-amber-600">Couldn’t save — will retry</span>
+    if (saveState === 'saved') return <span className="text-[11px] text-gray-400 inline-flex items-center gap-0.5"><CheckCircle2 size={11} /> Saved</span>
+    return null
+  }
 
   return (
     <Card>
@@ -169,20 +236,23 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
         <div className="flex items-center gap-2">
           <h4 className="text-sm font-semibold text-gray-700">Your section</h4>
           {entry.locked && <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><Lock size={11} /> Locked (submitted)</span>}
-          {savingSection && <span className="text-[11px] text-gray-400">Saving…</span>}
+          {renderSaveStatus()}
         </div>
         {entry.locked ? (
           isHtmlEmpty(sanitizeNoteHtml(toNoteHtml(body)))
             ? <p className="text-sm text-gray-400 italic">You didn&rsquo;t write a section.</p>
             : <div className="prose-notes text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(body)) }} />
         ) : (
-          <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={saveSection} fontScale={1} minHeight={360} maxHeight={1000} />
+          <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={() => void persist()} fontScale={1} minHeight={360} maxHeight={1000} />
         )}
       </div>
 
       {/* AI / sources attestation */}
       <div className="mt-4 space-y-2">
-        <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><ShieldCheck size={14} /> AI &amp; sources statement</h4>
+        <div className="flex items-center gap-2">
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><ShieldCheck size={14} /> AI &amp; sources statement</h4>
+          {!attested && renderSaveStatus()}
+        </div>
         <p className="text-xs text-gray-500">
           Declare any use of AI tools, collaboration, and sources for your section, and confirm the work is your own.
         </p>
@@ -192,7 +262,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           <textarea
             value={ai}
             onChange={e => setAi(e.target.value)}
-            onBlur={saveAi}
+            onBlur={() => void persist()}
             rows={3}
             disabled={attested}
             placeholder="e.g. I used a lexicon and ChatGPT to check one parsing; the analysis and writing are my own."
