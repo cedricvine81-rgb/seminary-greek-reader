@@ -470,3 +470,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
     padding-right: var(--search-panel-w, 620px);
   }
 }
+
+/* ── Translation Workbench side panel (desktop): split view, not overlay ─────────────────
+   While a Grammar-page translation/syntax exercise is open, TranslationWorkbench sets
+   data-workbench-panel + --workbench-panel-w on <html>; the grammar page shifts left into
+   the remaining space instead of being hidden under the panel. Desktop only — the mobile
+   panel is a full-screen sheet. */
+@media (min-width: 1024px) {
+  html[data-workbench-panel] #app-content {
+    padding-right: var(--workbench-panel-w, 30rem);
+  }
+}

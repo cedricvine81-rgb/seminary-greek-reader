@@ -55,6 +55,20 @@ export function TranslationWorkbench() {
     return () => document.removeEventListener('keydown', onKey)
   }, [sentence])
 
+  // While open, publish the panel on <html> so globals.css shifts #app-content left by the
+  // panel width on desktop — the grammar page sits beside the panel instead of being hidden
+  // under it (the same split-view trick as the Master Search panel). Mobile is a full sheet.
+  useEffect(() => {
+    if (!sentence) return
+    const root = document.documentElement
+    root.setAttribute('data-workbench-panel', '1')
+    root.style.setProperty('--workbench-panel-w', '30rem') // keep in sync with lg:w-[30rem] below
+    return () => {
+      root.removeAttribute('data-workbench-panel')
+      root.style.removeProperty('--workbench-panel-w')
+    }
+  }, [sentence])
+
   if (!sentence) return null
 
   const word = sentence.words[selected]
