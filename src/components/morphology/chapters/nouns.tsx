@@ -15,7 +15,7 @@
 
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
-  P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
 } from '../shared'
 
 export const NOUNS_CONTENT = (
@@ -301,7 +301,42 @@ export const NOUNS_CONTENT = (
       </ul>
     </InfoBox>
 
-    {/* ── 7 · Try it ─────────────────────────────────────── */}
+    {/* ── 7 · Together (guided practice) ─────────────────── */}
+    <SectionHeading>Together: let's work through two</SectionHeading>
+    <P>
+      Before you fly solo, work these with me. Answer each prompt in your head (or out loud — this is a
+      language), then tap <em>Show</em> to check yourself before the next prompt appears.
+    </P>
+    <GuidedExample
+      sentence={<>τὸν λόγον τοῦ θεοῦ ἀκούει ὁ μαθητής.</>}
+      steps={[
+        { prompt: <>Step 1 — find the cases. What does <span className="normal-case">τόν</span> tell you about <span className="normal-case">λόγον</span>?</>,
+          answer: <>Accusative singular masculine — so <span className="normal-case">τὸν λόγον</span> is the <strong>direct object</strong>, even though it comes first.</> },
+        { prompt: <>What is <span className="normal-case">τοῦ θεοῦ</span>, and what does it attach to?</>,
+          answer: <>Genitive — "of God." It hangs on the noun before it: "the word <em>of God</em>."</> },
+        { prompt: <>Who is doing the hearing?</>,
+          answer: <><span className="normal-case">ὁ μαθητής</span> — nominative (the article ὁ says so), therefore the <strong>subject</strong>. A 1st-declension <em>masculine</em> noun: the article outranks the ‑ης ending.</> },
+        { prompt: <>Step 3 — assemble it in English order.</>,
+          answer: <>Subject → verb → object → "of" phrase: <em>the disciple / hears / the word / of God</em>.</> },
+      ]}
+      translation={<>"The disciple hears the word of God." — and the fronted τὸν λόγον spotlights <em>what</em> is heard.</>}
+    />
+    <GuidedExample
+      title="Together: now a real confession"
+      sentence={<>σὺ εἶ ὁ υἱὸς τοῦ θεοῦ</>}
+      source={{ ref: 'John 1:49', label: 'John 1:49 (Nathanael to Jesus)' }}
+      steps={[
+        { prompt: <>Find the subject. What are <span className="normal-case">σύ</span> and <span className="normal-case">εἶ</span>?</>,
+          answer: <>The pronoun "you" + <span className="normal-case">εἰμί</span>'s 2nd singular: "you are." The spelled-out σύ adds emphasis — <em>you</em>.</> },
+        { prompt: <>What case is <span className="normal-case">ὁ υἱός</span> — and why isn't it the object?</>,
+          answer: <>Nominative! With the equative verb "to be" there is no object — <span className="normal-case">ὁ υἱός</span> is a <strong>predicate nominative</strong>, renaming the subject: "you are <em>the Son</em>."</> },
+        { prompt: <>And <span className="normal-case">τοῦ θεοῦ</span>?</>,
+          answer: <>Genitive again, attached to υἱός: "the Son <em>of God</em>."</> },
+      ]}
+      translation={<>"You are the Son of God" — Nathanael's confession, built entirely from this chapter's grammar.</>}
+    />
+
+    {/* ── 8 · Try it ─────────────────────────────────────── */}
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice A — parse the form"
@@ -311,33 +346,33 @@ export const NOUNS_CONTENT = (
           a: <>Genitive singular masculine — "of the Lord." The article <span className="normal-case">τοῦ</span> gives it away.</> },
         { q: <span className="normal-case">τοῖς ἀνθρώποις</span>,
           a: <>Dative plural masculine — "to / for the people."</> },
-        { q: <span className="normal-case">τὴν ἀρχήν</span>,
-          a: <>Accusative singular feminine — "the beginning" as a direct object.</> },
-        { q: <span className="normal-case">τὰ ἔργα</span>,
-          a: <>Neuter plural — nominative <em>or</em> accusative ("the works"): the neuter's nom. and acc. are identical, so the sentence must decide.</> },
-        { q: <span className="normal-case">τῆς σαρκός</span>,
-          a: <>Genitive singular feminine (3rd declension) — "of the flesh." Note the <span className="normal-case">‑ος</span> ending here is <em>genitive</em>, not nominative: trust the article.</> },
+        { q: <span className="normal-case">τὴν ἡμέραν</span>,
+          a: <>Accusative singular feminine — "the day" as a direct object.</> },
+        { q: <span className="normal-case">τὸ εὐαγγέλιον</span>,
+          a: <>Neuter singular — nominative <em>or</em> accusative ("the gospel"): the neuter's nom. and acc. are identical, so the sentence must decide.</> },
+        { q: <span className="normal-case">τοῦ πατρός</span>,
+          a: <>Genitive singular masculine (3rd declension) — "of the father." Note the <span className="normal-case">‑ος</span> ending here is <em>genitive</em>, not nominative: trust the article.</> },
       ]}
     />
     <Practice
       title="Practice B — translate the sentence"
       intro={<>Use the three-step method: cases first, then jobs, then English.
-        Vocabulary: <span className="normal-case">βλέπει</span> "sees" · <span className="normal-case">λέγει</span> "says/speaks" · <span className="normal-case">ἀκούουσιν</span> "they hear" · <span className="normal-case">δοῦλος</span> "servant" · <span className="normal-case">τέκνον</span> "child."</>}
+        Vocabulary: <span className="normal-case">γινώσκει</span> "knows" · <span className="normal-case">λέγει</span> "says/speaks" · <span className="normal-case">ἀκούουσιν</span> "they hear" · <span className="normal-case">λαμβάνει</span> "receives" · <span className="normal-case">μαθητής</span> "disciple."</>}
       items={[
-        { q: <span className="normal-case">ὁ θεὸς βλέπει τὸν ἄνθρωπον.</span>,
-          a: <>"God sees the man." <span className="normal-case">ὁ θεός</span> nominative = subject; <span className="normal-case">τὸν ἄνθρωπον</span> accusative = object.</> },
-        { q: <span className="normal-case">τὸν λόγον τοῦ κυρίου ἀκούουσιν οἱ δοῦλοι.</span>,
-          a: <>"The servants hear the word of the Lord." The object came first — the cases, not the order, tell you <span className="normal-case">οἱ δοῦλοι</span> (nominative) is the subject.</> },
+        { q: <span className="normal-case">ὁ θεὸς γινώσκει τὸν ἄνθρωπον.</span>,
+          a: <>"God knows the man." <span className="normal-case">ὁ θεός</span> nominative = subject; <span className="normal-case">τὸν ἄνθρωπον</span> accusative = object.</> },
+        { q: <span className="normal-case">τὸν λόγον τοῦ κυρίου ἀκούουσιν οἱ μαθηταί.</span>,
+          a: <>"The disciples hear the word of the Lord." The object came first — the cases, not the order, tell you <span className="normal-case">οἱ μαθηταί</span> (nominative) is the subject.</> },
         { q: <span className="normal-case">λέγει ὁ ἀπόστολος τοῖς ἀδελφοῖς.</span>,
           a: <>"The apostle speaks to the brothers." <span className="normal-case">τοῖς ἀδελφοῖς</span> dative = the ones spoken <em>to</em>.</> },
-        { q: <span className="normal-case">τὰ τέκνα βλέπει ὁ κύριος.</span>,
-          a: <>"The Lord sees the children." Trap: <span className="normal-case">τὰ τέκνα</span> could be nom. or acc. (neuter!), but <span className="normal-case">ὁ κύριος</span> is unambiguously nominative — so it must be the subject.</> },
-        { q: <span className="normal-case">ἡ ἀρχὴ τοῦ εὐαγγελίου (cf. Mark 1:1)</span>,
-          a: <>"The beginning of the gospel" — a nominative + genitive phrase, exactly how Mark's Gospel opens.</> },
+        { q: <span className="normal-case">τὸ εὐαγγέλιον λαμβάνει ὁ μαθητής.</span>,
+          a: <>"The disciple receives the gospel." Trap: <span className="normal-case">τὸ εὐαγγέλιον</span> could be nom. or acc. (neuter!), but <span className="normal-case">ὁ μαθητής</span> is unambiguously nominative — so it must be the subject.</> },
+        { q: <span className="normal-case">κύριός ἐστιν ὁ υἱὸς τοῦ ἀνθρώπου. (Mark 2:28)</span>,
+          a: <>"The Son of Man is Lord." Both nouns are nominative (equative <span className="normal-case">ἐστίν</span>) — the articular <span className="normal-case">ὁ υἱός</span> is the subject, anarthrous <span className="normal-case">κύριος</span> the predicate. Real verse, this chapter's grammar.</> },
       ]}
     />
 
-    {/* ── 8 · See it in the NT ───────────────────────────── */}
+    {/* ── 9 · See it in the NT ───────────────────────────── */}
     <LiveExamples
       intro={<>Don't take the textbook's word for it — these links search the tagged Greek New Testament itself.</>}
       links={[
@@ -348,7 +383,7 @@ export const NOUNS_CONTENT = (
       ]}
     />
 
-    {/* ── 9 · Going deeper (Intermediate only) ───────────── */}
+    {/* ── 10 · Going deeper (Intermediate only) ──────────── */}
     <LevelOnly level="intermediate">
       <SectionHeading>Going deeper: when the default translation isn't enough</SectionHeading>
       <P>

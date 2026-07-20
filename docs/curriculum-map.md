@@ -9,8 +9,9 @@ Sources: the *Lessons (remote)* PowerPoint decks (canonical, per instructor);
 the BGVB — *A Modern Biblical Greek Vocab Builder* (`Greek_Vocab_Builder_v20221207.xlsx`),
 whose frequency-ranked sections (20 words each) define the vocabulary track.
 
-Status: **DRAFT — awaiting instructor approval** of (a) the lesson↔week↔vocab
-pairing in Part 2 and (b) the exercise-constraint rules in Part 3.
+Status: **APPROVED basis** — instructor confirmed (2026-07-19) that the course
+follows deck order and that all 50+-occurrence NT vocabulary (= the BGVB's 320
+words) is learned by the end; Part 2's pacing is derived from those anchors.
 
 ---
 
@@ -40,29 +41,33 @@ Cumulative "can parse" inventory (what exercises may *require*, not merely gloss
 - **After L9:** + μι-verbs.
 - **After L10:** + conditional classification; genitive absolutes.
 
-## Part 2 · The vocabulary track (BGVB) — PROPOSED pairing
+## Part 2 · The vocabulary track (BGVB)
 
-BGVB sections are 20 words in strict frequency order; the course assigns one
-section per week. The grammar lessons stretch over more than ten weeks, so the
-proposed alignment (⚠ **instructor to approve/adjust**):
+Instructor-confirmed anchors (2026-07-19): students learn **all NT vocabulary
+occurring 50+ times by the end of Beginning Greek** — which is exactly the
+BGVB's 320 words — and class follows **deck order** (Lessons 1–10). The pacing
+rule is therefore derived proportionally: vocabulary advances evenly through
+the frequency sections, completing rank 320 at Lesson 10. Rank cap at grammar
+lesson N = 32 × N, snapped down to a section boundary:
 
-| Grammar lesson | Semester weeks | BGVB sections known | Cumulative vocab (ranks) |
-|---|---|---|---|
-| 1 | 1 | — (alphabet week) | 0 |
-| 2 | 2 | 1.A | 1–20 |
-| 3 | 3–4 | 1.B, 1.C | 1–60 |
-| 4 | 5 | 1.D | 1–80 |
-| 5 | 6–7 | 1.E, 1.F | 1–120 |
-| 6 | 8–9 | 1.G, 1.H | 1–160 |
-| 7 | 10–11 | 1.I, 2.A | 1–200 |
-| 8 | 12–13 | 2.B, 2.C | 1–240 |
-| 9 | 14 | 2.D | 1–260 |
-| 10 | 15–16 | 2.E–2.G | 1–320 |
+| Grammar lesson | Cumulative BGVB sections | Vocab cap (rank) |
+|---|---|---|
+| 1 | 1.A | 20 |
+| 2 | 1.A–1.C | 60 |
+| 3 | 1.A–1.D | 80 |
+| 4 | 1.A–1.F | 120 |
+| 5 | 1.A–1.H | 160 |
+| 6 | 1.A–1.I | 180 |
+| 7 | 1.A–2.B | 220 |
+| 8 | 1.A–2.C | 240 |
+| 9 | 1.A–2.E | 280 |
+| 10 | 1.A–2.G | 320 |
 
 Working rule for exercise vocabulary: **at grammar lesson N, use only words
-from the cumulative rank range above**, plus the closed-class "grammar words"
-the decks themselves introduce (article forms, εἰμί, the pronoun paradigms,
-the prepositions taught in L3).
+within the rank cap above**, plus the closed-class "grammar words" the decks
+themselves introduce (article forms, εἰμί, the pronoun paradigms, the
+prepositions taught in L3). Prefer the highest-frequency words available —
+they are the ones students have drilled longest.
 
 ## Part 3 · Exercise-writing rules
 
@@ -100,7 +105,8 @@ Vocabulary quizzes follow the week's BGVB section throughout.
 
 ## Part 5 · Open flags
 
-1. ⚠ **Approve the Part 2 pairing** (or supply the real syllabus weeks).
+1. ~~Approve the Part 2 pairing~~ — resolved: anchors confirmed by the
+   instructor; pacing derived (32 × lesson, snapped to sections).
 2. ⚠ **App data bug** (filed as its own task): `VocabularyItem.sortOrder`
    holds occurrence counts, not BGVB ranks, and only 95 BEGINNING rows exist —
    so the in-app `vocabThruLesson` quiz filter cannot currently match the map.

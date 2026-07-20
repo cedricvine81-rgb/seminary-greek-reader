@@ -280,6 +280,62 @@ export function Practice({ title = 'Try it', intro, items }: {
 }
 
 /**
+ * Guided "we do" example — step ③ of the teaching cycle (① English concept,
+ * ② Greek examples, ③ guided practice with prompts, ④ independent practice).
+ * A sentence is worked through staged prompts: each "Show" reveals the answer
+ * to the current prompt and surfaces the next one, mirroring how the
+ * instructor prompts the class. The final translation appears at the end.
+ */
+export function GuidedExample({ title = 'Together: work it through', sentence, source, translation, steps }: {
+  title?: string
+  sentence: React.ReactNode
+  /** Optional verse reference; rendered as a link into the Reader. */
+  source?: { ref: string; label?: string }
+  translation?: React.ReactNode
+  steps: { prompt: React.ReactNode; answer: React.ReactNode }[]
+}) {
+  const [revealed, setRevealed] = useState(0)
+  return (
+    <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1.5">{title}</p>
+      <p className="text-base normal-case text-gray-900 mb-1">{sentence}</p>
+      {source && (
+        <p className="text-xs mb-2">
+          <Link href={`/reader?ref=${encodeURIComponent(source.ref)}`} className="text-brand-600 hover:underline">
+            {source.label ?? source.ref} — open in the Reader →
+          </Link>
+        </p>
+      )}
+      <ol className="mt-2 space-y-2.5">
+        {steps.slice(0, revealed + 1).map((s, i) => (
+          <li key={i} className="text-sm">
+            <p className="font-medium text-gray-800">{s.prompt}</p>
+            {i < revealed ? (
+              <p className="mt-0.5 border-l-2 border-brand-300 pl-3 text-gray-700">{s.answer}</p>
+            ) : (
+              <button
+                onClick={() => setRevealed(r => r + 1)}
+                className="mt-1 rounded-lg bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700"
+              >
+                Show
+              </button>
+            )}
+          </li>
+        ))}
+      </ol>
+      {revealed >= steps.length && translation && (
+        <p className="mt-3 border-t border-brand-100 pt-2.5 text-sm font-medium text-gray-900">{translation}</p>
+      )}
+      {revealed > 0 && (
+        <button onClick={() => setRevealed(0)} className="mt-2 text-xs text-gray-400 hover:text-gray-600">
+          Start over
+        </button>
+      )}
+    </div>
+  )
+}
+
+/**
  * Links into the live tagged corpus: each entry opens the Master Search
  * morphology facet (/search?in=morph:GNT) pre-filled with the given features
  * and/or lemma, so students see every real NT occurrence of the category.
