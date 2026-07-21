@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const MI_VERBS_CONTENT = (
@@ -86,6 +86,20 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · The κα aorist ──────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — which μι-verb?"
+      intro={<>Spot the stem: διδ(ο)-, τιθ(ε)-, (ἱ)στ(α)-, ἀφι(ε)-.</>}
+      options={["δίδωμι — give", "τίθημι — place", "ἵστημι — stand", "ἀφίημι — forgive / leave"]}
+      items={[
+        { q: <span className="normal-case">δίδομεν</span>, answer: "δίδωμι — give" },
+        { q: <span className="normal-case">τίθησιν</span>, answer: "τίθημι — place" },
+        { q: <span className="normal-case">ἕστηκεν</span>, answer: "ἵστημι — stand" },
+        { q: <span className="normal-case">ἀφίεμεν</span>, answer: "ἀφίημι — forgive / leave" },
+        { q: <span className="normal-case">δοθήσεται</span>, answer: "δίδωμι — give" },
+        { q: <span className="normal-case">σταθήσεται</span>, answer: "ἵστημι — stand" },
+      ]}
+    />
+
     <SectionHeading>The marker: a ‑κα aorist</SectionHeading>
     <P>
       In the aorist, μι-verbs drop the iota (of course — not present tense any more) and take
@@ -115,6 +129,20 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · The compound family ────────────────────────── */}
+    <DropdownPractice
+      title="Practice — aorist or perfect?"
+      intro={<>Both wear κα — reduplication settles it.</>}
+      options={["κ-aorist", "Perfect — reduplicated"]}
+      items={[
+        { q: <span className="normal-case">ἔδωκεν</span>, answer: "κ-aorist" },
+        { q: <span className="normal-case">δέδωκεν</span>, answer: "Perfect — reduplicated" },
+        { q: <span className="normal-case">ἔθηκεν</span>, answer: "κ-aorist" },
+        { q: <span className="normal-case">τέθεικεν</span>, answer: "Perfect — reduplicated" },
+        { q: <span className="normal-case">ἀφῆκεν</span>, answer: "κ-aorist" },
+        { q: <span className="normal-case">ἐδώκαμεν</span>, answer: "κ-aorist" },
+      ]}
+    />
+
     <SectionHeading>The family you'll actually read: compounds</SectionHeading>
     <P>
       Much of the μι-club's NT frequency comes through compounds — preposition + μι-verb — and several are
@@ -141,6 +169,22 @@ export const MI_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="μι-verbs in the text"
+      items={[
+        { words: [
+          { w: "ἄφες", parsing: "2nd Aor Act Impv 2 Sg — ἀφίημι", gloss: "forgive!" },
+          { w: "ἡμῖν", parsing: "Dat Pl — ἐγώ", syntax: "Dative of Indirect Object", gloss: "us" },
+          { w: "τὰ", parsing: "Article — Acc Pl Neut", gloss: "the" },
+          { w: "ὀφειλήματα", parsing: "Acc Pl Neut — ὀφείλημα (3rd decl.)", syntax: "Direct Object", gloss: "debts" },
+          { w: "ἡμῶν.", parsing: "Gen Pl — ἐγώ", syntax: "Genitive of Possession", gloss: "our" },
+        ],
+          translation: "Forgive us our debts.",
+          note: "Matthew 6:12 — the Lord’s Prayer.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

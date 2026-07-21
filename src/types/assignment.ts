@@ -80,4 +80,5 @@ export interface AssignmentFormData {
   allowLate?: boolean
   lateDaysLimit?: number
   notesFolderName?: string   // COURSE_NOTES: the folder each student is given and submits
+  homeworkSet?: string       // TRANSLATION_EXERCISE: grammar-homework pack id (deck Exercises A/B)
 }

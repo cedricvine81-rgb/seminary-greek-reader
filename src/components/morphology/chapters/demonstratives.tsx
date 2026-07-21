@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const DEMONSTRATIVES_CONTENT = (
@@ -91,6 +91,20 @@ export const DEMONSTRATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Position ───────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — parse the demonstrative"
+      intro={<>Same endings as αὐτός — watch the τουτ-/ταυτ- front end.</>}
+      options={["Gen Sg Fem — \"of this\"", "Dat Pl Masc/Neut — \"to these\"", "Nom/Acc Pl Neut — \"those (things)\"", "Acc Sg Masc — \"this\"", "Nom Pl Fem — \"these\"", "Dat Sg Masc/Neut — \"to that\""]}
+      items={[
+        { q: <span className="normal-case">ταύτης</span>, answer: "Gen Sg Fem — \"of this\"" },
+        { q: <span className="normal-case">τούτοις</span>, answer: "Dat Pl Masc/Neut — \"to these\"" },
+        { q: <span className="normal-case">ἐκεῖνα</span>, answer: "Nom/Acc Pl Neut — \"those (things)\"" },
+        { q: <span className="normal-case">τοῦτον</span>, answer: "Acc Sg Masc — \"this\"" },
+        { q: <span className="normal-case">αὗται</span>, answer: "Nom Pl Fem — \"these\"", note: <>Rough breathing — not αὐταί ("they").</> },
+        { q: <span className="normal-case">ἐκείνῳ</span>, answer: "Dat Sg Masc/Neut — \"to that\"" },
+      ]}
+    />
+
     <SectionHeading>The position surprise</SectionHeading>
     <P>
       Adjectives modifying an articular noun sit <em>inside</em> the article-unit (<Gk>ὁ καλὸς λόγος</Gk>).
@@ -119,6 +133,20 @@ export const DEMONSTRATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 4 · The relatives: ἑαυτοῦ and ἀλλήλων ──────────── */}
+    <DropdownPractice
+      title="Practice — translate the phrase"
+      intro={<>Demonstratives sit in predicate position but translate attributively.</>}
+      options={["this man", "that day", "these works", "those disciples", "this commandment", "this gospel"]}
+      items={[
+        { q: <span className="normal-case">οὗτος ὁ ἄνθρωπος</span>, answer: "this man" },
+        { q: <span className="normal-case">ἐκείνη ἡ ἡμέρα</span>, answer: "that day" },
+        { q: <span className="normal-case">ταῦτα τὰ ἔργα</span>, answer: "these works" },
+        { q: <span className="normal-case">ἐκεῖνοι οἱ μαθηταί</span>, answer: "those disciples" },
+        { q: <span className="normal-case">αὕτη ἡ ἐντολή</span>, answer: "this commandment" },
+        { q: <span className="normal-case">τοῦτο τὸ εὐαγγέλιον</span>, answer: "this gospel" },
+      ]}
+    />
+
     <SectionHeading>Two cousins: "himself" and "one another"</SectionHeading>
     <P>
       Two more pointing-family pronouns complete the set. The reflexive <Gk>ἑαυτοῦ</Gk> ("himself /
@@ -135,6 +163,25 @@ export const DEMONSTRATIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="Reflexives and reciprocals"
+      items={[
+        { words: [
+          { w: "ἀγαπᾶτε", parsing: "Pres Act Impv 2 Pl — ἀγαπάω", gloss: "love!" },
+          { w: "ἀλλήλους.", parsing: "Acc Pl Masc — ἀλλήλων (reciprocal)", syntax: "Direct Object", gloss: "one another" },
+        ],
+          translation: "Love one another.",
+          note: "John 13:34.",
+        },
+        { words: [
+          { w: "φιλοῦσιν", parsing: "Pres Act Ind 3 Pl — φιλέω", gloss: "they love" },
+          { w: "ἑαυτούς.", parsing: "Acc Pl Masc — ἑαυτοῦ (reflexive)", syntax: "Direct Object", gloss: "themselves" },
+        ],
+          translation: "They love themselves.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const DEPONENTS_CONTENT = (
@@ -101,6 +101,20 @@ export const DEPONENTS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Middle vs passive deponents ────────────────── */}
+    <DropdownPractice
+      title="Practice — deponent or not?"
+      intro={<>Middle/passive form; does the verb have an active form in use?</>}
+      options={["Deponent — translate as active", "Ordinary middle/passive"]}
+      items={[
+        { q: <span className="normal-case">ἔρχεται</span>, answer: "Deponent — translate as active", note: <>"He comes" — ἔρχομαι has no active form.</> },
+        { q: <span className="normal-case">λύεται</span>, answer: "Ordinary middle/passive", note: <>"He is being loosed."</> },
+        { q: <span className="normal-case">δέχονται</span>, answer: "Deponent — translate as active" },
+        { q: <span className="normal-case">γράφεται</span>, answer: "Ordinary middle/passive", note: <>"It is written."</> },
+        { q: <span className="normal-case">πορεύονται</span>, answer: "Deponent — translate as active" },
+        { q: <span className="normal-case">ἀποκρίνεται</span>, answer: "Deponent — translate as active" },
+      ]}
+    />
+
     <SectionHeading>Two sub-clubs: middle and passive deponents</SectionHeading>
     <P>
       Deponents split by which non-active forms they use in the aorist. <strong>Middle deponents</strong> take
@@ -127,6 +141,31 @@ export const DEPONENTS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="Deponents in the text"
+      items={[
+        { words: [
+          { w: "ἀπεκρίθη", parsing: "Aor Pass-Dep Ind 3 Sg — ἀποκρίνομαι", gloss: "answered" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "Ἰησοῦς", parsing: "Nom Sg Masc — Ἰησοῦς", syntax: "Subject", gloss: "Jesus" },
+          { w: "καὶ", parsing: "Conjunction", gloss: "and" },
+          { w: "εἶπεν", parsing: "2nd Aor Act Ind 3 Sg — λέγω", gloss: "said" },
+          { w: "αὐτῷ.", parsing: "Dat Sg Masc — αὐτός", syntax: "Dative of Indirect Object", gloss: "to him" },
+        ],
+          translation: "Jesus answered and said to him.",
+          note: "The Gospels’ favourite formula — a passive-deponent with active meaning.",
+        },
+        { words: [
+          { w: "ἐπορεύθησαν", parsing: "Aor Pass-Dep Ind 3 Pl — πορεύομαι", gloss: "they went" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "into" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "πόλιν.", parsing: "Acc Sg Fem — πόλις (3rd decl.)", gloss: "city" },
+        ],
+          translation: "They went into the city.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

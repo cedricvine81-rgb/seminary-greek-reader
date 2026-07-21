@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { addDays } from 'date-fns'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { QuizPlayer } from '@/components/student/QuizPlayer'
+import { GrammarHomework } from '@/components/student/GrammarHomework'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
@@ -60,6 +61,12 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   const now = new Date()
   // Exams have a start gate: students cannot open them before opensAt.
   const examNotYetOpen = assignment.type === 'TRANSLATION_EXAM' && !!assignment.opensAt && now < assignment.opensAt
+
+  // Grammar homework (deck Exercises A/B as a Translation Exercise): questions carry
+  // word-level model data in options[0] ({"hw":1,...}).
+  const isGrammarHomework = assignment.type === 'TRANSLATION_EXERCISE'
+    && assignment.questions.length > 0
+    && (assignment.questions[0].options[0] ?? '').includes('"hw":1')
   const finalDeadline = effectiveDeadline(assignment)
   const isPastDue = now > finalDeadline
   const lateDeadline = assignment.allowLate && assignment.lateDaysLimit != null
@@ -226,7 +233,28 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           <ExegesisWorkspace assignmentId={assignment.id} previewMode={previewMode} />
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && assignment.type === 'TRANSLATION_EXERCISE' && (
+        {/* Grammar homework (deck Exercises A/B): word-by-word translation exercise
+            worked in the right-hand homework pane; graded by the instructor. */}
+        {(!isClosed || previewMode) && isGrammarHomework && (
+          <GrammarHomework
+            assignmentId={assignment.id}
+            attemptCount={attemptCount}
+            dueDate={assignment.dueDate?.toISOString() ?? null}
+            questions={assignment.questions.map(q => {
+              let meta: { words?: unknown[]; note?: string | null } = {}
+              try { meta = JSON.parse(q.options[0] ?? '{}') } catch { /* ignore */ }
+              return {
+                id: q.id,
+                prompt: q.prompt,
+                points: q.points,
+                words: (meta.words ?? []) as { w: string }[],
+                note: meta.note ?? undefined,
+              }
+            })}
+          />
+        )}
+
+        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type === 'TRANSLATION_EXERCISE' && (
           <TranslationExercise
             assignmentId={assignment.id}
             questions={quizQuestions}
@@ -248,7 +276,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && (
+        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

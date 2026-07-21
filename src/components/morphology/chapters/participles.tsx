@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const PARTICIPLES_CONTENT = (
@@ -160,6 +160,19 @@ export const PARTICIPLES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Timing ─────────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — parse the participle"
+      options={["Pres Act Masc Nom Sg", "Pres Act Fem Nom Sg", "Aor Act Masc Nom Sg", "Pres M/P Masc Nom Sg", "Aor Pass Masc Nom Sg", "Aor Act Masc Nom Pl"]}
+      items={[
+        { q: <span className="normal-case">λύων</span>, answer: "Pres Act Masc Nom Sg" },
+        { q: <span className="normal-case">λύουσα</span>, answer: "Pres Act Fem Nom Sg" },
+        { q: <span className="normal-case">λύσας</span>, answer: "Aor Act Masc Nom Sg" },
+        { q: <span className="normal-case">λυόμενος</span>, answer: "Pres M/P Masc Nom Sg" },
+        { q: <span className="normal-case">λυθείς</span>, answer: "Aor Pass Masc Nom Sg" },
+        { q: <span className="normal-case">λύσαντες</span>, answer: "Aor Act Masc Nom Pl" },
+      ]}
+    />
+
     <SectionHeading>Timing: Simultaneous or Sequence</SectionHeading>
     <P>
       A participle's tense does not say <em>when</em> on the calendar — it says when <em>relative to the
@@ -187,6 +200,20 @@ export const PARTICIPLES_CONTENT = (
     </TableAside>
 
     {/* ── 4 · The article question ───────────────────────── */}
+    <DropdownPractice
+      title="Practice — timing"
+      intro={<>Present participle = same time; aorist participle = before the main verb.</>}
+      options={["Simultaneous — \"while …-ing\"", "Sequence — \"having …-ed\""]}
+      items={[
+        { q: <span className="normal-case">βλέπων</span>, answer: "Simultaneous — \"while …-ing\"" },
+        { q: <span className="normal-case">βλέψας</span>, answer: "Sequence — \"having …-ed\"" },
+        { q: <span className="normal-case">ἐρχόμενος</span>, answer: "Simultaneous — \"while …-ing\"" },
+        { q: <span className="normal-case">ἐλθών</span>, answer: "Sequence — \"having …-ed\"" },
+        { q: <span className="normal-case">ἀκούσας</span>, answer: "Sequence — \"having …-ed\"" },
+        { q: <span className="normal-case">ἀκούων</span>, answer: "Simultaneous — \"while …-ing\"" },
+      ]}
+    />
+
     <SectionHeading>The first question: is there an article?</SectionHeading>
     <P>
       Every participle you meet gets the same opening question: <strong>does an article stand with it?</strong>
@@ -233,6 +260,20 @@ export const PARTICIPLES_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Genitive absolute ──────────────────────────── */}
+    <DropdownPractice
+      title="Practice — which use?"
+      intro={<>First question: is there an article, and what does it attach to?</>}
+      options={["Substantival — \"the one who …\"", "Attributive — \"the X who …\"", "Adverbial — \"while/after …-ing\""]}
+      items={[
+        { q: <span className="normal-case">ὁ πιστεύων</span>, answer: "Substantival — \"the one who …\"" },
+        { q: <span className="normal-case">πιστεύων</span>, answer: "Adverbial — \"while/after …-ing\"" },
+        { q: <span className="normal-case">ὁ ἄνθρωπος ὁ πιστεύων</span>, answer: "Attributive — \"the X who …\"" },
+        { q: <span className="normal-case">οἱ ἀκούοντες</span>, answer: "Substantival — \"the one who …\"" },
+        { q: <span className="normal-case">ἀκούσας</span>, answer: "Adverbial — \"while/after …-ing\"" },
+        { q: <span className="normal-case">τὸν λόγον τὸν σῴζοντα</span>, answer: "Attributive — \"the X who …\"" },
+      ]}
+    />
+
     <SectionHeading>The genitive absolute</SectionHeading>
     <P>
       One special pattern earns its own name. When the participle's subject is <em>not</em> the subject of
@@ -262,6 +303,24 @@ export const PARTICIPLES_CONTENT = (
     </TableAside>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="The genitive absolute in the text"
+      items={[
+        { words: [
+          { w: "ταῦτα", parsing: "Acc Pl Neut — οὗτος", syntax: "Direct Object", gloss: "these things" },
+          { w: "αὐτοῦ", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive Absolute", gloss: "he" },
+          { w: "λαλοῦντος", parsing: "Pres Act Ptcp Gen Sg Masc — λαλέω", syntax: "Genitive Absolute", gloss: "speaking" },
+          { w: "πολλοὶ", parsing: "Nom Pl Masc — πολύς", syntax: "Subject", gloss: "many" },
+          { w: "ἐπίστευσαν", parsing: "Aor Act Ind 3 Pl — πιστεύω", gloss: "believed" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "in" },
+          { w: "αὐτόν.", parsing: "Acc Sg Masc — αὐτός", gloss: "him" },
+        ],
+          translation: "While he was saying these things, many believed in him.",
+          note: "John 8:30 — αὐτοῦ λαλοῦντος is a genitive absolute; its subject is not part of the main clause.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

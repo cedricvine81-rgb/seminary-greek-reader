@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const SECOND_AORISTS_CONTENT = (
@@ -103,6 +103,19 @@ export const SECOND_AORISTS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Beyond the indicative ──────────────────────── */}
+    <DropdownPractice
+      title="Practice — first or second aorist?"
+      options={["1st aorist — σα identifier", "2nd aorist — changed stem"]}
+      items={[
+        { q: <span className="normal-case">ἔλυσα</span>, answer: "1st aorist — σα identifier" },
+        { q: <span className="normal-case">εἶδον</span>, answer: "2nd aorist — changed stem" },
+        { q: <span className="normal-case">ἔλαβεν</span>, answer: "2nd aorist — changed stem" },
+        { q: <span className="normal-case">ἐπίστευσεν</span>, answer: "1st aorist — σα identifier" },
+        { q: <span className="normal-case">ἦλθον</span>, answer: "2nd aorist — changed stem" },
+        { q: <span className="normal-case">ἔγραψεν</span>, answer: "1st aorist — σα identifier" },
+      ]}
+    />
+
     <SectionHeading>The changed stem travels everywhere</SectionHeading>
     <P>
       The 2nd-aorist stem isn't only for the indicative — it powers the verb's aorist participles,
@@ -134,6 +147,20 @@ export const SECOND_AORISTS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — trace the stem"
+      intro={<>The changed stem keeps its identity in every mood.</>}
+      options={["ὁράω (εἶδον) — \"having seen\"", "λαμβάνω — \"to take\"", "ἔρχομαι — \"having come\"", "λέγω — \"having said\"", "ἐσθίω — \"to eat\"", "εὑρίσκω — \"having found\""]}
+      items={[
+        { q: <span className="normal-case">ἰδών</span>, answer: "ὁράω (εἶδον) — \"having seen\"" },
+        { q: <span className="normal-case">λαβεῖν</span>, answer: "λαμβάνω — \"to take\"" },
+        { q: <span className="normal-case">ἐλθών</span>, answer: "ἔρχομαι — \"having come\"" },
+        { q: <span className="normal-case">εἰπών</span>, answer: "λέγω — \"having said\"" },
+        { q: <span className="normal-case">φαγεῖν</span>, answer: "ἐσθίω — \"to eat\"" },
+        { q: <span className="normal-case">εὑρών</span>, answer: "εὑρίσκω — \"having found\"" },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

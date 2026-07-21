@@ -5,6 +5,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
 import { CourseNotesGrader } from '@/components/instructor/CourseNotesGrader'
 import { GroupPresentationGrader } from '@/components/instructor/GroupPresentationGrader'
+import { GrammarHomeworkGrader } from '@/components/instructor/GrammarHomeworkGrader'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
@@ -20,7 +21,7 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
-    select: { id: true, title: true, type: true, weekNumber: true, isPublished: true, courseId: true, reference: true, course: { select: { id: true, name: true } } },
+    select: { id: true, title: true, type: true, weekNumber: true, isPublished: true, courseId: true, reference: true, course: { select: { id: true, name: true } }, questions: { orderBy: { position: 'asc' }, take: 1, select: { options: true } } },
   })
   if (!assignment || !await isAuthorizedForAssignment(params.assignmentId, payload.sub)) notFound()
 
@@ -46,7 +47,9 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
           ? <CourseNotesGrader assignmentId={assignment.id} />
           : assignment.type === 'GROUP_PRESENTATION'
             ? <GroupPresentationGrader assignmentId={assignment.id} />
-            : <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />}
+            : (assignment.questions[0]?.options[0] ?? '').includes('"hw":1')
+              ? <GrammarHomeworkGrader assignmentId={assignment.id} />
+              : <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />}
       </div>
     </DashboardShell>
   )

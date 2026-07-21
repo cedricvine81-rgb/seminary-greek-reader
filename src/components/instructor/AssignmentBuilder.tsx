@@ -5,6 +5,7 @@ import { addDays, format, getDay, parseISO } from 'date-fns'
 import { CalendarDays, FileText, CheckCircle2, Download, Eye } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
+import { GRAMMAR_HOMEWORK_SETS } from '@/data/grammar-homework'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { toEndOfDayLocalISO } from '@/lib/due-date'
@@ -224,7 +225,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [form, setForm] = useState<AssignmentFormData>({
     title: '', type: 'VOCABULARY_QUIZ', weekNumber: 1, dueDate: '',
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
-    allowLate: false, lateDaysLimit: 7, notesFolderName: '',
+    allowLate: false, lateDaysLimit: 7, notesFolderName: '', homeworkSet: '',
   })
   const [quizStylePct, setQuizStylePct] = useState(0)
   // Vocab word selection over the BGVB list: frequency subsections.
@@ -251,7 +252,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     setError('')
 
     // Client-side validation for passage exercises/exams
-    if ((form.type === 'TRANSLATION_EXERCISE' || form.type === 'TRANSLATION_EXAM') && !form.reference?.trim()) {
+    if ((form.type === 'TRANSLATION_EXERCISE' || form.type === 'TRANSLATION_EXAM') && !form.reference?.trim()
+        && !(form.type === 'TRANSLATION_EXERCISE' && form.homeworkSet)) {
       setError('At least one passage reference is required (e.g. "John 1:1–18").')
       return
     }
@@ -609,12 +611,35 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             Students will open the Exegesis Workspace with this passage pre-loaded. They can annotate
             each word (Parsing · Syntax · Translation) and submit their analysis.
           </p>
+          <div>
+            <Select
+              label="Grammar homework set (optional)"
+              value={form.homeworkSet ?? ''}
+              onChange={e => set('homeworkSet', e.target.value)}
+              placeholder="None — passage-based exercise"
+              options={GRAMMAR_HOMEWORK_SETS.map(s => ({ value: s.id, label: s.title }))}
+            />
+            <p className="mt-1 text-xs text-brand-600">
+              A homework set replaces the passage: students work the deck&rsquo;s Exercises sentences
+              word-by-word (parsing · syntax · translation) in the homework pane, and you grade each
+              sentence into the gradebook. No passage reference needed.
+            </p>
+          </div>
+          {form.homeworkSet ? (
+            <Input
+              label="Deadline"
+              type="date"
+              value={form.dueDate}
+              onChange={e => set('dueDate', e.target.value)}
+            />
+          ) : (
           <Input
             label="Passage reference (required)"
             value={form.reference ?? ''}
             onChange={e => set('reference', e.target.value)}
             placeholder="e.g. John 1:1–18"
           />
+          )}
           <div>
             <Input
               label="Stage 1 time limit — annotation phase (minutes, 0 = no limit)"

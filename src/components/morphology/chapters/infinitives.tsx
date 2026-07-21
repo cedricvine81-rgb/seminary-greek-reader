@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const INFINITIVES_CONTENT = (
@@ -57,6 +57,19 @@ export const INFINITIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 3 · The helper-verb pattern ────────────────────── */}
+    <DropdownPractice
+      title="Practice — identify the infinitive"
+      options={["Present active — \"to loose\"", "Aorist active — \"to loose (simply)\"", "Present middle/passive", "Aorist passive — \"to be loosed\"", "Present (deponent) — \"to come\"", "Aorist (2nd) — \"to come\""]}
+      items={[
+        { q: <span className="normal-case">λύειν</span>, answer: "Present active — \"to loose\"" },
+        { q: <span className="normal-case">λῦσαι</span>, answer: "Aorist active — \"to loose (simply)\"" },
+        { q: <span className="normal-case">λύεσθαι</span>, answer: "Present middle/passive" },
+        { q: <span className="normal-case">λυθῆναι</span>, answer: "Aorist passive — \"to be loosed\"" },
+        { q: <span className="normal-case">ἔρχεσθαι</span>, answer: "Present (deponent) — \"to come\"" },
+        { q: <span className="normal-case">ἐλθεῖν</span>, answer: "Aorist (2nd) — \"to come\"" },
+      ]}
+    />
+
     <SectionHeading>Where you'll meet it first: after helper verbs</SectionHeading>
     <P>
       Exactly as in English, a set of "helper" verbs is incomplete without an infinitive:
@@ -113,6 +126,24 @@ export const INFINITIVES_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Articular infinitives ──────────────────────── */}
+    <ClassSentences
+      lesson="The accusative subject"
+      items={[
+        { words: [
+          { w: "δεῖ", parsing: "Pres Act Ind 3 Sg — δεῖ (impersonal)", gloss: "it is necessary" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "υἱὸν", parsing: "Acc Sg Masc — υἱός", syntax: "Accusative Subject of Infinitive", gloss: "Son" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of" },
+          { w: "ἀνθρώπου", parsing: "Gen Sg Masc — ἄνθρωπος", syntax: "Genitive of Relationship", gloss: "Man" },
+          { w: "πολλὰ", parsing: "Acc Pl Neut — πολύς", syntax: "Direct Object", gloss: "many things" },
+          { w: "παθεῖν.", parsing: "2nd Aor Act Infinitive — πάσχω", syntax: "Complementary Infinitive", gloss: "to suffer" },
+        ],
+          translation: "The Son of Man must suffer many things.",
+          note: "Mark 8:31 — τὸν υἱόν is accusative because it is the SUBJECT of the infinitive.",
+        },
+      ]}
+    />
+
     <SectionHeading>The article + infinitive: Greek's Swiss-army clause</SectionHeading>
     <P>
       Because the infinitive is a noun, it can take the neuter article — <Gk>τὸ λύειν</Gk>, "the (act of)
@@ -145,6 +176,18 @@ export const INFINITIVES_CONTENT = (
     </TableAside>
 
     {/* ── 6 · Watch out ──────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — article + infinitive"
+      intro={<>The preposition chooses the meaning.</>}
+      options={["\"while …-ing\"", "\"because … / on account of …-ing\"", "\"in order to …\"", "\"after …-ing\""]}
+      items={[
+        { q: <span className="normal-case">ἐν τῷ λαλεῖν</span>, answer: "\"while …-ing\"" },
+        { q: <span className="normal-case">διὰ τὸ ἔχειν</span>, answer: "\"because … / on account of …-ing\"" },
+        { q: <span className="normal-case">εἰς τὸ σῶσαι</span>, answer: "\"in order to …\"" },
+        { q: <span className="normal-case">μετὰ τὸ ἐλθεῖν</span>, answer: "\"after …-ing\"" },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

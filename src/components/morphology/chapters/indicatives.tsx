@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const INDICATIVES_CONTENT = (
@@ -67,6 +67,20 @@ export const INDICATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Past time: the augment ─────────────────────── */}
+    <DropdownPractice
+      title="Practice — who is acting?"
+      intro={<>Read the person and number straight off the ending.</>}
+      options={["1st singular — \"I\"", "2nd singular — \"you\"", "3rd singular — \"he/she/it\"", "1st plural — \"we\"", "2nd plural — \"you (pl.)\"", "3rd plural — \"they\""]}
+      items={[
+        { q: <span className="normal-case">λέγομεν</span>, answer: "1st plural — \"we\"" },
+        { q: <span className="normal-case">πιστεύεις</span>, answer: "2nd singular — \"you\"" },
+        { q: <span className="normal-case">ἀκούουσιν</span>, answer: "3rd plural — \"they\"" },
+        { q: <span className="normal-case">ἔχετε</span>, answer: "2nd plural — \"you (pl.)\"" },
+        { q: <span className="normal-case">γινώσκω</span>, answer: "1st singular — \"I\"" },
+        { q: <span className="normal-case">λαμβάνει</span>, answer: "3rd singular — \"he/she/it\"" },
+      ]}
+    />
+
     <SectionHeading>Marking past time: the augment</SectionHeading>
     <P>
       To push a verb into the past, Greek glues an <Gk>ἐ‑</Gk> onto the front — called the
@@ -106,6 +120,20 @@ export const INDICATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 4 · εἰμί ───────────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — spot the augment"
+      intro={<>The ἐ- prefix (or a lengthened opening vowel) marks past time in the indicative.</>}
+      options={["Augmented — past time", "No augment — not past"]}
+      items={[
+        { q: <span className="normal-case">ἤκουον</span>, answer: "Augmented — past time", note: <>ἀ lengthened to ἠ.</> },
+        { q: <span className="normal-case">πιστεύομεν</span>, answer: "No augment — not past" },
+        { q: <span className="normal-case">ἐλέγετε</span>, answer: "Augmented — past time" },
+        { q: <span className="normal-case">ἔχει</span>, answer: "No augment — not past" },
+        { q: <span className="normal-case">ἔγραφον</span>, answer: "Augmented — past time" },
+        { q: <span className="normal-case">λύουσιν</span>, answer: "No augment — not past" },
+      ]}
+    />
+
     <SectionHeading>The most common verb of all: εἰμί, "to be"</SectionHeading>
     <P>
       Just as in English (<em>am, is, was</em> — nothing like "be"!), the Greek verb "to be" is irregular
@@ -137,6 +165,32 @@ export const INDICATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 5 · The tense machine ──────────────────────────── */}
+    <ClassSentences
+      lesson="εἰμί in the wild"
+      items={[
+        { words: [
+          { w: "ἐγώ", parsing: "Nom Sg — ἐγώ (emphatic)", syntax: "Subject", gloss: "I" },
+          { w: "εἰμι", parsing: "Pres Act Ind 1 Sg — εἰμί", gloss: "am" },
+          { w: "τὸ", parsing: "Article — Nom Sg Neut", gloss: "the" },
+          { w: "φῶς", parsing: "Nom Sg Neut — φῶς (3rd decl.)", syntax: "Predicate Nominative", gloss: "light" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+          { w: "κόσμου.", parsing: "Gen Sg Masc — κόσμος", syntax: "Genitive of Possession", gloss: "world" },
+        ],
+          translation: "I am the light of the world.",
+          note: "John 8:12.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "ἀγάπη", parsing: "Nom Sg Fem — ἀγάπη", syntax: "Predicate Nominative", gloss: "love" },
+          { w: "ἐστίν.", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "is" },
+        ],
+          translation: "God is love.",
+          note: "1 John 4:8 — the articular θεός is the subject; anarthrous ἀγάπη the predicate.",
+        },
+      ]}
+    />
+
     <SectionHeading>The tense machine: identifiers</SectionHeading>
     <P>
       Here is the payoff of learning the two base paradigms: every remaining tense is built by inserting a
@@ -229,6 +283,20 @@ export const INDICATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 6 · Voice ──────────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — name the tense"
+      intro={<>Augment? Identifier? Reduplication? Read the machine.</>}
+      options={["Present", "Imperfect", "Future", "Aorist", "Perfect", "Aorist passive", "Future passive"]}
+      items={[
+        { q: <span className="normal-case">λύσομεν</span>, answer: "Future" },
+        { q: <span className="normal-case">ἐλύσατε</span>, answer: "Aorist" },
+        { q: <span className="normal-case">λελύκαμεν</span>, answer: "Perfect" },
+        { q: <span className="normal-case">ἐλύετο</span>, answer: "Imperfect" },
+        { q: <span className="normal-case">λυθήσεται</span>, answer: "Future passive" },
+        { q: <span className="normal-case">ἐλύθη</span>, answer: "Aorist passive" },
+      ]}
+    />
+
     <SectionHeading>Voice: who does, who receives</SectionHeading>
     <P>
       English has two <Term t="voice">voices</Term>: active ("the dog bit the man") and passive ("the man
@@ -286,6 +354,19 @@ export const INDICATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 7 · Worked example ─────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — name the voice"
+      options={["Active — subject acts", "Middle/Passive form", "Passive (θη-form)"]}
+      items={[
+        { q: <span className="normal-case">λύει</span>, answer: "Active — subject acts" },
+        { q: <span className="normal-case">λύεται</span>, answer: "Middle/Passive form" },
+        { q: <span className="normal-case">λυθήσεται</span>, answer: "Passive (θη-form)" },
+        { q: <span className="normal-case">ἐλύθησαν</span>, answer: "Passive (θη-form)" },
+        { q: <span className="normal-case">λύομαι</span>, answer: "Middle/Passive form" },
+        { q: <span className="normal-case">ἔλυσεν</span>, answer: "Active — subject acts" },
+      ]}
+    />
+
     <SectionHeading>Reading the machine: a worked example</SectionHeading>
     <TableAside
       beginning={<>

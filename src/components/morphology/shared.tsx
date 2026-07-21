@@ -9,7 +9,7 @@
    (Term glossary tooltips, Practice exercises, LiveExamples corpus links).
 ───────────────────────────────────────────── */
 
-import { useState, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
@@ -492,6 +492,182 @@ export function ClassSentences({ lesson, intro, items }: {
           </li>
         ))}
       </ol>
+    </div>
+  )
+}
+
+/**
+ * Graded homework for this chapter (the lesson deck's "Exercises A / B" as
+ * Translation Exercises), role-aware:
+ *
+ * - Students see their published homework assignments with due date +
+ *   submission state; each opens the assignment's homework pane.
+ * - Instructors see an activate panel: per course, toggle a set on with a
+ *   deadline (creates the published assignment through the normal assignment
+ *   API, so it appears on the course dashboard and in the gradebook), adjust
+ *   the deadline, or deactivate (unpublish) — class-by-class control from
+ *   right here on the Grammar page.
+ *
+ * Renders nothing when signed out or when the chapter has no sets.
+ */
+interface HwStudentEntry { assignmentId: string; title: string; dueDate: string; submitted: boolean }
+interface HwInstructorData {
+  sets: { id: string; title: string; sentenceCount: number }[]
+  courses: { id: string; name: string; level: string }[]
+  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean }[]
+}
+
+function toEndOfDayISO(date: string) {
+  return new Date(`${date}T23:59:59`).toISOString()
+}
+
+export function HomeworkAssignments({ chapter }: { chapter: string }) {
+  const [role, setRole] = useState<'none' | 'student' | 'instructor'>('none')
+  const [entries, setEntries] = useState<HwStudentEntry[]>([])
+  const [data, setData] = useState<HwInstructorData | null>(null)
+  const [dates, setDates] = useState<Record<string, string>>({})   // `${setId}:${courseId}` -> yyyy-mm-dd
+  const [busy, setBusy] = useState<string | null>(null)
+  const [error, setError] = useState('')
+
+  function load() {
+    fetch(`/api/grammar-homework?chapter=${encodeURIComponent(chapter)}`)
+      .then(r => (r.ok ? r.json() : { role: 'none', entries: [] }))
+      .then(d => {
+        setRole(d.role ?? 'none')
+        if (d.role === 'student') setEntries(d.entries ?? [])
+        if (d.role === 'instructor') setData(d)
+      })
+      .catch(() => setRole('none'))
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { load() }, [chapter])
+
+  if (role === 'student') {
+    if (entries.length === 0) return null
+    return (
+      <div className="my-5 max-w-3xl rounded-xl border border-amber-200 bg-amber-50/60 px-4 py-3.5">
+        <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-2">Homework — graded</p>
+        <ul className="space-y-1.5">
+          {entries.map(e => (
+            <li key={e.assignmentId} className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-sm">
+              <Link href={`/student/assignments/${e.assignmentId}`} className="font-medium text-amber-900 hover:underline">
+                {e.title} →
+              </Link>
+              <span className="text-xs text-amber-700">
+                due {new Date(e.dueDate).toLocaleDateString()}
+                {e.submitted && ' · submitted ✓'}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  if (role !== 'instructor' || !data) return null
+
+  async function act(key: string, fn: () => Promise<Response>) {
+    setBusy(key); setError('')
+    try {
+      const res = await fn()
+      if (!res.ok) {
+        const b = await res.json().catch(() => ({}))
+        setError(b.error ?? 'Something went wrong.')
+        return
+      }
+      load()
+    } finally {
+      setBusy(null)
+    }
+  }
+
+  return (
+    <div className="my-5 max-w-3xl rounded-xl border border-amber-300 bg-amber-50/70 px-4 py-3.5">
+      <p className="text-xs font-semibold uppercase tracking-wide text-amber-800 mb-1">
+        Homework — instructor controls
+      </p>
+      <p className="text-xs text-amber-700 mb-3">
+        Activate a set for a class and it becomes a graded assignment on that course&rsquo;s dashboard
+        (and in the gradebook). Grade it from the assignment&rsquo;s Grade page.
+      </p>
+      <div className="space-y-3">
+        {data.sets.map(set => (
+          <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
+            <p className="text-sm font-semibold text-gray-800">
+              {set.title} <span className="text-xs font-normal text-gray-400">· {set.sentenceCount} sentences</span>
+            </p>
+            <div className="mt-2 space-y-2">
+              {data.courses.map(course => {
+                const key = `${set.id}:${course.id}`
+                const existing = data.assignments.find(a => a.setId === set.id && a.courseId === course.id)
+                const dateVal = dates[key] ?? (existing ? existing.dueDate.slice(0, 10) : '')
+                return (
+                  <div key={course.id} className="flex flex-wrap items-center gap-2 text-sm">
+                    <span className="min-w-[10rem] text-gray-700">{course.name}</span>
+                    <input
+                      type="date"
+                      value={dateVal}
+                      onChange={e => setDates(prev => ({ ...prev, [key]: e.target.value }))}
+                      className="rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    />
+                    {!existing ? (
+                      <button
+                        type="button"
+                        disabled={busy === key || !dateVal}
+                        onClick={() => act(key, () => fetch('/api/assignments', {
+                          method: 'POST', headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            courseId: course.id, title: set.title, type: 'TRANSLATION_EXERCISE',
+                            weekNumber: 1, dueDate: toEndOfDayISO(dateVal), level: course.level,
+                            homeworkSet: set.id, isPublished: true,
+                          }),
+                        }))}
+                        className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
+                      >
+                        {busy === key ? 'Activating…' : 'Activate'}
+                      </button>
+                    ) : (
+                      <>
+                        <span className={clsx('rounded-md px-2 py-0.5 text-xs font-medium',
+                          existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
+                          {existing.isPublished ? `active · due ${new Date(existing.dueDate).toLocaleDateString()}` : 'deactivated'}
+                        </span>
+                        {existing.isPublished && dateVal && dateVal !== existing.dueDate.slice(0, 10) && (
+                          <button
+                            type="button"
+                            disabled={busy === key}
+                            onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
+                              method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ dueDate: toEndOfDayISO(dateVal) }),
+                            }))}
+                            className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
+                          >
+                            Update deadline
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          disabled={busy === key}
+                          onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
+                            method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(existing.isPublished
+                              ? { isPublished: false }
+                              : { isPublished: true, ...(dateVal ? { dueDate: toEndOfDayISO(dateVal) } : {}) }),
+                          }))}
+                          className="rounded-lg border border-gray-300 bg-surface px-3 py-1 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700 disabled:opacity-50"
+                        >
+                          {existing.isPublished ? 'Deactivate' : 'Reactivate'}
+                        </button>
+                      </>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+      {error && <p className="mt-2 text-xs text-red-600 bg-red-50 rounded-lg px-2 py-1.5">{error}</p>}
     </div>
   )
 }

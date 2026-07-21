@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const CONJUNCTIONS_CONTENT = (
@@ -53,6 +53,18 @@ export const CONJUNCTIONS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Class by class ─────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — name the class"
+      intro={<>Read the conjunction + mood before anything else.</>}
+      options={["First class — εἰ + indicative (assumed true)", "Second class — εἰ + past indicative … ἄν (contrary to fact)", "Third class — ἐάν + subjunctive (open)", "Indefinite relative — ὃς ἄν + subjunctive (\"whoever\")"]}
+      items={[
+        { q: <span className="normal-case">εἰ + present indicative</span>, answer: "First class — εἰ + indicative (assumed true)" },
+        { q: <span className="normal-case">εἰ + aorist indicative … ἄν</span>, answer: "Second class — εἰ + past indicative … ἄν (contrary to fact)" },
+        { q: <span className="normal-case">ἐάν + subjunctive</span>, answer: "Third class — ἐάν + subjunctive (open)" },
+        { q: <span className="normal-case">ὃς ἄν + subjunctive</span>, answer: "Indefinite relative — ὃς ἄν + subjunctive (\"whoever\")" },
+      ]}
+    />
+
     <SectionHeading>First class: assumed true — for the argument</SectionHeading>
     <P>
       <Gk>εἰ</Gk> + indicative assumes the "if" for the sake of what follows: <em>if</em> this holds,
@@ -123,6 +135,23 @@ export const CONJUNCTIONS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="A third-class condition"
+      items={[
+        { words: [
+          { w: "ἐὰν", parsing: "Conjunction (+ subjunctive)", syntax: "Conditional Clause (Third Class)", gloss: "if" },
+          { w: "ἔχητε", parsing: "Pres Act Subj 2 Pl — ἔχω", gloss: "you have" },
+          { w: "ἀγάπην,", parsing: "Acc Sg Fem — ἀγάπη", syntax: "Direct Object", gloss: "love" },
+          { w: "μαθηταί", parsing: "Nom Pl Masc — μαθητής", syntax: "Predicate Nominative", gloss: "disciples" },
+          { w: "μού", parsing: "Gen Sg — ἐγώ", syntax: "Genitive of Possession", gloss: "my" },
+          { w: "ἐστε.", parsing: "Pres Act Ind 2 Pl — εἰμί", gloss: "you are" },
+        ],
+          translation: "If you have love, you are my disciples.",
+          note: "After John 13:35.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

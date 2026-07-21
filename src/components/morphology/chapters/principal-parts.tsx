@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  DropdownPractice,
 } from '../shared'
 
 export const PRINCIPAL_PARTS_CONTENT = (
@@ -52,6 +53,20 @@ export const PRINCIPAL_PARTS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · The rebels ─────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — which door-key?"
+      intro={<>Place each form in its principal part.</>}
+      options={["Part 1 — present", "Part 2 — future active", "Part 3 — aorist active", "Part 4 — perfect active", "Part 5 — perfect middle/passive", "Part 6 — aorist passive"]}
+      items={[
+        { q: <span className="normal-case">λύω</span>, answer: "Part 1 — present" },
+        { q: <span className="normal-case">λύσω</span>, answer: "Part 2 — future active" },
+        { q: <span className="normal-case">ἔλυσα</span>, answer: "Part 3 — aorist active" },
+        { q: <span className="normal-case">λέλυκα</span>, answer: "Part 4 — perfect active" },
+        { q: <span className="normal-case">λέλυμαι</span>, answer: "Part 5 — perfect middle/passive" },
+        { q: <span className="normal-case">ἐλύθην</span>, answer: "Part 6 — aorist passive" },
+      ]}
+    />
+
     <SectionHeading>The rebels worth memorizing</SectionHeading>
     <P>
       Here are the highest-frequency irregular sets in the New Testament. Read each row aloud, left to
@@ -90,6 +105,20 @@ export const PRINCIPAL_PARTS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Using the grid ─────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — name the rebel"
+      intro={<>Suppletive stems: match the form to its dictionary verb.</>}
+      options={["φέρω — \"I carried\"", "λέγω — \"I said\"", "ἔρχομαι — \"I came\"", "ὁράω — \"I saw\"", "ἐσθίω — \"I ate\"", "γινώσκω — \"I knew\""]}
+      items={[
+        { q: <span className="normal-case">ἤνεγκα</span>, answer: "φέρω — \"I carried\"" },
+        { q: <span className="normal-case">εἶπον</span>, answer: "λέγω — \"I said\"" },
+        { q: <span className="normal-case">ἦλθον</span>, answer: "ἔρχομαι — \"I came\"" },
+        { q: <span className="normal-case">εἶδον</span>, answer: "ὁράω — \"I saw\"" },
+        { q: <span className="normal-case">ἔφαγον</span>, answer: "ἐσθίω — \"I ate\"" },
+        { q: <span className="normal-case">ἔγνων</span>, answer: "γινώσκω — \"I knew\"" },
+      ]}
+    />
+
     <SectionHeading>Using the grid: from mystery form to dictionary</SectionHeading>
     <TableAside
       beginning={<>

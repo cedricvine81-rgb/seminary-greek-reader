@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const SUBJUNCTIVES_CONTENT = (
@@ -81,6 +81,19 @@ export const SUBJUNCTIVES_CONTENT = (
     </LevelOnly>
 
     {/* ── 3 · Flag words ─────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — indicative or subjunctive?"
+      options={["Indicative — statement", "Subjunctive — the vowel went long"]}
+      items={[
+        { q: <span className="normal-case">λύομεν</span>, answer: "Indicative — statement" },
+        { q: <span className="normal-case">λύωμεν</span>, answer: "Subjunctive — the vowel went long" },
+        { q: <span className="normal-case">ἀκούετε</span>, answer: "Indicative — statement" },
+        { q: <span className="normal-case">ἀκούητε</span>, answer: "Subjunctive — the vowel went long" },
+        { q: <span className="normal-case">πιστεύσῃ</span>, answer: "Subjunctive — the vowel went long" },
+        { q: <span className="normal-case">πιστεύει</span>, answer: "Indicative — statement" },
+      ]}
+    />
+
     <SectionHeading>How you'll actually meet it: flag words</SectionHeading>
     <P>
       The subjunctive rarely walks alone. In practice, a small set of "flag words" announces it a word or
@@ -109,6 +122,19 @@ export const SUBJUNCTIVES_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Independent uses ───────────────────────────── */}
+    <DropdownPractice
+      title="Practice — read the flag word"
+      options={["Purpose — \"in order that\"", "Condition — \"if (maybe)\"", "\"Whoever\"", "\"Whenever\"", "Prohibition — \"do not\"", "Emphatic denial — \"never\""]}
+      items={[
+        { q: <span className="normal-case">ἵνα</span>, answer: "Purpose — \"in order that\"" },
+        { q: <span className="normal-case">ἐάν</span>, answer: "Condition — \"if (maybe)\"" },
+        { q: <span className="normal-case">ὃς ἄν</span>, answer: "\"Whoever\"" },
+        { q: <span className="normal-case">ὅταν</span>, answer: "\"Whenever\"" },
+        { q: <span className="normal-case">μή + aorist subj.</span>, answer: "Prohibition — \"do not\"" },
+        { q: <span className="normal-case">οὐ μή</span>, answer: "Emphatic denial — \"never\"" },
+      ]}
+    />
+
     <SectionHeading>When it does walk alone</SectionHeading>
     <P>
       Four uses need no flag word — the subjunctive itself carries the meaning:
@@ -123,6 +149,26 @@ export const SUBJUNCTIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="The subjunctive alone"
+      items={[
+        { words: [
+          { w: "ἀγαπῶμεν", parsing: "Pres Act Subj 1 Pl — ἀγαπάω (hortatory)", gloss: "let us love" },
+          { w: "ἀλλήλους.", parsing: "Acc Pl Masc — ἀλλήλων", syntax: "Direct Object", gloss: "one another" },
+        ],
+          translation: "Let us love one another.",
+          note: "1 John 4:7 — the hortatory subjunctive.",
+        },
+        { words: [
+          { w: "τί", parsing: "Acc Sg Neut — τίς (interrogative)", gloss: "what?" },
+          { w: "εἴπω;", parsing: "2nd Aor Act Subj 1 Sg — λέγω (deliberative)", gloss: "should I say" },
+        ],
+          translation: "What should I say?",
+          note: "John 12:27 — the deliberative subjunctive.",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

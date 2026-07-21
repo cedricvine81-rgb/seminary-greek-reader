@@ -8,6 +8,7 @@
 import {
   ColsTable, InfoBox, TableAside, Gk, Ex,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples,
+  DropdownPractice,
 } from '../shared'
 
 export const CONJ_ADV_CONTENT = (
@@ -61,6 +62,19 @@ export const CONJ_ADV_CONTENT = (
     />
 
     {/* ── 3 · Subordinating ──────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — the coordinators"
+      options={["and / also / even", "but / and (mild turn)", "but (strong contrast)", "for (gives the reason)", "therefore", "or"]}
+      items={[
+        { q: <span className="normal-case">καί</span>, answer: "and / also / even" },
+        { q: <span className="normal-case">δέ</span>, answer: "but / and (mild turn)" },
+        { q: <span className="normal-case">ἀλλά</span>, answer: "but (strong contrast)" },
+        { q: <span className="normal-case">γάρ</span>, answer: "for (gives the reason)" },
+        { q: <span className="normal-case">οὖν</span>, answer: "therefore" },
+        { q: <span className="normal-case">ἤ</span>, answer: "or" },
+      ]}
+    />
+
     <SectionHeading>Joining unequals: the subordinate conjunctions</SectionHeading>
     <P>
       These open a dependent <Term t="clause">clause</Term> — one that hangs on the main clause and answers
@@ -101,6 +115,19 @@ export const CONJ_ADV_CONTENT = (
     />
 
     {/* ── 4 · Adverbs ────────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — the subordinators"
+      options={["that / because", "in order that", "whenever", "as / when", "if", "just as"]}
+      items={[
+        { q: <span className="normal-case">ὅτι</span>, answer: "that / because" },
+        { q: <span className="normal-case">ἵνα</span>, answer: "in order that" },
+        { q: <span className="normal-case">ὅταν</span>, answer: "whenever" },
+        { q: <span className="normal-case">ὡς</span>, answer: "as / when" },
+        { q: <span className="normal-case">εἰ</span>, answer: "if" },
+        { q: <span className="normal-case">καθώς</span>, answer: "just as" },
+      ]}
+    />
+
     <SectionHeading>Adverbs: how, when, where</SectionHeading>
     <P>
       Adverbs are not conjunctions — they modify verbs, filling in the action's circumstances. Most Greek
@@ -150,6 +177,19 @@ export const CONJ_ADV_CONTENT = (
     </LevelOnly>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — the little adverbs"
+      options={["now", "then", "there", "again", "immediately", "here"]}
+      items={[
+        { q: <span className="normal-case">νῦν</span>, answer: "now" },
+        { q: <span className="normal-case">τότε</span>, answer: "then" },
+        { q: <span className="normal-case">ἐκεῖ</span>, answer: "there" },
+        { q: <span className="normal-case">πάλιν</span>, answer: "again" },
+        { q: <span className="normal-case">εὐθύς</span>, answer: "immediately", note: <>Mark’s favourite word.</> },
+        { q: <span className="normal-case">ὧδε</span>, answer: "here" },
+      ]}
+    />
+
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice — name the sign's function"

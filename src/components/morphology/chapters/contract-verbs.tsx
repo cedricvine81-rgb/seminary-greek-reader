@@ -7,6 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
+  DropdownPractice,
 } from '../shared'
 
 export const CONTRACT_VERBS_CONTENT = (
@@ -79,6 +80,20 @@ export const CONTRACT_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Outside the present ────────────────────────── */}
+    <DropdownPractice
+      title="Practice — do the contraction"
+      intro={<>Merge the stem vowel with the ending vowel.</>}
+      options={["φιλῶ", "φιλεῖτε", "ἀγαπῶμεν", "πληροῖ", "φιλοῦσιν", "ἀγαπᾷς"]}
+      items={[
+        { q: <span className="normal-case">φιλέ-ω →</span>, answer: "φιλῶ" },
+        { q: <span className="normal-case">φιλέ-ετε →</span>, answer: "φιλεῖτε" },
+        { q: <span className="normal-case">ἀγαπά-ομεν →</span>, answer: "ἀγαπῶμεν" },
+        { q: <span className="normal-case">πληρό-ει →</span>, answer: "πληροῖ" },
+        { q: <span className="normal-case">φιλέ-ουσιν →</span>, answer: "φιλοῦσιν" },
+        { q: <span className="normal-case">ἀγαπά-εις →</span>, answer: "ἀγαπᾷς" },
+      ]}
+    />
+
     <SectionHeading>Outside the present: the vowel grows up</SectionHeading>
     <P>
       Contraction only happens where stem-vowel meets connecting vowel — the present and imperfect. In
@@ -107,6 +122,20 @@ export const CONTRACT_VERBS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — the grown-up vowel"
+      intro={<>Outside the present the stem vowel lengthens before the identifier.</>}
+      options={["φιλέω — future (ε → η)", "ἀγαπάω — aorist (α → η)", "πληρόω — perfect (ο → ω)", "λαλέω — aorist (ε → η)", "ζητέω — future (ε → η)", "ποιέω — aorist (ε → η)"]}
+      items={[
+        { q: <span className="normal-case">φιλήσω</span>, answer: "φιλέω — future (ε → η)" },
+        { q: <span className="normal-case">ἠγάπησεν</span>, answer: "ἀγαπάω — aorist (α → η)" },
+        { q: <span className="normal-case">πεπλήρωκεν</span>, answer: "πληρόω — perfect (ο → ω)" },
+        { q: <span className="normal-case">ἐλάλησα</span>, answer: "λαλέω — aorist (ε → η)" },
+        { q: <span className="normal-case">ζητήσετε</span>, answer: "ζητέω — future (ε → η)" },
+        { q: <span className="normal-case">ἐποίησεν</span>, answer: "ποιέω — aorist (ε → η)" },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

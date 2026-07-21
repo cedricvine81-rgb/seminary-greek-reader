@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getHomeworkSet } from '@/data/grammar-homework'
 import { logError } from '@/lib/logger'
 import { revalidatePath } from 'next/cache'
 import { prisma } from '@/lib/db'
@@ -40,7 +41,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson, notesFolderName } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson, notesFolderName } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -61,7 +62,11 @@ export async function POST(req: NextRequest) {
   if (!await isInstructorOfCourse(courseId, payload.sub)) {
     return NextResponse.json({ error: 'You do not teach this course.' }, { status: 403 })
   }
-  if ((type === 'TRANSLATION_EXERCISE' || type === 'TRANSLATION_EXAM') && !reference?.trim()) {
+  const hwSet = type === 'TRANSLATION_EXERCISE' && homeworkSet ? getHomeworkSet(String(homeworkSet)) : undefined
+  if (type === 'TRANSLATION_EXERCISE' && homeworkSet && !hwSet) {
+    return NextResponse.json({ error: 'Unknown grammar homework set.' }, { status: 400 })
+  }
+  if ((type === 'TRANSLATION_EXERCISE' || type === 'TRANSLATION_EXAM') && !reference?.trim() && !hwSet) {
     return NextResponse.json({ error: 'At least one passage reference is required.' }, { status: 400 })
   }
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
@@ -75,7 +80,8 @@ export async function POST(req: NextRequest) {
       weekNumber: Number(weekNumber),
       dueDate: new Date(dueDate),
       level: level as CourseLevel,
-      reference, instructions,
+      reference: reference?.trim() ? reference : hwSet ? hwSet.title : reference,
+      instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
       opensAt: opensAt ? new Date(opensAt) : null,
@@ -139,6 +145,17 @@ export async function POST(req: NextRequest) {
     const subtype = (morphologySubtype as MorphologySubtype) ?? 'VERB_PARSING'
     const fields: string[] | undefined = body.fields?.length ? body.fields : undefined
     questions = await generateMorphologyQuestionsBySubtype(subtype, Number(numQuestions ?? 10), vocabThruLesson ?? null, fields, body.parseFilter ?? undefined)
+  } else if (hwSet) {
+    // Grammar homework: one TRANSLATION question per sentence. options[0] carries the
+    // word-level model answers as JSON; correctAnswer holds the model translation.
+    questions = hwSet.sentences.map((s, i) => ({
+      position: i,
+      type: 'TRANSLATION' as QuestionType,
+      prompt: s.words.map(w => w.w).join(' '),
+      correctAnswer: s.translation,
+      options: [JSON.stringify({ hw: 1, set: hwSet.id, chapter: hwSet.chapter, words: s.words, note: s.note ?? null })],
+      points: 10,
+    }))
   }
 
   if (questions.length > 0) {

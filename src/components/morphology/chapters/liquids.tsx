@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const LIQUIDS_CONTENT = (
@@ -61,6 +61,20 @@ export const LIQUIDS_CONTENT = (
     </TableAside>
 
     {/* ── 3 · The liquid aorist ──────────────────────────── */}
+    <DropdownPractice
+      title="Practice — present or future?"
+      intro={<>No σ in a liquid future — only the accent differs.</>}
+      options={["Present", "Future — the circumflex gives it away"]}
+      items={[
+        { q: <span className="normal-case">μένει</span>, answer: "Present" },
+        { q: <span className="normal-case">μενεῖ</span>, answer: "Future — the circumflex gives it away" },
+        { q: <span className="normal-case">κρίνομεν</span>, answer: "Present" },
+        { q: <span className="normal-case">κρινοῦμεν</span>, answer: "Future — the circumflex gives it away" },
+        { q: <span className="normal-case">ἀποστέλλει</span>, answer: "Present" },
+        { q: <span className="normal-case">ἀποστελεῖ</span>, answer: "Future — the circumflex gives it away" },
+      ]}
+    />
+
     <SectionHeading>The liquid aorist: σ-less but honest</SectionHeading>
     <P>
       The aorist likewise refuses the σ but keeps everything else — augment and the familiar
@@ -94,6 +108,20 @@ export const LIQUIDS_CONTENT = (
     </TableAside>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <DropdownPractice
+      title="Practice — the σ-less aorist"
+      intro={<>Lengthened stem vowel instead of σ.</>}
+      options={["μένω — \"I remained\"", "αἴρω — \"I took up\"", "κρίνω — \"he judged\"", "ἀποστέλλω — \"they sent\"", "ἐγείρω — \"he raised\"", "ἀπαγγέλλω — \"he announced\""]}
+      items={[
+        { q: <span className="normal-case">ἔμεινα</span>, answer: "μένω — \"I remained\"" },
+        { q: <span className="normal-case">ἦρα</span>, answer: "αἴρω — \"I took up\"" },
+        { q: <span className="normal-case">ἔκρινεν</span>, answer: "κρίνω — \"he judged\"" },
+        { q: <span className="normal-case">ἀπέστειλαν</span>, answer: "ἀποστέλλω — \"they sent\"" },
+        { q: <span className="normal-case">ἤγειρεν</span>, answer: "ἐγείρω — \"he raised\"" },
+        { q: <span className="normal-case">ἀπήγγειλεν</span>, answer: "ἀπαγγέλλω — \"he announced\"" },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">

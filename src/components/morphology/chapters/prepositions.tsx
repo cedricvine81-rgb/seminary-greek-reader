@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences, DropdownPractice,
+  ClassSentences, DropdownPractice, HomeworkAssignments,
 } from '../shared'
 
 export const PREPOSITIONS_CONTENT = (
@@ -308,6 +308,8 @@ export const PREPOSITIONS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="prepositions" />
 
     <LiveExamples
       intro={<>Prepositions saturate the NT — watch the same word shift meaning with its case.</>}

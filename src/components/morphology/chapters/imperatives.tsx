@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const IMPERATIVES_CONTENT = (
@@ -79,6 +79,19 @@ export const IMPERATIVES_CONTENT = (
     </TableAside>
 
     {/* ── 3 · Aspect in commands ─────────────────────────── */}
+    <DropdownPractice
+      title="Practice — parse the command"
+      options={["Pres Impv 2 Sg — \"keep loosing!\"", "Aor Impv 2 Sg — \"loose!\"", "Pres Impv 2 Pl", "Aor Impv 2 Pl", "Pres Impv 3 Sg — \"let him loose!\"", "Aor Impv 3 Sg — \"let him loose!\""]}
+      items={[
+        { q: <span className="normal-case">λῦε</span>, answer: "Pres Impv 2 Sg — \"keep loosing!\"" },
+        { q: <span className="normal-case">λῦσον</span>, answer: "Aor Impv 2 Sg — \"loose!\"" },
+        { q: <span className="normal-case">λύετε</span>, answer: "Pres Impv 2 Pl" },
+        { q: <span className="normal-case">λύσατε</span>, answer: "Aor Impv 2 Pl" },
+        { q: <span className="normal-case">λυέτω</span>, answer: "Pres Impv 3 Sg — \"let him loose!\"" },
+        { q: <span className="normal-case">λυσάτω</span>, answer: "Aor Impv 3 Sg — \"let him loose!\"" },
+      ]}
+    />
+
     <SectionHeading>Present or aorist? The aspect of a command</SectionHeading>
     <P>
       Both tenses command; they command <em>differently</em>. The aorist orders a specific, whole act:
@@ -95,6 +108,30 @@ export const IMPERATIVES_CONTENT = (
     </P>
 
     {/* ── 4 · Watch out ──────────────────────────────────── */}
+    <ClassSentences
+      lesson="Commands in the text"
+      items={[
+        { words: [
+          { w: "χαίρετε", parsing: "Pres Act Impv 2 Pl — χαίρω", gloss: "rejoice!" },
+          { w: "ἐν", parsing: "Preposition + dative", gloss: "in" },
+          { w: "κυρίῳ", parsing: "Dat Sg Masc — κύριος", gloss: "the Lord" },
+          { w: "πάντοτε.", parsing: "Adverb", gloss: "always" },
+        ],
+          translation: "Rejoice in the Lord always.",
+          note: "Philippians 4:4 — present imperative: keep on rejoicing.",
+        },
+        { words: [
+          { w: "μὴ", parsing: "Negative particle (+ pres. impv.)", gloss: "not" },
+          { w: "φοβοῦ,", parsing: "Pres Mid Impv 2 Sg — φοβέομαι", gloss: "fear" },
+          { w: "μόνον", parsing: "Adverb", gloss: "only" },
+          { w: "πίστευε.", parsing: "Pres Act Impv 2 Sg — πιστεύω", gloss: "believe" },
+        ],
+          translation: "Do not fear; only believe.",
+          note: "Mark 5:36 — μή + present imperative: stop fearing (and keep believing).",
+        },
+      ]}
+    />
+
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
       <ul className="list-disc list-inside space-y-1.5 text-sm text-gray-700">
