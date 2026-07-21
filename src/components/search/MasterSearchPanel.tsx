@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { SearchPageView } from './SearchPageView'
+import { MorphSearchPage } from './MorphSearchPage'
 import type { MasterSearchPreset } from '@/lib/master-search-bus'
 
 // The Master Search as a side panel beside the current page (Reader, Texts, …) instead of a
@@ -106,15 +107,26 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
       {/* The search itself — its own scroll container (the sticky controls + parsing dock
           stick within it). pb-16 mirrors the /search page's bottom clearance. */}
       <div className="flex-1 min-h-0 overflow-y-auto pb-16">
-        <SearchPageView
-          embedded
-          onRequestClose={onClose}
-          initialQuery={preset?.query}
-          initialScope={preset?.scope}
-          initialLemma={preset?.lemma}
-          initialBooks={preset?.books}
-          initialStrongs={preset?.strongs}
-        />
+        {preset?.scope?.startsWith('morph:') ? (
+          // Morphology facet (Grammar-page "See it in the NT" links, Reader "By morphology"):
+          // same split-view panel, its own criteria/results flow.
+          <MorphSearchPage
+            embedded
+            onRequestClose={onClose}
+            features={(preset.features ?? '').split(',').map(f => f.trim()).filter(Boolean)}
+            lemma={(preset.query ?? '').trim()}
+          />
+        ) : (
+          <SearchPageView
+            embedded
+            onRequestClose={onClose}
+            initialQuery={preset?.query}
+            initialScope={preset?.scope}
+            initialLemma={preset?.lemma}
+            initialBooks={preset?.books}
+            initialStrongs={preset?.strongs}
+          />
+        )}
       </div>
     </div>
   )

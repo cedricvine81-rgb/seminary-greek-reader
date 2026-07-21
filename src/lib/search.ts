@@ -174,20 +174,27 @@ export interface MorphCriteria {
 // Every verse containing a word whose parsing matches all requested features (and, if
 // given, the requested lemma). Feature tokens are matched against the word's parsing
 // string, e.g. 'verb, aorist, active, participle, …'.
-export async function searchByMorph(criteria: MorphCriteria, corpus: SearchCorpus): Promise<BiblicalVerse[]> {
+export async function searchByMorph(criteria: MorphCriteria, corpus: SearchCorpus): Promise<(BiblicalVerse & { matchedLemmas?: string[] })[]> {
   const feats = criteria.features.map(f => f.toLowerCase().trim()).filter(Boolean)
   const lemmaNorm = criteria.lemma ? normalizeGreek(criteria.lemma) : null
   if (!feats.length && !lemmaNorm) return []
   const wi = getWordIndex()
-  const matched = new Set<string>()
+  // verseId → normalized lemmas of the words that matched, so the results view can
+  // red-highlight exactly the matching token(s) in each verse.
+  const matched = new Map<string, Set<string>>()
   for (const verseId in wi) {
     for (const [, l, p] of wi[verseId]) {
       if (lemmaNorm && l !== lemmaNorm) continue
       const toks = p ? p.split(', ') : []
-      if (feats.every(f => toks.includes(f))) { matched.add(verseId); break }
+      if (feats.every(f => toks.includes(f))) {
+        let set = matched.get(verseId)
+        if (!set) matched.set(verseId, (set = new Set()))
+        if (l) set.add(l)
+      }
     }
   }
-  return versesFor(matched, corpus)
+  return versesFor(new Set(matched.keys()), corpus)
+    .map(v => ({ ...v, matchedLemmas: Array.from(matched.get(v.id) ?? []) }))
 }
 
 // Every verse containing a word with the given Strong's number (e.g. '1080' or 'G1080').

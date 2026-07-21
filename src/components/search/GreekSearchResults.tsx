@@ -17,7 +17,9 @@ const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number
 // rendered as a column. The selector itself lives in SearchPageView's controls bar.
 
 type Token = { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }
-export type GreekHit = { osisId: string; chapter: number; verse: number; text: string }
+// matchedLemmas: normalized lemmas of the word(s) a morphology search matched in this verse,
+// so exactly those tokens can be red-highlighted (surface/lemma terms cover the other searches).
+export type GreekHit = { osisId: string; chapter: number; verse: number; text: string; matchedLemmas?: string[] }
 type CtxVerse = { chapter: number; verse: number; text: string }
 
 function formatMorph(m?: Record<string, string | null>): string {
@@ -137,9 +139,12 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       // Neighbour verses (or not-yet-loaded) render as plain (grey) text.
       return <span className={isHit ? '' : 'text-gray-400'}>{hilite(cv.text, terms)}</span>
     }
+    const hitLemmas = h.matchedLemmas?.length ? new Set(h.matchedLemmas.map(normalizeFold)) : null
     return toks.map((tok, ti) => {
       const key = `${rowKey}.${ti}`
-      const matched = termSet.has(normalizeFold(tok.surface)) || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
+      const matched = termSet.has(normalizeFold(tok.surface))
+        || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
+        || (!!hitLemmas && hitLemmas.has(normalizeFold(tok.lemma)))
       const select = () => {
         showInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
         setSelKey(key)

@@ -2,16 +2,23 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Loader2, Pencil } from 'lucide-react'
+import { ArrowLeft, Loader2, Pencil, X } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { MorphSearchPicker } from '@/components/reader/MorphSearchPicker'
 import { MORPH_GROUPS } from '@/lib/morph-features'
+import { normalizeFold } from '@/lib/highlight-terms'
 import { markScrollRestore } from '@/lib/scroll-restore'
 
-// The morphology facet of the full-page search (scope `morph:GNT`). Reached from the Reader's
-// "By morphology" picker (openMasterSearch → /search?in=morph:GNT&features=…). Kept as its own
-// page component (branched in /search/page.tsx) so it stays isolated from the text-query search
-// UI while reusing GreekSearchResults for the Greek | translation display. NT-only.
+// The morphology facet of the search (scope `morph:GNT`). Reached from the Reader's
+// "By morphology" picker and the Grammar pages' "See it in the New Testament" links
+// (openMasterSearch). Kept as its own component (branched in /search/page.tsx and
+// MasterSearchPanel) so it stays isolated from the text-query search UI while reusing
+// GreekSearchResults for the Greek | translation display. NT-only.
+//
+// `embedded` hosts it inside the Master Search SIDE PANEL (MasterSearchPanel): the page
+// underneath stays mounted (split view, like Reader searches), there is no "return"
+// navigation, and editing the criteria re-runs the search in place instead of routing.
+// The matching word in each verse is red-highlighted (matchedLemmas from the API).
 
 // value → human label, for the criteria chips.
 const FEATURE_LABEL = new Map(MORPH_GROUPS.flatMap(g => g.features.map(f => [f.value, f.label] as const)))
@@ -24,12 +31,17 @@ function returnLabelFor(from?: string): string {
   return 'page'
 }
 
-export function MorphSearchPage({ features, lemma, returnTo }: {
+export function MorphSearchPage({ features: initialFeatures, lemma: initialLemma, returnTo, embedded = false, onRequestClose }: {
   features: string[]
   lemma: string          // '' when not restricting to a lemma
   returnTo?: string
+  embedded?: boolean
+  onRequestClose?: () => void
 }) {
   const router = useRouter()
+  // Criteria are state so an embedded "Edit criteria" re-searches in place; the full page
+  // routes instead (and remounts), so there the state simply mirrors the props.
+  const [{ features, lemma }, setCriteria] = useState({ features: initialFeatures, lemma: initialLemma })
   const [hits, setHits] = useState<GreekHit[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
@@ -56,9 +68,9 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
     if (lemma) params.set('lemma', lemma)
     fetch(`/api/search?${params.toString()}`)
       .then(r => r.ok ? r.json() : { results: [] })
-      .then((d: { results?: { bookId: string; chapter: number; verse: number; text: string }[] }) => {
+      .then((d: { results?: { bookId: string; chapter: number; verse: number; text: string; matchedLemmas?: string[] }[] }) => {
         if (!live) return
-        setHits((d.results ?? []).map(v => ({ osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text })))
+        setHits((d.results ?? []).map(v => ({ osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text, matchedLemmas: v.matchedLemmas })))
       })
       .catch(() => { if (live) setHits([]) })
       .finally(() => { if (live) setLoading(false) })
@@ -69,26 +81,31 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
     router.push(`/reader?ref=${encodeURIComponent(`${h.osisId} ${h.chapter}:${h.verse}`)}`)
   }, [router])
 
-  // Re-search with edited criteria: navigate here anew (preserving the return target).
+  // Re-search with edited criteria. Embedded (side panel): update in place — the page
+  // underneath owns the URL. Full page: navigate anew (preserving the return target).
   const applyEdit = useCallback((feats: string[], lem: string | null) => {
     setEditing(false)
+    if (embedded) {
+      setCriteria({ features: feats, lemma: lem ?? '' })
+      return
+    }
     const p = new URLSearchParams({ in: 'morph:GNT', features: feats.join(',') })
     if (lem) p.set('q', lem)
     if (returnTo) p.set('from', returnTo)
     router.push(`/search?${p.toString()}`)
-  }, [router, returnTo])
+  }, [router, returnTo, embedded])
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6">
-      <div className="sticky top-0 z-10 -mx-4 sm:-mx-6 px-4 sm:px-6 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100">
-        {returnTo && (
+    <div className={embedded ? 'w-full px-4' : 'mx-auto w-full max-w-4xl px-4 sm:px-6'}>
+      <div className={`sticky top-0 z-10 -mx-4 px-4 pt-4 pb-2 bg-gray-50/95 backdrop-blur border-b border-gray-100 ${embedded ? '' : 'sm:-mx-6 sm:px-6'}`}>
+        {!embedded && returnTo && (
           <button type="button" onClick={() => { markScrollRestore(returnTo); router.push(returnTo) }}
             className="mb-2 inline-flex items-center gap-1.5 text-sm text-brand-600 hover:text-brand-800 transition-colors">
             <ArrowLeft size={16} /> Return to {returnLabelFor(returnTo)}
           </button>
         )}
 
-        {/* Criteria summary + edit */}
+        {/* Criteria summary + edit (+ close, in the side panel) */}
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <div className="flex items-baseline gap-2">
@@ -109,10 +126,18 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
               )}
             </div>
           </div>
-          <button type="button" onClick={() => setEditing(true)}
-            className="flex-none inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-surface px-2.5 py-1.5 text-xs text-gray-600 hover:border-brand-300 hover:text-brand-700 transition-colors">
-            <Pencil size={13} /> Edit criteria
-          </button>
+          <div className="flex flex-none items-center gap-1.5">
+            <button type="button" onClick={() => setEditing(true)}
+              className="inline-flex items-center gap-1.5 rounded-md border border-gray-200 bg-surface px-2.5 py-1.5 text-xs text-gray-600 hover:border-brand-300 hover:text-brand-700 transition-colors">
+              <Pencil size={13} /> Edit criteria
+            </button>
+            {embedded && onRequestClose && (
+              <button type="button" onClick={onRequestClose} title="Close search"
+                className="rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
+                <X size={16} />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -137,12 +162,14 @@ export function MorphSearchPage({ features, lemma, returnTo }: {
             <GreekSearchResults
               hits={hits}
               terms={[]}
+              searchLemma={lemma ? normalizeFold(lemma) : undefined}
               corpus="GNT"
               bookName={bookName}
               context={0}
               ctxMap={{}}
               transLang={transLang}
               onOpen={openHit}
+              embedded={embedded}
             />
           </>
         )}

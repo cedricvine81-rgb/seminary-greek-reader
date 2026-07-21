@@ -13,9 +13,9 @@ import { snapshotScroll } from '@/lib/scroll-restore'
 //
 // The search opens as a SIDE PANEL over the current page (MasterSearchPanel) — the page stays
 // mounted and visible, so results can be compared with the passage without any "return" round
-// trip. Two cases still navigate instead:
-//  - a morphology search (scope morph:*) — MorphSearchPage is its own full-page flow;
-//  - already ON /search — the full page owns the search UI there, so just update its URL.
+// trip. This includes morphology searches (scope morph:*): the panel hosts MorphSearchPage, so
+// the Grammar pages' "See it in the NT" links open beside the page. One case still navigates:
+// already ON /search — the full page owns the search UI there, so just update its URL.
 export function MasterSearchProvider() {
   const router = useRouter()
   // nonce keys the panel so re-opening with a new preset (e.g. right-clicking another word
@@ -25,7 +25,7 @@ export function MasterSearchProvider() {
   const doOpen = useCallback((p?: MasterSearchPreset) => {
     if (isExamLocked()) return
     const onSearchPage = typeof window !== 'undefined' && window.location.pathname.startsWith('/search')
-    if (p?.scope?.startsWith('morph:') || onSearchPage) {
+    if (onSearchPage) {
       const params = new URLSearchParams()
       if (p?.query) params.set('q', p.query)
       if (p?.scope) params.set('in', p.scope)
