@@ -112,7 +112,11 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
     }))
   }
 
+  // One submission only — no resubmission (assignment is created with maxRetakes: 0).
+  const locked = attemptCount > 0 || submitted
+
   async function submit() {
+    if (locked) return
     const missing = questions.length - doneCount
     if (missing > 0 && !window.confirm(
       `${missing} of ${questions.length} sentences ${missing === 1 ? 'is' : 'are'} not fully answered. Submit anyway?`)) return
@@ -143,7 +147,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
   }
 
   const inputCls =
-    'w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent'
+    'w-full rounded-lg border border-gray-300 bg-input px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed'
 
   const q = open !== null ? questions[open] : null
   const entry = open !== null ? entries[open] : null
@@ -152,12 +156,11 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
 
   return (
     <div className="space-y-4">
-      {(submitted || attemptCount > 0) && (
+      {locked && (
         <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800 flex items-center gap-2">
           <CheckCircle2 size={16} className="flex-none" />
           <span>
-            {submitted ? 'Submitted for grading.' : 'You have already submitted this homework.'}
-            {' '}You can revise and resubmit until the deadline{dueDate ? ` (${new Date(dueDate).toLocaleDateString()})` : ''}.
+            Submitted for grading. This homework takes a single submission — no further changes can be made.
           </span>
         </div>
       )}
@@ -193,16 +196,20 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
 
       <div className="flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
         <p className="text-xs text-gray-500">
-          {doneCount}/{questions.length} sentences complete · work autosaves on this device until you submit.
+          {locked
+            ? 'Your submission is shown above (read-only).'
+            : `${doneCount}/${questions.length} sentences complete · autosaves on this device. You get one submission — check your work before submitting.`}
         </p>
-        <button
-          type="button"
-          onClick={submit}
-          disabled={submitting}
-          className="btn btn-primary px-5 py-2 inline-flex items-center gap-1.5 disabled:opacity-60"
-        >
-          <Send size={14} /> {submitting ? 'Submitting…' : attemptCount > 0 || submitted ? 'Resubmit' : 'Submit homework'}
-        </button>
+        {!locked && (
+          <button
+            type="button"
+            onClick={submit}
+            disabled={submitting}
+            className="btn btn-primary px-5 py-2 inline-flex items-center gap-1.5 disabled:opacity-60"
+          >
+            <Send size={14} /> {submitting ? 'Submitting…' : 'Submit homework'}
+          </button>
+        )}
       </div>
 
       {/* Right-hand working pane */}
@@ -211,7 +218,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
           <div className="flex items-center justify-between gap-2 border-b border-gray-200 bg-surface px-4 py-3">
             <div className="min-w-0">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-700">Homework — sentence {open! + 1} of {questions.length}</p>
-              <p className="truncate text-xs text-gray-500">Enter parsing, syntax and translation for each word, then translate the sentence.</p>
+              <p className="truncate text-xs text-gray-500">{locked ? 'Submitted — read-only.' : 'Enter parsing, syntax and translation for each word, then translate the sentence.'}</p>
             </div>
             <button type="button" onClick={() => setOpen(null)} title="Close"
               className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
@@ -239,20 +246,20 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
               <p className="font-reading text-xl text-gray-900">{word.w}</p>
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-600">Parsing</label>
-                <input type="text" className={inputCls}
+                <input type="text" className={inputCls} disabled={locked}
                   placeholder="case, number, gender / tense, voice, mood… — lexical form"
                   value={wordEntry.parsing}
                   onChange={e => updateWord(open!, wordIdx, { parsing: e.target.value })} />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-600">Syntax</label>
-                <Select value={wordEntry.syntax}
+                <Select value={wordEntry.syntax} disabled={locked}
                   onChange={e => updateWord(open!, wordIdx, { syntax: e.target.value })}
                   placeholder="Select syntax category…" options={SYNTAX_OPTS} />
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-600">Translation</label>
-                <input type="text" className={inputCls} placeholder="Translate this word…"
+                <input type="text" className={inputCls} disabled={locked} placeholder="Translate this word…"
                   value={wordEntry.gloss}
                   onChange={e => updateWord(open!, wordIdx, { gloss: e.target.value })} />
               </div>
@@ -266,7 +273,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
 
             <div className="rounded-xl border border-gray-200 bg-surface p-4 space-y-2">
               <label className="block text-xs font-medium text-gray-600">Now translate the whole sentence</label>
-              <textarea rows={2} className={inputCls} placeholder="Enter your translation…"
+              <textarea rows={2} className={inputCls} disabled={locked} placeholder="Enter your translation…"
                 value={entry.translation}
                 onChange={e => setEntries(prev => prev.map((s, i) => i !== open ? s : { ...s, translation: e.target.value }))} />
             </div>

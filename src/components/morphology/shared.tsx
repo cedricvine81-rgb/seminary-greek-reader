@@ -514,7 +514,7 @@ interface HwStudentEntry { assignmentId: string; title: string; dueDate: string;
 interface HwInstructorData {
   sets: { id: string; title: string; sentenceCount: number }[]
   courses: { id: string; name: string; level: string }[]
-  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean }[]
+  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null }[]
 }
 
 // ISO instant → a datetime-local input value ("YYYY-MM-DDTHH:mm") in local time.
@@ -534,6 +534,8 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const [data, setData] = useState<HwInstructorData | null>(null)
   const [dates, setDates] = useState<Record<string, string>>({})       // `${setId}:${courseId}` -> datetime-local
   const [selected, setSelected] = useState<Record<string, string>>({}) // setId -> chosen courseId
+  const [late, setLate] = useState<Record<string, boolean>>({})        // `${setId}:${courseId}` -> allow late
+  const [lateDays, setLateDays] = useState<Record<string, number>>({}) // `${setId}:${courseId}` -> days (0 = no limit)
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
 
@@ -596,7 +598,8 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
       </p>
       <p className="text-xs text-amber-700 mb-3">
         Activate a set for a class and it becomes a graded assignment on that course&rsquo;s dashboard
-        (and in the gradebook). Grade it from the assignment&rsquo;s Grade page.
+        (and in the gradebook). Students get a single submission; tick &ldquo;Allow late&rdquo; to accept
+        submissions after the deadline. Grade it from the assignment&rsquo;s Grade page.
       </p>
       <div className="space-y-3">
         {data.sets.map(set => {
@@ -605,8 +608,16 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           const key = `${set.id}:${courseId}`
           const existing = data.assignments.find(a => a.setId === set.id && a.courseId === courseId)
           const dtVal = dates[key] ?? (existing ? toLocalInput(existing.dueDate) : '')
+          const lateVal = late[key] ?? (existing ? existing.allowLate : false)
+          const daysVal = lateDays[key] ?? (existing ? (existing.lateDaysLimit ?? 0) : 0)
           const fieldCls = 'rounded-lg border border-gray-300 bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400'
-          const changed = !!dtVal && (!existing || dtVal !== toLocalInput(existing.dueDate))
+          // Late policy sent to the API: null days = accept indefinitely.
+          const latePayload = { allowLate: lateVal, lateDaysLimit: lateVal && daysVal > 0 ? daysVal : null }
+          const changed = !!existing && (
+            (!!dtVal && dtVal !== toLocalInput(existing.dueDate)) ||
+            lateVal !== existing.allowLate ||
+            (lateVal && (daysVal || 0) !== (existing.lateDaysLimit ?? 0))
+          )
           return (
             <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
               <p className="text-sm font-semibold text-gray-800">
@@ -632,6 +643,27 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     className={fieldCls}
                   />
                 </label>
+                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600">
+                  <input
+                    type="checkbox"
+                    checked={lateVal}
+                    onChange={e => setLate(prev => ({ ...prev, [key]: e.target.checked }))}
+                    className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  Allow late
+                </label>
+                {lateVal && (
+                  <label className="flex items-center gap-1.5 pb-2 text-xs text-gray-500">
+                    up to
+                    <input
+                      type="number" min={0} max={30}
+                      value={daysVal}
+                      onChange={e => setLateDays(prev => ({ ...prev, [key]: Number(e.target.value) }))}
+                      className="w-14 rounded-lg border border-gray-300 px-1.5 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    />
+                    {daysVal > 0 ? (daysVal === 1 ? 'day late' : 'days late') : 'days (0 = no limit)'}
+                  </label>
+                )}
                 <div className="flex items-center gap-2 pb-1">
                   {!existing ? (
                     <button
@@ -643,6 +675,8 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                           courseId, title: set.title, type: 'TRANSLATION_EXERCISE',
                           weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course.level,
                           homeworkSet: set.id, isPublished: true,
+                          maxRetakes: 0,   // one submission — no resubmission
+                          ...latePayload,
                         }),
                       }))}
                       className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
@@ -653,7 +687,9 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                     <>
                       <span className={clsx('rounded-md px-2 py-1 text-xs font-medium',
                         existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
-                        {existing.isPublished ? `active · due ${fmtDeadline(existing.dueDate)}` : 'deactivated'}
+                        {existing.isPublished
+                          ? `active · due ${fmtDeadline(existing.dueDate)}${existing.allowLate ? ` · late ${existing.lateDaysLimit ? `+${existing.lateDaysLimit}d` : 'open'}` : ''}`
+                          : 'deactivated'}
                       </span>
                       {existing.isPublished && changed && (
                         <button
@@ -661,11 +697,11 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                           disabled={busy === key}
                           onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
                             method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString() }),
+                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString(), ...latePayload }),
                           }))}
                           className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
                         >
-                          Update deadline
+                          Update
                         </button>
                       )}
                       <button

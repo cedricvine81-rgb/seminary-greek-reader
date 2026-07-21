@@ -40,11 +40,11 @@ export async function GET(req: NextRequest) {
       const candidates = await prisma.assignment.findMany({
         where: { type: 'TRANSLATION_EXERCISE', courseId: { in: courses.map(c => c.id) } },
         select: {
-          id: true, courseId: true, dueDate: true, isPublished: true,
+          id: true, courseId: true, dueDate: true, isPublished: true, allowLate: true, lateDaysLimit: true,
           questions: { orderBy: { position: 'asc' }, take: 1, select: { options: true } },
         },
       })
-      const assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean }[] = []
+      const assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null }[] = []
       for (const a of candidates) {
         const opt = a.questions[0]?.options[0] ?? ''
         if (!opt.includes('"hw":1')) continue
@@ -54,6 +54,7 @@ export async function GET(req: NextRequest) {
           assignments.push({
             setId: meta.set, courseId: a.courseId, assignmentId: a.id,
             dueDate: a.dueDate.toISOString(), isPublished: a.isPublished,
+            allowLate: a.allowLate, lateDaysLimit: a.lateDaysLimit,
           })
         } catch { /* ignore */ }
       }
