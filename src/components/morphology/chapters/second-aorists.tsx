@@ -51,7 +51,7 @@ export const SECOND_AORISTS_CONTENT = (
         <p>Some are <em>suppletive</em> — they borrow a whole different root (<Gk>λέγω → εἶπον</Gk>, <Gk>ὁράω → εἶδον</Gk>). Learn the aorist stem as part of the verb's principal parts.</p>
       </>}
     >
-    <MorphTable
+    <MorphTable striped
       flush
       title="40 Most Common 2nd Aorist Verbs"
       headers={['Present', '2nd Aorist', 'Definition']}

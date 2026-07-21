@@ -122,7 +122,7 @@ export const ESS_SECTIONS: EssSection[] = [
           <p>Recognize the <em>family</em> rather than an exact string: a <Gk>σ</Gk>-cluster = aorist/future, a <Gk>θ</Gk>-cluster = passive. The perfect's reduplication (<Gk>λε‒λυ‒κα</Gk>) reinforces its <Gk>‒κα</Gk>.</p>
         </>}
       >
-        <MorphTable flush headers={['Identifier', 'Tense']} firstColIsData highlight="text-red-600" highlightCols={[0]}
+        <MorphTable flush headers={['Identifier', 'Tense']} firstColIsData highlight="text-blue-600" highlightCols={[0]}
           rows={[
             ['‒σ','Future (active and middle)'],['‒θησ','Future (passive)'],
             ['‒σα','1 Aorist (active and middle)'],['‒θη / ‒θε / ‒θ','1 Aorist (passive)'],

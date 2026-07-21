@@ -33,23 +33,69 @@ interface MorphTableProps {
   highlightCols?: number[]
   /** Drop the default bottom margin (used when the table sits inside a TableAside row). */
   flush?: boolean
+  /** Alternate row tint — for long vocabulary lists, keeps the eye on the row. */
+  striped?: boolean
 }
 
-export function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false }: MorphTableProps) {
+/**
+ * Render a table cell, colouring the morphology (textbook style):
+ * - "stem|ending" (invisible marker) renders the ending red; "|word" makes the whole
+ *   word red (used for the article);
+ * - "stem|identifier|ending" additionally renders the tense identifier blue —
+ *   the Eight Minimums distinction between the identifier and the personal ending;
+ * - a token beginning with a dash (an endings-table cell like "‒ος") goes red,
+ *   unless it IS a tense identifier (‒σ, ‒σα, ‒θη, ‒κα …), which goes blue.
+ */
+const TENSE_IDENTIFIERS = new Set(['σ', 'σα', 'θη', 'θε', 'θ', 'θησ', 'κα', 'κ'])
+
+function renderCell(cell: string): React.ReactNode {
+  if (!cell.includes('|') && !/(^|\s)[‒–-]\S/.test(cell)) return cell
+  const parts = cell.split(/(\s+)/)
+  return (
+    <>
+      {parts.map((tok, i) => {
+        if (/^\s*$/.test(tok)) return tok
+        if (tok.includes('|')) {
+          const bits = tok.split('|')
+          if (bits.length >= 3) {
+            const [stem, ident, ...rest] = bits
+            return (
+              <span key={i}>
+                {stem}
+                <span className="text-blue-600 font-medium">{ident}</span>
+                <span className="text-red-600 font-medium">{rest.join('')}</span>
+              </span>
+            )
+          }
+          const [stem, end] = bits
+          return <span key={i}>{stem}<span className="text-red-600 font-medium">{end}</span></span>
+        }
+        if (/^[‒–-]\S/.test(tok)) {
+          const letters = tok.replace(/[^Ͱ-Ͽἀ-῿]/g, '')
+          const cls = TENSE_IDENTIFIERS.has(letters) ? 'text-blue-600 font-medium' : 'text-red-600 font-medium'
+          return <span key={i} className={cls}>{tok}</span>
+        }
+        return tok
+      })}
+    </>
+  )
+}
+
+export function MorphTable({ title, headers, rows, dividerRows = [], note, firstColIsData = false, highlight, highlightCols, flush = false, striped = false }: MorphTableProps) {
   const divSet = new Set(dividerRows)
   return (
     <div className={flush ? '' : 'mb-5'}>
       {title && (
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+        <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide mb-1.5">
           {title}
         </p>
       )}
-      <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+      <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
         <table className="text-sm border-collapse">
           <thead>
-            <tr className="bg-gray-100 border-b border-gray-200">
+            <tr className="bg-brand-100 border-b border-brand-200">
               {headers.map((h, i) => (
-                <th key={i} className={clsx('px-3 py-2 font-semibold text-gray-700 text-sm whitespace-nowrap', i === 0 ? 'text-left' : 'text-center')}>
+                <th key={i} className={clsx('px-3 py-2 font-semibold text-brand-900 text-sm whitespace-nowrap', i === 0 ? 'text-left' : 'text-center')}>
                   {h}
                 </th>
               ))}
@@ -59,10 +105,10 @@ export function MorphTable({ title, headers, rows, dividerRows = [], note, first
             {rows.map((row, ri) => {
               const isDivider = divSet.has(ri)
               return (
-                <tr key={ri} className={clsx(isDivider ? 'bg-gray-50 border-t border-gray-200' : 'bg-surface', !isDivider && ri > 0 && 'border-t border-gray-100')}>
+                <tr key={ri} className={clsx(isDivider ? 'bg-brand-50/60 border-t border-gray-200' : striped && ri % 2 === 1 ? 'bg-gray-50/80' : 'bg-surface', !isDivider && ri > 0 && 'border-t border-gray-100')}>
                   {row.map((cell, ci) => (
-                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-gray-500 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
-                      {cell ?? ''}
+                    <td key={ci} className={clsx('px-3 py-2', isDivider ? 'text-xs font-semibold text-brand-700 uppercase tracking-wide' : (ci === 0 && !firstColIsData) ? 'text-left text-sm font-medium text-gray-500 whitespace-nowrap' : (firstColIsData && ci > 0) ? ['text-left text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'] : ['text-center text-sm', (highlight && (!highlightCols || highlightCols.includes(ci))) ? highlight : 'text-gray-900'])}>
+                      {cell ? renderCell(cell) : ''}
                     </td>
                   ))}
                 </tr>
@@ -99,14 +145,14 @@ export function ColsTable({ title, headers, rows, note }: {
   return (
     <div className="mb-5">
       {title && (
-        <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">{title}</p>
+        <p className="text-xs font-semibold text-brand-700 uppercase tracking-wide mb-1.5">{title}</p>
       )}
-      <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
+      <div className="w-fit max-w-full overflow-x-auto rounded-lg border border-gray-300 shadow-sm">
         <table className="text-sm border-collapse">
           <thead>
-            <tr className="bg-gray-100 border-b border-gray-200">
+            <tr className="bg-brand-100 border-b border-brand-200">
               {headers.map((h, i) => (
-                <th key={i} className="px-3 py-2 font-semibold text-gray-700 text-left whitespace-nowrap">{h}</th>
+                <th key={i} className="px-3 py-2 font-semibold text-brand-900 text-left whitespace-nowrap">{h}</th>
               ))}
             </tr>
           </thead>

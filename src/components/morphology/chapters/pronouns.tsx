@@ -50,14 +50,14 @@ export const PRONOUNS_CONTENT = (
     >
       <MorphTable flush title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
         rows={[
-          ['Sg.','Nom.','αὐτός','he','αὐτή','she','αὐτό','it'],
-          ['','Gen.','αὐτοῦ','his','αὐτῆς','her','αὐτοῦ','its'],
-          ['','Dat.','αὐτῷ','to him','αὐτῇ','to her','αὐτῷ','to it'],
-          ['','Acc.','αὐτόν','him','αὐτήν','her','αὐτό','it'],
-          ['Pl.','Nom.','αὐτοί','they','αὐταί','they','αὐτά','they'],
-          ['','Gen.','αὐτῶν','their','αὐτῶν','their','αὐτῶν','their'],
-          ['','Dat.','αὐτοῖς','to them','αὐταῖς','to them','αὐτοῖς','to them'],
-          ['','Acc.','αὐτούς','them','αὐτάς','them','αὐτά','them'],
+          ['Sg.','Nom.','αὐτ|ός','he','αὐτ|ή','she','αὐτ|ό','it'],
+          ['','Gen.','αὐτ|οῦ','his','αὐτ|ῆς','her','αὐτ|οῦ','its'],
+          ['','Dat.','αὐτ|ῷ','to him','αὐτ|ῇ','to her','αὐτ|ῷ','to it'],
+          ['','Acc.','αὐτ|όν','him','αὐτ|ήν','her','αὐτ|ό','it'],
+          ['Pl.','Nom.','αὐτ|οί','they','αὐτ|αί','they','αὐτ|ά','they'],
+          ['','Gen.','αὐτ|ῶν','their','αὐτ|ῶν','their','αὐτ|ῶν','their'],
+          ['','Dat.','αὐτ|οῖς','to them','αὐτ|αῖς','to them','αὐτ|οῖς','to them'],
+          ['','Acc.','αὐτ|ούς','them','αὐτ|άς','them','αὐτ|ά','them'],
         ]}
       />
     </TableAside>

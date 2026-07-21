@@ -56,12 +56,12 @@ export const INDICATIVES_CONTENT = (
     >
       <MorphTable flush title={gt("Present Tense — λύω (I loose, I am loosing)")} headers={['Person','Greek','Translation']}
         rows={[
-          ['1st sg.','λύω','I am untying / I untie'],
-          ['2nd sg.','λύεις','You are untying / you untie'],
-          ['3rd sg.','λύει','He/she/it is untying'],
-          ['1st pl.','λύομεν','We are untying / we untie'],
-          ['2nd pl.','λύετε','You are untying / you untie'],
-          ['3rd pl.','λύουσι(ν)','They are untying / they untie'],
+          ['1st sg.','λύ|ω','I am untying / I untie'],
+          ['2nd sg.','λύ|εις','You are untying / you untie'],
+          ['3rd sg.','λύ|ει','He/she/it is untying'],
+          ['1st pl.','λύ|ομεν','We are untying / we untie'],
+          ['2nd pl.','λύ|ετε','You are untying / you untie'],
+          ['3rd pl.','λύ|ουσι(ν)','They are untying / they untie'],
         ]}
       />
     </TableAside>
@@ -89,12 +89,12 @@ export const INDICATIVES_CONTENT = (
     >
       <MorphTable flush title={gt("Present & Imperfect Full Paradigm — λύω")} headers={['','','Imp. Active','Imp. Mid/Pass','Pres. Active','Pres. Mid/Pass']}
         rows={[
-          ['SG','1','ἔλυον','ἐλυόμην','λύω','λύομαι'],
-          ['','2','ἔλυες','ἐλύου','λύεις','λύῃ (σαι)'],
-          ['','3','ἔλυε(ν)','ἐλύετο','λύει','λύεται'],
-          ['PL','1','ἐλύομεν','ἐλυόμεθα','λύομεν','λυόμεθα'],
-          ['','2','ἐλύετε','ἐλύεσθε','λύετε','λύεσθε'],
-          ['','3','ἔλυον','ἐλύοντο','λύουσι(ν)','λύονται'],
+          ['SG','1','ἔλυ|ον','ἐλυ|όμην','λύ|ω','λύ|ομαι'],
+          ['','2','ἔλυ|ες','ἐλύ|ου','λύ|εις','λύ|ῃ (σαι)'],
+          ['','3','ἔλυ|ε(ν)','ἐλύ|ετο','λύ|ει','λύ|εται'],
+          ['PL','1','ἐλύ|ομεν','ἐλυ|όμεθα','λύ|ομεν','λυ|όμεθα'],
+          ['','2','ἐλύ|ετε','ἐλύ|εσθε','λύ|ετε','λύ|εσθε'],
+          ['','3','ἔλυ|ον','ἐλύ|οντο','λύ|ουσι(ν)','λύ|ονται'],
         ]}
       />
     </TableAside>
@@ -249,18 +249,18 @@ export const INDICATIVES_CONTENT = (
     >
       <MorphTable flush title={gt("Full Tense & Voice Paradigm — λύω (1st sg.)")} headers={['Tense','Voice','Form','Translation']}
         rows={[
-          ['Present','Active','λύω','I loose'],
-          ['','Middle','λύομαι','I loose myself'],
-          ['','Passive','λύομαι','I am being loosed'],
-          ['Future','Active','λύσω','I will loose'],
-          ['','Middle','λύσομαι','I will loose myself'],
-          ['','Passive','λυθήσομαι','I will be loosed'],
-          ['Imperfect','Active','ἔλυον','I was loosing'],
-          ['','Middle','ἐλυόμην','I was loosing myself'],
-          ['','Passive','ἐλυόμην','I was being loosed'],
-          ['Aorist','Active','ἔλυσα','I loosed'],
-          ['','Middle','ἐλυσάμην','I loosed myself'],
-          ['','Passive','ἐλύθην','I was loosed'],
+          ['Present','Active','λύ|ω','I loose'],
+          ['','Middle','λύ|ομαι','I loose myself'],
+          ['','Passive','λύ|ομαι','I am being loosed'],
+          ['Future','Active','λύ|σ|ω','I will loose'],
+          ['','Middle','λύ|σ|ομαι','I will loose myself'],
+          ['','Passive','λυ|θήσ|ομαι','I will be loosed'],
+          ['Imperfect','Active','ἔλυ|ον','I was loosing'],
+          ['','Middle','ἐλυ|όμην','I was loosing myself'],
+          ['','Passive','ἐλυ|όμην','I was being loosed'],
+          ['Aorist','Active','ἔλυ|σα|','I loosed'],
+          ['','Middle','ἐλυ|σά|μην','I loosed myself'],
+          ['','Passive','ἐλύ|θη|ν','I was loosed'],
         ]}
       />
     </TableAside>
@@ -275,12 +275,12 @@ export const INDICATIVES_CONTENT = (
     >
       <MorphTable flush title={gt("Perfect & Pluperfect — λύω")} headers={['Tense','Voice','Form','Translation']}
         rows={[
-          ['Perfect','Active','λέλυκα','I have loosed'],
-          ['','Middle','λέλυμαι','I have loosed myself'],
-          ['','Passive','λέλυμαι','I have been loosed'],
-          ['Pluperfect','Active','ἐλελύκειν','I had loosed'],
-          ['','Middle','ἐλελύμην','I had loosed myself'],
-          ['','Passive','ἐλελύμην','I had been loosed'],
+          ['Perfect','Active','λέλυ|κα|','I have loosed'],
+          ['','Middle','λέλυ|μαι','I have loosed myself'],
+          ['','Passive','λέλυ|μαι','I have been loosed'],
+          ['Pluperfect','Active','ἐλελύ|κ|ειν','I had loosed'],
+          ['','Middle','ἐλελύ|μην','I had loosed myself'],
+          ['','Passive','ἐλελύ|μην','I had been loosed'],
         ]}
       />
     </TableAside>

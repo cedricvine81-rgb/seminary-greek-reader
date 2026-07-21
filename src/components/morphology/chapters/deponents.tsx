@@ -49,7 +49,7 @@ export const DEPONENTS_CONTENT = (
         <p>Many now argue the Greek <strong>middle voice</strong> genuinely fits these verbs (subject-affectedness) rather than being a defective active — but the practical rule (active meaning) still holds.</p>
       </>}
     >
-    <MorphTable
+    <MorphTable striped
       flush
       title="40 Most Common Deponent Verbs"
       headers={['Pres. (1st sg.)', 'Fut.', 'Aor.', 'Definition']}
