@@ -64,12 +64,28 @@ function Note({ children }: { children: React.ReactNode }) {
   return <div className="space-y-2">{children}</div>
 }
 
-/** One syntax category: bold name — short gloss (optional simple example). */
-function Cat({ name, children, eg }: { name: React.ReactNode; children: React.ReactNode; eg?: React.ReactNode }) {
+/** One syntax category: bold name — short gloss (optional simple example),
+ *  then two real NT examples (Greek clause + English translation below). */
+function Cat({ name, children, eg, ex }: {
+  name: React.ReactNode
+  children: React.ReactNode
+  eg?: React.ReactNode
+  ex?: { g: string; e: string; r: string }[]
+}) {
   return (
     <li className="text-sm leading-snug text-gray-700">
       <span className="font-semibold text-gray-900">{name}</span> — {children}
       {eg && <span className="text-gray-500"> — <em>{eg}</em></span>}
+      {ex && ex.length > 0 && (
+        <ul className="mt-1.5 mb-1 space-y-1.5 list-none pl-0">
+          {ex.map((x, i) => (
+            <li key={i} className="border-l-2 border-brand-200 pl-2.5 leading-snug">
+              <span className="normal-case font-reading text-[15px] text-gray-800">{x.g}</span>
+              <span className="block text-xs text-gray-500">{x.e} <span className="text-gray-400">({x.r})</span></span>
+            </li>
+          ))}
+        </ul>
+      )}
     </li>
   )
 }
@@ -231,40 +247,40 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>Each case does more than one job. These are the <strong>Essential Syntax Categories</strong> (after Wallace) — the functions you learn to name when you move from parsing to interpreting.</P>
         <CatGroup label="Nominative — the naming case">
-          <Cat name="Subject">the doer of a finite verb</Cat>
-          <Cat name="Predicate Nominative" eg="“the Word was God,” John 1:1">renames the subject through an equative verb (<G>εἰμί, γίνομαι</G>)</Cat>
-          <Cat name="Nominative Absolute">a naming nominative in titles / salutations (not in a full sentence)</Cat>
-          <Cat name="Nominative for Vocative" eg="“O foolish Galatians!”">a nominative used for direct address</Cat>
+          <Cat name="Subject" ex={[{ g: "ὁ λόγος σὰρξ ἐγένετο", e: "the Word became flesh", r: "John 1:14" }, { g: "ὁ θεὸς ἀγάπη ἐστίν", e: "God is love", r: "1 John 4:8" }]}>the doer of a finite verb</Cat>
+          <Cat name="Predicate Nominative" eg="“the Word was God,” John 1:1" ex={[{ g: "θεὸς ἦν ὁ λόγος", e: "the Word was God", r: "John 1:1" }, { g: "ὑμεῖς ἐστε τὸ φῶς τοῦ κόσμου", e: "you are the light of the world", r: "Matt 5:14" }]}>renames the subject through an equative verb (<G>εἰμί, γίνομαι</G>)</Cat>
+          <Cat name="Nominative Absolute" ex={[{ g: "Ἀρχὴ τοῦ εὐαγγελίου Ἰησοῦ Χριστοῦ", e: "The beginning of the gospel of Jesus Christ", r: "Mark 1:1" }, { g: "Παῦλος ἀπόστολος Χριστοῦ Ἰησοῦ", e: "Paul, an apostle of Christ Jesus", r: "Eph 1:1" }]}>a naming nominative in titles / salutations (not in a full sentence)</Cat>
+          <Cat name="Nominative for Vocative" eg="“O foolish Galatians!”" ex={[{ g: "ὁ κύριός μου καὶ ὁ θεός μου", e: "My Lord and my God!", r: "John 20:28" }, { g: "ναί, ὁ πατήρ", e: "Yes, Father", r: "Matt 11:26" }]}>a nominative used for direct address</Cat>
         </CatGroup>
         <CatGroup label="Genitive — description & separation (“of”)">
-          <Cat name="Possessive" eg="“his ear”">the head noun belongs to the genitive</Cat>
-          <Cat name="Descriptive">a loose “characterized by” quality (the catch-all genitive)</Cat>
-          <Cat name="Relationship" eg="Σίμων Ἰωάννου, “Simon [son] of John”">family relation</Cat>
-          <Cat name="Partitive" eg="“half of my possessions”">the whole of which the head noun is a part</Cat>
-          <Cat name="Apposition" eg="“the sign, namely circumcision”">the genitive is the same thing / a specific example of the head noun</Cat>
-          <Cat name="Comparison" eg="“greater than the angels”">the standard after a comparative adjective (“than”)</Cat>
-          <Cat name="Subjective" eg="“the revelation of Jesus” = Jesus reveals">acts as the subject of the idea in a verbal head noun</Cat>
-          <Cat name="Objective" eg="“blasphemy of the Spirit” = blaspheming the Spirit">acts as the object of that idea</Cat>
-          <Cat name="Genitive of Time">the kind of time / time <em>within which</em></Cat>
-          <Cat name="Genitive Absolute">a detached genitive noun + participle giving background (see Participles)</Cat>
-          <Cat name="After certain verbs / prepositions">as a direct object (sensation, sharing, ruling…) or governed by a preposition</Cat>
+          <Cat name="Possessive" eg="“his ear”" ex={[{ g: "τὸν οἶκον τοῦ πατρός μου", e: "my Father’s house", r: "John 2:16" }, { g: "τὸ βιβλίον τοῦ προφήτου Ἠσαΐου", e: "the scroll of the prophet Isaiah", r: "Luke 4:17" }]}>the head noun belongs to the genitive</Cat>
+          <Cat name="Descriptive" ex={[{ g: "βάπτισμα μετανοίας", e: "a baptism of repentance", r: "Mark 1:4" }, { g: "τὸν οἰκονόμον τῆς ἀδικίας", e: "the dishonest steward", r: "Luke 16:8" }]}>a loose “characterized by” quality (the catch-all genitive)</Cat>
+          <Cat name="Relationship" eg="Σίμων Ἰωάννου, “Simon [son] of John”" ex={[{ g: "Σίμων Ἰωάννου", e: "Simon, son of John", r: "John 21:15" }, { g: "Ἰάκωβος ὁ τοῦ Ζεβεδαίου", e: "James the son of Zebedee", r: "Matt 10:2" }]}>family relation</Cat>
+          <Cat name="Partitive" eg="“half of my possessions”" ex={[{ g: "τὰ ἡμίσιά μου τῶν ὑπαρχόντων", e: "half of my possessions", r: "Luke 19:8" }, { g: "τινὲς τῶν γραμματέων", e: "some of the scribes", r: "Matt 9:3" }]}>the whole of which the head noun is a part</Cat>
+          <Cat name="Apposition" eg="“the sign, namely circumcision”" ex={[{ g: "τοῦ ναοῦ τοῦ σώματος αὐτοῦ", e: "the temple of his body", r: "John 2:21" }, { g: "σημεῖον περιτομῆς", e: "the sign, namely circumcision", r: "Rom 4:11" }]}>the genitive is the same thing / a specific example of the head noun</Cat>
+          <Cat name="Comparison" eg="“greater than the angels”" ex={[{ g: "μείζων τοῦ πατρὸς ἡμῶν Ἀβραάμ", e: "greater than our father Abraham", r: "John 8:53" }, { g: "πλεῖον Ἰωνᾶ ὧδε", e: "something greater than Jonah is here", r: "Matt 12:41" }]}>the standard after a comparative adjective (“than”)</Cat>
+          <Cat name="Subjective" eg="“the revelation of Jesus” = Jesus reveals" ex={[{ g: "ἡ ἀγάπη τοῦ Χριστοῦ συνέχει ἡμᾶς", e: "the love of Christ (= Christ’s love) compels us", r: "2 Cor 5:14" }, { g: "Ἀποκάλυψις Ἰησοῦ Χριστοῦ", e: "the revelation from Jesus Christ", r: "Rev 1:1" }]}>acts as the subject of the idea in a verbal head noun</Cat>
+          <Cat name="Objective" eg="“blasphemy of the Spirit” = blaspheming the Spirit" ex={[{ g: "ἡ τοῦ πνεύματος βλασφημία", e: "the blasphemy against the Spirit", r: "Matt 12:31" }, { g: "διὰ τὸν φόβον τῶν Ἰουδαίων", e: "for fear of the Jews", r: "John 7:13" }]}>acts as the object of that idea</Cat>
+          <Cat name="Genitive of Time" ex={[{ g: "ἦλθεν πρὸς αὐτὸν νυκτός", e: "he came to him by night", r: "John 3:2" }, { g: "νηστεύω δὶς τοῦ σαββάτου", e: "I fast twice a week", r: "Luke 18:12" }]}>the kind of time / time <em>within which</em></Cat>
+          <Cat name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος", e: "while he was still speaking", r: "Mark 5:35" }]}>a detached genitive noun + participle giving background (see Participles)</Cat>
+          <Cat name="After certain verbs / prepositions" ex={[{ g: "ἥψατο τῆς χειρὸς αὐτῆς", e: "he touched her hand", r: "Matt 8:15" }, { g: "ἀκούσουσιν τῆς φωνῆς τοῦ υἱοῦ τοῦ θεοῦ", e: "they will hear the voice of the Son of God", r: "John 5:25" }]}>as a direct object (sensation, sharing, ruling…) or governed by a preposition</Cat>
         </CatGroup>
         <CatGroup label="Dative — the “to / for / with / by” case">
-          <Cat name="Indirect Object" eg="“he gave the book to me”">the person to/for whom</Cat>
-          <Cat name="Interest">advantage (“for” someone) or disadvantage (“against” someone)</Cat>
-          <Cat name="Reference / Respect" eg="“dead to sin”">“with respect to”</Cat>
-          <Cat name="Possession">the possessor with an equative verb</Cat>
-          <Cat name="Sphere" eg="“pure in heart”">the realm in which something is true</Cat>
-          <Cat name="Dative of Time">the point in time <em>at which</em></Cat>
-          <Cat name="Means / Instrument" eg="“with a word”">the plain dative = “by/with”</Cat>
-          <Cat name="Direct Object / after prepositions">verbs and prepositions that govern the dative</Cat>
+          <Cat name="Indirect Object" eg="“he gave the book to me”" ex={[{ g: "δός μοι τὴν κεφαλὴν Ἰωάννου", e: "give me the head of John", r: "Matt 14:8" }, { g: "λέγει αὐτῇ ὁ Ἰησοῦς", e: "Jesus says to her", r: "John 11:23" }]}>the person to/for whom</Cat>
+          <Cat name="Interest" ex={[{ g: "μαρτυρεῖτε ἑαυτοῖς", e: "you testify against yourselves", r: "Matt 23:31" }, { g: "τῷ κυρίῳ ζῶμεν", e: "we live for the Lord", r: "Rom 14:8" }]}>advantage (“for” someone) or disadvantage (“against” someone)</Cat>
+          <Cat name="Reference / Respect" eg="“dead to sin”" ex={[{ g: "νεκροὺς τῇ ἁμαρτίᾳ", e: "dead with respect to sin", r: "Rom 6:11" }, { g: "ζῶντας τῷ θεῷ", e: "alive with respect to God", r: "Rom 6:11" }]}>“with respect to”</Cat>
+          <Cat name="Possession" ex={[{ g: "οὐκ ἦν αὐτοῖς τόπος ἐν τῷ καταλύματι", e: "there was no place for them in the inn", r: "Luke 2:7" }, { g: "ᾧ ὄνομα Ἰωσήφ", e: "whose name was Joseph", r: "Luke 1:27" }]}>the possessor with an equative verb</Cat>
+          <Cat name="Sphere" eg="“pure in heart”" ex={[{ g: "οἱ καθαροὶ τῇ καρδίᾳ", e: "the pure in heart", r: "Matt 5:8" }, { g: "οἱ πτωχοὶ τῷ πνεύματι", e: "the poor in spirit", r: "Matt 5:3" }]}>the realm in which something is true</Cat>
+          <Cat name="Dative of Time" ex={[{ g: "τῇ τρίτῃ ἡμέρᾳ ἐγερθήσεται", e: "on the third day he will be raised", r: "Matt 20:19" }, { g: "τοῖς γενεσίοις αὐτοῦ δεῖπνον ἐποίησεν", e: "on his birthday he gave a banquet", r: "Mark 6:21" }]}>the point in time <em>at which</em></Cat>
+          <Cat name="Means / Instrument" eg="“with a word”" ex={[{ g: "ἐξέβαλεν τὰ πνεύματα λόγῳ", e: "he cast out the spirits with a word", r: "Matt 8:16" }, { g: "χάριτί ἐστε σεσῳσμένοι", e: "by grace you have been saved", r: "Eph 2:8" }]}>the plain dative = “by/with”</Cat>
+          <Cat name="Direct Object / after prepositions" ex={[{ g: "ἠκολούθησαν αὐτῷ", e: "they followed him", r: "Matt 4:20" }, { g: "ἐπίστευσεν Ἀβραὰμ τῷ θεῷ", e: "Abraham believed God", r: "Rom 4:3" }]}>verbs and prepositions that govern the dative</Cat>
         </CatGroup>
         <CatGroup label="Accusative — extent & limitation">
-          <Cat name="Direct Object" eg="“God loved the world”">what receives a transitive verb's action</Cat>
-          <Cat name="Double Accusative">two objects: person + thing (“he teaches you Greek”), or object + complement (“they called him Lord”)</Cat>
-          <Cat name="Measure" eg="“forty days,” “a day's journey”">extent of time or space (“how long / how far”)</Cat>
-          <Cat name="Subject of Infinitive" eg="“I want him to learn”">the accusative that acts as an infinitive's subject</Cat>
-          <Cat name="After certain prepositions">prepositions that govern the accusative</Cat>
+          <Cat name="Direct Object" eg="“God loved the world”" ex={[{ g: "ἠγάπησεν ὁ θεὸς τὸν κόσμον", e: "God loved the world", r: "John 3:16" }, { g: "λύσατε τὸν ναὸν τοῦτον", e: "destroy this temple", r: "John 2:19" }]}>what receives a transitive verb's action</Cat>
+          <Cat name="Double Accusative" ex={[{ g: "ἐκεῖνος ὑμᾶς διδάξει πάντα", e: "he will teach you all things", r: "John 14:26" }, { g: "ὑμᾶς εἴρηκα φίλους", e: "I have called you friends", r: "John 15:15" }]}>two objects: person + thing (“he teaches you Greek”), or object + complement (“they called him Lord”)</Cat>
+          <Cat name="Measure" eg="“forty days,” “a day's journey”" ex={[{ g: "ἔμεινεν ἐκεῖ δύο ἡμέρας", e: "he stayed there two days", r: "John 4:40" }, { g: "ἦλθον ἡμέρας ὁδόν", e: "they went a day’s journey", r: "Luke 2:44" }]}>extent of time or space (“how long / how far”)</Cat>
+          <Cat name="Subject of Infinitive" eg="“I want him to learn”" ex={[{ g: "δεῖ ὑμᾶς γεννηθῆναι ἄνωθεν", e: "you must be born again", r: "John 3:7" }, { g: "ἐν τῷ ὑποστρέφειν τὸν Ἰησοῦν", e: "when Jesus returned", r: "Luke 8:40" }]}>the accusative that acts as an infinitive's subject</Cat>
+          <Cat name="After certain prepositions" ex={[{ g: "ἀπέστειλεν ὁ θεὸς τὸν υἱὸν εἰς τὸν κόσμον", e: "God sent the Son into the world", r: "John 3:17" }, { g: "πάντες ἔρχονται πρὸς αὐτόν", e: "everyone is coming to him", r: "John 3:26" }]}>prepositions that govern the accusative</Cat>
         </CatGroup>
         <Hook>Time expressions sort by case: "<strong>at</strong>" a point = dative · "<strong>during</strong>" = genitive · "<strong>how long</strong>" = accusative (<G>νυκτί</G> "at night" · <G>νυκτός</G> "during the night" · <G>νύκτα</G> "for the whole night").</Hook>
         <P><strong>The article</strong> also carries syntax. An adjective inside the article is <strong>attributive</strong> ("the good word"); outside it, <strong>predicate</strong> ("the word <em>is</em> good"). Two famous article rules: the <strong>Granville Sharp rule</strong> (one article joining two singular nouns points to one person) and <strong>Colwell's rule</strong> (an anarthrous predicate nominative before the verb can still be definite).</P>
@@ -342,33 +358,33 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>In the <em>indicative</em>, tense encodes both <strong>time</strong> and <strong>aspect</strong>. The same form can be put to several uses; naming the use is the interpretive step. These are the <strong>Essential Syntax Categories</strong> for the tenses (after Wallace).</P>
         <CatGroup label="Present (imperfective — ongoing)">
-          <Cat name="Progressive" eg="“she is writing”">action in progress right now</Cat>
-          <Cat name="Iterative">a repeated / habitual action</Cat>
-          <Cat name="Extending-from-past">began in the past and continues ("I have been…")</Cat>
-          <Cat name="Conative">attempted or about-to-begin action ("is trying to…")</Cat>
-          <Cat name="Historical" eg="“Jesus says to them…”">a present-tense verb narrating a past event (vivid)</Cat>
-          <Cat name="Futuristic">a present form referring to a certain future event</Cat>
+          <Cat name="Progressive" eg="“she is writing”" ex={[{ g: "κύριε, σῶσον, ἀπολλύμεθα", e: "Lord, save us! We are perishing", r: "Matt 8:25" }, { g: "πάντες ζητοῦσίν σε", e: "everyone is looking for you", r: "Mark 1:37" }]}>action in progress right now</Cat>
+          <Cat name="Iterative" ex={[{ g: "νηστεύω δὶς τοῦ σαββάτου", e: "I fast twice a week", r: "Luke 18:12" }, { g: "καθ’ ἡμέραν ἀποθνῄσκω", e: "I die daily", r: "1 Cor 15:31" }]}>a repeated / habitual action</Cat>
+          <Cat name="Extending-from-past" ex={[{ g: "τοσαῦτα ἔτη δουλεύω σοι", e: "these many years I have been serving you", r: "Luke 15:29" }, { g: "ἀπ’ ἀρχῆς μετ’ ἐμοῦ ἐστε", e: "you have been with me from the beginning", r: "John 15:27" }]}>began in the past and continues ("I have been…")</Cat>
+          <Cat name="Conative" ex={[{ g: "διὰ ποῖον ἔργον ἐμὲ λιθάζετε;", e: "for which deed are you trying to stone me?", r: "John 10:32" }, { g: "ἐν ὀλίγῳ με πείθεις Χριστιανὸν ποιῆσαι", e: "you are trying to persuade me to become a Christian", r: "Acts 26:28" }]}>attempted or about-to-begin action ("is trying to…")</Cat>
+          <Cat name="Historical" eg="“Jesus says to them…”" ex={[{ g: "λέγει αὐτῇ ὁ Ἰησοῦς", e: "Jesus says to her", r: "John 20:15" }, { g: "ἔρχονται πάλιν εἰς Ἱεροσόλυμα", e: "they come again to Jerusalem", r: "Mark 11:27" }]}>a present-tense verb narrating a past event (vivid)</Cat>
+          <Cat name="Futuristic" ex={[{ g: "ἔρχομαι πρὸς ὑμᾶς", e: "I am coming to you", r: "John 14:18" }, { g: "μετὰ δύο ἡμέρας τὸ πάσχα γίνεται", e: "after two days the Passover takes place", r: "Matt 26:2" }]}>a present form referring to a certain future event</Cat>
         </CatGroup>
         <CatGroup label="Imperfect (past imperfective)">
-          <Cat name="Progressive" eg="“he was teaching”">ongoing action in past time</Cat>
-          <Cat name="Iterative">a repeated action in the past ("kept on…")</Cat>
-          <Cat name="Ingressive / Inceptive" eg="“he began to speak”">focus on the start of the action</Cat>
-          <Cat name="Conative">attempted past action ("was trying to…")</Cat>
+          <Cat name="Progressive" eg="“he was teaching”" ex={[{ g: "ἐδίδασκεν αὐτούς", e: "he was teaching them", r: "Mark 2:13" }, { g: "ἐκάθητο παρὰ τὴν ὁδόν", e: "he was sitting beside the road", r: "Mark 10:46" }]}>ongoing action in past time</Cat>
+          <Cat name="Iterative" ex={[{ g: "κατ’ ἔτος ἐπορεύοντο εἰς Ἰερουσαλήμ", e: "every year they went to Jerusalem", r: "Luke 2:41" }, { g: "ἐβαπτίζοντο ἐν τῷ Ἰορδάνῃ ποταμῷ", e: "they were being baptized in the Jordan River", r: "Mark 1:5" }]}>a repeated action in the past ("kept on…")</Cat>
+          <Cat name="Ingressive / Inceptive" eg="“he began to speak”" ex={[{ g: "ἀνοίξας τὸ στόμα αὐτοῦ ἐδίδασκεν αὐτούς", e: "he opened his mouth and began to teach them", r: "Matt 5:2" }, { g: "ἐξαλλόμενος ἔστη καὶ περιεπάτει", e: "leaping up, he stood and began to walk", r: "Acts 3:8" }]}>focus on the start of the action</Cat>
+          <Cat name="Conative" ex={[{ g: "ὁ δὲ Ἰωάννης διεκώλυεν αὐτόν", e: "but John was trying to prevent him", r: "Matt 3:14" }, { g: "ἐκάλουν αὐτὸ Ζαχαρίαν", e: "they were going to name him Zechariah", r: "Luke 1:59" }]}>attempted past action ("was trying to…")</Cat>
         </CatGroup>
         <CatGroup label="Aorist (perfective — a whole action)">
-          <Cat name="Constative">the action as a simple whole (the default aorist)</Cat>
-          <Cat name="Ingressive" eg="“he became rich”">stresses entry into a state / action</Cat>
-          <Cat name="Culminative">stresses the completed end-point</Cat>
-          <Cat name="Gnomic">a timeless / proverbial truth</Cat>
-          <Cat name="Epistolary">the writer's "now" written as a past ("I wrote")</Cat>
-          <Cat name="Dramatic">an immediate past, stated for vividness</Cat>
+          <Cat name="Constative" ex={[{ g: "τεσσεράκοντα καὶ ἓξ ἔτεσιν οἰκοδομήθη ὁ ναὸς οὗτος", e: "this temple was built in forty-six years", r: "John 2:20" }, { g: "ἐβασίλευσεν ὁ θάνατος ἀπὸ Ἀδάμ", e: "death reigned from Adam", r: "Rom 5:14" }]}>the action as a simple whole (the default aorist)</Cat>
+          <Cat name="Ingressive" eg="“he became rich”" ex={[{ g: "δι’ ὑμᾶς ἐπτώχευσεν πλούσιος ὤν", e: "though he was rich, for your sakes he became poor", r: "2 Cor 8:9" }, { g: "ἐσίγησεν πᾶν τὸ πλῆθος", e: "the whole crowd fell silent", r: "Acts 15:12" }]}>stresses entry into a state / action</Cat>
+          <Cat name="Culminative" ex={[{ g: "ἔμαθον αὐτάρκης εἶναι", e: "I have learned to be content", r: "Phil 4:11" }, { g: "ἐνίκησεν ὁ λέων ὁ ἐκ τῆς φυλῆς Ἰούδα", e: "the Lion of the tribe of Judah has conquered", r: "Rev 5:5" }]}>stresses the completed end-point</Cat>
+          <Cat name="Gnomic" ex={[{ g: "ἐξηράνθη ὁ χόρτος καὶ τὸ ἄνθος ἐξέπεσεν", e: "the grass withers and the flower falls", r: "1 Pet 1:24" }, { g: "ἐδικαιώθη ἡ σοφία ἀπὸ τῶν τέκνων αὐτῆς", e: "wisdom is justified by her children", r: "Luke 7:35" }]}>a timeless / proverbial truth</Cat>
+          <Cat name="Epistolary" ex={[{ g: "ἔπεμψα αὐτὸν πρὸς ὑμᾶς", e: "I am sending him to you", r: "Phil 2:28" }, { g: "ἔγραψά σοι", e: "I am writing to you", r: "Phlm 21" }]}>the writer's "now" written as a past ("I wrote")</Cat>
+          <Cat name="Dramatic" ex={[{ g: "νῦν ἐδοξάσθη ὁ υἱὸς τοῦ ἀνθρώπου", e: "now the Son of Man is glorified", r: "John 13:31" }, { g: "ἡ θυγάτηρ μου ἄρτι ἐτελεύτησεν", e: "my daughter has just now died", r: "Matt 9:18" }]}>an immediate past, stated for vividness</Cat>
         </CatGroup>
         <CatGroup label="Perfect & Future">
-          <Cat name="Intensive Perfect" eg="“it stands finished”">stresses the resulting present state</Cat>
-          <Cat name="Extensive Perfect">stresses the completed past act that produced the state</Cat>
-          <Cat name="Predictive Future" eg="“he will come”">a plain prediction</Cat>
-          <Cat name="Imperatival Future">a future used as a command ("you shall not…")</Cat>
-          <Cat name="Deliberative Future">a real or rhetorical question ("what shall we do?")</Cat>
+          <Cat name="Intensive Perfect" eg="“it stands finished”" ex={[{ g: "τετέλεσται", e: "it is finished (and stands so)", r: "John 19:30" }, { g: "γέγραπται", e: "it stands written", r: "Matt 4:4" }]}>stresses the resulting present state</Cat>
+          <Cat name="Extensive Perfect" ex={[{ g: "τὸν δρόμον τετέλεκα, τὴν πίστιν τετήρηκα", e: "I have finished the race, I have kept the faith", r: "2 Tim 4:7" }, { g: "ἐγὼ πεπίστευκα ὅτι σὺ εἶ ὁ Χριστός", e: "I have come to believe that you are the Christ", r: "John 11:27" }]}>stresses the completed past act that produced the state</Cat>
+          <Cat name="Predictive Future" eg="“he will come”" ex={[{ g: "αὐτὸς σώσει τὸν λαὸν αὐτοῦ", e: "he will save his people", r: "Matt 1:21" }, { g: "ὁ οὐρανὸς καὶ ἡ γῆ παρελεύσονται", e: "heaven and earth will pass away", r: "Matt 24:35" }]}>a plain prediction</Cat>
+          <Cat name="Imperatival Future" ex={[{ g: "ἀγαπήσεις τὸν πλησίον σου", e: "you shall love your neighbor", r: "Matt 22:39" }, { g: "οὐ φονεύσεις", e: "you shall not murder", r: "Matt 5:21" }]}>a future used as a command ("you shall not…")</Cat>
+          <Cat name="Deliberative Future" ex={[{ g: "κύριε, πρὸς τίνα ἀπελευσόμεθα;", e: "Lord, to whom shall we go?", r: "John 6:68" }, { g: "πῶς ἔτι ζήσομεν ἐν αὐτῇ;", e: "how shall we still live in it?", r: "Rom 6:2" }]}>a real or rhetorical question ("what shall we do?")</Cat>
         </CatGroup>
         <P>Voice matters for exegesis too: a passive often hides its agent (the "divine passive" implying God). But reserve heavy tense-based theology for places where the author had a real choice of forms — much tense selection is just default narration.</P>
       </Note>
@@ -385,16 +401,16 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>The infinitive is a <strong>verbal noun</strong>, so it can take an article (<G>τό</G>) and even a subject in the accusative (<G>θέλω τὸν ἄγγελον ἀπελθεῖν</G> = "I want the messenger to depart"). These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
         <CatGroup label="Verbal use (like a verb)">
-          <Cat name="Purpose" eg="“I came to destroy the law”">answers <em>why?</em> — “in order to”; naked inf., or <G>τοῦ / εἰς τό / πρὸς τό</G></Cat>
-          <Cat name="Result" eg="“…so that the crowd was amazed”">the outcome produced; usually <G>ὥστε</G> + infinitive</Cat>
-          <Cat name="Time">answers <em>when?</em> — <G>μετὰ τό</G> "after," <G>ἐν τῷ</G> "while," <G>πρὸ τοῦ</G> "before"</Cat>
-          <Cat name="Causal" eg="“because it had no root”">answers <em>why?</em> looking back; <G>διὰ τό</G> + infinitive</Cat>
-          <Cat name="Complementary" eg="“you cannot serve God and mammon”">completes a helper verb (<G>δύναμαι, θέλω, μέλλω, ἄρχομαι</G>)</Cat>
+          <Cat name="Purpose" eg="“I came to destroy the law”" ex={[{ g: "οὐκ ἦλθον καταλῦσαι ἀλλὰ πληρῶσαι", e: "I did not come to abolish but to fulfill", r: "Matt 5:17" }, { g: "ἐξῆλθεν ὁ σπείρων σπεῖραι", e: "the sower went out to sow", r: "Mark 4:3" }]}>answers <em>why?</em> — “in order to”; naked inf., or <G>τοῦ / εἰς τό / πρὸς τό</G></Cat>
+          <Cat name="Result" eg="“…so that the crowd was amazed”" ex={[{ g: "ὥστε τὸν ὄχλον θαυμάσαι", e: "so that the crowd marveled", r: "Matt 15:31" }, { g: "ὥστε ἤδη γεμίζεσθαι τὸ πλοῖον", e: "so that the boat was already filling", r: "Mark 4:37" }]}>the outcome produced; usually <G>ὥστε</G> + infinitive</Cat>
+          <Cat name="Time" ex={[{ g: "ἐν τῷ σπείρειν αὐτόν", e: "while he was sowing", r: "Matt 13:4" }, { g: "μετὰ τὸ ἐγερθῆναί με", e: "after I have been raised", r: "Matt 26:32" }]}>answers <em>when?</em> — <G>μετὰ τό</G> "after," <G>ἐν τῷ</G> "while," <G>πρὸ τοῦ</G> "before"</Cat>
+          <Cat name="Causal" eg="“because it had no root”" ex={[{ g: "διὰ τὸ μὴ ἔχειν ῥίζαν", e: "because it had no root", r: "Mark 4:6" }, { g: "διὰ τὸ εἶναι αὐτὸν ἐξ οἴκου Δαυίδ", e: "because he was of the house of David", r: "Luke 2:4" }]}>answers <em>why?</em> looking back; <G>διὰ τό</G> + infinitive</Cat>
+          <Cat name="Complementary" eg="“you cannot serve God and mammon”" ex={[{ g: "οὐ δύνασθε θεῷ δουλεύειν καὶ μαμωνᾷ", e: "you cannot serve God and mammon", r: "Matt 6:24" }, { g: "ἤρξατο ὁ Ἰησοῦς κηρύσσειν", e: "Jesus began to preach", r: "Matt 4:17" }]}>completes a helper verb (<G>δύναμαι, θέλω, μέλλω, ἄρχομαι</G>)</Cat>
         </CatGroup>
         <CatGroup label="Substantival use (like a noun)">
-          <Cat name="Subject" eg="“to live is Christ” (Phil 1:21)">the infinitive is the subject, often with <G>δεῖ, ἔξεστιν</G></Cat>
-          <Cat name="Indirect Discourse" eg="“they say there is no resurrection”">reports speech/thought after a verb of perception</Cat>
-          <Cat name="Epexegetical" eg="“authority to tread on serpents”">explains a noun or adjective (ability, freedom, need…)</Cat>
+          <Cat name="Subject" eg="“to live is Christ” (Phil 1:21)" ex={[{ g: "ἐμοὶ τὸ ζῆν Χριστὸς καὶ τὸ ἀποθανεῖν κέρδος", e: "to live is Christ and to die is gain", r: "Phil 1:21" }, { g: "καλόν ἐστιν ἡμᾶς ὧδε εἶναι", e: "it is good for us to be here", r: "Mark 9:5" }]}>the infinitive is the subject, often with <G>δεῖ, ἔξεστιν</G></Cat>
+          <Cat name="Indirect Discourse" eg="“they say there is no resurrection”" ex={[{ g: "λέγουσιν ἀνάστασιν μὴ εἶναι", e: "they say there is no resurrection", r: "Mark 12:18" }, { g: "τίνα με λέγουσιν εἶναι;", e: "who do they say that I am?", r: "Mark 8:27" }]}>reports speech/thought after a verb of perception</Cat>
+          <Cat name="Epexegetical" eg="“authority to tread on serpents”" ex={[{ g: "ἐξουσίαν τοῦ πατεῖν ἐπάνω ὄφεων", e: "authority to tread on serpents", r: "Luke 10:19" }, { g: "ἐξουσίαν ἔχω θεῖναι αὐτήν", e: "I have authority to lay it down", r: "John 10:18" }]}>explains a noun or adjective (ability, freedom, need…)</Cat>
         </CatGroup>
         <P>Present vs. aorist infinitive is aspect, not time: ongoing vs. simple action.</P>
       </Note>
@@ -411,11 +427,11 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>Present vs. aorist imperative is <strong>aspect</strong>: present = ongoing / general ("make it your practice to…"), aorist = a specific, whole action ("do it"). The aorist is the more common of the two, so take note when the <em>present</em> imperative is chosen. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
         <CatGroup>
-          <Cat name="Command" eg="“Go and make disciples”">a straightforward order, usually superior to inferior</Cat>
-          <Cat name="Prohibition" eg="“do not fear”"><G>μή</G> + imperative forbids an action</Cat>
-          <Cat name="Request / Entreaty" eg="“give us this day our daily bread”">a polite appeal, often inferior to superior</Cat>
-          <Cat name="Permissive">allows or tolerates an action ("let him do it")</Cat>
-          <Cat name="Conditional">an imperative that states a condition ("do X, and Y will follow")</Cat>
+          <Cat name="Command" eg="“Go and make disciples”" ex={[{ g: "πορευθέντες μαθητεύσατε πάντα τὰ ἔθνη", e: "go and make disciples of all nations", r: "Matt 28:19" }, { g: "ἀκολούθει μοι", e: "follow me", r: "Matt 9:9" }]}>a straightforward order, usually superior to inferior</Cat>
+          <Cat name="Prohibition" eg="“do not fear”" ex={[{ g: "μὴ φοβοῦ, μόνον πίστευε", e: "do not fear, only believe", r: "Mark 5:36" }, { g: "μὴ κρίνετε, ἵνα μὴ κριθῆτε", e: "do not judge, so that you may not be judged", r: "Matt 7:1" }]}><G>μή</G> + imperative forbids an action</Cat>
+          <Cat name="Request / Entreaty" eg="“give us this day our daily bread”" ex={[{ g: "τὸν ἄρτον ἡμῶν δὸς ἡμῖν σήμερον", e: "give us this day our daily bread", r: "Matt 6:11" }, { g: "κύριε, βοήθει μοι", e: "Lord, help me", r: "Matt 15:25" }]}>a polite appeal, often inferior to superior</Cat>
+          <Cat name="Permissive" ex={[{ g: "ὃ ποιεῖς ποίησον τάχιον", e: "what you do, do quickly", r: "John 13:27" }, { g: "εἰ ὁ ἄπιστος χωρίζεται, χωριζέσθω", e: "if the unbeliever separates, let it be so", r: "1 Cor 7:15" }]}>allows or tolerates an action ("let him do it")</Cat>
+          <Cat name="Conditional" ex={[{ g: "λύσατε τὸν ναὸν τοῦτον, καὶ ἐγερῶ αὐτόν", e: "destroy this temple, and I will raise it up", r: "John 2:19" }, { g: "ἐγγίσατε τῷ θεῷ, καὶ ἐγγιεῖ ὑμῖν", e: "draw near to God, and he will draw near to you", r: "Jas 4:8" }]}>an imperative that states a condition ("do X, and Y will follow")</Cat>
         </CatGroup>
         <Hook>Prohibitions split by aspect: <G>μή</G> + <strong>present</strong> imperative = "stop / don't keep doing," while <G>μή</G> + <strong>aorist</strong> subjunctive = "don't start / don't ever."</Hook>
         <Hook>It's easy to confuse the <strong>future indicative</strong> and the <strong>aorist imperative</strong> — both have a <G>σ</G> and no augment. The <em>endings</em> decide: <G>πίστευσον</G> "Believe!" (aor. imperative) vs. <G>πιστεύσομεν</G> "we will believe" (fut. indicative).</Hook>
@@ -434,23 +450,23 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>The first question is <strong>article or no article?</strong> With the article the participle is <em>adjectival</em>; without it, usually <em>adverbial</em>. These are its <strong>Essential Syntax Categories</strong> (after Wallace).</P>
         <CatGroup label="Adjectival (with the article)">
-          <Cat name="Attributive" eg="“the man who is loosing…”">adds detail to a noun (“who / which”)</Cat>
-          <Cat name="Substantival" eg="ὁ πιστεύων, “the believer”">stands alone as a noun</Cat>
-          <Cat name="Predicate">asserts something of the noun (rare)</Cat>
+          <Cat name="Attributive" eg="“the man who is loosing…”" ex={[{ g: "ὁ ἄρτος ὁ ἐκ τοῦ οὐρανοῦ καταβαίνων", e: "the bread that comes down from heaven", r: "John 6:50" }, { g: "τὸ πνεῦμα τὸ λαλοῦν ἐν ὑμῖν", e: "the Spirit who speaks in you", r: "Matt 10:20" }]}>adds detail to a noun (“who / which”)</Cat>
+          <Cat name="Substantival" eg="ὁ πιστεύων, “the believer”" ex={[{ g: "ὁ πιστεύων εἰς τὸν υἱὸν ἔχει ζωὴν αἰώνιον", e: "the one who believes in the Son has eternal life", r: "John 3:36" }, { g: "μακάριοι οἱ πενθοῦντες", e: "blessed are those who mourn", r: "Matt 5:4" }]}>stands alone as a noun</Cat>
+          <Cat name="Predicate" ex={[{ g: "εἶδεν τὸ πνεῦμα καταβαῖνον εἰς αὐτόν", e: "he saw the Spirit descending upon him", r: "Mark 1:10" }, { g: "εὑρήσετε βρέφος κείμενον ἐν φάτνῃ", e: "you will find a baby lying in a manger", r: "Luke 2:12" }]}>asserts something of the noun (rare)</Cat>
         </CatGroup>
         <CatGroup label="Adverbial / circumstantial (no article) — modifies the main verb">
-          <Cat name="Temporal" eg="“while eating…”">answers <em>when?</em></Cat>
-          <Cat name="Cause" eg="“because he was righteous”">answers <em>why?</em> — “because”</Cat>
-          <Cat name="Means / Manner" eg="“by doing this…”">answers <em>how?</em></Cat>
-          <Cat name="Condition" eg="“if you do this…”">the “if” on which the verb depends</Cat>
-          <Cat name="Concession" eg="“although they knew God…”">“although”</Cat>
-          <Cat name="Purpose">answers <em>why?</em> looking forward — “in order to”</Cat>
+          <Cat name="Temporal" eg="“while eating…”" ex={[{ g: "ἐλθὼν ὁ Ἰησοῦς εἰς τὴν οἰκίαν Πέτρου", e: "when Jesus came into Peter’s house", r: "Matt 8:14" }, { g: "ἀκούσαντες δὲ ἐβαπτίσθησαν", e: "and when they heard, they were baptized", r: "Acts 19:5" }]}>answers <em>when?</em></Cat>
+          <Cat name="Cause" eg="“because he was righteous”" ex={[{ g: "Ἰωσὴφ δίκαιος ὢν", e: "Joseph, because he was righteous", r: "Matt 1:19" }, { g: "πλανᾶσθε μὴ εἰδότες τὰς γραφάς", e: "you are wrong because you do not know the Scriptures", r: "Matt 22:29" }]}>answers <em>why?</em> — “because”</Cat>
+          <Cat name="Means / Manner" eg="“by doing this…”" ex={[{ g: "τίς μεριμνῶν δύναται προσθεῖναι πῆχυν;", e: "who by worrying can add a single cubit?", r: "Matt 6:27" }, { g: "ἐπορεύοντο χαίροντες", e: "they went on their way rejoicing", r: "Acts 5:41" }]}>answers <em>how?</em></Cat>
+          <Cat name="Condition" eg="“if you do this…”" ex={[{ g: "θερίσομεν μὴ ἐκλυόμενοι", e: "we will reap, if we do not give up", r: "Gal 6:9" }, { g: "πῶς ἡμεῖς ἐκφευξόμεθα τηλικαύτης ἀμελήσαντες σωτηρίας;", e: "how shall we escape if we neglect so great a salvation?", r: "Heb 2:3" }]}>the “if” on which the verb depends</Cat>
+          <Cat name="Concession" eg="“although they knew God…”" ex={[{ g: "γνόντες τὸν θεὸν οὐχ ὡς θεὸν ἐδόξασαν", e: "although they knew God, they did not glorify him as God", r: "Rom 1:21" }, { g: "ὃν οὐκ ἰδόντες ἀγαπᾶτε", e: "though you have not seen him, you love him", r: "1 Pet 1:8" }]}>“although”</Cat>
+          <Cat name="Purpose" ex={[{ g: "ἐληλύθει προσκυνήσων εἰς Ἰερουσαλήμ", e: "he had come to worship in Jerusalem", r: "Acts 8:27" }, { g: "ἴδωμεν εἰ ἔρχεται Ἠλίας σώσων αὐτόν", e: "let us see whether Elijah comes to save him", r: "Matt 27:49" }]}>answers <em>why?</em> looking forward — “in order to”</Cat>
         </CatGroup>
         <CatGroup label="Other uses">
-          <Cat name="Attendant Circumstance" eg="“Go and make disciples”">translate as a finite verb + “and”; pigg-backs on the main verb</Cat>
-          <Cat name="Periphrastic">a participle + a form of <G>εἰμί</G> making one verbal idea</Cat>
-          <Cat name="Imperatival">a participle functioning as a command</Cat>
-          <Cat name="Genitive Absolute">detached participle + noun, both genitive — usually background/time</Cat>
+          <Cat name="Attendant Circumstance" eg="“Go and make disciples”" ex={[{ g: "πορευθέντες μαθητεύσατε πάντα τὰ ἔθνη", e: "go and make disciples of all nations", r: "Matt 28:19" }, { g: "ἐγερθεὶς παράλαβε τὸ παιδίον", e: "rise and take the child", r: "Matt 2:13" }]}>translate as a finite verb + “and”; pigg-backs on the main verb</Cat>
+          <Cat name="Periphrastic" ex={[{ g: "ἦν διδάσκων αὐτοὺς ὡς ἐξουσίαν ἔχων", e: "he was teaching them as one having authority", r: "Mark 1:22" }, { g: "ἦν ὁ λαὸς προσδοκῶν τὸν Ζαχαρίαν", e: "the people were waiting for Zechariah", r: "Luke 1:21" }]}>a participle + a form of <G>εἰμί</G> making one verbal idea</Cat>
+          <Cat name="Imperatival" ex={[{ g: "τῇ ἐλπίδι χαίροντες, τῇ θλίψει ὑπομένοντες", e: "rejoice in hope, be patient in tribulation", r: "Rom 12:12" }, { g: "ἀποστυγοῦντες τὸ πονηρόν, κολλώμενοι τῷ ἀγαθῷ", e: "abhor what is evil, cling to what is good", r: "Rom 12:9" }]}>a participle functioning as a command</Cat>
+          <Cat name="Genitive Absolute" ex={[{ g: "ὀψίας δὲ γενομένης", e: "when evening had come", r: "Matt 8:16" }, { g: "ἔτι αὐτοῦ λαλοῦντος ἰδοὺ Ἰούδας ἦλθεν", e: "while he was still speaking, behold, Judas came", r: "Matt 26:47" }]}>detached participle + noun, both genitive — usually background/time</Cat>
         </CatGroup>
         <Hook>Don't be afraid to add "<strong>who</strong>" for a substantival participle, and if the first word of a sentence is <strong>genitive</strong>, <em>think genitive absolute</em> — its subject differs from the main verb's (<G>ὀψίας γενομένης</G>… = "when evening had come…").</Hook>
       </Note>
@@ -468,15 +484,15 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
       <Note>
         <P>These are its <strong>Essential Syntax Categories</strong> (after Wallace) — some standing alone, some inside a dependent clause.</P>
         <CatGroup label="In independent clauses">
-          <Cat name="Hortatory" eg="“let us love one another”">1st person plural — an exhortation</Cat>
-          <Cat name="Deliberative" eg="“what shall we say?”">a real or rhetorical question about what to do</Cat>
-          <Cat name="Emphatic Negation" eg="“will never perish”"><G>οὐ μή</G> + aorist subjunctive — the strongest “no”</Cat>
-          <Cat name="Prohibitive" eg="“do not fear”"><G>μή</G> + aorist subjunctive (a negative command)</Cat>
+          <Cat name="Hortatory" eg="“let us love one another”" ex={[{ g: "ἀγαπῶμεν ἀλλήλους", e: "let us love one another", r: "1 John 4:7" }, { g: "διέλθωμεν ἕως Βηθλέεμ", e: "let us go over to Bethlehem", r: "Luke 2:15" }]}>1st person plural — an exhortation</Cat>
+          <Cat name="Deliberative" eg="“what shall we say?”" ex={[{ g: "τί οὖν ποιήσωμεν;", e: "what then shall we do?", r: "Luke 3:10" }, { g: "δῶμεν ἢ μὴ δῶμεν;", e: "shall we pay, or shall we not?", r: "Mark 12:14" }]}>a real or rhetorical question about what to do</Cat>
+          <Cat name="Emphatic Negation" eg="“will never perish”" ex={[{ g: "οὐ μὴ ἀπόλωνται εἰς τὸν αἰῶνα", e: "they shall never perish", r: "John 10:28" }, { g: "οἱ λόγοι μου οὐ μὴ παρέλθωσιν", e: "my words will never pass away", r: "Matt 24:35" }]}><G>οὐ μή</G> + aorist subjunctive — the strongest “no”</Cat>
+          <Cat name="Prohibitive" eg="“do not fear”" ex={[{ g: "μὴ φοβηθῇς παραλαβεῖν Μαρίαν", e: "do not be afraid to take Mary", r: "Matt 1:20" }, { g: "μὴ δόξητε λέγειν ἐν ἑαυτοῖς", e: "do not presume to say among yourselves", r: "Matt 3:9" }]}><G>μή</G> + aorist subjunctive (a negative command)</Cat>
         </CatGroup>
         <CatGroup label="In dependent clauses">
-          <Cat name="ἵνα + subjunctive">purpose (“in order that”) or result (“so that”)</Cat>
-          <Cat name="Conditional" eg="“if you ask…”"><G>ἐάν</G> + subjunctive — the 3rd-class condition</Cat>
-          <Cat name="Indefinite" eg="ὃς ἄν “whoever,” ὅταν “whenever”">relative or temporal clauses with <G>ἄν</G></Cat>
+          <Cat name="ἵνα + subjunctive" ex={[{ g: "ἵνα πᾶς ὁ πιστεύων εἰς αὐτὸν ἔχῃ ζωὴν αἰώνιον", e: "that whoever believes in him may have eternal life", r: "John 3:16" }, { g: "ἦλθεν ἵνα μαρτυρήσῃ περὶ τοῦ φωτός", e: "he came to bear witness about the light", r: "John 1:7" }]}>purpose (“in order that”) or result (“so that”)</Cat>
+          <Cat name="Conditional" eg="“if you ask…”" ex={[{ g: "ἐάν τι αἰτήσητέ με, ἐγὼ ποιήσω", e: "if you ask me anything, I will do it", r: "John 14:14" }, { g: "ἐὰν ὁμολογῶμεν τὰς ἁμαρτίας ἡμῶν", e: "if we confess our sins", r: "1 John 1:9" }]}><G>ἐάν</G> + subjunctive — the 3rd-class condition</Cat>
+          <Cat name="Indefinite" eg="ὃς ἄν “whoever,” ὅταν “whenever”" ex={[{ g: "ὃς ἂν ποιήσῃ τὸ θέλημα τοῦ θεοῦ", e: "whoever does the will of God", r: "Mark 3:35" }, { g: "ὅταν προσεύχησθε, λέγετε", e: "whenever you pray, say", r: "Luke 11:2" }]}>relative or temporal clauses with <G>ἄν</G></Cat>
         </CatGroup>
         <P>Because the subjunctive carries aspect only, choose your English helper ("may / should / might") from the <em>clause type</em>, not from a fixed gloss.</P>
       </Note>
