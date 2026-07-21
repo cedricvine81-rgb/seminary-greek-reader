@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -221,6 +222,8 @@ export const CONJUNCTIONS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="conditionals" />
 
     <LiveExamples
       intro={<>Hunt the classes in the wild — check each protasis's mood as you go.</>}

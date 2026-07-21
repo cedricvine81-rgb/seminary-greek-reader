@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -261,6 +262,8 @@ export const MI_VERBS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="mi-verbs" />
 
     <LiveExamples
       intro={<>The μι-club in the wild — watch for iota vs. augment vs. reduplication at the front.</>}

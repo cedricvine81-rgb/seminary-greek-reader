@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -251,6 +252,8 @@ export const INFINITIVES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="infinitives" />
 
     <LiveExamples
       intro={<>Watch the patterns — helper + infinitive, preposition + articular infinitive — repeat page after page.</>}

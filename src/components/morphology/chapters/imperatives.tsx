@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -189,6 +190,8 @@ export const IMPERATIVES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="imperatives" />
 
     <LiveExamples
       intro={<>The NT is full of commands — compare how present and aorist feel in context.</>}

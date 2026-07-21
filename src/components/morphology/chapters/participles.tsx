@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -439,6 +440,8 @@ export const PARTICIPLES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="participles" />
 
     <LiveExamples
       intro={<>Participles are everywhere — roughly one NT word in twenty. Watch the patterns repeat.</>}

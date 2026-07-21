@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -216,6 +217,8 @@ export const SECOND_AORISTS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="second-aorists" />
 
     <LiveExamples
       intro={<>The 2nd-aorist club dominates NT narrative — every story runs on these forms.</>}

@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -189,6 +190,8 @@ export const LIQUIDS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="liquids" />
 
     <LiveExamples
       intro={<>Four liquid verbs that carry resurrection, mission, judgment, and abiding.</>}

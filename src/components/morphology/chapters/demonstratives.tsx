@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -257,6 +258,8 @@ export const DEMONSTRATIVES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="demonstratives" />
 
     <LiveExamples
       intro={<>The pointing words in place — notice how often they open or close an argument.</>}

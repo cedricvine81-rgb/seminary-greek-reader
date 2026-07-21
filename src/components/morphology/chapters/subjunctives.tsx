@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -252,6 +253,8 @@ export const SUBJUNCTIVES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="subjunctives" />
 
     <LiveExamples
       intro={<>Track the flag words to their subjunctives in the text itself.</>}

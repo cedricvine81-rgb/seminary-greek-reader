@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -418,6 +419,8 @@ export const PRONOUNS_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="pronouns" />
 
     <LiveExamples
       intro={<>Pronouns are the highest-frequency words in the NT after the article — see them at work.</>}

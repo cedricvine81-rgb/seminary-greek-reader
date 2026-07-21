@@ -5,6 +5,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -493,6 +494,8 @@ export const INDICATIVES_CONTENT = (
         },
       ]}
     />
+
+    <HomeworkAssignments chapter="indicatives" />
 
     <LiveExamples
       intro={<>The tense system in the wild — every hit is a real NT verb you can now decode.</>}

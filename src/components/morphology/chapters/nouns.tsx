@@ -14,6 +14,7 @@
 ───────────────────────────────────────────── */
 
 import {
+  HomeworkAssignments,
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
@@ -693,6 +694,8 @@ export const NOUNS_CONTENT = (
     />
 
     {/* ── 9 · See it in the NT ───────────────────────────── */}
+
+    <HomeworkAssignments chapter="nouns" />
 
     <LiveExamples
       intro={<>Don't take the textbook's word for it — these links search the tagged Greek New Testament itself.</>}
