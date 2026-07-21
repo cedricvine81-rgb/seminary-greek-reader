@@ -368,6 +368,7 @@ export const INDICATIVES_CONTENT = (
       ]}
     />
 
+    <LevelOnly level="beginning">
     <SectionHeading>Reading the machine: a worked example</SectionHeading>
     <TableAside
       beginning={<>
@@ -392,6 +393,7 @@ export const INDICATIVES_CONTENT = (
       />
     </TableAside>
 
+    </LevelOnly>
     {/* ── 8 · Watch out ──────────────────────────────────── */}
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
@@ -405,6 +407,7 @@ export const INDICATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 9 · Try it ─────────────────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice A — parse the verb"
@@ -495,6 +498,7 @@ export const INDICATIVES_CONTENT = (
       ]}
     />
 
+    </LevelOnly>
     <HomeworkAssignments chapter="indicatives" />
 
     <LiveExamples

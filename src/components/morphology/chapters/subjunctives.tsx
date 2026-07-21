@@ -181,6 +181,7 @@ export const SUBJUNCTIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice — parse and translate"
@@ -254,6 +255,7 @@ export const SUBJUNCTIVES_CONTENT = (
       ]}
     />
 
+    </LevelOnly>
     <HomeworkAssignments chapter="subjunctives" />
 
     <LiveExamples

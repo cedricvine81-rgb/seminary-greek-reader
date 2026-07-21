@@ -201,6 +201,7 @@ export const INFINITIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice — translate"
@@ -253,6 +254,7 @@ export const INFINITIVES_CONTENT = (
       ]}
     />
 
+    </LevelOnly>
     <HomeworkAssignments chapter="infinitives" />
 
     <LiveExamples

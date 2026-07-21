@@ -334,6 +334,7 @@ export const PARTICIPLES_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice A — parse the participle"
@@ -441,6 +442,7 @@ export const PARTICIPLES_CONTENT = (
       ]}
     />
 
+    </LevelOnly>
     <HomeworkAssignments chapter="participles" />
 
     <LiveExamples

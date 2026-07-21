@@ -451,6 +451,7 @@ export const NOUNS_CONTENT = (
     />
 
     {/* ── 4 · How to translate ───────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>How to translate: the three-step method</SectionHeading>
     <P>
       Never translate a Greek sentence word-by-word from left to right — that is the English habit, and
@@ -492,6 +493,7 @@ export const NOUNS_CONTENT = (
     </TableAside>
 
     {/* ── 5 · Adjectives agree ───────────────────────────── */}
+    </LevelOnly>
     <SectionHeading>Adjectives agree with their nouns</SectionHeading>
     <P>
       An <Term t="adjective">adjective</Term> describes a noun — and in Greek it must <strong>agree</strong> with
@@ -623,6 +625,7 @@ export const NOUNS_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Together (guided practice) ─────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Together: let's work through two</SectionHeading>
     <P>
       Before you fly solo, work these with me. Answer each prompt in your head (or out loud — this is a
@@ -657,7 +660,9 @@ export const NOUNS_CONTENT = (
       translation={<>"You are the Son of God" — Nathanael's confession, built entirely from this chapter's grammar.</>}
     />
 
+    </LevelOnly>
     {/* ── 8 · Try it ─────────────────────────────────────── */}
+    <LevelOnly level="beginning">
     <SectionHeading>Try it</SectionHeading>
     <Practice
       title="Practice A — parse the form"
@@ -695,6 +700,7 @@ export const NOUNS_CONTENT = (
 
     {/* ── 9 · See it in the NT ───────────────────────────── */}
 
+    </LevelOnly>
     <HomeworkAssignments chapter="nouns" />
 
     <LiveExamples
@@ -706,6 +712,26 @@ export const NOUNS_CONTENT = (
         { label: '3rd-declension in action: every neuter noun', features: ['noun', 'neuter'] },
       ]}
     />
+    {/* ── The article in full (Intermediate — from the Article session of the Int. course) ── */}
+    <LevelOnly level="intermediate">
+      <SectionHeading>The article — beyond "the"</SectionHeading>
+      <P>The Intermediate course gives the article its own session:</P>
+      <MorphTable
+        headers={['Use', 'What it does', 'Example']} firstColIsData striped
+        rows={[
+          ['As pronoun', 'ὁ δε = "but he"', 'ὁ δε ἐξελθων ἠρξατο κηρυσσειν (Mark 1:45)'],
+          ['Individualizing', 'points back to something already mentioned', 'τον ἀνθρωπον — THAT man, just discussed'],
+          ['Generic', 'the class, not an individual', 'ἀξιος ὁ ἐργατης του μισθου αὐτου (Luke 10:7)'],
+          ['Substantiver', 'turns anything into a noun', 'οἱ ἐκ πιστεως — those who are of faith (Gal 3:7)'],
+          ['Function marker', 'flags case or ties an attributive on', 'ἡ ἐντολη ἡ ἐμη (John 15:12)'],
+          ['Absence of article', 'often stresses quality, not indefiniteness', 'θεος ἠν ὁ λογος — the Word was (in nature) God (John 1:1)'],
+          ['Colwell’s rule', 'a definite predicate before the verb usually drops its article', 'θεος ἠν ὁ λογος again — anarthrous, still definite'],
+          ['Granville Sharp', 'one article + two singular nouns joined by και = one person', 'του θεου και σωτηρος ἡμων Ἰησου Χριστου (Tit 2:13)'],
+        ]}
+        note="Colwell and Granville Sharp are rules of thumb about when the article may be dropped without a change of meaning — both matter in key christological texts."
+      />
+    </LevelOnly>
+
 
     {/* ── 10 · Going deeper (Intermediate only) ──────────── */}
     <LevelOnly level="intermediate">

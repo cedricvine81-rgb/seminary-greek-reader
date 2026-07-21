@@ -259,17 +259,22 @@ export function MorphologyView() {
   const [mainTab, setMainTab] = useState<MainTab>('essentials')
   const [essId, setEssId]     = useState(1)
 
-  // Beginning / Intermediate explanation level, remembered across visits.
-  // Default to 'beginning' on first render (server + first client paint) to
-  // avoid a hydration mismatch, then hydrate from localStorage.
+  // Beginning / Intermediate explanation level. Beginning is the DEFAULT on
+  // every fresh visit; the choice is remembered only for the current browser
+  // session (sessionStorage), so the Grammar pages always open at Beginning
+  // rather than whatever a student picked weeks ago. Hydrate after first
+  // paint to avoid a hydration mismatch.
   const [level, setLevel] = useState<MorphLevel>('beginning')
   useEffect(() => {
-    const saved = localStorage.getItem('morph-level')
-    if (saved === 'beginning' || saved === 'intermediate') setLevel(saved)
+    try {
+      const saved = sessionStorage.getItem('morph-level')
+      if (saved === 'beginning' || saved === 'intermediate') setLevel(saved)
+      localStorage.removeItem('morph-level') // retire the old cross-visit memory
+    } catch { /* ignore */ }
   }, [])
   function changeLevel(l: MorphLevel) {
     setLevel(l)
-    try { localStorage.setItem('morph-level', l) } catch { /* ignore */ }
+    try { sessionStorage.setItem('morph-level', l) } catch { /* ignore */ }
   }
 
   // Course mode (opt-in overlay). Same hydrate-from-localStorage pattern as
