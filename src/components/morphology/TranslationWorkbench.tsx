@@ -156,10 +156,12 @@ export function TranslationWorkbench() {
           {word.parsing !== undefined && (
             <div>
               <label className="mb-1 block text-xs font-medium text-gray-600">Parsing</label>
+              {/* Format hint only — a concrete example (e.g. "Pres Act Ind 1 Pl — πιστεύω")
+                  can be the actual answer for the selected word, giving it away. */}
               <input
                 type="text"
                 className={inputCls}
-                placeholder="e.g. Pres Act Ind 1 Pl — πιστεύω"
+                placeholder="case, number, gender / tense, voice, mood… — lexical form"
                 value={entry.parsing}
                 onChange={e => update({ parsing: e.target.value, checked: false })}
               />
