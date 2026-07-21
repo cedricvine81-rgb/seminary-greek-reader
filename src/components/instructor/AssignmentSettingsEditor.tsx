@@ -57,6 +57,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   const isTranslation = assignmentType === 'TRANSLATION_EXERCISE'
   const isExam = assignmentType === 'TRANSLATION_EXAM'
+  // Course Notes and Group Presentations aren't quizzes — no questions, timer, or retakes.
+  // Hide that quiz chrome below.
+  const isNotes = assignmentType === 'COURSE_NOTES'
+  const isGroup = assignmentType === 'GROUP_PRESENTATION'
 
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
@@ -196,7 +200,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   return (
     <Card>
-      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : 'Quiz Settings'}</CardTitle>
+      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -453,7 +457,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             </>
             )}
           </div>
-        ) : (
+        ) : (isNotes || isGroup) ? null : (
           <Input
             label="Time per question (seconds, 0 = untimed)"
             type="number"
@@ -543,7 +547,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           </div>
         )}
 
-        {!isTranslation && (
+        {!isTranslation && !isNotes && !isGroup && (
           <Select
             label="Quiz retakes allowed"
             value={maxRetakes === null ? '' : String(maxRetakes)}

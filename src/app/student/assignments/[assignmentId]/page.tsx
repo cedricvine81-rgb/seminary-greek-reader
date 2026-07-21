@@ -233,7 +233,22 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           />
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && assignment.type !== 'TRANSLATION_EXERCISE' && (
+        {/* Course Notes isn't a quiz — students write and submit their own notes in the folder
+            provisioned for them. Point them there instead of an empty quiz player. */}
+        {assignment.type === 'COURSE_NOTES' && (
+          <div className="rounded-2xl border border-brand-200 bg-brand-50 px-5 py-6 space-y-3">
+            <p className="text-base font-semibold text-brand-900">This is a course notes assignment</p>
+            <p className="text-sm text-brand-800">
+              There&rsquo;s no quiz to take — you write and submit your own notes. Your notes folder
+              {assignment.notesFolderName ? <>, <strong>{assignment.notesFolderName}</strong>,</> : ''} is in the Notes tab of the Exegesis workspace.
+            </p>
+            <Link href="/exegesis?tab=notes" className="btn btn-primary inline-flex w-fit items-center gap-1.5 px-4 py-2">
+              Open your notes →
+            </Link>
+          </div>
+        )}
+
+        {(!isClosed || previewMode) && !isPassageExercise && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

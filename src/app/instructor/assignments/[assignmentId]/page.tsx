@@ -68,7 +68,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             assignment.reference && (
               <Badge variant="blue">{assignment.reference}</Badge>
             )
-          ) : (() => {
+          ) : (assignment.type === 'COURSE_NOTES' || assignment.type === 'GROUP_PRESENTATION') ? null : (() => {
             // Re-sampling vocab quizzes store the whole pool and show `perAttempt`
             // random questions each attempt — show that, not the raw pool size.
             const sel = assignment.vocabSelection as { perAttempt?: number } | null
@@ -138,7 +138,7 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
           }}
         />
 
-        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && (
+        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && (
           <QuizPreview
             questions={assignment.questions.map(q => ({
               id: q.id,
