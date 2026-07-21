@@ -517,15 +517,23 @@ interface HwInstructorData {
   assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean }[]
 }
 
-function toEndOfDayISO(date: string) {
-  return new Date(`${date}T23:59:59`).toISOString()
+// ISO instant → a datetime-local input value ("YYYY-MM-DDTHH:mm") in local time.
+function toLocalInput(iso: string) {
+  const d = new Date(iso)
+  const p = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
+}
+// Deadline shown to instructors: date + time, with explicit fields (Safari-safe — no dateStyle).
+function fmtDeadline(iso: string) {
+  return new Date(iso).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
 }
 
 export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const [role, setRole] = useState<'none' | 'student' | 'instructor'>('none')
   const [entries, setEntries] = useState<HwStudentEntry[]>([])
   const [data, setData] = useState<HwInstructorData | null>(null)
-  const [dates, setDates] = useState<Record<string, string>>({})   // `${setId}:${courseId}` -> yyyy-mm-dd
+  const [dates, setDates] = useState<Record<string, string>>({})       // `${setId}:${courseId}` -> datetime-local
+  const [selected, setSelected] = useState<Record<string, string>>({}) // setId -> chosen courseId
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
 
@@ -554,7 +562,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                 {e.title} →
               </Link>
               <span className="text-xs text-amber-700">
-                due {new Date(e.dueDate).toLocaleDateString()}
+                due {fmtDeadline(e.dueDate)}
                 {e.submitted && ' · submitted ✓'}
               </span>
             </li>
@@ -591,81 +599,95 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
         (and in the gradebook). Grade it from the assignment&rsquo;s Grade page.
       </p>
       <div className="space-y-3">
-        {data.sets.map(set => (
-          <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
-            <p className="text-sm font-semibold text-gray-800">
-              {set.title} <span className="text-xs font-normal text-gray-400">· {set.sentenceCount} sentences</span>
-            </p>
-            <div className="mt-2 space-y-2">
-              {data.courses.map(course => {
-                const key = `${set.id}:${course.id}`
-                const existing = data.assignments.find(a => a.setId === set.id && a.courseId === course.id)
-                const dateVal = dates[key] ?? (existing ? existing.dueDate.slice(0, 10) : '')
-                return (
-                  <div key={course.id} className="flex flex-wrap items-center gap-2 text-sm">
-                    <span className="min-w-[10rem] text-gray-700">{course.name}</span>
-                    <input
-                      type="date"
-                      value={dateVal}
-                      onChange={e => setDates(prev => ({ ...prev, [key]: e.target.value }))}
-                      className="rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                    />
-                    {!existing ? (
-                      <button
-                        type="button"
-                        disabled={busy === key || !dateVal}
-                        onClick={() => act(key, () => fetch('/api/assignments', {
-                          method: 'POST', headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            courseId: course.id, title: set.title, type: 'TRANSLATION_EXERCISE',
-                            weekNumber: 1, dueDate: toEndOfDayISO(dateVal), level: course.level,
-                            homeworkSet: set.id, isPublished: true,
-                          }),
-                        }))}
-                        className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
-                      >
-                        {busy === key ? 'Activating…' : 'Activate'}
-                      </button>
-                    ) : (
-                      <>
-                        <span className={clsx('rounded-md px-2 py-0.5 text-xs font-medium',
-                          existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
-                          {existing.isPublished ? `active · due ${new Date(existing.dueDate).toLocaleDateString()}` : 'deactivated'}
-                        </span>
-                        {existing.isPublished && dateVal && dateVal !== existing.dueDate.slice(0, 10) && (
-                          <button
-                            type="button"
-                            disabled={busy === key}
-                            onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
-                              method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({ dueDate: toEndOfDayISO(dateVal) }),
-                            }))}
-                            className="rounded-lg bg-brand-600 px-3 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
-                          >
-                            Update deadline
-                          </button>
-                        )}
+        {data.sets.map(set => {
+          const courseId = selected[set.id] ?? data.courses[0].id
+          const course = data.courses.find(c => c.id === courseId)!
+          const key = `${set.id}:${courseId}`
+          const existing = data.assignments.find(a => a.setId === set.id && a.courseId === courseId)
+          const dtVal = dates[key] ?? (existing ? toLocalInput(existing.dueDate) : '')
+          const fieldCls = 'rounded-lg border border-gray-300 bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400'
+          const changed = !!dtVal && (!existing || dtVal !== toLocalInput(existing.dueDate))
+          return (
+            <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
+              <p className="text-sm font-semibold text-gray-800">
+                {set.title} <span className="text-xs font-normal text-gray-400">· {set.sentenceCount} sentences</span>
+              </p>
+              <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
+                <label className="flex flex-col gap-1 text-xs font-medium text-gray-500">
+                  Course
+                  <select
+                    value={courseId}
+                    onChange={e => setSelected(prev => ({ ...prev, [set.id]: e.target.value }))}
+                    className={fieldCls}
+                  >
+                    {data.courses.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1 text-xs font-medium text-gray-500">
+                  Due — date &amp; time
+                  <input
+                    type="datetime-local"
+                    value={dtVal}
+                    onChange={e => setDates(prev => ({ ...prev, [key]: e.target.value }))}
+                    className={fieldCls}
+                  />
+                </label>
+                <div className="flex items-center gap-2 pb-1">
+                  {!existing ? (
+                    <button
+                      type="button"
+                      disabled={busy === key || !dtVal}
+                      onClick={() => act(key, () => fetch('/api/assignments', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          courseId, title: set.title, type: 'TRANSLATION_EXERCISE',
+                          weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course.level,
+                          homeworkSet: set.id, isPublished: true,
+                        }),
+                      }))}
+                      className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
+                    >
+                      {busy === key ? 'Activating…' : 'Activate'}
+                    </button>
+                  ) : (
+                    <>
+                      <span className={clsx('rounded-md px-2 py-1 text-xs font-medium',
+                        existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
+                        {existing.isPublished ? `active · due ${fmtDeadline(existing.dueDate)}` : 'deactivated'}
+                      </span>
+                      {existing.isPublished && changed && (
                         <button
                           type="button"
                           disabled={busy === key}
                           onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
                             method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(existing.isPublished
-                              ? { isPublished: false }
-                              : { isPublished: true, ...(dateVal ? { dueDate: toEndOfDayISO(dateVal) } : {}) }),
+                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString() }),
                           }))}
-                          className="rounded-lg border border-gray-300 bg-surface px-3 py-1 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700 disabled:opacity-50"
+                          className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
                         >
-                          {existing.isPublished ? 'Deactivate' : 'Reactivate'}
+                          Update deadline
                         </button>
-                      </>
-                    )}
-                  </div>
-                )
-              })}
+                      )}
+                      <button
+                        type="button"
+                        disabled={busy === key}
+                        onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
+                          method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify(existing.isPublished
+                            ? { isPublished: false }
+                            : { isPublished: true, ...(dtVal ? { dueDate: new Date(dtVal).toISOString() } : {}) }),
+                        }))}
+                        className="rounded-lg border border-gray-300 bg-surface px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700 disabled:opacity-50"
+                      >
+                        {existing.isPublished ? 'Deactivate' : 'Reactivate'}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
       {error && <p className="mt-2 text-xs text-red-600 bg-red-50 rounded-lg px-2 py-1.5">{error}</p>}
     </div>

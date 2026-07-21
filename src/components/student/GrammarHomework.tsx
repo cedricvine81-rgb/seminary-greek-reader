@@ -21,6 +21,8 @@ interface HwQuestion {
   points: number
   words: HomeworkWord[]
   note?: string
+  /** The student's last-submitted answer for this sentence (so they can correct it). */
+  prior?: { words: { parsing: string; syntax: string; gloss: string }[]; translation: string }
 }
 
 interface WordEntry { parsing: string; syntax: string; gloss: string }
@@ -40,8 +42,13 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
   dueDate: string | null
 }) {
   const router = useRouter()
+  // Seed each sentence from the student's last submission (server) where present,
+  // padded to the current word count; blank otherwise. Same-device localStorage
+  // edits (autosaved) override this on mount.
   const [entries, setEntries] = useState<SentenceEntry[]>(() =>
-    questions.map(q => ({ words: q.words.map(emptyWord), translation: '' })))
+    questions.map(q => q.prior
+      ? { words: q.words.map((_, i) => q.prior!.words[i] ?? emptyWord()), translation: q.prior.translation }
+      : { words: q.words.map(emptyWord), translation: '' }))
   const [open, setOpen] = useState<number | null>(null)
   const [wordIdx, setWordIdx] = useState(0)
   const [submitting, setSubmitting] = useState(false)

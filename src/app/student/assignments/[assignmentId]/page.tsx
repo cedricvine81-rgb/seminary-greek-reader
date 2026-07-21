@@ -25,7 +25,7 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [assignment, attemptCount, bestAttempt, existingSession] = await Promise.all([
+  const [assignment, attemptCount, bestAttempt, existingSession, priorResponses] = await Promise.all([
     prisma.assignment.findUnique({
       where: { id: params.assignmentId },
       include: { questions: { orderBy: { position: 'asc' } } },
@@ -39,6 +39,12 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
     prisma.exegesisSession.findFirst({
       where: { assignmentId: params.assignmentId, userId: payload.sub },
       select: { submittedAt: true, grade: true, gradeNote: true },
+    }),
+    // Grammar homework: the student's last-submitted answers, so they can correct
+    // (in class, on any device) rather than starting over from a blank pane.
+    prisma.response.findMany({
+      where: { assignmentId: params.assignmentId, userId: payload.sub, questionId: { not: null } },
+      select: { questionId: true, answer: true },
     }),
   ])
   if (!assignment) notFound()
@@ -235,24 +241,32 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
 
         {/* Grammar homework (deck Exercises A/B): word-by-word translation exercise
             worked in the right-hand homework pane; graded by the instructor. */}
-        {(!isClosed || previewMode) && isGrammarHomework && (
-          <GrammarHomework
-            assignmentId={assignment.id}
-            attemptCount={attemptCount}
-            dueDate={assignment.dueDate?.toISOString() ?? null}
-            questions={assignment.questions.map(q => {
-              let meta: { words?: unknown[]; note?: string | null } = {}
-              try { meta = JSON.parse(q.options[0] ?? '{}') } catch { /* ignore */ }
-              return {
-                id: q.id,
-                prompt: q.prompt,
-                points: q.points,
-                words: (meta.words ?? []) as { w: string }[],
-                note: meta.note ?? undefined,
-              }
-            })}
-          />
-        )}
+        {(!isClosed || previewMode) && isGrammarHomework && (() => {
+          const priorByQuestion = new Map(priorResponses.map(r => [r.questionId, r.answer]))
+          return (
+            <GrammarHomework
+              assignmentId={assignment.id}
+              attemptCount={attemptCount}
+              dueDate={assignment.dueDate?.toISOString() ?? null}
+              questions={assignment.questions.map(q => {
+                let meta: { words?: unknown[]; note?: string | null } = {}
+                try { meta = JSON.parse(q.options[0] ?? '{}') } catch { /* ignore */ }
+                let prior: { words?: unknown[]; translation?: string } | null = null
+                try { const raw = priorByQuestion.get(q.id); if (raw) prior = JSON.parse(raw) } catch { /* ignore */ }
+                return {
+                  id: q.id,
+                  prompt: q.prompt,
+                  points: q.points,
+                  words: (meta.words ?? []) as { w: string }[],
+                  note: meta.note ?? undefined,
+                  prior: prior && Array.isArray(prior.words)
+                    ? { words: prior.words as { parsing: string; syntax: string; gloss: string }[], translation: prior.translation ?? '' }
+                    : undefined,
+                }
+              })}
+            />
+          )
+        })()}
 
         {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type === 'TRANSLATION_EXERCISE' && (
           <TranslationExercise
