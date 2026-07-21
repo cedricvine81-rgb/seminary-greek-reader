@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const PRONOUNS_CONTENT = (
@@ -69,6 +69,71 @@ export const PRONOUNS_CONTENT = (
       </P>
     </LevelOnly>
 
+    <DropdownPractice
+      title="Practice — parse αὐτός"
+      intro={<>Match each form to its parsing and default translation.</>}
+      options={["Accusative Plural Masculine — \"them\"", "Dative Singular Feminine — \"to/for her\"", "Genitive Singular (masc./neut.) — \"his/its\"", "Nominative Plural Feminine — \"they\"", "Genitive Plural (all genders) — \"their\"", "Nom/Acc Singular Neuter — \"it\""]}
+      items={[
+        { q: <span className="normal-case">αὐτούς</span>, answer: "Accusative Plural Masculine — \"them\"" },
+        { q: <span className="normal-case">αὐτῇ</span>, answer: "Dative Singular Feminine — \"to/for her\"", note: <>Or "to it," if the antecedent is a feminine thing.</> },
+        { q: <span className="normal-case">αὐτοῦ</span>, answer: "Genitive Singular (masc./neut.) — \"his/its\"" },
+        { q: <span className="normal-case">αὐταί</span>, answer: "Nominative Plural Feminine — \"they\"" },
+        { q: <span className="normal-case">αὐτῶν</span>, answer: "Genitive Plural (all genders) — \"their\"" },
+        { q: <span className="normal-case">αὐτό</span>, answer: "Nom/Acc Singular Neuter — \"it\"", note: <>Neuter nominative and accusative are identical — as always.</> },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · Pronouns (αὐτός)"
+      items={[
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "κύριος", parsing: "Nom Sg Masc — κύριος", syntax: "Subject", gloss: "Lord" },
+          { w: "γινώσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "knows" },
+          { w: "αὐτούς.", parsing: "Acc Pl Masc — αὐτός", syntax: "Direct Object", gloss: "them" },
+        ],
+          translation: "The Lord knows them.",
+        },
+        { words: [
+          { w: "λέγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "says" },
+          { w: "αὐτοῖς", parsing: "Dat Pl Masc — αὐτός", syntax: "Dative of Indirect Object", gloss: "to them" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "Ἰησοῦς.", parsing: "Nom Sg Masc — Ἰησοῦς", syntax: "Subject", gloss: "Jesus" },
+        ],
+          translation: "Jesus says to them.",
+          note: "The subject comes last — the cases, not the order, tell you who speaks.",
+        },
+        { words: [
+          { w: "ἀκούομεν", parsing: "Pres Act Ind 1 Pl — ἀκούω", gloss: "we hear" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λόγον", parsing: "Acc Sg Masc — λόγος", syntax: "Direct Object", gloss: "word" },
+          { w: "αὐτοῦ.", parsing: "Gen Sg Masc — αὐτός", syntax: "Genitive of Possession", gloss: "his" },
+        ],
+          translation: "We hear his word.",
+          note: "The genitive of αὐτός is how Greek says \"his/her/its\" — literally \"the word of him.\"",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "γινώσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "knows" },
+          { w: "τὰς", parsing: "Article — Acc Pl Fem", gloss: "the" },
+          { w: "καρδίας", parsing: "Acc Pl Fem — καρδία", syntax: "Direct Object", gloss: "hearts" },
+          { w: "αὐτῶν.", parsing: "Gen Pl — αὐτός", syntax: "Genitive of Possession", gloss: "their" },
+        ],
+          translation: "God knows their hearts.",
+        },
+        { words: [
+          { w: "βλέπομεν", parsing: "Pres Act Ind 1 Pl — βλέπω", gloss: "we see" },
+          { w: "αὐτὸν", parsing: "Acc Sg Masc — αὐτός", syntax: "Direct Object", gloss: "him" },
+          { w: "ἐν", parsing: "Preposition + dative", gloss: "in" },
+          { w: "τῷ", parsing: "Article — Dat Sg Neut", gloss: "the" },
+          { w: "ἱερῷ.", parsing: "Dat Sg Neut — ἱερόν", gloss: "temple" },
+        ],
+          translation: "We see him in the temple.",
+        },
+      ]}
+    />
+
     {/* ── 3 · 1st & 2nd person ───────────────────────────── */}
     <SectionHeading>"I" and "you": the personal pronouns</SectionHeading>
     <P>
@@ -103,6 +168,78 @@ export const PRONOUNS_CONTENT = (
         <Gk> ὑμεῖς</Gk> is "you all."
       </P>
     </LevelOnly>
+
+    <DropdownPractice
+      title="Practice — parse the personal pronoun"
+      intro={<>Which pronoun, which case — and what does it mean?</>}
+      options={["Dative Plural of ἐγώ — \"to/for us\"", "Accusative Plural of σύ — \"you (pl.)\"", "Genitive Singular of ἐγώ — \"my / of me\"", "Genitive Plural of σύ — \"your / of you (pl.)\"", "Accusative Singular of ἐγώ (emphatic) — \"me\"", "Nominative Plural of ἐγώ — \"we\""]}
+      items={[
+        { q: <span className="normal-case">ἡμῖν</span>, answer: "Dative Plural of ἐγώ — \"to/for us\"" },
+        { q: <span className="normal-case">ὑμᾶς</span>, answer: "Accusative Plural of σύ — \"you (pl.)\"" },
+        { q: <span className="normal-case">μου</span>, answer: "Genitive Singular of ἐγώ — \"my / of me\"", note: <>The short (enclitic) form — the everyday "my."</> },
+        { q: <span className="normal-case">ὑμῶν</span>, answer: "Genitive Plural of σύ — \"your / of you (pl.)\"" },
+        { q: <span className="normal-case">ἐμέ</span>, answer: "Accusative Singular of ἐγώ (emphatic) — \"me\"", note: <>The long form — used for stress or after prepositions.</> },
+        { q: <span className="normal-case">ἡμεῖς</span>, answer: "Nominative Plural of ἐγώ — \"we\"", note: <>Nominative = emphasis: the verb ending already says "we."</> },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · Pronouns (first and second person)"
+      items={[
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "λόγος", parsing: "Nom Sg Masc — λόγος", syntax: "Subject", gloss: "word" },
+          { w: "σου", parsing: "Gen Sg — σύ", syntax: "Genitive of Possession", gloss: "your" },
+          { w: "σῴζει.", parsing: "Pres Act Ind 3 Sg — σῴζω", gloss: "saves" },
+        ],
+          translation: "Your word saves.",
+        },
+        { words: [
+          { w: "ἐγὼ", parsing: "Nom Sg — ἐγώ (emphatic)", syntax: "Subject", gloss: "I" },
+          { w: "βλέπω", parsing: "Pres Act Ind 1 Sg — βλέπω", gloss: "see" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "ἀδελφόν", parsing: "Acc Sg Masc — ἀδελφός", syntax: "Direct Object", gloss: "brother" },
+          { w: "σου.", parsing: "Gen Sg — σύ", syntax: "Genitive of Possession", gloss: "your" },
+        ],
+          translation: "I see your brother.",
+          note: "The spelled-out ἐγώ is emphatic — the verb ending alone already means \"I see.\"",
+        },
+        { words: [
+          { w: "ὑμεῖς", parsing: "Nom Pl — σύ (emphatic)", syntax: "Subject", gloss: "you (pl.)" },
+          { w: "ἠκούσατε", parsing: "Aor Act Ind 2 Pl — ἀκούω", gloss: "heard" },
+          { w: "ἀλλὰ", parsing: "Conjunction", gloss: "but" },
+          { w: "ἡμεῖς", parsing: "Nom Pl — ἐγώ (emphatic)", syntax: "Subject", gloss: "we" },
+          { w: "οὐκ", parsing: "Negative particle", gloss: "not" },
+          { w: "ἐπιστεύσαμεν.", parsing: "Aor Act Ind 1 Pl — πιστεύω", gloss: "believed" },
+        ],
+          translation: "You (pl.) heard, but we did not believe.",
+          note: "The emphatic pronouns ὑμεῖς and ἡμεῖς sharpen the contrast — Greek only adds them for emphasis.",
+        },
+        { words: [
+          { w: "σὺ", parsing: "Nom Sg — σύ (emphatic)", syntax: "Subject", gloss: "you" },
+          { w: "φιλεῖς", parsing: "Pres Act Ind 2 Sg — φιλέω", gloss: "love" },
+          { w: "σεαυτόν,", parsing: "Acc Sg Masc — σεαυτοῦ (reflexive)", syntax: "Direct Object", gloss: "yourself" },
+          { w: "ἀλλ᾿", parsing: "Conjunction", gloss: "but" },
+          { w: "ἐγὼ", parsing: "Nom Sg — ἐγώ (emphatic)", syntax: "Subject", gloss: "I" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "ἄλλους.", parsing: "Acc Pl Masc — ἄλλος", syntax: "Direct Object", gloss: "others" },
+        ],
+          translation: "You love yourself, but I (love) the others.",
+          note: "The second verb is left out (ellipsis) — supply it from the first clause.",
+        },
+        { words: [
+          { w: "ὑμεῖς", parsing: "Nom Pl — σύ (emphatic)", syntax: "Subject", gloss: "you (pl.)" },
+          { w: "ἐστε", parsing: "Pres Act Ind 2 Pl — εἰμί", gloss: "are" },
+          { w: "τὸ", parsing: "Article — Nom Sg Neut", gloss: "the" },
+          { w: "φῶς", parsing: "Nom Sg Neut — φῶς (3rd decl.)", syntax: "Predicate Nominative", gloss: "light" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+          { w: "κόσμου.", parsing: "Gen Sg Masc — κόσμος", syntax: "Genitive of Possession", gloss: "world" },
+        ],
+          translation: "You (pl.) are the light of the world.",
+          note: "Matthew 5:14 — straight from your Lesson 4 deck.",
+        },
+      ]}
+    />
 
     {/* ── 4 · "No one" ───────────────────────────────────── */}
     <SectionHeading>"No one, nothing": οὐδείς and μηδείς</SectionHeading>
@@ -209,73 +346,75 @@ export const PRONOUNS_CONTENT = (
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
     <SectionHeading>Try it</SectionHeading>
-    <Practice
-      title="Practice A — parse the pronoun"
-      intro={<>Identify the form and give a translation.</>}
+    <DropdownPractice
+      title="Practice — τις or τίς?"
+      intro={<>Read the accent first — it is the only difference between "someone" and "who?"</>}
+      options={["Interrogative — \"who?\"", "Indefinite — \"someone\"", "Interrogative — \"what? why?\"", "Indefinite — \"some (people)\"", "Interrogative — \"whose? of what?\"", "Indefinite — \"to someone\""]}
       items={[
-        { q: <span className="normal-case">αὐτούς</span>,
-          a: <>Accusative plural masculine of <span className="normal-case">αὐτός</span> — "them."</> },
-        { q: <span className="normal-case">αὐτῇ</span>,
-          a: <>Dative singular feminine — "to / for her" (or "to it," if the antecedent is a feminine thing).</> },
-        { q: <span className="normal-case">ἡμῖν</span>,
-          a: <>Dative plural of <span className="normal-case">ἐγώ</span> — "to / for us."</> },
-        { q: <span className="normal-case">ὑμᾶς</span>,
-          a: <>Accusative plural of <span className="normal-case">σύ</span> — "you all" as an object.</> },
-        { q: <span className="normal-case">τίνος</span>,
-          a: <>Genitive singular of accented <span className="normal-case">τίς</span> — "whose? of what?"</> },
-      ]}
-    />
-    <Practice
-      title="Practice B — translate the sentence"
-      intro={<>Vocabulary: <span className="normal-case">βλέπω</span> "I see" · <span className="normal-case">λέγει</span> "says" · <span className="normal-case">ἀκούετε</span> "you (pl.) hear" · <span className="normal-case">γινώσκει</span> "knows."</>}
-      items={[
-        { q: <span className="normal-case">ὁ κύριος γινώσκει αὐτούς.</span>,
-          a: <>"The Lord knows them."</> },
-        { q: <span className="normal-case">λέγει αὐτοῖς ὁ Ἰησοῦς.</span>,
-          a: <>"Jesus says to them" — dative <span className="normal-case">αὐτοῖς</span> = the ones addressed.</> },
-        { q: <span className="normal-case">ἐγὼ βλέπω τὸν ἀδελφόν σου.</span>,
-          a: <>"<em>I</em> see your brother" — the expressed <span className="normal-case">ἐγώ</span> is emphatic; <span className="normal-case">σου</span> = "your."</> },
-        { q: <span className="normal-case">τίς ἀκούει τὸν λόγον;</span>,
-          a: <>"Who hears the word?" — accented <span className="normal-case">τίς</span> asks the question.</> },
-        { q: <span className="normal-case">ἄνθρωπός τις εἶχεν δύο τέκνα.</span>,
-          a: <>"A certain man had two children" — unaccented <span className="normal-case">τις</span>, the classic parable opener.</> },
+        { q: <span className="normal-case">τίς</span>, answer: "Interrogative — \"who?\"" },
+        { q: <span className="normal-case">τις</span>, answer: "Indefinite — \"someone\"", note: <>No accent — the enclitic indefinite.</> },
+        { q: <span className="normal-case">τί</span>, answer: "Interrogative — \"what? why?\"" },
+        { q: <span className="normal-case">τινες</span>, answer: "Indefinite — \"some (people)\"" },
+        { q: <span className="normal-case">τίνος</span>, answer: "Interrogative — \"whose? of what?\"" },
+        { q: <span className="normal-case">τινι</span>, answer: "Indefinite — \"to someone\"" },
       ]}
     />
 
-    {/* ── 8 · See it in the NT ───────────────────────────── */}
     <ClassSentences
-      lesson="Lesson 3 · Pronouns (first and second person)"
+      lesson="Lesson 4 · τις and τίς"
       items={[
         { words: [
-          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
-          { w: "λόγος", parsing: "Nom Sg Masc — λόγος", syntax: "Subject", gloss: "word" },
-          { w: "σου", parsing: "Gen Sg — σύ", syntax: "Genitive of Possession", gloss: "your" },
-          { w: "σῴζει.", parsing: "Pres Act Ind 3 Sg — σῴζω", gloss: "saves" },
+          { w: "τίς", parsing: "Nom Sg — τίς (interrogative)", syntax: "Subject", gloss: "who?" },
+          { w: "πιστεύει;", parsing: "Pres Act Ind 3 Sg — πιστεύω", gloss: "believes" },
         ],
-          translation: "Your word saves.",
+          translation: "Who believes?",
         },
         { words: [
-          { w: "ὑμεῖς", parsing: "Nom Pl — σύ", syntax: "Subject", gloss: "you (pl.)" },
-          { w: "ἠκούσατε", parsing: "Aor Act Ind 2 Pl — ἀκούω", gloss: "heard" },
-          { w: "ἀλλὰ", parsing: "Conjunction", gloss: "but" },
-          { w: "ἡμεῖς", parsing: "Nom Pl — ἐγώ", syntax: "Subject", gloss: "we" },
-          { w: "οὐκ", parsing: "Negative particle", gloss: "not" },
-          { w: "ἐπιστεύσαμεν.", parsing: "Aor Act Ind 1 Pl — πιστεύω", gloss: "believed" },
+          { w: "τίς", parsing: "Nom Sg — τίς (interrogative)", syntax: "Subject", gloss: "who?" },
+          { w: "ἀκούει", parsing: "Pres Act Ind 3 Sg — ἀκούω", gloss: "hears" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λόγον;", parsing: "Acc Sg Masc — λόγος", syntax: "Direct Object", gloss: "word" },
         ],
-          translation: "You (pl.) heard, but we did not believe.",
-          note: "The emphatic pronouns ὑμεῖς and ἡμεῖς sharpen the contrast — Greek only adds them for emphasis.",
+          translation: "Who hears the word?",
         },
         { words: [
-          { w: "σὺ", parsing: "Nom Sg — σύ", syntax: "Subject", gloss: "you" },
-          { w: "φιλεῖς", parsing: "Pres Act Ind 2 Sg — φιλέω", gloss: "love" },
-          { w: "σεαυτόν,", parsing: "Acc Sg Masc — σεαυτοῦ (reflexive)", syntax: "Direct Object", gloss: "yourself" },
-          { w: "ἀλλ᾿", parsing: "Conjunction", gloss: "but" },
-          { w: "ἐγὼ", parsing: "Nom Sg — ἐγώ", syntax: "Subject", gloss: "I" },
-          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
-          { w: "ἄλλους.", parsing: "Acc Pl Masc — ἄλλος", syntax: "Direct Object", gloss: "others" },
+          { w: "θέλω", parsing: "Pres Act Ind 1 Sg — θέλω", gloss: "I want" },
+          { w: "ὕδωρ", parsing: "Acc Sg Neut — ὕδωρ (3rd decl.)", syntax: "Direct Object", gloss: "water" },
+          { w: "τι.", parsing: "Acc Sg Neut — τις (indefinite, enclitic)", gloss: "some" },
         ],
-          translation: "You love yourself, but I (love) the others.",
-          note: "The second verb is left out (ellipsis) — supply it from the first clause.",
+          translation: "I want some water.",
+          note: "Unaccented τι = \"some\" — leaning on the noun before it.",
+        },
+        { words: [
+          { w: "τί", parsing: "Acc Sg Neut — τίς (interrogative, adverbial)", gloss: "why?" },
+          { w: "ζητεῖτε", parsing: "Pres Act Ind 2 Pl — ζητέω", gloss: "you seek" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "κύριον;", parsing: "Acc Sg Masc — κύριος", syntax: "Direct Object", gloss: "Lord" },
+        ],
+          translation: "Why do you (pl.) seek the Lord?",
+          note: "Neuter τί often means \"why?\" — context decides between \"what?\" and \"why?\"",
+        },
+        { words: [
+          { w: "περὶ", parsing: "Preposition + genitive", gloss: "about" },
+          { w: "τίνος", parsing: "Gen Sg — τίς (interrogative)", gloss: "what/whom?" },
+          { w: "λέγεις;", parsing: "Pres Act Ind 2 Sg — λέγω", gloss: "are you speaking" },
+        ],
+          translation: "About what (or whom) are you speaking?",
+        },
+        { words: [
+          { w: "γυναῖκές", parsing: "Nom Pl Fem — γυνή (3rd decl.)", syntax: "Subject", gloss: "women" },
+          { w: "τινες", parsing: "Nom Pl — τις (indefinite)", gloss: "some" },
+          { w: "εἰσὶν", parsing: "Pres Act Ind 3 Pl — εἰμί", gloss: "are" },
+          { w: "πισταί.", parsing: "Nom Pl Fem — πιστός", syntax: "Predicate Nominative", gloss: "faithful" },
+        ],
+          translation: "Some women are faithful.",
+          note: "The double accent on γυναῖκές comes from the enclitic τινες throwing its accent backward.",
+        },
+        { words: [
+          { w: "τίνα", parsing: "Acc Sg — τίς (interrogative)", syntax: "Direct Object", gloss: "whom?" },
+          { w: "καλεῖτε;", parsing: "Pres Act Ind 2 Pl — καλέω", gloss: "are you calling" },
+        ],
+          translation: "Whom are you (pl.) calling?",
         },
       ]}
     />

@@ -16,7 +16,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel, gt,
   P, SectionHeading, LevelOnly, Term, Practice, GuidedExample, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const NOUNS_CONTENT = (
@@ -99,6 +99,21 @@ export const NOUNS_CONTENT = (
       />
     </TableAside>
 
+    <DropdownPractice
+      title="Practice — spot the case"
+      intro={<>Which Greek case would the <strong>bold</strong> phrase be in? (English first — no endings needed yet.)</>}
+      options={["Nominative", "Genitive", "Dative", "Accusative"]}
+      items={[
+        { q: <><strong>The apostle</strong> teaches the crowd.</>, answer: "Nominative", note: <>The doer of the action — the subject.</> },
+        { q: <>God loves <strong>the world</strong>.</>, answer: "Accusative", note: <>Acted upon — the direct object.</> },
+        { q: <>The word <strong>of the Lord</strong> endures.</>, answer: "Genitive", note: <>"of …" — possession/source.</> },
+        { q: <>She speaks <strong>to the disciples</strong>.</>, answer: "Dative", note: <>"to/for …" — the ones spoken to.</> },
+        { q: <>We heard the voice <strong>of an angel</strong>.</>, answer: "Genitive" },
+        { q: <><strong>The children</strong> hear the word.</>, answer: "Nominative" },
+        { q: <>He gives the bread <strong>to the crowd</strong>.</>, answer: "Dative" },
+      ]}
+    />
+
     {/* ── 3 · The forms ──────────────────────────────────── */}
     <SectionHeading>The forms: 1st &amp; 2nd declension</SectionHeading>
     <P>
@@ -136,6 +151,84 @@ export const NOUNS_CONTENT = (
       />
     </TableAside>
 
+    <DropdownPractice
+      title="Practice — parse the form"
+      intro={<>Pick the case and number. Read each form as stem + ending before you choose.</>}
+      options={["Nominative Singular", "Genitive Singular", "Dative Singular", "Accusative Singular", "Nominative Plural", "Genitive Plural", "Dative Plural", "Accusative Plural", "Nom/Acc Plural (neuter)"]}
+      items={[
+        { q: <span className="normal-case">λόγον</span>, answer: "Accusative Singular" },
+        { q: <span className="normal-case">ψυχῆς</span>, answer: "Genitive Singular" },
+        { q: <span className="normal-case">ἀνθρώπῳ</span>, answer: "Dative Singular" },
+        { q: <span className="normal-case">ἀδελφοί</span>, answer: "Nominative Plural" },
+        { q: <span className="normal-case">ἔργα</span>, answer: "Nom/Acc Plural (neuter)", note: <>Neuter nominative and accusative are always identical — the sentence must decide.</> },
+        { q: <span className="normal-case">ἡμέραις</span>, answer: "Dative Plural" },
+        { q: <span className="normal-case">κυρίων</span>, answer: "Genitive Plural" },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · 1st & 2nd declension"
+      items={[
+        { words: [
+          { w: "ἀκούετε", parsing: "Pres Act Ind 2 Pl — ἀκούω", gloss: "you hear" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λόγον", parsing: "Acc Sg Masc — λόγος", syntax: "Direct Object", gloss: "word" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of" },
+          { w: "θεοῦ.", parsing: "Gen Sg Masc — θεός", syntax: "Genitive of Possession", gloss: "God" },
+        ],
+          translation: "You (pl.) hear the word of God.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "κύριος", parsing: "Nom Sg Masc — κύριος", syntax: "Subject", gloss: "Lord" },
+          { w: "γινώσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "knows" },
+          { w: "τὰς", parsing: "Article — Acc Pl Fem", gloss: "the" },
+          { w: "καρδίας.", parsing: "Acc Pl Fem — καρδία", syntax: "Direct Object", gloss: "hearts" },
+        ],
+          translation: "The Lord knows the hearts.",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "υἱὸς", parsing: "Nom Sg Masc — υἱός", syntax: "Subject", gloss: "son" },
+          { w: "λέγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "speaks" },
+          { w: "τοῖς", parsing: "Article — Dat Pl Masc", gloss: "to the" },
+          { w: "ἀδελφοῖς.", parsing: "Dat Pl Masc — ἀδελφός", syntax: "Dative of Indirect Object", gloss: "brothers" },
+        ],
+          translation: "The son speaks to the brothers.",
+        },
+        { words: [
+          { w: "ἀκούομεν", parsing: "Pres Act Ind 1 Pl — ἀκούω", gloss: "we hear" },
+          { w: "τὰς", parsing: "Article — Acc Pl Fem", gloss: "the" },
+          { w: "φωνὰς", parsing: "Acc Pl Fem — φωνή", syntax: "Direct Object", gloss: "voices" },
+          { w: "τῶν", parsing: "Article — Gen Pl Masc", gloss: "of the" },
+          { w: "ἀγγέλων.", parsing: "Gen Pl Masc — ἄγγελος", syntax: "Genitive of Possession", gloss: "angels" },
+        ],
+          translation: "We hear the voices of the angels.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "ἄνθρωποι", parsing: "Nom Pl Masc — ἄνθρωπος", syntax: "Subject", gloss: "men" },
+          { w: "πιστεύουσιν", parsing: "Pres Act Ind 3 Pl — πιστεύω", gloss: "believe" },
+          { w: "τῷ", parsing: "Article — Dat Sg Neut", gloss: "the" },
+          { w: "εὐαγγελίῳ.", parsing: "Dat Sg Neut — εὐαγγέλιον", gloss: "gospel" },
+        ],
+          translation: "The men believe the gospel.",
+          note: "πιστεύω takes its object in the dative — \"believe (in) the gospel.\"",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "κόσμος", parsing: "Nom Sg Masc — κόσμος", syntax: "Subject", gloss: "world" },
+          { w: "οὐ", parsing: "Negative particle", gloss: "not" },
+          { w: "γινώσκει", parsing: "Pres Act Ind 3 Sg — γινώσκω", gloss: "knows" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "θεόν.", parsing: "Acc Sg Masc — θεός", syntax: "Direct Object", gloss: "God" },
+        ],
+          translation: "The world does not know God.",
+          note: "Echoes John 1:10 — ὁ κόσμος αὐτὸν οὐκ ἔγνω.",
+        },
+      ]}
+    />
+
     <SectionHeading>Your best friend: the article</SectionHeading>
     <P>
       Greek's word for "the" — the <Term t="article">article</Term> — changes form to match its noun
@@ -172,6 +265,83 @@ export const NOUNS_CONTENT = (
       />
     </TableAside>
 
+    <DropdownPractice
+      title="Practice — parse the article"
+      intro={<>The article is your answer key — so learn to parse it on sight. Pick the case and number.</>}
+      options={["Nominative Singular", "Genitive Singular", "Dative Singular", "Accusative Singular", "Nominative Plural", "Genitive Plural", "Dative Plural", "Accusative Plural"]}
+      items={[
+        { q: <span className="normal-case">τοῦ</span>, answer: "Genitive Singular", note: <>Masculine or neuter — τοῦ serves both.</> },
+        { q: <span className="normal-case">ταῖς</span>, answer: "Dative Plural", note: <>Feminine.</> },
+        { q: <span className="normal-case">τόν</span>, answer: "Accusative Singular", note: <>Masculine.</> },
+        { q: <span className="normal-case">ἡ</span>, answer: "Nominative Singular", note: <>Feminine.</> },
+        { q: <span className="normal-case">τῶν</span>, answer: "Genitive Plural", note: <>All three genders — context decides.</> },
+        { q: <span className="normal-case">τῷ</span>, answer: "Dative Singular", note: <>Masculine or neuter.</> },
+        { q: <span className="normal-case">αἱ</span>, answer: "Nominative Plural", note: <>Feminine.</> },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · The article"
+      items={[
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "ἀδελφὸς", parsing: "Nom Sg Masc — ἀδελφός", syntax: "Subject", gloss: "brother" },
+          { w: "ἔχει", parsing: "Pres Act Ind 3 Sg — ἔχω", gloss: "has" },
+          { w: "τὸ", parsing: "Article — Acc Sg Neut", gloss: "the" },
+          { w: "εὐαγγέλιον.", parsing: "Acc Sg Neut — εὐαγγέλιον", syntax: "Direct Object", gloss: "gospel" },
+        ],
+          translation: "The brother has the gospel.",
+        },
+        { words: [
+          { w: "ἀκούομεν", parsing: "Pres Act Ind 1 Pl — ἀκούω", gloss: "we hear" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "φωνὴν", parsing: "Acc Sg Fem — φωνή", syntax: "Direct Object", gloss: "voice" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "of the" },
+          { w: "ἐκκλησίας.", parsing: "Gen Sg Fem — ἐκκλησία", syntax: "Genitive of Possession", gloss: "church" },
+        ],
+          translation: "We hear the voice of the church.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταὶ", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "γράφουσιν", parsing: "Pres Act Ind 3 Pl — γράφω", gloss: "write" },
+          { w: "τοὺς", parsing: "Article — Acc Pl Masc", gloss: "the" },
+          { w: "λόγους.", parsing: "Acc Pl Masc — λόγος", syntax: "Direct Object", gloss: "words" },
+        ],
+          translation: "The disciples write the words.",
+          note: "μαθητής looks 1st-declension feminine but the article οἱ proves it masculine — trust the article.",
+        },
+        { words: [
+          { w: "γινώσκετε", parsing: "Pres Act Ind 2 Pl — γινώσκω", gloss: "you know" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "δόξαν", parsing: "Acc Sg Fem — δόξα", syntax: "Direct Object", gloss: "glory" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+          { w: "κυρίου.", parsing: "Gen Sg Masc — κύριος", syntax: "Genitive of Possession", gloss: "Lord" },
+        ],
+          translation: "You (pl.) know the glory of the Lord.",
+        },
+        { words: [
+          { w: "λαμβάνετε", parsing: "Pres Act Ind 2 Pl — λαμβάνω", gloss: "you receive" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "ἄρτον", parsing: "Acc Sg Masc — ἄρτος", syntax: "Direct Object", gloss: "bread" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+          { w: "κυρίου.", parsing: "Gen Sg Masc — κύριος", syntax: "Genitive of Possession", gloss: "Lord" },
+        ],
+          translation: "You (pl.) receive the bread of the Lord.",
+        },
+        { words: [
+          { w: "πιστεύομεν", parsing: "Pres Act Ind 1 Pl — πιστεύω", gloss: "we believe" },
+          { w: "τῷ", parsing: "Article — Dat Sg Masc", gloss: "the" },
+          { w: "λόγῳ", parsing: "Dat Sg Masc — λόγος", gloss: "word" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "of the" },
+          { w: "κυρίου.", parsing: "Gen Sg Masc — κύριος", syntax: "Genitive of Possession", gloss: "Lord" },
+        ],
+          translation: "We believe the word of the Lord.",
+          note: "Again πιστεύω + dative. The two τοῦ/τῷ forms show why parsing the article matters.",
+        },
+      ]}
+    />
+
     <SectionHeading>The third family: 3rd declension</SectionHeading>
     <P>
       The 3rd declension looks irregular but is actually a very consistent family — the trick is
@@ -206,6 +376,78 @@ export const NOUNS_CONTENT = (
         note="→ neuter takes the same ending as Masc./Fem.  ·  Neuter Acc. = Neuter Nom."
       />
     </TableAside>
+
+    <DropdownPractice
+      title="Practice — parse the 3rd-declension form"
+      intro={<>Find the hidden stem first (drop ‑ος from the genitive), then pick the case and number.</>}
+      options={["Nominative Singular", "Genitive Singular", "Dative Singular", "Accusative Singular", "Nominative Plural", "Genitive Plural", "Dative Plural", "Accusative Plural", "Nom/Acc Plural (neuter)"]}
+      items={[
+        { q: <span className="normal-case">γυναῖκες</span>, answer: "Nominative Plural" },
+        { q: <span className="normal-case">ὀνόματα</span>, answer: "Nom/Acc Plural (neuter)" },
+        { q: <span className="normal-case">πίστεως</span>, answer: "Genitive Singular", note: <>πίστις, πίστεως — the vowel-stem family with the ‑εως genitive.</> },
+        { q: <span className="normal-case">βασιλεῖ</span>, answer: "Dative Singular" },
+        { q: <span className="normal-case">ἐλπίδα</span>, answer: "Accusative Singular" },
+        { q: <span className="normal-case">νύκτας</span>, answer: "Accusative Plural" },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 4 · 3rd declension"
+      items={[
+        { words: [
+          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+          { w: "θυγάτηρ", parsing: "Nom Sg Fem — θυγάτηρ (3rd decl.)", syntax: "Subject", gloss: "daughter" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "of the" },
+          { w: "μητρὸς", parsing: "Gen Sg Fem — μήτηρ (3rd decl.)", syntax: "Genitive of Relationship", gloss: "mother" },
+          { w: "ἔφυγεν.", parsing: "Aor Act Ind 3 Sg — φεύγω", gloss: "fled" },
+        ],
+          translation: "The mother's daughter fled.",
+        },
+        { words: [
+          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
+          { w: "πιστὸν", parsing: "Acc Sg Masc — πιστός (adjective)", gloss: "faithful" },
+          { w: "πατέρα.", parsing: "Acc Sg Masc — πατήρ (3rd decl.)", syntax: "Direct Object", gloss: "father" },
+        ],
+          translation: "We have a faithful father.",
+          note: "πιστόν (1st/2nd-declension adjective) agrees with πατέρα (3rd-declension noun) in case, number and gender — not in ending.",
+        },
+        { words: [
+          { w: "διὰ", parsing: "Preposition + genitive", gloss: "through" },
+          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "the" },
+          { w: "χάριτος", parsing: "Gen Sg Fem — χάρις (3rd decl.)", gloss: "grace" },
+          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
+          { w: "ἐλπίδα", parsing: "Acc Sg Fem — ἐλπίς (3rd decl.)", syntax: "Direct Object", gloss: "hope" },
+          { w: "ζωῆς.", parsing: "Gen Sg Fem — ζωή", syntax: "Genitive of Description/Quality", gloss: "of life" },
+        ],
+          translation: "Through grace we have hope of life.",
+        },
+        { words: [
+          { w: "πλείονες", parsing: "Nom Pl Fem — πλείων (comparative)", gloss: "more" },
+          { w: "γυναῖκες", parsing: "Nom Pl Fem — γυνή (3rd decl.)", syntax: "Subject", gloss: "women" },
+          { w: "ἔρχονται.", parsing: "Pres Mid Ind 3 Pl — ἔρχομαι", gloss: "are coming" },
+        ],
+          translation: "More women are coming.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "πατέρες", parsing: "Nom Pl Masc — πατήρ (3rd decl.)", syntax: "Subject", gloss: "fathers" },
+          { w: "ἔχουσιν", parsing: "Pres Act Ind 3 Pl — ἔχω", gloss: "have" },
+          { w: "ἐλπίδα.", parsing: "Acc Sg Fem — ἐλπίς (3rd decl.)", syntax: "Direct Object", gloss: "hope" },
+        ],
+          translation: "The fathers have hope.",
+        },
+        { words: [
+          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+          { w: "γυνὴ", parsing: "Nom Sg Fem — γυνή (3rd decl.)", syntax: "Subject", gloss: "woman" },
+          { w: "λαμβάνει", parsing: "Pres Act Ind 3 Sg — λαμβάνω", gloss: "receives" },
+          { w: "τὴν", parsing: "Article — Acc Sg Fem", gloss: "the" },
+          { w: "χάριν.", parsing: "Acc Sg Fem — χάρις (3rd decl.)", syntax: "Direct Object", gloss: "grace" },
+        ],
+          translation: "The woman receives the grace.",
+          note: "χάριν — an irregular accusative (not χάριτα). A handful of common nouns do this.",
+        },
+      ]}
+    />
 
     {/* ── 4 · How to translate ───────────────────────────── */}
     <SectionHeading>How to translate: the three-step method</SectionHeading>
@@ -291,6 +533,83 @@ export const NOUNS_CONTENT = (
       />
     </TableAside>
 
+    <DropdownPractice
+      title="Practice — which position?"
+      intro={<>Attributive describes inside the article–noun unit; predicate makes a statement; substantival stands alone as a noun.</>}
+      options={["Attributive — \"the good word\"", "Predicate — \"the word is good\"", "Substantival — \"the good (ones)\""]}
+      items={[
+        { q: <span className="normal-case">ὁ ἀγαθὸς λόγος</span>, answer: "Attributive — \"the good word\"" },
+        { q: <span className="normal-case">ὁ λόγος ἀγαθός</span>, answer: "Predicate — \"the word is good\"", note: <>Outside the article–noun unit — it asserts, with no "is" written.</> },
+        { q: <span className="normal-case">οἱ ἅγιοι</span>, answer: "Substantival — \"the good (ones)\"", note: <>Article + adjective, no noun: "the holy ones," "the saints."</> },
+        { q: <span className="normal-case">ὁ λόγος ὁ καλός</span>, answer: "Attributive — \"the good word\"", note: <>The second attributive position — the repeated article keeps it inside the unit.</> },
+        { q: <span className="normal-case">ἁγία ἡ ἐκκλησία</span>, answer: "Predicate — \"the word is good\"" },
+        { q: <span className="normal-case">τὰ ἀγαθά</span>, answer: "Substantival — \"the good (ones)\"", note: <>"The good things."</> },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · Adjectives"
+      items={[
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "ἀγαθὸς", parsing: "Nom Sg Masc — ἀγαθός (attributive)", gloss: "good" },
+          { w: "ἄνθρωπος", parsing: "Nom Sg Masc — ἄνθρωπος", syntax: "Subject", gloss: "man" },
+          { w: "ἔχει", parsing: "Pres Act Ind 3 Sg — ἔχω", gloss: "has" },
+          { w: "καλὴν", parsing: "Acc Sg Fem — καλός (attributive)", gloss: "good" },
+          { w: "καρδίαν.", parsing: "Acc Sg Fem — καρδία", syntax: "Direct Object", gloss: "heart" },
+        ],
+          translation: "The good man has a good heart.",
+        },
+        { words: [
+          { w: "πιστὸς", parsing: "Nom Sg Masc — πιστός (predicate)", syntax: "Predicate Nominative", gloss: "faithful" },
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "κύριος.", parsing: "Nom Sg Masc — κύριος", syntax: "Subject", gloss: "Lord" },
+        ],
+          translation: "The Lord is faithful.",
+          note: "2 Thessalonians 3:3 — predicate position, with no εἰμί written.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "ἅγιοι", parsing: "Nom Pl Masc — ἅγιος (substantival)", syntax: "Subject", gloss: "saints" },
+          { w: "ἀκούουσιν", parsing: "Pres Act Ind 3 Pl — ἀκούω", gloss: "hear" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "λόγον.", parsing: "Acc Sg Masc — λόγος", syntax: "Direct Object", gloss: "word" },
+        ],
+          translation: "The saints hear the word.",
+          note: "Substantival: article + adjective with no noun = \"the holy ones.\"",
+        },
+        { words: [
+          { w: "νεκρὰ", parsing: "Nom Pl Neut — νεκρός (predicate)", syntax: "Predicate Nominative", gloss: "dead" },
+          { w: "τὰ", parsing: "Article — Nom Pl Neut", gloss: "the" },
+          { w: "ἔργα.", parsing: "Nom Pl Neut — ἔργον", syntax: "Subject", gloss: "works" },
+        ],
+          translation: "The works are dead.",
+          note: "Echoes Hebrews — νεκρὰ ἔργα, \"dead works.\"",
+        },
+        { words: [
+          { w: "ὁ", parsing: "Article — Nom Sg Masc", gloss: "the" },
+          { w: "θεὸς", parsing: "Nom Sg Masc — θεός", syntax: "Subject", gloss: "God" },
+          { w: "λέγει", parsing: "Pres Act Ind 3 Sg — λέγω", gloss: "speaks" },
+          { w: "καλοὺς", parsing: "Acc Pl Masc — καλός (attributive)", gloss: "good" },
+          { w: "λόγους", parsing: "Acc Pl Masc — λόγος", syntax: "Direct Object", gloss: "words" },
+          { w: "τοῖς", parsing: "Article — Dat Pl Masc", gloss: "to the" },
+          { w: "πιστοῖς.", parsing: "Dat Pl Masc — πιστός (substantival)", syntax: "Dative of Indirect Object", gloss: "faithful" },
+        ],
+          translation: "God speaks good words to the faithful.",
+          note: "τοῖς πιστοῖς is substantival — \"to the faithful (ones).\"",
+        },
+        { words: [
+          { w: "ἐσχάτη", parsing: "Nom Sg Fem — ἔσχατος (predicate)", syntax: "Predicate Nominative", gloss: "last" },
+          { w: "ἐστὶν", parsing: "Pres Act Ind 3 Sg — εἰμί", gloss: "is" },
+          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
+          { w: "ὥρα.", parsing: "Nom Sg Fem — ὥρα", syntax: "Subject", gloss: "hour" },
+        ],
+          translation: "It is the last hour.",
+          note: "1 John 2:18 — ἐσχάτη ὥρα ἐστίν.",
+        },
+      ]}
+    />
+
     {/* ── 6 · Watch out ──────────────────────────────────── */}
     <SectionHeading>Watch out</SectionHeading>
     <InfoBox>
@@ -374,45 +693,6 @@ export const NOUNS_CONTENT = (
     />
 
     {/* ── 9 · See it in the NT ───────────────────────────── */}
-    <ClassSentences
-      lesson="Lessons 3–4 · Declensions and adjectives"
-      items={[
-        { words: [
-          { w: "ἡ", parsing: "Article — Nom Sg Fem", gloss: "the" },
-          { w: "θυγάτηρ", parsing: "Nom Sg Fem — θυγάτηρ (3rd decl.)", syntax: "Subject", gloss: "daughter" },
-          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "of the" },
-          { w: "μητρὸς", parsing: "Gen Sg Fem — μήτηρ (3rd decl.)", syntax: "Genitive of Relationship", gloss: "mother" },
-          { w: "ἔφυγεν.", parsing: "Aor Act Ind 3 Sg — φεύγω", gloss: "fled" },
-        ],
-          translation: "The mother's daughter fled.",
-        },
-        { words: [
-          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
-          { w: "πιστὸν", parsing: "Acc Sg Masc — πιστός (adjective)", gloss: "faithful" },
-          { w: "πατέρα.", parsing: "Acc Sg Masc — πατήρ (3rd decl.)", syntax: "Direct Object", gloss: "father" },
-        ],
-          translation: "We have a faithful father.",
-          note: "πιστόν (1st/2nd-declension adjective) agrees with πατέρα (3rd-declension noun) in case, number and gender — not in ending.",
-        },
-        { words: [
-          { w: "διὰ", parsing: "Preposition + genitive", gloss: "through" },
-          { w: "τῆς", parsing: "Article — Gen Sg Fem", gloss: "the" },
-          { w: "χάριτος", parsing: "Gen Sg Fem — χάρις (3rd decl.)", gloss: "grace" },
-          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
-          { w: "ἐλπίδα", parsing: "Acc Sg Fem — ἐλπίς (3rd decl.)", syntax: "Direct Object", gloss: "hope" },
-          { w: "ζωῆς.", parsing: "Gen Sg Fem — ζωή", syntax: "Genitive of Description/Quality", gloss: "of life" },
-        ],
-          translation: "Through grace we have hope of life.",
-        },
-        { words: [
-          { w: "πλείονες", parsing: "Nom Pl Fem — πλείων (comparative)", gloss: "more" },
-          { w: "γυναῖκες", parsing: "Nom Pl Fem — γυνή (3rd decl.)", syntax: "Subject", gloss: "women" },
-          { w: "ἔρχονται.", parsing: "Pres Mid Ind 3 Pl — ἔρχομαι", gloss: "are coming" },
-        ],
-          translation: "More women are coming.",
-        },
-      ]}
-    />
 
     <LiveExamples
       intro={<>Don't take the textbook's word for it — these links search the tagged Greek New Testament itself.</>}

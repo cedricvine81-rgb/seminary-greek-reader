@@ -337,6 +337,72 @@ export function GuidedExample({ title = 'Together: work it through', sentence, s
 }
 
 /**
+ * A practice block where each item is answered from a dropdown (e.g. parse drills:
+ * pick the case + number). Answering gives immediate right/wrong feedback and, when
+ * wrong, shows the correct answer. `options` is the shared dropdown list; an item can
+ * override it with its own.
+ */
+export function DropdownPractice({ title = 'Practice', intro, options, items }: {
+  title?: string
+  intro?: React.ReactNode
+  options: string[]
+  items: { q: React.ReactNode; answer: string; options?: string[]; note?: React.ReactNode }[]
+}) {
+  const [chosen, setChosen] = useState<Record<number, string>>({})
+  const answered = Object.keys(chosen).filter(k => chosen[Number(k)] !== '').length
+  const right = items.filter((it, i) => chosen[i] === it.answer).length
+  return (
+    <div className="my-5 max-w-3xl rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</p>
+        {answered > 0 && (
+          <span className="text-xs tabular-nums text-gray-400">{right}/{answered} correct</span>
+        )}
+      </div>
+      {intro && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
+      <ol className="space-y-3">
+        {items.map((it, i) => {
+          const picked = chosen[i] ?? ''
+          const isRight = picked !== '' && picked === it.answer
+          const isWrong = picked !== '' && picked !== it.answer
+          return (
+            <li key={i} className="text-sm text-gray-800">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                <span className="min-w-[3.5rem]">{i + 1}. {it.q}</span>
+                <select
+                  value={picked}
+                  onChange={e => setChosen(prev => ({ ...prev, [i]: e.target.value }))}
+                  className={clsx(
+                    'rounded-lg border bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500',
+                    isRight ? 'border-green-400' : isWrong ? 'border-red-400' : 'border-gray-300'
+                  )}
+                >
+                  <option value="">Choose…</option>
+                  {(it.options ?? options).map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+                {isRight && <span className="text-xs font-medium text-green-700">✓ correct</span>}
+                {isWrong && <span className="text-xs font-medium text-red-700">✗ — {it.answer}</span>}
+              </div>
+              {isWrong && it.note && (
+                <p className="mt-1 border-l-2 border-brand-200 pl-3 text-xs text-gray-600">{it.note}</p>
+              )}
+            </li>
+          )
+        })}
+      </ol>
+      {answered > 0 && (
+        <button
+          onClick={() => setChosen({})}
+          className="mt-3 text-xs text-gray-400 hover:text-gray-600"
+        >
+          Start over
+        </button>
+      )}
+    </div>
+  )
+}
+
+/**
  * Classroom translation sentences — step ④ "you do" of the teaching cycle,
  * mirrored 1:1 from the lesson PowerPoint decks (deck ⇄ page parity). Each
  * sentence can be opened in the Translation Workbench side panel, where the

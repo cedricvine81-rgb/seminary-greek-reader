@@ -7,7 +7,7 @@
 import {
   MorphTable, TableAside, Gk, Ex, AsideLabel,
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
-  ClassSentences,
+  ClassSentences, DropdownPractice,
 } from '../shared'
 
 export const PREPOSITIONS_CONTENT = (
@@ -62,6 +62,83 @@ export const PREPOSITIONS_CONTENT = (
         ]}
       />
     </TableAside>
+
+    <DropdownPractice
+      title="Practice — which case follows?"
+      intro={<>The one-case prepositions are the pure triangle: away = genitive, rest = dative, toward = accusative.</>}
+      options={["Genitive", "Dative", "Accusative"]}
+      items={[
+        { q: <><span className="normal-case">ἀπό</span> — away from</>, answer: "Genitive" },
+        { q: <><span className="normal-case">ἐν</span> — in</>, answer: "Dative" },
+        { q: <><span className="normal-case">εἰς</span> — into</>, answer: "Accusative" },
+        { q: <><span className="normal-case">ἐκ</span> — out of</>, answer: "Genitive" },
+        { q: <><span className="normal-case">πρός</span> — toward</>, answer: "Accusative" },
+        { q: <><span className="normal-case">σύν</span> — with</>, answer: "Dative" },
+      ]}
+    />
+
+    <ClassSentences
+      lesson="Lesson 3 · One-case prepositions"
+      items={[
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "μαθηταί", parsing: "Nom Pl Masc — μαθητής", syntax: "Subject", gloss: "disciples" },
+          { w: "εἰσιν", parsing: "Pres Act Ind 3 Pl — εἰμί", gloss: "are" },
+          { w: "ἐν", parsing: "Preposition + dative", gloss: "in" },
+          { w: "τῷ", parsing: "Article — Dat Sg Neut", gloss: "the" },
+          { w: "ἱερῷ.", parsing: "Dat Sg Neut — ἱερόν", gloss: "temple" },
+        ],
+          translation: "The disciples are in the temple.",
+        },
+        { words: [
+          { w: "πιστεύομεν", parsing: "Pres Act Ind 1 Pl — πιστεύω", gloss: "we believe" },
+          { w: "εἰς", parsing: "Preposition + accusative", gloss: "in/into" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "κύριον.", parsing: "Acc Sg Masc — κύριος", gloss: "Lord" },
+        ],
+          translation: "We believe in the Lord.",
+          note: "πιστεύω εἰς + accusative — the NT idiom for trusting into someone.",
+        },
+        { words: [
+          { w: "ἀκούομεν", parsing: "Pres Act Ind 1 Pl — ἀκούω", gloss: "we hear" },
+          { w: "φωνὴν", parsing: "Acc Sg Fem — φωνή", syntax: "Direct Object", gloss: "a voice" },
+          { w: "ἐκ", parsing: "Preposition + genitive", gloss: "out of" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "the" },
+          { w: "οὐρανοῦ.", parsing: "Gen Sg Masc — οὐρανός", gloss: "heaven" },
+        ],
+          translation: "We hear a voice from heaven.",
+          note: "Echoes Mark 1:11 — φωνὴ ἐκ τῶν οὐρανῶν.",
+        },
+        { words: [
+          { w: "ἔχομεν", parsing: "Pres Act Ind 1 Pl — ἔχω", gloss: "we have" },
+          { w: "εἰρήνην", parsing: "Acc Sg Fem — εἰρήνη", syntax: "Direct Object", gloss: "peace" },
+          { w: "ἀπὸ", parsing: "Preposition + genitive", gloss: "from" },
+          { w: "τοῦ", parsing: "Article — Gen Sg Masc", gloss: "the" },
+          { w: "θεοῦ.", parsing: "Gen Sg Masc — θεός", gloss: "God" },
+        ],
+          translation: "We have peace from God.",
+          note: "Romans 1:7 — εἰρήνη ἀπὸ θεοῦ πατρὸς ἡμῶν.",
+        },
+        { words: [
+          { w: "οἱ", parsing: "Article — Nom Pl Masc", gloss: "the" },
+          { w: "ἀδελφοί", parsing: "Nom Pl Masc — ἀδελφός", syntax: "Subject", gloss: "brothers" },
+          { w: "εἰσιν", parsing: "Pres Act Ind 3 Pl — εἰμί", gloss: "are" },
+          { w: "σὺν", parsing: "Preposition + dative", gloss: "with" },
+          { w: "τοῖς", parsing: "Article — Dat Pl Masc", gloss: "the" },
+          { w: "μαθηταῖς.", parsing: "Dat Pl Masc — μαθητής", gloss: "disciples" },
+        ],
+          translation: "The brothers are with the disciples.",
+        },
+        { words: [
+          { w: "λέγομεν", parsing: "Pres Act Ind 1 Pl — λέγω", gloss: "we speak" },
+          { w: "πρὸς", parsing: "Preposition + accusative", gloss: "to/toward" },
+          { w: "τὸν", parsing: "Article — Acc Sg Masc", gloss: "the" },
+          { w: "θεόν.", parsing: "Acc Sg Masc — θεός", gloss: "God" },
+        ],
+          translation: "We speak to God.",
+        },
+      ]}
+    />
 
     {/* ── 3 · Two-case ───────────────────────────────────── */}
     <SectionHeading>Two cases, two meanings</SectionHeading>
