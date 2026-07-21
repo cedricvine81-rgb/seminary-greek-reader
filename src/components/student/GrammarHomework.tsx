@@ -300,16 +300,34 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
           </div>
 
           <div className="flex-1 overflow-y-auto px-4 py-4 space-y-5">
-            <div className="flex flex-wrap gap-1.5">
+            {/* Interlinear chips (like the Exegesis syntax page): parsing above each Greek
+                word, syntax + translation below — the analysis stays in view while working. */}
+            <div className="flex flex-wrap items-end gap-1.5">
               {q.words.map((w, i) => {
-                const filled = entry.words[i].parsing.trim() || entry.words[i].syntax || entry.words[i].gloss.trim()
+                const we = entry.words[i]
+                const filled = we.parsing.trim() || we.syntax || we.gloss.trim()
                 return (
                   <button key={i} type="button" onClick={() => setWordIdx(i)}
-                    className={clsx('font-reading rounded-lg border px-2.5 py-1.5 text-lg leading-none transition-colors',
-                      i === wordIdx ? 'border-brand-600 bg-brand-600 text-white'
-                        : filled ? 'border-green-300 bg-green-50 text-gray-800'
-                        : 'border-gray-200 bg-surface text-gray-800 hover:border-brand-300')}>
-                    {w.w}
+                    className={clsx('flex flex-col items-center rounded-lg border px-2.5 py-1.5 transition-colors',
+                      i === wordIdx ? 'border-brand-600 bg-brand-600'
+                        : filled ? 'border-green-300 bg-green-50'
+                        : 'border-gray-200 bg-surface hover:border-brand-300')}>
+                    <span className={clsx('font-sans text-[10px] leading-tight whitespace-nowrap',
+                      i === wordIdx ? 'text-brand-100' : 'text-gray-500')}>
+                      {we.parsing || ' '}
+                    </span>
+                    <span className={clsx('font-reading text-lg leading-tight',
+                      i === wordIdx ? 'text-white' : 'text-gray-800')}>
+                      {w.w}
+                    </span>
+                    <span className={clsx('font-sans text-[10px] leading-tight whitespace-nowrap',
+                      i === wordIdx ? 'text-brand-100' : 'text-gray-500')}>
+                      {we.syntax || ' '}
+                    </span>
+                    <span className={clsx('font-sans text-[10px] italic leading-tight whitespace-nowrap',
+                      i === wordIdx ? 'text-brand-50' : 'text-brand-700')}>
+                      {we.gloss || ' '}
+                    </span>
                   </button>
                 )
               })}

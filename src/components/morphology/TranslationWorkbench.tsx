@@ -125,27 +125,48 @@ export function TranslationWorkbench() {
             Click each word, enter its parsing, syntax and translation, then check your answer.
             <span className="ml-1 text-gray-400">{doneCount}/{sentence.words.length} checked</span>
           </p>
-          <div className="flex flex-wrap gap-1.5">
-            {sentence.words.map((w, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setSelected(i)}
-                className={clsx(
-                  'font-reading rounded-lg border px-2.5 py-1.5 text-lg leading-none transition-colors',
-                  i === selected
-                    ? 'border-brand-600 bg-brand-600 text-white'
-                    : entries[i]?.checked
-                      ? 'border-green-300 bg-green-50 text-gray-800'
-                      : 'border-gray-200 bg-surface text-gray-800 hover:border-brand-300'
-                )}
-              >
-                {w.w}
-                {entries[i]?.checked && (
-                  <Check size={11} className={clsx('ml-1 inline-block', i === selected ? 'text-white' : 'text-green-600')} />
-                )}
-              </button>
-            ))}
+          {/* Interlinear chips (like the Exegesis syntax page): the student's parsing shows
+              ABOVE each Greek word, their syntax + translation BELOW it — the whole analysis
+              stays in view while they work through the sentence. */}
+          <div className="flex flex-wrap items-end gap-1.5">
+            {sentence.words.map((w, i) => {
+              const e = entries[i]
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setSelected(i)}
+                  className={clsx(
+                    'flex flex-col items-center rounded-lg border px-2.5 py-1.5 transition-colors',
+                    i === selected
+                      ? 'border-brand-600 bg-brand-600'
+                      : e?.checked
+                        ? 'border-green-300 bg-green-50'
+                        : 'border-gray-200 bg-surface hover:border-brand-300'
+                  )}
+                >
+                  <span className={clsx('font-sans text-[10px] leading-tight whitespace-nowrap',
+                    i === selected ? 'text-brand-100' : 'text-gray-500')}>
+                    {e?.parsing || ' '}
+                  </span>
+                  <span className={clsx('font-reading text-lg leading-tight',
+                    i === selected ? 'text-white' : 'text-gray-800')}>
+                    {w.w}
+                    {e?.checked && (
+                      <Check size={11} className={clsx('ml-1 inline-block', i === selected ? 'text-white' : 'text-green-600')} />
+                    )}
+                  </span>
+                  <span className={clsx('font-sans text-[10px] leading-tight whitespace-nowrap',
+                    i === selected ? 'text-brand-100' : 'text-gray-500')}>
+                    {e?.syntax || ' '}
+                  </span>
+                  <span className={clsx('font-sans text-[10px] italic leading-tight whitespace-nowrap',
+                    i === selected ? 'text-brand-50' : 'text-brand-700')}>
+                    {e?.gloss || ' '}
+                  </span>
+                </button>
+              )
+            })}
           </div>
         </div>
 

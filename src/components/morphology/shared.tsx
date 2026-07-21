@@ -9,7 +9,7 @@
    (Term glossary tooltips, Practice exercises, LiveExamples corpus links).
 ───────────────────────────────────────────── */
 
-import { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext, useRef, createContext } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
@@ -396,32 +396,103 @@ export function DropdownPractice({ title = 'Practice', intro, options, items }: 
   items: { q: React.ReactNode; answer: string; options?: string[]; note?: React.ReactNode }[]
 }) {
   const [chosen, setChosen] = useState<Record<number, string>>({})
+  // Quiz-from-memory mode (for in-class use): "Quiz me" BLANKS the table this practice
+  // drills (the nearest preceding table on the page), answers give no feedback until
+  // Submit, and Submit restores the table and marks every item right/wrong — so the
+  // instructor can walk through why each answer was right or wrong.
+  const [mode, setMode] = useState<'open' | 'quiz' | 'review'>('open')
+  const rootRef = useRef<HTMLDivElement | null>(null)
+  const blanked = useRef<HTMLElement[]>([])
+
+  // Find the nearest preceding element (walking up through ancestors) that contains
+  // a table, and hide its table bodies — the frame stays, the contents go blank.
+  function blankTable() {
+    let node: HTMLElement | null = rootRef.current
+    outer: while (node) {
+      let sib = node.previousElementSibling as HTMLElement | null
+      while (sib) {
+        const tables: HTMLTableElement[] = sib.tagName === 'TABLE'
+          ? [sib as HTMLTableElement]
+          : Array.from(sib.querySelectorAll('table'))
+        if (tables.length > 0) {
+          for (const t of tables) {
+            for (const body of Array.from(t.tBodies)) {
+              body.style.visibility = 'hidden'
+              blanked.current.push(body)
+            }
+          }
+          break outer
+        }
+        sib = sib.previousElementSibling as HTMLElement | null
+      }
+      node = node.parentElement
+    }
+  }
+  function unblankTable() {
+    for (const el of blanked.current) el.style.visibility = ''
+    blanked.current = []
+  }
+  // Never leave a table blanked if the block unmounts (e.g. switching chapter tabs).
+  useEffect(() => () => unblankTable(), [])
+
+  function startQuiz() {
+    setChosen({})
+    setMode('quiz')
+    blankTable()
+  }
+  function submitQuiz() {
+    setMode('review')
+    unblankTable()
+  }
+  function endQuiz() {
+    setChosen({})
+    setMode('open')
+    unblankTable()
+  }
+
   const answered = Object.keys(chosen).filter(k => chosen[Number(k)] !== '').length
   const right = items.filter((it, i) => chosen[i] === it.answer).length
+  // Feedback (colors, ✓/✗, running score) is hidden while a quiz is in progress.
+  const showFeedback = mode !== 'quiz'
+
   return (
-    <div className="my-5 max-w-3xl rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
+    <div ref={rootRef} className={clsx('my-5 max-w-3xl rounded-xl border px-4 py-3.5',
+      mode === 'quiz' ? 'border-brand-300 bg-brand-50/50' : 'border-gray-200 bg-gray-50')}>
       <div className="mb-2 flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{title}</p>
-        {answered > 0 && (
-          <span className="text-xs tabular-nums text-gray-400">{right}/{answered} correct</span>
-        )}
+        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+          {title}
+          {mode === 'quiz' && <span className="ml-2 normal-case font-medium text-brand-700">— from memory (table hidden)</span>}
+          {mode === 'review' && <span className="ml-2 normal-case font-medium text-brand-700">— results</span>}
+        </p>
+        {mode === 'review'
+          ? <span className="text-xs font-medium tabular-nums text-gray-600">{right}/{items.length} correct</span>
+          : mode === 'open' && answered > 0 && (
+            <span className="text-xs tabular-nums text-gray-400">{right}/{answered} correct</span>
+          )}
       </div>
-      {intro && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
+      {intro && mode === 'open' && <div className="text-sm text-gray-600 mb-3">{intro}</div>}
+      {mode === 'quiz' && (
+        <p className="mb-3 text-sm text-brand-800">
+          The table is hidden — answer every item from memory, then submit to see how you did.
+        </p>
+      )}
       <ol className="space-y-3">
         {items.map((it, i) => {
           const picked = chosen[i] ?? ''
-          const isRight = picked !== '' && picked === it.answer
-          const isWrong = picked !== '' && picked !== it.answer
+          const isRight = showFeedback && picked !== '' && picked === it.answer
+          const isWrong = showFeedback && picked !== '' && picked !== it.answer
+          const missed = mode === 'review' && picked === ''
           return (
             <li key={i} className="text-sm text-gray-800">
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
                 <span className="min-w-[3.5rem]">{i + 1}. {it.q}</span>
                 <select
                   value={picked}
+                  disabled={mode === 'review'}
                   onChange={e => setChosen(prev => ({ ...prev, [i]: e.target.value }))}
                   className={clsx(
-                    'rounded-lg border bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500',
-                    isRight ? 'border-green-400' : isWrong ? 'border-red-400' : 'border-gray-300'
+                    'rounded-lg border bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-80',
+                    isRight ? 'border-green-400' : (isWrong || missed) ? 'border-red-400' : 'border-gray-300'
                   )}
                 >
                   <option value="">Choose…</option>
@@ -429,22 +500,59 @@ export function DropdownPractice({ title = 'Practice', intro, options, items }: 
                 </select>
                 {isRight && <span className="text-xs font-medium text-green-700">✓ correct</span>}
                 {isWrong && <span className="text-xs font-medium text-red-700">✗ — {it.answer}</span>}
+                {missed && <span className="text-xs font-medium text-red-700">not answered — {it.answer}</span>}
               </div>
-              {isWrong && it.note && (
+              {(isWrong || missed) && it.note && (
                 <p className="mt-1 border-l-2 border-brand-200 pl-3 text-xs text-gray-600">{it.note}</p>
               )}
             </li>
           )
         })}
       </ol>
-      {answered > 0 && (
-        <button
-          onClick={() => setChosen({})}
-          className="mt-3 text-xs text-gray-400 hover:text-gray-600"
-        >
-          Start over
-        </button>
-      )}
+      <div className="mt-3 flex flex-wrap items-center gap-3">
+        {mode === 'open' && (
+          <button
+            type="button"
+            onClick={startQuiz}
+            className="rounded-lg border border-brand-300 bg-surface px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50"
+          >
+            Quiz me — hide the table
+          </button>
+        )}
+        {mode === 'quiz' && (
+          <>
+            <button
+              type="button"
+              onClick={submitQuiz}
+              className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700"
+            >
+              Submit answers{answered < items.length ? ` (${items.length - answered} left)` : ''}
+            </button>
+            <button type="button" onClick={endQuiz} className="text-xs text-gray-400 hover:text-gray-600">
+              Cancel
+            </button>
+          </>
+        )}
+        {mode === 'review' && (
+          <>
+            <button
+              type="button"
+              onClick={startQuiz}
+              className="rounded-lg border border-brand-300 bg-surface px-3 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-50"
+            >
+              Try again
+            </button>
+            <button type="button" onClick={endQuiz} className="text-xs text-gray-400 hover:text-gray-600">
+              Done
+            </button>
+          </>
+        )}
+        {mode === 'open' && answered > 0 && (
+          <button type="button" onClick={() => setChosen({})} className="text-xs text-gray-400 hover:text-gray-600">
+            Start over
+          </button>
+        )}
+      </div>
     </div>
   )
 }
