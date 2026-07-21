@@ -72,6 +72,11 @@ export async function POST(req: NextRequest) {
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
     return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
   }
+  // Grammar homework: the due date is the Round 1 cut-off, so a correction
+  // round must end after it.
+  if (hwSet && round2Deadline && dueDate && new Date(round2Deadline) <= new Date(dueDate)) {
+    return NextResponse.json({ error: 'The correction round must end after the due date.' }, { status: 400 })
+  }
 
   const assignment = await prisma.assignment.create({
     data: {

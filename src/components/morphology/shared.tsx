@@ -14,6 +14,7 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
+import { openMasterSearch } from '@/lib/master-search-bus'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -510,11 +511,11 @@ export function ClassSentences({ lesson, intro, items }: {
  *
  * Renders nothing when signed out or when the chapter has no sets.
  */
-interface HwStudentEntry { assignmentId: string; title: string; dueDate: string; submitted: boolean }
+interface HwStudentEntry { assignmentId: string; title: string; dueDate: string; round2Deadline: string | null; submitted: boolean }
 interface HwInstructorData {
   sets: { id: string; title: string; sentenceCount: number }[]
   courses: { id: string; name: string; level: string }[]
-  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null }[]
+  assignments: { setId: string; courseId: string; assignmentId: string; dueDate: string; isPublished: boolean; allowLate: boolean; lateDaysLimit: number | null; round2Deadline: string | null }[]
 }
 
 // ISO instant → a datetime-local input value ("YYYY-MM-DDTHH:mm") in local time.
@@ -536,6 +537,8 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
   const [selected, setSelected] = useState<Record<string, string>>({}) // setId -> chosen courseId
   const [late, setLate] = useState<Record<string, boolean>>({})        // `${setId}:${courseId}` -> allow late
   const [lateDays, setLateDays] = useState<Record<string, number>>({}) // `${setId}:${courseId}` -> days (0 = no limit)
+  const [r2, setR2] = useState<Record<string, boolean>>({})            // `${setId}:${courseId}` -> correction round on
+  const [r2Dates, setR2Dates] = useState<Record<string, string>>({})   // `${setId}:${courseId}` -> round 2 datetime-local
   const [busy, setBusy] = useState<string | null>(null)
   const [error, setError] = useState('')
 
@@ -565,6 +568,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
               </Link>
               <span className="text-xs text-amber-700">
                 due {fmtDeadline(e.dueDate)}
+                {e.round2Deadline && ` · corrections until ${fmtDeadline(e.round2Deadline)}`}
                 {e.submitted && ' · submitted ✓'}
               </span>
             </li>
@@ -598,8 +602,10 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
       </p>
       <p className="text-xs text-amber-700 mb-3">
         Activate a set for a class and it becomes a graded assignment on that course&rsquo;s dashboard
-        (and in the gradebook). Students get a single submission; tick &ldquo;Allow late&rdquo; to accept
-        submissions after the deadline. Grade it from the assignment&rsquo;s Grade page.
+        (and in the gradebook). Students get a single Round&nbsp;1 submission; tick &ldquo;Correction
+        round&rdquo; to open a Round&nbsp;2 window after the deadline where they revise their own work
+        (in class) before you grade. Tick &ldquo;Allow late&rdquo; to accept Round&nbsp;1 after the
+        deadline. Grade it from the assignment&rsquo;s Grade page — both rounds are shown side by side.
       </p>
       <div className="space-y-3">
         {data.sets.map(set => {
@@ -610,13 +616,20 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           const dtVal = dates[key] ?? (existing ? toLocalInput(existing.dueDate) : '')
           const lateVal = late[key] ?? (existing ? existing.allowLate : false)
           const daysVal = lateDays[key] ?? (existing ? (existing.lateDaysLimit ?? 0) : 0)
+          const r2On = r2[key] ?? (existing ? !!existing.round2Deadline : false)
+          const r2Val = r2Dates[key] ?? (existing?.round2Deadline ? toLocalInput(existing.round2Deadline) : '')
+          // Round 2 must end after Round 1 (the due date).
+          const r2Invalid = r2On && !!r2Val && !!dtVal && new Date(r2Val) <= new Date(dtVal)
           const fieldCls = 'rounded-lg border border-gray-300 bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400'
           // Late policy sent to the API: null days = accept indefinitely.
           const latePayload = { allowLate: lateVal, lateDaysLimit: lateVal && daysVal > 0 ? daysVal : null }
+          const r2Payload = { round2Deadline: r2On && r2Val ? new Date(r2Val).toISOString() : null }
           const changed = !!existing && (
             (!!dtVal && dtVal !== toLocalInput(existing.dueDate)) ||
             lateVal !== existing.allowLate ||
-            (lateVal && (daysVal || 0) !== (existing.lateDaysLimit ?? 0))
+            (lateVal && (daysVal || 0) !== (existing.lateDaysLimit ?? 0)) ||
+            r2On !== !!existing.round2Deadline ||
+            (r2On && !!r2Val && r2Val !== (existing.round2Deadline ? toLocalInput(existing.round2Deadline) : ''))
           )
           return (
             <div key={set.id} className="rounded-lg border border-amber-200 bg-surface p-3">
@@ -646,6 +659,26 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                 <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600">
                   <input
                     type="checkbox"
+                    checked={r2On}
+                    onChange={e => setR2(prev => ({ ...prev, [key]: e.target.checked }))}
+                    className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  Correction round
+                </label>
+                {r2On && (
+                  <label className="flex flex-col gap-1 text-xs font-medium text-gray-500">
+                    Corrections end — date &amp; time
+                    <input
+                      type="datetime-local"
+                      value={r2Val}
+                      onChange={e => setR2Dates(prev => ({ ...prev, [key]: e.target.value }))}
+                      className={clsx(fieldCls, r2Invalid && 'border-red-400 ring-1 ring-red-300')}
+                    />
+                  </label>
+                )}
+                <label className="flex items-center gap-1.5 pb-2 text-xs font-medium text-gray-600">
+                  <input
+                    type="checkbox"
                     checked={lateVal}
                     onChange={e => setLate(prev => ({ ...prev, [key]: e.target.checked }))}
                     className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
@@ -668,15 +701,16 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                   {!existing ? (
                     <button
                       type="button"
-                      disabled={busy === key || !dtVal}
+                      disabled={busy === key || !dtVal || r2Invalid || (r2On && !r2Val)}
                       onClick={() => act(key, () => fetch('/api/assignments', {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                           courseId, title: set.title, type: 'TRANSLATION_EXERCISE',
                           weekNumber: 1, dueDate: new Date(dtVal).toISOString(), level: course.level,
                           homeworkSet: set.id, isPublished: true,
-                          maxRetakes: 0,   // one submission — no resubmission
+                          maxRetakes: 0,   // one Round 1 submission; corrections go through their own endpoint
                           ...latePayload,
+                          ...r2Payload,
                         }),
                       }))}
                       className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
@@ -688,16 +722,16 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                       <span className={clsx('rounded-md px-2 py-1 text-xs font-medium',
                         existing.isPublished ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500')}>
                         {existing.isPublished
-                          ? `active · due ${fmtDeadline(existing.dueDate)}${existing.allowLate ? ` · late ${existing.lateDaysLimit ? `+${existing.lateDaysLimit}d` : 'open'}` : ''}`
+                          ? `active · due ${fmtDeadline(existing.dueDate)}${existing.round2Deadline ? ` · corrections until ${fmtDeadline(existing.round2Deadline)}` : ''}${existing.allowLate ? ` · late ${existing.lateDaysLimit ? `+${existing.lateDaysLimit}d` : 'open'}` : ''}`
                           : 'deactivated'}
                       </span>
                       {existing.isPublished && changed && (
                         <button
                           type="button"
-                          disabled={busy === key}
+                          disabled={busy === key || r2Invalid || (r2On && !r2Val)}
                           onClick={() => act(key, () => fetch(`/api/assignments/${existing.assignmentId}`, {
                             method: 'PATCH', headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString(), ...latePayload }),
+                            body: JSON.stringify({ dueDate: new Date(dtVal).toISOString(), ...latePayload, ...r2Payload }),
                           }))}
                           className="rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50"
                         >
@@ -744,19 +778,23 @@ export function LiveExamples({ intro, links }: {
       <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1.5">See it in the New Testament</p>
       {intro && <div className="text-sm text-gray-600 mb-2">{intro}</div>}
       <ul className="space-y-1.5">
-        {links.map((l, i) => {
-          const p = new URLSearchParams({ in: 'morph:GNT' })
-          if (l.features?.length) p.set('features', l.features.join(','))
-          if (l.lemma) p.set('q', l.lemma)
-          p.set('from', '/grammar')
-          return (
-            <li key={i}>
-              <Link href={`/search?${p.toString()}`} className="text-sm text-brand-600 hover:text-brand-700 hover:underline">
-                {l.label} →
-              </Link>
-            </li>
-          )
-        })}
+        {links.map((l, i) => (
+          <li key={i}>
+            {/* Opens the morphology search in the SIDE PANEL (split view, like Reader
+                searches) — the Grammar page stays visible; matches highlight in red. */}
+            <button
+              type="button"
+              onClick={() => openMasterSearch({
+                query: l.lemma ?? '',
+                scope: 'morph:GNT',
+                features: l.features?.join(','),
+              })}
+              className="text-left text-sm text-brand-600 hover:text-brand-700 hover:underline"
+            >
+              {l.label} →
+            </button>
+          </li>
+        ))}
       </ul>
     </div>
   )

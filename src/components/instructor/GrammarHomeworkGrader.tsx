@@ -10,6 +10,11 @@ import type { HomeworkWord } from '@/data/grammar-homework'
 // Grading view for grammar-homework Translation Exercises: each student's
 // submitted word-by-word answers side by side with the model, with a points
 // box per sentence. Saved scores flow into the gradebook via Response.score.
+//
+// Two-round correction system: when the student submitted Round 2 corrections
+// (answer carries {r2, r2At}), the corrected value is shown as the student's
+// answer with the Round 1 original beneath it wherever they changed it — so
+// the instructor grades the final work while seeing what was revised in class.
 
 interface HwQuestion {
   id: string
@@ -22,7 +27,13 @@ interface HwResponse { id: string; questionId: string | null; answer: string; sc
 interface HwStudent { userId: string; name: string; email: string; submittedAt: string | null; responses: HwResponse[] }
 interface HwData { title: string; questions: HwQuestion[]; students: HwStudent[] }
 
-interface StudentAnswer { words: { parsing: string; syntax: string; gloss: string }[]; translation: string }
+interface AnswerWords { parsing: string; syntax: string; gloss: string }
+interface StudentAnswer {
+  words: AnswerWords[]
+  translation: string
+  r2?: { words: AnswerWords[]; translation: string }
+  r2At?: string
+}
 
 function parseAnswer(raw: string): StudentAnswer | null {
   try {
@@ -30,6 +41,29 @@ function parseAnswer(raw: string): StudentAnswer | null {
     if (a && Array.isArray(a.words)) return a
   } catch { /* ignore */ }
   return null
+}
+
+/** One field of a graded cell: the student's final (Round 2 where corrected)
+ *  answer, the Round 1 original when it was changed, and the model beneath. */
+function GradeCell({ r1, r2, model, exactMatch }: {
+  r1?: string; r2?: string; model?: string; exactMatch?: boolean
+}) {
+  const hasR2 = r2 !== undefined
+  const final = hasR2 ? r2 : r1
+  const revised = hasR2 && (r2 ?? '').trim() !== (r1 ?? '').trim()
+  return (
+    <>
+      <span className={clsx(exactMatch ? 'text-green-700' : 'text-gray-800')}>
+        {final?.trim() ? final : <em className="text-gray-300">—</em>}
+      </span>
+      {revised && (
+        <span className="block text-[11px] text-amber-600">
+          R1: <span className="line-through decoration-amber-400/70">{(r1 ?? '').trim() || '—'}</span>
+        </span>
+      )}
+      {model && <span className="block text-gray-400">{model}</span>}
+    </>
+  )
 }
 
 export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }) {
@@ -101,6 +135,13 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
 
                         {ans ? (
                           <>
+                            {ans.r2At && (
+                              <p className="mt-1 inline-flex items-center gap-1 rounded-md bg-amber-50 px-2 py-0.5 text-[11px] font-medium text-amber-700">
+                                Round 2 corrections submitted
+                                {' '}{new Date(ans.r2At).toLocaleString(undefined, { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })}
+                                {' '}· revised fields show the Round 1 answer struck through
+                              </p>
+                            )}
                             <div className="mt-2 overflow-x-auto">
                               <table className="text-xs border-collapse min-w-full">
                                 <thead>
@@ -114,22 +155,20 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                                 <tbody>
                                   {(q.model?.words ?? []).map((w, wi) => {
                                     const sw = ans.words[wi]
+                                    const cw = ans.r2?.words[wi]
+                                    const finalSyntax = cw ? cw.syntax : sw?.syntax
                                     return (
                                       <tr key={wi} className="border-t border-gray-100 align-top">
                                         <td className="pr-3 py-1 font-reading normal-case text-sm text-gray-900 whitespace-nowrap">{w.w}</td>
                                         <td className="pr-3 py-1">
-                                          <span className="text-gray-800">{sw?.parsing || <em className="text-gray-300">—</em>}</span>
-                                          {w.parsing && <span className="block text-gray-400">{w.parsing}</span>}
+                                          <GradeCell r1={sw?.parsing} r2={cw?.parsing} model={w.parsing} />
                                         </td>
                                         <td className="pr-3 py-1">
-                                          <span className={clsx(w.syntax && sw?.syntax === w.syntax ? 'text-green-700' : 'text-gray-800')}>
-                                            {sw?.syntax || <em className="text-gray-300">—</em>}
-                                          </span>
-                                          {w.syntax && <span className="block text-gray-400">{w.syntax}</span>}
+                                          <GradeCell r1={sw?.syntax} r2={cw?.syntax} model={w.syntax}
+                                            exactMatch={!!w.syntax && finalSyntax === w.syntax} />
                                         </td>
                                         <td className="py-1">
-                                          <span className="text-gray-800">{sw?.gloss || <em className="text-gray-300">—</em>}</span>
-                                          {w.gloss && <span className="block text-gray-400">{w.gloss}</span>}
+                                          <GradeCell r1={sw?.gloss} r2={cw?.gloss} model={w.gloss} />
                                         </td>
                                       </tr>
                                     )
@@ -139,7 +178,16 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                             </div>
 
                             <div className="mt-2 rounded-lg bg-gray-50 px-3 py-2 text-sm">
-                              <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">Student:</span>{ans.translation || <em className="text-gray-300">no translation</em>}</p>
+                              {ans.r2 ? (
+                                <>
+                                  <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">Round 2:</span>{ans.r2.translation || <em className="text-gray-300">no translation</em>}</p>
+                                  {ans.r2.translation.trim() !== ans.translation.trim() && (
+                                    <p className="text-amber-700/80 text-xs"><span className="text-gray-400 mr-1.5">Round 1:</span><span className="line-through decoration-amber-400/70">{ans.translation || '—'}</span></p>
+                                  )}
+                                </>
+                              ) : (
+                                <p className="text-gray-800"><span className="text-xs text-gray-400 mr-1.5">Student:</span>{ans.translation || <em className="text-gray-300">no translation</em>}</p>
+                              )}
                               <p className="text-gray-500"><span className="text-xs text-gray-400 mr-1.5">Model:</span>{q.modelTranslation}</p>
                               {q.model?.note && <p className="mt-0.5 text-xs text-gray-400">{q.model.note}</p>}
                             </div>

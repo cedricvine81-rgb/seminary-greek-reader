@@ -248,10 +248,12 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
               assignmentId={assignment.id}
               attemptCount={attemptCount}
               dueDate={assignment.dueDate?.toISOString() ?? null}
+              round2Deadline={assignment.round2Deadline?.toISOString() ?? null}
               questions={assignment.questions.map(q => {
                 let meta: { words?: unknown[]; note?: string | null } = {}
                 try { meta = JSON.parse(q.options[0] ?? '{}') } catch { /* ignore */ }
-                let prior: { words?: unknown[]; translation?: string } | null = null
+                type PriorWords = { parsing: string; syntax: string; gloss: string }[]
+                let prior: { words?: unknown[]; translation?: string; r2?: { words?: unknown[]; translation?: string }; r2At?: string } | null = null
                 try { const raw = priorByQuestion.get(q.id); if (raw) prior = JSON.parse(raw) } catch { /* ignore */ }
                 return {
                   id: q.id,
@@ -260,7 +262,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
                   words: (meta.words ?? []) as { w: string }[],
                   note: meta.note ?? undefined,
                   prior: prior && Array.isArray(prior.words)
-                    ? { words: prior.words as { parsing: string; syntax: string; gloss: string }[], translation: prior.translation ?? '' }
+                    ? {
+                        words: prior.words as PriorWords,
+                        translation: prior.translation ?? '',
+                        r2: prior.r2 && Array.isArray(prior.r2.words)
+                          ? { words: prior.r2.words as PriorWords, translation: prior.r2.translation ?? '' }
+                          : undefined,
+                        r2At: prior.r2At,
+                      }
                     : undefined,
                 }
               })}
