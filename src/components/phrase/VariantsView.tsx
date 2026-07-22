@@ -86,12 +86,13 @@ function parseRef(ref: string): { osis: string; name: string; chapter: number; v
 const SOURCE_ATTR = 'Manuscript transcriptions: Center for New Testament Restoration (Alan Bunning), CC BY-SA 4.0. '
   + 'Reference line: Robinson–Pierpont Byzantine Majority Text. Reproduces the layout of R. Swanson’s New Testament Greek Manuscripts.'
 
-export function VariantsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution }: {
+export function VariantsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, diplomatic = false }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   fontSize?: PhraseFontSize
   onFontSize?: (s: PhraseFontSize) => void
   onAttribution?: (a: string) => void
+  diplomatic?: boolean   // show the raw CNTR transcription (bare, medial σ, unaccented) instead of the readable overlay
 }) {
   const isFontControlled = controlledFontSize !== undefined
   const [internalFont, setInternalFont] = useState<PhraseFontSize>('lg')
@@ -265,6 +266,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                               const refCell = v.rows[0].cells[ci]
                               const acc = parseMap[v.verse]?.[gkey(c.t)]?.surface
                               const shown = isRef ? c.t
+                                : diplomatic ? c.t   // raw CNTR form, as transcribed
                                 : acc ?? (!c.d && refCell?.t ? refCell.t.replace(/^[¶*]+/, '') : finalSigma(c.t))
                               return (
                                 <td key={ci} className={`pr-[7px] align-baseline ${c.d ? 'underline decoration-1 underline-offset-2' : ''} ${c.o ? 'text-gray-300' : ''}`}>

@@ -93,6 +93,11 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
   const [variantsFontSize, setVariantsFontSize] = useState<PhraseFontSize>('lg')
   const [variantsAttribution, setVariantsAttribution] = useState('')
+  // Diplomatic view: show the raw CNTR transcription (bare, unaccented) instead of the readable
+  // accented overlay. Persisted so a scholar's preference sticks across sessions.
+  const [variantsDiplomatic, setVariantsDiplomatic] = useState(false)
+  useEffect(() => { setVariantsDiplomatic(localStorage.getItem('variants-diplomatic') === '1') }, [])
+  const toggleDiplomatic = (v: boolean) => { setVariantsDiplomatic(v); localStorage.setItem('variants-diplomatic', v ? '1' : '0') }
   // A Backgrounds cross-reference "Open in Texts" now navigates to the standalone /texts page
   // (Texts left the workspace), carrying the passage as ?open=<encoded target>.
   function openInTexts(target: OpenInTextsTarget) {
@@ -470,6 +475,14 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                         <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
                       </div>
                     </div>
+                    <label className="flex items-start gap-2 cursor-pointer">
+                      <input type="checkbox" checked={variantsDiplomatic} onChange={e => toggleDiplomatic(e.target.checked)}
+                        className="mt-0.5 accent-brand-600" />
+                      <span className="text-sm text-gray-700">
+                        Diplomatic view
+                        <span className="block text-xs text-gray-400">Show manuscripts as transcribed — bare, unaccented, medial σ.</span>
+                      </span>
+                    </label>
                     {variantsAttribution && (
                       <details className="border-t border-gray-100 pt-2">
                         <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
@@ -579,7 +592,8 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'variants' ? '' : 'hidden'}`}>
         <VariantsView controlledPassage={passage} isAuthenticated={isAuthenticated}
-          fontSize={variantsFontSize} onFontSize={setVariantsFontSize} onAttribution={setVariantsAttribution} />
+          fontSize={variantsFontSize} onFontSize={setVariantsFontSize} onAttribution={setVariantsAttribution}
+          diplomatic={variantsDiplomatic} />
       </div>
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
