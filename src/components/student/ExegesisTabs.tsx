@@ -1,12 +1,13 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Rows3, type LucideIcon } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Rows3, Feather, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
 import { VariantsView } from '@/components/phrase/VariantsView'
 import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
+import { RhetoricView } from '@/components/phrase/RhetoricView'
 import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
@@ -34,8 +35,8 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  */
 // Texts moved out to its own top-level page (/texts) + header nav item (2026-07-19), freeing a
 // workspace slot; the Backgrounds "open in Texts" hand-off now navigates to /texts.
-type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'variants' | 'backgrounds' | 'notes' | 'commentary'
-const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'variants', 'backgrounds', 'notes', 'commentary']
+type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'variants' | 'backgrounds' | 'rhetoric' | 'notes' | 'commentary'
+const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'variants', 'backgrounds', 'rhetoric', 'notes', 'commentary']
 
 // Tab id → label + icon, shared by the desktop tab bar and the mobile hamburger menu.
 const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
@@ -44,13 +45,14 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'synopsis',    label: 'Synopsis',    Icon: Columns3 },
   { id: 'variants',    label: 'Variants',    Icon: Rows3 },
   { id: 'backgrounds', label: 'Backgrounds', Icon: Scroll },
+  { id: 'rhetoric',    label: 'Rhetoric',    Icon: Feather },
   { id: 'commentary',  label: 'Commentary',  Icon: BookOpen },
   { id: 'notes',       label: 'Notes',       Icon: StickyNote },
 ]
 
 // Mobile switches tabs from inside the ⋮ menu and omits the wide desktop-only views
-// (Backgrounds, Synopsis — too wide for a phone). Variants has its own mobile card layout.
-const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
+// (Backgrounds, Synopsis, Rhetoric — too wide for a phone). Variants has its own mobile layout.
+const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis', 'rhetoric']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
@@ -93,6 +95,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
   const [variantsFontSize, setVariantsFontSize] = useState<PhraseFontSize>('lg')
   const [variantsAttribution, setVariantsAttribution] = useState('')
+  const [rhetoricAttribution, setRhetoricAttribution] = useState('')
   // Diplomatic view: show the raw CNTR transcription (bare, unaccented) instead of the readable
   // accented overlay. Persisted so a scholar's preference sticks across sessions.
   const [variantsDiplomatic, setVariantsDiplomatic] = useState(false)
@@ -256,7 +259,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
   const toolsMenuTitles: Record<typeof tab, string> = {
     workspace: 'Syntax tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
-    variants: 'Settings & sources', backgrounds: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
+    variants: 'Settings & sources', backgrounds: 'Settings & sources', rhetoric: 'Sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
 
@@ -492,6 +495,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                   </>
                 )}
 
+                {tab === 'rhetoric' && rhetoricAttribution && (
+                  <details className="pt-1" open>
+                    <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                    <p className="text-xs text-gray-600 mt-2">{rhetoricAttribution}</p>
+                  </details>
+                )}
+
                 {tab === 'backgrounds' && (
                   <>
                     <div>
@@ -598,6 +608,9 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
           fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} onOpenInTexts={openInTexts} />
+      </div>
+      <div className={`flex-1 min-h-0 ${tab === 'rhetoric' ? '' : 'hidden'}`}>
+        <RhetoricView controlledPassage={passage} isAuthenticated={isAuthenticated} onAttribution={setRhetoricAttribution} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>
         <CommentaryView anchor={anchor} isAuthenticated={isAuthenticated} onAttribution={setCommentaryAttribution} />
