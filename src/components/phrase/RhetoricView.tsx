@@ -146,6 +146,8 @@ const VERSIONS = [
   { code: 'ko', label: 'Korean' },
   { code: 'zh', label: 'Mandarin' },
 ]
+// Translations only (for the parallel line under the Greek in the example preview).
+const TRANS_VERSIONS = VERSIONS.filter(v => v.code !== 'na1904' && v.code !== 'gnt')
 const cacheKey = (v: string, osis: string, chapter: number) =>
   v === 'na1904' ? `na1904.${osis}` : v === 'bsb' ? 'bsb' : `${v}.${osis}.${chapter}`
 
@@ -180,6 +182,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   const [fullCat, setFullCat] = useState<Device[] | null>(fullCache)
   // An example the user is previewing in the side panel (browse mode), read without leaving.
   const [previewRef, setPreviewRef] = useState<string | null>(null)
+  const [previewTrans, setPreviewTrans] = useState('bsb')   // translation shown under the Greek
   // A device+ref to auto-select once the passage settles (set when jumping from an example),
   // so it survives the passage-change reset below instead of being cleared to null.
   const pendingSel = useRef<{ id: string; ref: string } | null>(null)
@@ -214,9 +217,9 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
 
   // Load the previewed example's chapter (reuses the passage cache); clear the preview when
   // the browsed figure changes or we leave browse mode.
-  useEffect(() => { const p = previewRef && parseRef(previewRef); if (p) loadPassage(version, p.osis, p.chapter)
+  useEffect(() => { const p = previewRef && parseRef(previewRef); if (p) { loadPassage(version, p.osis, p.chapter); loadPassage(previewTrans, p.osis, p.chapter) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [previewRef, version])
+  }, [previewRef, version, previewTrans])
   useEffect(() => { setPreviewRef(null) }, [browseId, mode])
 
   // Group a device's occurrences by book, in canonical NT order (for the browser detail view).
@@ -354,14 +357,21 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
     return Array.from(s)
   }, [shownVerses, byVerse])
 
-  // Parsing-pane content before any word is clicked: the passage's first Greek token, so
-  // the pane never sits empty (mirrors the Synopsis / Phrasing tabs).
-  const defaultParsingInfo = useMemo<LexicalInfoPanel | null>(() => {
-    if (!isGreek || !parsed) return null
+  // Parsing-pane content before any word is clicked: the first Greek token of whatever is
+  // in focus (the preview verse while previewing, else the passage). Computed each render so
+  // it fills in as soon as the chapter's word-tokens load.
+  const defaultParsingInfo: LexicalInfoPanel | null = (() => {
+    if (!isGreek) return null
+    if (showPreview) {
+      const pp = parseRef(previewRef!)
+      const t = pp ? wordCache.current[version]?.[`${pp.osis}.${pp.chapter}.${pp.vStart}`]?.[0] : undefined
+      return t ? toLexicalInfo(t, `${pp!.name} ${pp!.chapter}:${pp!.vStart}`) : null
+    }
+    if (!parsed) return null
     const fv = shownVerses.find(v => v.tokens && v.tokens.length > 0)
     const ft = fv?.tokens?.[0]
     return ft ? toLexicalInfo(ft, `${parsed.name} ${parsed.chapter}:${fv!.verse}`) : null
-  }, [isGreek, parsed, shownVerses])
+  })()
 
   const sel = selected && deviceById(selected.id)
 
@@ -602,16 +612,40 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                     {!isGreek
                       ? <TransWords text={text} lang={version} reference={pref} book={p!.osis} />
                       : ptoks && ptoks.length > 0
-                        ? ptoks.map((tok, ti) => (
-                            <span key={ti} onContextMenu={e => wordMenu(e, tok, pref)} className="cursor-context-menu rounded px-0.5 hover:bg-brand-100">
-                              {tok.surface}{ti < ptoks.length - 1 ? ' ' : ''}
-                            </span>
-                          ))
+                        ? ptoks.map((tok, ti) => {
+                            const key = `prev.${ti}`
+                            const select = () => { setSelectedInfo(toLexicalInfo(tok, pref)); setSelectedKey(key) }
+                            return (
+                              <span key={ti} onMouseEnter={select} onClick={select} onContextMenu={e => wordMenu(e, tok, pref)}
+                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
+                                {tok.surface}{ti < ptoks.length - 1 ? ' ' : ''}
+                              </span>
+                            )
+                          })
                         : text}
                   </p>
                 ) : (
                   <p className="text-xs text-gray-400 italic">Loading…</p>
                 )}
+                {/* Parallel translation immediately below the Greek (user picks the version). */}
+                {isGreek && text && (() => {
+                  const tt = p ? (textCache.current[previewTrans]?.[vid] ?? null) : null
+                  return (
+                    <div className="mt-2 pt-2 border-t border-brand-100">
+                      <select value={previewTrans} onChange={e => setPreviewTrans(e.target.value)}
+                        className="mb-1 rounded border border-gray-300 bg-white px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400">
+                        {TRANS_VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+                      </select>
+                      {tt ? (
+                        <p className="font-reading text-gray-600 leading-relaxed" style={{ fontSize: 'calc(var(--rh-fs) * 0.82)' }}>
+                          <TransWords text={tt} lang={previewTrans} reference={pref} book={p!.osis} />
+                        </p>
+                      ) : (
+                        <p className="text-xs text-gray-400 italic">Loading translation…</p>
+                      )}
+                    </div>
+                  )
+                })()}
                 {occ?.source === 'editorial' && (
                   <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5 mt-2">
                     <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
@@ -638,9 +672,9 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
       )}
 
       {/* Greek parsing pane at the bottom — the shared component (Strong's → Thayer's /
-          Mounce / Abbott-Smith / LSJ), fed by hovering/clicking a Greek word above.
-          Shown only for a Greek edition in passage mode; defaults to the passage's first word. */}
-      {status === 'ok' && isGreek && mode === 'passage' && (
+          Mounce / Abbott-Smith / LSJ), fed by hovering/clicking a Greek word above. Shown
+          for a Greek edition in passage mode, and while previewing a Greek example. */}
+      {status === 'ok' && isGreek && (mode === 'passage' || showPreview) && (
         <ResizableParsingPane storageKey="rhetoric" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
     </div>
