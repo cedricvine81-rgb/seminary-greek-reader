@@ -100,10 +100,11 @@ type VMCell = { shown: string; underline: boolean; omit: boolean }
 type VMRow = { sigla: WitRef[]; family: WitnessFamily; isRef: boolean; cells: VMCell[] }
 type VMVerse = { vid: string; verse: number; rows: VMRow[]; lac: string[]; hasVariant: boolean }
 
-type Controls = { refWid: string; hidden: string[]; hideSpelling: boolean; onlyVariants: boolean; group: boolean }
+type Controls = { refWid: string; hidden: string[]; onlyVariants: boolean; group: boolean }
 // Default view: compare against Sinaiticus (ℵ), show only verses with variants, group identical
-// readings. Falls back to 𝔐 automatically in chapters where ℵ is lacunose.
-const DEFAULT_CONTROLS: Controls = { refWid: '01', hidden: [], hideSpelling: false, onlyVariants: true, group: true }
+// readings, and always show spelling (itacism) differences. Falls back to 𝔐 automatically in
+// chapters where ℵ is lacunose.
+const DEFAULT_CONTROLS: Controls = { refWid: '01', hidden: [], onlyVariants: true, group: true }
 
 // On phones the wide grid becomes a per-variation-unit apparatus: for each column where the
 // visible witnesses disagree, list each reading with the sigla that support it.
@@ -243,7 +244,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
   // ── the render model: reference, spelling fold, witness filter, grouping ─────────────────
   const viewModel: VMVerse[] = useMemo(() => {
-    const { refWid, hidden, hideSpelling, group } = ctrl
+    const { refWid, hidden, group } = ctrl
     return shownVerses.map(v => {
       const refIdx = v.rows.findIndex(r => r.wid === refWid)
       const refRow = refIdx >= 0 ? v.rows[refIdx] : v.rows[0]
@@ -265,8 +266,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
         if (!c && refText) return { shown: '', underline: true, omit: true }          // omission
         if (c && !refText) return { shown: overlay(c, true, '', false), underline: true, omit: false }   // addition
         const differs = gkey(c) !== gkey(refText)
-        const substantive = differs && ofold(c) !== ofold(refText)
-        return { shown: overlay(c, differs, refText, false), underline: differs && (!hideSpelling || substantive), omit: false }
+        return { shown: overlay(c, differs, refText, false), underline: differs, omit: false }
       })
 
       const others = v.rows.filter(r => r !== refRow && !hidden.includes(r.wid))
@@ -357,10 +357,6 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
     const wids = witnesses.filter(w => w.family === fam && w.wid !== ctrl.refWid).map(w => w.wid)
     const anyVisible = wids.some(w => !ctrl.hidden.includes(w))
     setControls({ hidden: anyVisible ? Array.from(new Set([...ctrl.hidden, ...wids])) : ctrl.hidden.filter(w => !wids.includes(w)) })
-  }
-  function applyPreset(level: 'beginner' | 'advanced') {
-    if (level === 'beginner') setControls({ hideSpelling: true, onlyVariants: true, group: true })
-    else setControls({ hideSpelling: false, onlyVariants: false, group: false })
   }
 
   // One clickable Greek word inside a collation cell.
@@ -461,10 +457,6 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                 )}
               </div>
 
-              <label className="inline-flex items-center gap-1 cursor-pointer" title="Hide spelling-only (itacism) differences">
-                <input type="checkbox" checked={ctrl.hideSpelling} className="accent-brand-600" onChange={e => setControls({ hideSpelling: e.target.checked })} />
-                <span className="text-gray-600">Hide spelling</span>
-              </label>
               <label className="inline-flex items-center gap-1 cursor-pointer" title="Show only verses with a substantive variant">
                 <input type="checkbox" checked={ctrl.onlyVariants} className="accent-brand-600" onChange={e => setControls({ onlyVariants: e.target.checked })} />
                 <span className="text-gray-600">Only variants</span>
@@ -474,9 +466,6 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                 <span className="text-gray-600">Group</span>
               </label>
 
-              <span className="h-4 w-px bg-gray-200" />
-              <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('beginner')}>Beginner</button>
-              <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('advanced')}>Advanced</button>
               <button type="button" title="Print / save as PDF" className="ml-auto inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50"
                 onClick={() => window.print()}><Printer size={13} /> Print</button>
             </div>
@@ -486,7 +475,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
             )}
 
             {isMobile && displayed.map(vm => {
-              const units = variationUnits(vm.rows, ctrl.hideSpelling)
+              const units = variationUnits(vm.rows, false)
               return (
                 <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
                   <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-500 mb-1.5">
@@ -510,7 +499,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                             {rd.sigla.map(s => (
                               <button key={s.wid + s.sigil} type="button" title="Manuscript information"
                                 onClick={e => { e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: r.left, y: r.bottom }) }}
-                                className="font-mono text-[0.72rem] font-semibold" style={{ color: FAMILY_COLOR[s.family] }}>{s.sigil}</button>
+                                className="font-greek text-[0.85rem] font-semibold" style={{ color: FAMILY_COLOR[s.family] }}>{s.sigil}</button>
                             ))}
                           </span>
                         </div>
@@ -553,7 +542,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                               {r.sigla.map(s => (
                                 <button key={s.wid + s.sigil} type="button"
                                   onClick={e => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: rect.left, y: rect.bottom }) }}
-                                  className="inline-flex items-center gap-1 font-mono text-[0.8rem] font-semibold text-gray-600 hover:text-brand-700"
+                                  className="inline-flex items-center gap-1 font-greek text-[0.9rem] font-semibold text-gray-600 hover:text-brand-700"
                                   title="Manuscript information">
                                   <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[s.family] }} />
                                   {s.sigil}
