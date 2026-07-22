@@ -16,9 +16,10 @@ SLUG = {
     "Matt": "matthew", "Mark": "mark", "Luke": "luke", "John": "john", "Acts": "acts",
     "Romans": "romans", "1 Corinthians": "1_corinthians", "2 Corinthians": "2_corinthians",
     "Galatians": "galatians", "Ephesians": "ephesians", "Philippians": "philippians",
-    "Colossians": "colossians", "1 Timothy": "1_timothy", "2 Timothy": "2_timothy",
-    "Philemon": "philemon", "Hebrews": "hebrews", "James": "james",
-    "1 Peter": "1_peter", "2 Peter": "2_peter", "Revelation": "revelation",
+    "Colossians": "colossians", "1 Thessalonians": "1_thessalonians", "2 Thessalonians": "2_thessalonians",
+    "1 Timothy": "1_timothy", "2 Timothy": "2_timothy", "Titus": "titus", "Philemon": "philemon",
+    "Hebrews": "hebrews", "James": "james", "1 Peter": "1_peter", "2 Peter": "2_peter",
+    "1 John": "1_john", "2 John": "2_john", "3 John": "3_john", "Jude": "jude", "Revelation": "revelation",
 }
 
 def refs_from_devices():
