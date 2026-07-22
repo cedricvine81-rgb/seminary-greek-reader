@@ -62,6 +62,12 @@ function gkey(s: string): string {
   const d = s.normalize('NFD').toLowerCase().replace(/[̀-ͯ]/g, '').replace(/ς/g, 'σ')
   return d.replace(/[^α-ω]/g, '')
 }
+// CNTR transcribes the manuscripts in bare lowercase with medial σ everywhere. Restore the
+// final-sigma form (σ → ς when the sigma isn't followed by another Greek letter) so witness
+// words read naturally; accents are supplied separately from the reference / base text.
+function finalSigma(s: string): string {
+  return s.replace(/σ(?![Ͱ-Ͽἀ-῿])/g, 'ς')
+}
 
 function parseRef(ref: string): { osis: string; name: string; chapter: number; vStart: number; vEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
@@ -252,11 +258,20 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                                 </span>
                               )}
                             </td>
-                            {r.cells.map((c, ci) => (
-                              <td key={ci} className={`pr-[7px] align-baseline ${c.d ? 'underline decoration-1 underline-offset-2' : ''} ${c.o ? 'text-gray-300' : ''}`}>
-                                {c.o ? '—' : <GreekWord text={c.t} verse={v.verse} wkey={`${v.vid}.${ri}.${ci}`} bold={isRef} />}
-                              </td>
-                            ))}
+                            {r.cells.map((c, ci) => {
+                              // Overlay proper Greek on the bare CNTR witness forms: prefer the
+                              // accented base-text form, else the accented reference word when the
+                              // witness agrees, else just restore the final sigma.
+                              const refCell = v.rows[0].cells[ci]
+                              const acc = parseMap[v.verse]?.[gkey(c.t)]?.surface
+                              const shown = isRef ? c.t
+                                : acc ?? (!c.d && refCell?.t ? refCell.t.replace(/^[¶*]+/, '') : finalSigma(c.t))
+                              return (
+                                <td key={ci} className={`pr-[7px] align-baseline ${c.d ? 'underline decoration-1 underline-offset-2' : ''} ${c.o ? 'text-gray-300' : ''}`}>
+                                  {c.o ? '—' : <GreekWord text={shown} verse={v.verse} wkey={`${v.vid}.${ri}.${ci}`} bold={isRef} />}
+                                </td>
+                              )
+                            })}
                             <td className="sticky right-0 pl-3 align-baseline bg-white text-left border-l border-gray-100">
                               <button
                                 type="button"
