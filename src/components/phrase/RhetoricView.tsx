@@ -1,6 +1,8 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { DEVICES, GROUP_LABEL, GROUP_COLOR, type Device, type DeviceGroup } from '@/lib/rhetoric-devices'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Rhetoric tab ────────────────────────────────────────────────────────────────────────
 // Three columns, like Backgrounds: the passage (left), the rhetorical device(s) present in
@@ -88,18 +90,57 @@ const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech
 
 type Hit = { device: Device; note?: string; ref: string }   // ref = the exact occurrence ref (Bengel key)
 
+// Versions the passage column can show: a Greek edition or a translation (mirrors the
+// Synopsis / Backgrounds selector). Greek editions carry word-level tokens that feed the
+// parsing pane; translations render as plain text.
+const VERSIONS = [
+  { code: 'na1904', label: 'Greek — Nestle 1904' },
+  { code: 'gnt', label: 'Greek — Tischendorf' },
+  { code: 'bsb', label: 'English (BSB)' },
+  { code: 'en', label: 'English (WEB)' },
+  { code: 'es', label: 'Spanish' },
+  { code: 'fr', label: 'French' },
+  { code: 'pt', label: 'Portuguese' },
+  { code: 'ru', label: 'Russian' },
+  { code: 'ko', label: 'Korean' },
+  { code: 'zh', label: 'Mandarin' },
+]
+const cacheKey = (v: string, osis: string, chapter: number) =>
+  v === 'na1904' ? `na1904.${osis}` : v === 'bsb' ? 'bsb' : `${v}.${osis}.${chapter}`
+
+// A clickable Greek word carries enough to fill the shared parsing pane (Strong's →
+// Thayer's / Mounce / Abbott-Smith / LSJ). na1904 words come from the phrase tree with a
+// ready `parsing` string + gloss; Tischendorf words ship structured morph we format the same.
+type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
+const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
+function formatGntMorph(m: Record<string, string | null> | undefined): string {
+  if (!m) return ''
+  return GNT_MORPH_ORDER.map(k => m[k]).filter(Boolean).join(', ')
+}
+function toLexicalInfo(tok: WordToken, reference: string): LexicalInfoPanel {
+  return { surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '',
+    parsing: tok.parsing, strongs: tok.strongs, reference }
+}
+
 export function RhetoricView({ controlledPassage, onAttribution }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   onAttribution?: (a: string) => void
 }) {
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
-  const [verses, setVerses] = useState<{ verse: number; text: string }[]>([])
-  const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'missing' | 'nonNT'>('idle')
+  const [version, setVersion] = useState('na1904')
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
   const [bookDevices, setBookDevices] = useState<Device[]>(() => bookCache[parseRef(controlledPassage ?? '')?.osis ?? ''] ?? [])
   const [selected, setSelected] = useState<{ id: string; ref: string } | null>(null)
-  const reqRef = useRef(0)
+  // Clicked/hovered Greek word for the parsing pane, plus a key so only that instance lights up.
+  const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
+  const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  // version → verseId → text / Greek word-tokens, filled lazily by loadPassage().
+  const textCache = useRef<Record<string, Record<string, string>>>({})
+  const wordCache = useRef<Record<string, Record<string, WordToken[]>>>({})
+  const loaded = useRef<Set<string>>(new Set())
+  const settled = useRef<Set<string>>(new Set())
+  const [, setTick] = useState(0)
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
   useEffect(() => { loadBengel().then(setBengel) }, [])
@@ -114,21 +155,85 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
 
   const allDevices = useMemo(() => mergeDevices(DEVICES, bookDevices), [bookDevices])
 
+  // Reset device + word selections when the passage changes.
+  useEffect(() => { setSelected(null); setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
+
+  // Load the passage text (and Greek word-tokens) for the chosen version.
   useEffect(() => {
-    setSelected(null)
-    if (!controlledPassage?.trim()) { setStatus('idle'); return }
-    if (!parsed) { setStatus('nonNT'); setVerses([]); return }
-    const id = ++reqRef.current
-    setStatus('loading')
-    fetch(`/data/gnt/${parsed.osis}_${parsed.chapter}.json`)
-      .then(r => (r.ok ? r.json() : Promise.reject()))
-      .then((d: { verses?: { verse: number; text: string }[] }) => {
-        if (id !== reqRef.current) return
-        setVerses((d.verses ?? []).map(v => ({ verse: v.verse, text: v.text })))
-        setStatus('ok')
-      })
-      .catch(() => { if (id === reqRef.current) { setVerses([]); setStatus('missing') } })
-  }, [controlledPassage, parsed])
+    if (parsed) loadPassage(version, parsed.osis, parsed.chapter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [version, parsed?.osis, parsed?.chapter])
+
+  function loadPassage(v: string, osis: string, chapter: number) {
+    const ck = cacheKey(v, osis, chapter)
+    if (loaded.current.has(ck)) return
+    loaded.current.add(ck)
+    const done = () => { settled.current.add(ck); setTick(t => t + 1) }
+    if (v === 'na1904') {
+      // na1904 has no verse-text files — reconstruct from the per-book phrase tree (MACULA).
+      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; strongs?: string; c?: Node[] }
+      fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: { sentences?: { tree: Node }[] }) => {
+        const tmap = (textCache.current.na1904 ??= {}); const wmap = (wordCache.current.na1904 ??= {})
+        const byVerse: Record<string, { i: number; tok: WordToken }[]> = {}
+        const walk = (n: Node) => {
+          if (n.t === 'w' && n.id) {
+            const [bk, ch, vs, wd] = n.id.split('.')
+            ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({ i: parseInt(wd || '0', 10),
+              tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss, strongs: n.strongs } })
+          } else (n.c ?? []).forEach(walk)
+        }
+        for (const s of d.sentences ?? []) walk(s.tree)
+        for (const [vKey, ws] of Object.entries(byVerse)) {
+          ws.sort((a, b) => a.i - b.i)
+          tmap[vKey] = ws.map(x => x.tok.surface).join(' '); wmap[vKey] = ws.map(x => x.tok)
+        }
+        done()
+      }).catch(done)
+    } else if (v === 'gnt') {
+      type GntWord = { surface: string; lemma?: string; strongs?: string; morph?: Record<string, string | null> }
+      fetch(`/data/gnt/${osis}_${chapter}.json`).then(r => r.json()).then((d: { verses?: { verse: number; text: string; words?: GntWord[] }[] }) => {
+        const tmap = (textCache.current.gnt ??= {}); const wmap = (wordCache.current.gnt ??= {})
+        for (const vv of d.verses ?? []) {
+          const vid = `${osis}.${chapter}.${vv.verse}`
+          tmap[vid] = vv.text
+          if (vv.words) wmap[vid] = vv.words.map(w => ({ surface: w.surface, parsing: formatGntMorph(w.morph), lemma: w.lemma ?? '', strongs: w.strongs }))
+        }
+        done()
+      }).catch(done)
+    } else if (v === 'bsb') {
+      fetch('/data/bsb-alignment.json?v=3').then(r => r.json()).then((d: Record<string, { text: string }>) => {
+        const tmap = (textCache.current.bsb ??= {})
+        for (const [vid, val] of Object.entries(d)) tmap[vid] = val.text
+        done()
+      }).catch(done)
+    } else {
+      fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${v}`).then(r => r.json()).then((d: { verses?: Record<string, string> }) => {
+        Object.assign((textCache.current[v] ??= {}), d.verses ?? {})
+        done()
+      }).catch(done)
+    }
+  }
+
+  // Verses of the current chapter present in the chosen version's cache, in order.
+  const verses = useMemo(() => {
+    if (!parsed) return [] as { verse: number; text: string; tokens?: WordToken[] }[]
+    const tmap = textCache.current[version] ?? {}; const wmap = wordCache.current[version] ?? {}
+    const prefix = `${parsed.osis}.${parsed.chapter}.`
+    return Object.keys(tmap).filter(k => k.startsWith(prefix))
+      .map(k => ({ verse: parseInt(k.slice(prefix.length), 10), text: tmap[k], tokens: wmap[k] }))
+      .filter(v => Number.isFinite(v.verse))
+      .sort((a, b) => a.verse - b.verse)
+    // settled is bumped via setTick, which re-runs this memo through a render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [parsed, version, settled.current.size, textCache.current[version]])
+
+  const isGreek = version === 'gnt' || version === 'na1904'
+  const status: 'idle' | 'nonNT' | 'loading' | 'ok' | 'missing' =
+    !controlledPassage?.trim() ? 'idle'
+      : !parsed ? 'nonNT'
+        : verses.length > 0 ? 'ok'
+          : settled.current.has(cacheKey(version, parsed.osis, parsed.chapter)) ? 'missing'
+            : 'loading'
 
   // Devices occurring in this chapter, indexed by verse.
   const byVerse = useMemo(() => {
@@ -159,6 +264,15 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
   }, [byVerse])
   const versesWithDevices = shownVerses.filter(v => byVerse[v.verse]?.length)
 
+  // Parsing-pane content before any word is clicked: the passage's first Greek token, so
+  // the pane never sits empty (mirrors the Synopsis / Phrasing tabs).
+  const defaultParsingInfo = useMemo<LexicalInfoPanel | null>(() => {
+    if (!isGreek || !parsed) return null
+    const fv = shownVerses.find(v => v.tokens && v.tokens.length > 0)
+    const ft = fv?.tokens?.[0]
+    return ft ? toLexicalInfo(ft, `${parsed.name} ${parsed.chapter}:${fv!.verse}`) : null
+  }, [isGreek, parsed, shownVerses])
+
   const sel = selected && deviceById(selected.id)
 
   return (
@@ -170,16 +284,40 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
 
       {status === 'ok' && (
         <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
-          {/* Column 1 — the passage */}
+          {/* Column 1 — the passage, in a chosen Greek edition or translation */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{parsed!.name} {parsed!.chapter}</p>
-            <div className="space-y-1.5 font-greek text-[1.05rem] leading-relaxed">
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{parsed!.name} {parsed!.chapter}</p>
+              <select
+                value={version}
+                onChange={e => setVersion(e.target.value)}
+                className="shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
+              </select>
+            </div>
+            <div className={`space-y-1.5 leading-relaxed ${isGreek ? 'font-greek text-[1.05rem] text-gray-900' : 'font-reading text-[0.95rem] text-gray-700'}`}>
               {shownVerses.map(v => {
                 const has = byVerse[v.verse]?.length
                 return (
                   <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
                     <sup className="text-[0.6rem] font-sans font-semibold text-gray-500 mr-1 align-super">{v.verse}</sup>
-                    {v.text}
+                    {isGreek && v.tokens && v.tokens.length > 0
+                      ? v.tokens.map((tok, ti) => {
+                          const key = `${v.verse}.${ti}`
+                          const select = () => { setSelectedInfo(toLexicalInfo(tok, `${parsed!.name} ${parsed!.chapter}:${v.verse}`)); setSelectedKey(key) }
+                          return (
+                            <span
+                              key={ti}
+                              onMouseEnter={select}
+                              onClick={select}
+                              className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
+                            >
+                              {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                            </span>
+                          )
+                        })
+                      : v.text}
                   </p>
                 )
               })}
@@ -273,6 +411,13 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
             )}
           </div>
         </div>
+      )}
+
+      {/* Greek parsing pane at the bottom — the shared component (Strong's → Thayer's /
+          Mounce / Abbott-Smith / LSJ), fed by hovering/clicking a Greek word above.
+          Shown only for a Greek edition; defaults to the passage's first word. */}
+      {status === 'ok' && isGreek && (
+        <ResizableParsingPane storageKey="rhetoric" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
     </div>
   )
