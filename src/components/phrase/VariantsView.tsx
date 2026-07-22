@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { X } from 'lucide-react'
+import { X, ChevronDown } from 'lucide-react'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -11,21 +11,21 @@ import { witnessInfo, FAMILY_COLOR, FAMILY_LABEL, type WitnessFamily } from '@/l
 
 // ── Textual-variants tab ────────────────────────────────────────────────────────────────
 // A Swanson-style manuscript collation: one line per witness, word-aligned into columns so
-// differences line up vertically, with the sigla down the right margin. The Byzantine
-// majority (Robinson–Pierpont) is the reference line; each early witness (great uncials +
-// papyri) is shown against it. Data is built by scripts/build-variants.py from the CNTR
-// transcriptions (CC BY-SA 4.0) into /data/variants/<Osis>_<ch>.json.
+// differences line up vertically, with the sigla down the right margin. Data is built by
+// scripts/build-variants.py from the CNTR transcriptions (CC BY-SA 4.0).
 //
-// Any Greek word (reference or witness) is clickable/hoverable to fill the shared parsing
-// pane below (morphology comes from the base /data/gnt text, matched by surface form), and
-// each verse carries a note button anchored to (book, chapter, verse) like the other tools.
+// The control bar lets the student narrow, denoise, and re-orient the comparison: pick which
+// witnesses show, choose the reference line, hide spelling-only differences, collapse verses
+// with no variation, and group identical readings onto one line. Any Greek word is clickable
+// for the parsing pane; each verse carries a note button.
 
 type Cell = { t: string; d: boolean; o: boolean }
 type Row = { wid: string; sigil: string; family: WitnessFamily; cells: Cell[] }
 type Verse = { verse: number; vid: string; refTokens: string[]; rows: Row[]; lac: string[] }
+type WitRef = { wid: string; sigil: string; family: WitnessFamily }
 type ChapterData = {
   book: string; chapter: number; reference: string
-  witnesses: { wid: string; sigil: string; family: WitnessFamily }[]
+  witnesses: WitRef[]
   verses: Verse[]; source: string
 }
 type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
@@ -57,14 +57,22 @@ const NT_BOOKS: { osis: string; name: string; abbr: string[] }[] = [
 const AVAILABLE_HINT = 'Matt 12 · all of John · Luke 11 · Luke 23 · Rom 3 · 1 Cor 13 · Gal 1 · Rev 1 · 1 Pet 1 · Jude'
 
 const norm = (s: string) => s.toLowerCase().replace(/\s+/g, '')
-// Greek key for surface-form lookup: strip accents/breathing, lowercase, final-sigma → σ.
+// Greek key for surface-form lookup / letter-level difference: strip accents, lowercase, medial σ.
 function gkey(s: string): string {
   const d = s.normalize('NFD').toLowerCase().replace(/[̀-ͯ]/g, '').replace(/ς/g, 'σ')
   return d.replace(/[^α-ω]/g, '')
 }
-// CNTR transcribes the manuscripts in bare lowercase with medial σ everywhere. Restore the
-// final-sigma form (σ → ς when the sigma isn't followed by another Greek letter) so witness
-// words read naturally; accents are supplied separately from the reference / base text.
+// Orthographic fold: collapse the common spelling-only variations (itacism vowels, movable-ν,
+// doubled consonants, final sigma) so "hide spelling" can tell a real variant from an itacism.
+function ofold(s: string): string {
+  let x = gkey(s)
+  x = x.replace(/ει|οι|υι/g, 'ι').replace(/αι/g, 'ε')
+  x = x.replace(/[ηυ]/g, 'ι').replace(/ω/g, 'ο')
+  x = x.replace(/([βγδθκλμνπρστφχ])\1/g, '$1')
+  x = x.replace(/ν$/, '')
+  return x
+}
+// CNTR transcribes bare, medial-σ; restore the final sigma (σ → ς when not before a Greek letter).
 function finalSigma(s: string): string {
   return s.replace(/σ(?![Ͱ-Ͽἀ-῿])/g, 'ς')
 }
@@ -86,13 +94,21 @@ function parseRef(ref: string): { osis: string; name: string; chapter: number; v
 const SOURCE_ATTR = 'Manuscript transcriptions: Center for New Testament Restoration (Alan Bunning), CC BY-SA 4.0. '
   + 'Reference line: Robinson–Pierpont Byzantine Majority Text. Reproduces the layout of R. Swanson’s New Testament Greek Manuscripts.'
 
+// ── derived render model ────────────────────────────────────────────────────────────────
+type VMCell = { shown: string; underline: boolean; omit: boolean }
+type VMRow = { sigla: WitRef[]; family: WitnessFamily; isRef: boolean; cells: VMCell[] }
+type VMVerse = { vid: string; verse: number; rows: VMRow[]; lac: string[]; hasVariant: boolean }
+
+type Controls = { refWid: string; hidden: string[]; hideSpelling: boolean; onlyVariants: boolean; group: boolean }
+const DEFAULT_CONTROLS: Controls = { refWid: 'RP', hidden: [], hideSpelling: false, onlyVariants: false, group: false }
+
 export function VariantsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, diplomatic = false }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   fontSize?: PhraseFontSize
   onFontSize?: (s: PhraseFontSize) => void
   onAttribution?: (a: string) => void
-  diplomatic?: boolean   // show the raw CNTR transcription (bare, medial σ, unaccented) instead of the readable overlay
+  diplomatic?: boolean   // raw CNTR transcription (bare, medial σ, unaccented) instead of the readable overlay
 }) {
   const isFontControlled = controlledFontSize !== undefined
   const [internalFont, setInternalFont] = useState<PhraseFontSize>('lg')
@@ -103,11 +119,29 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   const [data, setData] = useState<ChapterData | null>(null)
   const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'missing' | 'nonNT'>('idle')
   const [info, setInfo] = useState<{ wid: string; sigil: string; family: WitnessFamily; x: number; y: number } | null>(null)
-  // Parsing pane: morphology per verse, keyed by Greek surface form (from the base gnt text).
   const [parseMap, setParseMap] = useState<Record<number, Record<string, WordToken>>>({})
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const reqRef = useRef(0)
+
+  // ── control-bar state (persisted) ──────────────────────────────────────────────────────
+  const [ctrl, setCtrl] = useState<Controls>(DEFAULT_CONTROLS)
+  const [openMenu, setOpenMenu] = useState<'ref' | 'wit' | null>(null)
+  const [hoverCol, setHoverCol] = useState<number | null>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    try { const s = JSON.parse(localStorage.getItem('variants-controls') || '{}'); setCtrl({ ...DEFAULT_CONTROLS, ...s }) } catch { /* ignore */ }
+  }, [])
+  const setControls = (patch: Partial<Controls>) => setCtrl(c => {
+    const next = { ...c, ...patch }
+    localStorage.setItem('variants-controls', JSON.stringify(next))
+    return next
+  })
+  useEffect(() => {
+    if (!openMenu) return
+    const h = (e: MouseEvent) => { if (barRef.current && !barRef.current.contains(e.target as Node)) setOpenMenu(null) }
+    document.addEventListener('mousedown', h); return () => document.removeEventListener('mousedown', h)
+  }, [openMenu])
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
 
@@ -124,7 +158,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
       .catch(() => { if (id === reqRef.current) { setData(null); setStatus('missing') } })
   }, [controlledPassage, parsed])
 
-  // Load base-text morphology (gnt) for the same chapter → parsing-pane lookups.
+  // Load base-text morphology (gnt) for the same chapter → parsing-pane lookups + accent overlay.
   useEffect(() => {
     setParseMap({})
     if (!parsed) return
@@ -171,20 +205,76 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
     return data.verses.filter(v => v.verse >= parsed.vStart && v.verse <= parsed.vEnd)
   }, [data, parsed])
 
+  // ── the render model: reference, spelling fold, witness filter, grouping ─────────────────
+  const viewModel: VMVerse[] = useMemo(() => {
+    const { refWid, hidden, hideSpelling, group } = ctrl
+    return shownVerses.map(v => {
+      const refIdx = v.rows.findIndex(r => r.wid === refWid)
+      const refRow = refIdx >= 0 ? v.rows[refIdx] : v.rows[0]
+      const refCells = refRow.cells
+
+      const overlay = (t: string, differs: boolean, refText: string, isRP: boolean): string => {
+        if (!t) return ''
+        if (diplomatic) return t
+        if (isRP) return t
+        const acc = parseMap[v.verse]?.[gkey(t)]?.surface
+        if (acc) return acc
+        if (!differs && refText) return refText.replace(/^[¶*]+/, '')
+        return finalSigma(t)
+      }
+      const buildCells = (r: Row): VMCell[] => r.cells.map((c, ci) => {
+        const refText = refCells[ci]?.t ?? ''
+        if (r === refRow) return { shown: overlay(c.t, false, c.t, r.wid === 'RP'), underline: false, omit: false }
+        if (!c.t && !refText) return { shown: '', underline: false, omit: false }
+        if (!c.t && refText) return { shown: '', underline: true, omit: true }        // omission
+        if (c.t && !refText) return { shown: overlay(c.t, true, '', false), underline: true, omit: false } // addition
+        const differs = gkey(c.t) !== gkey(refText)
+        const substantive = differs && ofold(c.t) !== ofold(refText)
+        return { shown: overlay(c.t, differs, refText, false), underline: differs && (!hideSpelling || substantive), omit: false }
+      })
+
+      const others = v.rows.filter(r => r !== refRow && !hidden.includes(r.wid))
+      let rows: VMRow[] = [
+        { sigla: [{ wid: refRow.wid, sigil: refRow.sigil, family: refRow.family }], family: refRow.family, isRef: true, cells: buildCells(refRow) },
+        ...others.map(r => ({ sigla: [{ wid: r.wid, sigil: r.sigil, family: r.family }], family: r.family, isRef: false, cells: buildCells(r) })),
+      ]
+
+      if (group) {   // collapse identical non-reference readings onto one line
+        const merged = new Map<string, VMRow>()
+        for (const row of rows.slice(1)) {
+          const sig = row.cells.map(c => (c.omit ? '∅' : gkey(c.shown))).join('|')
+          const ex = merged.get(sig)
+          if (ex) { ex.sigla.push(...row.sigla); if (ex.family !== row.family) ex.family = 'other' }
+          else merged.set(sig, { ...row, sigla: [...row.sigla] })
+        }
+        rows = [rows[0], ...merged.values()]
+      }
+
+      const hasVariant = others.some(r => r.cells.some((c, ci) => {
+        const refText = refCells[ci]?.t ?? ''
+        if (!c.t && !refText) return false
+        if (!c.t || !refText) return true
+        return ofold(c.t) !== ofold(refText)
+      }))
+
+      return { vid: v.vid, verse: v.verse, rows, lac: v.lac, hasVariant }
+    })
+  }, [shownVerses, ctrl, parseMap, diplomatic])
+
+  const displayed = ctrl.onlyVariants ? viewModel.filter(v => v.hasVariant) : viewModel
+  const hiddenVerses = viewModel.length - displayed.length
+
   function lexInfo(tok: WordToken, verse: number): LexicalInfoPanel {
     return {
       surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '',
       parsing: tok.parsing, strongs: tok.strongs, reference: `${parsed?.name ?? ''} ${parsed?.chapter}:${verse}`,
     }
   }
-  // Selecting a Greek word: look up its parse by surface form in the base text for that verse.
   function selectWord(text: string, verse: number, key: string) {
     const tok = parseMap[verse]?.[gkey(text)]
     if (!tok) return
     setSelectedInfo(lexInfo(tok, verse)); setSelectedKey(key)
   }
-
-  // Default pane content before any click: the first reference word we can parse.
   const defaultParsingInfo: LexicalInfoPanel | null = useMemo(() => {
     for (const v of shownVerses) {
       for (const t of v.refTokens) {
@@ -197,6 +287,20 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   }, [shownVerses, parseMap])
 
   const fs = FONT_SIZE_MAP[fontSize]
+  const witnesses = data?.witnesses ?? []
+  const refSigil = witnesses.find(w => w.wid === ctrl.refWid)?.sigil ?? '𝔐'
+  const visibleCount = witnesses.filter(w => w.wid === ctrl.refWid || !ctrl.hidden.includes(w.wid)).length
+  const familiesPresent = useMemo(() => Array.from(new Set(witnesses.map(w => w.family))), [witnesses])
+
+  function toggleFamily(fam: WitnessFamily) {
+    const wids = witnesses.filter(w => w.family === fam && w.wid !== ctrl.refWid).map(w => w.wid)
+    const anyVisible = wids.some(w => !ctrl.hidden.includes(w))
+    setControls({ hidden: anyVisible ? Array.from(new Set([...ctrl.hidden, ...wids])) : ctrl.hidden.filter(w => !wids.includes(w)) })
+  }
+  function applyPreset(level: 'beginner' | 'advanced') {
+    if (level === 'beginner') setControls({ hideSpelling: true, onlyVariants: true, group: true })
+    else setControls({ hideSpelling: false, onlyVariants: false, group: false })
+  }
 
   // One clickable Greek word inside a collation cell.
   function GreekWord({ text, verse, wkey, bold }: { text: string; verse: number; wkey: string; bold?: boolean }) {
@@ -217,6 +321,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
     )
   }
 
+  const ctrlBtn = 'inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 hover:bg-gray-50'
+
   return (
     <div className="h-full flex flex-col min-h-0">
       <div className="flex-1 overflow-y-auto px-1 pb-4" onClick={() => info && setInfo(null)}>
@@ -236,79 +342,155 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
         {status === 'ok' && data && (
           <>
-            <div className="text-center mb-3 mt-1">
+            <div className="text-center mb-2 mt-1">
               <div className="text-[0.7rem] tracking-widest font-semibold text-gray-400 uppercase">Manuscript Collation</div>
               <div className="text-lg font-semibold text-gray-800 font-greek">{data.reference}</div>
             </div>
 
-            {shownVerses.map(v => (
-              <div key={v.vid} className="mb-4">
+            {/* Control bar */}
+            <div ref={barRef} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3 text-xs relative z-20">
+              {/* Reference selector */}
+              <div className="relative">
+                <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'ref' ? null : 'ref')}>
+                  <span className="text-gray-400">Compare to</span>
+                  <span className="font-greek font-semibold text-gray-700">{refSigil}</span>
+                  <ChevronDown size={12} className="text-gray-400" />
+                </button>
+                {openMenu === 'ref' && (
+                  <div className="absolute left-0 top-full mt-1 w-44 max-h-64 overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-lg py-1 z-30">
+                    {witnesses.map(w => (
+                      <button key={w.wid} type="button" onClick={() => { setControls({ refWid: w.wid }); setOpenMenu(null) }}
+                        className={`flex w-full items-center gap-2 px-2 py-1 text-left hover:bg-brand-50 ${w.wid === ctrl.refWid ? 'bg-brand-50' : ''}`}>
+                        <span className="inline-block w-[7px] h-[7px] rounded-full shrink-0" style={{ background: FAMILY_COLOR[w.family] }} />
+                        <span className="font-greek">{w.sigil}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Witness picker */}
+              <div className="relative">
+                <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'wit' ? null : 'wit')}>
+                  <span className="text-gray-400">Witnesses</span>
+                  <span className="font-medium text-gray-700">{visibleCount}/{witnesses.length}</span>
+                  <ChevronDown size={12} className="text-gray-400" />
+                </button>
+                {openMenu === 'wit' && (
+                  <div className="absolute left-0 top-full mt-1 w-56 max-h-80 overflow-y-auto rounded-lg border border-gray-200 bg-popover shadow-lg z-30">
+                    <div className="flex flex-wrap gap-1 px-2 py-1.5 border-b border-gray-100 sticky top-0 bg-popover">
+                      <button type="button" className="rounded px-1.5 py-0.5 text-[11px] text-gray-600 hover:bg-gray-100" onClick={() => setControls({ hidden: [] })}>All</button>
+                      <button type="button" className="rounded px-1.5 py-0.5 text-[11px] text-gray-600 hover:bg-gray-100"
+                        onClick={() => setControls({ hidden: witnesses.filter(w => w.wid !== ctrl.refWid).map(w => w.wid) })}>None</button>
+                      {familiesPresent.map(f => (
+                        <button key={f} type="button" className="rounded px-1.5 py-0.5 text-[11px] hover:bg-gray-100 inline-flex items-center gap-1"
+                          style={{ color: FAMILY_COLOR[f] }} onClick={() => toggleFamily(f)}>
+                          <span className="inline-block w-[6px] h-[6px] rounded-full" style={{ background: FAMILY_COLOR[f] }} />{FAMILY_LABEL[f]}
+                        </button>
+                      ))}
+                    </div>
+                    {witnesses.map(w => {
+                      const on = w.wid === ctrl.refWid || !ctrl.hidden.includes(w.wid)
+                      return (
+                        <label key={w.wid} className="flex items-center gap-2 px-2 py-1 hover:bg-gray-50 cursor-pointer">
+                          <input type="checkbox" checked={on} disabled={w.wid === ctrl.refWid} className="accent-brand-600"
+                            onChange={() => setControls({ hidden: on ? [...ctrl.hidden, w.wid] : ctrl.hidden.filter(x => x !== w.wid) })} />
+                          <span className="inline-block w-[7px] h-[7px] rounded-full shrink-0" style={{ background: FAMILY_COLOR[w.family] }} />
+                          <span className="font-greek">{w.sigil}</span>
+                          {w.wid === ctrl.refWid && <span className="ml-auto text-[10px] text-brand-600 uppercase tracking-wide">ref</span>}
+                        </label>
+                      )
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <label className="inline-flex items-center gap-1 cursor-pointer" title="Hide spelling-only (itacism) differences">
+                <input type="checkbox" checked={ctrl.hideSpelling} className="accent-brand-600" onChange={e => setControls({ hideSpelling: e.target.checked })} />
+                <span className="text-gray-600">Hide spelling</span>
+              </label>
+              <label className="inline-flex items-center gap-1 cursor-pointer" title="Show only verses with a substantive variant">
+                <input type="checkbox" checked={ctrl.onlyVariants} className="accent-brand-600" onChange={e => setControls({ onlyVariants: e.target.checked })} />
+                <span className="text-gray-600">Only variants</span>
+              </label>
+              <label className="inline-flex items-center gap-1 cursor-pointer" title="Group witnesses that share a reading onto one line">
+                <input type="checkbox" checked={ctrl.group} className="accent-brand-600" onChange={e => setControls({ group: e.target.checked })} />
+                <span className="text-gray-600">Group</span>
+              </label>
+
+              <span className="h-4 w-px bg-gray-200" />
+              <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('beginner')}>Beginner</button>
+              <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('advanced')}>Advanced</button>
+            </div>
+
+            {displayed.length === 0 && (
+              <p className="text-gray-400 text-sm text-center mt-6">No substantive variants among the visible witnesses in this passage.</p>
+            )}
+
+            {displayed.map(vm => (
+              <div key={vm.vid} className="mb-4">
                 <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-1.5">
-                  <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }}>
+                  <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }} onMouseLeave={() => setHoverCol(null)}>
                     <tbody>
-                      {v.rows.map((r, ri) => {
-                        const isRef = r.wid === 'RP'
-                        return (
-                          <tr key={`${r.wid}-${ri}`} className={isRef ? 'font-semibold' : ''}>
-                            <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-300 select-none whitespace-nowrap">
-                              {ri === 0 && (
-                                <span className="inline-flex items-center gap-1">
-                                  <span>{v.verse}</span>
-                                  <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={v.verse}
-                                    noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
-                                </span>
-                              )}
+                      {vm.rows.map((r, ri) => (
+                        <tr key={ri} className={r.isRef ? 'font-semibold' : ''}>
+                          <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-300 select-none whitespace-nowrap">
+                            {ri === 0 && (
+                              <span className="inline-flex items-center gap-1">
+                                <span>{vm.verse}</span>
+                                <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
+                                  noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                              </span>
+                            )}
+                          </td>
+                          {r.cells.map((c, ci) => (
+                            <td key={ci} onMouseEnter={() => setHoverCol(ci)}
+                              className={`pr-[7px] align-baseline ${c.underline ? 'underline decoration-1 underline-offset-2' : ''} ${c.omit ? 'text-gray-300' : ''} ${hoverCol === ci ? 'bg-brand-50' : ''}`}>
+                              {c.omit ? '—' : <GreekWord text={c.shown} verse={vm.verse} wkey={`${vm.vid}.${ri}.${ci}`} bold={r.isRef} />}
                             </td>
-                            {r.cells.map((c, ci) => {
-                              // Overlay proper Greek on the bare CNTR witness forms: prefer the
-                              // accented base-text form, else the accented reference word when the
-                              // witness agrees, else just restore the final sigma.
-                              const refCell = v.rows[0].cells[ci]
-                              const acc = parseMap[v.verse]?.[gkey(c.t)]?.surface
-                              const shown = isRef ? c.t
-                                : diplomatic ? c.t   // raw CNTR form, as transcribed
-                                : acc ?? (!c.d && refCell?.t ? refCell.t.replace(/^[¶*]+/, '') : finalSigma(c.t))
-                              return (
-                                <td key={ci} className={`pr-[7px] align-baseline ${c.d ? 'underline decoration-1 underline-offset-2' : ''} ${c.o ? 'text-gray-300' : ''}`}>
-                                  {c.o ? '—' : <GreekWord text={shown} verse={v.verse} wkey={`${v.vid}.${ri}.${ci}`} bold={isRef} />}
-                                </td>
-                              )
-                            })}
-                            <td className="sticky right-0 pl-3 align-baseline bg-white text-left border-l border-gray-100">
-                              <button
-                                type="button"
-                                onClick={e => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setInfo({ wid: r.wid, sigil: r.sigil, family: r.family, x: rect.left, y: rect.bottom }) }}
-                                className="inline-flex items-center gap-1.5 font-mono text-[0.8rem] font-semibold text-gray-600 hover:text-brand-700"
-                                title="Manuscript information"
-                              >
-                                <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[r.family] }} />
-                                {r.sigil}
-                              </button>
-                            </td>
-                          </tr>
-                        )
-                      })}
+                          ))}
+                          <td className="sticky right-0 pl-3 align-baseline bg-white text-left border-l border-gray-100">
+                            <span className="inline-flex flex-wrap items-center gap-x-1.5">
+                              {r.sigla.map(s => (
+                                <button key={s.wid + s.sigil} type="button"
+                                  onClick={e => { e.stopPropagation(); const rect = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: rect.left, y: rect.bottom }) }}
+                                  className="inline-flex items-center gap-1 font-mono text-[0.8rem] font-semibold text-gray-600 hover:text-brand-700"
+                                  title="Manuscript information">
+                                  <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[s.family] }} />
+                                  {s.sigil}
+                                </button>
+                              ))}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
-                {v.lac.length > 0 && (
+                {vm.lac.length > 0 && (
                   <div className="text-[0.7rem] text-gray-400 mt-0.5 pl-6">
-                    <span className="font-mono font-semibold">lac.</span> {v.lac.join(' ')} <span className="text-gray-300">(absent here)</span>
+                    <span className="font-mono font-semibold">lac.</span> {vm.lac.join(' ')} <span className="text-gray-300">(absent here)</span>
                   </div>
                 )}
               </div>
             ))}
 
+            {ctrl.onlyVariants && hiddenVerses > 0 && (
+              <p className="text-[0.7rem] text-gray-400 mt-1 pl-1">{hiddenVerses} verse{hiddenVerses > 1 ? 's' : ''} with no variants hidden ·
+                <button type="button" className="ml-1 underline hover:text-brand-600" onClick={() => setControls({ onlyVariants: false })}>show all</button>
+              </p>
+            )}
+
             {/* Legend */}
             <div className="text-[0.7rem] text-gray-400 mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-x-4 gap-y-1 items-center pl-1">
-              <span>Reference: <b className="font-greek">𝔐</b> Byzantine majority</span>
+              <span>Reference: <b className="font-greek">{refSigil}</b></span>
               <span>Underline = differs · — = omission</span>
-              {(['alexandrian', 'byzantine', 'western', 'mixed'] as WitnessFamily[]).map(f => (
+              {familiesPresent.map(f => (
                 <span key={f} className="inline-flex items-center gap-1">
                   <span className="inline-block w-[7px] h-[7px] rounded-full" style={{ background: FAMILY_COLOR[f] }} />{FAMILY_LABEL[f]}
                 </span>
               ))}
-              <span className="text-gray-300">· Click a word to parse it · click a siglum for manuscript details</span>
+              <span className="text-gray-300">· Click a word to parse it · click a siglum for details</span>
             </div>
           </>
         )}

@@ -8,7 +8,7 @@
 // witnesses are described in full; anything not listed falls back to a generic entry
 // derived from its siglum + text-family (see `witnessInfo`).
 
-export type WitnessFamily = 'byzantine' | 'alexandrian' | 'western' | 'mixed' | 'other'
+export type WitnessFamily = 'byzantine' | 'alexandrian' | 'western' | 'mixed' | 'critical' | 'other'
 
 export interface WitnessInfo {
   sigil: string
@@ -26,6 +26,7 @@ export const FAMILY_LABEL: Record<WitnessFamily, string> = {
   alexandrian: 'Alexandrian',
   western: 'Western',
   mixed: 'Mixed / Caesarean',
+  critical: 'Critical / edition',
   other: 'Other',
 }
 
@@ -35,6 +36,7 @@ export const FAMILY_COLOR: Record<WitnessFamily, string> = {
   alexandrian: '#1d4ed8',  // blue-700
   western: '#be185d',      // pink-700
   mixed: '#7c3aed',        // violet-600
+  critical: '#0d9488',     // teal-600
   other: '#6b7280',        // gray-500
 }
 
