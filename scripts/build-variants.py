@@ -94,9 +94,13 @@ OVERRIDES = {
     "P46": ("𝔓46", "alexandrian"), "P47": ("𝔓47", "alexandrian"), "P72": ("𝔓72", "alexandrian"),
     "P52": ("𝔓52", "alexandrian"),
 }
-def witness_meta(fid):
+def witness_meta(fid, book=None):
     if fid in EDITIONS: return (EDITIONS[fid], "critical")
-    if fid in OVERRIDES: return OVERRIDES[fid]
+    if fid in OVERRIDES:
+        sig, fam = OVERRIDES[fid]
+        # Codex Alexandrinus (A) is Byzantine only in the Gospels; Alexandrian elsewhere.
+        if fid == "02" and book is not None and book >= 44: fam = "alexandrian"
+        return (sig, fam)
     if fid.startswith("P"): return ("𝔓" + fid[1:], FAMILY_DEFAULT_PAP)
     if fid.startswith("O"): return (fid, "other")
     return (fid, FAMILY_DEFAULT_MAJ)
@@ -231,7 +235,7 @@ def build_chapter(wits, osis, ch):
         aligned = []   # {wid, sigil, family, rmap, ins}
         lac = []       # chapter witnesses physically absent at this verse (the "lac." line)
         for fid in present:
-            sig, fam = witness_meta(fid)
+            sig, fam = witness_meta(fid, num)
             raw = wits[fid].get(vid)
             if raw is None:
                 lac.append(sig); continue
@@ -268,7 +272,7 @@ def build_chapter(wits, osis, ch):
         verses.append({"verse": vid - vbase, "vid": str(vid), "refTokens": ref_tokens, "rows": rows, "lac": lac})
 
     witnesses=[{"wid":"RP","sigil":"𝔐","family":"byzantine"}]+[
-        {"wid":f,"sigil":witness_meta(f)[0],"family":witness_meta(f)[1]} for f in present]
+        {"wid":f,"sigil":witness_meta(f, num)[0],"family":witness_meta(f, num)[1]} for f in present]
     return {"book":osis,"chapter":ch,"reference":f"{NAME[osis]} {ch}",
             "witnesses":witnesses,"verses":verses,
             "source":"CNTR electronic transcriptions (Alan Bunning / Center for New Testament "

@@ -489,8 +489,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               const units = variationUnits(vm.rows, ctrl.hideSpelling)
               return (
                 <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
-                  <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-400 mb-1.5">
-                    <span className="font-semibold">{parsed!.chapter}:{vm.verse}</span>
+                  <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-500 mb-1.5">
+                    <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
                     <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                       noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
                     <NoteBadge vid={vm.vid} verse={vm.verse} />
@@ -532,10 +532,10 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                     <tbody>
                       {vm.rows.map((r, ri) => (
                         <tr key={ri} className={r.isRef ? 'font-semibold' : ''}>
-                          <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-300 select-none whitespace-nowrap">
+                          <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-500 select-none whitespace-nowrap">
                             {ri === 0 && (
                               <span className="inline-flex items-center gap-1">
-                                <span>{parsed!.chapter}:{vm.verse}</span>
+                                <span className="font-semibold text-gray-600">{parsed!.chapter}:{vm.verse}</span>
                                 <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                                   noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
                                 <NoteBadge vid={vm.vid} verse={vm.verse} />
