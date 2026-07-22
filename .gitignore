@@ -50,3 +50,6 @@ scripts/data/oshb-cache/
 # Python bytecode cache
 __pycache__/
 *.pyc
+
+# CNTR transcription source cache (auto-downloaded by build-variants.py)
+scripts/cntr/

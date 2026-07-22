@@ -1,10 +1,11 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, type LucideIcon } from 'lucide-react'
+import { PencilLine, ListTree, Columns3, StickyNote, BookOpen, MoreVertical, X, Download, FolderClock, Scroll, Rows3, type LucideIcon } from 'lucide-react'
 import { ExegesisWorkspace, type ExegesisWorkspaceHandle, type SavedSession } from './ExegesisWorkspace'
 import { PhraseExplorer, PhrasingSourcesPanel, FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { SynopsisView } from '@/components/phrase/SynopsisView'
+import { VariantsView } from '@/components/phrase/VariantsView'
 import { BackgroundsView, type OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
 import { NotesView, type NoteAnchor } from './NotesView'
@@ -33,22 +34,23 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
  */
 // Texts moved out to its own top-level page (/texts) + header nav item (2026-07-19), freeing a
 // workspace slot; the Backgrounds "open in Texts" hand-off now navigates to /texts.
-type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'backgrounds' | 'notes' | 'commentary'
-const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'backgrounds', 'notes', 'commentary']
+type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'variants' | 'backgrounds' | 'notes' | 'commentary'
+const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'variants', 'backgrounds', 'notes', 'commentary']
 
 // Tab id → label + icon, shared by the desktop tab bar and the mobile hamburger menu.
 const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
   { id: 'workspace',   label: 'Syntax',      Icon: PencilLine },
   { id: 'phrasing',    label: 'Phrasing',    Icon: ListTree },
   { id: 'synopsis',    label: 'Synopsis',    Icon: Columns3 },
+  { id: 'variants',    label: 'Variants',    Icon: Rows3 },
   { id: 'backgrounds', label: 'Backgrounds', Icon: Scroll },
   { id: 'commentary',  label: 'Commentary',  Icon: BookOpen },
   { id: 'notes',       label: 'Notes',       Icon: StickyNote },
 ]
 
-// Mobile switches tabs from inside the ⋮ menu and omits Backgrounds and Synopsis (too
-// wide/complex to use comfortably on a phone — they stay desktop-only).
-const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
+// Mobile switches tabs from inside the ⋮ menu and omits the wide desktop-only views
+// (Backgrounds, Synopsis, Variants — the collation grid needs horizontal room).
+const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis', 'variants']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
@@ -89,6 +91,8 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   const [synopsisAttribution, setSynopsisAttribution] = useState('')
   const [bgFontSize, setBgFontSize] = useState<PhraseFontSize>('lg')
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
+  const [variantsFontSize, setVariantsFontSize] = useState<PhraseFontSize>('lg')
+  const [variantsAttribution, setVariantsAttribution] = useState('')
   // A Backgrounds cross-reference "Open in Texts" now navigates to the standalone /texts page
   // (Texts left the workspace), carrying the passage as ?open=<encoded target>.
   function openInTexts(target: OpenInTextsTarget) {
@@ -247,7 +251,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
   const toolsMenuTitles: Record<typeof tab, string> = {
     workspace: 'Syntax tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
-    backgrounds: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
+    variants: 'Settings & sources', backgrounds: 'Settings & sources', commentary: 'Commentary text', notes: 'Note text',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
 
@@ -451,6 +455,30 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                   </>
                 )}
 
+                {tab === 'variants' && (
+                  <>
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
+                      <div className="flex items-center gap-3">
+                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
+                        <input
+                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
+                          value={FONT_SIZES.indexOf(variantsFontSize)}
+                          onChange={e => setVariantsFontSize(FONT_SIZES[e.target.valueAsNumber])}
+                          className="flex-1 accent-brand-600"
+                        />
+                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+                      </div>
+                    </div>
+                    {variantsAttribution && (
+                      <details className="border-t border-gray-100 pt-2">
+                        <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
+                        <p className="text-xs text-gray-600 mt-2">{variantsAttribution}</p>
+                      </details>
+                    )}
+                  </>
+                )}
+
                 {tab === 'backgrounds' && (
                   <>
                     <div>
@@ -548,6 +576,10 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       <div className={`flex-1 min-h-0 overflow-y-auto ${tab === 'synopsis' ? '' : 'hidden'}`}>
         <SynopsisView controlledPassage={passage} isAuthenticated={isAuthenticated}
           fontSize={synFontSize} onFontSize={setSynFontSize} onAttribution={setSynopsisAttribution} />
+      </div>
+      <div className={`flex-1 min-h-0 ${tab === 'variants' ? '' : 'hidden'}`}>
+        <VariantsView controlledPassage={passage} isAuthenticated={isAuthenticated}
+          fontSize={variantsFontSize} onFontSize={setVariantsFontSize} onAttribution={setVariantsAttribution} />
       </div>
       <div className={`flex-1 min-h-0 flex flex-col ${tab === 'backgrounds' ? '' : 'hidden'}`}>
         <BackgroundsView controlledPassage={passage} isAuthenticated={isAuthenticated}
