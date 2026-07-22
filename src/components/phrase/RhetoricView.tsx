@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { DEVICES, GROUP_LABEL, GROUP_COLOR, GROUP_DESC, GROUP_ORDER, type Device, type DeviceGroup, type Occurrence } from '@/lib/rhetoric-devices'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -118,6 +118,15 @@ const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech
   + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
 
 type Hit = { device: Device; note?: string; ref: string; source?: 'editorial' }   // ref = exact occurrence ref (Bengel key)
+
+// All reading prose on the tab shares this size (matches the left passage column).
+const READING_FS: CSSProperties = { fontSize: 'var(--rh-fs)' }
+// Break Bengel's roman-numeral outline markers (I. II. III. …) onto their own lines so a long
+// analytical note reads as an outline instead of a run-on block. (Arabic markers are left inline
+// to avoid colliding with verse numbers like "4:28.")
+function tidyBengel(s: string): string {
+  return s.replace(/\s+([IVX]{1,4})\.\s+(?=[A-Z])/g, '\n$1. ').trim()
+}
 
 // Versions the passage column can show: a Greek edition or a translation (mirrors the
 // Synopsis / Backgrounds selector). Greek editions carry word-level tokens that feed the
@@ -336,7 +345,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   const sel = selected && deviceById(selected.id)
 
   return (
-    <div className="h-full flex flex-col min-h-0">
+    <div className="h-full flex flex-col min-h-0" style={{ '--rh-fs': '1.45rem' } as CSSProperties}>
       {status === 'idle' && <p className="text-gray-400 text-sm mt-6 text-center">Enter a New Testament passage to see its rhetorical figures.</p>}
       {status === 'nonNT' && <p className="text-gray-500 text-sm mt-6 text-center">Rhetoric data covers the <b>New Testament</b>. Try e.g. <span className="font-medium">Romans 8:31-39</span>.</p>}
       {status === 'loading' && <p className="text-gray-400 text-sm mt-6 text-center">Loading…</p>}
@@ -356,7 +365,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
             </div>
-            <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={{ fontSize: '1.45rem' }}>
+            <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
               {shownVerses.map(v => {
                 const has = byVerse[v.verse]?.length
                 return (
@@ -472,7 +481,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                     <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[browseDevice.group]}`}>{GROUP_LABEL[browseDevice.group]}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[browseDevice.group]}</p>
-                  <p className="text-sm text-gray-700 leading-relaxed mt-1.5">{browseDevice.definition}</p>
+                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{browseDevice.definition}</p>
                 </div>
                 <div className="pt-2 border-t border-gray-100">
                   <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1.5">
@@ -504,7 +513,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                     <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[sel.group]}`}>{GROUP_LABEL[sel.group]}</span>
                   </div>
                   <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[sel.group]}</p>
-                  <p className="text-sm text-gray-700 leading-relaxed mt-1.5">{sel.definition}</p>
+                  <p className="font-reading text-gray-700 leading-relaxed mt-1.5" style={READING_FS}>{sel.definition}</p>
                 </div>
 
                 {/* the note for this specific occurrence, plus an editorial caveat if needed */}
@@ -517,7 +526,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                           <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
                         </p>
                       )}
-                      {occ?.note && <p className="text-xs text-gray-600 bg-gray-50 rounded-lg px-2.5 py-1.5"><b className="font-mono">{selected!.ref}</b> — {occ.note}</p>}
+                      {occ?.note && <p className="font-reading text-gray-700 bg-gray-50 rounded-lg px-2.5 py-1.5 leading-relaxed" style={READING_FS}><b className="font-mono text-[0.8em] text-gray-500">{selected!.ref}</b> — {occ.note}</p>}
                     </div>
                   )
                 })()}
@@ -526,7 +535,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                 <div>
                   <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">Bengel’s Gnomon · {selected!.ref}</p>
                   {bengel[selected!.ref] ? (
-                    <p className="text-xs text-gray-600 leading-relaxed font-greek-mixed">{bengel[selected!.ref]}</p>
+                    <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(bengel[selected!.ref])}</p>
                   ) : (
                     <p className="text-xs text-gray-400 italic">No Gnomon note for this verse.</p>
                   )}
