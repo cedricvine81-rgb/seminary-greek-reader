@@ -47,6 +47,24 @@ export const WITNESS_INFO: Record<string, WitnessInfo> = {
     contents: 'Entire New Testament', family: 'byzantine',
     importance: 'Shown here as the reference line: the text of the Byzantine majority, against which each early witness is compared. Underlined words are where a witness departs from it.',
   },
+  SR: {
+    sigil: 'SR', name: 'Statistical Restoration (Bunning)', date: '2022 (computer-generated)',
+    provenance: 'CNTR — an algorithmic reconstruction weighing the earliest manuscript evidence.',
+    contents: 'Entire New Testament', family: 'critical',
+    importance: 'A modern, reproducible critical text built statistically from the early witnesses; close to NA/UBS. A useful "critical" reference to compare against.',
+  },
+  WH: {
+    sigil: 'WH', name: 'Westcott–Hort (1881)', date: '1881',
+    provenance: 'The New Testament in the Original Greek, by B. F. Westcott and F. J. A. Hort.',
+    contents: 'Entire New Testament', family: 'critical',
+    importance: 'The landmark 19th-century critical edition that broke the dominance of the Textus Receptus and leans heavily on ℵ and B.',
+  },
+  KJTR: {
+    sigil: 'TR', name: 'Textus Receptus (Scrivener / KJV)', date: '1550–1894 (Byzantine tradition)',
+    provenance: 'The printed Greek text underlying the King James Version.',
+    contents: 'Entire New Testament', family: 'critical',
+    importance: 'The "Received Text" of the Reformation era, close to the Byzantine majority; the basis of the KJV and a foil to the modern critical text.',
+  },
   '01': {
     sigil: 'ℵ', name: 'Codex Sinaiticus', ga: '01', date: 'c. 330–360 (4th c.)',
     provenance: 'Written in Egypt or Caesarea; found at St Catherine’s Monastery, Sinai. Now mostly in the British Library.',

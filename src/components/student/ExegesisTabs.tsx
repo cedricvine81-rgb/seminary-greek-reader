@@ -49,8 +49,8 @@ const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
 ]
 
 // Mobile switches tabs from inside the ⋮ menu and omits the wide desktop-only views
-// (Backgrounds, Synopsis, Variants — the collation grid needs horizontal room).
-const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis', 'variants']
+// (Backgrounds, Synopsis — too wide for a phone). Variants has its own mobile card layout.
+const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis']
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {

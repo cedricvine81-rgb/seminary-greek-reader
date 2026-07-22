@@ -59,11 +59,15 @@ def ensure_cache():
                 f.write(_get(f"{GH_RAW}/class%201/{urllib.parse.quote(name)}", ctx))
         if (i + 1) % 20 == 0:
             print(f"  …{i + 1}/{len(listing)} witnesses")
-    with open(rp, "wb") as f:
-        f.write(_get(GH_RAW + "/critical%20texts/RP.txt", ctx))
-    print(f"  cached {len(os.listdir(c1))} witnesses + RP.txt")
+    for ed in ("RP", "SR", "WH", "KJTR"):   # RP reference + printed editions
+        with open(os.path.join(CACHE, ed + ".txt"), "wb") as f:
+            f.write(_get(f"{GH_RAW}/critical%20texts/{ed}.txt", ctx))
+    print(f"  cached {len(os.listdir(c1))} witnesses + RP/SR/WH/KJTR")
 
 import urllib.parse  # noqa: E402  (used by ensure_cache)
+
+# Printed critical editions shown as extra reference-eligible lines (file id -> sigil).
+EDITIONS = {"SR": "SR", "WH": "WH", "KJTR": "TR"}
 
 # ---- book numbering (CNTR 40..66) -> Osis abbrev used by /data/gnt/<Osis>_<ch>.json ----
 BOOKS = {40:"Matt",41:"Mark",42:"Luke",43:"John",44:"Acts",45:"Rom",46:"1Cor",47:"2Cor",
@@ -91,6 +95,7 @@ OVERRIDES = {
     "P52": ("𝔓52", "alexandrian"),
 }
 def witness_meta(fid):
+    if fid in EDITIONS: return (EDITIONS[fid], "critical")
     if fid in OVERRIDES: return OVERRIDES[fid]
     if fid.startswith("P"): return ("𝔓" + fid[1:], FAMILY_DEFAULT_PAP)
     if fid.startswith("O"): return (fid, "other")
@@ -153,9 +158,10 @@ def norm(tok):
 # ---- load every witness once, indexed by verse-id ----------------------------------------
 def load_all():
     wits = {}   # fid -> {vid(int): raw}
-    files = ["RP"] + sorted(f[:-4] for f in os.listdir(os.path.join(CACHE,"class1")) if f.endswith(".txt"))
+    files = ["RP"] + list(EDITIONS) + sorted(f[:-4] for f in os.listdir(os.path.join(CACHE,"class1")) if f.endswith(".txt"))
     for fid in files:
-        path = os.path.join(CACHE, "RP.txt") if fid=="RP" else os.path.join(CACHE,"class1",fid+".txt")
+        path = (os.path.join(CACHE, fid + ".txt") if fid == "RP" or fid in EDITIONS
+                else os.path.join(CACHE, "class1", fid + ".txt"))
         d = {}
         with open(path, encoding="utf-8") as f:
             for line in f:
@@ -209,12 +215,12 @@ def build_chapter(wits, osis, ch):
     for fid, d in wits.items():
         if fid=="RP": continue
         if any(vbase < v < vbase+1000 for v in d): present.append(fid)
-    # order: papyri first (by number), then majuscules, RP handled as reference row per verse
+    # order: printed editions first, then papyri (by number), then majuscules.
+    ED_ORDER = {"SR": 0, "WH": 1, "KJTR": 2}
     def sortkey(fid):
-        sig,fam = witness_meta(fid)
-        is_pap = fid.startswith("P")
-        n = int(re.sub(r"\D","",fid) or 0)
-        return (0 if is_pap else 1, n)
+        if fid in EDITIONS: return (0, ED_ORDER.get(fid, 9))
+        n = int(re.sub(r"\D", "", fid) or 0)
+        return (1 if fid.startswith("P") else 2, n)
     present.sort(key=sortkey)
 
     verses=[]

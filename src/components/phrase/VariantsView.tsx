@@ -102,6 +102,32 @@ type VMVerse = { vid: string; verse: number; rows: VMRow[]; lac: string[]; hasVa
 type Controls = { refWid: string; hidden: string[]; hideSpelling: boolean; onlyVariants: boolean; group: boolean }
 const DEFAULT_CONTROLS: Controls = { refWid: 'RP', hidden: [], hideSpelling: false, onlyVariants: false, group: false }
 
+// On phones the wide grid becomes a per-variation-unit apparatus: for each column where the
+// visible witnesses disagree, list each reading with the sigla that support it.
+type Unit = { readings: { text: string; nothing: boolean; sigla: WitRef[] }[] }
+function variationUnits(rows: VMRow[], hideSpelling: boolean): Unit[] {
+  const keyFn = hideSpelling ? ofold : gkey
+  const refRow = rows[0]
+  const cols = refRow?.cells.length ?? 0
+  const units: Unit[] = []
+  for (let ci = 0; ci < cols; ci++) {
+    const groups = new Map<string, { text: string; nothing: boolean; sigla: WitRef[] }>()
+    for (const r of rows) {
+      const c = r.cells[ci]; if (!c) continue
+      const nothing = c.omit || !c.shown
+      const key = nothing ? '∅' : keyFn(c.shown)
+      const g = groups.get(key)
+      if (g) g.sigla.push(...r.sigla)
+      else groups.set(key, { text: c.shown, nothing, sigla: [...r.sigla] })
+    }
+    if (groups.size <= 1) continue   // all agree → not a variation unit
+    const refKey = (() => { const c = refRow.cells[ci]; return (c.omit || !c.shown) ? '∅' : keyFn(c.shown) })()
+    const readings = [groups.get(refKey), ...[...groups.entries()].filter(([k]) => k !== refKey).map(([, v]) => v)].filter(Boolean) as Unit['readings']
+    units.push({ readings })
+  }
+  return units
+}
+
 export function VariantsView({ controlledPassage, isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, diplomatic = false }: {
   controlledPassage?: string
   isAuthenticated?: boolean
@@ -128,7 +154,13 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   const [ctrl, setCtrl] = useState<Controls>(DEFAULT_CONTROLS)
   const [openMenu, setOpenMenu] = useState<'ref' | 'wit' | null>(null)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 640px)')
+    const on = () => setIsMobile(mq.matches); on()
+    mq.addEventListener('change', on); return () => mq.removeEventListener('change', on)
+  }, [])
   useEffect(() => {
     try { const s = JSON.parse(localStorage.getItem('variants-controls') || '{}'); setCtrl({ ...DEFAULT_CONTROLS, ...s }) } catch { /* ignore */ }
   }, [])
@@ -427,7 +459,44 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               <p className="text-gray-400 text-sm text-center mt-6">No substantive variants among the visible witnesses in this passage.</p>
             )}
 
-            {displayed.map(vm => (
+            {isMobile && displayed.map(vm => {
+              const units = variationUnits(vm.rows, ctrl.hideSpelling)
+              return (
+                <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
+                  <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-400 mb-1.5">
+                    <span className="font-semibold">{vm.verse}</span>
+                    <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
+                      noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                  </div>
+                  {units.length === 0 ? (
+                    <p className="text-xs text-gray-400">No variants among the visible witnesses.</p>
+                  ) : units.map((u, ui) => (
+                    <div key={ui} className="mb-2 last:mb-0 border-l-2 border-gray-100 pl-2">
+                      {u.readings.map((rd, ri) => (
+                        <div key={ri} className="flex gap-2 items-baseline py-0.5">
+                          <span className="font-greek shrink-0 min-w-[4.5rem]" style={{ fontSize: fs }}>
+                            {rd.nothing ? <span className="text-gray-300">⌀ omit</span>
+                              : <GreekWord text={rd.text} verse={vm.verse} wkey={`${vm.vid}.m${ui}.${ri}`} bold={ri === 0} />}
+                          </span>
+                          <span className="flex flex-wrap gap-x-1.5 gap-y-0.5 items-center pt-0.5">
+                            {rd.sigla.map(s => (
+                              <button key={s.wid + s.sigil} type="button" title="Manuscript information"
+                                onClick={e => { e.stopPropagation(); const r = e.currentTarget.getBoundingClientRect(); setInfo({ wid: s.wid, sigil: s.sigil, family: s.family, x: r.left, y: r.bottom }) }}
+                                className="font-mono text-[0.72rem] font-semibold" style={{ color: FAMILY_COLOR[s.family] }}>{s.sigil}</button>
+                            ))}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                  {vm.lac.length > 0 && (
+                    <div className="text-[0.68rem] text-gray-400 mt-1"><span className="font-mono font-semibold">lac.</span> {vm.lac.join(' ')}</div>
+                  )}
+                </div>
+              )
+            })}
+
+            {!isMobile && displayed.map(vm => (
               <div key={vm.vid} className="mb-4">
                 <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-1.5">
                   <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }} onMouseLeave={() => setHoverCol(null)}>
