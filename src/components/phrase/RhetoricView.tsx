@@ -54,7 +54,7 @@ function loadBengel(): Promise<Record<string, string>> {
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
   + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain.'
 
-type Hit = { device: Device; note?: string }
+type Hit = { device: Device; note?: string; ref: string }   // ref = the exact occurrence ref (Bengel key)
 
 export function RhetoricView({ controlledPassage, onAttribution }: {
   controlledPassage?: string
@@ -95,7 +95,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
       for (const occ of device.occurrences) {
         const p = parseRef(occ.ref)
         if (p && p.osis === parsed.osis && p.chapter === parsed.chapter) {
-          (map[p.vStart] ||= []).push({ device, note: occ.note })
+          (map[p.vStart] ||= []).push({ device, note: occ.note, ref: occ.ref })
         }
       }
     }
@@ -155,12 +155,12 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
                     <p className="text-[0.7rem] font-mono font-semibold text-gray-500 mb-1">{parsed!.chapter}:{v.verse}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {byVerse[v.verse].map((h, i) => {
-                        const on = selected?.id === h.device.id && selected?.ref === `${parsed!.name} ${parsed!.chapter}:${v.verse}`
+                        const on = selected?.id === h.device.id && selected?.ref === h.ref
                         return (
                           <button
                             key={h.device.id + i}
                             type="button"
-                            onClick={() => setSelected({ id: h.device.id, ref: `${parsed!.name} ${parsed!.chapter}:${v.verse}` })}
+                            onClick={() => setSelected({ id: h.device.id, ref: h.ref })}
                             className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
                             title={h.note}
                           >
@@ -201,7 +201,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
 
                 {/* the note for this specific occurrence */}
                 {(() => {
-                  const occ = sel.occurrences.find(o => `${sel.name}` && parseRef(o.ref)?.vStart === parseInt(selected!.ref.split(':')[1], 10) && parseRef(o.ref)?.osis === parsed!.osis)
+                  const occ = sel.occurrences.find(o => o.ref === selected!.ref)
                   return occ?.note ? <p className="text-xs text-gray-600 bg-gray-50 rounded-lg px-2.5 py-1.5"><b className="font-mono">{selected!.ref}</b> — {occ.note}</p> : null
                 })()}
 

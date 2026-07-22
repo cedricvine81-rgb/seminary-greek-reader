@@ -6,6 +6,8 @@
 // (Bullinger + standard rhetorical-critical handbooks), not an exhaustive index; explanations
 // are written in plain language. Bengel's Gnomon note for each occurrence verse is fetched
 // separately into /data/rhetoric/bengel.json and shown alongside.
+//
+// Coverage is being grown book by book (Matthew filled out first).
 
 export type DeviceGroup = 'comparison' | 'substitution' | 'omission' | 'repetition' | 'arrangement' | 'emphasis'
 
@@ -39,7 +41,10 @@ export const DEVICES: Device[] = [
     id: 'simile', name: 'Simile', greek: 'ὁμοίωσις', group: 'comparison',
     definition: 'An explicit comparison of two unlike things using “like” or “as.” The comparison is stated openly, which makes it gentler than a metaphor.',
     occurrences: [
+      { ref: 'Matt 10:16', note: '“wise as serpents and innocent as doves”' },
       { ref: 'Matt 13:31', note: 'the kingdom is “like” a mustard seed' },
+      { ref: 'Matt 13:33', note: 'the kingdom is “like” leaven' },
+      { ref: 'Matt 17:2', note: 'his face shone “as the sun”' },
       { ref: 'Matt 23:27', note: '“like” whitewashed tombs' },
       { ref: '1 Peter 1:24', note: '“all flesh is as grass”' },
       { ref: 'James 1:6', note: 'the doubter is “like a wave of the sea”' },
@@ -49,10 +54,12 @@ export const DEVICES: Device[] = [
     id: 'metaphor', name: 'Metaphor', greek: 'μεταφορά', group: 'comparison',
     definition: 'An implied comparison that calls one thing another (“A is B”), without “like” or “as.” Stronger than a simile because the identification is direct.',
     occurrences: [
-      { ref: 'John 10:9', note: '“I am the door”' },
-      { ref: 'John 15:5', note: '“I am the vine, you are the branches”' },
       { ref: 'Matt 5:13', note: '“you are the salt of the earth”' },
       { ref: 'Matt 5:14', note: '“you are the light of the world”' },
+      { ref: 'Matt 7:15', note: 'false prophets are “ravenous wolves”' },
+      { ref: 'Matt 9:37', note: '“the harvest is plentiful, the labourers few”' },
+      { ref: 'John 10:9', note: '“I am the door”' },
+      { ref: 'John 15:5', note: '“I am the vine, you are the branches”' },
       { ref: 'John 6:35', note: '“I am the bread of life”' },
     ],
   },
@@ -61,20 +68,31 @@ export const DEVICES: Device[] = [
     id: 'metonymy', name: 'Metonymy', greek: 'μετωνυμία', group: 'substitution',
     definition: 'Naming something by a word closely associated with it rather than the thing itself — e.g. the cause for the effect, the container for its contents, the author for his writings.',
     occurrences: [
+      { ref: 'Matt 3:5', note: '“Jerusalem and all Judea went out” = the people of those places' },
+      { ref: 'Matt 26:39', note: '“let this cup pass” — the cup = the suffering' },
       { ref: 'Luke 16:29', note: '“Moses and the prophets” = their writings' },
       { ref: '1 Corinthians 11:25', note: '“the cup” = what it contains / the covenant' },
       { ref: 'Romans 3:30', note: '“the circumcision” = the Jews' },
-      { ref: 'Luke 1:32', note: '“the throne of David” = David’s royal line' },
     ],
   },
   {
     id: 'synecdoche', name: 'Synecdoche', greek: 'συνεκδοχή', group: 'substitution',
     definition: 'Substituting a part for the whole (or the whole for a part) — e.g. “all the world” for the empire, “flesh and blood” for human beings.',
     occurrences: [
-      { ref: 'Luke 2:1', note: '“all the world” = the Roman empire' },
       { ref: 'Matt 16:17', note: '“flesh and blood” = mere human agency' },
+      { ref: 'Matt 6:11', note: '“daily bread” = all that we need' },
+      { ref: 'Luke 2:1', note: '“all the world” = the Roman empire' },
       { ref: 'Acts 27:37', note: '“souls” = persons' },
-      { ref: 'Romans 1:16', note: '“to the Jew first” — the nation named by its representatives' },
+    ],
+  },
+  {
+    id: 'merism', name: 'Merism', group: 'substitution',
+    definition: 'Naming two opposite extremes to take in everything between them — “heaven and earth” for the whole created order.',
+    occurrences: [
+      { ref: 'Matt 5:18', note: '“till heaven and earth pass away” = for all time' },
+      { ref: 'Matt 11:25', note: '“Lord of heaven and earth” = of everything' },
+      { ref: 'Matt 24:35', note: '“heaven and earth will pass away”' },
+      { ref: 'Matt 28:18', note: '“all authority in heaven and on earth”' },
     ],
   },
   // ── Omission ────────────────────────────────────────────────────────────────────────
@@ -82,8 +100,8 @@ export const DEVICES: Device[] = [
     id: 'ellipsis', name: 'Ellipsis', greek: 'ἔλλειψις', group: 'omission',
     definition: 'A word or words are deliberately left out and must be supplied by the reader. The gap creates compression and often force.',
     occurrences: [
-      { ref: '2 Corinthians 9:6', note: '“he who sows sparingly [will reap] sparingly”' },
       { ref: 'Matt 25:9', note: '“not so, lest [there be] not enough”' },
+      { ref: '2 Corinthians 9:6', note: '“he who sows sparingly [will reap] sparingly”' },
       { ref: 'Romans 5:18', note: '“as … so also …” with verbs supplied' },
     ],
   },
@@ -110,6 +128,8 @@ export const DEVICES: Device[] = [
     definition: 'The same word or phrase begins a series of successive clauses, hammering a theme.',
     occurrences: [
       { ref: 'Matt 5:3', note: '“Blessed are …” repeated through the Beatitudes' },
+      { ref: 'Matt 6:2', note: '“When you give … pray … fast” (6:2, 5, 16)' },
+      { ref: 'Matt 23:13', note: '“Woe to you, scribes and Pharisees …” repeated' },
       { ref: '1 Corinthians 13:4', note: '“Love is … love …”' },
       { ref: 'Hebrews 11:4', note: '“By faith …” repeated down the chapter' },
     ],
@@ -118,6 +138,7 @@ export const DEVICES: Device[] = [
     id: 'epizeuxis', name: 'Epizeuxis', greek: 'ἐπίζευξις', group: 'repetition',
     definition: 'Immediate repetition of a word for intense emphasis or emotion, with nothing between.',
     occurrences: [
+      { ref: 'Matt 7:21', note: '“Lord, Lord”' },
       { ref: 'Matt 23:37', note: '“Jerusalem, Jerusalem”' },
       { ref: 'Luke 10:41', note: '“Martha, Martha”' },
       { ref: 'Mark 15:34', note: '“Eloi, Eloi”' },
@@ -139,15 +160,27 @@ export const DEVICES: Device[] = [
     definition: 'An inverted, mirror-image arrangement (A–B–B′–A′). The crossing pattern often puts the emphasis at the centre or ties the outer terms together.',
     occurrences: [
       { ref: 'Matt 6:24', note: 'hate–love … hold to–despise (the two masters)' },
-      { ref: 'Mark 2:27', note: '“sabbath for man … man for the sabbath”' },
       { ref: 'Matt 7:6', note: 'dogs–swine … trample–tear (A–B–B′–A′)' },
+      { ref: 'Matt 23:12', note: '“exalts himself → humbled; humbles himself → exalted”' },
       { ref: 'Matt 19:30', note: '“first last, and last first”' },
+      { ref: 'Mark 2:27', note: '“sabbath for man … man for the sabbath”' },
+    ],
+  },
+  {
+    id: 'antithesis', name: 'Antithesis', greek: 'ἀντίθεσις', group: 'arrangement',
+    definition: 'Two opposite ideas are deliberately set side by side so that each sharpens the other.',
+    occurrences: [
+      { ref: 'Matt 5:21', note: '“You have heard … but I say to you” (repeated, 5:21–48)' },
+      { ref: 'Matt 5:27', note: 'the old command set against Jesus’ deeper demand' },
+      { ref: 'Matt 5:43', note: '“love your neighbour … but I say, love your enemies”' },
+      { ref: 'Matt 7:13', note: 'the narrow gate set against the wide' },
     ],
   },
   {
     id: 'inclusio', name: 'Inclusio', group: 'arrangement',
     definition: 'A section is “book-ended” by repeating a word or idea at its start and finish, framing everything between as a unit.',
     occurrences: [
+      { ref: 'Matt 1:23', note: '“God with us” — echoed by “I am with you always” (28:20), framing the Gospel' },
       { ref: 'Matt 5:3', note: '“theirs is the kingdom of heaven” frames the Beatitudes (v. 10)' },
       { ref: 'Matt 7:16', note: '“by their fruits you shall know them” (also v. 20)' },
       { ref: 'Romans 1:5', note: '“the obedience of faith” — echoed at 16:26' },
@@ -169,6 +202,8 @@ export const DEVICES: Device[] = [
     occurrences: [
       { ref: 'Matt 5:29', note: '“pluck out your eye … cut off your hand”' },
       { ref: 'Matt 7:3', note: 'the “log” in your own eye' },
+      { ref: 'Matt 17:20', note: 'faith “as a mustard seed” moves a mountain' },
+      { ref: 'Matt 19:24', note: '“a camel through the eye of a needle”' },
       { ref: 'Matt 23:24', note: '“strain out a gnat and swallow a camel”' },
       { ref: 'John 21:25', note: '“the world itself could not contain the books”' },
     ],
@@ -187,6 +222,7 @@ export const DEVICES: Device[] = [
     id: 'irony', name: 'Irony', greek: 'εἰρωνεία', group: 'emphasis',
     definition: 'Saying the opposite of what is meant, so that the real sense is felt through the contrast — often gently mocking.',
     occurrences: [
+      { ref: 'Matt 27:29', note: 'the soldiers mock: “Hail, King of the Jews!”' },
       { ref: '1 Corinthians 4:8', note: '“already you have become rich, you have reigned as kings”' },
       { ref: '2 Corinthians 11:19', note: '“you gladly bear with fools”' },
       { ref: '2 Corinthians 12:13', note: '“forgive me this wrong!”' },
@@ -196,9 +232,11 @@ export const DEVICES: Device[] = [
     id: 'erotesis', name: 'Rhetorical question', greek: 'ἐρώτησις', group: 'emphasis',
     definition: 'A question asked for effect rather than for an answer — to affirm, deny, or provoke thought more forcibly than a statement could.',
     occurrences: [
+      { ref: 'Matt 6:26', note: '“Are you not of more value than they?”' },
+      { ref: 'Matt 7:9', note: '“which of you, if his son asks for bread, will give a stone?”' },
+      { ref: 'Matt 16:26', note: '“what will it profit a man …?”' },
       { ref: 'Romans 8:31', note: '“If God is for us, who can be against us?” (vv. 31–35)' },
       { ref: 'Galatians 3:1', note: '“O foolish Galatians, who has bewitched you?”' },
-      { ref: 'Romans 6:1', note: '“Shall we continue in sin …?”' },
       { ref: '1 Corinthians 15:55', note: '“O death, where is your sting?”' },
     ],
   },
@@ -206,10 +244,11 @@ export const DEVICES: Device[] = [
     id: 'personification', name: 'Personification', greek: 'προσωποποιΐα', group: 'emphasis',
     definition: 'Giving human traits, actions, or speech to something impersonal or abstract (sin, death, love, Scripture, creation).',
     occurrences: [
+      { ref: 'Matt 6:34', note: '“tomorrow will be anxious for itself”' },
+      { ref: 'Matt 11:19', note: '“wisdom is justified by her deeds”' },
       { ref: '1 Corinthians 13:4', note: 'Love “is patient … is kind … does not envy”' },
       { ref: 'Romans 7:11', note: 'sin “deceived me and … killed me”' },
       { ref: 'Romans 8:22', note: 'creation “groans” together' },
-      { ref: 'Galatians 3:8', note: 'the Scripture “foreseeing … preached beforehand”' },
     ],
   },
   {
@@ -232,18 +271,21 @@ export const DEVICES: Device[] = [
     ],
   },
   {
-    id: 'oxymoron', name: 'Oxymoron', greek: 'ὀξύμωρον', group: 'emphasis',
-    definition: 'A pointed pairing of apparently contradictory terms that expresses a deeper truth (“dying, and behold we live”).',
+    id: 'oxymoron', name: 'Oxymoron / paradox', greek: 'ὀξύμωρον', group: 'emphasis',
+    definition: 'A pointed pairing of apparently contradictory terms that expresses a deeper truth (“dying, and behold we live”; “whoever loses his life will find it”).',
     occurrences: [
-      { ref: '2 Corinthians 6:9', note: '“as dying, and behold we live … as poor, yet making many rich” (vv. 9–10)' },
+      { ref: 'Matt 10:39', note: '“whoever finds his life will lose it …”' },
+      { ref: 'Matt 20:16', note: '“the last will be first, and the first last”' },
+      { ref: 'Matt 23:11', note: '“the greatest among you shall be your servant”' },
+      { ref: '2 Corinthians 6:9', note: '“as dying, and behold we live …” (vv. 9–10)' },
       { ref: '2 Corinthians 12:10', note: '“when I am weak, then I am strong”' },
-      { ref: '1 Timothy 5:6', note: 'she “is dead while she lives”' },
     ],
   },
   {
     id: 'apostrophe', name: 'Apostrophe', greek: 'ἀποστροφή', group: 'emphasis',
     definition: 'A sudden turn from the audience to address someone or something absent, dead, or abstract directly.',
     occurrences: [
+      { ref: 'Matt 11:21', note: '“Woe to you, Chorazin! … Bethsaida!” — the absent towns' },
       { ref: '1 Corinthians 15:55', note: 'the speaker turns to address “death” itself' },
       { ref: 'Romans 2:1', note: '“O man, whoever you are who judges …”' },
       { ref: 'James 5:1', note: '“Come now, you rich, weep …”' },
