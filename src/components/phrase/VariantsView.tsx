@@ -122,7 +122,7 @@ function variationUnits(rows: VMRow[], hideSpelling: boolean): Unit[] {
     }
     if (groups.size <= 1) continue   // all agree → not a variation unit
     const refKey = (() => { const c = refRow.cells[ci]; return (c.omit || !c.shown) ? '∅' : keyFn(c.shown) })()
-    const readings = [groups.get(refKey), ...[...groups.entries()].filter(([k]) => k !== refKey).map(([, v]) => v)].filter(Boolean) as Unit['readings']
+    const readings = [groups.get(refKey), ...Array.from(groups.entries()).filter(([k]) => k !== refKey).map(([, v]) => v)].filter(Boolean) as Unit['readings']
     units.push({ readings })
   }
   return units
@@ -279,7 +279,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
           if (ex) { ex.sigla.push(...row.sigla); if (ex.family !== row.family) ex.family = 'other' }
           else merged.set(sig, { ...row, sigla: [...row.sigla] })
         }
-        rows = [rows[0], ...merged.values()]
+        rows = [rows[0], ...Array.from(merged.values())]
       }
 
       const hasVariant = others.some(r => r.cells.some((c, ci) => {
