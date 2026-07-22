@@ -216,90 +216,33 @@ export async function generateMorphologyQuestions(count: number) {
 
 // ─── Subtype generators (use static paradigm data) ────────────────────────────
 
-import { VERB_PARSES, NOUN_PARSES, ADJECTIVE_PARSES, PRONOUN_PARSES, type GreekParseEntry } from '@/data/greek-parsing-data'
+import { VERB_POOL, NOUN_POOL, ADJECTIVE_POOL, PRONOUN_POOL } from '@/data/greek-parsing-pool'
+import type { GreekParseEntry } from '@/data/greek-parsing-data'
 import { CONDITIONAL_EXAMPLES, CONDITIONAL_TYPES } from '@/data/conditional-examples'
 import { SUBJUNCTIVE_EXAMPLES, SUBJUNCTIVE_TYPES } from '@/data/subjunctive-examples'
 import { VOCAB_LESSONS } from '@/lib/vocab-lesson-map'
 
-export type MorphologySubtype =
-  | 'VERB_PARSING'
-  | 'NOUN_PARSING'
-  | 'ADJECTIVE_PARSING'
-  | 'PRONOUN_PARSING'
-  | 'CONDITIONALS'
-  | 'SUBJUNCTIVES'
-  | 'MIXED'
-
-export interface MorphFieldOption {
-  key: string
-  label: string
-}
-
-/** Which parse fields are available for each subtype. */
-export const SUBTYPE_FIELD_OPTIONS: Record<MorphologySubtype, MorphFieldOption[]> = {
-  VERB_PARSING: [
-    { key: 'tense',  label: 'Tense'  },
-    { key: 'voice',  label: 'Voice'  },
-    { key: 'mood',   label: 'Mood'   },
-    { key: 'person', label: 'Person' },
-    { key: 'number', label: 'Number' },
-  ],
-  NOUN_PARSING: [
-    { key: 'casus',  label: 'Case'   },
-    { key: 'gender', label: 'Gender' },
-    { key: 'number', label: 'Number' },
-  ],
-  ADJECTIVE_PARSING: [
-    { key: 'casus',  label: 'Case'   },
-    { key: 'gender', label: 'Gender' },
-    { key: 'number', label: 'Number' },
-  ],
-  PRONOUN_PARSING: [
-    { key: 'casus',  label: 'Case'   },
-    { key: 'gender', label: 'Gender' },
-    { key: 'number', label: 'Number' },
-  ],
-  MIXED: [
-    { key: 'partOfSpeech', label: 'Part of Speech' },
-    { key: 'tense',        label: 'Tense'          },
-    { key: 'voice',        label: 'Voice'          },
-    { key: 'mood',         label: 'Mood'           },
-    { key: 'person',       label: 'Person'         },
-    { key: 'number',       label: 'Number'         },
-    { key: 'casus',        label: 'Case'           },
-    { key: 'gender',       label: 'Gender'         },
-  ],
-  CONDITIONALS:  [],
-  SUBJUNCTIVES:  [],
-}
-
-/**
- * Restrict which inflected forms appear in the question pool.
- * Each array is a whitelist; omit (or empty) means "all values allowed".
- */
-export interface MorphParseFilter {
-  // Verb
-  tenses?:  string[]   // e.g. ['Present', 'Aorist']
-  voices?:  string[]   // e.g. ['Active', 'Passive']
-  moods?:   string[]   // e.g. ['Indicative', 'Subjunctive']
-  persons?: string[]   // e.g. ['1st', '3rd']  — non-participle/infinitive moods
-  numbers?: string[]   // e.g. ['Singular']
-  // Participle / Noun / Adjective / Pronoun
-  cases?:   string[]   // e.g. ['Nominative', 'Genitive']
-  genders?: string[]   // e.g. ['Masculine']
-}
-
-/** One test in a morphology series. */
-export interface MorphTestConfig {
-  subtype: MorphologySubtype
-  numQuestions: number
-  vocabThruLesson: number | null  // null = no vocabulary filter
-  fields: string[]                // which parse fields students must identify
-  parseFilter?: MorphParseFilter  // restrict question pool to specific forms
-}
+// Field/filter vocabulary lives in '@/lib/quiz-fields' (no data import, so the instructor
+// client bundle stays free of the ~840KB question pool). Re-exported here for server callers.
+export {
+  SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS,
+  NOUN_CASES, GENDERS, PRONOUN_TYPES,
+} from '@/lib/quiz-fields'
+export type {
+  MorphologySubtype, MorphFieldOption, MorphParseFilter, MorphTestConfig,
+} from '@/lib/quiz-fields'
+import type { MorphologySubtype, MorphParseFilter } from '@/lib/quiz-fields'
 
 function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fields?: string[]) {
-  return shuffle(entries).slice(0, count).map((entry, idx) => {
+  // Keep only forms that actually carry every tested field, so a student is never asked for
+  // a value the form doesn't have. This is what makes the verb subtype mood-aware:
+  // ticking Case+Gender yields a participle-only quiz; ticking Person excludes participles
+  // (they have none) and infinitives.
+  const testable = fields?.length
+    ? entries.filter(e => fields.every(f =>
+        f === 'partOfSpeech' || (e as unknown as Record<string, unknown>)[f] != null))
+    : entries
+  return shuffle(testable).slice(0, count).map((entry, idx) => {
     const full: Record<string, string | null> = {
       partOfSpeech: entry.partOfSpeech,
       tense:  entry.tense  ?? null,
@@ -344,18 +287,19 @@ function applyParseFilter(entries: GreekParseEntry[], filter?: MorphParseFilter)
     has(filter.persons, e.person) &&
     has(filter.numbers, e.number) &&
     has(filter.cases,   e.casus)  &&
-    has(filter.genders, e.gender)
+    has(filter.genders, e.gender) &&
+    has(filter.pronounTypes, e.pronounType)
   )
 }
 
 function getEntriesForSubtype(subtype: MorphologySubtype): GreekParseEntry[] {
   switch (subtype) {
-    case 'VERB_PARSING':      return VERB_PARSES
-    case 'NOUN_PARSING':      return NOUN_PARSES
-    case 'ADJECTIVE_PARSING': return ADJECTIVE_PARSES
-    case 'PRONOUN_PARSING':   return PRONOUN_PARSES
-    case 'MIXED':             return [...VERB_PARSES, ...NOUN_PARSES, ...ADJECTIVE_PARSES, ...PRONOUN_PARSES]
-    default:                  return VERB_PARSES
+    case 'VERB_PARSING':      return VERB_POOL
+    case 'NOUN_PARSING':      return NOUN_POOL
+    case 'ADJECTIVE_PARSING': return ADJECTIVE_POOL
+    case 'PRONOUN_PARSING':   return PRONOUN_POOL
+    case 'MIXED':             return [...VERB_POOL, ...NOUN_POOL, ...ADJECTIVE_POOL, ...PRONOUN_POOL]
+    default:                  return VERB_POOL
   }
 }
 
@@ -400,19 +344,19 @@ export async function generateMorphologyQuestionsBySubtype(
 }
 
 export function generateVerbParseQuestions(count: number) {
-  return parseEntriesToQuestions(VERB_PARSES, count)
+  return parseEntriesToQuestions(VERB_POOL, count)
 }
 
 export function generateNounParseQuestions(count: number) {
-  return parseEntriesToQuestions(NOUN_PARSES, count)
+  return parseEntriesToQuestions(NOUN_POOL, count)
 }
 
 export function generateAdjectiveParseQuestions(count: number) {
-  return parseEntriesToQuestions(ADJECTIVE_PARSES, count)
+  return parseEntriesToQuestions(ADJECTIVE_POOL, count)
 }
 
 export function generatePronounParseQuestions(count: number) {
-  return parseEntriesToQuestions(PRONOUN_PARSES, count)
+  return parseEntriesToQuestions(PRONOUN_POOL, count)
 }
 
 export function generateConditionalQuestions(count: number) {

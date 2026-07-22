@@ -18,6 +18,9 @@ export interface GreekParseEntry {
   // Noun/Adj/Pronoun fields
   casus?: string        // case (renamed to avoid JS reserved word)
   gender?: string
+  // Pronoun only: which class of pronoun (Personal, Demonstrative, Relative, …).
+  // 1st/2nd-person pronouns and reflexives have a person but no gender.
+  pronounType?: string
   reference?: string    // Optional NT reference
 }
 

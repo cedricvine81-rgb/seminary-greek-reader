@@ -12,8 +12,8 @@ import { toEndOfDayLocalISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
-import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-generation'
-import { SUBTYPE_FIELD_OPTIONS } from '@/lib/quiz-generation'
+import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
+import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
 import type { CourseLevel } from '@/types/course'
 import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
@@ -21,13 +21,8 @@ import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-l
 
 // ── Parse-filter value lists ───────────────────────────────────────────────────
 
-const VERB_TENSES  = ['Present', 'Imperfect', 'Future', 'Aorist', 'Perfect', 'Pluperfect']
-const VERB_VOICES  = ['Active', 'Middle', 'Passive', 'Middle/Passive']
-const VERB_MOODS   = ['Indicative', 'Subjunctive', 'Optative', 'Imperative', 'Infinitive', 'Participle']
-const PERSONS      = ['1st', '2nd', '3rd']
-const NUMBERS      = ['Singular', 'Plural']
-const NOUN_CASES   = ['Nominative', 'Genitive', 'Dative', 'Accusative', 'Vocative']
-const GENDERS      = ['Masculine', 'Feminine', 'Neuter']
+// Value lists come from '@/lib/quiz-fields' so the builder and generator never drift
+// (no Optative; 'Deponent' is a real tagged voice in the corpus).
 
 /** Default parse filter for VERB_PARSING — all values selected. */
 const DEFAULT_VERB_FILTER: MorphParseFilter = {
@@ -38,6 +33,7 @@ const DEFAULT_VERB_FILTER: MorphParseFilter = {
   numbers: [...NUMBERS],
   cases:   [...NOUN_CASES],
   genders: [...GENDERS],
+  pronounTypes: [...PRONOUN_TYPES],
 }
 
 const MORPH_SUBTYPE_SHORT: Record<MorphologySubtype, string> = {
