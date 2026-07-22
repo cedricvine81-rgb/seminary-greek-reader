@@ -38,8 +38,10 @@ def parse_ref(ref):
 
 def fetch(url):
     env = dict(os.environ, CURL_CA_BUNDLE="/etc/ssl/cert.pem")
-    r = subprocess.run(["curl", "-sS", "-A", "Mozilla/5.0", url], capture_output=True, text=True, env=env, timeout=40)
-    return r.stdout
+    # bytes + tolerant decode: an occasional biblehub response has a stray non-UTF-8 byte
+    r = subprocess.run(["curl", "-sS", "--compressed", "-A", "Mozilla/5.0", url],
+                       capture_output=True, env=env, timeout=40)
+    return r.stdout.decode("utf-8", errors="replace")
 
 def bengel_note(h):
     # the section is the "Bengel's Gnom(e/o)n" heading block, up to the next vheading2
@@ -59,19 +61,26 @@ def main():
     if os.path.exists(OUT):
         data = json.load(open(OUT, encoding="utf-8"))
     refs = refs_from_devices()
-    print(f"{len(refs)} device-verses; {len(data)} already cached")
+    print(f"{len(refs)} device-verses; {len(data)} already cached", flush=True)
+    save = lambda: json.dump(data, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
+    done = 0
     for i, ref in enumerate(refs):
         if ref in data and data[ref]:
             continue
         p = parse_ref(ref)
         if not p or not p[0]:
-            print(f"  ? skip unparseable: {ref}"); data[ref] = ""; continue
+            print(f"  ? skip unparseable: {ref}", flush=True); data[ref] = ""; continue
         slug, ch, v = p
-        note = bengel_note(fetch(f"https://biblehub.com/commentaries/{slug}/{ch}-{v}.htm"))
+        try:
+            note = bengel_note(fetch(f"https://biblehub.com/commentaries/{slug}/{ch}-{v}.htm"))
+        except Exception as e:                       # one bad response must not abort the run
+            print(f"  ! {ref}: {type(e).__name__} — retry next run", flush=True); continue
         data[ref] = note
-        print(f"  [{i+1}/{len(refs)}] {ref:24} {'· ' + note[:60] if note else '(none)'}")
+        done += 1
+        print(f"  [{i+1}/{len(refs)}] {ref:24} {'· ' + note[:60] if note else '(none)'}", flush=True)
+        if done % 40 == 0: save()                    # persist progress periodically
         time.sleep(0.4)
-    json.dump(data, open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=0)
+    save()
     got = sum(1 for v in data.values() if v)
     print(f"wrote {OUT} — {got}/{len(data)} with a Bengel note")
 
