@@ -6,8 +6,10 @@ export const MORPH_OPTIONS: MorphOptions = {
   number: ['Singular', 'Plural'],
   gender: ['Masculine', 'Feminine', 'Neuter'],
   tense: ['Present', 'Imperfect', 'Future', 'Aorist', 'Perfect', 'Pluperfect'],
-  voice: ['Active', 'Middle', 'Passive', 'Middle/Passive'],
-  mood: ['Indicative', 'Subjunctive', 'Optative', 'Imperative', 'Infinitive', 'Participle'],
+  // "Deponent" is a voice the corpus tags (middle/passive in form, active in meaning) and it
+  // appears in the quiz pool, so it must be answerable. Optative is excluded from the pool.
+  voice: ['Active', 'Middle', 'Passive', 'Middle/Passive', 'Deponent'],
+  mood: ['Indicative', 'Subjunctive', 'Imperative', 'Infinitive', 'Participle'],
   person: ['1st', '2nd', '3rd'],
   participleType: [
     'Adverbial Temporal', 'Adverbial Causal', 'Adverbial Concessive',
@@ -20,7 +22,7 @@ export const MORPH_OPTIONS: MorphOptions = {
   ],
   pronounType: [
     'Personal', 'Reflexive', 'Reciprocal', 'Demonstrative',
-    'Relative', 'Interrogative', 'Indefinite', 'Possessive',
+    'Relative', 'Interrogative', 'Indefinite', 'Possessive', 'Correlative',
   ],
   articleUsage: [
     'Generic', 'Individualizing', 'Anaphoric', 'Kataphoric',

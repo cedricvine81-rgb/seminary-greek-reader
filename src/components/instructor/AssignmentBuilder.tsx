@@ -24,8 +24,12 @@ import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-l
 // Value lists come from '@/lib/quiz-fields' so the builder and generator never drift
 // (no Optative; 'Deponent' is a real tagged voice in the corpus).
 
-/** Default parse filter for VERB_PARSING — all values selected. */
-const DEFAULT_VERB_FILTER: MorphParseFilter = {
+/** Subtypes that support restricting the question pool by parse values. */
+const PARSE_FILTER_SUBTYPES: MorphologySubtype[] =
+  ['VERB_PARSING', 'NOUN_PARSING', 'ADJECTIVE_PARSING', 'PRONOUN_PARSING', 'MIXED']
+
+/** Default parse filter — every value selected (i.e. no restriction). */
+const DEFAULT_PARSE_FILTER: MorphParseFilter = {
   tenses:  [...VERB_TENSES],
   voices:  [...VERB_VOICES],
   moods:   [...VERB_MOODS],
@@ -99,7 +103,7 @@ const DEFAULT_MORPH_TEST: MorphTestConfig = {
   numQuestions: 20,
   vocabThruLesson: null,
   fields: SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key),
-  parseFilter: { ...DEFAULT_VERB_FILTER },
+  parseFilter: { ...DEFAULT_PARSE_FILTER },
 }
 
 // ── Late Policy Fields ────────────────────────────────────────────────────────
@@ -230,7 +234,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [morphologyFields, setMorphologyFields] = useState<string[]>(
     SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key)
   )
-  const [morphParseFilter, setMorphParseFilter] = useState<MorphParseFilter>({ ...DEFAULT_VERB_FILTER })
+  const [morphParseFilter, setMorphParseFilter] = useState<MorphParseFilter>({ ...DEFAULT_PARSE_FILTER })
   const [filterOpen, setFilterOpen] = useState(false)
   const [vocabThruLesson, setVocabThruLesson] = useState<number | null>(null)
   const [allowLate, setAllowLate] = useState(false)
@@ -378,7 +382,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             onChange={v => {
               setMorphologySubtype(v)
               setMorphologyFields(SUBTYPE_FIELD_OPTIONS[v].map(f => f.key))
-              setMorphParseFilter(v === 'VERB_PARSING' ? { ...DEFAULT_VERB_FILTER } : {})
+              setMorphParseFilter(v === 'VERB_PARSING' ? { ...DEFAULT_PARSE_FILTER } : {})
               setFilterOpen(false)
             }}
           />
@@ -417,19 +421,20 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
               )}
             </div>
           )}
-          {morphologySubtype === 'VERB_PARSING' && (
+          {PARSE_FILTER_SUBTYPES.includes(morphologySubtype) && (
             <div className="border border-gray-200 rounded-xl overflow-hidden">
               <button
                 type="button"
                 onClick={() => setFilterOpen(v => !v)}
                 className="w-full flex items-center justify-between px-4 py-2.5 bg-gray-50 hover:bg-gray-100 transition-colors text-sm font-medium text-gray-700"
               >
-                <span>Restrict to specific tense / voice / mood…</span>
+                <span>Restrict to specific forms…</span>
                 <span className="text-gray-400">{filterOpen ? '▲' : '▼'}</span>
               </button>
               {filterOpen && (
                 <div className="p-4 space-y-2">
-                  <VerbParseFilterPicker
+                  <ParseFilterPicker
+                    subtype={morphologySubtype}
                     filter={morphParseFilter}
                     onChange={setMorphParseFilter}
                   />
@@ -877,18 +882,27 @@ function FilterChipGroup({
 
 // ── Verb Parse Filter Picker ──────────────────────────────────────────────────
 
-function VerbParseFilterPicker({
+function ParseFilterPicker({
+  subtype,
   filter,
   onChange,
   compact = false,
 }: {
+  subtype: MorphologySubtype
   filter: MorphParseFilter
   onChange: (f: MorphParseFilter) => void
   compact?: boolean
 }) {
+  const isVerb     = subtype === 'VERB_PARSING' || subtype === 'MIXED'
+  const isNominal  = subtype === 'NOUN_PARSING' || subtype === 'ADJECTIVE_PARSING'
+                     || subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
+  const isPronoun  = subtype === 'PRONOUN_PARSING' || subtype === 'MIXED'
   const selectedMoods  = filter.moods  ?? VERB_MOODS
   const hasNonPart     = selectedMoods.some(m => m !== 'Participle' && m !== 'Infinitive')
   const hasParticiple  = selectedMoods.includes('Participle')
+  // Case/gender belong to nominals always, and to verbs only once participles are in scope.
+  const showCaseGender = isNominal || (isVerb && hasParticiple)
+  const cgPrefix       = !isNominal && isVerb ? 'Ptc. ' : ''
 
   function patch(partial: Partial<MorphParseFilter>) {
     onChange({ ...filter, ...partial })
@@ -896,18 +910,23 @@ function VerbParseFilterPicker({
 
   return (
     <div className="space-y-2">
-      <FilterChipGroup compact={compact} label="Tense"   options={VERB_TENSES} selected={filter.tenses  ?? VERB_TENSES}  onChange={v => patch({ tenses: v })}  />
-      <FilterChipGroup compact={compact} label="Voice"   options={VERB_VOICES} selected={filter.voices  ?? VERB_VOICES}  onChange={v => patch({ voices: v })}  />
-      <FilterChipGroup compact={compact} label="Mood"    options={VERB_MOODS}  selected={filter.moods   ?? VERB_MOODS}   onChange={v => patch({ moods: v })}   />
-      {hasNonPart && (
+      {isVerb && <>
+        <FilterChipGroup compact={compact} label="Tense"   options={VERB_TENSES} selected={filter.tenses  ?? VERB_TENSES}  onChange={v => patch({ tenses: v })}  />
+        <FilterChipGroup compact={compact} label="Voice"   options={VERB_VOICES} selected={filter.voices  ?? VERB_VOICES}  onChange={v => patch({ voices: v })}  />
+        <FilterChipGroup compact={compact} label="Mood"    options={VERB_MOODS}  selected={filter.moods   ?? VERB_MOODS}   onChange={v => patch({ moods: v })}   />
+      </>}
+      {((isVerb && hasNonPart) || isPronoun) && (
         <FilterChipGroup compact={compact} label="Person" options={PERSONS}    selected={filter.persons ?? PERSONS}      onChange={v => patch({ persons: v })} />
       )}
       <FilterChipGroup compact={compact} label="Number"  options={NUMBERS}     selected={filter.numbers ?? NUMBERS}      onChange={v => patch({ numbers: v })} />
-      {hasParticiple && (
+      {showCaseGender && (
         <>
-          <FilterChipGroup compact={compact} label="Ptc. Case"   options={NOUN_CASES} selected={filter.cases   ?? NOUN_CASES} onChange={v => patch({ cases: v })}   />
-          <FilterChipGroup compact={compact} label="Ptc. Gender" options={GENDERS}    selected={filter.genders ?? GENDERS}    onChange={v => patch({ genders: v })} />
+          <FilterChipGroup compact={compact} label={`${cgPrefix}Case`}   options={NOUN_CASES} selected={filter.cases   ?? NOUN_CASES} onChange={v => patch({ cases: v })}   />
+          <FilterChipGroup compact={compact} label={`${cgPrefix}Gender`} options={GENDERS}    selected={filter.genders ?? GENDERS}    onChange={v => patch({ genders: v })} />
         </>
+      )}
+      {isPronoun && (
+        <FilterChipGroup compact={compact} label="Pronoun type" options={PRONOUN_TYPES} selected={filter.pronounTypes ?? PRONOUN_TYPES} onChange={v => patch({ pronounTypes: v })} />
       )}
     </div>
   )
@@ -1047,7 +1066,7 @@ function MorphSeriesBuilder({
                   onClick={() => updateTest(i, {
                     subtype: opt.value,
                     fields: SUBTYPE_FIELD_OPTIONS[opt.value].map(f => f.key),
-                    parseFilter: opt.value === 'VERB_PARSING' ? { ...DEFAULT_VERB_FILTER } : undefined,
+                    parseFilter: PARSE_FILTER_SUBTYPES.includes(opt.value) ? { ...DEFAULT_PARSE_FILTER } : undefined,
                   })}
                   className={`text-left px-2.5 py-2 rounded-lg border text-xs transition-colors ${
                     test.subtype === opt.value
@@ -1099,21 +1118,22 @@ function MorphSeriesBuilder({
             )}
 
             {/* Verb parse-value filter */}
-            {test.subtype === 'VERB_PARSING' && (
+            {PARSE_FILTER_SUBTYPES.includes(test.subtype) && (
               <div className="border border-gray-200 rounded-lg overflow-hidden">
                 <button
                   type="button"
                   onClick={() => toggleFilter(i)}
                   className="w-full flex items-center justify-between px-3 py-2 bg-gray-100 hover:bg-gray-200 transition-colors text-xs font-medium text-gray-700"
                 >
-                  <span>Restrict to specific tense / voice / mood…</span>
+                  <span>Restrict to specific forms…</span>
                   <span>{filterOpen[i] ? '▲' : '▼'}</span>
                 </button>
                 {filterOpen[i] && (
                   <div className="p-3 bg-surface space-y-2">
-                    <VerbParseFilterPicker
+                    <ParseFilterPicker
                       compact
-                      filter={test.parseFilter ?? DEFAULT_VERB_FILTER}
+                      subtype={test.subtype}
+                      filter={test.parseFilter ?? DEFAULT_PARSE_FILTER}
                       onChange={f => updateTest(i, { parseFilter: f })}
                     />
                   </div>

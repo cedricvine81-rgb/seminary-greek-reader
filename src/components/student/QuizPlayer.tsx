@@ -638,6 +638,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             number: { label: 'Number', optsKey: 'number' },
             casus:  { label: 'Case',   optsKey: 'case'   },
             gender: { label: 'Gender', optsKey: 'gender' },
+            pronounType: { label: 'Pronoun type', optsKey: 'pronounType' },
           }
           const activeFields = Object.keys(FIELD_MAP).filter(f => correctObj[f])
           const requiredFilled = activeFields.every(f => morphDraft[f])

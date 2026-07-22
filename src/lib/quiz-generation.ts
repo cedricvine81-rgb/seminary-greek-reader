@@ -252,6 +252,7 @@ function parseEntriesToQuestions(entries: GreekParseEntry[], count: number, fiel
       number: entry.number ?? null,
       casus:  entry.casus  ?? null,
       gender: entry.gender ?? null,
+      pronounType: entry.pronounType ?? null,
     }
     // Filter to only the instructor-selected fields; always keep partOfSpeech
     // so the QuizPlayer can show "Parse this Verb:" even when it's not tested.
