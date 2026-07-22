@@ -472,4 +472,146 @@ export const DEVICES: Device[] = [
       { ref: 'Ephesians 6:11', note: 'the armour of God (vv. 11–17)' },
     ],
   },
+  {
+    id: 'apodioxis', name: 'Apodioxis (emphatic denial)', greek: 'μὴ γένοιτο', group: 'emphasis',
+    definition: 'An indignant rejection of a false inference as utterly abhorrent — Paul’s “God forbid!” / “By no means!” (μὴ γένοιτο), the hallmark rebuttal of his diatribe style.',
+    occurrences: [
+      { ref: 'Luke 20:16', note: '“God forbid” — the crowd’s recoil at the vineyard verdict' },
+      { ref: 'Romans 3:4', note: '“God forbid: yea, let God be true, but every man a liar”' },
+      { ref: 'Romans 3:6', note: '“God forbid: for then how shall God judge the world?”' },
+      { ref: 'Romans 3:31', note: '“do we then make void the law …? God forbid”' },
+      { ref: 'Romans 6:2', note: '“How shall we … live any longer therein? God forbid”' },
+      { ref: 'Romans 6:15', note: '“shall we sin, because … under grace? God forbid”' },
+      { ref: 'Romans 7:7', note: '“Is the law sin? God forbid”' },
+      { ref: 'Romans 7:13', note: '“was … that which is good made death …? God forbid”' },
+      { ref: 'Romans 9:14', note: '“Is there unrighteousness with God? God forbid”' },
+      { ref: 'Romans 11:1', note: '“Hath God cast away his people? God forbid”' },
+      { ref: 'Romans 11:11', note: '“have they stumbled that they should fall? God forbid”' },
+      { ref: '1 Corinthians 6:15', note: '“members of an harlot? God forbid”' },
+      { ref: 'Galatians 2:17', note: '“is … Christ the minister of sin? God forbid”' },
+      { ref: 'Galatians 3:21', note: '“is the law then against the promises …? God forbid”' },
+      { ref: 'Galatians 6:14', note: '“God forbid that I should glory, save in the cross”' },
+    ],
+  },
 ]
+
+// ── Landmark passages (hand-curated) ─────────────────────────────────────────────────
+// Well-attested figures in high-value teaching passages across the NT, layered on top of
+// the sets above (and the Bullinger per-book data). Standard rhetorical-critical readings;
+// each note is plain language. Merged into DEVICES below by id, deduped by ref so a verse
+// the base set or Bullinger already lists is never doubled.
+const LANDMARKS: Record<string, Occurrence[]> = {
+  metaphor: [
+    { ref: 'John 6:51', note: '“I am the living bread which came down from heaven”' },
+    { ref: 'John 10:9', note: '“I am the door of the sheep”' },
+    { ref: 'John 14:6', note: '“I am the way, the truth, and the life”' },
+    { ref: '1 Corinthians 12:27', note: '“ye are the body of Christ”' },
+    { ref: 'Ephesians 2:20', note: 'Christ Jesus “the chief corner stone”' },
+    { ref: 'Ephesians 5:23', note: '“the husband is the head of the wife”' },
+    { ref: '2 Timothy 4:7', note: '“I have fought a good fight” (athletic/military metaphor)' },
+    { ref: 'Hebrews 12:29', note: '“our God is a consuming fire”' },
+    { ref: 'Revelation 5:5', note: '“the Lion of the tribe of Juda”' },
+    { ref: 'Revelation 22:16', note: '“the bright and morning star”' },
+  ],
+  metonymy: [
+    { ref: 'Matt 10:34', note: '“not … peace, but a sword” — sword = war/division' },
+    { ref: 'Luke 22:20', note: '“this cup is the new testament in my blood”' },
+    { ref: 'Romans 13:4', note: '“he beareth not the sword in vain” — sword = judicial power' },
+    { ref: '1 Corinthians 10:21', note: '“the cup of the Lord … the table of the Lord”' },
+  ],
+  synecdoche: [
+    { ref: 'John 1:14', note: '“the Word was made flesh” — flesh = a full human being' },
+    { ref: 'Acts 2:41', note: '“about three thousand souls” — souls = persons' },
+    { ref: 'Romans 16:4', note: '“laid down their own necks” — necks = their very lives' },
+    { ref: '1 Corinthians 11:26', note: '“as often as ye eat this bread” — bread = the whole meal' },
+  ],
+  merism: [
+    { ref: 'Matt 5:45', note: 'sun on “evil and … good,” rain on “just and … unjust” = all alike' },
+    { ref: 'Romans 14:8', note: '“whether we live … or die, we are the Lord’s”' },
+    { ref: '1 Corinthians 3:22', note: '“the world, or life, or death … present, or … to come” = all' },
+    { ref: 'Ephesians 3:18', note: '“breadth, and length, and depth, and height” = the whole immensity' },
+    { ref: 'Revelation 21:6', note: '“the Alpha and Omega, the beginning and the end”' },
+  ],
+  antithesis: [
+    { ref: 'Matt 7:17', note: '“good tree … good fruit; … corrupt tree … evil fruit”' },
+    { ref: 'John 1:17', note: '“the law … by Moses; grace and truth … by Jesus Christ”' },
+    { ref: 'John 3:36', note: '“believeth … hath life; believeth not … shall not see life”' },
+    { ref: 'Romans 5:19', note: '“by one man’s disobedience … by the obedience of one”' },
+    { ref: 'Romans 8:6', note: '“to be carnally minded is death; … spiritually minded is life”' },
+    { ref: '1 Corinthians 15:22', note: '“in Adam all die … in Christ … made alive”' },
+    { ref: '2 Corinthians 3:6', note: '“the letter killeth, but the spirit giveth life”' },
+    { ref: '2 Corinthians 5:21', note: '“made him … sin … that we might be made … righteousness”' },
+    { ref: 'Galatians 6:8', note: '“soweth to … flesh … corruption; … to the Spirit … life”' },
+    { ref: '1 Thessalonians 5:5', note: '“children of light … not of the night, nor of darkness”' },
+    { ref: '1 John 2:9', note: '“in the light, and hateth his brother, is in darkness”' },
+  ],
+  chiasmus: [
+    { ref: 'Romans 2:7', note: 'life→glory … wrath … wrath → glory-honour (A–B–B′–A′, vv. 7–10)' },
+  ],
+  parallelism: [
+    { ref: 'Matt 7:24', note: 'the wise vs. foolish builder — matched clauses (vv. 24–27)' },
+    { ref: 'Philippians 2:6', note: 'the Christ-hymn’s balanced strophes (vv. 6–11)' },
+    { ref: 'Colossians 1:15', note: 'the hymn to Christ’s supremacy (vv. 15–20)' },
+    { ref: 'Revelation 22:11', note: '“he that is unjust … unjust still … he that is holy … holy still”' },
+  ],
+  anaphora: [
+    { ref: 'Hebrews 11:3', note: '“Through faith …” — the refrain that drives the chapter' },
+    { ref: '1 Corinthians 13:7', note: '“beareth all … believeth all … hopeth all … endureth all”' },
+    { ref: '1 John 2:12', note: '“I write unto you …” repeated (vv. 12–14)' },
+  ],
+  epizeuxis: [
+    { ref: 'Luke 13:34', note: '“O Jerusalem, Jerusalem”' },
+    { ref: 'Luke 23:21', note: '“Crucify him, crucify him”' },
+    { ref: 'Revelation 4:8', note: '“Holy, holy, holy” — the threefold Sanctus' },
+    { ref: 'Revelation 8:13', note: '“Woe, woe, woe, to the inhabiters of the earth”' },
+  ],
+  polysyndeton: [
+    { ref: 'Romans 9:4', note: '“the adoption, and the glory, and the covenants, and the … law …”' },
+  ],
+  hyperbole: [
+    { ref: 'Matt 18:22', note: '“Until seventy times seven”' },
+    { ref: 'Mark 1:5', note: '“all … Judaea … all … baptized” — sweeping generalisation' },
+    { ref: 'Acts 17:6', note: '“these that have turned the world upside down”' },
+  ],
+  litotes: [
+    { ref: 'Acts 28:2', note: '“shewed us no little kindness”' },
+    { ref: 'Hebrews 4:15', note: '“not an high priest which cannot be touched with … our infirmities”' },
+  ],
+  irony: [
+    { ref: 'John 11:50', note: 'Caiaphas’ unwitting irony: “expedient that one man should die”' },
+    { ref: '2 Corinthians 11:5', note: '“not a whit behind the very chiefest apostles”' },
+  ],
+  erotesis: [
+    { ref: 'Romans 3:1', note: '“What advantage then hath the Jew?”' },
+    { ref: 'Romans 4:1', note: '“What shall we say then that Abraham … hath found?”' },
+    { ref: 'Romans 6:15', note: '“shall we sin, because we are … under grace?”' },
+    { ref: 'Romans 8:32', note: '“how shall he not … also freely give us all things?”' },
+    { ref: 'Romans 8:34', note: '“Who is he that condemneth?”' },
+    { ref: 'Romans 9:14', note: '“Is there unrighteousness with God?”' },
+    { ref: '1 Corinthians 6:2', note: '“know ye not that the saints shall judge the world?”' },
+    { ref: '1 Corinthians 15:12', note: '“how say some … that there is no resurrection?”' },
+    { ref: 'James 2:14', note: '“What doth it profit … though a man say he hath faith …?”' },
+    { ref: 'James 3:11', note: '“Doth a fountain send forth … sweet water and bitter?”' },
+  ],
+  personification: [
+    { ref: 'Romans 10:6', note: '“the righteousness which is of faith speaketh on this wise”' },
+    { ref: '1 Corinthians 12:15', note: '“if the foot shall say, Because I am not the hand …”' },
+  ],
+  oxymoron: [
+    { ref: '1 Corinthians 3:18', note: '“let him become a fool, that he may be wise”' },
+  ],
+  hendiadys: [
+    { ref: 'John 4:23', note: '“in spirit and in truth” = in true, Spirit-given worship' },
+  ],
+  inclusio: [
+    { ref: 'Matt 4:23', note: '“teaching … preaching … healing” frames the ministry (echoed at 9:35)' },
+  ],
+}
+
+// Merge the landmark occurrences into their devices (dedupe by ref).
+for (const d of DEVICES) {
+  const extra = LANDMARKS[d.id]
+  if (!extra) continue
+  const seen = new Set(d.occurrences.map(o => o.ref))
+  for (const o of extra) if (!seen.has(o.ref)) { d.occurrences.push(o); seen.add(o.ref) }
+}
