@@ -43,7 +43,13 @@
      "note": "3; 5:6. To see another is used for making war with him, or of meeting him in battle"
     },
     {
+     "ref": "1 John 4:3"
+    },
+    {
      "ref": "1 John 4:15"
+    },
+    {
+     "ref": "1 John 5:6"
     },
     {
      "ref": "1 John 5:18",
@@ -92,6 +98,38 @@
    ]
   },
   {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:5",
+     "note": "It would require a volume to investigate and carry out all that is taught by this wondrous Metaphor. First, we should have to understand what Light itself 1s, and science was never more baffled than"
+    },
+    {
+     "ref": "1 John 2:20"
+    },
+    {
+     "ref": "1 John 2:27"
+    },
+    {
+     "ref": "1 John 2:29"
+    },
+    {
+     "ref": "1 John 3:9"
+    },
+    {
+     "ref": "1 John 3:20",
+     "note": "Greater than all"
+    },
+    {
+     "ref": "1 John 5:14"
+    }
+   ]
+  },
+  {
    "id": "heterosis",
    "name": "Heterosis",
    "greek": "ἑτέρωσις",
@@ -125,32 +163,6 @@
    ]
   },
   {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
-   "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
-   "occurrences": [
-    {
-     "ref": "1 John 1:5",
-     "note": "It would require a volume to investigate and carry out all that is taught by this wondrous Metaphor. First, we should have to understand what Light itself 1s, and science was never more baffled than"
-    },
-    {
-     "ref": "1 John 2:20"
-    },
-    {
-     "ref": "1 John 2:29"
-    },
-    {
-     "ref": "1 John 3:20",
-     "note": "Greater than all"
-    },
-    {
-     "ref": "1 John 5:14"
-    }
-   ]
-  },
-  {
    "id": "synecdoche",
    "name": "Synecdoche",
    "greek": "συνεκδοχή",
@@ -169,8 +181,53 @@
      "ref": "1 John 2:23"
     },
     {
+     "ref": "1 John 3:4"
+    },
+    {
+     "ref": "1 John 3:6"
+    },
+    {
      "ref": "1 John 4:2",
      "note": "Every spirit that confesseth that Jesus Christ is come in the flesh (i.e., in His real human nature) is of God.. Here, it is ( eleeluthota ), being come. In chap. 5:6, it is the (hoelth n),thisisHe"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "1 John 2:15"
+    },
+    {
+     "ref": "1 John 2:16"
+    },
+    {
+     "ref": "1 John 3:9"
+    },
+    {
+     "ref": "1 John 5:18"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:13",
+     "note": "That which was from the beginning, which we have heard, which we have seen with our eyes, which we have looked upon That which we have seen and heard declare we unto you. ho ), which, emphasizes with"
+    },
+    {
+     "ref": "1 John 3:5"
+    },
+    {
+     "ref": "1 John 3:8"
     }
    ]
   },
@@ -195,22 +252,6 @@
    ]
   },
   {
-   "id": "anaphora",
-   "name": "Anaphora",
-   "greek": "ἀναφορά",
-   "group": "repetition",
-   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
-   "occurrences": [
-    {
-     "ref": "1 John 1:13",
-     "note": "That which was from the beginning, which we have heard, which we have seen with our eyes, which we have looked upon That which we have seen and heard declare we unto you. ho ), which, emphasizes with"
-    },
-    {
-     "ref": "1 John 3:5"
-    }
-   ]
-  },
-  {
    "id": "epanadiplosis",
    "name": "Epanadiplosis",
    "greek": "ἐπαναδίπλωσις",
@@ -228,20 +269,6 @@
    ]
   },
   {
-   "id": "parallelism",
-   "name": "Parallelism",
-   "group": "arrangement",
-   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
-   "occurrences": [
-    {
-     "ref": "1 John 2:15"
-    },
-    {
-     "ref": "1 John 3:9"
-    }
-   ]
-  },
-  {
    "id": "pleonasm",
    "name": "Pleonasm",
    "greek": "πλεονασμός",
@@ -255,6 +282,21 @@
     {
      "ref": "1 John 1:8",
      "note": "If we say that we have no sin, we deceive ourselves, and the truth is not in us. So 2:4"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:1"
+    },
+    {
+     "ref": "1 John 1:8"
     }
    ]
   },
@@ -350,18 +392,6 @@
     {
      "ref": "1 John 2:24",
      "note": "Here again the peculiarity of the Hyperbaton attracts our attraction, and causes us to reflect on the words. Ye, then, what ye heard from the beginning (or primitively), in you let it abide: if in you"
-    }
-   ]
-  },
-  {
-   "id": "paroemia",
-   "name": "Paroemia (proverb)",
-   "greek": "παροιμία",
-   "group": "emphasis",
-   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
-   "occurrences": [
-    {
-     "ref": "1 John 1:8"
     }
    ]
   },

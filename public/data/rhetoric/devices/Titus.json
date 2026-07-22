@@ -62,6 +62,21 @@
    ]
   },
   {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Titus 3:5"
+    },
+    {
+     "ref": "Titus 3:6"
+    }
+   ]
+  },
+  {
    "id": "enallage",
    "name": "Enallage",
    "greek": "ἐναλλαγή",
@@ -159,18 +174,6 @@
    "occurrences": [
     {
      "ref": "Titus 1:12"
-    }
-   ]
-  },
-  {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
-   "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
-   "occurrences": [
-    {
-     "ref": "Titus 3:5"
     }
    ]
   },

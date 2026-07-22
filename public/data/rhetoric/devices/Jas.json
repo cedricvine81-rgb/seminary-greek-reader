@@ -2,6 +2,45 @@
  "book": "Jas",
  "devices": [
   {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "James 2:14"
+    },
+    {
+     "ref": "James 2:17"
+    },
+    {
+     "ref": "James 2:20"
+    },
+    {
+     "ref": "James 2:21",
+     "note": "Was not Abraham our father justified by works? i.e., declared to be justified. See verse 23 and"
+    },
+    {
+     "ref": "James 2:22",
+     "note": "By works was faith made (i.e., declared to be, or manifested to be) perfect: i.e., true and sincere. ii. The CONTAINER for the contents: and the PLACE for the thing placed in it 1. CIRCUIT is so put"
+    },
+    {
+     "ref": "James 2:24"
+    },
+    {
+     "ref": "James 2:26"
+    },
+    {
+     "ref": "James 4:14"
+    },
+    {
+     "ref": "James 5:11",
+     "note": "Ye have heard of the patience of Job, and have seen the end ( i.e., the reward) of the Lord"
+    }
+   ]
+  },
+  {
    "id": "synecdoche",
    "name": "Synecdoche",
    "greek": "συνεκδοχή",
@@ -33,33 +72,6 @@
    ]
   },
   {
-   "id": "metonymy",
-   "name": "Metonymy",
-   "greek": "μετωνυμία",
-   "group": "substitution",
-   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
-   "occurrences": [
-    {
-     "ref": "James 2:14"
-    },
-    {
-     "ref": "James 2:21",
-     "note": "Was not Abraham our father justified by works? i.e., declared to be justified. See verse 23 and"
-    },
-    {
-     "ref": "James 2:22",
-     "note": "By works was faith made (i.e., declared to be, or manifested to be) perfect: i.e., true and sincere. ii. The CONTAINER for the contents: and the PLACE for the thing placed in it 1. CIRCUIT is so put"
-    },
-    {
-     "ref": "James 4:14"
-    },
-    {
-     "ref": "James 5:11",
-     "note": "Ye have heard of the patience of Job, and have seen the end ( i.e., the reward) of the Lord"
-    }
-   ]
-  },
-  {
    "id": "idioma",
    "name": "Idiom",
    "greek": "ἰδίωμα",
@@ -79,11 +91,56 @@
      "note": "27 (religion). ( musteerion ) always rendered or rather transliterated mystery; but meaning a secret. See a pamphlet on The Mystery, by the same author and publisher. was used of managing a househol"
     },
     {
+     "ref": "James 1:27"
+    },
+    {
      "ref": "James 4:7"
     },
     {
      "ref": "James 4:13",
      "note": "meant come now. On sleep"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "James 5:7"
+    },
+    {
+     "ref": "James 5:8"
+    },
+    {
+     "ref": "James 5:13"
+    },
+    {
+     "ref": "James 5:14"
+    }
+   ]
+  },
+  {
+   "id": "climax",
+   "name": "Climax",
+   "greek": "κλῖμαξ",
+   "group": "arrangement",
+   "definition": "A chain in which the end of each step becomes the start of the next, building to a peak.",
+   "occurrences": [
+    {
+     "ref": "James 1:3"
+    },
+    {
+     "ref": "James 1:4"
+    },
+    {
+     "ref": "James 1:14"
+    },
+    {
+     "ref": "James 1:15"
     }
    ]
   },
@@ -147,8 +204,70 @@
      "ref": "James 1:19"
     },
     {
+     "ref": "James 1:20"
+    },
+    {
      "ref": "James 5:6",
      "note": "Here the translators have inserted and twice in italics, utterly destroying the figure and hiding the conclusion. Ye have condemned, ye have killed the just [ One ]; He doth not resist you. Be patient"
+    }
+   ]
+  },
+  {
+   "id": "epanadiplosis",
+   "name": "Epanadiplosis",
+   "greek": "ἐπαναδίπλωσις",
+   "group": "repetition",
+   "definition": "A clause encircled — beginning and ending with the same word.",
+   "occurrences": [
+    {
+     "ref": "James 2:14",
+     "note": "The passage begins and ends with the words, What doth it profit. (such as Pss. 8, ciii"
+    },
+    {
+     "ref": "James 2:15"
+    },
+    {
+     "ref": "James 2:16"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "James 1:26",
+     "note": "27 ). It must be so rendered here: humility and religion: i.e., humility, yesthe religious humility of angels. If we observe this figure, it throws all the other words into their right places, and e"
+    },
+    {
+     "ref": "James 1:27"
+    },
+    {
+     "ref": "James 3:9",
+     "note": "* In the same way villages are called daughters"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "James 1:13",
+     "note": "Cannot be tempted of evil ( marg., evils ): i.e., is not to be tempted with respect to evil things"
+    },
+    {
+     "ref": "James 1:26",
+     "note": "27 (its only occurrences in the New Testament), and Wisd. 14:16, 18, 27 in the Septuagint. Then, the Greek reads: Humility and religion, which, by Hendiadys ( q.v. ), means religious humility (with e"
+    },
+    {
+     "ref": "James 1:27"
     }
    ]
   },
@@ -170,21 +289,6 @@
    ]
   },
   {
-   "id": "anaphora",
-   "name": "Anaphora",
-   "greek": "ἀναφορά",
-   "group": "repetition",
-   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
-   "occurrences": [
-    {
-     "ref": "James 5:7"
-    },
-    {
-     "ref": "James 5:13"
-    }
-   ]
-  },
-  {
    "id": "polysyndeton",
    "name": "Polysyndeton",
    "greek": "πολυσύνδετον",
@@ -198,21 +302,6 @@
     {
      "ref": "James 4:13",
      "note": "The Polysyndeton here, Bengel says, expresses the caprice of a mind secure and indifferentthe will of a mind at ease"
-    }
-   ]
-  },
-  {
-   "id": "climax",
-   "name": "Climax",
-   "greek": "κλῖμαξ",
-   "group": "arrangement",
-   "definition": "A chain in which the end of each step becomes the start of the next, building to a peak.",
-   "occurrences": [
-    {
-     "ref": "James 1:3"
-    },
-    {
-     "ref": "James 1:14"
     }
    ]
   },
@@ -247,23 +336,6 @@
     {
      "ref": "James 3:4",
      "note": "Wherever the impulse of the steersman may will: i.e., as in A.V., whithersoever the governor (i.e., pilot) listeth"
-    }
-   ]
-  },
-  {
-   "id": "hendiadys",
-   "name": "Hendiadys",
-   "greek": "ἓν διὰ δυοῖν",
-   "group": "emphasis",
-   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
-   "occurrences": [
-    {
-     "ref": "James 1:26",
-     "note": "27 ). It must be so rendered here: humility and religion: i.e., humility, yesthe religious humility of angels. If we observe this figure, it throws all the other words into their right places, and e"
-    },
-    {
-     "ref": "James 3:9",
-     "note": "* In the same way villages are called daughters"
     }
    ]
   },
@@ -314,23 +386,6 @@
     {
      "ref": "James 5:4",
      "note": "The cries of them which have reaped are entered into the ears of the Lord of sabaoth. See also"
-    }
-   ]
-  },
-  {
-   "id": "palinodia",
-   "name": "Palinodia",
-   "greek": "παλινῳδία",
-   "group": "emphasis",
-   "definition": "A concession — granting a point for argument's sake before answering it.",
-   "occurrences": [
-    {
-     "ref": "James 1:13",
-     "note": "Cannot be tempted of evil ( marg., evils ): i.e., is not to be tempted with respect to evil things"
-    },
-    {
-     "ref": "James 1:26",
-     "note": "27 (its only occurrences in the New Testament), and Wisd. 14:16, 18, 27 in the Septuagint. Then, the Greek reads: Humility and religion, which, by Hendiadys ( q.v. ), means religious humility (with e"
     }
    ]
   },

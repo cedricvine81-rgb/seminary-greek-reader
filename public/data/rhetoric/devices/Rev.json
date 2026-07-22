@@ -2,6 +2,105 @@
  "book": "Rev",
  "devices": [
   {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Revelation 1:5"
+    },
+    {
+     "ref": "Revelation 2:23"
+    },
+    {
+     "ref": "Revelation 3:5"
+    },
+    {
+     "ref": "Revelation 3:14"
+    },
+    {
+     "ref": "Revelation 3:21",
+     "note": "Also as having a footstool the earth"
+    },
+    {
+     "ref": "Revelation 5:5"
+    },
+    {
+     "ref": "Revelation 5:6"
+    },
+    {
+     "ref": "Revelation 7:17"
+    },
+    {
+     "ref": "Revelation 13:8"
+    },
+    {
+     "ref": "Revelation 18:5"
+    },
+    {
+     "ref": "Revelation 20:12",
+     "note": "Oil or Anointing 1s attributed to God"
+    },
+    {
+     "ref": "Revelation 21:22",
+     "note": "and Christ is the Way thither"
+    },
+    {
+     "ref": "Revelation 22:16"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Revelation 1:6",
+     "note": "The ages of the ages, i.e., to the remotest age, for ever and ever. II]. ADJECTIVES * See in Divine Names and Titles, by the same author and publisher"
+    },
+    {
+     "ref": "Revelation 2:7"
+    },
+    {
+     "ref": "Revelation 2:11"
+    },
+    {
+     "ref": "Revelation 2:17"
+    },
+    {
+     "ref": "Revelation 2:29"
+    },
+    {
+     "ref": "Revelation 3:6"
+    },
+    {
+     "ref": "Revelation 3:13"
+    },
+    {
+     "ref": "Revelation 3:22"
+    },
+    {
+     "ref": "Revelation 13:9"
+    },
+    {
+     "ref": "Revelation 16:9",
+     "note": "And men were scorched with great heat. Lit., burnt with great burning"
+    },
+    {
+     "ref": "Revelation 17:6",
+     "note": "I wondered with great wonder (A.V., admiration), i.e., 1 wondered exceedingly. This figure exists even when the noun is absent through the figure of Ellipsis"
+    },
+    {
+     "ref": "Revelation 17:14"
+    }
+   ]
+  },
+  {
    "id": "metonymy",
    "name": "Metonymy",
    "greek": "μετωνυμία",
@@ -46,50 +145,142 @@
      "note": "And another angel came, having golden frankincense: i.e., a censer. See verse 5. iii. TIME is put for the things done in it, or existing in it 1. The word TIME or TIMES"
     },
     {
+     "ref": "Revelation 11:13"
+    },
+    {
      "ref": "Revelation 14:13",
      "note": "And their works (i.e., their rewards) do follow with them. DIVINATION is put for the money received for it"
     }
    ]
   },
   {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
-   "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
    "occurrences": [
     {
-     "ref": "Revelation 1:5"
+     "ref": "Revelation 1:11",
+     "note": "Here the seven churches are to be separated as being equal in importance, and distinct in their position: What thou seest write in a book and send it unto the seven churches which are in Asia; unto Ep"
     },
     {
-     "ref": "Revelation 2:23"
+     "ref": "Revelation 3:17",
+     "note": "Here, the figure is used to bring out the Laodicean condition of soul. Because thou sayest, I am rich and increased with goods, and have need of nothing; and knowest not that thou art wretched, and mi"
     },
     {
-     "ref": "Revelation 3:5"
+     "ref": "Revelation 6:15",
+     "note": "Here, to show the universality of the fear which will be manifested when the great day of his wrath is comeall classes of society are"
     },
     {
-     "ref": "Revelation 3:21",
-     "note": "Also as having a footstool the earth"
+     "ref": "Revelation 6:17",
+     "note": "so that there is, therefore, no interval for a millennium of peace and blessedness before the coming of the Lord. This is the coming of the Lord with His saints (the Church), not His coming for wha"
     },
     {
-     "ref": "Revelation 5:5"
+     "ref": "Revelation 7:5",
+     "note": "it is this latter, or the glory aspect of Messiahs birth that is presented, as referred to in Pss. 2 and 87 It leaps over the sufferings of Christ, and over the whole of the interval of this present d"
     },
     {
-     "ref": "Revelation 5:6"
+     "ref": "Revelation 11:17",
+     "note": "18; 20:915; 21:8 and 2227; 22:16, 17. Paradiastole; or, Neithers and Nors The Repetition of the Disjunctives Neither and Nor, or, Either and Or Par -a-di-as -to-lee. Greek,, from para ), beside o"
     },
     {
-     "ref": "Revelation 7:17"
+     "ref": "Revelation 11:18"
     },
     {
-     "ref": "Revelation 18:5"
+     "ref": "Revelation 13:19",
+     "note": "Here the figure is used to mark, to emphasize, and to call our attention to the solemn events, which will follow upon Satans being cast out into the earth, to find no more place in heaven ( 12:8 ). Fo"
     },
     {
-     "ref": "Revelation 20:12",
-     "note": "Oil or Anointing 1s attributed to God"
+     "ref": "Revelation 18:12"
     },
     {
-     "ref": "Revelation 21:22",
-     "note": "and Christ is the Way thither"
+     "ref": "Revelation 18:13"
+    },
+    {
+     "ref": "Revelation 21:8"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "Revelation 6:16"
+    },
+    {
+     "ref": "Revelation 6:17"
+    },
+    {
+     "ref": "Revelation 17:1"
+    },
+    {
+     "ref": "Revelation 17:15"
+    },
+    {
+     "ref": "Revelation 18:2"
+    },
+    {
+     "ref": "Revelation 18:4"
+    },
+    {
+     "ref": "Revelation 18:19"
+    },
+    {
+     "ref": "Revelation 18:20"
+    },
+    {
+     "ref": "Revelation 18:22",
+     "note": "23; and we shall see that the judgment is indeed deferred; but, it will surely come. God will watch over it to bring it to pass, and this is emphasized and marked by the three words: Shakedshokedshes"
+    },
+    {
+     "ref": "Revelation 18:23"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Revelation 6:1"
+    },
+    {
+     "ref": "Revelation 6:3"
+    },
+    {
+     "ref": "Revelation 6:5"
+    },
+    {
+     "ref": "Revelation 6:7"
+    },
+    {
+     "ref": "Revelation 6:9",
+     "note": "and 20:4: the souls of them that were slain or beheaded: i.e., the persons. John saw the dead persons. They could not reign till they were made alive, hence in 20:4, we read that they lived"
+    },
+    {
+     "ref": "Revelation 14:11"
+    },
+    {
+     "ref": "Revelation 16:3",
+     "note": "as well as of man in"
+    },
+    {
+     "ref": "Revelation 20:15"
+    },
+    {
+     "ref": "Revelation 22:15"
+    },
+    {
+     "ref": "Revelation 22:16",
+     "note": "Hence David is called his father"
     }
    ]
   },
@@ -137,103 +328,92 @@
    ]
   },
   {
-   "id": "polysyndeton",
-   "name": "Polysyndeton",
-   "greek": "πολυσύνδετον",
-   "group": "repetition",
-   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
-   "occurrences": [
-    {
-     "ref": "Revelation 1:11",
-     "note": "Here the seven churches are to be separated as being equal in importance, and distinct in their position: What thou seest write in a book and send it unto the seven churches which are in Asia; unto Ep"
-    },
-    {
-     "ref": "Revelation 3:17",
-     "note": "Here, the figure is used to bring out the Laodicean condition of soul. Because thou sayest, I am rich and increased with goods, and have need of nothing; and knowest not that thou art wretched, and mi"
-    },
-    {
-     "ref": "Revelation 6:15",
-     "note": "Here, to show the universality of the fear which will be manifested when the great day of his wrath is comeall classes of society are"
-    },
-    {
-     "ref": "Revelation 6:17",
-     "note": "so that there is, therefore, no interval for a millennium of peace and blessedness before the coming of the Lord. This is the coming of the Lord with His saints (the Church), not His coming for wha"
-    },
-    {
-     "ref": "Revelation 7:5",
-     "note": "it is this latter, or the glory aspect of Messiahs birth that is presented, as referred to in Pss. 2 and 87 It leaps over the sufferings of Christ, and over the whole of the interval of this present d"
-    },
-    {
-     "ref": "Revelation 11:17",
-     "note": "18; 20:915; 21:8 and 2227; 22:16, 17. Paradiastole; or, Neithers and Nors The Repetition of the Disjunctives Neither and Nor, or, Either and Or Par -a-di-as -to-lee. Greek,, from para ), beside o"
-    },
-    {
-     "ref": "Revelation 13:19",
-     "note": "Here the figure is used to mark, to emphasize, and to call our attention to the solemn events, which will follow upon Satans being cast out into the earth, to find no more place in heaven ( 12:8 ). Fo"
-    },
-    {
-     "ref": "Revelation 18:12"
-    }
-   ]
-  },
-  {
-   "id": "paronomasia",
-   "name": "Paronomasia (wordplay)",
-   "greek": "παρονομασία",
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
    "group": "emphasis",
-   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
    "occurrences": [
     {
-     "ref": "Revelation 6:16"
+     "ref": "Revelation 1:18"
     },
     {
-     "ref": "Revelation 17:1"
+     "ref": "Revelation 1:20",
+     "note": "the stars which John saw were a mystery: i.e., secret sign (or symbol); and in"
     },
     {
-     "ref": "Revelation 18:2"
+     "ref": "Revelation 3:7"
     },
     {
-     "ref": "Revelation 18:4"
+     "ref": "Revelation 3:19"
     },
     {
-     "ref": "Revelation 18:19"
+     "ref": "Revelation 17:5"
     },
     {
-     "ref": "Revelation 18:20"
+     "ref": "Revelation 17:7"
     },
     {
-     "ref": "Revelation 18:22",
-     "note": "23; and we shall see that the judgment is indeed deferred; but, it will surely come. God will watch over it to bring it to pass, and this is emphasized and marked by the three words: Shakedshokedshes"
+     "ref": "Revelation 20:8",
+     "note": "See under Hyperbole. As the dust of the earth, or dust, is used proverbially, by Metonymy ( q.v. ), for an innumerable multitude"
     }
    ]
   },
   {
-   "id": "polyptoton",
-   "name": "Polyptoton",
-   "greek": "πολύπτωτον",
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
    "group": "repetition",
-   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
    "occurrences": [
     {
-     "ref": "Revelation 1:6",
-     "note": "The ages of the ages, i.e., to the remotest age, for ever and ever. II]. ADJECTIVES * See in Divine Names and Titles, by the same author and publisher"
+     "ref": "Revelation 1:16"
     },
     {
-     "ref": "Revelation 2:7"
+     "ref": "Revelation 3:13"
     },
     {
-     "ref": "Revelation 13:9"
+     "ref": "Revelation 12:14",
+     "note": "From the face of the serpent, i.e., a great way off from the serpent. 2.(Peh ), mouth. This word seems to be redundant when used with the word sword: the mouth of the sword. But this use of the Figu"
     },
     {
-     "ref": "Revelation 16:9",
-     "note": "And men were scorched with great heat. Lit., burnt with great burning"
+     "ref": "Revelation 15:4",
+     "note": "Who shall not fear Thee, O Lord, and glorify thy name?: i.e., fear and worship Thee Thyself"
     },
     {
-     "ref": "Revelation 17:6",
-     "note": "I wondered with great wonder (A.V., admiration), i.e., 1 wondered exceedingly. This figure exists even when the noun is absent through the figure of Ellipsis"
+     "ref": "Revelation 16:19",
+     "note": "The fierceness of His wrath. Here, the figure is seen and beautifully translated: not literally, but according to the enhanced sense. The Greek is ( thumos orgees ), the anger of His wrath, the two w"
     },
     {
-     "ref": "Revelation 17:14"
+     "ref": "Revelation 19:2"
+    }
+   ]
+  },
+  {
+   "id": "hypotyposis",
+   "name": "Hypotyposis",
+   "greek": "ὑποτύπωσις",
+   "group": "emphasis",
+   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
+   "occurrences": [
+    {
+     "ref": "Revelation 19:11",
+     "note": "or when God is compared to a wine-refreshed giant when He arises to avenge His people"
+    },
+    {
+     "ref": "Revelation 19:12"
+    },
+    {
+     "ref": "Revelation 19:13"
+    },
+    {
+     "ref": "Revelation 19:14"
+    },
+    {
+     "ref": "Revelation 19:15"
+    },
+    {
+     "ref": "Revelation 19:16"
     }
    ]
   },
@@ -268,85 +448,30 @@
    ]
   },
   {
-   "id": "synecdoche",
-   "name": "Synecdoche",
-   "greek": "συνεκδοχή",
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
    "group": "substitution",
-   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
    "occurrences": [
     {
-     "ref": "Revelation 6:1"
+     "ref": "Revelation 1:12",
+     "note": "And I turned to see the voice that spake with me. Here voice is put by Metonymy ( q.v. ), for the person speaking. Apart from this, there is a Catachresis; seeing being joined with that which is…"
     },
     {
-     "ref": "Revelation 6:9",
-     "note": "and 20:4: the souls of them that were slain or beheaded: i.e., the persons. John saw the dead persons. They could not reign till they were made alive, hence in 20:4, we read that they lived"
+     "ref": "Revelation 2:7"
     },
     {
-     "ref": "Revelation 14:11"
+     "ref": "Revelation 14:8"
     },
     {
-     "ref": "Revelation 16:3",
-     "note": "as well as of man in"
+     "ref": "Revelation 18:3"
     },
     {
-     "ref": "Revelation 22:15"
+     "ref": "Revelation 22:2"
     },
     {
-     "ref": "Revelation 22:16",
-     "note": "Hence David is called his father"
-    }
-   ]
-  },
-  {
-   "id": "pleonasm",
-   "name": "Pleonasm",
-   "greek": "πλεονασμός",
-   "group": "repetition",
-   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
-   "occurrences": [
-    {
-     "ref": "Revelation 1:16"
-    },
-    {
-     "ref": "Revelation 12:14",
-     "note": "From the face of the serpent, i.e., a great way off from the serpent. 2.(Peh ), mouth. This word seems to be redundant when used with the word sword: the mouth of the sword. But this use of the Figu"
-    },
-    {
-     "ref": "Revelation 15:4",
-     "note": "Who shall not fear Thee, O Lord, and glorify thy name?: i.e., fear and worship Thee Thyself"
-    },
-    {
-     "ref": "Revelation 16:19",
-     "note": "The fierceness of His wrath. Here, the figure is seen and beautifully translated: not literally, but according to the enhanced sense. The Greek is ( thumos orgees ), the anger of His wrath, the two w"
-    },
-    {
-     "ref": "Revelation 19:2"
-    }
-   ]
-  },
-  {
-   "id": "paroemia",
-   "name": "Paroemia (proverb)",
-   "greek": "παροιμία",
-   "group": "emphasis",
-   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
-   "occurrences": [
-    {
-     "ref": "Revelation 1:18"
-    },
-    {
-     "ref": "Revelation 1:20",
-     "note": "the stars which John saw were a mystery: i.e., secret sign (or symbol); and in"
-    },
-    {
-     "ref": "Revelation 3:19"
-    },
-    {
-     "ref": "Revelation 17:5"
-    },
-    {
-     "ref": "Revelation 20:8",
-     "note": "See under Hyperbole. As the dust of the earth, or dust, is used proverbially, by Metonymy ( q.v. ), for an innumerable multitude"
+     "ref": "Revelation 22:14"
     }
    ]
   },
@@ -390,12 +515,74 @@
      "ref": "Revelation 1:5"
     },
     {
+     "ref": "Revelation 1:6"
+    },
+    {
      "ref": "Revelation 3:12",
      "note": "and 18:13. Heterosis; or, Exchange of Accidence Exchange of one Voice, Mood, Tense, Person, Number, Degree, or Gender, for another Het -e-r -sis ( heteros ), another, different. It is the name given"
     },
     {
      "ref": "Revelation 18:13",
      "note": "justasweusehandsof labourers"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "Revelation 6:9",
+     "note": "this time of persecution is not yet over, and those who have been slain are represented, by Prosopopia, as speaking and asking, How long it would be before the earth should be judged, and their blood"
+    },
+    {
+     "ref": "Revelation 6:10"
+    },
+    {
+     "ref": "Revelation 18:5",
+     "note": "Her sins have reached unto heaven. Antiprosopopia; or, Anti-Personification The opposite of Prosopopia; Persons represented as inanimate things An -ti-pros-o -po-p-ia (anti ), opposite, prefixed. The"
+    },
+    {
+     "ref": "Revelation 20:4"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "Revelation 3:7"
+    },
+    {
+     "ref": "Revelation 3:8"
+    },
+    {
+     "ref": "Revelation 7:58"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Revelation 5:9"
+    },
+    {
+     "ref": "Revelation 14:3"
+    },
+    {
+     "ref": "Revelation 15:3"
     }
    ]
   },
@@ -442,25 +629,6 @@
    ]
   },
   {
-   "id": "catachresis",
-   "name": "Catachresis",
-   "greek": "κατάχρησις",
-   "group": "substitution",
-   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
-   "occurrences": [
-    {
-     "ref": "Revelation 1:12",
-     "note": "And I turned to see the voice that spake with me. Here voice is put by Metonymy ( q.v. ), for the person speaking. Apart from this, there is a Catachresis; seeing being joined with that which is…"
-    },
-    {
-     "ref": "Revelation 2:7"
-    },
-    {
-     "ref": "Revelation 14:8"
-    }
-   ]
-  },
-  {
    "id": "gnome",
    "name": "Gnome (quotation)",
    "greek": "γνώμη",
@@ -479,37 +647,17 @@
    ]
   },
   {
-   "id": "personification",
-   "name": "Personification",
-   "greek": "προσωποποιΐα",
-   "group": "emphasis",
-   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
-   "occurrences": [
-    {
-     "ref": "Revelation 6:9",
-     "note": "this time of persecution is not yet over, and those who have been slain are represented, by Prosopopia, as speaking and asking, How long it would be before the earth should be judged, and their blood"
-    },
-    {
-     "ref": "Revelation 18:5",
-     "note": "Her sins have reached unto heaven. Antiprosopopia; or, Anti-Personification The opposite of Prosopopia; Persons represented as inanimate things An -ti-pros-o -po-p-ia (anti ), opposite, prefixed. The"
-    },
-    {
-     "ref": "Revelation 20:4"
-    }
-   ]
-  },
-  {
-   "id": "asyndeton",
-   "name": "Asyndeton",
-   "greek": "ἀσύνδετον",
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
    "group": "omission",
-   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
    "occurrences": [
     {
-     "ref": "Revelation 3:7"
+     "ref": "Revelation 5:9"
     },
     {
-     "ref": "Revelation 7:58"
+     "ref": "Revelation 7:9"
     }
    ]
   },
@@ -564,18 +712,6 @@
    ]
   },
   {
-   "id": "aposiopesis",
-   "name": "Aposiopesis",
-   "greek": "ἀποσιώπησις",
-   "group": "omission",
-   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
-   "occurrences": [
-    {
-     "ref": "Revelation 5:9"
-    }
-   ]
-  },
-  {
    "id": "tapeinosis",
    "name": "Tapeinosis",
    "greek": "ταπείνωσις",
@@ -622,18 +758,6 @@
    "occurrences": [
     {
      "ref": "Revelation 10:5"
-    }
-   ]
-  },
-  {
-   "id": "synonymia",
-   "name": "Synonymia",
-   "greek": "συνωνυμία",
-   "group": "repetition",
-   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
-   "occurrences": [
-    {
-     "ref": "Revelation 5:9"
     }
    ]
   },

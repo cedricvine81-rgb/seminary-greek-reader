@@ -2,6 +2,44 @@
  "book": "2Tim",
  "devices": [
   {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:10"
+    },
+    {
+     "ref": "2 Timothy 3:11"
+    },
+    {
+     "ref": "2 Timothy 3:15",
+     "note": "This know also, that in the last days perilous times shall come.For men shall be lovers of their own selves, covetous, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy, without"
+    },
+    {
+     "ref": "2 Timothy 3:16",
+     "note": "in verses 2 and 3 of the next chapter, which may be compared thus: The God-breathed Word is profitable"
+    },
+    {
+     "ref": "2 Timothy 3:17"
+    },
+    {
+     "ref": "2 Timothy 4:2"
+    },
+    {
+     "ref": "2 Timothy 4:3"
+    },
+    {
+     "ref": "2 Timothy 4:17"
+    },
+    {
+     "ref": "2 Timothy 4:18"
+    }
+   ]
+  },
+  {
    "id": "metonymy",
    "name": "Metonymy",
    "greek": "μετωνυμία",
@@ -42,28 +80,27 @@
    ]
   },
   {
-   "id": "asyndeton",
-   "name": "Asyndeton",
-   "greek": "ἀσύνδετον",
-   "group": "omission",
-   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
    "occurrences": [
+    {
+     "ref": "2 Timothy 3:6",
+     "note": "where it is rendered silly women. But it occurs only here, and is neuter. It therefore includes silly women of both sexes! Some see in this man-child the Church of God. But the Church is neither woma"
+    },
     {
      "ref": "2 Timothy 3:10"
     },
     {
-     "ref": "2 Timothy 3:15",
-     "note": "This know also, that in the last days perilous times shall come.For men shall be lovers of their own selves, covetous, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy, without"
-    },
-    {
-     "ref": "2 Timothy 3:16",
-     "note": "in verses 2 and 3 of the next chapter, which may be compared thus: The God-breathed Word is profitable"
-    },
-    {
-     "ref": "2 Timothy 4:2"
+     "ref": "2 Timothy 3:11"
     },
     {
      "ref": "2 Timothy 4:17"
+    },
+    {
+     "ref": "2 Timothy 4:18"
     }
    ]
   },
@@ -93,25 +130,6 @@
    ]
   },
   {
-   "id": "polysyndeton",
-   "name": "Polysyndeton",
-   "greek": "πολυσύνδετον",
-   "group": "repetition",
-   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
-   "occurrences": [
-    {
-     "ref": "2 Timothy 3:6",
-     "note": "where it is rendered silly women. But it occurs only here, and is neuter. It therefore includes silly women of both sexes! Some see in this man-child the Church of God. But the Church is neither woma"
-    },
-    {
-     "ref": "2 Timothy 3:10"
-    },
-    {
-     "ref": "2 Timothy 4:17"
-    }
-   ]
-  },
-  {
    "id": "polyptoton",
    "name": "Polyptoton",
    "greek": "πολύπτωτον",
@@ -128,6 +146,27 @@
     },
     {
      "ref": "2 Timothy 4:17"
+    },
+    {
+     "ref": "2 Timothy 4:18"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:2"
+    },
+    {
+     "ref": "2 Timothy 3:14"
+    },
+    {
+     "ref": "2 Timothy 3:15"
     }
    ]
   },
@@ -153,17 +192,36 @@
    ]
   },
   {
-   "id": "synonymia",
-   "name": "Synonymia",
-   "greek": "συνωνυμία",
-   "group": "repetition",
-   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
    "occurrences": [
     {
-     "ref": "2 Timothy 1:2"
+     "ref": "2 Timothy 1:10",
+     "note": "Our Saviour Jesus Christ, who hath abolished death and hath brought life and immortality to light: i.e., life, yesand immortal life too"
     },
     {
-     "ref": "2 Timothy 3:14"
+     "ref": "2 Timothy 4:1"
+    },
+    {
+     "ref": "2 Timothy 4:2"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:2"
+    },
+    {
+     "ref": "2 Timothy 3:3"
     }
    ]
   },
@@ -180,34 +238,6 @@
     {
      "ref": "2 Timothy 3:16",
      "note": "All Scripture is given by inspiration of God: i.e., the whole Scripture; not every Scripture, as in the R.V., but every part of Scripture. See under Ellipsis, page 44"
-    }
-   ]
-  },
-  {
-   "id": "hendiadys",
-   "name": "Hendiadys",
-   "greek": "ἓν διὰ δυοῖν",
-   "group": "emphasis",
-   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
-   "occurrences": [
-    {
-     "ref": "2 Timothy 1:10",
-     "note": "Our Saviour Jesus Christ, who hath abolished death and hath brought life and immortality to light: i.e., life, yesand immortal life too"
-    },
-    {
-     "ref": "2 Timothy 4:1"
-    }
-   ]
-  },
-  {
-   "id": "homoteleuton",
-   "name": "Homœoteleuton",
-   "greek": "ὁμοιοτέλευτον",
-   "group": "repetition",
-   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
-   "occurrences": [
-    {
-     "ref": "2 Timothy 3:2"
     }
    ]
   },

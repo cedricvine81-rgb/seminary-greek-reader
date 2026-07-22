@@ -2,6 +2,34 @@
  "book": "Col",
  "devices": [
   {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:10"
+    },
+    {
+     "ref": "Colossians 1:11"
+    },
+    {
+     "ref": "Colossians 1:12"
+    },
+    {
+     "ref": "Colossians 1:13"
+    },
+    {
+     "ref": "Colossians 1:26",
+     "note": "The secret which had been lying hid from the ages and from the generations, but lately was made manifest to his Saints. Other examples may be found, e.g.: Change from first person to the second"
+    },
+    {
+     "ref": "Colossians 3:3"
+    }
+   ]
+  },
+  {
    "id": "enallage",
    "name": "Enallage",
    "greek": "ἐναλλαγή",
@@ -59,6 +87,31 @@
    ]
   },
   {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:15"
+    },
+    {
+     "ref": "Colossians 1:18"
+    },
+    {
+     "ref": "Colossians 1:27"
+    },
+    {
+     "ref": "Colossians 2:17",
+     "note": "Which are a shadow of things to come: but the body of Christ is the substance: i.e., Christ Himself, either personally (verse 9 ) or mystically. * See under Ellipsis, and"
+    },
+    {
+     "ref": "Colossians 3:1"
+    }
+   ]
+  },
+  {
    "id": "palinodia",
    "name": "Palinodia",
    "greek": "παλινῳδία",
@@ -107,28 +160,6 @@
     {
      "ref": "Colossians 2:9",
      "note": "For in him dwelleth all the fulness of the Godhead bodily: lit., every: i.e., every part of; meaning the whole fulness of the Godhead in bodily form"
-    }
-   ]
-  },
-  {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
-   "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
-   "occurrences": [
-    {
-     "ref": "Colossians 1:15"
-    },
-    {
-     "ref": "Colossians 1:27"
-    },
-    {
-     "ref": "Colossians 2:17",
-     "note": "Which are a shadow of things to come: but the body of Christ is the substance: i.e., Christ Himself, either personally (verse 9 ) or mystically. * See under Ellipsis, and"
-    },
-    {
-     "ref": "Colossians 3:1"
     }
    ]
   },
@@ -188,6 +219,52 @@
     {
      "ref": "Colossians 3:16",
      "note": "This points to the conclusion that the psalms referred to here are the inspired Psalms of the Old Testament. ( hymnos ), whence our word hymn, which was originally a heathen word used of a song in"
+    }
+   ]
+  },
+  {
+   "id": "epimone",
+   "name": "Epimone",
+   "greek": "ἐπιμονή",
+   "group": "repetition",
+   "definition": "Dwelling on a point by repeating it in the same words for emphasis.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:14"
+    },
+    {
+     "ref": "Colossians 2:15"
+    }
+   ]
+  },
+  {
+   "id": "hypotyposis",
+   "name": "Hypotyposis",
+   "greek": "ὑποτύπωσις",
+   "group": "emphasis",
+   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:14"
+    },
+    {
+     "ref": "Colossians 2:15"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:21",
+     "note": "22 is an important Epitrechon, which writes folly on all the attempts to improve the old nature, by vows and pledges and badges"
+    },
+    {
+     "ref": "Colossians 2:22"
     }
    ]
   },
@@ -279,43 +356,6 @@
    ]
   },
   {
-   "id": "epimone",
-   "name": "Epimone",
-   "greek": "ἐπιμονή",
-   "group": "repetition",
-   "definition": "Dwelling on a point by repeating it in the same words for emphasis.",
-   "occurrences": [
-    {
-     "ref": "Colossians 2:14"
-    }
-   ]
-  },
-  {
-   "id": "hypotyposis",
-   "name": "Hypotyposis",
-   "greek": "ὑποτύπωσις",
-   "group": "emphasis",
-   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
-   "occurrences": [
-    {
-     "ref": "Colossians 2:14"
-    }
-   ]
-  },
-  {
-   "id": "epitrechon",
-   "name": "Epitrechon",
-   "greek": "ἐπιτρέχον",
-   "group": "arrangement",
-   "definition": "A clause “running through” — dropped in parenthetically between others.",
-   "occurrences": [
-    {
-     "ref": "Colossians 2:21",
-     "note": "22 is an important Epitrechon, which writes folly on all the attempts to improve the old nature, by vows and pledges and badges"
-    }
-   ]
-  },
-  {
    "id": "antiptosis",
    "name": "Antiptosis",
    "greek": "ἀντίπτωσις",
@@ -325,19 +365,6 @@
     {
      "ref": "Colossians 1:27",
      "note": "The riches of the glory: i.e., His wondrously rich glory, in the mystery revealed to and through Paul"
-    }
-   ]
-  },
-  {
-   "id": "anacoluthon",
-   "name": "Anacoluthon",
-   "greek": "ἀνακόλουθον",
-   "group": "arrangement",
-   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
-   "occurrences": [
-    {
-     "ref": "Colossians 1:26",
-     "note": "The secret which had been lying hid from the ages and from the generations, but lately was made manifest to his Saints. Other examples may be found, e.g.: Change from first person to the second"
     }
    ]
   },

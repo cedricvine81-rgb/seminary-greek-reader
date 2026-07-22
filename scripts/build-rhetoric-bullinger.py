@@ -228,19 +228,55 @@ def load_text():
 
 HEAD = re.compile(r"([A-Z][A-Za-zé'\-]+(?:[ \-][A-Z][a-zé'\-]+){0,3})\s*;\s*or,\s+[A-Z]")
 
+def expand_merged(v, vmax):
+    """A single verse, or an OCR-merged 4-digit range ("1924" -> 19..24) the hyphen was lost
+    from. Returns the verse list (empty = unrecoverable, so it's dropped)."""
+    if 1 <= v <= vmax:
+        return [v]
+    s = str(v)
+    if len(s) == 4:
+        a, b = int(s[:2]), int(s[2:])
+        if 1 <= a < b <= vmax and b - a <= 25:
+            return list(range(a, b + 1))
+    return []
+
+# Bullinger's citation tail after a "Book C:V": ", 5, 16" (more verses, same chapter) and
+# "; 6:13" (a new chapter, same book). A comma-verse must NOT be followed by ":" (that would
+# be its own chapter:verse), and "; …" must be digits (a book name after ";" ends the run).
+CONT = re.compile(r"\s*(?:,\s*(\d+)(?!\s*[:.]\s*\d)|;\s*(\d+)\s*[:.]\s*(\d+))")
+def continuation(text, pos, ch):
+    out = []
+    for _ in range(40):
+        m = CONT.match(text, pos)
+        if not m:
+            break
+        if m.group(1):
+            out.append((ch, int(m.group(1))))          # ", v" — same chapter
+        else:
+            ch = int(m.group(2)); out.append((ch, int(m.group(3))))   # "; c:v" — same book
+        pos = m.end()
+    return out
+
 def build_book(book, text, head_events):
     """head_events: sorted (pos, figure-id-or-None) from the shared figure headings."""
     b = BOOKS[book]
-    if b["sc"]:                                   # single-chapter: "Jude 12" -> 1:12
-        ref = re.compile("(?:" + b["rx"] + r")[a-z]*\.?\s*(\d+)")
-        refs = [(m.start(), 1, int(m.group(1)), m.end()) for m in ref.finditer(text)]
-        vmax, chmax = b["sc"], 1
-    else:
-        ref = re.compile("(?:" + b["rx"] + r")[a-z]*\.?\s*(\d+)\s*[:.]\s*(\d+)")
-        refs = [(m.start(), int(m.group(1)), int(m.group(2)), m.end()) for m in ref.finditer(text)]
-        vmax, chmax = MAX_VERSE, b["max_ch"]
+    vmax, chmax = (b["sc"], 1) if b["sc"] else (MAX_VERSE, b["max_ch"])
+    # rx captures the FIRST verse (single-chapter) or chapter:verse; each match also pulls in
+    # Bullinger's continuation tail (", v"/"; c:v") and expands OCR-merged 4-digit ranges.
+    # refs entries: (start, ch, v, end, primary?) — only the primary verse carries the gloss.
+    rx = re.compile("(?:" + b["rx"] + r")[a-z]*\.?\s*(\d+)" + ("" if b["sc"] else r"\s*[:.]\s*(\d+)"))
+    refs = []
+    for m in rx.finditer(text):
+        ch0 = 1 if b["sc"] else int(m.group(1))
+        vraw = int(m.group(1) if b["sc"] else m.group(2))
+        prim = expand_merged(vraw, vmax)
+        for i, vv in enumerate(prim):
+            refs.append((m.start(), ch0, vv, m.end(), i == 0))     # gloss on the first only
+        if prim:                                                   # continuations tag-only
+            for cc, vv in continuation(text, m.end(), ch0):
+                refs.append((m.start(), cc, vv, m.end(), False))
 
-    events = head_events + [(s, ("r", ch, v, e)) for s, ch, v, e in refs]
+    events = head_events + [(s, ("r", ch, v, e, p)) for s, ch, v, e, p in refs]
     events.sort(key=lambda x: x[0])
 
     devices, cur = {}, None
@@ -250,11 +286,11 @@ def build_book(book, text, head_events):
             continue
         if not cur:
             continue
-        _, ch, v, end = val
-        if not (1 <= ch <= chmax and 1 <= v <= vmax):     # OCR-mangled ref / merged range
+        _, ch, v, end, primary = val
+        if not (1 <= ch <= chmax and 1 <= v <= vmax):     # OCR-mangled / out-of-range
             continue
         did, name, greek, group, definition = cur
-        note = make_note(text[end:end + 240])
+        note = make_note(text[end:end + 240]) if primary else ""   # list members: tag only
         d = devices.setdefault(did, dict(id=did, name=name, greek=greek, group=group,
                                          definition=definition, occ={}))
         r = f"{b['name']} {ch}:{v}"

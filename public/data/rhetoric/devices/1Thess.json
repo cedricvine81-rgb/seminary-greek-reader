@@ -2,6 +2,57 @@
  "book": "1Thess",
  "devices": [
   {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:1"
+    },
+    {
+     "ref": "1 Thessalonians 4:13"
+    },
+    {
+     "ref": "1 Thessalonians 4:14"
+    },
+    {
+     "ref": "1 Thessalonians 5:6"
+    },
+    {
+     "ref": "1 Thessalonians 5:7"
+    },
+    {
+     "ref": "1 Thessalonians 5:10"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 5:14",
+     "note": "Now we exhort you, brethren, warn them that are unruly, comfort the feeble minded, support the weak, be patient toward all men. See that none render evil for evil unto any man; but ever follow that w"
+    },
+    {
+     "ref": "1 Thessalonians 5:15"
+    },
+    {
+     "ref": "1 Thessalonians 5:16"
+    },
+    {
+     "ref": "1 Thessalonians 5:17"
+    },
+    {
+     "ref": "1 Thessalonians 5:18"
+    }
+   ]
+  },
+  {
    "id": "metonymy",
    "name": "Metonymy",
    "greek": "μετωνυμία",
@@ -10,6 +61,9 @@
    "occurrences": [
     {
      "ref": "1 Thessalonians 2:19"
+    },
+    {
+     "ref": "1 Thessalonians 2:20"
     },
     {
      "ref": "1 Thessalonians 5:12",
@@ -34,20 +88,9 @@
     },
     {
      "ref": "1 Thessalonians 4:16"
-    }
-   ]
-  },
-  {
-   "id": "parallelism",
-   "name": "Parallelism",
-   "group": "arrangement",
-   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
-   "occurrences": [
-    {
-     "ref": "1 Thessalonians 4:13"
     },
     {
-     "ref": "1 Thessalonians 5:6"
+     "ref": "1 Thessalonians 4:17"
     }
    ]
   },

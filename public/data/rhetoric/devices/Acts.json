@@ -2,6 +2,189 @@
  "book": "Acts",
  "devices": [
   {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Acts 1:4",
+     "note": "They should not depart from Jerusalem, but wait for the promise of the Father: i.e., that which the Father had promised"
+    },
+    {
+     "ref": "Acts 1:5",
+     "note": "Ye shall be baptized with the Holy Ghost: i.e., ye shall be immersed in spiritual power (see verse 8 ), which shall cover you as well as fill you and flow out from you"
+    },
+    {
+     "ref": "Acts 1:11",
+     "note": "This same Jesus, which is taken up from you: i.e., from your presence and company. So verse 22"
+    },
+    {
+     "ref": "Acts 1:15"
+    },
+    {
+     "ref": "Acts 1:18",
+     "note": "Now this man purchased ( i.e., caused to be purchased) a field"
+    },
+    {
+     "ref": "Acts 1:24",
+     "note": "Thou, Lord, which knowest the hearts (i.e., the thoughts) of all men"
+    },
+    {
+     "ref": "Acts 2:4",
+     "note": "They began to speak with other tongues: i.e., in other languages ). So verse 11"
+    },
+    {
+     "ref": "Acts 2:11"
+    },
+    {
+     "ref": "Acts 2:26"
+    },
+    {
+     "ref": "Acts 2:27"
+    },
+    {
+     "ref": "Acts 2:31"
+    },
+    {
+     "ref": "Acts 3:6",
+     "note": "Silver and gold (i.e., money, like the Scottish siller and French largent ) have I none. 6. IRON is put for things made of it"
+    },
+    {
+     "ref": "Acts 3:16"
+    },
+    {
+     "ref": "Acts 4:11"
+    },
+    {
+     "ref": "Acts 4:12"
+    },
+    {
+     "ref": "Acts 5:41"
+    },
+    {
+     "ref": "Acts 6:7",
+     "note": "And a great company of the Priests were obedient to the faith: i.e., to the doctrine believed"
+    },
+    {
+     "ref": "Acts 7:6",
+     "note": "where the period of sojourning is stated to be 400 years. Whereas, in"
+    },
+    {
+     "ref": "Acts 7:7"
+    },
+    {
+     "ref": "Acts 7:51",
+     "note": "Ye do always resist the Holy Ghost: i.e., the testimony of the Holy Spirit as given by the prophets. Their fathers resisted the prophets, and would not hear the Spirits voice in them and now they, li"
+    },
+    {
+     "ref": "Acts 8:25",
+     "note": "They preached the gospel to many villages of the Samaritans: i.e., to their inhabitants. The A.V. evades and hides the Metonymy by rendering it in many"
+    },
+    {
+     "ref": "Acts 9:4",
+     "note": "Saul, Saul, why persecutest thou me? i.e., My People who belong to Me. See verse 5; and"
+    },
+    {
+     "ref": "Acts 10:2",
+     "note": "Cornelius.. feared God with all his house: i.e., all his family or household"
+    },
+    {
+     "ref": "Acts 10:4"
+    },
+    {
+     "ref": "Acts 10:10"
+    },
+    {
+     "ref": "Acts 10:15",
+     "note": "What God hath cleansed: i.e., declared to be (ceremonially) clean: as is clear from verse 28"
+    },
+    {
+     "ref": "Acts 10:34",
+     "note": "I perceive (i.e., I now understand and am made to know from what has taken place) that God is no respecter of persons. cf"
+    },
+    {
+     "ref": "Acts 10:43"
+    },
+    {
+     "ref": "Acts 12:17"
+    },
+    {
+     "ref": "Acts 14:15",
+     "note": "We preach unto you that ye should turn from these vanities ( i.e., idols) unto the living God. Note that the term Living God is generally used when idols are mentioned or implied in the context (See |"
+    },
+    {
+     "ref": "Acts 15:10",
+     "note": "Now therefore why tempt ye God, to put a yoke (i.e., a burden) on the neck of the disciples"
+    },
+    {
+     "ref": "Acts 15:21"
+    },
+    {
+     "ref": "Acts 16:13",
+     "note": "Where we supposed was prayer: i.e., a place of prayer. See verse 16. The word rendered supposed means that they looked for and expected to find a place of prayer as lawfully and legally allowed"
+    },
+    {
+     "ref": "Acts 16:24",
+     "note": "And made their feet fast in the wood: i.e in the stocks, as in A.V. 9. FLAX is put for the wick made of it"
+    },
+    {
+     "ref": "Acts 17:11",
+     "note": "whether they are of God (or of demons and evil spirits): because many false prophets are gone out into the world. Hereby know ye the spirit (or doctrine and teaching ) of God. Every spirit ( i.e"
+    },
+    {
+     "ref": "Acts 17:16"
+    },
+    {
+     "ref": "Acts 17:31",
+     "note": "Lit., Whereof he hath given faith to all men. Here faith, the effect, is put for the proofs or evidence on which it rests. Whereof He hath afforded evidence unto all men: and then the evidence or proo"
+    },
+    {
+     "ref": "Acts 19:2",
+     "note": "Did ye on believing receive the Holy Ghost? Here, this must mean the wondrous gifts of the Spirit, because they had already received Him, or they could not have believed at all. Verse 6 also shows tha"
+    },
+    {
+     "ref": "Acts 19:21"
+    },
+    {
+     "ref": "Acts 20:22"
+    },
+    {
+     "ref": "Acts 21:18"
+    },
+    {
+     "ref": "Acts 21:21"
+    },
+    {
+     "ref": "Acts 22:3"
+    },
+    {
+     "ref": "Acts 23:35"
+    },
+    {
+     "ref": "Acts 24:6"
+    },
+    {
+     "ref": "Acts 26:5"
+    },
+    {
+     "ref": "Acts 27:9",
+     "note": "Because the fast was now already past: i.e., the time appointed for fasting, viz., the tenth day of the seventh month"
+    },
+    {
+     "ref": "Acts 28:20",
+     "note": "For the hope of Israel I am bound with this chain: i.e., for the Messiahs sake, Whom Israel hoped for. See 26:68"
+    },
+    {
+     "ref": "Acts 28:26"
+    },
+    {
+     "ref": "Acts 28:27"
+    }
+   ]
+  },
+  {
    "id": "idioma",
    "name": "Idiom",
    "greek": "ἰδίωμα",
@@ -15,6 +198,9 @@
     {
      "ref": "Acts 2:27",
      "note": "31; 13:35. It is resurrection from the grave which is taught and referred to here, as is clear from"
+    },
+    {
+     "ref": "Acts 2:31"
     },
     {
      "ref": "Acts 2:42",
@@ -72,6 +258,9 @@
      "note": "Lask therefore for what word (i.e., as in A.V., for what intent) ye have sent for me"
     },
     {
+     "ref": "Acts 10:34"
+    },
+    {
      "ref": "Acts 10:42"
     },
     {
@@ -85,6 +274,9 @@
     {
      "ref": "Acts 13:29",
      "note": "When they (i.e., the rulers, verse 27 ) had fulfilled all that was written of him, they took him down from the tree, and laid him in a sepulchre: i.e., they permitted Joseph of Arimathea and…"
+    },
+    {
+     "ref": "Acts 13:35"
     },
     {
      "ref": "Acts 13:36",
@@ -157,157 +349,23 @@
      "ref": "Acts 26:5"
     },
     {
+     "ref": "Acts 27:33",
+     "note": "This day is the fourteenth day that ye have tarried and continued fasting, * having taken nothing. Wherefore I pray you take some meat: for this is for your health: And when he had thus spoken, he too"
+    },
+    {
+     "ref": "Acts 27:34"
+    },
+    {
+     "ref": "Acts 27:35"
+    },
+    {
+     "ref": "Acts 27:36"
+    },
+    {
      "ref": "Acts 28:13"
     },
     {
      "ref": "Acts 28:27"
-    }
-   ]
-  },
-  {
-   "id": "metonymy",
-   "name": "Metonymy",
-   "greek": "μετωνυμία",
-   "group": "substitution",
-   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
-   "occurrences": [
-    {
-     "ref": "Acts 1:4",
-     "note": "They should not depart from Jerusalem, but wait for the promise of the Father: i.e., that which the Father had promised"
-    },
-    {
-     "ref": "Acts 1:5",
-     "note": "Ye shall be baptized with the Holy Ghost: i.e., ye shall be immersed in spiritual power (see verse 8 ), which shall cover you as well as fill you and flow out from you"
-    },
-    {
-     "ref": "Acts 1:11",
-     "note": "This same Jesus, which is taken up from you: i.e., from your presence and company. So verse 22"
-    },
-    {
-     "ref": "Acts 1:15"
-    },
-    {
-     "ref": "Acts 1:18",
-     "note": "Now this man purchased ( i.e., caused to be purchased) a field"
-    },
-    {
-     "ref": "Acts 1:24",
-     "note": "Thou, Lord, which knowest the hearts (i.e., the thoughts) of all men"
-    },
-    {
-     "ref": "Acts 2:4",
-     "note": "They began to speak with other tongues: i.e., in other languages ). So verse 11"
-    },
-    {
-     "ref": "Acts 2:11"
-    },
-    {
-     "ref": "Acts 2:26"
-    },
-    {
-     "ref": "Acts 2:27"
-    },
-    {
-     "ref": "Acts 3:6",
-     "note": "Silver and gold (i.e., money, like the Scottish siller and French largent ) have I none. 6. IRON is put for things made of it"
-    },
-    {
-     "ref": "Acts 3:16"
-    },
-    {
-     "ref": "Acts 4:11"
-    },
-    {
-     "ref": "Acts 6:7",
-     "note": "And a great company of the Priests were obedient to the faith: i.e., to the doctrine believed"
-    },
-    {
-     "ref": "Acts 7:6",
-     "note": "where the period of sojourning is stated to be 400 years. Whereas, in"
-    },
-    {
-     "ref": "Acts 7:7"
-    },
-    {
-     "ref": "Acts 7:51",
-     "note": "Ye do always resist the Holy Ghost: i.e., the testimony of the Holy Spirit as given by the prophets. Their fathers resisted the prophets, and would not hear the Spirits voice in them and now they, li"
-    },
-    {
-     "ref": "Acts 8:25",
-     "note": "They preached the gospel to many villages of the Samaritans: i.e., to their inhabitants. The A.V. evades and hides the Metonymy by rendering it in many"
-    },
-    {
-     "ref": "Acts 9:4",
-     "note": "Saul, Saul, why persecutest thou me? i.e., My People who belong to Me. See verse 5; and"
-    },
-    {
-     "ref": "Acts 10:2",
-     "note": "Cornelius.. feared God with all his house: i.e., all his family or household"
-    },
-    {
-     "ref": "Acts 10:10"
-    },
-    {
-     "ref": "Acts 10:15",
-     "note": "What God hath cleansed: i.e., declared to be (ceremonially) clean: as is clear from verse 28"
-    },
-    {
-     "ref": "Acts 10:34",
-     "note": "I perceive (i.e., I now understand and am made to know from what has taken place) that God is no respecter of persons. cf"
-    },
-    {
-     "ref": "Acts 12:17"
-    },
-    {
-     "ref": "Acts 14:15",
-     "note": "We preach unto you that ye should turn from these vanities ( i.e., idols) unto the living God. Note that the term Living God is generally used when idols are mentioned or implied in the context (See |"
-    },
-    {
-     "ref": "Acts 15:10",
-     "note": "Now therefore why tempt ye God, to put a yoke (i.e., a burden) on the neck of the disciples"
-    },
-    {
-     "ref": "Acts 15:21"
-    },
-    {
-     "ref": "Acts 16:13",
-     "note": "Where we supposed was prayer: i.e., a place of prayer. See verse 16. The word rendered supposed means that they looked for and expected to find a place of prayer as lawfully and legally allowed"
-    },
-    {
-     "ref": "Acts 16:24",
-     "note": "And made their feet fast in the wood: i.e in the stocks, as in A.V. 9. FLAX is put for the wick made of it"
-    },
-    {
-     "ref": "Acts 17:11",
-     "note": "whether they are of God (or of demons and evil spirits): because many false prophets are gone out into the world. Hereby know ye the spirit (or doctrine and teaching ) of God. Every spirit ( i.e"
-    },
-    {
-     "ref": "Acts 17:16"
-    },
-    {
-     "ref": "Acts 17:31",
-     "note": "Lit., Whereof he hath given faith to all men. Here faith, the effect, is put for the proofs or evidence on which it rests. Whereof He hath afforded evidence unto all men: and then the evidence or proo"
-    },
-    {
-     "ref": "Acts 19:2",
-     "note": "Did ye on believing receive the Holy Ghost? Here, this must mean the wondrous gifts of the Spirit, because they had already received Him, or they could not have believed at all. Verse 6 also shows tha"
-    },
-    {
-     "ref": "Acts 22:3"
-    },
-    {
-     "ref": "Acts 23:35"
-    },
-    {
-     "ref": "Acts 27:9",
-     "note": "Because the fast was now already past: i.e., the time appointed for fasting, viz., the tenth day of the seventh month"
-    },
-    {
-     "ref": "Acts 28:20",
-     "note": "For the hope of Israel I am bound with this chain: i.e., for the Messiahs sake, Whom Israel hoped for. See 26:68"
-    },
-    {
-     "ref": "Acts 28:26"
     }
    ]
   },
@@ -336,11 +394,29 @@
      "note": "Rom. ( hostis ), anyone who"
     },
     {
+     "ref": "Acts 2:26"
+    },
+    {
+     "ref": "Acts 2:27"
+    },
+    {
+     "ref": "Acts 2:28"
+    },
+    {
+     "ref": "Acts 2:29"
+    },
+    {
+     "ref": "Acts 2:30"
+    },
+    {
      "ref": "Acts 2:31",
      "note": "His soul ( i.e., He) was not left in Hades (the grave), neither his flesh did see corruption"
     },
     {
      "ref": "Acts 2:41"
+    },
+    {
+     "ref": "Acts 2:43"
     },
     {
      "ref": "Acts 2:47"
@@ -359,6 +435,12 @@
     {
      "ref": "Acts 7:6",
      "note": "There are two reckonings, starting from two different points, and both ending at the Exodus"
+    },
+    {
+     "ref": "Acts 7:10"
+    },
+    {
+     "ref": "Acts 7:14"
     },
     {
      "ref": "Acts 7:42",
@@ -385,6 +467,9 @@
     {
      "ref": "Acts 13:40",
      "note": "where the preposition in means by. Il. SYNECDOCHE OF THE SPECIES This is when the Species is put for the Genus (the opposite of the above), or when particulars are put for universals. i. Many is…"
+    },
+    {
+     "ref": "Acts 15:22"
     },
     {
      "ref": "Acts 15:33",
@@ -444,6 +529,9 @@
      "ref": "Acts 1:20"
     },
     {
+     "ref": "Acts 2:3"
+    },
+    {
      "ref": "Acts 2:34"
     },
     {
@@ -452,6 +540,9 @@
     },
     {
      "ref": "Acts 3:22"
+    },
+    {
+     "ref": "Acts 3:23"
     },
     {
      "ref": "Acts 4:11"
@@ -471,10 +562,19 @@
      "ref": "Acts 13:40"
     },
     {
+     "ref": "Acts 13:41"
+    },
+    {
      "ref": "Acts 15:16"
     },
     {
+     "ref": "Acts 15:17"
+    },
+    {
      "ref": "Acts 17:22"
+    },
+    {
+     "ref": "Acts 17:23"
     },
     {
      "ref": "Acts 17:28",
@@ -485,6 +585,118 @@
     },
     {
      "ref": "Acts 28:26"
+    },
+    {
+     "ref": "Acts 28:27"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Acts 2:17"
+    },
+    {
+     "ref": "Acts 2:18"
+    },
+    {
+     "ref": "Acts 2:25",
+     "note": "As sitting upon the flood, or at the flood"
+    },
+    {
+     "ref": "Acts 2:33"
+    },
+    {
+     "ref": "Acts 2:34"
+    },
+    {
+     "ref": "Acts 4:11"
+    },
+    {
+     "ref": "Acts 4:28",
+     "note": "To do whatsoever thy hand and thy counsel determined before to be done. PROTECTION, gracious deliverance, and security"
+    },
+    {
+     "ref": "Acts 4:30",
+     "note": "By stretching forth thine hand to heal. PROVIDENCE"
+    },
+    {
+     "ref": "Acts 7:55"
+    },
+    {
+     "ref": "Acts 7:56"
+    },
+    {
+     "ref": "Acts 10:38",
+     "note": "The word Christ means anointed, both in its Hebrew form, Messiah, and its Greek form, christos"
+    },
+    {
+     "ref": "Acts 11:26",
+     "note": "Bread is attributed to God"
+    },
+    {
+     "ref": "Acts 13:11",
+     "note": "And now, behold, the hand of the Lord is upon thee"
+    },
+    {
+     "ref": "Acts 13:22"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Acts 2:6"
+    },
+    {
+     "ref": "Acts 3:19",
+     "note": "That so there may come ( R.V. ) times of refreshing from the presence (face) of the Lord"
+    },
+    {
+     "ref": "Acts 3:23"
+    },
+    {
+     "ref": "Acts 5:12"
+    },
+    {
+     "ref": "Acts 5:41",
+     "note": "And they departed from the presence of the council. Lit., the face of"
+    },
+    {
+     "ref": "Acts 7:25"
+    },
+    {
+     "ref": "Acts 7:35"
+    },
+    {
+     "ref": "Acts 13:45",
+     "note": "But when the Jews saw the multitudes, they were filled with envy, and spake against those things which were spoken by Paul, contradicting, and blaspheming"
+    },
+    {
+     "ref": "Acts 15:23",
+     "note": "the A.V. omits by the hands of them, and substitutes the word letters in italics. The R.V. says, They wrote thus by them"
+    },
+    {
+     "ref": "Acts 17:26",
+     "note": "For to dwell on all the face of the earth"
+    },
+    {
+     "ref": "Acts 17:31",
+     "note": "The Son of Man is therefore an emphatic dispensational title of Christ. It means merely man, but with emphasis on all that the word means as used of Christ and his dominion in"
+    },
+    {
+     "ref": "Acts 18:9",
+     "note": "Be not afraid, but speak, and hold not thy peace"
     }
    ]
   },
@@ -533,95 +745,82 @@
      "ref": "Acts 24:15"
     },
     {
+     "ref": "Acts 24:21"
+    },
+    {
      "ref": "Acts 26:5"
     }
    ]
   },
   {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
    "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
    "occurrences": [
     {
-     "ref": "Acts 2:17"
+     "ref": "Acts 7:43"
     },
     {
-     "ref": "Acts 2:25",
-     "note": "As sitting upon the flood, or at the flood"
+     "ref": "Acts 7:44"
     },
     {
-     "ref": "Acts 2:33"
+     "ref": "Acts 9:5",
+     "note": "It is hard for thee to kick against the pricks: i.e., the goads"
     },
     {
-     "ref": "Acts 4:11"
+     "ref": "Acts 13:51",
+     "note": "The schools of the Scribes taught that the dust of heathen lands caused defilement. The shaking off of the dust of the feet, therefore, was a sign that, though the * Babyl. Berachoth. fol. 55, 2"
     },
     {
-     "ref": "Acts 4:28",
-     "note": "To do whatsoever thy hand and thy counsel determined before to be done. PROTECTION, gracious deliverance, and security"
+     "ref": "Acts 20:35",
+     "note": "It is more blessed to give than to receive. This is one of the unrecorded Parmi or Logia of Christ. But it does not follow that a papyrus which professes, some centuries later, to give other Parmi is…"
     },
     {
-     "ref": "Acts 4:30",
-     "note": "By stretching forth thine hand to heal. PROVIDENCE"
+     "ref": "Acts 23:25"
     },
     {
-     "ref": "Acts 10:38",
-     "note": "The word Christ means anointed, both in its Hebrew form, Messiah, and its Greek form, christos"
+     "ref": "Acts 26:14"
     },
     {
-     "ref": "Acts 11:26",
-     "note": "Bread is attributed to God"
-    },
-    {
-     "ref": "Acts 13:11",
-     "note": "And now, behold, the hand of the Lord is upon thee"
-    },
-    {
-     "ref": "Acts 13:22"
+     "ref": "Acts 27:34",
+     "note": "and, in the Old Testament"
     }
    ]
   },
   {
-   "id": "pleonasm",
-   "name": "Pleonasm",
-   "greek": "πλεονασμός",
-   "group": "repetition",
-   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
    "occurrences": [
     {
-     "ref": "Acts 2:6"
+     "ref": "Acts 5:34"
     },
     {
-     "ref": "Acts 3:19",
-     "note": "That so there may come ( R.V. ) times of refreshing from the presence (face) of the Lord"
+     "ref": "Acts 7:20",
+     "note": "Moses was fair to God: i.e., Divinely beautiful"
     },
     {
-     "ref": "Acts 5:12"
+     "ref": "Acts 7:30",
+     "note": "In a flame of a fire of a bush: i.e., in a flame of a burning bush"
     },
     {
-     "ref": "Acts 5:41",
-     "note": "And they departed from the presence of the council. Lit., the face of"
+     "ref": "Acts 13:5"
     },
     {
-     "ref": "Acts 13:45",
-     "note": "But when the Jews saw the multitudes, they were filled with envy, and spake against those things which were spoken by Paul, contradicting, and blaspheming"
+     "ref": "Acts 13:10",
+     "note": "Children of wrath"
     },
     {
-     "ref": "Acts 15:23",
-     "note": "the A.V. omits by the hands of them, and substitutes the word letters in italics. The R.V. says, They wrote thus by them"
+     "ref": "Acts 14:13",
+     "note": "They brought oxen and garlands, means They brought oxen, yes, and they were garlanded too! This figure is called Hendiadys, under which the reader will find many examples. 10. Noun (in regimen ) for"
     },
     {
-     "ref": "Acts 17:26",
-     "note": "For to dwell on all the face of the earth"
-    },
-    {
-     "ref": "Acts 17:31",
-     "note": "The Son of Man is therefore an emphatic dispensational title of Christ. It means merely man, but with emphasis on all that the word means as used of Christ and his dominion in"
-    },
-    {
-     "ref": "Acts 18:9",
-     "note": "Be not afraid, but speak, and hold not thy peace"
+     "ref": "Acts 16:37",
+     "note": "They have beaten us in public: i.e., publicly"
     }
    ]
   },
@@ -697,40 +896,6 @@
    ]
   },
   {
-   "id": "paroemia",
-   "name": "Paroemia (proverb)",
-   "greek": "παροιμία",
-   "group": "emphasis",
-   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
-   "occurrences": [
-    {
-     "ref": "Acts 7:43"
-    },
-    {
-     "ref": "Acts 7:44"
-    },
-    {
-     "ref": "Acts 9:5",
-     "note": "It is hard for thee to kick against the pricks: i.e., the goads"
-    },
-    {
-     "ref": "Acts 13:51",
-     "note": "The schools of the Scribes taught that the dust of heathen lands caused defilement. The shaking off of the dust of the feet, therefore, was a sign that, though the * Babyl. Berachoth. fol. 55, 2"
-    },
-    {
-     "ref": "Acts 20:35",
-     "note": "It is more blessed to give than to receive. This is one of the unrecorded Parmi or Logia of Christ. But it does not follow that a papyrus which professes, some centuries later, to give other Parmi is…"
-    },
-    {
-     "ref": "Acts 23:25"
-    },
-    {
-     "ref": "Acts 27:34",
-     "note": "and, in the Old Testament"
-    }
-   ]
-  },
-  {
    "id": "tapeinosis",
    "name": "Tapeinosis",
    "greek": "ταπείνωσις",
@@ -763,34 +928,58 @@
    ]
   },
   {
-   "id": "enallage",
-   "name": "Enallage",
-   "greek": "ἐναλλαγή",
-   "group": "substitution",
-   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
    "occurrences": [
     {
-     "ref": "Acts 5:34"
+     "ref": "Acts 7:34",
+     "note": "Here the figure of Polyptoton is translated as though it were Epizeuxis ( q.v. ). Lit. it is Seeing I have seen: i.e., I have surely seen"
     },
     {
-     "ref": "Acts 7:20",
-     "note": "Moses was fair to God: i.e., Divinely beautiful"
+     "ref": "Acts 23:12",
+     "note": "Certain of the Jews banded together, and bound themselves under a curse. ( Marg., or, with an oath of execration ). And then, in verse 14, to emphasize this, they say, We have bound ourselves under"
     },
     {
-     "ref": "Acts 7:30",
-     "note": "In a flame of a fire of a bush: i.e., in a flame of a burning bush"
+     "ref": "Acts 28:4"
     },
     {
-     "ref": "Acts 13:10",
-     "note": "Children of wrath"
+     "ref": "Acts 28:25"
     },
     {
-     "ref": "Acts 14:13",
-     "note": "They brought oxen and garlands, means They brought oxen, yes, and they were garlanded too! This figure is called Hendiadys, under which the reader will find many examples. 10. Noun (in regimen ) for"
+     "ref": "Acts 28:26"
     },
     {
-     "ref": "Acts 16:37",
-     "note": "They have beaten us in public: i.e., publicly"
+     "ref": "Acts 28:27"
+    }
+   ]
+  },
+  {
+   "id": "hendiatris",
+   "name": "Hendiatris",
+   "greek": "ἓν διὰ τριῶν",
+   "group": "emphasis",
+   "definition": "One idea expressed by three words joined with “and” (“the way, the truth, and the life”).",
+   "occurrences": [
+    {
+     "ref": "Acts 3:5"
+    },
+    {
+     "ref": "Acts 10:24"
+    },
+    {
+     "ref": "Acts 20:16"
+    },
+    {
+     "ref": "Acts 22:18"
+    },
+    {
+     "ref": "Acts 27:33"
+    },
+    {
+     "ref": "Acts 28:6"
     }
    ]
   },
@@ -824,26 +1013,6 @@
    ]
   },
   {
-   "id": "polyptoton",
-   "name": "Polyptoton",
-   "greek": "πολύπτωτον",
-   "group": "repetition",
-   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
-   "occurrences": [
-    {
-     "ref": "Acts 7:34",
-     "note": "Here the figure of Polyptoton is translated as though it were Epizeuxis ( q.v. ). Lit. it is Seeing I have seen: i.e., I have surely seen"
-    },
-    {
-     "ref": "Acts 23:12",
-     "note": "Certain of the Jews banded together, and bound themselves under a curse. ( Marg., or, with an oath of execration ). And then, in verse 14, to emphasize this, they say, We have bound ourselves under"
-    },
-    {
-     "ref": "Acts 28:26"
-    }
-   ]
-  },
-  {
    "id": "paregmenon",
    "name": "Paregmenon",
    "greek": "παρηγμένον",
@@ -853,6 +1022,9 @@
     {
      "ref": "Acts 4:11",
      "note": "12; and so the Holy Spirit asserts in"
+    },
+    {
+     "ref": "Acts 4:12"
     },
     {
      "ref": "Acts 4:24"
@@ -878,8 +1050,72 @@
      "note": "Counsel and foreknowledge, Crucified and slain"
     },
     {
+     "ref": "Acts 13:33"
+    },
+    {
      "ref": "Acts 16:25",
      "note": "Will I sing praise unto Thee"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "Acts 2:25",
+     "note": "In fact, this first Psalm speaks of Christ as the one perfect Man; while the second speaks of Him as the one perfect King: (the model ( ho poimeen ho kalos ( ho kalos poimeen ): and then twice over…"
+    },
+    {
+     "ref": "Acts 7:60"
+    },
+    {
+     "ref": "Acts 12:6"
+    },
+    {
+     "ref": "Acts 13:36"
+    }
+   ]
+  },
+  {
+   "id": "apodioxis",
+   "name": "Apodioxis",
+   "greek": "ἀποδίωξις",
+   "group": "emphasis",
+   "definition": "Indignant rejection of an argument or suggestion as abhorrent (“Get behind me, Satan”).",
+   "occurrences": [
+    {
+     "ref": "Acts 8:20",
+     "note": "Peter repels with horror the thought of Simon Magus that the gift of the Holy Ghost could be purchased with money. Deprecatio; or, Deprecation An Expression of Feeling by way of Deprecation Dep-re-ca"
+    },
+    {
+     "ref": "Acts 8:21"
+    },
+    {
+     "ref": "Acts 8:22"
+    },
+    {
+     "ref": "Acts 8:23"
+    }
+   ]
+  },
+  {
+   "id": "chronographia",
+   "name": "Chronographia",
+   "greek": "χρονογραφία",
+   "group": "emphasis",
+   "definition": "Description of a time or season by its marks rather than by naming it.",
+   "occurrences": [
+    {
+     "ref": "Acts 2:15"
+    },
+    {
+     "ref": "Acts 10:3"
+    },
+    {
+     "ref": "Acts 10:9"
     }
    ]
   },
@@ -966,6 +1202,26 @@
    ]
   },
   {
+   "id": "protherapeia",
+   "name": "Protherapeia",
+   "greek": "προθεραπεία",
+   "group": "emphasis",
+   "definition": "Conciliation — softening words used first to win a hearing for what follows.",
+   "occurrences": [
+    {
+     "ref": "Acts 17:22",
+     "note": "Ye men of Athens, I perceive that in all things ye are very religious. This is the meaning of the word (see R.V. margin) ( deisidaimonesteros ), careful in the discharge of religious services. For re"
+    },
+    {
+     "ref": "Acts 26:2",
+     "note": "3 is another beautiful example of true Protherapeia. See also 22:36"
+    },
+    {
+     "ref": "Acts 26:3"
+    }
+   ]
+  },
+  {
    "id": "aposiopesis",
    "name": "Aposiopesis",
    "greek": "ἀποσιώπησις",
@@ -982,17 +1238,17 @@
    ]
   },
   {
-   "id": "parallelism",
-   "name": "Parallelism",
-   "group": "arrangement",
-   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "id": "syncrisis",
+   "name": "Syncrisis",
+   "greek": "σύγκρισις",
+   "group": "emphasis",
+   "definition": "Reconciling or comparing opposites, setting contraries together to make a point.",
    "occurrences": [
     {
-     "ref": "Acts 2:25",
-     "note": "In fact, this first Psalm speaks of Christ as the one perfect Man; while the second speaks of Him as the one perfect King: (the model ( ho poimeen ho kalos ( ho kalos poimeen ): and then twice over…"
+     "ref": "Acts 26:28"
     },
     {
-     "ref": "Acts 7:60"
+     "ref": "Acts 26:29"
     }
    ]
   },
@@ -1014,17 +1270,17 @@
    ]
   },
   {
-   "id": "hendiatris",
-   "name": "Hendiatris",
-   "greek": "ἓν διὰ τριῶν",
-   "group": "emphasis",
-   "definition": "One idea expressed by three words joined with “and” (“the way, the truth, and the life”).",
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
    "occurrences": [
     {
-     "ref": "Acts 3:5"
+     "ref": "Acts 1:2"
     },
     {
-     "ref": "Acts 20:16"
+     "ref": "Acts 1:21"
     }
    ]
   },
@@ -1041,23 +1297,6 @@
     {
      "ref": "Acts 14:19",
      "note": "drew. This figure is so called, because it tears away the veil, or whatever may be covering the real matter in question, and shows it up as it really is. Hence, raillery which tears away all disguise"
-    }
-   ]
-  },
-  {
-   "id": "protherapeia",
-   "name": "Protherapeia",
-   "greek": "προθεραπεία",
-   "group": "emphasis",
-   "definition": "Conciliation — softening words used first to win a hearing for what follows.",
-   "occurrences": [
-    {
-     "ref": "Acts 17:22",
-     "note": "Ye men of Athens, I perceive that in all things ye are very religious. This is the meaning of the word (see R.V. margin) ( deisidaimonesteros ), careful in the discharge of religious services. For re"
-    },
-    {
-     "ref": "Acts 26:2",
-     "note": "3 is another beautiful example of true Protherapeia. See also 22:36"
     }
    ]
   },
@@ -1114,18 +1353,6 @@
    ]
   },
   {
-   "id": "syncrisis",
-   "name": "Syncrisis",
-   "greek": "σύγκρισις",
-   "group": "emphasis",
-   "definition": "Reconciling or comparing opposites, setting contraries together to make a point.",
-   "occurrences": [
-    {
-     "ref": "Acts 26:28"
-    }
-   ]
-  },
-  {
    "id": "repeatednegation",
    "name": "Repeated negation",
    "greek": "οὐ μή",
@@ -1177,18 +1404,6 @@
    ]
   },
   {
-   "id": "chronographia",
-   "name": "Chronographia",
-   "greek": "χρονογραφία",
-   "group": "emphasis",
-   "definition": "Description of a time or season by its marks rather than by naming it.",
-   "occurrences": [
-    {
-     "ref": "Acts 2:15"
-    }
-   ]
-  },
-  {
    "id": "hypallage",
    "name": "Hypallage",
    "greek": "ὑπαλλαγή",
@@ -1211,18 +1426,6 @@
     {
      "ref": "Acts 2:39",
      "note": "For the promise is unto you, and to your children, and to all that are afar off: i.e., to the Gentiles. Peter did not wish at that time to give unnecessary offence. There are many other Euphemisms wh"
-    }
-   ]
-  },
-  {
-   "id": "ampliatio",
-   "name": "Ampliatio",
-   "greek": "ἀμπλιατίο",
-   "group": "substitution",
-   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
-   "occurrences": [
-    {
-     "ref": "Acts 1:21"
     }
    ]
   },

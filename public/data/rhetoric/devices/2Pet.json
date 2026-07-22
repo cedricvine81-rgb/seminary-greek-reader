@@ -2,6 +2,34 @@
  "book": "2Pet",
  "devices": [
   {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "2 Peter 1:3",
+     "note": "Through the knowledge of him who hath called us to glory and virtue. But the Greek is by, as stated in the margin, ( dia ) with the genitive, denoting the cause or instrument. The R.V. renders it by"
+    },
+    {
+     "ref": "2 Peter 1:16",
+     "note": "When we made known unto you the power and coming: Le., either the coming power, or the powerful coming, or both"
+    },
+    {
+     "ref": "2 Peter 1:17",
+     "note": "For he received from God the Father honour and glory: Le., honour, yesand glorious honour too. Christ received this glorious honour, which was put upon Him, on the holy mount of transfiguration"
+    },
+    {
+     "ref": "2 Peter 1:18"
+    },
+    {
+     "ref": "2 Peter 3:12",
+     "note": "Looking for, and hasting unto the coming of the day of God. Here, looking for is ( prosdoka ), * and hasting is ( speud ), to hasten. Everywhere else the latter verb is intransitive; but here it is t"
+    }
+   ]
+  },
+  {
    "id": "enallage",
    "name": "Enallage",
    "greek": "ἐναλλαγή",
@@ -26,27 +54,58 @@
    ]
   },
   {
-   "id": "hendiadys",
-   "name": "Hendiadys",
-   "greek": "ἓν διὰ δυοῖν",
+   "id": "repeatednegation",
+   "name": "Repeated negation",
+   "greek": "οὐ μή",
    "group": "emphasis",
-   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "definition": "Two or more negatives heaped together in Greek to deny all the more emphatically.",
+   "occurrences": [
+    {
+     "ref": "2 Peter 1:16"
+    },
+    {
+     "ref": "2 Peter 1:17"
+    },
+    {
+     "ref": "2 Peter 1:18"
+    }
+   ]
+  },
+  {
+   "id": "hendiatris",
+   "name": "Hendiatris",
+   "greek": "ἓν διὰ τριῶν",
+   "group": "emphasis",
+   "definition": "One idea expressed by three words joined with “and” (“the way, the truth, and the life”).",
+   "occurrences": [
+    {
+     "ref": "2 Peter 3:12"
+    },
+    {
+     "ref": "2 Peter 3:13"
+    },
+    {
+     "ref": "2 Peter 3:14"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
    "occurrences": [
     {
      "ref": "2 Peter 1:3",
-     "note": "Through the knowledge of him who hath called us to glory and virtue. But the Greek is by, as stated in the margin, ( dia ) with the genitive, denoting the cause or instrument. The R.V. renders it by"
+     "note": "virtue); 1:5 (virtue). ( gl ssokomon ) was the case in which the tongues ( ) of musical instruments were kept ( tongue-case ). All trace of this vanishes in later Greek, and it was used of any chest"
     },
     {
-     "ref": "2 Peter 1:16",
-     "note": "When we made known unto you the power and coming: Le., either the coming power, or the powerful coming, or both"
+     "ref": "2 Peter 2:4",
+     "note": "9 and Jude 6, it is further described, and is spoken of in connection with Noah. Is it not strange that in"
     },
     {
-     "ref": "2 Peter 1:17",
-     "note": "For he received from God the Father honour and glory: Le., honour, yesand glorious honour too. Christ received this glorious honour, which was put upon Him, on the holy mount of transfiguration"
-    },
-    {
-     "ref": "2 Peter 3:12",
-     "note": "Looking for, and hasting unto the coming of the day of God. Here, looking for is ( prosdoka ), * and hasting is ( speud ), to hasten. Everywhere else the latter verb is intransitive; but here it is t"
+     "ref": "2 Peter 2:9"
     }
    ]
   },
@@ -114,23 +173,6 @@
     {
      "ref": "2 Peter 2:19",
      "note": "While they promise them ( i.e. their dupes) liberty, they themselves are the servants of corruption. Enantiosis; or, contraries Affirmation or Negation by Contraries E-nan-ti-o -sis ( enantios ), oppo"
-    }
-   ]
-  },
-  {
-   "id": "idioma",
-   "name": "Idiom",
-   "greek": "ἰδίωμα",
-   "group": "substitution",
-   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
-   "occurrences": [
-    {
-     "ref": "2 Peter 1:3",
-     "note": "virtue); 1:5 (virtue). ( gl ssokomon ) was the case in which the tongues ( ) of musical instruments were kept ( tongue-case ). All trace of this vanishes in later Greek, and it was used of any chest"
-    },
-    {
-     "ref": "2 Peter 2:4",
-     "note": "9 and Jude 6, it is further described, and is spoken of in connection with Noah. Is it not strange that in"
     }
    ]
   },
@@ -215,18 +257,6 @@
     {
      "ref": "2 Peter 1:13",
      "note": "As long as I am in this tabernacle: i.e., am alive. Verse 14, Shortly I must put off this my tabernacle: i.e., must die. This is strictly speaking Euphemy ( q.v. ): viz., a pleasant periphrasis to"
-    }
-   ]
-  },
-  {
-   "id": "hendiatris",
-   "name": "Hendiatris",
-   "greek": "ἓν διὰ τριῶν",
-   "group": "emphasis",
-   "definition": "One idea expressed by three words joined with “and” (“the way, the truth, and the life”).",
-   "occurrences": [
-    {
-     "ref": "2 Peter 3:12"
     }
    ]
   },

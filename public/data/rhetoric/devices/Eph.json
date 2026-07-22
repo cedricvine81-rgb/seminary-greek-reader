@@ -2,6 +2,80 @@
  "book": "Eph",
  "devices": [
   {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:7"
+    },
+    {
+     "ref": "Ephesians 1:10",
+     "note": "The FACE, to signify presence. It is used of the Divine presence in happiness and of Divine favour"
+    },
+    {
+     "ref": "Ephesians 1:18"
+    },
+    {
+     "ref": "Ephesians 1:20"
+    },
+    {
+     "ref": "Ephesians 1:21"
+    },
+    {
+     "ref": "Ephesians 1:22",
+     "note": "23; 4:12,15,16. The HEAD is spoken of Christ"
+    },
+    {
+     "ref": "Ephesians 1:23"
+    },
+    {
+     "ref": "Ephesians 2:4"
+    },
+    {
+     "ref": "Ephesians 2:7"
+    },
+    {
+     "ref": "Ephesians 2:20",
+     "note": "21; and foundation and stumbling stone"
+    },
+    {
+     "ref": "Ephesians 2:21"
+    },
+    {
+     "ref": "Ephesians 3:8"
+    },
+    {
+     "ref": "Ephesians 3:16"
+    },
+    {
+     "ref": "Ephesians 3:18",
+     "note": "Magnitude or greatness is attributed to God"
+    },
+    {
+     "ref": "Ephesians 4:10",
+     "note": "ete. A FINGER is attributed to God, to denote the putting forth of His formative power, and the direct and immediate act of God"
+    },
+    {
+     "ref": "Ephesians 4:12"
+    },
+    {
+     "ref": "Ephesians 4:15"
+    },
+    {
+     "ref": "Ephesians 4:16"
+    },
+    {
+     "ref": "Ephesians 4:30"
+    },
+    {
+     "ref": "Ephesians 5:2"
+    }
+   ]
+  },
+  {
    "id": "metonymy",
    "name": "Metonymy",
    "greek": "μετωνυμία",
@@ -83,6 +157,9 @@
      "ref": "Ephesians 1:18"
     },
     {
+     "ref": "Ephesians 1:19"
+    },
+    {
      "ref": "Ephesians 2:1"
     },
     {
@@ -96,6 +173,9 @@
      "note": "The unsearchable (or the untrackable) riches ( i.e., wealth or greatness) of Christ. This greatness consisting of all Gods purposes in Christ as set forth in this epistle; which the Old Testament sai"
     },
     {
+     "ref": "Ephesians 4:30"
+    },
+    {
      "ref": "Ephesians 5:6",
      "note": "It does not say that Gods children were such, but only that we had our conversation among them. We were, by nature, sons of wrath"
     },
@@ -106,40 +186,42 @@
    ]
   },
   {
-   "id": "anthropopatheia",
-   "name": "Anthropopatheia",
-   "greek": "ἀνθρωποπάθεια",
-   "group": "emphasis",
-   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
    "occurrences": [
     {
-     "ref": "Ephesians 1:7"
+     "ref": "Ephesians 1:20",
+     "note": "Having raised him he set him"
     },
     {
-     "ref": "Ephesians 1:10",
-     "note": "The FACE, to signify presence. It is used of the Divine presence in happiness and of Divine favour"
+     "ref": "Ephesians 2:2"
     },
     {
-     "ref": "Ephesians 1:22",
-     "note": "23; 4:12,15,16. The HEAD is spoken of Christ"
+     "ref": "Ephesians 2:3"
     },
     {
-     "ref": "Ephesians 2:20",
-     "note": "21; and foundation and stumbling stone"
+     "ref": "Ephesians 2:13"
     },
     {
-     "ref": "Ephesians 3:18",
-     "note": "Magnitude or greatness is attributed to God"
+     "ref": "Ephesians 2:14"
     },
     {
-     "ref": "Ephesians 4:10",
-     "note": "ete. A FINGER is attributed to God, to denote the putting forth of His formative power, and the direct and immediate act of God"
+     "ref": "Ephesians 4:31"
     },
     {
-     "ref": "Ephesians 4:30"
+     "ref": "Ephesians 4:32"
     },
     {
      "ref": "Ephesians 5:2"
+    },
+    {
+     "ref": "Ephesians 5:27"
+    },
+    {
+     "ref": "Ephesians 5:33"
     }
    ]
   },
@@ -277,6 +359,25 @@
    ]
   },
   {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:20"
+    },
+    {
+     "ref": "Ephesians 1:21"
+    },
+    {
+     "ref": "Ephesians 5:19",
+     "note": "Here the three synonyms, Psalms, and hymns, and spiritual songs, are used to emphasize the true inward and spiritual occupation of the heart with Christ, which is at once the result of being filled"
+    }
+   ]
+  },
+  {
    "id": "antiptosis",
    "name": "Antiptosis",
    "greek": "ἀντίπτωσις",
@@ -340,21 +441,21 @@
    ]
   },
   {
-   "id": "anacoluthon",
-   "name": "Anacoluthon",
-   "greek": "ἀνακόλουθον",
-   "group": "arrangement",
-   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
    "occurrences": [
     {
-     "ref": "Ephesians 1:20",
-     "note": "Having raised him he set him"
+     "ref": "Ephesians 4:8",
+     "note": "This is supposed to be a case where there is a difference of reading. The English is: and gave gifts unto men. But the Hebrew of"
     },
     {
-     "ref": "Ephesians 2:2"
+     "ref": "Ephesians 5:31"
     },
     {
-     "ref": "Ephesians 5:27"
+     "ref": "Ephesians 5:32"
     }
    ]
   },
@@ -375,6 +476,21 @@
    ]
   },
   {
+   "id": "epanalepsis",
+   "name": "Epanalepsis",
+   "greek": "ἐπανάληψις",
+   "group": "repetition",
+   "definition": "Resumption of a word or thought after an intervening parenthesis.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:1"
+    },
+    {
+     "ref": "Ephesians 3:14"
+    }
+   ]
+  },
+  {
    "id": "polyptoton",
    "name": "Polyptoton",
    "greek": "πολύπτωτον",
@@ -388,22 +504,6 @@
     {
      "ref": "Ephesians 6:18",
      "note": "Praying always with all prayer, i.e., earnestly praying"
-    }
-   ]
-  },
-  {
-   "id": "synonymia",
-   "name": "Synonymia",
-   "greek": "συνωνυμία",
-   "group": "repetition",
-   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
-   "occurrences": [
-    {
-     "ref": "Ephesians 1:20"
-    },
-    {
-     "ref": "Ephesians 5:19",
-     "note": "Here the three synonyms, Psalms, and hymns, and spiritual songs, are used to emphasize the true inward and spiritual occupation of the heart with Christ, which is at once the result of being filled"
     }
    ]
   },
@@ -459,22 +559,6 @@
    ]
   },
   {
-   "id": "gnome",
-   "name": "Gnome (quotation)",
-   "greek": "γνώμη",
-   "group": "emphasis",
-   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
-   "occurrences": [
-    {
-     "ref": "Ephesians 4:8",
-     "note": "This is supposed to be a case where there is a difference of reading. The English is: and gave gifts unto men. But the Hebrew of"
-    },
-    {
-     "ref": "Ephesians 5:31"
-    }
-   ]
-  },
-  {
    "id": "oxymoron",
    "name": "Oxymoron / paradox",
    "greek": "ὀξύμωρον",
@@ -526,18 +610,6 @@
     {
      "ref": "Ephesians 6:12",
      "note": "For we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world, against spiritual wickedness in high places. This is to emphas"
-    }
-   ]
-  },
-  {
-   "id": "epanalepsis",
-   "name": "Epanalepsis",
-   "greek": "ἐπανάληψις",
-   "group": "repetition",
-   "definition": "Resumption of a word or thought after an intervening parenthesis.",
-   "occurrences": [
-    {
-     "ref": "Ephesians 3:1"
     }
    ]
   },

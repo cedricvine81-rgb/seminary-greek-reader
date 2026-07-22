@@ -131,6 +131,9 @@
     },
     {
      "ref": "2 Corinthians 11:24"
+    },
+    {
+     "ref": "2 Corinthians 11:26"
     }
    ]
   },
@@ -309,6 +312,73 @@
    ]
   },
   {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:6"
+    },
+    {
+     "ref": "2 Corinthians 5:17"
+    },
+    {
+     "ref": "2 Corinthians 5:18"
+    },
+    {
+     "ref": "2 Corinthians 9:6",
+     "note": "He that soweth sparingly, sparingly shall reap also: he that soweth bountifully, bountifully shall reap also. Here is combined also the figure of Symploce ( q.v. ) in the repetition of the words sow a"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:2"
+    },
+    {
+     "ref": "2 Corinthians 6:12"
+    },
+    {
+     "ref": "2 Corinthians 7:15"
+    },
+    {
+     "ref": "2 Corinthians 9:9"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:5",
+     "note": "7 ). Missionary work: Received and minister"
+    },
+    {
+     "ref": "2 Corinthians 1:7"
+    },
+    {
+     "ref": "2 Corinthians 2:17",
+     "note": "We are not as many, which corrupt the word of God: but as of sincerity, but as of God, in the sight of God speak we in Christ: i.e., we speak really and truly sincere, pure, and Divine words"
+    },
+    {
+     "ref": "2 Corinthians 3:18",
+     "note": "We are all with unveiled face beholding as in a mirror (, katoptrizomenoi ) the glory of the Lord, are trans-figured to the same image, from glory to glory, even as from the Lordthe Spirit: i.e., re"
+    }
+   ]
+  },
+  {
    "id": "palinodia",
    "name": "Palinodia",
    "greek": "παλινῳδία",
@@ -334,6 +404,24 @@
    ]
   },
   {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 7:5"
+    },
+    {
+     "ref": "2 Corinthians 7:6"
+    },
+    {
+     "ref": "2 Corinthians 7:24"
+    }
+   ]
+  },
+  {
    "id": "tapeinosis",
    "name": "Tapeinosis",
    "greek": "ταπείνωσις",
@@ -351,25 +439,6 @@
     {
      "ref": "2 Corinthians 2:11",
      "note": "We are not ignorant of his devices, i.e., we are very well aware of them"
-    }
-   ]
-  },
-  {
-   "id": "anadiplosis",
-   "name": "Anadiplosis",
-   "greek": "ἀναδίπλωσις",
-   "group": "repetition",
-   "definition": "The word ending one clause is repeated to begin the next, linking them.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 4:6"
-    },
-    {
-     "ref": "2 Corinthians 5:17"
-    },
-    {
-     "ref": "2 Corinthians 9:6",
-     "note": "He that soweth sparingly, sparingly shall reap also: he that soweth bountifully, bountifully shall reap also. Here is combined also the figure of Symploce ( q.v. ) in the repetition of the words sow a"
     }
    ]
   },
@@ -395,56 +464,20 @@
    ]
   },
   {
-   "id": "catachresis",
-   "name": "Catachresis",
-   "greek": "κατάχρησις",
-   "group": "substitution",
-   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 5:2"
-    },
-    {
-     "ref": "2 Corinthians 6:12"
-    },
-    {
-     "ref": "2 Corinthians 9:9"
-    }
-   ]
-  },
-  {
-   "id": "simile",
-   "name": "Simile",
-   "greek": "ὁμοίωσις",
+   "id": "allegory",
+   "name": "Allegory",
+   "greek": "ἀλληγορία",
    "group": "comparison",
-   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
    "occurrences": [
     {
-     "ref": "2 Corinthians 1:5",
-     "note": "7 ). Missionary work: Received and minister"
+     "ref": "2 Corinthians 3:2"
     },
     {
-     "ref": "2 Corinthians 2:17",
-     "note": "We are not as many, which corrupt the word of God: but as of sincerity, but as of God, in the sight of God speak we in Christ: i.e., we speak really and truly sincere, pure, and Divine words"
+     "ref": "2 Corinthians 3:3"
     },
     {
-     "ref": "2 Corinthians 3:18",
-     "note": "We are all with unveiled face beholding as in a mirror (, katoptrizomenoi ) the glory of the Lord, are trans-figured to the same image, from glory to glory, even as from the Lordthe Spirit: i.e., re"
-    }
-   ]
-  },
-  {
-   "id": "asyndeton",
-   "name": "Asyndeton",
-   "greek": "ἀσύνδετον",
-   "group": "omission",
-   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 7:5"
-    },
-    {
-     "ref": "2 Corinthians 7:24"
+     "ref": "2 Corinthians 5:1"
     }
    ]
   },
@@ -516,6 +549,21 @@
    ]
   },
   {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:5"
+    },
+    {
+     "ref": "2 Corinthians 12:11"
+    }
+   ]
+  },
+  {
    "id": "synecdoche",
    "name": "Synecdoche",
    "greek": "συνεκδοχή",
@@ -529,6 +577,37 @@
     {
      "ref": "2 Corinthians 11:25",
      "note": "A night and a day have I done or made in the deep: i.e., I have passed or been in the deep"
+    }
+   ]
+  },
+  {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:17",
+     "note": "18 contains several beautiful Antitheses"
+    },
+    {
+     "ref": "2 Corinthians 4:18"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:6"
+    },
+    {
+     "ref": "2 Corinthians 5:8"
     }
    ]
   },
@@ -638,18 +717,6 @@
    ]
   },
   {
-   "id": "catabasis",
-   "name": "Catabasis",
-   "greek": "κατάβασις",
-   "group": "arrangement",
-   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 11:5"
-    }
-   ]
-  },
-  {
    "id": "antiptosis",
    "name": "Antiptosis",
    "greek": "ἀντίπτωσις",
@@ -685,43 +752,6 @@
     {
      "ref": "2 Corinthians 4:3",
      "note": "The perishing are those who shall hereafter be destroyed, and who were then or are now on their way to destruction"
-    }
-   ]
-  },
-  {
-   "id": "antithesis",
-   "name": "Antithesis",
-   "greek": "ἀντίθεσις",
-   "group": "arrangement",
-   "definition": "Two opposite ideas set side by side so each sharpens the other.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 4:17",
-     "note": "18 contains several beautiful Antitheses"
-    }
-   ]
-  },
-  {
-   "id": "anacoluthon",
-   "name": "Anacoluthon",
-   "greek": "ἀνακόλουθον",
-   "group": "arrangement",
-   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 5:6"
-    }
-   ]
-  },
-  {
-   "id": "allegory",
-   "name": "Allegory",
-   "greek": "ἀλληγορία",
-   "group": "comparison",
-   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
-   "occurrences": [
-    {
-     "ref": "2 Corinthians 3:2"
     }
    ]
   },

@@ -29,6 +29,9 @@
     {
      "ref": "Philippians 3:19",
      "note": "Whose God is their belly: Le., themselves, and what they can get"
+    },
+    {
+     "ref": "Philippians 4:13"
     }
    ]
   },
@@ -157,6 +160,25 @@
    ]
   },
   {
+   "id": "prosapodosis",
+   "name": "Prosapodosis",
+   "greek": "προσαπόδοσις",
+   "group": "arrangement",
+   "definition": "A detailing return that takes up several things named together and expounds each in turn.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:15",
+     "note": "Some indeed preach Christ even of envy and strife; and some also of good will: The one preach Christ of contention, not sincerely, supposing to add affliction to my bonds: But the other of love, kno"
+    },
+    {
+     "ref": "Philippians 1:16"
+    },
+    {
+     "ref": "Philippians 1:17"
+    }
+   ]
+  },
+  {
    "id": "palinodia",
    "name": "Palinodia",
    "greek": "παλινῳδία",
@@ -174,6 +196,21 @@
     {
      "ref": "Philippians 4:9",
      "note": "The God of peace: i.e., the God who has made peace and gives peace. This differs from the peace of God. See below under the genitive of Possession"
+    }
+   ]
+  },
+  {
+   "id": "epanalepsis",
+   "name": "Epanalepsis",
+   "greek": "ἐπανάληψις",
+   "group": "repetition",
+   "definition": "Resumption of a word or thought after an intervening parenthesis.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:22"
+    },
+    {
+     "ref": "Philippians 1:24"
     }
    ]
   },
@@ -253,18 +290,6 @@
     {
      "ref": "Philippians 3:57",
      "note": "Though I might also have confidence in the flesh (Greek:Though I might have confidence IN THE FLESH also). If any other man thinketh that he hath whereof he might boast in the flesh, I more: Circumcis"
-    }
-   ]
-  },
-  {
-   "id": "epanalepsis",
-   "name": "Epanalepsis",
-   "greek": "ἐπανάληψις",
-   "group": "repetition",
-   "definition": "Resumption of a word or thought after an intervening parenthesis.",
-   "occurrences": [
-    {
-     "ref": "Philippians 1:22"
     }
    ]
   },

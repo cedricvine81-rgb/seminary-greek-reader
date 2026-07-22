@@ -32,6 +32,9 @@
      "note": "Received ye the Spirit (i.e., the gifts of the Spirit) by the works of the law, or by the hearing of faith? Verse 5: He, therefore, that ministereth to you the Spirit (i.e., the gifts of the Spirit"
     },
     {
+     "ref": "Galatians 3:5"
+    },
+    {
      "ref": "Galatians 3:7",
      "note": "29; 4:28. 7. COVENANT is put for the two tables of stone"
     },
@@ -43,12 +46,21 @@
      "note": "Being made a curse for us: i.e., accursed, one under the curse of the Law"
     },
     {
+     "ref": "Galatians 3:14"
+    },
+    {
+     "ref": "Galatians 3:16"
+    },
+    {
      "ref": "Galatians 3:17",
      "note": "where the period refers not to the sojourning of Abrahams seed (which could not commence till Isaac was born, thirty years after the promise), but includes that of Abraham himself, the sum is given as"
     },
     {
      "ref": "Galatians 3:23",
      "note": "Before faith came: i.e., before the Gospel was declared, and brought a new object for faith"
+    },
+    {
+     "ref": "Galatians 3:29"
     },
     {
      "ref": "Galatians 4:14",
@@ -59,8 +71,75 @@
      "note": "Where is then the blessedness ye spake of: i.e., how great was that blessedness ye spake of! for"
     },
     {
+     "ref": "Galatians 4:28"
+    },
+    {
      "ref": "Galatians 5:5",
      "note": "We through the Spirit wait for the hope of righteousness by faith: i.e., life eternal, which is promised to the righteous by faith: The just shall live (i.e., have eternal life) by faith"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:6"
+    },
+    {
+     "ref": "Galatians 3:25",
+     "note": "26; 4:5, 6, 20. Change from second person to the first"
+    },
+    {
+     "ref": "Galatians 3:26"
+    },
+    {
+     "ref": "Galatians 4:5"
+    },
+    {
+     "ref": "Galatians 4:6"
+    },
+    {
+     "ref": "Galatians 4:7"
+    },
+    {
+     "ref": "Galatians 4:20"
+    },
+    {
+     "ref": "Galatians 6:1",
+     "note": "Brethren, if a man be overtaken in a fault, ye which are spiritual, restore such an one in the spirit of meekness; considering thyself, lest thou also be tempted. Here the abrupt transition from the"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:16",
+     "note": "I conferred not with flesh and blood: i.e., with no human being in contrast with God, Who alone revealed to him the Gospel which he was to preach"
+    },
+    {
+     "ref": "Galatians 3:16"
+    },
+    {
+     "ref": "Galatians 3:17"
+    },
+    {
+     "ref": "Galatians 5:4"
+    },
+    {
+     "ref": "Galatians 5:6",
+     "note": "Walk in the spirit (i.e., in the New nature), and ye shall not fulfil the lust of the flesh (i.e., of the old man). 10. BLOOD is put for man, as we say poor blood for poor fellow"
+    },
+    {
+     "ref": "Galatians 5:10"
     }
    ]
   },
@@ -97,6 +176,30 @@
    ]
   },
   {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:8"
+    },
+    {
+     "ref": "Galatians 1:9"
+    },
+    {
+     "ref": "Galatians 2:19"
+    },
+    {
+     "ref": "Galatians 2:20"
+    },
+    {
+     "ref": "Galatians 5:7"
+    }
+   ]
+  },
+  {
    "id": "heterosis",
    "name": "Heterosis",
    "greek": "ἑτέρωσις",
@@ -126,48 +229,48 @@
    ]
   },
   {
-   "id": "synecdoche",
-   "name": "Synecdoche",
-   "greek": "συνεκδοχή",
-   "group": "substitution",
-   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
    "occurrences": [
     {
-     "ref": "Galatians 1:16",
-     "note": "I conferred not with flesh and blood: i.e., with no human being in contrast with God, Who alone revealed to him the Gospel which he was to preach"
+     "ref": "Galatians 5:19",
+     "note": "Now the works of the flesh are manifest, which are these, Adultery, fornication, uncleanness, lasciviousness, idolatry, witchcraft, hatred, variance, * For the significance of this number, see Number"
     },
     {
-     "ref": "Galatians 3:16"
+     "ref": "Galatians 5:20"
     },
     {
-     "ref": "Galatians 5:4"
+     "ref": "Galatians 5:21"
     },
     {
-     "ref": "Galatians 5:6",
-     "note": "Walk in the spirit (i.e., in the New nature), and ye shall not fulfil the lust of the flesh (i.e., of the old man). 10. BLOOD is put for man, as we say poor blood for poor fellow"
+     "ref": "Galatians 5:22",
+     "note": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, temperance: against such there is no law. Contrast this with the Polysyndeton in"
     }
    ]
   },
   {
-   "id": "anacoluthon",
-   "name": "Anacoluthon",
-   "greek": "ἀνακόλουθον",
-   "group": "arrangement",
-   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
    "occurrences": [
     {
-     "ref": "Galatians 2:6"
+     "ref": "Galatians 1:12",
+     "note": "For I neither received it of man, neither was | taught it, but by the revelation of Jesus Christ. Thus is emphasized the special commission which Paul received direct from God; and thus is it distingu"
     },
     {
-     "ref": "Galatians 3:25",
-     "note": "26; 4:5, 6, 20. Change from second person to the first"
+     "ref": "Galatians 5:19",
+     "note": "The works of the flesh are emphasized by sixteen synonyms, and by the figure of Asyndeton ( q.v"
     },
     {
-     "ref": "Galatians 4:6"
+     "ref": "Galatians 5:20"
     },
     {
-     "ref": "Galatians 6:1",
-     "note": "Brethren, if a man be overtaken in a fault, ye which are spiritual, restore such an one in the spirit of meekness; considering thyself, lest thou also be tempted. Here the abrupt transition from the"
+     "ref": "Galatians 5:21"
     }
    ]
   },
@@ -197,20 +300,20 @@
    ]
   },
   {
-   "id": "polyptoton",
-   "name": "Polyptoton",
-   "greek": "πολύπτωτον",
-   "group": "repetition",
-   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
    "occurrences": [
     {
-     "ref": "Galatians 1:8"
+     "ref": "Galatians 2:7"
     },
     {
-     "ref": "Galatians 2:19"
+     "ref": "Galatians 2:8"
     },
     {
-     "ref": "Galatians 5:7"
+     "ref": "Galatians 2:16",
+     "note": "A Knowing that a man 1s not justified B by the works of the law, C but by the faith of Jesus Christ, C even we have believed in Jesus Christ, that we might be justified by the faith of Christ, B an"
     }
    ]
   },
@@ -251,6 +354,21 @@
    ]
   },
   {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:8"
+    },
+    {
+     "ref": "Galatians 1:9"
+    }
+   ]
+  },
+  {
    "id": "polysyndeton",
    "name": "Polysyndeton",
    "greek": "πολυσύνδετον",
@@ -264,21 +382,6 @@
     {
      "ref": "Galatians 3:28",
      "note": "where in each case the sex 1s emphatic. We have a similar example of a neuter word including both sexes in the word ( gunaikaria ), in"
-    }
-   ]
-  },
-  {
-   "id": "parallelism",
-   "name": "Parallelism",
-   "group": "arrangement",
-   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
-   "occurrences": [
-    {
-     "ref": "Galatians 2:7"
-    },
-    {
-     "ref": "Galatians 2:16",
-     "note": "A Knowing that a man 1s not justified B by the works of the law, C but by the faith of Jesus Christ, C even we have believed in Jesus Christ, that we might be justified by the faith of Christ, B an"
     }
    ]
   },
@@ -383,19 +486,6 @@
    ]
   },
   {
-   "id": "asyndeton",
-   "name": "Asyndeton",
-   "greek": "ἀσύνδετον",
-   "group": "omission",
-   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
-   "occurrences": [
-    {
-     "ref": "Galatians 5:22",
-     "note": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, temperance: against such there is no law. Contrast this with the Polysyndeton in"
-    }
-   ]
-  },
-  {
    "id": "aposiopesis",
    "name": "Aposiopesis",
    "greek": "ἀποσιώπησις",
@@ -405,18 +495,6 @@
     {
      "ref": "Galatians 1:4",
      "note": "Sanctification"
-    }
-   ]
-  },
-  {
-   "id": "anaphora",
-   "name": "Anaphora",
-   "greek": "ἀναφορά",
-   "group": "repetition",
-   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
-   "occurrences": [
-    {
-     "ref": "Galatians 1:8"
     }
    ]
   },
@@ -456,19 +534,6 @@
     {
      "ref": "Galatians 5:17",
      "note": "a The flesh lusteth b against the spirit, b and the spirit a against the flesh. |"
-    }
-   ]
-  },
-  {
-   "id": "synonymia",
-   "name": "Synonymia",
-   "greek": "συνωνυμία",
-   "group": "repetition",
-   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
-   "occurrences": [
-    {
-     "ref": "Galatians 1:12",
-     "note": "For I neither received it of man, neither was | taught it, but by the revelation of Jesus Christ. Thus is emphasized the special commission which Paul received direct from God; and thus is it distingu"
     }
    ]
   },

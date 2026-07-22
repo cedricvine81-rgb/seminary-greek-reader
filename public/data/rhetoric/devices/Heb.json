@@ -13,6 +13,9 @@
      "note": "4; 8:1. So Christs dignity is further described by the figure THEOPREP S, worthy of a god"
     },
     {
+     "ref": "Hebrews 1:4"
+    },
+    {
      "ref": "Hebrews 1:5",
      "note": "So, those who believe, are said to be begotten by God"
     },
@@ -44,7 +47,13 @@
      "ref": "Hebrews 4:13"
     },
     {
+     "ref": "Hebrews 4:16"
+    },
+    {
      "ref": "Hebrews 5:7"
+    },
+    {
+     "ref": "Hebrews 8:1"
     },
     {
      "ref": "Hebrews 8:10"
@@ -52,6 +61,9 @@
     {
      "ref": "Hebrews 10:38",
      "note": "Hence the expression to swear by ones soul"
+    },
+    {
+     "ref": "Hebrews 11:10"
     },
     {
      "ref": "Hebrews 13:8",
@@ -101,6 +113,9 @@
      "ref": "Hebrews 9:16"
     },
     {
+     "ref": "Hebrews 9:17"
+    },
+    {
      "ref": "Hebrews 9:23",
      "note": "With better sacrifices than these: i.e., one better and greater sacrifice; for Christ offered only one sacrifice"
     },
@@ -122,6 +137,121 @@
     },
     {
      "ref": "Hebrews 13:8"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:8"
+    },
+    {
+     "ref": "Hebrews 1:9"
+    },
+    {
+     "ref": "Hebrews 1:10"
+    },
+    {
+     "ref": "Hebrews 1:11"
+    },
+    {
+     "ref": "Hebrews 1:12"
+    },
+    {
+     "ref": "Hebrews 1:13"
+    },
+    {
+     "ref": "Hebrews 3:7"
+    },
+    {
+     "ref": "Hebrews 5:6"
+    },
+    {
+     "ref": "Hebrews 9:8",
+     "note": "Referring to Ex. 25 xl. (concerning the Tabernacle and its teaching), The Holy Ghost this signifying"
+    },
+    {
+     "ref": "Hebrews 9:19"
+    },
+    {
+     "ref": "Hebrews 9:20"
+    },
+    {
+     "ref": "Hebrews 10:5",
+     "note": "7 ).A body hast thou prepared me. These words are like the LXX of Psalm 40:6 ( 39:6 ), and differ from the Hebrew, which is, Mine ears hast thou opened. But this is not given as a quotation. It does"
+    },
+    {
+     "ref": "Hebrews 10:6"
+    },
+    {
+     "ref": "Hebrews 10:15"
+    },
+    {
+     "ref": "Hebrews 11:21",
+     "note": "This is not a quotation; but, as it is generally treated as such, and as being in discrepancy with"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:7",
+     "note": "and that man is never spoken of as a spirit. He is said to have a spirit, but not to be one. In"
+    },
+    {
+     "ref": "Hebrews 2:18",
+     "note": "All often denotes the greater part"
+    },
+    {
+     "ref": "Hebrews 4:12"
+    },
+    {
+     "ref": "Hebrews 4:15"
+    },
+    {
+     "ref": "Hebrews 6:3",
+     "note": "This will we do, if God permit: i.e., if God so orders it, and gives the needed grace and strength. To seek"
+    },
+    {
+     "ref": "Hebrews 7:18",
+     "note": "and 9:26 ) 1s used as a technical legal ( akur sis ) a depriving of authority, and in Antithesis to ( bebai sis ), a confirming, or establishing. * Bibelstudien, Marburg, 1895, and Neue Bibelstudieu,…"
+    },
+    {
+     "ref": "Hebrews 7:26"
+    },
+    {
+     "ref": "Hebrews 9:16"
+    },
+    {
+     "ref": "Hebrews 9:17"
+    },
+    {
+     "ref": "Hebrews 10:20"
+    },
+    {
+     "ref": "Hebrews 11:1",
+     "note": "sukophantein ). This word meant originally an informer, and was used of one who gave information against persons who exported figs from Attica. Literally, a fig-shewer. Hence a common informer"
+    },
+    {
+     "ref": "Hebrews 11:4",
+     "note": "but few hear his voice. Few understand the great fact that God left nothing for mans imagination when He made known how He would be approached, and how He would be worshipped. In the last chapter o"
+    },
+    {
+     "ref": "Hebrews 11:28"
+    },
+    {
+     "ref": "Hebrews 13:15",
+     "note": "There is no other worship now which He accepts, and no other worshippers whom the Father seeks to worship Him"
     }
    ]
   },
@@ -243,57 +373,57 @@
    ]
   },
   {
-   "id": "idioma",
-   "name": "Idiom",
-   "greek": "ἰδίωμα",
-   "group": "substitution",
-   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
    "occurrences": [
     {
-     "ref": "Hebrews 1:7",
-     "note": "and that man is never spoken of as a spirit. He is said to have a spirit, but not to be one. In"
+     "ref": "Hebrews 1:3",
+     "note": "By the word of his power. This is hardly His powerful word; but the word which is the instrument, by which His power 1s carried out. After certain verbs of sense or feeling, the genitive is used to i"
     },
     {
-     "ref": "Hebrews 2:18",
-     "note": "All often denotes the greater part"
+     "ref": "Hebrews 1:14"
     },
     {
-     "ref": "Hebrews 4:12"
+     "ref": "Hebrews 2:5"
     },
     {
-     "ref": "Hebrews 4:15"
+     "ref": "Hebrews 3:12",
+     "note": "An evil heart of unbelief: i.e., an evil heart in respect to unbelief"
     },
     {
-     "ref": "Hebrews 6:3",
-     "note": "This will we do, if God permit: i.e., if God so orders it, and gives the needed grace and strength. To seek"
+     "ref": "Hebrews 5:6",
+     "note": "The order of Melchisedek: i.e., Melchisedeks order"
     },
     {
-     "ref": "Hebrews 7:18",
-     "note": "and 9:26 ) 1s used as a technical legal ( akur sis ) a depriving of authority, and in Antithesis to ( bebai sis ), a confirming, or establishing. * Bibelstudien, Marburg, 1895, and Neue Bibelstudieu,…"
+     "ref": "Hebrews 5:13",
+     "note": "Unskilled of the word of righteousness: i.e., in respect of the word of righteousness"
     },
     {
-     "ref": "Hebrews 7:26"
+     "ref": "Hebrews 6:1",
+     "note": "The foundation of repentance: i.e., the foundation, that is to say, repentance"
     },
     {
-     "ref": "Hebrews 9:16"
+     "ref": "Hebrews 6:2"
     },
     {
-     "ref": "Hebrews 10:20"
+     "ref": "Hebrews 9:21",
+     "note": "Vessels of the ministry: i.e., pertaining to the ministering"
     },
     {
-     "ref": "Hebrews 11:1",
-     "note": "sukophantein ). This word meant originally an informer, and was used of one who gave information against persons who exported figs from Attica. Literally, a fig-shewer. Hence a common informer"
+     "ref": "Hebrews 10:7"
     },
     {
-     "ref": "Hebrews 11:4",
-     "note": "but few hear his voice. Few understand the great fact that God left nothing for mans imagination when He made known how He would be approached, and how He would be worshipped. In the last chapter o"
+     "ref": "Hebrews 10:12"
     },
     {
-     "ref": "Hebrews 11:28"
+     "ref": "Hebrews 10:15"
     },
     {
-     "ref": "Hebrews 13:15",
-     "note": "There is no other worship now which He accepts, and no other worshippers whom the Father seeks to worship Him"
+     "ref": "Hebrews 11:26",
+     "note": "The reproach of Christ: i.e., reproach in connection with Christ"
     }
    ]
   },
@@ -353,87 +483,32 @@
    ]
   },
   {
-   "id": "palinodia",
-   "name": "Palinodia",
-   "greek": "παλινῳδία",
-   "group": "emphasis",
-   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
    "occurrences": [
     {
-     "ref": "Hebrews 1:3",
-     "note": "By the word of his power. This is hardly His powerful word; but the word which is the instrument, by which His power 1s carried out. After certain verbs of sense or feeling, the genitive is used to i"
+     "ref": "Hebrews 11:32"
     },
     {
-     "ref": "Hebrews 1:14"
+     "ref": "Hebrews 11:33"
     },
     {
-     "ref": "Hebrews 3:12",
-     "note": "An evil heart of unbelief: i.e., an evil heart in respect to unbelief"
+     "ref": "Hebrews 11:34"
     },
     {
-     "ref": "Hebrews 5:6",
-     "note": "The order of Melchisedek: i.e., Melchisedeks order"
+     "ref": "Hebrews 11:35"
     },
     {
-     "ref": "Hebrews 5:13",
-     "note": "Unskilled of the word of righteousness: i.e., in respect of the word of righteousness"
+     "ref": "Hebrews 11:36"
     },
     {
-     "ref": "Hebrews 6:1",
-     "note": "The foundation of repentance: i.e., the foundation, that is to say, repentance"
+     "ref": "Hebrews 11:37"
     },
     {
-     "ref": "Hebrews 6:2"
-    },
-    {
-     "ref": "Hebrews 9:21",
-     "note": "Vessels of the ministry: i.e., pertaining to the ministering"
-    },
-    {
-     "ref": "Hebrews 10:7"
-    },
-    {
-     "ref": "Hebrews 11:26",
-     "note": "The reproach of Christ: i.e., reproach in connection with Christ"
-    }
-   ]
-  },
-  {
-   "id": "gnome",
-   "name": "Gnome (quotation)",
-   "greek": "γνώμη",
-   "group": "emphasis",
-   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
-   "occurrences": [
-    {
-     "ref": "Hebrews 1:8"
-    },
-    {
-     "ref": "Hebrews 1:13"
-    },
-    {
-     "ref": "Hebrews 3:7"
-    },
-    {
-     "ref": "Hebrews 5:6"
-    },
-    {
-     "ref": "Hebrews 9:8",
-     "note": "Referring to Ex. 25 xl. (concerning the Tabernacle and its teaching), The Holy Ghost this signifying"
-    },
-    {
-     "ref": "Hebrews 9:19"
-    },
-    {
-     "ref": "Hebrews 10:5",
-     "note": "7 ).A body hast thou prepared me. These words are like the LXX of Psalm 40:6 ( 39:6 ), and differ from the Hebrew, which is, Mine ears hast thou opened. But this is not given as a quotation. It does"
-    },
-    {
-     "ref": "Hebrews 10:15"
-    },
-    {
-     "ref": "Hebrews 11:21",
-     "note": "This is not a quotation; but, as it is generally treated as such, and as being in discrepancy with"
+     "ref": "Hebrews 11:38"
     }
    ]
   },
@@ -460,6 +535,55 @@
     },
     {
      "ref": "Hebrews 13:15"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:12"
+    },
+    {
+     "ref": "Hebrews 9:14"
+    },
+    {
+     "ref": "Hebrews 10:19"
+    },
+    {
+     "ref": "Hebrews 12:24"
+    },
+    {
+     "ref": "Hebrews 13:12"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 8:5"
+    },
+    {
+     "ref": "Hebrews 9:26",
+     "note": "It will be easy, therefore, for the student to distinguish it from ( telos ), which is used in the other passages"
+    },
+    {
+     "ref": "Hebrews 11:12"
+    },
+    {
+     "ref": "Hebrews 12:5"
+    },
+    {
+     "ref": "Hebrews 12:6"
     }
    ]
   },
@@ -514,28 +638,6 @@
    ]
   },
   {
-   "id": "paroemia",
-   "name": "Paroemia (proverb)",
-   "greek": "παροιμία",
-   "group": "emphasis",
-   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
-   "occurrences": [
-    {
-     "ref": "Hebrews 8:5"
-    },
-    {
-     "ref": "Hebrews 9:26",
-     "note": "It will be easy, therefore, for the student to distinguish it from ( telos ), which is used in the other passages"
-    },
-    {
-     "ref": "Hebrews 11:12"
-    },
-    {
-     "ref": "Hebrews 12:5"
-    }
-   ]
-  },
-  {
    "id": "erotesis",
    "name": "Rhetorical question",
    "greek": "ἐρώτησις",
@@ -555,6 +657,25 @@
     {
      "ref": "Hebrews 2:6",
      "note": "to magnify the grace of God in lifting up such an one from the dunghill to make him inherit the throne of glory"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 12:16"
+    },
+    {
+     "ref": "Hebrews 12:17"
+    },
+    {
+     "ref": "Hebrews 13:8",
+     "note": "Jesus Christ the same yesterday, and to-day, and for ever"
     }
    ]
   },
@@ -643,6 +764,43 @@
    ]
   },
   {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 10:6"
+    },
+    {
+     "ref": "Hebrews 10:8"
+    },
+    {
+     "ref": "Hebrews 10:38"
+    }
+   ]
+  },
+  {
+   "id": "irony",
+   "name": "Irony",
+   "greek": "εἰρωνεία",
+   "group": "emphasis",
+   "definition": "Saying the opposite of what is meant, so the real sense is felt through the contrast.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 11:17",
+     "note": "It seems very probable that this was the spot where the altar of burnt offering was afterwards erected"
+    },
+    {
+     "ref": "Hebrews 11:18"
+    },
+    {
+     "ref": "Hebrews 11:19"
+    }
+   ]
+  },
+  {
    "id": "tapeinosis",
    "name": "Tapeinosis",
    "greek": "ταπείνωσις",
@@ -660,18 +818,17 @@
    ]
   },
   {
-   "id": "polysyndeton",
-   "name": "Polysyndeton",
-   "greek": "πολυσύνδετον",
-   "group": "repetition",
-   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
    "occurrences": [
     {
-     "ref": "Hebrews 12:16"
+     "ref": "Hebrews 12:20"
     },
     {
-     "ref": "Hebrews 13:8",
-     "note": "Jesus Christ the same yesterday, and to-day, and for ever"
+     "ref": "Hebrews 12:21"
     }
    ]
   },
@@ -705,6 +862,22 @@
     {
      "ref": "Hebrews 13:15",
      "note": "homologein ), to confess, is used of to praise or celebrate, like the Hebrew ( h dah ) which has both meanings"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:27",
+     "note": "28 ). they are sent, Sent Me and sent them"
+    },
+    {
+     "ref": "Hebrews 9:28"
     }
    ]
   },
@@ -828,30 +1001,6 @@
    ]
   },
   {
-   "id": "epitrechon",
-   "name": "Epitrechon",
-   "greek": "ἐπιτρέχον",
-   "group": "arrangement",
-   "definition": "A clause “running through” — dropped in parenthetically between others.",
-   "occurrences": [
-    {
-     "ref": "Hebrews 12:20"
-    }
-   ]
-  },
-  {
-   "id": "metalepsis",
-   "name": "Metalepsis",
-   "greek": "μετάληψις",
-   "group": "substitution",
-   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
-   "occurrences": [
-    {
-     "ref": "Hebrews 9:12"
-    }
-   ]
-  },
-  {
    "id": "hendiadys",
    "name": "Hendiadys",
    "greek": "ἓν διὰ δυοῖν",
@@ -873,31 +1022,6 @@
    "occurrences": [
     {
      "ref": "Hebrews 11:31"
-    }
-   ]
-  },
-  {
-   "id": "antithesis",
-   "name": "Antithesis",
-   "greek": "ἀντίθεσις",
-   "group": "arrangement",
-   "definition": "Two opposite ideas set side by side so each sharpens the other.",
-   "occurrences": [
-    {
-     "ref": "Hebrews 10:6"
-    }
-   ]
-  },
-  {
-   "id": "simile",
-   "name": "Simile",
-   "greek": "ὁμοίωσις",
-   "group": "comparison",
-   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
-   "occurrences": [
-    {
-     "ref": "Hebrews 9:27",
-     "note": "28 ). they are sent, Sent Me and sent them"
     }
    ]
   }
