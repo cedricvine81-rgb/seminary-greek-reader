@@ -203,8 +203,10 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
   // Highlighting on the passage column: drag-to-select palette + right-click menu (same as
   // Synopsis / Backgrounds). Requires sign-in to save.
   const highlights = useHighlights(isAuthenticated)
-  const passagePaneRef = useRef<HTMLDivElement>(null)
-  const highlightSelection = useHighlightSelection(passagePaneRef)
+  // Covers both reading surfaces (passage column + example preview); the hook no-ops on any
+  // selection that doesn't intersect a [data-hl-verse] anchor.
+  const highlightPaneRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(highlightPaneRef)
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
   useEffect(() => { loadBengel().then(setBengel) }, [])
@@ -227,9 +229,9 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
 
   // Load the previewed example's chapter (reuses the passage cache); clear the preview when
   // the browsed figure changes or we leave browse mode.
-  useEffect(() => { const p = previewRef && parseRef(previewRef); if (p) { loadPassage(version, p.osis, p.chapter); loadPassage(previewTrans, p.osis, p.chapter) }
+  useEffect(() => { const p = previewRef && parseRef(previewRef); if (p) { loadPassage(version, p.osis, p.chapter); loadPassage(previewTrans, p.osis, p.chapter); if (isAuthenticated) void highlights.loadFor(p.osis, p.chapter) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [previewRef, version, previewTrans])
+  }, [previewRef, version, previewTrans, isAuthenticated])
   useEffect(() => { setPreviewRef(null) }, [browseId, mode])
 
   // Group a device's occurrences by book, in canonical NT order (for the browser detail view).
@@ -399,10 +401,10 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
       {status === 'missing' && <p className="text-gray-500 text-sm mt-6 text-center">Couldn’t load {parsed?.name} {parsed?.chapter}.</p>}
 
       {status === 'ok' && (
-        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
+        <div ref={highlightPaneRef} className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* Column 1 — the passage (steps aside while previewing an example) */}
           {!showPreview && (
-          <div ref={passagePaneRef} className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
+          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{parsed!.name} {parsed!.chapter}</p>
               <select
@@ -637,6 +639,8 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
             const text = p ? (textCache.current[version]?.[vid] ?? null) : null
             const ptoks = p ? wordCache.current[version]?.[vid] : undefined
             const pref = p ? `${p.name} ${p.chapter}:${p.vStart}` : previewRef!
+            const pvHls = p ? highlights.forVerse(p.osis, p.chapter, p.vStart, isGreek ? 'grc' : version) : []
+            const ptHls = p ? highlights.forVerse(p.osis, p.chapter, p.vStart, previewTrans) : []
             const occ = browseDevice!.occurrences.find(o => o.ref === previewRef)
             const gnomon = bengel[previewRef!]
             return (
@@ -649,18 +653,39 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                   <p className={`leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
                     <sup className="text-[10px] text-brand-500 mr-0.5 font-sans align-super">{p!.vStart}</sup>
                     {!isGreek
-                      ? <TransWords text={text} lang={version} reference={pref} book={p!.osis} />
+                      ? <span {...verseAnchorProps(p!.osis, p!.chapter, p!.vStart, version)}>
+                          <TransWords text={text} lang={version} reference={pref} book={p!.osis}
+                            hl={isAuthenticated ? { isAuthenticated, verseHighlights: pvHls,
+                              create: (s, e, c) => void highlights.create(p!.osis, p!.chapter, p!.vStart, s, e, c, version),
+                              recolor: (id, c) => void highlights.recolor(id, p!.osis, p!.chapter, c),
+                              remove: id => void highlights.remove(id, p!.osis, p!.chapter) } : undefined} />
+                        </span>
                       : ptoks && ptoks.length > 0
-                        ? ptoks.map((tok, ti) => {
-                            const key = `prev.${ti}`
-                            const select = () => { setSelectedInfo(toLexicalInfo(tok, pref)); setSelectedKey(key) }
-                            return (
-                              <span key={ti} onMouseEnter={select} onClick={select} onContextMenu={e => wordMenu(e, tok, pref)}
-                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
-                                {tok.surface}{ti < ptoks.length - 1 ? ' ' : ''}
-                              </span>
-                            )
-                          })
+                        ? <span {...verseAnchorProps(p!.osis, p!.chapter, p!.vStart, 'grc')}>
+                            {withTokenOffsets(ptoks).map(({ token: tok, start, end }, ti) => {
+                              const key = `prev.${ti}`
+                              const select = () => { setSelectedInfo(toLexicalInfo(tok, pref)); setSelectedKey(key) }
+                              const hl = highlightAt(start, end, pvHls)
+                              return (
+                                <span key={ti} onMouseEnter={select} onClick={select}
+                                  onContextMenu={e => {
+                                    e.preventDefault()
+                                    openWordSearch({
+                                      x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null, reference: pref, kind: 'greek', greekCorpus: 'GNT',
+                                      highlight: isAuthenticated ? {
+                                        activeColor: hl?.color ?? null,
+                                        onPick: c => hl ? void highlights.recolor(hl.id, p!.osis, p!.chapter, c) : void highlights.create(p!.osis, p!.chapter, p!.vStart, start, end, c, 'grc'),
+                                        onRemove: () => { if (hl) void highlights.remove(hl.id, p!.osis, p!.chapter) },
+                                      } : undefined,
+                                    })
+                                  }}
+                                  {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': p!.osis, 'data-hl-chapter': p!.chapter, 'data-hl-color': hl.color } : {})}
+                                  className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}>
+                                  {tok.surface}{ti < ptoks.length - 1 ? ' ' : ''}
+                                </span>
+                              )
+                            })}
+                          </span>
                         : text}
                   </p>
                 ) : (
@@ -677,7 +702,13 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                       </select>
                       {tt ? (
                         <p className="font-reading text-gray-600 leading-relaxed" style={{ fontSize: 'calc(var(--rh-fs) * 0.82)' }}>
-                          <TransWords text={tt} lang={previewTrans} reference={pref} book={p!.osis} />
+                          <span {...verseAnchorProps(p!.osis, p!.chapter, p!.vStart, previewTrans)}>
+                            <TransWords text={tt} lang={previewTrans} reference={pref} book={p!.osis}
+                              hl={isAuthenticated ? { isAuthenticated, verseHighlights: ptHls,
+                                create: (s, e, c) => void highlights.create(p!.osis, p!.chapter, p!.vStart, s, e, c, previewTrans),
+                                recolor: (id, c) => void highlights.recolor(id, p!.osis, p!.chapter, c),
+                                remove: id => void highlights.remove(id, p!.osis, p!.chapter) } : undefined} />
+                          </span>
                         </p>
                       ) : (
                         <p className="text-xs text-gray-400 italic">Loading translation…</p>
