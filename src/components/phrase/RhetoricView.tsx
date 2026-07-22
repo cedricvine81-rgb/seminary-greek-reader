@@ -257,12 +257,14 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
   }, [verses, parsed])
 
   const deviceById = (id: string) => allDevices.find(d => d.id === id)
+  const versesWithDevices = shownVerses.filter(v => byVerse[v.verse]?.length)
+  // Legend reflects only the shown verse range (not the whole chapter), so it stays empty
+  // when the selected passage has no catalogued figures.
   const groupsPresent = useMemo(() => {
     const s = new Set<DeviceGroup>()
-    for (const hits of Object.values(byVerse)) for (const h of hits) s.add(h.device.group)
+    for (const v of shownVerses) for (const h of (byVerse[v.verse] ?? [])) s.add(h.device.group)
     return Array.from(s)
-  }, [byVerse])
-  const versesWithDevices = shownVerses.filter(v => byVerse[v.verse]?.length)
+  }, [shownVerses, byVerse])
 
   // Parsing-pane content before any word is clicked: the passage's first Greek token, so
   // the pane never sits empty (mirrors the Synopsis / Phrasing tabs).
