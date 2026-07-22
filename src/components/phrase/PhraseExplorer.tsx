@@ -1,6 +1,7 @@
 'use client'
 import { createContext, useContext, useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { PassageAutocomplete } from './PassageAutocomplete'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -446,7 +447,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
     }
   }
 
-  const submit = () => { if (books.length) loadPassage(input, books) }
+  const submit = (val: string = input) => { if (books.length) loadPassage(val, books) }
 
   return (
     <WordCtx.Provider value={{ selectedId: selected?.id ?? null, onWord: setSelected }}>
@@ -459,14 +460,14 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
         <div className="flex items-center flex-wrap gap-3">
           <div className="flex items-center">
             <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-            <input
-              type="text"
+            <PassageAutocomplete
               value={input}
-              onChange={e => { setInput(e.target.value); if (inputError) setInputError(false) }}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-              onBlur={submit}
+              onChange={v => { setInput(v); if (inputError) setInputError(false) }}
+              onCommit={v => submit(v)}
+              commitOnBlur
+              error={inputError}
               placeholder="e.g. Matthew 3:1-3"
-              className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${inputError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+              inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
           </div>
           {loading && <span className="text-sm text-gray-400">Loading…</span>}

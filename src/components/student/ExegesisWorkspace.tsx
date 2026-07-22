@@ -11,6 +11,7 @@ import { saveLocalDraft, markLocalDraftSynced, readLocalDraft, clearLocalDraft }
 import { setExamLocked } from '@/lib/exam-lockdown'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
+import { PassageAutocomplete } from '@/components/phrase/PassageAutocomplete'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -1149,8 +1150,8 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
   }, [controlledPassage, books])
 
   // ── Passage box: parse a typed reference ("Matthew 3:1-3") and load it ──
-  function handlePassageSubmit() {
-    const raw = passageInput.trim()
+  function handlePassageSubmit(value: string = passageInput) {
+    const raw = value.trim()
     if (!raw) { setPassageError(false); return }
     const parsed = parsePassageRef(raw, books)
     if (!parsed) { setPassageError(true); return }
@@ -1936,14 +1937,14 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
                   <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium">Passage</span>
-                  <input
-                    type="text"
+                  <PassageAutocomplete
                     value={passageInput}
-                    onChange={e => { setPassageInput(e.target.value); if (passageError) setPassageError(false) }}
-                    onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() } }}
-                    onBlur={handlePassageSubmit}
+                    onChange={v => { setPassageInput(v); if (passageError) setPassageError(false) }}
+                    onCommit={v => handlePassageSubmit(v)}
+                    commitOnBlur
+                    error={passageError}
                     placeholder="e.g. Matthew 3:1-3"
-                    className={`border rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 ${passageError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+                    inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
                   />
                 </div>
                 {isLoading && <span className="text-sm text-gray-400">Loading…</span>}

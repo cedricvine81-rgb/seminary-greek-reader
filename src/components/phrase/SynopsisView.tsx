@@ -4,6 +4,7 @@ import { X } from 'lucide-react'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { PassageAutocomplete } from './PassageAutocomplete'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
@@ -312,11 +313,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     }
   }
 
-  const addRef = () => {
-    const raw = addInput.trim()
-    if (!raw) return
-    if (!parseRef(raw, books)) { setAddError(true); return }
-    setExtraRefs(r => [...r, raw])
+  const addRef = (raw: string = addInput) => {
+    const r = raw.trim()
+    if (!r) return
+    if (!parseRef(r, books)) { setAddError(true); return }
+    setExtraRefs(prev => [...prev, r])
     setAddInput(''); setAddError(false)
   }
 
@@ -448,15 +449,15 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           {/* Add a comparison column */}
           <div className="w-60 shrink-0 rounded-xl border border-dashed border-gray-300 p-3">
             <p className="text-xs font-semibold text-gray-500 mb-2">Add a passage to compare</p>
-            <input
-              type="text"
+            <PassageAutocomplete
               value={addInput}
-              onChange={e => { setAddInput(e.target.value); if (addError) setAddError(false) }}
-              onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addRef() } }}
+              onChange={v => { setAddInput(v); if (addError) setAddError(false) }}
+              onCommit={v => addRef(v)}
               placeholder="e.g. Mark 1:9-11"
-              className={`w-full border rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 ${addError ? 'border-red-400 focus:ring-red-400' : 'border-gray-300 focus:ring-brand-400'}`}
+              error={addError}
+              inputClassName="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
-            <button onClick={addRef} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
+            <button onClick={() => addRef()} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}
           </div>
         </div>
