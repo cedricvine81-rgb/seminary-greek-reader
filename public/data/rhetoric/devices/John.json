@@ -1,0 +1,1602 @@
+{
+ "book": "John",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "John 1:9",
+     "note": "That was the true light, which, coming into the world ( i.e., among men), lighteth every man, without distinction of race or language"
+    },
+    {
+     "ref": "John 1:10",
+     "note": "The world knew him not: i.e., people of the world"
+    },
+    {
+     "ref": "John 1:12"
+    },
+    {
+     "ref": "John 1:23"
+    },
+    {
+     "ref": "John 3:6",
+     "note": "That which is born of the Spirit is spirit. Here, the second time the word spirit is used, it is in a different sense, by the figure of Antanaclasis ( q.v., page 286 ); and by Metonymy it is put for"
+    },
+    {
+     "ref": "John 3:16",
+     "note": "God so loved the world: i.e., the inhabitants of the world, now without distinction. Before it was only Israel without exception. See further under Synecdoche"
+    },
+    {
+     "ref": "John 3:17",
+     "note": "That the world through him might be saved: i.e., people in the world without distinction"
+    },
+    {
+     "ref": "John 3:18"
+    },
+    {
+     "ref": "John 3:19",
+     "note": "krisis, the act or process of judging ). SIN and its synonyms are put for the effects or punishment of sin"
+    },
+    {
+     "ref": "John 3:27",
+     "note": "A man can receive nothing, except it be given him from heaven: i.e., from God (who dwells there). 21. HEART is put for nature and character"
+    },
+    {
+     "ref": "John 3:34",
+     "note": "For God giveth not the Spirit by measure to Him: te., the gifts and operations produced by the Spirit. The Holy Spirit is a person, and cannot, therefore, be measured out or given by measure. The mea"
+    },
+    {
+     "ref": "John 4:25"
+    },
+    {
+     "ref": "John 6:33",
+     "note": "The bread of God is he which cometh down from heaven, and giveth life unto the world: i.e., to Gods People in the world"
+    },
+    {
+     "ref": "John 6:42"
+    },
+    {
+     "ref": "John 6:63",
+     "note": "The words that I speak unto you, they, are spirit (i.e., the gift and operation of the Spirit of God), and they are life ( i.e., they give and produce divine, spiritual and eternal life"
+    },
+    {
+     "ref": "John 7:7",
+     "note": "The world cannot hate you, but me it hateth: i.e., the inhabitants of the world, as without God"
+    },
+    {
+     "ref": "John 7:38",
+     "note": "He that believeth on me, as the Scripture hath said, out of his belly shall flow rivers of living water. Here, belly is put for the innermost thoughts and feelings, and what the Scripture hath said…"
+    },
+    {
+     "ref": "John 7:39",
+     "note": "This spake he of the Spirit: i.e., this outflow of spiritual power mentioned in verse 38. A person could not flow out from another person"
+    },
+    {
+     "ref": "John 8:2"
+    },
+    {
+     "ref": "John 8:43",
+     "note": "Ye cannot hear (i.e., receive, and understand, and approve) my word. See verse 44"
+    },
+    {
+     "ref": "John 10:17"
+    },
+    {
+     "ref": "John 10:24"
+    },
+    {
+     "ref": "John 10:27",
+     "note": "My sheep hear my voice, and I know them: i.e., I love them with all a shepherds fondness"
+    },
+    {
+     "ref": "John 11:25",
+     "note": "I am the resurrection and the life: i.e., the Worker of resurrection, and the Giver of resurrection life"
+    },
+    {
+     "ref": "John 11:40",
+     "note": "Said I not unto thee, that, if thou wouldest believe, thou shouldest see the glory (i.e., the glorious work) of God?"
+    },
+    {
+     "ref": "John 12:25",
+     "note": "He that loveth his life shall lose it: i.e., that cares more for his life than for Christ. See under Ellipsis and Hyperbole. This is the explanation of"
+    },
+    {
+     "ref": "John 12:27",
+     "note": "Now is my soul troubled; and what shall I say? Father, save me from this hour (i.e., this time of trial): but for this cause came I unto this hour (i.e., these sufferings). 6. END is put for that…"
+    },
+    {
+     "ref": "John 12:31"
+    },
+    {
+     "ref": "John 12:38"
+    },
+    {
+     "ref": "John 12:40"
+    },
+    {
+     "ref": "John 12:50",
+     "note": "And I know that his commandment is life everlasting: i.e., the effect of it is eternal life"
+    },
+    {
+     "ref": "John 14:17",
+     "note": "The Spirit of truth; whom the world ( i.e., men) cannot receive. So 15:19; 16:20, 33; 17:9, 14"
+    },
+    {
+     "ref": "John 14:31",
+     "note": "But that the world may know that I love the Father: i.e., that the godly in the world. Hence"
+    },
+    {
+     "ref": "John 17:3",
+     "note": "This is life eternal that they might know (i.e., believe on) theethe only true God, and Jesus Christ, whom thou hast sent"
+    },
+    {
+     "ref": "John 17:21",
+     "note": "That the world may believe: i.e., many in the world, without distinction"
+    },
+    {
+     "ref": "John 18:18"
+    },
+    {
+     "ref": "John 20:23",
+     "note": "Whose soever sins ye (i.e., by the word which ye minister) remit. See below under verbs. Whatever this may mean, it was spoken to the apostles: and it is certain that they had no commission, authori"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "John 1:1"
+    },
+    {
+     "ref": "John 1:4",
+     "note": "In him was (i.e., 1s) life, and the life was (i.e., is) the light of men. Verse 15: This was (i.e., is) he of whom I spake"
+    },
+    {
+     "ref": "John 1:12",
+     "note": "To them gave he authority to have become (i.e., to become, or that they might be) sons of God"
+    },
+    {
+     "ref": "John 1:13",
+     "note": "Not of bloods: i.e., not of the best or purest blood; or not of the very best of human parents"
+    },
+    {
+     "ref": "John 1:15",
+     "note": "For he was first of me: i.e., prior to me ( A.V. before me). So the word first is used in"
+    },
+    {
+     "ref": "John 1:46",
+     "note": "47 ). Can there any good thing (neut.) come out of Nazareth? The words were spoken with reference to Christ"
+    },
+    {
+     "ref": "John 2:19",
+     "note": "Destroy this temple. This was not a command for the Jews to destroy Him, but a prophesy that they would do so. When they perverted His words, they did not do so by taking the figure literally, but by"
+    },
+    {
+     "ref": "John 3:6",
+     "note": "That (neut.) which is born of the flesh is flesh; and that (neut.) which is born of the Spirit is spirit. The neuter is used to agree with the"
+    },
+    {
+     "ref": "John 3:11",
+     "note": "We (i.e., I) speak that we (i.e., I) know, and testify that we ( i.e., I) have seen; and ye receive not our (i.e., my) witness"
+    },
+    {
+     "ref": "John 3:13",
+     "note": "No man hath ascended up into the heaven: i.e. ascend up, or can ascend"
+    },
+    {
+     "ref": "John 3:16",
+     "note": "God so loved ( i.e., loveth) the world, that he gave ( Le., giveth) his only begotten Son"
+    },
+    {
+     "ref": "John 4:38",
+     "note": "Other men laboured, and ye have entered ( i.e. shall enter, or are entered) into their labours"
+    },
+    {
+     "ref": "John 5:45"
+    },
+    {
+     "ref": "John 6:27",
+     "note": "Labour not for the meat which perisheth, but for the meat that endureth to eternal life: i.e., labour more for the latter than for the former, or rather than"
+    },
+    {
+     "ref": "John 6:39"
+    },
+    {
+     "ref": "John 6:51"
+    },
+    {
+     "ref": "John 7:27"
+    },
+    {
+     "ref": "John 8:44"
+    },
+    {
+     "ref": "John 9:36",
+     "note": "Who is he, Lord, that I shall have believed (i.e., may believe) on him"
+    },
+    {
+     "ref": "John 10:29",
+     "note": "My Father, which gave them me, is greater than (i.e., greatest of) all"
+    },
+    {
+     "ref": "John 11:56",
+     "note": "What think ye, that he will not have come ( i.e., there is no hope of his coming) to the feast?"
+    },
+    {
+     "ref": "John 13:3"
+    },
+    {
+     "ref": "John 15:6",
+     "note": "Except anyone abide in me he was cast out ( i.e., will be cast out), and was (i.e., will be) burned. See under Ellipsis. 5. The Present for the Past"
+    },
+    {
+     "ref": "John 15:8",
+     "note": "By this is my Father glorified, that ye may bear much fruit: i.e., that ye bear or when ye bear"
+    },
+    {
+     "ref": "John 15:18",
+     "note": "If the world hate you, ye know that it hated me first of you: i.e., before you. So"
+    },
+    {
+     "ref": "John 15:22",
+     "note": "If I had not come and spoken to them, they had not had sin: i.e., So much sin"
+    },
+    {
+     "ref": "John 16:13",
+     "note": "When HE the Spirit of truthis come, HE will guide you into all truth, for HE shall not speak of Himself; but whatsoever HE shall hear that shall HE speak, and HE will show you things to come. Here, th"
+    },
+    {
+     "ref": "John 18:24",
+     "note": "New Annas sent him ( i.e., had sent him) bound unto Caiaphas. 4. The Aorist for the Present The Aorist is sometimes put for a past action or state continued up to the present time"
+    },
+    {
+     "ref": "John 20:17",
+     "note": "Hold me not, for I have not yet ascended: i.e., I do not yet ascend, or"
+    },
+    {
+     "ref": "John 21:24",
+     "note": "And we (i.e., I) know that his testimony is true"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "John 1:9",
+     "note": "We must take this with the R.V. margin. This was the true light, which lighteth every man, coming into the world: i.e., lighteth every man, now, without distinction, not without exception. Hitherto"
+    },
+    {
+     "ref": "John 1:14",
+     "note": "The Word was made flesh: i.e., man, a human being"
+    },
+    {
+     "ref": "John 1:16",
+     "note": "And of his fulness have all we received: i.e., all the we who have received grace. The all is thus defined and limited"
+    },
+    {
+     "ref": "John 3:15"
+    },
+    {
+     "ref": "John 3:16",
+     "note": "God so loved the world: i.e., people and kindred and tongues in all parts of the world. Not, as heretofore, only Israel. This love was confined to Israel, according to"
+    },
+    {
+     "ref": "John 3:32",
+     "note": "And no man receiveth his testimony: i.e., no natural man receiveth it of himself; but only those to whom it is given of the Father"
+    },
+    {
+     "ref": "John 4:12"
+    },
+    {
+     "ref": "John 4:22",
+     "note": "but now it is extended to people out of all tongues, and nations, and peoples"
+    },
+    {
+     "ref": "John 4:23",
+     "note": "The hour cometh, and now is, when the true worshippers shall worship the Father in spirit and in truth. See this passage and verse 24, under Hendiadys below"
+    },
+    {
+     "ref": "John 5:25",
+     "note": "The hour is coming, and now is, when the dead shall hear the voice of the Son of God; and they that hear shall live. Note that in this almighty act Christs title is Son of God; while, in verse 27, He"
+    },
+    {
+     "ref": "John 5:28",
+     "note": "But every man in his own order; or rank and time and according to the Dispensation"
+    },
+    {
+     "ref": "John 6:17",
+     "note": "And (they) entered into a ship, and came ( i.e., went) over the sea toward Capernaum. And it was now dark, and Jesus was not come (i.e., gone) to them"
+    },
+    {
+     "ref": "John 6:45"
+    },
+    {
+     "ref": "John 6:50",
+     "note": "This is the bread which cometh down from heaven, that anyone may eat thereof, and not die: i.e., everyone who does eat of it. il. Words of a limited and special sense are used with a wider and more u"
+    },
+    {
+     "ref": "John 6:51",
+     "note": "My flesh: i.e., myself"
+    },
+    {
+     "ref": "John 8:39"
+    },
+    {
+     "ref": "John 10:8",
+     "note": "All that ever came before me are thieves and robbers: i.e., all who did not enter in by the door, but climbed up some other way. See verse 1. Other examples may be found in"
+    },
+    {
+     "ref": "John 10:9"
+    },
+    {
+     "ref": "John 11:3"
+    },
+    {
+     "ref": "John 11:28"
+    },
+    {
+     "ref": "John 11:29",
+     "note": "As soon as she heard that, she arose quickly, and came ( Le., went) unto him"
+    },
+    {
+     "ref": "John 12:19",
+     "note": "Behold, the world is gone after him: i.e., multitudes of people of all sorts. Synecdoche here is preferable to Hyperbole ( q.v"
+    },
+    {
+     "ref": "John 12:32",
+     "note": "I, if I be lifted up from the earth, will draw all unto me: Le., all without distinction; clearly, not all without exception, as this would be contrary both to fact and experience. It must, therefore"
+    },
+    {
+     "ref": "John 13:14",
+     "note": "Washing the feet is only one kind or one example of humble service which one may do for another. So"
+    },
+    {
+     "ref": "John 13:20"
+    },
+    {
+     "ref": "John 14:27",
+     "note": "Peace I leave with you, my peace I give unto you: Le., not peace alone, which is only one species of heavenly gifts, but all kinds of blessings. So"
+    },
+    {
+     "ref": "John 15:5",
+     "note": "Without me ye can do nothing: i.e., nothing that is good and true and right, or according to God; but a great deal that is contrary to Him"
+    },
+    {
+     "ref": "John 18:20",
+     "note": "In secret have I said nothing: i.e., nothing seditious or criminal. In secret He had said many things, but nothing which they particularly meant"
+    },
+    {
+     "ref": "John 20:19"
+    },
+    {
+     "ref": "John 21:7"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "John 1:51",
+     "note": "52 ). The reference is to the first occurrence of the phrase in Ps. 8, where the title is seen to involve universal dominion in the earth. Dominion was given to the first man, Adam, and lost. It is"
+    },
+    {
+     "ref": "John 2:4"
+    },
+    {
+     "ref": "John 2:19",
+     "note": "But the common expression is on the third day, and it occurs ten times. But if the expression be literal and not an idiom, all these passages should say the fourth day! Paul preached the resurrect"
+    },
+    {
+     "ref": "John 3:15"
+    },
+    {
+     "ref": "John 3:33"
+    },
+    {
+     "ref": "John 4:10"
+    },
+    {
+     "ref": "John 4:23"
+    },
+    {
+     "ref": "John 5:21"
+    },
+    {
+     "ref": "John 6:9"
+    },
+    {
+     "ref": "John 6:51",
+     "note": "I am the living bread which came down from heaven: if any man eat of this bread, he shall live for ever: i.e., just as the body lives temporally by eating bread, so the new life is nourished by feedi"
+    },
+    {
+     "ref": "John 7:26"
+    },
+    {
+     "ref": "John 7:52",
+     "note": "Search and look: i.e., search and thou wilt see"
+    },
+    {
+     "ref": "John 8:34",
+     "note": "To do justice or righteousness is used for willingly, earnestly and joyfully walking and living as one whom God has justified"
+    },
+    {
+     "ref": "John 8:43",
+     "note": "Why do ye not understand my speech? even because ye cannot hear (i.e., receive) my word"
+    },
+    {
+     "ref": "John 8:44"
+    },
+    {
+     "ref": "John 8:47"
+    },
+    {
+     "ref": "John 9:27",
+     "note": "I have told you already, and ye did not hear (i.e., believe). Why again do ye desire to hear? In the latter clause it is used in its ordinary sense; in the former idiomatically"
+    },
+    {
+     "ref": "John 12:6"
+    },
+    {
+     "ref": "John 12:34",
+     "note": "cf. 8:28 ), the Jews rightly inferred that the title involved His Messiahship. That the title has to do with dominion in the earth is clear from the fact that it does not occur in the Epistles, and d"
+    },
+    {
+     "ref": "John 12:38",
+     "note": "Who hath believed our hearing? (i.e., our report). Called. To be called is used of being acknowledged, accounted, or simply of being"
+    },
+    {
+     "ref": "John 12:40",
+     "note": "it is rendered literally according to the Hebrew idiom: He hath blinded"
+    },
+    {
+     "ref": "John 16:5",
+     "note": "None of you asketh me whither goest thou: i.e., none of you knoweth or hath discovered; for Peter had asked that question in 13:36. Lit., None is enquiring. 3. Active Verbs are used to declare that"
+    },
+    {
+     "ref": "John 17:12",
+     "note": "is one who 1s lost in a very emphatic and terrible sense. See under Synecdoche. 111. Idiomatic Degrees of Comparison In the Hebrew there are several idiomatic ways of emphasizing adjectives, and ma"
+    },
+    {
+     "ref": "John 18:37"
+    },
+    {
+     "ref": "John 19:37"
+    },
+    {
+     "ref": "John 20:17",
+     "note": "To come: where the simple verb is used for all that pertains to Christs advent"
+    },
+    {
+     "ref": "John 21:3",
+     "note": "The a is a softening down of the Anglo-Saxon on: on sleep"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "John 1:18",
+     "note": "In the bosom of the Father"
+    },
+    {
+     "ref": "John 1:29"
+    },
+    {
+     "ref": "John 1:41",
+     "note": "42 ); 4:25. Christians are therefore only those who are thus anointed by the Holy Spirit"
+    },
+    {
+     "ref": "John 3:29"
+    },
+    {
+     "ref": "John 4:10"
+    },
+    {
+     "ref": "John 4:32"
+    },
+    {
+     "ref": "John 6:35"
+    },
+    {
+     "ref": "John 10:11"
+    },
+    {
+     "ref": "John 10:20",
+     "note": "Multitude or fulness is attributed to God"
+    },
+    {
+     "ref": "John 10:28",
+     "note": "Neither shall any pluck them out of my hand"
+    },
+    {
+     "ref": "John 10:29",
+     "note": "None can pluck them out of my Fathers hand"
+    },
+    {
+     "ref": "John 12:38"
+    },
+    {
+     "ref": "John 14:6",
+     "note": "A Shade or Shadow"
+    },
+    {
+     "ref": "John 14:23"
+    },
+    {
+     "ref": "John 14:28"
+    },
+    {
+     "ref": "John 15:15",
+     "note": "b) Species II. INANIMATE THINGS ARE SOMETIMES USED AS FIGURES OF GOD 1. Universals The heights of heaven"
+    },
+    {
+     "ref": "John 18:37",
+     "note": "c) As to Place When God is spoken of being in circumstances which have to do with Place and Time as men are Heaven is his dwelling place"
+    },
+    {
+     "ref": "John 20:21"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "John 1:10",
+     "note": "The world was made by Him (the Word), and the world knew Him not. The former place refers to the created world, the latter to unbelieving men"
+    },
+    {
+     "ref": "John 1:11",
+     "note": "He came unto His own, (, ta idea; i.e., his own possessions, neuter ) and His own (, hoi idioi, i.e., His own people, masculine ), received Him not"
+    },
+    {
+     "ref": "John 2:23"
+    },
+    {
+     "ref": "John 3:13",
+     "note": "And no man hath ascended up to heaven (, eis ton ouranon ), but He that came down from heaven ek tou ouranou ), even the Son of Man which is (or was) in heaven ho n en t ouran"
+    },
+    {
+     "ref": "John 3:31",
+     "note": "He that is of the earth, ek tees gees ) is of the earth, ek tees gees ), and speaketh of the earth, ek tees gees ); Le"
+    },
+    {
+     "ref": "John 4:31"
+    },
+    {
+     "ref": "John 6:28",
+     "note": "What shall we do that we might work the works of God? Le., might really do what God wills us to do"
+    },
+    {
+     "ref": "John 7:24",
+     "note": "This Hebrew idiom appears in the New Testament, showing that though the words are Greek the thoughts and idioms are Hebrew. (See under Idioma"
+    },
+    {
+     "ref": "John 12:39"
+    },
+    {
+     "ref": "John 12:40"
+    },
+    {
+     "ref": "John 13:7",
+     "note": "Here there is apparently a Polyptoton of the verb to know, but it is only in the English, not in the Greek. What I do thou knowest not now, but thou shalt know hereafter. In the Greek the two verbs ar"
+    },
+    {
+     "ref": "John 13:10",
+     "note": "Here again there is no Polyptoton of the verb to wash, as appears in the English, for in the Greek the two words are quite different. He that is washed (, leloumenos, i.e., bathed ) needeth not sav"
+    },
+    {
+     "ref": "John 17:8"
+    },
+    {
+     "ref": "John 17:25",
+     "note": "O righteous Father, the world hath not known, egn ) thee: but I have known, egn n ) thee, and these have known, egnosan _ ) that thou hast sent me"
+    },
+    {
+     "ref": "John 17:26",
+     "note": "And I have declared unto them thy name and will declare it"
+    },
+    {
+     "ref": "John 19:22",
+     "note": "What I have written, I have written. In the former place, it refers to the act of writing; in the latter, to the writing which standeth written"
+    }
+   ]
+  },
+  {
+   "id": "repeatednegation",
+   "name": "Repeated negation",
+   "greek": "οὐ μή",
+   "group": "emphasis",
+   "definition": "Two or more negatives heaped together in Greek to deny all the more emphatically.",
+   "occurrences": [
+    {
+     "ref": "John 4:14",
+     "note": "The satisfying power of the Divine gifts"
+    },
+    {
+     "ref": "John 4:48",
+     "note": "The obstinacy of unbelief"
+    },
+    {
+     "ref": "John 6:35",
+     "note": "The satisfying power of the bread of life"
+    },
+    {
+     "ref": "John 6:37",
+     "note": "All ( pan ho, everything ) that the Father giveth me shall, heexei, will reach ) me; and him that cometh (, ton erchomenon, he who is on his way to ) to me I will in no wise cast out. The repeated"
+    },
+    {
+     "ref": "John 8:12",
+     "note": "The perfection of the Divine light"
+    },
+    {
+     "ref": "John 8:51"
+    },
+    {
+     "ref": "John 10:5",
+     "note": "The miraculous power of His sheeps spiritual instinct"
+    },
+    {
+     "ref": "John 10:28",
+     "note": "The Divine preservation of Christs sheep"
+    },
+    {
+     "ref": "John 11:26",
+     "note": "The certainty of being changed in a moment for those who are alive and remain till His coming. Once this repeated negation was used by an angelGabriel, in"
+    },
+    {
+     "ref": "John 13:8",
+     "note": "Peter says again, Thou shalt never wash my feet. But Christ did"
+    },
+    {
+     "ref": "John 20:25",
+     "note": "Thomas says, Except I shall see"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "John 2:17",
+     "note": "The zeal of thy house: i.e., with respect to it, for or concerning it"
+    },
+    {
+     "ref": "John 2:21",
+     "note": "He spake concerning the temple of the body of him: which means the temple, that is to say, His body"
+    },
+    {
+     "ref": "John 5:29",
+     "note": "Resurrection of life: i.e., with a view to life. Resurrection of damnation: i.e., for the purpose of judgment"
+    },
+    {
+     "ref": "John 6:29",
+     "note": "This is the work of God: i.e., which God effects"
+    },
+    {
+     "ref": "John 7:35",
+     "note": "The dispersion of the Gentiles: i.e., among. The dispersed people (of the Jews) among the Greeks (Gentiles"
+    },
+    {
+     "ref": "John 10:27",
+     "note": "My sheep hear of my voice ( gen. ): i.e., they hear and recognize that which comes from Me, as being Mine; while"
+    },
+    {
+     "ref": "John 12:43",
+     "note": "They loved the praise of men (i.e., that came from men) more than the praise of God (i.e., that comes from God"
+    },
+    {
+     "ref": "John 14:6",
+     "note": "and the truth) was correctly inserted, but disappeared again in editions since 1817. Among the latter"
+    },
+    {
+     "ref": "John 17:2",
+     "note": "Power of all flesh: i.e. ( exousia ), power"
+    },
+    {
+     "ref": "John 18:36",
+     "note": "My kingdom is not of this world. The word of there is not the sign of the genitive ( ek ), out of, from, as to its origin. The kingdom depends on the Person of the King. It is the king that makes a k"
+    },
+    {
+     "ref": "John 19:19"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "John 1:12"
+    },
+    {
+     "ref": "John 3:14"
+    },
+    {
+     "ref": "John 10:34"
+    },
+    {
+     "ref": "John 12:14"
+    },
+    {
+     "ref": "John 12:40"
+    },
+    {
+     "ref": "John 13:3",
+     "note": "He did give gifts to men. (c ) In number"
+    },
+    {
+     "ref": "John 15:25"
+    },
+    {
+     "ref": "John 19:24"
+    },
+    {
+     "ref": "John 19:36",
+     "note": "A bone of him shall not be broken. Quoted from"
+    },
+    {
+     "ref": "John 19:37"
+    }
+   ]
+  },
+  {
+   "id": "erotesis",
+   "name": "Rhetorical question",
+   "greek": "ἐρώτησις",
+   "group": "emphasis",
+   "definition": "A question asked for effect, not for an answer — to affirm, deny, or provoke thought.",
+   "occurrences": [
+    {
+     "ref": "John 2:4",
+     "note": "See under Idiom. Also Judges 11:12"
+    },
+    {
+     "ref": "John 3:4",
+     "note": "How can this man give us his flesh to eat?"
+    },
+    {
+     "ref": "John 4:35"
+    },
+    {
+     "ref": "John 6:52",
+     "note": "It was a hard saying (verse 60 ), and hence they thought it absurd. Have any of the elders or of the Pharisees believed on him?"
+    },
+    {
+     "ref": "John 7:48",
+     "note": "This question forms, from that day to this, the excuse for not acknowledging the claims of God *"
+    },
+    {
+     "ref": "John 8:56"
+    },
+    {
+     "ref": "John 11:21",
+     "note": "and 32. Mary fell down at his feet. How is it that thou hast found it so quickly, my son?"
+    },
+    {
+     "ref": "John 12:34",
+     "note": "This was the expression of the absurdity on the part of Christs enemies. 19. DOUBLE QUESTIONS Sometimes double questions are employed, repeating the same question in different words so as to express…"
+    },
+    {
+     "ref": "John 16:8"
+    },
+    {
+     "ref": "John 18:38"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "John 1:3",
+     "note": "All things were made by Him, and without Him was not anything made that was made"
+    },
+    {
+     "ref": "John 1:12"
+    },
+    {
+     "ref": "John 1:20",
+     "note": "And he confessed, and denied not; but confessed, I am not the Christ"
+    },
+    {
+     "ref": "John 1:22",
+     "note": "Who art thou? What sayest thou of thyself?"
+    },
+    {
+     "ref": "John 3:14"
+    },
+    {
+     "ref": "John 3:15",
+     "note": "That whosoever believeth in him should not perish, but have eternal life"
+    },
+    {
+     "ref": "John 5:24",
+     "note": "He that heareth my words, and believeth on him that sent me, hath everlasting life, and shall not come into condemnation (judgment), but is passed from death unto life"
+    },
+    {
+     "ref": "John 12:38"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "John 1:1",
+     "note": "Here the subject, the Word, being defined by the article which is prefixed to it, can be placed at the end of two of the clauses: In the"
+    },
+    {
+     "ref": "John 4:19",
+     "note": "The order of the words is, Saith to him, the woman, Sir, I perceive that a prophet art thou: thus emphasizing both the words thou and prophet, which should be greatly emphasized in reading"
+    },
+    {
+     "ref": "John 4:24",
+     "note": "A Spirit is God. The true emphasis is to be placed on the word Spirit, through its being placed (in the Greek) at the beginning of the sentence. In the ordinary order, it would be placed after the su"
+    },
+    {
+     "ref": "John 6:60",
+     "note": "Hard is this saying. Here again the predicate is put first, and the object last, in order to emphasize both"
+    },
+    {
+     "ref": "John 7:4",
+     "note": "For no one in secret doeth anything and [ at the same time |] seeketh for it in public to be"
+    },
+    {
+     "ref": "John 9:31",
+     "note": "Now we know that sinnersGod does not hear"
+    },
+    {
+     "ref": "John 17:5",
+     "note": "And now glorify me, Thou, Father, with Thyself, with the glory which I had, before the world was, with Thee. Here, the mysterious depths of the words are forced upon our attention by the Hyperbaton"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "John 1:14",
+     "note": "And we beheld his glory, the glory as of the only begotten of the Father: i.e., the glory of Him who was really the only begotten Son of the Father. A.V. The Authorized Version, or current Text of…"
+    },
+    {
+     "ref": "John 3:14",
+     "note": "Note the two musts (verses 7 and 14 ); and the parabolic miracle of"
+    },
+    {
+     "ref": "John 5:26",
+     "note": "God reveals Himself: Heaven and earth; ways and thoughts"
+    },
+    {
+     "ref": "John 12:32",
+     "note": "The all means all without distinction (no longer the one People of Israel) not all without exception. In due time Christ came to be thus lifted up, and 6. 7.8. Then 9. 10. 11. 12. 13. 14. 15. Then 16"
+    },
+    {
+     "ref": "John 14:31",
+     "note": "and suffered; Lamb dumb, and so He"
+    },
+    {
+     "ref": "John 15:9",
+     "note": "He reveals our relationships and duties: Many members and one body"
+    },
+    {
+     "ref": "John 17:18",
+     "note": "to bear testimony of His grace: Believed and done"
+    }
+   ]
+  },
+  {
+   "id": "metaphor",
+   "name": "Metaphor",
+   "greek": "μεταφορά",
+   "group": "comparison",
+   "definition": "An implied comparison that calls one thing another (“A is B”), without “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "John 2:9",
+     "note": "When the ruler of the feast tasted the water that was made (i.e., changed into) wine"
+    },
+    {
+     "ref": "John 6:35",
+     "note": "I am the bread of life: i.e., what bread does in supporting natural life is a representation of what Christ does in supporting and nourishing the new, Divine, spiritual life"
+    },
+    {
+     "ref": "John 6:39"
+    },
+    {
+     "ref": "John 8:12",
+     "note": "I am the light of the world"
+    },
+    {
+     "ref": "John 10:9",
+     "note": "Iam the door: i.e., | am what a door is. I am the entrance to the sheepfold, and to the Father. Yes, a door, and not a flight of steps. A door, through which we pass in one movement from one side to…"
+    },
+    {
+     "ref": "John 15:5",
+     "note": "I am the true vine. ( aleethinos ) helps the figure, for it means true as regards the reality in relation to shadows or representations. Not true as opposed to what is false, but the very vine: the vi"
+    },
+    {
+     "ref": "John 16:20",
+     "note": "Your sorrow shall be turned into joy. This was a real transubstantiation"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "John 1:46",
+     "note": "47 ). Can there any good thing come out of Nazareth? This appears from 7:41, 42, 52, to have been a proverb already in use"
+    },
+    {
+     "ref": "John 4:37",
+     "note": "And herein is that saying true; One soweth, and another reapeth"
+    },
+    {
+     "ref": "John 8:7",
+     "note": "says: He that is without sin among you, let him first cast a stone. How great a fire a little matter kindleth. But in"
+    },
+    {
+     "ref": "John 8:33"
+    },
+    {
+     "ref": "John 10:6",
+     "note": "where it is rendered parable; and in 16:25 (twice), 29, and"
+    },
+    {
+     "ref": "John 13:16",
+     "note": "* Every kingdom divided against itself is brought to desolation"
+    },
+    {
+     "ref": "John 20:25"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "John 1:25",
+     "note": "He that cometh behind me ( i.e., after, as to position) is preferred before me: i.e. ( opis ) behind ( emprosthen ) before, never refer to time, but to position or grade. The verbs to become and t"
+    },
+    {
+     "ref": "John 6:25"
+    },
+    {
+     "ref": "John 7:26"
+    },
+    {
+     "ref": "John 10:23",
+     "note": "And Jesus walked in the porch of Solomon: i.e., in the porch built like that of Solomon, and in the same place"
+    },
+    {
+     "ref": "John 12:36"
+    },
+    {
+     "ref": "John 15:5",
+     "note": "Without (or apart from) me ye can do nothing: Le., severed from me"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "John 1:13"
+    },
+    {
+     "ref": "John 6:39"
+    },
+    {
+     "ref": "John 6:62",
+     "note": "And if ye shall see the Son of Man ascend up where he was before? This has already been referred to under Ellipsis (see p. 54 ). But something more is implied; more than can be supplied by any specifi"
+    },
+    {
+     "ref": "John 10:11",
+     "note": "the Great Shepherd in resurrection"
+    },
+    {
+     "ref": "John 15:20",
+     "note": "If they have kept my saying, they will keep yours also, i.e., as surely as they have NOT kept my saying, they will not keep yours. The whole context shows that this must be the figure of Meiosis"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "John 1:5",
+     "note": "And the light shineth in darkness; and the darkness comprehended it not. The figure does not appear either in the English or the Greek: but in the Chaldee or Syriac language darkness is, kvel and…"
+    },
+    {
+     "ref": "John 1:51",
+     "note": "Verily, verily ( ameen ameen ). Twenty- five solemn sayings of the Lord Jesus are thus emphatically marked in Johns Gospel: viz., 1:51; 373.55 5.11-75219-, 24 25» 6:26., 32..47, 53-: 8:34, 51, 582"
+    },
+    {
+     "ref": "John 3:16",
+     "note": "which is accidental. But as it may be useful to some in teaching others, we note it here"
+    },
+    {
+     "ref": "John 10:1",
+     "note": "He that entereth not in by the door into the sheep fold. Is beautifully expressed in the Syriac"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "John 3:20",
+     "note": "For if our heart condemn ( katagin skee ) us, God is greater than our heart, and knoweth (, gin ske1 ) all things. Both words are from the same root, and mean to know, but the former to know somethin"
+    },
+    {
+     "ref": "John 11:41"
+    },
+    {
+     "ref": "John 13:7",
+     "note": "appears to be the Figure of Paregmenon in the English. But there is no figure in the Greek. What I do thou knowest not now; but thou shalt know hereafter. Here, the two words know are different in the"
+    },
+    {
+     "ref": "John 15:2",
+     "note": "Every branch in me that beareth not fruit he taketh away (, airei * ): and every branch that beareth fruit he purgeth it (, kathairei"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "John 3:26",
+     "note": "All men come to him. Thus his disciples said to John, to show their"
+    },
+    {
+     "ref": "John 3:32"
+    },
+    {
+     "ref": "John 12:19",
+     "note": "Behold, the world is gone after him. The enemies of the Lord thus expressed their indignation at the vast multitudes which followed Him"
+    },
+    {
+     "ref": "John 21:25",
+     "note": "is also Hyperbole. The verb ( ch reesai ) is to be taken in the same sense, as it is in"
+    }
+   ]
+  },
+  {
+   "id": "irony",
+   "name": "Irony",
+   "greek": "εἰρωνεία",
+   "group": "emphasis",
+   "definition": "Saying the opposite of what is meant, so the real sense is felt through the contrast.",
+   "occurrences": [
+    {
+     "ref": "John 3:10",
+     "note": "Art thou a master of Israel, and knowest not these things? This is a species of mild Irony"
+    },
+    {
+     "ref": "John 7:28",
+     "note": "is Irony, and refers back to verse 27. Whom ye know not points to the fact that they knew not God, and, therefore, they knew not Christ"
+    },
+    {
+     "ref": "John 18:38",
+     "note": "Pilate saith unto him, What is truth? By his not waiting for the answer it seems that the question wasnot seriously put. (See under Erotesis ). So, his words in"
+    },
+    {
+     "ref": "John 19:14",
+     "note": "Behold your king, were also Irony"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "John 4:23",
+     "note": "24 ); making the Lord Jesus"
+    },
+    {
+     "ref": "John 10:27"
+    },
+    {
+     "ref": "John 19:11",
+     "note": "over all kindreds, and tongues, and nations (as with Nebuchadnezzar"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "John 1:17",
+     "note": "The law was given by Moses, but grace and truth came by Jesus Christ. This must be the figure Hendiadys, because otherwise the words taken literally would not be true to fact. Was there no grace in t"
+    },
+    {
+     "ref": "John 3:5",
+     "note": "This is literally, Except a man shall have been begotten of water and spirit. There is no article to either of the two nouns. That only one thing is meant by the two words is clear from verses 6 and 8"
+    },
+    {
+     "ref": "John 7:38"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "John 2:16"
+    },
+    {
+     "ref": "John 16:33"
+    },
+    {
+     "ref": "John 19:33",
+     "note": "37 ). Their hearts are broken, as His was"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "John 6:37",
+     "note": "Him that cometh to me, I will in no wise cast out. Here, there is very much more implied than is expressed in the literal words. Not only will I not cast him out, but I will by all means receive him a"
+    },
+    {
+     "ref": "John 14:18",
+     "note": "I will not leave you comfortless, i.e., I will certainly come to you by My Holy Spirit and be your ever present help and defence. Moreover, I will come again and receive you to Mine own self"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "John 14:11",
+     "note": "Believe me that I am in the Father, and the Father in me"
+    },
+    {
+     "ref": "John 18:37",
+     "note": "It is difficult to express the figure in this verse in English. The I is repeated thus: Thou sayest that a King am I. I to this end was born"
+    }
+   ]
+  },
+  {
+   "id": "climax",
+   "name": "Climax",
+   "greek": "κλῖμαξ",
+   "group": "arrangement",
+   "definition": "A chain in which the end of each step becomes the start of the next, building to a peak.",
+   "occurrences": [
+    {
+     "ref": "John 1:1"
+    },
+    {
+     "ref": "John 1:4"
+    }
+   ]
+  },
+  {
+   "id": "parechesis",
+   "name": "Parechesis",
+   "greek": "παρήχησις",
+   "group": "emphasis",
+   "definition": "Repetition of like-sounding words, especially from a foreign tongue — sound-play across languages.",
+   "occurrences": [
+    {
+     "ref": "John 1:5",
+     "note": "The light shineth in darkness, and the darkness comprehended it not. In Syriac the word darkness would be, keval, and comprehend would be, kabbel"
+    },
+    {
+     "ref": "John 10:1",
+     "note": "He that entereth not by the door into the sheepfold would be, min tara let"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "John 10:11",
+     "note": "and 14 ); and so, too, is He the model Man and the model King. 2. Antithetic, or Opposite This is when the words are contrasted in the two or more lines, being opposed in sense the one to the other"
+    },
+    {
+     "ref": "John 11:11"
+    }
+   ]
+  },
+  {
+   "id": "chronographia",
+   "name": "Chronographia",
+   "greek": "χρονογραφία",
+   "group": "emphasis",
+   "definition": "Description of a time or season by its marks rather than by naming it.",
+   "occurrences": [
+    {
+     "ref": "John 10:22",
+     "note": "And it was winter. This brief description of time, is intended to convey to us a sense of the humiliation and rejection of the Lord Jesus. The next verse tells how He walked in Solomons porch, on the"
+    },
+    {
+     "ref": "John 18:18"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "John 2:9",
+     "note": "but the servants which drew the water knew"
+    },
+    {
+     "ref": "John 4:79",
+     "note": "Jesus saith unto her, Give me to drink (For his disciples were gone away into the city to buy meat). Then saith the woman"
+    }
+   ]
+  },
+  {
+   "id": "antonomasia",
+   "name": "Antonomasia",
+   "greek": "ἀντονομασία",
+   "group": "substitution",
+   "definition": "A proper name replaced by a descriptive title, or a title by a proper name (“the Son of man”).",
+   "occurrences": [
+    {
+     "ref": "John 11:3"
+    },
+    {
+     "ref": "John 11:28",
+     "note": "The Son of man (see under Synecdoche"
+    }
+   ]
+  },
+  {
+   "id": "euphemismos",
+   "name": "Euphemism",
+   "greek": "εὐφημισμός",
+   "group": "emphasis",
+   "definition": "A softened or decent expression put for one that is harsh or delicate (“fallen asleep”).",
+   "occurrences": [
+    {
+     "ref": "John 2:25",
+     "note": "He knew what was in man. This is a solemn condemnation of man; and shows something of his true nature and character"
+    },
+    {
+     "ref": "John 11:11",
+     "note": "Our friend Lazarus sleepeth (i.e., is dead); but I go, that I may awake him out of sleep: i.e., raise him from the dead"
+    }
+   ]
+  },
+  {
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
+   "occurrences": [
+    {
+     "ref": "John 9:17",
+     "note": "The Epithet blind man is still used of the man after his sight was restored"
+    },
+    {
+     "ref": "John 10:16",
+     "note": "Other sheep I have. They are so called, though they were not yet in existence, except in the purpose of the Father"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "John 5:44",
+     "note": "How can ye believe, receiving honour one from another? and the honour that is only from God, ye seek not"
+    },
+    {
+     "ref": "John 13:29",
+     "note": "Buy those things that we have need of against the feast; or, that he should give something to the poor"
+    }
+   ]
+  },
+  {
+   "id": "amphibologia",
+   "name": "Amphibologia",
+   "greek": "ἀμφιβολία",
+   "group": "emphasis",
+   "definition": "A saying deliberately capable of two meanings, both intended.",
+   "occurrences": [
+    {
+     "ref": "John 19:19",
+     "note": "was written (probably in Latin) and put on the cross before it left Pilates presence. (2) The inscription in"
+    },
+    {
+     "ref": "John 19:22",
+     "note": "What I have written I have written. Pilate said this to convey two meanings. First, to state a matter of fact; and second, to dismiss an inconvenient subject; implying that he did no wish to alter wha"
+    }
+   ]
+  },
+  {
+   "id": "epanorthosis",
+   "name": "Epanorthosis",
+   "greek": "ἐπανόρθωσις",
+   "group": "emphasis",
+   "definition": "Recalling a word just used to correct or strengthen it (“not I, but the Lord”).",
+   "occurrences": [
+    {
+     "ref": "John 12:27",
+     "note": "The Lord Jesus prays as perfect man, Father, save me from this hour: [and then, remembering, as perfect God, the work which He had come to do, He adds] but for this cause came I unto this hour. See…"
+    },
+    {
+     "ref": "John 16:32",
+     "note": "Behold, the hour cometh, yea, is now come, that ye shall be scattered, every man to his own home"
+    }
+   ]
+  },
+  {
+   "id": "syncrisis",
+   "name": "Syncrisis",
+   "greek": "σύγκρισις",
+   "group": "emphasis",
+   "definition": "Reconciling or comparing opposites, setting contraries together to make a point.",
+   "occurrences": [
+    {
+     "ref": "John 6:28"
+    }
+   ]
+  },
+  {
+   "id": "antimetabole",
+   "name": "Antimetabole",
+   "greek": "ἀντιμεταβολή",
+   "group": "arrangement",
+   "definition": "Words repeated in reverse order and grammatical relation (“sabbath for man … man for sabbath”).",
+   "occurrences": [
+    {
+     "ref": "John 2:18",
+     "note": "a Last time (little children) b Antichrist to come (and as) b many come (even now) a last time (whereby). 2 John 6. a This is love, that we walk b after his commandments. b This is the commandment"
+    }
+   ]
+  },
+  {
+   "id": "hermeneia",
+   "name": "Hermeneia",
+   "greek": "ἑρμηνεία",
+   "group": "comparison",
+   "definition": "Interpretation: a plain restatement added at once to explain a figure just used.",
+   "occurrences": [
+    {
+     "ref": "John 7:39",
+     "note": "is added in order to interpret what had been said in said in verse 38"
+    }
+   ]
+  },
+  {
+   "id": "periphrasis",
+   "name": "Periphrasis",
+   "greek": "περίφρασις",
+   "group": "substitution",
+   "definition": "Circumlocution: a description put in place of the plain name of a thing.",
+   "occurrences": [
+    {
+     "ref": "John 1:9",
+     "note": "That was the true Light, which lighteth every man that cometh into the world. This rendering is obtained by disregarding the figure, taking the participle coming as though it were the present tense, a"
+    }
+   ]
+  },
+  {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "John 6:15",
+     "note": "Our Lord was perfectly aware that He was a born King"
+    }
+   ]
+  },
+  {
+   "id": "epitheton",
+   "name": "Epitheton",
+   "greek": "ἐπίθετον",
+   "group": "substitution",
+   "definition": "Naming a thing by an attribute or adjunct added to it (“John the Baptist”).",
+   "occurrences": [
+    {
+     "ref": "John 17:3",
+     "note": "That they might know thee, the only true God. Here true is not a mere adjective qualifying God, but is an epithet: That they might know TheeGod, the only God, the true (or very) God. So"
+    }
+   ]
+  },
+  {
+   "id": "hendiatris",
+   "name": "Hendiatris",
+   "greek": "ἓν διὰ τριῶν",
+   "group": "emphasis",
+   "definition": "One idea expressed by three words joined with “and” (“the way, the truth, and the life”).",
+   "occurrences": [
+    {
+     "ref": "John 14:6",
+     "note": "I am the way, and the truth, and the life. This is hidden in the A.V. which ignores the first and. The whole subject of conversation here is Christ as the way. See the context. We have here therefo"
+    }
+   ]
+  },
+  {
+   "id": "hypocatastasis",
+   "name": "Hypocatastasis",
+   "greek": "ὑποκατάστασις",
+   "group": "comparison",
+   "definition": "Comparison by implication: the thing compared is not named at all, only the image (“Beware the leaven…”).",
+   "occurrences": [
+    {
+     "ref": "John 2:19",
+     "note": "Destroy this temple, and in three days I will raise it up. The Lord Jesus did not say that His body was like the temple (that would have been Simile ), or that it was His body (that would have been Me"
+    }
+   ]
+  },
+  {
+   "id": "allegory",
+   "name": "Allegory",
+   "greek": "ἀλληγορία",
+   "group": "comparison",
+   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
+   "occurrences": [
+    {
+     "ref": "John 4:35"
+    }
+   ]
+  },
+  {
+   "id": "enigma",
+   "name": "Enigma",
+   "greek": "αἴνιγμα",
+   "group": "emphasis",
+   "definition": "A dark saying — a truth wrapped in obscure or riddling terms.",
+   "occurrences": [
+    {
+     "ref": "John 16:33"
+    }
+   ]
+  },
+  {
+   "id": "diasyrmos",
+   "name": "Diasyrmos",
+   "greek": "διασυρμός",
+   "group": "emphasis",
+   "definition": "Mockery that belittles an opponent's argument by raillery.",
+   "occurrences": [
+    {
+     "ref": "John 7:4",
+     "note": "The Lords brethren seek to reflect upon Him, as if He were mismanaging His affairs. But, in this case, the Diasyrmos proceeded from their own mistake as to what His mission really was. There is no man"
+    }
+   ]
+  },
+  {
+   "id": "epitrope",
+   "name": "Epitrope",
+   "greek": "ἐπιτροπή",
+   "group": "emphasis",
+   "definition": "Admission or permission — ironically conceding a point (“Fill up the measure of your fathers”).",
+   "occurrences": [
+    {
+     "ref": "John 13:27",
+     "note": "That thou doest, do quickly. The Lord is not sanctioning the evil, but permitting it"
+    }
+   ]
+  },
+  {
+   "id": "protherapeia",
+   "name": "Protherapeia",
+   "greek": "προθεραπεία",
+   "group": "emphasis",
+   "definition": "Conciliation — softening words used first to win a hearing for what follows.",
+   "occurrences": [
+    {
+     "ref": "John 3:2",
+     "note": "Rabbi, we know that thou art a teacher come from God"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,371 @@
+{
+ "book": "Col",
+ "devices": [
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:11",
+     "note": "According to the power of his glory: i.e., His glorious power"
+    },
+    {
+     "ref": "Colossians 1:13",
+     "note": "Who hath translated us into the Kingdom of the Son of His love: Le., of His beloved Son"
+    },
+    {
+     "ref": "Colossians 1:22",
+     "note": "The body of his flesh: i.e., his fleshly body"
+    },
+    {
+     "ref": "Colossians 2:18",
+     "note": "The mind of his flesh: i.e., as in A.V., his fleshly mind"
+    },
+    {
+     "ref": "Colossians 3:14",
+     "note": "Bond of perfectness: i.e., a perfect bond"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:27",
+     "note": "What is the riches (i.e., the great abundance) of the glory of this Mystery"
+    },
+    {
+     "ref": "Colossians 2:2",
+     "note": "All riches of the full assurance of understanding: i.e., the abundant or fullest assurance of knowledge. To sanctify often means to make ceremonially clean: i.e., to cleanse a thing from those defil"
+    },
+    {
+     "ref": "Colossians 2:14",
+     "note": "We read of the handwriting of ordinances which was against us. Christ took it out of the way. We have the same idiom in the Septuagint"
+    },
+    {
+     "ref": "Colossians 2:18"
+    },
+    {
+     "ref": "Colossians 4:17",
+     "note": "To live is used not merely of being alive, or having life, but of having all that makes life worth living, flourishing and prospering"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:13",
+     "note": "The power of darkness: i.e., the power belonging to Satan. acc. The Accusative Case"
+    },
+    {
+     "ref": "Colossians 1:23",
+     "note": "The hope of the Gospel: i.e., produced by it"
+    },
+    {
+     "ref": "Colossians 1:24",
+     "note": "The afflictions of Christ: i.e., the afflictions pertaining to Christ Mystical, the apostle having an abundant measure of them as a member of that Body of Christ. So that, if other members had fewer"
+    },
+    {
+     "ref": "Colossians 2:12",
+     "note": "Faith of the operation of God: i.e., faith effected, originated and produced by Almighty power"
+    },
+    {
+     "ref": "Colossians 2:18",
+     "note": "Worship of angels. Here, the word rendered worship is ( threeskeia ) which never means worship, but always religion, or religious ritual"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:22"
+    },
+    {
+     "ref": "Colossians 1:23",
+     "note": "The Gospel which was preached to every creature which is under heaven: i.e., to every person without distinction"
+    },
+    {
+     "ref": "Colossians 1:28"
+    },
+    {
+     "ref": "Colossians 2:9",
+     "note": "For in him dwelleth all the fulness of the Godhead bodily: lit., every: i.e., every part of; meaning the whole fulness of the Godhead in bodily form"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:15"
+    },
+    {
+     "ref": "Colossians 1:27"
+    },
+    {
+     "ref": "Colossians 2:17",
+     "note": "Which are a shadow of things to come: but the body of Christ is the substance: i.e., Christ Himself, either personally (verse 9 ) or mystically. * See under Ellipsis, and"
+    },
+    {
+     "ref": "Colossians 3:1"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:24",
+     "note": "Who now rejoice in my sufferings for you, and fill up that which is behind of the afflictions of Christ in my flesh: i.e., Christ mystical; not personal; as is clear from what follows: for His bodys"
+    },
+    {
+     "ref": "Colossians 3:16",
+     "note": "where this effect is produced by the same cause: viz., occupation of the heart with Godthe Word of Christ dwelling richly within us"
+    },
+    {
+     "ref": "Colossians 4:18",
+     "note": "The Hand is also put for a gift given to anyone"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:8",
+     "note": "Beware lest any man spoil you through philosophy and vain deceit. Here, we have not two things, but one: through philosophy, yesa vain, deceitful philosophy too. *"
+    },
+    {
+     "ref": "Colossians 2:18",
+     "note": "Let no man beguile you of your reward in a voluntary humility and worshipping of angels, intruding into those things which he hath not seen, vainly puffed up by his fleshly mind"
+    },
+    {
+     "ref": "Colossians 3:10",
+     "note": "Likeness 1s (dm th (homoi sis"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:16",
+     "note": "For by him were all things created, that are in heaven, and that are in earth, visible and invisible, whether they be thrones, or dominions, or principalities, or powers: all things were created by"
+    },
+    {
+     "ref": "Colossians 3:16",
+     "note": "This points to the conclusion that the psalms referred to here are the inspired Psalms of the Old Testament. ( hymnos ), whence our word hymn, which was originally a heathen word used of a song in"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:14"
+    },
+    {
+     "ref": "Colossians 1:20",
+     "note": "And, having made peace through the blood of his cross. Here, again, cross is put for His death, and His death is put for all its meritorious results. It is by forcing the word cross into a literal mea"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "Colossians 3:5",
+     "note": "Mortify therefore your members which are upon the earth. The members which commit the sins are put by a forcible Catachresis for the sins themselves. For the sins are immediately enumerated, not the m"
+    },
+    {
+     "ref": "Colossians 3:12"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:6",
+     "note": "Divine consolations: Sufferings and consolation"
+    },
+    {
+     "ref": "Colossians 3:13"
+    }
+   ]
+  },
+  {
+   "id": "enthymema",
+   "name": "Enthymeme",
+   "greek": "ἐνθύμημα",
+   "group": "omission",
+   "definition": "An argument in which one premise is left unexpressed and silently understood.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:12",
+     "note": "Thus we were planted together with Him in His death, and raised with Him ( 6:4 ) to newness of life. And be it noted that this is no mere marriage union. To prevent this conclusion the verb to marr"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:26",
+     "note": "Anaphora; or, Like Sentence-Beginnings The Repetition of the same Word at the beginning of successive Sentences A-naph -o-ra (ana ), again, and ( pher ), to bring or carry. It means a carrying back"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:19",
+     "note": "Increaseth with the increase of God (, auxei teen auxeesin ). Lit., Increaseth the increase, i.e., receives abundant increase from God, or worthy of God: or, receives Divine increase"
+    }
+   ]
+  },
+  {
+   "id": "epimone",
+   "name": "Epimone",
+   "greek": "ἐπιμονή",
+   "group": "repetition",
+   "definition": "Dwelling on a point by repeating it in the same words for emphasis.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:14"
+    }
+   ]
+  },
+  {
+   "id": "hypotyposis",
+   "name": "Hypotyposis",
+   "greek": "ὑποτύπωσις",
+   "group": "emphasis",
+   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:14"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:21",
+     "note": "22 is an important Epitrechon, which writes folly on all the attempts to improve the old nature, by vows and pledges and badges"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:27",
+     "note": "The riches of the glory: i.e., His wondrously rich glory, in the mystery revealed to and through Paul"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Colossians 1:26",
+     "note": "The secret which had been lying hid from the ages and from the generations, but lately was made manifest to his Saints. Other examples may be found, e.g.: Change from first person to the second"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:17",
+     "note": "There is, therefore, not much profit in following out what have been called types by men. Many are merely illustrations; and it would be better so to call them; inasmuch as they did not and do not"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Colossians 2:21",
+     "note": "Touch not; taste not; handle not. These ordinances of men were probably prescribed in these words, and are referred to as well known. We know them also to-day; for man is the same, and human nature is"
+    }
+   ]
+  }
+ ]
+}

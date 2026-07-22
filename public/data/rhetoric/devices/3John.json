@@ -1,0 +1,31 @@
+{
+ "book": "3John",
+ "devices": [
+  {
+   "id": "epanodos",
+   "name": "Epanodos",
+   "greek": "ἐπάνοδος",
+   "group": "arrangement",
+   "definition": "Repetition of the chief words of a sentence in inverse order, to expound them.",
+   "occurrences": [
+    {
+     "ref": "3 John 1:11",
+     "note": "a Follow not that which is evil, b but that which is good. b He that doeth good is of God; a But he that doeth evil hath not seen God. For further illustration see under Correspondence. Antimetabole"
+    }
+   ]
+  },
+  {
+   "id": "antimetabole",
+   "name": "Antimetabole",
+   "greek": "ἀντιμεταβολή",
+   "group": "arrangement",
+   "definition": "Words repeated in reverse order and grammatical relation (“sabbath for man … man for sabbath”).",
+   "occurrences": [
+    {
+     "ref": "3 John 1:11",
+     "note": "a Follow not that which is evil, b but that which is good; b He that doeth good is of God, a but he that doeth evil hath not seen God. Other examples of introverted parallelism (of lines) may be…"
+    }
+   ]
+  }
+ ]
+}

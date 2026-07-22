@@ -1,0 +1,42 @@
+{
+ "book": "Phlm",
+ "devices": [
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "Philemon 1:11",
+     "note": "Which in time past was to thee unprofitable. This is a Meiosis, for Onesimus was guilty of injury. * This is not the same as"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "Philemon 1:17",
+     "note": "To receive Onesimus the same as receiving Paul. b 25. Benediction. It will be observed that the first and last members are alternate. III. COMPLEX CORRESPONDENCE This is where the members of a struc"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Philemon 1:15"
+    }
+   ]
+  }
+ ]
+}

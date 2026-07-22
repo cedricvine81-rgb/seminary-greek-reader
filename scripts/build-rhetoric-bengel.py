@@ -6,10 +6,11 @@ Reads the occurrence refs out of src/lib/rhetoric-devices.ts, fetches each verse
 keyed by reference. Bengel's Gnomon (1742; Eng. tr. 1857) is public domain. Re-runs skip
 refs already cached, so it's cheap to add devices later.
 """
-import os, re, json, time, html, subprocess
+import os, re, json, time, html, subprocess, glob
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DEVICES_TS = os.path.join(HERE, os.pardir, "src", "lib", "rhetoric-devices.ts")
+DEVICES_DIR = os.path.join(HERE, os.pardir, "public", "data", "rhetoric", "devices")
 OUT = os.path.join(HERE, os.pardir, "public", "data", "rhetoric", "bengel.json")
 
 SLUG = {
@@ -23,8 +24,11 @@ SLUG = {
 }
 
 def refs_from_devices():
-    txt = open(DEVICES_TS, encoding="utf-8").read()
-    return list(dict.fromkeys(re.findall(r"ref:\s*'([^']+)'", txt)))   # ordered-unique
+    refs = re.findall(r"ref:\s*'([^']+)'", open(DEVICES_TS, encoding="utf-8").read())
+    for f in sorted(glob.glob(os.path.join(DEVICES_DIR, "*.json"))):   # per-book Bullinger data
+        for d in json.load(open(f, encoding="utf-8")).get("devices", []):
+            refs += [o["ref"] for o in d.get("occurrences", [])]
+    return list(dict.fromkeys(refs))   # ordered-unique
 
 def parse_ref(ref):
     m = re.match(r"^(\d?\s?[A-Za-z]+)\s+(\d+):(\d+)$", ref.strip())

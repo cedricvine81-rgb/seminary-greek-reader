@@ -1,0 +1,251 @@
+{
+ "book": "1Thess",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 2:19"
+    },
+    {
+     "ref": "1 Thessalonians 5:12",
+     "note": "We beseech you, brethren, to know them which labour among you: i.e., to consider and care for them"
+    },
+    {
+     "ref": "1 Thessalonians 5:19",
+     "note": "Quench not the Spirit: i.e., do not hinder in yourself or in others the use of spiritual gifts. The verb to quench is ( sbennumi ), to put out, and always of extinguishing a light or fire; hence, to"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 2:11",
+     "note": "Ye know how we exhorted and comforted and charged every one of you, as a father doth his children. (See under Ellipsis, page 89"
+    },
+    {
+     "ref": "1 Thessalonians 4:16"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:13"
+    },
+    {
+     "ref": "1 Thessalonians 5:6"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 2:13",
+     "note": "When ye received the word of God, which ye heard of us. Lit., the word of hearing. ( logos akoees akoee ) which means hearing, is often used by the figure of Metonymy ( q.v. ), for what is heard"
+    },
+    {
+     "ref": "1 Thessalonians 4:17",
+     "note": "hout s ), thus in this matter, shall we ever be with the Lord: i.e., by being caught up to meet the Lord in the air: the sleeping"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 3:5",
+     "note": "He the tempting-one: i.e., he who tempteth, Le., the tempter"
+    },
+    {
+     "ref": "1 Thessalonians 5:5"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 2:17",
+     "note": "A.V., time). Philem. 15 (A.V., season"
+    },
+    {
+     "ref": "1 Thessalonians 4:17",
+     "note": "Then we which are alive and remain shall be caught away together with them in clouds for a meeting of the Lord, into the air, and thus, always with the Lord shall we be. Here, the meeting involves act"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 2:12",
+     "note": "That ye would walk worthy of God, who hath called you unto his kingdom and glory: i.e., his kingdom, yeshis glorious kingdom too; or, his glorious kingdom, with emphasis on the word glorious"
+    },
+    {
+     "ref": "1 Thessalonians 4:1",
+     "note": "As ye have received of us how ye ought to walk and to please God: i.e., how ye ought to walk, yesand how to please God in your walk, with emphasis on the verb to please"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 3:8",
+     "note": "The opposite of this is"
+    },
+    {
+     "ref": "1 Thessalonians 4:15",
+     "note": "meant to go or come before, precede. See under Ellipsis"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:3"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:13",
+     "note": "Concerning those that are asleep. Their resurrection and translation with the saints that are alive at the coming of the Lord, to be for ever with Him, when the Mystery is completed"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 1:3",
+     "note": "Work of faith, labour of love, and patience of hope. We have given these under the genitive of origin (see Appendix B ): i.e., work which proceeds from faith, labour which proceeds from love, and pati"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:16"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:4"
+    }
+   ]
+  },
+  {
+   "id": "euphemismos",
+   "name": "Euphemism",
+   "greek": "εὐφημισμός",
+   "group": "emphasis",
+   "definition": "A softened or decent expression put for one that is harsh or delicate (“fallen asleep”).",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 4:14",
+     "note": "It is only a sleep; because the Lord Himself will come to wake them. The change in Euphemy is necessarily obtained by using several words for one, and is therefore a special kind of Periphrasis:…"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 5:5"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 1:7"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "1 Thessalonians 1:3",
+     "note": "Work of faith: i.e., work produced by or proceeding from and having its origin in their faith, when they turned to God from idols (verse 9 ). Labour of love: i.e., the labour or service proceeding f"
+    }
+   ]
+  }
+ ]
+}

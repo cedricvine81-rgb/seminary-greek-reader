@@ -1,0 +1,378 @@
+{
+ "book": "2Tim",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 2:8",
+     "note": "Remember that Jesus Christ of the seed of David was raised from the dead according to my Gospel: i.e., Believe and enjoy, and rest in, the blessed knowledge of the fact"
+    },
+    {
+     "ref": "2 Timothy 2:19",
+     "note": "The Lord knoweth (i.e., loves and cares for) them that are his. See also under Heterosis. Verbs of Knowing are used also of experiencing, either by saving faith or by personal dealing"
+    },
+    {
+     "ref": "2 Timothy 3:1",
+     "note": "This know also that in the last days difficult times will come: i.e., difficult things will be done: which things are described in verses 25. 2.AGE (,ai n),aperiodoftime,isputforwhattakesplaceinit"
+    },
+    {
+     "ref": "2 Timothy 3:6",
+     "note": "For of this sort are they that creep into houses: i.e., families"
+    },
+    {
+     "ref": "2 Timothy 4:8",
+     "note": "All them also that love His appearing (and act, and live, accordingly"
+    },
+    {
+     "ref": "2 Timothy 4:10",
+     "note": "Demas hath forsaken me, having loved this present world: (and"
+    },
+    {
+     "ref": "2 Timothy 4:15"
+    },
+    {
+     "ref": "2 Timothy 4:19",
+     "note": "Here the Greek, house, is rendered household: i.e., family"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:10"
+    },
+    {
+     "ref": "2 Timothy 3:15",
+     "note": "This know also, that in the last days perilous times shall come.For men shall be lovers of their own selves, covetous, boasters, proud, blasphemers, disobedient to parents, unthankful, unholy, without"
+    },
+    {
+     "ref": "2 Timothy 3:16",
+     "note": "in verses 2 and 3 of the next chapter, which may be compared thus: The God-breathed Word is profitable"
+    },
+    {
+     "ref": "2 Timothy 4:2"
+    },
+    {
+     "ref": "2 Timothy 4:17"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:15"
+    },
+    {
+     "ref": "2 Timothy 3:3"
+    },
+    {
+     "ref": "2 Timothy 3:6",
+     "note": "meant, originally, as Anglo-Saxon, saelig, timely, then, happy, and innocent. But now, because a person who acts thus is supposed by the world to be foolish, so it has come to be used. The same is…"
+    },
+    {
+     "ref": "2 Timothy 4:1"
+    },
+    {
+     "ref": "2 Timothy 4:3"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:6",
+     "note": "where it is rendered silly women. But it occurs only here, and is neuter. It therefore includes silly women of both sexes! Some see in this man-child the Church of God. But the Church is neither woma"
+    },
+    {
+     "ref": "2 Timothy 3:10"
+    },
+    {
+     "ref": "2 Timothy 4:17"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:13",
+     "note": "But evil men and seducers shall wax worse and worse, deceiving and being deceived"
+    },
+    {
+     "ref": "2 Timothy 4:7",
+     "note": "I have fought a good fight (, ton ag na ton kalon eeg nismai ): i.e., [have earnestly fought the good fight"
+    },
+    {
+     "ref": "2 Timothy 4:17"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:18",
+     "note": "And in how many things he ministered to me in Ephesus thou knowest better: i.e., well; or (as in A.V. ), very well: i.e., to well to need reminding of. 4. The Comparative for the Superlative"
+    },
+    {
+     "ref": "2 Timothy 2:19",
+     "note": "The Lord knoweth them that are his: i.e., the Lord maketh known who are His; as in"
+    },
+    {
+     "ref": "2 Timothy 4:6",
+     "note": "For I already am being poured (or offered): i.e., I shall soon have been offered up. 8. The Future for the Past The future is used for the past when it is understood that the thing or matter was futu"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:2"
+    },
+    {
+     "ref": "2 Timothy 3:14"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 2:8"
+    },
+    {
+     "ref": "2 Timothy 3:16",
+     "note": "All Scripture is given by inspiration of God: i.e., the whole Scripture; not every Scripture, as in the R.V., but every part of Scripture. See under Ellipsis, page 44"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:10",
+     "note": "Our Saviour Jesus Christ, who hath abolished death and hath brought life and immortality to light: i.e., life, yesand immortal life too"
+    },
+    {
+     "ref": "2 Timothy 4:1"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:2"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:16",
+     "note": "and 4:2. There is a beautiful extended alternation between the subjects of these two verses. See pages 146 and 148. The Word of God is God-breathed and profitable for A A doctrine, B for reproof (or"
+    }
+   ]
+  },
+  {
+   "id": "hermeneia",
+   "name": "Hermeneia",
+   "greek": "ἑρμηνεία",
+   "group": "comparison",
+   "definition": "Interpretation: a plain restatement added at once to explain a figure just used.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 4:6",
+     "note": "I am now ready to be offered is explained by what follows: the time of my departure is at hand. All the passages which commence, which being interpreted means"
+    }
+   ]
+  },
+  {
+   "id": "hypotyposis",
+   "name": "Hypotyposis",
+   "greek": "ὑποτύπωσις",
+   "group": "emphasis",
+   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:13",
+     "note": "In the plural it would express what we call outlines. The name is given to this figure because it describes an action, event, person, condition, passion"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:17"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 2:10",
+     "note": "Salvation which ) Christ Jesus: i.e., by or through Him; in virtue of His atoning death. In this very book"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 2:11"
+    }
+   ]
+  },
+  {
+   "id": "hysteresis",
+   "name": "Hysteresis",
+   "greek": "ὑστέρησις",
+   "group": "emphasis",
+   "definition": "A later passage supplying a detail not recorded in the earlier narrative it refers to.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:8",
+     "note": "Jannes and Jambres are named as two of the Egyptian wise men; whose names are not given in Exodus, but are supplied here by the Holy Spirit"
+    }
+   ]
+  },
+  {
+   "id": "enigma",
+   "name": "Enigma",
+   "greek": "αἴνιγμα",
+   "group": "emphasis",
+   "definition": "A dark saying — a truth wrapped in obscure or riddling terms.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:10"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:8",
+     "note": "is said to be a quotation from the Targum of Jonathan ben Uzziel upon"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 1:10"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 2:19"
+    }
+   ]
+  },
+  {
+   "id": "epanorthosis",
+   "name": "Epanorthosis",
+   "greek": "ἐπανόρθωσις",
+   "group": "emphasis",
+   "definition": "Recalling a word just used to correct or strengthen it (“not I, but the Lord”).",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 4:8",
+     "note": "Henceforth there is laid up for me a crown of righteousness, which the Lord, the righteous judge, shall give me at that day: [then comes a beautiful Epanorthosis | and not to me only, but unto all the"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "2 Timothy 3:17",
+     "note": "The man of God: i.e., Gods man. This was the popular name of a prophet, for in him the People recognised Gods spokesman. *"
+    }
+   ]
+  }
+ ]
+}

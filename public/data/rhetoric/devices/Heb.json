@@ -1,0 +1,905 @@
+{
+ "book": "Heb",
+ "devices": [
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:3",
+     "note": "4; 8:1. So Christs dignity is further described by the figure THEOPREP S, worthy of a god"
+    },
+    {
+     "ref": "Hebrews 1:5",
+     "note": "So, those who believe, are said to be begotten by God"
+    },
+    {
+     "ref": "Hebrews 1:6",
+     "note": "ec) As to Circumstances connected with the person Arms are attributed to God: i.e., weapons of war"
+    },
+    {
+     "ref": "Hebrews 1:8"
+    },
+    {
+     "ref": "Hebrews 1:9",
+     "note": "which may apply to the Holy Spirit"
+    },
+    {
+     "ref": "Hebrews 1:12"
+    },
+    {
+     "ref": "Hebrews 1:13",
+     "note": "denoting the completeness of their subjection"
+    },
+    {
+     "ref": "Hebrews 2:4"
+    },
+    {
+     "ref": "Hebrews 2:8"
+    },
+    {
+     "ref": "Hebrews 4:13"
+    },
+    {
+     "ref": "Hebrews 5:7"
+    },
+    {
+     "ref": "Hebrews 8:10"
+    },
+    {
+     "ref": "Hebrews 10:38",
+     "note": "Hence the expression to swear by ones soul"
+    },
+    {
+     "ref": "Hebrews 13:8",
+     "note": "Christ is said to be the first-born as to time"
+    },
+    {
+     "ref": "Hebrews 13:20"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 2:7",
+     "note": "Thou hast made (i.e., Thou wilt make) Him for a little while less than the angels. For this was a prophecy spoken of Christ long before, in Ps"
+    },
+    {
+     "ref": "Hebrews 2:16",
+     "note": "For not, indeed, of angels nature He taketh (i.e., took) hold, but of Abrahams seed He taketh (i.e., took) hold"
+    },
+    {
+     "ref": "Hebrews 3:14",
+     "note": "We have been made (i.e., we shall become) partakers of Christ, if we hold"
+    },
+    {
+     "ref": "Hebrews 7:3",
+     "note": "He remaineth (i.e., remained) a priest all his life"
+    },
+    {
+     "ref": "Hebrews 7:7",
+     "note": "And without all contradiction the less (neut.) is blessed of the better. See also"
+    },
+    {
+     "ref": "Hebrews 7:8",
+     "note": "One testified of that he liveth (i.e., that he lived, viz., a priest) all his life. See above. 6. The Present for the Future This is put when the design is to show that some thing will certainly come"
+    },
+    {
+     "ref": "Hebrews 9:12",
+     "note": "Into the holies: i.e., the most holy place"
+    },
+    {
+     "ref": "Hebrews 9:16"
+    },
+    {
+     "ref": "Hebrews 9:23",
+     "note": "With better sacrifices than these: i.e., one better and greater sacrifice; for Christ offered only one sacrifice"
+    },
+    {
+     "ref": "Hebrews 10:11",
+     "note": "And every high priest stood (i.e., standeth) daily (as in A.V"
+    },
+    {
+     "ref": "Hebrews 10:21",
+     "note": "And having a great ( i.e., highest) priest over the house of God. So 13:20. 3. The Comparative for the Positive"
+    },
+    {
+     "ref": "Hebrews 10:28",
+     "note": "Without mercies: i.e., without the least mercy"
+    },
+    {
+     "ref": "Hebrews 12:22",
+     "note": "But ye have come (i.e., shall come) unto Mount Zion"
+    },
+    {
+     "ref": "Hebrews 13:8"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:2",
+     "note": "By whom also he made (or constituted) the ages: i.e., the world, and all that pertains to it. So 11:3, where the verb is ( katartiz ), to adjust, prepare, or restore. 3. YEARS is put for what happens…"
+    },
+    {
+     "ref": "Hebrews 5:9"
+    },
+    {
+     "ref": "Hebrews 6:1",
+     "note": "Dead works: i.e., works wrought by the Old nature. So 9:14, according to"
+    },
+    {
+     "ref": "Hebrews 7:25",
+     "note": "Here, to her full height; there, to their full need"
+    },
+    {
+     "ref": "Hebrews 9:28"
+    },
+    {
+     "ref": "Hebrews 11:7",
+     "note": "Noah prepared an ark to the saving of his house: i.e., of his family. 5. ISLANDS are put for their inhabitants"
+    },
+    {
+     "ref": "Hebrews 11:13",
+     "note": "These all died in faith, not having received the promises: i.e., the things which had been promised. The promises were what they had received, but not the things promised. vi. The SIGN is put for the…"
+    },
+    {
+     "ref": "Hebrews 11:15",
+     "note": "If they had been mindful of that country from whence they came out: i.e., if they had longed for it, or desired to return to it, they could have done so. This is clear from the verb to desire in vers"
+    },
+    {
+     "ref": "Hebrews 11:34",
+     "note": "where it is rendered quench; and"
+    },
+    {
+     "ref": "Hebrews 12:1",
+     "note": "Let us run the race-course (or stadium): i.e., the race which is run there. So"
+    },
+    {
+     "ref": "Hebrews 13:4",
+     "note": "Whoremongers and adulterers God will judge: i.e., punish. See also"
+    },
+    {
+     "ref": "Hebrews 13:10",
+     "note": "We have an altar: i.e., a sacrifice, referring to the sin-offering which was burned without the camp including the skin and the dung, no soul having a right to eat of it. So Christ is our sin-offerin"
+    },
+    {
+     "ref": "Hebrews 13:15",
+     "note": "By him let us offer the sacrifice of praise to God continually, that is, the fruit of our lips, giving thanks to his name. See also"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:2",
+     "note": "Whom he hath placed (i.e., appointed) heir of all things. 9. TO MEET (, katanta ) is used of arriving at so as to touch"
+    },
+    {
+     "ref": "Hebrews 2:9",
+     "note": "That he by the grace of God should taste death for every man: i.e., all manner of men, without distinction. It cannot mean without exception, or else every man must be saved, and if it be taken as l"
+    },
+    {
+     "ref": "Hebrews 2:11"
+    },
+    {
+     "ref": "Hebrews 2:14",
+     "note": "Forasmuch then as the children are partakers of flesh and blood, he also himself likewise took part of the same: i.e., He became flesh, and took part in a true and perfect human body. 12. THE HEAD is"
+    },
+    {
+     "ref": "Hebrews 6:16"
+    },
+    {
+     "ref": "Hebrews 9:12",
+     "note": "By his own blood he entered in once into the holy place, having found (i.e., obtained, as in A.V. ) eternal redemption for us. 5. TO FIND is also used of to have, or to be present with"
+    },
+    {
+     "ref": "Hebrews 9:28"
+    },
+    {
+     "ref": "Hebrews 10:7",
+     "note": "In the volume of the book it is written of me. ( en kephalidi bibliou ), in the head of the book (, kephalis, head ), is not a synonym for roll, as some try to show; but it is the head or knob of t"
+    },
+    {
+     "ref": "Hebrews 10:20",
+     "note": "By a new and living way, which he hath consecrated ( marg., new made ) for us, through the veil, that is to say, his flesh: i.e., his human nature, Himself as truly and really man"
+    },
+    {
+     "ref": "Hebrews 11:5",
+     "note": "By faith Enoch was translated that he should not see death; and was not found (i.e., present), because God had translated him. 6. TO CALL UPON THE LORD is used of Divine worship A special act is put"
+    },
+    {
+     "ref": "Hebrews 11:13",
+     "note": "These all died in faith. This does not include Enoch (see verse 5), but only all who died"
+    },
+    {
+     "ref": "Hebrews 13:4",
+     "note": "Marriage is honourable in all: i.e., all kinds of degrees which the law of God allows, or all cases in which persons are entitled to marry. Otherwise it cannot be honourable"
+    },
+    {
+     "ref": "Hebrews 13:9",
+     "note": "It is a good thing that the heart to be established with grace, not with meats, which have not profited them that have been occupied therein. Here meats, one of the things about which people are occup"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:7",
+     "note": "and that man is never spoken of as a spirit. He is said to have a spirit, but not to be one. In"
+    },
+    {
+     "ref": "Hebrews 2:18",
+     "note": "All often denotes the greater part"
+    },
+    {
+     "ref": "Hebrews 4:12"
+    },
+    {
+     "ref": "Hebrews 4:15"
+    },
+    {
+     "ref": "Hebrews 6:3",
+     "note": "This will we do, if God permit: i.e., if God so orders it, and gives the needed grace and strength. To seek"
+    },
+    {
+     "ref": "Hebrews 7:18",
+     "note": "and 9:26 ) 1s used as a technical legal ( akur sis ) a depriving of authority, and in Antithesis to ( bebai sis ), a confirming, or establishing. * Bibelstudien, Marburg, 1895, and Neue Bibelstudieu,…"
+    },
+    {
+     "ref": "Hebrews 7:26"
+    },
+    {
+     "ref": "Hebrews 9:16"
+    },
+    {
+     "ref": "Hebrews 10:20"
+    },
+    {
+     "ref": "Hebrews 11:1",
+     "note": "sukophantein ). This word meant originally an informer, and was used of one who gave information against persons who exported figs from Attica. Literally, a fig-shewer. Hence a common informer"
+    },
+    {
+     "ref": "Hebrews 11:4",
+     "note": "but few hear his voice. Few understand the great fact that God left nothing for mans imagination when He made known how He would be approached, and how He would be worshipped. In the last chapter o"
+    },
+    {
+     "ref": "Hebrews 11:28"
+    },
+    {
+     "ref": "Hebrews 13:15",
+     "note": "There is no other worship now which He accepts, and no other worshippers whom the Father seeks to worship Him"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:6"
+    },
+    {
+     "ref": "Hebrews 2:1",
+     "note": "but here the expression is different, Beni El-hai. In the singular with both articles it 1s used of Christ. The Son of God is that blessed one who is perfect man and perfect God, perfectly human as t"
+    },
+    {
+     "ref": "Hebrews 2:15",
+     "note": "Through fear of death were all their living, subject to bondage: i.e., all their lifetime, as in A.V"
+    },
+    {
+     "ref": "Hebrews 4:1",
+     "note": "A promise being left us to enter in: i.e., of entering in. 2. The Participle (active) for a Noun"
+    },
+    {
+     "ref": "Hebrews 6:17",
+     "note": "The unchangeable of his counsel: i.e., the unchangeableness of His counsel, or the unchangeable [ character ] of His counsel. [V. ANTIMEREIA OF THE NOUN"
+    },
+    {
+     "ref": "Hebrews 9:10",
+     "note": "Which stood only in meats and drinks and divers washings (, baptisms ) and (or even) ordinances of the flesh, put upon them until the time of setting things right: i.e., Baptisms whose character was"
+    },
+    {
+     "ref": "Hebrews 9:17"
+    },
+    {
+     "ref": "Hebrews 10:39",
+     "note": "must be explained by this usage, if sense is to be made of the words, the difficulty of which is seen in the R.V. margin: But we are not [ children of unbelief ] of drawing back unto destruction of th"
+    },
+    {
+     "ref": "Hebrews 12:9",
+     "note": "Fathers of our flesh: i.e., human or natural fathers, in contrast with the Heavenly Father and giver of our spirits. James 1:25. A hearer of forgetfulness: i.e., as in A.V., a forgetful hearer: with…"
+    },
+    {
+     "ref": "Hebrews 12:11",
+     "note": "Any discipline for the present ( time ) seems not to be of joy (, charas ): i.e. joyous, but of grief (, lupees ): i.e., grievous, as in A.V"
+    },
+    {
+     "ref": "Hebrews 12:18",
+     "note": "Ye are not come to a mount being touched: i.e., a touchable, palpable or literal mount"
+    },
+    {
+     "ref": "Hebrews 12:27",
+     "note": "That those things which cannot be shaken may remain: Le., the unshakable things; the things that know no shaking. I. ANTIMERIA OF THE ADVERB 1. Adverb for Noun"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:3",
+     "note": "By the word of his power. This is hardly His powerful word; but the word which is the instrument, by which His power 1s carried out. After certain verbs of sense or feeling, the genitive is used to i"
+    },
+    {
+     "ref": "Hebrews 1:14"
+    },
+    {
+     "ref": "Hebrews 3:12",
+     "note": "An evil heart of unbelief: i.e., an evil heart in respect to unbelief"
+    },
+    {
+     "ref": "Hebrews 5:6",
+     "note": "The order of Melchisedek: i.e., Melchisedeks order"
+    },
+    {
+     "ref": "Hebrews 5:13",
+     "note": "Unskilled of the word of righteousness: i.e., in respect of the word of righteousness"
+    },
+    {
+     "ref": "Hebrews 6:1",
+     "note": "The foundation of repentance: i.e., the foundation, that is to say, repentance"
+    },
+    {
+     "ref": "Hebrews 6:2"
+    },
+    {
+     "ref": "Hebrews 9:21",
+     "note": "Vessels of the ministry: i.e., pertaining to the ministering"
+    },
+    {
+     "ref": "Hebrews 10:7"
+    },
+    {
+     "ref": "Hebrews 11:26",
+     "note": "The reproach of Christ: i.e., reproach in connection with Christ"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:8"
+    },
+    {
+     "ref": "Hebrews 1:13"
+    },
+    {
+     "ref": "Hebrews 3:7"
+    },
+    {
+     "ref": "Hebrews 5:6"
+    },
+    {
+     "ref": "Hebrews 9:8",
+     "note": "Referring to Ex. 25 xl. (concerning the Tabernacle and its teaching), The Holy Ghost this signifying"
+    },
+    {
+     "ref": "Hebrews 9:19"
+    },
+    {
+     "ref": "Hebrews 10:5",
+     "note": "7 ).A body hast thou prepared me. These words are like the LXX of Psalm 40:6 ( 39:6 ), and differ from the Hebrew, which is, Mine ears hast thou opened. But this is not given as a quotation. It does"
+    },
+    {
+     "ref": "Hebrews 10:15"
+    },
+    {
+     "ref": "Hebrews 11:21",
+     "note": "This is not a quotation; but, as it is generally treated as such, and as being in discrepancy with"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 2:12"
+    },
+    {
+     "ref": "Hebrews 4:2",
+     "note": "and see under Metonymy"
+    },
+    {
+     "ref": "Hebrews 4:12",
+     "note": "Other uses of the word are seen in"
+    },
+    {
+     "ref": "Hebrews 11:34"
+    },
+    {
+     "ref": "Hebrews 13:15"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:12",
+     "note": "The blood of goats and calves, ( 13 ) the blood of bulls and of goats. Here the figure lessens the importance of the sacrifices which were offered under the Law, in order to increase by contrast the g"
+    },
+    {
+     "ref": "Hebrews 10:10",
+     "note": "Final Preservation, Resurrection, and Eternal Life"
+    },
+    {
+     "ref": "Hebrews 13:17",
+     "note": "For that is unprofitable for you. It is really much more than that! It is disastrous and ruinous"
+    },
+    {
+     "ref": "Hebrews 13:20",
+     "note": "and the Chief Shepherd in glory"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 2:14",
+     "note": "That through death he might destroy him that had the power of death, that is, the devil. Here, the first death 1s put by Synecdoche, for the atoning results of Christs death: while the second means"
+    },
+    {
+     "ref": "Hebrews 6:14",
+     "note": "Surely blessing I will bless thee, and multiplying I will multiply thee: i.e., Surely in blessing I will most certainly bless thee"
+    },
+    {
+     "ref": "Hebrews 10:37",
+     "note": "He who cometh will come: i.e., He will surely come. See also under the figure of Epizeuxis"
+    },
+    {
+     "ref": "Hebrews 11:22",
+     "note": "By faith Joseph, when he died made mention of (margin, remembered ) the departing of the children of Israel; and gave commandment concerning his bones: i.e., Joseph remembered the promise of God made"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 8:5"
+    },
+    {
+     "ref": "Hebrews 9:26",
+     "note": "It will be easy, therefore, for the student to distinguish it from ( telos ), which is used in the other passages"
+    },
+    {
+     "ref": "Hebrews 11:12"
+    },
+    {
+     "ref": "Hebrews 12:5"
+    }
+   ]
+  },
+  {
+   "id": "erotesis",
+   "name": "Rhetorical question",
+   "greek": "ἐρώτησις",
+   "group": "emphasis",
+   "definition": "A question asked for effect, not for an answer — to affirm, deny, or provoke thought.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:5",
+     "note": "for His office of king. To which of the angels said he at any time, Sit on my right hand, until I make thine enemies thy footstool?"
+    },
+    {
+     "ref": "Hebrews 1:13"
+    },
+    {
+     "ref": "Hebrews 1:14"
+    },
+    {
+     "ref": "Hebrews 2:6",
+     "note": "to magnify the grace of God in lifting up such an one from the dunghill to make him inherit the throne of glory"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 6:17",
+     "note": "The immutability of his counsel: i.e., His unchangeable counsel"
+    },
+    {
+     "ref": "Hebrews 9:15",
+     "note": "The promise of the eternal inheritance: i.e., the promised eternal inheritance"
+    },
+    {
+     "ref": "Hebrews 10:5",
+     "note": "A body hast thou prepared me ( Dat. ( moi ), for me ). It is a question whether the Dative is used, by Antiptosis, for the Accusative; to show that, while Christs human body was prepared for Him"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 6:16",
+     "note": "For with men it is the Greater by whom they swear, and of all dispute they have a decisive settlement the oath"
+    },
+    {
+     "ref": "Hebrews 7:4",
+     "note": "To whom, even a tenth, Abraham gave out of the spoils, the patriarch. Notice how the subject of the verse is kept back to the last, in order to call attention to the fact that, if Abrahamthe patriarc"
+    },
+    {
+     "ref": "Hebrews 10:30",
+     "note": "To me vengeance belongeth, I (even I) will recompense, saith the Lord: emphasising the pronouns very strongly"
+    }
+   ]
+  },
+  {
+   "id": "hysteronproteron",
+   "name": "Hysteron-proteron",
+   "greek": "ὕστερον πρότερον",
+   "group": "arrangement",
+   "definition": "The natural order of two things reversed, the later put first (“let us live and move”).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 3:8",
+     "note": "Harden not your hearts, as in the provocation, in the day of temptation in the wilderness. The provocation of God followed the temptation in the wilderness; but is here put first to mark out the…"
+    },
+    {
+     "ref": "Hebrews 4:2",
+     "note": "For unto us was the Gospel preached, as well as unto them. Here, the order of time is inverted, to agree with the order of thought, and for emphasis. But, as we have said, it is a question whether we"
+    },
+    {
+     "ref": "Hebrews 9:24",
+     "note": "and 11:14. ( emphanizein ), see its only other First, the war takes place in heaven, and the Devil is cast out into the earth. Then he stands upon the sand of the sea (chap. 13:1, R.V. ); and John se"
+    }
+   ]
+  },
+  {
+   "id": "hysteresis",
+   "name": "Hysteresis",
+   "greek": "ὑστέρησις",
+   "group": "emphasis",
+   "definition": "A later passage supplying a detail not recorded in the earlier narrative it refers to.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:19",
+     "note": "The sprinkling of the book is supplementary information which is not given in Ex. 2"
+    },
+    {
+     "ref": "Hebrews 11:21",
+     "note": "Here we have an additional fact, which at once explains and amplifies"
+    },
+    {
+     "ref": "Hebrews 12:21",
+     "note": "gives a particular which we do not find recorded in Ex. 19 and XX"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 11:16",
+     "note": "Wherefore God is not ashamed to be called their God: Le., God is well-pleased to be their God, and to own them as His chosen people"
+    },
+    {
+     "ref": "Hebrews 13:2",
+     "note": "Be not forgetful to entertain strangers: i.e., make it your business to remember to show hospitality. Rey. 12:11. They loved not their lives unto the death. The fact implied is that they disregarded"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 12:16"
+    },
+    {
+     "ref": "Hebrews 13:8",
+     "note": "Jesus Christ the same yesterday, and to-day, and for ever"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:15",
+     "note": "That they which are called might receive the promise of eternal inheritance: L.e., the eternal inheritance which had been promised"
+    },
+    {
+     "ref": "Hebrews 9:23",
+     "note": "Here, the purification attributed to the heavenly things really applies to those who shall enter; as is clear from the former part of the verse"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 11:31"
+    },
+    {
+     "ref": "Hebrews 13:15",
+     "note": "homologein ), to confess, is used of to praise or celebrate, like the Hebrew ( h dah ) which has both meanings"
+    }
+   ]
+  },
+  {
+   "id": "enigma",
+   "name": "Enigma",
+   "greek": "αἴνιγμα",
+   "group": "emphasis",
+   "definition": "A dark saying — a truth wrapped in obscure or riddling terms.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:27",
+     "note": "but the honey is found in"
+    },
+    {
+     "ref": "Hebrews 12:11"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 10:37",
+     "note": "Yet a little while, Lit., how little, how little. ( eti gar mikron hoson hoson"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 10:34",
+     "note": "huparchont n ), knowing in yourselves that ye have in heaven a better and an enduring, huparxin"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 5:8",
+     "note": "emathen ) obedience by, epathen"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 2:12",
+     "note": "The latter two passages fully confirm the limited use of the word: And sang praises unto God"
+    }
+   ]
+  },
+  {
+   "id": "repeatednegation",
+   "name": "Repeated negation",
+   "greek": "οὐ μή",
+   "group": "emphasis",
+   "definition": "Two or more negatives heaped together in Greek to deny all the more emphatically.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 13:5",
+     "note": "I will never leave thee nor forsake thee, where we have the in both clauses"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:7",
+     "note": "We at once connect their sin in the days of Noah and their prison with"
+    }
+   ]
+  },
+  {
+   "id": "periphrasis",
+   "name": "Periphrasis",
+   "greek": "περίφρασις",
+   "group": "substitution",
+   "definition": "Circumlocution: a description put in place of the plain name of a thing.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 1:14",
+     "note": "Heirs of salvation is a beautiful Periphrasis for the elect"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 11:12",
+     "note": "of Abrahams seed. Judges 7:12: of the Midianites"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 12:20"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:12"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 2:9",
+     "note": "distinctly tells us why Christ was thus crowned"
+    }
+   ]
+  },
+  {
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
+   "occurrences": [
+    {
+     "ref": "Hebrews 11:31"
+    }
+   ]
+  },
+  {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "Hebrews 10:6"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "Hebrews 9:27",
+     "note": "28 ). they are sent, Sent Me and sent them"
+    }
+   ]
+  }
+ ]
+}

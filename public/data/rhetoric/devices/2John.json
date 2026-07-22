@@ -1,0 +1,34 @@
+{
+ "book": "2John",
+ "devices": [
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "2 John 1:7",
+     "note": "itis ( erchomenon ), who confess not that Jesus Christ is coming in the flesh: i.e., in his human nature, the same Jesus, in like manner as he went into heaven"
+    },
+    {
+     "ref": "2 John 1:9"
+    }
+   ]
+  },
+  {
+   "id": "antimetabole",
+   "name": "Antimetabole",
+   "greek": "ἀντιμεταβολή",
+   "group": "arrangement",
+   "definition": "Words repeated in reverse order and grammatical relation (“sabbath for man … man for sabbath”).",
+   "occurrences": [
+    {
+     "ref": "2 John 1:6",
+     "note": "a This is love, that we walk b after his commandments. b This is the commandment, a that.. ye should walk in it. 3 John 11. a Follow not that which is evil, b but that which is good; b He that doe"
+    }
+   ]
+  }
+ ]
+}

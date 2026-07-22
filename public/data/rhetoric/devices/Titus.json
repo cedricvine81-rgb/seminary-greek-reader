@@ -1,0 +1,191 @@
+{
+ "book": "Titus",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Titus 1:11",
+     "note": "Who subvert whole houses: i.e., families"
+    },
+    {
+     "ref": "Titus 1:12",
+     "note": "A prophet of their own. Epiminedes was not a prophet except in the opinion of the Cretans. See under Gnome"
+    },
+    {
+     "ref": "Titus 1:13",
+     "note": "That they may be sound in the faith: i.e., the doctrine of the Gospel. Jude 3. Earnestly contend for the faith: i.e., the true doctrine of Christ"
+    },
+    {
+     "ref": "Titus 2:13",
+     "note": "Looking for that blessed hope: i.e., that blessed object of hope, the coming of Christ. 4. LOVE is put for the person or object loved"
+    },
+    {
+     "ref": "Titus 3:14"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Titus 1:4"
+    },
+    {
+     "ref": "Titus 2:4",
+     "note": "In all the other epistles it is only grace, or grace and peace. In these three epistles mercy is added: as though to imply that with the many responsibilities of the pastoral office, Gods mercy would"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Titus 1:8"
+    },
+    {
+     "ref": "Titus 2:3",
+     "note": "where it is used as an adjective, and in its ordinary sense of malicious accuser. ( diatheekee ). In classical Greek it had two meanings: (1) a last will or testament, and (2) very rarely, of a cove"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Titus 2:13",
+     "note": "The appearing of the glory of our great God and Saviour: i.e., the glorious appearing of the great God, even our Saviour Jesus Christ"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Titus 1:3"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Titus 1:12",
+     "note": "Slow bellies: i.e., slow persons, who by reason of large eating, have grown stout and move slowly. 19. The WOMB is put for a female, in respect to her being marriageable Judges 5:30. A wombtwo wombs"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Titus 2:13",
+     "note": "Looking for that blessed hope and the glorious appearing. Not two things but one: our hope is the glorious appearing! The latter clause is also Hendiadys: One Person being meant, not two: the appear"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "Titus 3:8",
+     "note": "Faithful the saying. How much more emphatic than the ordinary coldness of the natural order: The saying is faithful"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Titus 2:7"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Titus 1:12",
+     "note": "One of themselves, even a prophet of their own, said, The Cretians are alway liars, evil beasts, slow bellies (i.e., liars, evil wild-beasts, gluttons, lazy). This involves another figure called Oxym"
+    }
+   ]
+  },
+  {
+   "id": "amphibologia",
+   "name": "Amphibologia",
+   "greek": "ἀμφιβολία",
+   "group": "emphasis",
+   "definition": "A saying deliberately capable of two meanings, both intended.",
+   "occurrences": [
+    {
+     "ref": "Titus 1:12"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Titus 3:5"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Titus 2:14",
+     "note": "Zealous of good works: i.e., with respect to good works"
+    }
+   ]
+  }
+ ]
+}

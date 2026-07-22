@@ -1,0 +1,454 @@
+{
+ "book": "Jas",
+ "devices": [
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "James 1:27",
+     "note": "pure religion and undefiled before God and the Father is this, To visit the fatherless and widows in their affliction"
+    },
+    {
+     "ref": "James 2:10",
+     "note": "hosoi an ), as many as perchance"
+    },
+    {
+     "ref": "James 2:15"
+    },
+    {
+     "ref": "James 3:6",
+     "note": "So is the tongue among our members, that it defileth the"
+    },
+    {
+     "ref": "James 3:18"
+    },
+    {
+     "ref": "James 4:13",
+     "note": "Go to now, ye that say, To-day or to-morrow we shall go into such a city, and shall do a year there: i.e., as in A.V., continue there a year. So Latin agere vitam (to live), and agere poenitentiam"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "James 2:14"
+    },
+    {
+     "ref": "James 2:21",
+     "note": "Was not Abraham our father justified by works? i.e., declared to be justified. See verse 23 and"
+    },
+    {
+     "ref": "James 2:22",
+     "note": "By works was faith made (i.e., declared to be, or manifested to be) perfect: i.e., true and sincere. ii. The CONTAINER for the contents: and the PLACE for the thing placed in it 1. CIRCUIT is so put"
+    },
+    {
+     "ref": "James 4:14"
+    },
+    {
+     "ref": "James 5:11",
+     "note": "Ye have heard of the patience of Job, and have seen the end ( i.e., the reward) of the Lord"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "James 1:2",
+     "note": "All signifies some of every kind"
+    },
+    {
+     "ref": "James 1:3",
+     "note": "What is genuine in your faith. ( aretee"
+    },
+    {
+     "ref": "James 1:26",
+     "note": "27 (religion). ( musteerion ) always rendered or rather transliterated mystery; but meaning a secret. See a pamphlet on The Mystery, by the same author and publisher. was used of managing a househol"
+    },
+    {
+     "ref": "James 4:7"
+    },
+    {
+     "ref": "James 4:13",
+     "note": "meant come now. On sleep"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "James 1:25",
+     "note": "A hearer of forgetfulness: i.e., as in A.V., a forgetful hearer: with emphasis on forgetful"
+    },
+    {
+     "ref": "James 2:1"
+    },
+    {
+     "ref": "James 2:4",
+     "note": "Judges of evil thoughts: i.e., evil-thinking judges"
+    },
+    {
+     "ref": "James 3:13",
+     "note": "Meekness of wisdom: i.e., wise meekness"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "James 1:17",
+     "note": "Father of lights: i.e., true light. Hence, the Father who is the source of all true light (being the genitive of origin"
+    },
+    {
+     "ref": "James 1:24",
+     "note": "He beheld himself, and has gone away: i.e., he beholdeth himself, and goeth his way"
+    },
+    {
+     "ref": "James 4:13",
+     "note": "To-day or to-morrow we may go into such a city: i.e., we will go. Verse 15: If the Lord should will, and we should live: i.e., if He willeth, and we live. Some Christians say, If the Lord should ta"
+    },
+    {
+     "ref": "James 5:1",
+     "note": "Weep and howl: i.e., ye shall weep and howl. 4. Imperative for Subjunctive"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "James 1:19"
+    },
+    {
+     "ref": "James 5:6",
+     "note": "Here the translators have inserted and twice in italics, utterly destroying the figure and hiding the conclusion. Ye have condemned, ye have killed the just [ One ]; He doth not resist you. Be patient"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "James 1:18",
+     "note": "Deliverance from the world"
+    },
+    {
+     "ref": "James 3:1",
+     "note": "My brethren, be not many masters, knowing that we shall receive the greater condemnation. He does not stop to specify what the many things are, in which those who occupy such positions may give cause"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "James 5:7"
+    },
+    {
+     "ref": "James 5:13"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "James 1:24",
+     "note": "Here the repeated and greatly emphasises what Bengel calls the hastiness joined with levity of the natural man. For he beholdeth himself, and goeth his way, and straightway forgeteth what manner of…"
+    },
+    {
+     "ref": "James 4:13",
+     "note": "The Polysyndeton here, Bengel says, expresses the caprice of a mind secure and indifferentthe will of a mind at ease"
+    }
+   ]
+  },
+  {
+   "id": "climax",
+   "name": "Climax",
+   "greek": "κλῖμαξ",
+   "group": "arrangement",
+   "definition": "A chain in which the end of each step becomes the start of the next, building to a peak.",
+   "occurrences": [
+    {
+     "ref": "James 1:3"
+    },
+    {
+     "ref": "James 1:14"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "James 3:6",
+     "note": "The tongue is a fire, a world of iniquity. It is a question here, whethor ( kosmos ) does not mean ornament or adorning, as in |"
+    },
+    {
+     "ref": "James 4:1",
+     "note": "The verb, which means to wage war, is Hyperbole when used of a single individual; but it told Jeremiah how bitter the opposition of man would be to his Divine message"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "James 2:17",
+     "note": "Faith is dead: i.e., the man who says he has such faith is dead"
+    },
+    {
+     "ref": "James 3:4",
+     "note": "Wherever the impulse of the steersman may will: i.e., as in A.V., whithersoever the governor (i.e., pilot) listeth"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "James 1:26",
+     "note": "27 ). It must be so rendered here: humility and religion: i.e., humility, yesthe religious humility of angels. If we observe this figure, it throws all the other words into their right places, and e"
+    },
+    {
+     "ref": "James 3:9",
+     "note": "* In the same way villages are called daughters"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "James 3:2"
+    },
+    {
+     "ref": "James 3:5",
+     "note": "it is written: Behold, how great a matter a little fire kindleth. The Apostolic benediction"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "James 1:15",
+     "note": "When lust hath conceived, it bringeth forth sin. See under Climax"
+    },
+    {
+     "ref": "James 5:4",
+     "note": "we have it literally"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "James 1:17",
+     "note": "The Father of lights: i.e., the source, not only of light itself, but of all light producers and light-bearers and light givers: viz., the sun, moon, stars, planets, and all the fountains of light c"
+    },
+    {
+     "ref": "James 5:4",
+     "note": "The cries of them which have reaped are entered into the ears of the Lord of sabaoth. See also"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "James 1:13",
+     "note": "Cannot be tempted of evil ( marg., evils ): i.e., is not to be tempted with respect to evil things"
+    },
+    {
+     "ref": "James 1:26",
+     "note": "27 (its only occurrences in the New Testament), and Wisd. 14:16, 18, 27 in the Septuagint. Then, the Greek reads: Humility and religion, which, by Hendiadys ( q.v. ), means religious humility (with e"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "James 1:3",
+     "note": "The trying of your faith worketh patience, but patience let it have its perfect work"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "James 5:17",
+     "note": "He prayed earnestly. This is the beautiful rendering of the figure ( proseuchee proseeuxato ) with prayer he prayed"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "James 2:4",
+     "note": "Are ye not then partial in yourselves, and are become judges of evil thoughts? There the two words ( diekritheete ) and ( kritai ) are from the same root: the former means to make a distinction, and…"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "James 5:17",
+     "note": "With prayer ( proseuchee ) he prayed (, proseeuxato ): i.e., as in A.V., He prayed earnestly"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "James 5:13",
+     "note": "they are again set in contrast: Is any among you afflicted? let him pray. Is any merry? let him sing psalms. This universal testimony of Scripture settles for us the question as to the distinction b"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "James 2:25",
+     "note": "The harlot Rahab: where ( pornee ), a harlot, receives its true meaning from the Heb. ( z nah ) which means a female hostess, or landlady, as well as harlot"
+    }
+   ]
+  },
+  {
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
+   "occurrences": [
+    {
+     "ref": "James 2:25",
+     "note": "Rahab is still called the harlot. The term remains as an Epithet. But see under Catachresis. Antiphrasis; or, Permutation: i.e., A New Name for the Old Thing A new and opposite Name for a thing aft"
+    }
+   ]
+  },
+  {
+   "id": "hysteresis",
+   "name": "Hysteresis",
+   "greek": "ὑστέρησις",
+   "group": "emphasis",
+   "definition": "A later passage supplying a detail not recorded in the earlier narrative it refers to.",
+   "occurrences": [
+    {
+     "ref": "James 5:17",
+     "note": "The earnest prayer of Elijah is not recorded in"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "James 2:16"
+    }
+   ]
+  }
+ ]
+}

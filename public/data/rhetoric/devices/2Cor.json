@@ -1,0 +1,753 @@
+{
+ "book": "2Cor",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:9",
+     "note": "We had the sentence of death in ourselves: i.e., we experienced the feelings of those who have had the sentence of death pronounced upon them. (b) Verbs of REMEMBERING are used of a strong desire or"
+    },
+    {
+     "ref": "2 Corinthians 1:10",
+     "note": "Who delivered us from so great a death: i.e., from the persecution or trouble which threatened to kill them, and end in death"
+    },
+    {
+     "ref": "2 Corinthians 1:14",
+     "note": "We are your rejoicing (i.e., cause of rejoicing), even as ye also are ours"
+    },
+    {
+     "ref": "2 Corinthians 3:6",
+     "note": "Who hath made us competent ministers also of the New Covenant: not of letter (i.e., the Divine Law of the Old Covenant), but of spirit ( i.e., the ministration of the Spirit, verse 8: the New Coven"
+    },
+    {
+     "ref": "2 Corinthians 3:15"
+    },
+    {
+     "ref": "2 Corinthians 3:16"
+    },
+    {
+     "ref": "2 Corinthians 4:4",
+     "note": "The god of this age: i.e., of the things done in, and of the people who live in and for, this world"
+    },
+    {
+     "ref": "2 Corinthians 4:16"
+    },
+    {
+     "ref": "2 Corinthians 5:11",
+     "note": "Knowing, then, the fear of the Lord: i.e., knowing, therefore, the Lord as one who is to be feared. 7. OTHER ACTIONS are put for the object connected with, or related to them; which object is shown…"
+    },
+    {
+     "ref": "2 Corinthians 5:17",
+     "note": "If any man be in Christ he is a new creature: i.e., he has a new nature created within him. Thus a new standing is given to him, with new thoughts and desires"
+    },
+    {
+     "ref": "2 Corinthians 5:19",
+     "note": "Reconciling the world (i.e., the inhabitants of the world) unto himself"
+    },
+    {
+     "ref": "2 Corinthians 5:21",
+     "note": "He hath made him to be sin (i.e., a sin-offering) for us. See"
+    },
+    {
+     "ref": "2 Corinthians 7:3"
+    },
+    {
+     "ref": "2 Corinthians 8:23",
+     "note": "So that verse 12 would be To the end that Thy saints may sing praise to Thee: glory being put for the saints who give the glory"
+    },
+    {
+     "ref": "2 Corinthians 10:10",
+     "note": "contemptible ). 2. The SPIRIT is put also for His quickening, regenerating and sanctifying work in man, in creating the new nature with its spiritual desires and powers"
+    },
+    {
+     "ref": "2 Corinthians 10:16",
+     "note": "In another mans line: i.e., in another mans inheritance or sphere of labour"
+    },
+    {
+     "ref": "2 Corinthians 11:4",
+     "note": "For if he that cometh (i.e., the one who is coming, perhaps from Jerusalem or the Twelve) preacheth another Jesus: i.e., a different doctrine or teaching concerning Jesus"
+    },
+    {
+     "ref": "2 Corinthians 11:20",
+     "note": "For ye suffer if a man devour you: i.e., your goods or property, as expressed in"
+    },
+    {
+     "ref": "2 Corinthians 11:23",
+     "note": "In deaths oft. This cannot, of course, mean that he had died more than once; but that he had often been at deaths door, and in troubles which cause or bring about death"
+    },
+    {
+     "ref": "2 Corinthians 12:2",
+     "note": "where similar visions and revelations are called a trance. There is great divergence of the use of small and capital letters in all different versions. 5. PARENTS and ANCESTORS are frequently put for"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:12"
+    },
+    {
+     "ref": "2 Corinthians 1:22"
+    },
+    {
+     "ref": "2 Corinthians 3:6"
+    },
+    {
+     "ref": "2 Corinthians 4:16"
+    },
+    {
+     "ref": "2 Corinthians 5:7",
+     "note": "We walk by faith, not by sight. Word (, logos ) in the New Testament follows the Hebrew idiom; and signifies not merely a word, but speech, which is the outcome of words. Hence, it is used of any m"
+    },
+    {
+     "ref": "2 Corinthians 6:17",
+     "note": "Wherefore come out from among them, and be ye separate"
+    },
+    {
+     "ref": "2 Corinthians 8:1",
+     "note": "meant make to know (see Wit below): to certify. Fetched a compass"
+    },
+    {
+     "ref": "2 Corinthians 8:11",
+     "note": "The figure is well translated to be forward (verse 10 )as being greater even than the actual doing. Also for eager desire"
+    },
+    {
+     "ref": "2 Corinthians 9:5",
+     "note": "That they would go before unto you, and make up beforehand your blessing: i.e., your gift to the saints (see A.V. marg. ). Doctrine (, didachee ) means the thing taught; but it is used idiomatically"
+    },
+    {
+     "ref": "2 Corinthians 11:5",
+     "note": "This is the Anglo-Saxon, wiht, a person or thing; hence not a whit meant not at all. Very"
+    },
+    {
+     "ref": "2 Corinthians 11:24"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:2",
+     "note": "The hidden things of dishonesty: i.e., the shameful secret things"
+    },
+    {
+     "ref": "2 Corinthians 4:6",
+     "note": "The knowledge of the glory of God: i.e., the knowledge of the glorious"
+    },
+    {
+     "ref": "2 Corinthians 4:16",
+     "note": "Though our without ( i.e., external or outward) man perish, yet the within (i.e., internal or inward) man is renewed day by day"
+    },
+    {
+     "ref": "2 Corinthians 4:17",
+     "note": "For our momentary lightness of tribulation ( i.e., light tribulation) worketh for us exceedingly excessively an eternal weight of glory: i.e., an excessively surpassing eternal weight of glory. R.V"
+    },
+    {
+     "ref": "2 Corinthians 8:8",
+     "note": "To prove the genuine of your love: i.e., the genuineness (or genuine character of"
+    },
+    {
+     "ref": "2 Corinthians 10:4",
+     "note": "For the weapons of our warfare are not carnal, but mighty to God (so A.V. margin): i.e., immensely powerful. The word SONS or CHILDREN with a noun ( in regimen ) is used idiomatically: The word son"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:10",
+     "note": "Who delivered us from so great a death, and doth deliver: in whom we trust that He will yet deliver us"
+    },
+    {
+     "ref": "2 Corinthians 5:21",
+     "note": "For He hath made Him to be sin for us, who knew no sin. The order of the Greek is not ambiguous as is the English: For He who knew no sin was made sin for us. Here, in the former place, it means sin i"
+    },
+    {
+     "ref": "2 Corinthians 8:9",
+     "note": "And see above, under Ellipsis ( page 22 ), and Heterosis"
+    },
+    {
+     "ref": "2 Corinthians 9:8",
+     "note": "And God is able to make all (, p san ), grace abound toward you; that ye always having all sufficiency in all things (, panti pantote p san)mayaboundtoevery(all)(,p n)goodwork. (b ) Repetition of t"
+    },
+    {
+     "ref": "2 Corinthians 10:12",
+     "note": "For we dare not make ourselves of the number, or"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:3",
+     "note": "Mercies: i.e., great mercy"
+    },
+    {
+     "ref": "2 Corinthians 2:14",
+     "note": "Now, thanks be to the God that always causeth us to triumph. Here the A.V. recognises the figure of exchange; as also in"
+    },
+    {
+     "ref": "2 Corinthians 9:8",
+     "note": "God is able to make all grace abound in you"
+    },
+    {
+     "ref": "2 Corinthians 9:10",
+     "note": "In all other places the verb ( auxan ), to increase, is intransitive"
+    },
+    {
+     "ref": "2 Corinthians 11:26",
+     "note": "Dangers in the city (i.e., cities, or city-dangers), dangers in the wilderness (i.e., wildernesses, or wilderness-dangers"
+    }
+   ]
+  },
+  {
+   "id": "irony",
+   "name": "Irony",
+   "greek": "εἰρωνεία",
+   "group": "emphasis",
+   "definition": "Saying the opposite of what is meant, so the real sense is felt through the contrast.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:3",
+     "note": "If so be that being clothed we shall not be found naked"
+    },
+    {
+     "ref": "2 Corinthians 10:12",
+     "note": "In the words, we dare not, the Apostle intimates, by Irony, that he was far beyond those who thought themselves to be somebodies"
+    },
+    {
+     "ref": "2 Corinthians 11:19",
+     "note": "Ye suffer fools gladly, seeing ye yourselves are wise"
+    },
+    {
+     "ref": "2 Corinthians 12:13",
+     "note": "Forgive me this wrong. III. PEIRASTIC IRONY: BY WAY OF TRYING OR TESTING This third kind of Irony is where the words may not mean exactly what they seem to say, but are used by way of trial to the per"
+    },
+    {
+     "ref": "2 Corinthians 13:5",
+     "note": "Examine yourselves, whether ye be in the faith; prove your own selves. The Hyperbaton ( q.v. ( heautous ), yourselves, is placed at the beginning of the sentence, (the object before the subject), sho"
+    }
+   ]
+  },
+  {
+   "id": "oxymoron",
+   "name": "Oxymoron / paradox",
+   "greek": "ὀξύμωρον",
+   "group": "emphasis",
+   "definition": "A pointed pairing of apparently contradictory terms that expresses a deeper truth.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 6:4"
+    },
+    {
+     "ref": "2 Corinthians 8:2",
+     "note": "Their deep poverty abounded unto the riches of their liberality. This is a most elegant Oxymoron"
+    },
+    {
+     "ref": "2 Corinthians 11:5",
+     "note": "In A.D. 62, he could say that he was less than the least of all saints, while, later than this, (A.D. 67), his knowledge of Gods grace made him see himself as the chief of sinners"
+    },
+    {
+     "ref": "2 Corinthians 12:10",
+     "note": "When I am weak, then am I strong. This is folly to the natural man, but blessed truth to those who know by experience the true wisdom"
+    },
+    {
+     "ref": "2 Corinthians 12:11",
+     "note": "In nothing am I behind the very chiefest apostles, though I be nothing"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:21"
+    },
+    {
+     "ref": "2 Corinthians 2:15"
+    },
+    {
+     "ref": "2 Corinthians 4:7",
+     "note": "Raiment 1s attributed to God"
+    },
+    {
+     "ref": "2 Corinthians 6:16",
+     "note": "In the thick darkness"
+    },
+    {
+     "ref": "2 Corinthians 8:9"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:1",
+     "note": "The house of our tabernacle: i.e., the house, that is to say, our tabernacle"
+    },
+    {
+     "ref": "2 Corinthians 5:5",
+     "note": "The earnest of the Spirit: i.e., the earnest, which is the Spirit. So 122"
+    },
+    {
+     "ref": "2 Corinthians 10:5",
+     "note": "Obedience of Christ: i.e., rendered to the Christ: i.e., loyalty to Him"
+    },
+    {
+     "ref": "2 Corinthians 11:26",
+     "note": "Dangers of rivers: dangers occasioned by rivers"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:8",
+     "note": "Of the trouble at Ephesus, at the close of his ministry there ( Acts 19 ), when his preaching the kingdom ends and the revelation of the Mystery begins"
+    },
+    {
+     "ref": "2 Corinthians 2:6",
+     "note": "Sufficient to such a man is, ), rebuke. See further under Idiom 2. NEGATIVELY When the emphasis is made by the use of the negative in order to express the positive in a very high degree, this is the"
+    },
+    {
+     "ref": "2 Corinthians 2:11",
+     "note": "We are not ignorant of his devices, i.e., we are very well aware of them"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:6"
+    },
+    {
+     "ref": "2 Corinthians 5:17"
+    },
+    {
+     "ref": "2 Corinthians 9:6",
+     "note": "He that soweth sparingly, sparingly shall reap also: he that soweth bountifully, bountifully shall reap also. Here is combined also the figure of Symploce ( q.v. ) in the repetition of the words sow a"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:8",
+     "note": "aporoumenoi ), but not in despair (, exaporoumenoi ), i.e., at a loss to know what to do, but not utterly at a loss"
+    },
+    {
+     "ref": "2 Corinthians 5:4",
+     "note": "ekdusasthai ), but, ependusasthai ): i.e., that we would not be found naked in the grave, but be clothed with our resurrection body. The figure belongs also to Paregmenon ( q.v"
+    },
+    {
+     "ref": "2 Corinthians 10:6",
+     "note": "Having in a readiness to revenge all disobedience (, parakoeen, hupakoee ) is fulfilled. So"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:2"
+    },
+    {
+     "ref": "2 Corinthians 6:12"
+    },
+    {
+     "ref": "2 Corinthians 9:9"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:5",
+     "note": "7 ). Missionary work: Received and minister"
+    },
+    {
+     "ref": "2 Corinthians 2:17",
+     "note": "We are not as many, which corrupt the word of God: but as of sincerity, but as of God, in the sight of God speak we in Christ: i.e., we speak really and truly sincere, pure, and Divine words"
+    },
+    {
+     "ref": "2 Corinthians 3:18",
+     "note": "We are all with unveiled face beholding as in a mirror (, katoptrizomenoi ) the glory of the Lord, are trans-figured to the same image, from glory to glory, even as from the Lordthe Spirit: i.e., re"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 7:5"
+    },
+    {
+     "ref": "2 Corinthians 7:24"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 7:11",
+     "note": "We have the repetition of the word yea to increase the effects and results of true godly sorrow for sin in seven particulars. Referring to six different aspects of their sorrow as manifested in three"
+    },
+    {
+     "ref": "2 Corinthians 11:26",
+     "note": "Here we have the repetition of in perils eight times"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 8:22",
+     "note": "And we have sent with them our brother, whom we have oftentimes (, pollakis ) proved diligent in many things (, pollois ). In the Greek the words come together, and in a different order: ( pollois…"
+    },
+    {
+     "ref": "2 Corinthians 9:8",
+     "note": "Having all sufficiency in all things, ( panti"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:3",
+     "note": "a Deity. Blessed be God. b Paternity. Even the Father. b Paternity. The Father of mercies. a Deity. And the God of all comfort"
+    },
+    {
+     "ref": "2 Corinthians 8:14",
+     "note": "a Equality. By an equality. 5 a a a Pauls commission. When they saw that the Gospel of the uncircumcision was committed unto me. b Peters. As the Gospel of circumcision was unto Peter. b Peters. For h"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:1",
+     "note": "The earthly house of this tabernacle, emphasizing this mortal body as being so different from the heavenly body"
+    },
+    {
+     "ref": "2 Corinthians 6:17",
+     "note": "For other illustrations see"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 7:1",
+     "note": "Let us cleanse ourselves from all filthiness of the flesh (i.e., of the body) and spirit. 6. THE FLESH is put for the whole person"
+    },
+    {
+     "ref": "2 Corinthians 11:25",
+     "note": "A night and a day have I done or made in the deep: i.e., I have passed or been in the deep"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 9:6"
+    },
+    {
+     "ref": "2 Corinthians 13:14",
+     "note": "suffers from various changes: fellowship, instead of communion; or, in addition to it, as though they were two different things: rest upon and abide; be and abide: for ever; now, henceforth, and for"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:5"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:3",
+     "note": "Lest your minds be corrupt, haplo teetos, hagno teetos ), that is towards (i.e., with reference to) Christ. This is the reading of the R.V., and is according to all the critical Greek Texts. In En"
+    }
+   ]
+  },
+  {
+   "id": "symploce",
+   "name": "Symploce",
+   "greek": "συμπλοκή",
+   "group": "repetition",
+   "definition": "Anaphora and epistrophe together — clauses that share both their opening and closing words.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 9:6",
+     "note": "Here the Greek exhibits a beautiful example of this figure. He that soweth sparingly, sparingly shall reap also: He that soweth bountifully, bountifully shall reap also. With this is combined the figu"
+    }
+   ]
+  },
+  {
+   "id": "epanodos",
+   "name": "Epanodos",
+   "greek": "ἐπάνοδος",
+   "group": "arrangement",
+   "definition": "Repetition of the chief words of a sentence in inverse order, to expound them.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:3",
+     "note": "a Blessed be God, b even the Father of our Lord Jesus Christ, b the Father of mercies, a and the God of all comfort. 3 John 11. a Follow not that which is evil, b but that which is good. b He that"
+    }
+   ]
+  },
+  {
+   "id": "parechesis",
+   "name": "Parechesis",
+   "greek": "παρήχησις",
+   "group": "emphasis",
+   "definition": "Repetition of like-sounding words, especially from a foreign tongue — sound-play across languages.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:17",
+     "note": "But as it were foolishly, in this confidence of boasting. Here, foolishness and boasting are (from the same root) ( hithallel ) and ( hith lel ). (d) With a different sound (but similar sense) Synon"
+    }
+   ]
+  },
+  {
+   "id": "periphrasis",
+   "name": "Periphrasis",
+   "greek": "περίφρασις",
+   "group": "substitution",
+   "definition": "Circumlocution: a description put in place of the plain name of a thing.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:1",
+     "note": "Our earthly house of this tabernacle: i.e., this body. 1 Thess. 4 In this chapter there are three examples of Periphrasis, all used for the Gentiles: Verse 5, which know not God. Verse 12, them th"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:8"
+    }
+   ]
+  },
+  {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 11:5"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 8:8",
+     "note": "The genuineness of your love: i.e., your genuine love"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 3:7",
+     "note": "If the ministration (or ministry) of death written and engraven in stones. It was the letters, not the ministry, which were engraven on stones"
+    }
+   ]
+  },
+  {
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:3",
+     "note": "The perishing are those who shall hereafter be destroyed, and who were then or are now on their way to destruction"
+    }
+   ]
+  },
+  {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 4:17",
+     "note": "18 contains several beautiful Antitheses"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 5:6"
+    }
+   ]
+  },
+  {
+   "id": "allegory",
+   "name": "Allegory",
+   "greek": "ἀλληγορία",
+   "group": "comparison",
+   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 3:2"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 6:16"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "2 Corinthians 1:10"
+    }
+   ]
+  }
+ ]
+}

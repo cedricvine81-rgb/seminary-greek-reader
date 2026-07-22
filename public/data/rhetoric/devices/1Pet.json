@@ -1,0 +1,400 @@
+{
+ "book": "1Pet",
+ "devices": [
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:6"
+    },
+    {
+     "ref": "1 Peter 1:7",
+     "note": "This usage would render"
+    },
+    {
+     "ref": "1 Peter 2:9",
+     "note": "That ye should show forth the praises of him who hath called you. And"
+    },
+    {
+     "ref": "1 Peter 3:7",
+     "note": "Giving honour unto the wife as unto the weaker vessel: i.e., nourishing and supporting her"
+    },
+    {
+     "ref": "1 Peter 3:10",
+     "note": "as it has also in our English idiom. To hear ( akouein ), to hear, is used idiomatically when followed by the accusative case. It then means, not only to hear the voice of the person speaking (which"
+    },
+    {
+     "ref": "1 Peter 3:15",
+     "note": "except by setting Him high above and apart from every other object of respect and veneration? Spirit was used in various combinations by the Hebrews to denote the greatest degree of any mental quality"
+    },
+    {
+     "ref": "1 Peter 3:18",
+     "note": "Quickeneth, maketh alive"
+    },
+    {
+     "ref": "1 Peter 4:5",
+     "note": "is the Anglo-Saxon cwic, alive, as opposite to dead. Now we use it in the sense of lively as opposite to sluggish. So Quicken means to make alive"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:9",
+     "note": "Receiving the end (i.e., reward) of your faith. 7. FEAST-DAY is put for the sacrifices offered at the Festival"
+    },
+    {
+     "ref": "1 Peter 2:6",
+     "note": "where the cause is put. The sense is that he that believeth will have no need of hurried flight, he will wait Gods time. iv. The THING MADE, for the material from which it is made or produced"
+    },
+    {
+     "ref": "1 Peter 2:17",
+     "note": "Love the brotherhood: i.e., the brethren"
+    },
+    {
+     "ref": "1 Peter 2:24"
+    },
+    {
+     "ref": "1 Peter 3:4",
+     "note": "Let it be the hidden man of the heart: i.e., the new nature implanted within. 22. BELLY is put for heart or thoughts"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:19"
+    },
+    {
+     "ref": "1 Peter 2:4"
+    },
+    {
+     "ref": "1 Peter 2:7"
+    },
+    {
+     "ref": "1 Peter 2:25"
+    },
+    {
+     "ref": "1 Peter 3:12",
+     "note": "It is used of Jehovah Himself, for emphasis"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:9",
+     "note": "Receiving the end of your faith, even the salvation of your souls: i.e., of yourselves. 3. SOUL (, nephesh ) is also used of animals; and when joined with the word living ( khayah ), means living…"
+    },
+    {
+     "ref": "1 Peter 2:13",
+     "note": "Submit yourselves to every ordinance of man. ktisis ): i.e., institution. ( anthr pinee 3. DOMICILE is put for prison"
+    },
+    {
+     "ref": "1 Peter 3:18",
+     "note": "Being put to death as to the flesh (i.e., as to his human nature), but quickened (i.e., raised from the dead) as to his spirit (i.e., his resurrection or spiritual body). There is no article with e"
+    },
+    {
+     "ref": "1 Peter 3:20"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:16"
+    },
+    {
+     "ref": "1 Peter 1:24"
+    },
+    {
+     "ref": "1 Peter 2:6"
+    },
+    {
+     "ref": "1 Peter 2:7"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:2",
+     "note": "Sanctification of [the] Spirit: i.e., spiritual sanctification, or perhaps it may be the Genitive of Origin, and mean that sanctification of which the Spirit is the author and source"
+    },
+    {
+     "ref": "1 Peter 1:14"
+    },
+    {
+     "ref": "1 Peter 2:19"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:25"
+    },
+    {
+     "ref": "1 Peter 2:6",
+     "note": "Wherefore also it is contained in the Scriptures, lit., it contains: i.e., there is a passage in the Scripture. 3. Middle for Passive"
+    },
+    {
+     "ref": "1 Peter 5:3",
+     "note": "Not as being lords over Gods heritages: i.e., great heritage. The word God is repeated, by Ellipsis, from verse 2, and presents the same truth as"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:10",
+     "note": "Which in time past were not a people"
+    },
+    {
+     "ref": "1 Peter 5:4"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:9",
+     "note": "this is put literally, instead of (as here) by Antiptosis"
+    },
+    {
+     "ref": "1 Peter 3:20",
+     "note": "The longsuffering of God: i.e., the longsuffering God. There are other exchanges of case beside that of the absolute for the construct. But these are for the most part peculiar to Greek usage"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 3:7",
+     "note": "where ( skeuos ), a vase or utensil, is used for the Heb. ( klee ), which has a wider meaning, instrument or weapon"
+    },
+    {
+     "ref": "1 Peter 3:14",
+     "note": "dikaiosunee ), righteousness, is used of ordinary piety, kindness"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:7",
+     "note": "To you therefore is the preciousness[ unto you | who believe. The subject is put last in order to emphasize the fact that the Lord Jesus is precious only to believers and to none else"
+    },
+    {
+     "ref": "1 Peter 3:21",
+     "note": "The order and emphasis of the Greek 1s: Which [ water Jin the antitypenow saves you alsonamely, baptism: not a putting away of bodily defilement, but an appeal of a good conscience to God, through t"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:25",
+     "note": "Ye were as sheep going astray; but are now returned unto the Shepherd and Bishop of your souls. Here we have Simile, which stands in marked contrast to the Proverb in"
+    },
+    {
+     "ref": "1 Peter 4:10",
+     "note": "with the Divine promise, Rain and snow: the word of God"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:25",
+     "note": "we see how forcible is the difference between the saved sinner and the reformed character. The saint may go astray, and the ungodly may reform; but they both turn again, the one to his Shepherd, and t"
+    },
+    {
+     "ref": "1 Peter 5:3"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:3",
+     "note": "But when the resurrection of Christ, or that of ( ek ), out of or from among, is always used"
+    },
+    {
+     "ref": "1 Peter 2:19",
+     "note": "Conscience of God: i.e., conscience toward God"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:3"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:22",
+     "note": "Thus faith is the source out of which all virtues must spring, and love is the point to which all such virtues tend. Hence, Whatsoever is not of faith is sin"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 3:1",
+     "note": "That, if any obey not the word [ t log: i.e., the Gospel], they also may without the word [, logou: i.e., speaking or talking] be won by the conversation of the wives. Synceiosis; or, Cohabitatio"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:4"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 2:5",
+     "note": "who are built up a spiritual house, are as completely covered with the Divine and the glorious righteousness of"
+    }
+   ]
+  },
+  {
+   "id": "epitheton",
+   "name": "Epitheton",
+   "greek": "ἐπίθετον",
+   "group": "substitution",
+   "definition": "Naming a thing by an attribute or adjunct added to it (“John the Baptist”).",
+   "occurrences": [
+    {
+     "ref": "1 Peter 4:3",
+     "note": "Abominable idolatriesabominable things: i.e., the worship of"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:2"
+    }
+   ]
+  },
+  {
+   "id": "metaphor",
+   "name": "Metaphor",
+   "greek": "μεταφορά",
+   "group": "comparison",
+   "definition": "An implied comparison that calls one thing another (“A is B”), without “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "1 Peter 1:24",
+     "note": "the Metaphor carries the figure across at once, and says All flesh IS grass"
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,645 @@
+{
+ "book": "Eph",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:10"
+    },
+    {
+     "ref": "Ephesians 1:21",
+     "note": "Here, the attributes are put for the beings who possess them:Far above all princes, and powerful beings, and mighty ones, and lords: i.e., all"
+    },
+    {
+     "ref": "Ephesians 2:2",
+     "note": "Wherein in time past ye walked according to the age of this world: i.e., according to the practices, and customs, and follies of the world"
+    },
+    {
+     "ref": "Ephesians 4:5",
+     "note": "One Lord, one faith (i.e., doctrine), one baptism"
+    },
+    {
+     "ref": "Ephesians 4:22"
+    },
+    {
+     "ref": "Ephesians 4:23"
+    },
+    {
+     "ref": "Ephesians 4:24"
+    },
+    {
+     "ref": "Ephesians 5:2"
+    },
+    {
+     "ref": "Ephesians 5:6",
+     "note": "For because of these things cometh the wrath of God upon the children of disobedience: i.e., the punishments inflicted by God on account"
+    },
+    {
+     "ref": "Ephesians 5:8",
+     "note": "For ye were sometimes darkness (i.e., dark and ignorant), but now are ye light (i.e., enlightened ones) in the Lord. il. The CONTENTS, for that which contains them: and what is placed, for the place…"
+    },
+    {
+     "ref": "Ephesians 5:16",
+     "note": "Redeeming the time, because the days are evil: i.e., because of the evil deeds that are done"
+    },
+    {
+     "ref": "Ephesians 5:18",
+     "note": "Be filled with the Spirit: i.e., not with the Person of the Holy Spirit surely! but with His operations: i.e., with the gifts which come through the ministry of the Word; as is clear from"
+    },
+    {
+     "ref": "Ephesians 6:12",
+     "note": "The rulers of the darkness of this age: i.e., of all the dark things done in this world; the word age pointing to a time coming when that rule will be done away. See under Anaphora and Antimereia"
+    },
+    {
+     "ref": "Ephesians 6:16",
+     "note": "we learn that it is through Christ; who is the shield which faith uses. iii. The EFFECT for the thing or action causing or producing it (a) In NOUNS"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:7",
+     "note": "According to the riches (i.e., the great abundance or wealth) of his grace"
+    },
+    {
+     "ref": "Ephesians 1:13"
+    },
+    {
+     "ref": "Ephesians 1:14",
+     "note": "meant a pledge; but differing from an ordinary pledge in this, that while a pledge might be of a different kind, the earnest was a pledge of the same kind. Fast"
+    },
+    {
+     "ref": "Ephesians 1:18"
+    },
+    {
+     "ref": "Ephesians 2:1"
+    },
+    {
+     "ref": "Ephesians 2:2"
+    },
+    {
+     "ref": "Ephesians 2:3"
+    },
+    {
+     "ref": "Ephesians 3:8",
+     "note": "The unsearchable (or the untrackable) riches ( i.e., wealth or greatness) of Christ. This greatness consisting of all Gods purposes in Christ as set forth in this epistle; which the Old Testament sai"
+    },
+    {
+     "ref": "Ephesians 5:6",
+     "note": "It does not say that Gods children were such, but only that we had our conversation among them. We were, by nature, sons of wrath"
+    },
+    {
+     "ref": "Ephesians 5:14",
+     "note": "we have two imperatives and then the future. 11. Special idiomatic usages of Nouns and Verbs (1) Noun ( in regimen ) for Adjective. See under Heterosis. (2) Noun (a second) for Adjective"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:7"
+    },
+    {
+     "ref": "Ephesians 1:10",
+     "note": "The FACE, to signify presence. It is used of the Divine presence in happiness and of Divine favour"
+    },
+    {
+     "ref": "Ephesians 1:22",
+     "note": "23; 4:12,15,16. The HEAD is spoken of Christ"
+    },
+    {
+     "ref": "Ephesians 2:20",
+     "note": "21; and foundation and stumbling stone"
+    },
+    {
+     "ref": "Ephesians 3:18",
+     "note": "Magnitude or greatness is attributed to God"
+    },
+    {
+     "ref": "Ephesians 4:10",
+     "note": "ete. A FINGER is attributed to God, to denote the putting forth of His formative power, and the direct and immediate act of God"
+    },
+    {
+     "ref": "Ephesians 4:30"
+    },
+    {
+     "ref": "Ephesians 5:2"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 2:8",
+     "note": "The gift of God: i.e., which God gives"
+    },
+    {
+     "ref": "Ephesians 4:3",
+     "note": "The bond of peace: i.e., the bond, which is peace"
+    },
+    {
+     "ref": "Ephesians 4:9",
+     "note": "The lower parts of the earth: i.e., the lower parts, that is to say, the earth"
+    },
+    {
+     "ref": "Ephesians 4:16",
+     "note": "Every joint of the supply: i.e., every joint or sensation for the purpose of supply, or with a view to supply"
+    },
+    {
+     "ref": "Ephesians 4:18",
+     "note": "Being alienated from the life of God: i.e., destitute of the life which God gives"
+    },
+    {
+     "ref": "Ephesians 6:14",
+     "note": "The breastplate of righteousness. Here, it is not the genitive of possession as in verses 16 and 17, but of apposition, Christs righteousness being our breastplate"
+    },
+    {
+     "ref": "Ephesians 6:16",
+     "note": "The shield of faith: i.e., faiths shield. The shield which faith possesses and uses: viz., Christ"
+    },
+    {
+     "ref": "Ephesians 6:17",
+     "note": "The sword of the Spirit: i.e., the Spirits sword, which is the word of God"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:6",
+     "note": "To the praise of the glory of His grace: i.e., of His glorious grace. * Sometimes it is the latter that is put for the adjective"
+    },
+    {
+     "ref": "Ephesians 2:2",
+     "note": "Children of this world"
+    },
+    {
+     "ref": "Ephesians 2:3",
+     "note": "Fulfilling the desires of the flesh and of the mind: i.e., coarse fleshly lusts, and refined mental lusts; for there is no difference between these in Gods sight, though there may be in mans"
+    },
+    {
+     "ref": "Ephesians 2:13"
+    },
+    {
+     "ref": "Ephesians 4:22",
+     "note": "Lusts of deceit: i.e., deceitful lusts; or lusts which deceive, and are the instruments of deceit. Verse 24: Righteousness and holiness of truth: i.e., true righteousness and holiness, as contrasted…"
+    },
+    {
+     "ref": "Ephesians 5:8",
+     "note": "Children of the devil"
+    },
+    {
+     "ref": "Ephesians 6:12",
+     "note": "The spiritual [ powers, bands, hosts ] of wickedness: i.e., wicked spirits"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:4",
+     "note": "and is not, therefore, the subject of prophecy, as is the kingdom and dominion in the earth, which was from the foundation of the world"
+    },
+    {
+     "ref": "Ephesians 1:21"
+    },
+    {
+     "ref": "Ephesians 2:8",
+     "note": "and therefore it is not added to anything. It is the precious faith which is obtained through the righteousness of God (verse | ). * See under the figures of Ellipsis and Polyptoton. See under the"
+    },
+    {
+     "ref": "Ephesians 2:15",
+     "note": "The Church was before creation, before the foundation of the world"
+    },
+    {
+     "ref": "Ephesians 4:30"
+    },
+    {
+     "ref": "Ephesians 4:31",
+     "note": "Let all bitterness (, pikria, the opposite of, chreestoi, verse 32, kind ). and wrath (, thumos, the opposite of, eusplangchnoi tender- hearted ), and, orgee, the opposite of, charizomenoi"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Ephesians 2:21",
+     "note": "In whom all the building, fitly framed together, groweth unto an holy temple in the Lord: i.e., the whole building; ( pasa ), every being put for every part of it"
+    },
+    {
+     "ref": "Ephesians 3:15",
+     "note": "Of whom the whole family in heaven and earth is named. Here, the R.V. has rendered the figure literally every family, which is not sense, but in the margin has put Gr. fatherhood. Every here is used"
+    },
+    {
+     "ref": "Ephesians 4:13",
+     "note": "Till we shall all have come into (i.e., arrived at) the unity of the faith"
+    },
+    {
+     "ref": "Ephesians 6:12",
+     "note": "We wrestle not against flesh and blood: i.e., against human beings, in contrast with wicked spiritual beings. See under Metonymy of Adjunct"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:7",
+     "note": "The riches of his grace. By Enallage this would be gracious riches, but it means more than this. Grace is the subject, and it is the"
+    },
+    {
+     "ref": "Ephesians 1:18",
+     "note": "The riches of his glory denotes the exceeding rich glory of His inheritance in the saints"
+    },
+    {
+     "ref": "Ephesians 4:29",
+     "note": "Building up or edifying of the need. The A.V. renders thisUse of edifying; but it is the word use (or need) which is in the genitive case, and not the word edifying. The R.V. renders it Edifying as th"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:8",
+     "note": "According to the riches (or wealth) of His grace which (grace) he hath made to overflow into us"
+    },
+    {
+     "ref": "Ephesians 2:6",
+     "note": "Believers are regarded as already raised from the dead and seated in the heavenly places"
+    },
+    {
+     "ref": "Ephesians 6:16",
+     "note": "In Pronouns the singular is frequently put for the plural"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 4:11",
+     "note": "And he gave some, apostles; and some, prophets; and some, evangelists; and some, pastors and teachers: i.e., pastors (or shepherds), yesshepherds who should feed too; or teachers, yesteachers who sh"
+    },
+    {
+     "ref": "Ephesians 5:5",
+     "note": "Hath any inheritance in the kingdom of Christ and of God: Le., the kingdom of Christ, yesof Christ who is truly God"
+    },
+    {
+     "ref": "Ephesians 6:18",
+     "note": "Praying always with all prayer and supplication in the Spirit, and watching thereunto with all perseverance and supplication for all saints: i.e., praying with all prayer (this is Polyploton, q.v"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:20",
+     "note": "Having raised him he set him"
+    },
+    {
+     "ref": "Ephesians 2:2"
+    },
+    {
+     "ref": "Ephesians 5:27"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:5"
+    },
+    {
+     "ref": "Ephesians 3:8",
+     "note": "Who am less than the least of all saints. This marks the apostles growth in grace, who a year after could say he was the chief of sinners"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:3",
+     "note": "Blessed (, eulogeetos ) be the God and Father of our Lord Jesus Christ, who hath blessed, ho eulogeesas ) us with all spiritual blessings (, eulogia ) in heavenly places (or spheres ) in Christ: 1"
+    },
+    {
+     "ref": "Ephesians 6:18",
+     "note": "Praying always with all prayer, i.e., earnestly praying"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:20"
+    },
+    {
+     "ref": "Ephesians 5:19",
+     "note": "Here the three synonyms, Psalms, and hymns, and spiritual songs, are used to emphasize the true inward and spiritual occupation of the heart with Christ, which is at once the result of being filled"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:5",
+     "note": "Which (i.e., the Mystery) in other ages was not made known unto the sons of men: i.e., to any human being. It is according to this Figure or Hebraism that Christ is called the Son of Man, as the man"
+    },
+    {
+     "ref": "Ephesians 4:23",
+     "note": "And be renewed in the spirit of your mind: i.e., that your whole new nature or inner man being a new creation, Divine in its origin and impeccable in its character now causes the whole course of lif"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:7",
+     "note": "Redemption through his blood: i.e., through the merits of His atoning death"
+    },
+    {
+     "ref": "Ephesians 2:13",
+     "note": "But now in Christ Jesus ye who sometimes were far off are made nigh by the blood of Christ: i.e., by His death, not by His life: yet not"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 4:21",
+     "note": "As the truth is in Jesus, which is a very different thing. The former implies that there is truth apart from Him. But the latter implies that the truth is in Jesus, and nowhere else. A nation shall"
+    },
+    {
+     "ref": "Ephesians 5:32",
+     "note": "shows us that it was also synonymous with the Latin sacramentum, which is there used to represent the Greek mysteerion. So that the sacramentum of the Latin Vulgate meant simply a symbol. Sacramentu"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 4:8",
+     "note": "This is supposed to be a case where there is a difference of reading. The English is: and gave gifts unto men. But the Hebrew of"
+    },
+    {
+     "ref": "Ephesians 5:31"
+    }
+   ]
+  },
+  {
+   "id": "oxymoron",
+   "name": "Oxymoron / paradox",
+   "greek": "ὀξύμωρον",
+   "group": "emphasis",
+   "definition": "A pointed pairing of apparently contradictory terms that expresses a deeper truth.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:8",
+     "note": "Less than the least of all saints. This pleasing Oxymoron emphasises the apostles growth in grace (i.e., in his knowledge of what grace was to him, and what it had done for him). Before this, (in A.D"
+    },
+    {
+     "ref": "Ephesians 4:18"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 4:32",
+     "note": "Contrast this with the Polysyndeton in verse 31. And be ye kind one to another, tenderhearted, forgiving one another, even as God for Christs sake hath forgiven you. (Lit. like as GOD also"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:9",
+     "note": "Lit. And to enlighten all [ as to ] what [ is ] the dispensation of the Mystery which has been hidden away, away, from the ages in [or by] God. Showing the completeness with which the secret was…"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 6:12",
+     "note": "For we wrestle not against flesh and blood, but against principalities, against powers, against the rulers of the darkness of this world, against spiritual wickedness in high places. This is to emphas"
+    }
+   ]
+  },
+  {
+   "id": "epanalepsis",
+   "name": "Epanalepsis",
+   "greek": "ἐπανάληψις",
+   "group": "repetition",
+   "definition": "Resumption of a word or thought after an intervening parenthesis.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:1"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 5:14"
+    }
+   ]
+  },
+  {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "Ephesians 3:8",
+     "note": "while at the end of his life he says, I am the chief of sinners!"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 2:5",
+     "note": "by grace ye are saved"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 1:9",
+     "note": "The mystery of His will. The word ( musteerion ) rendered mystery always means a secret. And here it is the Secret pertaining to Gods purpose: i.e., the Secret which He hath purposed; or, by the fig"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 6:8",
+     "note": "Whatsoever thing each may have done that is good. Here the adjective is held over to the last in order to emphasize it"
+    }
+   ]
+  },
+  {
+   "id": "allegory",
+   "name": "Allegory",
+   "greek": "ἀλληγορία",
+   "group": "comparison",
+   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 6:11"
+    }
+   ]
+  },
+  {
+   "id": "erotesis",
+   "name": "Rhetorical question",
+   "greek": "ἐρώτησις",
+   "group": "emphasis",
+   "definition": "A question asked for effect, not for an answer — to affirm, deny, or provoke thought.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 2:13",
+     "note": "from God. While the first question in the New Testament reveals the effect of this on the sinners heart, causing him to turn to that Saviour whom the New Testament reveals, and cry, WHERE IS HE ? T"
+    }
+   ]
+  },
+  {
+   "id": "protherapeia",
+   "name": "Protherapeia",
+   "greek": "προθεραπεία",
+   "group": "emphasis",
+   "definition": "Conciliation — softening words used first to win a hearing for what follows.",
+   "occurrences": [
+    {
+     "ref": "Ephesians 2:13"
+    }
+   ]
+  }
+ ]
+}

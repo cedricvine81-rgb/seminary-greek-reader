@@ -1,0 +1,204 @@
+{
+ "book": "2Thess",
+ "devices": [
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 2:2",
+     "note": "R.V., and the former revealed in"
+    },
+    {
+     "ref": "2 Thessalonians 2:4",
+     "note": "and authority was given him to continue forty and two months"
+    },
+    {
+     "ref": "2 Thessalonians 2:6",
+     "note": "under Ellipsis. * See a small pamphlet, Things to Come, by the same author and publisher. The chapter is too long to quote here in full, but if all the many ands be noted and marked, the importance"
+    },
+    {
+     "ref": "2 Thessalonians 2:9",
+     "note": "10 ). and I saw one of his heads, as it were, wounded to death (similar to verses 6, 12,14), and his deadly wound was healed; and all the world wondered [| and followed | after the beast ( 3:10. 2 T"
+    },
+    {
+     "ref": "2 Thessalonians 2:11",
+     "note": "12 ), whose names are not written in the book of life"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 1:7",
+     "note": "The angels of His power: i.e., His mighty angels, with great emphasis on mighty. (See margin"
+    },
+    {
+     "ref": "2 Thessalonians 2:3",
+     "note": "The man of sin: i.e., the man characterized by sin, the sinful or wicked man, with the emphasis on sinful. The son of perdition. (See under Metonomy, for the use of the word son"
+    },
+    {
+     "ref": "2 Thessalonians 2:7"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 2:3"
+    },
+    {
+     "ref": "2 Thessalonians 2:7",
+     "note": "must not be translated literally, arise or become developed out of the midst, as is done by a certain school of prophetic students; because it is a Greek idiom for being out of the way, and always"
+    },
+    {
+     "ref": "2 Thessalonians 2:11",
+     "note": "For this cause God shall send them strong delusion, that they should believe a lie: i.e., God will leave them and suffer them to be deceived by the great Lie which will come on all the world. 5. Acti"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 1:11",
+     "note": "We pray that our God would count you worthy of this calling: i.e., of that for which He has called you: viz., to deliver you out of the tribulation; so that He may be glorified in His saints before…"
+    },
+    {
+     "ref": "2 Thessalonians 2:8"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 1:10",
+     "note": "elthee ) to be glorified in his saints, and to be admired in all them that believe in that day: i.e., the whole body of believers. In like manner every (i.e., all) is used for the whole in"
+    },
+    {
+     "ref": "2 Thessalonians 3:11",
+     "note": "For we hear that there are some which walk among you disorderly, working not at all, but are busybodies. The negative does not deny working universally, but working of a particular kind: i.e., not"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 3:9"
+    },
+    {
+     "ref": "2 Thessalonians 3:10",
+     "note": "Tit. T15 NON-CANONICAL, OR, SUPPOSED SCRIPTURE, PROVERBS *"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 1:9",
+     "note": "The face of the Lord. Here, it is rendered presence. See under Ellipsis. So"
+    },
+    {
+     "ref": "2 Thessalonians 2:8"
+    }
+   ]
+  },
+  {
+   "id": "syllogismus",
+   "name": "Syllogismus",
+   "greek": "συλλογισμός",
+   "group": "omission",
+   "definition": "The conclusion is left unstated, so the hearer is made to draw it — an unspoken inference.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 3:10",
+     "note": "If any would not work, neither should he eat. Here the conclusion is to be supplied: Every man must eat; therefore every man must work: for it is not meant that a mans food is to be withdrawn from him"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 2:4",
+     "note": "in the heart (, i.e., in the heart ) of the seas; yet thou art a man and not God, though thou set thine heart () as the heart ( ) of God"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 3:11",
+     "note": "ergazomenous ) not at all, but are busybodies (, periergazomenous ). It is difficult to express the thought in English. The latter word means to overdo anything; to do with pains what is not worth do"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 2:3",
+     "note": "Except there come the apostacy first: i.e., before it"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "2 Thessalonians 3:5",
+     "note": "The patience of Christ (margin, and R.V. ): i.e., Christs patient (hypomonee ), which always has the idea of endurance and waiting"
+    }
+   ]
+  }
+ ]
+}

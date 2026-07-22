@@ -1,0 +1,427 @@
+{
+ "book": "Phil",
+ "devices": [
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:13"
+    },
+    {
+     "ref": "Philippians 2:8",
+     "note": "And being found (i.e., present) in fashion as a man he humbled himself"
+    },
+    {
+     "ref": "Philippians 2:21"
+    },
+    {
+     "ref": "Philippians 3:9",
+     "note": "And be found (i.e., be present) in him"
+    },
+    {
+     "ref": "Philippians 3:11",
+     "note": "If by any means I might attain unto (i.e., arrive at) the out-rising, that one from among the dead. * Paul is saying this from his point of view as a Jew, and not that of a saint. He is speaking of w"
+    },
+    {
+     "ref": "Philippians 3:19",
+     "note": "Whose God is their belly: Le., themselves, and what they can get"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:13",
+     "note": "My bonds in Christ are manifest in all the palace: i.e., the effect of his preaching made it manifest that his bonds were on account of his service for Christ, and not for any crimes"
+    },
+    {
+     "ref": "Philippians 1:16",
+     "note": "Supposing to add affliction to my bonds: i.e., my captivity. See also under Prosapodosis"
+    },
+    {
+     "ref": "Philippians 1:21",
+     "note": "To me to live is Christ: i.e., to serve Christ, to work and labour for Him. 2. Verbs Where the action is put for the declaration concerning it: or where what is said to be done is put for what is dec"
+    },
+    {
+     "ref": "Philippians 2:9",
+     "note": "Metalepsis; or, Double Metonymy Two Metonymies, one contained in the other, but only one expressed Met -a-lep sis, from ( m ta ), behind, and (leip ), to leave, a leaving behind The Figure is so cal"
+    },
+    {
+     "ref": "Philippians 2:10"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "Philippians 2:6",
+     "note": "R.V. ). Equality with God was not a thing to be obtained, but a thing to be either inherently possessed (as He possessed it as the Son of God), or to be received as the gift of God (as He received it…"
+    },
+    {
+     "ref": "Philippians 3:2",
+     "note": "Note the repetition of the word beware"
+    },
+    {
+     "ref": "Philippians 4:2",
+     "note": "I beseech Euodias, and beseech Syntyche"
+    },
+    {
+     "ref": "Philippians 4:8",
+     "note": "We have here the repetition of the word whatsoever things with which the figure of Asyndeton ( q.v. ) is combined, in order to emphasize the important conclusion Think on these things: and these thin"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:23",
+     "note": "Having a desire unto the return: i.e., ( lit. ) unto the to return ( i.e., the ( analu ), to loosen back again, but always from there to here; hence, to return (not from here to there, which would"
+    },
+    {
+     "ref": "Philippians 2:6",
+     "note": "Equal with God: i.e., on an equality with God. This is what the first man grasped at, tempted and deceived by the Old Serpent. But Christ, the second man, the last Adam, did not think it a matter to"
+    },
+    {
+     "ref": "Philippians 3:21",
+     "note": "Who shall change the body of our humiliation ( i.e., our corruptible body) that it may be fashioned like unto His body of glory (Le., his glorious body): with emphasis on corruptible and glorious"
+    },
+    {
+     "ref": "Philippians 4:5",
+     "note": "Let your moderate be known unto all men: i.e., your moderation"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Philippians 2:23",
+     "note": "meant immediately. Prevent"
+    },
+    {
+     "ref": "Philippians 3:15",
+     "note": "As many as be (i.e., would be, or try to be) perfect"
+    },
+    {
+     "ref": "Philippians 4:8"
+    },
+    {
+     "ref": "Philippians 4:18",
+     "note": "episcopoi ), overseers (A.V., bishops), is used of civil functionaries in Rhodes, in the first centuries, both B.C. and A.D.; and also of an official in the temple of Apollo. ( presbyteroi ), elde"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Philippians 4:3"
+    },
+    {
+     "ref": "Philippians 4:6"
+    },
+    {
+     "ref": "Philippians 4:18"
+    },
+    {
+     "ref": "Philippians 4:19",
+     "note": "An Inheritance is attributed to God"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:11",
+     "note": "The resurrection of the dead, there is more than one thing to remark. First, note that the word resurrection here is not the ordinary word. It ( exanastasis ), out-resurrection. Secondly, that the re"
+    },
+    {
+     "ref": "Philippians 4:7",
+     "note": "The peace of God: i.e., Gods peace; the peace which reigns in His presence, where the end is known from the beginning, producing a peace which nothing can therefore disturb. It is the unknown future"
+    },
+    {
+     "ref": "Philippians 4:9",
+     "note": "The God of peace: i.e., the God who has made peace and gives peace. This differs from the peace of God. See below under the genitive of Possession"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:3",
+     "note": "For we are the circumcision, which worship God in the spirit, and rejoice in Christ Jesus, and have no confidence in the flesh. Thus the Spirit emphasises these three great fundamental principles of C"
+    },
+    {
+     "ref": "Philippians 4:9"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:2",
+     "note": "Beware of the katatomee ( ): for we are the peritomee ( ). Thus are contrasted the false and the true circumcision. True circumcision 1s to worship God in the spirit, to rejoice in Christ Jesus, and t"
+    },
+    {
+     "ref": "Philippians 3:3",
+     "note": "It is of the heart in spirit, and not in letter"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:16",
+     "note": "To walk by the same rule: i.e., let us walk, or walk ye. Other examples may be seen in"
+    },
+    {
+     "ref": "Philippians 3:20"
+    }
+   ]
+  },
+  {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:7",
+     "note": "But what things were gain to me, those I counted loss for Christ. Note that, by Antithesis, our attention is called to the fact that Paul is here speaking, by the Spirit, of his gains, not of his sin"
+    },
+    {
+     "ref": "Philippians 3:9",
+     "note": "And be found in him (Christ), not having mine own righteousness, which is of the law, but that [ righteousness |] which is through the faith of Christ, the righteousness which is of God by faith. See"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:57",
+     "note": "Though I might also have confidence in the flesh (Greek:Though I might have confidence IN THE FLESH also). If any other man thinketh that he hath whereof he might boast in the flesh, I more: Circumcis"
+    }
+   ]
+  },
+  {
+   "id": "epanalepsis",
+   "name": "Epanalepsis",
+   "greek": "ἐπανάληψις",
+   "group": "repetition",
+   "definition": "Resumption of a word or thought after an intervening parenthesis.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:22"
+    }
+   ]
+  },
+  {
+   "id": "epanadiplosis",
+   "name": "Epanadiplosis",
+   "greek": "ἐπαναδίπλωσις",
+   "group": "repetition",
+   "definition": "A clause encircled — beginning and ending with the same word.",
+   "occurrences": [
+    {
+     "ref": "Philippians 4:4",
+     "note": "Rejoice in the LORD alway: and again I say Rejoice. James 2:1416. The passage begins and ends with the words, What doth it profit. (such as Pss. 8, ciii"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "Philippians 2:8",
+     "note": "And being found in fashion as a man, he became obedient unto death, the death of the cross"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:5",
+     "note": "A Hebrew of the Hebrews, i.e., a thorough Hebrew. See this verse under Asyndeton"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Philippians 4:9",
+     "note": "Those things which ye have both learned, and received, and heard, and seen in me, do"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:23",
+     "note": "Which is far better. Here, the return of Christ is declared to be poll ), much; ( mallon ), more; ( kreisson ), better, than either living or dying; out of ) which two he was being pressed by that"
+    }
+   ]
+  },
+  {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "Philippians 2:68",
+     "note": "Who, being in the form of God, 1. Thought it not robbery to be equal with God: 2. But made himself of no reputation. 3. And took upon him the form of a servant, 4. And was made in the likeness of men"
+    }
+   ]
+  },
+  {
+   "id": "epitherapeia",
+   "name": "Epitherapeia",
+   "greek": "ἐπιθεραπεία",
+   "group": "emphasis",
+   "definition": "A qualifying clause added to soften or secure a statement just made.",
+   "occurrences": [
+    {
+     "ref": "Philippians 4:10",
+     "note": "I rejoiced in the Lord greatly, that now, at the last, your care of me hath flourished again; wherein ye were careful also, but ye lacked"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Philippians 4:5",
+     "note": "The immutability of his counsel: i.e., his immutable counsel"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:25",
+     "note": "I know that I shall abide and continue with you all for your furtherance and joy of faith. Here, in each case, there are two distinct ideas: the abiding in life, and continuing with the Philippian sai"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "Philippians 1:8",
+     "note": "splangna ), bowels, 1s used for mercy, like the Heb., ( rachameem ), which has both meanings"
+    }
+   ]
+  },
+  {
+   "id": "hysteronproteron",
+   "name": "Hysteron-proteron",
+   "greek": "ὕστερον πρότερον",
+   "group": "arrangement",
+   "definition": "The natural order of two things reversed, the later put first (“let us live and move”).",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:19",
+     "note": "has been cited: Whose end is destruction, whose God is their belly, and whose glory is in their shame, who mind earthly things. Here, the end is put first: in order that the mind may dwell with the gr"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Philippians 3:17"
+    }
+   ]
+  }
+ ]
+}

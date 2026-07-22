@@ -1,0 +1,577 @@
+{
+ "book": "Gal",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:6",
+     "note": "Another gospel: it was not the Gospel, though it was so called"
+    },
+    {
+     "ref": "Galatians 1:8"
+    },
+    {
+     "ref": "Galatians 1:23",
+     "note": "He now preacheth the faith which once be destroyed: i.e., the doctrine which he had now believed"
+    },
+    {
+     "ref": "Galatians 2:9",
+     "note": "To place the hand on is put for association"
+    },
+    {
+     "ref": "Galatians 2:12",
+     "note": "For before that certain came from James: i.e., from Jerusalem, where James presided"
+    },
+    {
+     "ref": "Galatians 3:2",
+     "note": "Received ye the Spirit (i.e., the gifts of the Spirit) by the works of the law, or by the hearing of faith? Verse 5: He, therefore, that ministereth to you the Spirit (i.e., the gifts of the Spirit"
+    },
+    {
+     "ref": "Galatians 3:7",
+     "note": "29; 4:28. 7. COVENANT is put for the two tables of stone"
+    },
+    {
+     "ref": "Galatians 3:8"
+    },
+    {
+     "ref": "Galatians 3:13",
+     "note": "Being made a curse for us: i.e., accursed, one under the curse of the Law"
+    },
+    {
+     "ref": "Galatians 3:17",
+     "note": "where the period refers not to the sojourning of Abrahams seed (which could not commence till Isaac was born, thirty years after the promise), but includes that of Abraham himself, the sum is given as"
+    },
+    {
+     "ref": "Galatians 3:23",
+     "note": "Before faith came: i.e., before the Gospel was declared, and brought a new object for faith"
+    },
+    {
+     "ref": "Galatians 4:14",
+     "note": "where it is rendered despise: and"
+    },
+    {
+     "ref": "Galatians 4:15",
+     "note": "Where is then the blessedness ye spake of: i.e., how great was that blessedness ye spake of! for"
+    },
+    {
+     "ref": "Galatians 5:5",
+     "note": "We through the Spirit wait for the hope of righteousness by faith: i.e., life eternal, which is promised to the righteous by faith: The just shall live (i.e., have eternal life) by faith"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:15",
+     "note": "16 Paul says, When it pleased God"
+    },
+    {
+     "ref": "Galatians 1:16",
+     "note": "which is most significant. Paul was the wise master-builder. Paul was the first to preach Christ as the Son of God, as declared in"
+    },
+    {
+     "ref": "Galatians 2:16"
+    },
+    {
+     "ref": "Galatians 4:2",
+     "note": "Also of a land-steward, or as we"
+    },
+    {
+     "ref": "Galatians 4:21",
+     "note": "Ye, that desire to be under law, do ye not hear (i.e., understand) the Law?"
+    },
+    {
+     "ref": "Galatians 5:4",
+     "note": "Whosoever of you are justified (i.e., seek to be justified) by the law; ye are fallen from grace: for chap. 3:11 distinctly declares that no man is justified by the law in the sight of God"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:14",
+     "note": "But when I saw that they do (i.e., did) not walk uprightly"
+    },
+    {
+     "ref": "Galatians 4:9",
+     "note": "But now after that ye have known God, or rather are known of God: Le"
+    },
+    {
+     "ref": "Galatians 4:68",
+     "note": "Because ye are sons, God hath sent forth the spirit of His Son into your hearts Wherefore thou art no more a servant, but a son Howbeit, then, when ye knew not God"
+    },
+    {
+     "ref": "Galatians 6:1",
+     "note": "Ye that are spiritual restore such an one, in the spirit of meekness, considering thyself (instead of yourselves). This is in order to emphasize the fact that those who are thus addressed stand each i"
+    },
+    {
+     "ref": "Galatians 6:2",
+     "note": "And so fulfil (i.e., so ye will fulfil) the law of Christ"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:16",
+     "note": "I conferred not with flesh and blood: i.e., with no human being in contrast with God, Who alone revealed to him the Gospel which he was to preach"
+    },
+    {
+     "ref": "Galatians 3:16"
+    },
+    {
+     "ref": "Galatians 5:4"
+    },
+    {
+     "ref": "Galatians 5:6",
+     "note": "Walk in the spirit (i.e., in the New nature), and ye shall not fulfil the lust of the flesh (i.e., of the old man). 10. BLOOD is put for man, as we say poor blood for poor fellow"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:6"
+    },
+    {
+     "ref": "Galatians 3:25",
+     "note": "26; 4:5, 6, 20. Change from second person to the first"
+    },
+    {
+     "ref": "Galatians 4:6"
+    },
+    {
+     "ref": "Galatians 6:1",
+     "note": "Brethren, if a man be overtaken in a fault, ye which are spiritual, restore such an one in the spirit of meekness; considering thyself, lest thou also be tempted. Here the abrupt transition from the"
+    }
+   ]
+  },
+  {
+   "id": "epanorthosis",
+   "name": "Epanorthosis",
+   "greek": "ἐπανόρθωσις",
+   "group": "emphasis",
+   "definition": "Recalling a word just used to correct or strengthen it (“not I, but the Lord”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:6",
+     "note": "I marvel that ye are so, a different ) Gospel. Which is not another, another of the same kind"
+    },
+    {
+     "ref": "Galatians 2:20",
+     "note": "Nevertheless I live: yet not I, but Christ liveth in me. See under Zeugma, Epanadiplosis, and Polyptoton"
+    },
+    {
+     "ref": "Galatians 3:4",
+     "note": "Have ye suffered so many things in vain? If it be yet in vain. Amphidiorthosis; or, Double Correction A setting both Hearer and Speaker right by a Correction which acts both ways Am -phi-di-or-th -sis"
+    },
+    {
+     "ref": "Galatians 4:9",
+     "note": "But now, after that ye have known God: or rather are known of God"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:8"
+    },
+    {
+     "ref": "Galatians 2:19"
+    },
+    {
+     "ref": "Galatians 5:7"
+    }
+   ]
+  },
+  {
+   "id": "allegory",
+   "name": "Allegory",
+   "greek": "ἀλληγορία",
+   "group": "comparison",
+   "definition": "An extended metaphor — a whole passage whose surface story stands throughout for a deeper meaning.",
+   "occurrences": [
+    {
+     "ref": "Galatians 4:22"
+    },
+    {
+     "ref": "Galatians 4:24",
+     "note": "No figure requires more careful discrimination than Allegory. And it would be safer to say that there are no allegories in Scripture than to follow ones own judgment as to what is allegory, and wh"
+    },
+    {
+     "ref": "Galatians 6:8"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:6",
+     "note": "But of these who seemed to be somewhat ( ). They seemed to be something, really they were nothing ( 6:3 ). SICK, for those who were dead in sins"
+    },
+    {
+     "ref": "Galatians 5:21",
+     "note": "They which do such things, shall not inherit the kingdom of God: i.e., they shall not only not inherit the kingdom, but shall be cast out into outer darkness and destroyed without remedy"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:17",
+     "note": "and the giving of the Law, * See a pamphlet, entitled, Also: a Bible-Study on the use of the Word, by the same author and publisher. and, hee latreia, the [tabernacle] worship ), and the promises"
+    },
+    {
+     "ref": "Galatians 3:28",
+     "note": "where in each case the sex 1s emphatic. We have a similar example of a neuter word including both sexes in the word ( gunaikaria ), in"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:7"
+    },
+    {
+     "ref": "Galatians 2:16",
+     "note": "A Knowing that a man 1s not justified B by the works of the law, C but by the faith of Jesus Christ, C even we have believed in Jesus Christ, that we might be justified by the faith of Christ, B an"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:19"
+    },
+    {
+     "ref": "Galatians 5:1",
+     "note": "Stand fast therefore in the liberty wherewith Christ hath made us free, and be not entangled again with the yoke of bondage"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:8",
+     "note": "An angel from heaven preaching a different gospel is inconceivable. The hypothesis is used in order to show the importance of the Gospel of God"
+    },
+    {
+     "ref": "Galatians 4:15",
+     "note": "Examples pertaining to COMPARISONS are frequent, where one thing is compared with another, when there is nothing common between them: The sand of the sea and the dust of the earth are constantly used"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:14",
+     "note": "Being more exceedingly a zealot: i.e., zealous, as in A.V"
+    },
+    {
+     "ref": "Galatians 2:11",
+     "note": "Because he was to be blamed: i.e., blameworthy, or better, because he stood self-condemned"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:14",
+     "note": "The promise of the Spirit: i.e., the promised Spirit"
+    },
+    {
+     "ref": "Galatians 4:4",
+     "note": "The fulness of the time: i.e., the full or completed time"
+    }
+   ]
+  },
+  {
+   "id": "enigma",
+   "name": "Enigma",
+   "greek": "αἴνιγμα",
+   "group": "emphasis",
+   "definition": "A dark saying — a truth wrapped in obscure or riddling terms.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:10",
+     "note": "but the honey is found in verse 13. SIN is a strong Lion"
+    },
+    {
+     "ref": "Galatians 5:21",
+     "note": "but the honey is found in"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:10",
+     "note": "and 13 ). From Sin which is too strong"
+    },
+    {
+     "ref": "Galatians 4:26"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "Galatians 5:22",
+     "note": "But the fruit of the Spirit is love, joy, peace, longsuffering, gentleness, goodness, faith, meekness, temperance: against such there is no law. Contrast this with the Polysyndeton in"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:4",
+     "note": "Sanctification"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:8"
+    }
+   ]
+  },
+  {
+   "id": "epanadiplosis",
+   "name": "Epanadiplosis",
+   "greek": "ἐπαναδίπλωσις",
+   "group": "repetition",
+   "definition": "A clause encircled — beginning and ending with the same word.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:20",
+     "note": "In this verse the figure, which is in the Greek, is lost in the translation owing to the difference of idiom. In the Greek it reads: Christ, I have been crucified-together-with, yet I live: and yet i"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "Galatians 4:31",
+     "note": "and 5:1. So then, brethren, we are not children of a bondwoman, but of the free, eleutheras ). In the freedom, eleutheria ) wherewith Christ hath made us free, stand fast"
+    }
+   ]
+  },
+  {
+   "id": "antimetabole",
+   "name": "Antimetabole",
+   "greek": "ἀντιμεταβολή",
+   "group": "arrangement",
+   "definition": "Words repeated in reverse order and grammatical relation (“sabbath for man … man for sabbath”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 5:17",
+     "note": "a The flesh lusteth b against the spirit, b and the spirit a against the flesh. |"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:12",
+     "note": "For I neither received it of man, neither was | taught it, but by the revelation of Jesus Christ. Thus is emphasized the special commission which Paul received direct from God; and thus is it distingu"
+    }
+   ]
+  },
+  {
+   "id": "epitheton",
+   "name": "Epitheton",
+   "greek": "ἐπίθετον",
+   "group": "substitution",
+   "definition": "Naming a thing by an attribute or adjunct added to it (“John the Baptist”).",
+   "occurrences": [
+    {
+     "ref": "Galatians 4:8"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "Galatians 6:1",
+     "note": "The spirit of meekness: i.e., meekness of spirit"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Galatians 6:14",
+     "note": "God forbid that I should glory, save in the cross of our Lord Jesus Christ: i.e., not the wooden instrument of death, nor the act of crucifixion; but he gloried in all that this meant for him, all th"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "Galatians 2:21",
+     "note": "I do not frustrate (or esteem at a small price) the grace of God: for if righteousness come by the law, then Christ is dead ( i.e., died) in vain. Here, ( d rean ), a free gift, is put for ( mateen"
+    }
+   ]
+  },
+  {
+   "id": "metaphor",
+   "name": "Metaphor",
+   "greek": "μεταφορά",
+   "group": "comparison",
+   "definition": "An implied comparison that calls one thing another (“A is B”), without “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "Galatians 4:24",
+     "note": "Which things are an allegory: for these are the two covenants"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:8"
+    }
+   ]
+  },
+  {
+   "id": "thaumasmos",
+   "name": "Thaumasmos",
+   "greek": "θαυμασμός",
+   "group": "emphasis",
+   "definition": "An exclamation of wonder or admiration.",
+   "occurrences": [
+    {
+     "ref": "Galatians 1:6",
+     "note": "I marvel that ye are so soon removed from him that called you into the ( heteron ), different ) Gospel. A simple statement would have expressed the fact, Ye are soon removed"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Galatians 3:22"
+    }
+   ]
+  }
+ ]
+}

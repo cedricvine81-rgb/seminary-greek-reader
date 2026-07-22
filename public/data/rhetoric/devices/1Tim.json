@@ -1,0 +1,373 @@
+{
+ "book": "1Tim",
+ "devices": [
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 3:6",
+     "note": "is used in the papyri of newly planted palm trees. ( atheteesis ), disanulling"
+    },
+    {
+     "ref": "1 Timothy 3:11"
+    },
+    {
+     "ref": "1 Timothy 4:13",
+     "note": "apostomatizein ). Its classical use was to dictate to a pupil what he was to learn by heart and afterwards recite. * The late Professor Hatch, of Oxford, has shown the importance of this branch of B"
+    },
+    {
+     "ref": "1 Timothy 5:3",
+     "note": "Honour widows that are really widows,: i.e., maintain them out of the funds of the church, as is clear from verse 4"
+    },
+    {
+     "ref": "1 Timothy 5:4",
+     "note": "from the Latin nepos. Occupy"
+    },
+    {
+     "ref": "1 Timothy 5:17",
+     "note": "Let the elders that rule well be counted worthy of double honour: i.e., of a liberal (see Metonymy ) maintenance"
+    },
+    {
+     "ref": "1 Timothy 6:9",
+     "note": "They that will to be rich: i.e., love to be rich. To look or to see is often used ( a ) implying the delight or pleasure felt by the beholder (whether it be sinful or innocent"
+    },
+    {
+     "ref": "1 Timothy 6:12",
+     "note": "Fight the good fight of faith, lay hold of eternal life: i.e., thou shalt lay hold of"
+    },
+    {
+     "ref": "1 Timothy 6:13",
+     "note": "Quickening, making alive"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 2:15"
+    },
+    {
+     "ref": "1 Timothy 3:14",
+     "note": "Hoping to come unto thee more quickly: i.e., soon; or, as in A.V., shortly"
+    },
+    {
+     "ref": "1 Timothy 4:10"
+    },
+    {
+     "ref": "1 Timothy 5:12"
+    },
+    {
+     "ref": "1 Timothy 6:8",
+     "note": "We shall be content: i.e., let us be content. 1V. HETEROSIS OF PERSON AND NUMBER (VERBS) In order to make what is said more emphatic, Hebrew idiom sometimes changes the number and person of the verb"
+    },
+    {
+     "ref": "1 Timothy 6:15"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:4",
+     "note": "which means to purpose, determine, or design. Hence, it means is not disposed that any kind of person should perish, but that all without distinction should come to repentance. Whosoever is to be ta"
+    },
+    {
+     "ref": "1 Timothy 2:4",
+     "note": "Who will have all men to be saved, and to come unto the knowledge of the truth. Here the all is the same as in verse |, and must mean all kinds of men, the genus being put for the species. In verse 2"
+    },
+    {
+     "ref": "1 Timothy 3:16",
+     "note": "Manifest in the flesh: i.e., in human beings. The mystery was ho ), which, corresponds best with the context, and agrees with"
+    },
+    {
+     "ref": "1 Timothy 5:10"
+    },
+    {
+     "ref": "1 Timothy 6:3"
+    },
+    {
+     "ref": "1 Timothy 6:8",
+     "note": "Food and raiment are put by example for this worlds goods. See 1 John 317"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:1",
+     "note": "The Lord Jesus Christ, our hope: i.e., Who is the object of our hope"
+    },
+    {
+     "ref": "1 Timothy 2:8",
+     "note": "To strike hands is put for making a promise, or bargain"
+    },
+    {
+     "ref": "1 Timothy 3:4",
+     "note": "One that ruleth well his own house: i.e., his own family"
+    },
+    {
+     "ref": "1 Timothy 4:1",
+     "note": "Some shall depart from the faith: i.e., from the doctrine of Christ. See under Tapeinosis and Synathrsmus"
+    },
+    {
+     "ref": "1 Timothy 5:17",
+     "note": "Let the elders that rule be counted worthy of double ( i.e., liberal) honour (i.e., maintenance). See under Idiom. v. The thing signified is put for the sign"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:15"
+    },
+    {
+     "ref": "1 Timothy 3:16",
+     "note": "Great is, of godliness, the mystery. How wonderful is the emphasis thus placed on the word great, put as it is before the subject, which is kept back and put as the very last word in the sentence (in"
+    },
+    {
+     "ref": "1 Timothy 6:5",
+     "note": "Supposing that gain is godliness. Here the principal word is put out of its place, at the end, to call our attention to it. The emphasis is thus put on the word godliness, Supposing that godliness is…"
+    },
+    {
+     "ref": "1 Timothy 6:12",
+     "note": "Keep on struggling the fine good struggle of the Faith, lay hold on the life eternal, unto which life thou wast called also, and didst confess the fine confession before many witnesses. Here the adjec"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:18",
+     "note": "That thou mightest war a good warfare (, strateuee strateian ). This comes also under the figure of Paronomasia ( q.v"
+    },
+    {
+     "ref": "1 Timothy 6:5"
+    },
+    {
+     "ref": "1 Timothy 6:15",
+     "note": "The King of kings, and Lord of lords"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:18",
+     "note": "War a good warfare, strateian strateuein"
+    },
+    {
+     "ref": "1 Timothy 4:3",
+     "note": "This passage has been referred to under Ellipsis and Zeugma; but there is a latent Paronomasia in one word that is omitted. The Greek is ( k leuont n ), forbidding. This word suggests the other word"
+    },
+    {
+     "ref": "1 Timothy 6:5"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:16"
+    },
+    {
+     "ref": "1 Timothy 1:17",
+     "note": "Now unto the King eternal, immortal, invisible, the only wise God, be honour and glory for ever and ever. Amen"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:2",
+     "note": "Grace, mercy, and peace. So also in the other two so-called Pastoral Epistles"
+    },
+    {
+     "ref": "1 Timothy 3:15",
+     "note": "That thou mayest know how thou oughtest (R.V., how men ought) to behave thyself [or what conduct is incumbent on us] in the house of God, which is the Church of the living God, the pillar and groun"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 3:15",
+     "note": "The Church of the living God, the pillar and ground of the truth. This is spoken of the truththe mystery of the faith (verse 9 ), and the mystery which is confessedly great (verse 16 ). This is the pi"
+    },
+    {
+     "ref": "1 Timothy 5:21",
+     "note": "who is about to judge the living and dead; and [ I adjure thee ] by His appearing, yesand His royal appearing too, Preach the Word. For this judgment shall be when He shall sit upon the throne of H"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 4:12",
+     "note": "The Greeks used it of the symptoms of a disease. Galen wrote a medical work entitled, concerning symptoms. In a Legal sense it was used of what we technically cite as a case. It will thus be see"
+    },
+    {
+     "ref": "1 Timothy 5:18"
+    }
+   ]
+  },
+  {
+   "id": "oxymoron",
+   "name": "Oxymoron / paradox",
+   "greek": "ὀξύμωρον",
+   "group": "emphasis",
+   "definition": "A pointed pairing of apparently contradictory terms that expresses a deeper truth.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:15",
+     "note": "16). See under Meiosis"
+    },
+    {
+     "ref": "1 Timothy 5:6",
+     "note": "She that liveth in pleasure is dead while she liveth. This Oxymoron arises from a latent Ploce ( q.v. ), the word dead denoting the absence of spiritual life: dead in trespasses and sins. Idioma; or"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:15",
+     "note": "See also under Oxymoron. Philem. 11. Which in time past was to thee unprofitable. This is a Meiosis, for Onesimus was guilty of injury. * This is not the same as"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 4:1",
+     "note": "Now the Spirit speaketh expressly, that in the latter times some shall depart from the faith, giving heed to seducing spirits (, wandering or deceiving spirits or angels ), and teachings of demons: 1"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:5",
+     "note": "Here, the figure points us to the true genealogy of charity, or love. Now the end of the commandment is charity out of a pure heart, and of a good conscience, and of faith unfeigned. If the faith be n"
+    }
+   ]
+  },
+  {
+   "id": "catabasis",
+   "name": "Catabasis",
+   "greek": "κατάβασις",
+   "group": "arrangement",
+   "definition": "A gradual descent — a series that steps down, clause by clause, to a low point (opposite of climax).",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:15",
+     "note": "yer, 92' Oh that my head were waters, and mine eyes a fountain of tears, that I might weep day and night for the slain of the daughter of my people! (See above"
+    }
+   ]
+  },
+  {
+   "id": "hypotyposis",
+   "name": "Hypotyposis",
+   "greek": "ὑποτύπωσις",
+   "group": "emphasis",
+   "definition": "Vivid word-painting that sets a scene before the eyes as though present.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:16"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 1:3"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "1 Timothy 5:18"
+    }
+   ]
+  }
+ ]
+}

@@ -51,6 +51,38 @@ function loadBengel(): Promise<Record<string, string>> {
   return bengelInflight
 }
 
+// Per-book Bullinger datasets (public/data/rhetoric/devices/<Osis>.json), fetched once each.
+// These carry the comprehensive, book-by-book figure→verse data; the curated NT-wide DEVICES
+// stay as the base layer, and the book file adds/enriches occurrences for that book.
+const bookCache: Record<string, Device[]> = {}
+const bookInflight: Record<string, Promise<Device[]>> = {}
+function loadBookDevices(osis: string): Promise<Device[]> {
+  if (bookCache[osis]) return Promise.resolve(bookCache[osis])
+  if (!bookInflight[osis]) bookInflight[osis] = fetch(`/data/rhetoric/devices/${osis}.json`)
+    .then(r => (r.ok ? r.json() : { devices: [] }))
+    .then((d: { devices?: Device[] }) => (bookCache[osis] = d.devices ?? []))
+    .catch(() => (bookCache[osis] = []))
+  return bookInflight[osis]
+}
+
+// Merge the book file into the curated base: same id → union occurrences (keep the curated
+// note, fill it from Bullinger only when missing); new ids are appended.
+function mergeDevices(base: Device[], extra: Device[]): Device[] {
+  const byId = new Map<string, Device>()
+  for (const d of base) byId.set(d.id, { ...d, occurrences: d.occurrences.map(o => ({ ...o })) })
+  for (const d of extra) {
+    const cur = byId.get(d.id)
+    if (!cur) { byId.set(d.id, { ...d, occurrences: d.occurrences.map(o => ({ ...o })) }); continue }
+    const seen = new Map(cur.occurrences.map(o => [o.ref, o] as const))
+    for (const o of d.occurrences) {
+      const ex = seen.get(o.ref)
+      if (!ex) { const c = { ...o }; cur.occurrences.push(c); seen.set(o.ref, c) }
+      else if (!ex.note && o.note) ex.note = o.note
+    }
+  }
+  return Array.from(byId.values())
+}
+
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
   + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain.'
 
@@ -65,11 +97,22 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
   const [verses, setVerses] = useState<{ verse: number; text: string }[]>([])
   const [status, setStatus] = useState<'idle' | 'loading' | 'ok' | 'missing' | 'nonNT'>('idle')
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
+  const [bookDevices, setBookDevices] = useState<Device[]>(() => bookCache[parseRef(controlledPassage ?? '')?.osis ?? ''] ?? [])
   const [selected, setSelected] = useState<{ id: string; ref: string } | null>(null)
   const reqRef = useRef(0)
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
   useEffect(() => { loadBengel().then(setBengel) }, [])
+
+  const osis = parsed?.osis
+  useEffect(() => {
+    if (!osis) { setBookDevices([]); return }
+    let alive = true
+    loadBookDevices(osis).then(d => { if (alive) setBookDevices(d) })
+    return () => { alive = false }
+  }, [osis])
+
+  const allDevices = useMemo(() => mergeDevices(DEVICES, bookDevices), [bookDevices])
 
   useEffect(() => {
     setSelected(null)
@@ -91,7 +134,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
   const byVerse = useMemo(() => {
     const map: Record<number, Hit[]> = {}
     if (!parsed) return map
-    for (const device of DEVICES) {
+    for (const device of allDevices) {
       for (const occ of device.occurrences) {
         const p = parseRef(occ.ref)
         if (p && p.osis === parsed.osis && p.chapter === parsed.chapter) {
@@ -100,7 +143,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
       }
     }
     return map
-  }, [parsed])
+  }, [parsed, allDevices])
 
   const shownVerses = useMemo(() => {
     if (!parsed) return verses
@@ -108,7 +151,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
     return verses.filter(v => v.verse >= parsed.vStart && v.verse <= parsed.vEnd)
   }, [verses, parsed])
 
-  const deviceById = (id: string) => DEVICES.find(d => d.id === id)
+  const deviceById = (id: string) => allDevices.find(d => d.id === id)
   const groupsPresent = useMemo(() => {
     const s = new Set<DeviceGroup>()
     for (const hits of Object.values(byVerse)) for (const h of hits) s.add(h.device.group)

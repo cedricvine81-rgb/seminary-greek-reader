@@ -1,0 +1,394 @@
+{
+ "book": "1John",
+ "devices": [
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:10",
+     "note": "We make him (i.e., we attempt so far as in us lies to make him) a liar. (See also chapter 5:10"
+    },
+    {
+     "ref": "1 John 2:1",
+     "note": "pistis ), faith. In classical Greek, it meant, psychologically, conviction: rhetorically, proof which brings about the conviction; and morally, goodfaith or mutual trust. In Biblical Greek, there"
+    },
+    {
+     "ref": "1 John 2:16",
+     "note": "Now we use it of one special form of desire. Mote"
+    },
+    {
+     "ref": "1 John 2:21"
+    },
+    {
+     "ref": "1 John 2:26",
+     "note": "These things have I written unto you concerning them that seduce (or deceive) you: i.e., that would, or that try to, deceive you. 2. Active Verbs are sometimes used to denote the effect of the action…"
+    },
+    {
+     "ref": "1 John 3:1",
+     "note": "That we should be called the sons of God. Holy means primarily that which is ceremonially clean and free from defilement"
+    },
+    {
+     "ref": "1 John 3:7",
+     "note": "To work is used of seeking to gain salvation by human merit"
+    },
+    {
+     "ref": "1 John 3:9"
+    },
+    {
+     "ref": "1 John 4:2",
+     "note": "3; 5:6. To see another is used for making war with him, or of meeting him in battle"
+    },
+    {
+     "ref": "1 John 4:15"
+    },
+    {
+     "ref": "1 John 5:18",
+     "note": "Also, to touch is used for cohabitation"
+    }
+   ]
+  },
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:3",
+     "note": "See also under Synecdoche and Ellipsis"
+    },
+    {
+     "ref": "1 John 2:2",
+     "note": "He is the propitiation for our sins: and not for ours only, but also for the whole world: i.e., for all the inhabitants of the world without distinction; as shown by ( heemeteros ( heem n ), of us: i"
+    },
+    {
+     "ref": "1 John 2:12"
+    },
+    {
+     "ref": "1 John 2:16",
+     "note": "The lust of the eyes: i.e., that which the eyes desire. 6. FEAR is put for God who is feared, or for any object of fear"
+    },
+    {
+     "ref": "1 John 3:1",
+     "note": "Behold, what manner of love the Father hath bestowed upon us: i.e., not merely the feeling of love, but the manifestation of it in all that it has done for us: one thing here being the calling and ma"
+    },
+    {
+     "ref": "1 John 4:13",
+     "note": "Beloved, believe not every spirit ( i.e., every doctrine that is put forth as the teaching of the Spirit ), but try the spirits ( 1e., their teaching and doctrines"
+    },
+    {
+     "ref": "1 John 5:4",
+     "note": "This is the victory that overcometh the world, even our faith. Victory, the effect, is put for our faith, which accomplishes it. From"
+    },
+    {
+     "ref": "1 John 5:19",
+     "note": "The whole world (i.e., all the inhabitants of the world) lieth in [ the power of | the wicked one. See under Ellipsis. 9. The WORLD is put for a portion of its inhabitants"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "1 John 1:1",
+     "note": "That which was from the beginning"
+    },
+    {
+     "ref": "1 John 3:6",
+     "note": "Whosoever sinneth hath not seen him, neither known him: Le., seeth Him not, neither knoweth Him. Other examples may be seen in"
+    },
+    {
+     "ref": "1 John 4:8",
+     "note": "He that loveth not, knew not (Le., knoweth not, or never knew) God"
+    },
+    {
+     "ref": "1 John 4:19",
+     "note": "We love Him because He first loved us: i.e., before we loved Him. VI. HETEROSIS OF NUMBER 1. The Singular for the Plural"
+    },
+    {
+     "ref": "1 John 5:4",
+     "note": "For whatsoever (neut.) is begotten of God. That this refers to persons is clear from verses 15: but it is put neuter both on account of the spiritual or new nature which is referred to (spirit being"
+    },
+    {
+     "ref": "1 John 5:8",
+     "note": "There are three that bear witness in earth, the spirit (neut.), and the water (neut.), and the blood (neut.), and these (masc.) three are one. Because persons are meant, the pronoun is masculine, thou"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:5",
+     "note": "It would require a volume to investigate and carry out all that is taught by this wondrous Metaphor. First, we should have to understand what Light itself 1s, and science was never more baffled than"
+    },
+    {
+     "ref": "1 John 2:20"
+    },
+    {
+     "ref": "1 John 2:29"
+    },
+    {
+     "ref": "1 John 3:20",
+     "note": "Greater than all"
+    },
+    {
+     "ref": "1 John 5:14"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "1 John 2:2",
+     "note": "Not for ours only, but also for the whole world: i.e., for all people; without distinction"
+    },
+    {
+     "ref": "1 John 2:18",
+     "note": "twice (A.V., time). 7. In CHRONOLOGY a part of a time or period is sometimes put for the whole of such period"
+    },
+    {
+     "ref": "1 John 2:23"
+    },
+    {
+     "ref": "1 John 4:2",
+     "note": "Every spirit that confesseth that Jesus Christ is come in the flesh (i.e., in His real human nature) is of God.. Here, it is ( eleeluthota ), being come. In chap. 5:6, it is the (hoelth n),thisisHe"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:1",
+     "note": "The Word of life: i.e., the living Word. Accordingly, it is added in the next verse, and the life ( viz., of the Word) was manifested. Jude 11. The way of Cain the error of Balaam the gainsaying of"
+    },
+    {
+     "ref": "1 John 3:10"
+    },
+    {
+     "ref": "1 John 5:6",
+     "note": "Because the Spirit is truth. Here the noun is rendered literally: but it is used by the figure Antimereia for the adjective true; and the"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:13",
+     "note": "That which was from the beginning, which we have heard, which we have seen with our eyes, which we have looked upon That which we have seen and heard declare we unto you. ho ), which, emphasizes with"
+    },
+    {
+     "ref": "1 John 3:5"
+    }
+   ]
+  },
+  {
+   "id": "epanadiplosis",
+   "name": "Epanadiplosis",
+   "greek": "ἐπαναδίπλωσις",
+   "group": "repetition",
+   "definition": "A clause encircled — beginning and ending with the same word.",
+   "occurrences": [
+    {
+     "ref": "1 John 3:1",
+     "note": "As the world knoweth not and understands not the motions and working of the Spirit of God, so the new"
+    },
+    {
+     "ref": "1 John 3:8",
+     "note": "In this verse the figure is hidden both in the A.V. and R.V. The word is ( to pneuma ), the Spirit, which is used both at the beginning and the end of the passage in the original. But at the beginnin"
+    }
+   ]
+  },
+  {
+   "id": "parallelism",
+   "name": "Parallelism",
+   "group": "arrangement",
+   "definition": "Successive lines echo one another in structure — saying the same thing twice, or balancing matched clauses.",
+   "occurrences": [
+    {
+     "ref": "1 John 2:15"
+    },
+    {
+     "ref": "1 John 3:9"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:5",
+     "note": "God is light, and in Him is no darkness at all"
+    },
+    {
+     "ref": "1 John 1:8",
+     "note": "If we say that we have no sin, we deceive ourselves, and the truth is not in us. So 2:4"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "1 John 2:5",
+     "note": "The love of God: i.e., either our love which goes out to God; or, His love with regard to us ( cf. especially"
+    },
+    {
+     "ref": "1 John 2:23",
+     "note": "first introduced in Cranmers Bibledoubtless from the Vulgate). Perhaps also Judges 16:2 and 20:9. 4. Where the English idiom differs from that of the Originals, and requires essential words to be ad"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "1 John 3:17",
+     "note": "But whoso hath this worlds good"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "1 John 3:7",
+     "note": "Little children, let no man deceive you; he that doeth righteousness is righteous, even as He is righteous. See also this verse under the figure of Tapeinosis"
+    }
+   ]
+  },
+  {
+   "id": "anabasis",
+   "name": "Anabasis",
+   "greek": "ἀνάβασις",
+   "group": "arrangement",
+   "definition": "A gradual ascent — a series that mounts, clause by clause, to a high point.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:1",
+     "note": "That which was from the beginning, which we have heard, which we have seen with our eyes, which we have looked upon, and our hands have handled, of the Word of life. As contrasted with Anabasis, we h"
+    }
+   ]
+  },
+  {
+   "id": "epitheton",
+   "name": "Epitheton",
+   "greek": "ἐπίθετον",
+   "group": "substitution",
+   "definition": "Naming a thing by an attribute or adjunct added to it (“John the Baptist”).",
+   "occurrences": [
+    {
+     "ref": "1 John 5:20",
+     "note": "1 Thess. he Such epithets are used of God, not to qualify but to distinguish Him from them who are no gods"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:7",
+     "note": "The blood of Jesus Christ his Son cleanseth us from all sin. Here, when it is a question of walking in the light, the saved sinner is reminded of that which put him there and which alone can keep him"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "1 John 2:24",
+     "note": "Here again the peculiarity of the Hyperbaton attracts our attraction, and causes us to reflect on the words. Ye, then, what ye heard from the beginning (or primitively), in you let it abide: if in you"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "1 John 1:8"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "1 John 2:16"
+    }
+   ]
+  },
+  {
+   "id": "epanorthosis",
+   "name": "Epanorthosis",
+   "greek": "ἐπανόρθωσις",
+   "group": "emphasis",
+   "definition": "Recalling a word just used to correct or strengthen it (“not I, but the Lord”).",
+   "occurrences": [
+    {
+     "ref": "1 John 2:2",
+     "note": "And he is the propitiation for our sins: [then comes the Epanorthosis, pointing out that He was the Propitiation for Gentiles as well as Jews, so John adds], and not for ours only, but also for the w"
+    }
+   ]
+  }
+ ]
+}

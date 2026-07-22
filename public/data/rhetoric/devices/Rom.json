@@ -1,0 +1,1586 @@
+{
+ "book": "Rom",
+ "devices": [
+  {
+   "id": "metonymy",
+   "name": "Metonymy",
+   "greek": "μετωνυμία",
+   "group": "substitution",
+   "definition": "Naming something by a word closely associated with it — cause for effect, container for contents, author for writings.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:3"
+    },
+    {
+     "ref": "Romans 1:9"
+    },
+    {
+     "ref": "Romans 1:16",
+     "note": "For it [the gospel] is the power of God unto salvation to every one that believeth: i.e., the belief is the effect of the power of God through the preaching of the gospel"
+    },
+    {
+     "ref": "Romans 2:5",
+     "note": "Thou treasurest up unto thyself wrath: i.e., the judgments produced by it"
+    },
+    {
+     "ref": "Romans 3:13"
+    },
+    {
+     "ref": "Romans 3:30",
+     "note": "Seeing it is one God, which shall justify the circumcision by faith and uncircumcision through faith. Here, circumcision is put for those who are circumcised; and uncircumcision for uncircumcised…"
+    },
+    {
+     "ref": "Romans 4:15",
+     "note": "The law worketh wrath: i.e., inflicts or executes punishments and penalties. The word execute is actually supplied in"
+    },
+    {
+     "ref": "Romans 6:6",
+     "note": "The body of sin is more than sinful body. It is more than mere character. The effect is put for the cause; which is the old nature, that, through the body, works out sin; and sin is the effect; which"
+    },
+    {
+     "ref": "Romans 6:12"
+    },
+    {
+     "ref": "Romans 6:23"
+    },
+    {
+     "ref": "Romans 7:7",
+     "note": "Is the law sin? (i.e., Is sin the effect of the law?) God forbid. But yet I knew not sin except through the law! There is no nay in the Greek. The word but brings out the meaning: God forbid that sin"
+    },
+    {
+     "ref": "Romans 7:9",
+     "note": "But when the commandment came: i.e., when its power was declared in revealing my impotence to obey it, I, in my experience, suffered its penaltydeath"
+    },
+    {
+     "ref": "Romans 7:10"
+    },
+    {
+     "ref": "Romans 7:15",
+     "note": "For that which I do I know not. Here, the A.V. translates the Metonymy, that which I do I allow not: i.e., I do not approve. The old Eng. of the verb allow is allaud, to praise or approve, as in"
+    },
+    {
+     "ref": "Romans 7:22"
+    },
+    {
+     "ref": "Romans 7:24",
+     "note": "The body of this death; or, by Hypallage ( q.v. ), as in A.V. margin, this body of death: in which case, of death is either, by Enallage, put for the adjective dying, or it may be the Metonymy of th"
+    },
+    {
+     "ref": "Romans 8:2",
+     "note": "For the law of the spirit of life (i.e., not the Holy Spirit, but His life- giving work in the New nature created within us) hath made me free from the law of sin and death. The Law brought the knowl"
+    },
+    {
+     "ref": "Romans 8:6",
+     "note": "To be carnally minded is death (i.e., the cause of death), but to be spiritually minded is life and peace ( i.e., ends in life and peace or peaceful life). So verse 10"
+    },
+    {
+     "ref": "Romans 8:19",
+     "note": "The earnest expectation of the creation (i.e., created things or creatures) waiteth"
+    },
+    {
+     "ref": "Romans 8:24",
+     "note": "Hope (i.e., the object hoped for) that is seen is not hope"
+    },
+    {
+     "ref": "Romans 8:31",
+     "note": "If God be for us, who can be against as? i.e., who can hurt us or bring any evils upon us? They can, of course, be against us, but not have any hurtful effect. iv. The MATERIAL is put for the thing m"
+    },
+    {
+     "ref": "Romans 8:35",
+     "note": "and many other, passages"
+    },
+    {
+     "ref": "Romans 9:4"
+    },
+    {
+     "ref": "Romans 9:8",
+     "note": "The children of the promise are counted for the seed: i.e., who believe and receive the promise of God, as is clear from 4:12, 16"
+    },
+    {
+     "ref": "Romans 9:13",
+     "note": "David is put for him who is descended from David; and therefore especially of the Messiah, who was of the seed of David according to the flesh"
+    },
+    {
+     "ref": "Romans 9:33"
+    },
+    {
+     "ref": "Romans 10:16"
+    },
+    {
+     "ref": "Romans 10:18",
+     "note": "* 5. SILVER is put for the thing procured by it"
+    },
+    {
+     "ref": "Romans 11:6",
+     "note": "If by grace, then is it no more of works: i.e., of wages or merit"
+    },
+    {
+     "ref": "Romans 11:7",
+     "note": "But the election (i.e., elect persons) hath obtained it"
+    },
+    {
+     "ref": "Romans 11:8",
+     "note": "1 Cor. Se WAS ii. The ORGANIC CAUSE or instrument is put for the thing effected by it 1. The ORGANS OF SPEECH are put for the testimony borne The MOUTH is put for the witness or testimony borne by it"
+    },
+    {
+     "ref": "Romans 11:27"
+    },
+    {
+     "ref": "Romans 12:2",
+     "note": "Be not conformed to this age: i.e., to the passing fashions, practices, and maxims of this world"
+    },
+    {
+     "ref": "Romans 13:3",
+     "note": "Rulers are not a terror: i.e., a source of terror"
+    },
+    {
+     "ref": "Romans 13:4",
+     "note": "G. Griesbach and his critical Greek Text. L. Lachmann and his critical Greek Text. T. Tischendorf and his critical Greek Text. Tr. Tregelles and his critical Greek Text. A. Alford and his critical…"
+    },
+    {
+     "ref": "Romans 13:5",
+     "note": "Wherefore ye must needs be subject, not only for wrath: Le., on account of the effects of the anger"
+    },
+    {
+     "ref": "Romans 14:3",
+     "note": "To Judge is also used in the sense of acquit, which is also an effect of judging"
+    },
+    {
+     "ref": "Romans 14:10",
+     "note": "where it is rendered set at nought; and"
+    },
+    {
+     "ref": "Romans 14:11"
+    },
+    {
+     "ref": "Romans 14:15",
+     "note": "Destroy not him with thy meat for whom Christ died: i.e., do not be a cause of destruction"
+    },
+    {
+     "ref": "Romans 15:4"
+    },
+    {
+     "ref": "Romans 15:24",
+     "note": "If first I be somewhat filled with you: i.e., your company"
+    },
+    {
+     "ref": "Romans 15:26",
+     "note": "For it pleased Macedonia and Achaia to make a certain contribution: i.e., the saints in Macedones and Achaia. 15. GRAVE is put for the dead buried in it"
+    },
+    {
+     "ref": "Romans 16:3"
+    }
+   ]
+  },
+  {
+   "id": "palinodia",
+   "name": "Palinodia",
+   "greek": "παλινῳδία",
+   "group": "emphasis",
+   "definition": "A concession — granting a point for argument's sake before answering it.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:4"
+    },
+    {
+     "ref": "Romans 1:5",
+     "note": "The obedience of faith (see margin). Here, the words correspond with the same expression in 16:26. In the former (in connection with the Gospel which was promised from of old), we have the apostolic g"
+    },
+    {
+     "ref": "Romans 1:17",
+     "note": "For therein ( i.e., in the Gospel, the good news concerning Christ, verse 16 ) is the righteousness of God ( i.e., which has its source and origin in God), revealed, and is imputed to man on the…"
+    },
+    {
+     "ref": "Romans 3:22",
+     "note": "By faith of Jesus Christ: i.e., faith which has respect to, or which embraces or rests on Him. Some take it as the genitive of Origin, faith which is the gift of Jesus Christ, according to"
+    },
+    {
+     "ref": "Romans 4:11",
+     "note": "The righteousness of faith: i.e., which comes from God as its source, and is enjoyed instrumentally by faith"
+    },
+    {
+     "ref": "Romans 4:13",
+     "note": "The objection is met, that Abraham was justified by workshis faith being a work. This is shewn in verse 4 and the following verses to be impossible, as denying the very first principles of grace"
+    },
+    {
+     "ref": "Romans 5:18",
+     "note": "Justification of life: i.e., which gives life. q.v. Which see"
+    },
+    {
+     "ref": "Romans 6:1"
+    },
+    {
+     "ref": "Romans 7:7",
+     "note": "What shall we say then? that the Law is sin? God forbid. Nay, I had not known sin, but by the Law"
+    },
+    {
+     "ref": "Romans 8:17",
+     "note": "Joint-heirs of Christ: i.e., in relation to Christ, and hence partaking with Christ"
+    },
+    {
+     "ref": "Romans 8:23",
+     "note": "The firstfruits of the Spirit: i.e., the firstfruits [ of our inheritance ], that is to say, the Spirit"
+    },
+    {
+     "ref": "Romans 8:36",
+     "note": "Sheep of slaughter: i.e., sheep devoted to slaughter"
+    },
+    {
+     "ref": "Romans 9:6",
+     "note": "Not as though the word of God hath taken none effect. For they are not all Israel which are of Israel. The objection which is met is this: If Israel be rejected and cast off for a time (as is going to"
+    },
+    {
+     "ref": "Romans 9:9",
+     "note": "For, of promise is this word: i.e., this word is relating to the promise (i.e., the promise made to Sarah). Lit, For, of promise, the word is this"
+    },
+    {
+     "ref": "Romans 9:14"
+    },
+    {
+     "ref": "Romans 9:19",
+     "note": "See above under Anteisagoge"
+    },
+    {
+     "ref": "Romans 10:2",
+     "note": "They have a zeal of God: i.e., a zeal for God, or with respect to Him. A person may have this; and yet be destitute of Gods righteousness, which He has provided for us, and which is in Christ only, a"
+    },
+    {
+     "ref": "Romans 10:18",
+     "note": "But I say, Have they not heard? (Anticipating the objection that they have not heard.) Yes verily"
+    },
+    {
+     "ref": "Romans 11:1",
+     "note": "I say then, Hath God cast away his people? (Anticipating the objection, which many make even until to-day.) To which he replies, God forbid"
+    },
+    {
+     "ref": "Romans 11:11",
+     "note": "I say then, Have they stumbled that they should fall [ for ever |? (Thus anticipating the objection that they had done so, and meeting it in the words that follow), or, Their falling away was not the"
+    },
+    {
+     "ref": "Romans 11:20"
+    },
+    {
+     "ref": "Romans 13:3",
+     "note": "Not a terror of good works: i.e., in respect to them"
+    },
+    {
+     "ref": "Romans 15:4",
+     "note": "Comfort of the Scriptures: i.e., the comfort which the Scriptures supply. The word patience is better taken by itself, as being patience exercised by us, and combined here with the comfort which the…"
+    },
+    {
+     "ref": "Romans 16:2",
+     "note": "Worthily of the saints: i.e., in connection with, or in a manner becoming to the saints. A.V.: As becometh saints"
+    }
+   ]
+  },
+  {
+   "id": "synecdoche",
+   "name": "Synecdoche",
+   "greek": "συνεκδοχή",
+   "group": "substitution",
+   "definition": "Substituting a part for the whole, or the whole for a part (“all the world”; “flesh and blood”).",
+   "occurrences": [
+    {
+     "ref": "Romans 1:3"
+    },
+    {
+     "ref": "Romans 1:7",
+     "note": "Grace to you, and peace"
+    },
+    {
+     "ref": "Romans 1:8",
+     "note": "Your faith is spoken of throughout the whole world: i.e., in all parts of the world"
+    },
+    {
+     "ref": "Romans 2:1"
+    },
+    {
+     "ref": "Romans 2:10",
+     "note": "But glory, honour, and peace (i.e., every earthly blessing) to every man that worketh good"
+    },
+    {
+     "ref": "Romans 3:15",
+     "note": "Their feet (i.e., they) are swift to shed blood. 11. An integral part of men (collectively) is put for the whole, or others associated with them"
+    },
+    {
+     "ref": "Romans 3:20",
+     "note": "Therefore by the deeds of the law, shall no flesh be justified in his sight. 2. CREATURE is put for man"
+    },
+    {
+     "ref": "Romans 4:1",
+     "note": "The Samaritans called Jacob their father"
+    },
+    {
+     "ref": "Romans 4:16",
+     "note": "To the end the promise might be sure to all the seed: i.e., the whole seed"
+    },
+    {
+     "ref": "Romans 4:17",
+     "note": "I have placed thee (i.e., made thee) a father of many nations"
+    },
+    {
+     "ref": "Romans 5:1",
+     "note": "ekpiste s,on faith-principle, as opposed to law-principle ) we have peace with God through our Lord Jesus Christ; and with it every heavenly blessing, as verse 2 goes on to show: By whom we have obta"
+    },
+    {
+     "ref": "Romans 5:10",
+     "note": "We were reconciled to God by the death of his Son: i.e., not by the act or article of death only, but by the atonement of which it formed only a part. So"
+    },
+    {
+     "ref": "Romans 7:18",
+     "note": "For I know that in me (that is, in my flesh) there does not dwell any good thing: for to will is present with me, but how to perform that which is good I find not (i.e., is not present with me"
+    },
+    {
+     "ref": "Romans 8:4",
+     "note": "Who walk not after the flesh: i.e., the Old nature. This is not the same as in verse 3"
+    },
+    {
+     "ref": "Romans 8:13",
+     "note": "If ye live after the flesh, ye shall die: i.e., if ye live and are ruled by the principles of the Old nature. So in verse 12, and frequently. See articles on Romans in Things to Come, 1898 and 1899"
+    },
+    {
+     "ref": "Romans 8:29",
+     "note": "That he might be the first-born among many brethren: Le., many relatively to others; but all with respect to his own brethren"
+    },
+    {
+     "ref": "Romans 10:15"
+    },
+    {
+     "ref": "Romans 12:1",
+     "note": "I beseech you therefore that ye present your bodies (i.e., yourselves) a living sacrifice"
+    },
+    {
+     "ref": "Romans 12:20",
+     "note": "Surely the two things mentioned are only examples of many ways in which love may be shown to our enemies"
+    },
+    {
+     "ref": "Romans 13:1"
+    },
+    {
+     "ref": "Romans 14:17"
+    },
+    {
+     "ref": "Romans 16:4",
+     "note": "Who have for my soul (A.V., life) laid down their own necks: i.e., who have laid down their own necks for me"
+    },
+    {
+     "ref": "Romans 16:18",
+     "note": "For they that are such serve not our Lord Jesus Christ, but their own belly: i.e., their own selves"
+    }
+   ]
+  },
+  {
+   "id": "idioma",
+   "name": "Idiom",
+   "greek": "ἰδίωμα",
+   "group": "substitution",
+   "definition": "A peculiar usage of the Hebrew or Greek that does not carry its literal force — an idiom to be rendered by its sense, not word for word.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:9",
+     "note": "Whom I serve with my spirit: i.e., with the most fervent zeal. Walk is used of ones continued course of action and life: i.e., the habitual habit and manner of life"
+    },
+    {
+     "ref": "Romans 2:4",
+     "note": "Or despisest thou the riches ( 1e., the greatness) of his goodness? i.e., His abounding goodness, or wealth of goodness"
+    },
+    {
+     "ref": "Romans 2:5",
+     "note": "occurs in a papyrus record of a sale, denoting that there was to be no change in it. ( biazomai ), suffer violence"
+    },
+    {
+     "ref": "Romans 3:20"
+    },
+    {
+     "ref": "Romans 4:4"
+    },
+    {
+     "ref": "Romans 4:17"
+    },
+    {
+     "ref": "Romans 4:20",
+     "note": "21 ). And, since it believes that, what God has said He will surely bring to pass, therefore, its objects are also objects of hope as well as faith"
+    },
+    {
+     "ref": "Romans 4:21"
+    },
+    {
+     "ref": "Romans 8:1",
+     "note": "Who walk not after the flesh"
+    },
+    {
+     "ref": "Romans 9:18",
+     "note": "Whom he will he hardeneth: i.e., he suffereth to be hardened. Not that this in any way weakens the absolute sovereignty of God"
+    },
+    {
+     "ref": "Romans 10:9"
+    },
+    {
+     "ref": "Romans 10:20"
+    },
+    {
+     "ref": "Romans 11:2"
+    },
+    {
+     "ref": "Romans 11:7",
+     "note": "The rest were hardened: i.e., were suffered to become blind (as in A.V. marg"
+    },
+    {
+     "ref": "Romans 11:8",
+     "note": "God hath given them the spirit of slumber: i.e., hath suffered them to fall asleep"
+    },
+    {
+     "ref": "Romans 12:8"
+    },
+    {
+     "ref": "Romans 12:11"
+    },
+    {
+     "ref": "Romans 13:9"
+    },
+    {
+     "ref": "Romans 13:11",
+     "note": "Quickened, made alive"
+    },
+    {
+     "ref": "Romans 15:28"
+    },
+    {
+     "ref": "Romans 15:29",
+     "note": "I shall come in the fulness of the blessing (i.e., the gift) of the Gospel of Christ"
+    },
+    {
+     "ref": "Romans 16:18"
+    },
+    {
+     "ref": "Romans 16:23",
+     "note": "peirazein ) usually translated to tempt: and ( peirasmos ), The classical use of the verb was to make proof or trial of (Homer, Od. 16. 319; 23. temptation. 114; 9. 281). To make an attempt (Polyb"
+    }
+   ]
+  },
+  {
+   "id": "enallage",
+   "name": "Enallage",
+   "greek": "ἐναλλαγή",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical part or form for another, differing from strict usage for effect.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:15",
+     "note": "to kat eme prothumon ), according to my ready | mind ], i.e., my readiness"
+    },
+    {
+     "ref": "Romans 1:19",
+     "note": "The known (i.e., knowable or discoverable) of God: i.e., that which may be learnt even by the natural man"
+    },
+    {
+     "ref": "Romans 1:26",
+     "note": "Lusts of dishonour: i.e., A.V., vile passions"
+    },
+    {
+     "ref": "Romans 2:4",
+     "note": "Not knowing the kind [ thing or gift | of God: i.e., the kindness of God"
+    },
+    {
+     "ref": "Romans 3:23",
+     "note": "For all have sinned, and come short of the glory of God: i.e., of Gods glory"
+    },
+    {
+     "ref": "Romans 4:17"
+    },
+    {
+     "ref": "Romans 5:2",
+     "note": "And rejoice in hope of the glory of God: i.e., and rejoice in Gods glorious hope"
+    },
+    {
+     "ref": "Romans 6:4",
+     "note": "In newness of life: i.e., a life-long newness"
+    },
+    {
+     "ref": "Romans 7:3"
+    },
+    {
+     "ref": "Romans 7:5",
+     "note": "Motions (or passions, margin ) of sins: i.e., sinful passions: or, sins passions; i.e., the passions of the various sins set in motion by the Law"
+    },
+    {
+     "ref": "Romans 7:24",
+     "note": "Who shall deliver me from the body of this death?: i.e., this dying body or this mortal body"
+    },
+    {
+     "ref": "Romans 8:2",
+     "note": "The law of the spirit of life: i.e., the spiritual law of life"
+    },
+    {
+     "ref": "Romans 8:3",
+     "note": "In likeness of flesh of sin: i.e., sinful fleshs likeness"
+    },
+    {
+     "ref": "Romans 8:6"
+    },
+    {
+     "ref": "Romans 13:10"
+    }
+   ]
+  },
+  {
+   "id": "gnome",
+   "name": "Gnome (quotation)",
+   "greek": "γνώμη",
+   "group": "emphasis",
+   "definition": "A quotation or proverbial maxim woven in — a pithy saying cited for authority or point.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:17"
+    },
+    {
+     "ref": "Romans 4:7",
+     "note": "Blessed are they whose iniquities are forgiven. In"
+    },
+    {
+     "ref": "Romans 9:17"
+    },
+    {
+     "ref": "Romans 9:27",
+     "note": "Though the number of the children of Israel be as the sand of the sea (so LXX ). In"
+    },
+    {
+     "ref": "Romans 9:29",
+     "note": "is referred to as a difference in reading. Except the Lord of Sabaoth had left us a seed (, sperma ). In"
+    },
+    {
+     "ref": "Romans 9:33",
+     "note": "Whosoever believeth on him shall not be ashamed. This, in"
+    },
+    {
+     "ref": "Romans 10:11"
+    },
+    {
+     "ref": "Romans 10:15",
+     "note": "How beautiful are the feet of them that preach the Gospel of peace. In"
+    },
+    {
+     "ref": "Romans 10:68",
+     "note": "Where what the Scripture (or, rather, the righteousness which is of faith) saith"
+    },
+    {
+     "ref": "Romans 11:3"
+    },
+    {
+     "ref": "Romans 11:8"
+    },
+    {
+     "ref": "Romans 11:26"
+    },
+    {
+     "ref": "Romans 14:11"
+    },
+    {
+     "ref": "Romans 15:3"
+    },
+    {
+     "ref": "Romans 15:12"
+    }
+   ]
+  },
+  {
+   "id": "polyptoton",
+   "name": "Polyptoton",
+   "greek": "πολύπτωτον",
+   "group": "repetition",
+   "definition": "Repetition of the same root word in different inflections (“dying you shall die”).",
+   "occurrences": [
+    {
+     "ref": "Romans 2:12",
+     "note": "As many as have sinned without law, anom s ) shall also perish without law, anom s ). Here, in the former case, it means not under the Law; in the latter, it means without the judgment of the Law"
+    },
+    {
+     "ref": "Romans 2:26",
+     "note": "If the uncircumcision keep the righteousness of the law, shall not his uncircumcision be counted for circumcision. In the former place, the word uncircumcision denotes the Gentiles; and in the latter"
+    },
+    {
+     "ref": "Romans 3:21",
+     "note": "But now the righteousness of God without the law is manifested, being witnessed by the Law and the Prophets. In the former case, the word denotes moral law ( no article ) without the works of the law"
+    },
+    {
+     "ref": "Romans 3:27",
+     "note": "Where is boasting then? It is excluded. By what law ? of works? Nay; but by the law of faith. In the first place it refers to divine law; and in the second not to law at all but to faith itself by the"
+    },
+    {
+     "ref": "Romans 4:18",
+     "note": "Who against hope believed in hope (, par elpida ep elpidi"
+    },
+    {
+     "ref": "Romans 7:13",
+     "note": "But sin, that it might appear sin. In the former place, sin is used of the old nature; while, in the latter it is used of its real sinful nature and character"
+    },
+    {
+     "ref": "Romans 7:23",
+     "note": "But I see another law in my members, warring against the law of my mind, and bringing me into captivity to the law of sin which is in my members"
+    },
+    {
+     "ref": "Romans 9:6",
+     "note": "They are not all Israel which are of Israel. Here the former place refers to the true spiritual seed of Israel; the latter denotes Israel according to the flesh, the natural descendants from Israels…"
+    },
+    {
+     "ref": "Romans 11:8",
+     "note": "Thus, seven times in all, this great prophecy is written down by the Holy Spirit in the Scriptures of Truth"
+    },
+    {
+     "ref": "Romans 11:36",
+     "note": "For of Him, and through Him, and to Him are all things"
+    },
+    {
+     "ref": "Romans 12:13"
+    },
+    {
+     "ref": "Romans 12:15",
+     "note": "In this verse we have two examples of the repetition of the infinitive and participle. Rejoice with them that do rejoice (, chairein meta chairont n ), and weep with them that weep (, klaiain meta kl"
+    }
+   ]
+  },
+  {
+   "id": "anthropopatheia",
+   "name": "Anthropopatheia",
+   "greek": "ἀνθρωποπάθεια",
+   "group": "emphasis",
+   "definition": "Ascribing to God human feelings, parts, or actions, by way of condescension to us.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:16",
+     "note": "A HAND is attributed to God, by which various powers and actions are indicated POWER AND MIRACULOUS OPERATION"
+    },
+    {
+     "ref": "Romans 2:4"
+    },
+    {
+     "ref": "Romans 2:5"
+    },
+    {
+     "ref": "Romans 5:5"
+    },
+    {
+     "ref": "Romans 8:15"
+    },
+    {
+     "ref": "Romans 8:29",
+     "note": "So Christ is said to be head of the Body: i.e., the Mystical Body"
+    },
+    {
+     "ref": "Romans 8:34"
+    },
+    {
+     "ref": "Romans 9:32"
+    },
+    {
+     "ref": "Romans 11:29",
+     "note": "Hence the phrase to hide from ones eyes means not to look upon or regard"
+    },
+    {
+     "ref": "Romans 11:33"
+    },
+    {
+     "ref": "Romans 15:12"
+    }
+   ]
+  },
+  {
+   "id": "tapeinosis",
+   "name": "Tapeinosis",
+   "greek": "ταπείνωσις",
+   "group": "emphasis",
+   "definition": "Deliberate understatement — belittling a thing to magnify it, or lessening to increase the effect.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:13",
+     "note": "I would not have you ignorant, brethren. This means very much more than a mere negative wish. It is a strong positive and earnest desire that they might assuredly know and be well instructed. Ignoranc"
+    },
+    {
+     "ref": "Romans 1:16",
+     "note": "I am not ashamed of the gospel of Christ: i.e., I count it my highest honour and glory to proclaim it, and to suffer for it, while I have full confidence in its power to accomplish all Gods purposes…"
+    },
+    {
+     "ref": "Romans 3:3",
+     "note": "For what if some did not believe? Our attention is by this at once pointed to the fact that it was in reality the very opposite. It was only some who believed, while the nation as a whole did not…"
+    },
+    {
+     "ref": "Romans 4:7"
+    },
+    {
+     "ref": "Romans 4:19",
+     "note": "And being not weak in faith: i.e., Abraham being very strong in faith"
+    },
+    {
+     "ref": "Romans 5:5",
+     "note": "Hope maketh not ashamed: i.e., it enables us to rejoice in hope of the glory of God (verse 2 ), and to joy in God through our Lord Jesus Christ. This hope, therefore, is no false hope, but will prove"
+    },
+    {
+     "ref": "Romans 5:6",
+     "note": "asthen n,sick). We were really dead in sin, but are spoken of as infirm, because called ungodly, sinners (verses 68 ), enemies (verse 10 ). REBUKE, for the great punishment of excommunication"
+    },
+    {
+     "ref": "Romans 10:2",
+     "note": "They have a zeal of God, but not according to knowledge. * Many illustrations of this will be found in Number in Scripture, by the same author and publisher"
+    },
+    {
+     "ref": "Romans 11:25",
+     "note": "That blindness in part is happened to Israel"
+    },
+    {
+     "ref": "Romans 13:10",
+     "note": "Love worketh no ill to his neighbour: i.e., it refuses to work ill, and not only so, but it works good for his neighbour"
+    }
+   ]
+  },
+  {
+   "id": "heterosis",
+   "name": "Heterosis",
+   "greek": "ἑτέρωσις",
+   "group": "substitution",
+   "definition": "Exchange of one grammatical form for another — of tense, number, person, degree, or mood (e.g. a future used for a command).",
+   "occurrences": [
+    {
+     "ref": "Romans 1:5",
+     "note": "By whom we (i.e., I, Paul) have received grace and apostleship. (See also Hendiadys ). |"
+    },
+    {
+     "ref": "Romans 1:25"
+    },
+    {
+     "ref": "Romans 3:30",
+     "note": "Seeing it is one God which shall (i.e., doth) justify. 10. The Future for the Imperative The Future of the Indicative is by Hebrew idiom frequently used for the Imperative. When this is the case, the"
+    },
+    {
+     "ref": "Romans 5:1",
+     "note": "Therefore, being justified by faith, we have peace with God. Here the reading, according to the R.V. (indicative), as in the T.R. and A.V. Alford, though he recognizes the reading, and puts it in the"
+    },
+    {
+     "ref": "Romans 5:2",
+     "note": "This grace wherein ye have stood: i.e., and continue to stand"
+    },
+    {
+     "ref": "Romans 8:30",
+     "note": "The called are spoken of as already (in the Divine purpose) in Christ, justified, yea, even glorified"
+    },
+    {
+     "ref": "Romans 10:18",
+     "note": "But I say. Who says it? David! But by the Holy Spirit what David said is now repeated by Paul in the first person. 2. The Second Person for the Third"
+    },
+    {
+     "ref": "Romans 12:1",
+     "note": "Mercies: i.e., great mercy"
+    },
+    {
+     "ref": "Romans 12:15",
+     "note": "To rejoice with them that rejoice: i.e., rejoice ye. See under Homoteleuton. * See the note in Dr. Ginsburgs edition of the Hebrew Bible"
+    }
+   ]
+  },
+  {
+   "id": "synonymia",
+   "name": "Synonymia",
+   "greek": "συνωνυμία",
+   "group": "repetition",
+   "definition": "Amassing synonyms — words of like meaning — to enforce and enlarge a point.",
+   "occurrences": [
+    {
+     "ref": "Romans 2:4",
+     "note": "Or despisest thou the riches of His goodness, and forbearance"
+    },
+    {
+     "ref": "Romans 2:7",
+     "note": "To them who by patient continuation in well-doing seek for glory, and honour, and immortality, [| He will give | eternal life. See under Ellipsis"
+    },
+    {
+     "ref": "Romans 2:8"
+    },
+    {
+     "ref": "Romans 2:10",
+     "note": "But glory, honour, and peace [ will be rendered | to every man that worketh good"
+    },
+    {
+     "ref": "Romans 2:18"
+    },
+    {
+     "ref": "Romans 6:6",
+     "note": "Knowing this that our old man is (was) crucified with him (Christ), that the body of sin might be destroyed, that henceforth we should not serve sin. Here all three terms refer, by the figure of Syno"
+    },
+    {
+     "ref": "Romans 9:33",
+     "note": "Stumbling-stone and rock of offence"
+    },
+    {
+     "ref": "Romans 10:15",
+     "note": "Gospel of peace, and glad tidings of good things"
+    }
+   ]
+  },
+  {
+   "id": "antithesis",
+   "name": "Antithesis",
+   "greek": "ἀντίθεσις",
+   "group": "arrangement",
+   "definition": "Two opposite ideas set side by side so each sharpens the other.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:18",
+     "note": "Therefore as through one offence judgment came upon all men to condemnation, even so too, through the righteous act (, not ) of one, the free gift came upon all men unto a justifying (, spoken only of"
+    },
+    {
+     "ref": "Romans 5:19",
+     "note": "For as by one mans disobedient act many were made sinners, so by the obedient act of one ( i.e., His death) shall many be made righteous. See also Paronomasia and Paregmenon"
+    },
+    {
+     "ref": "Romans 6:7"
+    },
+    {
+     "ref": "Romans 6:11"
+    },
+    {
+     "ref": "Romans 8:5",
+     "note": "For they that are (or live) after (or according to) flesh (the Old nature) do mind the things of the flesh; but they that are (or live) after (according to) spirit (the New nature) [ do mind | the thi"
+    },
+    {
+     "ref": "Romans 8:13",
+     "note": "For if ye live according to flesh, ye shall die: but if ye through spirit (the New nature) do mortify the deeds of the body (i.e., by reckoning that it died with Christ"
+    },
+    {
+     "ref": "Romans 8:15",
+     "note": "For ye have not received the spirit of bondage again to fear; but ye have received the spirit of adoption (or a sonship-spirit), whereby we cry, Abba, Father"
+    },
+    {
+     "ref": "Romans 15:12",
+     "note": "There shall be a root of Jesse, and he that shall rise [ and raise His banner ] to reign over the Gentiles; in him shall the Gentiles trust. The reference is to"
+    }
+   ]
+  },
+  {
+   "id": "simile",
+   "name": "Simile",
+   "greek": "ὁμοίωσις",
+   "group": "comparison",
+   "definition": "An explicit comparison of two unlike things using “like” or “as.”",
+   "occurrences": [
+    {
+     "ref": "Romans 4:18",
+     "note": "The covenant of works they brake, see"
+    },
+    {
+     "ref": "Romans 5:12",
+     "note": "These words explain the mystery of the first and last Adam, and the first and second man: their temptation and its results as shown in Gen. 3, Matt. 4, and"
+    },
+    {
+     "ref": "Romans 5:18",
+     "note": "also Disobedience and obedience: sinners and righteous"
+    },
+    {
+     "ref": "Romans 5:19",
+     "note": "Hence the eternal results of Sin and death: grace and eternal life"
+    },
+    {
+     "ref": "Romans 5:21"
+    },
+    {
+     "ref": "Romans 6:23",
+     "note": "This explains Offence and righteousness: judgment and free gift"
+    },
+    {
+     "ref": "Romans 9:32",
+     "note": "Wherefore? Because they sought it not by faith, but as it were ( i.e., actually) by the works of the law"
+    },
+    {
+     "ref": "Romans 12:4",
+     "note": "sec-1 Cor 12712, 13°). 21. Mutual forgiveness: Christ forgave and do ye"
+    }
+   ]
+  },
+  {
+   "id": "pleonasm",
+   "name": "Pleonasm",
+   "greek": "πλεονασμός",
+   "group": "repetition",
+   "definition": "A deliberate redundancy — more words than strictly needed — to underline or solemnise.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:23",
+     "note": "Unto an image made like. Lit., unto a likeness of an image. By this figure the meaning is enhanced, so that it is as though it said, They changed the glory of the incorruptible God actually into an…"
+    },
+    {
+     "ref": "Romans 4:20",
+     "note": "He staggered not at the promise of God through unbelief; but was strong in faith"
+    },
+    {
+     "ref": "Romans 9:26"
+    },
+    {
+     "ref": "Romans 10:13",
+     "note": "Whosoever shall call upon the name of the Lord shall be saved: i.e., not whosoever shall utter the name, but whosoever shall be a true worshipper of God in Christ shall be saved. So"
+    },
+    {
+     "ref": "Romans 10:16",
+     "note": "Who hath believed our hearing: i.e., what they have heard; our preaching or testimony. So here, the figure cannot be rendered literally, but the whole sense is enchanced by the fact that it was the w"
+    },
+    {
+     "ref": "Romans 12:11",
+     "note": "Not slothful in business. Lit., in diligence, not slothful. See under Ellipsis and Idiom"
+    },
+    {
+     "ref": "Romans 12:14",
+     "note": "Bless, and curse not"
+    }
+   ]
+  },
+  {
+   "id": "hyperbaton",
+   "name": "Hyperbaton",
+   "greek": "ὑπερβατόν",
+   "group": "arrangement",
+   "definition": "Words wrenched out of their natural order, throwing weight onto the displaced word.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:3",
+     "note": "Concerning His Son, Jesus Christ our Lord. Here, the A.V. entirely loses the emphasis of the Hyperbaton, by which the words Jesus Christ our Lord in sense follow the words His Son, but are held back"
+    },
+    {
+     "ref": "Romans 5:8",
+     "note": "Here the words are out of the natural order to excite our attention. The Greek is: But commends His own love to us God. The nominative is put last, and the verb first, to emphasize both"
+    },
+    {
+     "ref": "Romans 8:18",
+     "note": "Not worthy are the sufferings of the present time [ compared with | the coming glory, to be revealed. * Or by a resurrection of dead persons: viz., that referred to in"
+    },
+    {
+     "ref": "Romans 11:13",
+     "note": "For to you I speak, to you Gentiles, inasmuch as I am of Gentiles the apostle. Here the shades of emphasis can be traced in the unusual order of the words in which fleshly wisdom can discern only bad"
+    },
+    {
+     "ref": "Romans 12:19",
+     "note": "How unusual to commence like this: Not yourselves avenging (or, be no self-avengers), beloved, but give place to [ Divine | wrath, thus emphasizing yourselves"
+    },
+    {
+     "ref": "Romans 14:1",
+     "note": "Him that is weak in the faith receive ye, but not for disputings of doubts: i.e., doubtful disputations, with emphasis on doubtful"
+    }
+   ]
+  },
+  {
+   "id": "polysyndeton",
+   "name": "Polysyndeton",
+   "greek": "πολυσύνδετον",
+   "group": "repetition",
+   "definition": "Conjunctions (“and … and …”) piled up to slow the pace and weight every item.",
+   "occurrences": [
+    {
+     "ref": "Romans 8:23"
+    },
+    {
+     "ref": "Romans 8:29"
+    },
+    {
+     "ref": "Romans 9:4",
+     "note": "Here the figure is used to impress us with the wonderful possessions and privileges of Israel, Who are Israelites; to whom pertaineth the adoption ( sonship"
+    },
+    {
+     "ref": "Romans 14:23",
+     "note": "and the end of the commandment is love"
+    }
+   ]
+  },
+  {
+   "id": "paronomasia",
+   "name": "Paronomasia (wordplay)",
+   "greek": "παρονομασία",
+   "group": "emphasis",
+   "definition": "A play on words that sound alike but differ in sense — pun, rhyme, near-repetition.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:29",
+     "note": "Fornication ( porneia * ), wickedness ( poneeria ) full of envy (, phthonou ), murder (, phonou"
+    },
+    {
+     "ref": "Romans 1:31",
+     "note": "asunetous ) covenant-breakers (, asunthetous"
+    },
+    {
+     "ref": "Romans 2:25",
+     "note": "29 ). To go back therefore to ordinances, and to this ordinance, after having been made free in Christ is mutilation, not true circumcision. The verb ( katatemnein ) is always connected with…"
+    },
+    {
+     "ref": "Romans 9:18",
+     "note": "Therefore hath He mercy on whom He will have mercy. Lit., so then on whom he will ( thelei eleei"
+    }
+   ]
+  },
+  {
+   "id": "hypallage",
+   "name": "Hypallage",
+   "greek": "ὑπαλλαγή",
+   "group": "substitution",
+   "definition": "Interchange: a word logically belonging to one term is grammatically attached to another.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:17",
+     "note": "Abundance of grace: i.e., abounding grace (not gracious abounding"
+    },
+    {
+     "ref": "Romans 7:24",
+     "note": "Who shall deliver me from the body of this death? i.e., this body of death (as in A.V. margin); or, this mortal, dying body. Not until this mortal body shall die, or be changed and glorified, shall t"
+    },
+    {
+     "ref": "Romans 9:31",
+     "note": "But Israel, which followed after the law of righteousness, hath not attained to the law of righteousness: i.e., to the righteousness of the law"
+    },
+    {
+     "ref": "Romans 15:19",
+     "note": "So that from Jerusalem, and round about unto Illyricum, I have fully preached the gospel of Christ: i.e., I have filled, with the gospel of Christ, Jerusalem and round about"
+    }
+   ]
+  },
+  {
+   "id": "hendiadys",
+   "name": "Hendiadys",
+   "greek": "ἓν διὰ δυοῖν",
+   "group": "emphasis",
+   "definition": "One idea expressed by two words joined with “and,” the second really qualifying the first.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:5",
+     "note": "By whom we have received grace and apostleship: i.e., grace, yes and apostolic grace too"
+    },
+    {
+     "ref": "Romans 2:27",
+     "note": "Letter and circumcision. See under Ellipsis, page 23"
+    },
+    {
+     "ref": "Romans 11:17",
+     "note": "And with them partakest of the root and the fatness of the olive tree: i.e., the root, yesand the fat or prolific root; or the rich blessings which come forth from that root. *"
+    },
+    {
+     "ref": "Romans 15:4",
+     "note": "Whatsoever things were written aforetime were written for our learning, that we through patience and comfort of the Scriptures might have hope. Here there are two things, not one, because comforting i"
+    }
+   ]
+  },
+  {
+   "id": "personification",
+   "name": "Personification",
+   "greek": "προσωποποιΐα",
+   "group": "emphasis",
+   "definition": "Giving human traits, action, or speech to something impersonal or abstract.",
+   "occurrences": [
+    {
+     "ref": "Romans 7:23",
+     "note": "24; 5:21 ). From the World which is too strong"
+    },
+    {
+     "ref": "Romans 8:19",
+     "note": "For the earnest expectation of the creature waiteth for the manifestation of the sons of God. See under Metonymy (of Adjunct), Ellipsis, and Epitrechon"
+    },
+    {
+     "ref": "Romans 9:20",
+     "note": "Shall the thing formed say to him that formed it, Why hast thou made me thus?"
+    },
+    {
+     "ref": "Romans 10:68",
+     "note": "The righteousness which is of faith speaketh on this wise"
+    }
+   ]
+  },
+  {
+   "id": "erotesis",
+   "name": "Rhetorical question",
+   "greek": "ἐρώτησις",
+   "group": "emphasis",
+   "definition": "A question asked for effect, not for an answer — to affirm, deny, or provoke thought.",
+   "occurrences": [
+    {
+     "ref": "Romans 3:3",
+     "note": "See under Tapeinosis. If God be for us, who can be against us? Who shall lay anything to the charge of Gods elect? Who is he that condemneth? Who shall separate us from the love of Christ?"
+    },
+    {
+     "ref": "Romans 7:24",
+     "note": "marg. )). See under Ecphonesis, Metonymy, Hypallage, and Ellipsis. By these figures is this height of Christian experience emphasised: i.e., the knowledge of the fact as to what God had done with sins"
+    },
+    {
+     "ref": "Romans 10:6",
+     "note": "7 ). See under Epitrechon. These doubts, raised by self-righteousness, are seen to be removed only by the imputation of a Divine righteousness. 10. INADMONITION Hearest thou not, my daughter?"
+    },
+    {
+     "ref": "Romans 11:34",
+     "note": "35 ). Who goeth a warfare any time at his own charges?"
+    }
+   ]
+  },
+  {
+   "id": "anadiplosis",
+   "name": "Anadiplosis",
+   "greek": "ἀναδίπλωσις",
+   "group": "repetition",
+   "definition": "The word ending one clause is repeated to begin the next, linking them.",
+   "occurrences": [
+    {
+     "ref": "Romans 8:17",
+     "note": "If children, then heirs: heirs of God"
+    },
+    {
+     "ref": "Romans 9:30",
+     "note": "What shall we say then? That the Gentiles which followed not after righteousness have attained to righteoushess; righteousness which is of faith"
+    },
+    {
+     "ref": "Romans 10:17",
+     "note": "So then, faith cometh by hearing, and hearing by the word of God"
+    }
+   ]
+  },
+  {
+   "id": "climax",
+   "name": "Climax",
+   "greek": "κλῖμαξ",
+   "group": "arrangement",
+   "definition": "A chain in which the end of each step becomes the start of the next, building to a peak.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:3"
+    },
+    {
+     "ref": "Romans 8:29"
+    },
+    {
+     "ref": "Romans 10:14"
+    }
+   ]
+  },
+  {
+   "id": "paregmenon",
+   "name": "Paregmenon",
+   "greek": "παρηγμένον",
+   "group": "repetition",
+   "definition": "Words from the same root set near one another (a figure of derivation).",
+   "occurrences": [
+    {
+     "ref": "Romans 2:1",
+     "note": "Thou art inexcusable, O man, whos, ho krin n ), for wherein thou judgest (, krineis ) another thou condemnest (, katakrineis ) thyself; for t, ho krin n ) doest the same things"
+    },
+    {
+     "ref": "Romans 5:19",
+     "note": "For as by one mans disobedience (, parakoees ) many were, hypakoees ) of one shall many be made righteous"
+    },
+    {
+     "ref": "Romans 12:3",
+     "note": "Not to think of himself, hyperphronein ) than he ought to think (, phronein ); but to think (, phronein ) soberly (, s phronein"
+    }
+   ]
+  },
+  {
+   "id": "parechesis",
+   "name": "Parechesis",
+   "greek": "παρήχησις",
+   "group": "emphasis",
+   "definition": "Repetition of like-sounding words, especially from a foreign tongue — sound-play across languages.",
+   "occurrences": [
+    {
+     "ref": "Romans 10:19",
+     "note": "disobedience and obedience"
+    },
+    {
+     "ref": "Romans 13:8",
+     "note": "Owe no man anything but to love one another. ra. In the Greek (as in the English) these words are very different: but, to a Hebrew, the two words would immediately be, in the mind, ( ), ach b and, ch"
+    },
+    {
+     "ref": "Romans 15:4",
+     "note": "That we through patience might have hope. This would be, sabbar and, subar (from the same root). That we through sabbar might have saubar"
+    }
+   ]
+  },
+  {
+   "id": "epitrechon",
+   "name": "Epitrechon",
+   "greek": "ἐπιτρέχον",
+   "group": "arrangement",
+   "definition": "A clause “running through” — dropped in parenthetically between others.",
+   "occurrences": [
+    {
+     "ref": "Romans 3:7"
+    },
+    {
+     "ref": "Romans 9:2"
+    },
+    {
+     "ref": "Romans 10:6"
+    }
+   ]
+  },
+  {
+   "id": "catachresis",
+   "name": "Catachresis",
+   "greek": "κατάχρησις",
+   "group": "substitution",
+   "definition": "One word used for another only remotely related — a deliberately incongruous transfer.",
+   "occurrences": [
+    {
+     "ref": "Romans 7:23",
+     "note": "I see another law in my members. He means that he sees sin: which, through the authority with which it rules his members, he calls, by Catachresis, law. See under Antanaclasis"
+    },
+    {
+     "ref": "Romans 9:6"
+    },
+    {
+     "ref": "Romans 14:11"
+    }
+   ]
+  },
+  {
+   "id": "anacoluthon",
+   "name": "Anacoluthon",
+   "greek": "ἀνακόλουθον",
+   "group": "arrangement",
+   "definition": "A break in grammatical sequence — a sentence begun one way and finished another.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:12",
+     "note": "This is usually given as an example of what appears to be an Anacoluthon; because the sense seems broken off at the end of verse 12: but the structure of the passage shows us the connection, and wher"
+    },
+    {
+     "ref": "Romans 8:3",
+     "note": "For what the law could not do, in that it was weak through the flesh. Here, the argument breaks off to speak of what God has done: God (by sending His own Son in the likeness of sinful flesh and as…"
+    },
+    {
+     "ref": "Romans 12:4"
+    }
+   ]
+  },
+  {
+   "id": "paroemia",
+   "name": "Paroemia (proverb)",
+   "greek": "παροιμία",
+   "group": "emphasis",
+   "definition": "A proverb — a wayside-saying in common use, cited or coined.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:14",
+     "note": "where Adam is spoken of as a type of the Coming One. The theological use of the word agrees more with what in the New Testament is called ( skia ), a shadow ( Heb. 101"
+    },
+    {
+     "ref": "Romans 6:17"
+    },
+    {
+     "ref": "Romans 9:27"
+    }
+   ]
+  },
+  {
+   "id": "enigma",
+   "name": "Enigma",
+   "greek": "αἴνιγμα",
+   "group": "emphasis",
+   "definition": "A dark saying — a truth wrapped in obscure or riddling terms.",
+   "occurrences": [
+    {
+     "ref": "Romans 5:12"
+    },
+    {
+     "ref": "Romans 5:21",
+     "note": "but the honey is found in"
+    },
+    {
+     "ref": "Romans 6:6"
+    }
+   ]
+  },
+  {
+   "id": "aposiopesis",
+   "name": "Aposiopesis",
+   "greek": "ἀποσιώπησις",
+   "group": "omission",
+   "definition": "A sentence broken off unfinished, as if the speaker cannot or will not go on.",
+   "occurrences": [
+    {
+     "ref": "Romans 9:26",
+     "note": "where the pronoun my is used. In"
+    },
+    {
+     "ref": "Romans 10:19",
+     "note": "I will provoke you to jealousy by them that are no people. ( ouk ethnos ), a non-people. So"
+    }
+   ]
+  },
+  {
+   "id": "homoteleuton",
+   "name": "Homœoteleuton",
+   "greek": "ὁμοιοτέλευτον",
+   "group": "repetition",
+   "definition": "Successive clauses closing with like-sounding endings — rhyme of terminations.",
+   "occurrences": [
+    {
+     "ref": "Romans 12:15",
+     "note": "Rejoice with them that do rejoice, and weep with them that weep. Here the inflections of the infinitive and participles necessarily go together in the Greek, though, of course, not in the English.. C"
+    },
+    {
+     "ref": "Romans 16:25"
+    }
+   ]
+  },
+  {
+   "id": "hyperbole",
+   "name": "Hyperbole",
+   "greek": "ὑπερβολή",
+   "group": "emphasis",
+   "definition": "Deliberate exaggeration, not meant literally, that drives a point home vividly.",
+   "occurrences": [
+    {
+     "ref": "Romans 9:3",
+     "note": "For I could wish that myself were accursed from Christ is an hyperbolical supposition. Or we may take this sentence as being in a parenthesis, and render the imperfect tense ( eeuchomeen ) in the sens"
+    },
+    {
+     "ref": "Romans 9:13",
+     "note": "Anger is used for displeasure"
+    }
+   ]
+  },
+  {
+   "id": "antiptosis",
+   "name": "Antiptosis",
+   "greek": "ἀντίπτωσις",
+   "group": "substitution",
+   "definition": "One grammatical case put for another (commonly a genitive doing the work of an adjective).",
+   "occurrences": [
+    {
+     "ref": "Romans 2:4",
+     "note": "The good thing (, to chreeston ) of God: i.e., the goodness of God. See under Antimereia of the adjective"
+    },
+    {
+     "ref": "Romans 5:17",
+     "note": "The abundance of the grace: i.e., the abounding grace"
+    }
+   ]
+  },
+  {
+   "id": "metalepsis",
+   "name": "Metalepsis",
+   "greek": "μετάληψις",
+   "group": "substitution",
+   "definition": "A double metonymy: one word stands for a second, which itself stands for a third.",
+   "occurrences": [
+    {
+     "ref": "Romans 3:25",
+     "note": "Through faith in his blood: i.e., through faith in the merits of the atonement accomplished by it"
+    },
+    {
+     "ref": "Romans 5:9",
+     "note": "Being now justified by his blood: i.e., his atonement"
+    }
+   ]
+  },
+  {
+   "id": "ecphonesis",
+   "name": "Ecphonesis",
+   "greek": "ἐκφώνησις",
+   "group": "emphasis",
+   "definition": "An outcry of feeling — a sudden exclamation breaking from strong emotion (“O the depth!”).",
+   "occurrences": [
+    {
+     "ref": "Romans 1:16",
+     "note": "to 5:11 ): and then the old tree itself is dealt with in chap. 5:12 to 8:39, and is shown to be (in Gods sight) as dead, having been crucified with Christ. Thus, the conflict goes on till this body o"
+    },
+    {
+     "ref": "Romans 7:24",
+     "note": "O wretched man that I am! who shall deliver me from this body of death? ( marg"
+    }
+   ]
+  },
+  {
+   "id": "accismus",
+   "name": "Accismus",
+   "greek": "ἀκκισμός",
+   "group": "emphasis",
+   "definition": "A feigned or apparent refusal of what is really desired or intended.",
+   "occurrences": [
+    {
+     "ref": "Romans 1:13",
+     "note": "Now I would not have you ignorant, brethren, that oftentimes I purposed to come unto you, (but was let hitherto,) that I might have some fruit among you also, even as among other Gentiles. Verses 15"
+    },
+    {
+     "ref": "Romans 3:20"
+    }
+   ]
+  },
+  {
+   "id": "asyndeton",
+   "name": "Asyndeton",
+   "greek": "ἀσύνδετον",
+   "group": "omission",
+   "definition": "Conjunctions omitted between items in a series, producing a rapid, piled-up effect.",
+   "occurrences": [
+    {
+     "ref": "Romans 7:18",
+     "note": "Until, therefore, a new heart has been given by God, all attempts to make black white will be labour in vain"
+    }
+   ]
+  },
+  {
+   "id": "enthymema",
+   "name": "Enthymeme",
+   "greek": "ἐνθύμημα",
+   "group": "omission",
+   "definition": "An argument in which one premise is left unexpressed and silently understood.",
+   "occurrences": [
+    {
+     "ref": "Romans 7:16",
+     "note": "Here the fact is asserted that law has dominion over a man only while he is alive (verse 1 ), and this fact is applied to those who died (i.e., were judicially reckoned as having died) when Christ di"
+    }
+   ]
+  },
+  {
+   "id": "anaphora",
+   "name": "Anaphora",
+   "greek": "ἀναφορά",
+   "group": "repetition",
+   "definition": "The same word or phrase begins a run of successive clauses, hammering a theme.",
+   "occurrences": [
+    {
+     "ref": "Romans 8:33"
+    }
+   ]
+  },
+  {
+   "id": "epanalepsis",
+   "name": "Epanalepsis",
+   "greek": "ἐπανάληψις",
+   "group": "repetition",
+   "definition": "Resumption of a word or thought after an intervening parenthesis.",
+   "occurrences": [
+    {
+     "ref": "Romans 3:25"
+    }
+   ]
+  },
+  {
+   "id": "epistrophe",
+   "name": "Epistrophe",
+   "greek": "ἐπιστροφή",
+   "group": "repetition",
+   "definition": "The same word or phrase ends a run of successive clauses (the mirror of anaphora).",
+   "occurrences": [
+    {
+     "ref": "Romans 8:31",
+     "note": "If God be for us Who can be against us?"
+    }
+   ]
+  },
+  {
+   "id": "epanadiplosis",
+   "name": "Epanadiplosis",
+   "greek": "ἐπαναδίπλωσις",
+   "group": "repetition",
+   "definition": "A clause encircled — beginning and ending with the same word.",
+   "occurrences": [
+    {
+     "ref": "Romans 8:24",
+     "note": "Hope that is seen is not hope"
+    }
+   ]
+  },
+  {
+   "id": "epanodos",
+   "name": "Epanodos",
+   "greek": "ἐπάνοδος",
+   "group": "arrangement",
+   "definition": "Repetition of the chief words of a sentence in inverse order, to expound them.",
+   "occurrences": [
+    {
+     "ref": "Romans 2:14",
+     "note": "Which have not the law (,, mee nomon ).. these having not the law (nomon mee ). The figure, which does not appear in the English, shows us that in the former sentence we are to place the emphasis on"
+    }
+   ]
+  },
+  {
+   "id": "prosapodosis",
+   "name": "Prosapodosis",
+   "greek": "προσαπόδοσις",
+   "group": "arrangement",
+   "definition": "A detailing return that takes up several things named together and expounds each in turn.",
+   "occurrences": [
+    {
+     "ref": "Romans 11:22",
+     "note": "Behold therefore, the goodness and severity of God: on them which fell, severity; but toward thee, goodness, if thou continue in his goodness; otherwise thou also shalt be cut off. Here, the return"
+    }
+   ]
+  },
+  {
+   "id": "ampliatio",
+   "name": "Ampliatio",
+   "greek": "ἀμπλιατίο",
+   "group": "substitution",
+   "definition": "An old name kept for a person or thing after the reason for it has passed (“the blind man” once healed).",
+   "occurrences": [
+    {
+     "ref": "Romans 4:5",
+     "note": "The ungodly is so called after he is justified. The Epithet is still used by way of Ampliatio"
+    }
+   ]
+  },
+  {
+   "id": "hysteronproteron",
+   "name": "Hysteron-proteron",
+   "greek": "ὕστερον πρότερον",
+   "group": "arrangement",
+   "definition": "The natural order of two things reversed, the later put first (“let us live and move”).",
+   "occurrences": [
+    {
+     "ref": "Romans 1:4",
+     "note": "where the Lord Jesus is said to have been marked out as Gods Son as the result of raising (or rising), from among the dead, but simply, of dead people. That He was so marked out is described in th"
+    }
+   ]
+  },
+  {
+   "id": "epanorthosis",
+   "name": "Epanorthosis",
+   "greek": "ἐπανόρθωσις",
+   "group": "emphasis",
+   "definition": "Recalling a word just used to correct or strengthen it (“not I, but the Lord”).",
+   "occurrences": [
+    {
+     "ref": "Romans 14:4",
+     "note": "Who art thou * that judgest another mans servant? to his own master he standeth or falleth. [And then, remembering the blessed fact of the security of such an one, and the provision made for all his n"
+    }
+   ]
+  },
+  {
+   "id": "thaumasmos",
+   "name": "Thaumasmos",
+   "greek": "θαυμασμός",
+   "group": "emphasis",
+   "definition": "An exclamation of wonder or admiration.",
+   "occurrences": [
+    {
+     "ref": "Romans 11:33",
+     "note": "O the depth of the riches both of the wisdom and knowledge of God! how unsearchable are his judgments, and his ways past finding out! This 1s a proper Ecphonesis, except that it expresses wonder and"
+    }
+   ]
+  },
+  {
+   "id": "anteisagoge",
+   "name": "Anteisagoge",
+   "greek": "ἀντεισαγωγή",
+   "group": "emphasis",
+   "definition": "Meeting a question or objection with a counter-question.",
+   "occurrences": [
+    {
+     "ref": "Romans 9:19"
+    }
+   ]
+  },
+  {
+   "id": "epitrope",
+   "name": "Epitrope",
+   "greek": "ἐπιτροπή",
+   "group": "emphasis",
+   "definition": "Admission or permission — ironically conceding a point (“Fill up the measure of your fathers”).",
+   "occurrences": [
+    {
+     "ref": "Romans 11:19"
+    }
+   ]
+  }
+ ]
+}
