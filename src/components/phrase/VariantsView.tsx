@@ -101,7 +101,9 @@ type VMRow = { sigla: WitRef[]; family: WitnessFamily; isRef: boolean; cells: VM
 type VMVerse = { vid: string; verse: number; rows: VMRow[]; lac: string[]; hasVariant: boolean }
 
 type Controls = { refWid: string; hidden: string[]; hideSpelling: boolean; onlyVariants: boolean; group: boolean }
-const DEFAULT_CONTROLS: Controls = { refWid: 'RP', hidden: [], hideSpelling: false, onlyVariants: false, group: false }
+// Default view: compare against Sinaiticus (ℵ), show only verses with variants, group identical
+// readings. Falls back to 𝔐 automatically in chapters where ℵ is lacunose.
+const DEFAULT_CONTROLS: Controls = { refWid: '01', hidden: [], hideSpelling: false, onlyVariants: true, group: true }
 
 // On phones the wide grid becomes a per-variation-unit apparatus: for each column where the
 // visible witnesses disagree, list each reading with the sigla that support it.
@@ -401,11 +403,6 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
         {status === 'ok' && data && (
           <>
-            <div className="text-center mb-2 mt-1">
-              <div className="text-[0.7rem] tracking-widest font-semibold text-gray-400 uppercase">Manuscript Collation</div>
-              <div className="text-lg font-semibold text-gray-800 font-greek">{data.reference}</div>
-            </div>
-
             {/* Control bar */}
             <div ref={barRef} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3 text-xs relative z-20 print:hidden">
               {/* Reference selector */}
@@ -493,7 +490,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               return (
                 <div key={vm.vid} className="mb-3 rounded-lg border border-gray-100 p-2.5">
                   <div className="flex items-center gap-1 text-[0.7rem] font-mono text-gray-400 mb-1.5">
-                    <span className="font-semibold">{vm.verse}</span>
+                    <span className="font-semibold">{parsed!.chapter}:{vm.verse}</span>
                     <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                       noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
                     <NoteBadge vid={vm.vid} verse={vm.verse} />
@@ -538,7 +535,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                           <td className="pr-2 align-baseline text-[0.7rem] font-mono text-gray-300 select-none whitespace-nowrap">
                             {ri === 0 && (
                               <span className="inline-flex items-center gap-1">
-                                <span>{vm.verse}</span>
+                                <span>{parsed!.chapter}:{vm.verse}</span>
                                 <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                                   noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
                                 <NoteBadge vid={vm.vid} verse={vm.verse} />
