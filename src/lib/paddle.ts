@@ -37,8 +37,9 @@ export function verifyPaddleWebhookSignature(rawBody: string, signatureHeader: s
 
 /**
  * Schedules cancellation of a Paddle subscription at the end of the current billing
- * period — the student keeps access through what they already paid for, no refund is
- * issued, and no proration happens. Paddle later sends `subscription.canceled` once the
+ * period — the student keeps access through what they already paid for; cancelling alone
+ * issues no refund (those are requested separately, within 14 days of a charge, and are
+ * handled by Paddle as Merchant of Record) and no proration happens. Paddle later sends `subscription.canceled` once the
  * period actually ends, which is what flips our DB's subscriptionStatus to CANCELED.
  */
 export async function paddleCancelSubscription(subscriptionId: string) {

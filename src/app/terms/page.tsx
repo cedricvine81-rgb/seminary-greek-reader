@@ -25,7 +25,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-2">3. Subscription &amp; Payment</h2>
           <p>Student accounts created after the date of these Terms require a paid subscription of $10 per year to access the service. Subscriptions are billed and processed by our payment provider, Paddle, and renew automatically each year unless cancelled before the renewal date.</p>
-          <p>All payments are <strong>non-refundable</strong>, including partial years and unused portions of a subscription term — see our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for details. If a renewal payment fails or a subscription is cancelled or lapses, access to the service is suspended until payment is brought current or a new subscription is purchased. We do not store your payment card details; they are handled entirely by Paddle.</p>
+          <p>You may request a <strong>full refund of any payment within 14 days</strong> of that payment being charged, for any reason — see our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for how to do so. After that 14-day window a payment is non-refundable, including partial years and unused portions of a subscription term, except where applicable law or Paddle&rsquo;s Buyer Terms require otherwise. If a renewal payment fails or a subscription is cancelled or lapses, access to the service is suspended until payment is brought current or a new subscription is purchased. We do not store your payment card details; they are handled entirely by Paddle.</p>
           <p>Students whose accounts were created before these Terms took effect are grandfathered and are not required to pay the subscription fee to retain existing access.</p>
         </section>
 
@@ -53,7 +53,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-2">8. Termination</h2>
-          <p>We reserve the right to suspend or terminate accounts that violate these terms, including violations of Section 4. You may delete your account at any time by contacting us; subscription fees already paid are non-refundable upon termination or voluntary account deletion.</p>
+          <p>We reserve the right to suspend or terminate accounts that violate these terms, including violations of Section 4. You may delete your account at any time by contacting us. Subscription fees already paid are refundable only within the 14-day window described in Section 3 and our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link>; outside that window they are non-refundable upon termination or voluntary account deletion.</p>
         </section>
 
         <section>

@@ -32,12 +32,12 @@ export default function PricingPage() {
 
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-2">2. Billing</h2>
-          <p>Payment is charged immediately upon sign-up; there is no free trial or introductory discount. The subscription then renews automatically once a year at the same $10 rate unless cancelled beforehand. Billing and payment collection are handled entirely by <strong>Paddle.com</strong>, our Merchant of Record. Taxes (such as sales tax or VAT, where applicable) are not included in the $10 price shown above — they are calculated based on your location and added at checkout. See our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for details on cancellations and non-refundable payments.</p>
+          <p>Payment is charged immediately upon sign-up; there is no free trial or introductory discount. The subscription then renews automatically once a year at the same $10 rate unless cancelled beforehand. Billing and payment collection are handled entirely by <strong>Paddle.com</strong>, our Merchant of Record. Taxes (such as sales tax or VAT, where applicable) are not included in the $10 price shown above — they are calculated based on your location and added at checkout. You can request a full refund within 14 days of any charge — see our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for details on refunds and cancellations.</p>
         </section>
 
         <section>
           <h2 className="text-base font-semibold text-gray-900 mb-2">3. How to Cancel</h2>
-          <p>You can cancel automatic renewal at any time by signing in and going to <strong>Settings → Subscription → Cancel Subscription</strong>. Cancelling stops future billing only — you keep full access through the end of your current paid period, and no refund is issued for time already paid. See our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for full details.</p>
+          <p>You can cancel automatic renewal at any time by signing in and going to <strong>Settings → Subscription → Cancel Subscription</strong>. Cancelling stops future billing only — you keep full access through the end of your current paid period. If you are still within 14 days of a charge and want that payment returned rather than just stopping future ones, you can request a refund instead. See our <Link href="/refunds" className="text-brand-600 hover:underline">Refund Policy</Link> for full details.</p>
         </section>
 
         <section>

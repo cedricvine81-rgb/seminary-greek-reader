@@ -41,7 +41,7 @@ export function ManageSubscription() {
 
   async function cancel() {
     if (!confirm(
-      'Cancel your subscription? You will keep access until the end of your current billing period. No refund is issued for time already paid.'
+      'Cancel your subscription? You will keep access until the end of your current billing period. Cancelling does not itself refund a payment — if you are within 14 days of a charge you can request a refund instead.'
     )) return
     setCanceling(true); setError('')
     try {
@@ -85,7 +85,7 @@ export function ManageSubscription() {
       {data.status === 'ACTIVE' && !cancelScheduled && (
         <div className="mt-4">
           <Button variant="danger" size="sm" onClick={cancel} loading={canceling}>Cancel subscription</Button>
-          <p className="mt-1.5 text-xs text-gray-400">No refunds — you'll keep access through the period you already paid for.</p>
+          <p className="mt-1.5 text-xs text-gray-400">You&rsquo;ll keep access through the period you already paid for. Refunds are available within 14 days of a charge — see our <a href="/refunds" className="underline hover:text-gray-600">Refund Policy</a>.</p>
         </div>
       )}
     </Card>

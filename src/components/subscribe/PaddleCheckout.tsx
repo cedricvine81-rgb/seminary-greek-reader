@@ -120,7 +120,7 @@ export function PaddleCheckout({ userId, email }: { userId: string; email: strin
         Subscribe — $10/year
       </Button>
       <p className="text-xs text-gray-400 text-center">
-        Billed annually. Taxes may apply and will be calculated at checkout. No refunds — see our{' '}
+        Billed annually. Taxes may apply and will be calculated at checkout. Full refund available within 14 days — see our{' '}
         <a href="/refunds" target="_blank" rel="noopener noreferrer" className="underline hover:text-gray-600">Refund Policy</a>.
       </p>
     </div>

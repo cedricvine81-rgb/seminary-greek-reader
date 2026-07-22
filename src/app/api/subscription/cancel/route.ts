@@ -6,7 +6,7 @@ import { rateLimit } from '@/lib/rate-limit'
 import { logError } from '@/lib/logger'
 
 // POST /api/subscription/cancel — schedules cancellation at the end of the current
-// billing period. No refund is issued for time already paid; access continues until
+// billing period. Cancelling alone refunds nothing; access continues until
 // subscriptionCurrentPeriodEnd. Does not write subscription state itself — the Paddle
 // webhook is the sole writer, this only calls Paddle and reports its response back so
 // the UI can show the effective date immediately instead of waiting on the webhook.
