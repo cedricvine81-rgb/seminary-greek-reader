@@ -1,6 +1,6 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { X, ChevronDown } from 'lucide-react'
+import { X, ChevronDown, Info, Printer } from 'lucide-react'
 import { FONT_SIZE_MAP, FONT_SIZES, type PhraseFontSize } from './PhraseExplorer'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -8,6 +8,7 @@ import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { witnessInfo, FAMILY_COLOR, FAMILY_LABEL, type WitnessFamily } from '@/lib/witness-info'
+import { VARIANT_NOTES } from '@/lib/variant-notes'
 
 // ── Textual-variants tab ────────────────────────────────────────────────────────────────
 // A Swanson-style manuscript collation: one line per witness, word-aligned into columns so
@@ -154,6 +155,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   const [ctrl, setCtrl] = useState<Controls>(DEFAULT_CONTROLS)
   const [openMenu, setOpenMenu] = useState<'ref' | 'wit' | null>(null)
   const [hoverCol, setHoverCol] = useState<number | null>(null)
+  const [openNote, setOpenNote] = useState<string | null>(null)
   const [isMobile, setIsMobile] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
@@ -318,6 +320,31 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shownVerses, parseMap])
 
+  // Landmark-variant significance notes: a badge on any verse that has one, expanding a panel.
+  const noteFor = (verse: number) => (parsed ? VARIANT_NOTES[`${parsed.osis}.${parsed.chapter}.${verse}`] : undefined)
+  function NoteBadge({ vid, verse }: { vid: string; verse: number }) {
+    if (!noteFor(verse)) return null
+    return (
+      <button type="button" title="Why this variant matters" onClick={() => setOpenNote(openNote === vid ? null : vid)}
+        className={`print:hidden ${openNote === vid ? 'text-amber-600' : 'text-amber-500 hover:text-amber-600'}`}>
+        <Info size={13} />
+      </button>
+    )
+  }
+  function NotePanel({ vid, verse, force }: { vid: string; verse: number; force?: boolean }) {
+    const n = noteFor(verse)
+    if (!n || (openNote !== vid && !force)) return null
+    return (
+      <div className="mt-1 mb-2 rounded-lg border border-gray-200 bg-popover px-3 py-2 text-xs text-gray-700 max-w-2xl">
+        <div className="flex items-start justify-between gap-2">
+          <span className="font-semibold text-amber-700 font-greek">{n.title}</span>
+          {!force && <button onClick={() => setOpenNote(null)} className="text-gray-400 hover:text-gray-600 print:hidden"><X size={13} /></button>}
+        </div>
+        <p className="mt-0.5 leading-relaxed">{n.note}</p>
+      </div>
+    )
+  }
+
   const fs = FONT_SIZE_MAP[fontSize]
   const witnesses = data?.witnesses ?? []
   const refSigil = witnesses.find(w => w.wid === ctrl.refWid)?.sigil ?? '𝔐'
@@ -356,8 +383,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
   const ctrlBtn = 'inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 hover:bg-gray-50'
 
   return (
-    <div className="h-full flex flex-col min-h-0">
-      <div className="flex-1 overflow-y-auto px-1 pb-4" onClick={() => info && setInfo(null)}>
+    <div className="h-full flex flex-col min-h-0 print:h-auto print:block">
+      <div className="flex-1 overflow-y-auto px-1 pb-4 print:overflow-visible" onClick={() => info && setInfo(null)}>
         {status === 'idle' && (
           <p className="text-gray-400 text-sm mt-6 text-center">Enter a New Testament passage to compare its manuscript witnesses.</p>
         )}
@@ -380,7 +407,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
             </div>
 
             {/* Control bar */}
-            <div ref={barRef} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3 text-xs relative z-20">
+            <div ref={barRef} className="flex flex-wrap items-center gap-x-3 gap-y-1.5 mb-3 text-xs relative z-20 print:hidden">
               {/* Reference selector */}
               <div className="relative">
                 <button type="button" className={ctrlBtn} onClick={() => setOpenMenu(openMenu === 'ref' ? null : 'ref')}>
@@ -453,6 +480,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
               <span className="h-4 w-px bg-gray-200" />
               <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('beginner')}>Beginner</button>
               <button type="button" className="rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50" onClick={() => applyPreset('advanced')}>Advanced</button>
+              <button type="button" title="Print / save as PDF" className="ml-auto inline-flex items-center gap-1 rounded-lg border border-gray-200 px-2 py-1 text-gray-600 hover:bg-gray-50"
+                onClick={() => window.print()}><Printer size={13} /> Print</button>
             </div>
 
             {displayed.length === 0 && (
@@ -467,7 +496,9 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                     <span className="font-semibold">{vm.verse}</span>
                     <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                       noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                    <NoteBadge vid={vm.vid} verse={vm.verse} />
                   </div>
+                  <NotePanel vid={vm.vid} verse={vm.verse} />
                   {units.length === 0 ? (
                     <p className="text-xs text-gray-400">No variants among the visible witnesses.</p>
                   ) : units.map((u, ui) => (
@@ -498,7 +529,8 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
             {!isMobile && displayed.map(vm => (
               <div key={vm.vid} className="mb-4">
-                <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-1.5">
+                <div className="pl-6"><NotePanel vid={vm.vid} verse={vm.verse} /></div>
+                <div className="overflow-x-auto pb-1 [&::-webkit-scrollbar]:h-1.5 print:overflow-visible">
                   <table className="border-collapse font-greek" style={{ fontSize: fs, whiteSpace: 'nowrap' }} onMouseLeave={() => setHoverCol(null)}>
                     <tbody>
                       {vm.rows.map((r, ri) => (
@@ -509,6 +541,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                                 <span>{vm.verse}</span>
                                 <span className="font-sans"><VerseNoteButton book={parsed!.osis} chapter={parsed!.chapter} verse={vm.verse}
                                   noted={notedKeys.has(`${parsed!.osis}.${parsed!.chapter}.${vm.verse}`)} onChanged={refreshNotes} /></span>
+                                <NoteBadge vid={vm.vid} verse={vm.verse} />
                               </span>
                             )}
                           </td>
@@ -518,7 +551,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
                               {c.omit ? '—' : <GreekWord text={c.shown} verse={vm.verse} wkey={`${vm.vid}.${ri}.${ci}`} bold={r.isRef} />}
                             </td>
                           ))}
-                          <td className="sticky right-0 pl-3 align-baseline bg-white text-left border-l border-gray-100">
+                          <td className="sticky right-0 pl-3 align-baseline bg-white text-left border-l border-gray-100 print:static">
                             <span className="inline-flex flex-wrap items-center gap-x-1.5">
                               {r.sigla.map(s => (
                                 <button key={s.wid + s.sigil} type="button"
@@ -567,7 +600,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
       {/* Shared parsing pane — filled by clicking/hovering any Greek word above. */}
       {status === 'ok' && (
-        <ResizableParsingPane storageKey="variants" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
+        <ResizableParsingPane storageKey="variants" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" className="print:hidden" />
       )}
 
       {/* Witness info popover */}
@@ -602,7 +635,7 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
 
       {/* Non-controlled font control (standalone use, outside the shared tools menu) */}
       {!isFontControlled && status === 'ok' && (
-        <div className="fixed bottom-4 right-4 flex items-center gap-2 bg-popover border border-gray-200 rounded-full px-3 py-1.5 shadow z-40">
+        <div className="fixed bottom-4 right-4 flex items-center gap-2 bg-popover border border-gray-200 rounded-full px-3 py-1.5 shadow z-40 print:hidden">
           <span className="text-gray-400 font-greek" style={{ fontSize: '0.8rem' }}>Α</span>
           <input type="range" min={0} max={FONT_SIZES.length - 1} value={FONT_SIZES.indexOf(fontSize)}
             onChange={e => setFontSize(FONT_SIZES[e.target.valueAsNumber])} className="accent-brand-600 w-24" />
