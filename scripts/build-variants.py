@@ -125,7 +125,7 @@ def apply_corrections(text, hand):
 def clean_tokens(t):
     t = re.sub(r"\\\d+", " ", t)
     t = t.replace("\\", " ").replace("|", " ").replace("/", "")
-    t = re.sub(r"[&*%^¯]", "", t)
+    t = re.sub(r"[&*%^¯˚]", "", t)          # lacuna/damage marks + ˚ nomina-sacra ring (editions)
     for ch in "~+[]_⋄": t = t.replace(ch, "")
     toks = []
     for w in t.split():
@@ -249,15 +249,17 @@ def build_chapter(wits, osis, ch):
         add_gap(-1)
         for i in range(len(ref_tokens)):
             cols.append(("ref", i)); add_gap(i)
+        # Each cell is just the witness's word for that column ("" = omission / unused insertion
+        # slot). The renderer recomputes "differs"/"omits" against the chosen reference, so no
+        # per-cell flags are stored.
         def cells_for(rmap, ins):
             out = []
             for col in cols:
                 if col[0] == "ref":
-                    t, d, o = rmap[col[1]]; out.append({"t": t, "d": d, "o": o})
+                    out.append(rmap[col[1]][0])
                 else:
                     lst = ins.get(col[1], [])
-                    out.append({"t": lst[col[2]], "d": True, "o": False} if col[2] < len(lst)
-                               else {"t": "", "d": False, "o": False})   # empty slot = blank (not omission)
+                    out.append(lst[col[2]] if col[2] < len(lst) else "")
             return out
         ref_rmap = [(t, False, False) for t in ref_tokens]
         rows = [{"wid": "RP", "sigil": "𝔐", "family": "byzantine", "cells": cells_for(ref_rmap, {})}]

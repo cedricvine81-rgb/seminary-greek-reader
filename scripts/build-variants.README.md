@@ -47,15 +47,18 @@ Output: one minified JSON per chapter (~38 MB total for the whole NT) in
     "verse": 1, "vid": "43001001",
     "refTokens": ["Ἐν", "ἀρχῇ", …],          // the RP reference line
     "rows": [{ "wid": "P66", "sigil": "𝔓66", "family": "alexandrian",
-               "cells": [{ "t": "εν", "d": false, "o": false }, …] }, …],
+               "cells": ["εν", "αρχη", …] }, …],
     "lac": ["𝔓5", "C"]                        // witnesses physically absent at this verse
   }, …],
   "source": "…CC BY-SA 4.0…"
 }
 ```
 
-`cells` are aligned to `refTokens` columns: `d` = differs from the reference, `o` = the
-witness omits that word. Alignment is a per-witness `difflib` pass against the reference.
+Every row's `cells` share one column layout (RP reference columns + shared insertion columns
+from a per-witness `difflib` pass). Each cell is just the witness's word for that column
+(`""` = omission or an unused insertion slot). The renderer recomputes "differs" and "omits"
+against whichever reference the reader selects, so no per-cell flags are stored — which also
+keeps the data small. Printed editions (SR, WH, TR) are included as extra `critical` rows.
 
 Per-witness display metadata (date, provenance, contents, significance) for the info popup
 lives separately in `src/lib/witness-info.ts`.

@@ -19,7 +19,7 @@ import { witnessInfo, FAMILY_COLOR, FAMILY_LABEL, type WitnessFamily } from '@/l
 // with no variation, and group identical readings onto one line. Any Greek word is clickable
 // for the parsing pane; each verse carries a note button.
 
-type Cell = { t: string; d: boolean; o: boolean }
+type Cell = string   // the witness's word for a column; "" = omission / unused insertion slot
 type Row = { wid: string; sigil: string; family: WitnessFamily; cells: Cell[] }
 type Verse = { verse: number; vid: string; refTokens: string[]; rows: Row[]; lac: string[] }
 type WitRef = { wid: string; sigil: string; family: WitnessFamily }
@@ -255,14 +255,14 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
         return finalSigma(t)
       }
       const buildCells = (r: Row): VMCell[] => r.cells.map((c, ci) => {
-        const refText = refCells[ci]?.t ?? ''
-        if (r === refRow) return { shown: overlay(c.t, false, c.t, r.wid === 'RP'), underline: false, omit: false }
-        if (!c.t && !refText) return { shown: '', underline: false, omit: false }
-        if (!c.t && refText) return { shown: '', underline: true, omit: true }        // omission
-        if (c.t && !refText) return { shown: overlay(c.t, true, '', false), underline: true, omit: false } // addition
-        const differs = gkey(c.t) !== gkey(refText)
-        const substantive = differs && ofold(c.t) !== ofold(refText)
-        return { shown: overlay(c.t, differs, refText, false), underline: differs && (!hideSpelling || substantive), omit: false }
+        const refText = refCells[ci] ?? ''
+        if (r === refRow) return { shown: overlay(c, false, c, r.wid === 'RP'), underline: false, omit: false }
+        if (!c && !refText) return { shown: '', underline: false, omit: false }
+        if (!c && refText) return { shown: '', underline: true, omit: true }          // omission
+        if (c && !refText) return { shown: overlay(c, true, '', false), underline: true, omit: false }   // addition
+        const differs = gkey(c) !== gkey(refText)
+        const substantive = differs && ofold(c) !== ofold(refText)
+        return { shown: overlay(c, differs, refText, false), underline: differs && (!hideSpelling || substantive), omit: false }
       })
 
       const others = v.rows.filter(r => r !== refRow && !hidden.includes(r.wid))
@@ -283,10 +283,10 @@ export function VariantsView({ controlledPassage, isAuthenticated = false, fontS
       }
 
       const hasVariant = others.some(r => r.cells.some((c, ci) => {
-        const refText = refCells[ci]?.t ?? ''
-        if (!c.t && !refText) return false
-        if (!c.t || !refText) return true
-        return ofold(c.t) !== ofold(refText)
+        const refText = refCells[ci] ?? ''
+        if (!c && !refText) return false
+        if (!c || !refText) return true
+        return ofold(c) !== ofold(refText)
       }))
 
       return { vid: v.vid, verse: v.verse, rows, lac: v.lac, hasVariant }
