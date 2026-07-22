@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { DEVICES, GROUP_LABEL, GROUP_COLOR, GROUP_DESC, GROUP_ORDER, type Device, type DeviceGroup, type Occurrence } from '@/lib/rhetoric-devices'
+import { X } from 'lucide-react'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -175,6 +176,8 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   const [mode, setMode] = useState<'passage' | 'browse'>('passage')
   const [browseId, setBrowseId] = useState<string | null>(null)
   const [fullCat, setFullCat] = useState<Device[] | null>(fullCache)
+  // An example the user is previewing in the side panel (browse mode), read without leaving.
+  const [previewRef, setPreviewRef] = useState<string | null>(null)
   // A device+ref to auto-select once the passage settles (set when jumping from an example),
   // so it survives the passage-change reset below instead of being cleared to null.
   const pendingSel = useRef<{ id: string; ref: string } | null>(null)
@@ -205,6 +208,14 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   useEffect(() => { if (mode === 'browse' && !fullCat) loadFullCatalogue().then(setFullCat) }, [mode, fullCat])
   const catalogue = fullCat ?? allDevices
   const browseDevice = mode === 'browse' && browseId ? catalogue.find(d => d.id === browseId) ?? null : null
+  const showPreview = mode === 'browse' && !!previewRef && !!browseDevice
+
+  // Load the previewed example's chapter (reuses the passage cache); clear the preview when
+  // the browsed figure changes or we leave browse mode.
+  useEffect(() => { const p = previewRef && parseRef(previewRef); if (p) loadPassage(version, p.osis, p.chapter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewRef, version])
+  useEffect(() => { setPreviewRef(null) }, [browseId, mode])
 
   // Group a device's occurrences by book, in canonical NT order (for the browser detail view).
   function byBook(occs: Occurrence[]): [string, Occurrence[]][] {
@@ -212,11 +223,13 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
     for (const o of occs) { const n = parseRef(o.ref)?.name ?? '—'; (groups.get(n) ?? groups.set(n, []).get(n)!).push(o) }
     return NT_BOOKS.map(b => [b.name, groups.get(b.name)] as const).filter(([, v]) => v).map(([n, v]) => [n, v!])
   }
-  // Jump the shared passage box to an example and remember which figure to re-select.
-  const openExample = (ref: string, deviceId: string) => {
+  // Preview an example in the side panel (stays on the browse page).
+  const openExample = (ref: string) => setPreviewRef(ref)
+  // Or fully open it on the page: jump the shared passage box and re-select the figure.
+  const openOnPage = (ref: string, deviceId: string) => {
     if (!onNavigate) return
     pendingSel.current = { id: deviceId, ref }
-    onNavigate(ref); setMode('passage'); setBrowseId(null)
+    onNavigate(ref); setMode('passage'); setBrowseId(null); setPreviewRef(null)
   }
 
   // On passage change, reset selections — but honour a pending selection from an example jump.
@@ -353,7 +366,8 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
 
       {status === 'ok' && (
         <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
-          {/* Column 1 — the passage, in a chosen Greek edition or translation */}
+          {/* Column 1 — the passage (steps aside while previewing an example) */}
+          {!showPreview && (
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{parsed!.name} {parsed!.chapter}</p>
@@ -392,6 +406,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
               })}
             </div>
           </div>
+          )}
 
           {/* Column 2 — figures: in this passage, or the whole-NT browser */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
@@ -485,15 +500,15 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                 </div>
                 <div className="pt-2 border-t border-gray-100">
                   <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1.5">
-                    Examples ({browseDevice.occurrences.length}){!onNavigate && ' — open a passage to jump'}
+                    Examples ({browseDevice.occurrences.length}) — click to preview
                   </p>
                   {byBook(browseDevice.occurrences).map(([bookName, occs]) => (
                     <div key={bookName} className="mb-2">
                       <p className="text-[10px] font-semibold text-gray-500 mb-1">{bookName}</p>
                       <div className="flex flex-wrap gap-1">
                         {occs.map(o => (
-                          <button key={o.ref} type="button" onClick={() => openExample(o.ref, browseDevice.id)} title={o.note}
-                            className={`rounded border px-1.5 py-0.5 text-[11px] font-mono transition hover:bg-brand-50 hover:border-brand-300 ${o.source === 'editorial' ? 'border-dashed border-amber-300 text-amber-700' : 'border-gray-200 text-gray-600'}`}>
+                          <button key={o.ref} type="button" onClick={() => openExample(o.ref)} title={o.note}
+                            className={`rounded border px-1.5 py-0.5 text-[11px] font-mono transition hover:bg-brand-50 hover:border-brand-300 ${previewRef === o.ref ? 'ring-2 ring-brand-400' : ''} ${o.source === 'editorial' ? 'border-dashed border-amber-300 text-amber-700' : 'border-gray-200 text-gray-600'}`}>
                             {o.ref.replace(/^.*?\s(\d)/, '$1')}
                           </button>
                         ))}
@@ -555,13 +570,56 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
               </div>
             )}
           </div>
+
+          {/* Preview column — read an example verse (text + note + Bengel) without leaving the
+              browse page. Opens to the right; the passage column above steps aside for it. */}
+          {showPreview && (() => {
+            const p = parseRef(previewRef!)
+            const text = p ? (textCache.current[version]?.[`${p.osis}.${p.chapter}.${p.vStart}`] ?? null) : null
+            const occ = browseDevice!.occurrences.find(o => o.ref === previewRef)
+            const gnomon = bengel[previewRef!]
+            return (
+              <div className="min-h-0 overflow-y-auto rounded-xl border border-brand-200 bg-brand-50/20 p-3">
+                <div className="flex items-center justify-between gap-2 mb-2">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">{p?.name} {p?.chapter}:{p?.vStart} · {browseDevice!.name}</p>
+                  <button type="button" onClick={() => setPreviewRef(null)} className="text-gray-400 hover:text-gray-700 shrink-0" title="Close preview"><X size={15} /></button>
+                </div>
+                {text ? (
+                  <p className={`leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
+                    <sup className="text-[10px] text-brand-500 mr-0.5 font-sans align-super">{p!.vStart}</sup>{text}
+                  </p>
+                ) : (
+                  <p className="text-xs text-gray-400 italic">Loading…</p>
+                )}
+                {occ?.source === 'editorial' && (
+                  <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5 mt-2">
+                    <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
+                  </p>
+                )}
+                {occ?.note && <p className="font-reading text-gray-700 bg-white/70 rounded-lg px-2.5 py-1.5 leading-relaxed mt-2" style={READING_FS}>{occ.note}</p>}
+                <div className="mt-3">
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-brand-500 mb-1">Bengel’s Gnomon · {previewRef}</p>
+                  {gnomon ? (
+                    <p className="font-reading text-gray-700 leading-relaxed whitespace-pre-line" style={READING_FS}>{tidyBengel(gnomon)}</p>
+                  ) : (
+                    <p className="text-xs text-gray-400 italic">No Gnomon note for this verse.</p>
+                  )}
+                </div>
+                {onNavigate && (
+                  <button type="button" onClick={() => openOnPage(previewRef!, browseDevice!.id)} className="mt-3 text-xs font-medium text-brand-600 hover:underline">
+                    Open this passage on the page →
+                  </button>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
 
       {/* Greek parsing pane at the bottom — the shared component (Strong's → Thayer's /
           Mounce / Abbott-Smith / LSJ), fed by hovering/clicking a Greek word above.
-          Shown only for a Greek edition; defaults to the passage's first word. */}
-      {status === 'ok' && isGreek && (
+          Shown only for a Greek edition in passage mode; defaults to the passage's first word. */}
+      {status === 'ok' && isGreek && mode === 'passage' && (
         <ResizableParsingPane storageKey="rhetoric" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
       )}
     </div>
