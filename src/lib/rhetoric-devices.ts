@@ -23,7 +23,9 @@ export const GROUP_COLOR: Record<DeviceGroup, string> = {
   emphasis: 'bg-rose-50 border-rose-200 text-rose-800',
 }
 
-export interface Occurrence { ref: string; note?: string }
+// source: undefined = drawn from a printed source (Bullinger / standard handbooks); 'editorial'
+// = identified editorially (AI-assisted, reviewed), shown with an "Editorial" badge + caveat.
+export interface Occurrence { ref: string; note?: string; source?: 'editorial' }
 export interface Device {
   id: string
   name: string
@@ -614,4 +616,76 @@ for (const d of DEVICES) {
   if (!extra) continue
   const seen = new Set(d.occurrences.map(o => o.ref))
   for (const o of extra) if (!seen.has(o.ref)) { d.occurrences.push(o); seen.add(o.ref) }
+}
+
+// ── Editorial entries (AI-assisted, reviewed) ────────────────────────────────────────
+// Figures editorially identified in passages the printed sources (Bullinger et al.) leave
+// uncatalogued — chiefly narrative, where coverage was thinnest. NOT drawn from a printed
+// source, so each is tagged source:'editorial' and the UI shows an "Editorial" badge + a
+// caveat. Only added where the figure is clear and standard; skipped if a sourced entry
+// already covers the verse (so the badge only ever marks genuinely editorial calls).
+const EDITORIAL: Record<string, Occurrence[]> = {
+  antithesis: [
+    { ref: 'Matt 8:20', note: '“foxes have holes … the Son of man hath not where to lay his head”' },
+    { ref: 'Mark 5:39', note: '“the damsel is not dead, but sleepeth”' },
+    { ref: 'Luke 15:24', note: '“was dead, and is alive again; was lost, and is found”' },
+    { ref: 'Luke 15:32', note: 'the father repeats “was dead … alive; … lost … found”' },
+    { ref: 'John 3:30', note: '“He must increase, but I must decrease”' },
+    { ref: 'John 9:25', note: '“whereas I was blind, now I see”' },
+    { ref: 'Luke 24:6', note: '“He is not here, but is risen”' },
+    { ref: 'Acts 5:29', note: '“We ought to obey God rather than men”' },
+    { ref: 'Acts 20:35', note: '“It is more blessed to give than to receive”' },
+  ],
+  erotesis: [
+    { ref: 'Luke 1:34', note: '“How shall this be, seeing I know not a man?”' },
+    { ref: 'Mark 4:38', note: '“carest thou not that we perish?”' },
+    { ref: 'John 1:46', note: '“Can there any good thing come out of Nazareth?”' },
+    { ref: 'Matt 16:15', note: '“whom say ye that I am?”' },
+    { ref: 'Luke 10:29', note: '“And who is my neighbour?”' },
+    { ref: 'Luke 24:5', note: '“Why seek ye the living among the dead?”' },
+    { ref: 'Matt 27:46', note: '“My God, my God, why hast thou forsaken me?”' },
+    { ref: 'John 21:15', note: '“lovest thou me more than these?”' },
+  ],
+  irony: [
+    { ref: 'Matt 27:42', note: '“He saved others; himself he cannot save” — the mockers’ unwitting truth' },
+    { ref: 'Luke 23:35', note: '“let him save himself, if he be Christ”' },
+    { ref: 'John 19:5', note: 'Pilate’s “Behold the man!” — dramatic irony' },
+    { ref: 'John 19:19', note: 'the titulus “JESUS OF NAZARETH THE KING OF THE JEWS”' },
+  ],
+  epizeuxis: [
+    { ref: 'John 19:6', note: '“Crucify him, crucify him”' },
+  ],
+  metaphor: [
+    { ref: 'Matt 16:6', note: '“beware of the leaven of the Pharisees”' },
+    { ref: 'John 2:19', note: '“Destroy this temple, and in three days I will raise it up” (his body)' },
+  ],
+  hyperbole: [
+    { ref: 'Mark 1:33', note: '“all the city was gathered together at the door”' },
+    { ref: 'Luke 15:7', note: '“joy … over one sinner … more than over ninety and nine”' },
+  ],
+  personification: [
+    { ref: 'Luke 19:40', note: '“the stones would immediately cry out”' },
+  ],
+  oxymoron: [
+    { ref: 'Mark 10:31', note: '“many that are first shall be last; and the last first”' },
+    { ref: 'John 11:26', note: '“whosoever liveth and believeth in me shall never die”' },
+  ],
+  parallelism: [
+    { ref: 'Luke 2:14', note: '“Glory to God in the highest, and on earth peace”' },
+  ],
+  merism: [
+    { ref: 'Matt 8:11', note: '“many shall come from the east and west” = from everywhere' },
+  ],
+  climax: [
+    { ref: 'Acts 1:8', note: '“Jerusalem … Judaea … Samaria … the uttermost part of the earth”' },
+  ],
+}
+
+// Merge editorial entries in, tagged source:'editorial'; skip any ref already covered by a
+// sourced entry (so the badge only marks genuinely editorial calls).
+for (const d of DEVICES) {
+  const extra = EDITORIAL[d.id]
+  if (!extra) continue
+  const seen = new Set(d.occurrences.map(o => o.ref))
+  for (const o of extra) if (!seen.has(o.ref)) { d.occurrences.push({ ...o, source: 'editorial' }); seen.add(o.ref) }
 }

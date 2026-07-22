@@ -79,16 +79,21 @@ function mergeDevices(base: Device[], extra: Device[]): Device[] {
     for (const o of d.occurrences) {
       const ex = seen.get(o.ref)
       if (!ex) { const c = { ...o }; cur.occurrences.push(c); seen.set(o.ref, c) }
-      else if (!ex.note && o.note) ex.note = o.note
+      else {
+        // the book (Bullinger) covers this verse too, so it isn't editorial-only any more
+        if (ex.source) delete ex.source
+        if (!ex.note && o.note) ex.note = o.note
+      }
     }
   }
   return Array.from(byId.values())
 }
 
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
-  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain.'
+  + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain. '
+  + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
 
-type Hit = { device: Device; note?: string; ref: string }   // ref = the exact occurrence ref (Bengel key)
+type Hit = { device: Device; note?: string; ref: string; source?: 'editorial' }   // ref = exact occurrence ref (Bengel key)
 
 // Versions the passage column can show: a Greek edition or a translation (mirrors the
 // Synopsis / Backgrounds selector). Greek editions carry word-level tokens that feed the
@@ -243,7 +248,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
       for (const occ of device.occurrences) {
         const p = parseRef(occ.ref)
         if (p && p.osis === parsed.osis && p.chapter === parsed.chapter) {
-          (map[p.vStart] ||= []).push({ device, note: occ.note, ref: occ.ref })
+          (map[p.vStart] ||= []).push({ device, note: occ.note, ref: occ.ref, source: occ.source })
         }
       }
     }
@@ -298,12 +303,12 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
             </div>
-            <div className={`space-y-1.5 leading-relaxed ${isGreek ? 'font-greek text-[1.05rem] text-gray-900' : 'font-reading text-[0.95rem] text-gray-700'}`}>
+            <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={{ fontSize: '1.45rem' }}>
               {shownVerses.map(v => {
                 const has = byVerse[v.verse]?.length
                 return (
                   <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
-                    <sup className="text-[0.6rem] font-sans font-semibold text-gray-500 mr-1 align-super">{v.verse}</sup>
+                    <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                     {isGreek && v.tokens && v.tokens.length > 0
                       ? v.tokens.map((tok, ti) => {
                           const key = `${v.verse}.${ti}`
@@ -344,7 +349,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
                             key={h.device.id + i}
                             type="button"
                             onClick={() => setSelected({ id: h.device.id, ref: h.ref })}
-                            className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
+                            className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${h.source === 'editorial' ? 'border-dashed' : ''} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
                             title={h.note}
                           >
                             {h.device.name}
@@ -382,10 +387,19 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
                   <p className="text-sm text-gray-700 leading-relaxed mt-1.5">{sel.definition}</p>
                 </div>
 
-                {/* the note for this specific occurrence */}
+                {/* the note for this specific occurrence, plus an editorial caveat if needed */}
                 {(() => {
                   const occ = sel.occurrences.find(o => o.ref === selected!.ref)
-                  return occ?.note ? <p className="text-xs text-gray-600 bg-gray-50 rounded-lg px-2.5 py-1.5"><b className="font-mono">{selected!.ref}</b> — {occ.note}</p> : null
+                  return (
+                    <div className="space-y-2">
+                      {occ?.source === 'editorial' && (
+                        <p className="text-[11px] text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-2.5 py-1.5">
+                          <span className="font-semibold uppercase tracking-wide">Editorial</span> — editorially identified (AI-assisted, reviewed), not from a printed source.
+                        </p>
+                      )}
+                      {occ?.note && <p className="text-xs text-gray-600 bg-gray-50 rounded-lg px-2.5 py-1.5"><b className="font-mono">{selected!.ref}</b> — {occ.note}</p>}
+                    </div>
+                  )
                 })()}
 
                 {/* Bengel's Gnomon on this verse */}
