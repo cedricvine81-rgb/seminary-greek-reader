@@ -3,6 +3,8 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { DEVICES, GROUP_LABEL, GROUP_COLOR, GROUP_DESC, GROUP_ORDER, type Device, type DeviceGroup, type Occurrence } from '@/lib/rhetoric-devices'
 import { X } from 'lucide-react'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { openWordSearch } from '@/lib/word-search-bus'
+import { TransWords } from '@/components/highlights/TransWords'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Rhetoric tab ────────────────────────────────────────────────────────────────────────
@@ -223,6 +225,12 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
     for (const o of occs) { const n = parseRef(o.ref)?.name ?? '—'; (groups.get(n) ?? groups.set(n, []).get(n)!).push(o) }
     return NT_BOOKS.map(b => [b.name, groups.get(b.name)] as const).filter(([, v]) => v).map(([n, v]) => [n, v!])
   }
+  // Right-click a Greek word → the shared word-search popup (same as Backgrounds/Synopsis).
+  const wordMenu = (e: React.MouseEvent, tok: { surface: string; lemma?: string }, reference: string) => {
+    e.preventDefault()
+    openWordSearch({ x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null, reference, kind: 'greek', greekCorpus: 'GNT' })
+  }
+
   // Preview an example in the side panel (stays on the browse page).
   const openExample = (ref: string) => setPreviewRef(ref)
   // Or fully open it on the page: jump the shared passage box and re-select the figure.
@@ -394,13 +402,14 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                               key={ti}
                               onMouseEnter={select}
                               onClick={select}
+                              onContextMenu={e => wordMenu(e, tok, `${parsed!.name} ${parsed!.chapter}:${v.verse}`)}
                               className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
                             >
                               {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                             </span>
                           )
                         })
-                      : v.text}
+                      : <TransWords text={v.text} lang={version} reference={`${parsed!.name} ${parsed!.chapter}:${v.verse}`} book={parsed!.osis} />}
                   </p>
                 )
               })}
@@ -575,7 +584,10 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
               browse page. Opens to the right; the passage column above steps aside for it. */}
           {showPreview && (() => {
             const p = parseRef(previewRef!)
-            const text = p ? (textCache.current[version]?.[`${p.osis}.${p.chapter}.${p.vStart}`] ?? null) : null
+            const vid = p ? `${p.osis}.${p.chapter}.${p.vStart}` : ''
+            const text = p ? (textCache.current[version]?.[vid] ?? null) : null
+            const ptoks = p ? wordCache.current[version]?.[vid] : undefined
+            const pref = p ? `${p.name} ${p.chapter}:${p.vStart}` : previewRef!
             const occ = browseDevice!.occurrences.find(o => o.ref === previewRef)
             const gnomon = bengel[previewRef!]
             return (
@@ -586,7 +598,16 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
                 </div>
                 {text ? (
                   <p className={`leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
-                    <sup className="text-[10px] text-brand-500 mr-0.5 font-sans align-super">{p!.vStart}</sup>{text}
+                    <sup className="text-[10px] text-brand-500 mr-0.5 font-sans align-super">{p!.vStart}</sup>
+                    {!isGreek
+                      ? <TransWords text={text} lang={version} reference={pref} book={p!.osis} />
+                      : ptoks && ptoks.length > 0
+                        ? ptoks.map((tok, ti) => (
+                            <span key={ti} onContextMenu={e => wordMenu(e, tok, pref)} className="cursor-context-menu rounded px-0.5 hover:bg-brand-100">
+                              {tok.surface}{ti < ptoks.length - 1 ? ' ' : ''}
+                            </span>
+                          ))
+                        : text}
                   </p>
                 ) : (
                   <p className="text-xs text-gray-400 italic">Loading…</p>
