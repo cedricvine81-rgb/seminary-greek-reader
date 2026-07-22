@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { DEVICES, GROUP_LABEL, GROUP_COLOR, type Device, type DeviceGroup } from '@/lib/rhetoric-devices'
+import { DEVICES, GROUP_LABEL, GROUP_COLOR, GROUP_DESC, GROUP_ORDER, type Device, type DeviceGroup, type Occurrence } from '@/lib/rhetoric-devices'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
@@ -89,6 +89,30 @@ function mergeDevices(base: Device[], extra: Device[]): Device[] {
   return Array.from(byId.values())
 }
 
+// The full NT catalogue (curated + editorial + every book's Bullinger data), loaded once when
+// the "All figures" browser is first opened, so it can list every figure's occurrences NT-wide.
+let fullCache: Device[] | null = null
+let fullInflight: Promise<Device[]> | null = null
+function loadFullCatalogue(): Promise<Device[]> {
+  if (fullCache) return Promise.resolve(fullCache)
+  if (!fullInflight) fullInflight = Promise.all(NT_BOOKS.map(b =>
+    fetch(`/data/rhetoric/devices/${b.osis}.json`).then(r => (r.ok ? r.json() : { devices: [] }))
+      .then((d: { devices?: Device[] }) => d.devices ?? []).catch(() => [] as Device[])
+  )).then(books => {
+    let merged = DEVICES
+    for (const b of books) merged = mergeDevices(merged, b)
+    fullCache = merged
+    return merged
+  })
+  return fullInflight
+}
+
+const RHETORIC_INTRO = 'Rhetorical figures are the patterns of language — comparison, word-play, '
+  + 'repetition, structure — that give a text its force. Each verse’s figures appear below, '
+  + 'colour-coded by category; click one to see what it is and how it works here. Switch to '
+  + '“All figures” to browse every figure by category, read its definition, and jump to each of '
+  + 'its examples across the New Testament.'
+
 const SOURCE_ATTR = 'Figures classified after E. W. Bullinger, Figures of Speech Used in the Bible (1898). '
   + 'Verse notes: Bengel’s Gnomon of the New Testament (1742; Eng. tr. 1857), via Biblehub. Both public domain. '
   + 'Entries marked “Editorial” are identified editorially (AI-assisted, reviewed), not drawn from a printed source.'
@@ -127,16 +151,24 @@ function toLexicalInfo(tok: WordToken, reference: string): LexicalInfoPanel {
     parsing: tok.parsing, strongs: tok.strongs, reference }
 }
 
-export function RhetoricView({ controlledPassage, onAttribution }: {
+export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   onAttribution?: (a: string) => void
+  onNavigate?: (ref: string) => void   // jump the shared passage box to a ref (stays on this tab)
 }) {
   const parsed = useMemo(() => parseRef(controlledPassage ?? ''), [controlledPassage])
   const [version, setVersion] = useState('na1904')
   const [bengel, setBengel] = useState<Record<string, string>>(bengelCache ?? {})
   const [bookDevices, setBookDevices] = useState<Device[]>(() => bookCache[parseRef(controlledPassage ?? '')?.osis ?? ''] ?? [])
   const [selected, setSelected] = useState<{ id: string; ref: string } | null>(null)
+  // Figures browser: 'passage' = figures in the open passage; 'browse' = the whole catalogue.
+  const [mode, setMode] = useState<'passage' | 'browse'>('passage')
+  const [browseId, setBrowseId] = useState<string | null>(null)
+  const [fullCat, setFullCat] = useState<Device[] | null>(fullCache)
+  // A device+ref to auto-select once the passage settles (set when jumping from an example),
+  // so it survives the passage-change reset below instead of being cleared to null.
+  const pendingSel = useRef<{ id: string; ref: string } | null>(null)
   // Clicked/hovered Greek word for the parsing pane, plus a key so only that instance lights up.
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
@@ -160,8 +192,29 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
 
   const allDevices = useMemo(() => mergeDevices(DEVICES, bookDevices), [bookDevices])
 
-  // Reset device + word selections when the passage changes.
-  useEffect(() => { setSelected(null); setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
+  // Load the whole-NT catalogue the first time the browser is opened.
+  useEffect(() => { if (mode === 'browse' && !fullCat) loadFullCatalogue().then(setFullCat) }, [mode, fullCat])
+  const catalogue = fullCat ?? allDevices
+  const browseDevice = mode === 'browse' && browseId ? catalogue.find(d => d.id === browseId) ?? null : null
+
+  // Group a device's occurrences by book, in canonical NT order (for the browser detail view).
+  function byBook(occs: Occurrence[]): [string, Occurrence[]][] {
+    const groups = new Map<string, Occurrence[]>()
+    for (const o of occs) { const n = parseRef(o.ref)?.name ?? '—'; (groups.get(n) ?? groups.set(n, []).get(n)!).push(o) }
+    return NT_BOOKS.map(b => [b.name, groups.get(b.name)] as const).filter(([, v]) => v).map(([n, v]) => [n, v!])
+  }
+  // Jump the shared passage box to an example and remember which figure to re-select.
+  const openExample = (ref: string, deviceId: string) => {
+    if (!onNavigate) return
+    pendingSel.current = { id: deviceId, ref }
+    onNavigate(ref); setMode('passage'); setBrowseId(null)
+  }
+
+  // On passage change, reset selections — but honour a pending selection from an example jump.
+  useEffect(() => {
+    setSelected(pendingSel.current); pendingSel.current = null
+    setSelectedInfo(null); setSelectedKey(null)
+  }, [controlledPassage])
 
   // Load the passage text (and Greek word-tokens) for the chosen version.
   useEffect(() => {
@@ -331,50 +384,116 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
             </div>
           </div>
 
-          {/* Column 2 — devices present, per verse */}
+          {/* Column 2 — figures: in this passage, or the whole-NT browser */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Devices present</p>
-            {versesWithDevices.length === 0 ? (
-              <p className="text-sm text-gray-400">No catalogued figures in this passage yet.</p>
-            ) : (
+            <div className="flex items-center justify-between gap-2 mb-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{mode === 'browse' ? 'All figures' : 'Devices present'}</p>
+              <div className="flex rounded-lg border border-gray-200 overflow-hidden text-[10px] shrink-0">
+                <button type="button" onClick={() => setMode('passage')} className={`px-2 py-0.5 transition-colors ${mode === 'passage' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>In this passage</button>
+                <button type="button" onClick={() => setMode('browse')} className={`px-2 py-0.5 transition-colors ${mode === 'browse' ? 'bg-brand-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>All figures</button>
+              </div>
+            </div>
+
+            {mode === 'browse' ? (
               <div className="space-y-3">
-                {versesWithDevices.map(v => (
-                  <div key={v.verse}>
-                    <p className="text-[0.7rem] font-mono font-semibold text-gray-500 mb-1">{parsed!.chapter}:{v.verse}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {byVerse[v.verse].map((h, i) => {
-                        const on = selected?.id === h.device.id && selected?.ref === h.ref
-                        return (
-                          <button
-                            key={h.device.id + i}
-                            type="button"
-                            onClick={() => setSelected({ id: h.device.id, ref: h.ref })}
-                            className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${h.source === 'editorial' ? 'border-dashed' : ''} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
-                            title={h.note}
-                          >
-                            {h.device.name}
+                <p className="text-[11px] text-gray-500 leading-relaxed">{RHETORIC_INTRO}</p>
+                {!fullCat && <p className="text-xs text-gray-400 italic">Loading the full catalogue…</p>}
+                {GROUP_ORDER.map(g => {
+                  const devs = catalogue.filter(d => d.group === g && d.occurrences.length).sort((a, b) => a.name.localeCompare(b.name))
+                  if (!devs.length) return null
+                  return (
+                    <div key={g}>
+                      <div className={`rounded-lg border px-2 py-1 ${GROUP_COLOR[g]}`}>
+                        <p className="text-[11px] font-semibold uppercase tracking-wide">{GROUP_LABEL[g]}</p>
+                        <p className="text-[10px] opacity-80 leading-snug">{GROUP_DESC[g]}</p>
+                      </div>
+                      <div className="mt-1.5 flex flex-wrap gap-1.5">
+                        {devs.map(d => (
+                          <button key={d.id} type="button" onClick={() => setBrowseId(d.id)}
+                            className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[d.group]} ${browseId === d.id ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}>
+                            {d.name} <span className="opacity-60">{d.occurrences.length}</span>
                           </button>
-                        )
-                      })}
+                        ))}
+                      </div>
                     </div>
+                  )
+                })}
+              </div>
+            ) : (
+              <>
+                {versesWithDevices.length === 0 ? (
+                  <p className="text-sm text-gray-400">No catalogued figures in this passage yet.</p>
+                ) : (
+                  <div className="space-y-3">
+                    {versesWithDevices.map(v => (
+                      <div key={v.verse}>
+                        <p className="text-[0.7rem] font-mono font-semibold text-gray-500 mb-1">{parsed!.chapter}:{v.verse}</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {byVerse[v.verse].map((h, i) => {
+                            const on = selected?.id === h.device.id && selected?.ref === h.ref
+                            return (
+                              <button
+                                key={h.device.id + i}
+                                type="button"
+                                onClick={() => setSelected({ id: h.device.id, ref: h.ref })}
+                                className={`rounded-lg border px-2 py-0.5 text-[11px] font-medium transition ${GROUP_COLOR[h.device.group]} ${h.source === 'editorial' ? 'border-dashed' : ''} ${on ? 'ring-2 ring-brand-400' : 'hover:brightness-95'}`}
+                                title={h.note}
+                              >
+                                {h.device.name}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            )}
-            {/* group legend */}
-            {groupsPresent.length > 0 && (
-              <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-1.5">
-                {groupsPresent.map(g => (
-                  <span key={g} className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[g]}`}>{GROUP_LABEL[g]}</span>
-                ))}
-              </div>
+                )}
+                {/* colour key — hover a chip for the category’s plain-language meaning */}
+                {groupsPresent.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex flex-wrap gap-1.5">
+                    {groupsPresent.map(g => (
+                      <span key={g} title={GROUP_DESC[g]} className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium cursor-help ${GROUP_COLOR[g]}`}>{GROUP_LABEL[g]}</span>
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
 
-          {/* Column 3 — explanation of the selected device + Bengel */}
+          {/* Column 3 — explanation of the selected device (+Bengel), or the browsed device's examples */}
           <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
-            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Explanation</p>
-            {!sel ? (
+            <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{browseDevice ? 'Figure' : 'Explanation'}</p>
+            {browseDevice ? (
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-base font-semibold text-gray-800">{browseDevice.name}</span>
+                    {browseDevice.greek && <span className="font-greek text-sm text-gray-500">{browseDevice.greek}</span>}
+                    <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[browseDevice.group]}`}>{GROUP_LABEL[browseDevice.group]}</span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[browseDevice.group]}</p>
+                  <p className="text-sm text-gray-700 leading-relaxed mt-1.5">{browseDevice.definition}</p>
+                </div>
+                <div className="pt-2 border-t border-gray-100">
+                  <p className="text-[0.7rem] font-semibold uppercase tracking-wide text-gray-400 mb-1.5">
+                    Examples ({browseDevice.occurrences.length}){!onNavigate && ' — open a passage to jump'}
+                  </p>
+                  {byBook(browseDevice.occurrences).map(([bookName, occs]) => (
+                    <div key={bookName} className="mb-2">
+                      <p className="text-[10px] font-semibold text-gray-500 mb-1">{bookName}</p>
+                      <div className="flex flex-wrap gap-1">
+                        {occs.map(o => (
+                          <button key={o.ref} type="button" onClick={() => openExample(o.ref, browseDevice.id)} title={o.note}
+                            className={`rounded border px-1.5 py-0.5 text-[11px] font-mono transition hover:bg-brand-50 hover:border-brand-300 ${o.source === 'editorial' ? 'border-dashed border-amber-300 text-amber-700' : 'border-gray-200 text-gray-600'}`}>
+                            {o.ref.replace(/^.*?\s(\d)/, '$1')}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : !sel ? (
               <p className="text-sm text-gray-400">Click a device to see what it is and how it works here.</p>
             ) : (
               <div className="space-y-3">
@@ -384,6 +503,7 @@ export function RhetoricView({ controlledPassage, onAttribution }: {
                     {sel.greek && <span className="font-greek text-sm text-gray-500">{sel.greek}</span>}
                     <span className={`rounded-lg border px-2 py-0.5 text-[10px] font-medium ${GROUP_COLOR[sel.group]}`}>{GROUP_LABEL[sel.group]}</span>
                   </div>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{GROUP_DESC[sel.group]}</p>
                   <p className="text-sm text-gray-700 leading-relaxed mt-1.5">{sel.definition}</p>
                 </div>
 

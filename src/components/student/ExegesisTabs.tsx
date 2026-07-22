@@ -610,7 +610,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
           fontSize={bgFontSize} onFontSize={setBgFontSize} onAttribution={setBackgroundsAttribution} onOpenInTexts={openInTexts} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'rhetoric' ? '' : 'hidden'}`}>
-        <RhetoricView controlledPassage={passage} isAuthenticated={isAuthenticated} onAttribution={setRhetoricAttribution} />
+        <RhetoricView controlledPassage={passage} isAuthenticated={isAuthenticated} onAttribution={setRhetoricAttribution} onNavigate={(ref) => { setInput(ref); setGhost(''); commitPassage(ref) }} />
       </div>
       <div className={`flex-1 min-h-0 ${tab === 'commentary' ? '' : 'hidden'}`}>
         <CommentaryView anchor={anchor} isAuthenticated={isAuthenticated} onAttribution={setCommentaryAttribution} />

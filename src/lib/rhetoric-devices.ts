@@ -15,13 +15,24 @@ export const GROUP_LABEL: Record<DeviceGroup, string> = {
   repetition: 'Repetition', arrangement: 'Arrangement', emphasis: 'Emphasis & tone',
 }
 export const GROUP_COLOR: Record<DeviceGroup, string> = {
-  comparison: 'bg-blue-50 border-blue-200 text-blue-800',
-  substitution: 'bg-indigo-50 border-indigo-200 text-indigo-800',
+  comparison: 'bg-sky-50 border-sky-200 text-sky-800',
+  substitution: 'bg-violet-50 border-violet-200 text-violet-800',
   omission: 'bg-amber-50 border-amber-200 text-amber-800',
   repetition: 'bg-emerald-50 border-emerald-200 text-emerald-800',
-  arrangement: 'bg-purple-50 border-purple-200 text-purple-800',
+  arrangement: 'bg-fuchsia-50 border-fuchsia-200 text-fuchsia-800',
   emphasis: 'bg-rose-50 border-rose-200 text-rose-800',
 }
+// Plain-language gloss of each category, for the colour key / browser / explanation pane.
+export const GROUP_DESC: Record<DeviceGroup, string> = {
+  comparison: 'Likening one thing to another — simile, metaphor.',
+  substitution: 'Naming a thing by something linked to it — metonymy, synecdoche.',
+  omission: 'Leaving words out for effect — ellipsis, asyndeton.',
+  repetition: 'Repeating words or sounds — anaphora, epizeuxis.',
+  arrangement: 'The order and structure of the words — chiasmus, parallelism.',
+  emphasis: 'Heightening feeling or force — hyperbole, irony, rhetorical question.',
+}
+// The six categories in teaching order (comparison → emphasis), for the figures browser.
+export const GROUP_ORDER: DeviceGroup[] = ['comparison', 'substitution', 'omission', 'repetition', 'arrangement', 'emphasis']
 
 // source: undefined = drawn from a printed source (Bullinger / standard handbooks); 'editorial'
 // = identified editorially (AI-assisted, reviewed), shown with an "Editorial" badge + caveat.
