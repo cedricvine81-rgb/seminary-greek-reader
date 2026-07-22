@@ -5,6 +5,11 @@ import { X } from 'lucide-react'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { TransWords } from '@/components/highlights/TransWords'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { useHighlightSelection } from '@/components/highlights/useHighlightSelection'
+import { HighlightPopup } from '@/components/highlights/HighlightPopup'
+import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Rhetoric tab ────────────────────────────────────────────────────────────────────────
@@ -165,7 +170,7 @@ function toLexicalInfo(tok: WordToken, reference: string): LexicalInfoPanel {
     parsing: tok.parsing, strongs: tok.strongs, reference }
 }
 
-export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
+export function RhetoricView({ controlledPassage, isAuthenticated = false, onAttribution, onNavigate }: {
   controlledPassage?: string
   isAuthenticated?: boolean
   onAttribution?: (a: string) => void
@@ -195,6 +200,11 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
   const loaded = useRef<Set<string>>(new Set())
   const settled = useRef<Set<string>>(new Set())
   const [, setTick] = useState(0)
+  // Highlighting on the passage column: drag-to-select palette + right-click menu (same as
+  // Synopsis / Backgrounds). Requires sign-in to save.
+  const highlights = useHighlights(isAuthenticated)
+  const passagePaneRef = useRef<HTMLDivElement>(null)
+  const highlightSelection = useHighlightSelection(passagePaneRef)
 
   useEffect(() => { onAttribution?.(SOURCE_ATTR) }, [onAttribution])
   useEffect(() => { loadBengel().then(setBengel) }, [])
@@ -254,6 +264,12 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
     if (parsed) loadPassage(version, parsed.osis, parsed.chapter)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [version, parsed?.osis, parsed?.chapter])
+
+  // Load this chapter's saved highlights (signed-in users).
+  useEffect(() => {
+    if (isAuthenticated && parsed) void highlights.loadFor(parsed.osis, parsed.chapter)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, parsed?.osis, parsed?.chapter])
 
   function loadPassage(v: string, osis: string, chapter: number) {
     const ck = cacheKey(v, osis, chapter)
@@ -386,7 +402,7 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
         <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4 overflow-hidden">
           {/* Column 1 — the passage (steps aside while previewing an example) */}
           {!showPreview && (
-          <div className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
+          <div ref={passagePaneRef} className="min-h-0 overflow-y-auto rounded-xl border border-gray-200 p-3">
             <div className="flex items-center justify-between gap-2 mb-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">{parsed!.name} {parsed!.chapter}</p>
               <select
@@ -400,26 +416,49 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
             <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek' : 'font-reading'}`} style={READING_FS}>
               {shownVerses.map(v => {
                 const has = byVerse[v.verse]?.length
+                const layer = isGreek ? 'grc' : version
+                const verseHls = highlights.forVerse(parsed!.osis, parsed!.chapter, v.verse, layer)
+                const refStr = `${parsed!.name} ${parsed!.chapter}:${v.verse}`
                 return (
                   <p key={v.verse} className={has ? 'rounded px-1 -mx-1 bg-amber-50/40' : ''}>
                     <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.verse}</sup>
                     {isGreek && v.tokens && v.tokens.length > 0
-                      ? v.tokens.map((tok, ti) => {
-                          const key = `${v.verse}.${ti}`
-                          const select = () => { setSelectedInfo(toLexicalInfo(tok, `${parsed!.name} ${parsed!.chapter}:${v.verse}`)); setSelectedKey(key) }
-                          return (
-                            <span
-                              key={ti}
-                              onMouseEnter={select}
-                              onClick={select}
-                              onContextMenu={e => wordMenu(e, tok, `${parsed!.name} ${parsed!.chapter}:${v.verse}`)}
-                              className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}
-                            >
-                              {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
-                            </span>
-                          )
-                        })
-                      : <TransWords text={v.text} lang={version} reference={`${parsed!.name} ${parsed!.chapter}:${v.verse}`} book={parsed!.osis} />}
+                      ? <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, 'grc')}>
+                          {withTokenOffsets(v.tokens).map(({ token: tok, start, end }, ti) => {
+                            const key = `${v.verse}.${ti}`
+                            const select = () => { setSelectedInfo(toLexicalInfo(tok, refStr)); setSelectedKey(key) }
+                            const hl = highlightAt(start, end, verseHls)
+                            return (
+                              <span
+                                key={ti}
+                                onMouseEnter={select}
+                                onClick={select}
+                                onContextMenu={e => {
+                                  e.preventDefault()
+                                  openWordSearch({
+                                    x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null, reference: refStr, kind: 'greek', greekCorpus: 'GNT',
+                                    highlight: isAuthenticated ? {
+                                      activeColor: hl?.color ?? null,
+                                      onPick: c => hl ? void highlights.recolor(hl.id, parsed!.osis, parsed!.chapter, c) : void highlights.create(parsed!.osis, parsed!.chapter, v.verse, start, end, c, 'grc'),
+                                      onRemove: () => { if (hl) void highlights.remove(hl.id, parsed!.osis, parsed!.chapter) },
+                                    } : undefined,
+                                  })
+                                }}
+                                {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': parsed!.osis, 'data-hl-chapter': parsed!.chapter, 'data-hl-color': hl.color } : {})}
+                                className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
+                              >
+                                {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
+                              </span>
+                            )
+                          })}
+                        </span>
+                      : <span {...verseAnchorProps(parsed!.osis, parsed!.chapter, v.verse, version)}>
+                          <TransWords text={v.text} lang={version} reference={refStr} book={parsed!.osis}
+                            hl={isAuthenticated ? { isAuthenticated, verseHighlights: verseHls,
+                              create: (s, e, c) => void highlights.create(parsed!.osis, parsed!.chapter, v.verse, s, e, c, version),
+                              recolor: (id, c) => void highlights.recolor(id, parsed!.osis, parsed!.chapter, c),
+                              remove: id => void highlights.remove(id, parsed!.osis, parsed!.chapter) } : undefined} />
+                        </span>}
                   </p>
                 )
               })}
@@ -676,6 +715,26 @@ export function RhetoricView({ controlledPassage, onAttribution, onNavigate }: {
           for a Greek edition in passage mode, and while previewing a Greek example. */}
       {status === 'ok' && isGreek && (mode === 'passage' || showPreview) && (
         <ResizableParsingPane storageKey="rhetoric" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" />
+      )}
+
+      {/* Drag-to-select highlight palette (signed-in users). Right-click highlighting is wired
+          into the word-search popup above. */}
+      {isAuthenticated && highlightSelection.popup && (
+        <HighlightPopup
+          state={highlightSelection.popup}
+          onPick={color => {
+            const s = highlightSelection.popup!
+            if (s.kind === 'new') for (const sp of s.splits) void highlights.create(sp.book, sp.chapter, sp.verse, sp.start, sp.end, color, sp.layer)
+            else void highlights.recolor(s.id, s.book, s.chapter, color)
+            highlightSelection.close()
+          }}
+          onRemove={() => {
+            const s = highlightSelection.popup!
+            if (s.kind === 'edit') void highlights.remove(s.id, s.book, s.chapter)
+            highlightSelection.close()
+          }}
+          onClose={highlightSelection.close}
+        />
       )}
     </div>
   )
