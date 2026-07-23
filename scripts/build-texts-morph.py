@@ -150,24 +150,32 @@ def main():
     ap.add_argument('--book', type=int, default=None)
     ap.add_argument('--all', action='store_true', help='all Josephus works')
     ap.add_argument('--greco', action='store_true', help='Greco-Roman prose (Epictetus, Diogenes)')
+    ap.add_argument('--af', action='store_true', help='Apostolic Fathers (works with parallel Greek)')
+    ap.add_argument('--philo', action='store_true', help='Philo (works with parallel Greek)')
+    ap.add_argument('--only', default=None, help='restrict a dir run to one slug (debugging)')
     args = ap.parse_args()
 
     import stanza
     nlp = stanza.Pipeline('grc', processors='tokenize,pos,lemma', verbose=False)
 
-    if args.greco:
-        gdir = Path('public/data/greco')
+    prose_dir = ('public/data/greco' if args.greco else
+                 'public/data/apostolic-fathers' if args.af else
+                 'public/data/philo' if args.philo else None)
+    if prose_dir:
+        gdir = Path(prose_dir)
         for f in sorted(gdir.glob('*.json')):
             if f.stem.endswith('.morph'):
                 continue
-            out = build_prose(nlp, f)
+            if args.only and f.stem != args.only:
+                continue
+            out = build_prose(nlp, f)  # None when the work has no parallel Greek
             if out is None:
                 continue
             dest = f.with_name(f"{f.stem}.morph.json")
             dest.write_text(json.dumps(out, ensure_ascii=False, separators=(',', ':')))
             nwords = sum(len(v) for v in out.values())
             nparsed = sum(1 for v in out.values() for e in v if e)
-            print(f"greco/{f.name} -> {dest.name}  ({len(out)} verses, {nparsed}/{nwords} words parsed)", flush=True)
+            print(f"{gdir.name}/{f.name} -> {dest.name}  ({len(out)} verses, {nparsed}/{nwords} words parsed)", flush=True)
         return
 
     works = ['antiquities', 'jewish-war', 'against-apion', 'life'] if args.all else [args.work]
