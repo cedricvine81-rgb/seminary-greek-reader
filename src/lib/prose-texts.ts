@@ -346,8 +346,15 @@ const JUSTIN_WORKS: ProseWork[] = JUSTIN.map(w => ({
   parseCitation: justinCite(w.core),
 }))
 
+// All three Justin works carry parallel Greek (First1KGreek / Perseus) via
+// scripts/build-justin-greek.py — attached per chapter where our English is a single verse.
+// The Dialogue is only ~42% covered: its longer chapters are split into paragraph-verses our
+// English versified independently of the Greek's sections, so those stay English-only.
+const JUSTIN_GREEK = new Set(['justin-1apology', 'justin-2apology', 'justin-dialogue'])
+
 export const JUSTIN_CATALOG = JUSTIN.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+  ...(JUSTIN_GREEK.has(w.slug) ? { greek: true } : {}),
 }))
 
 // ── The Mishnah ───────────────────────────────────────────────────────────────────────
