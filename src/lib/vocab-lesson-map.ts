@@ -35,3 +35,23 @@ export const VOCAB_LESSONS: VocabLesson[] = [
 export function getLessonForWeek(week: number): VocabLesson | null {
   return VOCAB_LESSONS.find(l => l.lesson === week) ?? null
 }
+
+/**
+ * The `vocab-subsections` key holding this lesson's 20 words ("1-A" … "2-H").
+ * Lessons 1–8 are Section I A–H, lessons 9–16 are Section II A–H — the same
+ * 20-word chunks the FrequencySectionPicker and the /vocab study tab use.
+ */
+export function lessonSubsectionKey(lesson: number): string | null {
+  if (lesson < 1 || lesson > 16) return null
+  const section = lesson <= 8 ? 1 : 2
+  const label = String.fromCharCode(65 + ((lesson - 1) % 8))
+  return `${section}-${label}`
+}
+
+/** Subsection keys for every lesson BEFORE this one — the cumulative-review pool. */
+export function lessonSubsectionKeysBefore(lesson: number): string[] {
+  return VOCAB_LESSONS
+    .filter(l => l.lesson < lesson)
+    .map(l => lessonSubsectionKey(l.lesson))
+    .filter((k): k is string => k !== null)
+}

@@ -1394,6 +1394,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
         level:    form.level,
         count:    '5',
         week:     '1',
+        ...(form.quizType === 'VOCABULARY_QUIZ' ? { prevPct: String(form.prevSectionsPct) } : {}),
         ...(form.quizType === 'MORPHOLOGY_QUIZ' ? { morphologySubtype: previewSubtype } : {}),
         ...(previewVocab ? { vocabThruLesson: previewVocab } : {}),
       })
@@ -1539,8 +1540,30 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
                 selectedSubsections={form.vocabSubsections}
                 onChange={keys => setF('vocabSubsections', keys)}
               />
-              {/* Removed: "Questions from previous sections %" slider — backend
-                  doesn't yet honour the value, so it was UI-only. */}
+              {form.vocabSubsections.length === 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Review from earlier lessons —{' '}
+                    <span className="text-brand-700 font-semibold">
+                      {form.prevSectionsPct === 0
+                        ? 'This week’s words only'
+                        : `${form.prevSectionsPct}% earlier / ${100 - form.prevSectionsPct}% this week`}
+                    </span>
+                  </label>
+                  <input
+                    type="range"
+                    min={0} max={100} step={5}
+                    value={form.prevSectionsPct}
+                    onChange={e => setF('prevSectionsPct', Number(e.target.value))}
+                    className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Each week&rsquo;s quiz draws this share of its questions from <em>all</em> vocabulary
+                    covered in earlier weeks, so students keep reviewing. Week 1 has nothing earlier,
+                    so it uses its own list only.
+                  </p>
+                </div>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Type of Quiz —{' '}

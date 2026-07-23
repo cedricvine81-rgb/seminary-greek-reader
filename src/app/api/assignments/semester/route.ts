@@ -4,7 +4,7 @@ import { prisma } from '@/lib/db'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import {
   generateVocabQuestions,
-  generateVocabQuestionsInRange,
+  generateVocabQuestionsForLesson,
   generateVocabQuestionsFromSelection,
   generateMorphologyQuestionsBySubtype,
   type MorphologySubtype,
@@ -63,6 +63,7 @@ export async function POST(req: NextRequest) {
     morphologySubtype,
     vocabThruLesson,
     vocabSubsections,
+    prevSectionsPct,
     schedule,
   }: {
     courseId: string
@@ -82,6 +83,7 @@ export async function POST(req: NextRequest) {
     morphologySubtype?: MorphologySubtype
     vocabThruLesson?: number | null
     vocabSubsections?: string[]
+    prevSectionsPct?: number   // % of each vocab quiz drawn from EARLIER lessons
     schedule: ScheduleItem[]
   } = body
 
@@ -187,7 +189,9 @@ export async function POST(req: NextRequest) {
         // Instructor picked sections → draw every week's quiz from those words.
         questions = generateVocabQuestionsFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', qCount, pct)
       } else if (lesson) {
-        questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', qCount, pct)
+        // Mix in cumulative review from every lesson before this week's range.
+        questions = generateVocabQuestionsForLesson(
+          lesson.lesson, 'GREEK_TO_ENGLISH', qCount, pct, Number(prevSectionsPct ?? 0))
       } else {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }

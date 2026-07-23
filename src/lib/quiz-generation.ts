@@ -1,7 +1,8 @@
 import { prisma } from './db'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
-import { wordsForSelection } from './vocab-subsections'
+import { wordsForSelection, type BgvbWord } from './vocab-subsections'
+import { lessonSubsectionKey, lessonSubsectionKeysBefore } from './vocab-lesson-map'
 
 export interface GeneratedQuestion {
   position: number
@@ -29,9 +30,57 @@ export function generateVocabQuestionsFromSelection(
   const words = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss)
   if (words.length === 0) return []
 
-  const picked = shuffle(words).slice(0, count)
-  const allGlosses = words.map(w => w.gloss)
-  const allLexemes = words.map(w => w.word)
+  return buildVocabQuestions(shuffle(words).slice(0, count), words, type, provideDefinitionPct)
+}
+
+/**
+ * Vocabulary questions for BGVB lesson `lesson` (= week N of a Beginning semester).
+ *
+ * Words come from the static BGVB list — the same 20-word subsection the student studies
+ * on /vocab — rather than the VocabularyItem table, which only holds a partial seed.
+ *
+ * `reviewPct` (0–100) is cumulative review: that share of the questions is drawn from
+ * EVERY earlier lesson, the rest from this lesson. The two sets are shuffled together so
+ * review words aren't clumped. Lesson 1 has nothing earlier and silently uses its own list.
+ */
+export function generateVocabQuestionsForLesson(
+  lesson: number,
+  type: QuestionType,
+  count: number,
+  provideDefinitionPct = 0,
+  reviewPct = 0,
+): GeneratedQuestion[] {
+  const key = lessonSubsectionKey(lesson)
+  if (!key) return []
+  const current = wordsForSelection([key], []).filter(w => w.word && w.gloss)
+  if (current.length === 0) return []
+
+  const wantReview = Math.round((Math.min(100, Math.max(0, reviewPct)) / 100) * count)
+  const earlierKeys = lessonSubsectionKeysBefore(lesson)
+  const earlier = wantReview > 0 && earlierKeys.length > 0
+    ? wordsForSelection(earlierKeys, []).filter(w => w.word && w.gloss)
+    : []
+
+  const reviewCount = Math.min(wantReview, earlier.length)
+  const currentCount = Math.max(0, count - reviewCount)
+  const picked = shuffle([
+    ...shuffle(current).slice(0, currentCount),
+    ...shuffle(earlier).slice(0, reviewCount),
+  ]).slice(0, count)
+
+  // Distractors come from the whole studied-so-far pool, so wrong answers stay plausible.
+  return buildVocabQuestions(picked, [...current, ...earlier], type, provideDefinitionPct)
+}
+
+/** Shared question shaping for the BGVB-backed generators above. */
+function buildVocabQuestions(
+  picked: BgvbWord[],
+  pool: BgvbWord[],
+  type: QuestionType,
+  provideDefinitionPct: number,
+): GeneratedQuestion[] {
+  const allGlosses = pool.map(w => w.gloss)
+  const allLexemes = pool.map(w => w.word)
   const openEndedCount = Math.round((provideDefinitionPct / 100) * picked.length)
 
   return picked.map((w, idx) => {
@@ -106,61 +155,6 @@ export async function generateVocabQuestions(
   const picked = shuffle(items).slice(0, count)
   const allGlosses = items.map(i => i.lexeme.gloss)
   const allLexemes = items.map(i => i.lexeme.lexeme)
-  const openEndedCount = Math.round((provideDefinitionPct / 100) * count)
-
-  return picked.map((item, idx) => {
-    const isOpenEnded = idx < openEndedCount
-    if (type === 'GREEK_TO_ENGLISH') {
-      const options = isOpenEnded ? [] : shuffle([item.lexeme.gloss, ...pickDistractors(item.lexeme.gloss, allGlosses)])
-      return {
-        position: idx + 1,
-        type: (isOpenEnded ? 'GREEK_TO_ENGLISH' : 'MULTIPLE_CHOICE') as QuestionType,
-        prompt: item.lexeme.lexeme,
-        correctAnswer: item.lexeme.gloss,
-        options,
-        points: 1,
-      }
-    } else {
-      const options = isOpenEnded ? [] : shuffle([item.lexeme.lexeme, ...pickDistractors(item.lexeme.lexeme, allLexemes)])
-      return {
-        position: idx + 1,
-        type: (isOpenEnded ? 'ENGLISH_TO_GREEK' : 'MULTIPLE_CHOICE') as QuestionType,
-        prompt: item.lexeme.gloss,
-        correctAnswer: item.lexeme.lexeme,
-        options,
-        points: 1,
-      }
-    }
-  })
-}
-
-/**
- * Generate vocabulary questions from a specific rank range (sortOrder min/max inclusive).
- * Falls back to a broader BEGINNING pool if there aren't enough words in range.
- */
-export async function generateVocabQuestionsInRange(
-  rankMin: number,
-  rankMax: number,
-  type: QuestionType,
-  count: number,
-  provideDefinitionPct = 0
-) {
-  const rangeItems = await prisma.vocabularyItem.findMany({
-    where: { level: 'BEGINNING', sortOrder: { gte: rankMin, lte: rankMax } },
-    include: { lexeme: true },
-  })
-
-  const pool = await prisma.vocabularyItem.findMany({
-    where: { level: 'BEGINNING' },
-    include: { lexeme: true },
-    take: 200,
-  })
-
-  if (pool.length === 0) return [] // vocabulary table not yet loaded
-
-  const picked = shuffle(rangeItems.length >= count ? rangeItems : pool).slice(0, count)
-  const allGlosses = pool.map(i => i.lexeme.gloss)
-  const allLexemes = pool.map(i => i.lexeme.lexeme)
   const openEndedCount = Math.round((provideDefinitionPct / 100) * count)
 
   return picked.map((item, idx) => {

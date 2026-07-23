@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
-import { generateVocabQuestions, generateVocabQuestionsInRange, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
+import { generateVocabQuestions, generateVocabQuestionsForLesson, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import { getLessonForWeek } from '@/lib/vocab-lesson-map'
 import type { AssignmentType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -30,6 +30,8 @@ export async function GET(req: NextRequest) {
   const count    = Math.min(Math.max(Number(searchParams.get('count') ?? '5'), 1), 10)
   // week param lets us preview the actual lesson for a specific week
   const week     = Number(searchParams.get('week') ?? '1')
+  // % of the sample drawn from earlier lessons, so the preview matches the builder slider
+  const prevPct  = Math.min(Math.max(Number(searchParams.get('prevPct') ?? '0'), 0), 100)
 
   const resolvedLevel: CourseLevel = SOURCE_LEVEL[source] ?? level
   const useLessonMap = source === 'VOCAB_BUILDER' && resolvedLevel === 'BEGINNING'
@@ -39,7 +41,7 @@ export async function GET(req: NextRequest) {
 
   if (quizType === 'VOCABULARY_QUIZ') {
     if (lesson) {
-      questions = await generateVocabQuestionsInRange(lesson.rankMin, lesson.rankMax, 'GREEK_TO_ENGLISH', count)
+      questions = generateVocabQuestionsForLesson(lesson.lesson, 'GREEK_TO_ENGLISH', count, 0, prevPct)
     } else {
       questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', count)
     }
