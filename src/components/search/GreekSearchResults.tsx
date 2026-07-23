@@ -5,6 +5,11 @@ import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
+import { openWordSearch } from '@/lib/word-search-bus'
+import { TransWords } from '@/components/highlights/TransWords'
+import { useHighlights } from '@/components/highlights/useHighlights'
+import { highlightAt } from '@/components/highlights/render'
+import { highlightMarkClass } from '@/lib/highlight-colors'
 
 // Two-column parallel view for a Greek search: each hit verse shows the Greek (word-by-word,
 // clickable → parsing pane) beside a parallel translation, with one ParsingPanel pinned at the
@@ -31,7 +36,7 @@ function hilite(text: string, terms: string[]): ReactNode {
   return ranges.length ? <>{markSlice(text, ranges, 0, text.length, MARK)}</> : text
 }
 
-export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false }: {
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false, isAuthenticated = false }: {
   hits: GreekHit[]
   terms: string[]
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
@@ -46,7 +51,13 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   transLang: string
   onOpen: (h: GreekHit) => void
   embedded?: boolean
+  // Enables the highlighter row in the right-click menu; searching works signed out.
+  isAuthenticated?: boolean
 }) {
+  // A search hit is real text, so it gets the same right-click menu as the reader: search
+  // the word, and highlight it (the highlight is stored against the verse, so it shows up
+  // in the reader too).
+  const highlights = useHighlights(isAuthenticated)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
   const [selKey, setSelKey] = useState<string | null>(null)
   const [, bump] = useState(0)
@@ -140,8 +151,15 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       return <span className={isHit ? '' : 'text-gray-400'}>{hilite(cv.text, terms)}</span>
     }
     const hitLemmas = h.matchedLemmas?.length ? new Set(h.matchedLemmas.map(normalizeFold)) : null
+    // Char offsets into the verse's canonical text (tokens joined by single spaces), the
+    // same basis the reader's highlights use, so a highlight made here lands identically.
+    let pos = 0
+    const spans = toks.map(t => { const start = pos; pos += t.surface.length + 1; return { start, end: start + t.surface.length } })
+    const verseHl = isAuthenticated ? highlights.forVerse(h.osisId, cv.chapter, cv.verse, 'grc') : []
     return toks.map((tok, ti) => {
       const key = `${rowKey}.${ti}`
+      const { start, end } = spans[ti]
+      const mark = verseHl.length ? highlightAt(start, end, verseHl) : undefined
       const matched = termSet.has(normalizeFold(tok.surface))
         || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
         || (!!hitLemmas && hitLemmas.has(normalizeFold(tok.lemma)))
@@ -151,7 +169,23 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       }
       return (
         <span key={ti} onMouseEnter={select} onClick={select}
-          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''} ${matched ? MARK : ''}`}>
+          onContextMenu={e => {
+            e.preventDefault()
+            const existing = verseHl.find(hh => start < hh.endOffset && end > hh.startOffset)
+            openWordSearch({
+              x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
+              reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`,
+              kind: 'greek', greekCorpus: corpus, book: h.osisId,
+              highlight: isAuthenticated ? {
+                activeColor: existing?.color ?? null,
+                onPick: c => existing
+                  ? void highlights.recolor(existing.id, h.osisId, cv.chapter, c)
+                  : void highlights.create(h.osisId, cv.chapter, cv.verse, start, end, c, 'grc'),
+                onRemove: () => { if (existing) void highlights.remove(existing.id, h.osisId, cv.chapter) },
+              } : undefined,
+            })
+          }}
+          className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''} ${matched ? MARK : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}>
           {tok.surface}{ti < toks.length - 1 ? ' ' : ''}
         </span>
       )
@@ -183,7 +217,23 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                       </p>
                       {showTrans && (
                         <p className={`font-reading leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
-                          {trMap[vid] ? hilite(trMap[vid], isHit ? terms : []) : <span className="text-gray-300 italic">…</span>}
+                          {trMap[vid]
+                            ? (isHit && terms.length
+                                // A hit verse keeps its search-term marks; neighbours are plain
+                                // text, so they can carry the right-click menu instead.
+                                ? hilite(trMap[vid], terms)
+                                : <TransWords
+                                    text={trMap[vid]} lang={transLang}
+                                    reference={`${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`}
+                                    book={h.osisId}
+                                    hl={isAuthenticated ? {
+                                      isAuthenticated,
+                                      verseHighlights: highlights.forVerse(h.osisId, cv.chapter, cv.verse, transLang),
+                                      create: (st, en, c) => void highlights.create(h.osisId, cv.chapter, cv.verse, st, en, c, transLang),
+                                      recolor: (id, c) => void highlights.recolor(id, h.osisId, cv.chapter, c),
+                                      remove: id => void highlights.remove(id, h.osisId, cv.chapter),
+                                    } : undefined} />)
+                            : <span className="text-gray-300 italic">…</span>}
                         </p>
                       )}
                     </div>

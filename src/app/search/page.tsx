@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { SearchPageView } from '@/components/search/SearchPageView'
 import { MorphSearchPage } from '@/components/search/MorphSearchPage'
+import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 
 export const metadata: Metadata = { title: 'Search' }
 
@@ -9,6 +10,10 @@ export const metadata: Metadata = { title: 'Search' }
 // scope (e.g. greek:GNT, trans:en, bg:josephus). The morphology facet (in=morph:GNT, +features)
 // is its own isolated page component.
 export default function SearchPage({ searchParams }: { searchParams: { q?: string; in?: string; mode?: string; books?: string; from?: string; features?: string; strongs?: string } }) {
+  // Signed-in readers get the highlighter row in the results' right-click menu.
+  const token = getTokenFromCookies()
+  const isAuthenticated = !!(token && verifyToken(token))
+
   if (searchParams?.in?.startsWith('morph:')) {
     return (
       <div className="py-2 pb-16">
@@ -29,6 +34,7 @@ export default function SearchPage({ searchParams }: { searchParams: { q?: strin
         initialBooks={searchParams?.books}
         initialStrongs={searchParams?.strongs}
         returnTo={searchParams?.from}
+        isAuthenticated={isAuthenticated}
       />
     </div>
   )

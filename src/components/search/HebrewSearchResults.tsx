@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { openWordSearch } from '@/lib/word-search-bus'
 import { mtToEnglish } from '@/lib/versification'
 import { normalizeHebrew } from '@/lib/hebrew-fold'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
@@ -103,6 +104,14 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
       const pick = () => void selectWord(h, idx, part, key)
       return (
         <span key={pi} onMouseEnter={pick} onClick={pick}
+          onContextMenu={e => {
+            e.preventDefault()
+            // Hebrew has no Greek corpus to scope to; the menu still offers the word
+            // search and the copy row.
+            openWordSearch({ x: e.clientX, y: e.clientY, surface: part,
+              reference: `${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`,
+              kind: 'translation', transLang: 'he', book: h.osisId })
+          }}
           className={`cursor-pointer rounded transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''}${matched ? ` ${SEARCH_MARK}` : ''}`}>
           {part}
         </span>

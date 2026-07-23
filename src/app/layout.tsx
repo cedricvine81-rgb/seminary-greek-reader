@@ -92,7 +92,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <AppFooter />
         </div>
         <NativeMenuGuard />
-        <MasterSearchProvider />
+        <MasterSearchProvider isAuthenticated={headerProps.isAuthenticated} />
         <WordSearchProvider />
         <ScrollRestorer />
       </body>

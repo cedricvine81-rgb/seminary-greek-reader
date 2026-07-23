@@ -24,7 +24,7 @@ function clampWidth(w: number): number {
   return Math.min(Math.max(w, MIN_W), Math.max(max, MIN_W))
 }
 
-export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPreset; onClose: () => void }) {
+export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: { preset?: MasterSearchPreset; onClose: () => void; isAuthenticated?: boolean }) {
   const [width, setWidth] = useState(DEFAULT_W)
   const widthRef = useRef(width); widthRef.current = width
   const drag = useRef<{ startX: number; startW: number } | null>(null)
@@ -125,6 +125,7 @@ export function MasterSearchPanel({ preset, onClose }: { preset?: MasterSearchPr
             initialLemma={preset?.lemma}
             initialBooks={preset?.books}
             initialStrongs={preset?.strongs}
+            isAuthenticated={isAuthenticated}
           />
         )}
       </div>

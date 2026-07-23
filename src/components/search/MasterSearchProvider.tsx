@@ -16,7 +16,7 @@ import { snapshotScroll } from '@/lib/scroll-restore'
 // trip. This includes morphology searches (scope morph:*): the panel hosts MorphSearchPage, so
 // the Grammar pages' "See it in the NT" links open beside the page. One case still navigates:
 // already ON /search — the full page owns the search UI there, so just update its URL.
-export function MasterSearchProvider() {
+export function MasterSearchProvider({ isAuthenticated = false }: { isAuthenticated?: boolean }) {
   const router = useRouter()
   // nonce keys the panel so re-opening with a new preset (e.g. right-clicking another word
   // while the panel is up) remounts SearchPageView with the new initial query/scope.
@@ -64,5 +64,5 @@ export function MasterSearchProvider() {
   }, [doOpen])
 
   if (!panel) return null
-  return <MasterSearchPanel key={panel.nonce} preset={panel.preset} onClose={() => setPanel(null)} />
+  return <MasterSearchPanel key={panel.nonce} preset={panel.preset} isAuthenticated={isAuthenticated} onClose={() => setPanel(null)} />
 }

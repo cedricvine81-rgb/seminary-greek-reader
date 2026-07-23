@@ -7,6 +7,7 @@ import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
+import { SearchWords } from './SearchWords'
 import { HebrewSearchResults } from './HebrewSearchResults'
 import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
@@ -189,7 +190,7 @@ function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
 }
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose, isAuthenticated = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void; isAuthenticated?: boolean }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -748,14 +749,21 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
               {isGrc && isHit
                 ? bgGreekTokens(h, `${rowKey}.${cv.chapter}.${cv.verse}`, cv.text)
-                : <>{hiliteVerse(cv.text, terms)}{' '}</>}
+                : <><SearchWords text={cv.text} terms={isHit ? terms : []}
+                    payload={() => ({ kind: isGrc ? 'greek' : 'translation',
+                      reference: h.ref,
+                      ...(isGrc ? { greekCorpus: 'LXX' as const } : { transLang: 'en' }),
+                      ...(scope.kind === 'bg' && scope.category ? { bgCollection: scope.category } : {}) })} />{' '}</>}
             </span>
           )
         })}
       </span>
     ) : (
       <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
-        {isGrc ? bgGreekTokens(h, rowKey, h.text) : renderSnippet(h.text, terms)}
+        {isGrc ? bgGreekTokens(h, rowKey, h.text)
+               : <SearchWords text={h.text} terms={terms}
+                   payload={() => ({ kind: 'translation', reference: h.ref, transLang: 'en',
+                     ...(scope.kind === 'bg' && scope.category ? { bgCollection: scope.category } : {}) })} />}
       </span>
     )
     // Greek works with an aligned English (Josephus / Whiston, Greco-Roman / Perseus) show their
@@ -1061,6 +1069,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 transLang={parallelLang}
                 onOpen={h => openBiblical(`${h.osisId} ${h.chapter}:${h.verse}`)}
                 embedded={embedded}
+                isAuthenticated={isAuthenticated}
               />
             ) : scope.kind === 'hebrew' ? (
               <HebrewSearchResults
@@ -1089,13 +1098,24 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                             return (
                               <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
                                 <sup className="text-[10px] text-brand-500 mr-0.5">{cv.chapter === h.chapter ? cv.verse : `${cv.chapter}:${cv.verse}`}</sup>
-                                {hiliteVerse(cv.text, terms)}{' '}
+                                <SearchWords text={cv.text} terms={isHit ? terms : []}
+                                  payload={() => ({ kind: h.greek ? 'greek' : 'translation',
+                                    reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`,
+                                    book: h.osisId,
+                                    ...(h.greek ? { greekCorpus: 'LXX' as const }
+                                                : { transLang: scope.kind === 'trans' ? scope.lang : 'en' }) })} />{' '}
                               </span>
                             )
                           })}
                         </span>
                       ) : (
-                        <span className={`block text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}>{hiliteVerse(h.text, terms)}</span>
+                        <SearchWords text={h.text} terms={terms}
+                          className={`block text-gray-700 leading-relaxed ${h.greek ? 'greek-text' : 'font-reading'}`}
+                          payload={() => ({ kind: h.greek ? 'greek' : 'translation',
+                            reference: `${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`,
+                            book: h.osisId,
+                            ...(h.greek ? { greekCorpus: 'LXX' as const }
+                                        : { transLang: scope.kind === 'trans' ? scope.lang : 'en' }) })} />
                       )}
                     </button>
                     <button type="button" onClick={e => { e.stopPropagation(); void copyHit(h, ctx) }}
