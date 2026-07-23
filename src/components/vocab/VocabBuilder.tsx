@@ -1,7 +1,7 @@
 'use client'
 import { useState, useMemo, useEffect, createContext, useContext, type ReactNode } from 'react'
 import Link from 'next/link'
-import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen } from 'lucide-react'
+import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen, FileText } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
 import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
@@ -346,6 +346,21 @@ export function VocabBuilder({ lang = 'greek', onLangChange }: { lang?: VocabLan
             </button>
           ))}
         </div>
+
+        {/* The printable BGVB handout these sections are taken from. Greek only —
+            the Hebrew deck comes from a different list. */}
+        {lang === 'greek' && (
+          <a
+            href="/docs/bgvb-vocabulary-master-list.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-auto mr-1 inline-flex items-center gap-1.5 text-sm text-brand-700 hover:underline"
+          >
+            <FileText size={15} />
+            <span className="hidden sm:inline">Printable word list</span>
+            <span className="sm:hidden">Word list</span>
+          </a>
+        )}
 
         {onLangChange && (
           <div className="flex gap-1 bg-gray-100 rounded-xl p-1 w-fit">

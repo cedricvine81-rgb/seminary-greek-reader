@@ -3550,6 +3550,16 @@
     "order": 355
   },
   {
+    "word": "ποτέ",
+    "inflection": null,
+    "gloss": "once, formerly",
+    "pos": "Adv",
+    "section": 3,
+    "sub": "3-B",
+    "freq": 29,
+    "order": 356
+  },
+  {
     "word": "ἄξιος",
     "inflection": "-α, -ον",
     "gloss": "worthy, fit",
@@ -3557,7 +3567,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 356
+    "order": 357
   },
   {
     "word": "διέρχομαι",
@@ -3567,7 +3577,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 357
+    "order": 358
   },
   {
     "word": "ἐπιτίθημι",
@@ -3577,7 +3587,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 39,
-    "order": 358
+    "order": 359
   },
   {
     "word": "ἐργάζομαι",
@@ -3587,7 +3597,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 359
+    "order": 360
   },
   {
     "word": "ἑτοιμάζω",
@@ -3597,7 +3607,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 360
+    "order": 361
   },
   {
     "word": "εὐλογέω",
@@ -3607,7 +3617,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 361
+    "order": 362
   },
   {
     "word": "ἱκανός",
@@ -3617,7 +3627,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 362
+    "order": 363
   },
   {
     "word": "κλαίω",
@@ -3627,7 +3637,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 363
+    "order": 364
   },
   {
     "word": "λογίζομαι",
@@ -3637,7 +3647,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 364
+    "order": 365
   },
   {
     "word": "λοιπός",
@@ -3647,7 +3657,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": null,
-    "order": 365
+    "order": 366
   },
   {
     "word": "ὀλίγος",
@@ -3657,7 +3667,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 366
+    "order": 367
   },
   {
     "word": "πάντοτε",
@@ -3667,7 +3677,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 367
+    "order": 368
   },
   {
     "word": "παρίστημι",
@@ -3677,7 +3687,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 368
+    "order": 369
   },
   {
     "word": "σεαυτοῦ",
@@ -3687,7 +3697,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 43,
-    "order": 369
+    "order": 370
   },
   {
     "word": "σήμερον",
@@ -3697,7 +3707,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 370
+    "order": 371
   },
   {
     "word": "τέλος",
@@ -3707,7 +3717,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 371
+    "order": 372
   },
   {
     "word": "τέσσαρες",
@@ -3717,7 +3727,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 372
+    "order": 373
   },
   {
     "word": "τιμή",
@@ -3727,7 +3737,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 373
+    "order": 374
   },
   {
     "word": "φωνέω",
@@ -3737,7 +3747,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 43,
-    "order": 374
+    "order": 375
   },
   {
     "word": "χωρίς",
@@ -3747,7 +3757,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 375
+    "order": 376
   },
   {
     "word": "ἄρχων",
@@ -3757,7 +3767,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 376
+    "order": 377
   },
   {
     "word": "βούλομαι",
@@ -3767,7 +3777,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 36,
-    "order": 377
+    "order": 378
   },
   {
     "word": "διάβολος",
@@ -3777,7 +3787,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 378
+    "order": 379
   },
   {
     "word": "διακονέω",
@@ -3787,7 +3797,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 379
+    "order": 380
   },
   {
     "word": "δικαιόω",
@@ -3797,7 +3807,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 380
+    "order": 381
   },
   {
     "word": "ἐμαυτοῦ",
@@ -3807,7 +3817,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 381
+    "order": 382
   },
   {
     "word": "ἐπιθυμία",
@@ -3817,7 +3827,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 382
+    "order": 383
   },
   {
     "word": "εὐχαριστέω",
@@ -3827,7 +3837,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 383
+    "order": 384
   },
   {
     "word": "θύρα",
@@ -3837,7 +3847,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 384
+    "order": 385
   },
   {
     "word": "Ἰούδας",
@@ -3847,7 +3857,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 385
+    "order": 386
   },
   {
     "word": "μισέω",
@@ -3857,7 +3867,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 40,
-    "order": 386
+    "order": 387
   },
   {
     "word": "μνημεῖον",
@@ -3867,7 +3877,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 387
+    "order": 388
   },
   {
     "word": "οἰκοδομέω",
@@ -3877,7 +3887,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 41,
-    "order": 388
+    "order": 389
   },
   {
     "word": "πάσχω",
@@ -3887,7 +3897,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 41,
-    "order": 389
+    "order": 390
   },
   {
     "word": "πειράζω",
@@ -3897,7 +3907,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 390
+    "order": 391
   },
   {
     "word": "πέντε",
@@ -3907,7 +3917,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 391
+    "order": 392
   },
   {
     "word": "περισσεύω",
@@ -3917,7 +3927,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 392
+    "order": 393
   },
   {
     "word": "πλανάω",
@@ -3927,7 +3937,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 393
+    "order": 394
   },
   {
     "word": "πράσσω",
@@ -3937,7 +3947,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 394
+    "order": 395
   },
   {
     "word": "ὑποτάσσω",
@@ -3947,7 +3957,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 395
+    "order": 396
   },
   {
     "word": "ἀγρός",
@@ -3957,7 +3967,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 396
+    "order": 397
   },
   {
     "word": "ἅπτω",
@@ -3967,7 +3977,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 397
+    "order": 398
   },
   {
     "word": "ἄρτι",
@@ -3977,7 +3987,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 33,
-    "order": 398
+    "order": 399
   },
   {
     "word": "ἐπιστρέφω",
@@ -3987,7 +3997,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 399
+    "order": 400
   },
   {
     "word": "Ἰωσήφ",
@@ -3997,7 +4007,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 400
+    "order": 401
   },
   {
     "word": "καλῶς",
@@ -4007,7 +4017,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 401
+    "order": 402
   },
   {
     "word": "καυχάομαι",
@@ -4017,7 +4027,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 37,
-    "order": 402
+    "order": 403
   },
   {
     "word": "μαρτυρία",
@@ -4027,7 +4037,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 37,
-    "order": 403
+    "order": 404
   },
   {
     "word": "μάρτυς",
@@ -4037,7 +4047,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 404
+    "order": 405
   },
   {
     "word": "ὀπίσω",
@@ -4047,7 +4057,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 405
+    "order": 406
   },
   {
     "word": "ὀργή",
@@ -4057,7 +4067,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 406
+    "order": 407
   },
   {
     "word": "οὖς",
@@ -4067,7 +4077,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 407
+    "order": 408
   },
   {
     "word": "ὀφείλω",
@@ -4077,7 +4087,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 408
+    "order": 409
   },
   {
     "word": "παραγίνομαι",
@@ -4087,7 +4097,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 38,
-    "order": 409
+    "order": 410
   },
   {
     "word": "περιτομή",
@@ -4097,7 +4107,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 410
+    "order": 411
   },
   {
     "word": "πρόβατον",
@@ -4107,7 +4117,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 39,
-    "order": 411
+    "order": 412
   },
   {
     "word": "προσευχή",
@@ -4117,7 +4127,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 412
+    "order": 413
   },
   {
     "word": "Σατανᾶς",
@@ -4127,7 +4137,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 413
+    "order": 414
   },
   {
     "word": "Φίλιππος",
@@ -4137,7 +4147,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 414
+    "order": 415
   },
   {
     "word": "ὥσπερ",
@@ -4147,7 +4157,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 415
+    "order": 416
   },
   {
     "word": "ἀναγινώσκω",
@@ -4157,7 +4167,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 416
+    "order": 417
   },
   {
     "word": "ἅπας",
@@ -4167,7 +4177,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 42,
-    "order": 417
+    "order": 418
   },
   {
     "word": "ἄρα",
@@ -4177,7 +4187,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 36,
-    "order": 418
+    "order": 419
   },
   {
     "word": "ἀρνέομαι",
@@ -4187,7 +4197,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 419
+    "order": 420
   },
   {
     "word": "ἀσθενέω",
@@ -4197,7 +4207,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 420
+    "order": 421
   },
   {
     "word": "βιβλίον",
@@ -4207,7 +4217,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 421
+    "order": 422
   },
   {
     "word": "βλασφημέω",
@@ -4217,7 +4227,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 422
+    "order": 423
   },
   {
     "word": "δείκνυμι",
@@ -4227,7 +4237,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 423
+    "order": 424
   },
   {
     "word": "διαθήκη",
@@ -4237,7 +4247,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 424
+    "order": 425
   },
   {
     "word": "διακονία",
@@ -4247,7 +4257,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 425
+    "order": 426
   },
   {
     "word": "δυνατός",
@@ -4257,7 +4267,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 426
+    "order": 427
   },
   {
     "word": "ἐκπορεύομαι",
@@ -4267,7 +4277,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 427
+    "order": 428
   },
   {
     "word": "μέλος",
@@ -4277,7 +4287,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 428
+    "order": 429
   },
   {
     "word": "μετανοέω",
@@ -4287,7 +4297,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 429
+    "order": 430
   },
   {
     "word": "μήτε",
@@ -4297,7 +4307,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 430
+    "order": 431
   },
   {
     "word": "ναί",
@@ -4307,7 +4317,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 431
+    "order": 432
   },
   {
     "word": "οἶνος",
@@ -4317,7 +4327,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 432
+    "order": 433
   },
   {
     "word": "ποῖος",
@@ -4327,7 +4337,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 433
+    "order": 434
   },
   {
     "word": "πτωχός",
@@ -4337,7 +4347,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 434
+    "order": 435
   },
   {
     "word": "ὑποστρέφω",
@@ -4347,7 +4357,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 36,
-    "order": 435
+    "order": 436
   },
   {
     "word": "ἀκάθαρτος",
@@ -4357,7 +4367,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 436
+    "order": 437
   },
   {
     "word": "ἄνεμος",
@@ -4367,7 +4377,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 437
+    "order": 438
   },
   {
     "word": "ἐλπίζω",
@@ -4377,7 +4387,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 438
+    "order": 439
   },
   {
     "word": "ἔξεστι(ν)",
@@ -4387,7 +4397,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 32,
-    "order": 439
+    "order": 440
   },
   {
     "word": "ἐχθρός",
@@ -4397,7 +4407,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 32,
-    "order": 440
+    "order": 441
   },
   {
     "word": "ἥλιος",
@@ -4407,7 +4417,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 32,
-    "order": 441
+    "order": 442
   },
   {
     "word": "ἱερεύς",
@@ -4417,7 +4427,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 33,
-    "order": 442
+    "order": 443
   },
   {
     "word": "καθαρίζω",
@@ -4427,7 +4437,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 443
+    "order": 444
   },
   {
     "word": "ὁμοίως",
@@ -4437,7 +4447,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 444
+    "order": 445
   },
   {
     "word": "παραγγέλλω",
@@ -4447,7 +4457,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 30,
-    "order": 445
+    "order": 446
   },
   {
     "word": "παρρησία",
@@ -4457,7 +4467,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 446
+    "order": 447
   },
   {
     "word": "πλῆθος",
@@ -4467,7 +4477,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 32,
-    "order": 447
+    "order": 448
   },
   {
     "word": "πλήν",
@@ -4477,7 +4487,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 448
+    "order": 449
   },
   {
     "word": "ποτήριον",
@@ -4487,7 +4497,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 449
+    "order": 450
   },
   {
     "word": "συνείδησις",
@@ -4497,7 +4507,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 450
+    "order": 451
   },
   {
     "word": "ὑπομονή",
@@ -4507,7 +4517,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 32,
-    "order": 451
+    "order": 452
   },
   {
     "word": "φαίνω",
@@ -4517,7 +4527,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 452
+    "order": 453
   },
   {
     "word": "φυλάσσω",
@@ -4527,7 +4537,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 453
+    "order": 454
   },
   {
     "word": "φυλή",
@@ -4537,7 +4547,7 @@
     "section": 3,
     "sub": "3-G",
     "freq": 31,
-    "order": 454
+    "order": 455
   },
   {
     "word": "ἀγοράζω",
@@ -4547,7 +4557,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 455
+    "order": 456
   },
   {
     "word": "ἀρνίον",
@@ -4557,7 +4567,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 456
+    "order": 457
   },
   {
     "word": "γνῶσις",
@@ -4567,7 +4577,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 457
+    "order": 458
   },
   {
     "word": "διάκονος",
@@ -4577,7 +4587,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 458
+    "order": 459
   },
   {
     "word": "διδαχή",
@@ -4587,7 +4597,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 459
+    "order": 460
   },
   {
     "word": "ἐγγύς",
@@ -4597,7 +4607,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 460
+    "order": 461
   },
   {
     "word": "ἐλεέω",
@@ -4607,7 +4617,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 31,
-    "order": 461
+    "order": 462
   },
   {
     "word": "ἐπικαλέω",
@@ -4617,7 +4627,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 30,
-    "order": 462
+    "order": 463
   },
   {
     "word": "ἐπιτιμάω",
@@ -4627,7 +4637,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 463
+    "order": 464
   },
   {
     "word": "Ἠλίας",
@@ -4637,7 +4647,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 464
+    "order": 465
   },
   {
     "word": "Καῖσαρ",
@@ -4647,7 +4657,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 465
+    "order": 466
   },
   {
     "word": "μάχαιρα",
@@ -4657,7 +4667,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 466
+    "order": 467
   },
   {
     "word": "μισθός",
@@ -4667,7 +4677,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 467
+    "order": 468
   },
   {
     "word": "παρέρχομαι",
@@ -4677,7 +4687,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 468
+    "order": 469
   },
   {
     "word": "πάσχα",
@@ -4687,7 +4697,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 469
+    "order": 470
   },
   {
     "word": "πόθεν",
@@ -4697,7 +4707,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 470
+    "order": 471
   },
   {
     "word": "προσκαλέω",
@@ -4707,7 +4717,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 471
+    "order": 472
   },
   {
     "word": "σκότος",
@@ -4717,7 +4727,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 31,
-    "order": 472
+    "order": 473
   },
   {
     "word": "συνέρχομαι",
@@ -4727,7 +4737,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 31,
-    "order": 473
+    "order": 474
   },
   {
     "word": "παράκλησις",
@@ -4737,7 +4747,7 @@
     "section": 3,
     "sub": "3-H",
     "freq": 29,
-    "order": 474
+    "order": 475
   },
   {
     "word": "ἁγιάζω",
@@ -4747,7 +4757,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 475
+    "order": 476
   },
   {
     "word": "ἀδικέω",
@@ -4757,7 +4767,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 27,
-    "order": 476
+    "order": 477
   },
   {
     "word": "ἀληθινός",
@@ -4767,7 +4777,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 477
+    "order": 478
   },
   {
     "word": "Βαρναβᾶς",
@@ -4777,7 +4787,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 478
+    "order": 479
   },
   {
     "word": "βαστάζω",
@@ -4787,7 +4797,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 27,
-    "order": 479
+    "order": 480
   },
   {
     "word": "γαμέω",
@@ -4797,7 +4807,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 480
+    "order": 481
   },
   {
     "word": "ἐνδύω",
@@ -4807,7 +4817,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 481
+    "order": 482
   },
   {
     "word": "ἡγέομαι",
@@ -4817,7 +4827,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 482
+    "order": 483
   },
   {
     "word": "θυγάτηρ",
@@ -4827,7 +4837,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 483
+    "order": 484
   },
   {
     "word": "θυσία",
@@ -4837,7 +4847,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 484
+    "order": 485
   },
   {
     "word": "ἰσχυρός",
@@ -4847,7 +4857,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 485
+    "order": 486
   },
   {
     "word": "ἰσχύω",
@@ -4857,7 +4867,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 486
+    "order": 487
   },
   {
     "word": "νικάω",
@@ -4867,7 +4877,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 487
+    "order": 488
   },
   {
     "word": "πλούσιος",
@@ -4877,7 +4887,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 488
+    "order": 489
   },
   {
     "word": "προφητεύω",
@@ -4887,7 +4897,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 489
+    "order": 490
   },
   {
     "word": "σκανδαλίζω",
@@ -4897,7 +4907,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 29,
-    "order": 490
+    "order": 491
   },
   {
     "word": "τελέω",
@@ -4907,7 +4917,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 491
+    "order": 492
   },
   {
     "word": "φεύγω",
@@ -4917,7 +4927,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 30,
-    "order": 492
+    "order": 493
   },
   {
     "word": "φίλος",
@@ -4927,7 +4937,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 29,
-    "order": 493
+    "order": 494
   },
   {
     "word": "χώρα",
@@ -4937,7 +4947,7 @@
     "section": 4,
     "sub": "4-A",
     "freq": 28,
-    "order": 494
+    "order": 495
   },
   {
     "word": "ἀδελφή",
@@ -4947,7 +4957,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 495
+    "order": 496
   },
   {
     "word": "ἀληθής",
@@ -4957,7 +4967,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 496
+    "order": 497
   },
   {
     "word": "ἀποκαλύπτω",
@@ -4967,7 +4977,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 497
+    "order": 498
   },
   {
     "word": "γνωρίζω",
@@ -4977,7 +4987,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 25,
-    "order": 498
+    "order": 499
   },
   {
     "word": "δέκα",
@@ -4987,7 +4997,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 25,
-    "order": 499
+    "order": 500
   },
   {
     "word": "ἐκεῖθεν",
@@ -4997,7 +5007,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 500
+    "order": 501
   },
   {
     "word": "ἐκχέω",
@@ -5007,7 +5017,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 501
+    "order": 502
   },
   {
     "word": "ἔλεος",
@@ -5017,7 +5027,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 502
+    "order": 503
   },
   {
     "word": "Ἕλλην",
@@ -5027,7 +5037,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 503
+    "order": 504
   },
   {
     "word": "ἕνεκα",
@@ -5037,7 +5047,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 504
+    "order": 505
   },
   {
     "word": "ἐπεί",
@@ -5047,7 +5057,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 505
+    "order": 506
   },
   {
     "word": "Ἰακώβ",
@@ -5057,7 +5067,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 506
+    "order": 507
   },
   {
     "word": "καταργέω",
@@ -5067,7 +5077,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 507
+    "order": 508
   },
   {
     "word": "κρίμα",
@@ -5077,7 +5087,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 508
+    "order": 509
   },
   {
     "word": "κώμη",
@@ -5087,7 +5097,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 26,
-    "order": 509
+    "order": 510
   },
   {
     "word": "μυστήριον",
@@ -5097,7 +5107,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 510
+    "order": 511
   },
   {
     "word": "οὔπω",
@@ -5107,7 +5117,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 25,
-    "order": 511
+    "order": 512
   },
   {
     "word": "πόσος",
@@ -5117,7 +5127,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 512
+    "order": 513
   },
   {
     "word": "σός",
@@ -5127,7 +5137,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 513
+    "order": 514
   },
   {
     "word": "σταυρός",
@@ -5137,7 +5147,7 @@
     "section": 4,
     "sub": "4-B",
     "freq": 27,
-    "order": 514
+    "order": 515
   },
   {
     "word": "ἀδικία",
@@ -5147,7 +5157,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 515
+    "order": 516
   },
   {
     "word": "Αἴγυπτος",
@@ -5157,7 +5167,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 516
+    "order": 517
   },
   {
     "word": "ἀναβλέπω",
@@ -5167,7 +5177,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 517
+    "order": 518
   },
   {
     "word": "ἀσθενής",
@@ -5177,7 +5187,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 518
+    "order": 519
   },
   {
     "word": "δένδρον",
@@ -5187,7 +5197,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 519
+    "order": 520
   },
   {
     "word": "δουλεύω",
@@ -5197,7 +5207,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 520
+    "order": 521
   },
   {
     "word": "ἑορτή",
@@ -5207,7 +5217,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 521
+    "order": 522
   },
   {
     "word": "ἥκω",
@@ -5217,7 +5227,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 522
+    "order": 523
   },
   {
     "word": "ἰάομαι",
@@ -5227,7 +5237,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 523
+    "order": 524
   },
   {
     "word": "καθαρός",
@@ -5237,7 +5247,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 524
+    "order": 525
   },
   {
     "word": "κελεύω",
@@ -5247,7 +5257,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 525
+    "order": 526
   },
   {
     "word": "λευκός",
@@ -5257,7 +5267,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 25,
-    "order": 526
+    "order": 527
   },
   {
     "word": "λυπέω",
@@ -5267,7 +5277,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 527
+    "order": 528
   },
   {
     "word": "ὀμνύω",
@@ -5277,7 +5287,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 528
+    "order": 529
   },
   {
     "word": "ὁμολογέω",
@@ -5287,7 +5297,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 529
+    "order": 530
   },
   {
     "word": "στρατιώτης",
@@ -5297,7 +5307,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 530
+    "order": 531
   },
   {
     "word": "συνίημι",
@@ -5307,7 +5317,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 531
+    "order": 532
   },
   {
     "word": "φρονέω",
@@ -5317,7 +5327,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 27,
-    "order": 532
+    "order": 533
   },
   {
     "word": "χήρα",
@@ -5327,7 +5337,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 533
+    "order": 534
   },
   {
     "word": "πνευματικός",
@@ -5337,7 +5347,7 @@
     "section": 4,
     "sub": "4-C",
     "freq": 26,
-    "order": 534
+    "order": 535
   },
   {
     "word": "ἀκοή",
@@ -5347,7 +5357,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 535
+    "order": 536
   },
   {
     "word": "ἀναιρέω",
@@ -5357,7 +5367,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 536
+    "order": 537
   },
   {
     "word": "ἀσθένεια",
@@ -5367,7 +5377,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 537
+    "order": 538
   },
   {
     "word": "ἀστήρ",
@@ -5377,7 +5387,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 538
+    "order": 539
   },
   {
     "word": "διότι",
@@ -5387,7 +5397,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 539
+    "order": 540
   },
   {
     "word": "ἐπιστολή",
@@ -5397,7 +5407,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 540
+    "order": 541
   },
   {
     "word": "καταλείπω",
@@ -5407,7 +5417,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 541
+    "order": 542
   },
   {
     "word": "κεῖμαι",
@@ -5417,7 +5427,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 23,
-    "order": 542
+    "order": 543
   },
   {
     "word": "μανθάνω",
@@ -5427,7 +5437,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 543
+    "order": 544
   },
   {
     "word": "νέος",
@@ -5437,7 +5447,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 23,
-    "order": 544
+    "order": 545
   },
   {
     "word": "νεφέλη",
@@ -5447,7 +5457,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 545
+    "order": 546
   },
   {
     "word": "νοῦς",
@@ -5457,7 +5467,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 546
+    "order": 547
   },
   {
     "word": "οὗ",
@@ -5467,7 +5477,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 547
+    "order": 548
   },
   {
     "word": "παῖς",
@@ -5477,7 +5487,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 548
+    "order": 549
   },
   {
     "word": "πάρειμι",
@@ -5487,7 +5497,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 549
+    "order": 550
   },
   {
     "word": "παρουσία",
@@ -5497,7 +5507,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 550
+    "order": 551
   },
   {
     "word": "πίμπλημι",
@@ -5507,7 +5517,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 551
+    "order": 552
   },
   {
     "word": "πορνεία",
@@ -5517,7 +5527,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 552
+    "order": 553
   },
   {
     "word": "προσέχω",
@@ -5527,7 +5537,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 24,
-    "order": 553
+    "order": 554
   },
   {
     "word": "φιλέω",
@@ -5537,7 +5547,7 @@
     "section": 4,
     "sub": "4-D",
     "freq": 25,
-    "order": 554
+    "order": 555
   },
   {
     "word": "ἀμπελών",
@@ -5547,7 +5557,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 555
+    "order": 556
   },
   {
     "word": "ἀνάγω",
@@ -5557,7 +5567,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 556
+    "order": 557
   },
   {
     "word": "ἄπιστος",
@@ -5567,7 +5577,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 557
+    "order": 558
   },
   {
     "word": "εἰκών",
@@ -5577,7 +5587,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 558
+    "order": 559
   },
   {
     "word": "ἐλεύθερος",
@@ -5587,7 +5597,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 559
+    "order": 560
   },
   {
     "word": "ζῷον",
@@ -5597,7 +5607,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 560
+    "order": 561
   },
   {
     "word": "θεάομαι",
@@ -5607,7 +5617,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 561
+    "order": 562
   },
   {
     "word": "θυσιαστήριον",
@@ -5617,7 +5627,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 562
+    "order": 563
   },
   {
     "word": "κατηγορέω",
@@ -5627,7 +5637,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 563
+    "order": 564
   },
   {
     "word": "κοιλία",
@@ -5637,7 +5647,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 564
+    "order": 565
   },
   {
     "word": "κωλύω",
@@ -5647,7 +5657,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 565
+    "order": 566
   },
   {
     "word": "μιμνήσκω",
@@ -5657,7 +5667,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 566
+    "order": 567
   },
   {
     "word": "πεινάω",
@@ -5667,7 +5677,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 567
+    "order": 568
   },
   {
     "word": "πέραν",
@@ -5677,7 +5687,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 568
+    "order": 569
   },
   {
     "word": "περιβάλλω",
@@ -5687,7 +5697,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 569
+    "order": 570
   },
   {
     "word": "σκεῦος",
@@ -5697,7 +5707,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 570
+    "order": 571
   },
   {
     "word": "σωτήρ",
@@ -5707,7 +5717,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 24,
-    "order": 571
+    "order": 572
   },
   {
     "word": "τελειόω",
@@ -5717,7 +5727,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 572
+    "order": 573
   },
   {
     "word": "Τιμόθεος",
@@ -5727,7 +5737,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 24,
-    "order": 573
+    "order": 574
   },
   {
     "word": "χαρίζομαι",
@@ -5737,7 +5747,7 @@
     "section": 4,
     "sub": "4-E",
     "freq": 23,
-    "order": 574
+    "order": 575
   },
   {
     "word": "ἀγνοέω",
@@ -5747,7 +5757,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 575
+    "order": 576
   },
   {
     "word": "ἀντί",
@@ -5757,7 +5767,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 576
+    "order": 577
   },
   {
     "word": "αὐξάνω",
@@ -5767,7 +5777,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 577
+    "order": 578
   },
   {
     "word": "γρηγορέω",
@@ -5777,7 +5787,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 578
+    "order": 579
   },
   {
     "word": "δοκιμάζω",
@@ -5787,7 +5797,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 579
+    "order": 580
   },
   {
     "word": "ἐκλέγω",
@@ -5797,7 +5807,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 580
+    "order": 581
   },
   {
     "word": "ἐκλεκτός",
@@ -5807,7 +5817,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 581
+    "order": 582
   },
   {
     "word": "Ἠσαΐας",
@@ -5817,7 +5827,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 23,
-    "order": 582
+    "order": 583
   },
   {
     "word": "καθεύδω",
@@ -5827,7 +5837,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 583
+    "order": 584
   },
   {
     "word": "κἀκεῖνος",
@@ -5837,7 +5847,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 24,
-    "order": 584
+    "order": 585
   },
   {
     "word": "κατεργάζομαι",
@@ -5847,7 +5857,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 585
+    "order": 586
   },
   {
     "word": "κοπιάω",
@@ -5857,7 +5867,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 586
+    "order": 587
   },
   {
     "word": "Μακεδονία",
@@ -5867,7 +5877,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 587
+    "order": 588
   },
   {
     "word": "μετάνοια",
@@ -5877,7 +5887,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 588
+    "order": 589
   },
   {
     "word": "μηκέτι",
@@ -5887,7 +5897,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 23,
-    "order": 589
+    "order": 590
   },
   {
     "word": "πληγή",
@@ -5897,7 +5907,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 590
+    "order": 591
   },
   {
     "word": "πλοῦτος",
@@ -5907,7 +5917,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 591
+    "order": 592
   },
   {
     "word": "πωλέω",
@@ -5917,7 +5927,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 22,
-    "order": 592
+    "order": 593
   },
   {
     "word": "χιλιάς",
@@ -5927,7 +5937,7 @@
     "section": 4,
     "sub": "4-F",
     "freq": 23,
-    "order": 593
+    "order": 594
   },
   {
     "word": "αἰτία",
@@ -5937,7 +5947,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 20,
-    "order": 594
+    "order": 595
   },
   {
     "word": "ἀργύριον",
@@ -5947,7 +5957,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 595
+    "order": 596
   },
   {
     "word": "βασιλεύω",
@@ -5957,7 +5967,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 596
+    "order": 597
   },
   {
     "word": "διδασκαλία",
@@ -5967,7 +5977,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 597
+    "order": 598
   },
   {
     "word": "ἐνεργέω",
@@ -5977,7 +5987,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 598
+    "order": 599
   },
   {
     "word": "εὐδοκέω",
@@ -5987,7 +5997,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 599
+    "order": 600
   },
   {
     "word": "θερίζω",
@@ -5997,7 +6007,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 600
+    "order": 601
   },
   {
     "word": "καθίστημι",
@@ -6007,7 +6017,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 601
+    "order": 602
   },
   {
     "word": "λατρεύω",
@@ -6017,7 +6027,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 602
+    "order": 603
   },
   {
     "word": "μνημονεύω",
@@ -6027,7 +6037,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 603
+    "order": 604
   },
   {
     "word": "πειρασμός",
@@ -6037,7 +6047,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 604
+    "order": 605
   },
   {
     "word": "περισσός",
@@ -6047,7 +6057,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 13,
-    "order": 605
+    "order": 606
   },
   {
     "word": "στρέφω",
@@ -6057,7 +6067,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 22,
-    "order": 606
+    "order": 607
   },
   {
     "word": "συνέδριον",
@@ -6067,7 +6077,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 22,
-    "order": 607
+    "order": 608
   },
   {
     "word": "τελώνης",
@@ -6077,7 +6087,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 608
+    "order": 609
   },
   {
     "word": "τεσσεράκοντα",
@@ -6087,7 +6097,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 22,
-    "order": 609
+    "order": 610
   },
   {
     "word": "τιμάω",
@@ -6097,7 +6107,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 610
+    "order": 611
   },
   {
     "word": "ὑπακούω",
@@ -6107,7 +6117,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 611
+    "order": 612
   },
   {
     "word": "χιλίαρχος",
@@ -6117,7 +6127,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 21,
-    "order": 612
+    "order": 613
   },
   {
     "word": "ὡσεί",
@@ -6127,7 +6137,7 @@
     "section": 4,
     "sub": "4-G",
     "freq": 20,
-    "order": 613
+    "order": 614
   },
   {
     "word": "ἀκροβυστία",
@@ -6137,7 +6147,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 614
+    "order": 615
   },
   {
     "word": "βάπτισμα",
@@ -6147,7 +6157,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 615
+    "order": 616
   },
   {
     "word": "γένος",
@@ -6157,7 +6167,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 616
+    "order": 617
   },
   {
     "word": "γονεύς",
@@ -6167,7 +6177,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 617
+    "order": 618
   },
   {
     "word": "ἑκατοντάρχης",
@@ -6177,7 +6187,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 618
+    "order": 619
   },
   {
     "word": "ἐπίγνωσις",
@@ -6187,7 +6197,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 619
+    "order": 620
   },
   {
     "word": "ἐφίστημι",
@@ -6197,7 +6207,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 620
+    "order": 621
   },
   {
     "word": "ἡγεμών",
@@ -6207,7 +6217,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 621
+    "order": 622
   },
   {
     "word": "Ἰσαάκ",
@@ -6217,7 +6227,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 622
+    "order": 623
   },
   {
     "word": "ἰχθύς",
@@ -6227,7 +6237,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 623
+    "order": 624
   },
   {
     "word": "μαρτύριον",
@@ -6237,7 +6247,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 624
+    "order": 625
   },
   {
     "word": "νηστεύω",
@@ -6247,7 +6257,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 625
+    "order": 626
   },
   {
     "word": "ξύλον",
@@ -6257,7 +6267,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 626
+    "order": 627
   },
   {
     "word": "προάγω",
@@ -6267,7 +6277,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 627
+    "order": 628
   },
   {
     "word": "σκηνή",
@@ -6277,7 +6287,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 628
+    "order": 629
   },
   {
     "word": "σοφός",
@@ -6287,7 +6297,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 629
+    "order": 630
   },
   {
     "word": "τοσοῦτος",
@@ -6297,7 +6307,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 630
+    "order": 631
   },
   {
     "word": "τρέχω",
@@ -6307,7 +6317,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 631
+    "order": 632
   },
   {
     "word": "ὑπηρέτης",
@@ -6317,7 +6327,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 632
+    "order": 633
   },
   {
     "word": "ὑψόω",
@@ -6327,7 +6337,7 @@
     "section": 4,
     "sub": "4-H",
     "freq": 20,
-    "order": 633
+    "order": 634
   },
   {
     "word": "ἀληθῶς",
@@ -6337,7 +6347,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 18,
-    "order": 634
+    "order": 635
   },
   {
     "word": "Ἀντιόχεια",
@@ -6347,7 +6357,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 18,
-    "order": 635
+    "order": 636
   },
   {
     "word": "ἀπέχω",
@@ -6357,7 +6367,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 18,
-    "order": 636
+    "order": 637
   },
   {
     "word": "γεωργός",
@@ -6367,7 +6377,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 637
+    "order": 638
   },
   {
     "word": "διακρίνω",
@@ -6377,7 +6387,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 638
+    "order": 639
   },
   {
     "word": "δῶρον",
@@ -6387,7 +6397,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 639
+    "order": 640
   },
   {
     "word": "ἐπαίρω",
@@ -6397,7 +6407,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 640
+    "order": 641
   },
   {
     "word": "ἐπάνω",
@@ -6407,7 +6417,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 18,
-    "order": 641
+    "order": 642
   },
   {
     "word": "ἐπιλαμβάνομαι",
@@ -6417,7 +6427,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 642
+    "order": 643
   },
   {
     "word": "ἐπουράνιος",
@@ -6427,7 +6437,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 643
+    "order": 644
   },
   {
     "word": "κοινωνία",
@@ -6437,7 +6447,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 644
+    "order": 645
   },
   {
     "word": "κριτής",
@@ -6447,7 +6457,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 645
+    "order": 646
   },
   {
     "word": "κρύπτω",
@@ -6457,7 +6467,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 646
+    "order": 647
   },
   {
     "word": "κτίσις",
@@ -6467,7 +6477,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 647
+    "order": 648
   },
   {
     "word": "μεριμνάω",
@@ -6477,7 +6487,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 648
+    "order": 649
   },
   {
     "word": "παλαιός",
@@ -6487,7 +6497,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 649
+    "order": 650
   },
   {
     "word": "παράπτωμα",
@@ -6497,7 +6507,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 650
+    "order": 651
   },
   {
     "word": "παρατίθημι",
@@ -6507,7 +6517,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 651
+    "order": 652
   },
   {
     "word": "προφητεία",
@@ -6517,7 +6527,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 652
+    "order": 653
   },
   {
     "word": "τέλειος",
@@ -6527,7 +6537,7 @@
     "section": 5,
     "sub": "5-A",
     "freq": 19,
-    "order": 653
+    "order": 654
   },
   {
     "word": "ἀποκάλυψις",
@@ -6537,7 +6547,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 654
+    "order": 655
   },
   {
     "word": "ἀπώλεια",
@@ -6547,7 +6557,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 655
+    "order": 656
   },
   {
     "word": "ἆρα",
@@ -6557,7 +6567,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 16,
-    "order": 656
+    "order": 657
   },
   {
     "word": "ἀριθμός",
@@ -6567,7 +6577,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 657
+    "order": 658
   },
   {
     "word": "Ἀσία",
@@ -6577,7 +6587,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 658
+    "order": 659
   },
   {
     "word": "βλασφημία",
@@ -6587,7 +6597,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 659
+    "order": 660
   },
   {
     "word": "δέησις",
@@ -6597,7 +6607,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 660
+    "order": 661
   },
   {
     "word": "δεσμός",
@@ -6607,7 +6617,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 661
+    "order": 662
   },
   {
     "word": "εἰσπορεύομαι",
@@ -6617,7 +6627,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 662
+    "order": 663
   },
   {
     "word": "ἐλέγχω",
@@ -6627,7 +6637,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 19,
-    "order": 663
+    "order": 664
   },
   {
     "word": "ἐμβαίνω",
@@ -6637,7 +6647,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 16,
-    "order": 664
+    "order": 665
   },
   {
     "word": "ἐπιβάλλω",
@@ -6647,7 +6657,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 17,
-    "order": 665
+    "order": 666
   },
   {
     "word": "ἐπιτρέπω",
@@ -6657,7 +6667,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 666
+    "order": 667
   },
   {
     "word": "θυμός",
@@ -6667,7 +6677,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 667
+    "order": 668
   },
   {
     "word": "καταγγέλλω",
@@ -6677,7 +6687,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 668
+    "order": 669
   },
   {
     "word": "κατακρίνω",
@@ -6687,7 +6697,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 20,
-    "order": 669
+    "order": 670
   },
   {
     "word": "κατέχω",
@@ -6697,7 +6707,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 17,
-    "order": 670
+    "order": 671
   },
   {
     "word": "κενός",
@@ -6707,7 +6717,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 671
+    "order": 672
   },
   {
     "word": "κληρονομέω",
@@ -6717,7 +6727,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 672
+    "order": 673
   },
   {
     "word": "κοιμάομαι",
@@ -6727,7 +6737,7 @@
     "section": 5,
     "sub": "5-B",
     "freq": 18,
-    "order": 673
+    "order": 674
   },
   {
     "word": "ἀνάγκη",
@@ -6737,7 +6747,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 17,
-    "order": 674
+    "order": 675
   },
   {
     "word": "ἀρέσκω",
@@ -6747,7 +6757,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 17,
-    "order": 675
+    "order": 676
   },
   {
     "word": "ἄφεσις",
@@ -6757,7 +6767,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 17,
-    "order": 676
+    "order": 677
   },
   {
     "word": "βρῶμα",
@@ -6767,7 +6777,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 17,
-    "order": 677
+    "order": 678
   },
   {
     "word": "κόπος",
@@ -6777,7 +6787,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 678
+    "order": 679
   },
   {
     "word": "μέχρι",
@@ -6787,7 +6797,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 19,
-    "order": 679
+    "order": 680
   },
   {
     "word": "μήν",
@@ -6797,7 +6807,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 19,
-    "order": 680
+    "order": 681
   },
   {
     "word": "νυνί",
@@ -6807,7 +6817,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 21,
-    "order": 681
+    "order": 682
   },
   {
     "word": "οἰκοδομή",
@@ -6817,7 +6827,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 682
+    "order": 683
   },
   {
     "word": "παραχρῆμα",
@@ -6827,7 +6837,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 683
+    "order": 684
   },
   {
     "word": "ποιμήν",
@@ -6837,7 +6847,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 684
+    "order": 685
   },
   {
     "word": "πόλεμος",
@@ -6847,7 +6857,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 685
+    "order": 686
   },
   {
     "word": "πολλάκις",
@@ -6857,7 +6867,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 686
+    "order": 687
   },
   {
     "word": "προστίθημι",
@@ -6867,7 +6877,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 687
+    "order": 688
   },
   {
     "word": "πυλών",
@@ -6877,7 +6887,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 688
+    "order": 689
   },
   {
     "word": "στέφανος",
@@ -6887,7 +6897,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 689
+    "order": 690
   },
   {
     "word": "ταράσσω",
@@ -6897,7 +6907,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 17,
-    "order": 690
+    "order": 691
   },
   {
     "word": "τίκτω",
@@ -6907,7 +6917,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 691
+    "order": 692
   },
   {
     "word": "φανερός",
@@ -6917,7 +6927,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 692
+    "order": 693
   },
   {
     "word": "χρυσοῦς",
@@ -6927,7 +6937,7 @@
     "section": 5,
     "sub": "5-C",
     "freq": 18,
-    "order": 693
+    "order": 694
   },
   {
     "word": "ἑκατόν",
@@ -6937,7 +6947,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 694
+    "order": 695
   },
   {
     "word": "ἐξίστημι",
@@ -6947,7 +6957,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 695
+    "order": 696
   },
   {
     "word": "ἐπαύριον",
@@ -6957,7 +6967,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 696
+    "order": 697
   },
   {
     "word": "ἕτοιμος",
@@ -6967,7 +6977,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 697
+    "order": 698
   },
   {
     "word": "θησαυρός",
@@ -6977,7 +6987,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 698
+    "order": 699
   },
   {
     "word": "ἵππος",
@@ -6987,7 +6997,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 699
+    "order": 700
   },
   {
     "word": "καθάπερ",
@@ -6997,7 +7007,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 15,
-    "order": 700
+    "order": 701
   },
   {
     "word": "Καισάρεια",
@@ -7007,7 +7017,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 701
+    "order": 702
   },
   {
     "word": "καταλύω",
@@ -7017,7 +7027,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 702
+    "order": 703
   },
   {
     "word": "κερδαίνω",
@@ -7027,7 +7037,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 16,
-    "order": 703
+    "order": 704
   },
   {
     "word": "κρυπτός",
@@ -7037,7 +7047,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 19,
-    "order": 704
+    "order": 705
   },
   {
     "word": "μήτι",
@@ -7047,7 +7057,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 705
+    "order": 706
   },
   {
     "word": "νίπτω",
@@ -7057,7 +7067,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 706
+    "order": 707
   },
   {
     "word": "περιτέμνω",
@@ -7067,7 +7077,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 707
+    "order": 708
   },
   {
     "word": "πλήρωμα",
@@ -7077,7 +7087,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 708
+    "order": 709
   },
   {
     "word": "πλησίον",
@@ -7087,7 +7097,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 709
+    "order": 710
   },
   {
     "word": "ποταμός",
@@ -7097,7 +7107,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 710
+    "order": 711
   },
   {
     "word": "ῥίζα",
@@ -7107,7 +7117,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 711
+    "order": 712
   },
   {
     "word": "ῥύομαι",
@@ -7117,7 +7127,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 17,
-    "order": 712
+    "order": 713
   },
   {
     "word": "σκοτία",
@@ -7127,7 +7137,7 @@
     "section": 5,
     "sub": "5-D",
     "freq": 16,
-    "order": 713
+    "order": 714
   },
   {
     "word": "ἀθετέω",
@@ -7137,7 +7147,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 714
+    "order": 715
   },
   {
     "word": "ἀνακρίνω",
@@ -7147,7 +7157,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 715
+    "order": 716
   },
   {
     "word": "δεῖπνον",
@@ -7157,7 +7167,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 716
+    "order": 717
   },
   {
     "word": "δέσμιος",
@@ -7167,7 +7177,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 717
+    "order": 718
   },
   {
     "word": "δηνάριον",
@@ -7177,7 +7187,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 718
+    "order": 719
   },
   {
     "word": "διαλογίζομαι",
@@ -7187,7 +7197,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 719
+    "order": 720
   },
   {
     "word": "διατάσσω",
@@ -7197,7 +7207,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 15,
-    "order": 720
+    "order": 721
   },
   {
     "word": "διψάω",
@@ -7207,7 +7217,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 721
+    "order": 722
   },
   {
     "word": "ἐκτείνω",
@@ -7217,7 +7227,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 722
+    "order": 723
   },
   {
     "word": "ἔπειτα",
@@ -7227,7 +7237,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 18,
-    "order": 723
+    "order": 724
   },
   {
     "word": "ἐπιθυμέω",
@@ -7237,7 +7247,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 724
+    "order": 725
   },
   {
     "word": "ἐπιμένω",
@@ -7247,7 +7257,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 725
+    "order": 726
   },
   {
     "word": "ἐργάτης",
@@ -7257,7 +7267,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 726
+    "order": 727
   },
   {
     "word": "εὐλογία",
@@ -7267,7 +7277,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 727
+    "order": 728
   },
   {
     "word": "Ἔφεσος",
@@ -7277,7 +7287,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 16,
-    "order": 728
+    "order": 729
   },
   {
     "word": "ὑποκριτής",
@@ -7287,7 +7297,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 729
+    "order": 730
   },
   {
     "word": "ὑπομένω",
@@ -7297,7 +7307,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 730
+    "order": 731
   },
   {
     "word": "χάρισμα",
@@ -7307,7 +7317,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 731
+    "order": 732
   },
   {
     "word": "ὦ",
@@ -7317,7 +7327,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 732
+    "order": 733
   },
   {
     "word": "ὡσαύτως",
@@ -7327,7 +7337,7 @@
     "section": 5,
     "sub": "5-E",
     "freq": 17,
-    "order": 733
+    "order": 734
   },
   {
     "word": "ζῆλος",
@@ -7337,7 +7347,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 734
+    "order": 735
   },
   {
     "word": "θεμέλιος",
@@ -7347,7 +7357,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 735
+    "order": 736
   },
   {
     "word": "κακῶς",
@@ -7357,7 +7367,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 736
+    "order": 737
   },
   {
     "word": "κἄν",
@@ -7367,7 +7377,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 737
+    "order": 738
   },
   {
     "word": "Καφαρναούμ",
@@ -7377,7 +7387,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 738
+    "order": 739
   },
   {
     "word": "κλείω",
@@ -7387,7 +7397,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 739
+    "order": 740
   },
   {
     "word": "κλέπτης",
@@ -7397,7 +7407,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 740
+    "order": 741
   },
   {
     "word": "λύπη",
@@ -7407,7 +7417,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 741
+    "order": 742
   },
   {
     "word": "νυμφίος",
@@ -7417,7 +7427,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 742
+    "order": 743
   },
   {
     "word": "οὐδέποτε",
@@ -7427,7 +7437,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 743
+    "order": 744
   },
   {
     "word": "πάθημα",
@@ -7437,7 +7447,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 744
+    "order": 745
   },
   {
     "word": "παρέχω",
@@ -7447,7 +7457,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 745
+    "order": 746
   },
   {
     "word": "περισσῶς",
@@ -7457,7 +7467,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 5,
-    "order": 746
+    "order": 747
   },
   {
     "word": "πλήρης",
@@ -7467,7 +7477,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 747
+    "order": 748
   },
   {
     "word": "προσδοκάω",
@@ -7477,7 +7487,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 748
+    "order": 749
   },
   {
     "word": "συκῆ",
@@ -7487,7 +7497,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 749
+    "order": 750
   },
   {
     "word": "συλλαμβάνω",
@@ -7497,7 +7507,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 750
+    "order": 751
   },
   {
     "word": "συνίστημι",
@@ -7507,7 +7517,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 751
+    "order": 752
   },
   {
     "word": "σφραγίς",
@@ -7517,7 +7527,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 752
+    "order": 753
   },
   {
     "word": "τέρας",
@@ -7527,7 +7537,7 @@
     "section": 5,
     "sub": "5-F",
     "freq": 16,
-    "order": 753
+    "order": 754
   },
   {
     "word": "ἀνέχομαι",
@@ -7537,7 +7547,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 754
+    "order": 755
   },
   {
     "word": "ἀνομία",
@@ -7547,7 +7557,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 14,
-    "order": 755
+    "order": 756
   },
   {
     "word": "γάμος",
@@ -7557,7 +7567,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 16,
-    "order": 756
+    "order": 757
   },
   {
     "word": "γέ",
@@ -7567,7 +7577,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 6,
-    "order": 757
+    "order": 758
   },
   {
     "word": "γεύομαι",
@@ -7577,7 +7587,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 758
+    "order": 759
   },
   {
     "word": "γνωστός",
@@ -7587,7 +7597,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 759
+    "order": 760
   },
   {
     "word": "γυμνός",
@@ -7597,7 +7607,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 760
+    "order": 761
   },
   {
     "word": "Δαμασκός",
@@ -7607,7 +7617,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 761
+    "order": 762
   },
   {
     "word": "δέρω",
@@ -7617,7 +7627,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 762
+    "order": 763
   },
   {
     "word": "διαμαρτύρομαι",
@@ -7627,7 +7637,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 763
+    "order": 764
   },
   {
     "word": "εἶτα",
@@ -7637,7 +7647,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 14,
-    "order": 764
+    "order": 765
   },
   {
     "word": "ἐλαία",
@@ -7647,7 +7657,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 16,
-    "order": 765
+    "order": 766
   },
   {
     "word": "ἐντέλλομαι",
@@ -7657,7 +7667,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 16,
-    "order": 766
+    "order": 767
   },
   {
     "word": "ἐπαγγέλλομαι",
@@ -7667,7 +7677,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 767
+    "order": 768
   },
   {
     "word": "ἐπίσταμαι",
@@ -7677,7 +7687,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 768
+    "order": 769
   },
   {
     "word": "εὐσέβεια",
@@ -7687,7 +7697,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 769
+    "order": 770
   },
   {
     "word": "εὐχαριστία",
@@ -7697,7 +7707,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 770
+    "order": 771
   },
   {
     "word": "τολμάω",
@@ -7707,7 +7717,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 16,
-    "order": 771
+    "order": 772
   },
   {
     "word": "τροφή",
@@ -7717,7 +7727,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 16,
-    "order": 772
+    "order": 773
   },
   {
     "word": "ὑστερέω",
@@ -7727,7 +7737,7 @@
     "section": 5,
     "sub": "5-G",
     "freq": 15,
-    "order": 773
+    "order": 774
   },
   {
     "word": "θρίξ",
@@ -7737,7 +7747,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 774
+    "order": 775
   },
   {
     "word": "Ἰορδάνης",
@@ -7747,7 +7757,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 775
+    "order": 776
   },
   {
     "word": "καταλαμβάνω",
@@ -7757,7 +7767,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 17,
-    "order": 776
+    "order": 777
   },
   {
     "word": "κατέρχομαι",
@@ -7767,7 +7777,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 16,
-    "order": 777
+    "order": 778
   },
   {
     "word": "κληρονόμος",
@@ -7777,7 +7787,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 778
+    "order": 779
   },
   {
     "word": "κτίζω",
@@ -7787,7 +7797,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 14,
-    "order": 779
+    "order": 780
   },
   {
     "word": "Λάζαρος",
@@ -7797,7 +7807,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 780
+    "order": 781
   },
   {
     "word": "λῃστής",
@@ -7807,7 +7817,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 781
+    "order": 782
   },
   {
     "word": "μοιχεύω",
@@ -7817,7 +7827,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 16,
-    "order": 782
+    "order": 783
   },
   {
     "word": "νομίζω",
@@ -7827,7 +7837,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 783
+    "order": 784
   },
   {
     "word": "ξηραίνω",
@@ -7837,7 +7847,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 784
+    "order": 785
   },
   {
     "word": "ὅθεν",
@@ -7847,7 +7857,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 785
+    "order": 786
   },
   {
     "word": "οἰκουμένη",
@@ -7857,7 +7867,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 786
+    "order": 787
   },
   {
     "word": "ὁμοιόω",
@@ -7867,7 +7877,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 787
+    "order": 788
   },
   {
     "word": "παρθένος",
@@ -7877,7 +7887,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 788
+    "order": 789
   },
   {
     "word": "πέτρα",
@@ -7887,7 +7897,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 789
+    "order": 790
   },
   {
     "word": "ποτίζω",
@@ -7897,7 +7907,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 790
+    "order": 791
   },
   {
     "word": "προλέγω",
@@ -7907,7 +7917,7 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 791
+    "order": 792
   },
   {
     "word": "ῥαββί",
@@ -7917,7 +7927,17 @@
     "section": 5,
     "sub": "5-H",
     "freq": 15,
-    "order": 792
+    "order": 793
+  },
+  {
+    "word": "αἰχμάλωτος",
+    "inflection": "-ου, ὁ",
+    "gloss": "captive, prisoner of war",
+    "pos": "Noun",
+    "section": 5,
+    "sub": "5-H",
+    "freq": 1,
+    "order": 794
   },
   {
     "word": "ἄκανθα",
@@ -7927,7 +7947,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 793
+    "order": 795
   },
   {
     "word": "ἀλλότριος",
@@ -7937,7 +7957,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 794
+    "order": 796
   },
   {
     "word": "ἀμφότεροι",
@@ -7947,7 +7967,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 795
+    "order": 797
   },
   {
     "word": "ἀνάκειμαι",
@@ -7957,7 +7977,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 796
+    "order": 798
   },
   {
     "word": "ἀναχωρέω",
@@ -7967,7 +7987,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 13,
-    "order": 797
+    "order": 799
   },
   {
     "word": "ἀνθίστημι",
@@ -7977,7 +7997,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 798
+    "order": 800
   },
   {
     "word": "ἀπάγω",
@@ -7987,7 +8007,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 799
+    "order": 801
   },
   {
     "word": "ἅπαξ",
@@ -7997,7 +8017,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 800
+    "order": 802
   },
   {
     "word": "ἀπειθέω",
@@ -8007,7 +8027,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 801
+    "order": 803
   },
   {
     "word": "ἁρπάζω",
@@ -8017,7 +8037,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 14,
-    "order": 802
+    "order": 804
   },
   {
     "word": "σαλεύω",
@@ -8027,7 +8047,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 803
+    "order": 805
   },
   {
     "word": "Σαῦλος",
@@ -8037,7 +8057,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 804
+    "order": 806
   },
   {
     "word": "σκάνδαλον",
@@ -8047,7 +8067,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 805
+    "order": 807
   },
   {
     "word": "συμφέρω",
@@ -8057,7 +8077,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 17,
-    "order": 806
+    "order": 808
   },
   {
     "word": "σφραγίζω",
@@ -8067,7 +8087,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 807
+    "order": 809
   },
   {
     "word": "τράπεζα",
@@ -8077,7 +8097,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 808
+    "order": 810
   },
   {
     "word": "ὑπακοή",
@@ -8087,7 +8107,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 809
+    "order": 811
   },
   {
     "word": "χορτάζω",
@@ -8097,7 +8117,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 810
+    "order": 812
   },
   {
     "word": "χόρτος",
@@ -8107,7 +8127,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 811
+    "order": 813
   },
   {
     "word": "ὠφελέω",
@@ -8117,7 +8137,7 @@
     "section": 6,
     "sub": "6-A",
     "freq": 15,
-    "order": 812
+    "order": 814
   },
   {
     "word": "ἀτενίζω",
@@ -8127,7 +8147,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 813
+    "order": 815
   },
   {
     "word": "αὔριον",
@@ -8137,7 +8157,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 814
+    "order": 816
   },
   {
     "word": "ἀφίστημι",
@@ -8147,7 +8167,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 815
+    "order": 817
   },
   {
     "word": "γράμμα",
@@ -8157,7 +8177,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 816
+    "order": 818
   },
   {
     "word": "διαλογισμός",
@@ -8167,7 +8187,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 817
+    "order": 819
   },
   {
     "word": "ἕκτος",
@@ -8177,7 +8197,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 15,
-    "order": 818
+    "order": 820
   },
   {
     "word": "ἐνιαυτός",
@@ -8187,7 +8207,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 819
+    "order": 821
   },
   {
     "word": "ἐξαποστέλλω",
@@ -8197,7 +8217,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 13,
-    "order": 820
+    "order": 822
   },
   {
     "word": "εὐφραίνω",
@@ -8207,7 +8227,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 821
+    "order": 823
   },
   {
     "word": "θύω",
@@ -8217,7 +8237,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 822
+    "order": 824
   },
   {
     "word": "κατανοέω",
@@ -8227,7 +8247,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 823
+    "order": 825
   },
   {
     "word": "κατεσθίω",
@@ -8237,7 +8257,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 824
+    "order": 826
   },
   {
     "word": "κλάω",
@@ -8247,7 +8267,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 825
+    "order": 827
   },
   {
     "word": "κληρονομία",
@@ -8257,7 +8277,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 826
+    "order": 828
   },
   {
     "word": "κοινός",
@@ -8267,7 +8287,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 827
+    "order": 829
   },
   {
     "word": "κοινόω",
@@ -8277,7 +8297,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 828
+    "order": 830
   },
   {
     "word": "κρείττων",
@@ -8287,7 +8307,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 13,
-    "order": 829
+    "order": 831
   },
   {
     "word": "κωφός",
@@ -8297,7 +8317,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 830
+    "order": 832
   },
   {
     "word": "λύχνος",
@@ -8307,7 +8327,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 831
+    "order": 833
   },
   {
     "word": "μακρόθεν",
@@ -8317,7 +8337,7 @@
     "section": 6,
     "sub": "6-B",
     "freq": 14,
-    "order": 832
+    "order": 834
   },
   {
     "word": "μακροθυμία",
@@ -8327,7 +8347,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 833
+    "order": 835
   },
   {
     "word": "μερίζω",
@@ -8337,7 +8357,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 834
+    "order": 836
   },
   {
     "word": "μέτρον",
@@ -8347,7 +8367,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 835
+    "order": 837
   },
   {
     "word": "μύρον",
@@ -8357,7 +8377,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 836
+    "order": 838
   },
   {
     "word": "νήπιος",
@@ -8367,7 +8387,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 837
+    "order": 839
   },
   {
     "word": "νοέω",
@@ -8377,7 +8397,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 838
+    "order": 840
   },
   {
     "word": "ξένος",
@@ -8387,7 +8407,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 839
+    "order": 841
   },
   {
     "word": "οἷος",
@@ -8397,7 +8417,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 840
+    "order": 842
   },
   {
     "word": "ὄφις",
@@ -8407,7 +8427,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 841
+    "order": 843
   },
   {
     "word": "ὄψιος",
@@ -8417,7 +8437,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 842
+    "order": 844
   },
   {
     "word": "πετεινόν",
@@ -8427,7 +8447,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 843
+    "order": 845
   },
   {
     "word": "προσδέχομαι",
@@ -8437,7 +8457,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 844
+    "order": 846
   },
   {
     "word": "Σαδδουκαῖος",
@@ -8447,7 +8467,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 15,
-    "order": 845
+    "order": 847
   },
   {
     "word": "σεισμός",
@@ -8457,7 +8477,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 846
+    "order": 848
   },
   {
     "word": "σῖτος",
@@ -8467,7 +8487,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 847
+    "order": 849
   },
   {
     "word": "στηρίζω",
@@ -8477,7 +8497,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 848
+    "order": 850
   },
   {
     "word": "τάλαντον",
@@ -8487,7 +8507,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 15,
-    "order": 849
+    "order": 851
   },
   {
     "word": "ταπεινόω",
@@ -8497,7 +8517,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 850
+    "order": 852
   },
   {
     "word": "τύπος",
@@ -8507,7 +8527,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 15,
-    "order": 851
+    "order": 853
   },
   {
     "word": "φρόνιμος",
@@ -8517,7 +8537,7 @@
     "section": 6,
     "sub": "6-C",
     "freq": 14,
-    "order": 852
+    "order": 854
   },
   {
     "word": "ἀνά",
@@ -8527,7 +8547,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 853
+    "order": 855
   },
   {
     "word": "ἀναγγέλλω",
@@ -8537,7 +8557,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 854
+    "order": 856
   },
   {
     "word": "ἀναλαμβάνω",
@@ -8547,7 +8567,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 855
+    "order": 857
   },
   {
     "word": "ἀναστροφή",
@@ -8557,7 +8577,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 856
+    "order": 858
   },
   {
     "word": "Ἀνδρέας",
@@ -8567,7 +8587,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 857
+    "order": 859
   },
   {
     "word": "ἄνωθεν",
@@ -8577,7 +8597,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 858
+    "order": 860
   },
   {
     "word": "δαιμονίζομαι",
@@ -8587,7 +8607,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 859
+    "order": 861
   },
   {
     "word": "διαλέγομαι",
@@ -8597,7 +8617,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 860
+    "order": 862
   },
   {
     "word": "διαφέρω",
@@ -8607,7 +8627,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 861
+    "order": 863
   },
   {
     "word": "δράκων",
@@ -8617,7 +8637,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 862
+    "order": 864
   },
   {
     "word": "ἐκπλήσσομαι",
@@ -8627,7 +8647,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 863
+    "order": 865
   },
   {
     "word": "ἐλάχιστος",
@@ -8637,7 +8657,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 864
+    "order": 866
   },
   {
     "word": "ἐλεημοσύνη",
@@ -8647,7 +8667,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 865
+    "order": 867
   },
   {
     "word": "ἐμπαίζω",
@@ -8657,7 +8677,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 866
+    "order": 868
   },
   {
     "word": "ἕξ",
@@ -8667,7 +8687,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 12,
-    "order": 867
+    "order": 869
   },
   {
     "word": "ἔξωθεν",
@@ -8677,7 +8697,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 868
+    "order": 870
   },
   {
     "word": "ἐπιζητέω",
@@ -8687,7 +8707,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 869
+    "order": 871
   },
   {
     "word": "ζύμη",
@@ -8697,7 +8717,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 13,
-    "order": 870
+    "order": 872
   },
   {
     "word": "φύσις",
@@ -8707,7 +8727,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 14,
-    "order": 871
+    "order": 873
   },
   {
     "word": "χωλός",
@@ -8717,7 +8737,7 @@
     "section": 6,
     "sub": "6-D",
     "freq": 14,
-    "order": 872
+    "order": 874
   },
   {
     "word": "θερισμός",
@@ -8727,7 +8747,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 873
+    "order": 875
   },
   {
     "word": "καπνός",
@@ -8737,7 +8757,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 874
+    "order": 876
   },
   {
     "word": "καταισχύνω",
@@ -8747,7 +8767,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 875
+    "order": 877
   },
   {
     "word": "καταντάω",
@@ -8757,7 +8777,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 876
+    "order": 878
   },
   {
     "word": "καταρτίζω",
@@ -8767,7 +8787,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 877
+    "order": 879
   },
   {
     "word": "κλέπτω",
@@ -8777,7 +8797,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 878
+    "order": 880
   },
   {
     "word": "Μάρθα",
@@ -8787,7 +8807,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 879
+    "order": 881
   },
   {
     "word": "Ναζωραῖος",
@@ -8797,7 +8817,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 880
+    "order": 882
   },
   {
     "word": "παιδεύω",
@@ -8807,7 +8827,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 881
+    "order": 883
   },
   {
     "word": "παιδίσκη",
@@ -8817,7 +8837,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 882
+    "order": 884
   },
   {
     "word": "παράδοσις",
@@ -8827,7 +8847,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 883
+    "order": 885
   },
   {
     "word": "πρίν",
@@ -8837,7 +8857,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 884
+    "order": 886
   },
   {
     "word": "τίμιος",
@@ -8847,7 +8867,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 885
+    "order": 887
   },
   {
     "word": "Τίτος",
@@ -8857,7 +8877,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 14,
-    "order": 886
+    "order": 888
   },
   {
     "word": "τρόπος",
@@ -8867,7 +8887,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 887
+    "order": 889
   },
   {
     "word": "τύπτω",
@@ -8877,7 +8897,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 888
+    "order": 890
   },
   {
     "word": "ὕψιστος",
@@ -8887,7 +8907,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 889
+    "order": 891
   },
   {
     "word": "Φῆστος",
@@ -8897,7 +8917,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 13,
-    "order": 890
+    "order": 892
   },
   {
     "word": "χρυσίον",
@@ -8907,7 +8927,7 @@
     "section": 6,
     "sub": "6-E",
     "freq": 10,
-    "order": 891
+    "order": 893
   },
   {
     "word": "ἄδικος",
@@ -8917,7 +8937,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 892
+    "order": 894
   },
   {
     "word": "ἀναπαύω",
@@ -8927,7 +8947,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 893
+    "order": 895
   },
   {
     "word": "ἀναπίπτω",
@@ -8937,7 +8957,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 11,
-    "order": 894
+    "order": 896
   },
   {
     "word": "ἀσκός",
@@ -8947,7 +8967,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 11,
-    "order": 895
+    "order": 897
   },
   {
     "word": "αὐλή",
@@ -8957,7 +8977,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 896
+    "order": 898
   },
   {
     "word": "Βαβυλών",
@@ -8967,7 +8987,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 897
+    "order": 899
   },
   {
     "word": "βαπτιστής",
@@ -8977,7 +8997,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 898
+    "order": 900
   },
   {
     "word": "βασανίζω",
@@ -8987,7 +9007,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 899
+    "order": 901
   },
   {
     "word": "Βηθανία",
@@ -8997,7 +9017,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 900
+    "order": 902
   },
   {
     "word": "βῆμα",
@@ -9007,7 +9027,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 901
+    "order": 903
   },
   {
     "word": "βοάω",
@@ -9017,7 +9037,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 902
+    "order": 904
   },
   {
     "word": "βουλή",
@@ -9027,7 +9047,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 903
+    "order": 905
   },
   {
     "word": "βροντή",
@@ -9037,7 +9057,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 904
+    "order": 906
   },
   {
     "word": "γέεννα",
@@ -9047,7 +9067,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 905
+    "order": 907
   },
   {
     "word": "γόνυ",
@@ -9057,7 +9077,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 906
+    "order": 908
   },
   {
     "word": "δεῦτε",
@@ -9067,7 +9087,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 907
+    "order": 909
   },
   {
     "word": "διάνοια",
@@ -9077,7 +9097,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 908
+    "order": 910
   },
   {
     "word": "δίκτυον",
@@ -9087,7 +9107,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 909
+    "order": 911
   },
   {
     "word": "ἔθος",
@@ -9097,7 +9117,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 12,
-    "order": 910
+    "order": 912
   },
   {
     "word": "χωρίζω",
@@ -9107,7 +9127,7 @@
     "section": 6,
     "sub": "6-F",
     "freq": 13,
-    "order": 911
+    "order": 913
   },
   {
     "word": "ἐξάγω",
@@ -9117,7 +9137,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 912
+    "order": 914
   },
   {
     "word": "ἔσωθεν",
@@ -9127,7 +9147,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 913
+    "order": 915
   },
   {
     "word": "Ζεβεδαῖος",
@@ -9137,7 +9157,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 914
+    "order": 916
   },
   {
     "word": "καίω",
@@ -9147,7 +9167,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 915
+    "order": 917
   },
   {
     "word": "κάλαμος",
@@ -9157,7 +9177,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 916
+    "order": 918
   },
   {
     "word": "κατακαίω",
@@ -9167,7 +9187,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 13,
-    "order": 917
+    "order": 919
   },
   {
     "word": "κατάκειμαι",
@@ -9177,7 +9197,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 918
+    "order": 920
   },
   {
     "word": "κολλάομαι",
@@ -9187,7 +9207,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 919
+    "order": 921
   },
   {
     "word": "κράτος",
@@ -9197,7 +9217,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 920
+    "order": 922
   },
   {
     "word": "λίαν",
@@ -9207,7 +9227,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 14,
-    "order": 921
+    "order": 923
   },
   {
     "word": "λιμός",
@@ -9217,7 +9237,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 922
+    "order": 924
   },
   {
     "word": "λυχνία",
@@ -9227,7 +9247,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 923
+    "order": 925
   },
   {
     "word": "Μαγδαληνή",
@@ -9237,7 +9257,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 924
+    "order": 926
   },
   {
     "word": "μάλιστα",
@@ -9247,7 +9267,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 925
+    "order": 927
   },
   {
     "word": "μεταβαίνω",
@@ -9257,7 +9277,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 926
+    "order": 928
   },
   {
     "word": "μωρός",
@@ -9267,7 +9287,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 927
+    "order": 929
   },
   {
     "word": "ὀδούς",
@@ -9277,7 +9297,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 928
+    "order": 930
   },
   {
     "word": "οἰκοδεσπότης",
@@ -9287,7 +9307,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 929
+    "order": 931
   },
   {
     "word": "ὅριον",
@@ -9297,7 +9317,7 @@
     "section": 6,
     "sub": "6-G",
     "freq": 12,
-    "order": 930
+    "order": 932
   },
   {
     "word": "παραιτέομαι",
@@ -9307,7 +9327,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 931
+    "order": 933
   },
   {
     "word": "πιάζω",
@@ -9317,7 +9337,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 932
+    "order": 934
   },
   {
     "word": "πληθύνω",
@@ -9327,7 +9347,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 933
+    "order": 935
   },
   {
     "word": "πλουτέω",
@@ -9337,7 +9357,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 934
+    "order": 936
   },
   {
     "word": "πόρνη",
@@ -9347,7 +9367,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 935
+    "order": 937
   },
   {
     "word": "πρόθεσις",
@@ -9357,7 +9377,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 936
+    "order": 938
   },
   {
     "word": "προσλαμβάνομαι",
@@ -9367,7 +9387,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 937
+    "order": 939
   },
   {
     "word": "πρωΐ",
@@ -9377,7 +9397,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 938
+    "order": 940
   },
   {
     "word": "πῶλος",
@@ -9387,7 +9407,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 939
+    "order": 941
   },
   {
     "word": "ῥάβδος",
@@ -9397,7 +9417,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 940
+    "order": 942
   },
   {
     "word": "Ῥωμαῖος",
@@ -9407,7 +9427,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 941
+    "order": 943
   },
   {
     "word": "σαλπίζω",
@@ -9417,7 +9437,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 942
+    "order": 944
   },
   {
     "word": "Σιλᾶς",
@@ -9427,7 +9447,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 943
+    "order": 945
   },
   {
     "word": "Σολομών",
@@ -9437,7 +9457,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 944
+    "order": 946
   },
   {
     "word": "σπλαγχνίζομαι",
@@ -9447,7 +9467,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 945
+    "order": 947
   },
   {
     "word": "σπουδή",
@@ -9457,7 +9477,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 946
+    "order": 948
   },
   {
     "word": "συνεργός",
@@ -9467,7 +9487,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 947
+    "order": 949
   },
   {
     "word": "συνέχω",
@@ -9477,7 +9497,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 948
+    "order": 950
   },
   {
     "word": "ταχύς",
@@ -9487,7 +9507,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 11,
-    "order": 949
+    "order": 951
   },
   {
     "word": "τρίς",
@@ -9497,7 +9517,7 @@
     "section": 6,
     "sub": "6-H",
     "freq": 12,
-    "order": 950
+    "order": 952
   },
   {
     "word": "ἀγαλλιάω",
@@ -9507,7 +9527,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 951
+    "order": 953
   },
   {
     "word": "ἀγορά",
@@ -9517,7 +9537,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 952
+    "order": 954
   },
   {
     "word": "Ἀγρίππας",
@@ -9527,7 +9547,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 953
+    "order": 955
   },
   {
     "word": "ἀλέκτωρ",
@@ -9537,7 +9557,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 954
+    "order": 956
   },
   {
     "word": "ἅλυσις",
@@ -9547,7 +9567,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 955
+    "order": 957
   },
   {
     "word": "Ἁνανίας",
@@ -9557,7 +9577,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 956
+    "order": 958
   },
   {
     "word": "ἀνατολή",
@@ -9567,7 +9587,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 10,
-    "order": 957
+    "order": 959
   },
   {
     "word": "ἀντιλέγω",
@@ -9577,7 +9597,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 958
+    "order": 960
   },
   {
     "word": "ἀπαρνέομαι",
@@ -9587,7 +9607,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 959
+    "order": 961
   },
   {
     "word": "ἀπιστία",
@@ -9597,7 +9617,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 960
+    "order": 962
   },
   {
     "word": "ἀρχαῖος",
@@ -9607,7 +9627,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 961
+    "order": 963
   },
   {
     "word": "ἄφρων",
@@ -9617,7 +9637,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 962
+    "order": 964
   },
   {
     "word": "Βαραββᾶς",
@@ -9627,7 +9647,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 963
+    "order": 965
   },
   {
     "word": "τυγχάνω",
@@ -9637,7 +9657,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 964
+    "order": 966
   },
   {
     "word": "ὑγιαίνω",
@@ -9647,7 +9667,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 965
+    "order": 967
   },
   {
     "word": "ὑγιής",
@@ -9657,7 +9677,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 11,
-    "order": 966
+    "order": 968
   },
   {
     "word": "φιάλη",
@@ -9667,7 +9687,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 967
+    "order": 969
   },
   {
     "word": "φονεύω",
@@ -9677,7 +9697,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 968
+    "order": 970
   },
   {
     "word": "χοῖρος",
@@ -9687,7 +9707,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 969
+    "order": 971
   },
   {
     "word": "ψεύδομαι",
@@ -9697,7 +9717,7 @@
     "section": 7,
     "sub": "7-A",
     "freq": 12,
-    "order": 970
+    "order": 972
   },
   {
     "word": "βρῶσις",
@@ -9707,7 +9727,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 971
+    "order": 973
   },
   {
     "word": "Γαλιλαῖος",
@@ -9717,7 +9737,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 972
+    "order": 974
   },
   {
     "word": "γέμω",
@@ -9727,7 +9747,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 973
+    "order": 975
   },
   {
     "word": "διαμερίζω",
@@ -9737,7 +9757,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 974
+    "order": 976
   },
   {
     "word": "δόλος",
@@ -9747,7 +9767,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 975
+    "order": 977
   },
   {
     "word": "δωρεά",
@@ -9757,7 +9777,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 976
+    "order": 978
   },
   {
     "word": "ἐάω",
@@ -9767,7 +9787,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 977
+    "order": 979
   },
   {
     "word": "εἴδωλον",
@@ -9777,7 +9797,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 978
+    "order": 980
   },
   {
     "word": "εἰσάγω",
@@ -9787,7 +9807,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 979
+    "order": 981
   },
   {
     "word": "ἔλαιον",
@@ -9797,7 +9817,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 980
+    "order": 982
   },
   {
     "word": "ἐλευθερία",
@@ -9807,7 +9827,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 981
+    "order": 983
   },
   {
     "word": "ἐμβλέπω",
@@ -9817,7 +9837,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 982
+    "order": 984
   },
   {
     "word": "ἐνδείκνυμι",
@@ -9827,7 +9847,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 983
+    "order": 985
   },
   {
     "word": "ἐξουθενέω",
@@ -9837,7 +9857,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 12,
-    "order": 984
+    "order": 986
   },
   {
     "word": "ἔπαινος",
@@ -9847,7 +9867,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 985
+    "order": 987
   },
   {
     "word": "ἐπαισχύνομαι",
@@ -9857,7 +9877,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 986
+    "order": 988
   },
   {
     "word": "ἐπιπίπτω",
@@ -9867,7 +9887,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 12,
-    "order": 987
+    "order": 989
   },
   {
     "word": "ἐπισκέπτομαι",
@@ -9877,7 +9897,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 988
+    "order": 990
   },
   {
     "word": "Ζαχαρίας",
@@ -9887,7 +9907,7 @@
     "section": 7,
     "sub": "7-B",
     "freq": 11,
-    "order": 989
+    "order": 991
   },
   {
     "word": "ζηλόω",
@@ -9897,7 +9917,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 12,
-    "order": 990
+    "order": 992
   },
   {
     "word": "ζῳοποιέω",
@@ -9907,7 +9927,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 991
+    "order": 993
   },
   {
     "word": "θανατόω",
@@ -9917,7 +9937,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 992
+    "order": 994
   },
   {
     "word": "θάπτω",
@@ -9927,7 +9947,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 993
+    "order": 995
   },
   {
     "word": "Θωμᾶς",
@@ -9937,7 +9957,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 994
+    "order": 996
   },
   {
     "word": "Ἰσκαριώθ",
@@ -9947,7 +9967,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 12,
-    "order": 995
+    "order": 997
   },
   {
     "word": "κακία",
@@ -9957,7 +9977,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 996
+    "order": 998
   },
   {
     "word": "καταβολή",
@@ -9967,7 +9987,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 997
+    "order": 999
   },
   {
     "word": "κατασκευάζω",
@@ -9977,7 +9997,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 998
+    "order": 1000
   },
   {
     "word": "κάτω",
@@ -9987,7 +10007,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 12,
-    "order": 999
+    "order": 1001
   },
   {
     "word": "καύχημα",
@@ -9997,7 +10017,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1000
+    "order": 1002
   },
   {
     "word": "καύχησις",
@@ -10007,7 +10027,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1001
+    "order": 1003
   },
   {
     "word": "κέρας",
@@ -10017,7 +10037,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1002
+    "order": 1004
   },
   {
     "word": "κλάδος",
@@ -10027,7 +10047,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1003
+    "order": 1005
   },
   {
     "word": "κλῆρος",
@@ -10037,7 +10057,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1004
+    "order": 1006
   },
   {
     "word": "κλῆσις",
@@ -10047,7 +10067,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1005
+    "order": 1007
   },
   {
     "word": "κομίζω",
@@ -10057,7 +10077,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 12,
-    "order": 1006
+    "order": 1008
   },
   {
     "word": "κράβαττος",
@@ -10067,7 +10087,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1007
+    "order": 1009
   },
   {
     "word": "λίμνη",
@@ -10077,7 +10097,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1008
+    "order": 1010
   },
   {
     "word": "μετρέω",
@@ -10087,7 +10107,7 @@
     "section": 7,
     "sub": "7-C",
     "freq": 11,
-    "order": 1009
+    "order": 1011
   },
   {
     "word": "νεανίσκος",
@@ -10097,7 +10117,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1010
+    "order": 1012
   },
   {
     "word": "νόσος",
@@ -10107,7 +10127,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1011
+    "order": 1013
   },
   {
     "word": "ὁμοθυμαδόν",
@@ -10117,7 +10137,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1012
+    "order": 1014
   },
   {
     "word": "ὅραμα",
@@ -10127,7 +10147,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1013
+    "order": 1015
   },
   {
     "word": "πηγή",
@@ -10137,7 +10157,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1014
+    "order": 1016
   },
   {
     "word": "ποιμαίνω",
@@ -10147,7 +10167,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1015
+    "order": 1017
   },
   {
     "word": "πρᾶγμα",
@@ -10157,7 +10177,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1016
+    "order": 1018
   },
   {
     "word": "πραΰτης",
@@ -10167,7 +10187,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 12,
-    "order": 1017
+    "order": 1019
   },
   {
     "word": "πρότερος",
@@ -10177,7 +10197,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 10,
-    "order": 1018
+    "order": 1020
   },
   {
     "word": "πυνθάνομαι",
@@ -10187,7 +10207,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1019
+    "order": 1021
   },
   {
     "word": "σάλπιγξ",
@@ -10197,7 +10217,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1020
+    "order": 1022
   },
   {
     "word": "Σαμάρεια",
@@ -10207,7 +10227,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1021
+    "order": 1023
   },
   {
     "word": "σπλάγχνον",
@@ -10217,7 +10237,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1022
+    "order": 1024
   },
   {
     "word": "σπουδάζω",
@@ -10227,7 +10247,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1023
+    "order": 1025
   },
   {
     "word": "στήκω",
@@ -10237,7 +10257,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 12,
-    "order": 1024
+    "order": 1026
   },
   {
     "word": "συγγενής",
@@ -10247,7 +10267,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 12,
-    "order": 1025
+    "order": 1027
   },
   {
     "word": "σφόδρα",
@@ -10257,7 +10277,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1026
+    "order": 1028
   },
   {
     "word": "σχίζω",
@@ -10267,7 +10287,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1027
+    "order": 1029
   },
   {
     "word": "τελευτάω",
@@ -10277,7 +10297,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1028
+    "order": 1030
   },
   {
     "word": "τριάκοντα",
@@ -10287,7 +10307,7 @@
     "section": 7,
     "sub": "7-D",
     "freq": 11,
-    "order": 1029
+    "order": 1031
   },
   {
     "word": "ἁγιασμός",
@@ -10297,7 +10317,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1030
+    "order": 1032
   },
   {
     "word": "ᾅδης",
@@ -10307,7 +10327,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1031
+    "order": 1033
   },
   {
     "word": "ἀδύνατος",
@@ -10317,7 +10337,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1032
+    "order": 1034
   },
   {
     "word": "ἀκαθαρσία",
@@ -10327,7 +10347,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1033
+    "order": 1035
   },
   {
     "word": "ἅμα",
@@ -10337,7 +10357,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1034
+    "order": 1036
   },
   {
     "word": "ἀναφέρω",
@@ -10347,7 +10367,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 8,
-    "order": 1035
+    "order": 1037
   },
   {
     "word": "Ἀπολλῶς",
@@ -10357,7 +10377,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1036
+    "order": 1038
   },
   {
     "word": "ἀπολογέομαι",
@@ -10367,7 +10387,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1037
+    "order": 1039
   },
   {
     "word": "ἀπολύτρωσις",
@@ -10377,7 +10397,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1038
+    "order": 1040
   },
   {
     "word": "Τύρος",
@@ -10387,7 +10407,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1039
+    "order": 1041
   },
   {
     "word": "ὑποκάτω",
@@ -10397,7 +10417,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 10,
-    "order": 1040
+    "order": 1042
   },
   {
     "word": "ὕστερος",
@@ -10407,7 +10427,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1041
+    "order": 1043
   },
   {
     "word": "ὑψηλός",
@@ -10417,7 +10437,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 12,
-    "order": 1042
+    "order": 1044
   },
   {
     "word": "φυτεύω",
@@ -10427,7 +10447,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1043
+    "order": 1045
   },
   {
     "word": "φωτίζω",
@@ -10437,7 +10457,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1044
+    "order": 1046
   },
   {
     "word": "χείρων",
@@ -10447,7 +10467,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1045
+    "order": 1047
   },
   {
     "word": "χίλιοι",
@@ -10457,7 +10477,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1046
+    "order": 1048
   },
   {
     "word": "χιτών",
@@ -10467,7 +10487,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1047
+    "order": 1049
   },
   {
     "word": "χράομαι",
@@ -10477,7 +10497,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1048
+    "order": 1050
   },
   {
     "word": "ψευδοπροφήτης",
@@ -10487,7 +10507,7 @@
     "section": 7,
     "sub": "7-E",
     "freq": 11,
-    "order": 1049
+    "order": 1051
   },
   {
     "word": "ἀσέλγεια",
@@ -10497,7 +10517,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1050
+    "order": 1052
   },
   {
     "word": "ἀσπασμός",
@@ -10507,7 +10527,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1051
+    "order": 1053
   },
   {
     "word": "ἀφαιρέω",
@@ -10517,7 +10537,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1052
+    "order": 1054
   },
   {
     "word": "ἀφορίζω",
@@ -10527,7 +10547,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1053
+    "order": 1055
   },
   {
     "word": "Ἀχαΐα",
@@ -10537,7 +10557,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1054
+    "order": 1056
   },
   {
     "word": "βίβλος",
@@ -10547,7 +10567,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1055
+    "order": 1057
   },
   {
     "word": "δάκρυον",
@@ -10557,7 +10577,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1056
+    "order": 1058
   },
   {
     "word": "δεσπότης",
@@ -10567,7 +10587,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1057
+    "order": 1059
   },
   {
     "word": "δικαίωμα",
@@ -10577,7 +10597,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1058
+    "order": 1060
   },
   {
     "word": "διωγμός",
@@ -10587,7 +10607,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1059
+    "order": 1061
   },
   {
     "word": "ἐγκαταλείπω",
@@ -10597,7 +10617,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1060
+    "order": 1062
   },
   {
     "word": "εἴκοσι",
@@ -10607,7 +10627,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 11,
-    "order": 1061
+    "order": 1063
   },
   {
     "word": "ἐκκόπτω",
@@ -10617,7 +10637,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1062
+    "order": 1064
   },
   {
     "word": "ἐκπίπτω",
@@ -10627,7 +10647,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1063
+    "order": 1065
   },
   {
     "word": "ἐμφανίζω",
@@ -10637,7 +10657,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1064
+    "order": 1066
   },
   {
     "word": "ἔνατος",
@@ -10647,7 +10667,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1065
+    "order": 1067
   },
   {
     "word": "ἔνοχος",
@@ -10657,7 +10677,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1066
+    "order": 1068
   },
   {
     "word": "ἐντεῦθεν",
@@ -10667,7 +10687,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1067
+    "order": 1069
   },
   {
     "word": "ἐξομολογέω",
@@ -10677,7 +10697,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1068
+    "order": 1070
   },
   {
     "word": "ἐπειδή",
@@ -10687,7 +10707,7 @@
     "section": 7,
     "sub": "7-F",
     "freq": 10,
-    "order": 1069
+    "order": 1071
   },
   {
     "word": "ἐπιτάσσω",
@@ -10697,7 +10717,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1070
+    "order": 1072
   },
   {
     "word": "ἐπιτελέω",
@@ -10707,7 +10727,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1071
+    "order": 1073
   },
   {
     "word": "θλίβω",
@@ -10717,7 +10737,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1072
+    "order": 1074
   },
   {
     "word": "Ἰόππη",
@@ -10727,7 +10747,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1073
+    "order": 1075
   },
   {
     "word": "ἰσχύς",
@@ -10737,7 +10757,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1074
+    "order": 1076
   },
   {
     "word": "κἀκεῖ",
@@ -10747,7 +10767,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 11,
-    "order": 1075
+    "order": 1077
   },
   {
     "word": "κἀκεῖθεν",
@@ -10757,7 +10777,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1076
+    "order": 1078
   },
   {
     "word": "κλητός",
@@ -10767,7 +10787,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1077
+    "order": 1079
   },
   {
     "word": "κοινωνός",
@@ -10777,7 +10797,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1078
+    "order": 1080
   },
   {
     "word": "κοσμέω",
@@ -10787,7 +10807,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1079
+    "order": 1081
   },
   {
     "word": "μακροθυμέω",
@@ -10797,7 +10817,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1080
+    "order": 1082
   },
   {
     "word": "μέλει",
@@ -10807,7 +10827,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1081
+    "order": 1083
   },
   {
     "word": "μνῆμα",
@@ -10817,7 +10837,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1082
+    "order": 1084
   },
   {
     "word": "ξενίζω",
@@ -10827,7 +10847,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1083
+    "order": 1085
   },
   {
     "word": "ὅδε",
@@ -10837,7 +10857,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1084
+    "order": 1086
   },
   {
     "word": "οἰκονόμος",
@@ -10847,7 +10867,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1085
+    "order": 1087
   },
   {
     "word": "ὀκτώ",
@@ -10857,7 +10877,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1086
+    "order": 1088
   },
   {
     "word": "ὄντως",
@@ -10867,7 +10887,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1087
+    "order": 1089
   },
   {
     "word": "ὅρκος",
@@ -10877,7 +10897,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1088
+    "order": 1090
   },
   {
     "word": "παντοκράτωρ",
@@ -10887,7 +10907,7 @@
     "section": 7,
     "sub": "7-G",
     "freq": 10,
-    "order": 1089
+    "order": 1091
   },
   {
     "word": "παράγω",
@@ -10897,7 +10917,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1090
+    "order": 1092
   },
   {
     "word": "παραλυτικός",
@@ -10907,7 +10927,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1091
+    "order": 1093
   },
   {
     "word": "παρεμβολή",
@@ -10917,7 +10937,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 11,
-    "order": 1092
+    "order": 1094
   },
   {
     "word": "πατάσσω",
@@ -10927,7 +10947,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1093
+    "order": 1095
   },
   {
     "word": "πενθέω",
@@ -10937,7 +10957,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1094
+    "order": 1096
   },
   {
     "word": "περιστερά",
@@ -10947,7 +10967,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1095
+    "order": 1097
   },
   {
     "word": "πλάνη",
@@ -10957,7 +10977,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1096
+    "order": 1098
   },
   {
     "word": "πλεονεξία",
@@ -10967,7 +10987,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1097
+    "order": 1099
   },
   {
     "word": "ποικίλος",
@@ -10977,7 +10997,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1098
+    "order": 1100
   },
   {
     "word": "πόρνος",
@@ -10987,7 +11007,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1099
+    "order": 1101
   },
   {
     "word": "προσκαρτερέω",
@@ -10997,7 +11017,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1100
+    "order": 1102
   },
   {
     "word": "πύλη",
@@ -11007,7 +11027,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1101
+    "order": 1103
   },
   {
     "word": "σιγάω",
@@ -11017,7 +11037,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1102
+    "order": 1104
   },
   {
     "word": "σιωπάω",
@@ -11027,7 +11047,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1103
+    "order": 1105
   },
   {
     "word": "στρατηγός",
@@ -11037,7 +11057,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1104
+    "order": 1106
   },
   {
     "word": "συζητέω",
@@ -11047,7 +11067,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1105
+    "order": 1107
   },
   {
     "word": "σύνδουλος",
@@ -11057,7 +11077,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1106
+    "order": 1108
   },
   {
     "word": "σφάζω",
@@ -11067,7 +11087,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1107
+    "order": 1109
   },
   {
     "word": "ταχέως",
@@ -11077,7 +11097,7 @@
     "section": 7,
     "sub": "7-H",
     "freq": 10,
-    "order": 1108
+    "order": 1110
   },
   {
     "word": "τέταρτος",
@@ -11087,7 +11107,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1109
+    "order": 1111
   },
   {
     "word": "ὑμέτερος",
@@ -11097,7 +11117,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 11,
-    "order": 1110
+    "order": 1112
   },
   {
     "word": "ὑπαντάω",
@@ -11107,7 +11127,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 11,
-    "order": 1111
+    "order": 1113
   },
   {
     "word": "ὑπόδημα",
@@ -11117,7 +11137,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1112
+    "order": 1114
   },
   {
     "word": "φείδομαι",
@@ -11127,7 +11147,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1113
+    "order": 1115
   },
   {
     "word": "χρηστότης",
@@ -11137,7 +11157,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1114
+    "order": 1116
   },
   {
     "word": "χωρέω",
@@ -11147,7 +11167,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 9,
-    "order": 1115
+    "order": 1117
   },
   {
     "word": "χωρίον",
@@ -11157,7 +11177,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1116
+    "order": 1118
   },
   {
     "word": "ψεῦδος",
@@ -11167,7 +11187,7 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1117
+    "order": 1119
   },
   {
     "word": "ψεύστης",
@@ -11177,26 +11197,6 @@
     "section": 7,
     "sub": "7-I",
     "freq": 10,
-    "order": 1118
-  },
-  {
-    "word": "ποτέ",
-    "inflection": null,
-    "gloss": "once, formerly",
-    "pos": "Adv",
-    "section": 3,
-    "sub": "3-Z",
-    "freq": 29,
-    "order": 1121
-  },
-  {
-    "word": "αἰχμάλωτος",
-    "inflection": "-ου, ὁ",
-    "gloss": "captive, prisoner of war",
-    "pos": "Noun",
-    "section": 5,
-    "sub": "5-Z",
-    "freq": 1,
-    "order": 1122
+    "order": 1120
   }
 ]
