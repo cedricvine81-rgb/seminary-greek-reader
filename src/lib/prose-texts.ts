@@ -209,9 +209,19 @@ const AF_WORKS: ProseWork[] = AF.map(w => ({
   parseCitation: afCite(w.abbrevs),
 }))
 
+// Works for which scripts/build-apostolic-fathers-greek.py attached the parallel Greek
+// (First1KGreek, CC BY-SA 4.0). Diognetus, the Martyrdom of Polycarp and the Didache are
+// English-only — no aligned Greek source — so they are absent here.
+const AF_GREEK = new Set([
+  '1clement', '2clement', 'barnabas', 'polycarp',
+  'ign-ephesians', 'ign-magnesians', 'ign-trallians', 'ign-romans',
+  'ign-philadelphians', 'ign-smyrnaeans', 'ign-polycarp',
+])
+
 // Ids/names the catalog needs to list the Apostolic Fathers under one Texts category.
 export const AF_CATALOG = AF.map(w => ({
   id: `af-${w.slug}`, source: `af-${w.slug}` as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+  ...(AF_GREEK.has(w.slug) ? { greek: true } : {}),
 }))
 
 // ── The Targums ───────────────────────────────────────────────────────────────────────
