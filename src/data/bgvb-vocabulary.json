@@ -3390,13 +3390,13 @@
     "order": 339
   },
   {
-    "word": "δέομαι",
+    "word": "δέω",
     "inflection": null,
-    "gloss": "beseech, beg",
+    "gloss": "bind, tie",
     "pos": "Verb",
     "section": 3,
     "sub": "3-B",
-    "freq": 22,
+    "freq": 43,
     "order": 340
   },
   {
@@ -3526,7 +3526,7 @@
     "pos": "Adv",
     "section": 3,
     "sub": "3-B",
-    "freq": 19,
+    "freq": null,
     "order": 353
   },
   {
@@ -3550,16 +3550,6 @@
     "order": 355
   },
   {
-    "word": "ποτέ",
-    "inflection": null,
-    "gloss": "once, formerly",
-    "pos": "Adv",
-    "section": 3,
-    "sub": "3-B",
-    "freq": 29,
-    "order": 356
-  },
-  {
     "word": "ἄξιος",
     "inflection": "-α, -ον",
     "gloss": "worthy, fit",
@@ -3567,7 +3557,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 357
+    "order": 356
   },
   {
     "word": "διέρχομαι",
@@ -3577,7 +3567,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 358
+    "order": 357
   },
   {
     "word": "ἐπιτίθημι",
@@ -3587,7 +3577,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 39,
-    "order": 359
+    "order": 358
   },
   {
     "word": "ἐργάζομαι",
@@ -3597,7 +3587,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 360
+    "order": 359
   },
   {
     "word": "ἑτοιμάζω",
@@ -3607,7 +3597,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 361
+    "order": 360
   },
   {
     "word": "εὐλογέω",
@@ -3617,7 +3607,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 362
+    "order": 361
   },
   {
     "word": "ἱκανός",
@@ -3627,7 +3617,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 363
+    "order": 362
   },
   {
     "word": "κλαίω",
@@ -3637,7 +3627,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 364
+    "order": 363
   },
   {
     "word": "λογίζομαι",
@@ -3647,7 +3637,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 40,
-    "order": 365
+    "order": 364
   },
   {
     "word": "λοιπός",
@@ -3657,7 +3647,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": null,
-    "order": 366
+    "order": 365
   },
   {
     "word": "ὀλίγος",
@@ -3667,7 +3657,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 367
+    "order": 366
   },
   {
     "word": "πάντοτε",
@@ -3677,7 +3667,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 368
+    "order": 367
   },
   {
     "word": "παρίστημι",
@@ -3687,7 +3677,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 369
+    "order": 368
   },
   {
     "word": "σεαυτοῦ",
@@ -3697,7 +3687,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 43,
-    "order": 370
+    "order": 369
   },
   {
     "word": "σήμερον",
@@ -3707,7 +3697,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 371
+    "order": 370
   },
   {
     "word": "τέλος",
@@ -3717,7 +3707,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 372
+    "order": 371
   },
   {
     "word": "τέσσαρες",
@@ -3727,7 +3717,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 373
+    "order": 372
   },
   {
     "word": "τιμή",
@@ -3737,7 +3727,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 374
+    "order": 373
   },
   {
     "word": "φωνέω",
@@ -3747,7 +3737,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 43,
-    "order": 375
+    "order": 374
   },
   {
     "word": "χωρίς",
@@ -3757,7 +3747,7 @@
     "section": 3,
     "sub": "3-C",
     "freq": 41,
-    "order": 376
+    "order": 375
   },
   {
     "word": "ἄρχων",
@@ -3767,7 +3757,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 377
+    "order": 376
   },
   {
     "word": "βούλομαι",
@@ -3777,7 +3767,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 36,
-    "order": 378
+    "order": 377
   },
   {
     "word": "διάβολος",
@@ -3787,7 +3777,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 379
+    "order": 378
   },
   {
     "word": "διακονέω",
@@ -3797,7 +3787,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 380
+    "order": 379
   },
   {
     "word": "δικαιόω",
@@ -3807,7 +3797,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 381
+    "order": 380
   },
   {
     "word": "ἐμαυτοῦ",
@@ -3817,7 +3807,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 382
+    "order": 381
   },
   {
     "word": "ἐπιθυμία",
@@ -3827,7 +3817,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 383
+    "order": 382
   },
   {
     "word": "εὐχαριστέω",
@@ -3837,7 +3827,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 384
+    "order": 383
   },
   {
     "word": "θύρα",
@@ -3847,7 +3837,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 385
+    "order": 384
   },
   {
     "word": "Ἰούδας",
@@ -3857,7 +3847,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 386
+    "order": 385
   },
   {
     "word": "μισέω",
@@ -3867,7 +3857,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 40,
-    "order": 387
+    "order": 386
   },
   {
     "word": "μνημεῖον",
@@ -3877,7 +3867,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 37,
-    "order": 388
+    "order": 387
   },
   {
     "word": "οἰκοδομέω",
@@ -3887,7 +3877,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 41,
-    "order": 389
+    "order": 388
   },
   {
     "word": "πάσχω",
@@ -3897,7 +3887,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 41,
-    "order": 390
+    "order": 389
   },
   {
     "word": "πειράζω",
@@ -3907,7 +3897,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 391
+    "order": 390
   },
   {
     "word": "πέντε",
@@ -3917,7 +3907,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 392
+    "order": 391
   },
   {
     "word": "περισσεύω",
@@ -3927,7 +3917,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 393
+    "order": 392
   },
   {
     "word": "πλανάω",
@@ -3937,7 +3927,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 394
+    "order": 393
   },
   {
     "word": "πράσσω",
@@ -3947,7 +3937,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 39,
-    "order": 395
+    "order": 394
   },
   {
     "word": "ὑποτάσσω",
@@ -3957,7 +3947,7 @@
     "section": 3,
     "sub": "3-D",
     "freq": 38,
-    "order": 396
+    "order": 395
   },
   {
     "word": "ἀγρός",
@@ -3967,7 +3957,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 397
+    "order": 396
   },
   {
     "word": "ἅπτω",
@@ -3977,7 +3967,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 398
+    "order": 397
   },
   {
     "word": "ἄρτι",
@@ -3987,7 +3977,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 33,
-    "order": 399
+    "order": 398
   },
   {
     "word": "ἐπιστρέφω",
@@ -3997,7 +3987,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 400
+    "order": 399
   },
   {
     "word": "Ἰωσήφ",
@@ -4007,7 +3997,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 401
+    "order": 400
   },
   {
     "word": "καλῶς",
@@ -4017,7 +4007,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 402
+    "order": 401
   },
   {
     "word": "καυχάομαι",
@@ -4027,7 +4017,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 37,
-    "order": 403
+    "order": 402
   },
   {
     "word": "μαρτυρία",
@@ -4037,7 +4027,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 37,
-    "order": 404
+    "order": 403
   },
   {
     "word": "μάρτυς",
@@ -4047,7 +4037,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 405
+    "order": 404
   },
   {
     "word": "ὀπίσω",
@@ -4057,7 +4047,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 406
+    "order": 405
   },
   {
     "word": "ὀργή",
@@ -4067,7 +4057,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 407
+    "order": 406
   },
   {
     "word": "οὖς",
@@ -4077,7 +4067,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 408
+    "order": 407
   },
   {
     "word": "ὀφείλω",
@@ -4087,7 +4077,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 35,
-    "order": 409
+    "order": 408
   },
   {
     "word": "παραγίνομαι",
@@ -4097,7 +4087,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 38,
-    "order": 410
+    "order": 409
   },
   {
     "word": "περιτομή",
@@ -4107,7 +4097,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 411
+    "order": 410
   },
   {
     "word": "πρόβατον",
@@ -4117,7 +4107,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 39,
-    "order": 412
+    "order": 411
   },
   {
     "word": "προσευχή",
@@ -4127,7 +4117,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 413
+    "order": 412
   },
   {
     "word": "Σατανᾶς",
@@ -4137,7 +4127,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 414
+    "order": 413
   },
   {
     "word": "Φίλιππος",
@@ -4147,7 +4137,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 415
+    "order": 414
   },
   {
     "word": "ὥσπερ",
@@ -4157,7 +4147,7 @@
     "section": 3,
     "sub": "3-E",
     "freq": 36,
-    "order": 416
+    "order": 415
   },
   {
     "word": "ἀναγινώσκω",
@@ -4167,7 +4157,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 417
+    "order": 416
   },
   {
     "word": "ἅπας",
@@ -4177,7 +4167,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 42,
-    "order": 418
+    "order": 417
   },
   {
     "word": "ἄρα",
@@ -4187,7 +4177,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 36,
-    "order": 419
+    "order": 418
   },
   {
     "word": "ἀρνέομαι",
@@ -4197,7 +4187,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 420
+    "order": 419
   },
   {
     "word": "ἀσθενέω",
@@ -4207,7 +4197,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 421
+    "order": 420
   },
   {
     "word": "βιβλίον",
@@ -4217,7 +4207,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 422
+    "order": 421
   },
   {
     "word": "βλασφημέω",
@@ -4227,7 +4217,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 423
+    "order": 422
   },
   {
     "word": "δείκνυμι",
@@ -4237,7 +4227,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 424
+    "order": 423
   },
   {
     "word": "διαθήκη",
@@ -4247,7 +4237,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 425
+    "order": 424
   },
   {
     "word": "διακονία",
@@ -4257,7 +4247,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 426
+    "order": 425
   },
   {
     "word": "δυνατός",
@@ -4267,7 +4257,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 32,
-    "order": 427
+    "order": 426
   },
   {
     "word": "ἐκπορεύομαι",
@@ -4277,7 +4267,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 428
+    "order": 427
   },
   {
     "word": "μέλος",
@@ -4287,7 +4277,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 429
+    "order": 428
   },
   {
     "word": "μετανοέω",
@@ -4297,7 +4287,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 430
+    "order": 429
   },
   {
     "word": "μήτε",
@@ -4307,7 +4297,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 431
+    "order": 430
   },
   {
     "word": "ναί",
@@ -4317,7 +4307,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 432
+    "order": 431
   },
   {
     "word": "οἶνος",
@@ -4327,7 +4317,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 433
+    "order": 432
   },
   {
     "word": "ποῖος",
@@ -4337,7 +4327,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 33,
-    "order": 434
+    "order": 433
   },
   {
     "word": "πτωχός",
@@ -4347,7 +4337,7 @@
     "section": 3,
     "sub": "3-F",
     "freq": 34,
-    "order": 435
+    "order": 434
   },
   {
     "word": "ὑποστρέφω",
@@ -4357,6 +4347,16 @@
     "section": 3,
     "sub": "3-F",
     "freq": 36,
+    "order": 435
+  },
+  {
+    "word": "ποτέ",
+    "inflection": null,
+    "gloss": "once, formerly",
+    "pos": "Adv",
+    "section": 3,
+    "sub": "3-G",
+    "freq": 29,
     "order": 436
   },
   {
