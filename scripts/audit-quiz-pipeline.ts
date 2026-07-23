@@ -20,6 +20,7 @@ import {
   generateMorphologyQuestionsBySubtype,
 } from '../src/lib/quiz-generation'
 import { MORPH_OPTIONS } from '../src/data/morphology-options'
+import { normaliseLexeme } from '../src/lib/bgvb-lemmas'
 
 const fail: string[] = []
 const ok = (label: string, cond: boolean, detail = '') => {
@@ -117,9 +118,12 @@ async function main() {
   console.log('\n=== 9. Database decks match the revised lists ===')
   const { prisma } = await import('../src/lib/db')
   const beginningWords = new Set(wordsForSelection(['1-A','1-B','1-C','1-D','1-E','1-F','1-G','1-H',
-    '2-A','2-B','2-C','2-D','2-E','2-F','2-G','2-H'], []).map(w => w.word))
-  const interWords = new Set(wordsForSelection(['3-A','3-B','3-C','3-D','3-E','3-F','3-G','3-H'], []).map(w => w.word))
-  for (const [level, expected] of [['BEGINNING', beginningWords], ['INTERMEDIATE', interWords]] as const) {
+    '2-A','2-B','2-C','2-D','2-E','2-F','2-G','2-H'], []).map(w => normaliseLexeme(w.word)))
+  const interWords = new Set(wordsForSelection(['3-A','3-B','3-C','3-D','3-E','3-F','3-G','3-H'], []).map(w => normaliseLexeme(w.word)))
+  const advKeys = ALL_SUBSECTION_KEYS.filter(k => Number(k.split('-')[0]) >= 4)
+  const advWords = new Set(wordsForSelection(advKeys, []).map(w => normaliseLexeme(w.word)))
+  for (const [level, expected] of [['BEGINNING', beginningWords], ['INTERMEDIATE', interWords],
+                                   ['ADVANCED', advWords]] as const) {
     const rows = await prisma.vocabularyItem.findMany({ where: { level }, include: { lexeme: true } })
     const have = new Set(rows.map((r: { lexeme: { lexeme: string } }) => r.lexeme.lexeme))
     const missing = Array.from(expected).filter(w => !have.has(w))
