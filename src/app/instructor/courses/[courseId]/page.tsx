@@ -1,4 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
+import { AssignmentSeriesEditor } from '@/components/instructor/AssignmentSeriesEditor'
+import { groupIntoSeries } from '@/lib/assignment-series'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Fragment } from 'react'
@@ -66,6 +68,11 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
     },
   })
   if (!course) notFound()
+
+  const assignmentSeries = groupIntoSeries(course.assignments.map(a => ({
+    id: a.id, title: a.title, type: a.type as string, weekNumber: a.weekNumber,
+    dueDate: a.dueDate, isPublished: a.isPublished, questionCount: a._count.questions,
+  })))
 
   const students = course.enrollments.map(e => ({
     id: e.user.id,
@@ -135,7 +142,15 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
               </div>
             </summary>
 
-            <div className="mt-4">
+            <div className="mt-4 space-y-5">
+              {/* One control for a whole run — the semester builder creates a row per
+                  date, so a 28-quiz schedule is otherwise 28 separate edits. */}
+              {assignmentSeries.length > 0 && (
+                <AssignmentSeriesEditor
+                  series={assignmentSeries}
+                  courseEnd={course.endDate.toISOString()}
+                />
+              )}
               {course.assignments.length === 0 ? (
                 <p className="text-sm text-gray-400 italic">
                   No assignments yet. Create one to get started.
