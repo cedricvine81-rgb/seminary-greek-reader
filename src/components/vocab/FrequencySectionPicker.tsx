@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
+import { bandForSection, BAND_LEGEND } from '@/lib/vocab-bands'
 import {
   ALL_SECTIONS,
   SECTION_SUBSECTIONS,
@@ -110,6 +111,16 @@ export function FrequencySectionPicker({
         </div>
       </div>
 
+      {/* Which sections belong to which course — so an instructor building a quiz can
+          see at a glance where Beginning ends and Intermediate begins. */}
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        {BAND_LEGEND.map(b => (
+          <span key={b.band} className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}>
+            {b.name} · {b.freq}
+          </span>
+        ))}
+      </div>
+
       {/* Section list */}
       <div className="space-y-1.5">
         {ALL_SECTIONS.map(s => {
@@ -117,11 +128,12 @@ export function FrequencySectionPicker({
           const isExpanded = expandedSections.includes(s)
           const subs = SECTION_SUBSECTIONS[s]
           const coverage = SECTION_CUMULATIVE_COVERAGE[s]
+          const band = bandForSection(s)
 
           return (
             <div
               key={s}
-              className="rounded-lg border overflow-hidden transition-colors border-gray-200"
+              className={clsx('rounded-lg border overflow-hidden transition-colors border-gray-200', band.edge)}
             >
               {/* Section row */}
               <div className="flex items-center px-4 py-3 gap-3 bg-surface">
@@ -132,6 +144,9 @@ export function FrequencySectionPicker({
                 />
                 <div className="flex-1 min-w-0">
                   <span className="text-base font-medium text-gray-900">Section §{s}</span>
+                  <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
+                    {band.short}
+                  </span>
                   <span className="text-sm text-gray-500 ml-2">
                     {subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT
                   </span>

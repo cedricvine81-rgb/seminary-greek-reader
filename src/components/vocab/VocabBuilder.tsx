@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
+import { bandForSection, BAND_LEGEND } from '@/lib/vocab-bands'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
 
@@ -939,6 +940,7 @@ function StudySettings({
   onStart: (mode: LaunchMode) => void
 }) {
   const V = useVocab()
+  const isGreek = V.scriptName === 'Greek'
   const [expandedSections, setExpandedSections] = useState<number[]>(V.sections)
   const [listSubKey, setListSubKey] = useState<string | null>(null)
   const [subListMode, setSubListMode] = useState<Record<string, SectionListMode>>({})
@@ -1045,19 +1047,36 @@ function StudySettings({
             </div>
           </div>
 
+          {/* Course bands: which sections belong to Beginning vs Intermediate Greek.
+              Greek only — the Hebrew deck's sections don't map to these courses. */}
+          {isGreek && (
+            <div className="flex flex-wrap items-center gap-2 mb-3">
+              {BAND_LEGEND.map(b => (
+                <span
+                  key={b.band}
+                  className={clsx('text-xs px-2 py-0.5 rounded-full border', b.chip)}
+                >
+                  {b.name} · {b.freq}
+                </span>
+              ))}
+            </div>
+          )}
+
           <div className="space-y-1.5">
             {V.sections.map(s => {
               const state = sectionState(s)
               const isExpanded = expandedSections.includes(s)
               const subs = V.subsections[s]
               const coverage = V.coverage[s]
+              const band = isGreek ? bandForSection(s) : null
 
               return (
                 <div
                   key={s}
                   className={clsx(
                     'rounded-lg border overflow-hidden transition-colors',
-                    'border-gray-200'
+                    'border-gray-200',
+                    band?.edge
                   )}
                 >
                   {/* Section row */}
@@ -1069,6 +1088,11 @@ function StudySettings({
                     />
                     <div className="flex-1 min-w-0">
                       <span className="text-base font-medium text-gray-900">Section §{s}</span>
+                      {band && (
+                        <span className={clsx('text-xs px-2 py-0.5 rounded-full border ml-2 align-middle', band.chip)}>
+                          {band.short}
+                        </span>
+                      )}
                       <span className="text-sm text-gray-500 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% of {V.corpusLabel}</span>
                     </div>
                     <button
