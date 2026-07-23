@@ -1,7 +1,7 @@
 import { prisma } from './db'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
-import { wordsForSelection, type BgvbWord } from './vocab-subsections'
+import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
 import { lessonSubsectionKey, lessonSubsectionKeysBefore } from './vocab-lesson-map'
 
 export interface GeneratedQuestion {
@@ -119,9 +119,33 @@ export function generateVocabPoolFromSelection(
   pos: string[],
   type: QuestionType,
   provideDefinitionPct = 0,
+  reviewPct = 0,
 ): GeneratedQuestion[] {
-  const poolSize = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss).length
-  return generateVocabQuestionsFromSelection(subsections, pos, type, poolSize, provideDefinitionPct)
+  const current = wordsForSelection(subsections, pos).filter(w => w.word && w.gloss)
+  if (current.length === 0) return []
+
+  // Cumulative review: blend in words from every subsection BEFORE the selection.
+  // The stored pool is what the player re-samples from each attempt, so review is
+  // applied by composition — earlier words make up `reviewPct` of the pool.
+  const pct = Math.min(100, Math.max(0, reviewPct))
+  const earlierKeys = pct > 0 ? subsectionKeysBefore(subsections) : []
+  const earlier = earlierKeys.length > 0
+    ? wordsForSelection(earlierKeys, pos).filter(w => w.word && w.gloss)
+    : []
+
+  if (earlier.length === 0) {
+    return buildVocabQuestions(shuffle(current), current, type, provideDefinitionPct)
+  }
+
+  // pct of the pool should be review: reviewSize / (current + reviewSize) = pct/100.
+  const reviewSize = pct >= 100
+    ? earlier.length
+    : Math.min(earlier.length, Math.round((current.length * pct) / (100 - pct)))
+  const pool = pct >= 100
+    ? shuffle(earlier)
+    : [...current, ...shuffle(earlier).slice(0, reviewSize)]
+
+  return buildVocabQuestions(shuffle(pool), pool, type, provideDefinitionPct)
 }
 
 function shuffle<T>(arr: T[]): T[] {

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import { toEndOfDayLocalISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
+import { subsectionKeysBefore, wordsForSelection } from '@/lib/vocab-subsections'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
@@ -230,6 +231,13 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
   const [quizStylePct, setQuizStylePct] = useState(0)
   // Vocab word selection over the BGVB list: frequency subsections.
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
+  const [vocabReviewPct, setVocabReviewPct] = useState(0)   // % of the pool from earlier sections
+  // How many words precede the selection — 0 means there is nothing to review, so hide the control.
+  const earlierWordCount = useMemo(() => {
+    const keys = subsectionKeysBefore(vocabSubsections)
+    // NB wordsForSelection([]) means "all sections", so an empty key list must short-circuit.
+    return keys.length === 0 ? 0 : wordsForSelection(keys, []).length
+  }, [vocabSubsections])
   const [morphologySubtype, setMorphologySubtype] = useState<MorphologySubtype>('VERB_PARSING')
   const [morphologyFields, setMorphologyFields] = useState<string[]>(
     SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key)
@@ -296,7 +304,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
           maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
           // quizStylePct (0–100) is the real open-ended/MC mix; provideDefinition is derived (>0 → typed answers graded leniently).
-          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -454,6 +462,30 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
             selectedSubsections={vocabSubsections}
             onChange={setVocabSubsections}
           />
+          {earlierWordCount > 0 && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Review from earlier sections —{' '}
+                <span className="text-brand-700 font-semibold">
+                  {vocabReviewPct === 0
+                    ? 'Selected sections only'
+                    : `${vocabReviewPct}% earlier / ${100 - vocabReviewPct}% selected`}
+                </span>
+              </label>
+              <input
+                type="range"
+                min={0} max={100} step={5}
+                value={vocabReviewPct}
+                onChange={e => setVocabReviewPct(Number(e.target.value))}
+                className="w-full h-2 cursor-pointer rounded-lg accent-brand-600 [appearance:auto]"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Blends in words from the {earlierWordCount} words in sections before your
+                selection, so students keep reviewing. The quiz stores the whole pool and draws
+                a fresh sample each attempt, so this sets the mix of the pool.
+              </p>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Type of Quiz —{' '}

@@ -27,7 +27,7 @@ export async function POST(
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
-  const { type, count, level, quizStylePct, vocabSubsections, vocabPos } = await req.json()
+  const { type, count, level, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct } = await req.json()
 
   const assignment = await prisma.assignment.findUnique({
     where: { id: params.assignmentId },
@@ -41,10 +41,16 @@ export async function POST(
   // Effective word selection: a fresh one from the request wins; otherwise reuse
   // whatever was stored on the assignment. perAttempt = how many the player shows
   // each attempt (the quiz stores the whole pool and re-samples on retake).
+  const storedSel = (assignment.vocabSelection ?? null) as { subsections: string[]; pos: string[]; perAttempt?: number; reviewPct?: number } | null
   const reqSel = Array.isArray(vocabSubsections) || Array.isArray(vocabPos)
-    ? { subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [], pos: Array.isArray(vocabPos) ? vocabPos : [], perAttempt: qCount }
+    ? {
+        subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [],
+        pos: Array.isArray(vocabPos) ? vocabPos : [],
+        perAttempt: qCount,
+        // Keep the stored review mix unless the caller explicitly sends a new one.
+        reviewPct: Math.min(Math.max(Number(vocabReviewPct ?? storedSel?.reviewPct ?? 0), 0), 100),
+      }
     : null
-  const storedSel = (assignment.vocabSelection ?? null) as { subsections: string[]; pos: string[]; perAttempt?: number } | null
   const effectiveSel = reqSel ?? storedSel
   const qLevel = (level as CourseLevel) ?? assignment.level
   const morphSubtype = assignment.morphSubtype ?? 'ALL'
@@ -59,7 +65,7 @@ export async function POST(
 
   if (assignment.type === 'VOCABULARY_QUIZ') {
     questions = effectiveSel
-      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct)
+      ? generateVocabPoolFromSelection(effectiveSel.subsections, effectiveSel.pos, qType, provideDefinitionPct, effectiveSel.reviewPct ?? 0)
       : await generateVocabQuestions(qLevel, qType, qCount, provideDefinitionPct)
   } else if (assignment.type === 'MORPHOLOGY_QUIZ') {
     switch (morphSubtype) {

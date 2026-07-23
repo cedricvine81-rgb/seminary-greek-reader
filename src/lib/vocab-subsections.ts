@@ -86,3 +86,18 @@ export function wordsForSelection(subsections: string[], pos: string[]): BgvbWor
     return true
   })
 }
+
+/**
+ * Every subsection key that comes BEFORE the earliest of `subsections` in BGVB
+ * frequency order (1-A … 1-H, 2-A … 7-H) — i.e. the material a student has
+ * already covered by the time they reach this selection. Empty if nothing
+ * precedes it, or if `subsections` is empty (which means "all sections").
+ */
+export function subsectionKeysBefore(subsections: string[]): string[] {
+  if (subsections.length === 0) return []
+  const idx = subsections
+    .map(k => ALL_SUBSECTION_KEYS.indexOf(k))
+    .filter(i => i >= 0)
+  if (idx.length === 0) return []
+  return ALL_SUBSECTION_KEYS.slice(0, Math.min(...idx))
+}

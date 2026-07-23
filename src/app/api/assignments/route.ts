@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, morphologySubtype, vocabThruLesson, notesFolderName } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, notesFolderName } = body
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -51,6 +51,8 @@ export async function POST(req: NextRequest) {
         subsections: Array.isArray(vocabSubsections) ? vocabSubsections : [],
         pos: Array.isArray(vocabPos) ? vocabPos : [],
         perAttempt: Math.min(Math.max(Number(numQuestions ?? 10), 1), 50),
+        // % of the pool drawn from subsections EARLIER than the selection
+        reviewPct: Math.min(Math.max(Number(vocabReviewPct ?? 0), 0), 100),
       }
     : null
 
@@ -142,7 +144,7 @@ export async function POST(req: NextRequest) {
     // course-level pool from the database.
     if (vocabSel) {
       // Store the full pool; the player draws perAttempt at random each attempt.
-      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct)
+      questions = generateVocabPoolFromSelection(vocabSel.subsections, vocabSel.pos, 'GREEK_TO_ENGLISH', openEndedPct, vocabSel.reviewPct)
     } else {
       questions = await generateVocabQuestions(level as CourseLevel, 'GREEK_TO_ENGLISH', Number(numQuestions ?? 10), openEndedPct)
     }
