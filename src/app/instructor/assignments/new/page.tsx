@@ -23,7 +23,7 @@ export default async function NewAssignmentPage({
         { coInstructors: { some: { userId: payload.sub } } },
       ],
     },
-    select: { id: true, name: true, level: true },
+    select: { id: true, name: true, level: true, startDate: true, endDate: true },
     orderBy: { createdAt: 'desc' },
   })
 
@@ -37,7 +37,14 @@ export default async function NewAssignmentPage({
 
   return (
     <DashboardShell role="INSTRUCTOR" pageTitle="New Assignment">
-      <AssignmentBuilder courses={courses} defaultCourseId={searchParams.courseId} />
+      <AssignmentBuilder
+        courses={courses.map(c => ({
+          ...c,
+          startDate: c.startDate.toISOString(),
+          endDate: c.endDate.toISOString(),
+        }))}
+        defaultCourseId={searchParams.courseId}
+      />
     </DashboardShell>
   )
 }

@@ -77,6 +77,8 @@ interface Course {
   id: string
   name: string
   level: CourseLevel
+  startDate: string
+  endDate: string
 }
 
 interface SemesterForm {
@@ -1418,6 +1420,19 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     [form.startDate, form.weeks, form.days]
   )
 
+  // The schedule counts weeks forward from the start date and knows nothing about when
+  // the course actually ends, so a series can run past the last day of term — those
+  // quizzes exist but no student ever sits them. Surface the overrun before it is saved.
+  const selectedCourse = courses.find(c => c.id === form.courseId)
+  const overrun = useMemo(() => {
+    if (!selectedCourse || schedule.length === 0) return null
+    const end = new Date(selectedCourse.endDate).getTime() + 24 * 60 * 60 * 1000
+    const past = schedule.filter(s => s.date.getTime() >= end)
+    if (past.length === 0) return null
+    const weeksThatFit = new Set(schedule.filter(s => s.date.getTime() < end).map(s => s.week)).size
+    return { count: past.length, weeksThatFit, courseEnd: new Date(selectedCourse.endDate) }
+  }, [selectedCourse, schedule])
+
   const openSample = useCallback(async () => {
     setSampleOpen(true)
     setSampleData(null)
@@ -1711,6 +1726,29 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
             <Download size={14} />
             Download Biblical Greek Vocabulary Builder (PDF)
           </a>
+        )}
+
+        {/* Runs past the end of term — the quizzes would be created but never sat. */}
+        {overrun && (
+          <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            <p className="font-semibold">
+              {overrun.count} quiz{overrun.count !== 1 ? 'zes' : ''} fall after this course ends
+              ({format(overrun.courseEnd, 'MMM d, yyyy')}).
+            </p>
+            <p className="mt-1 text-amber-800">
+              Only {overrun.weeksThatFit} week{overrun.weeksThatFit !== 1 ? 's' : ''} fit inside the
+              course. Students would never see the later quizzes
+              {form.quizType === 'VOCABULARY_QUIZ' && ', so the last vocabulary sections would go untaught'}.
+              {' '}Reduce the length of the semester to {overrun.weeksThatFit}, or extend the course dates.
+            </p>
+            <button
+              type="button"
+              onClick={() => setF('weeks', overrun.weeksThatFit)}
+              className="mt-2 text-sm font-medium text-amber-900 underline hover:no-underline"
+            >
+              Set to {overrun.weeksThatFit} weeks
+            </button>
+          </div>
         )}
 
         {/* Schedule preview */}
