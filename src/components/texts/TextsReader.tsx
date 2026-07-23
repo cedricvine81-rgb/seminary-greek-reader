@@ -1152,13 +1152,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                     </p>
                     <div className="space-y-2">
                       {filteredRows.map(row => {
-                        // The English/primary column's highlight layer (Greek works anchor on
-                        // the Greek; translation-only works on the English). Greek-prose works
-                        // (Josephus, Epictetus) highlight BOTH columns independently — the Greek
-                        // on its own 'grc' layer (greekHighlights), the English on 'en'.
+                        // Layer per column. A verse's Greek and its translation are different
+                        // strings, so a highlight's offsets are only meaningful against one of
+                        // them: the Greek column always highlights on 'grc', the English column
+                        // always on 'en'. Sharing one layer across both (as lxx works used to)
+                        // paints the Greek offsets over the English text.
                         const layer = isGreek ? 'grc' : 'en'
                         const verseHighlights = highlights.forVerse(noteBook, section.chapter, row.num, layer)
                         const greekHighlights = greekProse ? highlights.forVerse(noteBook, section.chapter, row.num, 'grc') : verseHighlights
+                        const englishHighlights = layer === 'en' ? verseHighlights
+                          : highlights.forVerse(noteBook, section.chapter, row.num, 'en')
                         return (
                         <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
                           className={`grid gap-4 ${!greekHidden && englishColShown ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
@@ -1245,7 +1248,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               (Greek hidden) it's the sole column and carries the note button. */}
                           {englishColShown && (
                             <p className={`font-reading leading-relaxed text-gray-600 ${greekHidden ? '' : 'lg:border-l lg:border-gray-100 lg:pl-4'}`} style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
-                              {...(greekProse ? verseAnchorProps(noteBook, section.chapter, row.num, layer) : {})}>
+                              {...verseAnchorProps(noteBook, section.chapter, row.num, 'en')}>
                               {isAuthenticated && greekHidden && (
                                 <span className="font-sans align-middle mr-0.5">
                                   <VerseNoteButton book={noteBook} chapter={section.chapter} verse={row.num} noted={notedKeys.has(row.num)}
@@ -1257,16 +1260,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 ? (q ? highlight(row.english ?? '', search)
                                    : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
                                    : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
-                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
+                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
+                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : row.english
                                 ? (q ? highlight(row.english, search)
                                    : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
                                    : <TransWords text={row.english} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
-                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
-                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
+                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
+                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : <span className="text-gray-300 italic">—</span>}
