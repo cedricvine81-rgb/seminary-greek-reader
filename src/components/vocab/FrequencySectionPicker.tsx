@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { Check, ChevronRight, ChevronDown, List, X } from 'lucide-react'
 import { clsx } from 'clsx'
-import { bandForSection, BAND_LEGEND } from '@/lib/vocab-bands'
+import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import {
   ALL_SECTIONS,
   SECTION_SUBSECTIONS,
@@ -129,6 +129,7 @@ export function FrequencySectionPicker({
           const subs = SECTION_SUBSECTIONS[s]
           const coverage = SECTION_CUMULATIVE_COVERAGE[s]
           const band = bandForSection(s)
+          const sectionRange = freqRange(subs.flatMap(sub => sub.words))
 
           return (
             <div
@@ -148,7 +149,9 @@ export function FrequencySectionPicker({
                     {band.short}
                   </span>
                   <span className="text-sm text-gray-500 ml-2">
-                    {subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% GNT
+                    {subs.reduce((n, sub) => n + sub.words.length, 0)} words
+                    {sectionRange && <> · {sectionRange}</>}
+                    {' '}· up to {coverage}% GNT
                   </span>
                 </div>
                 <button
@@ -223,6 +226,9 @@ export function FrequencySectionPicker({
                             <span className="text-gray-400 font-normal ml-1.5">
                               ({sub.words.length} words)
                             </span>
+                          {freqRange(sub.words) && (
+                            <span className="text-gray-500 font-normal ml-1.5">· {freqRange(sub.words)}</span>
+                          )}
                           </p>
                           <div className="flex items-center gap-2">
                             {/* Mode toggle */}

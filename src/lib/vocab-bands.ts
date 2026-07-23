@@ -57,3 +57,17 @@ export function bandForSection(section: number): BandStyle {
 
 /** Legend order: the three bands, once each. */
 export const BAND_LEGEND: BandStyle[] = [BEGINNING, INTERMEDIATE, BEYOND]
+
+/**
+ * "913–2,905×" — the NT/HB occurrence span of a word list, for section and
+ * word-list headers. Words with no reliable corpus count are skipped; returns
+ * null when none of them has one.
+ */
+export function freqRange(words: { freq: number | null }[]): string | null {
+  const counts = words.map(w => w.freq).filter((n): n is number => n != null)
+  if (counts.length === 0) return null
+  const lo = Math.min(...counts)
+  const hi = Math.max(...counts)
+  const fmt = (n: number) => n.toLocaleString('en-US')
+  return lo === hi ? `${fmt(lo)}×` : `${fmt(lo)}–${fmt(hi)}×`
+}

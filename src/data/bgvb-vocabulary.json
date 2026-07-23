@@ -5,7 +5,7 @@
     "gloss": "for",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 1036,
     "order": 2
   },
   {
@@ -14,7 +14,7 @@
     "gloss": "and, also, likewise",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 8977,
     "order": 11
   },
   {
@@ -23,7 +23,7 @@
     "gloss": "(with dat.) in",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 2743,
     "order": 8
   },
   {
@@ -32,7 +32,7 @@
     "gloss": "the",
     "pos": "Art",
     "section": 1,
-    "freq": null,
+    "freq": 19787,
     "order": 14
   },
   {
@@ -41,7 +41,7 @@
     "gloss": "from out, from",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 915,
     "order": 7
   },
   {
@@ -50,7 +50,7 @@
     "gloss": "no, not",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 1626,
     "order": 17
   },
   {
@@ -59,7 +59,7 @@
     "gloss": "not, lest",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 1033,
     "order": 13
   },
   {
@@ -68,7 +68,7 @@
     "gloss": "am, exist",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 2461,
     "order": 5
   },
   {
@@ -77,7 +77,7 @@
     "gloss": "god",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 1312,
     "order": 9
   },
   {
@@ -86,7 +86,7 @@
     "gloss": "he, she, it; same",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 5565,
     "order": 1
   },
   {
@@ -95,7 +95,7 @@
     "gloss": "(with gen.) down, against; (with acc.) according to",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 471,
     "order": 32
   },
   {
@@ -104,7 +104,7 @@
     "gloss": "write",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 192,
     "order": 88
   },
   {
@@ -113,7 +113,7 @@
     "gloss": "answer, reply",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 233,
     "order": 64
   },
   {
@@ -122,7 +122,7 @@
     "gloss": "wind, breath, spirit",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 379,
     "order": 59
   },
   {
@@ -131,7 +131,7 @@
     "gloss": "sky, heaven",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 275,
     "order": 56
   },
   {
@@ -140,7 +140,7 @@
     "gloss": "(with gen.) about, concerning; (with acc.) around",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 335,
     "order": 58
   },
   {
@@ -149,7 +149,7 @@
     "gloss": "will, wish, desire",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 208,
     "order": 71
   },
   {
@@ -158,7 +158,7 @@
     "gloss": "am able, can",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 209,
     "order": 68
   },
   {
@@ -167,7 +167,7 @@
     "gloss": "man",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 216,
     "order": 63
   },
   {
@@ -176,7 +176,7 @@
     "gloss": "son, descendent",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 376,
     "order": 61
   },
   {
@@ -185,7 +185,7 @@
     "gloss": "city",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 164,
     "order": 101
   },
   {
@@ -194,7 +194,7 @@
     "gloss": "go into, come in, enter",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 195,
     "order": 91
   },
   {
@@ -203,7 +203,7 @@
     "gloss": "indeed, on the one hand",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 177,
     "order": 97
   },
   {
@@ -212,7 +212,7 @@
     "gloss": "hand",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 175,
     "order": 103
   },
   {
@@ -221,7 +221,7 @@
     "gloss": "go out, come out",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 221,
     "order": 70
   },
   {
@@ -230,7 +230,7 @@
     "gloss": "find, discover",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 175,
     "order": 93
   },
   {
@@ -239,7 +239,7 @@
     "gloss": "angel, messenger",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 177,
     "order": 84
   },
   {
@@ -248,7 +248,7 @@
     "gloss": "Paul",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 158,
     "order": 100
   },
   {
@@ -257,7 +257,7 @@
     "gloss": "nation, the Gentiles",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 162,
     "order": 90
   },
   {
@@ -266,7 +266,7 @@
     "gloss": "glory, splendor, brightness",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 166,
     "order": 89
   },
   {
@@ -275,7 +275,7 @@
     "gloss": "(with gen.) from; (with dat.) at, by; (with acc.) near",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 191,
     "order": 99
   },
   {
@@ -284,7 +284,7 @@
     "gloss": "the world, universe",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 184,
     "order": 96
   },
   {
@@ -293,7 +293,7 @@
     "gloss": "heart",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 156,
     "order": 95
   },
   {
@@ -302,7 +302,7 @@
     "gloss": "just as, as",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 181,
     "order": 94
   },
   {
@@ -311,7 +311,7 @@
     "gloss": "sin",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 173,
     "order": 85
   },
   {
@@ -320,7 +320,7 @@
     "gloss": "then",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 157,
     "order": 102
   },
   {
@@ -329,7 +329,7 @@
     "gloss": "(with gen.) by; (with acc.) under",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 221,
     "order": 83
   },
   {
@@ -338,7 +338,7 @@
     "gloss": "am born, become, happen",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 667,
     "order": 25
   },
   {
@@ -347,7 +347,7 @@
     "gloss": "receive, take",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 259,
     "order": 51
   },
   {
@@ -356,7 +356,7 @@
     "gloss": "therefore, then",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 489,
     "order": 35
   },
   {
@@ -365,7 +365,7 @@
     "gloss": "if",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 491,
     "order": 27
   },
   {
@@ -374,7 +374,7 @@
     "gloss": "and, both",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 214,
     "order": 82
   },
   {
@@ -383,7 +383,7 @@
     "gloss": "(with gen.) with; (with acc.) after, behind",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 469,
     "order": 54
   },
   {
@@ -392,7 +392,7 @@
     "gloss": "believe in, have faith in, trust",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 241,
     "order": 80
   },
   {
@@ -401,7 +401,7 @@
     "gloss": "that",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 240,
     "order": 69
   },
   {
@@ -410,7 +410,7 @@
     "gloss": "know, remember",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 317,
     "order": 55
   },
   {
@@ -419,7 +419,7 @@
     "gloss": "word, speech",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 330,
     "order": 52
   },
   {
@@ -428,7 +428,7 @@
     "gloss": "holy, sacred",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 233,
     "order": 62
   },
   {
@@ -437,7 +437,7 @@
     "gloss": "no one, nothing",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 235,
     "order": 77
   },
   {
@@ -446,7 +446,7 @@
     "gloss": "woman, wife",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 219,
     "order": 67
   },
   {
@@ -455,7 +455,7 @@
     "gloss": "know, learn",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 222,
     "order": 66
   },
   {
@@ -464,7 +464,7 @@
     "gloss": "learner, disciple",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 261,
     "order": 53
   },
   {
@@ -473,7 +473,7 @@
     "gloss": "faith, belief, trust",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 243,
     "order": 81
   },
   {
@@ -482,7 +482,7 @@
     "gloss": "Jewish, Judean",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 193,
     "order": 72
   },
   {
@@ -491,7 +491,7 @@
     "gloss": "earth, land",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 251,
     "order": 65
   },
   {
@@ -500,7 +500,7 @@
     "gloss": "father, ancestor",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 412,
     "order": 57
   },
   {
@@ -509,7 +509,7 @@
     "gloss": "law",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 196,
     "order": 75
   },
   {
@@ -518,7 +518,7 @@
     "gloss": "large, great",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 244,
     "order": 73
   },
   {
@@ -527,7 +527,7 @@
     "gloss": "name",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 229,
     "order": 76
   },
   {
@@ -536,7 +536,7 @@
     "gloss": "who, which, what",
     "pos": "Interrog",
     "section": 1,
-    "freq": null,
+    "freq": 533,
     "order": 38
   },
   {
@@ -545,7 +545,7 @@
     "gloss": "anyone, anything; someone, something",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 527,
     "order": 39
   },
   {
@@ -554,7 +554,7 @@
     "gloss": "one",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 336,
     "order": 47
   },
   {
@@ -563,7 +563,7 @@
     "gloss": "all, every",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 1226,
     "order": 20
   },
   {
@@ -572,7 +572,7 @@
     "gloss": "this, he, she, it",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 1380,
     "order": 18
   },
   {
@@ -581,7 +581,7 @@
     "gloss": "who, which, what, that",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 1404,
     "order": 15
   },
   {
@@ -590,7 +590,7 @@
     "gloss": "thus, so, in this manner",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 208,
     "order": 79
   },
   {
@@ -599,7 +599,7 @@
     "gloss": "other, another",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 154,
     "order": 105
   },
   {
@@ -608,7 +608,7 @@
     "gloss": "whosoever, whichsoever, whatsoever",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 146,
     "order": 114
   },
   {
@@ -617,7 +617,7 @@
     "gloss": "flesh, body",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 147,
     "order": 120
   },
   {
@@ -626,7 +626,7 @@
     "gloss": "as great, as far, how far",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 108,
     "order": 159
   },
   {
@@ -635,7 +635,7 @@
     "gloss": "entire, whole, complete",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 109,
     "order": 158
   },
   {
@@ -644,7 +644,7 @@
     "gloss": "am dying, die",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 112,
     "order": 148
   },
   {
@@ -653,7 +653,7 @@
     "gloss": "now, already",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 147,
     "order": 113
   },
   {
@@ -662,7 +662,7 @@
     "gloss": "raise",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 143,
     "order": 107
   },
   {
@@ -671,7 +671,7 @@
     "gloss": "slave",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 124,
     "order": 131
   },
   {
@@ -680,7 +680,7 @@
     "gloss": "throw, place",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 125,
     "order": 129
   },
   {
@@ -689,7 +689,7 @@
     "gloss": "age, eternity",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 124,
     "order": 124
   },
   {
@@ -698,7 +698,7 @@
     "gloss": "go, proceed",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 155,
     "order": 118
   },
   {
@@ -707,7 +707,7 @@
     "gloss": "people, crowd",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 144,
     "order": 112
   },
   {
@@ -716,7 +716,7 @@
     "gloss": "send away, dismiss, send out",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 131,
     "order": 127
   },
   {
@@ -725,7 +725,7 @@
     "gloss": "how, in what manner",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 104,
     "order": 141
   },
   {
@@ -734,7 +734,7 @@
     "gloss": "(with dat.) with",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 129,
     "order": 142
   },
   {
@@ -743,7 +743,7 @@
     "gloss": "assembly, congregation, church",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 114,
     "order": 151
   },
   {
@@ -752,7 +752,7 @@
     "gloss": "hand over, hand down, entrust",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 119,
     "order": 140
   },
   {
@@ -761,7 +761,7 @@
     "gloss": "live",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 140,
     "order": 109
   },
   {
@@ -770,7 +770,7 @@
     "gloss": "when, whenever",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 123,
     "order": 139
   },
   {
@@ -779,7 +779,7 @@
     "gloss": "dead, a corpse",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 128,
     "order": 138
   },
   {
@@ -788,7 +788,7 @@
     "gloss": "king, ruler",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 115,
     "order": 149
   },
   {
@@ -797,7 +797,7 @@
     "gloss": "truth, truthfulness",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 109,
     "order": 146
   },
   {
@@ -806,7 +806,7 @@
     "gloss": "sound, voice",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 139,
     "order": 143
   },
   {
@@ -815,7 +815,7 @@
     "gloss": "power, authority",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 102,
     "order": 152
   },
   {
@@ -824,7 +824,7 @@
     "gloss": "good",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 102,
     "order": 144
   },
   {
@@ -833,7 +833,7 @@
     "gloss": "remain, abide, stay",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 117,
     "order": 137
   },
   {
@@ -842,7 +842,7 @@
     "gloss": "seek, look for, ask",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 117,
     "order": 153
   },
   {
@@ -851,7 +851,7 @@
     "gloss": "life",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 135,
     "order": 134
   },
   {
@@ -860,7 +860,7 @@
     "gloss": "John",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 134,
     "order": 136
   },
   {
@@ -869,7 +869,7 @@
     "gloss": "death",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 120,
     "order": 135
   },
   {
@@ -878,7 +878,7 @@
     "gloss": "Peter",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 154,
     "order": 117
   },
   {
@@ -887,7 +887,7 @@
     "gloss": "kingdom, reign",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 162,
     "order": 87
   },
   {
@@ -896,7 +896,7 @@
     "gloss": "crowd, multitude",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 173,
     "order": 98
   },
   {
@@ -905,7 +905,7 @@
     "gloss": "(an untranslatable conditional particle)",
     "pos": "Particle",
     "section": 1,
-    "freq": null,
+    "freq": 165,
     "order": 86
   },
   {
@@ -914,7 +914,7 @@
     "gloss": "depart, go away",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 117,
     "order": 126
   },
   {
@@ -923,7 +923,7 @@
     "gloss": "neither, nor, and not",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 137,
     "order": 115
   },
   {
@@ -932,7 +932,7 @@
     "gloss": "love",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 143,
     "order": 104
   },
   {
@@ -941,7 +941,7 @@
     "gloss": "again, further",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 141,
     "order": 116
   },
   {
@@ -950,7 +950,7 @@
     "gloss": "call, invite",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 148,
     "order": 111
   },
   {
@@ -959,7 +959,7 @@
     "gloss": "prophet",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 145,
     "order": 119
   },
   {
@@ -968,7 +968,7 @@
     "gloss": "look, see",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 132,
     "order": 130
   },
   {
@@ -977,7 +977,7 @@
     "gloss": "grace, favor, kindness",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 155,
     "order": 123
   },
   {
@@ -986,7 +986,7 @@
     "gloss": "it is necessary, one must",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 103,
     "order": 150
   },
   {
@@ -995,7 +995,7 @@
     "gloss": "until, as far as",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 145,
     "order": 108
   },
   {
@@ -1004,7 +1004,7 @@
     "gloss": "truly, amen, so let it be",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 126,
     "order": 125
   },
   {
@@ -1013,7 +1013,7 @@
     "gloss": "(with gen.) on behalf of; (with acc.) above",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 148,
     "order": 122
   },
   {
@@ -1022,7 +1022,7 @@
     "gloss": "leave, let go, pardon",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 143,
     "order": 106
   },
   {
@@ -1031,7 +1031,7 @@
     "gloss": "cause to stand, place, set",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 153,
     "order": 110
   },
   {
@@ -1040,7 +1040,7 @@
     "gloss": "two",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 132,
     "order": 133
   },
   {
@@ -1049,7 +1049,7 @@
     "gloss": "power, strength",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 119,
     "order": 132
   },
   {
@@ -1058,7 +1058,7 @@
     "gloss": "high priest",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 121,
     "order": 128
   },
   {
@@ -1067,7 +1067,7 @@
     "gloss": "body, flesh",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 141,
     "order": 121
   },
   {
@@ -1076,7 +1076,7 @@
     "gloss": "am about to, intend",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 110,
     "order": 156
   },
   {
@@ -1085,7 +1085,7 @@
     "gloss": "judge, decide",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 114,
     "order": 155
   },
   {
@@ -1094,7 +1094,7 @@
     "gloss": "save, heal",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 106,
     "order": 161
   },
   {
@@ -1103,7 +1103,7 @@
     "gloss": "raise, rise, stand up",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 107,
     "order": 147
   },
   {
@@ -1112,7 +1112,7 @@
     "gloss": "love",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 116,
     "order": 145
   },
   {
@@ -1121,7 +1121,7 @@
     "gloss": "soul, life",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 102,
     "order": 162
   },
   {
@@ -1130,7 +1130,7 @@
     "gloss": "work, labor",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 169,
     "order": 92
   },
   {
@@ -1139,7 +1139,7 @@
     "gloss": "house, household, dwelling",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 115,
     "order": 157
   },
   {
@@ -1148,7 +1148,7 @@
     "gloss": "one's own, personal",
     "pos": "Adj",
     "section": 1,
-    "freq": null,
+    "freq": 114,
     "order": 154
   },
   {
@@ -1157,7 +1157,7 @@
     "gloss": "hour, season",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 106,
     "order": 163
   },
   {
@@ -1166,7 +1166,7 @@
     "gloss": "comfort, invite, exhort",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 108,
     "order": 160
   },
   {
@@ -1175,7 +1175,7 @@
     "gloss": "speak, say",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 298,
     "order": 50
   },
   {
@@ -1184,7 +1184,7 @@
     "gloss": "or, either",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 346,
     "order": 48
   },
   {
@@ -1193,7 +1193,7 @@
     "gloss": "hear, listen",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 427,
     "order": 43
   },
   {
@@ -1202,7 +1202,7 @@
     "gloss": "have, hold",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 707,
     "order": 30
   },
   {
@@ -1211,7 +1211,7 @@
     "gloss": "come, go",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 627,
     "order": 29
   },
   {
@@ -1220,7 +1220,7 @@
     "gloss": "day",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 388,
     "order": 49
   },
   {
@@ -1229,7 +1229,7 @@
     "gloss": "if",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 333,
     "order": 45
   },
   {
@@ -1238,7 +1238,7 @@
     "gloss": "offer, give",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 414,
     "order": 44
   },
   {
@@ -1247,7 +1247,7 @@
     "gloss": "brother",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 343,
     "order": 42
   },
   {
@@ -1256,7 +1256,7 @@
     "gloss": "in order that, so that",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 665,
     "order": 31
   },
   {
@@ -1265,7 +1265,7 @@
     "gloss": "through (with gen.); on account of, because of (with acc.)",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 633,
     "order": 26
   },
   {
@@ -1274,7 +1274,7 @@
     "gloss": "man, human being, person",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 550,
     "order": 23
   },
   {
@@ -1283,7 +1283,7 @@
     "gloss": "but, rather, yet",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 636,
     "order": 22
   },
   {
@@ -1292,7 +1292,7 @@
     "gloss": "(with acc.) to, towards, with; (with dat.) near, at",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 697,
     "order": 37
   },
   {
@@ -1301,7 +1301,7 @@
     "gloss": "lord, master, the Lord",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 717,
     "order": 33
   },
   {
@@ -1310,7 +1310,7 @@
     "gloss": "the Anointed One, the Messiah, the Christ",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 530,
     "order": 40
   },
   {
@@ -1319,7 +1319,7 @@
     "gloss": "do, make",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 569,
     "order": 36
   },
   {
@@ -1328,7 +1328,7 @@
     "gloss": "(with gen.) from, away from",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 640,
     "order": 24
   },
   {
@@ -1337,7 +1337,7 @@
     "gloss": "you",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 1073,
     "order": 21
   },
   {
@@ -1346,7 +1346,7 @@
     "gloss": "as, like, so",
     "pos": "Adv",
     "section": 1,
-    "freq": null,
+    "freq": 502,
     "order": 41
   },
   {
@@ -1355,7 +1355,7 @@
     "gloss": "(with gen.) over, upon; (with dat.) on, in; (with acc.) on, against",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 890,
     "order": 28
   },
   {
@@ -1364,7 +1364,7 @@
     "gloss": "see, look upon",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 683,
     "order": 34
   },
   {
@@ -1373,7 +1373,7 @@
     "gloss": "I",
     "pos": "Pron",
     "section": 1,
-    "freq": null,
+    "freq": 1720,
     "order": 4
   },
   {
@@ -1382,7 +1382,7 @@
     "gloss": "Jesus, Joshua",
     "pos": "Noun",
     "section": 1,
-    "freq": null,
+    "freq": 908,
     "order": 10
   },
   {
@@ -1391,7 +1391,7 @@
     "gloss": "but, and",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 2781,
     "order": 3
   },
   {
@@ -1400,7 +1400,7 @@
     "gloss": "that, since, because",
     "pos": "Conj",
     "section": 1,
-    "freq": null,
+    "freq": 1299,
     "order": 16
   },
   {
@@ -1409,7 +1409,7 @@
     "gloss": "say, tell",
     "pos": "Verb",
     "section": 1,
-    "freq": null,
+    "freq": 2258,
     "order": 12
   },
   {
@@ -1418,7 +1418,7 @@
     "gloss": "into, in",
     "pos": "Prep",
     "section": 1,
-    "freq": null,
+    "freq": 1769,
     "order": 6
   },
   {
@@ -1427,7 +1427,7 @@
     "gloss": "open",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 77,
     "order": 206
   },
   {
@@ -1436,7 +1436,7 @@
     "gloss": "go up, embark, ascend",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 82,
     "order": 205
   },
   {
@@ -1445,7 +1445,7 @@
     "gloss": "apostle, messenger",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 79,
     "order": 207
   },
   {
@@ -1454,7 +1454,7 @@
     "gloss": "rule, be first; (mid.) begin",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 208
   },
   {
@@ -1463,7 +1463,7 @@
     "gloss": "each, every one",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 84,
     "order": 210
   },
   {
@@ -1472,7 +1472,7 @@
     "gloss": "just, righteous",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 79,
     "order": 209
   },
   {
@@ -1481,7 +1481,7 @@
     "gloss": "mine, myself",
     "pos": "pron-posses",
     "section": 2,
-    "freq": null,
+    "freq": 69,
     "order": 212
   },
   {
@@ -1490,7 +1490,7 @@
     "gloss": "throw out, expel, cast",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 80,
     "order": 211
   },
   {
@@ -1499,7 +1499,7 @@
     "gloss": "and I, but I",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 213
   },
   {
@@ -1508,7 +1508,7 @@
     "gloss": "go down, come down",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 79,
     "order": 214
   },
   {
@@ -1517,7 +1517,7 @@
     "gloss": "more, rather",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 81,
     "order": 215
   },
   {
@@ -1526,7 +1526,7 @@
     "gloss": "Moses",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 81,
     "order": 217
   },
   {
@@ -1535,7 +1535,7 @@
     "gloss": "where, since, insofar as",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 82,
     "order": 218
   },
   {
@@ -1544,7 +1544,7 @@
     "gloss": "mother",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 84,
     "order": 216
   },
   {
@@ -1553,7 +1553,7 @@
     "gloss": "send",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 79,
     "order": 219
   },
   {
@@ -1562,7 +1562,7 @@
     "gloss": "evil, bad",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 77,
     "order": 220
   },
   {
@@ -1571,7 +1571,7 @@
     "gloss": "go away, depart",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 81,
     "order": 223
   },
   {
@@ -1580,7 +1580,7 @@
     "gloss": "so that, therefore",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 224
   },
   {
@@ -1589,7 +1589,7 @@
     "gloss": "mouth, speech",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 78,
     "order": 221
   },
   {
@@ -1598,7 +1598,7 @@
     "gloss": "Abraham",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 73,
     "order": 225
   },
   {
@@ -1607,7 +1607,7 @@
     "gloss": "lead",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 70,
     "order": 226
   },
   {
@@ -1616,7 +1616,7 @@
     "gloss": "ask, request, ask for",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 70,
     "order": 227
   },
   {
@@ -1625,7 +1625,7 @@
     "gloss": "put to death, kill",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 74,
     "order": 229
   },
   {
@@ -1634,7 +1634,7 @@
     "gloss": "eternal",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 70,
     "order": 228
   },
   {
@@ -1643,7 +1643,7 @@
     "gloss": "twelve",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 75,
     "order": 231
   },
   {
@@ -1652,7 +1652,7 @@
     "gloss": "dip, baptize",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 77,
     "order": 230
   },
   {
@@ -1661,7 +1661,7 @@
     "gloss": "gospel, the Good News",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 76,
     "order": 232
   },
   {
@@ -1670,7 +1670,7 @@
     "gloss": "temple",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 72,
     "order": 233
   },
   {
@@ -1679,7 +1679,7 @@
     "gloss": "head",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 75,
     "order": 235
   },
   {
@@ -1688,7 +1688,7 @@
     "gloss": "Jerusalem",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 252
   },
   {
@@ -1697,7 +1697,7 @@
     "gloss": "drink",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 73,
     "order": 237
   },
   {
@@ -1706,7 +1706,7 @@
     "gloss": "testify, bear witness",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 76,
     "order": 236
   },
   {
@@ -1715,7 +1715,7 @@
     "gloss": "sign, miracle",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 77,
     "order": 240
   },
   {
@@ -1724,7 +1724,7 @@
     "gloss": "face",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 77,
     "order": 238
   },
   {
@@ -1733,7 +1733,7 @@
     "gloss": "fire",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 71,
     "order": 239
   },
   {
@@ -1742,7 +1742,7 @@
     "gloss": "rejoice, am glad",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 74,
     "order": 244
   },
   {
@@ -1751,7 +1751,7 @@
     "gloss": "Simon",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 75,
     "order": 241
   },
   {
@@ -1760,7 +1760,7 @@
     "gloss": "keep, guard, observe",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 71,
     "order": 242
   },
   {
@@ -1769,7 +1769,7 @@
     "gloss": "light, source of light",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 72,
     "order": 243
   },
   {
@@ -1778,7 +1778,7 @@
     "gloss": "scribe, man of learning",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 64,
     "order": 246
   },
   {
@@ -1787,7 +1787,7 @@
     "gloss": "let go, send away, set free",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 67,
     "order": 245
   },
   {
@@ -1796,7 +1796,7 @@
     "gloss": "commandment, order",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 66,
     "order": 249
   },
   {
@@ -1805,7 +1805,7 @@
     "gloss": "and if, whether, if",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 65,
     "order": 248
   },
   {
@@ -1814,7 +1814,7 @@
     "gloss": "demon, evil spirit",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 63,
     "order": 247
   },
   {
@@ -1823,7 +1823,7 @@
     "gloss": "eat",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 65,
     "order": 251
   },
   {
@@ -1832,7 +1832,7 @@
     "gloss": "ask, question, request",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 65,
     "order": 250
   },
   {
@@ -1841,7 +1841,7 @@
     "gloss": "fruit, gain, crop",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 66,
     "order": 254
   },
   {
@@ -1850,7 +1850,7 @@
     "gloss": "Israel",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 68,
     "order": 253
   },
   {
@@ -1859,7 +1859,7 @@
     "gloss": "trustworthy, faithful, believing",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 67,
     "order": 257
   },
   {
@@ -1868,7 +1868,7 @@
     "gloss": "mountain, hill",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 64,
     "order": 256
   },
   {
@@ -1877,7 +1877,7 @@
     "gloss": "ship, vessel, boat",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 66,
     "order": 258
   },
   {
@@ -1886,7 +1886,7 @@
     "gloss": "say",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 68,
     "order": 264
   },
   {
@@ -1895,7 +1895,7 @@
     "gloss": "carry, bear",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 68,
     "order": 263
   },
   {
@@ -1904,7 +1904,7 @@
     "gloss": "old; (as noun) elder",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 67,
     "order": 259
   },
   {
@@ -1913,7 +1913,7 @@
     "gloss": "three",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 67,
     "order": 262
   },
   {
@@ -1922,7 +1922,7 @@
     "gloss": "Sabbath, week",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 68,
     "order": 261
   },
   {
@@ -1931,7 +1931,7 @@
     "gloss": "word, saying; thing, matter",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 67,
     "order": 260
   },
   {
@@ -1940,7 +1940,7 @@
     "gloss": "greet, salute",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 60,
     "order": 266
   },
   {
@@ -1949,7 +1949,7 @@
     "gloss": "beloved, dear",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 265
   },
   {
@@ -1958,7 +1958,7 @@
     "gloss": "Galilee",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 62,
     "order": 267
   },
   {
@@ -1967,7 +1967,7 @@
     "gloss": "David",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 59,
     "order": 268
   },
   {
@@ -1976,7 +1976,7 @@
     "gloss": "think, seem, believe",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 62,
     "order": 270
   },
   {
@@ -1985,7 +1985,7 @@
     "gloss": "glorify, honor, praise",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 271
   },
   {
@@ -1994,7 +1994,7 @@
     "gloss": "teacher",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 60,
     "order": 269
   },
   {
@@ -2003,7 +2003,7 @@
     "gloss": "throne",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 62,
     "order": 275
   },
   {
@@ -2012,7 +2012,7 @@
     "gloss": "now, already",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 58,
     "order": 273
   },
   {
@@ -2021,7 +2021,7 @@
     "gloss": "outside, out",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 62,
     "order": 272
   },
   {
@@ -2030,7 +2030,7 @@
     "gloss": "will, wish, desire",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 62,
     "order": 274
   },
   {
@@ -2039,7 +2039,7 @@
     "gloss": "outer garment, garment",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 59,
     "order": 276
   },
   {
@@ -2048,7 +2048,7 @@
     "gloss": "here",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 60,
     "order": 284
   },
   {
@@ -2057,7 +2057,7 @@
     "gloss": "night, night-time",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 279
   },
   {
@@ -2066,7 +2066,7 @@
     "gloss": "stone",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 60,
     "order": 278
   },
   {
@@ -2075,7 +2075,7 @@
     "gloss": "proclaim, herald, preach",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 277
   },
   {
@@ -2084,7 +2084,7 @@
     "gloss": "worship",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 59,
     "order": 280
   },
   {
@@ -2093,7 +2093,7 @@
     "gloss": "am, exist, be present",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 60,
     "order": 282
   },
   {
@@ -2102,7 +2102,7 @@
     "gloss": "joy, gladness",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 59,
     "order": 283
   },
   {
@@ -2111,7 +2111,7 @@
     "gloss": "gather together",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 59,
     "order": 281
   },
   {
@@ -2120,7 +2120,7 @@
     "gloss": "on the right hand, right",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 54,
     "order": 286
   },
   {
@@ -2129,7 +2129,7 @@
     "gloss": "beginning; ruler, authority",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 56,
     "order": 285
   },
   {
@@ -2138,7 +2138,7 @@
     "gloss": "take, receive",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 56,
     "order": 287
   },
   {
@@ -2147,7 +2147,7 @@
     "gloss": "hope, expectation",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 53,
     "order": 289
   },
   {
@@ -2156,7 +2156,7 @@
     "gloss": "therefore, for this reason",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 52,
     "order": 288
   },
   {
@@ -2165,7 +2165,7 @@
     "gloss": "preach the Good News",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 54,
     "order": 292
   },
   {
@@ -2174,7 +2174,7 @@
     "gloss": "question, ask (a question)",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 56,
     "order": 290
   },
   {
@@ -2183,7 +2183,7 @@
     "gloss": "last, finally",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 53,
     "order": 291
   },
   {
@@ -2192,7 +2192,7 @@
     "gloss": "Mary",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 54,
     "order": 295
   },
   {
@@ -2201,7 +2201,7 @@
     "gloss": "cry out, cry, call out",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 55,
     "order": 294
   },
   {
@@ -2210,7 +2210,7 @@
     "gloss": "see, perceive",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 57,
     "order": 293
   },
   {
@@ -2219,7 +2219,7 @@
     "gloss": "and not, but not",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 54,
     "order": 297
   },
   {
@@ -2228,7 +2228,7 @@
     "gloss": "middle, in the middle",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 61,
     "order": 296
   },
   {
@@ -2237,7 +2237,7 @@
     "gloss": "Pilate",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 55,
     "order": 298
   },
   {
@@ -2246,7 +2246,7 @@
     "gloss": "sow, spread, scatter",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 53,
     "order": 321
   },
   {
@@ -2255,7 +2255,7 @@
     "gloss": "much, many, often",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 412,
     "order": 299
   },
   {
@@ -2264,7 +2264,7 @@
     "gloss": "in order that, so that, that",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 53,
     "order": 314
   },
   {
@@ -2273,7 +2273,7 @@
     "gloss": "wisdom",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 51,
     "order": 320
   },
   {
@@ -2282,7 +2282,7 @@
     "gloss": "convince, persuade; trust in",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 52,
     "order": 319
   },
   {
@@ -2291,7 +2291,7 @@
     "gloss": "ahead; in front of, before",
     "pos": "Prep",
     "section": 2,
-    "freq": null,
+    "freq": 48,
     "order": 309
   },
   {
@@ -2300,7 +2300,7 @@
     "gloss": "give away, give up; render",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 48,
     "order": 305
   },
   {
@@ -2309,7 +2309,7 @@
     "gloss": "blind",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 50,
     "order": 322
   },
   {
@@ -2318,7 +2318,7 @@
     "gloss": "tongue, language",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 50,
     "order": 307
   },
   {
@@ -2327,7 +2327,7 @@
     "gloss": "infant, young child",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 52,
     "order": 316
   },
   {
@@ -2336,7 +2336,7 @@
     "gloss": "as far as, up to, until",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 49,
     "order": 306
   },
   {
@@ -2345,7 +2345,7 @@
     "gloss": "take, receive, take with",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 49,
     "order": 318
   },
   {
@@ -2354,7 +2354,7 @@
     "gloss": "bad, evil",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 50,
     "order": 312
   },
   {
@@ -2363,7 +2363,7 @@
     "gloss": "writing",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 50,
     "order": 308
   },
   {
@@ -2372,7 +2372,7 @@
     "gloss": "by no means, not at all, not",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 53,
     "order": 315
   },
   {
@@ -2381,7 +2381,7 @@
     "gloss": "year",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 49,
     "order": 311
   },
   {
@@ -2390,7 +2390,7 @@
     "gloss": "promise",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 52,
     "order": 310
   },
   {
@@ -2399,7 +2399,7 @@
     "gloss": "happy, blessed",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 50,
     "order": 313
   },
   {
@@ -2408,7 +2408,7 @@
     "gloss": "need, necessity",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 49,
     "order": 324
   },
   {
@@ -2417,7 +2417,7 @@
     "gloss": "third",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 56,
     "order": 303
   },
   {
@@ -2426,7 +2426,7 @@
     "gloss": "assembly, congregation, synagogue",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 56,
     "order": 301
   },
   {
@@ -2435,7 +2435,7 @@
     "gloss": "first, before",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 101,
     "order": 300
   },
   {
@@ -2444,7 +2444,7 @@
     "gloss": "of such a kind, such",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 57,
     "order": 302
   },
   {
@@ -2453,7 +2453,7 @@
     "gloss": "reveal, make known",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 49,
     "order": 323
   },
   {
@@ -2462,7 +2462,7 @@
     "gloss": "time, season",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 54,
     "order": 304
   },
   {
@@ -2471,7 +2471,7 @@
     "gloss": "justice, righteousness",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 92,
     "order": 186
   },
   {
@@ -2480,7 +2480,7 @@
     "gloss": "put, place",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 99,
     "order": 180
   },
   {
@@ -2498,7 +2498,7 @@
     "gloss": "teach",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 97,
     "order": 169
   },
   {
@@ -2507,7 +2507,7 @@
     "gloss": "come near, go to, approach",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 87,
     "order": 203
   },
   {
@@ -2516,7 +2516,7 @@
     "gloss": "bread",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 97,
     "order": 167
   },
   {
@@ -2525,7 +2525,7 @@
     "gloss": "accompany, follow",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 91,
     "order": 184
   },
   {
@@ -2534,7 +2534,7 @@
     "gloss": "when",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 100,
     "order": 175
   },
   {
@@ -2543,7 +2543,7 @@
     "gloss": "there, to that place",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 94,
     "order": 171
   },
   {
@@ -2552,7 +2552,7 @@
     "gloss": "blood",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 97,
     "order": 164
   },
   {
@@ -2561,7 +2561,7 @@
     "gloss": "sit, sit down",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 89,
     "order": 194
   },
   {
@@ -2570,7 +2570,7 @@
     "gloss": "go about, walk around",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 94,
     "order": 177
   },
   {
@@ -2579,7 +2579,7 @@
     "gloss": "fall",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 89,
     "order": 200
   },
   {
@@ -2588,7 +2588,7 @@
     "gloss": "and not, neither, nor",
     "pos": "Conj",
     "section": 2,
-    "freq": null,
+    "freq": 94,
     "order": 199
   },
   {
@@ -2597,7 +2597,7 @@
     "gloss": "pray",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 204
   },
   {
@@ -2606,7 +2606,7 @@
     "gloss": "raise, lift up, take away",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 101,
     "order": 165
   },
   {
@@ -2615,7 +2615,7 @@
     "gloss": "in the presence of, before",
     "pos": "Prep",
     "section": 2,
-    "freq": null,
+    "freq": 93,
     "order": 188
   },
   {
@@ -2624,7 +2624,7 @@
     "gloss": "seven",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 88,
     "order": 189
   },
   {
@@ -2633,7 +2633,7 @@
     "gloss": "fear, am terrified",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 95,
     "order": 183
   },
   {
@@ -2642,7 +2642,7 @@
     "gloss": "beautiful, good",
     "pos": "Adj",
     "section": 2,
-    "freq": null,
+    "freq": 100,
     "order": 173
   },
   {
@@ -2651,7 +2651,7 @@
     "gloss": "destroy, ruin",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 90,
     "order": 185
   },
   {
@@ -2660,7 +2660,7 @@
     "gloss": "place",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 95,
     "order": 181
   },
   {
@@ -2669,7 +2669,7 @@
     "gloss": "one another, each other",
     "pos": "Pron",
     "section": 2,
-    "freq": null,
+    "freq": 100,
     "order": 166
   },
   {
@@ -2678,7 +2678,7 @@
     "gloss": "fill, make full, finish",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 86,
     "order": 201
   },
   {
@@ -2687,7 +2687,7 @@
     "gloss": "bring forth, give birth to",
     "pos": "Verb",
     "section": 2,
-    "freq": null,
+    "freq": 97,
     "order": 168
   },
   {
@@ -2696,7 +2696,7 @@
     "gloss": "immediately, soon",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 192
   },
   {
@@ -2705,7 +2705,7 @@
     "gloss": "way, road, journey",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 101,
     "order": 174
   },
   {
@@ -2714,7 +2714,7 @@
     "gloss": "still, yet, even now",
     "pos": "Adv",
     "section": 2,
-    "freq": null,
+    "freq": 94,
     "order": 191
   },
   {
@@ -2723,7 +2723,7 @@
     "gloss": "eye",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 100,
     "order": 176
   },
   {
@@ -2732,7 +2732,7 @@
     "gloss": "Pharisee",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 101,
     "order": 182
   },
   {
@@ -2741,7 +2741,7 @@
     "gloss": "peace",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 91,
     "order": 187
   },
   {
@@ -2750,7 +2750,7 @@
     "gloss": "child, descendent",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 99,
     "order": 179
   },
   {
@@ -2759,7 +2759,7 @@
     "gloss": "house, household",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 94,
     "order": 198
   },
   {
@@ -2768,7 +2768,7 @@
     "gloss": "sea, lake",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 92,
     "order": 193
   },
   {
@@ -2777,7 +2777,7 @@
     "gloss": "time, right time",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 85,
     "order": 195
   },
   {
@@ -2786,7 +2786,7 @@
     "gloss": "foot",
     "pos": "Noun",
     "section": 2,
-    "freq": null,
+    "freq": 91,
     "order": 202
   },
   {
@@ -2795,7 +2795,7 @@
     "gloss": "temple, shrine",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 336
   },
   {
@@ -2804,7 +2804,7 @@
     "gloss": "woe!, alas!",
     "pos": "Interj",
     "section": 3,
-    "freq": null,
+    "freq": 46,
     "order": 337
   },
   {
@@ -2813,7 +2813,7 @@
     "gloss": "take hold, hold fast",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 332
   },
   {
@@ -2822,7 +2822,7 @@
     "gloss": "wild beast, animal",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 329
   },
   {
@@ -2831,7 +2831,7 @@
     "gloss": "deserted, empty; desert, wilderness",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 48,
     "order": 328
   },
   {
@@ -2840,7 +2840,7 @@
     "gloss": "report, announce, proclaim",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 326
   },
   {
@@ -2849,7 +2849,7 @@
     "gloss": "seat, sit down",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 331
   },
   {
@@ -2858,7 +2858,7 @@
     "gloss": "bring to, offer",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 49,
     "order": 340
   },
   {
@@ -2867,7 +2867,7 @@
     "gloss": "(with gen.) before, in front of",
     "pos": "Prep",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 339
   },
   {
@@ -2876,7 +2876,7 @@
     "gloss": "judging, judgment",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 333
   },
   {
@@ -2885,7 +2885,7 @@
     "gloss": "hasten; pursue, persecute",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 44,
     "order": 327
   },
   {
@@ -2894,7 +2894,7 @@
     "gloss": "persecution, affliction, distress",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 330
   },
   {
@@ -2903,7 +2903,7 @@
     "gloss": "little, small",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 334
   },
   {
@@ -2912,7 +2912,7 @@
     "gloss": "deliverance, salvation",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 342
   },
   {
@@ -2921,7 +2921,7 @@
     "gloss": "fear",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 48,
     "order": 343
   },
   {
@@ -2930,7 +2930,7 @@
     "gloss": "guard, prison, watch",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 46,
     "order": 344
   },
   {
@@ -2939,7 +2939,7 @@
     "gloss": "crucify",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 46,
     "order": 341
   },
   {
@@ -2948,7 +2948,7 @@
     "gloss": "sinful",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 325
   },
   {
@@ -2957,7 +2957,7 @@
     "gloss": "alone, only",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 48,
     "order": 335
   },
   {
@@ -2966,7 +2966,7 @@
     "gloss": "no longer, no more",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 47,
     "order": 338
   },
   {
@@ -2975,7 +2975,7 @@
     "gloss": "seed, offspring",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 44,
     "order": 364
   },
   {
@@ -2984,7 +2984,7 @@
     "gloss": "dwell in, live",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 358
   },
   {
@@ -2993,7 +2993,7 @@
     "gloss": "loose, untie, set free",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 359
   },
   {
@@ -3002,7 +3002,7 @@
     "gloss": "part, portion",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 360
   },
   {
@@ -3011,7 +3011,7 @@
     "gloss": "fresh, new",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 357
   },
   {
@@ -3020,7 +3020,7 @@
     "gloss": "where",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 363
   },
   {
@@ -3029,7 +3029,7 @@
     "gloss": "like, similar to",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 45,
     "order": 361
   },
   {
@@ -3038,7 +3038,7 @@
     "gloss": "Judea",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 356
   },
   {
@@ -3047,7 +3047,7 @@
     "gloss": "James",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 355
   },
   {
@@ -3056,7 +3056,7 @@
     "gloss": "when, at what time",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 19,
     "order": 362
   },
   {
@@ -3065,7 +3065,7 @@
     "gloss": "wonder, marvel",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 353
   },
   {
@@ -3074,7 +3074,7 @@
     "gloss": "care for, heal",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 354
   },
   {
@@ -3083,7 +3083,7 @@
     "gloss": "sin",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 44,
     "order": 345
   },
   {
@@ -3092,7 +3092,7 @@
     "gloss": "beseech, beg",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 589
   },
   {
@@ -3101,7 +3101,7 @@
     "gloss": "resurrection",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 346
   },
   {
@@ -3110,7 +3110,7 @@
     "gloss": "come to know, recognize, understand",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 44,
     "order": 351
   },
   {
@@ -3119,7 +3119,7 @@
     "gloss": "generation, family",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 347
   },
   {
@@ -3128,7 +3128,7 @@
     "gloss": "come near, approach",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 350
   },
   {
@@ -3137,7 +3137,7 @@
     "gloss": "Herod",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 352
   },
   {
@@ -3146,7 +3146,7 @@
     "gloss": "second, in the second place",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 348
   },
   {
@@ -3155,7 +3155,7 @@
     "gloss": "always, at all times",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 376
   },
   {
@@ -3164,7 +3164,7 @@
     "gloss": "reckon, count, think",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 40,
     "order": 373
   },
   {
@@ -3173,7 +3173,7 @@
     "gloss": "summon, call",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 383
   },
   {
@@ -3182,7 +3182,7 @@
     "gloss": "worthy, fit",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 365
   },
   {
@@ -3191,7 +3191,7 @@
     "gloss": "pass through, go through",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 366
   },
   {
@@ -3200,7 +3200,7 @@
     "gloss": "today, now",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 379
   },
   {
@@ -3209,7 +3209,7 @@
     "gloss": "price, honor, value",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 382
   },
   {
@@ -3218,7 +3218,7 @@
     "gloss": "put, place upon, lay on",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 367
   },
   {
@@ -3227,7 +3227,7 @@
     "gloss": "present, come up to and stand by",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 377
   },
   {
@@ -3236,7 +3236,7 @@
     "gloss": "of yourself, yourself",
     "pos": "pron-reflex",
     "section": 3,
-    "freq": null,
+    "freq": 43,
     "order": 378
   },
   {
@@ -3245,7 +3245,7 @@
     "gloss": "make ready, prepare",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 369
   },
   {
@@ -3254,7 +3254,7 @@
     "gloss": "apart from, without",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 384
   },
   {
@@ -3263,7 +3263,7 @@
     "gloss": "sufficient, large",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 40,
     "order": 371
   },
   {
@@ -3272,7 +3272,7 @@
     "gloss": "end, purpose",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 380
   },
   {
@@ -3281,7 +3281,7 @@
     "gloss": "few, little",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 375
   },
   {
@@ -3290,7 +3290,7 @@
     "gloss": "four",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 381
   },
   {
@@ -3299,7 +3299,7 @@
     "gloss": "work, do, accomplish",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 368
   },
   {
@@ -3308,7 +3308,7 @@
     "gloss": "bless",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 370
   },
   {
@@ -3317,7 +3317,7 @@
     "gloss": "weep, mourn, cry",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 40,
     "order": 372
   },
   {
@@ -3326,7 +3326,7 @@
     "gloss": "try, tempt, test",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 399
   },
   {
@@ -3335,7 +3335,7 @@
     "gloss": "thank, give thanks",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 392
   },
   {
@@ -3344,7 +3344,7 @@
     "gloss": "make righteous, justify",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 389
   },
   {
@@ -3353,7 +3353,7 @@
     "gloss": "ruler, lord, authority",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 385
   },
   {
@@ -3362,7 +3362,7 @@
     "gloss": "wait at table, serve",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 388
   },
   {
@@ -3371,7 +3371,7 @@
     "gloss": "have an abundance, rich",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 401
   },
   {
@@ -3380,7 +3380,7 @@
     "gloss": "build, build up, edify",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 397
   },
   {
@@ -3389,7 +3389,7 @@
     "gloss": "do, accomplish",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 403
   },
   {
@@ -3398,7 +3398,7 @@
     "gloss": "desire, lust, longing",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 391
   },
   {
@@ -3407,7 +3407,7 @@
     "gloss": "suffer, endure",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 41,
     "order": 398
   },
   {
@@ -3416,7 +3416,7 @@
     "gloss": "tomb, sepulcher, grave",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 396
   },
   {
@@ -3425,7 +3425,7 @@
     "gloss": "the Slanderer, the Devil",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 387
   },
   {
@@ -3434,7 +3434,7 @@
     "gloss": "subject, subordinate",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 404
   },
   {
@@ -3443,7 +3443,7 @@
     "gloss": "Judas, Jude",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 394
   },
   {
@@ -3452,7 +3452,7 @@
     "gloss": "five",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 400
   },
   {
@@ -3461,7 +3461,7 @@
     "gloss": "of myself, myself",
     "pos": "pron-reflex",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 390
   },
   {
@@ -3470,7 +3470,7 @@
     "gloss": "hate, detest",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 40,
     "order": 395
   },
   {
@@ -3479,7 +3479,7 @@
     "gloss": "lead astray, deceive",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 402
   },
   {
@@ -3488,7 +3488,7 @@
     "gloss": "door",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 393
   },
   {
@@ -3497,7 +3497,7 @@
     "gloss": "will, desire, wish",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 386
   },
   {
@@ -3506,7 +3506,7 @@
     "gloss": "sheep",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 39,
     "order": 420
   },
   {
@@ -3515,7 +3515,7 @@
     "gloss": "Satan, the Adversary",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 422
   },
   {
@@ -3524,7 +3524,7 @@
     "gloss": "touch; kindle; hold",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 35,
     "order": 406
   },
   {
@@ -3533,7 +3533,7 @@
     "gloss": "turn back to; turn, turn around",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 408
   },
   {
@@ -3542,7 +3542,7 @@
     "gloss": "Joseph",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 35,
     "order": 409
   },
   {
@@ -3551,7 +3551,7 @@
     "gloss": "boast, glory",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 411
   },
   {
@@ -3560,7 +3560,7 @@
     "gloss": "field, farm",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 405
   },
   {
@@ -3569,7 +3569,7 @@
     "gloss": "witness",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 35,
     "order": 413
   },
   {
@@ -3578,7 +3578,7 @@
     "gloss": "just as, as",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 424
   },
   {
@@ -3587,7 +3587,7 @@
     "gloss": "anger, indignation",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 415
   },
   {
@@ -3596,7 +3596,7 @@
     "gloss": "ear",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 416
   },
   {
@@ -3605,7 +3605,7 @@
     "gloss": "witness, testimony",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 37,
     "order": 412
   },
   {
@@ -3614,7 +3614,7 @@
     "gloss": "owe, ought",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 35,
     "order": 417
   },
   {
@@ -3623,7 +3623,7 @@
     "gloss": "Philip",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 423
   },
   {
@@ -3632,7 +3632,7 @@
     "gloss": "well, beautifully",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 410
   },
   {
@@ -3641,7 +3641,7 @@
     "gloss": "prayer",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 421
   },
   {
@@ -3650,7 +3650,7 @@
     "gloss": "come; am present",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 38,
     "order": 418
   },
   {
@@ -3659,7 +3659,7 @@
     "gloss": "now, just now",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 407
   },
   {
@@ -3668,7 +3668,7 @@
     "gloss": "circumcision",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 419
   },
   {
@@ -3677,7 +3677,7 @@
     "gloss": "behind, back",
     "pos": "Prep",
     "section": 3,
-    "freq": null,
+    "freq": 35,
     "order": 414
   },
   {
@@ -3686,7 +3686,7 @@
     "gloss": "poor",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 443
   },
   {
@@ -3695,7 +3695,7 @@
     "gloss": "go out",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 436
   },
   {
@@ -3704,7 +3704,7 @@
     "gloss": "member, part",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 437
   },
   {
@@ -3713,7 +3713,7 @@
     "gloss": "covenant, will, testament",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 433
   },
   {
@@ -3722,7 +3722,7 @@
     "gloss": "point out, show",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 432
   },
   {
@@ -3731,7 +3731,7 @@
     "gloss": "am weak, sick",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 429
   },
   {
@@ -3740,7 +3740,7 @@
     "gloss": "blaspheme",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 431
   },
   {
@@ -3749,7 +3749,7 @@
     "gloss": "service",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 434
   },
   {
@@ -3758,7 +3758,7 @@
     "gloss": "powerful, able, possible",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 435
   },
   {
@@ -3767,7 +3767,7 @@
     "gloss": "repent, am converted",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 438
   },
   {
@@ -3776,7 +3776,7 @@
     "gloss": "book, scroll",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 430
   },
   {
@@ -3785,7 +3785,7 @@
     "gloss": "deny",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 428
   },
   {
@@ -3794,7 +3794,7 @@
     "gloss": "yes, indeed",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 440
   },
   {
@@ -3803,7 +3803,7 @@
     "gloss": "then, therefore, since, so",
     "pos": "Conj",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 427
   },
   {
@@ -3812,7 +3812,7 @@
     "gloss": "nor, neither, and not",
     "pos": "Conj",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 439
   },
   {
@@ -3821,7 +3821,7 @@
     "gloss": "of what kind? which? what?",
     "pos": "Interrog",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 442
   },
   {
@@ -3830,7 +3830,7 @@
     "gloss": "turn back, return",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 36,
     "order": 444
   },
   {
@@ -3839,7 +3839,7 @@
     "gloss": "all, every",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 42,
     "order": 426
   },
   {
@@ -3848,7 +3848,7 @@
     "gloss": "wine",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 34,
     "order": 441
   },
   {
@@ -3857,7 +3857,7 @@
     "gloss": "read",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 425
   },
   {
@@ -3866,7 +3866,7 @@
     "gloss": "drinking cup, a drink",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 459
   },
   {
@@ -3875,7 +3875,7 @@
     "gloss": "priest",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 33,
     "order": 451
   },
   {
@@ -3884,7 +3884,7 @@
     "gloss": "shine, (mid.) appear, become visible",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 462
   },
   {
@@ -3893,7 +3893,7 @@
     "gloss": "once, formerly",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 458
   },
   {
@@ -3902,7 +3902,7 @@
     "gloss": "conscience",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 460
   },
   {
@@ -3911,7 +3911,7 @@
     "gloss": "endurance, steadfastness, patience",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 461
   },
   {
@@ -3920,7 +3920,7 @@
     "gloss": "multitude, crowd",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 456
   },
   {
@@ -3929,7 +3929,7 @@
     "gloss": "keep, guard, observe; watch",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 463
   },
   {
@@ -3938,7 +3938,7 @@
     "gloss": "but, except",
     "pos": "Conj",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 457
   },
   {
@@ -3947,7 +3947,7 @@
     "gloss": "confidence, openness",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 455
   },
   {
@@ -3956,7 +3956,7 @@
     "gloss": "hope, expect",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 447
   },
   {
@@ -3965,7 +3965,7 @@
     "gloss": "command, charge",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 454
   },
   {
@@ -3974,7 +3974,7 @@
     "gloss": "wind",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 446
   },
   {
@@ -3983,7 +3983,7 @@
     "gloss": "sun, sunlight",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 450
   },
   {
@@ -3992,7 +3992,7 @@
     "gloss": "so, likewise, similarly",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 453
   },
   {
@@ -4001,7 +4001,7 @@
     "gloss": "unclean, impure",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 445
   },
   {
@@ -4010,7 +4010,7 @@
     "gloss": "hostile; enemy",
     "pos": "Adj",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 449
   },
   {
@@ -4019,7 +4019,7 @@
     "gloss": "it is permitted, lawful, possible",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 32,
     "order": 448
   },
   {
@@ -4028,7 +4028,7 @@
     "gloss": "make clean; purify",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 452
   },
   {
@@ -4037,7 +4037,7 @@
     "gloss": "tribe, race, nation",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 464
   },
   {
@@ -4046,7 +4046,7 @@
     "gloss": "knowledge, wisdom",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 467
   },
   {
@@ -4055,7 +4055,7 @@
     "gloss": "the feast of Passover, the Passover lamb",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 480
   },
   {
@@ -4064,7 +4064,7 @@
     "gloss": "pass by, (pass.) pass away",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 479
   },
   {
@@ -4073,7 +4073,7 @@
     "gloss": "call, invite",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 482
   },
   {
@@ -4082,7 +4082,7 @@
     "gloss": "wages, reward",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 477
   },
   {
@@ -4091,7 +4091,7 @@
     "gloss": "exhortation, entreaty",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 478
   },
   {
@@ -4100,7 +4100,7 @@
     "gloss": "waiter, servant, deacon",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 468
   },
   {
@@ -4109,7 +4109,7 @@
     "gloss": "darkness",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 483
   },
   {
@@ -4118,7 +4118,7 @@
     "gloss": "near",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 470
   },
   {
@@ -4127,7 +4127,7 @@
     "gloss": "come with, accompany",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 484
   },
   {
@@ -4136,7 +4136,7 @@
     "gloss": "Elijah",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 474
   },
   {
@@ -4145,7 +4145,7 @@
     "gloss": "Caesar, emperor",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 475
   },
   {
@@ -4154,7 +4154,7 @@
     "gloss": "buy",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 465
   },
   {
@@ -4163,7 +4163,7 @@
     "gloss": "teaching, doctrine",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 469
   },
   {
@@ -4172,7 +4172,7 @@
     "gloss": "name; (mid.) call upon",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 472
   },
   {
@@ -4181,7 +4181,7 @@
     "gloss": "pity, have mercy",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 31,
     "order": 471
   },
   {
@@ -4190,7 +4190,7 @@
     "gloss": "whence",
     "pos": "Adv",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 481
   },
   {
@@ -4199,7 +4199,7 @@
     "gloss": "rebuke, admonish",
     "pos": "Verb",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 473
   },
   {
@@ -4208,7 +4208,7 @@
     "gloss": "lamb, sheep",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 30,
     "order": 466
   },
   {
@@ -4217,7 +4217,7 @@
     "gloss": "sword",
     "pos": "Noun",
     "section": 3,
-    "freq": null,
+    "freq": 29,
     "order": 476
   },
   {
@@ -4226,7 +4226,7 @@
     "gloss": "sacrifice, offering",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 494
   },
   {
@@ -4235,7 +4235,7 @@
     "gloss": "put on, clothe",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 491
   },
   {
@@ -4244,7 +4244,7 @@
     "gloss": "am strong, able; am powerful",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 496
   },
   {
@@ -4253,7 +4253,7 @@
     "gloss": "make holy, sanctify",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 485
   },
   {
@@ -4262,7 +4262,7 @@
     "gloss": "beloved, loving; friend",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 29,
     "order": 503
   },
   {
@@ -4271,7 +4271,7 @@
     "gloss": "daughter",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 493
   },
   {
@@ -4280,7 +4280,7 @@
     "gloss": "end, accomplish",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 501
   },
   {
@@ -4289,7 +4289,7 @@
     "gloss": "lead, guide; think",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 492
   },
   {
@@ -4298,7 +4298,7 @@
     "gloss": "true, real, genuine",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 487
   },
   {
@@ -4307,7 +4307,7 @@
     "gloss": "do wrong, treat unjustly",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 486
   },
   {
@@ -4316,7 +4316,7 @@
     "gloss": "conquer, overcome",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 497
   },
   {
@@ -4325,7 +4325,7 @@
     "gloss": "cause to stumble",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 29,
     "order": 500
   },
   {
@@ -4334,7 +4334,7 @@
     "gloss": "Barnabas",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 488
   },
   {
@@ -4343,7 +4343,7 @@
     "gloss": "marry",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 490
   },
   {
@@ -4352,7 +4352,7 @@
     "gloss": "flee, escape",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 30,
     "order": 502
   },
   {
@@ -4361,7 +4361,7 @@
     "gloss": "region, land, fields, country",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 504
   },
   {
@@ -4370,7 +4370,7 @@
     "gloss": "foretell, prophesy",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 499
   },
   {
@@ -4379,7 +4379,7 @@
     "gloss": "rich",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 498
   },
   {
@@ -4388,7 +4388,7 @@
     "gloss": "carry, carry away, bear",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 489
   },
   {
@@ -4397,7 +4397,7 @@
     "gloss": "strong, mighty, powerful",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 28,
     "order": 495
   },
   {
@@ -4406,7 +4406,7 @@
     "gloss": "uncover, bring to light, reveal",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 507
   },
   {
@@ -4415,7 +4415,7 @@
     "gloss": "unconcealed, true",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 506
   },
   {
@@ -4424,7 +4424,7 @@
     "gloss": "make known, declare, reveal",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 508
   },
   {
@@ -4433,7 +4433,7 @@
     "gloss": "pour out, shed",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 511
   },
   {
@@ -4442,7 +4442,7 @@
     "gloss": "pity, mercy, compassion",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 512
   },
   {
@@ -4451,7 +4451,7 @@
     "gloss": "ten",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 509
   },
   {
@@ -4460,7 +4460,7 @@
     "gloss": "because of, on account of",
     "pos": "Conj",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 514
   },
   {
@@ -4469,7 +4469,7 @@
     "gloss": "Hellene, a Greek",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 513
   },
   {
@@ -4478,7 +4478,7 @@
     "gloss": "sister",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 505
   },
   {
@@ -4487,7 +4487,7 @@
     "gloss": "thence, from that place, from there",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 510
   },
   {
@@ -4496,7 +4496,7 @@
     "gloss": "bring to naught, sever, abolish",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 517
   },
   {
@@ -4505,7 +4505,7 @@
     "gloss": "village",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 519
   },
   {
@@ -4514,7 +4514,7 @@
     "gloss": "cross",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 524
   },
   {
@@ -4523,7 +4523,7 @@
     "gloss": "mystery; secret rites",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 520
   },
   {
@@ -4532,7 +4532,7 @@
     "gloss": "not yet",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 521
   },
   {
@@ -4541,7 +4541,7 @@
     "gloss": "because, since, for",
     "pos": "Conj",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 515
   },
   {
@@ -4550,7 +4550,7 @@
     "gloss": "Jacob",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 516
   },
   {
@@ -4559,7 +4559,7 @@
     "gloss": "yours, thy, thine",
     "pos": "Pron",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 523
   },
   {
@@ -4568,7 +4568,7 @@
     "gloss": "judgment, verdict, condemnation",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 518
   },
   {
@@ -4577,7 +4577,7 @@
     "gloss": "how much, how great, how many?",
     "pos": "Pron",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 522
   },
   {
@@ -4586,7 +4586,7 @@
     "gloss": "soldier",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 541
   },
   {
@@ -4595,7 +4595,7 @@
     "gloss": "white, bright",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 536
   },
   {
@@ -4604,7 +4604,7 @@
     "gloss": "am a slave, am subject to, serve",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 530
   },
   {
@@ -4613,7 +4613,7 @@
     "gloss": "swear, take an oath",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 538
   },
   {
@@ -4622,7 +4622,7 @@
     "gloss": "heal",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 533
   },
   {
@@ -4631,7 +4631,7 @@
     "gloss": "confess, profess, acknowledge",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 539
   },
   {
@@ -4640,7 +4640,7 @@
     "gloss": "cause someone distress",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 537
   },
   {
@@ -4649,7 +4649,7 @@
     "gloss": "command, order, urge",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 535
   },
   {
@@ -4658,7 +4658,7 @@
     "gloss": "tree",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 529
   },
   {
@@ -4667,7 +4667,7 @@
     "gloss": "clean, pure, unstained",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 534
   },
   {
@@ -4676,7 +4676,7 @@
     "gloss": "weak, infirm, sick, powerless",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 528
   },
   {
@@ -4685,7 +4685,7 @@
     "gloss": "unrighteousness, wrongdoing",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 525
   },
   {
@@ -4694,7 +4694,7 @@
     "gloss": "think, judge, observe",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 27,
     "order": 543
   },
   {
@@ -4703,7 +4703,7 @@
     "gloss": "festival, feast",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 531
   },
   {
@@ -4712,7 +4712,7 @@
     "gloss": "have come, am present",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 532
   },
   {
@@ -4721,7 +4721,7 @@
     "gloss": "look up, recover my sight; gain sight",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 527
   },
   {
@@ -4730,7 +4730,7 @@
     "gloss": "Egypt",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 526
   },
   {
@@ -4739,7 +4739,7 @@
     "gloss": "widow",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 544
   },
   {
@@ -4748,7 +4748,7 @@
     "gloss": "consider, understand; comprehend",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 26,
     "order": 542
   },
   {
@@ -4757,7 +4757,7 @@
     "gloss": "boy or girl child",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 558
   },
   {
@@ -4766,7 +4766,7 @@
     "gloss": "fornication, idolatry, prostitution",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 562
   },
   {
@@ -4775,7 +4775,7 @@
     "gloss": "take up, abolish, murder",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 546
   },
   {
@@ -4784,7 +4784,7 @@
     "gloss": "pay attention to, devote myself to",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 563
   },
   {
@@ -4793,7 +4793,7 @@
     "gloss": "presence, coming, arrival, advent",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 560
   },
   {
@@ -4802,7 +4802,7 @@
     "gloss": "am present, am near",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 559
   },
   {
@@ -4811,7 +4811,7 @@
     "gloss": "want of strength, weakness, illness",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 547
   },
   {
@@ -4820,7 +4820,7 @@
     "gloss": "where, whither, when",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 557
   },
   {
@@ -4829,7 +4829,7 @@
     "gloss": "on this account, because, for",
     "pos": "Conj",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 549
   },
   {
@@ -4838,7 +4838,7 @@
     "gloss": "love, like",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 564
   },
   {
@@ -4847,7 +4847,7 @@
     "gloss": "star",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 548
   },
   {
@@ -4856,7 +4856,7 @@
     "gloss": "hearing, ear, report",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 545
   },
   {
@@ -4865,7 +4865,7 @@
     "gloss": "lie, recline, am laid",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 552
   },
   {
@@ -4874,7 +4874,7 @@
     "gloss": "letter, dispatch, epistle",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 550
   },
   {
@@ -4883,7 +4883,7 @@
     "gloss": "cloud",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 25,
     "order": 555
   },
   {
@@ -4892,7 +4892,7 @@
     "gloss": "mind, reasoning faculty, understanding",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 556
   },
   {
@@ -4901,7 +4901,7 @@
     "gloss": "fill, fulfill",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 561
   },
   {
@@ -4910,7 +4910,7 @@
     "gloss": "over, beyond, across",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 578
   },
   {
@@ -4919,7 +4919,7 @@
     "gloss": "Timothy",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 583
   },
   {
@@ -4928,7 +4928,7 @@
     "gloss": "lead up, put to sea, set sail",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 566
   },
   {
@@ -4937,7 +4937,7 @@
     "gloss": "image, likeness, bust",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 568
   },
   {
@@ -4946,7 +4946,7 @@
     "gloss": "show favor to, forgive, give freely",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 584
   },
   {
@@ -4955,7 +4955,7 @@
     "gloss": "cast around, clothe; put on",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 579
   },
   {
@@ -4964,7 +4964,7 @@
     "gloss": "vessel, utensil, jar",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 580
   },
   {
@@ -4973,7 +4973,7 @@
     "gloss": "altar",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 572
   },
   {
@@ -4982,7 +4982,7 @@
     "gloss": "belly, womb, inner man",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 574
   },
   {
@@ -4991,7 +4991,7 @@
     "gloss": "prevent, hinder, forbid",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 575
   },
   {
@@ -5000,7 +5000,7 @@
     "gloss": "remember, recall",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 576
   },
   {
@@ -5009,7 +5009,7 @@
     "gloss": "am hungry, hunger",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 577
   },
   {
@@ -5018,7 +5018,7 @@
     "gloss": "see, behold, contemplate; look at",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 571
   },
   {
@@ -5027,7 +5027,7 @@
     "gloss": "unbelieving, incredulous, faithless",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 567
   },
   {
@@ -5036,7 +5036,7 @@
     "gloss": "vineyard",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 565
   },
   {
@@ -5045,7 +5045,7 @@
     "gloss": "accuse, charge, prosecute",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 573
   },
   {
@@ -5054,7 +5054,7 @@
     "gloss": "free, delivered from obligation",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 569
   },
   {
@@ -5063,7 +5063,7 @@
     "gloss": "am awake, am vigilant, watch",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 588
   },
   {
@@ -5072,7 +5072,7 @@
     "gloss": "Macedonia",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 598
   },
   {
@@ -5081,7 +5081,7 @@
     "gloss": "put to the test, prove, examine, approve",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 590
   },
   {
@@ -5090,7 +5090,7 @@
     "gloss": "no longer",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 600
   },
   {
@@ -5099,7 +5099,7 @@
     "gloss": "blow, stripe, wound",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 601
   },
   {
@@ -5108,7 +5108,7 @@
     "gloss": "sleep, am sleeping",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 594
   },
   {
@@ -5117,7 +5117,7 @@
     "gloss": "repentance, change of mind, conversion",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 599
   },
   {
@@ -5126,7 +5126,7 @@
     "gloss": "grow weary, toil, work",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 597
   },
   {
@@ -5135,7 +5135,7 @@
     "gloss": "chosen, elect",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 592
   },
   {
@@ -5144,7 +5144,7 @@
     "gloss": "cause to increase, become greater, grow",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 587
   },
   {
@@ -5153,7 +5153,7 @@
     "gloss": "and he, and that one",
     "pos": "pron",
     "section": 4,
-    "freq": null,
+    "freq": 24,
     "order": 595
   },
   {
@@ -5162,7 +5162,7 @@
     "gloss": "thousand; a group of a thousand",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 604
   },
   {
@@ -5171,7 +5171,7 @@
     "gloss": "sell",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 603
   },
   {
@@ -5180,7 +5180,7 @@
     "gloss": "in place of, for, instead of",
     "pos": "Prep",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 586
   },
   {
@@ -5189,7 +5189,7 @@
     "gloss": "produce, accomplish, bring about",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 596
   },
   {
@@ -5198,7 +5198,7 @@
     "gloss": "Isaiah",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 23,
     "order": 593
   },
   {
@@ -5207,7 +5207,7 @@
     "gloss": "do not know, am ignorant of",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 585
   },
   {
@@ -5216,7 +5216,7 @@
     "gloss": "riches, wealth",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 602
   },
   {
@@ -5225,7 +5225,7 @@
     "gloss": "choose, select, elect",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 591
   },
   {
@@ -5234,7 +5234,7 @@
     "gloss": "tent, tabernacle, dwelling",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 639
   },
   {
@@ -5243,7 +5243,7 @@
     "gloss": "council, Sanhedrin",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 618
   },
   {
@@ -5252,7 +5252,7 @@
     "gloss": "reap, gather; harvest",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 611
   },
   {
@@ -5261,7 +5261,7 @@
     "gloss": "run, exercise myself",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 642
   },
   {
@@ -5270,7 +5270,7 @@
     "gloss": "stand by, am urgent, approach",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 631
   },
   {
@@ -5279,7 +5279,7 @@
     "gloss": "staff, cross, wood, tree",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 637
   },
   {
@@ -5288,7 +5288,7 @@
     "gloss": "fast",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 636
   },
   {
@@ -5297,7 +5297,7 @@
     "gloss": "governor, procurator",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 632
   },
   {
@@ -5306,7 +5306,7 @@
     "gloss": "as if, as it were, like, about",
     "pos": "Adv",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 624
   },
   {
@@ -5315,7 +5315,7 @@
     "gloss": "listen, obey",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 622
   },
   {
@@ -5324,7 +5324,7 @@
     "gloss": "witness, evidence, testimony",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 635
   },
   {
@@ -5333,7 +5333,7 @@
     "gloss": "lead forth, go before",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 638
   },
   {
@@ -5342,7 +5342,7 @@
     "gloss": "Isaac",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 633
   },
   {
@@ -5351,7 +5351,7 @@
     "gloss": "so great, so far, so much",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 641
   },
   {
@@ -5360,7 +5360,7 @@
     "gloss": "foreskin; uncircumcision, the Gentiles",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 625
   },
   {
@@ -5369,7 +5369,7 @@
     "gloss": "knowledge, discernment, recognition",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 630
   },
   {
@@ -5378,7 +5378,7 @@
     "gloss": "instruction, teaching",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 608
   },
   {
@@ -5387,7 +5387,7 @@
     "gloss": "turn, change; am converted",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 617
   },
   {
@@ -5396,7 +5396,7 @@
     "gloss": "wise",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 640
   },
   {
@@ -5405,7 +5405,7 @@
     "gloss": "silver, shekel, money",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 606
   },
   {
@@ -5414,7 +5414,7 @@
     "gloss": "forty",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 22,
     "order": 620
   },
   {
@@ -5423,7 +5423,7 @@
     "gloss": "value at a price, honor",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 621
   },
   {
@@ -5432,7 +5432,7 @@
     "gloss": "rite of baptism",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 626
   },
   {
@@ -5441,7 +5441,7 @@
     "gloss": "am well-pleased, am pleased with",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 610
   },
   {
@@ -5450,7 +5450,7 @@
     "gloss": "trial, testing, temptation",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 615
   },
   {
@@ -5459,7 +5459,7 @@
     "gloss": "centurion, captain",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 20,
     "order": 629
   },
   {
@@ -5468,7 +5468,7 @@
     "gloss": "set, constitute, establish, appoint",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 612
   },
   {
@@ -5477,7 +5477,7 @@
     "gloss": "abundant, greater, superfluous",
     "pos": "Adj",
     "section": 4,
-    "freq": null,
+    "freq": 13,
     "order": 616
   },
   {
@@ -5486,7 +5486,7 @@
     "gloss": "military tribune; leader of a thousand",
     "pos": "Noun",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 623
   },
   {
@@ -5495,7 +5495,7 @@
     "gloss": "fall asleep, sleep, die",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 684
   },
   {
@@ -5504,7 +5504,7 @@
     "gloss": "outburst of passion, wrath, anger",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 678
   },
   {
@@ -5513,7 +5513,7 @@
     "gloss": "throw upon, lay, put around",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 676
   },
   {
@@ -5522,7 +5522,7 @@
     "gloss": "supplication, prayer, entreaty",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 671
   },
   {
@@ -5531,7 +5531,7 @@
     "gloss": "set before, serve, entrust",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 662
   },
   {
@@ -5540,7 +5540,7 @@
     "gloss": "necessity, constraint, distress",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 685
   },
   {
@@ -5549,7 +5549,7 @@
     "gloss": "inherit, acquire, obtain",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 683
   },
   {
@@ -5558,7 +5558,7 @@
     "gloss": "act of building, building, edification",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 693
   },
   {
@@ -5567,7 +5567,7 @@
     "gloss": "month",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 691
   },
   {
@@ -5576,7 +5576,7 @@
     "gloss": "bond, chain, fetter",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 672
   },
   {
@@ -5585,7 +5585,7 @@
     "gloss": "many times, often",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 697
   },
   {
@@ -5594,7 +5594,7 @@
     "gloss": "journey into, go in",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 673
   },
   {
@@ -5603,7 +5603,7 @@
     "gloss": "blasphemy",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 670
   },
   {
@@ -5612,7 +5612,7 @@
     "gloss": "instantly, immediately",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 694
   },
   {
@@ -5621,7 +5621,7 @@
     "gloss": "apparent, clear, visible, manifest",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 703
   },
   {
@@ -5630,7 +5630,7 @@
     "gloss": "as far as, until",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 690
   },
   {
@@ -5639,7 +5639,7 @@
     "gloss": "deliverance, pardon, forgiveness",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 687
   },
   {
@@ -5648,7 +5648,7 @@
     "gloss": "participation, communion, fellowship",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 655
   },
   {
@@ -5657,7 +5657,7 @@
     "gloss": "allow, permit, entrust",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 677
   },
   {
@@ -5666,7 +5666,7 @@
     "gloss": "go in, embark",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 675
   },
   {
@@ -5675,7 +5675,7 @@
     "gloss": "unveiling, revelation",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 665
   },
   {
@@ -5684,7 +5684,7 @@
     "gloss": "a particle expecting a negative response",
     "pos": "Particle",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 667
   },
   {
@@ -5693,7 +5693,7 @@
     "gloss": "number, total",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 668
   },
   {
@@ -5702,7 +5702,7 @@
     "gloss": "now, already, at present",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 21,
     "order": 692
   },
   {
@@ -5711,7 +5711,7 @@
     "gloss": "bear, bring forth, give birth to",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 702
   },
   {
@@ -5720,7 +5720,7 @@
     "gloss": "empty, vain, hollow",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 682
   },
   {
@@ -5729,7 +5729,7 @@
     "gloss": "please, serve",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 686
   },
   {
@@ -5738,7 +5738,7 @@
     "gloss": "trouble, toil, labor",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 689
   },
   {
@@ -5747,7 +5747,7 @@
     "gloss": "shut, shut up, lock",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 750
   },
   {
@@ -5756,7 +5756,7 @@
     "gloss": "question, examine, inquire into",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 726
   },
   {
@@ -5765,7 +5765,7 @@
     "gloss": "bridegroom",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 753
   },
   {
@@ -5774,7 +5774,7 @@
     "gloss": "prisoner",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 728
   },
   {
@@ -5783,7 +5783,7 @@
     "gloss": "river, torrent, stream",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 721
   },
   {
@@ -5792,7 +5792,7 @@
     "gloss": "remain behind, remain, endure",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 741
   },
   {
@@ -5801,7 +5801,7 @@
     "gloss": "likewise",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 744
   },
   {
@@ -5810,7 +5810,7 @@
     "gloss": "desire, long for, covet",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 735
   },
   {
@@ -5819,7 +5819,7 @@
     "gloss": "stretch out, cast forth, extend",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 733
   },
   {
@@ -5828,7 +5828,7 @@
     "gloss": "reason, debate, consider",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 730
   },
   {
@@ -5837,7 +5837,7 @@
     "gloss": "dinner, evening meal, supper",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 727
   },
   {
@@ -5846,7 +5846,7 @@
     "gloss": "darkness",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 724
   },
   {
@@ -5855,7 +5855,7 @@
     "gloss": "never",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 754
   },
   {
@@ -5864,7 +5864,7 @@
     "gloss": "and if, even if, if only",
     "pos": "Conj",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 748
   },
   {
@@ -5873,7 +5873,7 @@
     "gloss": "field-laborer, workman, doer",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 737
   },
   {
@@ -5882,7 +5882,7 @@
     "gloss": "crown, garland",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 700
   },
   {
@@ -5891,7 +5891,7 @@
     "gloss": "remain, stay, tarry, persist in",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 736
   },
   {
@@ -5900,7 +5900,7 @@
     "gloss": "undeserved favor, a gift",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 742
   },
   {
@@ -5909,7 +5909,7 @@
     "gloss": "thief",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 751
   },
   {
@@ -5918,7 +5918,7 @@
     "gloss": "even as, as, just as",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 711
   },
   {
@@ -5927,7 +5927,7 @@
     "gloss": "horse",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 710
   },
   {
@@ -5936,7 +5936,7 @@
     "gloss": "Caesarea",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 712
   },
   {
@@ -5945,7 +5945,7 @@
     "gloss": "tomorrow",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 707
   },
   {
@@ -5954,7 +5954,7 @@
     "gloss": "a particle expecting a negative answer",
     "pos": "Particle",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 716
   },
   {
@@ -5963,7 +5963,7 @@
     "gloss": "one hundred",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 705
   },
   {
@@ -5972,7 +5972,7 @@
     "gloss": "ready, prepared",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 708
   },
   {
@@ -5981,7 +5981,7 @@
     "gloss": "treasure, store",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 709
   },
   {
@@ -5990,7 +5990,7 @@
     "gloss": "destroy, abolish, overthrow",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 713
   },
   {
@@ -5999,7 +5999,7 @@
     "gloss": "am amazed, am astonished",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 706
   },
   {
@@ -6008,7 +6008,7 @@
     "gloss": "gain, win, avoid loss",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 714
   },
   {
@@ -6017,7 +6017,7 @@
     "gloss": "hidden, secret",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 715
   },
   {
@@ -6026,7 +6026,7 @@
     "gloss": "heavenly, celestial",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 654
   },
   {
@@ -6035,7 +6035,7 @@
     "gloss": "on the top, above, over",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 652
   },
   {
@@ -6044,7 +6044,7 @@
     "gloss": "seize, take hold of, catch",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 653
   },
   {
@@ -6053,7 +6053,7 @@
     "gloss": "have in full, am far; receive, abstain",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 647
   },
   {
@@ -6062,7 +6062,7 @@
     "gloss": "raise, lift up, hold up",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 651
   },
   {
@@ -6071,7 +6071,7 @@
     "gloss": "war, battle, strife",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 696
   },
   {
@@ -6080,7 +6080,7 @@
     "gloss": "food of any kind",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 688
   },
   {
@@ -6089,7 +6089,7 @@
     "gloss": "roughly western Asia Minor, Asia",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 669
   },
   {
@@ -6098,7 +6098,7 @@
     "gloss": "perfect, full-grown, complete",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 664
   },
   {
@@ -6107,7 +6107,7 @@
     "gloss": "shepherd",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 695
   },
   {
@@ -6116,7 +6116,7 @@
     "gloss": "destruction, ruin, loss",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 666
   },
   {
@@ -6125,7 +6125,7 @@
     "gloss": "golden",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 704
   },
   {
@@ -6134,7 +6134,7 @@
     "gloss": "rebuke, expose, convict",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 674
   },
   {
@@ -6143,7 +6143,7 @@
     "gloss": "put to, add, do again",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 698
   },
   {
@@ -6152,7 +6152,7 @@
     "gloss": "declare openly, preach, proclaim",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 679
   },
   {
@@ -6161,7 +6161,7 @@
     "gloss": "hold back, hold fast, bind, restrain",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 681
   },
   {
@@ -6170,7 +6170,7 @@
     "gloss": "prophecy",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 663
   },
   {
@@ -6179,7 +6179,7 @@
     "gloss": "judge",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 656
   },
   {
@@ -6188,7 +6188,7 @@
     "gloss": "falling away, sin, transgression",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 661
   },
   {
@@ -6197,7 +6197,7 @@
     "gloss": "am anxious; care for",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 659
   },
   {
@@ -6206,7 +6206,7 @@
     "gloss": "creation, creature, institution",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 658
   },
   {
@@ -6215,7 +6215,7 @@
     "gloss": "fullness, fulfillment",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 719
   },
   {
@@ -6224,7 +6224,7 @@
     "gloss": "husbandman, vine-dresser, farmer",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 19,
     "order": 648
   },
   {
@@ -6233,7 +6233,7 @@
     "gloss": "remember, mention",
     "pos": "Verb",
     "section": 4,
-    "freq": null,
+    "freq": 21,
     "order": 614
   },
   {
@@ -6242,7 +6242,7 @@
     "gloss": "truly, really, certainly",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 645
   },
   {
@@ -6251,7 +6251,7 @@
     "gloss": "Antioch",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 646
   },
   {
@@ -6260,7 +6260,7 @@
     "gloss": "give solemn evidence, testify solemnly",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 774
   },
   {
@@ -6269,7 +6269,7 @@
     "gloss": "piety, godliness",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 780
   },
   {
@@ -6278,7 +6278,7 @@
     "gloss": "badly, wickedly",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 747
   },
   {
@@ -6287,7 +6287,7 @@
     "gloss": "greatly, exceedingly",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 5,
     "order": 757
   },
   {
@@ -6296,7 +6296,7 @@
     "gloss": "wonder, portent",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 764
   },
   {
@@ -6305,7 +6305,7 @@
     "gloss": "suffering, passion",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 755
   },
   {
@@ -6314,7 +6314,7 @@
     "gloss": "taste, experience",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 769
   },
   {
@@ -6323,7 +6323,7 @@
     "gloss": "expect, await, wait for",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 759
   },
   {
@@ -6332,7 +6332,7 @@
     "gloss": "lawlessness, iniquity",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 14,
     "order": 766
   },
   {
@@ -6341,7 +6341,7 @@
     "gloss": "endure, bear with",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 765
   },
   {
@@ -6350,7 +6350,7 @@
     "gloss": "thirst for, desire earnestly, thirst",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 732
   },
   {
@@ -6359,7 +6359,7 @@
     "gloss": "wearing only under-garment, naked",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 771
   },
   {
@@ -6368,7 +6368,7 @@
     "gloss": "full, complete",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 758
   },
   {
@@ -6377,7 +6377,7 @@
     "gloss": "offer, provide, give, cause",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 756
   },
   {
@@ -6386,7 +6386,7 @@
     "gloss": "known, an acquaintance",
     "pos": "Adj",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 770
   },
   {
@@ -6395,7 +6395,7 @@
     "gloss": "at least, indeed, really",
     "pos": "Particle",
     "section": 5,
-    "freq": null,
+    "freq": 6,
     "order": 768
   },
   {
@@ -6404,7 +6404,7 @@
     "gloss": "fig tree",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 760
   },
   {
@@ -6413,7 +6413,7 @@
     "gloss": "commend, prove, am composed of",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 762
   },
   {
@@ -6422,7 +6422,7 @@
     "gloss": "Damascus",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 772
   },
   {
@@ -6431,7 +6431,7 @@
     "gloss": "pain, grief, sorrow",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 752
   },
   {
@@ -6440,7 +6440,7 @@
     "gloss": "near, nearby, a neighbor",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 720
   },
   {
@@ -6449,7 +6449,7 @@
     "gloss": "root, that which comes from root",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 722
   },
   {
@@ -6458,7 +6458,7 @@
     "gloss": "O, an exclamation",
     "pos": "Interj",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 743
   },
   {
@@ -6467,7 +6467,7 @@
     "gloss": "eagerness, zeal, jealousy",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 745
   },
   {
@@ -6476,7 +6476,7 @@
     "gloss": "circumcise",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 718
   },
   {
@@ -6485,7 +6485,7 @@
     "gloss": "give orders to, prescribe, order",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 731
   },
   {
@@ -6494,7 +6494,7 @@
     "gloss": "adulation, praise, blessing",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 738
   },
   {
@@ -6503,7 +6503,7 @@
     "gloss": "Capernaum",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 749
   },
   {
@@ -6512,7 +6512,7 @@
     "gloss": "reject, annul",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 725
   },
   {
@@ -6521,7 +6521,7 @@
     "gloss": "then, thereafter, afterwards",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 18,
     "order": 734
   },
   {
@@ -6530,7 +6530,7 @@
     "gloss": "foundation",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 746
   },
   {
@@ -6539,7 +6539,7 @@
     "gloss": "robber, brigand, bandit",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 792
   },
   {
@@ -6548,7 +6548,7 @@
     "gloss": "Rabbi, my master, teacher",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 804
   },
   {
@@ -6557,7 +6557,7 @@
     "gloss": "thankfulness, gratitude, thanksgiving",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 781
   },
   {
@@ -6566,7 +6566,7 @@
     "gloss": "know, understand",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 779
   },
   {
@@ -6575,7 +6575,7 @@
     "gloss": "flay, flog, scourge, beat",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 773
   },
   {
@@ -6584,7 +6584,7 @@
     "gloss": "come down",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 788
   },
   {
@@ -6593,7 +6593,7 @@
     "gloss": "then, thereafter, next",
     "pos": "Adv",
     "section": 5,
-    "freq": null,
+    "freq": 14,
     "order": 775
   },
   {
@@ -6602,7 +6602,7 @@
     "gloss": "virgin",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 799
   },
   {
@@ -6611,7 +6611,7 @@
     "gloss": "commit adultery",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 793
   },
   {
@@ -6620,7 +6620,7 @@
     "gloss": "forewarn, tell beforehand",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 803
   },
   {
@@ -6629,7 +6629,7 @@
     "gloss": "create, form, shape, make",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 14,
     "order": 790
   },
   {
@@ -6638,7 +6638,7 @@
     "gloss": "hair",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 785
   },
   {
@@ -6647,7 +6647,7 @@
     "gloss": "dare, endure, am bold",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 782
   },
   {
@@ -6656,7 +6656,7 @@
     "gloss": "Lazarus",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 791
   },
   {
@@ -6665,7 +6665,7 @@
     "gloss": "seize, overtake, comprehend, win",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 17,
     "order": 787
   },
   {
@@ -6674,7 +6674,7 @@
     "gloss": "promise, profess",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 778
   },
   {
@@ -6683,7 +6683,7 @@
     "gloss": "make like, liken, compare",
     "pos": "Verb",
     "section": 5,
-    "freq": null,
+    "freq": 15,
     "order": 798
   },
   {
@@ -6692,7 +6692,7 @@
     "gloss": "captive, prisoner of war",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 1,
     "order": 1135
   },
   {
@@ -6701,7 +6701,7 @@
     "gloss": "marriage, wedding",
     "pos": "Noun",
     "section": 5,
-    "freq": null,
+    "freq": 16,
     "order": 767
   },
   {
@@ -6710,7 +6710,7 @@
     "gloss": "Bethany",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 913
   },
   {
@@ -6719,7 +6719,7 @@
     "gloss": "baptizer, Baptist",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 911
   },
   {
@@ -6728,7 +6728,7 @@
     "gloss": "haste; diligence, eagerness",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 960
   },
   {
@@ -6737,7 +6737,7 @@
     "gloss": "burn up, consume entirely",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 930
   },
   {
@@ -6746,7 +6746,7 @@
     "gloss": "three times",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 964
   },
   {
@@ -6755,7 +6755,7 @@
     "gloss": "quickly, speedily, quick",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 11,
     "order": 963
   },
   {
@@ -6764,7 +6764,7 @@
     "gloss": "have pity on, feel sympathy for",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 959
   },
   {
@@ -6773,7 +6773,7 @@
     "gloss": "Silas",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 957
   },
   {
@@ -6782,7 +6782,7 @@
     "gloss": "sound a trumpet",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 956
   },
   {
@@ -6791,7 +6791,7 @@
     "gloss": "Magdalene",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 937
   },
   {
@@ -6800,7 +6800,7 @@
     "gloss": "lamp-stand, lampstand",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 936
   },
   {
@@ -6809,7 +6809,7 @@
     "gloss": "come hither!, come!",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 920
   },
   {
@@ -6818,7 +6818,7 @@
     "gloss": "knee",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 919
   },
   {
@@ -6827,7 +6827,7 @@
     "gloss": "custom, law",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 923
   },
   {
@@ -6836,7 +6836,7 @@
     "gloss": "fishing-net, net",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 922
   },
   {
@@ -6845,7 +6845,7 @@
     "gloss": "court-yard, palace, house",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 909
   },
   {
@@ -6854,7 +6854,7 @@
     "gloss": "master of the house",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 943
   },
   {
@@ -6863,7 +6863,7 @@
     "gloss": "very, very much, exceedingly",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 934
   },
   {
@@ -6872,7 +6872,7 @@
     "gloss": "inside, within; from within",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 926
   },
   {
@@ -6881,7 +6881,7 @@
     "gloss": "thunder",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 917
   },
   {
@@ -6890,7 +6890,7 @@
     "gloss": "take to myself, welcome, receive",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 951
   },
   {
@@ -6899,7 +6899,7 @@
     "gloss": "leave, depart, remove, go over",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 939
   },
   {
@@ -6908,7 +6908,7 @@
     "gloss": "most of all, especially",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 938
   },
   {
@@ -6917,7 +6917,7 @@
     "gloss": "Gehenna, hell",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 918
   },
   {
@@ -6926,7 +6926,7 @@
     "gloss": "districts, territory, region",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 944
   },
   {
@@ -6935,7 +6935,7 @@
     "gloss": "a fellow worker, helper",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 961
   },
   {
@@ -6944,7 +6944,7 @@
     "gloss": "deny, disown",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 973
   },
   {
@@ -6953,7 +6953,7 @@
     "gloss": "Roman",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 955
   },
   {
@@ -6962,7 +6962,7 @@
     "gloss": "increase, multiply",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 947
   },
   {
@@ -6971,7 +6971,7 @@
     "gloss": "Solomon",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 958
   },
   {
@@ -6980,7 +6980,7 @@
     "gloss": "press together, confine, compel",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 962
   },
   {
@@ -6989,7 +6989,7 @@
     "gloss": "from without, outside",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 880
   },
   {
@@ -6998,7 +6998,7 @@
     "gloss": "from above, from the beginning, again",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 870
   },
   {
@@ -7007,7 +7007,7 @@
     "gloss": "reaping, harvest",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 885
   },
   {
@@ -7016,7 +7016,7 @@
     "gloss": "nature, inherent nature",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 883
   },
   {
@@ -7025,7 +7025,7 @@
     "gloss": "six",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 879
   },
   {
@@ -7034,7 +7034,7 @@
     "gloss": "am astounded, am amazed",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 875
   },
   {
@@ -7043,7 +7043,7 @@
     "gloss": "Martha",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 892
   },
   {
@@ -7052,7 +7052,7 @@
     "gloss": "steal",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 890
   },
   {
@@ -7061,7 +7061,7 @@
     "gloss": "dragon or huge serpent",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 874
   },
   {
@@ -7070,7 +7070,7 @@
     "gloss": "shame, disgrace, put to shame",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 887
   },
   {
@@ -7079,7 +7079,7 @@
     "gloss": "least, smallest, very little",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 876
   },
   {
@@ -7088,7 +7088,7 @@
     "gloss": "Festus",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 903
   },
   {
@@ -7097,7 +7097,7 @@
     "gloss": "seek after, desire, search for",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 881
   },
   {
@@ -7106,7 +7106,7 @@
     "gloss": "golden ornament, gold",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 10,
     "order": 904
   },
   {
@@ -7115,7 +7115,7 @@
     "gloss": "lame",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 884
   },
   {
@@ -7124,7 +7124,7 @@
     "gloss": "converse, address, preach, discuss",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 872
   },
   {
@@ -7133,7 +7133,7 @@
     "gloss": "beat, strike, wound",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 901
   },
   {
@@ -7142,7 +7142,7 @@
     "gloss": "female slave, maidservant",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 895
   },
   {
@@ -7151,7 +7151,7 @@
     "gloss": "Nazarene",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 893
   },
   {
@@ -7160,7 +7160,7 @@
     "gloss": "come down, arrive at, reach",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 888
   },
   {
@@ -7169,7 +7169,7 @@
     "gloss": "fit together, prepare, mend, perfect",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 889
   },
   {
@@ -7178,7 +7178,7 @@
     "gloss": "Titus",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 899
   },
   {
@@ -7187,7 +7187,7 @@
     "gloss": "way, manner, character",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 900
   },
   {
@@ -7205,7 +7205,7 @@
     "gloss": "instruction, tradition",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 896
   },
   {
@@ -7214,7 +7214,7 @@
     "gloss": "alms-giving, charity, alms",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 877
   },
   {
@@ -7223,7 +7223,7 @@
     "gloss": "formerly, before",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 897
   },
   {
@@ -7232,7 +7232,7 @@
     "gloss": "of great price, precious, honored",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 898
   },
   {
@@ -7241,7 +7241,7 @@
     "gloss": "highest, most high",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 902
   },
   {
@@ -7250,7 +7250,7 @@
     "gloss": "Zebedee",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 927
   },
   {
@@ -7259,7 +7259,7 @@
     "gloss": "ignite, light, burn",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 928
   },
   {
@@ -7268,7 +7268,7 @@
     "gloss": "early (in the morning), at dawn",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 952
   },
   {
@@ -7277,7 +7277,7 @@
     "gloss": "colt, young donkey",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 953
   },
   {
@@ -7286,7 +7286,7 @@
     "gloss": "prostitute",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 949
   },
   {
@@ -7295,7 +7295,7 @@
     "gloss": "lead out",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 925
   },
   {
@@ -7304,7 +7304,7 @@
     "gloss": "show-bread, plan, presentation",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 950
   },
   {
@@ -7313,7 +7313,7 @@
     "gloss": "stupid, foolish",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 940
   },
   {
@@ -7322,7 +7322,7 @@
     "gloss": "glue, cleave, cling to, join",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 932
   },
   {
@@ -7331,7 +7331,7 @@
     "gloss": "hunger, famine",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 935
   },
   {
@@ -7340,7 +7340,7 @@
     "gloss": "Babylon",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 910
   },
   {
@@ -7349,7 +7349,7 @@
     "gloss": "rod, staff",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 954
   },
   {
@@ -7358,7 +7358,7 @@
     "gloss": "become rich, am rich",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 948
   },
   {
@@ -7367,7 +7367,7 @@
     "gloss": "tooth",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 942
   },
   {
@@ -7376,7 +7376,7 @@
     "gloss": "reed, reed-pen",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 929
   },
   {
@@ -7385,7 +7385,7 @@
     "gloss": "make excuse, refuse, reject",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 945
   },
   {
@@ -7394,7 +7394,7 @@
     "gloss": "torment, torture, buffet",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 912
   },
   {
@@ -7403,7 +7403,7 @@
     "gloss": "counsel, wisdom, purpose",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 916
   },
   {
@@ -7412,7 +7412,7 @@
     "gloss": "recline, am lying ill",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 931
   },
   {
@@ -7421,7 +7421,7 @@
     "gloss": "dominion, strength, power",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 933
   },
   {
@@ -7430,7 +7430,7 @@
     "gloss": "divide, separate, depart",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 924
   },
   {
@@ -7439,7 +7439,7 @@
     "gloss": "lay hold of, seize, catch",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 946
   },
   {
@@ -7448,7 +7448,7 @@
     "gloss": "unjust, unrighteous",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 905
   },
   {
@@ -7457,7 +7457,7 @@
     "gloss": "make to rest, give rest to",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 12,
     "order": 906
   },
   {
@@ -7466,7 +7466,7 @@
     "gloss": "lie down, recline",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 11,
     "order": 907
   },
   {
@@ -7475,7 +7475,7 @@
     "gloss": "wine-skin",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 11,
     "order": 908
   },
   {
@@ -7484,7 +7484,7 @@
     "gloss": "am demon-possessed",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 871
   },
   {
@@ -7493,7 +7493,7 @@
     "gloss": "discipline, educate, train, chastise",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 894
   },
   {
@@ -7502,7 +7502,7 @@
     "gloss": "bird",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 855
   },
   {
@@ -7511,7 +7511,7 @@
     "gloss": "collect, am profitable to, help",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 17,
     "order": 818
   },
   {
@@ -7520,7 +7520,7 @@
     "gloss": "shake, excite",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 815
   },
   {
@@ -7529,7 +7529,7 @@
     "gloss": "take a stand against, oppose, resist",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 810
   },
   {
@@ -7538,7 +7538,7 @@
     "gloss": "belonging to another person, foreign",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 806
   },
   {
@@ -7547,7 +7547,7 @@
     "gloss": "Saul",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 816
   },
   {
@@ -7556,7 +7556,7 @@
     "gloss": "calculation, reasoning, thought, doubt",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 829
   },
   {
@@ -7565,7 +7565,7 @@
     "gloss": "direct my gaze, look steadily",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 825
   },
   {
@@ -7574,7 +7574,7 @@
     "gloss": "obedience",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 821
   },
   {
@@ -7583,7 +7583,7 @@
     "gloss": "lead away, seduce, depart, go away",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 827
   },
   {
@@ -7592,7 +7592,7 @@
     "gloss": "recline at a dinner-table, lie",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 808
   },
   {
@@ -7601,7 +7601,7 @@
     "gloss": "return, retreat, withdraw",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 809
   },
   {
@@ -7610,7 +7610,7 @@
     "gloss": "from a distance, from far away",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 844
   },
   {
@@ -7619,7 +7619,7 @@
     "gloss": "both of two, both, all",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 807
   },
   {
@@ -7628,7 +7628,7 @@
     "gloss": "seize, snatch, obtain by robbery",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 814
   },
   {
@@ -7637,7 +7637,7 @@
     "gloss": "set a seal upon, seal",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 819
   },
   {
@@ -7646,7 +7646,7 @@
     "gloss": "table for food or business",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 820
   },
   {
@@ -7655,7 +7655,7 @@
     "gloss": "feed, satisfy, fill",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 822
   },
   {
@@ -7664,7 +7664,7 @@
     "gloss": "grass, hay",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 823
   },
   {
@@ -7673,7 +7673,7 @@
     "gloss": "tomorrow",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 826
   },
   {
@@ -7682,7 +7682,7 @@
     "gloss": "once, once for all",
     "pos": "Adv",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 812
   },
   {
@@ -7691,7 +7691,7 @@
     "gloss": "snare, stumbling-block, temptation to sin",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 817
   },
   {
@@ -7700,7 +7700,7 @@
     "gloss": "help, benefit, do good",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 824
   },
   {
@@ -7709,7 +7709,7 @@
     "gloss": "thorn-bush, thorn-plant",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 805
   },
   {
@@ -7718,7 +7718,7 @@
     "gloss": "disobey, rebel, am disobedient",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 813
   },
   {
@@ -7727,7 +7727,7 @@
     "gloss": "lead, carry, take away",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 811
   },
   {
@@ -7736,7 +7736,7 @@
     "gloss": "letter (of the alphabet), writings",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 828
   },
   {
@@ -7745,7 +7745,7 @@
     "gloss": "figure, model, type, image, copy",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 863
   },
   {
@@ -7754,7 +7754,7 @@
     "gloss": "stronger, more excellent, better",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 841
   },
   {
@@ -7763,7 +7763,7 @@
     "gloss": "year",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 831
   },
   {
@@ -7772,7 +7772,7 @@
     "gloss": "prudent, wise, sensible",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 864
   },
   {
@@ -7781,7 +7781,7 @@
     "gloss": "understand, consider, perceive",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 850
   },
   {
@@ -7790,7 +7790,7 @@
     "gloss": "Andrew",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 869
   },
   {
@@ -7799,7 +7799,7 @@
     "gloss": "behavior, manner of life, conduct",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 868
   },
   {
@@ -7808,7 +7808,7 @@
     "gloss": "(with numbers) each; (with acc.) up, through",
     "pos": "Prep",
     "section": 6,
-    "freq": null,
+    "freq": 13,
     "order": 865
   },
   {
@@ -7817,7 +7817,7 @@
     "gloss": "humble, humiliate, make low",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 862
   },
   {
@@ -7826,7 +7826,7 @@
     "gloss": "talent of silver or gold",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 861
   },
   {
@@ -7835,7 +7835,7 @@
     "gloss": "earthquake, storm, shaking",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 858
   },
   {
@@ -7844,7 +7844,7 @@
     "gloss": "welcome, accept, receive; wait for",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 856
   },
   {
@@ -7853,7 +7853,7 @@
     "gloss": "lamp",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 843
   },
   {
@@ -7862,7 +7862,7 @@
     "gloss": "anointing-oil, ointment, perfume",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 848
   },
   {
@@ -7871,7 +7871,7 @@
     "gloss": "an infant, child, a minor",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 849
   },
   {
@@ -7880,7 +7880,7 @@
     "gloss": "dumb, deaf, mute",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 842
   },
   {
@@ -7889,7 +7889,7 @@
     "gloss": "measure, measuring rod",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 847
   },
   {
@@ -7898,7 +7898,7 @@
     "gloss": "late, evening",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 854
   },
   {
@@ -7907,7 +7907,7 @@
     "gloss": "sixth",
     "pos": "Adj",
     "section": 6,
-    "freq": null,
+    "freq": 15,
     "order": 830
   },
   {
@@ -7916,7 +7916,7 @@
     "gloss": "eat till it is finished, eat up, devour",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 836
   },
   {
@@ -7925,7 +7925,7 @@
     "gloss": "patience, forbearance, steadfastness",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 845
   },
   {
@@ -7934,7 +7934,7 @@
     "gloss": "serpent, snake",
     "pos": "Noun",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 853
   },
   {
@@ -7943,7 +7943,7 @@
     "gloss": "gladden, cheer; (pass.) am glad",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 833
   },
   {
@@ -7952,7 +7952,7 @@
     "gloss": "break",
     "pos": "Verb",
     "section": 6,
-    "freq": null,
+    "freq": 14,
     "order": 837
   },
   {
@@ -7961,7 +7961,7 @@
     "gloss": "show forth, show, demonstrate",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 998
   },
   {
@@ -7970,7 +7970,7 @@
     "gloss": "Galilean",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 986
   },
   {
@@ -7979,7 +7979,7 @@
     "gloss": "Barabbas",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 977
   },
   {
@@ -7988,7 +7988,7 @@
     "gloss": "senseless, foolish",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 976
   },
   {
@@ -7997,7 +7997,7 @@
     "gloss": "market-place",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 966
   },
   {
@@ -8006,7 +8006,7 @@
     "gloss": "exult, am full of joy, am glad",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 965
   },
   {
@@ -8015,7 +8015,7 @@
     "gloss": "eating, food, meal, rust",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 985
   },
   {
@@ -8024,7 +8024,7 @@
     "gloss": "lie",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 984
   },
   {
@@ -8033,7 +8033,7 @@
     "gloss": "allow, permit, leave",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 992
   },
   {
@@ -8042,7 +8042,7 @@
     "gloss": "lead in, bring in",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 994
   },
   {
@@ -8051,7 +8051,7 @@
     "gloss": "unbelief, unfaithfulness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 974
   },
   {
@@ -8060,7 +8060,7 @@
     "gloss": "speak against, oppose",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 972
   },
   {
@@ -8069,7 +8069,7 @@
     "gloss": "cock, rooster",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 968
   },
   {
@@ -8078,7 +8078,7 @@
     "gloss": "freedom, liberty",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 996
   },
   {
@@ -8087,7 +8087,7 @@
     "gloss": "free gift, gift",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 990
   },
   {
@@ -8096,7 +8096,7 @@
     "gloss": "am well, am healthy",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 979
   },
   {
@@ -8105,7 +8105,7 @@
     "gloss": "original, ancient, old",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 975
   },
   {
@@ -8114,7 +8114,7 @@
     "gloss": "rising of sun, East",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 971
   },
   {
@@ -8123,7 +8123,7 @@
     "gloss": "Agrippa",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 967
   },
   {
@@ -8132,7 +8132,7 @@
     "gloss": "Zechariah",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1004
   },
   {
@@ -8141,7 +8141,7 @@
     "gloss": "fall upon, press upon",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1002
   },
   {
@@ -8150,7 +8150,7 @@
     "gloss": "shallow bowl",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 981
   },
   {
@@ -8159,7 +8159,7 @@
     "gloss": "commendation, praise",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1000
   },
   {
@@ -8168,7 +8168,7 @@
     "gloss": "obtain, happen, meet",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 978
   },
   {
@@ -8177,7 +8177,7 @@
     "gloss": "swine",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 983
   },
   {
@@ -8186,7 +8186,7 @@
     "gloss": "divide up, distribute",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 988
   },
   {
@@ -8195,7 +8195,7 @@
     "gloss": "am ashamed",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1001
   },
   {
@@ -8204,7 +8204,7 @@
     "gloss": "look upon, visit, oversee",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1003
   },
   {
@@ -8213,7 +8213,7 @@
     "gloss": "sound, whole, healthy",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 980
   },
   {
@@ -8222,7 +8222,7 @@
     "gloss": "Ananias",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 970
   },
   {
@@ -8231,7 +8231,7 @@
     "gloss": "look into, look upon",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 997
   },
   {
@@ -8240,7 +8240,7 @@
     "gloss": "ninth",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1080
   },
   {
@@ -8249,7 +8249,7 @@
     "gloss": "hence, from this place",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1082
   },
   {
@@ -8258,7 +8258,7 @@
     "gloss": "persecution",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1074
   },
   {
@@ -8267,7 +8267,7 @@
     "gloss": "greeting, salutation",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1066
   },
   {
@@ -8276,7 +8276,7 @@
     "gloss": "and there, and yonder",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1090
   },
   {
@@ -8285,7 +8285,7 @@
     "gloss": "involved in, liable, guilty",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1081
   },
   {
@@ -8294,7 +8294,7 @@
     "gloss": "steward, house steward",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1100
   },
   {
@@ -8303,7 +8303,7 @@
     "gloss": "oath",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1103
   },
   {
@@ -8312,7 +8312,7 @@
     "gloss": "abandon, desert, leave behind",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1075
   },
   {
@@ -8321,7 +8321,7 @@
     "gloss": "lord, master, prince",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1072
   },
   {
@@ -8330,7 +8330,7 @@
     "gloss": "and thence, and from there",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1091
   },
   {
@@ -8339,7 +8339,7 @@
     "gloss": "put into order, adorn, beautify",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1094
   },
   {
@@ -8348,7 +8348,7 @@
     "gloss": "make visible, report against, reveal",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1079
   },
   {
@@ -8357,7 +8357,7 @@
     "gloss": "cut out, cut off, cut down",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1077
   },
   {
@@ -8366,7 +8366,7 @@
     "gloss": "ruler of universe, the Almighty",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1104
   },
   {
@@ -8375,7 +8375,7 @@
     "gloss": "really, truly",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1102
   },
   {
@@ -8384,7 +8384,7 @@
     "gloss": "false prophet",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1064
   },
   {
@@ -8393,7 +8393,7 @@
     "gloss": "called, summoned, invited",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1092
   },
   {
@@ -8402,7 +8402,7 @@
     "gloss": "use, make use of, deal with",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1063
   },
   {
@@ -8411,7 +8411,7 @@
     "gloss": "afflict, oppress, persecute",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1087
   },
   {
@@ -8420,7 +8420,7 @@
     "gloss": "strength, power",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1089
   },
   {
@@ -8429,7 +8429,7 @@
     "gloss": "take away, smite off",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1067
   },
   {
@@ -8438,7 +8438,7 @@
     "gloss": "written book, volume",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1070
   },
   {
@@ -8447,7 +8447,7 @@
     "gloss": "righteous deed",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1073
   },
   {
@@ -8456,7 +8456,7 @@
     "gloss": "when, since, because",
     "pos": "Conj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1084
   },
   {
@@ -8465,7 +8465,7 @@
     "gloss": "partner, companion",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1093
   },
   {
@@ -8474,7 +8474,7 @@
     "gloss": "Achaia",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1069
   },
   {
@@ -8483,7 +8483,7 @@
     "gloss": "it is a care, it concerns",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1096
   },
   {
@@ -8492,7 +8492,7 @@
     "gloss": "liar, deceiver",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1114
   },
   {
@@ -8501,7 +8501,7 @@
     "gloss": "persist, hold fast",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1125
   },
   {
@@ -8510,7 +8510,7 @@
     "gloss": "mourn, lament, grieve",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1119
   },
   {
@@ -8519,7 +8519,7 @@
     "gloss": "lie",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1113
   },
   {
@@ -8528,7 +8528,7 @@
     "gloss": "your",
     "pos": "pron-posses",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1106
   },
   {
@@ -8537,7 +8537,7 @@
     "gloss": "soon, quickly, hastily",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1134
   },
   {
@@ -8546,7 +8546,7 @@
     "gloss": "keep silent, am silent",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1128
   },
   {
@@ -8555,7 +8555,7 @@
     "gloss": "fornicator",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1124
   },
   {
@@ -8564,7 +8564,7 @@
     "gloss": "paralytic",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1116
   },
   {
@@ -8573,7 +8573,7 @@
     "gloss": "general, magistrate, captain",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1130
   },
   {
@@ -8582,7 +8582,7 @@
     "gloss": "meet, fight, oppose",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1107
   },
   {
@@ -8591,7 +8591,7 @@
     "gloss": "fourth",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1105
   },
   {
@@ -8600,7 +8600,7 @@
     "gloss": "seek together, discuss",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1131
   },
   {
@@ -8609,7 +8609,7 @@
     "gloss": "covetousness, greediness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1122
   },
   {
@@ -8618,7 +8618,7 @@
     "gloss": "sandal",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1108
   },
   {
@@ -8627,7 +8627,7 @@
     "gloss": "spare, abstain",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1109
   },
   {
@@ -8636,7 +8636,7 @@
     "gloss": "goodness, kindness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1110
   },
   {
@@ -8645,7 +8645,7 @@
     "gloss": "lewdness, licentiousness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1065
   },
   {
@@ -8654,7 +8654,7 @@
     "gloss": "camp, barracks",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1117
   },
   {
@@ -8663,7 +8663,7 @@
     "gloss": "strike",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1118
   },
   {
@@ -8672,7 +8672,7 @@
     "gloss": "door, gate",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1126
   },
   {
@@ -8681,7 +8681,7 @@
     "gloss": "various, manifold",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1123
   },
   {
@@ -8690,7 +8690,7 @@
     "gloss": "make room, receive",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 9,
     "order": 1111
   },
   {
@@ -8699,7 +8699,7 @@
     "gloss": "keep silence, am silent",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1129
   },
   {
@@ -8708,7 +8708,7 @@
     "gloss": "dove, pigeon",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1120
   },
   {
@@ -8717,7 +8717,7 @@
     "gloss": "wandering, error, deceit",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1121
   },
   {
@@ -8726,7 +8726,7 @@
     "gloss": "pass by, depart, pass away",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1115
   },
   {
@@ -8735,7 +8735,7 @@
     "gloss": "fellow servant",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1132
   },
   {
@@ -8744,7 +8744,7 @@
     "gloss": "field, land",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1112
   },
   {
@@ -8753,7 +8753,7 @@
     "gloss": "tear",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1071
   },
   {
@@ -8762,7 +8762,7 @@
     "gloss": "give order, command",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1085
   },
   {
@@ -8771,7 +8771,7 @@
     "gloss": "tomb, monument, grave",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1097
   },
   {
@@ -8780,7 +8780,7 @@
     "gloss": "carry up, lead up, offer up",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 8,
     "order": 1050
   },
   {
@@ -8789,7 +8789,7 @@
     "gloss": "akin, a relative",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1040
   },
   {
@@ -8798,7 +8798,7 @@
     "gloss": "measure, estimate",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1024
   },
   {
@@ -8807,7 +8807,7 @@
     "gloss": "horn",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1017
   },
   {
@@ -8816,7 +8816,7 @@
     "gloss": "lake",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1023
   },
   {
@@ -8825,7 +8825,7 @@
     "gloss": "hasten; am eager",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1038
   },
   {
@@ -8834,7 +8834,7 @@
     "gloss": "bowels, compassion, heart",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1037
   },
   {
@@ -8843,7 +8843,7 @@
     "gloss": "fountain, spring, well",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1029
   },
   {
@@ -8852,7 +8852,7 @@
     "gloss": "bed, mattress, mat",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1022
   },
   {
@@ -8861,7 +8861,7 @@
     "gloss": "am jealous, am zealous",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1005
   },
   {
@@ -8870,7 +8870,7 @@
     "gloss": "stand fast, persevere",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1039
   },
   {
@@ -8879,7 +8879,7 @@
     "gloss": "Tyre",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1054
   },
   {
@@ -8888,7 +8888,7 @@
     "gloss": "exceedingly, greatly, very much",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1041
   },
   {
@@ -8897,7 +8897,7 @@
     "gloss": "boasting",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1016
   },
   {
@@ -8906,7 +8906,7 @@
     "gloss": "incapable, impossible, powerless",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1047
   },
   {
@@ -8915,7 +8915,7 @@
     "gloss": "young man, youth",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1025
   },
   {
@@ -8924,7 +8924,7 @@
     "gloss": "lot, portion, share",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1019
   },
   {
@@ -8933,7 +8933,7 @@
     "gloss": "boasting, object of boasting",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1015
   },
   {
@@ -8942,7 +8942,7 @@
     "gloss": "shepherd, tend, pasture",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1030
   },
   {
@@ -8951,7 +8951,7 @@
     "gloss": "thing done, matter, deed",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1031
   },
   {
@@ -8960,7 +8960,7 @@
     "gloss": "Apollos",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1051
   },
   {
@@ -8969,7 +8969,7 @@
     "gloss": "Iscariot",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1010
   },
   {
@@ -8978,7 +8978,7 @@
     "gloss": "uncleanness, impurity",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1048
   },
   {
@@ -8987,7 +8987,7 @@
     "gloss": "spectacle, vision",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1028
   },
   {
@@ -8996,7 +8996,7 @@
     "gloss": "rend, divide, split",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1042
   },
   {
@@ -9005,7 +9005,7 @@
     "gloss": "sanctification, holiness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1045
   },
   {
@@ -9014,7 +9014,7 @@
     "gloss": "with one mind, unanimously",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1027
   },
   {
@@ -9023,7 +9023,7 @@
     "gloss": "mildness, gentleness, meekness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1032
   },
   {
@@ -9032,7 +9032,7 @@
     "gloss": "Samaria",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1036
   },
   {
@@ -9041,7 +9041,7 @@
     "gloss": "Hades",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1046
   },
   {
@@ -9050,7 +9050,7 @@
     "gloss": "am full of",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 987
   },
   {
@@ -9059,7 +9059,7 @@
     "gloss": "idol, false god, image",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 993
   },
   {
@@ -9068,7 +9068,7 @@
     "gloss": "illuminate, bring to light",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1059
   },
   {
@@ -9077,7 +9077,7 @@
     "gloss": "at the same time, together",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1049
   },
   {
@@ -9086,7 +9086,7 @@
     "gloss": "bring, receive, recover",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 12,
     "order": 1021
   },
   {
@@ -9095,7 +9095,7 @@
     "gloss": "build, prepare, make, furnish",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1013
   },
   {
@@ -9104,7 +9104,7 @@
     "gloss": "lastly, afterward, later",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1056
   },
   {
@@ -9113,7 +9113,7 @@
     "gloss": "plant",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1058
   },
   {
@@ -9122,7 +9122,7 @@
     "gloss": "foundation, sowing",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1012
   },
   {
@@ -9131,7 +9131,7 @@
     "gloss": "underneath, under",
     "pos": "Adv",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1055
   },
   {
@@ -9140,7 +9140,7 @@
     "gloss": "Joppa",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1088
   },
   {
@@ -9149,7 +9149,7 @@
     "gloss": "complete, accomplish, perfect",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1086
   },
   {
@@ -9158,7 +9158,7 @@
     "gloss": "separate, place apart",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1068
   },
   {
@@ -9167,7 +9167,7 @@
     "gloss": "fall out, fall off, fall away",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1078
   },
   {
@@ -9176,7 +9176,7 @@
     "gloss": "this here, this",
     "pos": "Pron",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1099
   },
   {
@@ -9185,7 +9185,7 @@
     "gloss": "twenty",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1076
   },
   {
@@ -9194,7 +9194,7 @@
     "gloss": "give a defense, defend myself",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1052
   },
   {
@@ -9203,7 +9203,7 @@
     "gloss": "Thomas",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1009
   },
   {
@@ -9212,7 +9212,7 @@
     "gloss": "ask, inquire",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1034
   },
   {
@@ -9221,7 +9221,7 @@
     "gloss": "redemption, deliverance",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1053
   },
   {
@@ -9230,7 +9230,7 @@
     "gloss": "put to death, kill",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1007
   },
   {
@@ -9239,7 +9239,7 @@
     "gloss": "bury",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1008
   },
   {
@@ -9248,7 +9248,7 @@
     "gloss": "calling, summons",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1020
   },
   {
@@ -9257,7 +9257,7 @@
     "gloss": "disease, malady, illness",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1026
   },
   {
@@ -9266,7 +9266,7 @@
     "gloss": "formerly, before, earlier",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 10,
     "order": 1033
   },
   {
@@ -9275,7 +9275,7 @@
     "gloss": "trumpet",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1035
   },
   {
@@ -9284,7 +9284,7 @@
     "gloss": "make to live, make alive",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1006
   },
   {
@@ -9293,7 +9293,7 @@
     "gloss": "evil, wickedness, malice",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1011
   },
   {
@@ -9302,7 +9302,7 @@
     "gloss": "branch",
     "pos": "Noun",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1018
   },
   {
@@ -9311,7 +9311,7 @@
     "gloss": "end, finish, die",
     "pos": "Verb",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1043
   },
   {
@@ -9320,7 +9320,7 @@
     "gloss": "thirty",
     "pos": "Adj",
     "section": 7,
-    "freq": null,
+    "freq": 11,
     "order": 1044
   }
 ]

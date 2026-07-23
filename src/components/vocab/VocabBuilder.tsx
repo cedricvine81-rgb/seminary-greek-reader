@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { Search, RotateCcw, ChevronRight, ChevronDown, Check, List, X, CheckCircle2, XCircle, BookOpen } from 'lucide-react'
 import { clsx } from 'clsx'
 import { sm2 } from '@/lib/spaced-repetition'
-import { bandForSection, BAND_LEGEND } from '@/lib/vocab-bands'
+import { bandForSection, BAND_LEGEND, freqRange } from '@/lib/vocab-bands'
 import bgvbData from '@/data/bgvb-vocabulary.json'
 import hebrewData from '@/data/hebrew-vocabulary.json'
 
@@ -1069,6 +1069,7 @@ function StudySettings({
               const subs = V.subsections[s]
               const coverage = V.coverage[s]
               const band = isGreek ? bandForSection(s) : null
+              const sectionRange = freqRange(subs.flatMap(sub => sub.words))
 
               return (
                 <div
@@ -1093,7 +1094,11 @@ function StudySettings({
                           {band.short}
                         </span>
                       )}
-                      <span className="text-sm text-gray-500 ml-2">{subs.reduce((n, sub) => n + sub.words.length, 0)} words · up to {coverage}% of {V.corpusLabel}</span>
+                      <span className="text-sm text-gray-500 ml-2">
+                        {subs.reduce((n, sub) => n + sub.words.length, 0)} words
+                        {sectionRange && <> · {sectionRange}</>}
+                        {' '}· up to {coverage}% of {V.corpusLabel}
+                      </span>
                     </div>
                     <button
                       onClick={() => toggleExpand(s)}
@@ -1159,6 +1164,9 @@ function StudySettings({
                               <p className="text-sm font-semibold text-gray-700">
                                 §{s}{sub.label} · Words {sub.rankRange}
                                 <span className="text-gray-400 font-normal ml-1.5">({sub.words.length} words)</span>
+                                {freqRange(sub.words) && (
+                                  <span className="text-gray-500 font-normal ml-1.5">· {freqRange(sub.words)}</span>
+                                )}
                               </p>
                               <div className="flex items-center gap-2">
                                 {/* Mode toggle */}
