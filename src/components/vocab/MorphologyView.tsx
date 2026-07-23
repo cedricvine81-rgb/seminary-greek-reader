@@ -101,7 +101,7 @@ type MainTab = 'essentials' | 'pronunciation' | 'nouns' | 'pronouns' | 'demonstr
 // and relatives after Pronouns, contract verbs after Indicatives, liquids
 // beside 2nd Aorists, and Principal Parts closing the verb block.
 const MAIN_TABS: { id: MainTab; label: string }[] = [
-  { id: 'essentials',      label: 'Essentials'      },
+  { id: 'essentials',      label: 'Minimums'       },
   { id: 'pronunciation',   label: 'Pronunciation'   },
   { id: 'nouns',           label: 'Nouns/Adj.'      },
   { id: 'prepositions',    label: 'Prepositions'    },
@@ -153,7 +153,7 @@ const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
    progress header, chapter numbering, prev/next navigation, and a
    per-chapter "mark complete". Completion state comes from
    useCourseProgress (localStorage + the signed-in user's account).
-   Essentials stays outside the path as the reference spine.
+   Minimums stays outside the path as the reference spine.
 ───────────────────────────────────────────── */
 
 const COURSE_CHAPTERS = MAIN_TABS.filter(t => t.id !== 'essentials')
@@ -296,7 +296,7 @@ export function MorphologyView() {
   }
   const chapterIndex = COURSE_CHAPTERS.findIndex(c => c.id === mainTab)
 
-  // Mobile only: the topic tabs + Essentials sections collapse into a hamburger menu
+  // Mobile only: the topic tabs + Minimums sections collapse into a hamburger menu
   // (desktop keeps the inline bars). Close it on an outside click.
   const [menuOpen, setMenuOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement>(null)

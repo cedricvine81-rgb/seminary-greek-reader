@@ -11,7 +11,7 @@
                        next (mirrors the Wallace-based syntax summaries)
 
    Content is keyed two ways:
-     ESS_EXPLANATIONS   — Essentials sub-sections, keyed by section id (1–8)
+     ESS_EXPLANATIONS   — Minimums sub-sections, keyed by section id (1–8)
      TAB_EXPLANATIONS   — every other topic tab, keyed by MainTab id
 ───────────────────────────────────────────── */
 
@@ -110,7 +110,7 @@ function CatGroup({ label, children }: { label?: React.ReactNode; children: Reac
 }
 
 /* ─────────────────────────────────────────────
-   Essentials 1–8
+   Minimums 1–8
 ───────────────────────────────────────────── */
 
 export const ESS_EXPLANATIONS: Record<number, Explanation> = {
@@ -231,7 +231,7 @@ export const ESS_EXPLANATIONS: Record<number, Explanation> = {
 }
 
 /* ─────────────────────────────────────────────
-   Main topic tabs (all except Essentials)
+   Main topic tabs (all except Minimums)
 ───────────────────────────────────────────── */
 
 export const TAB_EXPLANATIONS: Record<string, Explanation> = {

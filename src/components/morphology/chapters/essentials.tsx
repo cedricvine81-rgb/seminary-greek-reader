@@ -4,7 +4,7 @@ export interface EssSection { id: number; label: string; title: string; content:
 
 export const ESS_SECTIONS: EssSection[] = [
   {
-    id: 1, label: 'Ess. 1', title: '1st & 2nd Declension Endings',
+    id: 1, label: 'Min. 1', title: '1st & 2nd Declension Endings',
     content: (
       <TableAside
         beginning={<>
@@ -38,7 +38,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 2, label: 'Ess. 2', title: '3rd Declension Endings',
+    id: 2, label: 'Min. 2', title: '3rd Declension Endings',
     content: (
       <TableAside
         beginning={<>
@@ -72,7 +72,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 3, label: 'Ess. 3', title: 'Present & Imperfect Tense Endings',
+    id: 3, label: 'Min. 3', title: 'Present & Imperfect Tense Endings',
     content: (
       <TableAside
         beginning={<>
@@ -108,7 +108,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 4, label: 'Ess. 4', title: 'Tense Identifiers',
+    id: 4, label: 'Min. 4', title: 'Tense Identifiers',
     content: (
       <TableAside
         beginning={<>
@@ -134,7 +134,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 5, label: 'Ess. 5', title: 'Applying Tense Identifiers',
+    id: 5, label: 'Min. 5', title: 'Applying Tense Identifiers',
     content: (
       <TableAside
         beginning={<>
@@ -164,7 +164,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 6, label: 'Ess. 6', title: 'Participle Endings',
+    id: 6, label: 'Min. 6', title: 'Participle Endings',
     content: (
       <TableAside
         beginning={<>
@@ -200,7 +200,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 7, label: 'Ess. 7', title: 'Subjunctive & Imperative',
+    id: 7, label: 'Min. 7', title: 'Subjunctive & Imperative',
     content: (
       <TableAside
         beginning={<>
@@ -246,7 +246,7 @@ export const ESS_SECTIONS: EssSection[] = [
     ),
   },
   {
-    id: 8, label: 'Ess. 8', title: '‒μι Verbs',
+    id: 8, label: 'Min. 8', title: '‒μι Verbs',
     content: (
       <TableAside
         beginning={<>

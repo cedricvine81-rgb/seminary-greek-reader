@@ -57,7 +57,7 @@ export const IMPERATIVES_CONTENT = (
     </TableAside>
     <P>
       The third person builds on two endings worth memorizing cold: <Gk>‑τω</Gk> (singular, "let him…")
-      and <Gk>‑τωσαν</Gk> (plural, "let them…"). The full paradigms live in Essentials 7 — here is the
+      and <Gk>‑τωσαν</Gk> (plural, "let them…"). The full paradigms live in Minimums 7 — here is the
       shape of the thing:
     </P>
     <TableAside
