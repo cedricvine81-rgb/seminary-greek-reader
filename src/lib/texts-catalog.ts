@@ -21,6 +21,12 @@ export interface CatalogWork {
   chapters?: number
   english?: 'brenton' | 'bsb'   // parallel English available for a Greek (lxx) work
   greek?: boolean               // parallel Greek stored per verse (prose works, e.g. Epictetus)
+  // Actual chapter numbers, when they are not a contiguous 1..chapters. A few works have
+  // gaps: the Sibylline Oracles run 1-8 then 11-14, and Life of Adam and Eve / 3 Baruch
+  // skip chapters their manuscript tradition lacks. Without this the reader queues numbers
+  // that have no text and stalls on "Loading next chapter…", and the chapter picker offers
+  // them. `chapters` stays the count, for callers that only need a total.
+  chapterNumbers?: number[]
   // Opens in Greek-only view (the Greek Sibylline, whose second column is empty for all but
   // the Book 8 acrostic). The Greek/second-column selector is still offered.
   greekOnly?: boolean
@@ -137,14 +143,14 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 85 },
       { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
       { id: 'apocmoses', name: 'Apocalypse of Moses', source: 'apocmoses', chapters: 43 },
-      { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51 },
-      { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17 },
+      { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51, chapterNumbers: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51] },
+      { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17, chapterNumbers: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17] },
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
-      { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14 },
-      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, greek: true, greekOnly: true, secondaryLabel: 'Latin' },
+      { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
+      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
       { id: 'odes-of-solomon', name: 'Odes of Solomon', source: 'odes-of-solomon', chapters: 42 },
       { id: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with Martyrdom of Isaiah)', source: 'ascension-of-isaiah', chapters: 11 },

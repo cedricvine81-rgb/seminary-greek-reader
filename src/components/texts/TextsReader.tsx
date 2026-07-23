@@ -100,6 +100,9 @@ function buildQueue(w: CatalogWork): QueueItem[] {
     w.books!.forEach((count, bi) => { for (let c = 1; c <= count; c++) out.push({ book: bi + 1, chapter: c }) })
     return out
   }
+  // Most works run 1..chapters; a few (Sibylline, Life of Adam and Eve, 3 Baruch) have gaps
+  // and declare their real numbers, so we never queue a chapter that has no text.
+  if (w.chapterNumbers?.length) return w.chapterNumbers.map(chapter => ({ chapter }))
   return Array.from({ length: w.chapters ?? 1 }, (_, i) => ({ chapter: i + 1 }))
 }
 function sameItem(a: QueueItem, book: number | undefined, chapter: number) {
@@ -816,13 +819,15 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     }
 
     const cols: LocateColumn[] = []
-    const chapterCount = work.chapters ?? 1
-    const chPresent = chapterCount > 1
+    const chapterNums = work.chapterNumbers?.length
+      ? work.chapterNumbers
+      : Array.from({ length: work.chapters ?? 1 }, (_, i) => i + 1)
+    const chPresent = chapterNums.length > 1
 
     if (chPresent) {
       cols.push({
         key: 'ch', label: 'Ch.', marginTop: 0,
-        items: Array.from({ length: chapterCount }, (_, i) => ({ n: i + 1, selected: locateChapter === i + 1, onClick: () => selectLocateChapter(i + 1) })),
+        items: chapterNums.map(n => ({ n, selected: locateChapter === n, onClick: () => selectLocateChapter(n) })),
       })
     }
     cols.push({
