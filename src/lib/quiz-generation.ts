@@ -2,7 +2,7 @@ import { prisma } from './db'
 import type { CourseLevel } from '@/types/course'
 import type { QuestionType } from '@/types/assignment'
 import { wordsForSelection, subsectionKeysBefore, type BgvbWord } from './vocab-subsections'
-import { lessonSubsectionKey, lessonSubsectionKeysBefore } from './vocab-lesson-map'
+import { lessonSubsectionKey, lessonSubsectionKeysBefore, lessonSubsectionKeysThrough } from './vocab-lesson-map'
 
 export interface GeneratedQuestion {
   position: number
@@ -341,21 +341,17 @@ export async function generateMorphologyQuestionsBySubtype(
     if (filtered.length >= Math.min(count, 3)) entries = filtered
   }
 
-  // Apply vocab filter (restrict to lexemes already learned)
+  // Apply vocab filter: keep only lexemes taught in lessons 1..vocabThruLesson, so a
+  // morphology quiz never asks about a word the vocabulary schedule hasn't reached.
+  // Word lists come from the static BGVB data — the same source as the vocab quizzes.
   if (vocabThruLesson != null && vocabThruLesson > 0) {
-    const lesson = VOCAB_LESSONS.find(l => l.lesson === vocabThruLesson)
-    if (lesson) {
-      try {
-        const vocabItems = await prisma.vocabularyItem.findMany({
-          where: { level: 'BEGINNING', sortOrder: { lte: lesson.rankMax } },
-          include: { lexeme: true },
-        })
-        const knownLexemes = new Set(vocabItems.map(v => v.lexeme.lexeme))
-        const filtered = entries.filter(e => knownLexemes.has(e.lexeme))
-        if (filtered.length >= Math.min(count, 3)) entries = filtered
-      } catch {
-        // DB unavailable — fall back to current pool
-      }
+    const keys = lessonSubsectionKeysThrough(vocabThruLesson)
+    if (keys.length > 0) {
+      const knownLexemes = new Set(wordsForSelection(keys, []).map(w => w.word))
+      const filtered = entries.filter(e => knownLexemes.has(e.lexeme))
+      // Guard against over-filtering into an unusable pool (e.g. a subtype with few
+      // early-lesson forms) — better a broader quiz than a broken one.
+      if (filtered.length >= Math.min(count, 3)) entries = filtered
     }
   }
 

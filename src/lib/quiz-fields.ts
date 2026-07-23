@@ -106,6 +106,8 @@ export interface MorphTestConfig {
   subtype: MorphologySubtype
   numQuestions: number
   vocabThruLesson: number | null  // null = no vocabulary filter
+  // true = follow the vocabulary schedule: week N is limited to words taught through lesson N
+  vocabAuto?: boolean
   fields: string[]                // which parse fields students must identify
   parseFilter?: MorphParseFilter  // restrict question pool to specific forms
 }

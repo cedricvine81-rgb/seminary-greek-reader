@@ -1191,17 +1191,26 @@ function MorphSeriesBuilder({
                   Vocab filter
                 </label>
                 <select
-                  value={test.vocabThruLesson ?? ''}
-                  onChange={e => updateTest(i, { vocabThruLesson: e.target.value === '' ? null : Number(e.target.value) })}
+                  value={test.vocabAuto ? 'AUTO' : test.vocabThruLesson ?? ''}
+                  onChange={e => updateTest(i, e.target.value === 'AUTO'
+                    ? { vocabAuto: true, vocabThruLesson: null }
+                    : { vocabAuto: false, vocabThruLesson: e.target.value === '' ? null : Number(e.target.value) })}
                   className="input text-sm w-full"
                 >
                   <option value="">All parsing examples</option>
+                  {/* Ties each week's morphology quiz to the vocabulary taught by that week. */}
+                  <option value="AUTO">Match vocabulary schedule (words taught so far)</option>
                   {VOCAB_LESSONS.map(l => (
                     <option key={l.lesson} value={l.lesson}>
                       Words through Lesson {l.lesson} ({l.section})
                     </option>
                   ))}
                 </select>
+                {test.vocabAuto && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Week 1 uses Lesson 1 words, week 2 Lessons 1–2, and so on.
+                  </p>
+                )}
               </div>
             </div>
           </div>

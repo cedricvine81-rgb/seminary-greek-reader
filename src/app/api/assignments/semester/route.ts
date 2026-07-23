@@ -197,7 +197,10 @@ export async function POST(req: NextRequest) {
       }
     } else if (testConfig) {
       const fields = testConfig.fields?.length ? testConfig.fields : undefined
-      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, testConfig.vocabThruLesson, fields, testConfig.parseFilter ?? undefined)
+      // vocabAuto ties the quiz to the vocabulary schedule: week N tests only words
+      // taught through lesson N, so students are never parsing unseen vocabulary.
+      const thruLesson = testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson
+      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, thruLesson, fields, testConfig.parseFilter ?? undefined)
     }
 
     if (questions.length > 0) {

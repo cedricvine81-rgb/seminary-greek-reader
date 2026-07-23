@@ -1,6 +1,7 @@
 // BGVB lesson map for Beginning Greek (50+ GNT occurrences, Sections I–II)
 // Each lesson covers 20 consecutive frequency-rank words.
-// sortOrder in VocabularyItem corresponds to frequency rank (1 = most frequent).
+// Lesson word lists come from the static BGVB data (see lessonSubsectionKey below), NOT
+// from VocabularyItem — that table is only partially seeded.
 
 export interface VocabLesson {
   lesson: number       // 1–16
@@ -46,6 +47,14 @@ export function lessonSubsectionKey(lesson: number): string | null {
   const section = lesson <= 8 ? 1 : 2
   const label = String.fromCharCode(65 + ((lesson - 1) % 8))
   return `${section}-${label}`
+}
+
+/** Subsection keys for lessons 1..lesson — everything a student has been taught by then. */
+export function lessonSubsectionKeysThrough(lesson: number): string[] {
+  return VOCAB_LESSONS
+    .filter(l => l.lesson <= lesson)
+    .map(l => lessonSubsectionKey(l.lesson))
+    .filter((k): k is string => k !== null)
 }
 
 /** Subsection keys for every lesson BEFORE this one — the cumulative-review pool. */
