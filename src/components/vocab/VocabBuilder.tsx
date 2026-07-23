@@ -18,6 +18,7 @@ interface BgvbWord {
   gloss: string
   pos: string
   section: number
+  sub?: string    // printed subsection key, e.g. "1-C" — Greek only; Hebrew chunks by 20
   freq: number | null
   order?: number  // PDF frequency rank (1 = most frequent); used for subsection sorting
   id?: string     // stable unique key. Greek lemmas are unique so it falls back to `word`;
@@ -108,8 +109,10 @@ function buildVocab(
 ): VocabData {
   const sections = Array.from(new Set(words.map(w => w.section))).sort((a, b) => a - b)
   const allPos = Array.from(new Set(words.map(w => w.pos))).sort()
-  // 20-word subsections per section, ordered by frequency rank (the `order` field; freq desc as
-  // a fallback). WORD_SUBSECTION maps each word to its subsection key ("1-A").
+  // Subsections come from the printed BGVB handout via each word's `sub` key, so the app's
+  // lists begin and end on the same words as the sheet students print. A few hold 18–19
+  // words: the handout prints a dozen words twice and only the first placement is kept.
+  // Decks without `sub` (Hebrew) keep the original 20-word chunking.
   const subsections: Record<number, Subsection[]> = {}
   const wordSubsection: Record<string, string> = {}
   sections.forEach(s => {
@@ -120,12 +123,35 @@ function buildVocab(
       return (b.freq ?? 0) - (a.freq ?? 0)
     })
     const subs: Subsection[] = []
-    for (let i = 0; i < sectionWords.length; i += 20) {
-      const chunk = sectionWords.slice(i, i + 20)
-      const label = String.fromCharCode(65 + subs.length) // A, B, C…
-      const key = `${s}-${label}`
-      subs.push({ key, label, rankRange: `${i + 1}–${Math.min(i + 20, sectionWords.length)}`, words: chunk })
-      chunk.forEach(w => { wordSubsection[wid(w)] = key })
+    const groups = new Map<string, BgvbWord[]>()
+    for (const w of sectionWords) {
+      if (!w.sub) continue
+      const list = groups.get(w.sub)
+      if (list) list.push(w)
+      else groups.set(w.sub, [w])
+    }
+
+    if (groups.size > 0) {
+      let position = 1
+      for (const key of Array.from(groups.keys()).sort()) {
+        const chunk = groups.get(key)!
+        subs.push({
+          key,
+          label: key.split('-')[1],
+          rankRange: `${position}–${position + chunk.length - 1}`,
+          words: chunk,
+        })
+        position += chunk.length
+        chunk.forEach(w => { wordSubsection[wid(w)] = key })
+      }
+    } else {
+      for (let i = 0; i < sectionWords.length; i += 20) {
+        const chunk = sectionWords.slice(i, i + 20)
+        const label = String.fromCharCode(65 + subs.length) // A, B, C…
+        const key = `${s}-${label}`
+        subs.push({ key, label, rankRange: `${i + 1}–${Math.min(i + 20, sectionWords.length)}`, words: chunk })
+        chunk.forEach(w => { wordSubsection[wid(w)] = key })
+      }
     }
     subsections[s] = subs
   })
