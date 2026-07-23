@@ -713,7 +713,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   }
 
   function openWork(w: CatalogWork) {
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode('both')
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(1); setLocateChapter(1)
     setTermHighlight(null)
     void openAt(w, w.source === 'josephus' ? 1 : undefined, 1)
@@ -740,7 +740,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       : target.source === 'josephus' ? findJosephusWork(target.workDir!)
       : TEXT_CATEGORIES.flatMap(c => c.works).find(x => x.source === target.source)
     if (!w) return
-    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode('both')
+    setWork(w); setTranslationId(translationsFor(w)[0]?.id ?? null); setMenuOpen(false); setGreekHiddenPref(false); setProseMode(w.greekOnly ? 'greek' : 'both')
     setLocateBook(target.book ?? 1); setLocateChapter(target.chapter)
     setTermHighlight(target.highlight?.trim() || null)
     void openAt(w, target.book, target.chapter, target.verse)
@@ -1091,7 +1091,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </div>
             )}
 
-            {greekProse && (
+            {greekProse && !work?.greekOnly && (
               <div className="relative" ref={translationMenuRef}>
                 <button
                   type="button"

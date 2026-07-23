@@ -20,7 +20,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -533,6 +533,18 @@ export const PROSE_WORKS: ProseWork[] = [
   // numbers aren't preserved in the source, so a "Sib. Or. 3:636" reference resolves to
   // book 3 (chapter level) — the line number is intentionally dropped to avoid pointing at
   // the wrong line.
+  // The Greek original, as its own work. Terry's English verse runs ~1.2x the Greek line
+  // count and the ratio varies by book, so the two cannot be paired line-by-line; they are
+  // sibling works sharing the same book numbers (1-8, 11-14). See
+  // scripts/build-sibylline-greek.py.
+  { source: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', noteBook: 'SibyllineGrc',
+    dataUrl: '/data/pseudepigrapha/sibylline-greek.json', chapters: 14,
+    attribution: 'Greek text of the Sibylline Oracles (ed. Geffcken). Digital edition: First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Line numbers are the Greek edition’s and do not match the English translation’s.',
+    parseCitation: (text: string) => {
+      const m = text.match(/^Sib\. Or\.\s+(\d+)/)
+      return m ? { chapter: parseInt(m[1], 10) } : null
+    },
+  },
   { source: 'sibylline', name: 'Sibylline Oracles', noteBook: 'Sibylline', dataUrl: '/data/pseudepigrapha/sibylline.json', chapters: 14,
     attribution: 'Text: Milton S. Terry’s translation of the Sibylline Oracles (2nd ed., 1899), public domain. Each book is a chapter; cross-references resolve at the book level.',
     parseCitation: (text: string) => {
