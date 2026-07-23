@@ -21,9 +21,12 @@ export interface CatalogWork {
   chapters?: number
   english?: 'brenton' | 'bsb'   // parallel English available for a Greek (lxx) work
   greek?: boolean               // parallel Greek stored per verse (prose works, e.g. Epictetus)
-  // Greek with no English at all (the Greek Sibylline): opens in Greek-only mode and hides
-  // the Greek/English selector, since there is nothing to toggle.
+  // Opens in Greek-only view (the Greek Sibylline, whose second column is empty for all but
+  // the Book 8 acrostic). The Greek/second-column selector is still offered.
   greekOnly?: boolean
+  // Name of the second column when it is not English — e.g. the Latin of Augustine's
+  // rendering of the Sibylline acrostic. Defaults to 'English'.
+  secondaryLabel?: string
   // josephus
   work?: string                 // directory under public/data/josephus/
   books?: number[]              // chapter count per book (index → book number - 1)
@@ -141,7 +144,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14 },
-      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, greek: true, greekOnly: true },
+      { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, greek: true, greekOnly: true, secondaryLabel: 'Latin' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
       { id: 'odes-of-solomon', name: 'Odes of Solomon', source: 'odes-of-solomon', chapters: 42 },
       { id: 'ascension-of-isaiah', name: 'Ascension of Isaiah (with Martyrdom of Isaiah)', source: 'ascension-of-isaiah', chapters: 11 },

@@ -258,7 +258,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const currentTranslationLabel = !translationId
     ? 'Greek only'
     : greekHidden ? `${translationLabel} only` : `Greek + ${translationLabel}`
-  const proseModeLabel = proseMode === 'greek' ? 'Greek only' : proseMode === 'english' ? 'English only' : 'Greek + English'
+  // The second column is English for most prose works, but Latin for the Greek Sibylline
+  // (Augustine's rendering of the Book 8 acrostic).
+  const secondLabel = work?.secondaryLabel ?? 'English'
+  const proseModeLabel = proseMode === 'greek' ? 'Greek only'
+    : proseMode === 'english' ? `${secondLabel} only` : `Greek + ${secondLabel}`
 
   // Which scripts the in-text search can target, given what's on screen.
   const greekSearchable = (isGreek || greekProse) && !greekHidden
@@ -1091,7 +1095,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </div>
             )}
 
-            {greekProse && !work?.greekOnly && (
+            {greekProse && (
               <div className="relative" ref={translationMenuRef}>
                 <button
                   type="button"
@@ -1105,7 +1109,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
 
                 {translationMenuOpen && (
                   <div className="absolute left-0 top-full z-30 mt-1 min-w-[11rem] rounded-lg border border-gray-200 bg-popover py-1 shadow-lg">
-                    {([['greek', 'Greek only'], ['both', 'Greek + English'], ['english', 'English only']] as const).map(([mode, label]) => (
+                    {([['greek', 'Greek only'], ['both', `Greek + ${secondLabel}`], ['english', `${secondLabel} only`]] as const).map(([mode, label]) => (
                       <button
                         key={mode}
                         type="button"

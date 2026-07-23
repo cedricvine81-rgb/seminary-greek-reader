@@ -20,6 +20,7 @@ Usage:  python3 scripts/build-sibylline-greek.py [--no-cache]   (run from the re
 """
 import json
 import re
+import unicodedata
 import ssl
 import sys
 import urllib.request
@@ -73,6 +74,42 @@ def is_greek_block(el):
     return g > l
 
 
+ACROSTIC = 'ΙΗΣΟΥΣΧΡΕΙΣΤΟΣΘΕΟΥΥΙΟΣΣΩΤΗΡ'   # 27 letters; ΣΤΑΥΡΟΣ follows in the Greek only
+
+
+def bare(text):
+    """Accent- and breathing-stripped lower-case, for matching regardless of the
+    precomposed form the edition happens to use (ώ is U+1F7D here, not U+03CE)."""
+    return ''.join(c for c in unicodedata.normalize('NFD', text)
+                   if unicodedata.category(c) != 'Mn').lower()
+
+
+def initial(text):
+    """First alphabetic letter, bare and upper-case (leading *, 〈 and free-standing
+    breathing marks are editorial)."""
+    t = text.lstrip('*〈 ⟨')
+    for ch in unicodedata.normalize('NFD', t):
+        if unicodedata.category(ch) == 'Mn' or not ch.isalpha():
+            continue
+        return ch.upper()
+    return ''
+
+
+def latin_lines(el):
+    """Augustine's Latin acrostic lines, with the marginal Greek acrostic letters the
+    edition prints beside some of them ("Υ Celsum", "Τ j Tartareumque") removed."""
+    txt = re.sub(r'<[^>]+>', '', ''.join(el.itertext()))
+    out = []
+    for raw in txt.split('\n'):
+        t = re.sub(r'\s+', ' ', raw).strip()
+        if not t:
+            continue
+        t = re.sub(r'^[\u0370-\u03ff\u1f00-\u1fff]\s*j?\s*', '', t)   # marginal Greek letter
+        if t:
+            out.append(t)
+    return out
+
+
 def book_lines(div):
     """Extract (line_number, text) for one book.
 
@@ -104,10 +141,15 @@ def book_lines(div):
         if el.tail:
             parts.append(el.tail)
 
+    latin = []
     for child in div:
         tag = child.tag.replace(TEI, '')
         if tag in ('p', 'lg') and not is_greek_block(child):
-            continue          # the edition's Latin (Augustine's acrostic) — not oracle text
+            # The edition's Latin: Augustine's verse rendering of the Book 8 acrostic
+            # (City of God 18.23). Kept aside — it must not drive the Greek line counter,
+            # which is what its own <lb> numbering did.
+            latin.extend(latin_lines(child))
+            continue
         walk(child)
 
     # Flatten into lines, applying anchors.
@@ -158,7 +200,35 @@ def book_lines(div):
         seen.add(n)
         last = n
         fixed.append((n, t))
-    return fixed
+    return fixed, latin
+
+
+def attach_latin(verses, latin):
+    """Pair Augustine's 27 Latin lines with the Greek acrostic lines they render.
+
+    Pairing is by ACROSTIC LETTER, not by position: the Greek here carries one extra line
+    inside the acrostic, so counting lines would slip by one part-way through. Walking the
+    expected letter sequence instead makes the pairing self-correcting and self-verifying —
+    if the letters do not all match, nothing is attached.
+    """
+    start = next((i for i, v in enumerate(verses)
+                  if initial(v['greek']) == 'Ι' and bare(v['greek'])[:20].lstrip('*〈 ⟨῾᾿').startswith('ιδρωσει')),
+                 None)
+    if start is None:
+        return 0
+    matched, j = [], start
+    for letter in ACROSTIC:
+        while j < len(verses) and initial(verses[j]['greek']) != letter:
+            j += 1
+        if j >= len(verses):
+            return 0                      # sequence broke — attach nothing
+        matched.append(j)
+        j += 1
+    if len(matched) != len(latin):
+        return 0
+    for idx, lat in zip(matched, latin):
+        verses[idx]['text'] = lat
+    return len(matched)
 
 
 def main():
@@ -178,11 +248,12 @@ def main():
         if div is None:
             report.append((b, 0, 0))
             continue
-        lines = book_lines(div)
+        lines, latin = book_lines(div)
+        verses = [{'number': n, 'text': '', 'greek': t} for n, t in lines]
+        if latin:
+            attach_latin(verses, latin)
         chapters.append({'number': int(b),
-                         # Greek-only work: `text` (the English column) is deliberately empty,
-                         # and the reader opens it in Greek-only mode.
-                         'verses': [{'number': n, 'text': '', 'greek': t} for n, t in lines]})
+                         'verses': verses})
         report.append((b, len(lines), max((n for n, _ in lines), default=0)))
 
     doc = {'work': 'Sibylline Oracles (Greek)', 'attribution': ATTRIB, 'greek': True,
