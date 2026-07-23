@@ -151,6 +151,91 @@ async function main() {
   console.log(`     flashcards: ${cards.map((c: { level: string; _count: { _all: number } }) => c.level + '=' + c._count._all).join(' ')}`)
   await prisma.$disconnect()
 
+  console.log('\n=== 11. Remaining morphology subtypes and parse filters ===')
+  for (const subtype of ['ADJECTIVE_PARSING', 'CONDITIONALS', 'SUBJUNCTIVES'] as const) {
+    const qs = await generateMorphologyQuestionsBySubtype(subtype, 8, null)
+    ok(`${subtype} returns questions`, qs.length > 0, `${qs.length}`)
+  }
+  {
+    const qs = await generateMorphologyQuestionsBySubtype('VERB_PARSING', 12, null, undefined,
+      { tenses: ['Aorist'], voices: [], moods: ['Subjunctive'], persons: [], numbers: [], cases: [], genders: [] })
+    const bad = qs.filter(q => {
+      const a = JSON.parse(q.correctAnswer)
+      return a.tense !== 'Aorist' || a.mood !== 'Subjunctive'
+    })
+    ok('parse filter (Aorist+Subjunctive) honoured', bad.length === 0, `${qs.length} questions`)
+  }
+  {
+    // Participle fields ⇒ only participles can satisfy Case+Gender
+    const qs = await generateMorphologyQuestionsBySubtype('VERB_PARSING', 12, null,
+      ['tense', 'voice', 'mood', 'casus', 'gender'])
+    const bad = qs.filter(q => JSON.parse(q.correctAnswer).mood !== 'Participle')
+    ok('Case+Gender fields select participles only', bad.length === 0, `${qs.length} questions`)
+  }
+
+  console.log('\n=== 12. English→Greek direction ===')
+  {
+    const qs = generateVocabQuestionsFromSelection(['1-A'], [], 'ENGLISH_TO_GREEK', 10, 0)
+    const greek = /[Ͱ-Ͽἀ-῿]/
+    const bad = qs.filter(q => greek.test(q.prompt) || !greek.test(q.correctAnswer)
+      || (q.options.length > 0 && !q.options.includes(q.correctAnswer)))
+    ok('prompts are English, answers Greek, answer among options', bad.length === 0, `${qs.length} questions`)
+  }
+
+  console.log('\n=== 13. Existing stored assignments are still coherent ===')
+  {
+    const assignments = await prisma.assignment.findMany({
+      where: { type: { in: ['VOCABULARY_QUIZ', 'MORPHOLOGY_QUIZ'] } },
+      include: { questions: true },
+    })
+    const vocabA = assignments.filter((a: { type: string }) => a.type === 'VOCABULARY_QUIZ')
+    const morphA = assignments.filter((a: { type: string }) => a.type === 'MORPHOLOGY_QUIZ')
+    console.log(`     stored: ${vocabA.length} vocabulary, ${morphA.length} morphology`)
+
+    // Saved section selections must still resolve after the rebuild.
+    let badSel = 0
+    for (const a of vocabA) {
+      const sel = a.vocabSelection as { subsections?: string[] } | null
+      for (const k of sel?.subsections ?? []) {
+        if (!ALL_SUBSECTION_KEYS.includes(k)) { badSel++; console.log(`     stale key ${k} on "${a.title}"`) }
+      }
+    }
+    ok('every saved section selection still resolves', badSel === 0)
+
+    // Frozen questions must remain gradable.
+    let empty = 0, badMorph = 0, noAnswerInOptions = 0
+    for (const a of assignments) {
+      if (a.questions.length === 0 && a.isPublished) empty++
+      for (const q of a.questions) {
+        if (q.type === 'MORPHOLOGY_IDENTIFY') {
+          try {
+            const ans = JSON.parse(q.correctAnswer)
+            if (Object.keys(ans).filter(k => ans[k]).length === 0) badMorph++
+          } catch { badMorph++ }
+        }
+        if (q.type === 'MULTIPLE_CHOICE') {
+          const opts = q.options as string[] | null
+          if (Array.isArray(opts) && opts.length > 0 && !opts.includes(q.correctAnswer)) noAnswerInOptions++
+        }
+      }
+    }
+    ok('no published quiz has zero questions', empty === 0, `${empty}`)
+    ok('every stored morphology answer is gradable JSON', badMorph === 0, `${badMorph}`)
+    ok('every stored MC question contains its answer', noAnswerInOptions === 0, `${noAnswerInOptions}`)
+
+    // No response points at a DELETED question. questionId=null is legitimate —
+    // regenerating a quiz deletes its questions and the optional relation nulls the
+    // reference; the attempt's aggregate score survives for the gradebook, and the
+    // results view skips the nulls. Only a non-null id with no matching row is a bug.
+    const orphans = await prisma.$queryRawUnsafe<{ n: bigint }[]>(
+      `SELECT count(*)::bigint AS n FROM "Response" r
+       LEFT JOIN "Question" q ON q.id = r."questionId"
+       WHERE r."questionId" IS NOT NULL AND q.id IS NULL`)
+    const detached = await prisma.response.count({ where: { questionId: null } })
+    ok('no response points at a deleted question', Number(orphans[0].n) === 0,
+       `${detached} detached by past regenerations (scores retained)`)
+  }
+
   console.log(`\n${fail.length === 0 ? 'ALL CHECKS PASSED' : `${fail.length} FAILURES: ${fail.join(' | ')}`}`)
 
 }
