@@ -4,6 +4,8 @@ import { AtSign } from 'lucide-react'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card } from '@/components/ui/Card'
+import { clsx } from 'clsx'
+import { courseStatus, courseTiming, groupByStatus } from '@/lib/course-status'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
@@ -98,21 +100,36 @@ export default async function StudentCoursesPage() {
           {approvedEnrollments.length === 0 ? (
             <p className="text-sm text-gray-400 italic">You are not enrolled in any courses yet.</p>
           ) : (
+            <div className="space-y-5">
+            {/* Grouped so a student sees the course they are actually taking first,
+                with finished terms kept but pushed to the bottom. */}
+            {groupByStatus(approvedEnrollments, e => ({ startDate: e.course.startDate, endDate: e.course.endDate }))
+              .filter(g => g.items.length > 0).map(group => (
+            <div key={group.status} className="space-y-3">
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              {group.label}
+              <span className="ml-1.5 font-normal normal-case text-gray-400">({group.items.length})</span>
+            </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {approvedEnrollments.map(e => {
+              {group.items.map(e => {
                 const instructorName = [
                   e.course.instructor.title,
                   e.course.instructor.firstName,
                   e.course.instructor.surname,
                 ].filter(Boolean).join(' ')
+                const status = courseStatus(e.course.startDate, e.course.endDate)
                 return (
-                  <Card key={e.courseId} className="space-y-2">
-                    <div className="flex items-start justify-between">
+                  <Card key={e.courseId} className={clsx('space-y-2', status.edge,
+                    status.status === 'past' && 'opacity-75')}>
+                    <div className="flex items-start justify-between gap-2">
                       <h3 className="font-semibold text-gray-900">{e.course.name}</h3>
+                      <span className={clsx('text-xs px-2 py-0.5 rounded-full border shrink-0', status.chip)}>
+                        {status.label}
+                      </span>
                     </div>
                     <p className="text-xs text-gray-500">{instructorName}</p>
                     <p className="text-xs text-gray-400">
-                      {e.course._count.assignments} assignments
+                      {e.course._count.assignments} assignments · {courseTiming(e.course.startDate, e.course.endDate)}
                     </p>
                     <div className="flex items-center justify-between gap-2 pt-1">
                       <Link href="/student/assignments" className="text-sm text-brand-600 hover:underline">
@@ -139,6 +156,9 @@ export default async function StudentCoursesPage() {
                   </Card>
                 )
               })}
+            </div>
+            </div>
+            ))}
             </div>
           )}
         </div>

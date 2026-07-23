@@ -8,10 +8,14 @@ import { MessageInstructorButton } from '@/components/student/MessageInstructorB
 import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
 import type { CategoryWeights } from '@/lib/grade-weights'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
+import { clsx } from 'clsx'
+import { courseStatus, courseTiming } from '@/lib/course-status'
 
 export interface StudentCourse {
   id: string
   name: string
+  startDate: string
+  endDate: string
   instructorName: string
   instructorEmail: string
   assignments: { id: string; title: string; type: string; dueDate: string; weekNumber: number; completed: boolean }[]
@@ -40,6 +44,7 @@ function DueLabel({ dueDate }: { dueDate: string }) {
 
 export function StudentCourseCard({ course, studentName }: { course: StudentCourse; studentName: string }) {
   const [open, setOpen] = useState(false)
+  const status = courseStatus(course.startDate, course.endDate)
   const sortedAssignments = [...course.assignments].sort((a, b) => a.weekNumber - b.weekNumber)
 
   function collapse() {
@@ -56,8 +61,19 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
         className="w-full flex items-center justify-between gap-3 text-left"
       >
         <div className="min-w-0">
-          <h3 className="font-semibold text-gray-900">{course.name}</h3>
-          <p className="text-xs text-gray-500">{course.instructorName}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <h3 className="font-semibold text-gray-900">{course.name}</h3>
+            {/* Past and upcoming courses stay visible but are marked, so a student is
+                never unsure which one is actually running. */}
+            {status.status !== 'current' && (
+              <span className={clsx('text-xs px-2 py-0.5 rounded-full border', status.chip)}>
+                {status.label}
+              </span>
+            )}
+          </div>
+          <p className="text-xs text-gray-500">
+            {course.instructorName} · {courseTiming(course.startDate, course.endDate)}
+          </p>
         </div>
         <ChevronDown size={18} className={`text-gray-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>

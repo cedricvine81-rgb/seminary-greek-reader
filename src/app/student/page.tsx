@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { groupByStatus } from '@/lib/course-status'
 import type { Metadata } from 'next'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { StudentDashboard } from '@/components/student/StudentDashboard'
@@ -73,11 +74,19 @@ export default async function StudentPage() {
 
   // Enrolled courses for the "My Courses" card — each with its own grade book
   // (assignments grouped by type, the student's score per assignment).
-  const courses = enrollments.slice(0, 5).map(e => {
+  // Current courses first, then upcoming, then finished — the dashboard only shows
+  // the first five, so a live course must never be crowded out by a past one.
+  const orderedEnrollments = groupByStatus(enrollments, e => ({
+    startDate: e.course.startDate, endDate: e.course.endDate,
+  })).flatMap(g => g.items)
+
+  const courses = orderedEnrollments.slice(0, 5).map(e => {
     const published = e.course.assignments.filter(a => a.isPublished).slice().sort((a, b) => a.weekNumber - b.weekNumber)
     return {
       id: e.course.id,
       name: e.course.name,
+      startDate: e.course.startDate.toISOString(),
+      endDate: e.course.endDate.toISOString(),
       instructorName: [e.course.instructor.title, e.course.instructor.firstName, e.course.instructor.surname].filter(Boolean).join(' '),
       instructorEmail: e.course.instructor.email,
       assignments: published.map(a => ({

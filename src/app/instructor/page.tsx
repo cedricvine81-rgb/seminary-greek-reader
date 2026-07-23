@@ -2,6 +2,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { format } from 'date-fns'
+import { clsx } from 'clsx'
+import { courseStatus, courseTiming, groupByStatus } from '@/lib/course-status'
 import { DashboardShell } from '@/components/layout/DashboardShell'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
@@ -51,6 +53,9 @@ export default async function InstructorPage() {
     }),
   ])
 
+  const courseGroups = groupByStatus(rawCourses, c => ({ startDate: c.startDate, endDate: c.endDate }))
+  const currentCount = courseGroups.find(g => g.status === 'current')?.items.length ?? 0
+
   const courseIds = rawCourses.map(c => c.id)
 
   const [totalAssignments, totalStudents, pendingEnrollments] = await Promise.all([
@@ -91,7 +96,8 @@ export default async function InstructorPage() {
 
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { label: 'Active Courses',    value: rawCourses.length,  icon: <BookOpen size={18} />,     color: 'text-blue-600 bg-blue-50' },
+              // "Active" used to count every non-archived course, including terms long finished.
+              { label: 'Current Courses',   value: currentCount,        icon: <BookOpen size={18} />,     color: 'text-blue-600 bg-blue-50' },
               { label: 'Enrolled Students', value: totalStudents,       icon: <Users size={18} />,        color: 'text-green-600 bg-green-50' },
               { label: 'Assignments',       value: totalAssignments,    icon: <ClipboardList size={18} />, color: 'text-purple-600 bg-purple-50' },
             ].map(s => (
@@ -150,14 +156,23 @@ export default async function InstructorPage() {
             </p>
           </Card>
         ) : (
-          <div className="space-y-3">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Your Courses</h3>
+          <div className="space-y-5">
+            {/* Courses are grouped by where they sit relative to today, so the one being
+                taught now is never buried among finished or not-yet-started terms. */}
+            {courseGroups.filter(g => g.items.length > 0).map(group => (
+            <div key={group.status} className="space-y-3">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+              {group.status === 'current' ? 'Current Courses' : group.label + ' Courses'}
+              <span className="ml-1.5 font-normal normal-case text-gray-400">({group.items.length})</span>
+            </h3>
             <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              {rawCourses.map(course => {
+              {group.items.map(course => {
                 const studentCount = course._count.enrollments
                 const assignmentCount = course._count.assignments
+                const status = courseStatus(course.startDate, course.endDate)
                 return (
-                  <Card key={course.id} hover className="flex flex-col gap-3 p-4">
+                  <Card key={course.id} hover className={clsx('flex flex-col gap-3 p-4', status.edge,
+                    status.status === 'past' && 'opacity-75')}>
                     {/* Course name */}
                     <div className="flex-1 min-w-0">
                       <Link
@@ -173,9 +188,13 @@ export default async function InstructorPage() {
 
                     {/* Meta row */}
                     <div className="flex flex-wrap items-center gap-2">
+                      <span className={clsx('text-xs px-2 py-0.5 rounded-full border', status.chip)}>
+                        {status.label}
+                      </span>
                       <span className="text-xs text-gray-400">
                         {format(new Date(course.startDate), 'MMM d')} –{' '}
                         {format(new Date(course.endDate), 'MMM d, yyyy')}
+                        {' · '}{courseTiming(course.startDate, course.endDate)}
                       </span>
                     </div>
 
@@ -206,6 +225,8 @@ export default async function InstructorPage() {
                 )
               })}
             </div>
+            </div>
+            ))}
           </div>
         )}
 
