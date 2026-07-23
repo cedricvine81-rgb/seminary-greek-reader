@@ -1,4 +1,4 @@
-export type FrequencyLevel = 'BEGINNING' | 'INTERMEDIATE'
+export type FrequencyLevel = 'BEGINNING' | 'INTERMEDIATE' | 'ADVANCED'
 
 export interface Flashcard {
   id: string

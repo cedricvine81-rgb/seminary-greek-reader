@@ -16,7 +16,7 @@ import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
 import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
 import type { CourseLevel } from '@/types/course'
-import { getLessonForWeek, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
+import { getLessonForWeek, minOccurrencesThrough, VOCAB_LESSONS, type VocabLesson } from '@/lib/vocab-lesson-map'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -987,7 +987,7 @@ function VocabLessonFilter({
           <option value="">No limit — use all parsing examples</option>
           {VOCAB_LESSONS.map(l => (
             <option key={l.lesson} value={l.lesson}>
-              Through Lesson {l.lesson} ({l.section}, ≥{l.occMin} occ.)
+              Through Lesson {l.lesson} ({l.section}, ≥{minOccurrencesThrough(l.lesson) ?? l.occMin} occ.)
             </option>
           ))}
         </select>

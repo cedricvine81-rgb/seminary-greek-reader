@@ -9,8 +9,9 @@
  *
  * BGVB sections are NT-frequency bands (measured against public/data/gnt):
  *   §1 100+   §2 50–99   §3 30–49   §4 22–30   §5 18–21   §6 13–17   §7 10–12
- * Beginning = §1–2 (50+ occurrences); Intermediate = §3 (30+), matching the
- * legacy vocabulary-nt-30-plus.json → INTERMEDIATE mapping.
+ * Beginning = §1–2 (50+ occurrences); Intermediate = §3 (30+), matching the legacy
+ * vocabulary-nt-30-plus.json → INTERMEDIATE mapping; Advanced = §4–7, which sit past
+ * both courses. Each level defaults to its own sections, so --sections is optional.
  *
  * `sortOrder` is written as the BGVB frequency RANK (1 = most frequent), which is
  * what the field name and every comment referring to it assume. It previously held
@@ -21,13 +22,15 @@
  * Idempotent: re-running only fills gaps. Instructor-curated fields (gloss,
  * extendedGloss, acceptedAnswers) on entries that already exist are never touched.
  *
- *   npx tsx scripts/seed-bgvb-vocab.ts --level=BEGINNING    --sections=1,2
- *   npx tsx scripts/seed-bgvb-vocab.ts --level=INTERMEDIATE --sections=3
+ *   npx tsx scripts/seed-bgvb-vocab.ts --level=BEGINNING     (§1–2)
+ *   npx tsx scripts/seed-bgvb-vocab.ts --level=INTERMEDIATE  (§3)
+ *   npx tsx scripts/seed-bgvb-vocab.ts --level=ADVANCED      (§4–7)
  *   (add --dry-run to report without writing)
  */
 import { PrismaClient } from '@prisma/client'
 import { readFileSync, readdirSync } from 'fs'
 import { join } from 'path'
+import { matchLemma, unaccent, normaliseLexeme } from '../src/lib/bgvb-lemmas'
 
 const prisma = new PrismaClient()
 const DRY = process.argv.includes('--dry-run')
@@ -35,12 +38,19 @@ const DRY = process.argv.includes('--dry-run')
 const arg = (name: string) =>
   process.argv.find(a => a.startsWith(`--${name}=`))?.split('=')[1]
 
-const LEVEL = (arg('level') ?? 'BEGINNING').toUpperCase() as 'BEGINNING' | 'INTERMEDIATE'
-const SECTIONS = (arg('sections') ?? (LEVEL === 'BEGINNING' ? '1,2' : '3'))
+const LEVEL = (arg('level') ?? 'BEGINNING').toUpperCase() as 'BEGINNING' | 'INTERMEDIATE' | 'ADVANCED'
+
+const DEFAULT_SECTIONS: Record<string, string> = {
+  BEGINNING: '1,2',      // 50+ occurrences
+  INTERMEDIATE: '3',     // 30–49
+  ADVANCED: '4,5,6,7',   // under 30 — past both courses
+}
+
+const SECTIONS = (arg('sections') ?? DEFAULT_SECTIONS[LEVEL] ?? '')
   .split(',').map(Number).filter(n => n >= 1 && n <= 7)
 
-if (!['BEGINNING', 'INTERMEDIATE'].includes(LEVEL) || SECTIONS.length === 0) {
-  console.error('usage: --level=BEGINNING|INTERMEDIATE --sections=1,2 [--dry-run]')
+if (!DEFAULT_SECTIONS[LEVEL] || SECTIONS.length === 0) {
+  console.error('usage: --level=BEGINNING|INTERMEDIATE|ADVANCED --sections=1,2 [--dry-run]')
   process.exit(1)
 }
 
@@ -66,27 +76,6 @@ const POS_MAP: Record<string, string> = {
 // Accent-insensitive matching catches the iota-subscript pairs (ἀποθνῄσκω/ἀποθνήσκω,
 // σῴζω/σώζω); these need naming outright. εἶπον is deliberately absent — the corpus
 // files it under λέγω, and merging the two would distort λέγω's count.
-const LEMMA_ALIASES: Record<string, string> = {
-  'οἶδα': 'εἴδω',
-  'φοβέομαι': 'φοβέω',
-  'Μωϋσῆς': 'Μωσεύς',
-  'Δαυίδ': 'Δαβίδ',
-  // §3: BGVB gives active headwords where the corpus lemmatises the deponent/-υω form
-  'δείκνυμι': 'δεικνύω',
-  'ἐπικαλέω': 'ἐπικαλέομαι',
-  'προσκαλέω': 'προσκαλέομαι',
-}
-
-/**
- * BGVB prints the movable nu as "ἔξεστι(ν)" (the only parenthetical headword in the
- * list). Store the bare lemma so it joins with the corpus and the parsing pool; the
- * flashcard still shows BGVB's spelling.
- */
-const normaliseLexeme = (w: string) => w.replace(/\(ν\)$/, '')
-
-const unaccent = (s: string) =>
-  s.normalize('NFD').replace(/[̀-͂ͅʹ·]/g, '').normalize('NFC').toLowerCase()
-
 /** lemma → { strongs, frequency } from the morphologically tagged GNT. */
 function corpusIndex(): Map<string, { strongs: string | null; frequency: number }> {
   const dir = join(process.cwd(), 'public/data/gnt')
@@ -105,17 +94,6 @@ function corpusIndex(): Map<string, { strongs: string | null; frequency: number 
     }
   }
   return index
-}
-
-/** Look up a BGVB lemma in the corpus, via alias then accent-insensitive fallback. */
-function lookup(
-  index: Map<string, { strongs: string | null; frequency: number }>,
-  bare: Map<string, { strongs: string | null; frequency: number }>,
-  lemma: string,
-) {
-  return index.get(lemma)
-    ?? index.get(LEMMA_ALIASES[lemma] ?? '')
-    ?? bare.get(unaccent(lemma))
 }
 
 async function main() {
@@ -146,7 +124,7 @@ async function main() {
     const w = words[i]
     const rank = i + 1
     const lexeme = normaliseLexeme(w.word)
-    const meta = lookup(corpus, corpusBare, lexeme)
+    const meta = matchLemma(corpus, corpusBare, w.word)
     if (!meta) missingInCorpus.push(lexeme)
     const partOfSpeech = POS_MAP[w.pos] ?? w.pos.toLowerCase()
 

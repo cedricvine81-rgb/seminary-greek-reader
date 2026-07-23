@@ -383,8 +383,9 @@ model MorphParse {
 // ─── Vocabulary ───────────────────────────────────────────────────
 
 enum FrequencyLevel {
-  BEGINNING
-  INTERMEDIATE
+  BEGINNING     // BGVB sections I–II  (50+ NT occurrences)
+  INTERMEDIATE  // BGVB section III    (30–49)
+  ADVANCED      // BGVB sections IV–VII (under 30) — past both courses
 }
 
 model VocabularyItem {

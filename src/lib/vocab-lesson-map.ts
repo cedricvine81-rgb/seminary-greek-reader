@@ -3,12 +3,15 @@
 // Lesson word lists come from the static BGVB data (see lessonSubsectionKey below), NOT
 // from VocabularyItem — that table is only partially seeded.
 
+import { wordsForSelection } from './vocab-subsections'
+
 export interface VocabLesson {
   lesson: number       // 1–16
   section: string      // e.g. "Section I-A"
   rankMin: number
   rankMax: number
-  occMin: number       // approximate lower bound from BGVB
+  occMin: number       // approximate lower bound printed in BGVB — use minOccurrencesThrough()
+                       // for the real figure; the printed one drifts from our corpus counts
   occMax: number       // approximate upper bound from BGVB
   pages: string        // BGVB page reference, e.g. "p. 11" or "pp. 12–13"
 }
@@ -63,4 +66,18 @@ export function lessonSubsectionKeysBefore(lesson: number): string[] {
     .filter(l => l.lesson < lesson)
     .map(l => lessonSubsectionKey(l.lesson))
     .filter((k): k is string => k !== null)
+}
+
+/**
+ * Fewest NT occurrences among the words taught through this lesson — the honest
+ * version of VocabLesson.occMin, which is BGVB's printed figure and drifts from our
+ * corpus counts (it claims ≥63 for lesson 13 where the real floor is 48).
+ */
+export function minOccurrencesThrough(lesson: number): number | null {
+  const keys = lessonSubsectionKeysThrough(lesson)
+  if (keys.length === 0) return null
+  const counts = wordsForSelection(keys, [])
+    .map(w => w.freq)
+    .filter((n): n is number => n != null)
+  return counts.length ? Math.min(...counts) : null
 }
