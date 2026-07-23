@@ -1,11 +1,16 @@
 /**
- * Seed the full BGVB Beginning vocabulary (Sections I–II) into LexicalEntry,
- * VocabularyItem and Flashcard.
+ * Seed BGVB vocabulary into LexicalEntry, VocabularyItem and Flashcard.
  *
- * The original prisma/seed.ts only loaded a 95-word subset, so the flashcard deck
- * and any VocabularyItem-backed feature covered less than a third of the Beginning
- * course. Source of truth is src/data/bgvb-vocabulary.json — the same list the
- * vocab quizzes and the /vocab study tab use.
+ * The original prisma/seed.ts only loaded small hand-made subsets (95 Beginning,
+ * 75 Intermediate words), so the flashcard deck and every VocabularyItem-backed
+ * feature covered a fraction of each course. Source of truth is
+ * src/data/bgvb-vocabulary.json — the same list the vocab quizzes and the /vocab
+ * study tab use.
+ *
+ * BGVB sections are NT-frequency bands (measured against public/data/gnt):
+ *   §1 100+   §2 50–99   §3 30–49   §4 22–30   §5 18–21   §6 13–17   §7 10–12
+ * Beginning = §1–2 (50+ occurrences); Intermediate = §3 (30+), matching the
+ * legacy vocabulary-nt-30-plus.json → INTERMEDIATE mapping.
  *
  * `sortOrder` is written as the BGVB frequency RANK (1 = most frequent), which is
  * what the field name and every comment referring to it assume. It previously held
@@ -16,7 +21,9 @@
  * Idempotent: re-running only fills gaps. Instructor-curated fields (gloss,
  * extendedGloss, acceptedAnswers) on entries that already exist are never touched.
  *
- *   npx tsx scripts/seed-beginning-vocab.ts [--dry-run]
+ *   npx tsx scripts/seed-bgvb-vocab.ts --level=BEGINNING    --sections=1,2
+ *   npx tsx scripts/seed-bgvb-vocab.ts --level=INTERMEDIATE --sections=3
+ *   (add --dry-run to report without writing)
  */
 import { PrismaClient } from '@prisma/client'
 import { readFileSync, readdirSync } from 'fs'
@@ -24,6 +31,18 @@ import { join } from 'path'
 
 const prisma = new PrismaClient()
 const DRY = process.argv.includes('--dry-run')
+
+const arg = (name: string) =>
+  process.argv.find(a => a.startsWith(`--${name}=`))?.split('=')[1]
+
+const LEVEL = (arg('level') ?? 'BEGINNING').toUpperCase() as 'BEGINNING' | 'INTERMEDIATE'
+const SECTIONS = (arg('sections') ?? (LEVEL === 'BEGINNING' ? '1,2' : '3'))
+  .split(',').map(Number).filter(n => n >= 1 && n <= 7)
+
+if (!['BEGINNING', 'INTERMEDIATE'].includes(LEVEL) || SECTIONS.length === 0) {
+  console.error('usage: --level=BEGINNING|INTERMEDIATE --sections=1,2 [--dry-run]')
+  process.exit(1)
+}
 
 interface BgvbWord {
   word: string
@@ -52,7 +71,18 @@ const LEMMA_ALIASES: Record<string, string> = {
   'φοβέομαι': 'φοβέω',
   'Μωϋσῆς': 'Μωσεύς',
   'Δαυίδ': 'Δαβίδ',
+  // §3: BGVB gives active headwords where the corpus lemmatises the deponent/-υω form
+  'δείκνυμι': 'δεικνύω',
+  'ἐπικαλέω': 'ἐπικαλέομαι',
+  'προσκαλέω': 'προσκαλέομαι',
 }
+
+/**
+ * BGVB prints the movable nu as "ἔξεστι(ν)" (the only parenthetical headword in the
+ * list). Store the bare lemma so it joins with the corpus and the parsing pool; the
+ * flashcard still shows BGVB's spelling.
+ */
+const normaliseLexeme = (w: string) => w.replace(/\(ν\)$/, '')
 
 const unaccent = (s: string) =>
   s.normalize('NFD').replace(/[̀-͂ͅʹ·]/g, '').normalize('NFC').toLowerCase()
@@ -93,10 +123,9 @@ async function main() {
     readFileSync(join(process.cwd(), 'src/data/bgvb-vocabulary.json'), 'utf8'),
   ) as BgvbWord[]
 
-  // Sections I–II are the Beginning course. Order by the BGVB frequency rank so
-  // sortOrder 1..N tracks the lesson sequence.
+  // Order by the BGVB frequency rank so sortOrder 1..N tracks the lesson sequence.
   const words = all
-    .filter(w => w.section <= 2 && w.word && w.gloss)
+    .filter(w => SECTIONS.includes(w.section) && w.word && w.gloss)
     .sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999))
 
   const corpus = corpusIndex()
@@ -107,7 +136,7 @@ async function main() {
     const hit = corpusBare.get(key)
     if (!hit || hit.frequency < meta.frequency) corpusBare.set(key, meta)
   })
-  console.log(`BGVB Sections I–II: ${words.length} words`)
+  console.log(`${LEVEL} — BGVB §${SECTIONS.join(', §')}: ${words.length} words`)
   console.log(`GNT corpus index:   ${corpus.size} lemmas`)
 
   const missingInCorpus: string[] = []
@@ -116,13 +145,14 @@ async function main() {
   for (let i = 0; i < words.length; i++) {
     const w = words[i]
     const rank = i + 1
-    const meta = lookup(corpus, corpusBare, w.word)
-    if (!meta) missingInCorpus.push(w.word)
+    const lexeme = normaliseLexeme(w.word)
+    const meta = lookup(corpus, corpusBare, lexeme)
+    if (!meta) missingInCorpus.push(lexeme)
     const partOfSpeech = POS_MAP[w.pos] ?? w.pos.toLowerCase()
 
     if (DRY) continue
 
-    const existing = await prisma.lexicalEntry.findUnique({ where: { lexeme: w.word } })
+    const existing = await prisma.lexicalEntry.findUnique({ where: { lexeme } })
     const entry = existing
       ? await (async () => {
           // Only fill blanks — never overwrite curated glosses or answer lists.
@@ -137,7 +167,7 @@ async function main() {
           createdEntries++
           return prisma.lexicalEntry.create({
             data: {
-              lexeme: w.word,
+              lexeme,
               gloss: w.gloss,
               partOfSpeech,
               frequency: meta?.frequency ?? w.freq ?? 0,
@@ -147,7 +177,7 @@ async function main() {
         })()
 
     const item = await prisma.vocabularyItem.findUnique({
-      where: { lexemeId_level: { lexemeId: entry.id, level: 'BEGINNING' } },
+      where: { lexemeId_level: { lexemeId: entry.id, level: LEVEL } },
     })
     if (item) {
       if (item.sortOrder !== rank) {
@@ -156,21 +186,21 @@ async function main() {
       }
     } else {
       await prisma.vocabularyItem.create({
-        data: { lexemeId: entry.id, level: 'BEGINNING', sortOrder: rank },
+        data: { lexemeId: entry.id, level: LEVEL, sortOrder: rank },
       })
       createdItems++
     }
 
     const card = await prisma.flashcard.findUnique({
-      where: { lexemeId_level: { lexemeId: entry.id, level: 'BEGINNING' } },
+      where: { lexemeId_level: { lexemeId: entry.id, level: LEVEL } },
     })
     if (!card) {
       await prisma.flashcard.create({
         data: {
           lexemeId: entry.id,
-          level: 'BEGINNING',
+          level: LEVEL,
           front: w.word,
-          backLexeme: w.inflection ? `${w.word}, ${w.inflection}` : w.word,
+          backLexeme: w.inflection ? `${w.word}, ${w.inflection}` : w.word,   // BGVB spelling
           backGloss: w.gloss,
           backParsing: partOfSpeech,
         },
@@ -179,12 +209,12 @@ async function main() {
     }
   }
 
-  // Any pre-existing Beginning word outside BGVB I–II keeps a rank, placed after
-  // the seeded list, so sortOrder stays a single coherent ordering.
+  // Any pre-existing word at this level but outside the seeded sections keeps a
+  // rank, placed after the list, so sortOrder stays a single coherent ordering.
   if (!DRY) {
-    const seeded = new Set(words.map(w => w.word))
+    const seeded = new Set(words.map(w => normaliseLexeme(w.word)))
     const strays = (await prisma.vocabularyItem.findMany({
-      where: { level: 'BEGINNING' },
+      where: { level: LEVEL },
       include: { lexeme: true },
       orderBy: { lexeme: { frequency: 'desc' } },
     })).filter(v => !seeded.has(v.lexeme.lexeme))
@@ -196,7 +226,8 @@ async function main() {
         updatedItems++
       }
     }
-    console.log(`\nNon-BGVB Beginning words re-ranked after the list: ${strays.length}`)
+    console.log(`\nWords at this level outside §${SECTIONS.join(',')}, re-ranked after the list: ${strays.length}`)
+    if (strays.length > 0) console.log(`  ${strays.map(v => v.lexeme.lexeme).join(' ')}`)
   }
 
   if (missingInCorpus.length > 0) {
@@ -208,8 +239,8 @@ async function main() {
   console.log(`VocabularyItem: +${createdItems} created, ${updatedItems} re-ranked`)
   console.log(`Flashcard:      +${createdCards} created`)
 
-  const total = await prisma.vocabularyItem.count({ where: { level: 'BEGINNING' } })
-  console.log(`\nBEGINNING VocabularyItem rows now: ${total}`)
+  const total = await prisma.vocabularyItem.count({ where: { level: LEVEL } })
+  console.log(`\n${LEVEL} VocabularyItem rows now: ${total}`)
   await prisma.$disconnect()
 }
 
