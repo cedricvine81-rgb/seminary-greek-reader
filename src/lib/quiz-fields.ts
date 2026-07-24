@@ -110,4 +110,9 @@ export interface MorphTestConfig {
   vocabAuto?: boolean
   fields: string[]                // which parse fields students must identify
   parseFilter?: MorphParseFilter  // restrict question pool to specific forms
+  // Optional label for the quiz title: "Week N — <series> (<topic>)". Falls back to the
+  // subtype label.
+  topic?: string
+  // Noun quizzes: restrict to declensions (classified by lemma; see nounDeclension).
+  declensions?: (1 | 2 | 3)[]
 }

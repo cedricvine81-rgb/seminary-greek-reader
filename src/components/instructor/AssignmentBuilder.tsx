@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, useRef, FormEvent, useCallback } from 'react'
+import { useState, useMemo, useRef, useEffect, FormEvent, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { addDays, format, getDay, parseISO } from 'date-fns'
 import { CalendarDays, FileText, CheckCircle2, Download, Eye } from 'lucide-react'
@@ -83,6 +83,7 @@ interface Course {
 
 interface SemesterForm {
   courseId: string
+  seriesName: string      // optional custom series name: "Week N — <name> (<topic|section>)"
   startDate: string
   weeks: number
   days: number[]          // 0=Sun … 6=Sat
@@ -1008,6 +1009,12 @@ function VocabLessonFilter({
 
 // ── Morph Series Builder ──────────────────────────────────────────────────────
 
+const SUBTYPE_LABEL_FALLBACK: Record<string, string> = {
+  VERB_PARSING: 'Verb Parsing', NOUN_PARSING: 'Noun Parsing', ADJECTIVE_PARSING: 'Adjective Parsing',
+  PRONOUN_PARSING: 'Pronoun Parsing', CONDITIONALS: 'Conditional Sentences',
+  SUBJUNCTIVES: 'Subjunctive Uses', MIXED: 'Mixed Parsing',
+}
+
 function MorphSeriesBuilder({
   series,
   onChange,
@@ -1151,6 +1158,43 @@ function MorphSeriesBuilder({
                 {test.fields.length === 0 && (
                   <p className="text-xs text-red-500 mt-1">Select at least one field.</p>
                 )}
+              </div>
+            )}
+
+            {/* Topic — names the quiz: "Week N — <series> (<topic>)" */}
+            <div className="flex items-center gap-2">
+              <label className="text-xs font-medium text-gray-600 shrink-0">Topic (for the title)</label>
+              <input
+                type="text"
+                value={test.topic ?? ''}
+                onChange={e => updateTest(i, { topic: e.target.value })}
+                placeholder={SUBTYPE_LABEL_FALLBACK[test.subtype] ?? ''}
+                className="input text-sm flex-1"
+              />
+            </div>
+
+            {/* Noun quizzes: restrict by declension (classified by lemma ending + gender,
+                so "Nouns I: 1st & 2nd Declension" / "Nouns II: 3rd" can be built here). */}
+            {test.subtype === 'NOUN_PARSING' && (
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-medium text-gray-600">Declensions</span>
+                {([1, 2, 3] as const).map(d => {
+                  const on = test.declensions?.includes(d) ?? false
+                  return (
+                    <button key={d} type="button"
+                      onClick={() => {
+                        const cur = new Set(test.declensions ?? [])
+                        if (on) cur.delete(d); else cur.add(d)
+                        const next = ([1, 2, 3] as const).filter(x => cur.has(x))
+                        updateTest(i, { declensions: next.length && next.length < 3 ? next : undefined })
+                      }}
+                      className={`px-2.5 py-1 rounded-md border text-xs font-medium transition-colors ${
+                        on ? 'bg-brand-600 text-white border-brand-600' : 'bg-surface text-gray-600 border-gray-300 hover:bg-gray-50'}`}>
+                      {d === 1 ? '1st' : d === 2 ? '2nd' : '3rd'}
+                    </button>
+                  )
+                })}
+                <span className="text-xs text-gray-400">none selected = all declensions</span>
               </div>
             )}
 
@@ -1371,6 +1415,43 @@ function SampleQuizModal({
 // ── Semester Schedule Form ────────────────────────────────────────────────────
 
 function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; defaultCourseId?: string }) {
+  // Saved series templates: the form snapshot minus course and dates, so the same series
+  // can be rebuilt next term against a new course and start date.
+  type Template = { id: string; name: string; quizType: string; config: Partial<SemesterForm> }
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [templateMsg, setTemplateMsg] = useState('')
+  useEffect(() => {
+    fetch('/api/series-templates').then(r => r.ok ? r.json() : { templates: [] })
+      .then(d => setTemplates(d.templates ?? [])).catch(() => {})
+  }, [])
+
+  async function saveTemplate(current: SemesterForm) {
+    const name = window.prompt('Template name (an existing name is overwritten):',
+      current.seriesName || (current.quizType === 'MORPHOLOGY_QUIZ' ? 'Morphology series' : 'Vocabulary series'))
+    if (!name?.trim()) return
+    const { courseId: _c, startDate: _d, ...config } = current
+    const res = await fetch('/api/series-templates', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name.trim(), quizType: current.quizType, config }),
+    })
+    if (res.ok) {
+      const d = await res.json()
+      setTemplateMsg(d.updated ? `Updated template “${name.trim()}”.` : `Saved template “${name.trim()}”.`)
+      const list = await fetch('/api/series-templates').then(r => r.json()).catch(() => null)
+      if (list) setTemplates(list.templates ?? [])
+    } else {
+      setTemplateMsg('Could not save the template.')
+    }
+  }
+
+  function loadTemplate(id: string) {
+    const t = templates.find(x => x.id === id)
+    if (!t) return
+    // Course and start date stay: the template is the series recipe, not the term.
+    setForm(prev => ({ ...prev, ...t.config, courseId: prev.courseId, startDate: prev.startDate }))
+    setTemplateMsg(`Loaded “${t.name}” — pick the start date and course, then create.`)
+  }
+
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -1391,6 +1472,7 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     vocabSubsections:  [],
     morphologySubtype: 'VERB_PARSING' as MorphologySubtype,
     morphologySeries:  [{ ...DEFAULT_MORPH_TEST }],
+    seriesName:        '',
     level:             courses[0]?.level ?? 'BEGINNING',
     prevSectionsPct:  0,
     quizStylePct:     0,
@@ -1512,6 +1594,29 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
 
         {/* Course — shown when there's a choice, or when launched from the dashboard
             (no course pre-selected) so the instructor allocates it explicitly. */}
+        {/* Series templates: rebuild a saved series next term with one click. */}
+        <div className="flex flex-wrap items-end gap-2">
+          {templates.length > 0 && (
+            <div className="flex-1 min-w-48">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Start from a saved series</label>
+              <select
+                className="input w-full text-sm"
+                defaultValue=""
+                onChange={e => { if (e.target.value) loadTemplate(e.target.value) }}
+              >
+                <option value="">— choose a template —</option>
+                {templates.map(t => (
+                  <option key={t.id} value={t.id}>{t.name} ({t.quizType === 'MORPHOLOGY_QUIZ' ? 'morphology' : 'vocabulary'})</option>
+                ))}
+              </select>
+            </div>
+          )}
+          <Button type="button" size="sm" variant="secondary" onClick={() => void saveTemplate(form)}>
+            Save current setup as template
+          </Button>
+          {templateMsg && <p className="basis-full text-xs text-emerald-700">{templateMsg}</p>}
+        </div>
+
         {(courses.length > 1 || !defaultCourseId) && (
           <Select
             label="Course"
@@ -1583,6 +1688,16 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
               { value: 'VOCABULARY_QUIZ',  label: 'Vocabulary Quiz' },
               { value: 'MORPHOLOGY_QUIZ',  label: 'Morphology Quiz' },
             ]}
+          />
+
+          {/* Names the whole run: quizzes become "Week N — <name> (<topic|section>)" and the
+              course page groups them under this name in the series editor. */}
+          <Input
+            label="Series name (optional)"
+            type="text"
+            value={form.seriesName}
+            onChange={e => setF('seriesName', e.target.value)}
+            placeholder={form.quizType === 'MORPHOLOGY_QUIZ' ? 'e.g. Beginning Greek Morphology' : 'e.g. Weekly Vocabulary'}
           />
 
           {form.quizType === 'MORPHOLOGY_QUIZ' && (

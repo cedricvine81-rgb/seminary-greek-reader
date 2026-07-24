@@ -7,6 +7,7 @@ import {
   generateVocabQuestionsForLesson,
   generateVocabQuestionsFromSelection,
   generateMorphologyQuestionsBySubtype,
+  generateMorphQuestionsFromConfig,
   type MorphologySubtype,
   type MorphTestConfig,
 } from '@/lib/quiz-generation'
@@ -64,6 +65,7 @@ export async function POST(req: NextRequest) {
     vocabThruLesson,
     vocabSubsections,
     prevSectionsPct,
+    seriesName,
     schedule,
   }: {
     courseId: string
@@ -84,6 +86,7 @@ export async function POST(req: NextRequest) {
     vocabThruLesson?: number | null
     vocabSubsections?: string[]
     prevSectionsPct?: number   // % of each vocab quiz drawn from EARLIER lessons
+    seriesName?: string        // custom series name for the quiz titles (and series grouping)
     schedule: ScheduleItem[]
   } = body
 
@@ -141,14 +144,17 @@ export async function POST(req: NextRequest) {
       : Math.min(Math.max(Number(numQuestions) || 10, 1), 50)
 
     // Build title
+    // "Week N — <series> (<topic>)": a custom series name groups the run under that name in
+    // the course page's series editor; per-test topics give each quiz a readable title.
+    const name = typeof seriesName === 'string' && seriesName.trim() ? seriesName.trim() : null
     let title = `Week ${weekNum} — `
     if (quizType === 'VOCABULARY_QUIZ') {
-      title += 'Vocabulary Quiz'
+      title += name ?? 'Vocabulary Quiz'
     } else if (testConfig) {
-      const seriesNum = isMorphSeries ? ` ${i + 1}` : ''
-      title += `Morphology Quiz${seriesNum}: ${SUBTYPE_LABEL[testConfig.subtype]}`
+      const topic = testConfig.topic?.trim() || SUBTYPE_LABEL[testConfig.subtype]
+      title += name ? `${name} (${topic})` : `Morphology Quiz${isMorphSeries ? ` ${i + 1}` : ''}: ${topic}`
     } else {
-      title += 'Morphology Quiz'
+      title += name ?? 'Morphology Quiz'
     }
 
     const instructions = lesson
@@ -180,7 +186,8 @@ export async function POST(req: NextRequest) {
               vocabThruLesson: testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null,
               // The full recipe, so the quiz can be regenerated faithfully later.
               morphConfig: JSON.parse(JSON.stringify({ fields: testConfig.fields ?? [],
-                ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}) })) }
+                ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}),
+                ...(testConfig.declensions?.length ? { declensions: testConfig.declensions } : {}) })) }
           : {}),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
         // Vocab quizzes only — ignore non-positive values
@@ -207,11 +214,11 @@ export async function POST(req: NextRequest) {
         questions = await generateVocabQuestions(resolvedLevel, 'GREEK_TO_ENGLISH', qCount, pct)
       }
     } else if (testConfig) {
-      const fields = testConfig.fields?.length ? testConfig.fields : undefined
       // vocabAuto ties the quiz to the vocabulary schedule: week N tests only words
       // taught through lesson N, so students are never parsing unseen vocabulary.
       const thruLesson = testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson
-      questions = await generateMorphologyQuestionsBySubtype(testConfig.subtype, qCount, thruLesson, fields, testConfig.parseFilter ?? undefined)
+      questions = await generateMorphQuestionsFromConfig(testConfig.subtype, qCount, thruLesson ?? null,
+        { fields: testConfig.fields, parseFilter: testConfig.parseFilter, declensions: testConfig.declensions })
     }
 
     if (questions.length > 0) {

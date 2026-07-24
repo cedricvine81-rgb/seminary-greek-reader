@@ -96,6 +96,7 @@ model User {
   @@index([email])
   @@index([paddleCustomerId])
   @@index([paddleSubscriptionId])
+  seriesTemplates SeriesTemplate[]
 }
 
 // ─── App-wide settings ───────────────────────────────────────────
@@ -398,6 +399,23 @@ model VocabularyItem {
   flashcards Flashcard[]
 
   @@unique([lexemeId, level])
+}
+
+// A saved quiz-series configuration (the semester builder's form state), so an instructor
+// can rebuild the same series next term with one click. `config` is the form snapshot:
+// quizType, days, weeks, question count, style/review percentages, seriesName, and the
+// morphology tests (subtype, fields, filters, declensions, topics, vocab cap).
+model SeriesTemplate {
+  id        String   @id @default(cuid())
+  ownerId   String
+  name      String
+  quizType  String
+  config    Json
+  createdAt DateTime @default(now())
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+
+  @@index([ownerId])
 }
 
 // ─── Assignments ─────────────────────────────────────────────────
