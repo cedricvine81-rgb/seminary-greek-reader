@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -826,6 +826,36 @@ export const LUCIAN_CATALOG = LUCIAN.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
 }))
 
+// ── Xenophon, Memorabilia ─────────────────────────────────────────────────────────────
+// The Socratic reminiscences (Marchant's public-domain Loeb + Perseus Greek), one work per
+// book, chapter → section. "Xen. Mem. 1.2.3" → Book 1, chapter 2, section 3.
+const XENOPHON_ATTRIB = 'Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+const xenophonMemCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Xen(?:ophon)?\\.?,?\\s+Mem(?:orabilia|\\.)\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const XENOPHON_MEM = [
+  { book: 1, chapters: 7 }, { book: 2, chapters: 10 }, { book: 3, chapters: 14 }, { book: 4, chapters: 8 },
+]
+
+const XENOPHON_WORKS: ProseWork[] = XENOPHON_MEM.map(w => ({
+  source: `xenophon-memorabilia-${w.book}` as EmbeddedProseSource,
+  name: `Xenophon, Memorabilia (Book ${w.book})`,
+  noteBook: `XenMem${w.book}`,
+  dataUrl: `/data/greco/xenophon-memorabilia-${w.book}.json`,
+  chapters: w.chapters,
+  attribution: XENOPHON_ATTRIB,
+  parseCitation: xenophonMemCite(w.book),
+}))
+
+export const XENOPHON_CATALOG = XENOPHON_MEM.map(w => ({
+  id: `xenophon-memorabilia-${w.book}`, source: `xenophon-memorabilia-${w.book}` as EmbeddedProseSource,
+  name: `Xenophon, Memorabilia (Book ${w.book})`, chapters: w.chapters, greek: true,
+}))
+
 // ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
 // A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
 // the NT quotes, its heading naming the source and the NT reference.
@@ -966,6 +996,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...PLUTARCH_WORKS,
   ...APOLLODORUS_WORKS,
   ...LUCIAN_WORKS,
+  ...XENOPHON_WORKS,
   NT_PAGAN_WORK,
 ]
 

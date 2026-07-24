@@ -293,6 +293,9 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
 
 
+XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; '
+                   'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
+                   '(perseus.tufts.edu).')
 LUCIAN_ATTRIB = ('Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Oxford, 1905), '
                  'public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
                  'CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -320,12 +323,12 @@ def parse_bcs(xml_bytes):
     return out
 
 
-def build_apollodorus(no_cache):
-    """The Library — one work per book (chapter = chapter, verse = section), so "Apollod. 1.9.16"
-    opens Book 1, chapter 9, section 16."""
-    base = 'tlg0548/tlg001/tlg0548.tlg001'
+def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_cache):
+    """A book→chapter→section work, one file per book (chapter = chapter, verse = section), so
+    "Apollod. 1.9.16" / "Xen. Mem. 1.2.3" opens Book 1, chapter 9/2, section 16/3."""
+    base = f'{urn_dir}/{urn_base}'
     grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
-    eng = parse_bcs(fetch(f'{base}.perseus-eng2.xml', no_cache))
+    eng = parse_bcs(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache))
     books = {}
     for (b, ch, sec), en in eng.items():
         if all(x and x.isdigit() for x in (b, ch, sec)):
@@ -336,9 +339,8 @@ def build_apollodorus(no_cache):
             {'number': sec, 'text': books[bk][ch][sec][0],
              **({'greek': books[bk][ch][sec][1]} if books[bk][ch][sec][1] else {})}
             for sec in sorted(books[bk][ch])]} for ch in sorted(books[bk])]
-        doc = {'work': f'Apollodorus, The Library (Book {bk})', 'attribution': APOLLODORUS_ATTRIB,
-               'greek': True, 'chapters': chapters}
-        slug = f'apollodorus-library-{bk}'
+        doc = {'work': name_fmt(bk), 'attribution': attrib, 'greek': True, 'chapters': chapters}
+        slug = f'{slug_prefix}-{bk}'
         (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
         results.append({'slug': slug, 'doc': doc, 'chapters': len(chapters),
                         'verses': sum(1 for c in chapters for v in c['verses'] if 'greek' in v)})
@@ -454,7 +456,11 @@ def main():
     results += build_units('lucian-alexander', 'Lucian, Alexander the False Prophet',
                            'tlg0062/tlg038', 'tlg0062.tlg038', 'eng4', None, 'section', LUCIAN_ATTRIB, no_cache)
     # Apollodorus, The Library — the mythographic handbook (one work per book).
-    results += build_apollodorus(no_cache)
+    results += build_bcs('apollodorus-library', lambda b: f'Apollodorus, The Library (Book {b})',
+                         'tlg0548/tlg001', 'tlg0548.tlg001', 'eng2', APOLLODORUS_ATTRIB, no_cache)
+    # Xenophon, Memorabilia — the Socratic ethics (four books; cited Mem. book.chapter.section).
+    results += build_bcs('xenophon-memorabilia', lambda b: f'Xenophon, Memorabilia (Book {b})',
+                         'tlg0032/tlg002', 'tlg0032.tlg002', 'eng2', XENOPHON_ATTRIB, no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
