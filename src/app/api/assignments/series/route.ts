@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { generateVocabQuestionsForLesson } from '@/lib/quiz-generation'
+import { generateVocabQuestionsForLesson, generateMorphQuestionsFromConfig, type MorphGenConfig } from '@/lib/quiz-generation'
+import type { MorphologySubtype } from '@/lib/quiz-fields'
 import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
 /**
@@ -92,6 +93,42 @@ export async function PATCH(req: NextRequest) {
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
         prisma.assignment.update({ where: { id: r.id }, data: { vocabReviewPct: pct } }),
+      ])
+      updated++
+    }
+    return NextResponse.json({ updated })
+  }
+
+  // Morphology vocabulary cap: regenerate each quiz from its STORED recipe (fields,
+  // filters, declension restriction) with the cap set to its week ('auto') or removed
+  // ('none'). Refused once students have answered, since questions are rebuilt.
+  if (action === 'morphVocab') {
+    const mode = value === 'none' ? 'none' : 'auto'
+    const rows = await prisma.assignment.findMany({
+      where: { id: { in: assignmentIds }, type: 'MORPHOLOGY_QUIZ' },
+      include: { _count: { select: { questions: true, responses: true } } },
+    })
+    const answered = rows.filter(r => r._count.responses > 0)
+    if (answered.length > 0) {
+      return NextResponse.json({
+        error: `${answered.length} of these have student answers, so their questions can’t be rebuilt.`,
+      }, { status: 409 })
+    }
+    const noRecipe = rows.filter(r => !r.morphConfig)
+    if (noRecipe.length > 0) {
+      return NextResponse.json({
+        error: `${noRecipe.length} of these predate stored generation recipes and can’t be rebuilt safely (e.g. "${noRecipe[0].title}").`,
+      }, { status: 409 })
+    }
+    for (const r of rows) {
+      const cap = mode === 'auto' ? Math.min(r.weekNumber, 16) : null
+      const qs = await generateMorphQuestionsFromConfig(
+        (r.morphSubtype ?? 'MIXED') as MorphologySubtype,
+        r._count.questions || 20, cap, r.morphConfig as MorphGenConfig)
+      await prisma.$transaction([
+        prisma.question.deleteMany({ where: { assignmentId: r.id } }),
+        prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
+        prisma.assignment.update({ where: { id: r.id }, data: { vocabThruLesson: cap } }),
       ])
       updated++
     }

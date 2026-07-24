@@ -177,7 +177,10 @@ export async function POST(req: NextRequest) {
           : {}),
         ...(testConfig
           ? { morphSubtype: testConfig.subtype,
-              vocabThruLesson: testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null }
+              vocabThruLesson: testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null,
+              // The full recipe, so the quiz can be regenerated faithfully later.
+              morphConfig: JSON.parse(JSON.stringify({ fields: testConfig.fields ?? [],
+                ...(testConfig.parseFilter ? { parseFilter: testConfig.parseFilter } : {}) })) }
           : {}),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
         // Vocab quizzes only — ignore non-positive values

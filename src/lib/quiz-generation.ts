@@ -358,6 +358,61 @@ export async function generateMorphologyQuestionsBySubtype(
   return parseEntriesToQuestions(entries, count, fields)
 }
 
+/** A morphology quiz's stored generation recipe (Assignment.morphConfig). */
+export interface MorphGenConfig {
+  fields?: string[]
+  parseFilter?: MorphParseFilter
+  declensions?: (1 | 2 | 3)[]
+}
+
+/** Declension from lemma ending + gender, on the ACCENT-STRIPPED lemma (θεός ends in an
+ * accented ό, which a literal /ος$/ misses). The -ος neuters (ἔθνος) and -μα neuters
+ * (πνεῦμα) are 3rd; γυνή (γυναικός) is the lexical exception. */
+const THIRD_DECLENSION = new Set(['γυνή'])
+export function nounDeclension(lemma: string, gender: string | null): 1 | 2 | 3 {
+  if (THIRD_DECLENSION.has(lemma.normalize('NFC'))) return 3
+  const b = lemma.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  if (/ος$/.test(b)) return gender === 'Neuter' ? 3 : 2
+  if (/(ον|ους)$/.test(b)) return 2                       // incl. contracts (Ἰησοῦς, νοῦς)
+  if (gender === 'Neuter' && /α$/.test(b)) return 3       // -μα / -α neuters
+  if (/[ηα]$/.test(b)) return 1
+  if (/(ης|ας)$/.test(b) && gender === 'Masculine') return 1
+  return 3
+}
+
+const morphLemmaOf = (p: string) => p.match(/\(([^\s—)]+)\s*—/)?.[1] ?? ''
+
+/**
+ * Generate a morphology quiz from its stored recipe. Wraps
+ * generateMorphologyQuestionsBySubtype and adds the declension restriction the noun
+ * quizzes use (the parse pool has no declension field, so over-generate and classify).
+ */
+export async function generateMorphQuestionsFromConfig(
+  subtype: MorphologySubtype,
+  count: number,
+  vocabThruLesson: number | null,
+  config: MorphGenConfig | null,
+) {
+  const fields = config?.fields?.length ? config.fields : undefined
+  const filter = config?.parseFilter ?? undefined
+  if (!config?.declensions?.length) {
+    return generateMorphologyQuestionsBySubtype(subtype, count, vocabThruLesson, fields, filter)
+  }
+  const raw = await generateMorphologyQuestionsBySubtype(subtype, 200, vocabThruLesson, fields, filter)
+  const want = new Set<number>(config.declensions)
+  const seen = new Set<string>()
+  const out: Array<(typeof raw)[number]> = []
+  for (const q of raw) {
+    const ans = JSON.parse(q.correctAnswer) as { gender: string | null }
+    const lem = morphLemmaOf(q.prompt)
+    if (!lem || seen.has(q.prompt) || !want.has(nounDeclension(lem, ans.gender))) continue
+    seen.add(q.prompt)
+    out.push(q)
+    if (out.length === count) break
+  }
+  return out.map((q, i) => ({ ...q, position: i + 1 }))
+}
+
 export function generateVerbParseQuestions(count: number) {
   return parseEntriesToQuestions(VERB_POOL, count)
 }

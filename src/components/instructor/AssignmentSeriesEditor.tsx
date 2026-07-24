@@ -247,22 +247,44 @@ export function AssignmentSeriesEditor({
                   )
                 })()}
 
-                {/* Morphology series: vocabulary cap status. Changing the cap regenerates
-                    questions with each quiz's own fields and filters, which are set at
-                    creation — so the cap is chosen in the series builder ("Match vocabulary
-                    schedule"); here it is reported, so its state is never invisible. */}
+                {/* Morphology series: vocabulary cap. Regenerates from each quiz's stored
+                    recipe (fields, filters, declensions), so the rebuild is faithful. */}
                 {s.type === 'MORPHOLOGY_QUIZ' && (() => {
                   const capped = s.members.every(m => m.vocabThruLesson != null && m.vocabThruLesson === Math.min(m.weekNumber, 16))
                   const none = s.members.every(m => m.vocabThruLesson == null)
                   return (
-                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                      Vocabulary
-                      <span className="ml-1.5 font-normal normal-case text-brand-700">
-                        {capped ? '— each quiz uses only words taught by its week'
-                         : none ? '— no cap: quizzes may use any parsing example'
-                         : '— mixed caps across the series'}
-                      </span>
-                    </p>
+                    <div>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                        Vocabulary
+                        <span className="ml-1.5 font-normal normal-case text-brand-700">
+                          {capped ? '— each quiz uses only words taught by its week'
+                           : none ? '— no cap: quizzes may use any parsing example'
+                           : mixed}
+                        </span>
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        <Button size="sm" variant={capped ? 'primary' : 'secondary'} disabled={busy}
+                          onClick={() => {
+                            if (!confirm(`Rebuild all ${s.members.length} quizzes so each uses only the words taught by its week?`)) return
+                            void run(ids, { action: 'morphVocab', value: 'auto' }, 'PATCH',
+                              n => `Rebuilt ${n} quizzes capped at each week’s vocabulary.`)
+                          }}>
+                          Words taught so far
+                        </Button>
+                        <Button size="sm" variant={none ? 'primary' : 'secondary'} disabled={busy}
+                          onClick={() => {
+                            if (!confirm(`Rebuild all ${s.members.length} quizzes with no vocabulary cap?`)) return
+                            void run(ids, { action: 'morphVocab', value: 'none' }, 'PATCH',
+                              n => `Rebuilt ${n} quizzes with no vocabulary cap.`)
+                          }}>
+                          No cap
+                        </Button>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Rebuilds the questions from each quiz&rsquo;s stored recipe, so it is
+                        refused once students have answered.
+                      </p>
+                    </div>
                   )
                 })()}
 

@@ -16,7 +16,7 @@
  * Usage:  npx tsx scripts/build-morphology-series.ts --course="Beginning Greek FA26" [--apply]
  */
 import { PrismaClient } from '@prisma/client'
-import { generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '../src/lib/quiz-generation'
+import { generateMorphQuestionsFromConfig, type MorphologySubtype } from '../src/lib/quiz-generation'
 import type { MorphParseFilter } from '../src/lib/quiz-fields'
 
 const prisma = new PrismaClient()
@@ -73,44 +73,6 @@ const SPECS: Spec[] = [
 
 const QUESTIONS = 20
 
-/** Declension from lemma ending + gender, on the ACCENT-STRIPPED lemma (θεός ends in an
- * accented ό, which a literal /ος$/ misses). The -ος neuters (ἔθνος) and -μα neuters
- * (πνεῦμα) are 3rd; γυνή (γυναικός) is the lexical exception. */
-const THIRD = new Set(['γυνή'])
-function declension(lemma: string, gender: string | null): 1 | 2 | 3 {
-  if (THIRD.has(lemma.normalize('NFC'))) return 3
-  const b = lemma.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
-  if (/ος$/.test(b)) return gender === 'Neuter' ? 3 : 2
-  if (/(ον|ους)$/.test(b)) return 2                       // incl. contracts (Ἰησοῦς, νοῦς)
-  if (gender === 'Neuter' && /α$/.test(b)) return 3       // -μα / -α neuters
-  if (/[ηα]$/.test(b)) return 1
-  if (/(ης|ας)$/.test(b) && gender === 'Masculine') return 1
-  return 3
-}
-const lemmaOf = (p: string) => p.match(/\(([^\s—)]+)\s*—/)?.[1] ?? ''
-
-async function generate(spec: Spec) {
-  if (!spec.declensions) {
-    return generateMorphologyQuestionsBySubtype(
-      spec.subtype, QUESTIONS, spec.week, spec.fields.length ? spec.fields : undefined, spec.filter)
-  }
-  // The parse pool has no declension field, so over-generate and classify by lemma.
-  const raw = await generateMorphologyQuestionsBySubtype(
-    spec.subtype, 200, spec.week, spec.fields.length ? spec.fields : undefined, spec.filter)
-  const want = new Set<number>(spec.declensions)
-  const seen = new Set<string>()
-  const out: Array<(typeof raw)[number]> = []
-  for (const q of raw) {
-    const ans = JSON.parse(q.correctAnswer) as { gender: string | null }
-    const lem = lemmaOf(q.prompt)
-    if (!lem || seen.has(q.prompt) || !want.has(declension(lem, ans.gender))) continue
-    seen.add(q.prompt)
-    out.push(q)
-    if (out.length === QUESTIONS) break
-  }
-  return out.map((q, i) => ({ ...q, position: i + 1 }))
-}
-
 /** The Thursday of course-week N (week 1 starts at the course's startDate). */
 function thursdayOfWeek(courseStart: Date, week: number): Date {
   const start = new Date(courseStart)
@@ -140,7 +102,8 @@ async function main() {
     const due = thursdayOfWeek(course.startDate, spec.week)
     if (spec.dueOffset) due.setDate(due.getDate() + spec.dueOffset)
     const title = `Week ${spec.week} — ${SERIES} (${spec.topic})`
-    const qs = await generate(spec)
+    const qs = await generateMorphQuestionsFromConfig(spec.subtype, QUESTIONS, spec.week,
+      { fields: spec.fields, parseFilter: spec.filter, declensions: spec.declensions })
     const flag = qs.length < QUESTIONS ? `   (pool gave ${qs.length})` : ''
     console.log(`wk ${String(spec.week).padStart(2)}  ${due.toDateString()}  ${title.slice(0, 66).padEnd(66)} ${qs.length}q${flag}`)
     if (!APPLY) continue
@@ -155,6 +118,9 @@ async function main() {
         level: course.level,
         morphSubtype: spec.subtype,
         vocabThruLesson: spec.week,   // cap at the vocabulary taught by this week
+        morphConfig: JSON.parse(JSON.stringify({ fields: spec.fields,
+          ...(spec.filter ? { parseFilter: spec.filter } : {}),
+          ...(spec.declensions ? { declensions: spec.declensions } : {}) })),
         timePerQuestion: null,        // untimed — parsing takes thought
         maxRetakes: null,             // unlimited, per the instructor's morphology settings
         allowLate: true,

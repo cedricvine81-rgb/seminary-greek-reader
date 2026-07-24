@@ -457,6 +457,10 @@ model Assignment {
   // MORPHOLOGY_QUIZ: BGVB vocab lesson this quiz's words are capped at (usually its week),
   // so "only vocabulary taught so far" is stored and visible, not just applied and lost.
   vocabThruLesson Int?
+  // MORPHOLOGY_QUIZ: the full generation recipe ({ fields, parseFilter, declensions }), so
+  // the quiz can be regenerated faithfully (e.g. when the vocabulary cap changes) without
+  // the series builder's in-memory state.
+  morphConfig Json?
   // For VOCABULARY_QUIZ: the instructor's word selection from the BGVB list —
   // { subsections: string[] (e.g. ["1-A","2-B"]), pos: string[] }. Lets the edit
   // page pre-fill the picker and regenerate from the same words.
