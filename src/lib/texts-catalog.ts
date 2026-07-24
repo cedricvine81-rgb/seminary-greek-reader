@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -195,8 +195,8 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'greco-roman',
     label: 'Greco-Roman',
-    blurb: 'Greco-Roman authors that illuminate the New Testament world — Plato, Aristotle, Plutarch, Epictetus, Diogenes Laertius, and Apollodorus’s Library of myth, with the Greek and public-domain English side by side (Perseus, CC-BY-SA).',
-    works: [...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...PLUTARCH_CATALOG, ...GRECO_CATALOG, ...APOLLODORUS_CATALOG],
+    blurb: 'Greco-Roman authors that illuminate the New Testament world — Plato, Aristotle, Plutarch, Epictetus, Lucian (on the early Christians), Diogenes Laertius, and Apollodorus’s Library of myth, with the Greek and public-domain English side by side (Perseus, CC-BY-SA).',
+    works: [...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...PLUTARCH_CATALOG, ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG],
   },
   {
     id: 'mishnah',

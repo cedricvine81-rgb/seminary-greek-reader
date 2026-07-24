@@ -56,10 +56,14 @@ def fetch(rel, no_cache):
 
 
 def chapter_text(div):
-    # Drop the chapter heading and editorial notes, then flatten the remaining text.
-    for tag in ('head', 'note'):
+    # Drop the chapter heading, editorial notes, and the non-preferred half of an editorial
+    # choice (<sic>/<orig>/<abbr> — keeping the accompanying <corr>/<reg>/<expan>), then flatten.
+    # Some Perseus texts (Lucian) nest <sic><corr> malformedly, which would otherwise duplicate
+    # the reading; dropping the <sic> subtree leaves a single corrected reading.
+    for tag in ('head', 'note', 'sic', 'orig', 'abbr'):
         for el in div.findall(f't:{tag}', NS) + div.findall(f'.//t:{tag}', NS):
-            el.clear(); el.text = el.tail = ''
+            tail = el.tail
+            el.clear(); el.text = ''; el.tail = tail
     return re.sub(r'\s+', ' ', ''.join(div.itertext())).strip()
 
 
@@ -137,8 +141,10 @@ def _ms_events(el, unit):
         yield ('t', el.text)
     for c in el:
         tag = c.tag.split('}')[-1]
-        if tag in ('note', 'head'):
-            pass
+        if tag in ('note', 'head', 'sic', 'orig', 'abbr'):
+            if c.tail:
+                yield ('t', c.tail)
+            continue
         elif tag == 'milestone' and c.get('unit') == unit:
             yield ('m', c.get('n'))
         else:
@@ -287,6 +293,9 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
 
 
+LUCIAN_ATTRIB = ('Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Oxford, 1905), '
+                 'public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
+                 'CC-BY-SA 4.0 (perseus.tufts.edu).')
 APOLLODORUS_ATTRIB = ('Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, '
                       '1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
                       'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -438,6 +447,12 @@ def main():
     # reference ("351c", the standard Moralia citation) from the Greek's "stephpage" milestone.
     results += build_units('plutarch-isis-osiris', 'Plutarch, On Isis and Osiris',
                            'tlg0007/tlg089', 'tlg0007.tlg089', 'eng4', None, 'section', PLUTARCH_MORALIA_ATTRIB, no_cache, ref_unit='stephpage')
+    # Lucian — the two works bearing on early Christianity (Fowler's public-domain English,
+    # flat sections; cited by section). Alexander has 61 Greek but 59 English sections.
+    results += build_units('lucian-peregrinus', 'Lucian, The Passing of Peregrinus',
+                           'tlg0062/tlg042', 'tlg0062.tlg042', 'eng4', None, 'section', LUCIAN_ATTRIB, no_cache)
+    results += build_units('lucian-alexander', 'Lucian, Alexander the False Prophet',
+                           'tlg0062/tlg038', 'tlg0062.tlg038', 'eng4', None, 'section', LUCIAN_ATTRIB, no_cache)
     # Apollodorus, The Library — the mythographic handbook (one work per book).
     results += build_apollodorus(no_cache)
     for r in results:

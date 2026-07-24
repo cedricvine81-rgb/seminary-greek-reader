@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -792,6 +792,40 @@ export const APOLLODORUS_CATALOG = APOLLODORUS.map(w => ({
   name: `Apollodorus, The Library (Book ${w.book})`, chapters: w.chapters, greek: true,
 }))
 
+// ── Lucian ────────────────────────────────────────────────────────────────────────────
+// The two works bearing on early Christianity — The Passing of Peregrinus (a Christian convert)
+// and Alexander the False Prophet (a religious charlatan, addressed to Celsus). Fowler's
+// public-domain English + Perseus Greek, cited by section ("Lucian, Peregr. 11").
+const LUCIAN_ATTRIB = 'Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Oxford, 1905), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+const lucianCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    const m = s.match(new RegExp('^Lucian,?\\s+' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)'))
+    if (m) return { chapter: parseInt(m[1], 10) }
+  }
+  return null
+}
+
+const LUCIAN: { slug: string; name: string; chapters: number; noteBook: string; abbrevs: string[] }[] = [
+  { slug: 'lucian-peregrinus', name: 'Lucian, The Passing of Peregrinus', chapters: 45, noteBook: 'LucianPeregr', abbrevs: ['Peregr.', 'De mort. Peregr.'] },
+  { slug: 'lucian-alexander', name: 'Lucian, Alexander the False Prophet', chapters: 59, noteBook: 'LucianAlex', abbrevs: ['Alex.'] },
+]
+
+const LUCIAN_WORKS: ProseWork[] = LUCIAN.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/greco/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: LUCIAN_ATTRIB,
+  parseCitation: lucianCite(w.abbrevs),
+}))
+
+export const LUCIAN_CATALOG = LUCIAN.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -910,6 +944,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...ARISTOTLE_WORKS,
   ...PLUTARCH_WORKS,
   ...APOLLODORUS_WORKS,
+  ...LUCIAN_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
