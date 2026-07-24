@@ -158,6 +158,12 @@ def build_plato(slug, name, urn_dir, urn_base, no_cache):
 ARISTOTLE_ATTRIB = ('Text: the Loeb Classical Library translation (public domain); Greek: the '
                     'Bekker/Perseus edition. Digital edition: Perseus Digital Library, '
                     'CC-BY-SA 4.0 (perseus.tufts.edu).')
+PLUTARCH_ATTRIB = ('Text: Plutarch’s Lives, tr. Bernadotte Perrin (Loeb, 1914–1926), public '
+                   'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
+                   'CC-BY-SA 4.0 (perseus.tufts.edu).')
+PLUTARCH_MORALIA_ATTRIB = ('Text: Plutarch’s Morals, tr. William W. Goodwin et al. (1874), '
+                           'public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
+                           'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
 
 
 def parse_units(xml_bytes, book_sub, unit_sub):
@@ -183,12 +189,13 @@ def parse_units(xml_bytes, book_sub, unit_sub):
     return out
 
 
-def build_aristotle(slug, name, wid, book_sub, unit_sub, no_cache):
-    """One treatise. With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7;
-    Rhet. 1.2 → book 1 ch. 2). Without books: chapter = unit, one verse (Poet. 6 → chapter 6)."""
-    base = f'tlg0086/{wid}/tlg0086.{wid}'
+def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache):
+    """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
+    With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
+    §2). Without books: chapter = unit, one verse (Poet. 6; Plutarch Moralia by section)."""
+    base = f'{urn_dir}/{urn_base}'
     grc = parse_units(fetch(f'{base}.perseus-grc2.xml', no_cache), book_sub, unit_sub)
-    eng = parse_units(fetch(f'{base}.perseus-eng2.xml', no_cache), book_sub, unit_sub)
+    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub)
     if book_sub:
         books = {}
         for (b, u), en in eng.items():
@@ -202,10 +209,59 @@ def build_aristotle(slug, name, wid, book_sub, unit_sub, no_cache):
         chapters = [{'number': u, 'verses': [
             {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {})}]}
             for u in sorted(units)]
-    doc = {'work': name, 'attribution': ARISTOTLE_ATTRIB, 'greek': True, 'chapters': chapters}
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
+
+
+APOLLODORUS_ATTRIB = ('Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, '
+                      '1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
+                      'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+
+
+def parse_bcs(xml_bytes):
+    """Return {(book, chapter, section): text} for a book→chapter→section TEI (Apollodorus)."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    out = {}
+
+    def walk(el, ctx):
+        for div in el.findall('t:div', NS):
+            if div.get('type') != 'textpart':
+                walk(div, ctx); continue
+            c = dict(ctx); c[div.get('subtype')] = div.get('n')
+            if div.get('subtype') == 'section':
+                out[(c.get('book'), c.get('chapter'), div.get('n'))] = chapter_text(div)
+            else:
+                walk(div, c)
+    walk(root.find('.//t:body', NS), {})
+    return out
+
+
+def build_apollodorus(no_cache):
+    """The Library — one work per book (chapter = chapter, verse = section), so "Apollod. 1.9.16"
+    opens Book 1, chapter 9, section 16."""
+    base = 'tlg0548/tlg001/tlg0548.tlg001'
+    grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
+    eng = parse_bcs(fetch(f'{base}.perseus-eng2.xml', no_cache))
+    books = {}
+    for (b, ch, sec), en in eng.items():
+        if all(x and x.isdigit() for x in (b, ch, sec)):
+            books.setdefault(int(b), {}).setdefault(int(ch), {})[int(sec)] = (en, grc.get((b, ch, sec), ''))
+    results = []
+    for bk in sorted(books):
+        chapters = [{'number': ch, 'verses': [
+            {'number': sec, 'text': books[bk][ch][sec][0],
+             **({'greek': books[bk][ch][sec][1]} if books[bk][ch][sec][1] else {})}
+            for sec in sorted(books[bk][ch])]} for ch in sorted(books[bk])]
+        doc = {'work': f'Apollodorus, The Library (Book {bk})', 'attribution': APOLLODORUS_ATTRIB,
+               'greek': True, 'chapters': chapters}
+        slug = f'apollodorus-library-{bk}'
+        (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+        results.append({'slug': slug, 'doc': doc, 'chapters': len(chapters),
+                        'verses': sum(1 for c in chapters for v in c['verses'] if 'greek' in v)})
+    return results
 
 
 def build(slug_prefix, name_fmt, urn_dir, urn_base, per_book, no_cache):
@@ -293,12 +349,22 @@ def main():
     ]:
         results += build_plato(slug, name, f'tlg0059/{wid}', f'tlg0059.{wid}', no_cache)
     # Aristotle — book→section (Ethics), book→chapter (Rhetoric), or flat chapters (Poetics).
-    results += build_aristotle('aristotle-nicomachean-ethics', 'Aristotle, Nicomachean Ethics',
-                               'tlg010', 'book', 'section', no_cache)
-    results += build_aristotle('aristotle-rhetoric', 'Aristotle, Rhetoric',
-                               'tlg038', 'book', 'chapter', no_cache)
-    results += build_aristotle('aristotle-poetics', 'Aristotle, Poetics',
-                               'tlg034', None, 'chapter', no_cache)
+    results += build_units('aristotle-nicomachean-ethics', 'Aristotle, Nicomachean Ethics',
+                           'tlg0086/tlg010', 'tlg0086.tlg010', 'eng2', 'book', 'section', ARISTOTLE_ATTRIB, no_cache)
+    results += build_units('aristotle-rhetoric', 'Aristotle, Rhetoric',
+                           'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_ATTRIB, no_cache)
+    results += build_units('aristotle-poetics', 'Aristotle, Poetics',
+                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_ATTRIB, no_cache)
+    # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section).
+    results += build_units('plutarch-antony', 'Plutarch, Life of Antony',
+                           'tlg0007/tlg058', 'tlg0007.tlg058', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
+    results += build_units('plutarch-alexander', 'Plutarch, Life of Alexander',
+                           'tlg0007/tlg047', 'tlg0007.tlg047', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
+    # Plutarch, Moralia — On Isis and Osiris (Goodwin's public-domain translation, flat sections).
+    results += build_units('plutarch-isis-osiris', 'Plutarch, On Isis and Osiris',
+                           'tlg0007/tlg089', 'tlg0007.tlg089', 'eng4', None, 'section', PLUTARCH_MORALIA_ATTRIB, no_cache)
+    # Apollodorus, The Library — the mythographic handbook (one work per book).
+    results += build_apollodorus(no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)

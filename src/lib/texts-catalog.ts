@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -195,20 +195,8 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'greco-roman',
     label: 'Greco-Roman',
-    blurb: 'Greco-Roman authors that illuminate the New Testament world — Epictetus’s Discourses and Enchiridion, with the Greek and George Long’s English side by side (Perseus, CC-BY-SA).',
-    works: GRECO_CATALOG,
-  },
-  {
-    id: 'plato',
-    label: 'Plato',
-    blurb: 'Plato’s dialogues — the Symposium (love) and Timaeus (creation and the world-soul), foundational for the Middle-Platonic and Logos background to the New Testament. Greek (Burnet) and the public-domain Loeb English side by side (Perseus, CC-BY-SA); cited by Stephanus page.',
-    works: PLATO_CATALOG,
-  },
-  {
-    id: 'aristotle',
-    label: 'Aristotle',
-    blurb: 'Aristotle’s Nicomachean Ethics (virtue ethics behind the New Testament’s moral vocabulary), Rhetoric, and Poetics. Greek and the public-domain Loeb English side by side (Perseus, CC-BY-SA).',
-    works: ARISTOTLE_CATALOG,
+    blurb: 'Greco-Roman authors that illuminate the New Testament world — Plato, Aristotle, Plutarch, Epictetus, Diogenes Laertius, and Apollodorus’s Library of myth, with the Greek and public-domain English side by side (Perseus, CC-BY-SA).',
+    works: [...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...PLUTARCH_CATALOG, ...GRECO_CATALOG, ...APOLLODORUS_CATALOG],
   },
   {
     id: 'mishnah',

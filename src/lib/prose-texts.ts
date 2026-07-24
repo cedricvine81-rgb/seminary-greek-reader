@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -721,6 +721,77 @@ export const ARISTOTLE_CATALOG = ARISTOTLE.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
 }))
 
+// ── Plutarch ──────────────────────────────────────────────────────────────────────────
+// The Lives (Perrin's public-domain Loeb, chapter→section) and a Moralia essay, On Isis and
+// Osiris (Goodwin's 1874 translation, flat sections). Built by scripts/build-perseus.py. Lives
+// are cited "Plutarch, Life of Antony 44.2" (chapter.section); the essay by section.
+const PLUTARCH_LIVES_ATTRIB = 'Text: Plutarch’s Lives, tr. Bernadotte Perrin (Loeb, 1914–1926), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const PLUTARCH_MORALIA_ATTRIB = 'Text: Plutarch’s Morals, tr. William W. Goodwin et al. (1874), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+const plutarchCite = (abbrevs: string[], hasVerse: boolean) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    // Allow a "Mor. <Stephanus>:" prefix before the work name, as the dataset cites the Moralia
+    // ("Plutarch, Mor. 361BC: Is. Os. 26"); the Lives have no such prefix.
+    const m = s.match(new RegExp('^Plutarch,?\\s+(?:[^:]*:\\s*)?' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)(?:\\.(\\d+))?'))
+    if (m) return hasVerse ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
+                           : { chapter: parseInt(m[1], 10) }
+  }
+  return null
+}
+
+const PLUTARCH: { slug: string; name: string; chapters: number; noteBook: string; attribution: string; abbrevs: string[]; hasVerse: boolean; label?: (ch: number) => string }[] = [
+  { slug: 'plutarch-antony', name: 'Plutarch, Life of Antony', chapters: 87, noteBook: 'PlutAnt', attribution: PLUTARCH_LIVES_ATTRIB, abbrevs: ['Life of Antony', 'Ant.'], hasVerse: true },
+  { slug: 'plutarch-alexander', name: 'Plutarch, Life of Alexander', chapters: 77, noteBook: 'PlutAlex', attribution: PLUTARCH_LIVES_ATTRIB, abbrevs: ['Life of Alexander', 'Alex.'], hasVerse: true },
+  { slug: 'plutarch-isis-osiris', name: 'Plutarch, On Isis and Osiris', chapters: 80, noteBook: 'PlutIsis', attribution: PLUTARCH_MORALIA_ATTRIB, abbrevs: ['On Isis and Osiris', 'De Iside et Osiride', 'Is. Os.'], hasVerse: false, label: (ch: number) => `Section ${ch}` },
+]
+
+const PLUTARCH_WORKS: ProseWork[] = PLUTARCH.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/greco/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: w.attribution,
+  parseCitation: plutarchCite(w.abbrevs, w.hasVerse),
+  ...(w.label ? { chapterLabel: w.label } : {}),
+}))
+
+export const PLUTARCH_CATALOG = PLUTARCH.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+}))
+
+// ── Apollodorus, The Library ──────────────────────────────────────────────────────────
+// The mythographic handbook (Frazer's public-domain Loeb), one work per book, chapter →
+// section. Built by scripts/build-perseus.py. "Apollodorus, Library 1.9.16" (also "Apollod.
+// 1.9.16", "Bibl. 1.9.16") → Book 1, chapter 9, section 16.
+const APOLLODORUS_ATTRIB = 'Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, 1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+const apollodorusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Apollod(?:orus,\\s*(?:The\\s+)?Library|orus|\\.|,\\s*Bibl)\\.?\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const APOLLODORUS = [
+  { book: 1, chapters: 9 }, { book: 2, chapters: 8 }, { book: 3, chapters: 16 },
+]
+
+const APOLLODORUS_WORKS: ProseWork[] = APOLLODORUS.map(w => ({
+  source: `apollodorus-library-${w.book}` as EmbeddedProseSource,
+  name: `Apollodorus, The Library (Book ${w.book})`,
+  noteBook: `ApollodLib${w.book}`,
+  dataUrl: `/data/greco/apollodorus-library-${w.book}.json`,
+  chapters: w.chapters,
+  attribution: APOLLODORUS_ATTRIB,
+  parseCitation: apollodorusCite(w.book),
+}))
+
+export const APOLLODORUS_CATALOG = APOLLODORUS.map(w => ({
+  id: `apollodorus-library-${w.book}`, source: `apollodorus-library-${w.book}` as EmbeddedProseSource,
+  name: `Apollodorus, The Library (Book ${w.book})`, chapters: w.chapters, greek: true,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -837,6 +908,8 @@ export const PROSE_WORKS: ProseWork[] = [
   ...GRECO_WORKS,
   ...PLATO_WORKS,
   ...ARISTOTLE_WORKS,
+  ...PLUTARCH_WORKS,
+  ...APOLLODORUS_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {
