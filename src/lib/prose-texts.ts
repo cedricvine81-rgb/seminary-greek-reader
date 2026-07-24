@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -632,6 +632,49 @@ export const GRECO_CATALOG = GRECO.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
 }))
 
+// ── Plato ─────────────────────────────────────────────────────────────────────────────
+// The dialogues, from Perseus's canonical TEI (Greek: Burnet; English: the public-domain Loeb),
+// built by scripts/build-perseus.py. Cited by STEPHANUS PAGE (the standard reference), so a
+// chapter is a page (172–223 for the Symposium); the reader queues the real page numbers via
+// chapterNumbers and heads each with "Stephanus 172". "Plato, Symp. 189DE" → page 189.
+const PLATO_ATTRIB = 'Text: the Loeb Classical Library translation (Plato in Twelve Volumes), public domain; Greek: J. Burnet’s edition. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+const platoCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of abbrevs) {
+    const m = s.match(new RegExp('^Plato,?\\s+' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)'))
+    if (m) return { chapter: parseInt(m[1], 10) }        // the Stephanus page; letters are dropped
+  }
+  return null
+}
+
+// slug (→ /data/greco/<slug>.json and `plato-…` source), display name, first/last Stephanus
+// page (contiguous), note anchor, citation abbreviation(s). Kept in sync with build-perseus.py.
+const PLATO: { slug: string; name: string; first: number; last: number; noteBook: string; abbrevs: string[] }[] = [
+  { slug: 'plato-symposium', name: 'Plato, Symposium', first: 172, last: 223, noteBook: 'PlatoSymp', abbrevs: ['Symp.'] },
+  { slug: 'plato-timaeus', name: 'Plato, Timaeus', first: 17, last: 92, noteBook: 'PlatoTim', abbrevs: ['Ti.', 'Tim.'] },
+]
+
+const platoPages = (w: { first: number; last: number }) =>
+  Array.from({ length: w.last - w.first + 1 }, (_, i) => w.first + i)
+
+const PLATO_WORKS: ProseWork[] = PLATO.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/greco/${w.slug}.json`,
+  chapters: w.last - w.first + 1,
+  attribution: PLATO_ATTRIB,
+  parseCitation: platoCite(w.abbrevs),
+  chapterLabel: (ch: number) => `Stephanus ${ch}`,
+}))
+
+// Ids/names the catalog needs; chapterNumbers carries the real (non-1-based) page numbers.
+export const PLATO_CATALOG = PLATO.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name,
+  chapters: w.last - w.first + 1, greek: true, chapterNumbers: platoPages(w),
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -746,6 +789,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...EUSEBIUS_WORKS,
   ...MISHNAH_WORKS,
   ...GRECO_WORKS,
+  ...PLATO_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {

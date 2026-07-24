@@ -122,6 +122,39 @@ def build_sections(slug, name, urn_dir, urn_base, no_cache):
              'verses': sum(len(c['verses']) for c in chapters)}]
 
 
+PLATO_ATTRIB = ('Text: the Loeb Classical Library translation (Plato in Twelve Volumes), public '
+                'domain; Greek: J. Burnet’s edition. Digital edition: Perseus Digital Library, '
+                'CC-BY-SA 4.0 (perseus.tufts.edu).')
+
+
+def parse_pages(xml_bytes):
+    """Plato: the Perseus editions divide to Stephanus PAGE (<div subtype="section" n="172">),
+    the standard citation unit, with a/b/c/d/e sub-sections marked only by inline milestones.
+    Return {page:int -> text} for the integer-numbered page divs."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    out = {}
+    for div in root.findall('.//t:div[@subtype="section"]', NS):
+        n = div.get('n')
+        if n and n.isdigit():
+            out[int(n)] = chapter_text(div)
+    return out
+
+
+def build_plato(slug, name, urn_dir, urn_base, no_cache):
+    """One dialogue: chapter = Stephanus page, one verse per page (English + parallel Greek)."""
+    grc = parse_pages(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
+    eng = parse_pages(fetch(f'{urn_dir}/{urn_base}.perseus-eng2.xml', no_cache))
+    pages = sorted(p for p in eng if eng[p])
+    chapters = [{'number': p, 'verses': [
+        {'number': 1, 'text': eng[p], **({'greek': grc[p]} if grc.get(p) else {})}]}
+        for p in pages]
+    doc = {'work': name, 'attribution': PLATO_ATTRIB, 'greek': True, 'chapters': chapters}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
+
+
 def build(slug_prefix, name_fmt, urn_dir, urn_base, per_book, no_cache):
     grc = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
     eng = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-eng3.xml', no_cache))
@@ -194,6 +227,12 @@ def main():
                      'tlg0557/tlg002', 'tlg0557.tlg002', False, no_cache)
     results += build_sections('diogenes-laertius', 'Diogenes Laertius, Lives of the Philosophers',
                               'tlg0004/tlg001', 'tlg0004.tlg001', no_cache)
+    # Plato — the dialogues, cited by Stephanus page (chapter = page). slug, display name, work id.
+    for slug, name, wid in [
+        ('plato-symposium', 'Plato, Symposium', 'tlg011'),
+        ('plato-timaeus',   'Plato, Timaeus',   'tlg031'),
+    ]:
+        results += build_plato(slug, name, f'tlg0059/{wid}', f'tlg0059.{wid}', no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
