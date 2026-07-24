@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -704,6 +704,30 @@ export const PROSE_WORKS: ProseWork[] = [
     // Cited as "Mart. Isa. 5:2" (the Martyrdom of Isaiah = chapters 1–5) or "Asc. Isa.".
     attribution: 'Text: R. H. Charles’ translation of the Ascension of Isaiah, 1900 (public domain). Source: earlychristianwritings.com.',
     parseCitation: cite(/^(?:Mart\.|Asc\.)\s*Isa\.\s+(\d+)(?::(\d+))?/) },
+  // New Testament apocrypha (M. R. James, PD) — English-only; no clean licensed Greek exists.
+  { source: 'protevangelium', name: 'The Protevangelium of James', noteBook: 'ProtJas',
+    dataUrl: '/data/apocrypha-gospels/protevangelium.json', chapters: 25,
+    attribution: 'Text: M. R. James, “The Apocryphal New Testament” (Oxford: Clarendon Press, 1924), public domain. Source: earlychristianwritings.com.',
+    parseCitation: cite(/^(?:Prot(?:ev)?\.?\s*Jas\.?|Prot\. Jas\.|Infancy (?:Gospel of )?James)\s+(\d+)(?::(\d+))?/) },
+  { source: 'gospel-of-peter', name: 'The Gospel of Peter', noteBook: 'GosPet',
+    dataUrl: '/data/apocrypha-gospels/gospel-of-peter.json', chapters: 14,
+    attribution: 'Text: M. R. James, “The Apocryphal New Testament” (Oxford: Clarendon Press, 1924), public domain. Source: earlychristianwritings.com. The Akhmim fragment; chapters are Robinson’s sections, verses Harnack’s continuous numbering.',
+    // Cited by the continuous Harnack verse number ("Gos. Pet. 24"); resolve it to its chapter.
+    parseCitation: (text: string) => {
+      const m = text.match(/^Gos(?:pel)?\.?\s*Pet(?:er|\.)?\s+(\d+)/)
+      if (!m) return null
+      const v = parseInt(m[1], 10)
+      const ends = [2, 5, 9, 14, 20, 24, 27, 33, 37, 42, 49, 54, 57, 60]  // last verse of each chapter
+      const chapter = ends.findIndex(e => v <= e) + 1
+      return { chapter: chapter || 14, verse: v }
+    } },
+  { source: 'paul-and-thecla', name: 'The Acts of Paul and Thecla', noteBook: 'ActsThecla',
+    dataUrl: '/data/apocrypha-gospels/paul-and-thecla.json', chapters: 1,
+    attribution: 'Text: M. R. James, “The Apocryphal New Testament” (Oxford: Clarendon Press, 1924), public domain. Source: earlychristianwritings.com. The Thecla episode of the Acts of Paul, verses 1–43.',
+    parseCitation: (text: string) => {
+      const m = text.match(/^(?:Acts (?:of )?Paul(?: and| &| &amp;)? Thecla|Acts Paul|Thecla)\.?\s+(\d+)/)
+      return m ? { chapter: 1, verse: parseInt(m[1], 10) } : null
+    } },
   ...TWELVE_PATRIARCHS_WORKS,
   ...PHILO_WORKS,
   ...AF_WORKS,

@@ -177,6 +177,16 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     works: [...JUSTIN_CATALOG, ...ANF_CATALOG],
   },
   {
+    id: 'nt-apocrypha',
+    label: 'NT Apocrypha',
+    blurb: 'Early Christian apocrypha — the Protevangelium of James, the Gospel of Peter (Akhmim fragment), and the Acts of Paul and Thecla — in M. R. James’s public-domain translation.',
+    works: [
+      { id: 'protevangelium', name: 'The Protevangelium of James', source: 'protevangelium', chapters: 25 },
+      { id: 'gospel-of-peter', name: 'The Gospel of Peter', source: 'gospel-of-peter', chapters: 14 },
+      { id: 'paul-and-thecla', name: 'The Acts of Paul and Thecla', source: 'paul-and-thecla', chapters: 1 },
+    ],
+  },
+  {
     id: 'eusebius',
     label: 'Eusebius',
     blurb: 'Eusebius of Caesarea’s Ecclesiastical History — the foundational narrative of the early church (c. 324 CE), in ten books. Schwartz’s Greek with Lake &amp; Oulton’s English side by side (First1KGreek, CC BY-SA).',
