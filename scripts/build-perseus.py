@@ -127,32 +127,75 @@ PLATO_ATTRIB = ('Text: the Loeb Classical Library translation (Plato in Twelve V
                 'CC-BY-SA 4.0 (perseus.tufts.edu).')
 
 
-def parse_pages(xml_bytes):
-    """Plato: the Perseus editions divide to Stephanus PAGE (<div subtype="section" n="172">),
-    the standard citation unit, with a/b/c/d/e sub-sections marked only by inline milestones.
-    Return {page:int -> text} for the integer-numbered page divs."""
+# ── Milestone-aware splitting: recover the standard page+letter reference ────────────────
+# Plato and the Plutarch Moralia are cited by a page reference marked only by inline milestones
+# (Plato "<milestone unit='section' n='172a'>", Moralia "<milestone unit='stephpage' n='351c'>").
+# These walk the text in document order and split it at those milestones so each lettered
+# subsection becomes its own verse, carrying its reference ("172a").
+def _ms_events(el, unit):
+    if el.text:
+        yield ('t', el.text)
+    for c in el:
+        tag = c.tag.split('}')[-1]
+        if tag in ('note', 'head'):
+            pass
+        elif tag == 'milestone' and c.get('unit') == unit:
+            yield ('m', c.get('n'))
+        else:
+            yield from _ms_events(c, unit)
+        if c.tail:
+            yield ('t', c.tail)
+
+
+def _segments(el, unit):
+    """[(ref, text)] — the text following each `unit` milestone (text before the first merges
+    into it)."""
+    segs, lead, cur = [], [], None
+    for kind, val in _ms_events(el, unit):
+        if kind == 'm':
+            segs.append([val, []]); cur = segs[-1][1]
+        else:
+            (cur if cur is not None else lead).append(val)
+    if segs and lead:
+        segs[0][1] = lead + segs[0][1]
+    return [(n, re.sub(r'\s+', ' ', ''.join(p)).strip()) for n, p in segs]
+
+
+def _pages_by_ref(xml_bytes, unit):
+    """{page:int -> {ref:str -> text}} from the milestone references (e.g. 172 -> {'172a': …})."""
     xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
-    root = ET.fromstring(xml)
+    body = ET.fromstring(xml).find('.//t:body', NS)
     out = {}
-    for div in root.findall('.//t:div[@subtype="section"]', NS):
-        n = div.get('n')
-        if n and n.isdigit():
-            out[int(n)] = chapter_text(div)
+    for ref, text in _segments(body, unit):
+        m = re.match(r'(\d+)[a-z]*$', ref or '')
+        if m and text:
+            out.setdefault(int(m.group(1)), {})[ref] = text
     return out
 
 
-def build_plato(slug, name, urn_dir, urn_base, no_cache):
-    """One dialogue: chapter = Stephanus page, one verse per page (English + parallel Greek)."""
-    grc = parse_pages(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
-    eng = parse_pages(fetch(f'{urn_dir}/{urn_base}.perseus-eng2.xml', no_cache))
-    pages = sorted(p for p in eng if eng[p])
-    chapters = [{'number': p, 'verses': [
-        {'number': 1, 'text': eng[p], **({'greek': grc[p]} if grc.get(p) else {})}]}
-        for p in pages]
-    doc = {'work': name, 'attribution': PLATO_ATTRIB, 'greek': True, 'chapters': chapters}
+def build_stephanus(slug, name, urn_dir, urn_base, eng_suffix, unit, attrib, no_cache):
+    """A dialogue / Moralia essay indexed by its page reference: chapter = page number, one verse
+    per lettered subsection carrying its standard ref ("172a"). English + parallel Greek."""
+    grc = _pages_by_ref(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache), unit)
+    eng = _pages_by_ref(fetch(f'{urn_dir}/{urn_base}.perseus-{eng_suffix}.xml', no_cache), unit)
+    chapters = []
+    for page in sorted(eng):
+        verses = []
+        for i, ref in enumerate(sorted(eng[page]), 1):
+            v = {'number': i, 'ref': ref, 'text': eng[page][ref]}
+            g = grc.get(page, {}).get(ref)
+            if g:
+                v['greek'] = g
+            verses.append(v)
+        chapters.append({'number': page, 'verses': verses})
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
+
+
+def build_plato(slug, name, urn_dir, urn_base, no_cache):
+    return build_stephanus(slug, name, urn_dir, urn_base, 'eng2', 'section', PLATO_ATTRIB, no_cache)
 
 
 ARISTOTLE_ATTRIB = ('Text: the Loeb Classical Library translation (public domain); Greek: the '
@@ -189,25 +232,54 @@ def parse_units(xml_bytes, book_sub, unit_sub):
     return out
 
 
-def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache):
+def parse_unit_refs(xml_bytes, book_sub, unit_sub, ref_unit):
+    """{(book,unit) -> ref} using the first `ref_unit` milestone inside each unit div — the
+    standard reference (Aristotle's Bekker "page" milestone, "1094a")."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    out = {}
+
+    def walk(el, book):
+        for div in el.findall('t:div', NS):
+            if div.get('type') != 'textpart':
+                walk(div, book); continue
+            sub = div.get('subtype')
+            if book_sub and sub == book_sub:
+                walk(div, div.get('n'))
+            elif sub == unit_sub:
+                ms = div.find(f'.//t:milestone[@unit="{ref_unit}"]', NS)
+                if ms is not None and ms.get('n'):
+                    out[(book, div.get('n'))] = ms.get('n')
+            else:
+                walk(div, book)
+    walk(root.find('.//t:body', NS), None)
+    return out
+
+
+def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache, ref_unit=None):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
-    §2). Without books: chapter = unit, one verse (Poet. 6; Plutarch Moralia by section)."""
+    §2). Without books: chapter = unit, one verse (Poet. 6). `ref_unit` attaches the standard
+    reference milestone (Aristotle's Bekker number) to each verse."""
     base = f'{urn_dir}/{urn_base}'
-    grc = parse_units(fetch(f'{base}.perseus-grc2.xml', no_cache), book_sub, unit_sub)
+    grc_bytes = fetch(f'{base}.perseus-grc2.xml', no_cache)
+    grc = parse_units(grc_bytes, book_sub, unit_sub)
     eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub)
+    refs = parse_unit_refs(grc_bytes, book_sub, unit_sub, ref_unit) if ref_unit else {}
     if book_sub:
         books = {}
         for (b, u), en in eng.items():
             if b and b.isdigit() and u and u.isdigit():
-                books.setdefault(int(b), {})[int(u)] = (en, grc.get((b, u), ''))
+                books.setdefault(int(b), {})[int(u)] = (en, grc.get((b, u), ''), refs.get((b, u)))
         chapters = [{'number': bk, 'verses': [
-            {'number': u, 'text': books[bk][u][0], **({'greek': books[bk][u][1]} if books[bk][u][1] else {})}
+            {'number': u, 'text': books[bk][u][0], **({'greek': books[bk][u][1]} if books[bk][u][1] else {}),
+             **({'ref': books[bk][u][2]} if books[bk][u][2] else {})}
             for u in sorted(books[bk])]} for bk in sorted(books)]
     else:
-        units = {int(u): (en, grc.get((None, u), '')) for (b, u), en in eng.items() if u and u.isdigit()}
+        units = {int(u): (en, grc.get((None, u), ''), refs.get((None, u))) for (b, u), en in eng.items() if u and u.isdigit()}
         chapters = [{'number': u, 'verses': [
-            {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {})}]}
+            {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {}),
+             **({'ref': units[u][2]} if units[u][2] else {})}]}
             for u in sorted(units)]
     doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
@@ -348,21 +420,24 @@ def main():
         ('plato-protagoras', 'Plato, Protagoras', 'tlg022'),
     ]:
         results += build_plato(slug, name, f'tlg0059/{wid}', f'tlg0059.{wid}', no_cache)
-    # Aristotle — book→section (Ethics), book→chapter (Rhetoric), or flat chapters (Poetics).
+    # Aristotle — book→section (Ethics), book→chapter (Rhetoric), or flat chapters (Poetics),
+    # each verse tagged with its Bekker number (the standard reference) from the "page" milestone.
     results += build_units('aristotle-nicomachean-ethics', 'Aristotle, Nicomachean Ethics',
-                           'tlg0086/tlg010', 'tlg0086.tlg010', 'eng2', 'book', 'section', ARISTOTLE_ATTRIB, no_cache)
+                           'tlg0086/tlg010', 'tlg0086.tlg010', 'eng2', 'book', 'section', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-rhetoric', 'Aristotle, Rhetoric',
-                           'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_ATTRIB, no_cache)
+                           'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-poetics', 'Aristotle, Poetics',
-                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_ATTRIB, no_cache)
+                           'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
     # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section).
     results += build_units('plutarch-antony', 'Plutarch, Life of Antony',
                            'tlg0007/tlg058', 'tlg0007.tlg058', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
     results += build_units('plutarch-alexander', 'Plutarch, Life of Alexander',
                            'tlg0007/tlg047', 'tlg0007.tlg047', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
-    # Plutarch, Moralia — On Isis and Osiris (Goodwin's public-domain translation, flat sections).
+    # Plutarch, Moralia — On Isis and Osiris. Goodwin's public-domain English has no Stephanus
+    # milestones, so it stays section-aligned (1–80); each section carries its Stephanus page
+    # reference ("351c", the standard Moralia citation) from the Greek's "stephpage" milestone.
     results += build_units('plutarch-isis-osiris', 'Plutarch, On Isis and Osiris',
-                           'tlg0007/tlg089', 'tlg0007.tlg089', 'eng4', None, 'section', PLUTARCH_MORALIA_ATTRIB, no_cache)
+                           'tlg0007/tlg089', 'tlg0007.tlg089', 'eng4', None, 'section', PLUTARCH_MORALIA_ATTRIB, no_cache, ref_unit='stephpage')
     # Apollodorus, The Library — the mythographic handbook (one work per book).
     results += build_apollodorus(no_cache)
     for r in results:

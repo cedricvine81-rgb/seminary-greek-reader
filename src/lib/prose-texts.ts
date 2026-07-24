@@ -929,6 +929,9 @@ export function matchProseCitation(text: string): { work: ProseWork; ref: { chap
 // The chapter→verse JSON shape these works share.
 // `greek` is present on parallel-text works (e.g. the Perseus Greco-Roman texts), carrying
 // the original Greek alongside the English `text` for side-by-side display.
-export interface ProseVerse { number: number; text: string; greek?: string }
+// `ref` is the standard scholarly reference for the verse when it isn't just the number —
+// Plato's Stephanus page+letter ("172a"), Aristotle's Bekker number ("1094a"), a Moralia
+// Stephanus page ("351c"). The reader shows it as the verse marker and cites by it.
+export interface ProseVerse { number: number; ref?: string; text: string; greek?: string }
 export interface ProseChapter { number: number; verses: ProseVerse[] }
 export interface ProseDoc { work: string; attribution: string; greek?: boolean; chapters: ProseChapter[] }

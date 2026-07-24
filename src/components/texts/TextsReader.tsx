@@ -38,7 +38,11 @@ function toLexicalInfo(tok: WordToken, ref: string): LexicalInfoPanel {
 // sidecar (<book>.morph.json) so the parsing pane works on Josephus etc.
 type MorphEntry = [string, string] | null
 // One rendered line of text: a verse (lxx / 2esdras) or a section (Josephus).
-type Row = { num: number; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[] }
+// `ref` is the work's standard scholarly reference for the verse when it differs from the plain
+// number — Plato's Stephanus page+letter ("172a"), Aristotle's Bekker number ("1094a"),
+// Plutarch's Moralia Stephanus page ("351c"). Shown as the verse marker and used in citations;
+// `num` stays the stable integer that anchors notes/highlights.
+type Row = { num: number; ref?: string; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[] }
 
 // A single chapter (or, for Josephus, book+chapter) worth of loaded rows.
 type QueueItem = { book?: number; chapter: number }
@@ -165,7 +169,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   const [locateOpen, setLocateOpen] = useState(false)
   const [locateBook, setLocateBook] = useState(1)
   const [locateChapter, setLocateChapter] = useState<number | null>(null)
-  const [locateVerseNums, setLocateVerseNums] = useState<number[] | null>(null)
+  const [locateVerseNums, setLocateVerseNums] = useState<{ num: number; ref?: string }[] | null>(null)
   // Josephus is navigated by pure Niese §: the sections run continuously through a whole
   // book (ch1 = §§1–51, ch2 = §§52–71, …), so a § alone locates the passage and there is no
   // chapter column. We still remember each §'s home chapter (content is fetched per chapter)
@@ -495,8 +499,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     const morph = await loadProseMorph(w)
-    return (ch?.verses ?? []).map((v: { number: number; text: string; greek?: string }) =>
-      ({ num: v.number, english: v.text, greek: v.greek, morph: morph?.[`${item.chapter}.${v.number}`] }))
+    return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string }) =>
+      ({ num: v.number, ref: v.ref, english: v.text, greek: v.greek, morph: morph?.[`${item.chapter}.${v.number}`] }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -702,7 +706,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const token = ++fetchTokenRef.current
     fetchChapterRows(w, { book, chapter }).then(rows => {
       if (fetchTokenRef.current !== token) return
-      setLocateVerseNums(rows.map(r => r.num))
+      setLocateVerseNums(rows.map(r => ({ num: r.num, ref: r.ref })))
     }).catch(() => { if (fetchTokenRef.current === token) setLocateVerseNums([]) })
   }
 
@@ -799,7 +803,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // Build the cascade's columns (Book → Chapter → Verse) in order. All columns are
   // top-aligned so the numbers sit in neat parallel columns; the selected row in each is
   // highlighted (rather than offsetting the next column) to show the current location.
-  type LocateItem = { n: number; selected: boolean; onClick: () => void }
+  type LocateItem = { n: number; label?: string; selected: boolean; onClick: () => void }
   type LocateColumn = { key: string; label: string; marginTop: number; items: 'loading' | LocateItem[] }
   function buildLocateColumns(): LocateColumn[] {
     if (!work) return []
@@ -837,7 +841,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     cols.push({
       key: 'vs', label: 'Vs.', marginTop: 0,
       items: locateVerseNums === null ? 'loading'
-        : locateVerseNums.map(vn => ({ n: vn, selected: false, onClick: () => selectLocateVerse(vn) })),
+        : locateVerseNums.map(v => ({ n: v.num, label: v.ref, selected: false, onClick: () => selectLocateVerse(v.num) })),
     })
     return cols
   }
@@ -970,7 +974,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             style={{ height: LOCATE_ROW_H }}
                             className={`flex w-full items-center px-2 text-left text-xs transition-colors ${it.selected ? 'bg-brand-100 text-brand-800 font-medium' : 'text-gray-600 hover:bg-gray-50'}`}
                           >
-                            {it.n}
+                            {it.label ?? it.n}
                           </button>
                         ))
                       )}
@@ -1157,6 +1161,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 if (q && filteredRows.length === 0) return null
                 const noteBook = noteBookFor(work, section)
                 const refLabel = refLabelFor(work, section)
+                // Citation for a row: a standard scholarly ref (Stephanus/Bekker) is a complete
+                // locator, so it replaces the "<work> <chapter>:<verse>" form ("Plato, Symposium
+                // 172a" rather than "…172:1").
+                const citeFor = (row: Row): string => row.ref ? `${work.name} ${row.ref}` : `${refLabel}:${row.num}`
                 const notedKeys = notedMap[`${noteBook}.${section.chapter}`] ?? new Set<number>()
                 return (
                   <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
@@ -1191,13 +1199,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                   onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
                               </span>
                             )}
-                            <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.num}</sup>
+                            <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.ref ?? row.num}</sup>
                             {isGreek ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
                                 {row.tokens && row.tokens.length > 0
                                   ? withTokenOffsets(row.tokens).map(({ token: tok, start, end }, ti) => {
                                       const key = `${section.key}.${row.num}.${ti}`
-                                      const select = () => { setSelectedInfo(toLexicalInfo(tok, `${refLabel}:${row.num}`)); setSelectedKey(key) }
+                                      const select = () => { setSelectedInfo(toLexicalInfo(tok, citeFor(row))); setSelectedKey(key) }
                                       const matched = !!q && tok.surface.toLowerCase().includes(q)
                                       const matchedTerm = !!termNorm && normalizeGreek(tok.surface).includes(termNorm)
                                       const hl = !q ? highlightAt(start, end, verseHighlights) : undefined
@@ -1208,7 +1216,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                             const existing = verseHighlights.find(h => start < h.endOffset && end > h.startOffset)
                                             openWordSearch({
                                               x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma,
-                                              reference: `${refLabel}:${row.num}`, kind: 'greek', greekCorpus: 'LXX',
+                                              reference: citeFor(row), kind: 'greek', greekCorpus: 'LXX',
                                               bgCollection: bgCollection?.id, bgCollectionLabel: bgCollection?.label,
                                               highlight: isAuthenticated ? {
                                                 activeColor: existing?.color ?? null,
@@ -1230,10 +1238,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
                                 {q ? highlight(row.greek ?? '', search)
                                   : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
-                                  : <GreekWords text={row.greek ?? ''} reference={`${refLabel}:${row.num}`}
+                                  : <GreekWords text={row.greek ?? ''} reference={citeFor(row)}
                                       analyses={row.morph} selectedKey={selectedKey} keyBase={`${section.key}.${row.num}`}
                                       onPick={(pick, key) => {
-                                        setSelectedInfo(pick ? { surface: pick.surface, lexeme: pick.lemma, gloss: '', partOfSpeech: '', parsing: pick.parsing, reference: `${refLabel}:${row.num}` } : null)
+                                        setSelectedInfo(pick ? { surface: pick.surface, lexeme: pick.lemma, gloss: '', partOfSpeech: '', parsing: pick.parsing, reference: citeFor(row) } : null)
                                         setSelectedKey(key)
                                       }}
                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights: greekHighlights,
@@ -1245,7 +1253,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
                                 {q ? highlight(row.english ?? '', search)
                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                  : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
+                                  : <TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                         recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1268,11 +1276,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                     onChanged={() => refreshNotesFor(noteBook, section.chapter)} />
                                 </span>
                               )}
-                              <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.num}</sup>
+                              <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.ref ?? row.num}</sup>
                               {greekProse
                                 ? (q ? highlight(row.english ?? '', search)
                                    : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english ?? ''} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
+                                   : <TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1280,7 +1288,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 : row.english
                                 ? (q ? highlight(row.english, search)
                                    : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english} lang="en" reference={`${refLabel}:${row.num}`} book={noteBook} bgCollection={bgCollection}
+                                   : <TransWords text={row.english} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
