@@ -174,15 +174,20 @@ def main():
             e = eng.get(bk, {}).get(ch)
             if e:
                 eng_hits += 1
-            verses = []
-            for i, sec in enumerate(sorted(secs)):
-                row = {'number': sec, 'greek': secs[sec]}
-                # English (whole chapter) rides on the FIRST section; others are Greek-only.
-                row['text'] = e if (i == 0 and e) else ''
-                verses.append(row)
-                n_sec += 1
-                n_grk += 1
-            chapters.append({'number': ch, 'verses': verses})
+            # The English divides only to CHAPTER (the transcription has no section markers), so
+            # the chapter is the parallel unit: one row holding the whole English chapter beside
+            # the whole Greek chapter, with the Schwartz section numbers kept inline in the Greek
+            # (superscripted by the reader) for citation. Splitting Greek into section-rows while
+            # the English stayed one block made the two columns drift apart.
+            order = sorted(secs)
+            # The verse marker "1" the reader prints already numbers section 1, so only sections
+            # 2+ take an inline number (avoids a doubled "1 1"). If a chapter's sections don't
+            # start at 1, number them all.
+            lead_is_one = order and order[0] == 1
+            greek = ' '.join((secs[s] if (i == 0 and lead_is_one) else f'{s} {secs[s]}')
+                             for i, s in enumerate(order))
+            n_sec += len(secs)
+            chapters.append({'number': ch, 'verses': [{'number': 1, 'text': e or '', 'greek': greek}]})
         doc = {
             'work': f'Eusebius, Ecclesiastical History (Book {bk})',
             'attribution': ATTRIBUTION,

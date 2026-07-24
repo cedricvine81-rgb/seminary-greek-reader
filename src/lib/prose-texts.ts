@@ -456,12 +456,13 @@ const EUSEBIUS_BOOKS: { book: number; last: number; preface: boolean }[] = [
 const eusebiusChapterNumbers = (b: { last: number; preface: boolean }): number[] =>
   Array.from({ length: b.last - (b.preface ? 0 : 1) + 1 }, (_, i) => (b.preface ? 0 : 1) + i)
 
-// "Eusebius, Hist. eccl. 3.39.15" → book 3, chapter 39, section 15. Only Hist. eccl. matches
-// (not Praep. ev. or other Eusebian works). Ranges keep their start.
+// "Eusebius, Hist. eccl. 3.39.15" → book 3, chapter 39 (the section is kept inline in the Greek
+// but each chapter is a single row, so citations open at chapter level). Only Hist. eccl.
+// matches (not Praep. ev. or other Eusebian works).
 const eusebiusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
   const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
-  const m = s.match(new RegExp(`^Eusebius,\\s*Hist\\. eccl\\.\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
-  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+  const m = s.match(new RegExp(`^Eusebius,\\s*Hist\\. eccl\\.\\s+${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
 }
 
 const EUSEBIUS_WORKS: ProseWork[] = EUSEBIUS_BOOKS.map(b => ({
