@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -681,6 +681,46 @@ export const PLATO_CATALOG = PLATO.map(w => ({
   chapters: w.last - w.first + 1, greek: true, chapterNumbers: platoPages(w),
 }))
 
+// ── Aristotle ─────────────────────────────────────────────────────────────────────────
+// Treatises from Perseus (Greek: Bekker/Perseus; English: the public-domain Loeb, H. Rackham
+// et al.), built by scripts/build-perseus.py. The Nicomachean Ethics and Rhetoric are cited
+// book.chapter (chapter = book, verse = the section/chapter); the Poetics is cited by chapter.
+const ARISTOTLE_ATTRIB = 'Text: the Loeb Classical Library translation (public domain); Greek: the Bekker/Perseus edition. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+// `hasVerse` works are cited "Aristotle, <abbr> <book>.<n>"; the rest just "<abbr> <chapter>".
+const aristotleCite = (abbrevs: string[], hasVerse: boolean) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of abbrevs) {
+    const m = s.match(new RegExp('^Aristotle,?\\s+' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)(?:\\.(\\d+))?'))
+    if (m) return hasVerse ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
+                           : { chapter: parseInt(m[1], 10) }
+  }
+  return null
+}
+
+// `books` = the top-level division is the treatise's book (labelled "Book N" in the reader);
+// the Poetics divides straight to chapter.
+const ARISTOTLE: { slug: string; name: string; chapters: number; noteBook: string; abbrevs: string[]; hasVerse: boolean; books: boolean }[] = [
+  { slug: 'aristotle-nicomachean-ethics', name: 'Aristotle, Nicomachean Ethics', chapters: 10, noteBook: 'AristNE', abbrevs: ['Eth. nic.', 'Eth. Nic.', 'Ethica'], hasVerse: true, books: true },
+  { slug: 'aristotle-rhetoric', name: 'Aristotle, Rhetoric', chapters: 3, noteBook: 'AristRhet', abbrevs: ['Rhet.'], hasVerse: true, books: true },
+  { slug: 'aristotle-poetics', name: 'Aristotle, Poetics', chapters: 26, noteBook: 'AristPoet', abbrevs: ['Poet.'], hasVerse: false, books: false },
+]
+
+const ARISTOTLE_WORKS: ProseWork[] = ARISTOTLE.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/greco/${w.slug}.json`,
+  chapters: w.chapters,
+  attribution: ARISTOTLE_ATTRIB,
+  parseCitation: aristotleCite(w.abbrevs, w.hasVerse),
+  ...(w.books ? { chapterLabel: (ch: number) => `Book ${ch}` } : {}),
+}))
+
+export const ARISTOTLE_CATALOG = ARISTOTLE.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+}))
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -796,6 +836,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...MISHNAH_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,
+  ...ARISTOTLE_WORKS,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {

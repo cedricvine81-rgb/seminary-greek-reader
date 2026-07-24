@@ -155,6 +155,59 @@ def build_plato(slug, name, urn_dir, urn_base, no_cache):
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
 
 
+ARISTOTLE_ATTRIB = ('Text: the Loeb Classical Library translation (public domain); Greek: the '
+                    'Bekker/Perseus edition. Digital edition: Perseus Digital Library, '
+                    'CC-BY-SA 4.0 (perseus.tufts.edu).')
+
+
+def parse_units(xml_bytes, book_sub, unit_sub):
+    """Return {(book|None, unit): text} for a book→unit (or flat unit) TEI. `book_sub` is the
+    div subtype that carries the book number (None for treatises without books); `unit_sub` is
+    the verse-level div subtype (a Nicomachean Ethics 'section', a Rhetoric/Poetics 'chapter')."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    out = {}
+
+    def walk(el, book):
+        for div in el.findall('t:div', NS):
+            if div.get('type') != 'textpart':
+                walk(div, book); continue
+            sub = div.get('subtype')
+            if book_sub and sub == book_sub:
+                walk(div, div.get('n'))
+            elif sub == unit_sub:
+                out[(book, div.get('n'))] = chapter_text(div)
+            else:
+                walk(div, book)
+    walk(root.find('.//t:body', NS), None)
+    return out
+
+
+def build_aristotle(slug, name, wid, book_sub, unit_sub, no_cache):
+    """One treatise. With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7;
+    Rhet. 1.2 → book 1 ch. 2). Without books: chapter = unit, one verse (Poet. 6 → chapter 6)."""
+    base = f'tlg0086/{wid}/tlg0086.{wid}'
+    grc = parse_units(fetch(f'{base}.perseus-grc2.xml', no_cache), book_sub, unit_sub)
+    eng = parse_units(fetch(f'{base}.perseus-eng2.xml', no_cache), book_sub, unit_sub)
+    if book_sub:
+        books = {}
+        for (b, u), en in eng.items():
+            if b and b.isdigit() and u and u.isdigit():
+                books.setdefault(int(b), {})[int(u)] = (en, grc.get((b, u), ''))
+        chapters = [{'number': bk, 'verses': [
+            {'number': u, 'text': books[bk][u][0], **({'greek': books[bk][u][1]} if books[bk][u][1] else {})}
+            for u in sorted(books[bk])]} for bk in sorted(books)]
+    else:
+        units = {int(u): (en, grc.get((None, u), '')) for (b, u), en in eng.items() if u and u.isdigit()}
+        chapters = [{'number': u, 'verses': [
+            {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {})}]}
+            for u in sorted(units)]
+    doc = {'work': name, 'attribution': ARISTOTLE_ATTRIB, 'greek': True, 'chapters': chapters}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
+
+
 def build(slug_prefix, name_fmt, urn_dir, urn_base, per_book, no_cache):
     grc = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
     eng = parse_chapters(fetch(f'{urn_dir}/{urn_base}.perseus-eng3.xml', no_cache))
@@ -239,6 +292,13 @@ def main():
         ('plato-protagoras', 'Plato, Protagoras', 'tlg022'),
     ]:
         results += build_plato(slug, name, f'tlg0059/{wid}', f'tlg0059.{wid}', no_cache)
+    # Aristotle — book→section (Ethics), book→chapter (Rhetoric), or flat chapters (Poetics).
+    results += build_aristotle('aristotle-nicomachean-ethics', 'Aristotle, Nicomachean Ethics',
+                               'tlg010', 'book', 'section', no_cache)
+    results += build_aristotle('aristotle-rhetoric', 'Aristotle, Rhetoric',
+                               'tlg038', 'book', 'chapter', no_cache)
+    results += build_aristotle('aristotle-poetics', 'Aristotle, Poetics',
+                               'tlg034', None, 'chapter', no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
