@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { clsx } from 'clsx'
 import { ChevronDown, ChevronRight, CalendarClock, AlertTriangle, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { membersPastCourseEnd, type AssignmentSeries } from '@/lib/assignment-series'
+import { membersPastCourseEnd, sharedValue, type AssignmentSeries } from '@/lib/assignment-series'
 
 const TYPE_LABEL: Record<string, string> = {
   VOCABULARY_QUIZ: 'Vocabulary', MORPHOLOGY_QUIZ: 'Morphology',
@@ -79,6 +79,13 @@ export function AssignmentSeriesEditor({
         const published = s.members.filter(m => m.isPublished).length
         const first = s.members[0]
         const last = s.members[s.members.length - 1]
+        // What each setting currently is across the run (null = the occurrences differ),
+        // so the active choice is shown filled in rather than the row looking untouched.
+        const curRetakes = sharedValue(s.members, m => m.maxRetakes ?? -1)   // -1 = unlimited
+        const curTime = sharedValue(s.members, m => m.timePerQuestion ?? 0)
+        const curReview = sharedValue(s.members, m => m.vocabReviewPct ?? 0)
+        const curLate = sharedValue(s.members, m => (m.allowLate ? (m.lateDaysLimit ?? -1) : 0))
+        const mixed = <span className="ml-1.5 text-xs font-normal normal-case text-amber-700">(varies across the series)</span>
 
         return (
           <div key={s.key} className="rounded-lg border border-gray-200 overflow-hidden bg-surface">
@@ -184,16 +191,21 @@ export function AssignmentSeriesEditor({
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
                       Retakes allowed (every quiz)
+                      {curRetakes === null ? mixed : (
+                        <span className="ml-1.5 font-normal normal-case text-brand-700">
+                          — {curRetakes === -1 ? 'unlimited' : curRetakes}
+                        </span>
+                      )}
                     </p>
                     <div className="flex flex-wrap gap-2">
                       {[0, 1, 2, 3].map(n => (
-                        <Button key={n} size="sm" variant="secondary" disabled={busy}
+                        <Button key={n} size="sm" variant={curRetakes === n ? 'primary' : 'secondary'} disabled={busy}
                           onClick={() => void run(ids, { action: 'maxRetakes', value: n }, 'PATCH',
                             c => `Set ${c} quizzes to ${n} retake${n !== 1 ? 's' : ''}.`)}>
                           {n}
                         </Button>
                       ))}
-                      <Button size="sm" variant="secondary" disabled={busy}
+                      <Button size="sm" variant={curRetakes === -1 ? 'primary' : 'secondary'} disabled={busy}
                         onClick={() => void run(ids, { action: 'maxRetakes', value: null }, 'PATCH',
                           c => `Set ${c} quizzes to unlimited retakes.`)}>
                         Unlimited
@@ -204,8 +216,7 @@ export function AssignmentSeriesEditor({
 
                 {/* Cumulative review — only meaningful for vocabulary series */}
                 {s.type === 'VOCABULARY_QUIZ' && (() => {
-                  const pcts = Array.from(new Set(s.members.map(m => m.vocabReviewPct ?? 0)))
-                  const current = pcts.length === 1 ? pcts[0] : null
+                  const current = curReview
                   return (
                     <div>
                       <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
@@ -218,7 +229,7 @@ export function AssignmentSeriesEditor({
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {[0, 10, 20, 25, 30, 50].map(pc => (
-                          <Button key={pc} size="sm" variant="secondary" disabled={busy}
+                          <Button key={pc} size="sm" variant={current === pc ? 'primary' : 'secondary'} disabled={busy}
                             onClick={() => {
                               if (!confirm(`Rebuild all ${s.members.length} quizzes so ${pc}% of each comes from earlier sections?\n\nThis regenerates their questions.`)) return
                               void run(ids, { action: 'reviewPct', value: pc }, 'PATCH',
@@ -241,10 +252,15 @@ export function AssignmentSeriesEditor({
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
                       Time per question (every quiz)
+                      {curTime === null ? mixed : (
+                        <span className="ml-1.5 font-normal normal-case text-brand-700">
+                          — {curTime === 0 ? 'untimed' : `${curTime}s`}
+                        </span>
+                      )}
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      {[0, 15, 20, 30, 45, 60].map(sec => (
-                        <Button key={sec} size="sm" variant="secondary" disabled={busy}
+                      {[0, 10, 15, 20, 30, 45, 60].map(sec => (
+                        <Button key={sec} size="sm" variant={curTime === sec ? 'primary' : 'secondary'} disabled={busy}
                           onClick={() => void run(ids, { action: 'timePerQuestion', value: sec }, 'PATCH',
                             n => sec === 0 ? `Set ${n} quizzes to untimed.`
                                            : `Set ${n} quizzes to ${sec}s per question.`)}>
@@ -260,15 +276,22 @@ export function AssignmentSeriesEditor({
                   <div>
                     <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
                       Late submissions (every quiz)
+                      {curLate === null ? mixed : (
+                        <span className="ml-1.5 font-normal normal-case text-brand-700">
+                          — {curLate === 0 ? 'not allowed'
+                             : curLate === -1 ? 'allowed, no limit'
+                             : `${curLate} day${curLate !== 1 ? 's' : ''}`}
+                        </span>
+                      )}
                     </p>
                     <div className="flex flex-wrap gap-2">
-                      <Button size="sm" variant="secondary" disabled={busy}
+                      <Button size="sm" variant={curLate === 0 ? 'primary' : 'secondary'} disabled={busy}
                         onClick={() => void run(ids, { action: 'allowLate', value: false }, 'PATCH',
                           n => `Closed ${n} quizzes to late work.`)}>
                         Not allowed
                       </Button>
                       {[1, 3, 7].map(days => (
-                        <Button key={days} size="sm" variant="secondary" disabled={busy}
+                        <Button key={days} size="sm" variant={curLate === days ? 'primary' : 'secondary'} disabled={busy}
                           onClick={async () => {
                             await run(ids, { action: 'allowLate', value: true }, 'PATCH', () => '')
                             await run(ids, { action: 'lateDaysLimit', value: days }, 'PATCH',

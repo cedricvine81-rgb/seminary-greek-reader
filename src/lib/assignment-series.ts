@@ -16,7 +16,12 @@ export interface SeriesMember {
   dueDate: string
   isPublished: boolean
   questionCount: number
+  // Current settings, so the editor can show which choice is in force.
   vocabReviewPct?: number | null
+  maxRetakes?: number | null
+  timePerQuestion?: number | null
+  allowLate?: boolean
+  lateDaysLimit?: number | null
 }
 
 export interface AssignmentSeries {
@@ -46,7 +51,8 @@ export function seriesStem(title: string): string {
 export function groupIntoSeries<T extends {
   id: string; title: string; type: string; weekNumber: number
   dueDate: string | Date; isPublished: boolean; questionCount: number
-  vocabReviewPct?: number | null
+  vocabReviewPct?: number | null; maxRetakes?: number | null
+  timePerQuestion?: number | null; allowLate?: boolean; lateDaysLimit?: number | null
 }>(assignments: T[]): AssignmentSeries[] {
   const buckets = new Map<string, AssignmentSeries>()
   for (const a of assignments) {
@@ -61,6 +67,10 @@ export function groupIntoSeries<T extends {
       isPublished: a.isPublished,
       questionCount: a.questionCount,
       vocabReviewPct: a.vocabReviewPct ?? null,
+      maxRetakes: a.maxRetakes ?? null,
+      timePerQuestion: a.timePerQuestion ?? null,
+      allowLate: a.allowLate ?? false,
+      lateDaysLimit: a.lateDaysLimit ?? null,
     })
     buckets.set(key, entry)
   }
@@ -73,6 +83,16 @@ export function groupIntoSeries<T extends {
     }))
     .sort((a, b) =>
       new Date(a.members[0].dueDate).getTime() - new Date(b.members[0].dueDate).getTime())
+}
+
+/**
+ * The value a setting has across the whole series, or null when the occurrences disagree
+ * — so the editor can highlight the chosen option, or say the run is mixed.
+ */
+export function sharedValue<V>(members: SeriesMember[], pick: (m: SeriesMember) => V): V | null {
+  if (members.length === 0) return null
+  const first = pick(members[0])
+  return members.every(m => pick(m) === first) ? first : null
 }
 
 /** Occurrences dated after the course's last day — created but never sat. */
