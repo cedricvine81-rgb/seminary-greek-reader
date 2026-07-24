@@ -278,6 +278,11 @@ const HERMAS_WORK: ProseWork = {
   chapterLabel: hermasLabel,
 }
 
+// The Didache and Diognetus carry parallel Greek at CHAPTER level (their Lightfoot English is
+// versified more finely than the Greek's sections, so each chapter is a single parallel row);
+// a citation therefore resolves to the chapter, dropping any verse.
+const AF_CHAPTER_LEVEL = new Set(['didache', 'diognetus'])
+
 const AF_WORKS: ProseWork[] = [
   ...AF.map(w => ({
     source: `af-${w.slug}` as EmbeddedProseSource,
@@ -286,18 +291,21 @@ const AF_WORKS: ProseWork[] = [
     dataUrl: `/data/apostolic-fathers/${w.slug}.json`,
     chapters: w.chapters,
     attribution: AF_ATTRIBUTION,
-    parseCitation: afCite(w.abbrevs),
+    parseCitation: AF_CHAPTER_LEVEL.has(w.slug)
+      ? (text: string) => { const r = afCite(w.abbrevs)(text); return r ? { chapter: r.chapter } : null }
+      : afCite(w.abbrevs),
   })),
   HERMAS_WORK,
 ]
 
-// Works for which scripts/build-apostolic-fathers-greek.py attached the parallel Greek
-// (First1KGreek, CC BY-SA 4.0). Diognetus, the Martyrdom of Polycarp and the Didache are
-// English-only — no aligned Greek source — so they are absent here.
+// Works carrying parallel Greek: the Ignatian letters, 1/2 Clement, Barnabas and Polycarp from
+// scripts/build-apostolic-fathers-greek.py, plus the Martyrdom of Polycarp (section-level), the
+// Didache and Diognetus (chapter-level) from scripts/build-af-remaining-greek.py.
 const AF_GREEK = new Set([
   '1clement', '2clement', 'barnabas', 'polycarp',
   'ign-ephesians', 'ign-magnesians', 'ign-trallians', 'ign-romans',
   'ign-philadelphians', 'ign-smyrnaeans', 'ign-polycarp',
+  'mart-polycarp', 'didache', 'diognetus',
 ])
 
 // Ids/names the catalog needs to list the Apostolic Fathers under one Texts category.
