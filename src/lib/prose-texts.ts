@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -912,6 +912,30 @@ const DIO_WORK: ProseWork = {
   chapterLabel: (ch: number) => `Oration ${ch}`,
 }
 
+// ── Aratus, Phaenomena (Greek only) ───────────────────────────────────────────────────
+// The full didactic poem, cited by line. Greek only on Perseus; the 1155 lines are chunked into
+// 150-line chapters for loading, each verse keeping its poem line number. "Aratus, Phaen. 5"
+// (Acts 17:28) → line 5.
+const ARATUS_CHUNK = 150
+const ARATUS_LINES = 1155
+
+const ARATUS_WORK: ProseWork = {
+  source: 'aratus-phaenomena',
+  name: 'Aratus, Phaenomena',
+  noteBook: 'AratusPhaen',
+  dataUrl: '/data/greco/aratus-phaenomena.json',
+  chapters: Math.ceil(ARATUS_LINES / ARATUS_CHUNK),
+  attribution: 'Greek: Aratus, Phaenomena. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only; cited by line (line 5 is quoted at Acts 17:28). The proem with a translation is in the “Pagan Sources Quoted in the New Testament” collection.',
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '').match(/^Aratus,?\s+(?:Phaen(?:omena|\.)?\s+)?(\d+)/)
+    if (!m) return null
+    const line = parseInt(m[1], 10)
+    return { chapter: Math.ceil(line / ARATUS_CHUNK), verse: line }
+  },
+  chapterLabel: (ch: number) =>
+    `Lines ${(ch - 1) * ARATUS_CHUNK + 1}–${Math.min(ch * ARATUS_CHUNK, ARATUS_LINES)}`,
+}
+
 // ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
 // A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
 // the NT quotes, its heading naming the source and the NT reference.
@@ -1056,6 +1080,7 @@ export const PROSE_WORKS: ProseWork[] = [
   MARCUS_AURELIUS_WORK,
   PHILOSTRATUS_WORK,
   DIO_WORK,
+  ARATUS_WORK,
   NT_PAGAN_WORK,
 ]
 

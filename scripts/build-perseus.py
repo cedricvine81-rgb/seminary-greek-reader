@@ -279,6 +279,27 @@ def build_greek_only(slug, name, urn_dir, urn_base, book_sub, unit_sub, attrib, 
              'verses': sum(len(c['verses']) for c in chapters)}]
 
 
+def build_line_poem(slug, name, urn_dir, urn_base, attrib, no_cache, chunk=150):
+    """A continuous verse poem addressed by line number (Aratus's Phaenomena). Greek only; the
+    lines are grouped into chapters of `chunk` for lazy loading, each verse keeping its poem line
+    number as its reference (so "Phaen. 5" cites line 5)."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache).decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    lines = [re.sub(r'\s+', ' ', ''.join(l.itertext())).strip()
+             for l in root.iter('{http://www.tei-c.org/ns/1.0}l')]
+    lines = [l for l in lines if l]
+    chapters = []
+    for i in range(0, len(lines), chunk):
+        block = lines[i:i + chunk]
+        chapters.append({'number': i // chunk + 1, 'verses': [
+            {'number': i + j + 1, 'ref': str(i + j + 1), 'text': '', 'greek': block[j]}
+            for j in range(len(block))]})
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'greekOnly': True,
+           'lineChunk': chunk, 'lineCount': len(lines), 'chapters': chapters}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': len(lines)}]
+
+
 def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache, ref_unit=None):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
@@ -318,6 +339,10 @@ PHILOSTRATUS_ATTRIB = ('Greek: Philostratus, Life of Apollonius of Tyana (Τὰ 
                        'Greek only.')
 DIO_ATTRIB = ('Greek: Dio Chrysostom, Orations (Λόγοι). Digital edition: Perseus Digital '
               'Library, CC-BY-SA 4.0. Greek only.')
+ARATUS_ATTRIB = ('Greek: Aratus, Phaenomena. Digital edition: Perseus Digital Library, '
+                 'CC-BY-SA 4.0. Greek only; cited by line (line 5 is quoted at Acts 17:28). See '
+                 'the “Pagan Sources Quoted in the New Testament” collection for the proem with a '
+                 'translation.')
 XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; '
                    'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
                    '(perseus.tufts.edu).')
@@ -495,6 +520,9 @@ def main():
                                 'tlg0638/tlg001', 'tlg0638.tlg001', 'book', 'chapter', PHILOSTRATUS_ATTRIB, no_cache)
     results += build_greek_only('dio-chrysostom-orations', 'Dio Chrysostom, Orations',
                                 'tlg0612/tlg001', 'tlg0612.tlg001', 'speech', 'section', DIO_ATTRIB, no_cache)
+    # Aratus, Phaenomena — the full didactic poem (Greek only, cited by line; line 5 = Acts 17:28).
+    results += build_line_poem('aratus-phaenomena', 'Aratus, Phaenomena',
+                               'tlg0653/tlg001', 'tlg0653.tlg001', ARATUS_ATTRIB, no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
