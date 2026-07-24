@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -875,6 +875,43 @@ const MARCUS_AURELIUS_WORK: ProseWork = {
   chapterLabel: (ch: number) => `Book ${ch}`,
 }
 
+// ── Philostratus & Dio Chrysostom (Greek only) ────────────────────────────────────────
+// Philostratus, Life of Apollonius of Tyana (chapter = book, "VA 1.4") and Dio Chrysostom's
+// Orations (chapter = oration, verse = section, "Or. 12.5") — Greek only on Perseus.
+const PHILOSTRATUS_WORK: ProseWork = {
+  source: 'philostratus-apollonius',
+  name: 'Philostratus, Life of Apollonius of Tyana',
+  noteBook: 'PhilostrVA',
+  dataUrl: '/data/greco/philostratus-apollonius.json',
+  chapters: 8,
+  attribution: 'Greek: Philostratus, Life of Apollonius of Tyana. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only — a chapter-aligned English is not yet available.',
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '').match(/^Philostratus,?\s+(?:VA|Vit\. Apoll\.|Vita Apoll\.)\s+(\d+)\.(\d+)/)
+    return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+  },
+  chapterLabel: (ch: number) => `Book ${ch}`,
+}
+
+// The Orations survive under the numbers 1–88 with gaps; chapterNumbers carries the real set.
+const DIO_ORATIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 23, 24, 25, 26,
+  27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+  51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74,
+  75, 76, 79, 80, 84, 85, 86, 87, 88]
+
+const DIO_WORK: ProseWork = {
+  source: 'dio-chrysostom-orations',
+  name: 'Dio Chrysostom, Orations',
+  noteBook: 'DioChrys',
+  dataUrl: '/data/greco/dio-chrysostom-orations.json',
+  chapters: DIO_ORATIONS[DIO_ORATIONS.length - 1],
+  attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only — a chapter-aligned English is not yet available.',
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:Or(?:ationes|\.)?\s+)?(\d+)\.(\d+)/)
+    return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+  },
+  chapterLabel: (ch: number) => `Oration ${ch}`,
+}
+
 // ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
 // A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
 // the NT quotes, its heading naming the source and the NT reference.
@@ -1017,8 +1054,13 @@ export const PROSE_WORKS: ProseWork[] = [
   ...LUCIAN_WORKS,
   ...XENOPHON_WORKS,
   MARCUS_AURELIUS_WORK,
+  PHILOSTRATUS_WORK,
+  DIO_WORK,
   NT_PAGAN_WORK,
 ]
+
+// Dio Chrysostom's non-contiguous oration numbers, for the catalog's chapterNumbers.
+export const DIO_CHAPTER_NUMBERS = DIO_ORATIONS
 
 export function findProseWork(source: string): ProseWork | undefined {
   return PROSE_WORKS.find(w => w.source === source)

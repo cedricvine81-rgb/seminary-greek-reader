@@ -313,6 +313,11 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
 MARCUS_ATTRIB = ('Greek: Marcus Aurelius, Τὰ εἰς ἑαυτόν (Meditations). Digital edition: Perseus '
                  'Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu). Greek only — see the note on '
                  'the work.')
+PHILOSTRATUS_ATTRIB = ('Greek: Philostratus, Life of Apollonius of Tyana (Τὰ ἐς τὸν Τυανέα '
+                       'Ἀπολλώνιον). Digital edition: Perseus Digital Library, CC-BY-SA 4.0. '
+                       'Greek only.')
+DIO_ATTRIB = ('Greek: Dio Chrysostom, Orations (Λόγοι). Digital edition: Perseus Digital '
+              'Library, CC-BY-SA 4.0. Greek only.')
 XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; '
                    'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
                    '(perseus.tufts.edu).')
@@ -484,6 +489,12 @@ def main():
     # Marcus Aurelius, Meditations — Greek only (no aligned English on Perseus; cited Med. book.chapter).
     results += build_greek_only('marcus-aurelius-meditations', 'Marcus Aurelius, Meditations',
                                 'tlg0562/tlg001', 'tlg0562.tlg001', 'book', 'chapter', MARCUS_ATTRIB, no_cache)
+    # Philostratus, Life of Apollonius (chapter = book, verse = chapter) and Dio Chrysostom's
+    # Orations (chapter = oration, verse = section) — Greek only on Perseus.
+    results += build_greek_only('philostratus-apollonius', 'Philostratus, Life of Apollonius of Tyana',
+                                'tlg0638/tlg001', 'tlg0638.tlg001', 'book', 'chapter', PHILOSTRATUS_ATTRIB, no_cache)
+    results += build_greek_only('dio-chrysostom-orations', 'Dio Chrysostom, Orations',
+                                'tlg0612/tlg001', 'tlg0612.tlg001', 'speech', 'section', DIO_ATTRIB, no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
