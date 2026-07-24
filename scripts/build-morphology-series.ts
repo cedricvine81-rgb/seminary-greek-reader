@@ -32,24 +32,27 @@ interface Spec {
   subtype: MorphologySubtype
   fields: string[]
   filter?: MorphParseFilter
+  declensions?: (1 | 2 | 3)[]      // noun quizzes: restrict by declension (classified below)
+  dueOffset?: number               // days relative to the week's Thursday (wk14 avoids Thanksgiving)
 }
 
 // The sequence. Subtypes and filters use the corpus-generated parsing pool; the pool cannot
 // filter nouns by declension, so the noun quizzes are titled by what is actually tested.
 const SPECS: Spec[] = [
-  { week: 3,  topic: 'Nouns: Case, Gender & Number',            subtype: 'NOUN_PARSING',
-    fields: ['casus', 'gender', 'number'] },
-  { week: 4,  topic: 'Adjectives & Noun Review',                subtype: 'ADJECTIVE_PARSING',
-    fields: ['casus', 'gender', 'number'] },
+  { week: 3,  topic: 'Nouns I: 1st & 2nd Declension',           subtype: 'NOUN_PARSING',
+    fields: ['casus', 'gender', 'number'], declensions: [1, 2] },
+  { week: 4,  topic: 'Nouns II: 3rd Declension',                subtype: 'NOUN_PARSING',
+    fields: ['casus', 'gender', 'number'], declensions: [3] },
   { week: 5,  topic: 'Verbs I: Present & Imperfect Indicative', subtype: 'VERB_PARSING',
     fields: ['tense', 'voice', 'mood', 'person', 'number'],
     filter: { tenses: ['Present', 'Imperfect'], moods: ['Indicative'] } },
   { week: 6,  topic: 'Verbs II: All Indicative Tenses',         subtype: 'VERB_PARSING',
     fields: ['tense', 'voice', 'mood', 'person', 'number'],
     filter: { moods: ['Indicative'] } },
+  // Perfect participles are excluded until formally taught.
   { week: 7,  topic: 'Participles',                             subtype: 'VERB_PARSING',
     fields: ['tense', 'voice', 'mood', 'casus', 'gender', 'number'],
-    filter: { moods: ['Participle'] } },
+    filter: { moods: ['Participle'], tenses: ['Present', 'Aorist'] } },
   { week: 8,  topic: 'Subjunctive, Imperative & Infinitive',    subtype: 'VERB_PARSING',
     fields: ['tense', 'voice', 'mood'],
     filter: { moods: ['Subjunctive', 'Imperative', 'Infinitive'] } },
@@ -57,16 +60,56 @@ const SPECS: Spec[] = [
     fields: ['tense', 'voice', 'mood'] },
   { week: 10, topic: 'Pronouns',                                subtype: 'PRONOUN_PARSING',
     fields: ['pronounType', 'casus', 'number'] },
-  { week: 11, topic: 'Mixed Parsing I',                         subtype: 'MIXED',
-    fields: ['partOfSpeech'] },
+  // Adjectives (taught with L3) are reviewed here, freeing weeks 3-4 for the two noun quizzes.
+  { week: 11, topic: 'Adjectives',                              subtype: 'ADJECTIVE_PARSING',
+    fields: ['casus', 'gender', 'number'] },
   { week: 12, topic: 'Conditional Sentences',                   subtype: 'CONDITIONALS', fields: [] },
-  { week: 13, topic: 'Mixed Parsing II',                        subtype: 'MIXED',
+  { week: 13, topic: 'Mixed Parsing',                           subtype: 'MIXED',
     fields: ['partOfSpeech'] },
-  { week: 14, topic: 'Final Review: Mixed Parsing',             subtype: 'MIXED',
+  // Due the TUESDAY of its week: the Thursday is Thanksgiving.
+  { week: 14, topic: 'Final Review: Mixed Parsing', dueOffset: -2, subtype: 'MIXED',
     fields: ['partOfSpeech'] },
 ]
 
 const QUESTIONS = 20
+
+/** Declension from lemma ending + gender, on the ACCENT-STRIPPED lemma (θεός ends in an
+ * accented ό, which a literal /ος$/ misses). The -ος neuters (ἔθνος) and -μα neuters
+ * (πνεῦμα) are 3rd; γυνή (γυναικός) is the lexical exception. */
+const THIRD = new Set(['γυνή'])
+function declension(lemma: string, gender: string | null): 1 | 2 | 3 {
+  if (THIRD.has(lemma.normalize('NFC'))) return 3
+  const b = lemma.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  if (/ος$/.test(b)) return gender === 'Neuter' ? 3 : 2
+  if (/(ον|ους)$/.test(b)) return 2                       // incl. contracts (Ἰησοῦς, νοῦς)
+  if (gender === 'Neuter' && /α$/.test(b)) return 3       // -μα / -α neuters
+  if (/[ηα]$/.test(b)) return 1
+  if (/(ης|ας)$/.test(b) && gender === 'Masculine') return 1
+  return 3
+}
+const lemmaOf = (p: string) => p.match(/\(([^\s—)]+)\s*—/)?.[1] ?? ''
+
+async function generate(spec: Spec) {
+  if (!spec.declensions) {
+    return generateMorphologyQuestionsBySubtype(
+      spec.subtype, QUESTIONS, spec.week, spec.fields.length ? spec.fields : undefined, spec.filter)
+  }
+  // The parse pool has no declension field, so over-generate and classify by lemma.
+  const raw = await generateMorphologyQuestionsBySubtype(
+    spec.subtype, 200, spec.week, spec.fields.length ? spec.fields : undefined, spec.filter)
+  const want = new Set<number>(spec.declensions)
+  const seen = new Set<string>()
+  const out: Array<(typeof raw)[number]> = []
+  for (const q of raw) {
+    const ans = JSON.parse(q.correctAnswer) as { gender: string | null }
+    const lem = lemmaOf(q.prompt)
+    if (!lem || seen.has(q.prompt) || !want.has(declension(lem, ans.gender))) continue
+    seen.add(q.prompt)
+    out.push(q)
+    if (out.length === QUESTIONS) break
+  }
+  return out.map((q, i) => ({ ...q, position: i + 1 }))
+}
 
 /** The Thursday of course-week N (week 1 starts at the course's startDate). */
 function thursdayOfWeek(courseStart: Date, week: number): Date {
@@ -95,9 +138,9 @@ async function main() {
   let created = 0
   for (const spec of SPECS) {
     const due = thursdayOfWeek(course.startDate, spec.week)
+    if (spec.dueOffset) due.setDate(due.getDate() + spec.dueOffset)
     const title = `Week ${spec.week} — ${SERIES} (${spec.topic})`
-    const qs = await generateMorphologyQuestionsBySubtype(
-      spec.subtype, QUESTIONS, spec.week, spec.fields.length ? spec.fields : undefined, spec.filter)
+    const qs = await generate(spec)
     const flag = qs.length < QUESTIONS ? `   (pool gave ${qs.length})` : ''
     console.log(`wk ${String(spec.week).padStart(2)}  ${due.toDateString()}  ${title.slice(0, 66).padEnd(66)} ${qs.length}q${flag}`)
     if (!APPLY) continue
