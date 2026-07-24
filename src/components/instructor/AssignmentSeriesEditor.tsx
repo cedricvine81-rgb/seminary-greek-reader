@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { format } from 'date-fns'
 import { clsx } from 'clsx'
-import { ChevronDown, ChevronRight, CalendarClock, AlertTriangle } from 'lucide-react'
+import { ChevronDown, ChevronRight, CalendarClock, AlertTriangle, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { membersPastCourseEnd, type AssignmentSeries } from '@/lib/assignment-series'
 
@@ -64,7 +64,7 @@ export function AssignmentSeriesEditor({
         <p className="text-sm font-semibold text-gray-600">
           Series
           <span className="ml-1.5 font-normal text-gray-400">
-            ({series.length} — edit a whole run at once)
+            — change dates, publication or retakes for a whole run at once
           </span>
         </p>
       </div>
@@ -103,6 +103,16 @@ export function AssignmentSeriesEditor({
               )}
               <span className="text-xs text-gray-400 shrink-0">
                 {published}/{s.members.length} published
+              </span>
+              {/* The rest of the row is the toggle, but an explicit control is needed here:
+                  every assignment below has a loud Edit button, so a bare chevron reads as
+                  decoration and the series controls went unnoticed. */}
+              <span className={clsx(
+                'shrink-0 inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium transition-colors',
+                isOpen ? 'border-brand-300 bg-brand-50 text-brand-700'
+                       : 'border-gray-300 text-gray-700')}>
+                <Settings size={12} />
+                {isOpen ? 'Close' : 'Edit series'}
               </span>
             </button>
 
