@@ -202,6 +202,51 @@ export function AssignmentSeriesEditor({
                   </div>
                 </div>
 
+                {/* Timing + late policy */}
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                      Time per question (every quiz)
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {[0, 15, 20, 30, 45, 60].map(sec => (
+                        <Button key={sec} size="sm" variant="secondary" disabled={busy}
+                          onClick={() => void run(ids, { action: 'timePerQuestion', value: sec }, 'PATCH',
+                            n => sec === 0 ? `Set ${n} quizzes to untimed.`
+                                           : `Set ${n} quizzes to ${sec}s per question.`)}>
+                          {sec === 0 ? 'Untimed' : `${sec}s`}
+                        </Button>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      The student&rsquo;s clock is per question, so a 20-question quiz at 30s runs 10 minutes.
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                      Late submissions (every quiz)
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Button size="sm" variant="secondary" disabled={busy}
+                        onClick={() => void run(ids, { action: 'allowLate', value: false }, 'PATCH',
+                          n => `Closed ${n} quizzes to late work.`)}>
+                        Not allowed
+                      </Button>
+                      {[1, 3, 7].map(days => (
+                        <Button key={days} size="sm" variant="secondary" disabled={busy}
+                          onClick={async () => {
+                            await run(ids, { action: 'allowLate', value: true }, 'PATCH', () => '')
+                            await run(ids, { action: 'lateDaysLimit', value: days }, 'PATCH',
+                              n => `Allowed late work on ${n} quizzes for ${days} day${days !== 1 ? 's' : ''}.`)
+                          }}>
+                          {days}d late
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
                 {/* The occurrences themselves */}
                 <div>
                   <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
