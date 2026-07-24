@@ -229,8 +229,14 @@ def main():
                               'tlg0004/tlg001', 'tlg0004.tlg001', no_cache)
     # Plato — the dialogues, cited by Stephanus page (chapter = page). slug, display name, work id.
     for slug, name, wid in [
-        ('plato-symposium', 'Plato, Symposium', 'tlg011'),
-        ('plato-timaeus',   'Plato, Timaeus',   'tlg031'),
+        ('plato-symposium',  'Plato, Symposium',  'tlg011'),
+        ('plato-timaeus',    'Plato, Timaeus',    'tlg031'),
+        ('plato-apology',    'Plato, Apology',    'tlg002'),
+        ('plato-crito',      'Plato, Crito',      'tlg003'),
+        ('plato-phaedo',     'Plato, Phaedo',     'tlg004'),
+        ('plato-phaedrus',   'Plato, Phaedrus',   'tlg012'),
+        ('plato-gorgias',    'Plato, Gorgias',    'tlg023'),
+        ('plato-protagoras', 'Plato, Protagoras', 'tlg022'),
     ]:
         results += build_plato(slug, name, f'tlg0059/{wid}', f'tlg0059.{wid}', no_cache)
     for r in results:

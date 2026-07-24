@@ -653,6 +653,12 @@ const platoCite = (abbrevs: string[]) => (text: string): { chapter: number; vers
 const PLATO: { slug: string; name: string; first: number; last: number; noteBook: string; abbrevs: string[] }[] = [
   { slug: 'plato-symposium', name: 'Plato, Symposium', first: 172, last: 223, noteBook: 'PlatoSymp', abbrevs: ['Symp.'] },
   { slug: 'plato-timaeus', name: 'Plato, Timaeus', first: 17, last: 92, noteBook: 'PlatoTim', abbrevs: ['Ti.', 'Tim.'] },
+  { slug: 'plato-apology', name: 'Plato, Apology', first: 17, last: 42, noteBook: 'PlatoApol', abbrevs: ['Apol.'] },
+  { slug: 'plato-crito', name: 'Plato, Crito', first: 43, last: 54, noteBook: 'PlatoCrito', abbrevs: ['Cri.', 'Crito'] },
+  { slug: 'plato-phaedo', name: 'Plato, Phaedo', first: 57, last: 118, noteBook: 'PlatoPhaedo', abbrevs: ['Phd.', 'Phaedo'] },
+  { slug: 'plato-phaedrus', name: 'Plato, Phaedrus', first: 227, last: 279, noteBook: 'PlatoPhaedr', abbrevs: ['Phaedr.', 'Phdr.'] },
+  { slug: 'plato-gorgias', name: 'Plato, Gorgias', first: 447, last: 527, noteBook: 'PlatoGorg', abbrevs: ['Gorg.'] },
+  { slug: 'plato-protagoras', name: 'Plato, Protagoras', first: 309, last: 362, noteBook: 'PlatoProt', abbrevs: ['Prot.', 'Protag.'] },
 ]
 
 const platoPages = (w: { first: number; last: number }) =>
