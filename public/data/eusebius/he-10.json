@@ -1,0 +1,777 @@
+{
+ "work": "Eusebius, Ecclesiastical History (Book 10)",
+ "attribution": "Greek: Eusebius, Historia Ecclesiastica, ed. E. Schwartz (GCS). English: the Loeb translation by Kirsopp Lake & J. E. L. Oulton (public domain). Both via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0.",
+ "greek": true,
+ "chapters": [
+  {
+   "number": 1,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Θεῷ δὴ χάρις ἐπὶ πᾶσι τῷ παντοκράτορι καὶ βασιλεῖ τῶν ὅλων, πλείστη δὲ καὶ τῷ σωτῆρι καὶ λυτρωτῇ τῶν ψυχῶν ἡμῶν Ἰησοῦ Χριστῷ, δι’ οὗ τὰ τῆς εἰρήνης ἔκ τε τῶν ἔξωθεν ὀχληρῶν καὶ τῶν κατὰ διάνοιαν βέβαια καὶ ἀσάλευτα φυλάττεσθαι ἡμῖν διὰ παντὸς εὐχόμεθα.",
+     "text": "BOOK XI. Thanks be to God, the Almighty and King of the universe, for all things; and abundant thanks be also the Saviour and Redeemer of our souls, Jesus Christ, through whom we pray continually that peace from troubles without and troubles in the heart may be preserved for us stedfast and unidsturbed. And having now added, while we pray, the tenth tome also of the Ecclesiastical History to those which preceded it, we shall dedicate this tome to thee, my ost holy Paulinus, 1 invoking thee as the seal of the whole work; and fitly in a perfect number we shall here place the perfect and panegyrical discourse on the restoration of the churches, in obediencce to the divine Spirit who thus exhorts us: “O sing unto the Lord a new song; for he hath done marvellous things: His right hand, and His holy arm, hath wrought salvation for him. The Lord hath made wn his salvation: His righteousness hath He revealed in the sight of the heathen. And verily, in accordance with the oracle, which thus bids us, let us now cry aloud the new song, since, after those terrible and gloomy spectacle and narratives, we were accounted worthy now to behold and to celebrate in panegyric such things as of a many righteous men and martyrs of God Before desired to see upon earth and saw them not, and hear, and heard them not. But they indeed ting with all speed, obtained far better things in the heavens themselves and were caught up into a aradise of divine pleasure; while we, acknowledge that even these present things are beyond our , have been utterly astounded at the munificence of the bounty of which He is the Author, and h our whole soul's might fittingly render Him awe and worship, attesting the truth of the written preedictions, wherein it is said: “came and behold the works of the Lord, what wonders He hath the earth, making wars to cease unto the ends of the earth. He break break the bow and shatter the ur, and the shields he will bum with fire.” Rejoicing that these things have been clearly fuld to us-ward, led us proceed to take up our narrative. The whole race of God's enemies had verily been moved even as we have stated, 1 and in a moment lotted out of men's sight; so that once more a divine ying hath fulfilment, that which says: “I have seen e wicked in great power, and lifted up like the cedars f Leganon. And I passed by, and, lo, he was not: d I sought his place, and it was not ” nd how henceforth a day bright and radiant with ys of heavenly light, overshadowed by never a ud, shone down upon the churches of Christ ughout the whole world ; nor were even those utisde our society 2 grudged, if not the equal enjoyment of our divinely-sent blessings, at any rate a in their effluence and a participation thereof."
+    },
+    {
+     "number": 2,
+     "greek": "ἅμα δὲ σαῖς εὐχαῖς καὶ τὸν δέκατον ἐν τούτῳ τοῖς προδιεξοδευθεῖσι τῆς ἐκκλησιαστικῆς ἱστορίας ἐπιθέντες τόμον, σοὶ τοῦτον ἐπιγράψωμεν, ἱερώτατέ μοι Παυλῖνε, ὥσπερ ἐπισφράγισμά σε τῆς ὅλης ὑποθέσεως ἀναβοώμενοι.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "εἰκότως δ’ ἐν ἀριθμῷ τελείῳ τὸν τέλειον ἐνταῦθα καὶ πανηγυρικὸν τῆς τῶν ἐκκλησιῶν ἀνανεώσεως λόγον κατατάξομεν, θείῳ πνεύματι πειθαρχοῦντες, ὧδέ πως ἐγκελευομένῳ “ᾄσατε τῷ κυρίῳ ᾆσμα καινὸν, ὅτι θαυμαστὰ ἐποίησεν. ἔσωσεν αὐτὸν ἡ δεξιὰ αὐτοῦ καὶ ὁ βραχίων ὁ ἅγιος αὐτοῦ· ἐγνώρισε κύριος τὸ σωτήριον αὐτοῦ, ἐναντίον τῶν ἐθνῶν ἀπεκάλυψε τὴν δικαιοσύνην αὐτοῦ·’’",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ δὴ τῷ λογίῳ προστάττοντι τὸ καινὸν ᾆσμα διὰ τοῦδε νῦν ἀκολούθως ἐπιφωνῶμεν, ὅτι δὴ μετὰ τὰς δεινὰς καὶ σκοτεινὰς ἐκείνας ὄψεις τε καὶ διηγήσεις τοιαῦτα νῦν ὁρᾶν καὶ τοιαῦτα πανηγυρίζειν ἠξιώθημεν οἷα τῶν πρὸ ἡμῶν πολλοὶ τῷ ὄντι δίκαιοι καὶ θεοῦ μάρτυρες ἐπεθύμησαν ἐπὶ γῆς ἰδεῖν, καὶ οὐκ εἶδον, καὶ ἀκοῦσαι, καὶ οὐκ ἥκουσαν.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ἀλλ’ οἶ μὲν ᾗ τάχος σπεύσαντες τῶν πολὺ κρειττόνων ἔτυχον, ἔν τ’ αὐτοῖς οὐρανοῖς καὶ παραδείσῳ τῆς ἐνθέου τρυφῆς ἀναρπασθέντες, ἡμεῖς δὲ καὶ τάδε μείζονα ἢ καθ’ ἡμᾶς ὑπάρχειν ὁμολογοῦντες ὑπερεκπεπλήγμεθα μὲν τῆς τοῦ αἰτίου μεγαλοδωρεᾶς τὴν χάριν, θαυμάζομεν δὲ εἰκότως ὅλης ψυχῆς δυνάμει σέβοντες, καὶ ταῖς ἀναγράπτοις προρρήσεσιν ἀλήθειαν ἐπιμαρτυροῦντες 5 δι’ ὧν εἴρηται",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "“δεῦτε καὶ ἴδετε τὰ ἔργα τοῦ κυρίου, ἃ ἔθετο τέρατα ἐπὶ τῆς γῆς, ἀνταναιρῶν πολέμους μέχρι τῶν περάτων τῆς οἰκουμένης· τόξον συντρίψει καὶ συνθλάσει ὅπλον, καὶ θυρεοὺς κατακαύσει ἐν πυρί·’’ ἐφ’ οἶς εἰς ἡμᾶς ἐναργῶς πεπληρωμένοις χαίροντες τὸν ἐφεξῆς συνείρωμεν λόγον.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ἠφάνιστο μὲν δὴ καθ’ ὅν δεδήλωται τρόπον πᾶν τὸ τῶν θεομισῶν γένος, καὶ τῆς ἀνθρώπων ἀθρόως ὄψεως οὕτως ἐξαλήλειπτο ὡς πάλιν ῥῆμα θεῖον τέλος ἔχειν τὸ λέγον “εἶδον ἀσεβῆ ὑπερυψούμενον καὶ ἐπαιρόμενον ὡς τὰς κέδρους τοῦ Λιβάνου· καὶ παρῆλθον, καὶ ἰδοὺ οὐκ ἦν, καὶ ἐζήτησα τὸν τόπον αὐτοῦ, καὶ οὐχ εὑρέθη·”",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "ἡμέρα δὲ λοιπὸν ἤδη φαιδρὰ καὶ διαυγὴς, μηδενὸς νέφους αὐτὴν ἐπισκιάζοντος, φωτὸς οὐρανίου βολαῖς ἀνὰ τὴν οἰκουμένην ἅπασαν ταῖς ἐκκλησίαις τοῦ Χριστοῦ κατηύγαζεν, οὐδέ τις ἦν καὶ τοῖς ἔξωθεν τοῦ καθ’ ἡμᾶς θιάσου φθόνος, συναπολαύειν εἰ μὴ τῶν ἴσ’ ὢν, ἀπορροῆς δ’ οὖν ὅμως καὶ μετουσίας τῶν θεόθεν ἡμῖν πρυτανευθέντων.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Πᾶσι μὲν οὖν ἀνθρώποις τὰ ἐκ τῆς τῶν τυράννων καταδυναστείας ἐλεύθερα ἦν, καὶ τῶν προτέρων ἀπηλλαγμένοι κακῶν ἄλλος ἄλλως μόνον ἀληθῆ θεὸν τὸν τῶν εὐσεβῶν ὑπέρμαχον ὡμολόγει, μάλιστα δ’ ἡμῖν τοῖς ἐπὶ τόν Χριστὸν τοῦ θεοῦ τὰς ἐλπίδας ἀνηρτημένοις ἄλεκτος παρῆν εὐφροσύνη, καί τις ἔνθεος ἅπασιν ἐπήνθει χαρὰ, πάντα τόπον τὸν πρὸ μικροῦ ταῖς τῶν τυράννων δυσσεβείαις ἠρειπωμένον ὥσπερ ἐκ μακρᾶς καὶ θανατηφόρου λύμης ἀναβιώσκοντα θεω- μένοις, νεός τε αὖθις ἐκ βάθρων εἰς ὕψος ἄπειρον ἐγειρομένους, καὶ πολὺ κρείττονα τὴν ἀγλαίαν τῶν πάλαι πεπολιορκημένων ἀπολαμβάνοντας.",
+     "text": "So the whole human race was freed from the oppression of the tyrants. And, delivered from his former ills, each one after his own fashion acknowledged as the only true God Him who was the Champion of the pious. But we especially, who had fixed our hopes upon the Christ of God, had gladness kable, and a divine joy blossomed in the hearts of us as we beheld every place, which a short time re had been laid in ruins by the tyrants' deeds, now reviving as if after a long and deadly destruction, and temples rising once more from their foundations to a boundless height, and receiving in far greater measure the magnificence of those that formerly had been destroyed. Yea, and Emperors, the most exalted, by successive enacbnents on bahalf of the Christians, confirmed still further and more widely God's bounty towards us; and bishops constantly received even personal letters from the Emperor, and honours and gifts of money. It may not be unfitting at the proper place in this work, as on a sacred monument, to insert in this book the text of these documents, translated from Latin into Greek, so that they may also be preserved in remembrance by all those who come after us."
+    },
+    {
+     "number": 2,
+     "greek": "ἀλλὰ καὶ βασιλεῖς οἶ ἀνωτάτω συνεχέσι ταῖς ὑπὲρ Χριστιανῶν νομεθεσίαις τὰ τῆς ἐκ θεοῦ μεγαλοδωρεᾶς ἡμῖν εἰς μακρὸν ἔτι καὶ μεῖζον ἐκράτυνον, ἐφοίτα δὲ καὶ εἰς πρόσωπον ἐπισκόποις βασιλέως γράμματα, καὶ τιμαὶ καὶ χρημάτων δόσεις· ὧν οὐκ ἀπὸ τρόπου γένοιτ’ ἂν κατὰ τὸν προσήκοντα καιρὸν τοῦ λόγου, ὥσπερ ἐν ἱερᾷ στήλῃ, τῇδε τῇ βίβλῳ τὰς φωνὰς ἐκ τῆς Ῥωμαίων ἐπὶ τὴν Ἑλλάδα γλῶσσαν μεταληφθείσας ἐγχαράξαι, ὡς ἂν καὶ τοῖς μεθ’ ἡμὰς ἅπασι φέροιντο διὰ μνήμης.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "ἐπὶ δὲ τούτοις τὸ πᾶσιν εὐκταῖον ἡμῖν καὶ ποθούμενον συνεκροτεῖτο θέαμα, ἐγκαινίων ἑορταὶ κατὰ πόλεις, καὶ τῶν ἄρτι νεοπαγῶν προσευκτηρίων ἀφιερώσεις ἐπισκόπων τε ἐπὶ ταὐτὸ συνηλύσεις, τῶν πόρρωθεν ἐξ ἀλλοδαπῆς συνδρομαὶ, λαῶν εἰς λαοὺς φιλοφρονήσεις, τῶν Χριστοῦ σώματος μελῶν εἰς μίαν συνιόντων ἁρμονίαν ἕνωσις.",
+     "text": "After this there was brought about that spectacle for which we all prayed and longed: festivals of dedication in the cities and consecrations of the newly-built houses of prayer, assemblages of bishops, comings together of those from far off foreign lands, kindly acts on the part of laity towards laity, union between the members of Crist's body as they met together in complete harmony. Certainly in accordance with a prophetic prediction that mystically signified beforehand what was for to come, there came together bone to bone and joint to joint, and all that the oracular utterance in dark speech truly foretold. One was the power of the divine Spirt that spread through all the members; all were of one soul, and displayed the same zeal for the faith; one hymn of praise to God came from the lips of all Yea verily our leaders conducted perfect ceremonies, and the consecrated priests pertonned the sacred rites and stately ordinances of the Church, here with psalmody and recitation of such other words as have been giveu us from God, there with the ministering of divine and mystic services; and the ineffable symbols of the Saviour's Passion were present. And all together, of every age, male and female, with the whole power of their mind gave honour to God the Author of their good fortune, in prayer and thanksgiving with joyful heart and soul. Moreover every one of the Church's rulers that were present, accorffing to his ability, delivered panegyrical orations, inspiring the assembly."
+    },
+    {
+     "number": 2,
+     "greek": "συνήγετο δ’ οὖν ἀκολούθως προρρήσει προφητικῇ μυστικῶς τὸ μέλλον προσημαινούσῃ “ὀστέον πρὸς ὀστέον καὶ ἁρμονία πρὸς ἁρμονίαν,’’ καὶ ὅσα θεσπίζων ὁ λόγος δι’ αἰνιγμάτων ἀψευδῶς προανετείνετο.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "μία τε ἦν θείου πνεύματος διὰ πάντων τῶν μελῶν χωροῦσα δύναμις, καὶ ψυχὴ τῶν πάντων μία, καὶ προθυμία πίστεως ἡ αὐτὴ, καὶ εἷς ἐξ ἁπάντων θεολογίας ὕμνος· ναὶ μὴν καὶ τῶν προηγουμένων ἐντελεῖς θρησκεῖαι, ἱερουργίαι τε τῶν ἱερωμένων, καὶ θεοπρεπεῖς ἐκκλησίας θεσμοὶ, ὧδε μὲν ψαλμῳδίαις καὶ ταῖς λοιπαῖς τῶν θεόθεν ἡμῖν παραδοθεισῶν φωνῶν ἀκροάσεσιν, ὧδε δὲ θείαις καὶ μυστικαῖς ἐπιτελουμέναις διακονίαις· σωτήριον τε ἦν πάθους ἀπόρρητα σύμβολα.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὁμοῦ δὲ πᾶν γένος ἡλικίας ἄρρενός τε καὶ θήλεος φύσεως ὅλῃ διανοίας ἰσχύι· δι’ εὐχῶν καὶ εὐχαριστίας γεγηθότι νῷ καὶ ψυχῇ τὸν τῶν ἀγαθῶν παραίτιον θεὸν ἐγέραιρον. ἐκίνει δὲ καὶ λόγους ἅπας τῶν παρόντων ἀρχόντων πανηγυρικοὺς, ὡς ἑκάστῳ παρῆν δυνάμεως, θειάζων τὴν πανήγυριν.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Καί τις ἐν μέσῳ παρελθὼν τῶν μετρίως ἐπιεικῶν, λόγου σύνταξιν πεποιημένος, ὡς ἐν ἐκκλησίας ἀθροίσματι πλείστων ἐπιπαρόντων ποιμένων, ἐν ἡσυχίᾳ καὶ κόσμῳ τὴν ἀκρόασιν παρεχομένων, ἑνὸς εἰς πρόσωπον τὰ πάντα ἀρίστου καὶ θεοφιλοῦς ἐπισκόπου, οὗ διὰ σπουδῆς ὁ μάλιστα τῶν ἀμφὶ τὸ Φοινίκων ἔθνος διαπρέπων ἐν Τυρῷ νεὼς φιλοτίμως ἐπεσκεύαστο, τοιόνδε παρέσχε λόγον. Πανηγυρικὸς ἐπὶ τῇ τῶν ἐκκλησιῶν οἰκοδομῇ, Παυλίνῳ Τυρίων ἐπισκόπῳ προσπεφωνημένος.",
+     "text": "And a certain one of moderate parts 1 advanced into the midst, having composed a discourse; and, in the presence of very many pastors who gave it a quiet and orderly hearing as in a chureh assembly, he delivered the following oration, addressed personally to a single bishop who was in every respect most excellent and beloved of God, by whose zeal and enthusiasm the temple in Tyre, surpassing in splendour all others in Phoenicia, had been erected: Panegyric on the building of the churches, addressed to Paulinus, bishop of the Tyrians: “Ο friends of God and priests who are clothed with the holy robe1 and the celestial crown of glory, the divine unction and the Priestly garb of the Holy Spirit; and thou, Ο youthful pride of God's holy temple, honoured indeed by God with revered wisdom, yet noted for the choiee deeds and acts of a youthful virtue that cometh to its prime, upon whom He who compasseth the whole world hath bestowed the especial honour of building His house upon earth, and restoring it for Christ His only-begotten firstborn Word and for Christ's holy and reverend Bride-whether one should call thee a new the architeet of a divine tabernacle, or Solomon the king of a new and far goodlier Jerusalem, or even a new Zerubbabel who bestowed upon the temple of God that glory which greatly exceeded the former; and you also, ye nurslings of the sacred flock of Christ, –place of goodly words, school of sobriety, auditory of godliness grave and dear to God: Long ago, as we listened to the reading aloud of those passages of Holy Writ which told of the miraculous signs that God gave and the wondrous deebs that the Lord wrought for the serviee of men we could hymns and songs to God and say, even as we were taught: ‘We have heard with our ears, Ο God, our fathers have told us, what work thou didst in their days, in the days of old.’ But now indeed no longer by hearing or by report do we learn of the stretched out arm and the heavenly right hand of our all-gracious God and universal King; nay, deeds, as one might say, and with our very eyes do we behold that those things committed to memory long ago are faithful and true; and so we can sing a second hymn of victory, and raise our voices aloud and say: ‘As we have heard, so have we seen in the city of the Lord of hosts, in the city of our God.’ And in what city, if it be not the new-made city that God hath builded, which is the chureh of the living God, the pillar and ground of the truth; of also another divine oracle speaketh good tidings, somewhat on this manner: ‘Glorious things are spoken of thee, O city of God’ ? To which city since the all-gracious God hath gathered us, through the grace of His Only-begotten, let each ofthe sing, yea all but shout, and say ‘I was glad when they said unto me, we will go unto the house of the Lord’ ; Lord’; and ‘Lord I have loved the beauty house, and the place where thy glory dwelleth.’ And let not only each one by himself, but also all together with one spirit and one soul, give honour and praise, saying: ‘Great is the Lord, and highly to be praised, in the city of our God, in his holy ’. Yea verily, He is truly great, and great is His house, lofty and large ; and more lovely in beauty than the sons of men. Great is the Lord who only doeth wondrous things. Great is He who doeth great things and past finding out; yea, glorious and marvellous things of which there is no number. Great is He who changeth the times and the seasons, removing kings and setting them up, raising up the poor from the ground, and from the dunghill setting up the needy. He hath put down princes from their thrones, and hath exalted them of low degree from the ground. The hungry he hath filled with good things, and he hath broken the arms of the proud. since, therefore, He hath confirmed not only for the faithful but also for the faithless the record of the ancient narratives, even He, the Doer of wonders, the Doer of great things, the Lord of the universe, the Maker of the whole world, the Almighty, the All-gracious, the one and only —let us sing to Him the new song, supplying in thought this also: ‘To him who alone doeth great wonders: for his mercy endureth for ever . . . to him which smote great kings, . . . and slew mighty kings; for his mercy endureth for ever . . . for he remembered us in our low estate, . . . and hath delivered us from our adversaries.’ “And may we never cease to praise aloud in these Words the Father of the universe. But as for Him who is the second cause of our good things, Who brought men to the knowledge of God, the Teacher of true piety, the Destroyer of the wicked, the Slayer of tyrants, the Emender of human life, our saviour when we were in despair, even Jesus, let us honour His name upon our lips; for He alone, as being the one only, all-gracious Son of an all-gracious since the Father in His love for man so ordained it, right willingly put on the nature of us, even of those who anywhere lay low in corruption. And like some excellent physician, who, to save those who are sick, ‘though he sees the ills yet touches the foul spots, and for another's misfortunes reaps suffering for himself,’1 so He by Himself saved the very abyss of death us who were not merely sick or oppressed by grievous sores and wounds already putrifying, but even lying among the dead; for none other in heaven possessed such strength as to minister unscathed for the salvation of so many. He, then, it was who alone laid hold upon the grievous suffering of our corruption, alone endured our sorrows, alone took upon Himself the penalty for our wickednesses; and when we were, I will not say, half dead, but even by this time altogether foul and stinking in tombs and graves, He raised us up, and saveth us now as in the days ofold, in His earnest love for man, beyond the hope of anyone, even of ourselves, and the good things of His Father imparteth to us freely a share — He who is the Giver of life the Enlightener, our great Physician and King and Lord, the Christ of God. Yea at that time, when He beheld 1 the whole human raee lring sunk in gloomy night and daxkness profound through the deceit of baneful demons and the operations of God-hating spirits, by naught save His appearing He broke asunder once for all the many-fettered chains of our wickednesses, as wax is melted by the rays of His light. “And when at this great grace and benefaction the envy that hateth the good, even the demon that loveth the evil, was torn asunder with wrath, so to speak, and was marshalling all his death-dealing forces against us, at first raging like a dog which gnaweth with his teeth at the stone hurled at him and venteth on the lifeless missiles hls fury agamst those who would drive him away, he ffirected his ferocious madness against the stones of the houses of prayer and the lifeless materials of which the buildings were composed, to work (as at least he thought within himself) the ruin of the churches; then he emitted his dread hissings and serpent-like sounds, at one time by the threats of wicked tyrants, at another by blasphemous ordinances of impious rulers; yea further, he vomited forth the death that was his, and bewitched the souh he captured by his baneful and soul-destroying poisons, all but causing their death by his death-fraught sacrifices to dead idols, and secretly stirring up every wild beast in shape of man, and every kind of savage thing, agriaInst us. But now, now again once more the Angel of mighty counsel, the great captain of the host of God, after that the greatest soldiers in His kingdom had given sufficient proof of their full training by their endurance and stedfastness in all things, by naught save His sudden apearing caused to vanish into nothingness whatsoever was adverse and hostile, so that it seemed never to have had even a name; howbeit, whatsoever was friendly and dear to Him, that He advanced beyond all glory in the sight of all, not only of men, but even also of the powers of heaven, the sun and moon and stars, and of the whole heaven and earth ; so that now — a thing unknown heretofore—the most Emperors of all, conscious of the honour which they have received nom Him, spit upon the faces of dead idoh, traInple upon the unhallowed rites of deomons, and laugh at the old deceits they inherited from their fathers: but Him who is the common Benefactor of all and of themselves they recognize as the one and only God, and confess that christ the son of God is sovereign King of the universe, and style Him as Saviour on monuments, inseribing in an imperishable record His righteous acts and His victories over the impious ones, in imperial characters in the midst of the city that is Empress among the cities of the world. Thus Jesus Christ our Saviour, alone of those who have ever been, is acknowledged, even by the most exalted on the earth, not as an ordinary king taken from among men, but is worshipped as the very son of the God of the universe, and as Himself God. “And rightly so. For what king ever attained to so much virtue as to ml the ears and tongues of all mankind upon earth with his name 7. what king, when he had laid down laws so good and wise, Was powerful enough to cause them to be published from the ends of the earth and too the bounds of the whole world in the hearing of all mankind? who abolished the barbarous and uncivilized customs of uncivilized nations by his civilized and most humane laws ? Who, when warred on by all men for whole ages, gave such proof of superhuman might as to flourish daily and remain young throughout his entire life? Who established a nation never even heard of since time hegan, which now lieth not hidden in some obscure corner of the earth but extendeth wherever the sun shineth? Who so defended his soldiers with the weapons of piety that their souls proved harder than adamant when they contended with their adversaries ? Which of the king exerciseth so great a sway, taketh the Reld after death, triumpheth over enemies, and filleth every plaee and district and city, both Greek and barbarian, with votive offerings of his royal houses and divine temples, such as the fair ornaments and offerings that we see in this temple ? Truly venerable and great are these Same things, worthy of amazement and wonder, and in themselves clear proofs of the sovereignty of our saviour: for even now He spake, and they were made; He commanded, and they were created: for what could resist the will of the universal King and Ruler and the Word of God Himself? Such things would require a discourse of their own were one carefully to exmaine and expound them at leisure. Yet indeed the zeal of those who have laboured is not so great or so noble in the judgement of Him whom we address as God, when He looketh into the lively temple which we all compose, and vieweth the house formed of living and firmly set stones, well and securely grounded upon the foundation of the apostles and prophets, Jesus Christ himself being the chief corner-stone; which stone the master–builders rejected, not only of that old building which is no more, but also of that building which compriseth the more part of mankind to the present day, evil workmen as they were of evil things; but the Father approved it, and then and now builded it into the head of the corner of this our common Church. This living temple, then, of a living God Formed out of ourselves, Ι mean the greatest sanctuary and truly reverend, whose innermost shrine may noit be seen by the common eye, for verily holy it is and a holy of —who that viewed it would dare to describe ? Who is able even to peer into the temple buildings that surround it, save only the great High Priest of the universe, to whom alone it is peimitted to search the hidden mysteries of every rational soul But perehance it is possible for another also, and for one alone among equals, to take the second place after Him, namely, for the commander who presideth over this army, whom the first and great High Priest Himself hath honoured with the second place in the priestly ministries of thhis place, the pastor of your divine flock who was allotted and adjudged your people by the Father, as He Himself had appointed him His attendant and interpreter, the new Aaron or Melchizedek, made like unto the Son of God, abiding and kept by Him continually by the common prayers of you all. To him, therefore, let it be permitted alone, after the first and greatest High Priest, if not in the first at any rate in the second place, to behold and inspect the inmost recesses of your souh; since through experience and length of time 1 he hath proved eaeh one and and his his zealous care he hath disposed you all in a godly order and doctrine; and he best of all is able to give such an account as will match his deedS, of those things that he himself hath wrought by the power of God. “Now our first and great High Priest saith that whatsoever things he seeth the Father doing, these the son also doeth in like manner. And this one also, looking unto the nrst as unto a master with the pure eyes of the mind, whatsoever he seeth Him doing, these he useth as patterns and archetypes, and by his worbnanship hath wTought their images, as far as in him lieth, into the closest likeness; thus in no wise doth he come behind that Bezalel, whom God Himself filled with the spirit of wisdom and understanding and with the knowledge as well of crafts and sciences, and called him to be the workman that should construct the temple of heavenly types in symbolic fashion. After this manner, then, this man also, bearing in his own soul the image of Christ entire, the Word, the Wisdom, the Light, ηath formed this magnificent temple of God most hing, answering in its nature to the pattern of that ich is better, even as the visible answereth to the visible; nor could one describe with what noblenindedness, with what a liberal hand — whose will to ve was insatiable—and with what emulation on of you all ye nobly ried with one another by the ge-hearthedness of your contributions in no come behind him in this selksame purpose. And place-which thing also is worthy to be first of all—which by the evil designs of emies had been corvered with all kinds of vile bbish, he did not overlook nor sunender to the alice of those who did this, though he might have ighted upon another spot (for the city supplied untless other sites), and thus found relief from toil freedom from trouble. Nay, he first of all ed himself to the word; then by his zeal he ngthened the whole people, and gathering together all into one great body, entered upon the t contest; for he deemed that she especially ho had been destroyed by the enemy, she who had en aforetime afflicted and had endured the same rsecutions as we and before us, even the church who ike a mother had been bereft of her children, should ave her share in the enjoyment of the bounty of the -gracious God. For since once more the great hepherd, having driven away the wild beasts and e wolves and every kind of cruel and savage crature, and having broken the great teeth of the ions, as the divine oracles say, once more had vouched to bring His sons together, it was most meet hat he should also set up the fold of the flock, that e might put to shame the enemy and the avenger, and openly rebuke the evil deeds of impious men fighting against God. And now these men, the haters of God, are no more, for they never were; but after troubling and being troubled for a little while, then they paid to Justice no contemptible penalty, accomplishing the utter overthrow of themselves, their friends and houses; so that the predictions whieh long ago had been inscribed on sacred records are confessedly proved trustworthy by the facts, in which among other true things that the divine word speaketh, this also it declareth concerning them: ‘The wicked have drawn out the sword and have bent their bow; to east down the poor and needy, to slay the upright in heart: may their sword enter into their own hearts, and may their bows be broken’; broken’ ; and again: ‘Their perished with a sound,’ and ‘Their name hath blotted out for ever and for ever and ever’; verily when they also were in trouble ‘They cried, and there was none to save: unto the Lord, and he did not hear them’; yea, they indeed ‘had their feet together and fell, but we rose and stood upright’; and that which was predicted in these words, ‘Lord, in thy city thou shalt set at naught their image,’ hath been shown to be true before the eyes of all. “But they verily, engaging like giants in battle against God, have thus brought their lives to a miserable end; while the issue of that godly enduranee on the part of her who was deserted and rekected by men was such as we have seen; so that the propheey of Isaiah ealleth aloud unto her in these words: ‘Be glad, Ο thirsty desert; let the desert rejoice and blossom as a lily; and the desert places shall blossom forth and rejoice. . . . Be strong, ye hands that hang down, and ye palsied knees. Be of good courage, ye feeble-hearted, be strong, fear not; behold, our God recompenseth judgement, and will recompense; he will come and save you. . . . For,’ saith he, broke out in the desert, and a stream in thirsty ground. And the waterless place shall become marsh-meadows, and upon the thirsty ground shall be a foundain of water.’ “Now these things, foretold long ago had been recorded in the sacred books in words; howbeti the deeds have come down to us no longer by hearsay, but in actual fact. This desert, this waterless plaee, this widowed and defenceless one, whose gates they cut down with axes as in a thicket of trees; whom together with hatchet and hammer they brake down; whose books also they destroyed and set ond frie the sanetuary of God; they profaned the dwelling-place of His name to the ground; whom all they which pass by the way did pluck, having before broken down her fences, whome the boar out of the wood did ravage and on whom the solitary wild beast did feed: now by the miraculous power of Christ, when He willeth it, hath become as a lily. For at that time also by His command, as of a careful father, she was chastened. For whom the Lord loveth He chasteneth, and scourgeth every son whom He receiveth. So then, after being corrected in due measure, once more again She is bidden anew to rejoice, alld she, blossoms forth as a lily and breathes upon all men of her divine, sweet odour; for, saith he, water broke out in the desert, the streams of the divine regeneration that the washing of salvation bestoweth; and that which a short time before was deert hath now become marsh-meadows, and a fountain of living water hath burst forth upon the thirsty ground; and in very truth hands that before hung down have me strong, of the stength of which hands these t and maniifest works are tokens. Yea, and the es that long ago were diseased and relaxed have vered their natural movement, and go straight ard upon the way of the knowledge of God, tinh to the flock of the all-gracious Shepherd, eir true home. But if through the threats of the ants the souls of some have waxed numb, not even ese the saving Word pass by as incurable, but ht He health them also and urgeth them on ards divine encouragement, encouragement, saying: ‘Be of courage, ye feeble-hearted, be strong, fear not.’ “The word which prophesied that she whom God made desert was to enjoy these blessings, this new and goodly Zerubbabel 1 heard with the sharp ing of his mind, after that bitter captivity and abomination of desolation; nor did he pass by e corpse as dead, but first of all with entreaties d prayer he propitiated the Father with the common nsent of you all; and taking as his Ally and Fellow- rker Him who alone can quicken the dead, he ised up her that had fallen, having first cleansed and aled her of her ills; and he clothed her with a ent, the old one that she had from the geinning, but with such a one as he was once more cted by the divine oracles, which thus clearly y : ‘And the latter glory of this house shall be ater than the former.’ “Thus, then, the whole area that he enclosed was uch larger. 2 The outer enclosure he made strong with the surrounding surrounding the whole, so that it might a most secure defence thereof; while he spread t a porch, great and raised aloft, towards the rays the rising sun, and even to those standing far outside the sacred precincts supplied no scanty view of at which is within; thus, one might say, turning he gaze, even of strangers to the faith, towards the t entrances, so that none might hastily pass by ithout first haring his soul mightily struck by the emory of the former desolation and the wondrous iracle of to-day; struck by which he hoped that rchance such a one would also be impelled, and ve his steps tumed forwards by the bare sight, wards the entrance. Now he hath not permitted im that passeth inside the gates to tread forthwith ith unhallowed and unwashen feet upon the holy laces withing; but hath left a space exceeding large tween the temple and the first entrances, and orned it au around with four transvers colonnades, encing the place into a kind of quadrangular figure, ith pillars raised on every side, and filling the spaces tween them with wooden barriers of lattice-work ising to a convenient height; and in the midst ereof he hath left an open space where men can e the sky, thus providing it with air bright and pen to the rays of light And here he hath placed of sacred purifications, by erecting fountains ight opposite the temple, whose copious streams of owing water supply cleansing to those who are vancing within the sacred precincts. And this is he first stopping-place for those that enter; supply- g at once adornment and splendour to the whole, d a place of sojourn suited to such as are still in need of their first instructions. “But verily, passing by this spectacle, he hath own open passages to the temple by means of nermost porches in still greater numbers, once again der the rays of the sun placing three gates on one de, upon the middle one of which he hath bestowed height and side that far surpasseth the two on either ide, and hath singled it out for special adornment ith bronze fastenings bound with iron and varied bossed work, making the others a bodyguard, as were, beneath it as their queen. And after the e manner he hath also ordered the number of the rches for the colonnades on either side of the tire temple; and above them hath derised as well parate opening into the building to give still further ght; and for these also he hath wrought a varied ornment with delicately-carved wood. ‘‘Now as to the royal house, 1 he hath builded it of thundant and still richer materials, eagerly desiring spare no expenses. I deem it superfluous for me to escribe here the length and breadth of the edifice, recount in full the brilliant beauty, the magnitude words can express, and the dazzling appearance of e workmanship, yea, and the loftniness that reacheth eaven, and the costly cedars of Lebanon that are hced above; the mention of which even the divine acle doth not pass over in silence, sayinn: ‘The ees of the Lord shall be glad, even the cedars of banon which he hath planted.’ “Why need I now speak more partieularly of the perfect widom and art with which the building hath been ordered, and the surpassing beauty of every part, when the witness of the eyes leaveth no plaee for the instruction that cometh through the ears? Nevertheless, having thus completed the temple he adorned it with thrones, very lorty, to do honour unto the Presidents, and likewise with benches arranged in order throughout in a convenient manner; and after all these he hath plaeed in the midst the holy of holies even the altar, and again surrounded this part also, that the multitude might not trea thereon, with a fence of wooden lattice-work, delicately wrought with the crartsman’s utmost skill, so as to present a marvellous Spectaele to those that see it. “Nor did even the pavement, as one might suppose, escape his care. This also, for example, he hath made exceeding brilliant with every kind of fair marble; and then, finally, passing on outside the temple as well, he hath construeted chambers and building on either side, very large, the which he hath skilfully μnited together to the sides ofthe royal house,1 and These with the openings into the central building. These also were wrought by our most peaceful solomon, who builded the temple of God, for those who still have need of cleansing and sprinkling with water and the Holy spirit, insomuch that the aforesaid said prophecy 2 is no longer a word only, but is become a fact. For the latter glory of this house hath become, and in truth even now is, greater than the fonner. “For it was meet and right that, as her shepherd and Lord had suffered once for all death on her behalf, and after the Passion had changed the foul body with which He had clothed Hinself for her sake into His splendid and glOrious body, and brought the very flesh that was dissoleved from corruption into incor- ruption, she also likewise should enjoy the fruits of e dispensations of the sariour. For verily having eived from Him a promise of much better things even these, she longeth to receive as her due, tingly and for the ages that are to come, the much eater glory of the new birth in the resurrection of an incorruptible body, in the company of the choir the angels of light in the kingdoms of God beyond e heavens, with Christ Jesus Himself her supreme nefector and Saviour. But meanwhile in the ent time she who hath long been a widow and eserted hath been robed by the grace of God with ese blossoms, and is become in truth as a lily, as ith the prophecy; and haring received again the arb of a bride and put on the gariand of beauty, she taught by Isaiah to dance, as it were, presenting er thank-ofering to the glory of God the King in words of praise. Let us listen to her as she saith: Let my soul rejoice in the Lord; for he hath clothed me vith the gannent of salvation and the cloke of ladness, he hath put a chaplet upon me as a brideoom, and hath adomed me mth adomment as a ride. And as the earth that maketh her flower to ow, and as the garden causeth the things that are wn in it to spring forth; so the Lord, the Lord, ill cause righteeousness and rejoicing to spring forth efore all the nations.’ “With these words, then, she danceth. But with hat words the Bridegroom also, even the heavenly ord, Jesus Christ Himself, answereth her, hear the rd as He saith: ‘Fear not for that thou hast been ut to shame; neither dread for that thou hast en put to reproach: for thou shalt forget thy everything shame, and the reproach of thy widowhood It thou remember no more . . . Not as a wife aken and rriaInt-hearted hath the Lord called thee, r as a wife hated from her youth, saith thy God. or a little time I forsook thee; and with great mercy will have mercy on thee. In a little wrath I hid my face from thee, and with everlasting mercy I will ve mercy on thee, saith the Lord who delivered Awake, awake, . . . thou who hast dmnk e hand of the Lord the cup of his fury; for the cup staggering, the bowl of fury, thou hast drunk and it. And there was none to comfort thee ong all thy sons whom thou hast brought forth; there was none to take thee by the hand. . . . hold I have taken out of thine hand the cup of gering, the bowl of my fury; and thou shalt no re it again: and I will put it into the hands them that did thee wrong and of them that umbled thee. . . . Awake, awake, put on strength, . . put on thy glory. . . . shake off the dust and ise sit thce down . . . loose the band from thy ck. Lift up thine eyes round about and behold y children gathered together Behold they were thered together and came to thee. As I live, ith the Lord, thou shalt clothe thee with them all with an ornament, and gird thyself with them as ith the ornament of a bride. For thy desolate and estroyed and ruined places shall now be too strait reason of them that inhabit thee, and they that wallow thee up shall be far away from thee. For sons whom thou hast lost shall say in thy ears, the place is too strait for me : give place to me that Ι ay dwell.’ And thou shalt say in thine heart, th hegorten me these ? I am children and a idow, but as for these, who hath brought me them up? I was left alone, but these, where had I them?’ “These things Isaiah prophesied, these things had of old been recorded concerning us in sacred books; but it was neeessary that somehow we should come to learn their truthfulness at some time by facts. Moreover, since the Brdegroom, even the Word, thus addresseth His Bride, the sacred and Holy church, fittingly did this paranymph 1 streteh out your hands in the common prayers of you all, and awake and raise up her who was desolate, who lay like a corpse, of whom men despaired, by the will of God the universal King and the manifestation of the power of Jesus Christ; and having raised he restored her to be such as he learnt from the record of the sacred oracles. “Α mightly wonder truly is this, and surpassing all amazement, especially in the eyes of such as take heed only to the appearance of outward things. But more wonderful than wonders are the archetypes, the rational prototypes of these things, and their divine models, 2 I mean the renewal of the God-given, spirtual edince in our souls. This edifice the Son of God Himself created in His own image, and everywhere and in all things hath bestowed upon it the divine likeness, an incorruptible nature, an essence incorporeal, spiritual, a stranger to all earthly matter and endowed with intelligence of its own; once for all at the first He fonned it into being from that which was not, and hath made it a holy bride and an allsacred temple for Himself and the Father. And this also He Himself clearly showeth, when He thus confesseth: ‘I will dwell in them, and walk in them; and I will be their God, and they shall be my people.’ Such then, is the perfect and purified soul, thus begotten from the beginning so as to bear the image of the heavenly Word. “But when through the envy and jealousy of demon which loveth evil she became of her own free choice a lover of that which is sensual and evil, and the Deity departed from her, leaving her bereft of a protector, she fell an easy capture and prey to the snares of those who long had enried her; and, laid low by the engines and machines of her invisible enemies and spiritual foes, she fell a tremendous fall, so that not even one stone upon another of her virtue remained standing in her; nay, she lay her full length upon the ground, absolutely dead, altogether deprived of her inborn thoughts concerning God. Yea, verily, as she lay fallen there, she who was made in the image of God, it was not that boar out of the wood which we can see that ravaged her, but some death-dealing demon and spiritual wild beasts, who also have inflamed her with their passions as with fiery darts of their own wickedness, and have set the truly divine sanctuary of God on fire, and have profaned the dwelling-place of His name to the ground; then they buried the hapless one in a great heap of earth, and brought her to a state bereft of all hope of salvation. “But her Guardian, the Word, the divinely-bright and saving one, when she had paid the just penalty for her sins, once more again rertored her, hearkening to the living-kindness of an all-gracious Father. First, then, choosing unto Himself the souls of the upreme Emperors, by means of these men most dearly beloved of God He cleansed the whole world of all wicked and baneful persons and of the cruel God-hating tyrants themselves. And then men that were His disciples, who all their life long had been consecrated to Him, yet secretly concealed, as in a storm of evils, by His sheltering care, these He brought out openly and honoured worthily with the great gifts of His Father's bounty. And by their means He once more purified and cleansed with pickaxes and mattocks, namely, the penetrating teachings of His instruction, those souls which a short time before had been befouled and overlaid with every sort of matter and rubbish contained in impious decrees; and when He had made bright and clear the place of the understanding of all of you, He then for the future consigned it to this all-wise and God-beloved ruler. He, discerning and as he is in an else, distinguisheth also and discerneth the understanding of the souls committed to his charge ; and from the first day, so to speak, even unto now he hath never ceased to build, and among you all to fit into its place, at one time the radiant gold, at another the approved and purified silver and the precious and costly stones; so as once more to fulfil in his deeds to you-ward the sacred and mystic prophecy, in which it hath been said: ‘Behold I prepare for thee thy stone of carbuncle, and thy foundations of sapphire, and thy battlements of jasper, and thy gates of crystals, and thy wall of choice stones, and all thy sons taught of God, and in great peace thy children: and in righteousness shalt thou be built.' “Building verily in righteousness, 1 he duly divided the whole people according to their several abilities; with some he fenced the outer enclosure and this alone, surrounding it with a wall of unerring faith (and this was the great multitude of the people who were unable to support a mightier structure); to others he entrusted the entrances to the house, setting them to haunt the doors and guide the steps of those entering, wherefore they have not unnaturally been reckoned as gateways of the temple; he supported with the first outer pillars that are about the quadrangular courtyard, bringing them to their first acquaintance with the letter of the four Gospels. Others he joineth closely to the royal house on either side, still indeed under instruction and in the stage of progressing and advancing, yet not far off nor greatly separated from the faithful who possess the divine vision of that which is innermost. Taking from the number of these last the pure souls that have been cleansed like gold by the divine washing, he then supporteth some of them with pillars much greater than the outermost, from the innermost mystic teachings of the Scriptures, while others he illumineth with apertures towards the light. The whole temple he adorneth with a single, mighty gateway, even the praise of the one and only God, the universal King; and on either side of the Father's sovereign power he provideth the secondary beams of the light of Christ and the Holy Spirit. As to the rest, throughout the whole house he showeth in an abundant and much varied manner the clearness and splendour of the truth that is in each one, in that everywhere and from every source he hath included the living and firmly set and well-wrought stones of men's souls. Thus he builded the great and royal house composed of all, bright and full of light both within and without; for not alone soul and mind, but even their body had been made glorious with the many-blossomed adornment of chastity and sobriety. “Now there are also in this fane thrones and countless benches and seats, as manv as are the souls on which the gifts of the divine Spirit find their restingplace; such as long ago appeared to the sacred Apostles and those that were with them, to whom there were manifested tongues parting asunder, like as of fire ; and it sat upon each one of them. But while in the ruler of all, as is right, the entire Christ hath taken His seat, in those who have the second place after him [this bounty] is proportioned to each one's capacity, by gifts of the power of Christ and of the Holy Ghost. And the souls of some might be the seats even of angels, of of those to whom the instruction and guarding of each several person hath been committed. But as to the reverend, mighty and unique altar, what might it be save the spotless holy of holies of the common priest of all ? 1 Standing beside it on the right hand the great High Priest of the universe, even Jesus, the only-begotten of receiveth with joyful countenance and uptunrned hands the sweet-smelling incense from all, and bloodless and immaterial sacrifices offered in prayer, and sendeth them on their way to the heavenly Father and God of the universe; Whom He Himself first adoreth and alone rendereth to His Father the honour that is due; after which He also beseecheth Him to remain favourable and propitious toward us all for ever. “Such is the great temple which the Word, the great Creator of the universe, hath builded throughout the whole world beneath the sun, forming again this spiritual image upon earth of those vaults beyond the vaults of heaven; so that by the whole creation and by the rational, living creatures upon earth His Father might be honoured and revered. But as for the region above the heavens and the models there of things on this earth, and the Jerusalem that is above, as it is called, and the mount Zion the heavenly mount, and the supramundane city of the living God, in which innumerable hosts of angels in general assembly and the church of the firstborn who are enrolled in heaven honour their Maker and the Sonereign of the universe, proclaiming His praises in unutterable words of which we cannot conceive: these no mortal man can worthily hymn, for in truth eye saw not, and ear heard not, nor did there enter into the heart of man those same things which God prepared for them that love Him. Of these things now in part deemed worthy, let us all together, men with women and children, small and great, with one spirit and one soul, never cease to praise and acclaim Him who is the Author of so great blessings to us ; who is very merciful to all our iniquities, who healeth all our diseases, who redeemeth our life from destruction, who crowneth us with mercy and pities, who satisfieth our desire with good things; for He hath not dealt with us after our sins, nor rewarded us after our iniquities; for as far as the east is from the west, far hath He removed our iniquities from us. Like a father pitieth his sons, so the Lord pitied them t fear Him. ‘‘Let us rekindle the memories of these things both now and for all time hereafter; yea, and let us keep our minds night and day, through every and, one might say, in every breath, the Author the present assembly, and this happy and most lorious day, even the Ruler of the assembly Himself; let us cherish and revere Him with the whole wer of our soul; and now let us rise and beseech in loud accents, as befitteth our earnest desire, at at He would shelter and preserve us to the end in is fold, and award us that eternal peace, unbroken undisturbed, which cometh cometh from Him, in Christ esus our Saviour, through whom to Him be glory for er and ever. ”"
+    },
+    {
+     "number": 2,
+     "greek": "Ὦ φίλοι θεοῦ καὶ ἱερεῖς, οἱ τὸν ἄγιον ποδήρη καὶ τὸν οὐράνιον τῆς δόξης στέφανον τό τε χρῖσμα τὸ ἔνθεον καὶ τὴν ἱερατικὴν τοῦ ἁγίου πνεύματος στολὴν περιβεβλημένοι 5 σύ τε, ὦ νέου ἁγίου νεὼ θεοῦ σεμνολόγημα, γεραρᾷ μὲν φρονήσει παρὰ θεοῦ τετιμημένε, νέας δὲ καὶ ἀκμαζούσης ἀρετῆς ἔργα πολυτελῆ καὶ πράξεις ἐπιδεδειγμένε, ᾧ τὸν ἐπὶ γῆς οἶκον αὐτὸς ὁ τὸν σύμπαντα κόσμον περιέχων θεὸς δείμασθαι καὶ ἀνανεοῦν Χριστῷ τῷ μονογενεῖ καὶ πρωτογενεῖ αὐτοῦ λόγῳ, τῇ τε ἁγίᾳ καὶ θεοπρεπεῖ τούτου νύμφῃ, γέρας ἐξαίρετον δεδώρηται·",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "εἴτε τις νέον σε Βεσελεὴλ, θείας ἀρχιτέκτονα σκηνῆς ἐθέλοι καλεῖν, εἴτε Σολομῶνα, καινῆς καὶ πολὺ κρείττονος Ἱερουσαλὴμ βασιλέα, εἴτε καὶ νέον Ζοροβάβελ, τὴν πολὺ κρείττονα δόξαν τῆς προτέρας τῷ νεῷ τοῦ θεοῦ περιτιθέντα·",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἀλλὰ καὶ ὑμεῖς, ὦ τῆς ἱερᾶς ἀγέλης Χριστοῦ θρέμματα, λόγων ἀγαθῶν ἑστία, σωφροσύνης παιδευτήριον, καὶ θεοσεβείας σεμνὸν καὶ θεοφιλὲς ἀκροατήριον·",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "πάλαι μὲν ἡμῖν τὰς παραδόξους θεοσημίας καὶ τόν τοῦ κυρίου θαυμάτων τὰς εἰς ἀνθρώπους εὐεργεσίας διὰ θείων ἀναγνωσμάτων ἀκοῇ παραδεχομένοις ὕμνους εἰς θεὸν καὶ ᾠδὰς ἀναπέμπειν ἐξῆν, λέγειν παιδευομένοις “ὁ θεὸς, ἐν τοῖς ὠσὶν ἡμῶν ἠκούσαμεν, οἱ πατέρες ἡμῶν ἀνήγγειλαν ἡμῖν ἔργον ὅ εἰργάσω ἐν ταῖς ἡμέραις αὐτῶν, ἐν ἡμέραις ἀρχαίαις.’’",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "ἀλλὰ νῦν γε οὐκέτ’ ἀκοαῖς οὐδὲ λόγων φήμαις τὸν βραχίονα τὸν ὑψηλὸν, τήν τε οὐράνιον δεξιὰν τοῦ παναγάθου καὶ παμβασιλέως ἡμῶν θεοῦ παραλαμβάνουσιν, ἔργοις δ’ ὡς ἔπος εἰπεῖν καὶ αὐτοῖς ὀφθαλμοῖς τὰ πάλαι μνήμῃ παραδεδομένα πιστὰ καὶ ἀληθῆ καθορωμένοις, δεύτερον ὕμνον ἐπινίκιον πάρεστιν ἀναμέλπειν, ἐναργῶς τε ἀναφωνεῖν καὶ λέγειν “καθάπερ ἠκούσαμεν, οὕτως καὶ εἴδομεν, ἐν πόλει κυρίου τῶν δυνάμεων, έν πόλει τοῦ θεοῦ ἡμῶν.’’",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ποίᾳ δὲ πόλει; ἢ τῇδε τῇ νεοπαγεῖ καὶ θεοτεύκτῳ; ἥτις ἐστὶν ἐκκλησία θεοῦ ζῶντος, στῦλος καὶ ἑδραίωμα τῆς ἀληθείας, περὶ ἧς καὶ ἄλλο τι θεῖον λόγιον ὧδέ πως εὐαγγελίζεται “δεδοξασμένα ἐλαλήθη περὶ σοῦ, ἡ πόλις τοῦ θεοῦ,” ἐφ’ ἣν τοῦ παναγάθου συγκροτή- σαντος ἡμάς θεοῦ διὰ τῆς τοῦ μονογενοῦς αὐτοῦ χάριτος, τῶν ἀνακεκλημένων ἕκαστος ὑμνείτω μονονουχὶ βοῶν καὶ λέγων “εὐφράνθην ἐπὶ τοῖς εἰρηκόσι μοι· εἰς οἶκον κυρίου πορευσόμεθα,’’ καὶ “κύριε, ἠγάπησα εὐπρέπειαν οἴκου σου, καὶ τόπον σκηνώματος δόξης σου.’’",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "καὶ μὴ μόνον γε ὁ καθεῖς, ἀλλὰ καὶ οἷ πάντες ἀθρόως ἐνὶ πνεύματι καὶ μιᾷ ψυχῇ γεραίροντες ἀνευφημῶμεν, “μέγας κύριος,’’ ἐπιλέγοντες, “καὶ αἰνετὸς σφόδρα, ἐν πόλει τοῦ θεοῦ ἡ μῶν, ἐν ὄρει ἁγίῳ αὐτοῦ. καὶ γὰρ οὖν μέγας ὡς ἀληθῶς, καὶ μέγας ὁ οἶκος αὐτοῦ, ὑψηλὸς καὶ ἐπιμήκης, καὶ ὡραῖος κάλλει παρὰ τοὺς υἱοὺς τῶν ἀνθρώπων· μέγας ὁ κύριος ὁ ποιῶν θαυμάσια μόνος· μέγας ὁ ποιῶν μεγάλα καὶ ἀνεξιχνίαστα, ἔνδοξά τε καὶ ἐξαίσια, ὧν οὐκ ἔστιν ἀριθμός· μέγας ὁ ἀλλοιῶν καιροὺς καἰ χρόνους, μεθιστῶν βασιλεῖς καὶ καθιστῶν, ἐγείρων ἀπὸ γῆς πτωχὸν, καὶ ἀπὸ κοπρίας ἀνιστῶν πένητα. καθεῖλε δυνάστας ἀπὸ θρόνων, καὶ ὕψωσε ταπεινοὺς ἀπὸ γῆς, πεινῶντας ἐνέπλησεν ἀγαθῶν, καὶ βραχίονας ὑπερηφάνων συνέτριψεν,’’",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "οὐ πιστοῖς μόνον, ἀλλὰ καὶ ἀπίστοις τῶν παλαιῶν διηγημάτων τὴν μνήμην πιστωσάμενος, ὁ θαυματουργὸς, ὁ μεγαλουργὸς, ὁ τῶν ὅλων δεσπότης, ὁ τοῦ σύμπαντος κόσμου δημιουργὸς, ὁ παντοκράτωρ, ὁ πανάγαθος, ὁ εἷς καὶ μόνος θεὸς, ᾧ τὸ καινὸν ᾆσμα μέλπωμεν, προσυπακούοντες τῷ ποιοῦντι θαυμάσια μόνῳ, ὅτι εἰς τὸν αἰῶνα τὸ ἔλεος αὐτοῦ, τῷ πατάξαντι βασιλεῖς μεγάλους καὶ ἀποκτείναντι βασιλεῖς κραταιοὺς, ὅτι εἰς τὸν αἰῶνα τὸ ἔλεος αὐτοῦ, ὅτι ἐν τῇ ταπεινώσει ἡμῶν ἐμνήσθη ἡμῶν ὁ κύριος, καὶ ἐλυτρώσατο ἡμᾶς ἐκ τῶν ἐχθρῶν ἡμῶν.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "καὶ τὸν μὲν τῶν ὅλων πατέρα τούτοις ἀνευφημοῦντες μή ποτε διαλίποιμεν· τὸν δὲ τῶν ἀγαθῶν ἡμῖν δεύτερον αἴτ’ ἴον, τὸν τῆς θεογνωσίας εἰσηγητὴν, τὸν τῆς ἀληθοῦς θεοσεβείας διδάσκαλον, τὸν τῶν ἀσεβῶν ὀλετῆρα, τὸν τυραννοκτόνον, τὸν τοῦ βίου διορθωτὴν, τὸν ἡμῶν τῶν ἀπεγνωσμένων σωτῆρα Ἰησοῦν ἀνὰ στόμα φέροντες γεραίρωμεν,",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "ὅτι δὴ μόνος οἷα παναγάθου πατρὸς μονώτατος ὑπάρχων πανάγαθος παῖς, γνώμῃ τῆς πατρικῆς φιλανθρωπίας τῶν ἐν φθορᾷ κάτω που κειμένων ἡμῶν εὖ μάλα προθύμως ὑποδὺς τὴν φύσιν, οἶά τις ἰατρῶν ἄριστος τῆς τῶν καμνόντων ἕνεκεν σωτηρίας ὁρῇ μὲν δεινὰ, θιγγάνει δ’ ἀηδέων, ἐπ’ ἀλλοτρίῃσί τε ξυμφορῇσιν ἰδίας καρποῦται λύπας, οὐ νοσοῦντας αὐτὸ μόνον, οὐδ’ ἕλκεσι δεινοῖς καὶ σεσηπόσιν ἤδη τραύμασι πιεζομένους, ἀλλὰ καὶ ἐν νεκροῖς κειμένους ἡμᾶς ἐξ αὐτῶν τῶν μυχῶν τοῦ θανάτου αὐτὸς ἑαυτῷ διεσώσατο, ὅτι μηδὲ ἄλλῳ τῳ τῶν κατ’ οὐρανὸν τοσοῦτον παρῆν ἰσχύος, ὡς τῇ τῶν τοσούτων ἀβλαβῶς διακονήσασθαι σωτηρίᾳ.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "μόνος δ’ οὖν καὶ τῆς ἡμῶν αὐτῶν βαρυπαθοῦς φθορᾶς ἐφαψάμενος, μόνος τοὺς ἡμετέρους ἀνατλὰς πόνους, μόνος τὰ πρόστιμα τῶν ἡμετέρων ἀσεβημάτων περιθέμενος, οὐχ ἡμιθνῆτας, ἀλλὰ καὶ πάμπαν ἐν μνήμασι καὶ τάφοις μυσαροὺς ἤδη καὶ ὀδωδότας ἀναλαβὼν, πάλαι τε καὶ νῦν σπουδῇ τῇ φιλανθρώπῳ, παρὰ πᾶσαν τὴν οὑτινοσοῦν ἡμῶν τε αὐτῶν ἐλπίδα, σώζει τε καὶ τῶν τοῦ πατρὸς ἀγαθῶν ἀφθονίαν μεταδίδωσιν, ὁ ζωοποιὸς, ὁ φωταγωγὸς, ὁ μέγας ἡμῶν ἰατρὸς καὶ βασιλεὺς καὶ κύριος, ὁ Χριστὸς τοῦ θεοῦ.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "ἀλλὰ τότε μὲν ἅπαξ ἐν νυκτὶ ζοφερᾷ καὶ σκότῳ βαθεῖ, δαιμόνων ἀλιτηρίων πλάναις καὶ θεομισῶν πνευμάτων ἐνεργείαις πᾶν τὸ τῶν ἀνθρώπων γένος κατορωρυγμένον, αὐτὸ μόνον ἐπιφανεὶς, ὡσὰν κηροῦ διατακέντος ταῖς αὐτοῦ βολαῖς τοῦ φωτὸς τὰς πολυδέτους τῶν ἀσεβημάτων ἡμῶν σειρὰς διελύσατο.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "νῦν δ’ ἐπὶ τῇ τοσαύτῃ χάριτι καὶ εὐεργεσίᾳ τοῦ μισοκάλου φθόνου καὶ φιλοπονήρου δαίμονος μονονουχὶ διαρρηγνυμένου, καὶ πάσας αὐτοῦ τὰς θανατοποιοὺς καθ’ ἡμῶν ἐπιστρατεύοντος δυνάμεις, καὶ τὰ μὲν πρῶτα κυνὸς δίκην λυττῶντος, τοὺς ὀδόντας ἐπὶ τοὺς ἀφιεμένους κατ’ αὐτοῦ λίθους προσαράττοντος, καὶ τὸν κατὰ τῶν ἀμυνομένων θυμὸν ἐπὶ τὰ ἄψυχα βλήματα καθιέντος, τοῖς τῶν προσευκτηρίων λίθοις καὶ ταῖς τῶν οἴκων ἀψύχοις ὕλαις τὴν θηριώδη μανίαν ἐπερείσαντος, ἐρημίαν τε, ὥς γε δὴ αὐτὸς ἑαυτῷ ᾤετο, τῶν ἐκκλησιῶν ἀπεργασαμένου, εἶτα δὲ δεινὰ συρίγματα καὶ τὰς ὀφιώδεις αὐτοῦ φωνὰς, τοτὲ μὲν ἀσεβῶν τυράννων ἀπειλαῖς, τοτὲ δὲ βλασφήμοις δυσσεβῶν ἀρχόντων διατάξεσιν ἀφιέντος, καὶ προσέτι τὸν αὐ̣τοῦ θάνατον ἐξερευγομένου, καὶ τοῖς ἰώδεσι καὶ ψυχοφθόροις δηλητηρίοις τὰς ἁλισκομένας πρὸς αὐτοῦ ψυχὰς φαρμάττοντος, καὶ μονονουχὶ νεκροῦντος ταῖς τῶν νεκρῶν εἰδώλων νεκροποιοῖς θυσίαις, πάντα τε ἀνθρωπόμορφον θῆρα καὶ πάντα τρόπον ἄγριον καθ’ ἡμῶν ὑποσαλεύοντος,",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "αὖθις ἐξ ὑπαρχῆς ὁ τῆς μεγάλης βουλῆς ἄγγελος, ὁ μέγας ἀρχιστράτηγος τοῦ θεοῦ, μετὰ τὴν αὐτάρκη διαγυμνασίαν, ἣν οἶ μέγιστοι τῆς αὐτοῦ βασιλείας στρατιῶται διὰ τῆς πρὸς ἅπαντα ὑπομονῆς καὶ καρτερίας ἐνεδείξαντο, ἀθρόως οὕτως φανεὶς τὰ μὲν ἐχθρὰ καὶ πολέμια εἰς ἀφανὲς καὶ τὸ μηδὲν κατεστήσατο, ὡς μηδὲ πώποτε ὠνομάσθαι δοκεῖν, τὰ δ’ αὐτῷ φίλα καὶ οἰκεῖα δόξης ἐπέκεινα παρὰ πᾶσιν οὐκ ἀνθρώποις μόνον, ἀλλ’ ἤδη καὶ δυνάμεσιν οὐρανίοις, ἡλίῳ τε καὶ σελήνῃ καὶ ἄστροις καὶ τῷ σύμπαντι οὐρανῷ τε καὶ κόσμῳ προήγαγεν,",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "ὥστε ἤδη, ὃ μηδὲ ἄλλοτέ πω, τοὺς πάντων ἀνωτάτω βασιλέας, ἧς λελόγχασι παρ’ αὐτοῦ τιμῆς συνῃσθημένους, νεκρῶν μὲν εἰδώλων καταπτύειν προσώποις, πατεῖν δ’ ἄθεσμα δαιμόνων θέσμια, καὶ παλαιᾶς ἀπάτης πατροπαραδότου κατεγγελᾶν, ἔνα δὲ αὐτὸν μόνον θεὸν τὸν κοινὸν ἀπάντων καὶ ἑαυτῶν εὐεργέτην γνωρίζειν, Χριστόν τε τοῦ θεοῦ παῖδα παμβασιλέα τῶν ὅλων ὁμολογεῖν, σωτῆρά τε αὐτὸν ἐν στήλαις ἀναγορεύειν, ἀνεξαλείπτῳ μνήμῃ τὰ κατορθώματα καὶ τὰς κατὰ τῶν ἀσεβῶν αὐτοῦ νίκας μέση τῇ βασιλευούσῃ τῶν ἐπὶ γῆς πόλει βασιλικοῖς χαρακτῆρσι προσεγγράφοντας, ὥστε μόνον τῶν ἐξ αἰῶνος Ἰησοῦν Χριστὸν τὸν ἡμῶν σωτῆρα καὶ πρὸς αὐτῶν τῶν ἐπὶ γῆς ἀνωτάτω οὐχ οἶα κοινὸν ἐξ ἀνθρώπων βασιλέα γενόμενον ὁμολογεῖσθαι, ἀλλ’ οἷα τοῦ καθόλου θεοῦ παῖδα γνήσιον καὶ αὐτόθεον προσκυνεῖσθαι, καὶ εἰκότως.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "τίς γὰρ τῶν πώποτε βασιλέων τοσοῦτον ἀρετῆς ἠνέγκατο ὡς πάντων τῶν ἐπὶ γῆς ἀνθρώπων ἀκοὴν καὶ γλῶτταν ἐμπλῆσαι τῆς αὐτοῦ προσηγορίας; τίς βασιλεὺς νόμους εὐσεβεῖς οὕτω καὶ σώφρονας διαταξάμενος, ἀπὸ περάτων γῆς καὶ εἰς ἄκρα τῆς ὅλης οἰκουμένης εἰς ἐπήκοον ἅπασιν ἀνθρώποις ἀναγινώσκεσθαι διαρκῶς ἐκράτυνεν;",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "τίς ἀνημέρων ἐθνῶν ἔθη βάρβαρα καὶ ἀνήμερα τοῖς ἡμέροις αὐτοῦ καὶ φιλανθρωποτάτοις παρέλυσε νόμοις; τίς αἰῶσιν ὅλοις ὑπὸ πάντων πολεμούμενος τὴν ὑπὲρ ἄνθρωπον ἀρετὴν ἐπεδείξατο, ὡς ἀνθεῖν ὁσημέραι καὶ νεάζειν διὰ παντὸς τοῦ βίου;",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "τίς ἔθνος τὸ μηδ᾿ ἀκουσθὲν ἐξ αἰῶνος, οὐκ ἐν γωνίᾳ ποι γῆς λεληθὸς, ἀλλὰ καθ᾿ ὅλης τῆς ὑφ᾿ ἡλίῳ ἱδρύσατο; τίς εὐσεβείας ὅπλοις οὕτως ἐφράξατο τοὺς στρατιώτας ὡς ἀδάμαντος τὰς ψυχὰς κραταιοτέρους ἐν τοῖς πρὸς τοὺς ἀντιπάλους ἀγῶσι διαφαίνεσθαι;",
+     "text": ""
+    },
+    {
+     "number": 20,
+     "greek": "τίς βασιλέων εἰς τοσοῦτον κρατεῖ καὶ στρατηγεῖ γε μετὰ θάνατον, καὶ τρόπαια κατ᾿ ἐχθρῶν ἵστησι, καὶ πάντα τόπον καὶ χώραν καὶ πόλιν, Ἑλλάδα τε καὶ βάρβαρον, βασιλικῶν οἴκων αὐτοῦ πληροῖ, καὶ θείων ναῶν ἀφιερώμασιν, οἷα τάδε τὰ τοῦδε τοῦ νεὼ περικαλλῆ κοσμήματά τε καὶ ἀναθήματα, ἃ καὶ αὐτὰ σεμνὰ μὲν ὡς ἀληθῶς καὶ μεγάλα, ἐκπλήξεώς τε καὶ θαύματος ἄξια, καὶ οἷα τῆς τοῦ σωτῆρος ἡμῶν βασιλείας ἐναργῆ δείγματα, ὅτι καὶ νῦν αὐτὸς εἶπε καὶ ἐγενήθησαν, αὐτὸς ἐνετείλατο καὶ ἐκτίσθησαν, — τί γὰρ καὶ ἔμελλε τοῦ παμβασιλέως καὶ πανηγεμόνος καὶ αὐτοῦ θεοῦ λόγου ἐνστήσεσθαι τῷ νεύματι; — σχολῆς τε λόγων οἰκείας εἰς ἀκριβῆ θεωρίαν τε καὶ ἑρμηνείαν τυγχάνει δεόμενα·",
+     "text": ""
+    },
+    {
+     "number": 21,
+     "greek": "οὐ μὴν ὅσα καὶ οἷα τὰ τῆς τῶν πεπονηκότων προθυμίας κέκριται παρ᾿ αὐτῷ τῷ θεολογουμένῳ, τὸν ἔμψυχον πάντων ἡμῶν καθορῶντι ναὸν, καὶ τὸν ἐκ ζώντων λίθων καὶ βεβηκότων οἶκον ἐποπτεύοντι, εὖ καὶ ἀσφαλῶς ἱδρυμένων ἐπὶ τῷ θεμελίῳ τῶν ἀποστόλων καὶ προφητῶν, ὄντος ἀκρογωνιαίου λίθου αὐτοῦ Ἰησοῦ Χριστοῦ, ὃν ἀπεδοκίμασαν μὲν οὐχ οἱ τῆς παλαιᾶς καὶ μηκέτ᾿ οὔσης ἐκείνης μόνον, ἀλλὰ καὶ τῆς εἰσέτι νῦν τῶν πολλῶν ἀνθρώπων οἰκοδομῆς κακοὶ κακῶν ὄντες ἀρχιτέκτονες, δοκιμάσας δὲ ὁ πατὴρ καὶ τότε καὶ νῦν εἰς κεφαλὴν γωνίας τῆσδε τῆς κοινῆς ἡμῶν ἐκ- κλησίας ἱδρύσατο.",
+     "text": ""
+    },
+    {
+     "number": 22,
+     "greek": "τοῦτον δὴ οὑν τὸν ἐξ ὑμῶν αὐτῶν ἐπεσκευασμένον ζῶντος θεοῦ ζῶντα ναὸν — τὸ μέγιστον καὶ ἀληθεῖ λόγῳ θεοπρεπὲς ἱερεῖόν φημι, οὗ τὰ ἐνδοτάτω ἄδυτα τοῖς πολλοῖς ἀθεώρητα καὶ ὄντως ἅγια καὶ τῶν ἁγίων ἅγια — τίς ἂν ἐποπτεύσας ἐξειπεῖν τολμήσειε; τίς δὲ κἂν εἰσκῦψαι περιβόλων ἱερῶν εἴσω δυνατὸς, ὅτι μὴ μόνος ὁ μέ γᾶς τῶν ὅλων ἀρχιερεὺς, ᾧ μόνῳ θέμις πάσης λογικῆς ψυχῆς τὰ ἀπόρρητα διερευνᾶσθαι;",
+     "text": ""
+    },
+    {
+     "number": 23,
+     "greek": "τάχα δὲ καὶ ἄλλῳ δευτερεύειν μετὰ τοῦτον ἐνὶ μόνῳ τῶν ἴσων ἐφικτὸν, τῷδε τῷ προκαθημένῳ τῆσδε τῆς στρατιᾶς ἡγεμόνι, ὅν αὐτὸς ὁ πρῶτος καὶ μέγας ἀρχιερεὺς δευτερείοις τῶν τῇδε ἱερείων τιμήσας, ποιμένα τῆς ὑμετέρας ἐνθέου ποίμνης, κλήρῳ καὶ κρίσει τοῦ πατρὸς τὸν ὑμέτερον λαχόντα λαὸν, ὡσὰν θεραπευτὴν καὶ ὑποφήτην αὐτὸς ἑαυτοῦ κατετάξατο, τὸν νέον Ἀαρὼν ἢ Μελχισεδὲκ, ἀφωμοιωμένον τῷ υἱῷ τοῦ θεοῦ, μένοντά τε καὶ πρὸς αὐτοῦ τηρούμενον εἰς τὸ διηνεκὲς ταῖς κοιναῖς ἁπάντων ὑμῶν εὐχαῖς.",
+     "text": ""
+    },
+    {
+     "number": 24,
+     "greek": "τούτῳ δὴ οὖν ἐξέστω μόνῳ μετὰ τὸν πρῶτον καὶ μέγιστον ἀρχιερέα, εἰ μὴ τὰ πρῶτα, τὰ δεύτερα γοῦν ὅμως ὁρᾶν τε καὶ ἐπισκοπεῖν τῆς ἐνδοτάτω τῶν ὑμετέρων ψυχῶν θεωρίας, πείρα μὲν καὶ χρόνου μήκει ἕκαστον ἀκριβῶς ἐξητακότι, σπουδῇ τε τῇ αὐτοῦ καὶ ἐπιμελείᾳ τοὺς πάντας ὑμᾶς ἐν κόσμῳ καὶ λόγῳ τῷ κατ’ εὐσέβειαν διατεθειμένῳ, δυνατῷ τε ὄντι μᾶλλον ἀπάντων, ὧν αὐτὸς σὺν θείᾳ δυνάμει κατηρτίσατο, τούτων τοῖς ἔργοις ἐφαμίλλως ἀποδοῦναι τοὺς λόγους.",
+     "text": ""
+    },
+    {
+     "number": 25,
+     "greek": "ὁ μὲν οὖν πρῶτος καὶ μέγας ἡμῶν ἀρχιερεὺς, ὅσα βλέπει τὸν πατέρα ποιοῦντα, ταῦτα, φησὶν, ὁμοίως καὶ ὁ υἱὸς ποιεῖ· ὁ δὲ καὶ αὐτὸς ὡσὰν ἐπὶ διδάσκαλον τὸν πρῶτον καθαροῖς νοὸς ὄμμασιν ἀφορῶν, ὅσα βλέπει ποιοῦντα, ὡσὰν ἀρχετύποις χρώμενος παραδείγμασι, τούτων τὰς εἰκόνας, ὡς ἔνι μάλιστα δυνατὸν, εἰς τὸ ὁμοιότατον δημιουργῶν ἀπειργάσατο, οὐδὲν ἐκείνῳ καταλιπὼν τῷ Βεσελεὴλ, ὃν αὐτὸς ὁ θεὸς πνεύματος ἐμπλήσας σοφίας καὶ συνέσεως καὶ τῆς ἄλλης ἐντέχνου καὶ ἐπιστημονικῆς γνώσεως, τῆς τῶν οὐρανίων τύπων διὰ συμβόλων ναοῦ κατασκευῆς δημιουργὸν ἀνακέκληται.",
+     "text": ""
+    },
+    {
+     "number": 26,
+     "greek": "ταύτῃ δ᾿ οὖν καὶ ὅδε Χριστὸν ὅλον, τὸν λόγον, τὴν σοφίαν, τὸ φῶς, ἐν τῇ αὐτὸς αὑτοῦ ἀγαλματοφορῶν ψυχῇ, οὐδ᾿ ἔστιν εἰπεῖν οἵᾳ σὺν μεγαλοφροσύνῃ, πλουσίᾳ τε καὶ ἀπλήστῳ διανοίας χειρὶ, καὶ σὺν οἵᾳ πάντων ὑμῶν φιλοτιμίᾳ, τῇ τῶν εἰσφορῶν μεγαλοψυχίᾳ, τῆς αὐτῆς αὐτῷ προθέσεως κατὰ μηδένα τρόπον ἀπολειφθῆναι φιλονεικότερον μεγαλοφρονουμένων, τὸν μεγαλοπρεπῆ τόνδε θεοῦ τοῦ ὑψίστου νεὼν, τῷ τοῦ κρείττονος παραδείγματι ὡσὰν ὁρώμενον μὴ ὁρωμένου, τὴν φύσιν ἐμφερῆ συνεστήσατο, χῶρον μὲν τόνδε, ὅτι καὶ ἄξιον εἰπεῖν πρῶτον ἁπάντων, πάσης οὐ καθαρᾶς ὕλης ἐχθρῶν ἐπιβουλαῖς παραχωρήσας νον οὐ παριδὼν, οὐδὲ τῇ τῶν αἰτίων παραχωρήσας κακίᾳ, ἐξὸν ἐφ᾿ ἕτερον ἐλθόντα, μυρίων ἄλλων εὐπορουμένων τῇ πόλει, ῥᾳστώνην εὕρασθαι τοῦ πόνου καὶ πραγμάτων ἀπηλλάχθαι.",
+     "text": ""
+    },
+    {
+     "number": 27,
+     "greek": "ὁ δὲ πρῶτον αὐτὸν ἐπὶ τὸ ἔργον ἐγείρας, εἶτα δὲ τὸν σύμπαντα λαὸν προθυμίᾳ ῥώσας καὶ μίαν ἐξ ἁπάντων μεγάλην χεῖρα συναγαγὼν, πρῶτον ἆθλον ἠγωνίζετο, αὐτὴν δὴ μάλιστα τὴν ὑπὸτῶν ἐχθρῶν πεπολιορκημένην,αὐτὴν τὴν προπονήσασαν, καὶ τοὺς αὐτοὺς ἡμῖν καὶ πρὸ ἡμῶν διωγμοὺς ὑπομείνασαν, τὴν μητρὸς δίκην τῶν τέκνων ἐρημωθεῖσαν ἐκκλησίαν συναπολαῦσαι δεῖν οἰόμενος τῆς τοῦ παναγάθου μεγαλοδωρεᾶς.",
+     "text": ""
+    },
+    {
+     "number": 28,
+     "greek": "ἐπειδὴ γὰρ τοὺς παῖδας αὖθις ὁ μέγας ποιμὴν, τοὺς θῆρας καὶ τοὺς λύκους καὶ πᾶν ἀπηνὲς καὶ ἄγριον γένος ἀποσοβήσας, καὶ τὰς μύλας τῶν λεόντων, ᾗ φησι τὰ θεῖα λόγια, συντρίψας, ἐπὶ ταὐτὸν αὖθις συνελθεῖν ἠξίωσε, δικαιότατα καὶ τῆς ποίμνης τὴν μάνδραν ἀνίστη, τοῦ καταισχῦναι ἐχθρὸν καὶ ἐκδικητὴν, καὶ ὡς ἂν ἔλεγχον ταῖς θεομάχοις τῶν ἀσεβῶν προαγάγοι τόλμαις.",
+     "text": ""
+    },
+    {
+     "number": 29,
+     "greek": "καὶ νῦν οἱ μὲν οὐκ εἰσὶν, οἱ θεομισεῖς, ὅτι μηδὲ ἦσαν· εἰς βραχὺ δὲ ταράξαντες καὶ ταραχθέντες, εὖθ’ ὑποσχόντες τιμωρίαν οὐ μεμπτὴν τῇ δίκῃ, ἑαυτοὺς καὶ φίλους καὶ οἴκους ἄρδην ἀναστάτους κατέστησαν, ὡς τὰς πάλαι στήλαις ἱεραῖς καταγραφείσας προρρήσεις ἔργοις πιστὰς ὀμολογεῖσθαι, δι’ ὧν τά τε ἄλλα ὁ θεῖος ἐπαληθεύει λόγος, ἀτὰρ καὶ τάδε περὶ αὐτῶν ἀποφαινόμενος·",
+     "text": ""
+    },
+    {
+     "number": 30,
+     "greek": "“ῥομφαίαν ἐσπάσαντο οἱ ἁμαρτωλοὶ, ἐνέτειναν τόξον αὐτῶν, τοῦ καταβαλεῖν πτωχὸν καὶ πένητα, τοῦ σφάξαι τοὺς εὐθεῖς τῇ καρδίᾳ· ἡ ῥομφαία αὐτῶν εἰσέλθοι εἰς καρδίαν αὐτῶν, καὶ τὰ τόξα αὐτῶν συντριβείη.” καὶ πάλιν “ἀπώλετο τὸ μνημόσυνον αὐτῶν μετ’ ἤχου, καὶ τὸ ὄνομα αὐτῶν ἐξήλειψας εἰς τὸν αἰῶνα, καὶ εἰς τὸν αἰῶνα τοῦ αἰῶνος· ὅτι δὴ καὶ ἐν κακοῖς γενόμενοι ἐκέκραξαν, καἰ οὐκ ἦν ὁ σώζων, πρὸς κύριον, καὶ οὐκ εἰσήκουσεν αὐτῶν. ἀλλ’ οἶ μὲν συνεποδίσθησαν καὶ ἔπεσον, ἡμεῖς δὲ ἀνέστημεν καὶ ἀνωρθώθημεν.’’ καὶ τό γε ἐν τούτοις προαναφωνοῦν ‘κύριε, ἐν τῇ πόλει σου τὴν εἰκόνα αὐτῶν ἐξουδενώσεις’’ ἀληθὲς ὑπ’ ὀφθαλμοῖς πάντων ἀναπέφανται.",
+     "text": ""
+    },
+    {
+     "number": 31,
+     "greek": "ἀλλ’ οἶ μὲν γιγάντων τρόπον θεομαχίαν ἐνστησάμενοι τοιαύτην εἰλήχασι τὴν τοῦ βίου καταστροφήν· τῆς δ’ ἐρήμου καὶ παρ’ ἀνθρώποις ἀπεγνωσμένης τοιαῦτα οἷα τὰ ὁρώμενα τῆς κατὰ θεὸν ὑπομονῆς τὰ τέλη, ὡς ἀναφωνεῖν αὐτῇ τὴν προφητείαν Ἠσαίου ταῦτα",
+     "text": ""
+    },
+    {
+     "number": 32,
+     "greek": "“εὐφράνθητι ἔρημος διψῶσα, ἀγαλλιάσθω ἔρημος, καὶ ἀνθείτω ὡς κρίνον· καὶ ἐξανθήσει καὶ ἀγαλλιάσεται τὰ ἔρημα. ἰσχύσατε χεῖρες ἀνειμέναι καὶ γόνατα παραλελυμένα· παρακαλέσατε, ὀλιγόψυχοι τῇ διανοίᾳ, ἰσχύσατε, μὴ φοβεῖσθε. ἰδοὺ ὁ θεὸς ἡμῶν κρίσιν ἀνταποδίδωσι καὶ ἀνταποδώσει, αὐτὸς ἥξει καὶ σώσει ἡμᾶς· ὅτι, φησὶν, ἐρράγη ἐν τῇ ἐρήμῳ ὕδωρ, καὶ φάραγξ ἐν γῇ διψώσῃ, καὶ ἡ ἄνυδρος ἔσται εἰς ἕλη, καὶ εἰς τὴν διψῶσαν γῆν πηγὴ ὕδατος ἔσται.’’",
+     "text": ""
+    },
+    {
+     "number": 33,
+     "greek": "καὶ τάδε μὲν λόγοις πάλαι προθεσπισθέντα βίβλοις ἱεραῖς καταβέβλητο· τά γε μὴν ἔργα οὐκέτ’ ἀκοαῖς, ἀλλ’ ἔργοις ἡμῖν παραδέδοται. ἡ ἔρημος ἥδε, ἡ ἄνυδρος, ἡ χήρα καὶ ἀπερίστατος, ἧς ὡς ἐν δρυμῷ ξύλων ἀξίναις ἐξέκοψαν τὰς πύλας ἐπὶ τὸ αὐτὸ, ἐν πέλυκι καὶ λαξευτηρίῳ συντρίψαντες αὐτὴν, ἧς καὶ τὰς βίβλους διαφθείραντες, ἐνεπύρισαν ἐν πυρὶ τὸ ἁγιαστήριον τοῦ θεοῦ, εἰς τὴν γῆν ἐβεβήλωσαν τὸ σκήνωμα τοῦ ὀνόματος αὐτοῦ, ἣν ἐτρύγησαν πάντες οἶ παραπορευόμενοι τὴν ὁδὸν, προκαθελόντες αὐτῆς τοὺς φραγμοὺς, ἣν ἐλυμήνατο ὗς ἐκ δρυμοῦ, καὶ μονιὸς ἄγριος κατενεμήσατο, Χριστοῦ δυνάμει παραδόξῳ νῦν, ὅτε θέλει αὐτὸς, γέγονεν ὡς κρίνον· ἐπεὶ καὶ τότε αὐτοῦ νεύματι, ὡσὰν προκηδομένου πατρὸς, ἐπαιδεύετο· ὃν γὰρ ἀγαπᾷ κύριος, παιδεύει, μαστιγοῖ δὲ πάντα υἱὸν ὃν παραδέχεται.",
+     "text": ""
+    },
+    {
+     "number": 34,
+     "greek": "μέτρῳ δῆτα κατὰ τὸ δέον ἐπιστραφεῖσα, αὖθις ἄνωθεν ἐξ ὑπαρχῆς ἀγαλλιᾶν προστάττεται, ἐξανθεῖ τε ὡς κρίνον, καὶ τῆς ἐνθέου εὐωδίας εἰς πάντας ἀποπνεῖ ἀνθρώπους· ὅτι, φησὶν, ἐρράγη έν τῇ ἐρήμῳ ὕδωρ, τὸ νᾶμα τῆς θείας τοῦ σωτηρίου λουτροῦ παλιγγενεσίας· καὶ νῦν γέγονεν ἡ πρὸ μικροῦ ἔρημος εἰς ἕλη, καὶ εἰς τὴν διψῶσαν γῆν ἔβρυσε πηγὴ ὕδατος ζῶντος· ἴσχυσάν τε ὡς ἀληθῶς χεῖρες αἱ τὸ πρὶν ἀνειμέναι, καὶ τῆς τῶν χειρῶν ἰσχύος ἔργα τάδε τὰ μεγάλα καὶ ἐναργῆ δείγματα· ἀλλὰ καὶ τὰ πάλαι σεσαθρωμένα καὶ παρειμένα γόνατα τὰς οἰκείας ἀπολαβόντα βάσεις, τὴν ὁδὸν τῆς θεογνωσίας εὐθυποροῦντα βαδίζει, ἐπὶ τὴν οἰκείαν ποίμνην τοῦ παναγάθου ποιμένος σπεύδοντα.",
+     "text": ""
+    },
+    {
+     "number": 35,
+     "greek": "εἰ δὲ καὶ ταῖς τῶν τυράννων ἀπειλαῖς τὰς ψυχάς τινες ἀπενάρκησαν, οὐδὲ τούτους ὁ σωτήριος ἀθεραπεύτους παρορᾷ λόγος· εὖ μάλα δὲ καὶ αὐτοὺς ἰώμενος εἰς τὴν τοῦ θείου παράκλησιν παρορμᾷ λέγων·",
+     "text": ""
+    },
+    {
+     "number": 36,
+     "greek": "“παρακαλέσατε, οἶ ὀλιγόψυχοι τῇ διανοίᾳ, ἰσχύσατε, μὴ φοβεῖσθε.” τούτων δεῖν ἀπολαῦσαι τὴν διὰ θεὸν γενομένην ἔρημον, τοῦ λόγου προαγορεύοντος ἐπακούσας ὀξείᾳ διανοίας ἀκοῇ οὗτος ὁ νέος ἡμῶν καὶ καλὸς Ζοροβάβελ, 5 μετὰ τὴν πικρὰν ἐκείνην αἰχμαλωσίαν καὶ τὸ βδέλυγμα τῆς ἐρημώσεως οὐ παριδὼν τὸ πτῶμα νεκρὸν, πρώτιστα πάντων παρακλήσεσι καὶ λιταῖς ἵλεων τὸν πατέρα μετὰ τῆς κοινῆς ὑμῶν ἁπάντων ὁμοφροσύνης καταστησάμενος, καὶ τὸν μόνον νεκρῶν ζωοποιὸν σύμμαχον παραλαβὼν καὶ συνεργὸν, τὴν πεσοῦσαν ἐξήγειρε, προαποκαθάρας καὶ προθεραπεύσας τῶν κακῶν· καὶ στολὴν οὐ τὴν ἐξ ἀρχαίου παλαιὰν αὐτῇ περιτέθεικεν, ἀλλ᾿ ὁποίαν αὖθις παρὰ τῶν θείων χρησμῶν ἐξεπαιδεύετο, σαφῶς ὧδε λεγόντων “καὶ ἔσται ἡ δόξα τοῦ οἴκου τούτου ἡ ἐσχάτη, ὑπὲρ τὴν προτέραν.”",
+     "text": ""
+    },
+    {
+     "number": 37,
+     "greek": "ταύτῃ δ᾿ οὖν πολὺ μείζονα τὸν χῶρον ἅπαντα περιλαβὼν, τὸν μὲν ἔξωθεν ὠχυροῦτο περίβολον τῷ τοῦ παντὸς περιτειχίσματι, ὡς ἂν ἀσφαλέστατον εἴη τοῦ παντὸς ἕρκος.",
+     "text": ""
+    },
+    {
+     "number": 38,
+     "greek": "πρόπυλον δὲ μέγα καὶ εἰς ὕψος ἐπηρμένον πρὸς αὐτὰς ἀνίσχοντος ἡλίου ἀκτῖνας ἀναπετάσας, ἤδη καὶ τοῖς μακρὰν περιβόλων ἔξω ἱερῶν ἑστῶσι τῆς τῶν ἔνδον παρέσχεν ἀφθονίαν θέας, μονονουχὶ καὶ τῶν ἀλλοτρίων τῆς πίστεως ἐπὶ τὰς πρώτας εἰσόδους ἐπιστρέφων τὰς ὄψεις, ὡς ἂν μὴ παρατρέχοι τις, ὅτι μὴ τὴν ψυχὴν κατανυγεὶς πρότερον μνήμῃ τῆς τε πρὶν : ἐρημίας, καὶ τῆς νῦν παραδόξου θαυματουργίας, ὑφ᾿ ἧς τάχα καὶ ἑλκυσθήσεσθαι κατανυγέντα, καὶ πρὸς αὐτῆς τῆς ὄψεως ἐπὶ τὴν εἴσοδον προτραπήσεσθαι ἤλπισεν.",
+     "text": ""
+    },
+    {
+     "number": 39,
+     "greek": "εἴσω δὲ παρελθόντι πυλῶν, οὐκ εὐθὺς ἐφῆκεν ἀνάγνοις καὶ ἀνίπτοις ποσὶ τῶν ἔνδον ἐπιβαίνειν ἁγίων, διαλαβὼν δὲ πλεῖστον ὅσον τὸ μεταξὺ τοῦ τε νεὼ καὶ τῶν πρώτων εἰσόδων, τέτταρσι μὲν πέριξ ἐγκαρσίοις κατεκόσμησε στοαῖς, εἰς τετράγωνόν τι σχῆμα περιφράξας τὸν τόπον, κίοσι πανταχόθεν ἐπαιρομέναις, ὧν τὰ μέσα διαφράγμασι τοῖς ἀπὸ ξύλου δικτυωτοῖς ἐς τὸ σύμμετρον ἥκουσι μήκους περικλείσας, μέσον αἴθριον ἠφίει εἰς τὴν τοῦ οὐρανοῦ κάτοψιν, λαμπρὸν καὶ ταῖς τοῦ φωτὸς ἀκτῖσιν ἀνειμένον ἀέρα παρέχον.",
+     "text": ""
+    },
+    {
+     "number": 40,
+     "greek": "ἱερῶν δ’ ἐνταῦθα καθαρσίων ἐτίθει σύμβολα, κρήνας ἄντικρυς εἰς πρόσωπον ἐπισκευάζων τοῦ νεὼ, πολλῷ τῷ χεύματι τοῦ νάματος τοῖς περιβόλων ἱερῶν ἐπὶ τὰ ἔσω προιοῦσι τὴν ἀπόρρυψιν παρεχομένας. καὶ πρώτη μὲν εἰσιόντων αὕτη διατριβὴ, κόσμον ὁμοῦ καὶ ἀγλαίαν τῷ παντὶ, τοῖς τε τῶν πρώτων εἰσαγωγῶν ἔτι δεομένοις κατάλληλον τὴν μονὴν παρεχομένη.",
+     "text": ""
+    },
+    {
+     "number": 41,
+     "greek": "ἀλλὰ γὰρ καὶ τὴν τούτων θέαν παραμειψάμενος, πλείοσιν ἔτι μᾶλλον τοῖς ἐνδοτάτω προπύλοις τὰς ἐπὶ τὸν νεὼν παρόδους ἀναπεπταμένας ἐποίει, ὑπὸ μὲν ταῖς ἡλίου βολαῖς αὖθις τρεῖς πύλας ὑφ’ ἒν καταθεὶς πλευρὸν, ὧν τὸ πολὺ τὰς παρ’ ἑκάτερα μεγέθει τε καὶ πλάτει πλεονεκτεῖν τῇ μέσῃ χαρισάμενος, παραπήγμασί τε χαλκοῦ σιδηροδέτοις καὶ ποικίλμασιν ἀναγλύφοις διαφερόντως αὐτὴν φαιδρύνας, ὡσὰν βασιλίδι ταύτῃ τοὺς δορυφόρους ὑπέζευξε.",
+     "text": ""
+    },
+    {
+     "number": 42,
+     "greek": "τὸν αὐτὸν δὲ τρόπον καὶ ταῖς παρ’ ἑκάτερα τοῦ παντὸς νεὼ στοαῖς τὸν τῶν προπύλων ἀριθμὸν διατάξας, ἄνωθεν ἐπὶ ταύταις ἄλλῳ πλείονι φωτὶ διαφόρους τὰς ἐπὶ τὸν οἶκον εἰσβολὰς ἐπενόει, ταῖς ἀπὸ ξύλου λεπτουργίαις καὶ τὸν περὶ αὐτὰς κόσμον καταποικίλλων. τὸν δὲ βασίλειον οἶκον πλουσιωτέραις ἤδη καὶ δαψιλέσι ταῖς ὕλαις ὠχύρου, ἀφθόνῳ φιλοτιμίᾳ τῶν ἀναλωμάτων χρώμενος.",
+     "text": ""
+    },
+    {
+     "number": 43,
+     "greek": "ἔνθα μοι δοκῶ περιττὸν εἶναι τοῦ δομήματος μήκη τε καὶ πλάτη καταγράφειν, τὰ φαιδρὰ ταῦτα κάλλη, καὶ τὰ λόγου κρείττονα μεγέθη, τήν τε τῶν ἔργων ἀποστίλβουσαν ὄψιν τῷ λόγῳ διεξιόντι, ὕψη τε τὰ οὐρανομήκη, καὶ τὰς τούτων ὑπερκειμένας πολυτελεῖς τοῦ Λιβάνου κέδρους, ὧν οὐδὲ τὸ θεῖον λόγιον τὴν μνήμην ἀπεσιώπησιν· “εὐφρανθήσεται’’ φάσκον “τὰ ξύλα τοῦ κυρίου, καὶ αἱ κέδροι τοῦ Λιβάνου ἃς ἐφύτευσε.”",
+     "text": ""
+    },
+    {
+     "number": 44,
+     "greek": "τί με δεῖ νῦν τῆς πανσόφου καὶ ἀρχιτεκτονικῆς διατάζεως καὶ τοῦ κάλλους τῆς ἐφ᾿ ἑκάστου μέρους ὑπερβολῆς ἀκριβολογεῖσθαι τὴν ὑφήγησιν, ὅτε τῆς ὄψεως τὴν διὰ τῶν ὤτων ἁποκλείει μάθησιν ἡ μαρτυρία; ἀλλὰ γὰρ ὧδε καὶ τὸν νεὼν ἐπιτελέσας, θρόνοις τε τοῖς ἀνωτάτων εἰς τὴν τῶν προέδρων τιμὴν, καὶ προσέτι βάθροις ἐν τάθει τοῖς καθ᾿ ὅλου κατὰ τὸ πρέπον κοσμήσας, ἐφ’ἅπασί τε τὸ τῶν ἁγίων ἅγιον θυσιαστήριον ἐν μέσῳ θεὶς, αὖθις καὶ τάδε, ὡς ἂν εἴη τοῖς πολλοῖς ἄβατα, τοῖς ἀπὸ ξύλου περιέφραττε δικτύοις, εἰς ἄκρον ἐντέχνου λεπτουργίας ἐξησκημένοις, ὡς θαυμάσιον τοῖς ὁρῶσι παρέχειν τὴν θέαν.",
+     "text": ""
+    },
+    {
+     "number": 45,
+     "greek": "ἀλλ᾿ οὐδὲ τοὔδαφος ἄρα εἰς ἀμελὲς ἔκειτο αὐτῷ· καὶ τόδε γοῦν λίθῳ μαρμάρῳ εὖ μάλα κόσμῳ παντὶ λαμπρύνας, ἤδη λοιπὸν καὶ ἐπὶ τὰ ἐκτὸς τοῦ νεὼ μετῄει, ἐξέδρας καὶ οἴκους τοὺς παρ᾿ ἑκάτερα μεγίστους ἐπισκευάζων εὐτέχνως, ἐπὶ ταυτὸν εἰς πλευρὰ τῷ βασιλείῳ συνεζευγμένους καὶ ταῖς ἐπὶ μέσον οἶκον εἰσβολαῖς ἡνωμένους· ἃ καὶ αὐτὰ τοῖς ἔτι καθάρσεως καὶ περιρραντηρίων τῶν διὰ ὕδατος καὶ ἁγίου πνεύματος ἐγχρῄζουσιν ὁ εἰρηνικώτατος ἠμῶν Σολομῶν ὁ τὸν νεὼν τοῦ θεοῦ δειμάμενος ἀπειργάζετο, ὡς μηκέτι λόγον, ἀλλ᾿ ἔργον γεγονέναι τὴν ἄνω λεχθεῖσαν προφητείαν.",
+     "text": ""
+    },
+    {
+     "number": 46,
+     "greek": "Γέγονε γὰρ καὶ νῦν, ὡς ἀληθῶς ἐστὶν ἡ δόξα τοῦ οἴκου τούτου ἠ ἐσχάτη ὑπὲρ τὴν προτέραν. ἔδει γὰρ καὶ ἀκόλουθον ἦν, τοῦ ποιμένος αὐτῆς καὶ δεσπότου ἅπαξ τὸν ὑπὲρ αὐτῆς θάνατον καταδεξαμένου, καὶ μετὰ τὸ πάθος ὃ χάριν αὐτῆς ῥυποῦν ἐνεδύσατο σῶμα, ἐπὶ τὸ λαμπρὸν καὶ ἔνδοξον μεταβεβληκότος, αὐτήν τε σάρκα τὴν λυθεῖσαν ἐκ φθορᾶς εἰς ἀφθαρσίαν ἀγαγόντος, καὶ τήνδε ὁμοίως τῶν τοῦ σωτῆρος οἰκονομιῶν ἐπαύρασθαι· ὅτι δὴ καὶ τούτων πολὺ κρείττονα λαβοῦσα παρ’ αὐτοῦ τὴν ἐπαγγελίαν, τὴν πολὺ μείζονα δόξαν τῆς παλιγγενεσίας ἐν ἀφθάρτου σώματος ἀναστάσει μετὰ φωτὸς ἀγγέλων χορείας ἐν τοῖς οὐρανῶν ἐπέκεινα τοῦ θεοῦ βασιλείοις σὺν αὐτῷ Χριστῷ Ἰησοῦ τῷ πανευεργέτῃ καὶ σωτῆρι διαρκῶς ἐπὶ τοὺς ἐξῆς αἰῶνας ἀπολαβεῖν ποθεῖ.",
+     "text": ""
+    },
+    {
+     "number": 47,
+     "greek": "ἀλλὰ γὰρ τέως ἐπὶ τοὐ παρόντος τούτοις ἡ πάλαι χήρα καὶ ἔρημος θεοῦ χάριτι περιβληθεῖσα τοῖς ἄνθεσι γέγονεν ἀληθῶς ὡς κρίνον, ᾗ φησιν ἡ προφητεία, καὶ τὴν νυμφικὴν ἀναλαβοῦσα στολὴν, τόν τε τῆς εὐπρεπείας περιθεμένη στέφανον, οἶα χορεύειν διὰ Ησαΐου παιδεύεται, τὰ χαριστήρια τῷ βασιλεῖ θεῷ φωναῖς εὐφήμοις γεραίρουσα, αὐτῆς λεγούσης ἐπακούσωμεν",
+     "text": ""
+    },
+    {
+     "number": 48,
+     "greek": "“ἀγαλλιάσθω ἡ ψυχή μου ἐπὶ τῷ κυρίῳ· ἐνέδυσε γάρ με ἱμάτιον σωτηρίου καὶ χιτῶνα εὐφροσύνης· περιέθηκέ μοι ὡς νυμφίῳ μίτραν, καὶ ὡς νύμφην κατεκόσμησέ με κόσμῳ, καὶ ὡς γῆν αὔξουσαν τὸ ἄνθος αὐτῆς· καὶ ὡς κῆπος τὰ σπέρματα αὐτοῦ ἀνατελεῖ, οὕτως κύριος κύριος ἀνέτειλε δικαιοσύνην καὶ ἀγαλλίαμα ἐνώπιον πάντων τῶν ἐθνῶν.”",
+     "text": ""
+    },
+    {
+     "number": 49,
+     "greek": "τούτοις μὲν οὖν αὕτη χορεύει· οἴοις δὲ καὶ ὁ νυμφίος λόγος ὁ οὐράνιος, αὐτὸς Ἰησοῦς Χριστὸς αὐτὴν ἀμείβεται, ἄκουε λέγοντος κυρίου “μὴ φοβοῦ ὅτι κατῃσχύνθης, μηδὲ ἐντραπῇς ὅτι ὠνειδίσθης· ὅτι αἰσχύνην αἰώνιον ἐπιλήσῃ, καὶ ὄνειδος τῆς χηρείας σου οὐ μὴ μνησθήσῃ. οὐχ ὡς γυναῖκα ἐγκαταλελειμμένην καὶ ὀλιγόψυχον κέκληκέ σε κύριος, οὐδ’ ὡς γυναῖκα ἐκ νεότητος μεμισημένην, εἶπεν ὁ θεός σου. χρόνον μικρὸν ἐγκατέλιπόν σε, καὶ ἐν ἐλέῳ μεγάλῳ ἐλεήσω σε· ἐν θυμῷ μικρῷ ἀπέ στρέψα τὸ πρόσωπόν μου ἀπὸ σοῦ, καὶ ἐν ἐλέῳ αἰωνίῳ ἐλεήσω σε, εἶπεν ὁ ῥυσάμενός σε κύριος.",
+     "text": ""
+    },
+    {
+     "number": 50,
+     "greek": "ἐξεγείρου, ἐξεγείρου ἡ πιοῦσα ἐκ χειρὸς κυρίου τὸ ποτήριον τοὐ θυμοῦ αὐτοῦ· ποτήριον γὰρ τῆς πτώσεως, τὸ κόνδυ τοῦ θυμοῦ μου, ἐξέπιες καὶ ἐξεκένωσας. καὶ οὐκ ἦν ὁ παρακαλῶν σε ἀπὸ πάντων τῶν τέκνων σου ὧν ἔτεκες, καὶ οὐκ ἦν ὁ ἀντιλαμβανόμενος τῆς χειρός σου. ἰδοὺ εἴληφα ἐκ τῆς χειρός σου τὸ ποτήριον τῆς πτώσεως, τὸ κόνδυ τοῦ θυμοῦ μου, καὶ οὐ προσθήσεις ἔτι πιεῖν αὐτό· καὶ δώσω αὐτὸ εἰς τὰς χεῖρας τῶν ἀδικησάντων σε καὶ τῶν ταπεινωσάντων σε.",
+     "text": ""
+    },
+    {
+     "number": 51,
+     "greek": "ἐξεγείρου, ἐξεγείρου, ἔνδυσαι τὴν ἰσχὺν, ἔνδυσαι τὴν δόξαν σου. ἐκτίναξαι τὸν χοῦν καὶ ἀνάστηθι. κάθισον, ἔκλυσαι τὸν δεσμὸν τοῦ τραχήλου σου. ἄρον κύκλῳ τοὺς ὀφθαλμούς σου καὶ ἴδε συνηγμένα τὰ τέκνα σου· ἰδοὺ συνήχθησαν καὶ ἦλθον πρός σε· ζῶ ἐγὼ, λέγει κύριος, ὅτι πάντας αὐτοὺς ὡς κόσμον ἐνδύσῃ καὶ περιθήσῃ αὐτοὺς ὡς κόσμον νύμφης, ὅτι τὰ ἔρημά σου καὶ τὰ διεφθαρμένα καὶ τὰ καταπεπτωκότα νῦν στενοχωρήσει ἀπὸ τῶν κατοικούντων σε· καὶ μακρυνθήσονται ἀπὸ σοῦ οἶ καταπίνοντές σε.",
+     "text": ""
+    },
+    {
+     "number": 52,
+     "greek": "ἐροῦσι γὰρ εἰς τὰ ὦτά σου οἶ υἱοί σου οὓς ἀπολώλεκας, στενός μοι ὁ τόπος, ποίησόν μοι τόπον ἵνα κατοικήσω. καὶ ἐρεῖς ἐν τῇ καρδίᾳ σου, τίς ἐγέννησέ μοι τούτους; ἐγὼ δὲ ἄτεκνος καὶ χήρα, τούτους δὲ τίς ἐξέθρεψέ μοι; ἐγὼ δὲ κατελείφθην μόνη, οὗτοι δέ μοι ποῦ ἦσαν;”",
+     "text": ""
+    },
+    {
+     "number": 53,
+     "greek": "ταῦτα Ἡσαΐας προεθέσπισε, ταῦτα πρόπαλαι περὶ ἡμῶν ἐν ἱεραῖς βίβλοις καταβέβλητο, ἐχρῆν δέ που τούτων τὴν ἀψεύδειαν ἤδη ποτὲ ἔργοις παραλαβεῖν.",
+     "text": ""
+    },
+    {
+     "number": 54,
+     "greek": "ἀλλὰ γὰρ τοιαῦτα τοῦ νυμφίου λόγου πρὸς τὴν ἑαυτοῦ νύμφην τὴν ἱερὰν καὶ ἁγίαν ἐκκλησίαν ἐπιφωνοῦντος, εἰκότως ὁ νυμφοστόλος ὅδε αὐτὴν τὴν ἔρημον, τὴν πτῶμα κειμένην, τὴν παρὰ ἀνθρώποις ἀνέλπιδα, ταῖς κοιναῖς ἁπάντων ὑμῶν εὐχαῖς, χεῖρας τὰς ὑμῶν αὐτῶν ὀρέξας, ἐξήγειρε καὶ ἐξανέστησε, θεοῦ τοῦ παμβασιλέως νεύματι καὶ τῆς Ἰησοῦ Χριστοῦ δυνάμεως ἐπιφανείᾳ, τοιαύτην τε ἀναστήσας κατεστήσατο, οἵαν ἐκ τῆς τῶν ἱερῶν χρησμῶν καταγραφῆς ἐδιδάσκετο.",
+     "text": ""
+    },
+    {
+     "number": 55,
+     "greek": "θαῦμα μὲν οὑν μέγιστον τοῦτο καὶ πέρα πάσης ἐκπλήξεως, μάλιστα τοῖς ἐπὶ μόνῃ τῇ τῶν ἔξωθεν φαντασίᾳ τὸν νοῦν προσανέχουσι. θαυμάτων δὲ θαυμασιώτερα τά τε ἀρχέτυπα, καὶ τούτων τὰ πρωτότυπα νοητὰ καὶ θεοπρεπῆ παραδείγματα, τῆς ἐνθέου φημὶ παὶ λογικῆς ἐν ψυχαῖς οἰκοδομῆς ἀνανεώματα·",
+     "text": ""
+    },
+    {
+     "number": 56,
+     "greek": "ἣν αὐτὸς ὁ θεόπαις κατ’ εἰκόνα τὴν αὐτὸς αὐτοῦ δημιουργήσας, πάντῃ τε καὶ κατὰ πάντα τὸ θεοείκελον δεδωρημένος, ἄφθαρτον φύσιν, ἀσώματον, λογικὴν, πάσης γεώδους ὕλης ἀλλοτρίαν, αὐτονοερὰν οὐσίαν, ἅπαξ τὸ πρῶτον ἐκ τοῦ μὴ ὄντος εἰς τὸ εἶναι συστησάμενος, νύμφην ἁγίαν καὶ νεὼν πανίερον ἑαυτῷ τε καὶ τῷ πατρὶ κατειργάσατο. ὃ καὶ σαφῶς αὐτὸς ὁμολογῶν ἐκφαίνει, λέγων “ἐνοικήσω ἐν αὐτοῖς καὶ ἐμπεριπατήσω, καὶ ἔσομαι αὐτῶν θεὸς, καὶ αὐτοὶ ἔσονταί μοι λαός.’’ καὶ τοιαύτη μὲν ἡ τελεία καὶ κεκαθαρμένη ψυχὴ, ἀρχῆθεν οὕτω γεγενημένη, οἵα τὸν οὐράνιον λόγον ἀγαλματοφορεῖν.",
+     "text": ""
+    },
+    {
+     "number": 57,
+     "greek": "ἀλλὰ γὰρ φθόνῳ καὶ ζήλῳ τοῦ φιλοπονήρου δαί- μόνος φιλοπαθὴς καὶ φιλοπόνηρος ἐξ αὐτεξουσίου αἱρέσεως γενομένη, ὑπαναχωρήσαντος αὐτῆς τοῦ θείου ὡσὰν ἔρημος προστάτου, εὐάλωτος καὶ εἰ ἐπιβουλὴν εὐχερὴς τοῖς ἐκ μακροῦ διαφθονούμενοι ἀπελήλεγκται, ταῖς τε τῶν ἀοράτων ἐχθρῶν καὶ νοητῶν πολεμίων ἑλεπόλεσι καὶ μηχαναῖς καταβληθεῖσα, πτῶμα ἐξαίσιον καταπέπτωκεν, εἰς ὅσον οὐδ’ ἐπὶ λίθῳ λίθον τῆς ἀρετῆς ἑστῶτα ἐν αὐτῇ διαμεῖναι, ὅλην δὲ διόλου χαμαὶ κεῖσθαι νεκρὰν, τῶν περὶ θεοῦ φυσικῶν ἐννοιῶν πάμπαν ἀπεστερημένην.",
+     "text": ""
+    },
+    {
+     "number": 58,
+     "greek": "πεπτωκυῖαν δὴ ταύτην ἐκείνην τὴν κατ’ εἰκόνα θεοῦ κατασκευασθεῖσαν ἐλυμήνατο οὐχ οὓς οὗτος ὁ ἐκ δρυμοῦ τοῦ παρ’ ἡμῖν ὁρατοῦ, ἀλλά τις φθοροποιὸς δαίμων, καὶ θῆρες ἄγριοι νοητοὶ, οἱ καὶ τοῖς πάθεσιν οἷα πεπυρακτωμένοις τῆς σφῶν κακίας βέλεσιν αὐτὴν ἐξυφάψαντες, ἐνεπύρισαν ἐν πυρὶ τὸ θεῖον ὄντως ἁγιαστήριον τοῦ θεοῦ, εἰς τὴν γῆν τε ἐβεβήλωσαν τὸ σκήνωμα τοῦ ὀνόματος αὐτοῦ· εἶτα πολλῷ τῷ προσχώματι τὴν ἀθλίαν κατορύξαντες, εἰς ἀνέλπιστον πάσης περιέτρεψαν σωτηρίας.",
+     "text": ""
+    },
+    {
+     "number": 59,
+     "greek": "ἀλλ’ ὅ γε κηδεμὼν αὐτῆς λόγος, ὁ θεοφεγγὴς καὶ σωτήριος, τὴν κατ’ ἀξίαν δίκην τῶν ἁμαρτημάτων ὑποσχοῦσαν αὖθις ἐξ ὑπαρχῆς ἀνελάμβανε, πατρὸς παναγάθου φιλανθρωπίᾳ πειθόμενος.",
+     "text": ""
+    },
+    {
+     "number": 60,
+     "greek": "αὐτὰς δὴ οὖν πρώτας τὰς τῶν ἀνωτάτω βασιλευόντων ψυχὰς προελόμενος, τῶν μὲν δυσσεβῶν καὶ ὀλεθρίων πάντων, αὐτῶν τε τῶν δεινῶν καὶ θεομισῶν τυράννων τὴν οἰκουμένην ἅπασαν δι’ αὐτῶν τῶν θεοφιλεστάτων ἐκαθήρατο· εἶτα δὲ τοὺς αὐτῷ γνωρίμους ἄνδρας, τοὺς πάλαι διὰ βίου ἱερωμένους αὐτῷ, κρύβδην γε μὴν ὡς ἐν κακῶν χειμῶνι πρὸς τῆς αὐτοῦ σκέπης καλυπτομένους, εἰς φανερὸν ἀγαγὼν, καὶ ταῖς τοῦ πνεύματος μεγαλοδωρεαῖς ἐπαξίως τιμήσας, αὖθις καὶ διὰ τούτων τὰς μικρῷ πρόσθεν ἐρρυπωμένας ψυχὰς, ὕλης τε παντοίας καὶ χώματος ἀσεβῶν ἐπιταγμάτων συμπεφορημένας, ὄρυξι καὶ δικέλλαις ταῖς πληκτικαῖς τῶν μαθημάτων διδασκαλίαις ἐξεκάθηρέ τε καὶ ἀπέσμηξε·",
+     "text": ""
+    },
+    {
+     "number": 61,
+     "greek": "λαμπρόν τε καὶ διαυγῆ τῆς πάντων ὑμῶν διανοίας τὸν χῶρον ἀπειργασμένος, ἐνταῦθα λοιπὸν τῷ πανσόφῳ καὶ θεοφιλεῖ τῷδε παραδέδωκεν ἡγεμόνι, ὃς τά τε ἄλλα κριτικὸς καὶ ἐπιλογιστικὸς τυγχάνων, τὴν τῶν αὐτῷ κεκληρωμένων ψυχῶν εὑ διαγινώσκων καὶ φυλοκρινῶν διάνοιαν, ἐκ πρώτης ὡς εἰπεῖν ἡμέρας οἰκοδομῶν οὔπω καὶ εἰς δεῦρο πέπαυται, τοτὲ μὲν διαυγῆ τὸν χρυσὸν, τοτὲ δὲ δόκιμον καὶ καθαρὸν τὸ ἀργύριον καὶ τοὺς τιμίους καὶ πολυτελεῖς λίθους ἐν πᾶσιν ὑμῖν ἁρμόττων, ὡς ἱερὰν αὖθις καὶ μυστικὴν ἔργοις τοῖς εἰς ὑμᾶς ἀποπληροῦν προφητείαν, δι’ ἧς εἴρηται",
+     "text": ""
+    },
+    {
+     "number": 62,
+     "greek": "“ἰδοὺ ἐγὼ ἑτοιμάζω σοι ἄνθρακα τὸν λίθον σου, καὶ τὰ θεμέλιά σου σάπφειρον, καὶ τὰς ἐπάλξεις σου ἴασπιν, καὶ τὰς πύλας σου λίθους κρυστάλλου, καὶ τὸν περίβολόν σου λίθους ἐκλεκτοὺς, καὶ πάντας τοὺς υἱούς σου διδακτοὺς θεοῦ 5 καὶ ἐν πολλῇ εἰρήνη τὰ τέκνα σου· καὶ ἐν δικαιοσύνῃ οἰκοδομηθήσῃ.”",
+     "text": ""
+    },
+    {
+     "number": 63,
+     "greek": "δικαιοσύνῃ δῆτα οἰκοδομῶν κατ’ ἀξίαν τοῦ παντὸς λαοῦ διῄρει τὰς δυνάμεις, οἷς μὲν τὸν ἔξωθεν αὐτὸ μόνον περιφράττων περίβολον, τὴν ἀπλανῆ πίστιν περιτειχίσας, πολὺς δὲ ὁ τοιοῦτος καὶ μέγας λεὼς, οὐδὲν κρεῖττον φέρειν οἰκοδόμημα διαρκῶν), οἷς δὲ τὰς ἐπὶ τὸν οἶκον ἐπιτρέπων εἰσόδους, θυραυλεῖν καὶ ποδηγεῖν τοὺς εἰσιόντας κατατάττων, οὐκ ἀπεικότως τοῦ νεὼ πρόπυλα νενομισμένους, ἄλλους δὲ πρώτοις τοῖς ἔξωθεν ἀμφὶ τὴν αὐλὴν ἐκ τετραγώνου κίοσιν ὑπεστήριζε, ταῖς πρώταις τῶν τεττάρων εὐαγγελίων τοῦ γράμματος προβολαῖς ἐμβιβάζων, τοὺς δ’ ἤδη ἀμφὶ τὸν βασίλειον οἶκον ἑκατέρωθεν παραζεύγνυσιν, ἔτι μὲν κατηχουμένους καὶ ἐν αὔξῃ καὶ προκοπῇ καθεστῶτας, οὐ μὴν πόρρω που καὶ μακρὰν τῆς τῶν ἐνδοτάτω θεοπτίας τῶν πιστῶν διεζευγμένους·",
+     "text": ""
+    },
+    {
+     "number": 64,
+     "greek": "ἐκ δὴ τούτων τὰς ἀκηράτους ψυχὰς θείῳ λουτρῷ χρυσοῦ δίκην ἀποσμηχθείσας παραλαβὼν, κἀνταῦθα τοὺς μὲν κίοσι τῶν ἐξωτάτω πολὺ κρείττοσιν ἐκ τῶν ἐνδοτάτω μυστικῶν τῆς γραφής δογμάτων ὐποστηρίζει, τοὺς δὲ τοῖς πρὸς τὸ φῶς ἀνοίγμασι καταυγάζει.",
+     "text": ""
+    },
+    {
+     "number": 65,
+     "greek": "προπύλῳ μὲν ἐνὶ μεγίστῳ τῆς τοῦ παμβασιλέως ἑνὸς καὶ μόνου θεοῦ δοξολογίας τὸν πάντα νεὼν κατακοσμῶν, Χριστοῦ δὲ καὶ τοῦ ἁγίου πνεύματος παρ’ ἑκάτερα τῆς τοῦ πατρὸς αὐθεντίας τὰς δευτέρας αὐγὰς τοῦ φωτὸς παρασχόμενος, τῶν τε λοιπῶν διὰ τοῦ παντὸς οἴκου ἄφθονον καὶ πολὺ διάφορον τῆς καθ’ ἕκαστον ἀληθείας τὸ σαφὲς καὶ φωτεινὸν ἐνδεικνύμενος, πάντη δὲ καὶ πανταχόθεν τοὺς ζῶντας καὶ βεβηκότας καὶ εὐπαγεῖς τῶν ψυχῶν λίθους ἐγκρίνας, τὸν μέγαν καὶ βασιλικὸν ἐξ ἁπάντων οἶκον ἐπισκευάζεται, λαμπρὸν καὶ φωτὸς ἔμπλεω τά τε ἔνδοθεν καὶ τὰ ἐκτὸς, ὅτι μὴ ψυχὴ μόνον καὶ διάνοια, καὶ τὸ σῶμα δὲ αὐτοῖς ἁγνείας καὶ σωφροσύνης πολυανθεῖ κόσμῳ κατηγλάϊστο.",
+     "text": ""
+    },
+    {
+     "number": 66,
+     "greek": "ἔνεισι δ’ ἐν τῷδε τῷ ἱερῷ καὶ θρόνοι βάθρα τε μυρία καὶ καθιστήρια, ἐν ὅσαις ψυχαῖς τὰ τοῦ θείου πνεύματος ἐφιζάνει δωρήματα, οἷα καὶ πάλαι ὤφθη τοῖς ἀμφὶ τοὺς ἱεροὺς ἀποστόλους, οἷς ἐφάνησαν διαμεριζόμεναι γλῶσσαι ὡσεὶ πυρὸς, ἐκάθισάν τε ἐφ’ ἔνα ἕκαστον αὐτῶν.",
+     "text": ""
+    },
+    {
+     "number": 67,
+     "greek": "ἀλλ’ ἐν μὲν τῷ πάντων ἄρχοντι ἴσως αὐτὸς ὅλος ἐγκάθηται Χριστὸς, ἐν δὲ τοῖς μετ’ αὐτὸν δευτερεύουσιν ἀναλόγως, καθ’ ὅσον ἕκαστος χωρεῖ Χριστοῦ δυνάμεως καὶ πνεύματος ἁγίου μερισμούς. βάθρα δ’ ἂν εἷεν καὶ ἀγγέλων καὶ αἵ τινων ψυχαὶ, τῶν εἰς παιδαγωγίαν καὶ φρουρὰν ἑκάστῳ παραδεδομένων.",
+     "text": ""
+    },
+    {
+     "number": 68,
+     "greek": "σεμνὸν δὲ καὶ μέγα καὶ μονογενὲς θυσιαστήριον ποῖον ἂν εἴη ἢ τῆς τοῦ κοινοῦ πάντων ἱερέως τῆς ψυχῆς τὸ εἰλικρινὲς καὶ ἁγίων ἅγιον; ᾧ παρεστὼς ἐπὶ δεξιᾷ ὁ μέγας τῶν ὅλων ἀρχιερεὺς αὐτὸς Ἰησοῦς, ὁ μονογενὴς τοῦ θεοῦ, τὸ παρὰ πάντων εὐῶδες θυμίαμα καὶ τὰς δι’ εὐχῶν ἀναίμους καὶ ἀύλους θυσίας φαιδρῷ τῷ βλέμματι καὶ ὑπτίαις ὑποδεχόμενος χερσὶ, τῷ κατ’ οὐρανὸν πατρὶ καὶ θεῷ τῶν ὅλων παραπέμπεται, πρῶτος αὐτὸς προσκυνῶν, καὶ μόνος τῷ πατρὶ τὸ κατ’ ἀξίαν ἀπονέμων σέβας, εἶτα δὲ καὶ πᾶσιν ἡμῖν εὐμενῆ διαμένειν καὶ δεξιὸν εἰς ἀεὶ παραιτούμενος.",
+     "text": ""
+    },
+    {
+     "number": 69,
+     "greek": "τοιοῦτος ὁ μέγας νεὼς, ὃν καθ’ ὅλης τῆς ὑφ’ ἥλιον οἰκουμένης ὁ μέγας τῶν ὅλων δημιουργὸς λόγος συνεστήσατο, τῶν ἐπέκεινα οὐρανίων ἁψίδων πάλιν καὶ αὐτὸς νοερὰν ταύτην ἐπὶ γῆς εἰκόνα κατεργασάμενος, ὡς ἂν διὰ πάσης τῆς κτίσεως τῶν τε ἐπὶ γῆς λογικῶν ζῴων ὁ πατὴρ αὐτῷ τιμῷτό τε καὶ σέβοιτο.",
+     "text": ""
+    },
+    {
+     "number": 70,
+     "greek": "τὸν δ’ ὑπερουράνιον χῶρον καὶ τὰ ἐκεῖσε τῶν τῇδε παραδείγματα, τήν τε ἄνω λεγομένην Ἱερουσαλὴμ καὶ τὸ Σιῶν ὅρος τὸ ἐπουράνιον, καὶ τὴν ὑπερκόσμιον πόλιν τοῦ ζῶντος θεοῦ, ἐν ᾗ μυριάδες ἀγγέλων πανηγύρεις καὶ ἐκκλησία πρωτοτόκωνπογεγραμμένων ἀ ἐν οὐρανοῖς ταῖς ἀρρήτοις καὶ ἀνεπιλογίστοις ἡμῖν θεολογίαις τὸν σφῶν ποιητὴν καὶ πανηγεμόνα τῶν ὅλων γεραίρουσιν, οὔτις θνητὸς οἶός τε κατ’ ἀξίαν ὑμνῆσαι, ὅτι δὴ ὀφθαλμὸς οὐκ εἶδε καὶ οὖς οὐκ ἤκουσε, καὶ ἐπὶ καρδίαν ἀνθρώπου οὐκ ἀνέβη, αὐτὰ δὴ ταῦτα ἃ ἡτοίμασεν ὁ θεὸς τοῖς ἀγαπῶσιν αὐτόν.",
+     "text": ""
+    },
+    {
+     "number": 71,
+     "greek": "ὧν ἤδη ἐν μέρει καταξιωθέντες ἄνδρες ἅμα παισὶ καὶ γυναιξὶ, μικροὶ καὶ μεγάλοι, πάντες ἀθρόως ἐν ἐνὶ πνεύματι καὶ μιᾷ ψυχῇ μὴ διαλίπωμεν ἐξομολογούμενοι, καὶ τὸν τῶν τοσούτων ἡμῖν ἀγαθῶν παραίτιον ἀνευφημοῦντες, “τὸν εὐιλατεύοντα πάσαις ταῖς ἀνομίαις ἡμῶν, τὸν ἰώμενον πάσας τὰς νόσους ἡμῶν, τὸν λυτρούμενον ἐκ φθορᾶς τὴν ζωὴν ἡμῶν, τὸν στεφανοῦντα ἡμάς ἐν ἐλέει καὶ οἰκτιρμοῖς, τὸν ἐμπιμπλῶντα ἐν ἀγαθοῖς τὴν ἐπιθυμίαν ἡμῶν, ὅτι οὐ κατὰ τὰς ἁμαρτίας ἡμῶν ἐποίησεν ἡμῖν, οὐδὲ κατὰ τὰς ἀνομίας ἡμῶν ἀνταπέδωκεν ἡμῖν, ὅτι καθ’ ὅσον ἀπέχουσιν ἀνατολαὶ ἀπὸ δυσμῶν, ἐμάκρυνεν ἀφ’ ἡμῶν τὰς ἀνομίας ἡμῶν· καθὼς οἰκτείρει πατὴρ υἱοὺς αὐτοῦ, ᾠκτείρησε κύριος τοὺς φοβουμένους αὐτόν.’’",
+     "text": ""
+    },
+    {
+     "number": 72,
+     "greek": "ταῦτα καὶ νῦν καὶ εἰς τοὺς ἐξῆς ἅπαντας χρόνους ταῖς μνήμαις ἀναζωπυροῦντες, ἀτὰρ καὶ τῆς παρούσης πανηγύρεως καὶ τῆς φαιδρᾶς ταύτης καὶ λαμπροτάτης ἡμέρας τὸν αἴτιον καὶ πανηγυριάρχην νύκτωρ καὶ μεθ’ ἡμέραν διὰ πάσης ὥρας καὶ δι’ ὅλης, ὡς εἰπεῖν, ἀναπνοῆς ἐν νῷ προορώμενοι, στέργοντες καὶ σέβοντες ψυχῆς ὅλῃ δυνάμει, καὶ νῦν ἀναστάντες, μεγάλῃ διαθέσεως φωνῇ καθικετεύσωμεν, ὡς ἂν ὑπὸ τὴν αὐτοῦ μάνδραν εἰς τέλος ἡμᾶς σκεπάζων διασώζοιτο, τὴν παρ’ αὐτοῦ βραβεύων ἀρραγῆ καὶ ἄσειστον αἰωνίαν εἰρήνην, ἐν Χριστῷ Ἰησοῦ τῷ σωτῆρι ἡμῶν, δι’ οὗ αὐτῷ ἡ δόξα εἰς τοὺς σύμπαντας αἰῶνας τῶν αἰώνων. Ἀμήν.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Φέρε δὴ λοιπὸν καὶ τῶν βασιλικῶν διατάξεων Κωνσταντίνου καὶ Λικιννίου τὰς ἐκ τῆς Ῥωμαίων φωνῆς μεταληφθείσας ἑρμηνείας παραθώμεθα. Ἀντίγραφον βασιλικῶν διατάξεων ἐκ Ῥωμαϊκῆς γλώσσης μεταληφθεισῶν.",
+     "text": "But come, let us now quote also the translations made from the Latin of the imperial ordinances of nstantine and Licinus. Copy of Imperial Ordinances translated from the Latin tongue.1 In our watchfulness in days gone by that freedom f worship should not be denied, but that each one rding to his mind and purpose should have uthority given him to care for divine things in the way that pleased him best, we had given orders that th to the Christians [and to all others liberty should allowed]1 to keep to the faith of their own sect d worship. But inasmuch as many and various conitions2 seemed clearly to have been added in that reipt, in which such rights were conceded to the same rsons, it may be that perchanee some of them were ortly afterwards repelled from such observance. “ When I Constantine Augustus and I Lincinius gustus had come under happy auspices to Milan, d discussed all matters that concemed the public vantage and good, among the other things that eemed to be of benefit to the many 3—or rather, first and foremost — we resolved to make sueh decrees should secure respect and reverenee for the Deity Deity ; namely, to grant both to the Christians and to all free choice of following whatever form of worship ey pleased, to the intent that all the dirine and eavenly powers that be might be favourable to us d all those living under our authority. Therefore with sound and most upright reasoning we resolved this 4 counsel : that authority be refused to no one homsoever to follow and choose the observanee or rm of worship that Christians use, and that authority e granted to each one to give his mind to that form f worship which he deems sritable to himself, to e intent that the Dininity 5 . . . may in all things ord us his wonted care and generosity. It was omitting to send a rescript that this is our pleasure, in er that when those conditions had altogether been moved, which were contained in our former letters nt to thy Devotedness, concerning the Christians, ose things also which seemed to be wholly unfortute and foreign to our clemency might be removed, d that now each one of those who were possessed the same purpose—namely, to observe istians’ form of worship—should ry thing, freely and simply, without any hindrance. ich things we have resolved, to signify in the est manner to thy Carefulness, to the intent that u mayest know that we have granted to these e Christians free and unrestricted authority to erve their own form of worship. And when thou rceivest that this has been granted unrestrictedly them by us, thy Devotedness will understand at authority has been given to others also, who h to follow their own observance and form of rship—a thing clearly suited to the our times—so that each one may have choose and observe whatever form he pleases. is has been done by us, to the intent that we would not seem to have detraeted in any way from y rith 2 or form of worship. “And this, moreover, with special regard to the istians, we resolve: That their places, at which was their former wont to assemble, coneerning ich also in the former letter dispatched to thy evotedness a definite ordinance 3 had been formerly d down, if any should appear to have bought them ther from our treasury or from any other source — at these they should restore to these same ristians without payment or any demand for compensation. Setting aside all negligence and doubtfulness; and if any chanee to have received them by girt, that they should restore them them all speed to these same Christians: prorided that if either those who have purchased these same place or those who have received them by gift request aught of our generosity, let them approach the prefect of the district,1 to the intent that through our Kindness thought may be taken for them also. All which things must be handed over to the corporation of the Christians by thy zealous care immediately and without delay. “And inasmuch as these same Christians had not only those places at whieh it was their wont to assemble, but also are known to have had Other, belonging not to indiniduals among them, but to the lawful property of their corporation, that is, of the Christians, all these, under the provisions of the law set forth above, thou wilt give orders to be restored without any question whatsoever to these same Christians, that is, to their corporation and assembly; provided always, of course, a aforesaid, that those persons who restoie the same without compensation, as we have mentioned above, may look for indemnification, as far as they are concerned, from our generosity. “In all these things thou Shouldest use all the diligence in thy power for the above-mentioned corporation of the Christians, that this our command may be fulfilled with all speed, so that in this also, through our kindness, thought may be taken for the common and publie peace. For by this method, as we have also said before, the divine care for us, which we have already experienced in many matters, will remain stedfast1 . . . continually. And that the form which this our enactment and generosity takes may be brought to the knowledge of all, it is fitting that this which we have written be set forth by thy order and published everywhere, and brought to the knowledge of all, to the intent that the enactment which embodies this our gnerosity may escape the notice of no one.’’ Copy of another Imperial Ordinance which he also made, indicating that the bounty had been granted to the Catholic Church alone. ‘‘Greeting, Anulinus, our most honoured Sir. It is the custom of our benevolence, that we will that whatsoever appertains by right to another should not only not suffer harm, but even be restored, most honoured Anulinus. Wherefore we will that, when thou receivest this lerter, if aught of those things that belonged to the catholic Church 2 of the Christians in any city, or even in other plaees, be now in the possession either of citizens or of any others: these thou shouldest cause to be restored forthwith to these same churches, inasmueh as it has been our determination that those things which these same churches possessed formerly should be restored to them as their right. Since, therefore, thy Devotedness perceives that the order of this our command is most explicit, do thy diligence that all things, whether gardens or buildings or whatsover belonged to these same churches by right, restored to them with all speed; so that we may learn that thou hast yielded the most careful obedience to this our order. Fare thee well, Anulinus, our most honoured and esteemed Sir.” Copy of an Imperial Letter, in which he commands holding of a Synod of bishops at Rome on behalf of the union and concord of the churches. “Constantine Augustus to Miltiades bishop of the , and to Mark. Inasmuch as documents of such a nature have been sent to me in numbers by Anulinus, the right honourable proconsul of Africa, m which it appears that Caecilian,1 the bishop of the ity of the Carthaginians, is called to aecount on many charges by some of his colleagues in Africa; d inasmuch as it seems to me to be a very serious tter that in those prorinces, which Dinine Pronience has chosen to entrust to my Denotedness, and where there is a great number of people, the ultitude should be found pursring the worse course f action, splitting up, as it were, and the bishops at ariance mnong themselves: it seemed good to me t Caecilian himself, with ten bishops, who seem call him to account, and such ten others as he ay deem necessary to his suit, should set sail for me, that there a hearing may be granted him in the presence of yourselves, and moreover of Reticius d Maternus and Marinus also, your colleagues aditor, i.e. had surrendered up the Scriptures to the pagan (whom I have ordered to hasten to Rome for this purpose), in such a manner as ye may perceive to be in accordance vith the most saered law. Nevertheless, that ye may have the fullest knowledge of all these same matters, I have subjoined to my letter copies of the documents that were sent to me by Anulinus, and have dispatehed them to your afore said colleagues. Which when your Firmness reads, he will gauge by what method the most eareful investigation can be made of the above-mentioned suit, and a just deeision arrived at; since it does not escape the notice of your Carefulness that the respect which I pay to the lawful Catholic Church is so great, that it is my wish that ye should leave no schism whatsoever or division in any plaee. May the divinity of the great God preserve 1 you Safely for many years, most honoured Sirs.2’’ Copy of an Imperial Letter, in which he gives orders for the holding of a second Synod for the purpose of removing all dinision among the bishops. “Constantine Augustus to Chrestus bishop of the Syracusans. Already on a former occasion, when some in a base and perverse manner began to create divisions with regard to the worship of the holy and heavenly Power and the Catholic religion, in my desire to cut short such dissensions among them, I had given orders to the effect that certain bishops should be sent from Gaul, nay further, that the opposing parties, who were contending stubbornly and persistently together, should be sunnnoned from Africa; that so, in the presence also of the bishop of Rome, this question which appeared to have been raised might through their comming receive a right solution by means of a careful examination in every particular. But since, as it happens, some, forgetful both of their own salvation and the reverence they owe to their most holy religion, even now do not cease to perpetuate their private enmities, being unwilling to conform to the judgement already passed, affirming that after all it was a few persons who gave their opinions and decisions, or that they were in a hurry psss judgement very speedily and sharply without having first accurately examined all those matters that ought to have been investigated; and since, as a result of all this, it has come to pass that even those very persons, who ought to be of one mind in brotherly concord, are separate from each other in a disgraceful, nay rather in an abominable, fashion, and give to those men whose souls are strangers to this most holy religion to scoff—wherefore it became incumbent upon me to provide that that which ought to have ceased by voluntary agreement, after the judgement akeady passed, may even now, if possible, be ended by the presence of many persons. Inasmuch, therefore, as we have commanded that very many bishops from various and numberless places should assemble at the city of Arles by the Kalends of August, we have thought it d to write to thee aho, that thou shouldest procure m the right honourable Latronianus, the “corrector1” of Sicily, a public vehicle, and joining to thy company two others of those of the second rank,1 whomsoever thou thyself mayest decide to choose, and, moreover, taking with you three servants who shall be able to artend upon you on the way, do thou be present at the above-mentioned place by that same day; so that both by thy Firmness and by the unanimous wisdom of the others assembled, this quarrel also (which hitherto, by reason of certain disgraceful contentions, has maintained a miserable existence), when all has been heard that will be said those who are now at variance among themselves, whom likewise we have commanded to be present, may, if onIy tardily, give place to a due state of religion and faith and brotherly coneord. May the ighty God preserve thec in good health for many years.”"
+    },
+    {
+     "number": 2,
+     "greek": "“Ἤδη μὲν πάλαι σκοποῦντες τὴν ἐλευθερίαν τῆς θρησκείας οὐκ ἀρνητέαν εἶναι, ἀλλ’ ἑνὸς ἑκάστου τῇ διανοίᾳ καὶ βουλήσει ἐξουσίαν δοτέον τοῦ τὰ θεῖα πράγματα τημελεῖν κατὰ τὴν αὐτοῦ προαίρεσιν, ἕκαστον κεκελεύκειμεν, τοῖς τε Χριστιανοῖς, τῆς αἱρέσεως καὶ τῆς θρησκείας τῆς ἑαυτῶν τὴν πίστιν φυλάττειν.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἀλλ’ ἐπειδὴ πολλαὶ καὶ διάφοροι αἱρέσεις ἐν ἐκείνῃ τῇ ἀντιγραφῇ, ἐν ᾗ τοῖς αὐτοῖς συνεχωρήθη ἡ τοιαύτη ἐξουσία, ἐδόκουν προστεθεῖσθαι σαφῶς, τυχὸν ἴσως τινὲς αὐτῶν μετ’ ὀλίγον ἀπὸ τῆς τοιαύτης παραφυλάξεως ἀνεκρούοντο.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὁπότε εὐτυχῶς ἐγὼ Κωνσταντῖνος ὁ Αὔγουστος κἀγὼ Λικίννιος ὁ Αὔγουστος ἐν τῇ Μεδιολάνῳ ἐληλύθειμεν, καὶ πάντα ὅσα πρὸς τὸ λυσιτελὲς καὶ τὸ χρήσιμον τῷ κοινῷ διέφερεν, ἐν ζητήσει ἔσχομεν, ταῦτα μεταξὺ τῶν λοιπῶν, ἅτινα ἐδόκει ἐν πολλοῖς ἅπασιν ἐπωφελῆ εἶναι, μᾶλλον δὲ ἐν πρώτοις διατάξαι ἐδογματίσαμεν, οἷς ἡ πρὸς τὸ θεῖον αἰδώς τε καὶ τὸ σέβας ἐνείχετο, τοῦτ’ ἔστιν, ὅπως δῶμεν καὶ τοῖς Χριστιανοῖς καὶ πᾶσιν ἐλευθέραν αἵρεσιν τοῦ ἀκολουθεῖν τῇ θρησκείᾳ, ᾗ δ’ ἂν βουληθῶσιν· ὅπως, ὅ τί ποτέ ἐστι θειότης καὶ οὐρανίου πράγματος, ἡμῖν καὶ πᾶσι τοῖς ὑπὸ τὴν ἡμετέραν ἐξουσίαν διάγουσιν εὐμενὲς εἶναι δυνηθῇ.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "τοίνυν ταύτην τὴν βούλησιν τὴν ἡμετέραν ὑγιεινῷ καὶ ὀρθοτάτῳ λογισμῷ ἐδογματίσαμεν, ὅπως μηδενὶ παντελῶς ἐξουσία ἀρνητέα ᾖ τοῦ ἀκολουθεῖν καὶ αἱρεῖσθαι τὴν τῶν Χριστιανῶν παραφύλαξιν ἢ θρησκείαν, ἑκάστῳ τε ἐξουσία δοθείη τοῦ διδόναι ἑαυτοῦ τὴν διάνοιαν ἐν ἐκείνῃ τῇ θρησκείᾳ, ἣν αὐτὸς ἑαυτῷ ἁρμόζειν νομίζῃ, ὅπως ἡμῖν δυνηθῇ τὸ θεῖον ἐν πᾶσι τὴν ἔθιμον σπουδὴν καὶ καλοκἀγαθίαν παρέχειν.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "ἅτινα οὕτως ἀρέσκειν ἡμῖν ἀντιγράψαι ἀκόλουθον ἦν, ἔν’ ἀφαιρεθεισῶν παντελῶς τῶν αἱρέσεων, αἵτινες τοῖς προτέροις ἡμῶν γράμμασι τοῖς πρὸς τὴν σὴν καθοσίωσιν ἀποσταλεῖσι περὶ τῶν Χριστιανῶν ἐνείχοντο, καὶ ἅτινα πάνυ σκαιὰ καὶ τῆς ἡμετέρας πραότητος ἀλλότρια εἶναι ἐδόκει, ταῦτα ὑφαιρεθῇ, καὶ νῦν ἐλευθέρως τε καὶ ἀπλανῶς ἕκαστος τῶν τὴν αὐτὴν προαίρεσιν ἐσχηκότων τοῦ φυλάττειν τὴν τῶν Χριστιανῶν θρησκείαν ἄνευ τινὸς ὀχλήσεως τοῦτο αὐτὸ παραφυλάττοι.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ἅτινα τῇ σῇ ἐπιμελείᾳ πληρέστατα δηλῶσαι ἐδογματίσαμεν, ὅπως εἰδείης ἡμᾶς ἐλευθέραν καὶ ἀπολελυμένην ἐξουσίαν τοῦ τημελεῖν τὴν ἑαυτῶν θρησκείαν τοῖς αὐτοῖς Χριστιανοῖς, δεδωκέναι.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "ὅπερ ἐπειδὴ ἀπολελυμένως αὐτοῖς ὑφ’ ἡμῶν δεδωρῆσθαι, θεωρεῖ ἡ σὴ καθοσίωσις, καὶ ἑτέροις δεδόσθαι ἐξουσίαν τοῖς βουλομένοις τοῦ μετέρχεσθαι τὴν παρατήρησιν καὶ θρησκείαν ἑαυτῶν· ὅπερ ἀκολούθως τῇ ἡσυχίᾳ τῶν ἡμετέρων καιρῶν γίνεσθαι φανερόν ἐστιν, ὅπως ἐξουσίαν ἕκαστος ἔχη τοῦ αἱρεῖσθαι καὶ τημελεῖν ὁποῖον δ’ ἂν βούληται θεῖον. τοῦτο δὲ ὑφ’ ἡμῶν γέγονεν, ὅπως μηδεμιᾷ τιμῇ μηδὲ θρησκείᾳ τινὶ μεμειῶσθαί τι ὑφ’ ἡμῶν δοκοίη.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "καὶ τοῦτο δὲ πρὸς τοῖς λοιποῖς εἰς τὸ πρόσωπον τῶν Χριστιανῶν δογματίζομεν, ἔνα τοὺς τόπους αὐτῶν, εἰς οὓς τὸ πρότερον συνέρχεσθαι ἔθος ἢν αὐτοῖς, περὶ ὧν καὶ τοῖς πρότερον δοθεῖσι πρὸς τὴν σὴν καθοσίωσιν γράμμασι τύπος ἕτερος ἦν ὡρισμένος τῷ προτέρῳ χρόνῳ, ἔν’, εἴ τινες ἢ παρὰ τοῦ ταμείου τοῦ ἡμετέρου, ἢ παρά τινος ἑτέρου φαίνοιντο ἠγορακότες τούτους, τοῖς αὐτοῖς Χριστιανοῖς ἄνευ ἀργυρίου καὶ ἄνευ τινὸς ἀπαιτήσεως τῆς τιμῆς ὑπερτεθείσης, δίχα πάσης ἀμελείας καὶ ἀμφιβολίας, ἀποκαταστήσωσι· καὶ εἴ τινες κατὰ δῶρον τυγχάνουσιν εἰληφότες τοὺς αὐτοὺς τόπους, ὅπως τοῖς αὐτοῖς Χριστιανοῖς τὴν ταχίστην ἀποκαταστήσωσιν·",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "οὕτως εἰ ἢ οἱ ἠγορακότες τοὺς αὐτοὺς τόπους, ἢ οἶ κατὰ δωρεὰν εἰληφότες αἰτῶσί τι παρὰ τῆς ἡμετέρας καλοκἀγαθίας, προσέλθωσι τῷ ἐπὶ τόπων ἐπάρχῳ δικάζοντι, ὅπως καὶ αὐτῶν διὰ τῆς ἡμετέρας χρηστότητος πρόνοια γένηται. ἅτινα πάντα τῷ σώματι τῷ τῶν Χριστιανῶν παρ’ αὐτὰ διὰ τῆς σῆς σπουδῆς ἄνευ τινὸς παρολκῆς παραδίδοσθαι δεήσει.",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "καὶ ἐπειδὴ οἶ αὐτοὶ Χριστιανοὶ οὐ μόνον ἐκείνους, εἰς οὓς συνέρχεσθαι ἔθος εἶχον, ἀλλὰ καὶ ἑτέρους τόπους ἐσχηκέναι γινώσκονται, διαφέροντας οὐ πρὸς ἕκαστον αὐτῶν, ἀλλὰ πρὸς τὸ δίκαιον τοῦ αὐτῶν σώματος, τοῦτ’ ἔστι τῶν Χριστιανῶν, ταῦτα πάντα ἐπὶ τῷ νόμῳ, ὃν προειρήκαμεν, δίχα παντελοῦς τινος ἀμφισβητήσεως τοῖς αὐτοῖς Χριστιανοῖς, τοῦτ’ ἔστι τῷ σώματι αὐτῶν καὶ τῇ συνόδῳ, ἑκάστῳ αὐτῶν ἀποκαταστῆναι κελεύσεις, τοῦ προειρημένου λογισμοῦ δηλαδὴ φυλαχθέντος, ὅπως αὐτοὶ οἵτινες τοὺς αὐτοὺς ἄνευ τιμῆς, καθὼς προειρήκαμεν, ἀποκαθιστῶσι, τὸ ἀζήμιον τὸ ἑαυτῶν παρὰ τῆς ἡμετέρας καλοκἀγαθίας ἐλπίζοιεν.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "ἐν οἶς πᾶσι τῷ προειρημένῳ σώματι τῶν Χριστιανῶν τὴν σπουδὴν δυνατώτατα παρασχεῖν ὀφείλεις, ὅπως τὸ ἡμέτερον κέλευσμα τὴν ταχίστην παραπληρωθῇ, ὅπως καὶ ἐν τούτῳ διὰ τῆς ἡμετέρας χρηστότητος πρόνοια γένηται τῆς κοινῆς καὶ δημοσίας ἡσυχίας.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "τούτῳ γὰρ τῷ λογισμῷ, καθὼς καὶ προείρηται, ἡ θεία σπουδὴ περὶ ἡμᾶς, ἧς ἐν πολλοῖς ἤδη πράγμασιν ἀπεπειράθημεν, διὰ παντὸς τοῦ χρόνου βεβαίως διαμενεῖ.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "ἵνα δὲ ταύτης τῆς ἡμετέρας νομοθεσίας καὶ τῆς καλοκἀγαθίας ὅρος πρὸς γνῶσιν πάντων ἐνεχθῆναι δυνηθῇ, ταῦτα τὰ ὑφ’ ἡμῶν γραφέντα πανταχοῦ προθεῖναι καὶ εἰς γνῶσιν πάντων ἀγαγεῖν ἀκόλουθόν ἐστιν, ὅπως ταύτης τῆς ἡμετέρας καλοκἀγαθίας ἡ νομοθεσία μηδένα λαθεῖν δυνηθῇ.”",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "Ἀντίγραφον ἑτέρας βασιλικῆς διατάξεως, ἣν αὖθις πεποίηνται, μόνῃ τῇ καθολικῇ ἐκκλησίᾳ τὴν δωρεὰν δεδόσθαι ὑποσημηνάμενοι. “Χαῖρε Ἀνυλῖνε, τιμιώτατε ἡμῖν. ἔστιν ὁ τρόπος οὗτος τῆς φιλαγαθίας τῆς ἡμετέρας, ὥστε ἐκεῖνα ἅπερ δικαίῳ ἀλλοτρίῳ προσήκει, μὴ μόνον μὴ ἐνοχλεῖσθαι, ἀλλὰ καὶ ἀποκαθιστᾶν βούλεσθαι ἡμᾶς, Ἀνυλῖνε τιμιώτατε.",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "ὅθεν βουλόμεθα ἵν’, ὁπόταν ταῦτα τὰ γράμματα κομίσῃ, εἴ τινα ἐκ τούτων τῶν τῇ ἐκκλησίᾳ τῇ καθολικῇ τῶν Χριστιανῶν ἐν ἑκάσταις πόλεσιν ἢ καὶ ἄλλοις τόποις διέφερον, καὶ κατέχοιντο νῦν ἢ ὑπὸ πολιτῶν ἢ ὑπό τινων ἄλλων, ταῦτα ἀποκατασταθῆναι παραχρῆμα ταῖς αὐτῶν ἐκκλησίαις ποιήσῃς, ἐπειδήπερ προῃρήμεθα, ταῦτα ἅπερ αἶ αὐταὶ ἐκκλησίαι πρότερον ἐσχήκεσαν, τῷ δικαίῳ αὐτῶν ἀποκατασταθῆναι.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "ὁπότε τοίνυν συνορᾷ ἡ καθοσίωσις ἡ σὴ, ταύτης ἡμῶν τῆς κελεύσεως σαφέστατον εἶναι τὸ πρόσταγμα, σπούδασον, εἴτε κῆποι, εἴτε οἰκίαι, εἶθ’ ὁτιουνδήποτε τῷ δικαίῳ τῶν αὐτῶν ἐκκλησιῶν διέφερον, σύμπαντα αὐταῖς ἀποκατασταθῆναι ὡς τάχιστα, ὅπως τούτῳ ἡμῶν τῷ προστάγματι ἐπιμελεστάτην σε πειθάρχησιν παρεσληκέναι καταμάθοιμεν. ἔρρωσο, Ἀνυλῖνε, τιμιώτατε καὶ ποθεινότατε ἡμῖν.”",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "Ἀντίγραφον βασιλικῆς ἐπιστολῆς δι᾿ ἧς σύνοδον ἐπισκόπων ἐπὶ ῾Ρώμης κελεύει γενέσθαι ὑπὲρ τῆς τῶν ἐκκλησιῶν ἑνώσεως τε καὶ ὁμονοίας. “Κωνσταντῖνος Σεβαστὸς Μιλτιάδῃ ἐπισκόπῳ ῾Ρωμαίων καὶ Μάρκῳ. ἐπειδὴ τοιοῦτοι χάρται παρὰ Ἀνυλίνου τοῦ λαμπροτάτου ἀνθυπάτου τῆς Ἀφρικῆς πρός με πλείους ἀπεστάλησαν, ἐν οἷς ἐμφέρεται, Καικιλιανὸν τὸν ἐπίσκοπον τῆς Καρταγεννησίων πόλεως παρά τινων κολλήγων αὐτοῦ τῶν κατὰ τὴν Ἀφρικὴν καθεστώτων ἐν πολλοῖς πράγμασιν εὐθύνεσθαι, καὶ τοῦτό μοι βαρὺ σφόδρα δοκεῖ, τὸ ἐν ταύταις ταῖς ἐπαρχίαις, ἃς τῇ ἐμῇ καθοσιώσει αὐθαίρετος ἡ θεία πρόνοια ἐνεχείρισε, (κἀκεῖσε πολὺ πλῆθος λαοῦ), ὄχλον ἐπὶ τὸ φαυλότερον ἐπιμένοντα εὑρίσκεσθαι ὡσανεὶ διχοστατοῦντα, καὶ μεταξὺ ἐπισκόπους διαφορὰς ἔχειν,",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "ἔδοξέ μοι, ἵν᾿ αὐτὸς ὁ Καικιλιανὸς μετὰ δέκα ἐπισκόπων, τῶν αὐτὸν εὐθύνειν δοκούντων, καὶ δέκα ἑτέρων οὓς αὐτὸς τῇ ἑαυτοῦ δίκῃ ἀναγκαίους ὑπολάβοι, εἰς τὴν ῾Ρώμην πλῷ ἀπιέναι μὴ ἀναβάλοιτο, ἵν᾿ ἐκεῖσε ὑμῶν παρόντων, ἀλλὰ μὴν καὶ ῾Ρετεκίου καὶ Ματέρνου καὶ Μαρίνου, τῶν κολλήγων ὑμῶν, οὓς τούτου ἕνεκεν εἰς τὴν ῾Ρώμην προσέταξα ἐπισπεῦσαι, δυνηθῇ ἀκουσθῆναι, ὡς ἂν καταμάθοιτε τῷ σεβασμιωτάτῳ νόμῳ ἁρμόττειν.",
+     "text": ""
+    },
+    {
+     "number": 20,
+     "greek": "ἵνα μέντοι καὶ περὶ πάντων αὐτῶν τούτων πληρεστάτην δυνηθῆτε ἔχειν γνῶσιν, τὰ ἀντίτυπα τῶν ἐγγράφων τῶν πρός με παρὰ Ἀνυλίνου ἀποσταλέν- τῶν, γράμμασιν ἐμοῖς ὑποτάξας, πρὸς τοὺς προειρημένους κολλήγας ὑμῶν ἐξέπεμψα , οἶς ἐντυχοῦσα ἡ ὑμετέρα στερρότης δοκιμάσει , ὅντινα χρὴ τρόπον τὴν προειρημένην δίκην ἐπιμελέστατα διευκρινῆσαι, καὶ κατὰ τὸ δίκαιον τερματίσαι, ὁπότε μηδὲ τὴν ὑμετέραν ἐπιμέλειαν λανθάνει, τοσαύτην με αἰδῶ τῇ ἐνθέσμῳ καθολικῇ ἐκκλησίᾳ ἀπονέμειν, ὡς μηδὲν καθόλου σχίσμα ἢ διχοστασίαν ἔν τινι τόπῳ βούλεσθαί με ὑμᾶς καταλιπεῖν. ἡ θειότης ὑμᾶς τοὐ μεγάλου θεοῦ διαφυλάξοι πολλοῖς ἔτεσι, τιμιώτατε.",
+     "text": ""
+    },
+    {
+     "number": 21,
+     "greek": "Ἀντίγραφον βασιλικῆς ἐπιστολῆς, δι’ ἧς προστάττει δευτέραν γενέσθαι σύνοδον ὕπερ τοῦ πᾶσαν τῶν ἐπισκόπων περιελεῖν διχοστασίαν. “ Κωνσταντῖνος σεβαστὸς Χρήστῳ ἐπισκόπῳ Συρακουσίων. ἤδη μὲν πρότερον, ὅτε φαύλως καὶ ἐνδιαστρόφως τινὲς περὶ θρησκείας τῆς ἁγίας καὶ ἐπουρανίου δυνάμεως καὶ τῆς αἱρέσεως τῆς καθολικῆς ἀποδιίστασθαι ἤρξαντο, ἐπιτέμνεσθαι βουληθεὶς τὰς τοιαύτας αὐτῶν φιλονεικίας, οὕτω διετετυπώκειν ὥστε ἀποσταλέντων ἀπὸ τῆς Γαλλίας τινῶν ἐπισκόπων, ἀλλὰ μὴν καὶ τούτων κληθέντων ἀπὸ τῆς Ἀφρικῆς τῶν ἐξ ἐναντίας μοίρας καταλλήλως ἐνστατικῶς καὶ ἐπιμόνως διαγωνιζομένων, παρόντος τε καὶ τοῦ τῆς Ῥώμης ἐπισκόπου, τοῦτο, ὅπερ ἐδόκει κεκινῆσθαι, δυνηθῇ ὑπὸ τῆς παρουσίας αὐτῶν μετὰ πάσης ἐπιμελοῦς διακρίσεως κατορθώσεως τυχεῖν.",
+     "text": ""
+    },
+    {
+     "number": 22,
+     "greek": "ἀλλ’ ἐπειδὴ, ὡς συμβαίνει, ἐπιλαθόμενοί τινες καὶ τῆς σωτηρίας τῆς ἰδίας καὶ τοῦ σεβάσματος τοῦ ὀφειλομένου τῇ ἁγιωτάτῃ αἱρέσει, ἔτι καὶ νῦν τὰς ἰδίας ἔχθρας παρατείνειν οὐ παύονται, μὴ βουλόμενοι τῇ ἤδη ἐξενεχθείσῃ κρίσει συντίθεσθαι, καὶ διοριζόμενοι, ὅτι δὴ ἄρα ὀλίγοι τινὲς τὰς γνώμας καὶ τὰς ἀποφάσεις ἑαυτῶν ἐξήνεγκαν, ἢ καὶ μὴ πρότερον ἁπάντων τῶν ὀφειλόντων ζητηθῆναι ἀκριβῶς ἐξετασθέντων πρὸς τὸ τὴν κρίσιν ἐξενέγκαι πάνυ ταχέως καὶ ὀξέως ἔσπευσαν, ἔκ τε τούτων ἁπάντων ἐκεῖνα συμβαίνει γενέσθαι, τὸ καὶ τούτους αὐτοὺς ἀδελφικὴν καὶ ὁμόφρονα ὀφείλοντας ἔχειν ὁμοψυχίαν αἰσχρῶς, μᾶλλον δὲ μυσερῶς ἀλλήλων ἀποδιεστάναι, καὶ τοῖς ἀνθρώποις τοῖς ἀλλοτρίας ἔχουσι τὰς ψυχὰς ἀπὸ τῆς ἁγιωτάτης θρησκείας ταύτης πρόφασιν χλεύης διδόναι, — ὅθεν προνοητέον μοι ἐγένετο, ὅπως τοῦτο, ὅπερ ἐχρῆν μετὰ τὴν ἐξενεχθεῖσαν ἤδη κρίσιν αὐθαιρέτῳ συγκαταθέσει πεπαῦσθαι, κἂν νῦν ποτὲ δυνηθῇ πολλῶν παρόντων τέλους τυχεῖν.",
+     "text": ""
+    },
+    {
+     "number": 23,
+     "greek": "ἐπειδὴ τοίνυν πλείστους ἐκ διαφόρων καὶ ἀμυθήτων τόπων ἐπισκόπους εἰς τὴν Ἀρελατησίων πόλιν εἴσω Καλανδῶν Αὐγούστων συνελθεῖν ἐκελεύσαμεν, καὶ σοὶ γράψαι ἐνομίσαμεν, ἔνα λαβὼν παρὰ τοῦ λαμπροτάτου Λατρωνιανοῦ τοῦ κορρήκτορος Σικελίας δημόσιον ὄχημα, συζεύξας σεαυτῷ καὶ δύο γέ τινας τῶν ἐκ τοῦ δευτέρου θρόνου, οὑς ἂν σὺ αὐτὸς ἐπιλέξασθαι κρίνῃς, ἀλλὰ μὴν καὶ τρεῖς παῖδας τοὺς δυνησομένους ὑμῖν κατὰ τὴν ὁδὸν ὑπηρετήσασθαι παραλαβὼν, εἴσω τῆς αὐτῆς ἡμέρας ἐπὶ τῷ προειρημένῳ τόπῳ ἀπάντησον,",
+     "text": ""
+    },
+    {
+     "number": 24,
+     "greek": "ὡς ἂν διά τε τῆς σῆς στερρότητος καὶ διὰ τῆς λοιπῆς τῶν συνιόντων ὁμοψύχου καὶ ὁμόφρονος συνέσεως καὶ τοῦτο, ὅπερ ἄχρι τοῦ δεῦρο φαύλως δι’ αἰσχράς τινας ζυγομαχίας παραμεμένηκεν, ἀκουσθέντων πάντων τῶν μελλόντων λεχθήσεσθαι παρὰ τῶν νῦν ἀπ’ ἀλλήλων διεστώτων, οὕσπερ ὁμοίως παρεῖναι ἐκελεύσαμεν, δυνηθῇ εἰς τὴν ὀφειλομένην θρησκείαν καὶ πίστιν, ἀδελφικήν τε ὁμόνοιαν κἄν βραδέως ἀνακληθῆναι. ὑγιαίνοντά σε ὁθ θεὸς ὁ παντοκράτωρ διαφυλάξαι ἐπὶ πολλοῖς ἔτεσιν.” Ἀντίγραφον βασιλικῆς ἐπιστολῆς, δι’ ἧς χρήματα ταπῖς ἐκκλησίαις δωρεῖται.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "“Κωνσταντῖνος Αὔηουστος Καικιλιανῷ ἐπισκόπῳ Καρταηένης. ἐπειδήπερ ἤρεσε, κατὰ πάσας ἐπαρχίας, τάς τε Ἀφρικὰς καὶ τὰς Νουμιδίας καὶ τὰς Μαυριτανίας, ῥητοῖς τισι τῶν ὑπηρετῶν τῆς ἐνθέσμου καὶ τὰς ἁγιωτάτης καθολικῆς θρησκείας εἰς ἀναλώματα ἐπιχορηγηθῆναί τι, ἔδωκα γράμματα πρὸς Οὖρσον τὸν διασημότατον καθολικὸν τῆς Ἀφρικῆς, καὶ ἐδήλωσα αὐτῷ, ὅπως τρισχιλίους φόλλειςτῇ σῇ στερρότητι ἀπαριθμῆσαι φροντίςῃ.",
+     "text": "Copy of an Imperial Letter in which grants of money are made to the churches. “ Constantine Augustus to Caecilian bishop of Carthage. Forasmuch as it has been our pleasure in all provinces, namely the African, the Numidian and the Mauretanian, that somewhat be contributed for expenses to certrin specified ministers of the lawful and most holy Catholic religion, I have dispatched a letter to Ursus, the most distinguished finance minister of Africa, and have notified to him that he be careful to pay over to thy Firmness three thousand folles.2 Do thou therefore, when thou shalt secure delivery of the aforesaid sum of money, give orders that this money be distributed among all the above-mentioned persons in accordance with the schedule sent to thee by Hosius. But if, after all, thou shalt find that there is aught lacking for the fulfilment of this my purpose in respect of them all, thou shouldest ask without doubting whatsoever thou findest to be necessary from Heraclides our procurator fiscal. For indeed when he was here I gave him orders that if thy Firmness should ask any money from him, he should be careful to pay it over without any scruple. And since I have learnt that certain persons of unstable mind are desirous of turning aside the laity of the most holy and Catholic Church by some vile method of seduction, know that I have given such commands to Anulinus, the proconsul, and moreover to Patricius, the Vicar of the Prefects,1 when they were here, that they should give due attention in all other matters and especially in this, and not suffer such an occurrence to be overlooked; therefore if thou observest any such men continuing in this madness, do not thou hesitate to go to the above-mentioned judges and bring this matter before them, so that (as I commanded them when they were here) they may turn these people from their error. May the divinity of the great God preserve thee for many years.”"
+    },
+    {
+     "number": 2,
+     "greek": "σὺ τοίνυν, ἡνίκα τὴν προδηλουμένην ποσότητα τῶν χρημάτων ὑποδεχθῆναι ποιήσεις, ἅπασι τοῖς προειρημένοις κατὰ τοὸ βρέουιον τὸ πρὸς σὲ παρὰ Ὁσίου ἀποσταλὲν ταῦτα τὰ χρήματα διαδοθῆναι κέ– λευσον.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "εἰ δ’ ἄρα πρὸς τὸ συμπληρωθῆναί μου τὴν εἰς τοῦτο περὶ ἅπαντας αὐτοὺς προαίρεσιν ἐνδεῖν τι καταμάθοις, παρὰ Ἡρακλείδα τοῦ ἐπιτρόπου τῶν ἡμετέρων κτημάτων ἀναμφιλίκτως ὅπερ ἀναγκαῖον εἶναι καταμάθοις αἰτῆσαι ὀφείλεις. καὶ γὰρ παρόντι αὐτῷ προσέταξα, ἵν’ εἴ τι ἄν χρημάτων παρ αὐτοῦ ἡ σὴ στερρότης αἰτήςῃ, ἄνευ δισταγμοῦ τινὸς ἀπαριθμῆσαι φροντίςῃ.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ ἐπειδὴ ἐπυθόμην τινὰς μὴ καθεστώσης διανοίας τυγχάνοντας ἀνθρώπους τὸν λαὸν τῆς ἁγιωτάτης καὶ καθολικῆς ἐκκλησίας φαύλῃ τινὶ ὑπονοθεύσει βούλεσθαι διαστρέφειν, γίνωσκέ με Ἀνυλίνῳ ἀνθυπάτῳ, ἀλλὰ μὴν καὶ Πατρικίῳ τῲ οὐικαρίῳ τῶν ἐπάρχων παροῦσι ροιαύτας ἐντολὰς δεδωκέναι, ἴν’ ἐν τοῖς λοιποῖς ἅπασι καὶ τούτου μάλιστα τὴν προσήκουσαν φροντίδα ποιήσωνται, καὶ μὴ ἀνάσχωνται περιορᾶν τοιοῦτο γινόμενον.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "διόπερ εἴ τινας τοιούτους ἀνθρώπους ἐν αὐτῇ τῇ μανίᾳ ἐπιμένειν κατίδοις, ἄνευ τινὸς ἀμφιβολίας τοῖς προειρημένοις δικασταῖς πρόσελθε, καὶ αὐτὸ τοῦτο προσανένεγκε, ὅπως αὐτοὺς ἐκεῖνοι, καθάπερ αὐτοῖς παροῦσιν ἐκέλευσα, ἐπιστρέψωσιν. ἡ θειότης τοῦ μεγάλου θεοῦ σε διαφυλάξοι ἐπὶ πολλοῖς ἔτεσιν.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἀντίγραφον βασιλικῆς ἐπιστολῆς, δι’ ἧς τοὺς προεστῶτας τῶν ἐκκλησιῶν πάσης ἀπολελύσθαι τῆς περὶ τὰ πολιτικὰ λειτουργίας προστάττει. “Χαῖρε, Ἀνυλῖνε, τιμιώτατε ἡμῖν ἐπειδὴ ἐκ πλειόνων πραγμάτων φαίνεται, παρεξουθενηθεῖσαν τὴν θρησκείαν, ἐν ᾗ ἡ κορυφαία τῆς ἁγιωτάτης ἐπουρανίου αἰδὼς φυλάττεται, μεγάλους κινδύνους ἐνηνοχέναι τοῖς δημοσίοις πράγμασιν, αὐτήν τε ταύτην ἐνθέσμως ἀναληφθεῖσαν καὶ φυλαττομένην μέγίστην εὐτυχίαν τῷ Ῥωμαϊκῷ ὀνόματι, καὶ σύμπασι τοῖς τῶν ἀνθρώπων πράγμασιν ἐξαίρετον εὐδαιμονίαν παρεσχηκέναι, τῶν θείων εὐεργεσιῶν τοῦτο παρεχουσῶν, ἔδοξεν ἐκείνους τοὺς ἄνδρας τοὺς τῇ ὀφειλομένη ἁγιότητι καὶ τῇ τοῦ νόμου τούτου παρεδρίᾳ τὰς ὑπηρεσίας τὰς ἐξ ἑαυτῶν τῇ τῆς θείας θρησκείας θεραπείᾳ παρ’ ἔχοντ’ ἃς, τῶν καμάτων τῶν ἰδίων τὰ ἔπαθλα κομίσασθαι, Ἀνυλῖνε τιμιώτατε.",
+     "text": "Copy of an Imperial Letter, in which he gives orders that presidents of the chursches be released from all public offices. ‘‘Greeting, Anulinus, our most honoured Sir. Since from many facts it appears that the setting at naught of divine worship, by which the highest reverence for the most holy and heavenly [Power] is preserved, has brought great dangers upon public affairs, and that its lawful restoration and preservation have bestowed the greatest good fortune on the Roman name and singular prosperity on all the affairs of mankind (for it is the Divine Providence which bestows these blessings): it has seemed good that those men who, with due holiness and constant observance of this law, bestow their services on the performance of divine worship, should receive the rewards of their own labours, most honoured Anulinus. Wherefore it is my wish that those persons who within the province committed to thee, in the Catholic Church over which Caecilian presides, bestow their service on this holy worship—those whom they accustomed to call clerics—should onee for aIl be kept absolutely free from all the public offices, that they be not drawn away by any error or sacrilegious fault from the worship which they owe to the Divinity, but rather without any hindrance serve to the utmost their own law. For when they render supreme service to the Deity, it seems that they confer incalculable benefit on the affairs of the State. Fare thee well, Anulinus, our most honoured and esteemed Sir.’"
+    },
+    {
+     "number": 2,
+     "greek": "διόπερ ἐκείνους τοὺς εἴσω τῆς ἐπαρχίας τῆς σοι πεπιστευμένης ἐν τῇ καθολικῇ ἐκκλησίᾳ, ᾗ Καικιλιανὸς ἐφέστηκε, τὴν ἐξ ἑαυτῶν ὑπηρεσίαν τῇ ἁγίᾳ ταύτῃ θρησκείᾳ παρέχοντας, οὕσπερ κληρικοὺς ἐπονομάξειν εἰώθασιν, ἀπὸ πάντων ἁπαξαπλῶς τῶν λειτουργιῶν βούλομαι ἀλειτουργήτους διαφυλαχθῆναι, ὅπως μὴ διά τινος πλάνης ἢ ἐξολισθήσεως ἱεροσύλου ἀπὸ τῆς θεραπείας τῆς τῇ θειότητι ὀφειλομένης ἀφέλκωνται, ἀλλὰ μᾶλλον ἄνευ τινὸς ἐνοχλήσεως τῷ ἰδίῳ νόμῳ ἐξυπηρετῶνται, ὧνπερ μεγίστην περὶ τὸ θεῖον λατρείαν ποιουμένων πλεῖστον ὅσον τοῖς κοινοῖς πράγμασι συνοίσειν δοκεῖ. ἔρρωσο, Ἀνυλῖνε, τιμιώτατε καὶ ποθεινότατε ἡμῖν.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Τοιαῦτα μὲν οὖν ἡμῖν ἡ θεία καὶ οὐράνιος τῆς τοῦ σωτῆρος ἡμῶν ἐπιφανείας ἐδωρεῖτο χάρις, τοσαύτη τε ἅπασιν ἀνθρώποις ἀγαθῶν ἀφθονία διὰ τῆς ἡμετέρας ἐπρυτανεύετο εἰρήνης. καὶ ὧδε μὲν τὰ καθ’ ἡμᾶς ἐν εὐφροσύναις καὶ πανηγύρεσιν ἐτελεῖτο.",
+     "text": "Such then were the gifts that the divine and heavenly grace of our Saviour bestowed upon us by His appearing, and such was the abundance of good things that the peace which came to us procured for all mankind. And thus Our happy state was celebrated with rejoicings and festive assemblies. Nevertheless theless the envy that hates the good, even the demon who loves the evil, could not endure the sight of hat he beheld; as indeed that which had happened the above-mentioned tyrants 1 was not ven for Licinius, to bring him to sound reason. e who had been deemed worthy of the princite in a state of prosperity, of second rank after e great Emperor Constantine, of a connexion by marriage and the most exalted kinship with him, ed from the following of good men and zealaffected the evil manners and wickedness the impious tyrants; and he preferred to follow e judgement of those whose end he had seen with his very eyes, rather than continue on terms friendship and love with his superior. Filled, fact, with envy of the common benefactor, he aged an impious and most terrible war against him, either giving respect to the laws of nature nor bewing a thought on sworn treaties or ties of blood or eements. For Constantine, all-gracious Emperor t he was furnished him with the tokens of genuine will, did not grudge him kinship with himself, and did not refuse him the enjoyment of an illustrious union in the person of his sister. Nay further, he eemed him worthy to partake of his ancertral obility and his imperial blood and origin, and bestowed on him, as a brother-in-law and the right to a share in the supreme government 2: for of his bounty he gave him the ruling and administration of no inferior part of the peoples under the Ṛoṃan ay. But Licinius pursued an exactly opposite line of conduct: he was daily contriving all kinds of devices against his superior, and inventing all manner of plans to reward his benefactor with evil. At first, indeed, he attempted to conceal the intrigue, and feigned friendliness, hoping that frequent recourse to guile and deceit would most easily secure his expectationS. But God proved to be Constantine's Friend and Protector and Guardian, who brought to light the plots that were devised secretly and in darkness, and confounded them. such power is there in the great weapon of godliness to ward off the enemy and to preserve its own in safety. Fenced verily with this, our Emperor, most dear to God, escaped the plots of this ill-famed master of intrigue. And he, when he saw that his covert design as by no means going according to his wish (for God disclosed every guile and wickeness to the Emperor whom He loved), since he was no longer able to conceal himself, raised an open warfare. And, to be sure, in his decision to make war at close quarteb upon Constantine, he was already hastening to battle also against the God of the universe, whom, as he knew, Constantine worshipped; and so he designed an attack, quietly and silently at first upon his godly subjects, who had never at any time done any harm at all to his rule. And this he did, because his innate wickeness had perforee brought upon him terrible blindness. Thus he neither kept before his eyes the memory of those who had persecuted Christians before him, nor of those whom he himself destroyed and punished for the evil deeds they had pursued. But he turned aside from the path of sound reason, and becoming altogether mad, decided to make war on God Himself, as the Protector of Constantine, instead of on him who was being protected. First, he drove away every Christian from his palace; thus by his own aet depriving himself, wretched man, of the prayeis to God on his behalf, which after the eustom of their fathers they are taught to make for all men. Then he gave orders that the soldiers in cities were to be singled out and deprived of honourable rank, unless they chose to sacrifce to demons. And, moreover, these were but small matters when judged by comparison with graver measures. What need is there to mention singly and successively the things done by this hater of God: how, to wit, this most lawless of men invented lawless laws? In fact, with regard to those who were suffering under imprisonment, he laid down a law that no one should treat them humanely by distributing food, or have pity on those who were perishing of hunger in bonds ; and that no one should be kindly at all, or do any kindly action, even When they were moved by mere natural feeling to sympathize with their neighbours. And of his laws this one at least was quite openly shameless and the harshert of all, in its putting aside of every civilized, natural feeling, by which also it was enacted as a punishment that those who showed pity should suffer the same as those whom they pitied, and that those who humanely ministered should endure the same punishment as those who were undergoing it, and be consigned to bonds and imprisonment. such were the ordinances of Lincinius. Why should one recount his innovations with regard to marriage, or his revolutionary changes in respect of those who were departing this life, wherein he dared to annul the aneient laws of the Romans well and wisely laid down, and in their stead brought in certain that were reckoning of an evil conscience—but had been that we did everything and supplicated God on behalf of the Emperor whom He loved. Hence he hastened to vent his wrath on us. And in truth the sycophants among the governors, persuaded that they were doing what pleased the impious man, plied some of the bishops with penalties suitable for malefactors, and those who had done no wrong were led away and punished, without a pretext, like murderers. And some endured at that time a more novel form of death: their bodies were cut with a sword into many pieces, and after this cruel and most fearful sight they were cast into the depths of the sea as food for fishes. Thereupon the men of God began again to flee, and once more the fields, once more the deserts, glens and mountains received the servants of Christ. And when the impious man was thus suceessful in these measures also, he then conceived the idea of stirring up anew the persecution against all. He had power to accomplish his purpose, and there was nothing to hinder him carrying it into effect, had not God, the Champion of the souls that are His own, foreseeing with all speed what would come to pass, caused to shine forth all at once, as it were out of deep darkness and most murky night, a great luminary and sariour of them all, leading thither with a lofty arm his servant Constantine. IX. To him, then, as the worthy fruit of piety did God vouchsafe from heaven above the trophies of victory over the wieked men; as for the guilty one, He laid him low, with all his counscellors and friends, prone beneath the feet of Constantine. For when Licinius had carried his madness to the urtennost, the Emperor, the friend of God, reckoning that he was no longer to be endured, summoned his sound powers of reason, and tempering the stern qualities of justice with humanity determined to succour those Who were being evil intreated under the tyrant's power; and hastened, by putting a few spoilers out of the way, to reseue the greater part of the human race. For hitherto, when he employed humanity alone and showed mercy to him who was undeserving of sympathy, there was no improvement in Licinius: he did not give over his wickedness, but rather increased his mad fury against his subject peoples; while as for those who were ill-treated, no hope of salvation was left for them, ground down as they were by a terrible wild beast. Wherefore, mingling a hatred of evil with a love of goodness, the defender of the good went forth, with that most humane Emperor, his son Crispus, stretching out the right hand of salvation to all who were perishing. Then, inasmuch as they had God the universal King and son of God, the Saviour of all, as their Ouide and Ally, the father and son both together divided their battle-array against the haters of God on all sides and easily Won the victory; 1 for everything in the encounter was made smooth for them by God according to His purpose. Tea verily, all at once and in less time than it takes to say it, those Who the other day were breathing death and threatening were no more, nor was even so much as their name remembered; their pictures and honours received a welldeserved disgrace; and the things that Licinius had seen with his own eyes happen to the impious tyrants of days gone by, these he himself also likewise suffered; for neither did he receive correction nor did he learn wisdom from the strokes that fell upon his neighbours, but pursued the same path of iniquity as they did, and justly reeled over the same precipice. Thus was licinius cast down prostrate. But Constantine the most mighty Victor, resplendent with every virtue that godliness bestows, together with his son Crispus, an Emperor most dear to God and in all respects like unto his father, recovered the East that belonged to them, and formed the Roman Empire, as in the days of old, into a single united whole, bringing under their peaceful rule all of it, from the rising sun round about in the two directions, north as well as south, even to the uttermost limits of the declining day. So then, there was taken away from men all fear of those who formerly oppressed them; they celebrated brilliant festivals; all things were filled with light, and men, formerly downcast, looked at each other with smiling countenanees and beaming eyes; with daneing and hymns in city and country alike they gave honour first of all to God the universal King, for this they had been instrueted to do, and, then to the pious Emperor with his sons beloved of God; old ills were forgotten and oblivion cast on every deed of impiety; present good things were enjoyed, with the further hope of those which were yet for to come. And, in short, there ẁ̀ere promulgated in every plaee ordinances of the victorious Emperor full of love for humanity, and las that betokened munificence and true piety. Thus verily, when all tyranny had been purged away, the kingdom that belonged to them was preserved stedfast and undisputed for Constantine and his sons alone;"
+    },
+    {
+     "number": 2,
+     "greek": "οὐκ ἢν δὲ ἄρα τῷ μισοκάλῳ φθόνῳ, τῷ τε φιλοπονήρῳ δαίμονι φορητὸς ἡ τῶν ὁρωμένων θέα, ὥσπερ οὑν οὐδὲ Λικιννίῳ πρὸς σώφρονα λογισμὸν ἐτύγχανεν αὐτάρκη τὰ τοῖς πρόσθεν δεδηλωμένοις τυράννοις συμβεβηκότα· ὃς εὖ φερομένης τῆς ἀρχῆς αὐτῷ, βασιλέως τε μεγάλου Κωνσταντίνου δευτερείων τιμῆς, ἐπιγαμβρίας τε καὶ συγγενείας τῆς ἀνωτάτω ἠξιωμένος, μιμήσεως μὲν τῆς τῶν καλῶν ἀπελιμπάνετο, τῆς δὲ τῶν ἀσεβῶν τυράννων μοχθηρίας ἐζήλου τὴν κακοτροπίαν, καὶ ὧν τοῦ βίου τὴν καταστροφὴν ἐπεῖδεν αὐτοῖς ὀφθαλμοῖς, τούτων ἕπεσθαι τῇ γνώμη μᾶλλον ἢ τῇ τοῦ κρείττονος ἐμμένειν φιλίᾳ τε καὶ διαθέσει ᾑρεῖτο.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "διαφθονηθείς γέ τοι τῷ πανευεργέτῃ πόλεμον δυσαγῆ καὶ δεινότατον πρὸς αὐτὸν ἐκφέρει, οὐ φύσεως νόμων φεισάμενος, οὐχ ὁρκωμοσιῶν, οὐχ αἵματος, οὐ συνθηκῶν μνήμην ἐν διανοίᾳ λαβών.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὁ μὲν γὰρ αὐτῷ οἷα πανάγαθος βασιλεὺς, εὐνοίας παρέχων ἀληθοῦς σύμβολα, συγγενείας τῆς πρὸς αὐτὸν οὐκ ἐφθόνησε, γάμων τε λαμπρῶν ἀδελφῆς μετουσίαν οὐκ ἀπηρνήσατο, ἀλλὰ καὶ τῆς ἐκ πατέρων εὐγενείας, βασιλικοῦ τε ἀνέκαθεν αἵματος κοινωνὸν γενέσθαι ἠξίωσε, τῆς τε κατὰ πάντων ἀπολαύειν ἀρχῆς οἷα κηδεστῇ καὶ συμβασιλεῖ παρεῖχε τὴν ἐξουσίαν, οὐκ ἔλαττον μέρος τῶν ὑπὸ Ῥωμαίους ἐθνῶν διέπειν αὐτῷ καὶ διοικεῖν κεχαρισμένος.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ὁ δ’ ἔμπαλιν τούτοις τἀναντία διεπράττετο, παντοίας ὁσημέραι κατὰ τοῦ κρείττονος μηχανὰς ἐπιτεχνώμενος, πάντας τε ἐπινοῶν ἐπιβουλῆς τρόπους, ὡς ἂν κακοῖς τὸν εὐεργέτην ἀμείψοιτο. τὰ μὲν οὖν πρῶτα πειρώμενος τὴν συσκευὴν ἐπικρύπτειν, φίλος εἶναι προσεποιεῖτο, δόλῳ τε καὶ ἀπάτῃ πλειστάκις ἐπιθέμενος ῥᾷστα ἂν τυχεῖν τοῦ προσδοκωμένου ἤλπισε.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "τῷ δὲ ἄρα ὁ θεὸς ἦν φίλος, κηδεμών τε καὶ φύλαξ, ὃς αὐτῷ τὰς ἐν ἀπορρήτῳ καὶ σκότει μηχανωμένας ἐπιβουλὰς εἰς φῶς ἄγων διήλεγχε. τοσοῦτον ἀρετῆς τὸ μέγα τῆς θεοσεβείας ὅπλον πρὸς ἄμυναν μὲν ἐχθρῶν, οἰκείας δὲ φυλακὴν σωτηρίας ἰσχύει ᾧ δὴ πεφραγμένος ὁ θεοφιλέστατος ἡμῶν βασιλεὺς τὰς τοῦ δυσωνύμου πολυπλόκους ἐπιβουλὰς διεδίδρασκεν.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ὁ δὲ τὴν λαθραίαν συσκευὴν ὡς οὐδαμῶς ἐώρα κατὰ γνώμην αὐτῷ χωροῦσαν, τοῦ θεοῦ πάντα δόλον τε καὶ ῥᾳδιουργίαν τῷ θεοφιλεῖ βασιλεῖ κατάφωρα ποιοῦντος, οὐκέθ’ οἷός τε ὢν ἐπικρύπτεσθαι προφανῆ πόλεμον αἴρεται.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "ὁμόσε δῆτα Κωνσταντίνῳ πολεμεῖν διαγνοὺς, ἤδη καὶ κατὰ τοῦ θεοῦ τῶν ὅλων, ὂν ἠπίστατο σέβειν αὐτὸν, παρατάττεσθαι ὡρμᾶτο, κἄπειτα τοὺς ὑπ’ αὐτῷ θεοσεβεῖς, μηδὲν μηδ’ ὅλως πώποτε τὴν ἀρχὴν αὐτοῦ λυπηρὸν διαθεμένους, ἠρέμα τέως καὶ ἡσυχῆ πολιορκεῖν ἐπεβάλλετο· καὶ τοῦτ’ ἔπραττε, δεινῶς ἀβλεπτεῖν ὑπὸ τῆς ἐμφύτου κακίας ἠναγκασμένος.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "οὔτ’ οὖν τὴν μνήμην τῶν πρὸ αὐτοῦ Χριστιανοὺς ἐκδιωξάντων πρὸ ὀφθαλμῶν ἔθετο, οὐδ’ ὧν αὐτὸς ὀλετὴρ καὶ τιμωρὸς δι’ ἃς μετῆλθον ἀσεβείας κατέστη. ἀλλὰ γὰρ τοῦ σώφρονος ἐκτραπεὶς λογισμοῦ, διαρρήδην δὲ μανεὶς τὰς φρένας, τὸν θεὸν αὐτὸν, οἷα δὴ Κωνσταντίνου βοηθὸν, ἀντὶ τοῦ βοηθουμένου πολεμεῖν ἐγνώκει.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "καὶ πρῶτα μὲν τῆς οἰκίας τῆς αὐτοῦ πάντα Χριστιανὸν ἀπελαύνει, ἔρημον αὐτὸς αὑτὸν ὁ δείλαιος τῆς τούτων καθιστὰς ὑπὲρ αὐτοῦ πρὸς τὸν θεὸν εὐχῆς, ἣν ὑπὲρ ἀπάντων αὐτοῖς ποιεῖσθαι πάτριον μάθημα τυγχάνει· εἶτα δὲ τοὺς κατὰ πόλιν στρατιώτας ἐκκρίνεσθαι καὶ ἀποβάλλεσθαι τοῦ τῆς τιμῆς ἀξιώματος, εἰ μὴ τοῖς δαίμοσι θύειν αἱροῖντο, παρακελεύεται. καὶ ἔτι γε ταῦτα ἦν μικρὰ, τῇ τῶν μειζόνων συγκρινόμενα παραθέσει.",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "τί δεῖ τούτων τὰ καθέκαστα καὶ κατὰ μέρος τῷ θεομισεῖ πεπραγμένα μνημονεύειν, ὅπως τε νόμους ἀνόμους ὁ παρανομώτατος ἐξηῦρε; τούς γέ τοι ἐν ταῖς εἱρκταῖς ταλαιπωρουμένους ἐνομοθέτει μηδένα μεταδόσει τροφῆς φιλανθρωπεύεσθαι, μηδ’ ἐλεεῖν τοὺς ἐν δεσμοῖς λιμῷ διαφθειρομένους, μηδ’ ἁπλῶς ἀγαθὸν εἶναι μηδένα, μηδ’ ἀγαθόν τι πράττειν τοὺς καὶ πρὸς αὐτῆς τῆς φύσεως ἐπὶ τὸ συμπαθὲς τῶν πέλας ἑλκομένους. καὶ ἦν γε νόμων οὗτος ἄντικρυς ἀναιδὴς καὶ ἀπηνέστατος, πᾶσαν ἥμερον ὑπερεξάγων φύσιν, ἐφ’ ᾧ καὶ τιμωρία προσέκειτο, τοὺς ἐλεοῦντας τὰ ἴσα πάσχειν τοῖς ἐλεουμένοις, δεσμοῖς τε καὶ φυλακαῖς καθείργνυσθαι, τὴν ἴσην τοῖς καταπονουμένοις ὑπομένοντας τιμωρίαν, τοὺς τὰ φιλάνθρωπα διακονουμένους.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "τοιαῦται αἶ Λικιννίου διατάξεις. τί χρὴ τὰς περὶ γάμων καινοτομίας ἀπαριθμεῖσθαι, ἢ τοὺς ἐπὶ τοῖς τὸν βίον μεταλλάττουσι νεωτερισμοὺς αὐτοῦ, δι᾿ ὧν τοὺς παλαιοὺς ῾Ρωμαίων εὖ καὶ σοφῶς κειμένους νόμους περιγράψαι τολμήσας, βαρβάρους τινὰς καὶ ἀνημέρους ἀντεισῆγε νόμους, ἀνόμους ὡς ἀληθῶς καὶ παρανόμους; ἐπισκήψεις τε μυρίας κατὰ τῶν ὑποχειρίων ἐθνῶν ἐπενόει, χρυσοῦ τε καὶ ἀργύρου παντοίας εἰσπράξεις, ἀναμετρήσεις τε γῆς, καὶ τῶν κατ᾿ ἀγροὺς μηκέτ᾿ ὄντων ἀνθρώπων, πρόπαλαι δὲ κατοιχομένων, ἐπιζήμιον κέρδος.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "οἵους δ᾿ ἐφηῦρεν ἐπὶ τούτοις ὁ μισάνθρωπος κατὰ μηδὲν ἠδικηκότων ἐξορισμοὺς, οἵας εὐπατριδῶν καὶ ἀξιολόγων ἀνδρῶν ἀπαγωγὰς, ὧν δὴ τὰς κουριδίας ἀποζευγνὺς γαμετὰς μιαροῖς τισὶν οἰκέταις ἐφ᾿ ὕβρει πράξεως αἰσχρᾶς παρεδίδου, ὅσαις δὲ αὐτὸς ὁ ἐσχατόγηρως γυναιξὶν ὑπάνδροις, παρθένοις τε κόραις ἐμπαροινῶν, τὴν ἀκόλαστον τῆς αὐτοῦ ψυχῆς ἐπιθυμίαν ἐπλήρου — τί χρὴ ταῦτα μηκύνειν, τῆς τῶν ἐσχάτων αὐτοῦ πράξεων ὑπερβολῆς μικρὰ τὰ πρῶτα καὶ τὸ μηδὲν εἶναι διελεγχούσης;",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "τὸ γοῦν τέλος αὐτῷ τῆς μανίας ἐπὶ τοὺς ἐπισκόπους ἐχώρει. ἤδη τε τούτους, ὡσὰν τοῦ ἐπὶ πάντων θεοῦ θεράποντας, ἐναντίους ὑπάρχειν οἷς ἔδρα ἡγούμενος, οὔπω μὲν ἐκ τοῦ φανεροῦ διὰ τὸν ἀπὸ τοῦ κρείττονος φόβον, λάθρα δὲ αὖθις καὶ δολίως συνεσκευάζετο, ἀνῄρει τε τούτων δι᾿ ἐπιβουλῆς τῶν ἡγεμόνων τοὺς δοκιμωτάτους. καὶ ὁ τρόπος δὲ τοῦ κατ᾿ αὐτῶν φόνου ξένος τις ἦν, καὶ οἷος οὐδεπώποτε ἠκούσθη.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "τὰ γοῦν ἀμφὶ τὴν Ἀμάσειαν καὶ τὰς λοιπὰς τοῦ Πόντου πόλεις κατεργασθέντα πᾶσαν ὑπερβολὴν ὠμότητος ὑπερηκόντισεν, ἔνθα τῶν ἐκκλησιῶν τοῦ θεοῦ αἱ μὲν ἐξ ὕψους εἰς ἔδαφος αὖθις κατερρίπτοντο, τὰς δὲ ἀπέκλειον, ὡς ἂν μὴ συνάγοιτό τις τῶν εἰω- θότων, μηδὲ τῷ θεῷ τὰς ἐποφειλομένας ἀποδιδῷ λατρείας.",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "συντελεῖσθαι γὰρ οὐχ ἡγεῖτο ὑπὲρ αὐτοῦ τὰς εὐχὰς, συνειδότι φαύλῳ τοῦτο λογιξόμενος, ἀλλ’ ὑπὲρ τοῦ θεοφιλοῦς βασιλέως πάντα πράττειν ἡμάς καὶ τὸν θεὸν ἱλεοῦσθαι πέπειστο· ἔνθεν ὡρμᾶτο καθ’ ἡμῶν τὸν θυμὸν ἐπισκήπτειν.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "καὶ δῆτα τῶν ἡγεμόνων οἶ κόλακες, τὰ φίλα πράττειν τῷ δυσαγεῖ πεπεισμένοι, τῶν ἐπισκόπων τοὺς μὲν συνήθως ταῖς τῶν κακούργων ἀνδρῶν περιέβαλλον τιμωρίαις, ἀπήγοντό τε καὶ ἐκολάζοντο ἀπροφασίστως τοῖς μιαιφόνοις ὁμοίως οἶ μηδὲν ἠδικηκότες· ἤδη δέ τινες καινοτέραν ὑπέμενον τελευτὴν, ξίφει τὸ σῶμα εἰς πολλὰ τμήματα κατακρεουργούμενοι, καὶ μετὰ τὴν ἀπηνῆ ταύτην καὶ φρικτοτάτην θέαν τοῖς τῆς θαλάσσης βυθοῖς ἰχθύσι εἰς βορὰν ῥιπτούμενοι.",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "φυγαὶ δὴ αὖθις ἐπὶ τούτοις τῶν θεοσεβῶν ἐγίνοντο ἀνδρῶν, καὶ πάλιν ἀγροὶ, καὶ πάλιν ἐρημίαι, νάπαι τε καὶ ὄρη τοὺς Χριστοῦ θεράποντας ὑπεδέχοντο. ἐπεὶ δὲ καὶ ταῦτα τοῦτον προυχώρει τῷ δυσσεβεῖ τὸν τρόπον, λοιπὸν καὶ τὸν κατὰ πάντων ἀνακινεῖν διωγμὸν ἐπὶ διάνοιαν ἐβάλλετο.",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "ἐκράτει τε γνώμης καὶ οὐδὲν ἐμποδὼν ἦν αὐτῷ μὴ οὐχὶ ἐν ἔργῳ χωρεῖν, εἰ μὴ τάχιστα τὸ μέλλον ἔσεσθαι προλαβὼν ὁ τῶν οἰκείων ψυχῶν ὑπέρμαχος θεὸς ὡς ἐν βαθεῖ σκότῳ καὶ νυκτὶ ζοφωδεστάτῃ φωστῆρα μέγαν ἀθρόως καὶ σωτῆρα τοῖς πᾶσιν ἐξέλαμψε, τὸν αὐτοῦ θεράποντα Κωνσταντῖνον ὑψηλῷ βραχίονι ἐπὶ τὰ τῇδε χειραγωγήσας.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Νώ. H. E. VII, 45-46] Τούτῳ μὲν οὖν ἄνωθεν ἐξ οὐρανοῦ καρπὸν εὐσεβείας ἐπάξιον, τὰ τρόπαια τῆς κατὰ τῶν ἀσεβῶν παρεῖχε νίκης, τὸν δ’ ἀλιτήριον, αὐτοῖς συμβούλοις ἅπασι καὶ φίλοις, ὑπὸ τοῖς Κωνσταντίνου ποσὶ πρηνῆ κατέβαλεν.",
+     "text": ""
+    },
+    {
+     "number": 2,
+     "greek": "ὡς γὰρ εἰς ἔσχατα μανίας τὰ κατ’ αὐτὸν ἤλαυνεν, οὐκέτ’ ἀνεκτὸν εἶναι λογισάμενος βασιλεὺς ὁ τῷ θεῷ φίλος, τὸν σώφρονα συναγαγὼν λογισμὸν, καὶ τὸν στερρὸν τοῦ δικαίου τρόπον φιλανθρωπίᾳ κερασάμενος, ἄσμενος ἐπαμῦναι κρίνει τοῖς ὑπὸ τῷ τυράννῳ ταλαιπωρουμένοις, καὶ τό γε πλεῖστον ἀνθρώπων γένος, βραχεῖς λυμεῶνας ἐκποδὼν ποιησάμενος, ἀνασώσασθαι ὁρμᾶται.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "μόνῃ γὰρ αὐτῷ χρωμένῳ φιλανθρωπίᾳ τὸν πρὸ τούτου χρόνον, καὶ τὸν οὐ συμπαθείας ἄξιον ἐλεοῦντι, τῷ μὲν οὐδὲν ἐγίνετο πλέον, τῆς κακίας οὐκ ἀπαλλαττομένῳ, αὔξοντι δὲ μᾶλλον τὴν κατὰ τῶν ὑποχειρίων ἐθνῶν λύτταν, τοῖς δὲ κακουμένοις οὔτις ἐλείπετο σωτηρίας ἐλπὶς, ὑπὸ δεινῷ θηρίῳ καταπονουμένοις.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "διὸ δὴ τῷ φιλαγάθῳ μίξας τὸ μισοπόνηρον ὁ τῶν ἀγαθῶν ἀρωγὸς, πρόεισιν ἅμα παιδὶ Κρίσπῳ βασιλεῖ φιλανθρωποτάτῳ, σωτήριον δεξιὰν ἅπασι τοῖς ἀπολλυμένοις ἐκτείνας· εἶθ’ οἷα παμβασιλεῖ θεῷ, θεοῦ παιδὶ σωτῆρι ἁπάντων ποδηγῷ καὶ συμμάχῳ χρώμενοι, πατὴρ ἅμα καὶ υἱὸς, ἄμφω κύκλῳ διελόντες τὴν κατὰ τῶν θεομισῶν παράταξιν, ῥᾳδίαν τὴν νίκην ἀποφέρονται, τῶν κατὰ τὴν συμβολὴν πάντων ἐξευμαρισθέντων αὐτοῖς ὑπὸ τοῦ θεοῦ κατὰ γνώμην.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ἀθρόως δῆτα καὶ λόγου θάττον οἱ μὲν χθὲς καὶ πρὸ ἡμέρας θανάτου πνέοντες καὶ ἀπειλῆς οὐκέτ’ ἦσαν, οὐδὲ μέχρις ὀνόματος μνημονευόμενοι· γραφαί τε αὐτῶν καὶ τιμαὶ τὴν ἀξίαν αἰσχύνην ἀπελάμβανον. καὶ ἃ τοῖς πάλαι δυσσεβέσι τυράννοις ἐνεῖδεν αὐτοῖς ὀφθαλμοῖς Λικίννιος, ταῦτα ὁμοίως καὶ αὐτὸς ἔπασχεν, ὅτι μηδ’ αὐτὸς ἐδέξατο ὢ παιδείαν, μηδὲ ταῖς τῶν πέλας ἐσωφρονίσθη μάστιξι, τὴν ὁμοίαν δ’ ἐκείνοις τῆς ἀσεβείας μετελθὼν ὁδὸν, ἐπὶ τὸν ἴσον αὐτοῖς ἐνδίκως περιηνέχθη κρημνόν.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "ἀλλ’ οὗτος μὲν ταύτῃ πη βεβλημένος ἔκειτο, ὁ δ’ ἀρετῇ πάσῃ θεοσεβείας ἐκπρέπων μέγιστος νικητὴς Κψνσταντῖνος σὺν παιδὶ Κρίσπῳ βασιλεῖ θεοφιλεστάτῳ καὶ κατὰ πάντα τοῦ πατρὸς ὁμοίῳ τὴν οἰκείαν ἑῴαν ἀπελάμβανον, καὶ μίαν ἡνωμένην τὴν Ῥωμαίων κατὰ τὸ παλαιὸν παρεῖχον ἀρχὴν, τὴν ἀπ’ ἀνίσχοντος ἡλίου πᾶσαν ἐν κύκλῳ κατὰ θάτερα τῆς οἰκουμένης, ἄρκτον τε ὁμοῦ καὶ μεσημβρίαν, εἰς ἔσχατα δυομένης ἡμέρας ὑπὸ τὴν αὐτῶν ἄγοντες εἰρήνην.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ἀφῄρητο δ’ οὖν ἐξ ἀνθρώπων πᾶν δέος τῶν πρὶν αὐτοὺς πιεζόντων, λαμπρὰς δ’ ἐτέλουν καὶ πανηγυρικὰς ἑορτῶν ἡμέρας· ἦν δὲ φωτὸς ἔμπλεα πάντα, καὶ μειδιῶσι προσώποις, ὄμμασί τε φαιδροῖς οἱ πρὶν κατηφεῖς ἀλλήλους ἔβλεπον, χορεῖαι δ’ αὐτοῖς καὶ ὕμνοι κατὰ πόλεις ὁμοῦ καὶ ἀγρούς· τὸν παμβασιλέα θεὸν πρώτιστα πάντων, ὅτι δὴ τοῦτ’ ἐδιδάχθησαν, κἄπειτα τὸν εὐσεβῆ βασιλέα παισὶν ἅμα θεοφιλέσιν ἐγέραιρον.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "κακῶν δ’ ἀμνηστία παλαιῶν ἦν, καὶ λήθη πάσης δυσσεβείας, παρόντων δ’ ἀγαθῶν ἀπόλαυσις, καὶ προσέτι μελλόντων προσδοκίαι. ἥπλωντο δ’ οὖν κατὰ πάντα τόπον τοῦ νικητοῦ βασιλέως φιλανθρωπίας ἔμπλεοι διατάξεις, νόμοι τε μεγαλοδωρεᾶς καὶ ἀληθοῦς εὐσεβείας γνωρίσματα περιέχοντες.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "οὕτω δῆτα πάσης τυραννίδος ἐκκαθαρθείσης, μόνοις ἐφυλάττετο τὰ τῆς προσηκούσης βασιλείας βέβαιά τε καὶ ἀνεπίφθονα Κωνσταντίνῳ καὶ τοῖς αὐτοῦ παισὶν, οἳ τῶν πρόσθεν πάντων ἀποσμήξαντες τὴν θεοστυγίαν τοῦ βίου, τῶν ἐκ θεοῦ πρυτανευθέντων ἀγαθῶν αὐτοῖς ᾐσθημένοι, τὸ φιλάρετον καὶ θεοφιλὲς τότε πρὸς τὸ θεῖον εὐσεβὲς καὶ εὐχάριστον δι’ ὧν εἰς προῦ- πτον ἅπασιν ἀνθρώποις παρέσχον ὁρᾶν ἐπεδείξαντο.",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

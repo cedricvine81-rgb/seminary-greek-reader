@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -148,7 +148,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
-      { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1 },
+      { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1, greek: true },
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
       { id: 'sibylline-greek', name: 'Sibylline Oracles (Greek)', source: 'sibylline-greek', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14], greek: true, greekOnly: true, secondaryLabel: 'Latin' },
       { id: 'pseudo-philo', name: 'Pseudo-Philo (Biblical Antiquities / L.A.B.)', source: 'pseudo-philo', chapters: 65 },
@@ -175,6 +175,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     label: 'Church Fathers',
     blurb: 'The Ante-Nicene Fathers — Justin Martyr’s Dialogue and Apologies, and Irenaeus’s Against Heresies — in the Roberts-Donaldson public-domain translation.',
     works: [...JUSTIN_CATALOG, ...ANF_CATALOG],
+  },
+  {
+    id: 'eusebius',
+    label: 'Eusebius',
+    blurb: 'Eusebius of Caesarea’s Ecclesiastical History — the foundational narrative of the early church (c. 324 CE), in ten books. Schwartz’s Greek with Lake &amp; Oulton’s English side by side (First1KGreek, CC BY-SA).',
+    works: EUSEBIUS_CATALOG,
   },
   {
     id: 'greco-roman',

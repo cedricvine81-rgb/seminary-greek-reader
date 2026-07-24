@@ -87,13 +87,19 @@ def apply_greek(slug, greek):
     for chap in doc['chapters']:
         total += 1
         g = greek.get(str(chap['number']))
-        # Only a single-verse chapter is a clean whole-chapter parallel. Multi-verse chapters
-        # are our English paragraph-split, which the Greek can't be divided to match.
         if len(chap['verses']) == 1:
             single += 1
-            if g:
-                chap['verses'][0]['greek'] = g
-                matched += 1
+        # The chapter is the parallel unit either way. A single-verse chapter is a clean
+        # whole-chapter parallel; a chapter our English splits into paragraph-verses gets the
+        # whole Greek chapter on its FIRST verse (the Josephus pattern — the reader shows the
+        # Greek beside the chapter's opening paragraph, the rest English-only), since the
+        # Greek's Marcovich sections don't correspond to New Advent's paragraph splits.
+        if g and chap['verses']:
+            # Clear any Greek a previous run left on later verses, then attach to the first.
+            for v in chap['verses']:
+                v.pop('greek', None)
+            chap['verses'][0]['greek'] = g
+            matched += 1
 
     if total == 0 or matched == 0:
         return {'slug': slug, 'greek': False, 'matched': matched, 'total': total, 'single': single}

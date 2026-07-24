@@ -15,12 +15,15 @@ export interface ProseWork {
   // Recognize this work's citation strings in the Backgrounds dataset and return the target
   // chapter (+ optional verse). Per-work because the citation abbreviations differ.
   parseCitation: (text: string) => { chapter: number; verse?: number } | null
+  // Traditional reference for a chapter, shown in the reader's chapter headings — for works
+  // whose chapters carry a second, structural numbering (Hermas: "Vision 3.6" for chapter 14).
+  chapterLabel?: (chapter: number) => string
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -62,8 +65,10 @@ const TWELVE_PATRIARCHS_WORKS: ProseWork[] = TWELVE_PATRIARCHS.map(t => ({
 }))
 
 // Ids/names the catalog needs so the Texts tab can list all twelve under one category.
+// All twelve carry chapter-level parallel Greek (scripts/build-testaments-greek.py).
 export const TWELVE_PATRIARCHS_CATALOG = TWELVE_PATRIARCHS.map(t => ({
   id: `tp-${t.slug}`, source: `tp-${t.slug}` as EmbeddedProseSource, name: `Testament of ${t.name}`, chapters: t.chapters,
+  greek: true,
 }))
 
 // ── Philo of Alexandria ───────────────────────────────────────────────────────────────
@@ -211,15 +216,80 @@ const AF: { slug: string; name: string; noteBook: string; chapters: number; abbr
   { slug: 'mart-polycarp', name: 'The Martyrdom of Polycarp', noteBook: 'AFMartPol', chapters: 22, abbrevs: ['Mart. Pol.'] },
 ]
 
-const AF_WORKS: ProseWork[] = AF.map(w => ({
-  source: `af-${w.slug}` as EmbeddedProseSource,
-  name: w.name,
-  noteBook: w.noteBook,
-  dataUrl: `/data/apostolic-fathers/${w.slug}.json`,
-  chapters: w.chapters,
-  attribution: AF_ATTRIBUTION,
-  parseCitation: afCite(w.abbrevs),
-}))
+// ── The Shepherd of Hermas ────────────────────────────────────────────────────────────
+// One work, chapters 1–114 (the continuous Whittaker/Joly numbering modern editions cite),
+// with the traditional Vision/Mandate/Similitude reference carried as each chapter's label.
+// Built by scripts/build-hermas.py (Lightfoot English + First1KGreek parallel Greek).
+// Chapters per Vision / Mandate / Similitude — Visions are chapters 1–25, Mandates 26–49,
+// Similitudes 50–114. Both citation styles resolve: "Herm. Vis. 2.1.3" and "Herm. 78.9".
+const HERMAS_VIS = [4, 4, 13, 3, 1]
+const HERMAS_MAND = [1, 1, 1, 4, 2, 2, 1, 1, 1, 3, 1, 6]
+const HERMAS_SIM = [1, 1, 1, 1, 7, 5, 1, 11, 33, 4]
+const HERMAS_GROUPS: [string, RegExp, number, number[]][] = [
+  ['Vision', /^Vis/, 0, HERMAS_VIS],
+  ['Mandate', /^Mand/, 25, HERMAS_MAND],
+  ['Similitude', /^Sim/, 49, HERMAS_SIM],
+]
+
+const hermasLabel = (chapter: number): string => {
+  let n = chapter
+  for (const [name, , , counts] of HERMAS_GROUPS) {
+    for (let u = 0; u < counts.length; u++) {
+      if (n <= counts[u]) {
+        const ref = counts[u] === 1 ? `${name} ${u + 1}` : `${name} ${u + 1}.${n}`
+        return `${ref} · Ch. ${chapter}`   // both the traditional ref and the continuous chapter
+      }
+      n -= counts[u]
+    }
+  }
+  return `Chapter ${chapter}`
+}
+
+// "Herm. Vis. 2.1.3" → Vision 2 ch. 1 v. 3 (continuous ch. 5); "Herm. Mand. 9.3" → the
+// single-chapter Mandate 9, verse 3; "Herm. Sim. 9.12" → Similitude 9 ch. 12; a bare
+// "Herm. 78.9" is already the continuous numbering. Ranges keep their start.
+const hermasCite = (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(/^Herm(?:as)?\.?,?\s+(?:(Vis|Mand|Sim)(?:\.|[a-z]*\.?)\s+)?(\d+)(?:[.:](\d+))?(?:[.:](\d+))?/)
+  if (!m) return null
+  const [, kind, a, b, c] = m
+  const unit = parseInt(a, 10)
+  const sub = b ? parseInt(b, 10) : undefined
+  const verse = c ? parseInt(c, 10) : undefined
+  if (!kind) return { chapter: unit, verse: sub }              // continuous "Herm. 78.9"
+  const group = HERMAS_GROUPS.find(([, re]) => re.test(kind))
+  if (!group) return null
+  const [, , base, counts] = group
+  if (unit < 1 || unit > counts.length) return null
+  const start = base + counts.slice(0, unit - 1).reduce((x, y) => x + y, 0)
+  if (counts[unit - 1] === 1) return { chapter: start + 1, verse: sub }   // "Mand. 9.3"
+  if (sub == null || sub > counts[unit - 1]) return { chapter: start + 1 }
+  return { chapter: start + sub, verse }
+}
+
+const HERMAS_WORK: ProseWork = {
+  source: 'af-hermas',
+  name: 'The Shepherd of Hermas',
+  noteBook: 'AFHerm',
+  dataUrl: '/data/apostolic-fathers/hermas.json',
+  chapters: 114,
+  attribution: 'Text: J. B. Lightfoot’s translation of the Shepherd of Hermas (1891), public domain. Greek: First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Chapters follow the continuous 1–114 numbering; the traditional Vision/Mandate/Similitude reference heads each chapter.',
+  parseCitation: hermasCite,
+  chapterLabel: hermasLabel,
+}
+
+const AF_WORKS: ProseWork[] = [
+  ...AF.map(w => ({
+    source: `af-${w.slug}` as EmbeddedProseSource,
+    name: w.name,
+    noteBook: w.noteBook,
+    dataUrl: `/data/apostolic-fathers/${w.slug}.json`,
+    chapters: w.chapters,
+    attribution: AF_ATTRIBUTION,
+    parseCitation: afCite(w.abbrevs),
+  })),
+  HERMAS_WORK,
+]
 
 // Works for which scripts/build-apostolic-fathers-greek.py attached the parallel Greek
 // (First1KGreek, CC BY-SA 4.0). Diognetus, the Martyrdom of Polycarp and the Didache are
@@ -231,10 +301,13 @@ const AF_GREEK = new Set([
 ])
 
 // Ids/names the catalog needs to list the Apostolic Fathers under one Texts category.
-export const AF_CATALOG = AF.map(w => ({
-  id: `af-${w.slug}`, source: `af-${w.slug}` as EmbeddedProseSource, name: w.name, chapters: w.chapters,
-  ...(AF_GREEK.has(w.slug) ? { greek: true } : {}),
-}))
+export const AF_CATALOG = [
+  ...AF.map(w => ({
+    id: `af-${w.slug}`, source: `af-${w.slug}` as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+    ...(AF_GREEK.has(w.slug) ? { greek: true } : {}),
+  })),
+  { id: 'af-hermas', source: 'af-hermas' as EmbeddedProseSource, name: 'The Shepherd of Hermas', chapters: 114, greek: true },
+]
 
 // ── The Targums ───────────────────────────────────────────────────────────────────────
 // The most-cited public-domain Aramaic Targums: Targum Isaiah (C. W. H. Pauli, 1871) and
@@ -347,14 +420,69 @@ const JUSTIN_WORKS: ProseWork[] = JUSTIN.map(w => ({
 }))
 
 // All three Justin works carry parallel Greek (First1KGreek / Perseus) via
-// scripts/build-justin-greek.py — attached per chapter where our English is a single verse.
-// The Dialogue is only ~42% covered: its longer chapters are split into paragraph-verses our
-// English versified independently of the Greek's sections, so those stay English-only.
+// scripts/build-justin-greek.py — every chapter is covered: a single-verse chapter is a
+// clean whole-chapter parallel, and a chapter our English splits into paragraph-verses
+// shows the whole Greek chapter beside its opening paragraph (the Josephus pattern).
 const JUSTIN_GREEK = new Set(['justin-1apology', 'justin-2apology', 'justin-dialogue'])
 
 export const JUSTIN_CATALOG = JUSTIN.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
   ...(JUSTIN_GREEK.has(w.slug) ? { greek: true } : {}),
+}))
+
+// ── Eusebius, Ecclesiastical History ──────────────────────────────────────────────────
+// Schwartz's Greek (section-precise) with Lake & Oulton's public-domain English, both from
+// First1KGreek (CC BY-SA 4.0). One work per book (10 books), chapters → sections; the Greek
+// rides every section, the English (chapter-level) on the first. Built by
+// scripts/build-eusebius.py. Cited "Eusebius, Hist. eccl. <book>.<chapter>.<section>"; the
+// book's work resolves it at chapter (+section) precision. Books 2, 5, 7, 8 open with a
+// preface, stored as chapter 0 — hence the per-book chapterNumbers below.
+const EUSEBIUS_ATTRIBUTION = 'Greek: Eusebius, Historia Ecclesiastica, ed. E. Schwartz (GCS). English: the Loeb translation by Kirsopp Lake & J. E. L. Oulton (public domain). Both via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0.'
+
+// book → last chapter number and whether it opens with a preface (chapter 0). From the build.
+const EUSEBIUS_BOOKS: { book: number; last: number; preface: boolean }[] = [
+  { book: 1, last: 13, preface: false },
+  { book: 2, last: 26, preface: true },
+  { book: 3, last: 39, preface: false },
+  { book: 4, last: 30, preface: false },
+  { book: 5, last: 28, preface: true },
+  { book: 6, last: 46, preface: false },
+  { book: 7, last: 32, preface: true },
+  { book: 8, last: 17, preface: true },
+  { book: 9, last: 11, preface: false },
+  { book: 10, last: 9, preface: false },
+]
+
+const eusebiusChapterNumbers = (b: { last: number; preface: boolean }): number[] =>
+  Array.from({ length: b.last - (b.preface ? 0 : 1) + 1 }, (_, i) => (b.preface ? 0 : 1) + i)
+
+// "Eusebius, Hist. eccl. 3.39.15" → book 3, chapter 39, section 15. Only Hist. eccl. matches
+// (not Praep. ev. or other Eusebian works). Ranges keep their start.
+const eusebiusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Eusebius,\\s*Hist\\. eccl\\.\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const EUSEBIUS_WORKS: ProseWork[] = EUSEBIUS_BOOKS.map(b => ({
+  source: `eusebius-he-${b.book}` as EmbeddedProseSource,
+  name: `Eusebius, Ecclesiastical History (Book ${b.book})`,
+  noteBook: `EusebHE${b.book}`,
+  dataUrl: `/data/eusebius/he-${b.book}.json`,
+  chapters: b.last + (b.preface ? 1 : 0),
+  attribution: EUSEBIUS_ATTRIBUTION,
+  parseCitation: eusebiusCite(b.book),
+  chapterLabel: (ch: number) => (ch === 0 ? 'Preface' : `Chapter ${ch}`),
+}))
+
+// Ids/names the catalog needs; preface books declare chapterNumbers so the reader queues ch. 0.
+export const EUSEBIUS_CATALOG = EUSEBIUS_BOOKS.map(b => ({
+  id: `eusebius-he-${b.book}`,
+  source: `eusebius-he-${b.book}` as EmbeddedProseSource,
+  name: `Eusebius, Ecclesiastical History (Book ${b.book})`,
+  chapters: b.last + (b.preface ? 1 : 0),
+  greek: true,
+  ...(b.preface ? { chapterNumbers: eusebiusChapterNumbers(b) } : {}),
 }))
 
 // ── The Mishnah ───────────────────────────────────────────────────────────────────────
@@ -582,6 +710,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...TG_WORKS,
   ...ANF_WORKS,
   ...JUSTIN_WORKS,
+  ...EUSEBIUS_WORKS,
   ...MISHNAH_WORKS,
   ...GRECO_WORKS,
 ]

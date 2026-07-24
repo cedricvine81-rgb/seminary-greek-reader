@@ -1,0 +1,1367 @@
+{
+ "work": "Eusebius, Ecclesiastical History (Book 5)",
+ "attribution": "Greek: Eusebius, Historia Ecclesiastica, ed. E. Schwartz (GCS). English: the Loeb translation by Kirsopp Lake & J. E. L. Oulton (public domain). Both via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0.",
+ "greek": true,
+ "chapters": [
+  {
+   "number": 0,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "[Προοίμιον.] Ὁ μὲν οὖν τῆς ῾Ρωμαίων ἐκκλησίας ἐπίσκοπος Σωτὴρ ἐπὶ ὄγδοον ἔτος ἡγησάμενος τελευτᾷ τὸν βίον. τοῦτον δωδέκατος ἀπὸ τῶν ἀποστόλων Ἐλεύθερος διαδέχεται· ἔτος δ᾿ ἦν ἑπτακαιδέκατον αὐτοκράτορος Ἀντωνίνου Οὐήρου, ἐν ᾧ κατά τινα μέρη τῆς γῆς σφοδρότερον ἀναρριπισθέντος τοῦ καθ᾿ ἡμῶν διωγμοῦ ἐξ ἐπιθέσεως τῶν κατὰ πόλεις δήμων μυριάδας μαρτύρων ἀνὰ τὴν οἰκουμένην διαπρέψαι, στοχασμῷ λαβεῖν ἔνεστιν ἀπὸ τῶν καθ᾿ ἓν ἔθνος συμβεβηκότων, ἃ καὶ γραφῇ τοῖς μετέπειτα παραδοθῆναι, ἀλήστου μνήμης ὡς ἀληθῶς ἐπάξια ὄντα, συμβέβηκε.",
+     "text": "BOOK V SORER, the bishop of the church of Rome, ended his life in the eighth year of his rule. To him succeeded Elutherus, the twelfth from the apostles, and it was the seventeenth year of the Emperor Antonius Verus.1 In this time the persecution of us in some parts of the world was rekindled more violently by popular violence in the cities, and, to judge from the events in one nation, myriads were distinguished by martyrdom. The story has chanced to be handed down in writing for posterity, and it is truly worthy of unceasing remembrance. sincc the whole reeord of its complete treatment has been embodied in our collection of martyrs, 2 and contains not merely the narrahve itself but also an exposition of doctrine, I will at present select and quote merely such points as belong to the present undertaking. Other writers of historical works have confined themselves to the written tradition of victories in wars, of trimnphs over enemies, of the exploits of generals and the valour of soldiers, men stained with blood and with countless murders for the sake of children and country and other possessions ; but it is wars most peaceful, waged for the very peace of the sOul, and men who therein have been valiant for truth rather than for country, and for piety rather than for rileir dear ones, that our reeord of those who order their lives according to God will inscribe on everlasting monuments : it is the struggles of the athletes of piety and their valour which braved so much, trophies won from demons, and victories against unseen adversaries, and the crowns at the end of all, that it will proclaim for everlasting remembrance."
+    },
+    {
+     "number": 2,
+     "greek": "τῆς μὲν οὖν περὶ τούτων ἐντελεστάτης ὑφηγήσεως τὸ πᾶν σύγγραμμα τῇ τῶν μαρτύρων ἡμῖν κατατέτακται συναγωγῇ, οὐχ ἱστορικὴν αὐτὸ μόνον, ἀλλὰ καὶ διδασκαλικὴν περιέχον διήγησιν. ὁπόσα γέ τοι τῆς παρούσης ἔχοιτο πραγματείας, ταῦτ᾿ ἐπὶ τοῦ παρόντος ἀναλεξάμενος παραθήσομαι.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἄλλοι μὲν οὖν ἱστορικὰς ποιούμενοι διηγήσεις πάντως ἂν παρέδωκαν τῇ γραφῇ πολέμων νίκας, καὶ τρόπαια κατ᾿ ἐχθρῶν, στρατηγῶν τε ἀριστείας, καὶ ὁπλιτῶν ἀνδραγαθίας, αἵματι καὶ μυρίοις φόνοις παίδων καὶ πατρίδος καὶ τῆς ἄλλης ἕνεκεν περιου- σίας μιανθέντων.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὁ δέ γε περὶ τοῦ καθ’ ἡμὰς πολιτεύματος διηγηματικὸς ἡμῖν λόγος τοὺς ὑπὲρ αὐτῆς τῆς κατὰ ψυχὴν εἰρήνης εἰρηνικωτάτους πολέμους, καὶ τοὺς ἐν τούτοις ὑπὲρ ἀληθείας μᾶλλον ἢ πατρίδος, καὶ μᾶλλον ὑπὲρ εὐσεβείας ἢ τῶν φιλτάτων ἀνδρισαμένους αἰωνίαις ἀναγράψεται στήλαις, τῶν εὐσεβείας ἀθλητῶν τὰς ἐνστάσεις, καὶ τὰς πολυτλήτους ἀνδρείας, τρόπαιά τε τὰ κατὰ δαιμόνων , καὶ νίκας τὰς κατὰ τῶν ἀοράτων ἀντιπάλων, καὶ τοὺς ἐπὶ πᾶσι τούτοις στεφάνους εἰς αἰώνιον μνήμην ἀνακηρύττων.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 1,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Γαλλία μὲν οὐν ἡ χώρα ἦν, καθ’ ἣν τὸ τῶν δηλουμένων συνεκροτεῖτο στάδιον, ἧς μητροπόλεις ἐπίσημοι καὶ παρὰ τὰς ἄλλας τῶν αὐτόθι διαφέρουσαι βεβόηνται Λούγοδουνος καὶ Βίεννα, δι’ ὧν ἀμφοτέρων τὴν ἅπασαν χώραν πολλῷ τῷ ῥεύματι περιρρέων ὁ Ῥοδανὸς ποταμὸς διέξεισι.",
+     "text": "1. Gaul was the country in which was prepared the stage for these events. Its capital cities, famous and more renowned than the others in the distriet, were Lyolb and Vienne, through both of which passes the river Rhone, flowing in an ample stream through the whole district. The distingtliSlled churches of this country sent the document about the martyrs to the churches in Asia and Phrygia, in this way recording what happedned among them, and I will quote their words : “ The servants sojourning in Vienne and Lyons in Gaul to the brethren in Asia and Phrygia, who have the same faith and hope of redemption as you. Peace, grace, and glory from God the Father and Jesus Christ, our Lord.” Then after other prefatory remarks they begin their narrative thus : “ The greatness of the persecution here, and the terrible rage of the heathen against the saints, and the suffering of the blessed martyrs, are more than we can narrate accurately, nor can they be put down in writing. For with all his might the adversary attaeked us, foreshadowing his coming which is shortly to be, and tried everything, practising his adherents and training them ngainst the servants of God, so that we were not merely excluded from houses and baths and markets, but we were even forbidden to be seen at all in any place whatever. But against them the grace of God did eaptain us ; it reseued the weak, and marshalled against them steadfast pillars of men able by patience to draw to themselves all the attack of the enemy. They cmne together and endured every kind of abuse and punishment, they eounted many things as few in their zeal for Christ, and ffidld indeed prove that the sufferings of this present time are not worthy to bc compared with the glory which shall be revealed to us. “First they endured nobly all that was heaped upon them by the mob, howls and stripes and dragging about, and rapine and imprisonment and stoning, and all things which are wont to happen at the hands of an infuriated populace against its supposed enemies and foes ; then they were dragged into the market-place by the tribune and by the chief authorities of the city, were indicted and eonfessed, and at last they were shut up until the coming of the governor. Then they were brought before the governor, and When he used all his eruelty against them, then intervened Vettius Epagathus, one of the brethren, mled filled with love towards and towards his neighbour, the strietness of whose life had gone so far that in spite of his youth his reputation was equal to that of the elder Zacharias. 1 He walked in all the commanmnents and orffinances of the Lord blameless and was unwearied in all ministrations to his neighbours, having much zeal toward God and being fervent in spirit. His character forbade him to endure the unreasonable judgement given agninst us, and, overcome with indignation, he asked to be heard himself in defence of the brethren to the effect that there was nothing atheistic or impious among us. He was howled down by those around the judgement-seat, for he was a man of position, 2 and the governor would not tolerate the just requests which he had put forward but merely asked if he were a Chrirtian hinBeK. He then confessed in clear tones and was himself taken into the ranks of the martyrs. He was called the ‘ Comforter of Christians,’ but had the Comforter in himself, spirit of Zacharias which he had shown by the fullness of his love when he chose to Iay down even his own life for the defence of the brethren, for he was and he is 3 a true ffidlsciple of christ, and he follows the Lamb wheresoever he goes. “The rest were then ffidIrided and the first martyrs were obviously ready, and they fulffiled the confession of martyrdom with all reaffiness, but some others appeared not to be ready, and failcd in training and in strength, unable to endure the strain of a great cOnffiet, and abOut ten in nmber failed, as those born out of due time. They caused us great grief and immeasurable mourning, and hindered the zeal of the others wo had not been arrerted. Yet they, although suffering all the terrors, nervertheless remained with the martyrs and did not desert them. But at that point we were all greatly terrified by uncertainty as to their confession, not fearillg the threatened punishment but looking towards the end and afraid lest some one should fall away. Yet day by day those who were worthy went on being ariested, completing their number, so as to collect from the two churches all the zealous and those through whom the life of the locality was kept together. There were also arrested certain heathen slaves of our members, since the governor had publicly commanded that we should all be prosecuted, and these by the snare of Satan, fearing the tortures which they saw the saints suffering, when the soldiers urged them, falsely accused us of Theyestean feasts and Oedipodean intercourse, 1 and things which it is not right for us either to speak of or to think of or even to believe that such things could ever happen among men. When this rumour spread all men turned like beab againt us, so that even if any had formerly been lenient for friendship's sake they then became furious and raged against us, and there was fulfilled that which was spoken by our Lord that ‘the rime will come when whosoever killeth you will think that he doeth God ’ Then at last the holy martyrs endured sufferings beyong all description, for Satan was striving to wring some blasphemy eVen from them, and all the fury of the mob and of the gOVernor and Of the soldiers was raised beyond meaSure against sanetus, the deacon from Vienne, and against Maturus, who was a noviee but a noble contender, and against Attalus, a pergamene by race, who had always been a pillar and support of the Christians there, and against Blandina, through whom Christ showed that things which are mean and obscure and contemptible among men are vouehsafed great glory with God beeause or the love towardS him shown in powere and not boasted of in appearance. For while we were all afraid, and her human mistress, who was herself one of the contenders among the martyrs, was in distress lest she should not be able, through the weakness of her body, to be bold enough even ro make confession, Blandina was ffiled with such power that she was released and rescued from those who took turns in torturing her in every way from morning until evening, and they themselves eonfessed that they were beaten, for they had nothing left to do to her, and they marvelled that she still remained alive, seeing that her whole body was broken and opened, and they testified that any one of these tortures was suffieient to destroy life, even when they had not been magnffied and multiplied. But the blessed woman, like a noble athlete, kept gaining in vigour in her confession, and found comfort and rest and freedom from pain from what was done to her by saying, ‘I am a Christian woman and nothing wicked happens among us.’ “Sanctus also himself endured nobly, beyond measure or human power, all the ill- treament of men, for though the wieked hoped through persistence and the rigour of his tortures to wring from him something wrong, he resisted them with such constancy that he did not even tell his own name, or the race or the city whence be was, nor whether he was slave or free, but to all questions answered in Latin, ‘I am a Christian.’ This he said for and city and race and for everything else, and the heathen heard no other sound from him. For this reason the governor and the torturers were very ambitious to subdue him, so that when they bad nothing left at all to do to him at last they fastened plates of heated brass to the tenderest parts of his body. His limbs were burnig, but he continued himself unbending and unyielding, firm in his confession, refreshed and strengthened by the heavenly spring of the water of life which proceeds forth from the body of Christ. His body was a witness to his treatment it was all one wound and bruise, wrenehed and torn out of human shape, but Christ suffering in him manifested great glory, overthrowing the adversary and showing for the example of the others how there is nothing fearful where there is the love of the Father nor painful where there is the glory of Christ. For when the wicked after some days again tortured the martyr they thought that they might overcome him how that his body was swollen and inflamed if they applied the same tortures, seeing that he could not even endure to be touched by the hand, or that by dying under torture he would put fear into the rest. Yet not only did nothing of this kind happen, but, beyond all human expectation, he raised himself up and his body was straightened in the subsequent tortures, and he regained his former appearance and the use of his limbs, so that through the grace of Christ the second torturing became not torment but cure. “Biblis, too, one of those who had denied, did the devil bring to torture (thinking that he had already swallowed her up and wishing to condemn her through blasphemy as well), to force her to say immpious things about us, as though she were already broken and weak. But she recovered under torture, and, as it were, woke up out of deep sleep, being reminded through this transitory punishment of the eternal torments in hell, and contradicted the blasphemers, saying, ‘How would such men eat children, when they are not allowed to eat the blood even of irrational animals?’ And after this she confessed herself a Christian and was added to the ranks of the martyrs. “But when the tyrant's torments had been brought to naught by Christ through the endurance of the blessed saints, the devil thought of other devices, imprisonment in the jail in darkness and in the most horrible place, and stretching their feet in the stocks, separated to the fifth hole, and the other outrages which angry warders filled with the devil are accustomed to inflict on the prisoners. Thus most of them were strangled in the prison, being all those whom the Lord had chosen thus to depart manifesting his glory. Some were tortured so cruelly that it seemed impossible for them to live even if they had had every care, yet surrived in the prison, bereft of human attention but strengthened by the Lord and given power in body and soul, and looking after and comforting the rest. But the younger ones, who had lately been arrested, whose boffidles had not become accustomed to it, did not endure the burden of cofinement but died in prison. “The blessed Pothinus, who had been entrusted with the ministry of the bishoprie at Lyons, was over nunety years old and very weak physically. He was scarcely breathing through the physical weakness which had aheady come upon ffihlm, but was strengthened by zeal of spirit through urgent desire of martyrdom. He was dragged before the judgementseat, and although his body was weakened by old age and disease, his soul was kept in him in order that through it Christ might triumph. He was brought by soldiers to the judgement-seat ; the local authorities accompanied him, and all the populace, uttering all kinds of howls at him as though he was Christ himself, but he gave noble testimony. When asked by the governor, Who was the God of the Christians, he said, ‘ If you are worthy, you will ’ And then he was dragged about without mercy, and suffered many blows ; for those who were near ilhtreated him with feet and hands and in every way, without respect even for his old age, and those who were at a ffistance each threw at him whatever he had at hand, and all thought that it would be a great transgression and impiety to omit any abuse against him. For they thought that in this way they would vindicate their gods. And he was thrown into prison scarcely breathing and after two days yielded up the ghost. “Then a great ffispensation of God was given, and the measureless mercy of Jesus was so manifested, as has rarely happened among the brethren, but is not beyond the skill of Christ. For those who at the nrst arrest had denied were imprisoned themselves and shared in the terrors, for this time not even their denial was any advantage to them ; but those who confessed what they were Were imprisoned as Christians, no other accusation being brought against them, the others however were held as murderers and foul persons and punished twiee as much as the rest. For the burden of the former was lightened by the joy of martyrdom and the hope of the promises, and by love towards Christ and by the spirit of the Father ; but the latter were greauy punished by their conscience so that they were conspicuous among all the rest by their faces when they were taken out. For the one went forth gladly; glory and great grace were mingled on their faces, so that they wore even their fetters as a becoming ornament, like a bride adorned with golden lace of many pattems, and they were perfumed with the sweet savour of Christ, so that some supposed that they had been anointed with worldly unguents ; but the others were depressed and humble and wretched and ffiled with every kind of unseemliness, and in addition were insulted by the heathen as ignoble and cowardly ; they had gained the accusation of murder, but had lost the name which is full of honour and glory and gives life. wben the others saw this they were strengthened and those who were arrested confessed without hesitation and gave no thought to the argumentS of the devil.” After a few more sentences they go on again: “After this the testimony of their death fell into every kind of variety. For they wove various colours and all kinds of Rowers into one wreath to offer to the Father, and so it was necessary for the noble athletes to undergo a varied conteSt, and after great victory to receive the great crown of immortality. Maturus and sanctus and Blandina and Attalus were led forth to the vild beasts, to the public, 1 and to a common exhibition of the inhumanity of the heathen, for the day of fighting with beasts was specially appointed for the Christians. Maturus and Sanctus passed again through all torture in the amphitheatre as though they had suffered nothing before, but rather as though, having conquered the opponent in many bouts, 2 they were now striving for his crown, once more they ran the gauntlet in the accustomed manner, endured the worrying of the wild beastS, and everything which the maddened public, some in one way, some in another, were howling for and commanding, finally, the iron chair on which the roasting of their own bodies clothed them with its reek. Their persecutors did not stop even here, but went on growing more and more furious, wishing to eonquer their endurance, yet gained nothing from sanctus beyond the sound of the confession Which he had been accustomed to make from the beginning. “Thus after a long time, when their life still remained in them through the great contest, they were at last sacrificed, having been made a spectacle to the world throughout that day as a substitute for all the variations of gladiatorial eontests ; but Blandina was hung on a stake and offered as a prey to the wild beasts that were let in. She seemed to be hanging in the shape of a croSS, and by her continuous prayer gave great zeal to the combatants, while they looked on during the cntest, and with their outward eyes saw in the form of their sister him who was crueffied for them, to persuade those who believe on him that all who suffer for the glory of Christ have for ever fellowship with the living God Then when none of the beasts Would touch her she was taken down from the stake and brought baek into the jail, and was thus preserved for another contest, in order that by winning through more trials she might make irrevocable the condemnation of the crooked serpent, and might encourage the brethren ; for small and weak and despised as she was, she had put on the great and invincible athlete, Christ ; she had overcome the adversary in many contests, and through the struggle had gained the crown of immortality. “But Attalus waS himSelf loudly ealled for by the crowd, for he was well known. He went in, a ready combatant, for his conscience was clear, and he had been nobly trained in Christian discipline and had ever been a witness for truth among us. He was led round the amphitheatre and a placard was earried before him on which was written in Latin, This Attalus, the ’ The people were very bitter against him, but when the governor learnt that he was a Roman, he commanded him to be put back with the rest, who were in the jail, about whom he had written to the emperor and was waiting for his reply. “But the intervening time was not idle or fruitless for them but through their endurance was manifested the immeasurable mercy of Christ, for through the living the dead were being quickened and martyrs gave grace to those who had denied. And there was great joy to the Virgin Mother who had miscarried with them as though dead, and was receiving them back alive. For through them the majority of those who had denied were again brought to birth 1 and again conceived and quickened again, and learned to confess, and now alive and vigorous, made happy by God who wills not the death of the sinner, but is Hnd towards repentance, went to the judgement-seat, in order that they might again be interrogated by the governor. For caesar had written that they should be tortured to death, but that if any should reeant they should be let go, and at the beginning of the local feast (and this is widely attended by the eoncourse of all the heathen to it) the govemor led them to the judgement-seat, making a show and spectacle of the blessed men to the mob. He accordingly examined them again, beheaded all who appeared to possess Roman citizenship, and sent the rest to the beasts. And Christ was greatly glorified by those who had formerly denied but theu confessed contrary to the expectation of the people. For they were examined by themselves with the intention of then letting them go, but confessed and were added to the ranks of the martyrs. nose indeed remained without who had never had any vestige of faith, nor perception of the bridal garment, nor idea of the fear of God, but even tbrough their behaviour blasphemed the Way — they are the sons of perdition — but all the rest were added to the church. when they too were being examined a certain Alexander, a Phrygian by race and a physician by profession, who had lived in Gaul for many years and was known to almost every one for his love toward ood and boldness of speech (for he was not without a share of the apostolic gift), stood by the judgement-seat and by signs encouraged them to confession, and seemed to those who were standing by as though he were in travail. But the crowd, angry that those who had formeriy denied were confessing again, howled at Alexander as though he were responsible for this. The govemor summoned him and asked him who he was, and when he said a Christian,’ he flew into a rage and him to the beasts. And the next day he went into the arena together with Attalus ; for to please the mob the governor had given Attalus back to the beasts. ney passed through all the instruments of torture which were prepared in the amphitheatre, and endured a great contest. Finally they too were sacrificed. Alexander uttered neither groan nor moan at all, but conversed with God in his heart, and Attalus, when he was put on the iron chair and was being bumed, and the reek arose from his body, said to the crowd in Latm; ‘ Lo, this which you are doing is to eat men, but we neither eat men nor do anything else wicked.’ And when was asked what name God has, he replied, ‘ God has not a name as a man has.’ “In addition to all this, on the last day of the gladiatorial sports, Blanffina was again brought in with Ponticus, a boy of about fifteen years old, and they had been brought in every day to see the torture of the others, and efforts were made to force them to swear by the idols, and the mob was furiolls against them beeause they had remained steadfast and disregarded them, so that there was neither pity for the youth of the boy nor respeet for the sex of the woman. They exposed them to all the terrors and put them through every torture in turn, trying to make them swear, but not being able to do so. For Ronticus was encouraged by the Christian sister, so that even the heathen saw that she was exhorting and rtrengthening him, and after nobly enduring every torture he gave up his spirit. But the blessed Blandina, last of all, like a noble mother who had encouraged her children and sent them forth triumphant to the king, having herself endured all the tortures of the cffildren, haStened to them, rejoicing and glad at her departure as though invited to a marriage feast rather than cast to the beaSts. And after scourging, after the beasts, after the gridiron, she was at last put in a net and thrown to a bull. she was tossed about a long time by the beast, haring no more feeling for what happened to her through her hope and hold on what had been en- trusted to her and her converse with ChriSt. And so she too was sacrificed, and the heathen themselves confessed that never before among them had a woman suffered so much and so long. “ Not even thus was their madness and cruelty to the SaintS satished, for, incited by a wild beast, 1 wild and barbarous tribes could scarcely stop, and their violenee began again in a new way on the bodies ; for that they had been conquered 2 did not shame them, because they had no human reason, but it rather inflamed their wrath as of a wild beast, and the governor and the people showed the like unrighteous hatred against us that the Scripture might be fulfilled, Let him that is unlawful be unlawful still, and he that iS righteous be righteouS ’ For thoSe who had been strangled in the jail they threw to the dogs, and watched carefully night and day that none should be cared for by us. Then they threw out the remains left by the beasb and by the nre, torn and charred, and ror many days watched with a mihtary guard the heads of the rest, together with their trunks, all unburied. And some raged and gnashed their teeth at the iemains, seeking some further vengeance from them, others laughed and jeered, glorifying their idols and ascribing to them the punishment of the Christians, and the gentler, who seemed to have a little sympathy, mocked greatly, saying, ‘ Where is their god and what good to them was their worship, which they preferred beyond their ’ Their conduct thus varied, but in our cirele great grief obtained, because we could not bury the bodies in the earth, for night did not avail us for this, nor did money persuade nor entreaty shame, but in every way they watehed, as though they would make some great gain, that the bodies should not obtain burial.” Further on they say : “ Thus the bodies of the martyrs, after having been exposed and insulted in every way for six days, and afterwards burned and turned to ashes, were swept by the wicked into the river Rhone which flows near by, that not even a relic of them might still appear upon the earth. And this they did as though they could coquer God and take away their rebirth in order, as they said, ‘ that they might not even have any hope of resurrection, through trusting in which they have brought in strange and new worship and despised terrors, going readily and with joy to death ; now let us see if they will rise again, and if their God be able to help them and to take them out of our hands.’”"
+    },
+    {
+     "number": 2,
+     "greek": "τὴν οὐν περὶ τῶν μαρτύρων γραφὴν αἱ τῇδε διαφανέσταται ἐκκλησίαι ταῖς κατὰ τὴν Ἀσίαν καὶ Φρυγίαν διαπέμπονται, τὰ παρ’ αὐταῖς πραχθέντα τοῦτον ἀνιστοροῦσαι τὸν τρόπον.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "παραθήσομαι δὲ τὰς αὐτῶν φωνάς “οἱ ἐν Βιέννῃ καὶ Λουγδούνῳ τῆς Γαλ- “ λίας “λίας παροικοῦντες δοῦλοι Χριστοῦ τοῖς Ἀσίαν καὶ Φρυγίαν τὴν αὐτὴν τῆς ἀπολυτρώσεως ‘ἡμῖν πίστιν καὶ ἐλπίδα ἔχουσιν ἀδελφοῖς εἰρήνη ‘καὶ χάρις καὶ δόξα ἀπὸ θεοῦ πατρὸς καὶ Χριστοῦ Ἰησοῦ τοῦ κυρίου ἡμῶν.”",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "εἶτα τούτοις ἐξῆς ἕτερα προοιμιασάμενοι τὴν τοῦ λόγου καταρχὴν ποιοῦνται ἐν τούτοις “τὸ μὲν οὖν μέγεθος τῆς ἐνθάδε θλίψεως καὶ τὴν τοσαύτην τῶν ἐθνῶν εἰς τοὺς ἁγίους ὀργὴν, καὶ ὅσα ὑπέμειναν οἱ μακάριοι μάρτυρες, ἐπ’ ἀκριβὲς οὔθ’ ἡμεῖς εἰπεῖν ἱκανοὶ οὔτε μὴν γραφῇ περιληφθῆναι δυνατόν.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "παντὶ γὰρ σθένει “ἐνέσκηψεν ὁ ἀντικείμενος, προοιμιαζόμενος ἤδη τὴν “ἀδεῶς μέλλουσαν ἔσεσθαι παρουσίαν αὐτοῦ, καὶ διὰ “πάντων διῆλθεν, ἐθίζων τοὺς ἑαυτοῦ καὶ προγυ- “μνάζων κατὰ τῶν δούλων τοῦ θεοῦ, ὥστε μὴ μόνον “οἰκιῶν καὶ βαλανείων καὶ ἀγορᾶς εἴργεσθαι, ἀλλὰ “καὶ τὸ καθόλου φαίνεσθαι ἡμῶν τινὰ αὐτοῖς ἀπειρῆσθαι “ἐν ὁποίῳ δήποτε τόπῳ.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "ἀντεστρατήγει “δὲ ἡ χάρις τοῦ θεοῦ, καὶ τοὺς μὲν ἀσθενεῖς ἐρρύετο, “ἀντιπαρέτασσε δὲ στύλους ἑδραίους, δυναμένους “διὰ τῆς ὑπομονῆς πᾶσαν τὴν ὁρμὴν τοῦ πονηροῦ “εἰς ἑαυτοὺς ἑλκύσαι, οἳ καὶ ὁμόσε ἐχώρουν “αὐτῷ, πᾶν εἶδος ὀνειδισμοῦ καὶ κολάσεως ἀνεχόμενοι, “οἳ καὶ τὰ πολλὰ ὀλίγα ἡγούμενοι ἔσπευδον πρὸς “Χριστὸν, ὄντως ἐπιδεικνύμενοι ὅτι οὐκ ἄξια τὰ παθήματα “τοῦ νῦν καιροῦ πρὸς τὴν μέλλουσαν δόξαν “ἀποκαλυφθῆναι εἰς ἡμᾶς.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "καὶ πρῶτον μὲν τὰ “ἀπὸ τοῦ ὄχλου πανδημεὶ σωρηδὸν ἐπιφερόμενα γενναίως “ὑπέμενον, ἐπιβοήσεις καὶ πληγὰς καὶ συρμοὺς “καὶ διαρπαγὰς καὶ λίθων βολὰς καὶ συγκλείσεις “καὶ πάνθ’ ὅσα ἠγριωμένῳ πλήθει ὡς πρὸς “ἐχθροὺς καὶ πολεμίους φιλεῖ γίνεσθαι.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "καὶ δὴ “ἀναχθέντες εἰς τὴν ἀγορὰν ὑπό τε τοῦ χιλιάρχου “καὶ τῶν προεστηκότων τῆς πόλεως ἐξουσιῶν, ἐπὶ “παντὸς τοῦ πλήθους ἀνακριθέντες καὶ ὁμολογήσαντες, “συνεκλείσθησαν εἰς τὴν εἱρκτὴν ἕως τοὐ ήγεμόνος “τῆς παρουσίας",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "μετέπειτα δὲ ἐπὶ τὸν ἡγεμόνα “ἀχθέντων αὐτῶν, κἀκείνου πάσῃ τῇ πρὸς ἡμᾶς “ὠμότητι χρωμένου, Οὐέττοις Ἐπάγαθος, εἷς ἐκ τῶν “ἀδελφῶν, πλήρωμα ἀγάπης τῆς πρὸς τὸν θεὸν καὶ “πρὸς τὸν πλησίον κεχωρηκὼς — οὑ καὶ ἐπὶ τοσοῦτον ἠκρίβωτο ἡ πολιτεία, ὡς καίπερ ὄντα νέον συνεξισοῦσθαι τῇ τοῦ πρεσβυτέρου Ζαχαρίου μαρτυρίᾳ· “πεπόρευτο γοῦν ἐν πάσαις ταῖς ἐντολαῖς καὶ δικαιώ- ῾μασι τοῦ κυρίου ἄμεμπτος, πάσῃ τῇ πρὸς τὸν πλη- “σίον λειτουργίᾳ ἄοκνος, ζῆλον θεοῦ πολὺν ἔχων, “καὶ ζέων τῷ πνεύματι — τοιοῦτος δή τις ὢν τὴν ‘οὕτως καθ’ ἡμῶν ἀλόγως γινομένην κρίσιν οὐκ ἐβά- “στασεν, ἀλλ’ ὑπερηγανάκτησε, καὶ ἠξίου καὶ αὐτὸς ἀκουσθῆναι ἀπολογούμενος ὑπὲρ τῶν ἀδελφῶν, ὅτι μηδὲν ἄθεον μηδὲ ἀσεβές ἐστιν ἐν ἡμῖν.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "τῶν δὲ περὶ τὸ βῆμα καταβοησάντων αὐτοῦ, (καὶ γὰρ ἠν ἐπίσημος), καὶ τοῦ ἡγεμόνος μὴ ἀνασχομένου τῆς οὕτως ὑπ’ αὐτοῦ δικαίας προταθείσης ἀξιώσεως, ἀλλὰ μόνον τοῦτο πυθομένου, εἰ καὶ αὐτὸς εἴη Χριστιανὸς, τοῦ δὲ λαμπροτάτῃ φωνῇ ὁμολογήσαντος, ἀνελήφθη καὶ αὐτὸς εἰς τὸν κλῆρον τῶν μαρτύρων, παράκλητος Χριστιανῶν χρηματίσας, ἔχων δὲ τὸν παράκλητον ἐν ἑαυτῷ, τὸ πνεῦμα πλέον τοῦ Ζαχαρίου, ὃ διὰ τοῦ πληρώματος τῆς ἀγάπης ἐνεδείξατο, εὐδοκήσας ὑπὲρ τῆς τῶν ἀδελφῶν ἀπολογίας καὶ τὴν ἑαυτοῦ θεῖναι ψυχήν. ἦν γὰρ καὶ ἔστι γνήσιος Χριστοῦ μαθητὴς, ἀκολουθῶν τῷ ἀρνίῳ ὅπου ἂν ὑπάγῃ.",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "ἐντεῦθεν δὴ διεκρίνοντο οἱ λοιποὶ, καὶ φανεροὶ καὶ ἕτοιμοι ἐγίνοντο πρωτομάρτυρες, οἳ καὶ μετὰ πάσης προθυμίας ἀνεπλήρουν τὴν ὁμολογίαν τῆς μαρτυρίας, ἐφαίνοντο δὲ καὶ οἱ ἀνέτοιμοι καὶ ἀγύμναστοι καὶ ἔτι ἀσθενεῖς, ἀγῶνος μεγάλου τόνον ἐνεγκεῖν μὴ δυνάμενοι, ὧν καὶ ἐξέτρωσαν ὡς δέκα τὸν ἀριθμὸν, οἳ καὶ μεγάλην λύπην καὶ πένθος ἀμέτρητον ἐνεποίησαν ἡμῖν, καὶ τὴν προθυμίαν τῶν “λοιπῶν τῶν μὴ συνειλημμένων ἐνέκοψαν, οἳ καί “πάντα τὰ δεινὰ πάσχοντες ὅμως συμπαρῆσαν τοῖς “μάρτυσι καὶ οὐκ ἀπελείποντο αὐτῶν.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "τότε δὴ “ οἱ πάντες μεγάλως ἐπτοήθημεν, διὰ τὸ ἄδηλον τῆς “ὁμολογίας, οὐ τὰς ἐπιφερομένας κολάσεις φοβούμε- ‘νοι, ἀλλὰ τὸ τέλος ἀφορῶντες, καὶ τὸ ἀποπεσεῖν τινὰ ‘δεδιότες.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "συνελαμβάνοντο μέντοι καθ’ ἑκάστην “ἡμέραν οἱ ἄξιοι, τὸν ἐκείνων ἀναπληροῦντες ἀρι- “θμὸν, ὥστε συλλεγῆναι ἐκ τῶν δύο ἐκκλησιῶν πάν- “τας τοὺς σπουδαίους, καὶ δι’ ὧν μάλιστα συνειστή- “κει τὰ ἐνθάδε.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "συνελαμβάνοντο δὲ καὶ ἐθνικοί “τινες οἰκέται τῶν ἡμετέρων, ἐπεὶ δημοσίᾳ ἐκέλευσεν “ὁ ἡγεμὼν ἀναζητεῖσθαι πάντας ἡμᾶς· οἳ καὶ κατ’ ἐνέ- “δραν τοῦ σατανᾶ, φοβηθέντες τὰς βασάνους ἃς τοὺς “ἁγίους ἔβλεπον πάσχοντας, τῶν στρατιωτῶν ἐπί τοῦτο “παρορμώντων αὐτοὺς κατεψεύσαντο ἡμῶν Θυέστεια “δεῖπνα καὶ Οἰδιποδείους μίξεις καὶ ὅσα μήτε λαλεῖν “μήτε νοεῖν θέμις ἡμῖν, ἀλλἀ μηδὲ πιστεύειν, εἴ τι τοι- “οῦτο πώποτε παρὰ ἀνθρώποις ἐγένετο.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "τούτων δὲ “φημισθέντων πάντες ἀπεθηριώθησαν εἰς ἡμᾶς, ὥστε “καὶ εἴ τινες τὸ πρότερον δι’ οἰκειότητα ἐμετρίαζον, “τότε μεγάλως ἐχαλέπαινον καὶ διεπρίοντο καθ’ ἡμῶν. “ἐπληροῦτο δὲ τὸ ὑπὸ τοῦ κυρίου ἡμῶν εἰρημένον, ὅτι ἐλεύσεται καιρὸς ἐν ᾧ πᾶς ὁ ἀποκτείνας ὑμᾶς “δόξει λατρείαν προσφέρειν τῷ θεῷ.",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "ἐνταῦθα “λοιπὸν ὑπεράνω πάσης ἐξηγήσεως ὑπέμενον “σεῖς οἱ ἅγιοι μάρτυρες, φιλοτιμουμένου τοῦ σατανᾶ “καὶ δι’ ἐκείνων ῥηθῆναί τι τῶν βλασφήμων.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "“ὑπερβεβλημένως δὲ ἐνέσκηψεν ἡ ὀργὴ πᾶσα καὶ “ὄχλου καὶ ἡγεμόνος καὶ στρατιωτῶν εἰς Σάγκτον “τὸν διάκονον ἀπὸ Βιέννης, καὶ εἰς Μάτουρον, νεο- “φώτιστον μὲν, ἀλλὰ γενναῖον ἀγωνιστὴν, καὶ εἰς “Ἄτταλον Περγαμηνὸν τῷ γένει, στῦλον καὶ “τῶν ἐνταῦθα ἀεὶ γεγονότα, καὶ εἰς Βλανδῖναν, δι ἧς ἐπέδειξεν ὁ Χριστὸς ὅτι τὰ παρὰ ἀνθρώποις εὐτελῆ καὶ ἀειδῆ καὶ εὐκαταφρόνητα φαινόμενα μεγάλης καταξιοῦται παρὰ θεῷ δόξης, διὰ τὴν πρὸς “αὐτὸν ἀγάπην, τὴν ἐν δυνάμει δεικνυμένην, καὶ μὴ “ἐν εἴδει καυχωμένην.",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "ἡμῶν γὰρ πάντων δεδιό- ‘των, καὶ τῆς σαρκίνης δεσποίνης αὐτῆς, ἥτις ἦν καὶ αὐτὴ τῶν μαρτύρων μία ἀγωνίστρια, ἀγωνιώσης “μὴ οὐδὲ τὴν ὁμολογίαν δυνήσεται παρρησιάσασθαι διὰ τὸ ἀσθενὲς τοῦ σώματος, ἡ Βλανδῖνα τοσαύτης “ἐπληρώθη δυνάμεως ὥστε ἐκλυθῆναι καὶ παρεθῆ- “ναι τοὺς κατὰ διαδοχὰς παντὶ τρόπῳ βασανίζοντας “αὐτὴν ἀπὸ ἑωθινῆς ἕως ἑσπέρας, καὶ αὐτοὺς ὁμολογοῦντας ὅτι νενίκηνται, μηδὲν ἔχοντες μηκέτι ὃ ῾ποιήσουσιν αὐτῇ, καὶ θαυμάζειν ἐπὶ τῷ παραμένειν ‘ἔμπνουν αὐτὴν, παντὸς τοῦ σώματος διερρωγότος καὶ ἠνεῳγμένου, καὶ μαρτυρεῖν ὅτι ἓν εἶδος στρεβλώσεως ἱκανὸν ἠν πρὸς τὸ ἐξαγαγεῖν τὴν ψυχὴν, οὐχ ὅτι γε τοιαῦτα καὶ τοσαῦτα.",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "ἀλλ’ ἡ μακαρία ὡς γενναῖος ἀθλητὴς ἀνενέαζεν ἐν τῇ ὁμολογίᾳ, καὶ ἦν αὐτῆς ἀνάληψις καὶ ἀνάπαυσις καὶ ἀναλγησία τῶν συμβαινόντων τὸ λέγειν ὅτι Χριστιανή εἰμι καὶ παρ’ ἡμῖν οὐδὲν φαῦλον γίνεται.",
+     "text": ""
+    },
+    {
+     "number": 20,
+     "greek": "ὁ δὲ Σάγκτος καὶ αὐτὸς ὑπερβεβλημένως καὶ ὑπὲρ πάντα ἄνθρωπον πάσας τὰς ἐξ ἀνθρώπων αἰκίας γενναίως ὑπομένων, τῶν ἀνόμων ἐλπιζόντων διὰ τὴν ἐπιμονὴν καὶ τὸ μέγεθος τῶν βασάνων ἀκούσεσθαί τι παρ’ αὐτοῦ τῶν μὴ δεόντων, τοσαύτῃ ὑποστάσει ἀντιπαρετάξατο αὐτοῖς ὥστε μηδὲ τὸ ἴδιον κατειπεῖν “ὄνομα, μήτε ἔθνους, μήτε πόλεως ὅθεν ἦν, μήτε εἰ “δοῦλος ἢ ἐλεύθερος εἴη, ἀλλὰ πρὸς πάντα τὰ ἐπε- “ρωτώμενα ἀπεκρίνατο τῇ ῾Ρωμαϊκῇ φωνῇ ῾Χριστια- “νός εἰμι.᾿ τοῦτο καὶ ἀντὶ ὀνόματος καὶ ἀντὶ πό- “λεως καὶ ἀντὶ γένους καὶ ἀντὶ παντὸς ἐπαλλήλως “ὡμολόγει, ἄλλην δὲ φωνὴν οὐκ ἤκουσαν αὐτοῦ τὰ “ἔθνη.",
+     "text": ""
+    },
+    {
+     "number": 21,
+     "greek": "ὅθεν δὴ καὶ φιλονεικία μεγάλη τοῦ “τε ἡγεμόνος καὶ τῶν βασανιστῶν ἐγένετο πρὸς αὐ- “τὸν, ὥστε ὁπότε μηκέτι μηδὲν εἶχον ὃ ποιήσουσιν “αὐτῷ, τὸ τελευταῖον χαλκᾶς λεπίδας διαπύρους “προσεκόλλων τοῖς τρυφερωτάτοις μέλεσι τοῦ σώμα- “τος αὐτοῦ.",
+     "text": ""
+    },
+    {
+     "number": 22,
+     "greek": "καὶ ταῦτα μὲν ἐκαίετο, αὐτὸς δὲ πα- “ρέμενεν ἀνεπίκαμπτος καὶ ἀνένδοτος, στερρὸς πρὸς “τὴν ὁμολογίαν, ὑπὸ τῆς οὐρανίου πηγῆς τοῦ ὕδα- “τος τῆς ζωῆς τοῦ ἐξιόντος ἐκ τῆς νηδύος τοῦ Χρι- “στοῦ δροσιζόμενος καὶ ἐνδυναμούμενος.",
+     "text": ""
+    },
+    {
+     "number": 23,
+     "greek": "τὸ δὲ “σωμάτιον μάρτυς ἦν τῶν συμβεβηκότων, ὅλον τραῦμα “καὶ μώλωψ καὶ συνεσπασμένον καὶ ἀποβεβληκὸς τὴν “ἀνθρώπειον ἔξωθεν μορφὴν, ἐν ᾧ πάσχων Χριστὸς “μεγάλας ἐπετέλει δόξας, καταργῶν τὸν ἀντικείμε- “νον, καὶ εἰς τὴν τῶν λοιπῶν ὑποτύπωσιν ὑποδει- “κνύων ὅτι μηδὲν φοβερὸν ὅπου πατρὸς ἀγάπη, μηδὲ “ἀλγεινὸν ὅπου Χριστοῦ δόξα.",
+     "text": ""
+    },
+    {
+     "number": 24,
+     "greek": "τῶν γὰρ ἀνόμων “μεθ᾿ ἡμέρας πάλιν στρεβλούντων τὸν μάρτυρα, καὶ “νομιζόντων ὅτι οἰδούντων καὶ φλεγμαινόντων τῶν “σωμάτων εἰ τὰ αὐτὰ προσενέγκοιεν κολαστήρια, πε- “ριέσοιντο αὐτοῦ, ὁπότε οὐδὲ τὴν ἀπὸ τῶν χειρῶν “ἁφὴν ἠνείχετο, ἢ ὅτι ἐναποθανὼν ταῖς βασάνοις “φόβον ἐμποιήσειε τοῖς λοιποῖς, οὐ μόνον οὐδὲν περὶ “αὐτὸν τοιοῦτο συνέβη, ἀλλὰ καὶ παρὰ πᾶσαν δόξαν “ἀνθρώπων ἀνέκυψε καὶ ἀνωρθώθη τὸ σωμάτιον ἐν “ταῖς μετέπειτα βασάνοις, καὶ τὴν ἰδέαν ἀπέλαβε “τὴν προτέραν καὶ τὴν χρῆσιν τῶν μελῶν, ὥστε μὴ “κόλασιν, ἀλλ᾿ ἴασιν διὰ τῆς χάριτος τοῦ Χριστοῦ “τὴν δευτέραν στρέβλωσιν αὐτῷ γενέσθαι.",
+     "text": ""
+    },
+    {
+     "number": 25,
+     "greek": "καὶ “Βιβλιάδα δέ τινα, μίαν τῶν ἠρνημένων, ἤδη δοκῶν “ὁ διάβολος καταπεπωκέναι, θελήσας δὲ καὶ διὰ “βλασφημίας κατακρῖναι, ἦγεν ἐπὶ κόλασιν, ἀναγκά- “ζων εἰπεῖν τὰ ἄθεα περὶ ἡμῶν, ὡς εὔθραυστον ἤδη “καὶ ἄνανδρον.",
+     "text": ""
+    },
+    {
+     "number": 26,
+     "greek": "ἡ δὲ ἐν τῇ στρεβλώσει ἀνένηψε, “καὶ ὡσὰν εἰπεῖν ἐκ βαθέος ὕπνου ἀνεγρηγόρησεν, “ὑπομνησθεῖσα διὰ τῆς προσκαίρου τιμωρίας τὴν αἰ- “ώνιον ἐν γεέννῃ κόλασιν, καὶ ἐξ ἐναντίας ἀντεῖπε “τοῖς βλασφήμοις φήσασα ῾πῶς ἂν παιδία φάγοιεν οἱ “τοιοῦτοι, οἶς μηδὲ ἀλόγων ζῴων αἷμα φαγεῖν ἐξόν;᾿ “καὶ ἀπὸ τοῦδε Χριστιανὴν ἑαυτὴν ὡμολόγει, καὶ ἐν “τῷ κλήρῳ τῶν μαρτύρων προσετέθη.",
+     "text": ""
+    },
+    {
+     "number": 27,
+     "greek": "καταργη- “θέντων δὲ τῶν τυραννικῶν κολαστηρίων ὑπὸ τοῦ “Χριστοῦ διὰ τῆς τῶν μακαρίων ὑπομονῆς, ἑτέρας μη- “χανὰς ὁ διάβολος ἐπενόει, τὰς κατὰ τὴν εἱρκτὴν ἐν τῷ “σκότει καὶ τῷ χαλεπωτάτῳ χωρίῳ συγκλείσεις, καὶ “τὰς ἐν τῷ ξύλῳ διατάσεις τῶν ποδῶν, ἐπὶ πέμπτον “διατεινομένων τρύπημα, καὶ τὰς λοιπὰς αἰκίας, ὅσας “εἰώθασιν ὀργιζόμενοι ὑπουργοὶ, καὶ ταῦτα διαβόλου “πλήρεις, διατιθέναι τοὺς ἐγκλειομένους, ὥστε ἀπο- “πνιγῆναι τοὺς πλείστους ἐν τῇ εἱρκτῇ, ὅσους γε ὁ “κύριος οὕτως ἐξελθεῖν ἠθέλησεν, ἐπιδεικνύων τὴν “αὐτοῦ δόξαν.",
+     "text": ""
+    },
+    {
+     "number": 28,
+     "greek": "οἱ μὲν γὰρ βασανισθέντες πικρῶς, “ὥστε δοκεῖν μηδὲ τῆς θεραπείας πάσης τυχόντας “ἔτι ζήσαι δύνασθαι, παρέμενον ἐν τῇ εἱρκτῇ ἔρημοι “μὲν τῆς παρὰ ἀνθρώπων ἐπιμελείας, ἀναρρωννύ- “μενοι δὲ ὑπὸ κυρίου καὶ ἐνδυναμούμενοι καὶ σώ- “ματι καὶ ψυχῇ, καὶ τοὺς λοιποὺς παρορμῶντες καὶ “παραμυθούμενοι. οἱ δὲ νεαροὶ καὶ ἄρτι συνειλημ- “μένοι, ὧν μὴ προκατῄκιστο τὰ σώματα, τὸ βάρος “ οὐκ ἔφερον τῆς συγκλείσεως, ἀλλ’ ἔνδον ἐναπέθνησκον.",
+     "text": ""
+    },
+    {
+     "number": 29,
+     "greek": "ὁ δὲ μακάριος Ποθεινὸς, ὁ τὴν διακο- ‘νίαν τῆς ἐπισκοπῆς ἐν Λουγδούνῳ πεπιστευμένος, “ὑπὲρ ὑπὲρ τὰ ἐνενήκοντα ἔτη τῆς ἡλικίας γεγονὼς, καὶ “πάνυ ἀσθενὴς τῷ σώματι, μόλις μὲν ἐμπνέων διὰ τὴν προκειμένην σωματικὴν ἀσθένειαν, ὑπὸ δὲ προθυμίας πνεύματος ἀναρρωννύμενος διὰ τὴν ἐγκειμένην τῆς μαρτυρίας ἐπιθυμίαν, καὶ αὐτὸς ἐπὶ τὸ “βῆμα ἐσύρετο, τοῦ μὲν σώματος καὶ ὑπὸ τοῦ γήρως καὶ ὑπὸ τῆς νόσου λελυμένου, τηρουμένης δὲ τῆς “ψυχῆς ἐν αὐτῷ, ἵνα δι’ αὐτῆς Χριστὸς θριαμβεύσῃ.",
+     "text": ""
+    },
+    {
+     "number": 30,
+     "greek": "ὃς ὑπὸ τῶν στρατιωτῶν ἐπὶ τὸ βῆμα κομισθεὶς, παραπεμπόντων αὐτὸν τῶν πολιτικῶν ἐξουσιῶν καὶ “παντὸς τοῦ πλήθους, ἐπιβοήσεις παντοίας ποιουμένων, ὡς αὐτοῦ ὄντος τοῦ κυρίου, ἀπεδίδου τὴν καλὴν μαρτυρίαν.",
+     "text": ""
+    },
+    {
+     "number": 31,
+     "greek": "ἀνεταζόμενος δὲ ὑπὸ τοῦ ἡγεμόνος τίς εἴη Χριστιανῶν ὁ θεὸς, ἔφη ῾ ἐὰν ᾖς ἄξιος, γνώσῃ.’ ἐντεῦθεν δὴ ἀφειδῶς ἐσύρετο, καὶ “ποικίλας ἔπασχε πληγὰς, τῶν μὲν σύνεγγυς χερσὶ καὶ ποσὶν ἐνυβριζόντων παντοίως, μηδὲ τὴν ἡλικίαν αἰδουμένων αὐτοῦ, τῶν δὲ μακρὰν, ὃ μετὰ χεῖρας ἕκαστος εἶχεν, εἰς αὐτὸν ἀκοντιζόντων, πάντων δὲ ἡγουμένων μεγάλως πλημμελεῖν καὶ ἀσεβεῖν, εἴ τις ἀπολειφθείη τῆς εἰς αὐτὸν ἀσελγείας· καὶ γὰρ τοὺς θεοὺς ἑαυτῶν ᾤοντο οὕτως ἐκδικήσειν. καὶ μόγις ἐμπνέων ἐρρίφη εἰς τὴν εἱρκτὴν, καὶ μετὰ δύο ἡμέρας ἀπέψυξεν.",
+     "text": ""
+    },
+    {
+     "number": 32,
+     "greek": "ἐνταῦθα δὴ μεγάλη τις οἰκονομία τοῦ θεοῦ ἐγίνετο, καὶ ἔλεος ἀμέτρητον “ἀνεφαίνετο Ἰησοῦ, σπανίως μὲν ἐν τῇ ἀδελφότητι γεγονὸς, μὴ ἀπολειπόμενον δὲ τῆς τέχνης τοῦ Χριστοῦ.",
+     "text": ""
+    },
+    {
+     "number": 33,
+     "greek": "οἱ γὰρ κατὰ τὴν πρώτην σύλληψιν ἔξαρνοι “γενόμενοι συνεκλείοντο καὶ αὐτοὶ καὶ μετεῖχον τῶν “δεινῶν· οὐδὲ γὰρ ἐν τῷ καιρῷ τούτ’ ᾦ ὄφελός τι αὐ- “τοῖς ἡ ἐξάρνησις ἐγίνετο· ἀλλ’ οἶ μὲν ὁμολογοῦντες “ὅ καὶ ἦσαν, συνεκλείοντο ὡς Χριστιανοὶ, μηδεμιᾶς “ἄλλης αὐτοῖς αἰτίας ἐπιφερομένης, οὗτοι δὲ λοιπὸν ὡς ἀνδροφόνοι καὶ μιαροὶ κατείχοντο, διπλότερον “παρὰ τοὺς λοιποὺς κολαζόμενοι.",
+     "text": ""
+    },
+    {
+     "number": 34,
+     "greek": "ἐκείνους μὲν “γὰρ ἐπεκούφιζεν ἡ χαρὰ τῆς μαρτυρίας, καὶ ἡ ἐλ- “πὶς τῶν ἐπηγγελμένων, καὶ ἡ πρὸς τὸν Χριστὸν “ἀγάπη, καὶ τὸ πνεῦμα τὸ πατρικὸν, τούτους δὲ τὸ “συνειδὸς μεγάλως ἐτιμωρεῖτο, ὥστε καὶ παρὰ τοῖς “λοιποῖς ἅπασι κατὰ τὰς παρόδους διαδήλους τὰς “ὄψεις αὐτῶν εἶναι.",
+     "text": ""
+    },
+    {
+     "number": 35,
+     "greek": "οἶ μὲν γὰρ ἱλαροὶ προῄεσαν, “δόξης καὶ χάριτος πολλῆς ταῖς ὄψεσιν αὐτῶν συγκε- “κραμένης, ὥστε καὶ τὰ δεσμὰ κόσμον εὐπρεπῆ πε- “ρικεῖσθαι αὐτοῖς, ὡς νύμφῃ κεκοσμημένῃ ἐν “σωτοῖς χρυσοῖς πεποικιλμένοις, τὴν εὐωδίαν ὀδω- “δότες ἅμα τὴν Χριστοῦ, ὥστε ἐνίους δόξαι καὶ μύρῳ “κοσμικῷ κεχρῖσθαι αὐτούς· οἶ δὲ κατηφεῖς καὶ τα- “πεινοὶ καὶ δυσειδεῖς καὶ πάσης ἀσχημοσύνης ἀνά- “πλεοι, προσέτι δὲ καὶ ὑπὸ τῶν ἐθνῶν ὀνειδιζόμε- “νοι ὡς ἀγεννεῖς καὶ ἄνανδροι, ἀνδροφόνων μὲν ἐγ- “κλήματα ἔχοντες, ἀπολωλεκότες δὲ τὴν πάντιμον “καὶ ἔνδοξον καὶ ζωοποιὸν προσηγορίαν. ταῦτα δὲ “οἱ λοιποὶ θεωροῦντες ἐστηρίχθησαν, καὶ οἱ συλλαμ- “ βανόμενοι ἀδιστάκτως ὡμολόγουν, μηδὲ ἔννοιαν “ἔχοντες διαβολικοῦ λογισμοῦ.”",
+     "text": ""
+    },
+    {
+     "number": 36,
+     "greek": "τούτοις μεταξύ τινα ἐπειπόντες αὖθις ἐπιφέρουσι· “μετὰ ταῦτα “λοιπὸν εἰς πᾶν εἶδος διῃρεῖτο τὰ μαρτύρια τῆς ἐξό- “δου αὐτῶν. ἐκ διαφόρων γὰρ χρωμάτων καὶ παν- “τοίων ἀνθῶν ἔνα πλέξαντες στέφανον προσήνεγκαν “τῷ πατρί. ἐχρῆν γοῦν τοὺς γενναίους ἀθλητὰς, “ποικίλον ὑπομείναντας ἀγῶνα καὶ μεγάλως νική- “σαντας, ἀπολαβεῖν τὸν μέγαν τῆς ἀφθαρσίας στέ- “φανον.",
+     "text": ""
+    },
+    {
+     "number": 37,
+     "greek": "ὁ μὲν οὖν Μάτουρος καὶ ὁ Σάγκτος καὶ “ἡ Βλανδῖνα καὶ Ἄτταλος ἤγοντο ἐπὶ τὰ θηρία εἰς τὸ “δημόσιον καὶ εἰς τὸ κοινὸν τῶν ἐθνῶν τῆς “πίας θέαμα, ἐπίτηδες τῆς τῶν θηριομαχιῶν ἡμέρας “διὰ τοὺς ἡμετέρους διδομένης.",
+     "text": ""
+    },
+    {
+     "number": 38,
+     "greek": "καὶ ὁ μὲν “ρος καὶ ὁ Σάγκτος αὖθις διῄεσαν ἐν τῷ “διὰ πάσης κολάσεως, ὡς μηδὲν ὅλως “τες, μᾶλλον δὲ ὡς διὰ πλειόνων ἤδη κλήρων ἐκβε- “βιακότες τὸν ἀντίπαλον, καὶ περὶ τοῦ στεφάνου “τοῦ τὸν ἀγῶνα ἔχοντες, ὑπέφερον πάλιν τὰς “δους τῶν μαστίγων τὰς ἐκεῖσε εἰθισμένας, καὶ ἄπο τῶν θηρίων ἑλκηθμοὺς, καὶ πάνθ’ ὅσα μαινό- “μενος ὁ δῆμος ἄλλοι ἀλλαχόθεν ἐπεβόων καὶ ἐπεκε- λεύοντο, καὶ ἐπὶ πᾶσι τὴν σιδηρᾶν καθέδραν, ἐφ’ “ ἧς τηγανιζόμενα τὰ σώματα κνίσης αὐτοὺς ἐνεφόρει. “",
+     "text": ""
+    },
+    {
+     "number": 39,
+     "greek": "οἶ δ’ οὐδ’ οὕτως ἔληγον, ἀλλ’ ἔτι καὶ μᾶλλον “ ἐξεμαίνοντο, βουλόμενοι νικῆσαι τὴν ἐκείνων ὑπο- “μονήν. καὶ οὐδ’ ὣς παρὰ Σάγκτου ἕτερόν τι ἤκου- “σαν παρ’ ἣν ἀπ’ ἀρχῆς εἴθιστο λέγειντῆς “φωνήν.",
+     "text": ""
+    },
+    {
+     "number": 40,
+     "greek": "οὗτοι μὲν οὖν, δι’ ἀγῶνος μεγάλου ἐπι- “πολὺ παραμενούσης αὐτῶν τῆς ψυχῆς, τοὔσχατον ‘ ἐτύθησαν διὰ τῆς ἡμέρας ἐκείνης, ἀντὶ πάσης τῆς “ἐν τοῖς μονομαχίοις ποικιλίας αὐτοὶ θέαμα “νοι τῷ κόσμῳ.",
+     "text": ""
+    },
+    {
+     "number": 41,
+     "greek": "ἡ δὲ Βλανδῖνα ἐπὶ ξύλου “σθεῖσα προύκειτο βορὰ τῶν εἰσβαλλομένων “ἣ καὶ διὰ τοῦ βλέπεσθαι σταυροῦ σχήματι διὰ τῆς εὐτόνου προσευχῆς πολλὴν προθυμίαν “τοῖς ἀγωνιζομένοις ἐνεποίει, βλεπόντων αὐτῶν ἑ “τῷ ἀγῶνί καὶ τοῖς ἔξωθεν ὀφθαλμοῖς διὰ τῆς τὸν ὑπὲρ αὐτῶν ἐσταυρωμένον, ἔνα πείσῃ τοὺς “πιστεύοντας εἰς αὐτὸν, ὅτι πᾶς ὁ ὑπὲρ τῆς Χριστοῦ “δόξης παθὼν τὴν κοινωνίαν ἀεὶ ἔχει μετὰ τοῦ ζῶν- “τος θεοῦ.",
+     "text": ""
+    },
+    {
+     "number": 42,
+     "greek": "καὶ μηδενὸς ἁψαμένου τότε τῶν θηρίων “αὐτῆς, καθαιρεθεῖσα ἀπὸ τοῦ ξύλου ἀνελήφθη πάλιν εἰς τὴν εἱρκτὴν, εἰς ἄλλον ἀγῶνα τηρουμένη, “ἔνα διὰ πλειόνων γυμνασμάτων νικήσασα τῷ μὲν ‘σκολιῷ ὄφει ἀπαραίτητον ποιήσῃ τὴν καταδίκην, “προτρέψηται δὲ τοὺς ἀδελφοὺς ἡ μικρὰ καὶ ἀσθενὴς “καὶ εὐκαταφρόνητος, μέγαν καὶ “ἀθλητὴν Χριστὸν ἐνδεδυμένη, διὰ πολλῶν κλήρων ἐκβιάσασα τὸν ἀντικείμενον, καὶ δι’ ἀγῶνος τὸν τῆς “ἀφθαρσίας στεψαμένη στέφανον.",
+     "text": ""
+    },
+    {
+     "number": 43,
+     "greek": "ὁ δὲ Ἄτταλος ‘καὶ αὐτὸς μεγάλως ἐξαιτηθεὶς ὑπὸ τοῦ ὄχλου καὶ γὰρ ἦν ὀνομαστός) ἕτοιμος εἰσῆλθεν ἀγωνιστὴς διὰ τὸ “εὐσυνείδητον, ἐπειδὴ γνησίως ἐν τῇ Χριστιανῇ συν- “τάξει γεγυμνασμένος ἦν, καὶ ἀεὶ μάρτυς ἐγεγόνει “παρ’ ἡμῖν ἀληθείας.",
+     "text": ""
+    },
+    {
+     "number": 44,
+     "greek": "καὶ περιαχθεὶς κύκλῳ τοὐ “ἀμφιθεάτρου, πίνακος αὐτὸν προάγοντος ἐν ᾧ ἐγέ- “γραπτο ‘οὗτός ἐστιν Ἄτταλος ὁ “νός᾿, καὶ τοῦ δήμου σφόδρα σφριγῶντος ἐπ’ αὐτῷ, ‘ μαθὼν ὁ ἡγεμὼν ὅτι Ῥωμαῖός ἐστιν, ἐκέλευσεν αὐτὸν ἀναληφθῆναι μετὰ καὶ τῶν λοιπῶν τῶν ἐν τῇ “εἱρκτῇ ὄντων, περὶ ὧν ἐπέστειλε τῷ Καίσαρι, καὶ περιέμενε τὴν ἀπόφασιν τὴν ἀπ’ ἐκείνου.",
+     "text": ""
+    },
+    {
+     "number": 45,
+     "greek": "ὁ δὲ διὰ μέσου καιρὸς οὐκ ἀργὸς αὐτοῖς οὐδὲ ἄκαρπος ἐγίνετο, ἀλλὰ διὰ τῆς ὑπομονῆς αὐτῶν τὸ ἀμέτρητον ἔλεος ἀνεφαίνετο Χριστοῦ. διὰ γὰρ τῶν ζώντων ἐζωοποιοῦντο τὰ νεκρὰ, καὶ μάρτυρες τοῖς μὴ μάρτυσιν ἐχαρίζοντο, καὶ ἐνεγίνετο πολλὴ χαρὰ τῇ παρθένῳ μητρὶ, οὓς ὡς νεκροὺς ἐξέτρωσε, τούτους ζῶντας τὰς ἀπολαμβανούσῃ.",
+     "text": ""
+    },
+    {
+     "number": 46,
+     "greek": "δι’ ἐκείνων γὰρ οἱ πλείους τῶν ἠρνημένων ἀνεμητροῦντο καὶ ἀνεκυίσκοντο καὶ “ἀνεζωπυροῦντο καὶ ἐμάνθανον ὁμολογεῖν, καὶ ζῶν- “τες ἤδη καὶ τετονωμένοι προσῄεσαν τῷ βήματι, ἐγ- “γλυκαίνοντος τοῦ τὸν μὲν θάνατον τοῦ ἁμαρτωλοῦ “μὴ βουλομένου, ἐπὶ δὲ τὴν μετάνοιαν χρηστευομένου “θεοῦ, ἵνα καὶ πάλιν ἐπερωτηθῶσιν ὑπὸ τοῦ ἡγεμό- “νος.",
+     "text": ""
+    },
+    {
+     "number": 47,
+     "greek": "ἐπιστείλαντος γὰρ τοὐ Καίσαρος τοὺς μὲν “ἀποτυμπανισθῆναι, εἰ δέ τινες ἀρνοῖντο, τούτους “ἀπολυθῆναι, τῆς ἐνθάδε πανηγύρεως (ἔστι δὲ αὕτη “πολυάνθρωπος ἐκ πάντων τῶν ἐθνῶν συνερχομένων “εἰς αὐτήν) ἀρχομένης συνεστάναι ἀνῆγεν ἐπὶ τὸ “βῆμα θεατρίζων τοὺς μακαρίους καὶ ἐμπομπεύων “τοῖς ὄχλοις. διὸ καὶ πάλιν ἀνήταζε, καὶ ὅσοι μὲν “ἐδόκουν πολιIείαν ῾Ρωμαίων ἐσχηκέναι, τούτων ἀπέ- “τεμνε τὰς κεφαλὰς, τοὺς δὲ λοιποὺς ἔπεμπεν εἰς “θηρία.",
+     "text": ""
+    },
+    {
+     "number": 48,
+     "greek": "ἐδοξάζετο δὲ μεγάλως ὁ Χριστὸς ἐπὶ τοῖς “πρότερον ἀρνησαμένοις, τότε παρὰ τὴν τῶν ἐθνῶν “ὑπόνοιαν ὁμολογοῦσι. καὶ γὰρ ἰδία̣ οὗτοι ἀνητά- “ζοντο, ὡς δῆθεν ἀπολυθησόμενοι, καὶ ὁμολογοῦντες “προσετίθεντο τῷ τῶν μαρτύρων κλήρῳ. ἔμειναν δὲ ἔξω οἱ μηδὲ ἴχνος πώποτε πίστεως, μηδὲ αἴσθησιν “ἐνδύματος νυμφικοῦ, μηδὲ ἔννοιαν φόβου θεοῦ “σχόντες ,ἀλλὰ καὶ διὰ τῆς ἀναστροφῆς αὐτῶν βλασ- “φημοῦντες τὴν ὁδὸν, ιουτέστιν οἱ υἱοὶ τῆς ἀπω- “λείας.",
+     "text": ""
+    },
+    {
+     "number": 49,
+     "greek": "οἱ δὲ λοιποὶ πάντες τῇ ἐκκλησίᾳ προσετέ- “θησαν, ὧν καὶ ἀνεταομἐνων Ἀλέξανδρός τις, Φρὺξ “μὲν τὸ γένος, ἰατρὸς δὲ τὴν ἐπιοτήμην, πολλοῖς “αἔτεσιν ἐν ταῖς Γαλλίαις διατρίψας, καὶ γνωστὸς “σχεδὸν πᾶσι διὰ τὴν πρὸς τὸν θεὸν ἀγάπην καὶ “παρρησίαν τοῦ λόγου (ἦν γὰρ καὶ οὐκ ἄμοιρος ἀπο- “στολικοῦ χαρίσματος), παρεστὼς τῷ βήματι, καὶ “νεύματι προτρέπων αὐτοὺς πρὸς τὴν ὁμολογίαν, “φανερὸς ἦν τοῖς περιεστηκόσι τὸ βῆμα ὥσπερ ὠδί- νῶν.",
+     "text": ""
+    },
+    {
+     "number": 50,
+     "greek": "ἀγανακτήσαντες δὲ οἱ ὄχλοι ἐπὶ τῷ τοὺς ·‘πρότερον ἠρνημένους αὖθις ὁμολογεῖν κατεβόησαν τοῦ Ἀλεξάνδρου, ὡς ἐκείνου τοῦτο ποιοῦντος. καὶ ἐπιστήσαντος τοῦ ἡγεμόνος καὶ ἀνετάσαντος αὐτὸν ὅστις εἴη, τοὐ δὲ φήσαντος ὅτι Χριστιανὸς, ἐν ὀργῇ ‘γενόμενος κατέκρινεν αὐτὸν πρὸς θηρία, καὶ τῇ ἐπιούσῃ εἰσῆλθε μετὰ καὶ τοῦ Ἀττάλου. καὶ γὰρ καὶ τὸν Ἄτταλον τῷ ὄχλῳ χαριζόμενος ὁ ἡγεμὼν ἐξέδωκε πάλιν πρὸς θηρία.",
+     "text": ""
+    },
+    {
+     "number": 51,
+     "greek": "οἱ· καὶ διὰ πάντων διελθόντες “ἐν τῷ ἀμφιθεάτρῳ τῶν πρὸς κόλασιν ἐξηυρημένων ὀργάνων, καὶ μέγιστον ὑπομείναντες ἀγῶνα, τοὔσχατον ἐτύθησαν καὶ αὐτοὶ, τοῦ μὲν Ἀλεξάνδρου μήτε στενάξαντος μήτε γρύξαντός τι ὅλως, ἀλλὰ κατὰ καρδίαν ὁμιλοῦντος τῷ θεῷ.",
+     "text": ""
+    },
+    {
+     "number": 52,
+     "greek": "ὁ δὲ Ἄτταλος, ὁπότε ἐπὶ τῆς σιδηρᾶς ἐπετέθη καθέδρας καὶ περιεκαίετο, ἡνίκα ἡ ἀπὸ τοῦ σώματος κνῖσα ἀνεφέρετο, ἔφη πρὸς τὸ πλῆθος τῇ ‘Pωμαἰ·κῇ φωνῇ ῾ “ἐστιν ἀνθρώπους ἐσθίειν, ὃ ποιεῖτε ὑμεῖς· ἡμεῖς δὲ οὔτε ἀνθρώπους ἐσθίομεν οὔθ’ ἕτερόν τι πονηρὸν πράττομεν.’ ἐπερωτώμενος δὲ τί ὄνομα ἔχει ὁ θεὸς, ἀπεκρίθη ‘ ὁ θεὸς ὄνομα οὐκ ἔχει ὡς ἄνθρωπος.",
+     "text": ""
+    },
+    {
+     "number": 53,
+     "greek": "ἐπὶ πάσι δὲ τούτοις τῇ ἐσχάτῃ λοιπὸν ἡμέρᾳ τῶν μονομαχίων ἡ Βλανδῖνα πάλιν εἰσεκομίζετο μετὰ καὶ Ποντικοῦ παιδαρίου ὡς πεντεκαίδεκα ἐτῶν, οἱ καὶ καθ’ ἡμέραν εἰσήγοντο πρὸς τὸ βλέπειν τὴν τῶν λοιπῶν κόλασιν, καὶ ἠναγκάζοντο ὀμνύναι κατὰ τῶν εἰδώλων αὐτῶν. καὶ διὰ τὸ ἐμμένειν εὐσταθῶς καὶ ἐξουθενεῖν αὐτοὺς ἠγριώθη πρὸς αὐτοὺς τὸ πλῆθος, ὡς μήτε τὴν ἡλικίαν τοῦ παιδὸς οἰκτεῖραι μήτε τὸ γύναιον αἰδεσθῆναι.",
+     "text": ""
+    },
+    {
+     "number": 54,
+     "greek": "πρὸς πάντα δὲ τὰ δεινὰ παρέβαλλον αὐτοὺς, καὶ διὰ πάσης ἐν κύκλῳ διῆγον κολάσεως, ἐπαλλήλως ἀναγκάζοντες ὀμόσαι, “ἀλλὰ μὴ δυνάμενοι τοῦτο πρᾶξαι· ὁ μὲν γὰρ Πον- “τικὸς ὑπὸ τῆς ἀδελφῆς παρωρμημένος, ὡς καὶ τὰ “ἔθνη βλέπειν ὅτι ἐκείνη ἦν προτρεπομένη καὶ στη- “ρίζουσα αὐτὸν, πᾶσαν κόλασιν γενναίως ὑπομείνας “ἀπέδωκε τὸ πνεῦμα.",
+     "text": ""
+    },
+    {
+     "number": 55,
+     "greek": "ἡ δὲ μακαρία Βλανδῖνα “πάντων ἐσχάτη, καθάπερ μήτηρ εὐγενὴς παρορμή- “σασα τὰ τέκνα καὶ νικηφόρους προπέμψασα πρὸς “τὸν βασιλέα, ἀναμετρουμένη καὶ αὐτὴ πάντα τὰ “τῶν παίδων ἀγωνίσματα, ἔσπευδε πρὸς αὐτοὺς χαί- “ρουσα καὶ ἀγαλλιωμένη ἐπὶ τῇ ἐξόδῳ, ὡς εἰς νυμ- “φικὸν δεῖπνον κεκλημένη, ἀλλὰ μὴ πρὸς θηρία “βεβλημένη.",
+     "text": ""
+    },
+    {
+     "number": 56,
+     "greek": "καὶ μετὰ τὰς μάστιγας, μετὰ τὰ “θηρία, μετὰ τὸ τήγανον, τοὔσχατον εἰς γυργαθὸν “βληθεῖσα ταύρῳ παρεβλήθη, καὶ ἱκανῶς ἀναβλη- “θεῖσα πρὸς τοῦ ζῴου, μηδὲ αἴσθησιν ἔτι τῶν συμ- “βαινόντων ἔχουσα διὰ τὴν ἐλπίδα καὶ ἐποχὴν τῶν “πεπιστευμένων καὶ ὁμιλίαν πρὸς Χριστὸν, ἐτύθη “καὶ αὐτὴ, καὶ αὐτῶν ὁμολογούντων τῶν ἐθνῶν ὅτι “μηδεπώποτε παρ᾿ αὐτοῖς γυνὴ τοιαῦτα καὶ τοσαῦτα “ἔπαθεν.",
+     "text": ""
+    },
+    {
+     "number": 57,
+     "greek": "ἀλλ᾿ οὐδ᾿ οὕτως κόρον ἐλάμβανεν αὐτῶν “ἡ μανία καὶ ἡ πρὸς τοὺς ἁγίους ὠμότης. ὑπὸ γὰρ “ἀγρίου θηρὸς ἄγρια καὶ βάρβαρα φῦλα ταραχθέντα “δυσπαύστως εἶχε, καὶ ἄλλην ἰδίαν ἀρχὴν ἐπὶ τοῖς “σώμασιν ἐλάμβανεν ἡ ὕβρις αὐτῶν.",
+     "text": ""
+    },
+    {
+     "number": 58,
+     "greek": "τὸ γὰρ “νενικῆσθαι αὐτοὺς οὐκ ἐδυσώπει, διὰ τὸ μὴ ἔχειν “ἀνθρώπινον ἐπιλογισμὸν, μᾶλλον δὲ καὶ ἐξέκαιεν “αὐτῶν τὴν ὀργὴν καθάπερ θηρίου, καὶ τοῦ ἡγεμό- “νος καὶ τοῦ δήμου τὸ ὅμοιον εἰς ἡμᾶς ἄδικον ἐπι- “δεικνυμένων μῖσος, ἵνα ἡ γραφὴ πληρωθῇ ῾ὁ ἄνο- “μος ἀνομησάτω ἔτι, καὶ ὁ δίκαιος δικαιωθήτω ἔτι.᾿ “",
+     "text": ""
+    },
+    {
+     "number": 59,
+     "greek": "καὶ γὰρ τοὺς ἐναποπνιγέντας ἐν τῇ εἱρκτῇ παρέβαλλον “κυσὶν, ἐπιμελῶς παραφυλάσσοντες νύκτωρ “καὶ μεθ’ ἡμέραν, μὴ κηδευθῇ τις ὑφ’ ἡμῶν, καὶ “τότε δὴ προθέντες τά τε τῶν θηρίων τά τε τοῦ “πυρὸς λείψανα, τῇ μὲν ἐσπαραγμένα , πῆ δὲ ἠν— “θρακευμἐνα, καὶ τῶν λοιπῶν τὰς κεφαλὰς σὺν τοῖς “ἀποτμήμασιν αὐτῶν ὡσαύτως ἀτάφους παρεφύλαττον “μετὰ στρατιωτικῆς ἐπιμελείας ἡμέραις συχναῖς. “",
+     "text": ""
+    },
+    {
+     "number": 60,
+     "greek": "καὶ οἱ μὲν ἐνεβριμῶντο καὶ ἔβρυχον τοὺς ὀδόντας “ἐπ’ αὐτοῖς, ζητοῦντές τινα περισσοτέραν ἐκδίκησιν “παρ’ αὐτῶν λαβεῖν, οἱ δὲ ἐνεγέλων καὶ ἐπετώθαζον, “μεγαλύνοντες ἅμα τὰ εἴδωλα αὐτῶν, καὶ ἐκείνοις “προσάπτοντες τὴν τούτων τιμωρίαν, οἱ δὲ ἐπιεικέστεροι “καὶ κατὰ ποσὸν συμπαθεῖν δοκοῦντες ὡνείδιζον “πολὺ λέγοντες ποῦ ὁ θεὸς αὐτῶν, καὶ τί αὐτοὺς “τοὺς ὤνησεν ἡ θρησκεία, ἣν καὶ πρὸ τῆς ἑαυτῶν “εἵλοντο ψυχῆς;",
+     "text": ""
+    },
+    {
+     "number": 61,
+     "greek": "καὶ τὰ μὲν ἀπ’ ἐκείνων τοιαύτην “εἶχε τὴν ποικιλίαν, τὰ δὲ καθ’ ἡμᾶς ἐν μεγάλῳ “καθειστήκει πένθει, διὰ τὸ μὴ δύνασθαι τὰ σώματα “κρύψαι τῇ γῇ. οὔτε γὰρ νὺξ συνεβάλλετο ἡμῖν πρὸς “τοῦτο οὔτε ἀργύρια ἔπειθεν οὔτε λιτανεία ἐδυσώπει, “παντὶ δὲ τρόπῳ παρετήρουν, ὡς μέγα τι κερδανουντες, “εἰ μὴ τύχοιεν ταφῆς.”",
+     "text": ""
+    },
+    {
+     "number": 62,
+     "greek": "τούτοις ἑξῆς “μεθ’ ἕτερά φασι “τὰ οὖν σώματα τῶν μαρτύρων “παραδειγματισθέντα καὶ αἰθαλωθέντα ἐπὶ “ἡμέρας ἓξ, μετέπειτα καέντα καὶ αἰθαλωθέντα ὑπὸ “τῶν ἀνόμων κατεσαρώθη εἰς τὸν Ῥοδανὸν ποταμὸν “πλησίον παραρρέοντα, ὅπως μηδὲ λείψανον αὐτῶν “φαίνηται ἐπὶ τῆς γῆς ἔτι.",
+     "text": ""
+    },
+    {
+     "number": 63,
+     "greek": "καὶ ταῦτ’ ἔπραττον “ὡς δυνάμενοι νικῆσαι τὸν θεὸν καὶ ἀφελέσθαι αὐτῶν “τῶν τὴν παλιγγενεσίαν, ἔνα, ὡς ἔλεγον ἐκεῖνοι, “μηδὲ ἐλπίδα σχῶσιν ἀναστάσεως, ἐφ’ ᾗ πεποιθότες “ξένην τινὰ καὶ καινὴν ἡμῖν εἰσάγουσι θρησκείαν, “καὶ καταφρονοῦσι τῶν δεινῶν, ἕτοιμοι καὶ “χαρᾶς ἥκοντες ἐπὶ τὸν θάνατον· νῦν ἴδωμεν εἰ ἀναστήσονται, “καὶ εἰ δύναται βοηθῆσαι αὐτοῖς ὁ θεὸς αὐτῶν, καὶ ἐξελέσθαι ἐκ τῶν χειρῶν ἡμῶν.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Τοιαῦτα καὶ τὰ κατὰ τὸν δεδηλωμένον αὐτοκράτορα ταῖς Χριστοῦ συμβέβηκεν ἐκκλησίαις, ἀφ’ ὧν καὶ τὰ ἐν ταῖς λοιπαῖς ἐπαρχίαις ἐνηργημένα εἰκότι λογισμῷ στοχάζεσθαι πάρεστιν. ἄξιον τούτοις ἐκ τῆς αὐτῆς ἐπισυνάψαι γραφῆς λέξεις ἑτέρας, δι’ ὧν καὶ τὸ ἐπιεικὲς καὶ φιλάνθρωπον τῶν δεδηλωμένων μαρτύρων ἀναγέγραπται τούτοις αὐτοῖς τοῖςρήμασιν",
+     "text": "Such things happened to the churehes of Christ under the emperor mentioned, and from them it is possible to from a reasonable conclusion as to what was done in the other provinces. It is worth while to add other statements from the same document, in which the genueness and the kindness of the martyrs already mentioned have been set down in these very words. “ And they carried so far their zeal and imitation of Christ, ‘ who being in the form of God, thought it not robbery to be equal with God,’ that for all their glory, and though they had testified not once or twice but many times, and had been taken back from the beasts and were covered with burns and scars and wounds, they neither proclaimed themselves as martyrs, nor allowed us to address them by this title. But if ever any one of us called them martyrs either in a letter or in speech they rebuked him sharply. For they gladly conceded the title of martyrdom to Christ, the frialthful and true martyr 1 and first-born from the dead and author of the life of God. And they reminded us of the martyrs who had already passed away, and said ‘they are already martyrs, whom Christ vouchsafed to be taken up at their confession, and sealed their witness by their departure, but we are lowly and humble ’ 2 And they besought the brethren with tears, begging that earnest prayers might be made for their consecration. The power of martyrdom they actually showed, having great boldness towards the heathen, and they made plain their nobleness by endurance and absence of fear or timidity; but the title of martyr they refused from the brethren, for they were filled with the fear of God.” Α little further on they say: “They humbled themselves under the mighty hand and by it they have now been greatly exalted. At that time they made defence for all men, against none did they bring accusation; they released all and bound none; and they Prayed for those who had inflicted torture, even as did Stephen, the perfect martyr, ‘Lord, lay not this sin to their ’ And if he prayed for those who were stoning him how much more for the brethren?” And again after other details, they Say: “For their greatest contes, through the genuineness of their love, was this, that the beast 1 should be choked into throwing up alive those whom he had at first thought to have swallowed down. For they did not boast over the fallen, but from their own abundance supplied with a mother's love those that and shedding many tears for them to the Father, they prayed for life, and he gave it to them, and they divided it among their neighbours, and then departed to God, having in all things carried off the victory. They ever loved Peace; peace they commended to us; and with peace they departed to God; for their mother2 they left behind no sorrow, and for the brethren no strife and war, but glory, Peace, concord, and ” Let this profitable extract suffice concerning the love of those blessed ones for their brethren who had fallen, for the sake of the inhuman and merciless disposition of those who after these events acted unsparingly to the members of Christ.3"
+    },
+    {
+     "number": 2,
+     "greek": "“οἳ καὶ ἐπὶ τοσοῦτον ζηλωταὶ καὶ μιμηταὶ Χριστοῦ ἐγένοντο, ὃς ἐν μορφῇ θεοῦ ὑπάρχων οὐχ ἁρπαγμὸν ἡγήσατο τὸ εἶναι ἴσα θεῷ, ὥστε ἐν τοιαύτῃ δόξῃ ὑπάρχοντες, καὶ οὐχ ἅπαξ οὐδὲ δὶς, ἀλλὰ πολλάκις μαρτυρήσαντες, καὶ ἐκ θηρίων αὖθις ἀναληφθέντες, καὶ τὰ καυτήρια καὶ τοὺς μώλωπας καὶ τὰ τραύματα ἔχοντες περικείμενα, οὔτ’ αὐτοὶ μάρ- “τυρας ἑαυτοὺς ἀνεκήρυττον οὔτε μὴν ἡμῖν τούτῳ τῷ ὀνόματι προσαγορεύειν αὐτοὺς, ἀλλ’ εἴ ποτέ τις ἡμῶν δι’ ἐπιστολῆς ἢ διὰ λόγου μάρτυρας αὐτοὺς προσεῖπεν, ἐπέπλησσον πικρῶς.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἡδέως γὰρ παρεχώρουν τὴν τῆς μαρτυρίας προσηγορίαν τῷ Χριστῷ, τῷ πιστῷ καὶ ἀληθινῷ μάρτυρι καὶ πρωτοτόκῳ τῶν νεκρῶν καὶ ἀρχηγῷ τῆς ζωῆς τοὐ θεοῦ, καὶ ἐπεμιμνήσγοντο τῶν ἐξεληλυθότων ἤδη μαρτύρων καὶ ἔλεγον ἐκεῖνοι ἤδη μάρτυρες, οὓς ἐν τῇ ὁμολογίᾳ Χριστὸς ἠξίωσεν ἀναληφθῆναι, ἐπι- σφραγισάμενος αὐτῶν διὰ τῆς ἐξόδου τὴν μαρτυ- “ρίαν, ἡμεῖς δὲ ὁμόλογοι μέτριοι καὶ ταπεινοί. καὶ “μετὰ δακρύων παρεκάλουν τοὺς ἀδελφοὺς, δεόμενοι “ἵνα ἐκτενεῖς εὐχαὶ γίνωνται πρὸς τὸ τελειωθῆναι “αὐτούς.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ τὴν μὲν δύναμιν τῆς μαρτυρίας ἔργῳ “ἐπεδείκνυντο, πολλὴν παρρησίαν ἄγοντες πρὸς πάντα “τὰ ἔθνη, καὶ τὴν εὐγένειαν διὰ τῆς ὑπομονῆς καὶ “ἀφοβίας καὶ ἀτρομίας φανερὰν ἐποίουν, τὴν δὲ πρὸς “τοὺς ἀδελφοὺς τῶν μαρτύρων προσηγορίαν παρῃτοῦντο, “ἐμπεπλησμένοι φόβου θεοὺ.”",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "καὶ αὖθις “μετὰ βραχέα φασίν “ἐταπείνουν ἑαυτοὺς ὑπὸ τὴν “κραταιὰν χεῖρα, ὑφ’ ἧς ἱκανῶς νῦν εἰσιν ὑψωμένοι. “τότε δὲ πάσι μὲν ἀπελογοῦντο, κατηγόρουν δὲ οὐδενὸς, “ἔλυον μὲν ἅπαντας, ἐδέσμευον δὲ οὐδένα, καὶ “ὑπὲρ τῶν τὰ δεινὰ διατιθέντων ηὔχοντο, καθάπερ “Στέφανος ὁ τέλειος μάρτυς ‘κύριε, μὴ στήσῃς αὐτοῖς “τὴν ἁμαρτίαν ταύτην.· εἰ δ’ ὑπὲρ ἰῶν λιθαζόντων “ἐδέετο, πόσῳ μᾶλλον ὑπὲρ τῶν ἀδελφῶν;",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "καὶ “αὖθίς φασι μεθ’ ἕτερα οὗτος γὰρ καὶ μέγιστος αὐτοῖς “πρὸς αὐτὸν ὁ πόλεμος έγἐνειο, διὰ τὸ γνήσιον “τῆς ἀγάπης, ἵνα ἀποπνιχθεὶς ὁ θὴρ, οὓς πρότερον “ᾤετο καταπεπωκέναι, ζῶντας ἐξεμέσῃ. οὐ γὰρ ἔλαβον “καύχημα κατὰ τῶν πεπτωκότων, ἀλλ’ ἐν οἷς “ἐπλεόναζον αὐτοὶ, τοῦτο τοῖς ἐνδεεστέροις ἐπήρκουν, “μητρικὰ σπλάγχνα ἔχοντες, καὶ πολλὰ περὶ αὐτῶν “ἐκχέοντες δάκρυα πρὸς τὸν πατέρα.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ζωὴν ἠτήσαντο, “καὶ ἔδωκεν αὐτοῖς, ἢν καὶ συνεμερίσαντο “τοῖς πλησίον. κατὰ πάντων νικηφόροι πρὸς θεὸν “ἀπελθόντες, εἰρήνην ἀγαπήσαντες ἀεὶ, καὶ εἰρήνην “ἀεὶ παρεγγυήσαντες, μετ’ ειρηνης ἐχώρησαν πρὸς “θεὸν, μὴ καταλιπόντες πόνον τῇ μητρὶ, μηδὲ στάσιν “καὶ πόλεμον τοῖς ἀδελφοῖς, ἀλλὰ χαρὰν καὶ εἰρήνην “καὶ ὁμόνοιαν καὶ ἀγάπην.”",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "ταῦτα καὶ περὶ τῆς τῶν μακαρίων ἐκείνων πρὸς τοὺς παραπεπτωκότας τῶν ἀδελφῶν στοργῆς ὠφελίμως προσκείσθω, τῆς ἀπανθρώπου καὶ ἀνηλεοῦς ἕνεκα διαθέσεως τῶν μετὰ ταῦτα ἀφειδῶς τοῖς Χριστοῦ μέλεσι προσενηνεγμένων.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἡ δ᾿ αὐτὴ τῶν προειρημένων μαρτύρων γραφὴ καὶ ἄλλην τινὰ μνήμης ἀξίαν ἱστορίαν περιέχει, ἣν καὶ οὐδεὶς ἂν γένοιτο φθόνος μὴ οὐχὶ τῶν ἐντευξομένων εἰς γνῶσιν προσθεῖναι. ἔχει δὲ οὕτως.",
+     "text": "III. The same document of the aforementioned martyrs contains also another story worthy of memory, and none could grudge our bringing it to the knowledge of those who are about to study. It runs thus: There was among them a certain Alcibiades, who was living a very austere life, and at first was not partaking of anything at all, but used merely bread and water and was trying to live thus even in the jail. But it was revealed to Attalus after the first contest which he underwent in the amphitheatre that Alcibiades was not doing well in not making use of the creations of God, and offering an example of offence 1 to others. Alcibiades was persuaded and began to partake of everything without restraint and gave thanks to God; for they were not without help from the grace of God but the Holy Spirit was their counsellor. Let this suffice for this point. Just at that time the party of Montanus and Aleibiades and Theodotus in Phrygia began first to engender among many their views concerning prophecy (for the many other wonderful works of the grace of God which Were still being wrought up to that time in divers churches produced the belief among many that they also were prophets), and when dissension arose about the persons mentioned the brethren in Gaul again formulated their own judgement, pious and most orthodox, concerning them, subjoining various letters from the martyrs who had been consecrated among them, which letters while they were still in prison they had composed for the brethren in Asia and Phrygia, and also for Eleutherus, who was then bishop of the Romans, and so they were ambassadors for the sake of the peace of the churches."
+    },
+    {
+     "number": 2,
+     "greek": "Ἀλκιβιάδου γάρ τινος ἐξ αὐτῶν, πάνυ αὐχμηρὸν βιοῦντος βίον, καὶ μηδενὸς ὅλως τὸ πρότερον μεταλαμβάνοντος, ἀλλ᾿ ἢ ἄρτῳ μόνῳ καὶ ὕδατι χρωμένου, πειρωμένου τε καὶ ἐν τῇ εἱρκτῇ οὕτω διάγειν, Ἀττάλῳ μετὰ τὸν πρῶτον ἀγῶνα, ὃν ἐν τῷ ἀμφιθεάτρῳ ἤνυσεν, ἀπεκαλύφθη, ὅτι μὴ καλῶς ποιοίη Ἀλκιβιάδης, μὴ χρώμενος τοῖς κτίσμασι τοὐ θεοῦ, καὶ ἄλλοις τύπον σκανδάλου ὑπολειπόμενος.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "πεισθεὶς δὲ ὁ Ἀλκιβιάδης πάντων ἀνέδην μετελάμβανε, καὶ ηὐχαρίστει τῷ θεῷ. οὐ γὰρ ἀνεπίσκεπτοι χάριτος θεοῦ ἦσαν, ἀλλὰ τὸ πνεῦμα τὸ ἅγιον ἦν σύμβουλον αὐτοῖς. καὶ ταῦτα μὲν ὁ δὶ ἐχέτω.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "τῶν δ᾿ ἀμφὶ τὸν Μοντανὸν καὶ Ἀλκιβιάδην καὶ Θεόδοτον περὶ τὴν Φρυγίαν ἄρτι τότε πρῶτον τὴν περὶ τοῦ προφητεύειν ὑπόληψιν παρὰ πολλοῖς ἐκφερομένων (πλεπῖσται γὰρ οὖν καὶ ἄλλαι παραδοξοποιίαι τοῦ θείου χαρίσματος εἰσέτι τότε κατὰ διαφόρους ἐκκλησίας ἐκτελούμεναι πίστιν παρὰ πολλοῖς τοῦ κἀκείνους προφητεύειν παρεῖχον), καὶ δὴ διαφωνίας ὑπαρχούσης περὶ τῶν δεδηλωμένων, αὖθις οἱ κατὰ τὴν Γαλλίαν ἀδελφοὶ τὴν ἰδίαν κρίσιν καὶ περὶ τούτων εὐλαβῆ καὶ ὀρθοδοξοτάτην ὑποτάττουσιν, ἐκθέμενοι καὶ τῶν παρ᾿ αὐτοῖς τελειωθέντων μαρτύρων διαφόρους ἐπιστολὰς, ἃς ἐν δεσμοῖς ἔτι ὑπάρχοντες τοῖς ἐπ᾿ Ἀσίας καὶ Φρυγίας ἀδελφοῖς διεχάραξαν, οὐ μὴν ἀλλὰ καὶ Ἐλευθέρῳ τῷ τότε ῾Ρωμαίων ἐπισκόπῳ, τῆς τῶν ἐκκλησιῶν εἰρήνης ἕνεκεν πρεσβεύοντες.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Οἱ δ᾿ αὐτοὶ μάρτυρες καὶ τὸν Εἰρήναιον, πρεσβύτερον ἤδη τότ᾿ ὄντα τῆς ἐν Λουγδούνῳ παροικίας , τῷ δηλωθέντι κατὰ ῾Ρώμην ἐπισκόπῳ συνίστων, πλεῖστα τῷ ἀνδρὶ μαρτυροῦντες, ὡς αἱ τοῦτον ἔχουσαι τὸν τρόπον δηλοῦσι φωναί",
+     "text": "Irenaeus also, who was at that time already a presbyter of the diocese at Lyons, the same martyrs commended to the afore-mentioned bishop of Rome, and gave him much good testimony, as is shown by words to the following effect: “Once more and always, Father Eleutherus, we wish you greeting in God. We have asked our brother and companion, Irenaeus, to bring this letter to you and we beg you to hold him in esteem, for he is Zealous for the covenant of Christ. For had we known that rank can confer righteousness on anyone, we should first of all have recommended him as being a presbyter of the church, for that is his position.” What need is there to transcribe the list of the martyrs in the above mentioned document, some consecrated by beheading, some cast out to be eaten by the wild beasts, others who fell asleep in the jail, and the number of the confessors which still survived at that time ? For whoever wishes can easily read the full aecount by taking the description which has been included in our collection of martyrs,1 as I said before. Such were the events which happened under Antoninus."
+    },
+    {
+     "number": 2,
+     "greek": "“χαίρειν ἐν θεῷ σε ἐν πᾶσιν εὐχόμεθα καὶ ἀεὶ, πάτερ “Ἐλεύθερε. ταῦτά σοι τὰ γράμματα προετρεψάμεθα “τὸν ἀδελφὸν ἡμῶν καὶ κοινωνὸν Εἰρηναῖον διακομίσαι, καὶ παρακαλοῦμεν ἔχειν σε αὐτὸν ἐν παραθέ- “σεῖ, ζηλωτὴν ὄντα τῆς διαθήκης Χριστοῦ. εἰ γὰρ “ᾔδειμεν, τόπον τινὶ δικαιοσύνην περιποιεῖσθαι, ὡς “πρεσβύτερον ἐκκλησίας, ὅπερ ἐστὶν ἐπ᾿ αὐτῷ, ἐν “πρώτοις ἂν παρεθέμεθα.”",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "τί δεῖ καταλέγειν τὸν ἐν τῇ δηλωθείσῃ γραφῇ τῶν μαρτύρων κατάλογον, ἰδίᾳ μὲν τῶν ἀποτμήσει κεφαλῆς τετελειωμένων, ἰδίᾳ δὲ τῶν θηρσὶν εἰς βορὰν παραβεβλημένων, καὶ αὖθις τῶν ἐπὶ τῆς εἱρκτῆς κεκοιμημένων, τόν τε ἀριθμὸν τῶν εἰσέτι τότε περιόντων ὁμολογητῶν; ὅτῳ γὰρ φίλον, καὶ ταῦτα ῥᾴδιον πληρέστατα διαγνῶναι μετὰ χεῖρας ἀναλαβόντι τὸ σύγγραμμα, ὃ καὶ αὐτὸ τῇ τῶν μαρτυρίων ουναγωγῇ πρὸς ἡμῶν, ὡς γοῦν ἔφην, κατείλεκται. ἀλλὰ τὰ μὲν ἐπ᾿ Ἀντωνίνου τοιαῦτα.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 5,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Τούτου δὴ ἀδελφὸν Μάρ- κον Αὐρήλιον Καίσαρα λόγος ἔχει Γερμανοῖς καὶ Σαρ- μάταις ἀντιπαραταττόμενον μάχῃ δίψει πιεζομἐνης αὐτοῦ τῆς στρατιᾶς ἐν ἀμηχανίᾳ γενέοθαι, τοὺς δὲ ἐπὶ τῆς Μελιτηνῆς οὕτω καλουμένης λεγεῶνος στρατιώτας διὰ πίστεως ἐξ ἐκείνου καὶ εἰς δεῦρο συνεστώσης ἐν τῇ πρὸς τοὺς πολεμίους παρατάξει γόνυ θέντας ἐπὶ γῆν κατὰ τὸ οἰκεῖον ἡμῖν τῶν εὐχῶν ἔθος ἐπὶ τὰς πρὸς θεὸν ἱκεσίας τραπέσθαι.",
+     "text": "It is said that when his brother, Marcus Aurelius Caesar, was engaging in battle with the Germans and Sarmatians, he was in difficulties, because his army was oppressed by thirst; but the soldiers of the legion which is called after Melitene,2 knelt on the ground according to our own custom of prayer, in the faith which has sustained them from that time to this in their contests with their enemies, and turned towards supplications to God. Now though this kind of spectacle seemed strange to the enemy, the story goes that another still more marvellous overcame them at once, for lightning drove the enemy to flight add destruction, and a shower falling on the army which had prayed to God, refreshed them all when they were on the point of destruction from thirst. The story is both told among writers who are foreign to our faith who have undertaken to write of the times of the above mentioned emperors,1 and has also been recorded by Christians. By the heathen writers, inasmucb as they were strangers to the faith, the miracle is related, but it was not confessed that it happened through the prayers of the Christians; but in our own writers, inasmuch as they are the friends of truth, what happened has been described in a simply and harmless fashion. Among these would be also Apolinarius, who states that after that time the legion which had wrought the miracle through prayer had received a name from the emperor appropriate to what had happened, and was called in Latin the “Thundering ’’2 Tertullian is also a worthy witness of these things, who in addressing in Latin an apology for our faithto to the Senate, which we have quoted already, confirmed the story with more and clearer proof. In his writing he says that letters of Marcus, the most prudent emperor, were still extant, in which he testifies himself that when his army was on the point of destruction in Germany from lack of water it had been saved by the Prayers of the Christians, and Tertullian says that the emperor also threatened death to those who attempted to accuse us. The author goes on as fohows: “What kind of laws are these which wicked, unrighteous, and cruel men use against us alone? Vespasian did not observe them although he conquered the Jews. Trajan partially allowed them, but forbade Christians to be sought out. Neither Hadrian, though busy in all curious matters, nor Pius, as he is called, ratified them.” But let these things be as anyone will, we must pass on to the train of further events. When Pothinus was consecrated with the martyrs in Gaul at the age of full ninety years, Irenaeus received the episcopacy of the diocese in Lyons,1 of which Pothinus had been the head, and we have been told that he had been a listener to Polycarp in his early youth. In his third book against the heresies he gives the succession of the bishops in Rome as far as Eleutherus, the events of whose days are now being discussed by us, as though his book had been composed at that time, and he gives the list, writing as follows."
+    },
+    {
+     "number": 2,
+     "greek": "παραδόξου δὲ τοῖς πολεμίοις τοὐ τοιούτου δὴ θεάματος φανέντος ἄλλο τι λόγος ἔχει παραδοξότερον ἐπικαταλαβεῖν αὐτίκα· σκηπτὸν μὲν εἰς φυγὴν καὶ ἀπώλειαν συνελαύνοντα τοὺς πολεμίους, ὄμβρον δὲ ἐπὶ τὴν τῶν τὸ θεῖον παρακεκληκότων στρατιὰν, πᾶσαν αὐτὴν ἐκ τοῦ δίψους μέλλουσαν ὅσον οὔπω διαφθείρεσθαι ἀνακτώμενον.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἡ δὲ ἱστορία φέρεται μὲν καὶ παρὰ πόρρω τοῦ καθ’ ἡμᾶς λόγου συγγραφεῦσιν, οἶς μέλον γέγονε τῆς κατὰ τοὺς δηλουμένους γραφῆς, δεδήλωται δὲ καὶ πρὸς τῶν ἡμετέρων. ἀλλὰ τοῖς μὲν ἔξωθεν ἱστορικοῖς, ἅτε τῆς πίστεως ἀνοικείοις, τἐθειται μὲν τὸ παράδοξον, οὐ μὴν καὶ ταῖς τῶν ἡμετέρων εὐχαῖς τοῦτο ὡμολογήθη γεγονέναι· τοῖς δέ γε ἡμετέροις, ἅτε ἀληθείας φίλοις, ἁπλῷ καὶ ἀκακοήθει τρόπῳ τὸ πραχθὲν παραδέδοται.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "τούτων δ’ ἂν εἴη καὶ Ἀπολινάριος, ἐξ ἐκείνου φήσας τὴν δι’ εὐχῆς τὸ παράδοξον πεποιηκυῖαν λεγεῶνα οἰκείαν τῷ γεγονότι πρὸς τοῦ βασιλέως εἰληφέναι προσηγορίαν, κεραυνοβόλον τῇ Ῥωμαίων ἐπικληθεῖσαν φωνῇ.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "μάρτυς δὲ τούτων γένοιτ’ ἂν ἀξιόχρεως ὁ Τερτυλλιανὸς, τῇ Ρωμαϊκῇ συγκλήτῳ προσφωνήσας ὑπὲρ τῆς πίστεως ἀπολογίαν, ἧς καὶ πρόσθεν ἐμνημονεύσαμεν, τήν τε ἱστορίαν βεβαιῶν σὺν ἀποδείξει μείζονι καὶ ἐναργεστέρᾳ.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "γράφει δ’ οὖν καὶ αὐτὸς λέγων Μάρκου τοῦ συνετωτάτου βασιλέως ἐπιστολὰς εἰσέτι νῦν φέρεσθαι, ἐν αἷς αὐτὸς μαρτυρεῖ ἐν Γερμανίᾳ ὕδατος ἀπορία μέλλοντα αὐτοῦ τὸν στρατὸν διαφθείρεσθαι ταῖς τῶν Χριστιανῶν εὐχαῖς σεσῶσθαι. τοῦτον δέ φησι καὶ θάνατον ἀπειλῆσαι τοῖς κατηγορεῖν ἡμῶν ἐπιχειροῦσιν.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "οἶς ὁ δηλωθεὶς ἀνὴρ καὶ ταῦτα προσεπιλέγει· ποταποὶ οὖν οἶ νόμοι οὗτοι, οἶς καθ’ ἡμῶν μόνον “ἕπονται ἀσεβεῖς, ἄδικοι, ὠμοί; οὑς οὔτε Οὐεσπα- “σιανὸς ἐφύλαξε, καίτοι γε Ἰουδαίους νικήσας, οὓς “Τραϊανὸς ἐκ μέρους ἐξουθένησε, κωλύων ἐπιζητεῖσθαι Χριστιανοὺς, οὓς οὔτε Ἀδριανὸς, καίτοι γε πάντα τὰ περίεργα πολυπραγμονῶν, οὔτε ὁ Εὐσε- ‘βὴς ἐπικληθεὶς ἐπεκύρωσεν.’ ἀλλὰ ταῦτα μὲν ὅπη τις ἐθέλῃ τιθέσθω, μετίωμεν δὲ ἡμεῖς ἐπὶ τὴν τῶν ἑξῆς ἀκολουθίαν.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "Ποθεινοῦ δὴ ἐφ’ ὅλοις τῆς ζωῆς ἔτεσιν ἐνενήκοντα σὺν τοῖς ἐπὶ Γαλλίας μαρτυρήσασι τελειωθέντος, Εἰρηναῖος τῆς κατὰ Λούγδουνον ἧς ὁ Ποθεινὸς ἡγεῖτο παροικίας τὴν ἐπισκοπὴν διαδέχεται. Πολυκάρπου δὲ τοῦτον ἀκουστὴν γενέσθαι κατὰ τὴν νέαν ἐμανθάνομεν ἡλικίαν.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "οὗτος τῶν ἐπὶ ῾Ρώμης τὴν διαδοχὴν ἐπισκόπων ἐν τρίτῃ συντάξει τῶν πρὸς τὰς αἱρέσεις παραθέμενος, εἰς Ἐλεύθερον, οὗ τὰ κατὰ τοὺς χρόνους ἡμῖν ἐξετάζεται, ὡσὰν δὴ κατ’ αὐτὸν σπουδαζομένης αὐτῷ τῆς γραφῆς, τὸν κατάλογον ἵστησι, γράφων ὧδε·",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 6,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "“Θεμελιώσαντες οὖν καὶ οἰκοδομήσαντες οἶ μακάριοι ἀπόστολοι τὴν ἐκκλησίαν Λίνῳ τὴν τῆς ἐπισκοπῆς λειτουργίαν ἐνεχείρισαν. τούτου τοῦ Λίνου Παῦλος ἐν ταῖς πρὸς Τιμόθεον ἐπιστολαῖς μέμνηται, διαδέχεται δὲ αὐτὸν Ανέγκλητος.",
+     "text": "“Therefore when the blessed apostles had found and built the church they gave the ministry of the episcopate to Linus. Paul mentioned this Linus in his epistle to Timothy. Anencletus succeeded him, and after him Clement obtained the episcopate in the third place from the apostles. He had seen the blessed apostles and conversed with them and the teaching of the apostles still rang in his ears, their tradition was held before his eyes. Nor was he alone in this, for there were still many surviving at that time who had been taught by the apostles. When in the time of this Clement no little dissenstion arose among the Chrirtians at Corinth, the church in Rome sent a most powerful letter to the Corinthians urging them to peace and renewing their faith and the tradition which they had recently received from the apostles.1” And after a little he says: “Evarestus succeeded to this Clement and Alexander to Evarestus, and then Xystus was appointed as the sixth from the apostles, and after him Telesphorus, who also was martyred gloriously; then Hyginus, then Pius, after him Anicetus. Soter succeeded Anicetus, and now, in the twelfth place from the apostles, Eleutherus holds the lot of the episcopate. The tradition from the apostles in the church and the preaching of the truth have reached us in the same order and the same teaching.”2"
+    },
+    {
+     "number": 2,
+     "greek": "μετὰ τοῦτον δὲ τρίτῳ τόπῳ ἀπὸ “τῶν ἀποστόλων τὴν ἐπισκοπὴν κληροῦται Κλήμης, ὁ “καὶ ἑωρακὼς τοὺς μακαρίους ἀποστόλους, καὶ συμ- “βεβληκὼς αὐτοῖς, καὶ ἔτι ἔναυλον τὸ κήρυγμα τῶν “ἀποστόλων καὶ τὴν παράδοσιν πρὸ ὀφθαλμῶν ἔχων, οὐ μόνος· ἔτι γὰρ πολλοὶ ὑπελείποντο τότε ὑπὸ τῶν “ἀποστόλων δεδιδαγμένοι.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἐπὶ τούτου οὖν τοῦ “Κλήμεντος στάσεως οὐκ ὀλίγης τοῖς ἐν Κορίνθῳ “γενομένης ἀδελφοῖς, ἐπέστειλεν ἡ ἐν ῾Ρώμῃ ἐκκλησία “ἱκανωτάτην γραφὴν τοῖς Κορινθίοις, εἰς εἰρήνην “συμβιβάζουσα αὐτοὺς, καὶ ἀνανεοῦσα τὴν πίστιν “αὐτῶν καὶ ἣν νεωστὶ ἀπὸ τῶν ἀποστόλων παρά- “δοσιν εἰλήφει.“",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ μετὰ βραχέα φησὶ “τὸν δὲ “Κλήμεντα τοῦτον διαδέχεται Εὐάρεστος, καὶ τὸν “Εὐάρεστον Ἀλέξανδρος. εἶθ᾿ οὕτως ἕκτος ἀπὸ τῶν “ἀποστόλων καθίσταται Ξύστὸς, μετὰ δὲ τοῦτον Τε- “λεσφόρος, ὃς καὶ ἐνδόξως ἐμαρτύρησεν· ἔπειτα Ὑγῖ- “νος, εἶτα Πίος, μεθ᾿ ὃν Ἀνίκητος. διαδεξαμένου “τὸν Ἀνίκητον Σωτῆρος νῦν δωδεκάτῳ τόπῳ τὸν τῆς “ἐπισκοπῆς ἀπὸ τῶν ἀποστόλων κατέχει κλῆρον Ἐλεύ- “θερος.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "τῇ αὐτῇ τάξει καὶ τῇ αὐτῇ διδαχῇ ἥ τε “ἀπὸ τῶν ἀποστόλων ἐν τῇ ἐκκλησίᾳ παράδοσις καὶ “τὸ τῆς ἀληθείας κήρυγμα κατήντηκεν εἰς ἡμᾶς.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 7,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ταῦτα ὁ Εἰρήναιος, ἀκουλούθως ταῖς προδιεξοδευθείσαις ἡμῖν ὑπογράψας ἱστορίαις ἐν οἷς ἐπέγραψε πέντε οὖσι τὸν ἀριθμὸν ἐλέγχου καὶ ἀνατροπῆς τῆς ψευδωνύμου γνώσεως, ἐν δευτέρῳ τῆς αὐτῆς ὑποθέσεως, ὅτι δὴ καὶ εἰς αὐτὸν ὑποδείγματα τῆς θείας καὶ παραδόξου δυνάμεως ἐν ἐκκλησίαις τισὶν ὑπολέλειπτο, διὰ τούτων ἐπισημαίνεται λέγων",
+     "text": "These things Irenaeus recounts, according to the extracts which we have made already, in the books, five in number, to which he gave the title of Refutation and Overthrow of Knowledge falsely socalled, and in the second book of this work he proves in the following words that manifestations of the divine and marvellous power had remained in some churches even as far as his time : “ But they fall so far 1 short of raising the dead, as did the Lord and his apostles through prayer (and often among the brethren, because of necessity and at the request of the whole church in the neighbourhood, with fasting and much supplication, the spirit of him who had died returned, and the man was given to the prayers of the ” And again he says after other things : “ But if they say that the Lord has done all these things merely in appearance we will take them back to the prophetic writings, and show from them that all these things had been foretold concerning him, and that they certainly happened, and that he alone is the Som of God ; for which cause also his true disciples having reeeived graee from him use it in his name for the benefit of the rest of men, even as each has received the gift from him. For some drive out demons with certainty and truth, so that often those who have themselves been cleansed from the evil spirits believe and are in the church, and some have foreknowledge of things to be, and visions and prophetic speech, and others cure the rick by the haying on of hands and make them whole, and even as we have said, the dead have been raised and remained with us for many years. And why should Ι say more 7. It is not possible to tell the number of the gifts which the chureh throughout the whole worid, having received them from God in the name of Jesus Christ, who was crucified under Pontius Pilate, uses each day for the benefit of the heathen, deceiving none and making profit from none. For as it received freely from God, it ministers also ” And in another place the same author writes : “ Just as also we hear many brethren in the church who have gifts of prophecy, and who speak through the Spirit with all manner of tongues, and who bring the hidden things of men into clearness for the common good and expound the myrteries of ” So much on the point that variety of gifts remained among the worthy up till the time spoken of."
+    },
+    {
+     "number": 2,
+     "greek": "“τοσοῦτον δὲ ἀποδέουσι “τοῦ νεκρὸν ἐγείραι, καθὼς ὁ κύριος ἤγειρε καὶ “ἀπόστολοι διὰ προσευχῆς, καὶ ἐν τῇ ἀδελφότητι “πολλάκις, διὰ τὸ ἀναγκαῖον τῆς κατὰ τόπον ἐκκλησίας πάσης αἰτησαμένης μετὰ νηστείας καὶ λιτανείας πολλῆς, ἐπέστρεψε τὸ πνεῦμα τοῦ τετελευτηκότος, καὶ ἐχαρίσθη ὁ ἄνθρωπος ταῖς εὐχαῖς τῶν ἁγίων.’’",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "καὶ αὖθίς φησι μεθ’ ἕτερα εἰ δὲ καὶ τὸν κύριον “φαντασιωδῶς τὰ τοιαῦτα πεποιηκέναι φήσουσιν, “ἐπὶ τὰ προφητικὰ ἀνάγοντες αὐτοὺς ἐξ αὐτῶν ἐπι- “δείξομεν πάντα οὕτως περὶ αὐτοῦ καὶ προειρῆσθαι “καὶ γεγονέναι βεβαίως, καὶ αὐτὸν μόνον εἶναι τὸν “υἱὸν τοῦ θεοῦ. διὸ καὶ ἐν τῷ ἐκείνου ὀνόματι οἶ “ἀληθῶς αὐτοῦ μαθηταὶ, παρ’ αὐτοῦ λαβόντες τὴν “χάριν, ἐπιτελοῦσιν ἐπ’ εὐεργεσίᾳ τῇ τῶν λοιπῶν “ἀνθρώπων, καθὼς εἷς ἕκαστος τὴν δωρεὰν εἴληφε παρ’ αὐτοῦ.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "οἶ μὲν γὰρ δαίμονας ἐλαύνουσι βεβαίως καὶ ἀληθῶς, ὥστε πολλάκις καὶ πιστεύειν ἐκείνους αὐτοὺς τοὺς καθαρισθέντας ἀπὸ τῶν πονηρῶν πνευμάτων καὶ εἶναι ἐν τῇ ἐκκλησίᾳ, οἶ δὲ καὶ πρόγνωσιν ἔχουσι τῶν μελλόντων καὶ ὀπτασίας καὶ ῥήσεις προφητικὰς, ἄλλοι δὲ τοὺς κάμνοντας διὰ τῆς τῶν χειρῶν ἐπιθέσεως ἰῶνται καὶ ὑγιεῖς ἀποκαθιστᾶσιν. ἤδη δὲ, καθὼς ἔφαμεν, καὶ νεκροὶ ἠγέρθησαν, καὶ παρέμειναν σὺν ἡμῖν ἔτεσιν ἱκανοῖς.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "καὶ τί γάρ; οὐκ ἔστιν ἀριθμὸν εἰπεῖν τῶν χαρισματων, ὧν κατὰ παντὸς του κόσμου ἡ ἐκκλησία παρὰ θεοῦ λαβοῦσα ἐν τῷ ὀνόματι Ἰησοῦ Χριστοῦ τοῦ σταυρωθέντος ἐπὶ Ποντίου Πιλάτου ἑκάστης ἡμέρας ἐπ’ εὐεργεσίᾳ τῇ τῶν ἐθνῶν ἐπιτελεῖ, μήτε ἐξαπατῶσά τινας μήτε ἐξαργυριζομένη· ὡς γὰρ “δωρεὰν εἴληφε παρὰ θεοῦ, δωρεὰν καὶ διακονεῖ.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "καὶ ἐν ἑτέρω δὲ τόπῳ ὁ αὐτὸς γράφει καθὼς καὶ “πολλῶν ἀκούομεν ἀδελφῶν ἐν τῇ ἐκκλησίᾳ “τικὰ χαρίσματα ἐχόντων, καὶ παντοδαπαῖς λαλούν- “των διὰ τοῦ πνεύματος γλώσσαις, καὶ τὰ κρύφια “τῶν ἀνθρώπων εἰς φανερὸν ἀγόντων ἐπὶ τῷ καὶ τὰ μυστήρια τοῦ θεοῦ ἐκδιηγουμένων. ταῦτα καὶ περὶ τοῦ διαφορὰς χαρισμάτων μέχρι καὶ τῶν δηλουμένων χρόνων παρὰ τοῖς ἀξίοις διαμεῖναι.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 8,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐπεὶ δὲ ἀρχόμενοι πραγματείας ὑπόσχεσιν πεποιήμεθα παραθήσεσθαι κατὰ καιρὸν εἰπόντες τὰς τῶν ἀρχαίων ἐκκλησιαστικῶν πρεσβυτέρων τε καὶ συγγραφέων φωνὰς, ἐν αἷς τὰς περὶ τῶν ἐνδιαθήκων γραφῶν εἰς αὐτοὺς κατελθούσας παραδόσεις γραφῇ παραδεδώκασι, τούτων δὲ καὶ ὁ Εἰρήναιος ἦν, φέρε καὶ τὰς αὐτοῦ παραθώμεθα λέξεις.",
+     "text": "At the beginning of this work we made promise to quote from time to time the sayings of the presbyters and writers of the church of the first period, in which they have delivered the traditions which came down to them about the canonical Scriptures. Now Irenaeus was one of these, so let us quote his words, and in the first place those which refer to the saered Gospels, as follwos : “ Now Matthew published among the Hebrews a written gospel 1 also in their own tongue, while Peter and Paul were preaching in Rome and founding the church. But after their death Mark also, the disciple and interpreter of Peter, himself handed down to us in writing the things which were preached by Peter, and Luke also, who was a follower of Paul, put down in a book the gospel which was preached by him. Then John, the disciple of the Lord, who had even reted on his breast, himself also gave forth the gospel, while he was living at Ephesus in Asia.” These things were said by the writer referred to in the third book of his treatise which has been quoted before, and in the fifth book he discourses thus about the Apocalypse of John and the number of the name of the Antichrist.1 “ Now since this is so, and since this number is found in all the good and ancient copies, and sinee those Who have seem John face to face testify, and reason teaches us that the number of the name of the beast appears according to the numeration of the Greeks by the letters in it . . . ” And going on later he says concerning the same point, “ We therefore will not take the risk of making any positive statement concerning the name of the Antichrist. For if it had been necessary for his name to have been announeed cleariy at the present time, it would have been spoken by him who also saw the Revelation ; for it was not even seen a long time ago, but almost in our own generation towards the end of the reign of Domitian.” The author quoted says this about the Apocalypse, and he also mentions the first Epistle of John, making many quotations from it, and likewise the first Epistle of Peter. And he not only knew but also received 2 the writing of the Shepherd, saying, “ Well did the scripture say ‘ first of all believe that God is one who created and fitted together all ’ and so ” He also made some quotations all but verbally from the WiSdom of Solomon, “ And the vision of God produces incorruptibility and incorruptibility brings us near to ” He also quotes treatises of a certain apostolic presbyter whose name he passes by in silence and gives his interpretaion of divine Scripture. Moreover, he has made mention of Justion Martyr and Ignatius, making frequent quotations from their writings, and he promised to give in a special work a refutation of Marcion from his own writings. Hear also, word for word, what he writes about the interpretation of the inspired Scriptures accorffing to the Septuagint. “ So God became man and the Lord himself saved us, giving us the sign of the virgin, but not as some say, who at the present time venture to translate the scriptures, ‘ behold a young woman shall conceive and bear a ’ as Theodotion the Ephesian tranriated it and Aquila from Pontus, both of them Jewish proselytes, whom the Ebionites follow and aver that he was begotten by Joseph. ’’ After a little he goes on thus : ‘‘ For before the Romans established their government, while the Macedonians still possessed Asia, Ptolemy, the son of Lagus,1 being very anxious to adorn the library, which he had founded in Alexandria, with all the best extant writings of all men, asked from the inhabitants of Jerusalem to have their Scriptures translated into Greek. They, for they were at that time still subject to the Macedonians, sent to Ptolemy seventy elders, the most experienced they had in the scriptures and in both languages, and God thus wrought what he willed. But Ptolemy, wishing to make trial of them in his own way, and being afraid lest they should have made some agreement to conceal by their translation the truth in the Scriptures, separated them from one another and commanded them all to write the same translation. And this he did in the case of all the books. when they came together to Ptolemy, and compared each his own translation, God was glorffied and scriptures were recognized as truly divine, for they all rendered the same things in the same words and the same names, from beginning to end, so that even the heathen who were present knew that the Scriptures had been translated by the inspiration of God. And it is no marvel that God did this, for when the Scriptures had been destroyed in the captivity of the people in the days of Nebuchadnezzar, and the Jews had gone back to their country after seventy years, then in the times of Artaxerxes, the king of the Persians, he inspired Ezra, the priest of the tribe of Levi, to restore all the sayingS of the prophets Who had gone before, and to restore to the people the law given by ” 1 so much sayS Irenaeus."
+    },
+    {
+     "number": 2,
+     "greek": "καὶ πρώτας γε τὰς περὶ τῶν ἱερῶν εὐαγγελίων, οὕτως ἐχούσας ὁ μὲν δὴ Ματθαῖος ἐν τοῖς Ἑβραίοις τῇ ἰδίᾳ αὐτῶν διαλέκτῳ καὶ γραφὴν ἐξήνεγκεν εὐαγγελίου, τοῦ Πέτρου καὶ τοῦ Παύλου ἐν ‘Ρώμῃ εὐαγγελιζομένων καὶ θεμελιούντων τὴν ἐκκλησίαν.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "μετὰ δὲ τὴν τούτων ἔξοδον Μάρκος ὁ μαθητὴς καὶ ἑρμηνευτὴς Πέτρου καὶ αὐτὸς τὰ ὑπὸ Πέτρου κηρυσσόμενα ἐγγράφως ἡμὶν παραδέ- “δωκε, καὶ Λουκᾶς δὲ, ὁ ἀκόλουθος ΠαύΑου, τὸ ὑπ’ ἐκείνου κηρυσσόμενον εὐαγγέλιον ἐν βίβλῳ κατέθετο.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἔπειτα Ἰωάννης, ὁ μαθητὴς τοῦ κυρίου, ὁ καὶ ἐπὶ τὸ στῆθος αὐτοῦ ἀναπεσὼν, καὶ αὐτὸς ἐξέδωκε τὸ εὐαγγέλιον, ἐν Ἐφέσω τῆς Ἀσίας δια- “τρίβων.”",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ταῦτα μὲν οὖν ἐν τρίτῳ τῆς εἰρημένης ὑποθέσεως τῷ προδηλωθέντι εἴρηται. ἐν δὲ τῷ πέμπτῳ περὶ τῆς Ἰωάννου ἀποκαλύψεως καὶ τῆς ψήφου τῆς τοῦ ἀντιχρίστου προσηγορίας οὕτω διαλαμβάνει· “τούτων δὲ οὕτως ἐχόντων, καὶ ἐν πᾶσι δὲ τοῖς σπουδαίοις καὶ ἀρχαίοις ἀντιγράφοις τοῦ ἀριθμοῦ τούτου κειμένου, καὶ μαρτυρούντων αὐτῶν ἐκείνων τῶν κατ᾿ ὄψιν τὸν Ἰωάννην καὶ τοῦ λόγου διδάσκοντος ἡμὰς ὅτι ὁ ἀριθμὸς τοῦ ὀνόματος τοῦ θηρίου κατὰ τὴν τῶν Ἑλλήνων ψῆφον διὰ τῶν ἐν αὐτῷ γραμμάτων ἐμφαίνεται.’’",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "καὶ ὑποκαταβὰς περὶ τοῦ αὐτοῦ φάσκει “ἡμεῖς οὖν οὐκ ‘ἀποκινδυνεύομεν περὶ τοῦ ὀνόματος τοῦ ἀντιχρίστου ἀποφαινόμενοι βεβαιωτικῶς. εἰ γὰρ ἔδει ἀναφανδὸν τῷ νῦν καιρῷ κηρύττεσθαι τοὔνομα αὐτοῦ, δι’ ἐκείνου ἂν ἐρρέθη τοῦ καὶ τὴν ἀποκάλυψιν ἑωρακότος· κότος· οὐδὲ γὰρ πρὸ πολλοῦ χρόνου ἐωράθη, ἀλλὰ σχεδὸν ἐπὶ τῆς ἡμετέρας γενεάς, πρὸς τῷ τέλει τῆς Δομετιανοῦ ἀρχῆς.”",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ταῦτα καὶ περὶ τῆς ἀποκαλύψεως ἱστόρηται τῷ δεδηλωμένῳ. μέμνηται δὲ καὶ τῆς Ἰωάννου πρώτης ἐπιστολῆς, μαρτύρια ἐξ αὐτῆς πλεῖστα εἰσφέρων, ὁμοίως δὲ καὶ τῆς Πέτρου προτέρας. οὐ μόνον δὲ οἶδεν, ἀλλὰ καὶ ἀποδέχεται τὴν τοῦ Ποιμένος γραφὴν λέγων καλῶς οὑν εἶπενἡγραφὴ ἡ λέγουσα, πρῶτον πάντων πίστευσον ὅτι εἷς ἐστὶν ὁ θεὸς, ὁ τ’. πάντα κτίσας καὶ τὰ ἑξῆς.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "καὶ ῥητοῖς τοῖς δέ τισιν ἐκ τῆς Σολομῶνος Σοφίας κέχρηται, μονονουχὶ φάσκων· ὅρασις ’δε θεοῦ περιποιητικὴ ἀφθαρσίας, ἀφθαρσία δὲ ἐγγὺς εἶναι ποιεῖ θεοῦ. καὶ ἀπομνημονευμάτων δὲ ἀποστολικοῦ τινὸς πρεσβυτέρου, οὗ τοὔνομα σιωπῇ παραδέδωκε, μνημονεύει, ὢ ἐξηγήσεις τε αὐτοῦ θείων γραφῶν παρατέθειται.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "ἔτι καὶ Ἰουστίνου τοὐ μάρτυρος καὶ Ἰγνατίου μνήμην πεποίηται, μαρτυρίαις αὖθις καὶ ἀπὸ τῶν τούτοις γραφέντων κεχρημένος. ἐπήγγελται δὲ αὐτὸς ἐκ τῶν Μαρκίωνος συγγραμμάτων ἀντιλέξειν αὐτῷ ἐν ἰδίῳ σπουδάσματι.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "καὶ περὶ τῆς κατὰ τοὺς ἑβδομήκοντα ἑρμηνείας τῶν θεοπνεύστων γραφῶν ἄκουε οἷα κατὰ λέξιν γράφει ὁ θεὸς οὖν ἄνθρωπος ἐγένετο, καὶ αὐτὸς κύριος ἔσωσεν ἡμᾶς, δοὺς τὸ τῆς παρθένου σημεῖον· ἀλλ’ οὐχ ὡς ἔνιοι φασι τῶν νῦν τολμώντων μεθερμηνεύειν τὴν γραφὴν ‘ ἴδοὺ ἡ νεᾶνις ἐν γαστρὶ ἔξει καὶ τέξεται υἱόν᾿, ὡς Θεοδοτίων ἡρμήνευσεν ὁ Ἐφέσιος, καὶ Ἀκύλας ὁ Ποντικὸς, ἀμφότεροι Ἰουδαῖοι προσήλυτοι, οἷς κατακολουθήσαντες οἱ Ἐβιωναῖοι ἐξ Ἰωσὴφ αὐτὸν γεγενῆσθαι φάσκουσι.’’",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "τούτοις ἐπιφέρει μετὰ βραχέα λέγων πρὸ τοῦ γὰρ Ῥωμαίους κρατῦναι τὴν ἀρχὴν αὐτῶν, ἔτι τῶν Μακεδόνων τὴν Ἀσίαν κατε- ‘χόντων, Πτολεμαῖος ὁ Λάγου, φιλοτιμούμενος τὴν “ὑπ᾿ αὐτοῦ κατεσκευασμένην βιβλιοθήκην ἐν Ἀλε- “ξανδρείᾳ κοσμῆσαι τοῖς πάντων ἀνθρώπων συγγράμμασιν, ὅσα γε σπουδαῖα ὑπῆρχεν, ᾐτήσατο παρὰ τῶν Ἱεροσολυμιτῶν εἰς τὴν Ἑλληνικὴν διάλεκτον σχεῖν αὐτῶν μεταβεβλημένας τὰς γραφάς.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "οἱ δὲ ὑπήκουον γὰρ ἔτι τοῖς Μακεδόσι τότε) τοὺς παρ’ αὐτοῖς ἐμπειροτάτους τῶν γραφῶν καὶ ἀμφοτέρων τῶν διαλέκτων, ἑβδομήκοντα πρεσβυτέρους ἔπεμψαν Πτολεμαίῳ, ποιήσοντας τοῦθ’ ὅπερ ἠβούλετο",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "ὁ δὲ ἰδέᾳ πεῖραν αὐτῶν λαβεῖν θελή- “σας, εὐλαβηθείς τε μή τι ἄρα συνθέμενοι τὴν ἐν ταῖς γραφαῖς διὰ τῆς ἑρμηνείας ἀλή- “θειαν, χωρίσας αὐτοὺς ἀπ’ ἀλλήλων ἐκέλευσε πάντας τὴν αὐτὴν ἑρμηνείαν γράφειν, καὶ τοῦτο ἐπὶ πάντων τῶν βιβλίων ἐποίησε.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "συνελθόντων δὲ αὐτῶν ἐπὶ τὸ αὐτὸ παρὰ τῷ Πτολεμαίῳ, καὶ “συναντιβαλλόντων ἑκάστου τὴν ἑαυτοῦ ἑρμηνείαν, “ὁ μὲν θεὸς ἐδοξάσθη, αἶ δὲ γραφαὶ ὄντως “ἐγνώσθησαν, τῶν πάντων τὰ αὐτὰ ταῖς αὐταῖς λἐ- “ξεσι καὶ τοῖς αὐτοῖς ὀνόμασιν ἀναγορευσάντων ἀπ’ ἀρχῆς μέχρι τέλους, ὥστε καὶ τὰ παρόντα ἔθνη “γνὠναι ὅτι κατ’ ἐπίπνοιαν τοῦ θεοῦ εἰσιν ἡρμηνευμέναι αἶ γραφαί.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "καὶ οὐδέν γε θαυμαστὸν τοῦτο ἐνηργηκέναι τὸν θεὸν, ὅς γε καὶ ἐν τῇ ἐπὶ Ναβουχοδονόσορ αἰχμαλωσίᾳ τοῦ λαοῦ, διαφθαρεισῶν σῶν τῶν γραφῶν, καὶ μετὰ ἑβδομήκοντα ἔτη τῶν Ἰουδαίων ἀνελθόντων εἰς τὴν χώραν αὐτῶν, ἔπειτα ἐν τοῖς χρόνοις Ἀρταξέρξου τοῦ Περσῶν βασιλέως ἐνέπνευσεν Ἔσδρᾳ τῷ ἱερεῖ ἐκ τῆς φυλῆς Λευὶ, τοὺς “τῶν προγεγονότων προφητῶν πάντας ἀνατάξασθαι λόγους, καὶ ἀποκαταστῆσαι τῷ λαῷ τὴν διὰ Μωυσέως νομοθεσίαν.’’ τοσαῦτα ὁ Εἰρήναιος.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 9,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐννέα δὲ καὶ δέκα ἔτεσι τῇ βασιλείᾳ διαρκέσαντος Ἀντωνίνου, Κόμοδος τὴν ἡγεμονίαν παραλαμβάνει, οὗ κατὰ τὸ πρῶτον ἔτος τῶν κατ’ Ἀλεξάνδρειαν ἐκκλησιῶν Ἰουλιανὸς ἐγχειρίζεται τὴν ἐπισκοπὴν, ἐπὶ δυοκαίδεκα ἔτεσιν Ἀγριππίνου τὴν λειτουργίαν ἀναπλήσαντος.",
+     "text": "When Antoninus had held the empire for nineteen years, Commodus 2 received the sovereignty, and in his first year Julian was appointed to the episcopate of the Churches in Alexandria when Agrippinus had completed his ministry after twelve years."
+    }
+   ]
+  },
+  {
+   "number": 10,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἡγεῖτο δὲ τηνικαῦτα τῆς τῶν πιστῶν αὐτόθι διατριβῆς τῶν ἀπὸ παιδείας ἀνὴρ ἐπιδοξότατος, ὄνομα αὐτῷ Πάνταινος, ἐξ ἀρχαίου ἔθους διδασκαλείου τῶν ἱερῶν λόγων παρ’ αὐτοῖς συνεστῶτος, ὃ καὶ εἰς ἡμᾶς παρατείνεται, καὶ πρὸς τῶν ἐν λόγῳ καὶ τῇ περὶ τὰ θεῖα σπουδῇ δυνατῶν συγκροτεῖσθαι παρειλήφαμεν. ἐν δὲ τοῖς μάλιστα κατ᾿ ἐκεῖνο καιροῦ διαλάμψαι λόγος ἔχει τὸν δεδηλωμένον, οἷα καὶ ἀπὸ φιλοσόφου ἀγωγῆς τῶν καλουμένων Στωϊκῶν ὁρμώμενον.",
+     "text": "At that time a man very famous for his learning named Pantaenus had charge of the life of the faithful in Alexandria, for from ancient custom a school of sacred learning eristed among them. This sehool has lasted on to our time, and we have heard that it is managed by men powerful in their learning and zeal for divine things, but tradition says that at that time Pantaenus was especially eminent, and that he had been influenced by the philosophic system of those called stoics. They say that he showed sueh Zeal in his warm disposition for the divine word that he was appointed as a herald for the goSpel of Christ to the heathen in the East, and was sent as far as India. For indeed there Were until then many evangelists of the word who had forethought to use inspired zeal on the apostolic model for the increases and the building up of the divine word. One of these was Pantaenus, and it is said that he went to the Indians, and the tradition is that he found there that among some of those there who had known Christ the Gospel according to MattheW had preceded his coming ; for Bartholomew, one of the apostles, had preached to them and had left them the writing of Matthew in Hebrew letters, which was preserved until the time mentioned. Pantaenus, after many achievementS, was at the head of the sehool in Alexandria until his death, and orally and in writing expounded the treasures of the divine doctrine."
+    },
+    {
+     "number": 2,
+     "greek": "τοσαύτην δ᾿ οὖν φασιν αὐτὸν ἐκθυμοτάτῃ διαθέσει προθυμίαν περὶ τὸν θεῖον λόγον ἐνδείξασθαι ὡς καὶ κήρυκα τοῦ κατὰ Χριστὸν εὐαγγελίου τοῖς ἐπ᾿ ἀνατολῆς ἔθνεσι ἀναδειχθῆναι, μέχρι καὶ τῆς Ἰνδῶν στειλάμενον γῆς. ἦσαν γὰρ, ἦσαν εἰσέτι τότε πλείους εὐαγγελισταὶ τοῦ λόγου, ἔνθεον ζῆλον ἀποστολικοῦ μιμήματος συνεισφέρειν ἐπ᾿ αὐξήσει καὶ οἰκοδομῇ τοῦ θείου λόγου προμηθούμενοι",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ὧν εἷς γενόμενος καὶ ὁ Πάνταινος καὶ εἰς Ἰνδοὺς ἐλθεῖν λέγεται, ἔνθα λόγος εὑρεῖν αὐτὸν προφθάσαν τὴν αὐτοῦ παρουσίαν τὸ κατὰ Ματθαῖον εὐαγγέλιον παρά τισιν αὐτόθι τὸν Χριστὸν ἐπεγνωκόσιν, οἷς Βαρθολομαῖον τῶν ἀποστόλων ἕνα κηρῦξαι, αὐτοῖς τε Ἑβραίων γράμμασι τὴν τοῦ Ματθαίου καταλεῖψαι γραφὴν, ἣν καὶ σώζεσθαι εἰς τὸν δηλούμενον χρόνον.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὅ γε μὴν Πάνταινος ἐπὶ πολλοῖς κατορθώμασι τοῦ κατ᾿ Ἀλεξάνδρειαν τελευτῶν ἡγεῖται διδασκαλείου, ζώσῃ φωνῇ καὶ διὰ συγγραμμάτων τοὺς τῶν θείων δογμάτων θησαυροὺς ὑπομνηματιζόμενος.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 11,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Κατὰ τοῦτον ταῖς θείαις γραφαῖς συνασκούμενος ἐπ᾿ Ἀλεξανδρείας ἐγνωρίζετο Κλήμης, ὁμώνυμος τῷ πάλαι τῆς ῾Ρωμαίων ἐκκλησίας ἡγησαμένῳ φοιτητῇ τῶν ἀποστόλων.",
+     "text": "In his time Clement. the namesake of the pupil of the apostles who had once ruled the ehurch of Rome, was famous in Alexandria for his study of the Holy Scriptures with Pantaenus. In the Hypotyposes which he composed he mentioned Pantaenus by name as his teacher, and he seems to me to allude to him in the first book of the Stromateis,1 when he speaks thus in reference to the more distinguishedd members of the apostolic sueeession which he had received. “ This work is not a writing composed for show, but notes stored up for my old age, a remedy against forgetfulness, an image without art, and a sketch of those clear and rital words which was privileged to hear, and of blessed and truly notable men. of these one, the Ionian, was in Greece, another in South Italy, a third in CoeleSyria,2 another from Egypt, and there were others in the East, one of them an Assyrian, another in Palestine of Hebrew origin. But when I had met the last, and in power he was indeed the first, hunted him out from his concealment in Egypt and found rest. But these men preserved the true tradition of the blessed teaching directly from Peter and James and John and Paul, the holy apostles, son receiving it from father (but there were few like their fathers), and by the blessing of God they came down to us to deposit those ancestral and apostolic seeds.”"
+    },
+    {
+     "number": 2,
+     "greek": "ὃς δὴ καὶ ὀνομαστὶ ἐν αἷς συνέταξεν Ὑποτυπώσεσιν ὡσὰν διδασκάλου τοῦ Πανταίνου μέμνηται, τοῦτόν τε αὐτὸν καὶ τῶν Στρωματέων ἐν πρώτῳ συγγράμματι αἰνίτ- τεσθαί μοι δοκεῖ, ὅτε τοὺς ἐμφανεστέρους ἧς κατείληφεν ἀποστολικῆς διαδοχῆς ἐπισημαινόμενος ταῦτά φησιν",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "“ἤδη δὲ οὐ γραφὴ εἰς ἐπίδειξιν τετεχνασμένη ἥδε ἡ πραγματεία, ἀλλά μοι ὑπομνήματα εἰς γῆρας θησαυρίζεται, λήθης φάρμακον, εἴδωλον ἀτεχνῶς καὶ σκιαγραφία τῶν ἐναργῶν καὶ ἐμψύχων ἐκείνων ὧν “κατηξιώθην ἐπακοῦσαι λόγων τε καὶ ἀνδρῶν “ρίων καὶ τῷ ὄντι ἀξιολόγων.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "τούτων ὁ μὲν τῆς Ἑλλάδος, ὁ Ἰωνικὸς, ὁ δὲ ἐπὶ τῆς μεγάλης Ἑλλάδος, τῆς Κοίλης ἅτερος αὐτῶν Συρίας ἦν, ὁ “δὲ ἀπ’ Αἰγύπτου, ἄλλοι δὲ ἀνὰ τὴν ἀνατολὴν, ταύτης ὁ μέν τις τῶν Ἀσσυρίων, ὁ δὲ ἐν τῇ Παλαιστίνῃ Ἑβραῖος ἀνέκαθεν. ὑστάτῳ δὲ περιτυχὼν δυνάμει δὲ ἄρα πρῶτος ἦν) ἀνεπαυσάμην, ἐν Αἰγύπτῳ θηράσας λεληθότα",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ἀλλ’ οἶ μὲν τὴν ἀληθῆ τῆς μακαρίας σώζοντες διδασκαλίας παράδοσιν εὐθὺς ἀπὸ Πέτρου καὶ Ἰακώβου, Ἰωάννου τε καὶ Παύλου τῶν ἁγίων ἀποστόλων, παῖς παρὰ πατρὸς ἐκδεξάμενος ὀλίγοι δὲ οἱ πατράσιν ὅμοιοι), ἧκον δὴ σὺν θεῷ καὶ εἰς ἡμᾶς, τὰ προγονικὰ ἐκεῖνα καὶ ἀποστολικὰ καταθησόμενοι σπέρματα.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 12,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐπὶ τούτων τῆς Ἱεροσολύμοις ἐκκλησίας ἐπίσκοπος ὁ παρὰ πολλοῖς εἰσέτι νῦν βεβοημένος Νάρκισσος ἐγνωρίζετο, πεντεκαιδεκάτην ἄγων διαδοχὴν ἀπὸ τῆς τῶν Ἰουδαίων κατὰ Ἀδριανὸν πολιορκίας, ἐξ οὐ δὴ πρῶτον τὴν αὐτόθι ἐκκλησίαν ἐξ ἐθνῶν συστῆναι μετὰ τοὺς ἐκ περιτομῆς, καθηγήσασθαί τε αὐτῶν πρῶτον ἐξ ἐθνῶν ἐπίσκοπον Μάρκον ἐδηλώσαμεν.",
+     "text": "In their time there flourished Narcissus, bishop of the church at Jerusalem, who is still widely famous. He held the succession in the fifteenth place after the siege of the Jews under Hadrian, aud we have stated already that from that time the church in that city was composed of Gentiles, in succession to the Jewish Christians, and that the first of the Gentile bishops was Marcus. After him the. local successions record that Cassian was bishop, and after him Publius, then Maximus, in addition to them Julian, then Gaius, after him Symmachus and Gaius the second, and then another Julian, and Capito, and in addition to them Valens and dolichianus, and after them all Narcissus, the thirtieth from the apostles according to the regular succession.1"
+    },
+    {
+     "number": 2,
+     "greek": "μεθ’ ὃν ἐπισκοπεῦσαι Κασσιανὸν αἶ τῶν αὐτόθι διαδοχαὶ περιέ- χοῦσι, καὶ μετὰ τοῦτον Πούπλιον, εἶτα Μάξιμον, καὶ ἐπὶ τούτοις Ἰουλιανὸν, ἔπειτα Γάϊον, μεθ’ ὃ Σύμμαχον, καὶ Γάϊον ἕτερον, καὶ πάλιν ἄλλον Ἰουλιανὸν, Καπίτωνά τε πρὸς τούτοις καὶ Οὐάλεντα καὶ Δολιχιανὸν, καὶ ἐπὶ πᾶσι τὸν Νάρκισσον, τριακοστὸ ἀπὸ τῶν ἀποστόλων κατὰ τὴν τῶν ἑξῆς διαδοχὴ γεγενημένον.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 13,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐν τούτῳ καὶ Ῥόδων, γένος τῶν Ἀσίας, μαθητευθεὶς ἐπὶ Ῥώμης, ὡς αὐτὸς ἱστορεῖ, Τατιανῷ, ὃν ἐκ τῶν πρόσθεν ἔγνωμεν, διάφορα συντάξας βιβλία, μετὰ τῶν λοιπῶν καὶ πρὸς τὴν Μαρκίωνος παρατέτακται αἵρεσιν· ἣν καὶ εἰς διαφόρους γνώμας κατ’ αὐτὸν διαστᾶσαν ἱστορεῖ, τοὺς τὴν διάστασιν ἐμπεποιηκότας ἀναγράφων, ἐπ’ ἀκριβές τε τὰς παρ’ ἑκάστῳ τούτων ἐπινενοημένας διελέγχων ψευδολογίας.",
+     "text": "At this time too Rhodo, of Asiatic race, was, as he narrates himself, the pupil at Rome of Tatian, whom we have mentioned above, and composed various books, among others especially one direeted against the heresy of Marcion. He says that it was divided in his time into various opinions, and, describing accurately those who had caused the divergence, he refutes the fahe teaching devised by each of them. Listen then to him when he writes thus : “ Therefore they have ceased to agree among themselves, maintaining inconsistent opinions. One of their herd is Apelles, who is reverenced for his life and old age. He admits that there is one Principle,2 but says that the prophecies are of an opposing spirit, and he was persuaded by the utteranees of a possessed maiden named Philoumene. But others, such as the eaptain himself (Mareion), introduced two Principles. To them belong Potitus and Basilicus. These followed the wolf of Pontus,3 not Perceiving the division of things, any more than he, and turning to a simple solution, announced two principles, baldly and without proof. Others again, passing into worse error, supposed that there are not only two but even three Natures. of them the chief and leader is syneros, as those state who represent his school.” The same writerd (Rhodo) says that he conversed with Apelles, and states it thus : “ For the old man Apelles when he consorted with us, was proved to make many false statements. Hence also he used to say that it is not necessary to investigate the argument fully, but that eaeh should remain in his own belief, for he asserted that those who placed their hope on the Crucffied would be saved, if they persisted in good works. But as we have srid before, the most obseure part of all the doctrines which he put forward were about God. For he kept on saying that there is only one Principle just as our doctrine ” Then after expounding all his opinions he goes on as follows: “ And when I said to him, where is this proof of yours, or how can you say that there is one Principle ? Tell ’ he said that the prophecies refute themselves by not having spoken the truth at all, for they are inconsistent and false and contradict themselves, but as to how there is one Principle he said that he did not know it, but merely inclined to that riew. Then when adjured him to to speak the truth he swore that he was speaking the truth, when he said that he did not know how the unbegotten God is one but that he believed it. But I laughed at him and condemned him, because though he called himself a teacher he did not know how to establish what he taught.” In the same work, speaking to Kallistio, the same writer states that he had been himself a disciple of Tatian at Rome, and he says that Tatian had preapred a book on Problems, in which he undertook to set out what was unclear and hidden in the divine seriptures, and Rhodo himself in his own work announces that he will set out the answers to Tatian's Problems. There is also extant a treatise of Rhodo on the ëmeron.1 Apelles, however, uttered countless impieties against the law of Moses, and in many treatises blasphemed the divine words with no little zeal, as it seemed, for their refutation and overthrow, as he at least thought. So much then concerning these."
+    },
+    {
+     "number": 2,
+     "greek": "ἄκουε δ’ οὖν καὶ αὐτοῦ ταῦτα γράφοντος διὰ τοῦτο καὶ παρ’ ἑαυτοῖς ἀσύμφωνοι γεγόνασιν, ἀσυστάτου γνώμης ἀντιποιούμενοι. “ἀπὸ γὰρ τῆς τούτων ἀγέλης Ἀπελλῆς μὲν, ὁ τῇ πο- “λιτείᾳ σεμνυνόμενος καὶ τῷ γήρᾳ, μίαν ἀρχὴν τὰς δὲ προφητείας ἐξ ἀντικειμένου λέγει πνεύματος, πειθόμενος ἀποφθέγμασι παρθένου δαιμονώσης, ὄνομα Φιλουμένης.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἕτεροι δὲ, καθὼς καὶ αὐτὸς ὁ ναύτης Μαρκίων, δύο ἀρχὰς εἰσηγοῦνται· “ἀφ᾿ ὧν εἰσι Ποτίτός τε καὶ Βασιλικός.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ οὗτοι ‘·μὲν κατακολουθήσαντες τῷ Ποντικῷ λύκῳ, καὶ μὴ εὑρίσκοντες τὴν διαίρεσιν τῶν πραγμάτων, ὡς οὐδὲ. ἐκεῖνος, ἐπὶ τὴν εὐχέρειαν ἐτράποντο, καὶ δύο ἀρχὰς ἀπεφήναντο ψιλῶς καὶ ἀναποδείκτως. ἄλλοι δὲ πάλιν ἀπ’ αὐτῶν ἐπὶ τὸ χεῖρον ἐξοκείλαντες οὐ μό- “νον δύο, ἀλλὰ καὶ τρεῖς ὑποτίθενται φύσεις, ὧν “ἐστιν ἀρχηγὸς καὶ προστάτης Σύνερως, καθὼς οἶ τὸ “διδασκαλεῖον αὐτοῦ προβαλλόμενοι λέγουσι.”",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "γράφει δὲ ὁ αὐτὸς ὡς καὶ εἰς λόγους ἐληλύθοι τῷ Ἀπελλῇ, φάσκων οὕτως “ὁ γὰρ γέρων Ἀπελλῆς συμ- “μίξας ἡμῖν πολλὰ μὲν κακῶς λέγων ἠλέγχθη, ὅθεν “καὶ ἔφασκε μὴ δεῖν ὅλως ἐξετάζειν τὸν λόγον, ἀλλ᾿ “ἕκαστον, ὡς πεπίστευκε, διαμένειν. σωθήσεσθαι “γὰρ τοὺς ἐπὶ τὸν ἐσταυρωμένον ἠλπικότας ἀπεφαί- “νετο, μόνον ἐὰν ἐν ἔργοις ἀγαθοῖς εὑρίσκωνται. τὸ “δὲ πάντων ἀσαφέστατον ἐδογματίζετο αὐτῷ πρᾶγμα, “καθὼς προειρήκαμεν, τὸ περὶ τοῦ θεοῦ. ἔλεγε μὲν “γὰρ μίαν ἀρχὴν καθὼς καὶ ὁ ἡμέτερος λόγος.”",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "εἶτα προθεὶς αὐτοῦ πᾶσαν τὴν δόξαν ἐπιφέρει φάσκων “λέγοντος δέ μου πρὸς αὐτὸν ῾πόθεν ἡ ἀπό- “δειξις αὕτη σοι, ἢ πῶς δύνασαι λέγειν μίαν ἀρχὴν, “φράσον ἡμῖν᾿ ἔφη τὰς μὲν προφητείας ἑαυτὰς ἐλέγ- “χειν, διὰ τὸ μηδὲν ὅλως ἀληθὲς εἰρηκέναι· ἀσύμφω- “νοι γὰρ ὑπάρχουσι καὶ ψευδεῖς καὶ ἑαυταῖς ἀντι- “κείμεναι. τὸ δὲ πῶς ἐστι μία ἀρχὴ μὴ γινώσκειν “ἔλεγεν, οὕτω δὲ κινεῖσθαι μόνον.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "εἶτ᾿ ἐπομοσα- “μένου μου τἀληθὲς εἰπεῖν, ὤμνυεν ἀληθεύων λέ- ‘’γειν, μὴ ἐπίστασθαι πῶς εἷς ἐστιν ἀγέννητος θεὸς, “τοῦτο δὲ πιστεύειν. ἐγὼ δὲ γελάσας κατέγνων αὐτοῦ, “διότι διδάσκαλος εἶναι λέγων οὐκ ᾔδει τὸ διδασκό- “μενον ὑπ᾿ αὐτοῦ κρατύνειν.”",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "ἐν τῷ αὐτῷ δὲ συγγράμματι Καλλιστίωνι προσφωνῶν ὁ αὐτὸς μεμαθητεῦσθαι ἐπὶ ῾Ρώμης Τατιανῷ ἑαυτὸν ὁμολογεῖ. φησὶ δὲ καὶ ἐσπουδάσθαι τῷ Τατιανῷ προβλημάτων βιβλίον, δι᾿ ὧν τὸ ἀσαφὲς καὶ ἐπικεκρυμμένον τῶν θείων γραφῶν παραστήσειν ὑποσχομένου τοῦ Τατιανοῦ αὐτὸς ὁ ῾Ρόδων ἐν ἰδίῳ συγγράμματι τὰς τῶν ἐκείνου προβλημάτων ἐπιλύσεις ἐκθήσεσθαι ἐπαγγέλλεται. φέρεται δὲ τοῦ αὐτοῦ καὶ εἰς τὴν ἑξαήμε- ρον ὑπόμνημα.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "ὅ γέ τοι Ἀπελλῆς οὗτος μυρία κατὰ τοῦ Μωυσέως ἠσέβησε νόμου, διὰ πλειόνων συγγραμμάτων τοὺς θείους βλασφημήσας λόγους, εἰς ἔλεγχόν τε, ὥς γε δὴ ἐδόκει, καὶ ἀνατροπὴν αὐτῶν οὐ μικρὰν πεποιημένος σπουδήν. ταῦτα μὲν οὖν περὶ τούτων.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 14,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Μισόκαλός γε μὴν ἐς τὰ μάλιστα καὶ φιλοπόνηρος ὢν ὁ τῆς ἐκκλησίας τοῦ θεοῦ πολέμιος, μηδένα τε μηδαμῶς τῆς κατὰ τῶν ἀνθρώπων ἀπολιπὼν ἐπιβουλῆς τρόπον, αἱρέσεις ξένας αὖθις ἐπιφύεσθαι κατὰ τῆς ἐκκλησίας ἐνήργει, ὧν οἱ μὲν ἰοβόλων δίκην ἑρπετῶν ἐπὶ τῆς Ἀσίας καὶ Φρυγίας εἷρπον, τὸν μὲν παράκλητον Μοντανὸν, τὰς δ᾿ ἐξ αὐτοῦ γυναῖκας, Πρίσκιλλαν καὶ Μαξίμιλλαν, ὡσὰν τοῦ Μοντανοῦ προφήτιδας γεγονυίας αὐχοῦντες.",
+     "text": "The enemy of the church of God, who hates good and loves deeply all that is wicked, left untried no kind of plot against men and again strove to raise up strange heresies against the church. Of these some like poisonous reptiles crawled over Asia and Pyrygia, and boasted that Montanus was the Paraclete and that the women of his sect, Priscilla and Maximilla, were the prophetesses of Montanus."
+    }
+   ]
+  },
+  {
+   "number": 15,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "οἱ δ᾿ ἐπὶ ῾Ρώμης ἤκμαζον, ὧν ἡγεῖτο Φλωρῖνος, πρεσβυτερίου τῆς ἐκκλησίας ἀποπεσὼν, Βλάστος τε σὺν τούτῳ παραπλησίῳ πτώματι κατεσχημένος. οἳ καὶ πλείους τῆς ἐκκλησίας περιέλκοντες ἐπὶ τὸ σφῶν ὑπῆγον βούλημα, θάτερος ἰδίως περὶ τὴν ἀλήθειαν νεωτερίζειν πειρώμενος.",
+     "text": "Others flourished in Rome of which Florinus was the leader. He had been turned out of the presbytery of the church and with him was Blastus who had suffered a similar fall. These drew away more of the church and brought them to their own opinion, each trying to introduce innovations about the truth in his own way."
+    }
+   ]
+  },
+  {
+   "number": 16,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Πρὸς μὲν οὖν τὴν λεγομένην κατὰ Φρύγας αἵρεσιν ὅπλον ἰσχυρὸν καὶ ἀκαταγώνιστον ἐπὶ τῆς Ἱεραπόλεως τὸν Ἀπολινάριον, οὗ καὶ πρόσθεν μνήμην ὁ λόγος πεποίητο, ἄλλους τε σὺν αὐτῷ πλείους τῶν τηνικάδε λογίων ἀνδρῶν ἡ τῆς ἀληθείας ὑπέρμαχος ἀνίστη δύναμις, ἐξ ὧν καὶ ἡμῖν ἱστορίας πλείστη τις ὑπόθεσις καταλέλειπται.",
+     "text": "Against the so-called Cataphrygian 2 heresy the power which champions the truth raised up a powertul and invincible weapon at Hierapolis in Apolinarius, who has already been mentioned in this work, and with him many others of the learned men of that time, from whom abundant material for history has been left to us. One of these at the beginning of his treatise agrinst the Montanists indicates that he had also taken part in oral controversy against them. He writers a preface in this way : “ For a long and protracted time, my dear Abercius Mareellus, have been urged by you to compose a treatise against the sect of those called after Miltiades,1 but until now 1 was somewhat reluctant, not from any lack of ability to refute the lie and testify to the truth, but from timidity and seruples lest 1 might seem to some to be adding to the writings or injunctions of the word of the new covenant of the gospel, to which no one who has chosen to live according to the gospel itself can add and from which he cannot take away. But when I had just come to Ancyra in Galatia and perceived that the chureh in that place was torn in two by this new movement which is not, as they call it, prophecy but much rather, as will be shown, false prophecy, I disputed concerning these people themselves and their propositions so far as I could, with the Lord's help, for many days continuously 2 in the church. Thus the church rejoiced and was strengthened in the truth, but our opponents were crushed for the moment and our adversaries were ffirtressed. Therefore the presbyters of the place asked me to leave some note of what had been said against the opponents of the word of the truth, when Zoticus of Otrous, our fellow presbyter, was also present. Though we did not do so, we promised to write from home if the Lord permitted, and to send it to them speedily.” Continuing with other similar remarks at the beginning of his treatise, he proceeds to narrate as follows the cause of the heresy rererred to : — “ Their opposition and their recent heretical schism from the church had the following origin. In Phrygian Mysia there is said to be a Village called Ardabav. There they say that a recent convert called Montanus, when Gratus was proconsul of Asia, in the unbounded lust of his sould for leadership gave access tp himself to the adversary, became obsessed, and suddenly fell into frenzy and convulsions. He began to be ecstatic and to speak and to talk strangely, prophesying contrary to the custom which belongs to the tradition and succession of the church from the beginning. Of those who at that time heard these bastard utterances some were vexed, thinking that he was possessed by a devil and by a spirit of error, and was disturbing the populace ; they rebuked him, and forbade him to speak, remembering the distinction made by the Lord, and his warning to keep watchful guard against the coming of the false prophets ; but others, as though elevated by a holy spirit and a prophetic gift, and not a little conceited, forgot the Lord's distinction, and encouraged the mind-injuring and seducing and people-misleading spirit, being cheated and deceived by it so that he could not be kept silent.1 But by some art, or rather by such an evil scheme of artifice, the deVil wrought destruction for the disobedient, and receiving unworthy honours from them stimuhrted and inflamed their understanding which was already dead to the true faith ; so that he raised up two more women and filled them with the bastard spirit so that they spoke madly and improperly and strangely, like Montanus. The spirit 2 gave blesrings to those who rejoiced and were pround in him, and puffed them up by the greatness of its promises. Yet sometimes it flatly condemned them completely, wisely, and faithfully, that it might seem to be critical, though but few of the Phrygians were deceived. But when the arrogant spirit taught to blaspheme the whole Catholic church throughout the world, because the spirit of false prophecy received from it neither honour nor entrance, for the Christians of Asia after assembling for this purpose many times and in many parts of the province, tested the recent utterances, pronounced them profane, and rejected the heresy, — then at last the Montanists were driven out of the chureh and excommunicated.” He tells this story at the beginning, and throughout the book continues the refutation of the error, but in the second book he speaks as follows about the end of the persons referred to : “ Since then they called us murderers of the prophets because we did not receive their chattering prophets (for they say that these are those whom the Lord promised to send to the people), let them answer us before God. Is there anyone, good people, of those whose talking began with Montanus and the women, who was persecuted by Jews or killed by the wicked ? Not one. Or was there any one of them who was taken and crucified for the name ? No, there was not. Or was any one of the women ever scourged in the synagogues of the Jews or stoned ? Never anywhere. It was a different death that Montanus and Maximilla are said to have died ; for the story goes that each of them was inspired by a mind-destroying spirit to commit suicide, though not together, and there was much gossip at the time of the death of eaeh. But thus it was that they died, and destroyed their lives like the traitor Judas. So also general report says that a certriaIn Theodotus, that remarkable man, the first steward as it were of their alleged prophecy, was sometimes taken up and raised to Heaven, when he fell into a trance and trusted himself to the spirit of deceit, but was hurled down and died miserably. They say, at least, that thiS happened thus. But not having seen them ourselves we do not elaim to have any knowledge of such things, my friend, for perhaps Montanus and Theodotus and the above mentioned woman died in this way, but perhaps they did not.” Again in the same book he says that the sacred bishops of that time tried to refute the spirit that was in Maximilla, but were prevented by others who ainly co-operated with the spirit, and he writes us: “And let not the spirit which speaks through aximilla say, in the same work according to sterius Orbanus, 1 ‘I am driven away like a wolf the sheep. 1 am not a wolf, I am word and Pirit and ’ But let him show clearly and rove the power in the spirit, and let him through spirit force to recognize him those who were then resent for the purpose of testing and conversing with he spirit as it spoke, — eminent men and bishops, ticus from the village Cumane, and Julian from Apamea, whose mouths the party of Themiso muzzled, and did not allow the false spirit which deceived the eople to be refuted by them.” In the same book, again, after other refutations of the false prophecies of Maximilla, in a single assage he both indicates the time at whieh he wrote this, and quotes her predictions, in which she foretold future wars and revolutions, and he corrects the falsehood of them as follows : “ Has it not been made obrious already that this is another lie ? For it is more than thirteen years to-day since the woman died, and there has been in the world neither local nor universal war, but rather by the mercy of God continuing peace even for ”2 This is from his second book. And from the third I will also quote a few words in which he speaks as follows against those who boasted that they had had ̔̀tyrs. “ so when they have been refuted in he whole discussion and have nothing to reply, they try to take refuge in martyrs, saying that they have many martyrs and that this is a trustworthy proof the power of the alleged prophetic spirit among them. But this appears to be actually further from the tmth than anything. For some of the other heresies have innumerable martyrs, but Ι do not suppose that we shall accept them for that reason, nor admit that they have the truth. In the first Place, indecd, the so-called Marcianists of the heresy of Marcion say that they have innumerable martyrs to Christ but nevertheless Chrirt himself they do not confess accorffing to truth.” And after a little he goes on as follows : “ Wherefore whenever members of the church who have been called to martyrdom for the true faith meet any of the so-called martyrs of the Montanist heresy, they separate from them and die without communicating with them, because they refuse to agree with the spirit in Montanus and the women. And that this is true, and that it happened in our time in Apamea on the Meander, is shown by the case of those who were martyred with Gaius and Alexander of Eumeneia.”"
+    },
+    {
+     "number": 2,
+     "greek": "ἀρχόμενος γοῦν τῆς κατ᾿ αὐτῶν γραφῆς τῶν εἰρημένων δή τις πρῶτον ἐπισημαίνεται, ὡς καὶ ἀγράφοις τοῖς κατ᾿ αὐτῶν ἐπεξέλθοι ἐλέγχοις. προοιμιά- ζεται γοῦν τοῦτον τὸν τρόπον",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "“ἐκ πλείστου ὅσου “καὶ ἱκανωτάτου χρόνου, ἀγαπητὲ Ἀουίρκιε Μάρ- “κελλε, ἐπιταχθεὶς ὑπὸ σοῦ συγγράψαι τινὰ λόγον “εἰς τὴν τῶν κατὰ Μιλτιάδην λεγομένων αἵρεσιν, “ἐφεκτικώτερόν πως μέχρι νῦν διεκείμην, οὐκ ἀπο- “ρίᾳ τοῦ δύνασθαι ἐλέγχειν μὲν τὸ ψεῦδος, μαρτυ- “ρεῖν δὲ τῇ ἀληθείᾳ, δεδιὼς δὲ καὶ ἐξευλαβούμενος “μή πη δόξω τισὶν ἐπισυγγράφειν ἢ ἐπιδιατάσσεσθαι “τῷ τῆς τοῦ εὐαγγελίου καινῆς διαθήκης λόγῳ, ᾧ “μήτε προσθεῖναι μήτ᾿ ἀφελεῖν δυνατὸν τῷ κατὰ τὸ “εὐαγγέλιον αὐτὸ πολιτεύεσθαι προῃρημένῳ.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "προσ- “φάτως δὲ γενόμενος ἐν Ἀγκύρᾳ τῆς Γαλατίας, καὶ “καταλαβὼν τὴν κατὰ Πόντον ἐκκλησίαν ὑπὸ τῆς “νέας ταύτης, οὐχ, ὡς αὐτοί φασι, προφητείας, πολὺ “δὲ μᾶλλον, ὡς δειχθήσεται, ψευδοπροφητείας δια- “τεθρυλημἐνην, καθ᾿ ὅσον δυνατὸν, τοῦ κυρίου πα- “ρασχόντος, περὶ αὐτῶν τε τούτων καὶ τῶν προτει- “νομένων ὑπ᾿ αὐτῶν ἕκαςά τε διελέχθημεν ἡμέραις “πλείοσιν ἐν τῇ ἐκκλησία, ὡς τὴν μὲν ἐκκλησίαν “ἀγαλλιασθῆναι καὶ πρὸς τὴν ἀλήθειαν ἐπιρρωσθῆ- “ναι, τοὺς δ᾿ ἐξ ἐναντίας πρὸς τὸ παρὸν ἀποκρουσθῆ- “ναι, καὶ τοὺς ἀντιθέους λυπηθῆναι.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "ἀξιούντων “οὖν τῶν κατὰ τόπον πρεσβυτέρων, ὅπως τῶν λε- “χθέντων κατὰ τῶν ἀντιδιατιθεμένων τῷ τῆς ἀλη- “θείας λόγῳ ὑπόμνημά τι καταλίπωμεν, παρόντος καὶ “τοῦ συμπρεσβυτέρου ἡμῶν Ζωτικοῦ τοῦ Ὀτρηνοῦ, “τοῦτο μὲν οὐκ ἐπράξαμεν, ἐπηγγειλάμεθα δὲ, ἐν- “θάδε γράψαντες τοῦ κυρίου διδόντος διὰ σπουδῆς “πέμψειν αὐτοῖς.”",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "ταῦτα καὶ ἑξῆς τούτοις ἕτερα κατ᾿ ἀρχὰς εἰπὼν τοῦ λόγου, τὸν αἴτιον τῆς δηλουμένης αἱρέσεως προϊὼν τοῦτον ἀνιστορεῖ τὸν τρόπον “ἡ τοίνυν ἔνστασις αὐτῶν καὶ ἡ πρόσφατος τοῦ ἀπο- “σχίσματος αἵρεσις πρὸς τὴν ἐκκλησίαν τὴν αἰτία “ἔσχε τοιαύτην.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "κώμη τις εἶναι λέγεται ἐν τῇ κατὰ “τὴν Φρυγίαν Μυσίᾳ, καλουμένη Ἀρδαβαῦ τοὔνομα· “ἔνθα φασί τινα τῶν νεοπίστων πρώτως, Μοντανὸν “τοὔνομα, κατὰ Γρᾶτον Ἀσίας ἀνθύπατον, ἐν ἀπιθυμίᾳ “ψυχῆς ἀμέτρῳ φιλοπρωτείας δόντα πάροδον εἰς “ἑαυτὸν τῷ ἀντικειμένῳ πνευματοφορηθῆναί τε καὶ “αἰφνιδίως ἐν κατοχῇ τινι καὶ παρεκστάσει γενόμενον “ἐνθουσιᾶν ἄρξασθαί τε λαλεῖν καὶ ξενοφωνεῖν, “παρὰ τὸ κατὰ παράδοσιν καὶ κατὰ διαδοχὴν ἄνωθεν “τῆς ἐκκλησίας ἔθος δῆθεν προφητεύοντα.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "τῶν δὲ “κατ’ ἐκεῖνο καιροῦ ἐν τῇ τῶν νόθων ἐκφωνημάτων “ἀκροάσει γενομένων οἶ μὲν ὡς ἐπὶ ἐνεργουμένῳ καὶ “δαιμονῶντι καὶ ἐν πλάνης πνεύματι ὑπάρχοντι καὶ “τοὺς ὄχλους ταράττοντι ἀχθόμενοι ἐπετίμων καὶ λαλεῖν “ἐκώλυον, μεμνημένοι τῆς τοῦ κυρίου διαστολῆς “τε καὶ ἀπειλῆς πρὸς τὸ φυλάττεσθαι τὴν τῶν “ψευδοπροφητῶν ἐγρηγορότως παρουσίαν· οἱ δὲ ὡς “ἁγίῳ πνεύματι καὶ προφητικῷ χαρίσματι ἐπαιρόμενοι “καὶ οὐχ ἥκιςα χαυνούμενοι, καὶ τῆς “τοῦ κυρίου ἐπιλανθανόμενοι, τὸ βλαψίφρον καὶ ὑποκοριστικὸν “καὶ λαοπλάνον πνεῦμα προυκαλοῦντο, “θελγόμενοι καὶ πλανώμενοι ὑπ’ αὐτοῦ, εἰς τὸ μηκέτι “κωλύεσθαι σιωπᾶν.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "τέχνῃ δέ τινι, μᾶλλον “δὲ τοιαύτῃ μεθόδῳ κακοτεχνίας ὁ διάβολος τὴν κατὰ “τῶν παρηκόων ἀπώλειαν μηχανησάμενος, καὶ παρ’ “ἀξίαν ὑπ’ αὐτῶν τιμώμενος, ὑπεξήγειρέ τε καὶ προσεξέκαυσεν “αὐτῶν τὴν ἀποκεκοιμημένην ἀπὸ τῆς κατ’ “ἀλήθειαν πίστεως διάνοιαν, ὡς καὶ ἑτέρας τινὰς δύο “γυναῖκας ἐπεγεῖραι καὶ τοῦ νόθου πνεύματος πληρῶσαι, “ὡς καὶ λαλεῖν ἐκφρόνως καὶ ἀκαίρως καὶ “ἀλλοτριοτρόπως , ὁμοίως τῷ προειρημένῳ, καὶ τοὺς “μὲν χαίροντας καὶ χαυνουμένους ἐπ᾿ αὐτῷ μακαρί- “ζοντος τοῦ πνεύματος, καὶ διὰ τοῦ μεγέθους τῶν “ἐπαγγελμάτων ἐκφυσιοῦντος, ἔσθ᾿ ὅπη δὲ καὶ κα- “τακρίνοντος στοχαστικῶς καὶ ἀξιοπίστως αὐτοὺς “ἄντικρυς, ἵνα καὶ ἐλεγκτικὸν εἶναι δοκῇ, (ὀλίγοι δ᾿ “ἦσαν οὗτοι τῶν Φρυγῶν ἐξηπατημένοι), τὴν δὲ κα- “θόλου καὶ πᾶσαν τὴν ὑπὸ τὸν οὐρανὸν ἐκκλησίαν “βλασφημεῖν διδάσκοντος τοῦ ἀπηυθαδισμένου πνεύ- “ματος, ὅτι μήτε τιμὴν μήτε πάροδον εἰς αὐτὴν τὸ “ψευδοπροφητικὸν ἐλάμβανε πνεῦμα.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "τῶν γὰρ “κατὰ τὴν Ἀσίαν πιστῶν πολλάκις καὶ πολλαχῆ τῆς “Ἀσίας εἰς τοῦτο συνελθόντων, καὶ τοὺς προσφάτους “λόγους ἐξετασάντων καὶ βεβήλους ἀποφηνάντων καὶ “ἀποδοκιμασάντων τὴν αἵρεσιν, οὕτω δὴ τῆς τε ἐκ- “κλησίας ἐξεώσθησαν καὶ τῆς κοινωνίας εἴρχθη- “σαν.”",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "ταῦτα ἐν πρώτοις ἱστορήσας, καὶ δι᾿ ὅλου τοῦ συγγράμματος τὸν ἔλεγχον τῆς κατ᾿ αὐτοὺς πλάνης ἐπαγαγὼν, ἐν τῷ δευτέρῳ περὶ τῆς τελευτῆς τῶν προδεδηλωμένων ταῦτά φησιν",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "“ἐπειδὴ τοί- “νυν καὶ προφητοφόντας ἡμᾶς ἀπεκάλουν, ὅτι μὴ “τοὺς ἀμετροφώνους αὐτῶν προφήτας ἐδεξάμεθα, “(τούτους γὰρ εἶναί φασιν, οὕσπερ ἐπηγγείλατο τῷ “λαῷ πέμψειν ὁ κύριος), ἀποκρινάσθωσαν ἡμῖν πρὸς “θεοῦ, ἔστι τις, ὦ βέλτιστοι, τούτων τῶν ἀπὸ Μον- “τανοῦ καὶ τῶν γυναικῶν λαλεῖν ἀρξαμένων, ὅστις “ὑπὸ Ἰουδαίων ἐδιώχθη ἢ ὑπὸ παρανόμων ἀπεκτάν- “θη; οὐδείς. οὐδέ γέ τις αὐτῶν κρατηθεὶς ὑπὲρ τοῦ “ὀνόματος ἀνεσταυρώθη. οὐ γὰρ οὖν. οὐδὲ μὴν “οὐδὲ ἐν συναγωγαῖς Ἰουδαίων τῶν γυναικῶν τις “ἐμαστιγώθη ποτὲ ἢ ἐλιθοβολήθη. οὐδαμόσε οὐδα- “μῶς.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "ἄλλῳ δὲ θανάτῳ τελευτῆσαι λέγονται Μον- “τανός τε καὶ Μαξίμιλλα. τούτους γὰρ ὑπὸ πνεύμα- “τος βλαψίφρονος ἑκατέρους ὑποκινήσαντος λόγος “ἀναρτῆσαι ἑαυτοὺς, οὐχ ὁμοῦ, κατὰ δὲ τὸν τῆς ἑκά- “στου τελευτῆς καιρὸν φήμη πολλὴ, καὶ οὕτω δὲ τε- “λευτῆσαι καὶ τὸν βίον καταστρέψαι Ἰούδα προδότου “δίκην.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "καθάπερ καὶ τὸν θαυμαστὸν ἐκεῖνον τὸν “πρῶτον τῆς κατ᾿ αὐτοὺς λεγομένης προφητείας οἷον “ἐπίτροπόν τινα Θεόδοτον πολὺς αἱρεῖ λόγος, ὡς αἰ- “ρόμενόν ποτε καὶ ἀναλαμβανόμενον εἰς οὐρανοὺς “παρεκστῆναί τε καὶ καταπιστεῦσαι ἑαυτὸν τῷ τῆς “ἀπάτης πνεύματι, καὶ δισκευθέντα κακῶς τελευτῆ- “σαι.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "φασὶ γοῦν τοῦτο οὕτως γεγονέναι, ἀλλὰ “μὴ ἄνευ τοῦ ἰδεῖν ἡμᾶς ἐπίστασθαί τι τῶν τοιού- “των νομίζομεν, ὦ μακάριε. ἴσως μὲν γὰρ οὕτως, “ἴσως δὲ οὐχ οὕτως τετελευτήκασι Μοντανός τε καὶ “Θεόδοτος καὶ ἡ προειρημένη γυνή.”",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "αὖθις δ᾿ ἐν τῷ αὐτῷ φησι λόγῳ τοὺς τότε ἱεροὺς ἐπισκόπους πεπειρᾶσθαι μὲν τὸ ἐν τῇ Μαξιμίλλῃ πνεῦμα διελέγξαι, κεκωλύσθαι δὲ πρὸς ἑτέρων, συνεργούντων δηλαδὴ τῷ πνεύματι.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "γράφει δὲ οὕτως “καὶ μὴ λε- “γέτω ἐν τῷ αὐτῷ λόγῳ τῷ κατὰ Ἀστέριον Οὐρβανὸν “τὸ διὰ Μαξιμίλλης πνεῦμα ῾διώκομαι ὡς λύκος ἐκ “προβάτων· οὐκ εἰμὶ λύκος· ῥῆμά εἰμι καὶ πνεῦμα καὶ “δύναμις᾿, ἀλλὰ τὴν ἐν τῷ πνεύματι δύναμιν ἐναργῶς “δειξάτω καὶ ἐλεγξάτω, καὶ ἐξομολογεῖσθαι διὰ τοῦ “πνεύματος καταναγκασάτω τοὺς τότε παρόντας εἰς “τὸ δοκιμάσαι καὶ διαλεχθῆναι τῷ πνεύματι λαλοῦντι, “ἄνδρας δοκίμους καὶ ἐπισκόπους, Ζωτικὸν ἀπὸ Κο- “μάνης κώμης καὶ Ἰουλιανὸν ἀπὸ Ἀπαμείας, ὧν οἱ “περὶ Θεμίσωνα τὰ στόματα φιμώσαντες οὐκ εἴασαν “τὸ ψευδὲς καὶ λαοπλάνον πνεῦμα ὑπ᾿ αὐτῶν ἐλεγ- “χθῆναι.”",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "ἐν ταὐτῷ δὲ πάλιν ἕτερα μεταξὺ πρὸς ἔλεγχον τῶν τῆς Μαξιμίλλης ψευδοπροφητειῶν εἰ- πὼν, ὁμοῦ τόν τε χρόνον καθ᾿ ὃν ταῦτ᾿ ἔγραφε σημαίνει καὶ τῶν προρρήσεων αὐτῆς μέμνηται, δι᾿ ὧν πολέμους ἔσεσθαι καὶ ἀκαταστασίας προεμαντεύσατο, ὧν καὶ τὴν ψευδολογίαν εὐθύνει ὧδε λέγων",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "“καὶ “πῶς οὐ καταφανὲς ἤδη γέγονε καὶ τοῦτο τὸ ψεῦδος; “πλείω γὰρ ἢ τρισκαίδεκα ἔτη εἰς ταύτην τὴν ἡμέ- “ραν, ἐξ οὗ τετελεύτηκεν ἡ γυνὴ, καὶ οὔτε μερικὸς “οὔτε καθολικὸς κόσμῳ γέγονε πόλεμος, ἀλλὰ καὶ “Χριστιανοῖς μᾶλλον εἰρήνη διάμονος ἐξ ἐλέου θεοῦ”. καὶ ταῦτα δὲ ἐκ τοῦ δευτέρου συγγράμματος",
+     "text": ""
+    },
+    {
+     "number": 20,
+     "greek": "καὶ ἀπὸ τοῦ τρίτου δὲ σμικρὰς παραθήσομαι λέξεις, δι᾿ ὧν πρὸς τοὺς αὐχοῦντας, ὡς ἄρα πλείους καὶ αὐτῶν μεμαρτυρηκότες εἶεν, ταῦτά φησιν “ὅταν τοίνυν ἐν “πᾶσι τοῖς εἰρημένοις ἐλεγχθέντες ἀπορήσωσιν, ἐπὶ “τοὺς μάρτυρας πειρῶνται καταφεύγειν, λέγοντες “πολλοὺς ἔχειν μάρτυρας, καὶ τοῦτο εἶναι τεκμήριον “πιστὸν τῆς δυνάμεως τοῦ παρ᾿ αὐτοῖς λεγομένου “προφητικοῦ πνεύματος. τὸ δ᾿ ἔστιν ἄρα, ὡς ἔοικε, “παντὸς μᾶλλον οὐκ ἀληθές.",
+     "text": ""
+    },
+    {
+     "number": 21,
+     "greek": "καὶ γὰρ τῶν ἄλλων “αἱρέσεών τινες πλείστους ὅσους ἔχουσι μάρτυρας, “καὶ οὐ παρὰ τοῦτο δήπου συγκαταθησόμεθα, οὐδὲ “ἀλήθειαν ἔχειν αὐτοὺς ὁμολογήσομεν. καὶ πρῶτοί “γε οἱ ἀπὸ τῆς Μαρκίωνος αἱρέσεως Μαρκιωνισταὶ “καλούμενοι πλείστους ὅσους ἔχειν Χριστοῦ μάρτυ- “ρας λέγουσιν, ἀλλὰ τόν γε Χριστὸν αὐτὸν κατ᾿ ἀλήθειαν οὐχ ὁμολογοῦσι.” καὶ μετὰ βραχέα τούτοις ἐπιφέρει λέγων",
+     "text": ""
+    },
+    {
+     "number": 22,
+     "greek": "“ὅθεν τοι καὶ ἐπειδὰν οἱ ἐπὶ τὸ “τῆς κατ᾿ ἀλήθειαν πίστεως μαρτύριον κληθέντες “ἀπὸ τῆς ἐκκλησίας τύχωσι μετά τινων τῶν ἀπὸ τῆς “τῶν Φρυγῶν αἱρέσεως λεγομένων μαρτύρων, δια- “φέρονταί τε πρὸς αὐτοὺς καὶ μὴ κοινωνήσαντες αὐ- “τοῖς τελειοῦνται, διὰ τὸ μὴ βούλεσθαι συγκαταθέ- “συαι τῷ διὰ Μοντανοῦ καὶ τῶν γυναικῶν πνεύ- “ματι. καὶ ὅτι τοῦτο ἀληθὲς καὶ ἐπὶ τῶν ἡμετέρων “χρόνων ἐν Ἀπαμείᾳ τῇ πρὸς Μαιάνδρῳ τυγχάνει “γεγενημένον ἐν τοῖς περὶ Γάϊον καὶ Ἀλέξανδρον “ἀπὸ Εὐμενείας μαρτυρήσασι πρόδηλον.”",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 17,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐν τούτῳ δὲ τῷ συγγράμματι καὶ Μιλτιάδου συγγραφέως μέμνηται, ὡς λόγον τινὰ καὶ αὐτοῦ κατὰ τῆς προειρημένης αἱρέσεως γεγραφότος. παραθἑμενος γοῦν αὐτῶν λέξεις τινὰς ἐπιφέρει λέγων “ταῦτα εὑρὼν ἔν τινι συγγράμ- “ματι αὐτῶν ἐνισταμένων τῷ Μιλτιάδου τοῦ ἀδελ- “φοῦ συγγράμματι, ἐν ᾧ ἀποδείκνυσι περὶ τοῦ μὴ “δεῖς προφήτην ἐν ἐκστάσει λαλεῖν, ἐπετεμόμην.”",
+     "text": "And in this work he also quotes Miltiades as a writer who had also himself written a treatise against the heresy mentioned. After quoting some of their sayings he continues as follwos : “I have given this abstract of what Ι found in a work of theirs when they were attacking the work of Alcibiades 1 the Christian in which he shows that a prophet need not to speak in ” And he goes on in the same work to give a catalogue of those who have been prophets of the New Testament, and among them he numbers a certain Ammia and Quadratus and says thus : “ But the false prophet speaks in ecstasy, after which follow ease and freedom from fear ; he begins with voluntary ignorance, but turns to involuntary madness of soul, as has been said before. But they cannot show that any prophet, either of those in the Old Testament or of those in the New, was inspired in this way ; they can boast neither of Agabus, nor of Judas, nor of Silas, nor of the daughters of Philip, nor of Ammia in Philadelphia, nor of Quadratus, nor of any others Who do not belong to ” And again after a little he goes on, “ For if the Montanist women succeeded to Quadratus and Ammia in Philadelphia in the prophetic gift, let them show who among them suceeeded the followers of Montanus and the women, for the apostle grants that the prophetic gift shall be in all the church until the final coming, but this they could not show, seeing that this is already the fourteenth year from the death of Maximilla.” He, therefore, so writes. But the Miltiades mentioned by him has also left us other monuments of his own zeal for the oracles of God in the treatises which he composed against the Gentiles and against the Jews, treating eaeh subject separately in two treatises, and besides this he wrote an Apology to the secular rulerS on behalf of the Philosophy which he held."
+    },
+    {
+     "number": 2,
+     "greek": "ὑποκαταβὰς δὲ ἐν αὐτῷ τοὺς κατὰ τὴν καινὴν διαθήκην προπεφητευκότας καταλέγει, ἐν οἷς καταριθμεῖ Ἀμμίαν τινὰ καὶ Κοδρᾶτον, λέγων οὕτως “ἀλλ᾿ ὅ γε ψευδοπροφήτης ἐν παρεκστάσει, ᾧ ἕπεται “ἄδεια καὶ ἀφοβία, ἀρχόμενος μὲν ἐξ ἑκουσίου ἀμα- “θίας, καταστρέφων δὲ εἰς ἀκούσιον μανίαν ψυχῆς, “ὡς προείρηται.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "τοῦτον δὲ τὸν τρόπον οὔτε τινὰ “τῶν κατὰ τὴν παλαιὰν, οὕτε τῶν κατὰ τὴν καινὴν “πνευματοφορηθέντα προφήτην δεῖξαι δυνήσονται, “οὔτε Ἄγαβον, οὔτε Ἰούδαν, οὔτε Σίλαν, οὔτε τὰς “Φιλίππου θυγατέρας, οὔτε τὴν ἐν Φιλαδελφείᾳ Ἀμ- “μίαν, οὔτε Κοδρᾶτον, οὔτε γε δή τινας ἄλλους μη- “δὲν αὐτοῖς προσήκοντας καυχήσονται.”",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ αὖθις δὲ μετὰ βραχέα ταῦτά φησιν “εἰ γὰρ μετὰ “Κοδρᾶτον καὶ τὴν ἐν Φιλαδελφείᾳ Ἀμμίαν, ὥς φα- “σιν, αἱ περὶ Μοντανὸν διεδεξαντο γυναῖκες τὸ προ- “φητικὸν χάρισμα, τοὺς ἀπὸ Μοντανοῦ καὶ τῶν γυ- “ναικῶν τίνες παρ᾿ αὐτοῖς διεδέξαντο δειξάτωσαν· “δεῖν γὰρ εἶναι τὸ προφητικὸν χάρισμα ἐν πάσῃ τῇ “ἐκκλησίᾳ μέχρι τῆς τελείας παρουσίας ὁ ἀπόστολος “ἀξιοῖ· ἀλλ’ οὐκ ἂν ἔχοιεν δεῖξαι “τον ἤδη που τοῦτο ἔτος ἀπὸ τῆς Μαξιμίλλης “τῆς.”",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "οὗτος μὲν δὴ τοσαῦτα. ὅ γέ τοι πρὸς δεδηλωμένος Μιλτιάδης καὶ ἄλλας ἡμῖν τῆς ἰδίας περὶ τὰ θεῖα λόγια σπουδῆς μνήμας καταλέλοιπεν, ἔν τε οἷς πρὸς Ἕλληνας συνέταξε λόγοις καὶ τοῖς πρὸς Ἰουδαίους, ἑκατέρᾳ ἰδίως ὑποθέσει ἐν δυσὶν ὑπαντήσας συγγράμμασιν. ἔτι δὲ καὶ πρὸς τοὺς κοσμικοὺς ἄρχοντας ὑπὲρ ἧς μετῄει φιλοσοφίας πεποίῃται ἀπολογίαν.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 18,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "τῆς δὲ κατὰ Φρύγας καλουμένης αἱρέσεως καὶ Ἀπολλών·ιος, ἀκκλησιαστικὸς συγγραφεὺς, ἀκμαζούσης εἰσέτι τότε κατὰ τὴν Φρυγίαν ἔλεγχον ἐνστησάμενος ἴδιον κατ’ αὐτῶν πεποίηται σύγγραμμα, τὰς μὲν φερομένας ἀυτῶν προφητείας ψευδεῖς οὔσας κατὰ λέξιν εὐθύνων, τὸν δὲ βίον τῶν τῆς αἱρέσεως ἀρχηγῶν ὁποῖός τις γέγονε διελέγχων. αὐτοῖς δὲ ῥήμασι περὶ τοῦ Μοντανοῦ ταῦτα λέγοντος ἄκουε",
+     "text": "Apollonius also, a writer of the ehurch when the so-called Montanist heresy was still flourishing in Phrygia, composed a refutation and published it as a separate work against them, proving word by word that their alleged prophecies are false and showing the true character of the life of the leaders of the heresy. Listen to the actual words which he uses about Montanus. “ But the deeds and the teachings of this recent teaeher show his eharaeter. It is he Who taught the annulment of marriage, who enacted fasts, who gave the name of Jerusalem to Pepuza and Tymion, which are little towns in Phrygia, and wished to hold assemblies there from everywhere, who appointed colleetors of money, who organimd the receiving of gifts under the name of offerings, who provided salaries for those who preached his doctrine in order that its teaching might prevail through gluttony.” So he says about Montanus. And a little further on he writes thus about the Prophetesses. “ Thus we prove that these first prophetesses themselves deserted their husbands from the moment that they were filled with the spirit. what a lie it is then for them to call Priscilla a ” Then he goes on saying : “Does not all Scripture seem to you to forbid a prophet from receiving gifts and money 7. There- fore When Ι see that the prophetess has received gold and silver and expensive clothes, how should I refrain from blaming her?” Then further on he says this about one of their confessors: “Moreover, Themiso too, who was garbed with specious covertousness, who did not endure the sign of confession but exchanged prison for wealth when he ought to have been humble-minded on this accound, and boasted that he was a martyr, dared, in imitation of the apostle, to compose an epistle general, to instruct those whose faith was better than his, and to contend with empty sounding words and to blaspheme against the Lord and the apostles and the holy ” And again he writes thus about another of those who were honoured among them as martyrs: “But in order that we may not speak about more of them, let the prophetess 1 tell us the story of Alexander, who calls himself a martyr, with whom she joins in revels, to whom many pay reverence. We need not tell of his robberies and the other crimes for which he has been punished, but the record-house 2 has them. Which then forgives the ’s sins? Does the prophet absolve the martyr of robbery or the martyr forgive the prophet for avarice? For the Lord said, ‘Provide neither gold nor silver nor two ’; but these, doing wholly otherwise, have transgressed by the acquisition of these forbidden things. For we will show that their so-called prophets and martyrs make gain not only from the rich but from the poor and from orphans and widows. And if they have the courage let them stop at this point and discuss these matters in order that if they are convicted they may at least cease transgressing for the future. For it is necessary to test the fruits of the prophet, for from the fruits the tree is known. But, that the story of Alexander may be known to those who wish, he was convicted by Aemilius Pompinus, proconsul in Ephesus, not for being a Christian but for his daring robberies, and he was an old offender. Then, by falsely claiming the name of the Lord he was released, having deceived the Christians there, and his own diocese from which he came would not receive him because he was a robber, and those who wish to learn his story have the public records of Asia at their disposition.1 The prophet is ignorant about him though he lived with him for many years, but we have exposed him, and through him expose also the nature of the prophet. we can ShoW the same in many instances, and, if they dare, let them stand the test.” And again in another part of the book he says this about their boasted prophets: “If they deny that their prophets have taken gifts let them admit this, that if they have been convicted, they are not true prophets, and we will give countless proofs of this. But it is necessary to test all the fruits of a prophet. Tell me, does a prophet dye his hair ? Does he pencil his eyelids ? Does he love ornaments ? Does he gamble and dice ? Does he lend money ? Let them state whether these things are right or not, and I will show that they have been done among them.” This same Apollonius in the same book says that it was forty years from the time when Montanus plotted his fictitious prophecy, to the time when he wrote his book. And again he says that Zoticus, whom the former writer mentioned, when Maximilla pretended to prophesy in Pepuza had tried in opporition to confute the spirit which worked in her, but was prevented by those who agreed with her He also mentions a certain Thraseas 1 as one of the martyrs of that time. Moreover, he says, as though from tradition, that the Sariour ordered his apostles not to leave Jerusalem for twelve years. He also makes quotations from the Apocalypse of John and tells how by divine power a dead man was raised by John himseK at Ephesus. And he says other things by which he demonstrated powertully and completely the error of the heresy under discussion. so far says Apollonius."
+    },
+    {
+     "number": 2,
+     "greek": "“ἀλλὰ τίς οὗτός ἐστιν ὁ “πρόσφατος διδάσκαλος τὰ ἔργα αὐτοῦ καὶ ἡ διδα- “σκαλία δείκνυσιν. οὗτός ἐστιν ὁ διδάξας λύσεις “γάμων, ὁ νηστείας νομοθετήσας, ὁ Πἐπουζαν καὶ Τύμιον Ἰερουσαλὴμ ὀνομάσας πόλεις δέ εἰσιν αὗ- ‘ται μικραὶ τῆς Φρυγίας), τοὺς πανταχόθεν ἐκεῖ ῾συναγαγεῖν ἐθέλων, ὁ πρακτῆρας χρημάτων ‘στήσας, ὁ ἐπ’ ὀνόματι προσφορῶν τὴν δωροληψίαν “ἐπιτεχνώμενος, ὁ σαλάρια χορηγῶν τοῖς κηρύττου- “σιν αὐτοῦ τὸν λόγον, ἵνα διὰ τῆς γαστριμαργίας ἡ διδασκαλία τοῦ λόγου κρατύνηται.’’",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "καὶ ταῦτα μὲν περὶ τοῦ Μοντανοῦ· καὶ περὶ τῶν προφητίδων δὲ αὐτοῦ ὑποκαταβὰς οὕτω γράφει “δείκνυμεν οὑν “αὐτὰς πρώτας τὰς προφήτιδας ταύτας, ἀφ’ οὑ τοῦ “πνεύματος ἐπληρώθησαν, τοὺς ἄνδρας καταλιπού- “σας. πῶς οὖν ἐψεύδοντο Πρίσκον. παρθένον “καλοῦντες;” εἶτ’ ἐπιφέρει λέγων",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "“δοκεῖ σοι “γραφὴ κωλύειν προφήτην λαμβάνειν δῶρα καὶ χρή- “ματα; ὅταν οὖν ἴδω τὴν προφῆτιν εἰληφυῖαν “χρυσὸν καὶ ἄργυρον καὶ πολυτελεῖς ἐσθῆτας, πῶς “ αὐτὴν μὴ παραιτήσωμαι;’’",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "αὖθις δὲ ὑποκαταβὰς περί τινος τῶν κατ’ αὐτοὺς ὁμολογητῶν ταῦτά φησιν “ἔτι δὲ καὶ Θεμίσων, ὁ τὴν ἀξιόπιστον πλεονεξίαν ἠμφιεσμένος, ὁ μὴ βαστάσας τῆς ὁμολογίας τὸ “σημεῖον, ἀλλὰ πλήθει χρημάτων ἀποθέμενος “δεσμὰ, δέον ἐπὶ τούτῳ ταπεινοφρονεῖν, ὡς μάρτυς “καυχώμενος ἐτόλμησε, μιμούμενος τὸν ἀπόστολον, “καθολικήν τινα συνταξάμενος ἐπιστολὴν κατηχεῖν “μὲν τοὺς ἄμεινον αὐτοῦ πεπιστευκότας, “ζεσθαι δὲ τοῖς τῆς κενοφωνίας λόγοις, βλασφημῆσαι δὲ εἰς τὸν κύριον καὶ τοὺς ἀποστόλους καὶ τὴν ἁγίαν ἐκκλησίαν.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "καὶ περὶ ἑτέρων δὲ αὖθις τῶν κατ’ αὐτοὺς τετιμημένων ὡς δὴ μαρτύρων οὕτω γράφει ἵνα δὲ μὴ περὶ πλειόνων λέγωμεν, ἡ προφῆτις ἡμῖν εἰπάτω τὰ κατὰ Ἀλέξανδρον τὸν λέγοντα ἑαυτὸν μάρτυρα, ᾧ συνεστιᾶται, ᾧ προσκυνοῦσι καὶ αὐτῷ πολλοὶ, οὗ τὰς λῃστείας καὶ τὰ ἄλλα τολμή- μάτα, ἐφ’ οἶς κεκόλασται, οὐχ ἡμὰς δεῖ λέγειν, ἀλλὰ ὁ ὀπισθόδομος ἔχει.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "τίς οὖν τίνι χαρίζεται τὰ ἁμαρτήματα; πότερον ὁ προφήτης τὰς λῃστείας τῷ μάρτυρι, ἢ ὁ μάρτυς τῷ προφήτῃ τὰς πλεονεξίας; εἰρηκότος γὰρ τοῦ κυρίου ‘μὴ κτήσησθε χρυσὸν μήτε ἄργυρον μήτε δύο χιτῶνας οὗτοι πᾶν τοὐναν- “τίον πεπλημμελήκασι περὶ τὰς τούτων τῶν ἀπηγο- “ρευμένων κτήσεις. δείξομεν γὰρ τοὺς λεγομένους “παρ᾿ αὐτοῖς προφήτας καὶ μάρτυρας μὴ μόνον “πλουσίων, ἀλλὰ καὶ παρὰ πτωχῶν καὶ ὀρφανῶν καὶ “χηρῶν κερματιζομένους.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "καὶ εἰ πεποίθησιν ἔχου- “σιν, στήτωσαν ἐν τούτῳ, καὶ διορισάσθωσαν “τούτοις, ἵνα ἐὰν ἐλεγχθῶσι, κἂν τοῦ λοιποῦ παύ- “σωνται πλημμελοῦντες· δεῖ γὰρ τοὺς καρποὺς δο- “κιμάζεσθαι τοῦ προφήτου, ἀπὸ γὰρ τοῦ καρποῦ τὸ “ ξύλον γινώσκεται.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "ἔνα δὲ τοῖς βουλομένοις τὰ “κατὰ Ἀλέξανδρον ᾖ γνώριμα, κέκριται ὑπὸ Αἰμιλίου “Φροντίνου ἀνθυπάτου ἐν Ἐφέσω, οὐ διὰ τὸ ὄνομα, ‘ἀλλὰ δι’ ἃς ἐτόλμησε λῃστείας, ὢν ἤδη παραβάτης· εἶτα ἐπιψευσάμενος τῷ ὀνόματι τοῦ κυρίου ἀπολἐ- “λυταὶ, πλανήσας τοὺς ἐκεῖ πιστούς· καὶ ἡ ἰδία πα- ‘ροικία αὐτὸν, ὅθεν ἦν, οὐκ ἐδέξατο, διὰ τὸ “αὐτὸν λῃστήν. καὶ οἱ θέλοντες μαθεῖν τὰ κατ’ αὐ- “τὸν ἔχουσι τὸ τῆς Ἀσίας δημόσιον ἀρχεῖον.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "ὃν “ὁ προφήτης συνόντα πολλοῖς ἔτεσιν ἀγνοεῖ, “ἐλέγχοντες ἡμεῖς δι’ αὐτοῦ καὶ τὴν ὑπόστασιν ἐξελέγχομεν τοῦ προφήτου. τὸ ὅμοιον ἐπὶ πολλῶν δυ- “νάμεθα ἀποδεῖξαι, καὶ εἰ θαρροῦσιν, ὑπομεινάτω- “σαν τὸν ἔλεγχον.”",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "πάλιν τε αὖ ἐν ἑτέρῳ τοῦ συγγράμματος περὶ ὧν αὐχοῦσι προφητῶν ἐπιλέγει ταῦτα “ἐὰν ἀρνῶνται δῶρα τοὺς προφήτας αὐτῶν εἰληφέναι, τοῦτο ὁμολογησάτωσαν, ὅτι ἐὰν “ἐλεγχθῶσιν εἰληφότες, οὐκ εἰσὶ προφῆται, καὶ μυρίας ἀποδείξεις τούτων παραστήσομεν. ἀναγκαῖον “δέ ἐστι πάντας καρποὺς δοκιμάζεσθαι προφήτης, εἰπέ μοι, βάπτεται; προφήτης στιβίζε- “ται; προφήτης φιλοκοσμεῖ; προφήτης τάβλαις “κύβοις παίζει; προφήτης δανείζει; ταῦτα ὁμολογη- “σάτωσαν πότερον ἔξεστιν ἢ μὴ, ἐγὼ δὲ ὅτι γέγονε “παρ᾿ αὐτοῖς δείξω.’’",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "ὁ δ’ αὐτὸς οὗτος κατὰ τὸ αὐτὸ σύγγραμμα ἱστορεῖ ὡς ἄρα τεσσαρακοστὸν ἐτύγχανεν ἔτος ἐπὶ τὴν τοῦ συγγράμματος αὐτοῦ γραφὴν, ἐξ οὗ τῷ προσποιήτῳ αὐτοῦ προφητείᾳ ὁ Μοντανὸς ἐπικεχείρηκε.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "καὶ πάλιν φησὶν ὡς ἄρα Ζωτικὸς, οὗ καὶ ὁ πρότερος συγγραφεὺς ἐμνημόνευσεν, ἐν Πεπούζοις προφητεύειν δὴ προσποιουμένης τῆς Μαξιμίλλης ἐπιστὰς διελέγξαι τὸ ἐνεργοῦν ἐν αὐτῇ πνεῦμα πεπείραται, ἐκωλύθη γε μὴν πρὸς τῶν τὰ ἐκείνης φρονούντων. καὶ Θρασέα δέ τινος τῶν τότε μαρτύρων μνημονεύει.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "ἔτι δὲ ὡς ἐκ παραδόσεως τὸν σωτῆρά φησι προστεταχέναι τοῖς αὐτοῦ ἀποστόλοις, ἐπὶ δώδεκα ἔτεσι μὴ χωρισθῆναι τῆς Ἰερουσαλήμ. κέχρηται δὲ καὶ μαρτυρίαις ἀπὸ τῆς Ἰωάννου ἀποκαλύψεως, καὶ νεκρὸν δὲ δυνάμει θείᾳ πρὸς αὐτοῦ Ἰωάννου ἐν τῇ Ἐφέσω ἐγηγέρθαι ἱστορεῖ. καὶ ἄλλα τινά φησι, δι’ ὧν ἱκανῶς τῆς προειρημένης αἱρέσεως πληρέστατα διηύθυνε τὴν πλάνην. ταῦτα καὶ ὁ Ἀπολλώνιος.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 19,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Τῶν δὲ Ἀπολιναρίου κατὰ τῆς δηλωθείσης αἱρέσεως μνήμην πεποίηται Σαραπίων, ὃν ἐπὶ τῶν δηλουμένων χρόνων μετὰ Μαξιμῖνον ἐπίσκοπον τῆς Ἀντιοχέων ἐκκλησίας γενέσθαι κατέχει λόγος. μέμνηται δὲ αὐτοῦ ἐν ἰδίᾳ ἐπιστολῇ τῇ πρὸς Καρικὸν καὶ Πόντιον, ἐν ᾗ διευθύνων καὶ αὐτὸς τὴν αὐτὴν αἵρεσιν ἐπιλέγει ταῦτα",
+     "text": "Tradition says that Serapion was bishop of Antioch after Maximinus at the time referred to, and he has mentioned the works of Apolinarius against the heresy described. He mentions him in his own letter to Caricus and Pontius, in whieh he aho himself refutes the same heresy, and continues thus: : “And in order that you may know this, that the working of the so-called new prophecy of this false order is abominated in the whole of Christendom throughout the World, Ι have sent you the writings of Claudius Apolinarius, the bishop of Hierapolis in Asia, of blesed ” And in this letter of Serapion there are preserved the signatures various bishops, of whom one signed himself I, Aurelius Cyrenaeus, a martyr, pray for your ” as follows: “Ι, Aelius Publius Julius, bishop of Debeltum, a colony of Thrace. As God lives in the heavens the blessed Sotas in Anchialus wished to drive the devil out of Priscilla and the hypocrites would not let ” The autograph signatures of many other bishops who agreed with them are also preserved in the above mentioned writing. so far concerning them."
+    },
+    {
+     "number": 2,
+     "greek": "“ὅπως δὲ καὶ τοῦτο ἴδητε, ὅτι τῆς ψευδοῦς ταύ- “τῆς τάξεως τῆς ἐπικαλουμένης νέας προφητείας “ἐβδέλυκται ἡ ἐνέργεια παρὰ πάσῃ τῇ ἐν κόσμῳ ἀδελφότητι, πέπομφα ὑμῖν καὶ Κλαυδίου Ἀπολινα- ‘ρίου τοῦ μακαριωτάτου γενομένου ἐν Ἱεραπόλει τῆς ‘Ἀσίας ἐπισκόπου γράμματα.’’",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἐν ταύτῃ δὲ τῇ τοῦ Σαραπίωνος ἐπιστολῇ καὶ ὑποσημειώσεις φέρονται διαφόρων ἐπισκόπων, ὧν ὁ μέν τις ὧδέ πως ὑποσεσημείωται “Αὐρήλιος Κυρήνιος μάρτυς ἐρρῶσθαι ὑμᾶς εὔχομαι” , ὁ δέ τις τοῦτον τὸν τρόπον “Αἴλιος Πούπλιος Ἰούλιος ἀπὸ Δεβελτοῦ κολωνίας τῆς Θρᾴ- κης ἐπίσκοπος· ζῇ ὁ θεὸς ὁ ἐν τοῖς οὐρανοῖς, ὅτι Σωτᾶς ὁ μακάριος ὁ ἐν Ἀγχιάλῳ ἠθέλησε τὸν δαίμονα τὸν Πρισκίλλης ἐκβαλεῖν, καὶ οἶ ὑποκριταὶ οὐκ ἀφῆκαν.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "καὶ ἄλλων δὲ πλειόνων τὸν ἀριθμὸν ἐπισκόπων συμψήφων τούτοις ἐν τοῖς δηλωθεῖσι γράμμασιν αὐτόγραφοι φέρονται σημειώσεις. καὶ τὰ μὲν κατὰ τούτους ἦν τοιαῦτα.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 20,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἐξ ἐναντίας δὲ τῶν ἐπὶ Ῥώμης τὸν ὑγιῆ τῆς ἐκκλησίας θεσμὸν παραχαραττόντων, Εἰρήναιος διαφόρους ἐπιστολὰς συντάττει, τὴν μὲν ἐπιγράψας πρὸς Βλάστον περὶ σχίσματος, τὴν δὲ πρὸς Φλωρῖνον περὶ μοναρχίας ἢ περὶ τοῦ μὴ εἶναι τὸν θεὸν ποιητὴν κακῶν. ταύτης γάρ τοι τῆς γνώμης οὗτος ἐδόκει προασπίζειν· δι’ ὃν αὖθις ὑποσυρόμενον τῇ κατὰ Οὐαλεντῖνον πλάνῃ καὶ τὸ περὶ ὀγδοάδος συντάττεται τῷ Εἰρηναίῳ σπούδασμα, ἐν ᾧ καὶ ἐπισημαίνεται τὴν πρώτην τῶν ἀποστόλων κατειληφέναι ἑαυτὸν διαδοχήν.",
+     "text": "In opposition to those in Rome who were discarding the sound ordinance of the church, Irenaeus composed various letters. He addressed one to Blastus On Schism, another to Florinus, On the Sole Sovereignty 1 or That God is not the Author of Evil, for Florinus seemed to be defending this opinion. For his sake too, when he a attracted by the Valentinian error, a work was composed by Irenaeus On the Ogdoad,2 in which he also indicates that he had himself received the first succession of the apostles, and in it, at the end of the work, we find a most acceptable notice from him which we are obliged to give in this book and it runs as follows: “Ι adjure thee, who shalt copy out this book, by our Lord Jesus Christ, by his glorious advent when he comes to judge the living and the dead, that thou compare what thou shalt transcribe and correct it with this copy whence thou art transcribing, with all care, and thou shalt likewise transeribe this oath and put it in the ” May his wordS be spoken to our profit and be narrated in order that we may keep those primitive and truly sacred men as the best example of the most zealous care. In the letter to Florinus, whieh we have spoken of above, Irenaeus again mentionS his intercourse with Polycarp, and says: “These opinions, Ο Florinus, that I may speak sparingly, do not belong to sound doctrine. These opinions are inconsistent with the church, and bring those who believe in them into the greatest impiety. These opinions not even the hereties outside the church ever dared to proclaim. These opinions those who were presbyters before us, they who accompanied the apostleS, did not hand on to you. For while 1 was still a boy Ι knew you in lower Asia in Polycarp's house when you were a man rank in the royal hall and endeavouring to stand well with him. I remember the eventS of those days more cleariy than those whieh happened recently, for what we learn as children grows up vith the soul and is united to it, so that I can speak even of the place in which the blessed Polycarp sat and disputed, how he came in and went out, the character of his life, the appearance of his body, the discourses which he made to the people, how he reported his intercourse with John and with the others who had Seen the Lord, how he remembered their wordS, and what were the things concerning the Lord which he had heard from them, and about their miracles, and about their teaching, and how Polycarp had received them from the eyewitnesses of the word of life, and reported all things in agreement with the Scriptures. I listened eagerly even then to these things through the mercy of God which was given me, and made notes Of them, not on paper but in my heart, and ever by the grace of God do Ι truly ruminate on them, and I can bear witness before God that if that blessed and apostolic presbyter had heard anything of this kind he would have cried out, and shut his ears, and said according to his custom, ‘Ο good God, to what time hast thou preserved me that I should endure ?' He would have fled even the place in which he was seated or standing when he heard sueh words. And from his letters which he sent either to the neighbouring churches, strengthening them, or to some of the brethren, exhorting and warning them, this can be made ” So says Irenaeus."
+    },
+    {
+     "number": 2,
+     "greek": "ἔνθα πρὸς τῷ τοῦ συγγράμματος τέλει χαριεστάτην αὐτοῦ σημείωσιν εὑρόντες ἀναγκαίως καὶ ταύτην τῇδε καταλέξομεν τῇ γραφῇ, τοῦτον ἔχουσαν τὸν τρόπον “ὁρκίζω σε τὸν μεταγραψόμενον τὸ βιβλίον τοῦτο κατὰ τοὐ κυρίου “ἡμῶν Ἰησοῦ Χριστοῦ καὶ κατὰ τῆς ἐνδόξου παρου- “σίας αὐτοῦ, ἧς ἔρχεται κρῖναι ζῶντας καὶ νεκροὺς, “ἵνα ἀντιβάλῃς ὃ μετεγράψω, καὶ κατορθώσῃς αὐτὸ “πρὸς τὸ ἀντίγραφον τοῦτο, ὅθεν μετεγράψω, ἐπιμε- “λῶς· καὶ τὸν ὅρκον τοῦτον ὁμοίως μεταγράψεις καὶ “θήσεις ἐν τῷ ἀντιγράφῳ.”",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "καὶ ταῦτα δὲ ὠφελίμως ὑπ᾿ ἐκείνου λελέχθω, πρὸς ἡμῶν τε ἱστορείσθω, ὡς ἂν ἔχοιμεν ἄριστον σπουδαιοτάτης ἐπιμελείας τοὺς ἀρχαίους ἐκείνους καὶ ὄντως ἱεροὺς ἄνδρας ὑπόδειγμα.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἐν ᾗ γε μὴν προειρήκαμεν πρὸς τὸν Φλωρῖνον ὁ Εἰρηναῖος ἐπιστολῇ αὖθις τῆς ἅμα Πολυκάρπῳ συνουσίας αὐτοῦ μνημονεύει λέγων “ταῦτα τὰ δόγματα, “Φλωρῖνε, ἵνα πεφεισμένως εἴπω, οὐκ ἔστιν ὑγιοῦς “γνώμης· ταῦτα τὰ δόγματα ἀσύμφωνά ἐστι τῇ ἐκ- “κλησίᾳ, εἰς τὴν μεγίστην ἀσέβειαν περιβάλλοντα “τοὺς πειθομένους αὐτοῖς· ταῦτα τὰ δόγματα οὐδὲ “οἱ ἔξω τῆς ἐκκλησίας αἱρετικοὶ ἐτόλμησαν ἀποφή- “νασθαί ποτε· ταῦτα τὰ δόγματα οἱ πρὸ ἡμῶν πρεσ- “βύτεροι οἱ καὶ τοῖς ἀποστόλοις συμφοιτήσαντες οὐ “παρέδωκάν σοι.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "εἶδον γάρ σε παῖς ἔτι ὢν ἐν τῇ “κάτω Ἀσίᾳ παρὰ Πολυκάρπῳ, λαμπρῶς πράσσοντα “ἐν τῇ βασιλικῇ αὐλῇ, καὶ πειρώμενον εὐδοκιμεῖν “παρ᾿ αὐτῷ. μᾶλλον γὰρ τὰ τότε διαμνημονεύω τῶν “ἔναγχος γινομένων.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "αἱ γὰρ ἐκ παίδων μαθήσεις “συναύξουσαι τῇ ψυχῇ ἑνοῦνται αὐτῇ, ὥστε με δύ- “νασθαι εἰπεῖν καὶ τὸν τόπον ἐν ᾧ καθεζόμενος διε- “λέγετο ὁ μακάριος Πολύκαρπος, καὶ τὰς προόδους “αὐτοῦ καὶ τὰς εἰσόδους, καὶ τὸν χαρακτῆρα τοῦ βίου, “καὶ τὴν τοῦ σώματος ἰδέαν, καὶ τὰς διαλέξεις ἃς “ἐποιεῖτο πρὸς τὸ πλῆθος, καὶ τὴν μετὰ Ἰωάννου “συναναστροφὴν ὡς ἀπήγγελλε καὶ τὴν μετὰ “λοιπῶν τῶν ἑωρακότων τὸν κύριον, καὶ ὡς ἀπεμνη- “μόνευε τοὺς λόγους αὐτῶν, καὶ περὶ τοῦ κυρίου “τίνα ἦν ἃ παρ’ ἐκείνων ἀκηκόει, καὶ περὶ τῶν “δυνάμεων αὐτοῦ, καὶ περὶ τῆς διδασκαλίας, ὡς “παρὰ τῶν αὐτοπτῶν τῆς ζωῆς τοῦ λόγου παρειληφὼς ὁ Πολύκαρπος ἀπήγγελλε πάντα σύμφωνα “ταἴς γραφαῖς.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ταῦτα καὶ τότε διὰ τὸ ἔλεος τοῦ “θεοῦ τὸ ἐπ’ ἐμοὶ γεγονὸς σπουδαίως ἤκουον, ‘μνηματιζόμενος αὐτὰ οὐκ ἐν χάρτῃ, ἀλλ’ ἐν τῇ ἐμῇ “καρδίᾳ, καὶ ἀεὶ διὰ τὴν χάριν τοῦ θεοῦ γνησίως “αὐτὰ ἀναμαρυκῶμαι· καὶ δύναμαι διαμαρτύρασθαι “ἔμπροσθεν τοῦ θεοῦ, ὅτι εἴ τι τοιοῦτον ἀκηκόει “ἐκεῖνος ὁ μακάριος καὶ ἀποστολικὸς πρεσβύτερος, “ἀνακράξας ἂν καὶ ἐμφράξας τὰ ὦτα αὐτοῦ, καὶ τὸ “σύνηθες αὐτῷ εἰπών ‘ ὦ καλὲ θεὲ, εἰς οἴους με και- “ροὺς τετήρηκας, ἔνα τούτων ἀνέχωμαι πεφεύγει “καὶ τὸν τόπον ἐν ᾧ καθεζόμενος ἢ ἑστὼς τῶν “ούτων ἀκηκόει λόγων.",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "καὶ ἐκ τῶν ἐπιστολῶν δὲ αὐτοῦ ὧν ἐπέστειλεν ἤτοι ταῖς γειτνιώσαις ἐκκλησίαις ἐπιστηρίζων αὐτὰς, ἢ τῶν ἀδελφῶν τισὶ νουθετῶν αὐτοὺς καὶ προτρεπόμενος, δύναται φανερωθῆναι.” ταῦτα ὁ Εἰρήναιος.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 21,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Κατὰ δὲ τὸν αὐτὸν τῆς Κομόδου βασιλείας χρόνον μεταβέβλητο μὲν ἐπὶ τὸ πρᾶον τὰ καθ’ ἡμᾶς, εἰρήνης σὺν θείᾳ χάριτι τὰς καθ’ ὅλης τῆς οἰκουμένης διαλαβούσης ἐκκλησίας, ὅτε καὶ ὁ σωτήριος λόγος ἐκ παντὸς γένους ἀνθρώπων πᾶσαν ὑπήγετο ψυχὴν ἐπὶ τὴν εὐσεβῆ τοῦ τῶν ὅλων θεοῦ θρησκείαν, ὥστε ἤδη καὶ τῶν ἐπὶ Ῥώμης εὖ μάλα πλούτῳ καὶ γένει διαφανῶν πλείους ἐπὶ τὴν σφῶν ὁμόσε χωρεῖν πανοικί τε καὶ παγγενῆ σωτηρίαν.",
+     "text": "And at the same time in the reign of Commodus our treatment was changed to a milder one, and by the grace of God peace came on the churches throughout the whole world. The word of salvation began ` to lead every soul of every race men to the pious worship of the God of the universe, so that now many of those who at Rome were famous for wealth and family turned to their own salvation with all their house and with all their kin. This was unendurable to the demon who hates good, envious as he is by nature, and he again stripped for conflict, and prepared various derices against uS. In the city of the Romans he brought before thc court Apollonius, a man famous among the ChristianS of that time for his education and philosophy, and raised up to accuse him one of his Servants who waS suitable for this. But the coward entered the case at a bad bme, for according to imperial decree informers on such points were not allowed to live; so they broke his legs at once, for the judge Perennius decreed this sentence against him. But the martyr, beloved of God, when the judge earnertly begged and prayed him to defend himself before the senate, made before every one a most learned defence of the faith for which hc was a martyr, and was consecrated by beheaffing as if bv decree of the senate: for an aneient law obtrialned among them that there should be no other issue for the case of those who once appeared befor the court and ffid not change their opinion. The words of Apollonius before the judge dge and the answers which he made to the interrogation of Perennius, and all the defence which he made to the senate, can be read by anyone who wishes in the compilation which we have made of the ancient martyrs.1"
+    },
+    {
+     "number": 2,
+     "greek": "οὐκ ἦν δὲ ἄρα τοῦτο τῷ μισοκάλῳ δαίμονι βασκάνῳ ὄντι τὴν φύσιν οἰστόν· ἀπεδύετο δ’ οὖν αὖθις, ποικίλας τὰς καθ’ ἡμῶν μηχανὰς ἐπιτεχνώμενος. ἐπὶ γοῦν τῆς Ῥωμαίων πόλεως Ἀπολλώνιον, ἄνδρα τῶν τότε πιστῶν ἐπὶ παιδείᾳ καὶ φιλοσοφίᾳ βεβοημένον, ἐπὶ δικαστήριον ἄγει, ἴνα γέ τιν’ τῶν εἰς ταῦτα ἐπιτηδείων αὐτῷ διακόνων ἐπὶ κατηγορίᾳ τἀνδρὸς ἐγείρας.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἀλλ’ ὁ μὲν δείλαιος παρὰ καιρὸν τὴν δίκην εἰσελθὼν, ὅτι μὴ ζῆν ἐξὸν ἦν κατὰ βασιλικὸν ὅρον τοὺς τῶν τοιῶνδε μηνυτὰς, αὐτίκα κατάγνυται τὰ σκέλη, Περεννίου δικαστοῦ τοιαύτην κατ’ αὐτοῦ ψῆφον ἀπενέγκαντος.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ὁ δέ γε θεοφιλέστατος μάρτυς, πολλὰ λιπαρῶς ἱκετεύσαντος τοὐ δικαστοῦ καὶ λόγον αὐτὸν ἐπὶ τῆς συγκλήτου βουλῆς αἰτήσαντος, λογιωτάτην ὑπὲρ ἧς ἐμαρτύρει πίστεως ἐπὶ πάντων παρασχὼν ἀπολογίαν κεφαλικῇ κολάσει ὡσὰν ἀπὸ δόγματος συγκλήτου τελειοῦται, μηδ’ ἄλλως ἀφεῖσθαι τοὺς ἅπαξ εἰς δικαστήριον παριόντας καὶ μηδαμῶς τῆς προθέσεως μεταβαλλομένους ἀρχαίου παρ’ αὐτοῖς νόμου κεκρατηκότος.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "τούτου μὲν οὖν τὰς ἐπὶ τοῦ δικαστοῦ φωνὰς καὶ τὰς ἀποκρίσεις, ἃς πρὸς πεῦσιν πεποίητο τοῦ Περεννίου, πᾶσάν τε τὴν πρὸς τὴν σύγκλητον ἀπολογίαν ὅτῳ διαγνῶναι φίλον, ἐκ τῆς τῶν ἀρχαίων μαρτυρίων συναχθείσης ἡμῖν ἀναγραφῆς εἴσεται.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 22,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Δεκάτῳ γε μὴν τῆς Κομόδου βασιλείας ἔτει δέκα πρὸς τρισὶν ἔτεσι τὴν ἐπισκοπὴν λελειτουργηκότα Ἐλεύθερον διαδέχεται Βίκτωρ· ἐν ᾧ καὶ Ἰουλιανοῦ δέκατον ἔτος ἀναπλήσαντος τῶν κατ’ Ἀλεξάνδρειαν παροικιῶν τὴν ἐγχειρίζεται Δημήτριος· καθ’ οὓς καὶ τῆς Ἀντιοχέων ἐκκλησίας ὄγδοος ἀπὸ τῶν ἀποστόλων ὁ πρόσθεν ἤδη δεδηλωμένος ἔτι τότε Σαραπίων ἐπίσκοπος ἐγνωρίζετο· Καισαρείας δὲ τῆς ἐπὶ Παλαιστίνῃ καθηγεῖτο Θεόφιλος. καὶ Νάρκισσος δὲ ὁμοίως, οὗ καὶ πρόσθεν ὁ λόγος μνήμην ἐποιήσατο, τῆς ἐν Ἱεροσολύμοις ἐκκλησίας ἔτι τότε τὴν λειτουργίαν εἶχεν. Κορίνθου δὲ τῆς καθ’ Ἑλλάδα κατὰ τοὺς αὐτοὺς χρόνους ἐπίσκοπος ἦν Βάκχυλλος, καὶ τῆς ἐν Ἐφέσω παροικίας Πολυκράτης, καὶ ἄλλοι δὲ, ὥς γε εἰκὸς, ἐπὶ τούτοις μυρίοι κατὰ τούσδε διέπρεπον. ὧν γε μὴν ἔγγραφος ἡ τῆς πίστεως εἰς ἡμὰς κατῆλθεν ὀρθοδοξία, τούτους εἰκότως ὀνομαστὶ κατελέξαμεν.",
+     "text": "In the tenth year ofthe reign of Commodus 2 victor sueceeded Eleutherus who had served in the episcopate thirteen years. In the same year Julian had completed his tenth year, and Demetrius was appointed to the administration of the Alexandrian dioceses, and at the same time the famous Serapion, whom we mentioned before, was bishop of the ehurch of Antioch and the eighth from the apostles. Theophilus ruled Caesarea in Palestine, and Narcissus, whomour work has mentioned before, still holding the administration of the church at Jerusalem. and at the same time bacchyllus was bishop of Corinth in Greece and Polycrates of the diocese of Ephesus. There were also, of course, countless other famous men at this time, but we have naturally given the names of those the orthodoxy of whose faith has been preserved to us in writing."
+    }
+   ]
+  },
+  {
+   "number": 23,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ζητήσεως δῆτα κατὰ τούσδε οὐ σμικρὰς ἀνακινηθείσης, ὅτι δὴ τῆς Ἀσίας ἁπάσης αἶ παροικίαι ὡσὰν ἐκ παραδόσεως ἀρχαιοτέρας σελήνης τὴν τεσσαρεσκαιδεκάτην ᾤοντο δεῖν ἐπὶ τῆς τοῦ πάσχα σωτηρίου ἑορτῆς παραφυλάττειν, ἐν ᾗ θύειν τὸ πρόβατον Ἰουδαίοις προηγόρευτο, ὡς δέον ἐκ παντὸς κατὰ ταύτην, ὁποίᾳ δ’ ἂν ἡμέρᾳ τῆς ἑβδομάδος περιτυγχάνοι, τὰς τῶν ἀσιτιῶν ἐπιλύσεις ποιεῖσθαι, οὐκ ἔθους ὄντος τοῦτον ἐπιτελεῖν τὸν τρόπον ταῖς ἀνὰ τὴν λοιπὴν ἅπασαν οἰκουμένην ἐκκλησίαις, ἑ § ἀποστολικῆς παραδόσεως τὸ καὶ εἰς δεῦρο κρατῆσαν ἔθος φυλαττούσαις, ὡς μηδ’ ἑτέρᾳ προσήκειν παρὰ τὴν τῆς ἀναστάσεως τοῦ σωτῆρος ἡμῶν ἡμέρᾳ τὰς νηστείας ἐπιλύεσθαι.",
+     "text": "At thattime time no small controversy arose because all the dioceses of Asia thought it right, as though by more ancient tradition, to observe for the feast of the Saniour's passover tbe fourteenth day of the moon, on which the Jews had been commanded to kill the lamb. Thus it was necessary to finish tbe fast on that day, whatever day of the Week it might be. 1 Yet it was not the custom to celebrate in this manner in the churches throughout the rest of the world, for from apostolic tradition they kept the custom which still exists that it is not right to finish tbe fast on any day save that of the resurrection of our Saviour. Many meetings and conferences with bishops were beld on this point, and all unanimously formulated in their letters the doctrine of the church for those in every country country that the mystery of the Lord's resurrection from the dead could be celebrated on no day save Sunday, 2 and that on that day alone we should celebrate the end of the paschal faSt. Thcre is still eXtallt a writing of those who were eonvened in Palestine, over whom piesided Theophilus, bishop of the dioeeSe of Caesarea, and Narcissus, bishop of Jerusalem; and there is similarly another from those in Rome on the same eontroversy, which gives Vietor as bishop; and there is one of the bishops of Pontus over whom Palmas presided as the oldest; and of the dioceses of Oaul, of which Irenaeus was biShop bishop; and yet others of those in OSrhoene and the citieS there; and particularly of Bacchyllus, the bishop of the chureh of Corinth; and of ver y many moie who expreSsed one and the Same opinion and judgement, and gave the same vote."
+    },
+    {
+     "number": 2,
+     "greek": "σύνοδοι δὴ καὶ συγκροτήσεις ἐπισκόπων ἐπὶ ταὐτὸν ἐγίνοντο, πάντες τε μιᾷ γνώμῃ δι’ ἐπιστολῶν ἐκκλησιαστικὸν δόγμα τοῖς πανταχόσε διετυποῦντο, ὡς ἂν μηδ’ ἐν ἄλλῃ ποτὲ τῆς κυριακῆς ἡμέρᾳ τὸ τῆς ἐκ νεκρῶν ἀναστάσεως ἐπιτελοῖτο τοῦ κυρίου μυστήριον, καὶ ὅπως ἐν ταύτῃ μόνῃ τῶν κατὰ τὸ πάσχα νηστειῶν φυλαττοίμεθα τὰς ἐπιλύσεις.",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "φέρεται δ᾿ εἰσέτι νῦν τῶν κατὰ Παλαιστίνην τηνικάδε συγκεκροτημένων γραφὴ, ὧν προυτέτακτο Θεόφιλος τῆς ἐν Καισαρείᾳ παροικίας ἐπίσκοπος καὶ Νάρκισσος τῆς ἐν Ἱεροσολύμοις· καὶ τῶν ἐπὶ ῾Ρώμης δὲ ὁμοίως ἄλλη περὶ τοῦ αὐτοῦ ζητήματος, ἐπίσκοπον Βίκτορα δηλοῦσα· τῶν τε κατὰ Πόντον ἐπισκόπων, ὧν Πάλμας ὡς ἀρχαιότατος προυτέτακτο, καὶ τῶν κατὰ Γαλλίαν δὲ παροικιῶν, ἃς Εἰρήναιος ἐπεσκόπει·",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἔτι τε τῶν κατὰ τὴν Ὀσροηνὴν καὶ τὰς ἐκεῖσε πόλεις· καὶ ἰδίως Βακχύλλου τῆς Κορινθίων ἐκκλησίας ἐπισκόπου, καὶ πλείστων ὅσων ἄλλων, οἳ μίαν καὶ τὴν αὐτὴν δόξαν τε καὶ κρίσιν ἐξενηνεγμένοι τὴν αὐτὴν τέθεινται ψῆφον. καὶ τούτων μὲν ἦν ὅρος εἷς , ὁ δεδηλωμένος·",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 24,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "τῶν δὲ ἐπὶ τῆς Ἀσίας ἐπισκόπων, τὸ πάλαι πρότερον αὐτοῖς παραδοθὲν διαφυλάττειν ἔθος χρῆναι διισχυριζομένων, ἡγεῖτο Πολυκράτης, ὃς καὶ αὐτὸς ἐν ᾗ πρὸς Βίκτορα καὶ τὴν ῾Ρωμαίων ἐκκλησίαν διετυπώσατο γραφῇ τὴν εἰς αὐτὸν ἐλθοῦσαν παράδοσιν ἐκτέθειται διὰ τούτων",
+     "text": "These iSsued the single definition which was given above; but the bishops in Asia were led by Polycrates in persisting that it was necessary to keep the custom whieh had been handed doWn to them of old. Polycrates himself in a document which he addreSsed to victor and to the church of Rome, expounds the traffition which had come to him as follows. “Therefore we keep the day undeviatingly, neither adding nor taking away, for in Asia great luminaries 1 sleep, and they will rise on the day of the coming of the Lord, when he shall come with glory from heaven and seek out 2 all the saints. sueh were Philip of the twelve apostles, and two of his daughters Who grew old as virgins, who sleep in Hierapolis, and another daughter of his, who lived in the Holy spirit, reSts at Ephesus. Moreover, there is also John, who lay on the Lord's breast, who was a priest wearing the breastplate, and a martyr, and teacher. He sleeps at Ephesus. And there is also Polycarp at smyrna, both bishop and martyr, and Thraseas, both bishop and martyr, from Eumenaea, who sleeps in Smyrna. And why should I speak of Sagaris, bishop and martyr, who sleeps at Laodicaea, and Papirius, too, the blessed, and Melito the eunuch, who lived entirely in the Holy Spirit, who lies in sardis, waiting for the visitation from heaven when he will rise from the dead? All these kept the fourteenth day of the passover accorffing to the gospel, never swerving, but following according to the rule of the faith. And I also, Polycrates, the least of you all, live according to the tradition of my kinsmen, and some or them have I followed. For seven of m y family were bishops and 1 am the eighth, and my kinsmen ever kept the day when the people put away the leaven. Therefore, brethren, Ι who have lived sixty- nve years in the Lord and conversed with brethren from every country, and have studied all holy scripture, am not afraid of threats, for they have said who were greater than I, ‘It is better to obey ood rather than men.’” He continues about the bishops who when he wrote were with him and shared his opimon, and says thus: “And I could mention the bishops who are present whom you required me to summon, and I did so. If I should write their names they would be many multitudes; and they knowing my feeble humanity, agreed with the lerter, knowing that not in vain is my head grey, but that 1 have ever lived in Christ Jesus.” Upon this Victor, who presided at Rome, immediately tried to cut off from the common unity the dioceses of all Asia, together with the adjacent churches, on the ground of heterodoxy, and he indited letters announcing that all the Christians there were absolutely excommunicated. But by no means all were pleased by this, so they isSued counter-requests to him to consider the cause of peace and unity and love towards his neighbours. Thcir words are extant, sharply rebuking victor. Among them too Irenaeus, writing in the name of the Christians whose leader he was in Oaul, though he recommends that the mystery of the ’s resurrection be observed only on the Lord's day, yet nevertheless exhorts victor suitably and at length not to excommunicate whole churches of God for following a traffidltion of ancient custom, and eontinues as follows: “For the controversy is not only about the day, but also about the actual character of the fast; for some think that they ought to fast one day, others two, others even more, some count their day as forty hours, day and night. 1 And such variation of observance ffid not begin in our own timep but much earlier, in the days of our predecessors who, it would appear, ffisregarding strictness maintained a practice which is simple and yet allows for personal preference, establishing it for the future, and none the less all these lived in peace, and we also live in peace with one another and the disagreement in the fast connrms our agreement in the faith.” He adds to this a narrative whieh I may suitably quote, running as follows: “Among these too were the presbyters before soter, who presided over church of which you are now the leader, I mean Anicetus and Pius and telesphorus and Xystus. ney did not themselves observe it, 1 nor ffid they enjoin it on those who followed them, and though they ffidId not keep it they Were none the less at peace with those from the ffioceses in which it was observed when tbey came to them, although to observe it was more objectionable to those who ffid not do so, 2 And no one was ever rejected for this reason, but the presbyters before you who did not observe it sent the Eucharist to those from other dioceses who did; and when the blessed Polycarp was staying in Rome in the time of Anicetus, though they disagreed a little about some other things as well, they immediately made peace, having no wish for strife between them on this marter. For neither waS Anicetus able to persuade Polycarp not to observe it, inasmuch as he had always done so in company with John the disciple of our Lord and the other apostles with whom he had associated; nor did Polycarp persuade Anicetus to observe it, for he said that he ought to keep the eustom of thOse who Vere presbyters before him. And under these circumstances they communicated Vith eaeh other, and in the church Anicetus yielded the eelebrariOn Of rile Fucharist to Polycarp ObViouriy out Of respect, and tbey parted from each other in peace, fOr the peace Of the whole church was kept both by thOse who obserVCd and by those Who did not.” And Irenaeus, who deserVed his name, making an eirenicon in this vay, gaVe exhortations of this kind for the peace of the church and served as as ambassador, for in letters he diseussed the Various views on the issue vhieh had been raised, not Only with Vletor but with Vith many other rulers of churehes."
+    },
+    {
+     "number": 2,
+     "greek": "“ἡμεῖς οὖν ἀρρᾳδιούργητον ἄγομεν τὴν ἡμέραν, “μήτε προστιθέντες μήτε ἀφαιρούμενοι. καὶ γὰρ “κατὰ τὴν Ἀσίαν μεγάλα στοιχεῖα κεκοίμηται, ἅτινα “ἀναστήσεται τῇ ἡμέρᾳ τῆς παρουσίας τοῦ κυρίου, “ἐν ᾗ ἔρχεται μετὰ δόξης ἐξ οὐρανῶν, καὶ ἀναστήσει “πάντας τοὺς ἁγίους, Φίλιππον τὸν τῶν δώδεκα ἀπο- “στόλων, ὃς κεκοίμηται Ἱεραπόλει, καὶ δύο θυγα- “τέρες αὐτοῦ γεγηρακυῖαι παρθένοι, καὶ ἡ ἑτέρα “αὐτοῦ θυγάτηρ ἐν ἁγίῳ πνεύματι πολιτευσαμένη, “ἣ ἐν Ἐφέσῳ ἀναπαύεται·",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "ἔτι δὲ καὶ Ἰωάννης ὁ “ἐπὶ τὸ στῆθος τοῦ κυρίου ἀναπεσὼν, ὃς ἐγενήθη “ἱερεὺς τὸ πέταλον πεφορηκὼς, καὶ μάρτυς καὶ διδά- “σκαλος· οὗτος ἐν Ἐφέσῳ κεκοίμηται·",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἔτι δὲ καὶ “Πολύκαρπος ὁ ἐν Σμύρνῃ καὶ ἐπίσκοπος καὶ μάρτυς, “καὶ Θρασέας ἐπίσκοπος καὶ μάρτυς ἀπὸ ‘ὃς ἐν Σμύρνῃ κεκοίμηται.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "τί δὲ δεῖ λέγειν Σά- “γαριν ἐπίσκοπον καὶ μάρτυρα, ὃς ἐν Λαοδικείᾳ κε- “κοίμηται, ἔτι δὲ καὶ Παπίριον τὸν μακάριον, καὶ “Μελίτωνα τὸν εὐνοῦχον, τὸν ἐν ἁγίῳ πνεύματι “πάντα πολιτευσάμενον, ὃς κεῖται ἐν Σάρδεσι περι- “μένων τὴν ἀπὸ τῶν οὐρανῶν ἐπισκοπὴν, ἐν ᾗ ἐκ “νεκρῶν ἀναστήσεται.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "οὗτοι πάντες ἐτήρησαν “ἡμἐραν τῆς τεσσαρεσκαιδεκάτης τοῦ πάσχα κατὰ τὸ “εὐαγγέλιον, μηδὲν παρεκβαίνοντες, ἀλλὰ κατὰ τὸν “κανόνα τῆς πίστεως ἀκολουθοῦντες· ἔτι δὲ κἀγὼ ὁ “μικρότερος πάντων ὑμῶν Πολυκράτης, κατὰ παρά- “δόσιν τῶν συγγενῶν μου, οἷς καὶ παρηκολούθησά “ τισιν αὐτῶν. ἑπτὰ μὲν ἦσαν συγγενεῖς μου ἐπίσκο- “ποι, ἐγὼ δὲ ὄγδοος· καὶ πάντοτε τὴν ἡμέραν “οἶ συγγενεῖς μου, ὅτε ὁ λαὸς ἤρνυε τὴν ζύμην. “",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "ἐγὼ οὖν, ἀδελφοὶ, ἐξήκοντα πέντε ἔτη ἔχων ἐν “κυρίῳ, καὶ συμβεβληκὼς τοῖς ἀπὸ τῆς οἰκουμένης ἀδελφοῖς, καὶ πᾶσαν ἁγίαν γραφὴν διεληλυθὼς, οὐ “πτύρομαι ἐπὶ τοῖς καταπλησσομένοις. οἱ γὰρ ἐμοῦ μείζονες εἰρήκασι πειθαρχεῖν δεῖ θεῷ μᾶλλον ἢ “ἀνθρώποις”",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "τούτοις ἐπιφέρει περὶ πάντων γράφων τῶν συμπαρόντων αὐτῷ καὶ ὁμοδοξούντων ἐπισκόπων ταῦτα λέγων “ἐδυνάμην δὲ τῶν ἐπισκόπων “τῶν συμπαρόντων μνημονεῦσαι, οὓς ὑμεῖς ἠξιώσατε “μετακληθῆναι ὑέ ἐμοῦ, καὶ μετεκαλεσάμην· ὧν τὰ “ἀνόματα ἐὰν γράφω, πολλὰ πλήθη εἰσίν. οἱ δὲ “ἰδόντες τὸν μικρόν μου ἄνθρωπον συνηυδόκησαν “τῇ ἐπιστολῇ, εἰδότες ὅτι εἰκῆ πολιὰς οὐκ ἤνεγκα, “ἀλλὰ ἐν κυρίῳ Ἰησοῦ πάντοτε πεπολίτευμαι.”",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "ἐπὶ τούτοις ὁ μὲν τῆς ῾Ρωμαίων προεστὼς Βίκτωρ ἀθρόως τῆς Ἀσίας πάσης ἅμα ταῖς ὁμόροις ἐκκλησίαις τὰς παροικίας ἀποτέμνειν, ὡσὰν ἑτεροδοξούσας, τῆς κοινῆς ἑνώσεως πειρᾶται, καὶ στηλιτεύει γε διὰ γραμμάτων, ἀκοινωνήτους πάντας ἄρδην τοὺς ἐκεῖσε ἀνακηρύττων ἀδελφούς.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "ἀλλ᾿ οὐ πᾶσί γε τοῖς ἐπισκόποις ταὐτ᾿ ἠρέσκετο. ἀντιπαρακελεύονται δῆτα αὐτῷ τὰ τῆς εἰρήνης καὶ τῆς πρὸς τοὺς πλησίον ἑνώσεως τε καὶ ἀγάπης φρονεῖν. φέρονται δὲ καὶ αἱ τούτων φωναὶ, πληκτικώτερον καθαπτομένων τοῦ Βίκτορος.",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "ἐν οἷς καὶ ὁ Εἰρηναῖος ἐκ προσώπου ὧν ἡγεῖτο κατὰ τὴν Γαλλίαν ἀδελφῶν ἐπιστείλας παρίσταται μὲν τῷ δεῖν ἐν μόνῃ τῇ τῆς κυριακῆς ἡμέρᾳ τὸ τῆς τοῦ κυρίου ἀναστάσεως ἐπιτελεῖσθαι μυστήριον, τῷ γε μὴν Βίκτορι προσηκόντως, ὡς μὴ ἀποκόπτοι ὅλας ἐκκλησίας θεοῦ, ἀρχαίου ἔθους παράδοσιν ἐπιτηρούσας, πλεῖστα ἕτερα παραινεῖ, καὶ αὐτοῖς ῥήμασι τάδε ἐπιλέγων",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "“οὐδὲ γὰρ μόνον “περὶ τῆς ἡμέρας ἐστὶν ἡ ἀμφισβήτησις, ἀλλὰ καὶ “περὶ τοῦ εἴδους αὐτοῦ τῆς νηστείας. οἱ μὲν γὰρ “οἴονται μίαν ἡμέραν δεῖν αὐτοὺς νηστεύειν, οἱ δὲ “δύο, οἱ δὲ καὶ πλείονας· οἱ δὲ τεσσαράκοντα ὥρας “ἡμερινάς τε καὶ νυκτερινὰς συμμετροῦσι τὴν ἡμέραν “αὐτῶν.",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "καὶ τοιαύτη μὲν ποικιλία τῶν ἐπιτη- “ρούντων οὐ νῦν ἐφ᾿ ἡμῶν γεγονυῖα, ἀλλὰ καὶ πολὺ “πρότερον ἐπὶ τῶν πρὸ ἡμῶν, τῶν παρὰ τὸ ἀκριβὲς, “ὡς εἰκὸς, κρατούντων τὴν καθ᾿ ἁπλότητα καὶ ἰδιω- “τισμὁν συνήθειαν εἰς τὸ μετέπειτα πεποιηκότων. “καὶ οὐδὲν ἔλαττον πάντες οὗτοι εἰρήνευσάν τε “εἰρηνεύομεν πρὸς ἀλλήλους, καὶ ἡ διαφωνία τῆς “νηστείας τὴν ὁμόνοιαν τῆς πίστεως συνίστησι.’’",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "τούτοις καὶ ἱστορίαν προστίθησιν, ἣν οἰκείως παραθήσομαι, τοῦτον ἔχουσαν τὸν τρόπον ἐν οἷς “καὶ οἶ πρὸ Σωτῆρος πρεσβύτεροι οἶ προστάντες “ἐκκλησίας ἧς σὺ νῦν ἀφηγῇ, Ἀνίκητον λέγομεν “Πίον, Ὑγῖνόν τε καὶ Τελεσφόρον καὶ Ξυστὸν, “αὐτοὶ ἐτήρησαν οὔτε τοῖς μετ’ αὐτῶν ἐπέτρεπον, καὶ οὐδὲν ἔλαττον αὐτοὶ μὴ τηροῦντες εἰρήνευον “τοῖς ἀπὸ τῶν παροικιῶν, ἐν αἷς ἐτηρεῖτο, ἐρχομένοις ‘πρὸς αὐτούς· καίτοι μᾶλλον ἐναντίον ἦν τὸ τηρεῖν “τοῖς μὴ τηροῦσι.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "καὶ οὐδέποτε διὰ τὸ ‘’τοῦτο ἀπεβλήθησάν τινες, ἀλλ’ αὐτοὶ μὴ τηροῦντες “οἱ πρὸ σοῦ πρεσβύτεροι τοῖς ἀπὸ τῶν “τηροῦσιν ἔπεμπον εὐχαριστίαν.",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "καὶ τοῦ μακα- “ρίου Πολυκάρπου ἐπιδημήσαντος τῇ Ῥώμῃ ἐπὶ “κήτου, καὶ περὶ ἄλλων τινῶν μικρὰ σχόντες πρὸς “ἀλλήλους εὐθὺς εἰρήνευσαν, περὶ τούτου τοῦ κεφα- “λαίου μὴ φιλεριστήσαντες̣ εἰς ἑαυτούς. οὔτε γὰρ ὁ Ἀνίκητος τὸν Πολύκαρπον πεῖσαι ἐδύνατο μὴ τη- “ῥεῖν, ἅτε μετὰ Ἰωάννου τοὐ μαθητοῦ τοῦ κυρίου “ἡμῶν ἡμῶν καὶ τῶν λοιπῶν ἀποστόλων, οἷς “ἀεὶ τετηρηκότα, οὔτε μὴν ὁ Πολύκαρπος τὸν Ἀνίκητον ἔπεισε τηρεῖν, λέγοντα τὴν συνήθειαν τῶν “πρὸ οὐτοῦ πρεσβυτέρων ὀφείλειν κατέχειν.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "καὶ τούτων οὕτως ἐχόντων ἐκοινώνησαν ἑαυτοῖς, καὶ ἐν τῇ ἐκκλησίᾳ παρεχώρησεν ὁ Ἀνίκητος τὴν εύχαριστίαν τῷ Πολυκάρπῳ κατ’ ἐντροπὴν δηλονότι, καὶ μετ’ εἰρήνης ἀπ’ ἀλλήλων ἀπηλλάγησαν, πάσης τῆς ἐκκλησίας εἰρήνην ἐχόντων καὶ τῶν τηρούντων καὶ “τῶν μὴ τηρούντων.”",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "καὶ ὁ μὲν Εἰρηναῖος φερώνυμός τις ὢν τῇ προσηγορίᾳ, αὐτῷ τε τῷ τρόπῳ εἰρηνοποιὸς, τοιαῦτα ὑπὲρ τῆς τῶν ἐκκλησιῶν εἰρήνης παρεκάλει τε καὶ ἐπρέσβευεν. ὁ δ᾿ αὐτὸς οὐ μόνον τῷ Βίκτορι, καὶ διαφόροις δὲ πλείστοις ἄρχουσιν ἐκκλησιῶν τὰ κατάλληλα δι᾿ ἐπιστολῶν περὶ τοῦ κεκινημένου ζητήματος ὡμίλει.",
+     "text": ""
+    }
+   ]
+  },
+  {
+   "number": 25,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Οἵ γε μὴν ἐπὶ Παλαιστίνης, οὓς ἀρτίως διεληλύθαμεν, ὅ τε Νάρκισσος καὶ Θεόφιλος, καὶ σὺν αὐτοῖς Κάσσιος τῆς κατὰ Τύρον ἐκκλησίας ἐπίσκοπος, καὶ Κλάρος τῆς ἐν Πτολεμαΐδι, οἵ τε μετὰ τούτων συνεληλυθότες περὶ τῆς κατελθούσης εἰς αὐτοὺς ἐκ διαδοχῆς τῶν ἀποστόλων περὶ τοῦ πάσχα παραδόσεως πλεῖστα διειληφότες, κατὰ τὸ τέλος τῆς γραφὴς αὐτοῖς ῥήμασιν ἐπιλέγουσι ταῦτα “τῆς δ᾿ ἐπιστολῆς ἡμῶν πειράθητε κατὰ πᾶσαν “ἐκκλησίαν ἀντίγραφα διαπέμψασθαι, ὅπως μὴ ἔνοχοι “ὦμεν τοῖς ῥᾳδίως πλανῶσιν ἑαυτῶν τὰς ψυχάς. δη- “λοῦμεν δὲ ὑμῖν ὅτι τῇ αὐτῇ ἡμέρᾳ καὶ ἐν Ἀλεξαν- “δρείᾳ ἄγουσιν, ᾗπερ καὶ ἡμεῖς. παρ᾿ ἡμῶν γὰρ τὰ “γράμματα κομίζεται αὐτοῖς καὶ ἡμῖν παρ᾿ αὐτῶν, “ὥστε συμφώνως καὶ ὁμοῦ ἄγειν ἡμᾶς τὴν ἁγίαν “ἡμέραν.”",
+     "text": "The Palestinians whom Ve bave reeenriy mentioned, that is to say Narcissus and Theophilus, and with them Cassius, the bishop of the church in Tyre, and Clarus, the birilop Of the church in Ptolemais, and thoSe Vho aembled rith them, treated at length the tradition concerning rile passover which had come down tO them frOm the succession of the apostles, and at the end Of their riring they add as follows: “Try tO send copies of Our letter to eVery diocese that ve may nOt be guilty towards thOse who easily deeeiVe tbeir own sOulS. And Ve make it plain tO you that in Alexandria also they celebrate the Same day as do we, for letters have been eXehanged between them and us, so that we obserVe the holy day together and in agreement.”"
+    }
+   ]
+  },
+  {
+   "number": 26,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Ἀλλὰ γὰρ πρὸς τοῖς ἀποδοθεῖσιν Εἰρηναίου συγγράμμασι καὶ ταῖς ἐπιστολαῖς φέρεταί τις αὐτοῦ ἀναγκαιότατος, λόγος συντομώτατος καὶ τὰ μάλιστα ἀναγκαιότατος, περὶ ἐπιστήμης ἐπιγεγραμμένος· καὶ ἄλλος ὃν ἀνατέθεικεν ἀδελφῷ, Μαρκιανῷ τοὔνομα, εἰς ἐπίδειξεν τοῦ ἀποστολικοῦ κηρύγματος· καὶ βιβλίον τι διαλέξεων διαφόρων, ἐν ᾧ τῆς πρὸς Ἑβραίους ἐπιστολῆς καὶ τῆς λεγομένης Σοφίας Σολομῶνος μνημονεύει, ῥητά τινα ἐξ αὐτῶν παραθέμε- νος. καὶ τὰ μὲν εἰς ἡμετέραν ἐλθόντα γνῶσιν τῶν Εἰρηναίου τοσαῦτα. Κομόδου δὲ τὴν ἀρχὴν ἐπὶ δέκα καὶ τρισὶν ἔτεσι καταλύσαντος αὐτοκράτωρ Σεβῆρος οὐδ᾿ ὅλοις μησὶν ἓξ μετὰ τὴν Κομόδου τελευτὴν Περτίνακος διαγενομένου κρατεῖ.",
+     "text": "In addition to the published treatises and to the letters of Irenaeus, there is extant a concise and extremely convincing treatise of hiS against the Greeks, entitled Concerning Knowledge, and another vhieh he has dedicated to a Christian named Marcian on the Demonstration of the Apostolic Preaching, and a little book of Various discourses in which he menrions the Epistle to the Hebrews and the so-called Wisdom of solOmon, quoting certain passages from them. such is the extent Of our knovledge of the works of Irenaeus. When CommoduS had riniShed his relgn after thirteen years severus became emperor not quite six monthS after the death Or CommOdus, Pertinax coming in the interval. 1"
+    }
+   ]
+  },
+  {
+   "number": 27,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Πλεῖστα μὲν οὖν παρὰ πολλοῖς εἰσέτι νῦν τῶν τότε σώζεται παλαιῶν καὶ ἐκκλησιαστικῶν ἀνδρῶν ἐναρέτου σπουδῆς ὑπομνήματα· ὧν γε μὴν αὐτοὶ διέγνωμεν, εἴη ἂν τὰ Ἡρακλείτου εἰς τὸν ἀπόστολον, καὶ τὰ Μαξίμου περὶ τοῦ πολυθρυλήτου παρὰ τοῖς αἱρεσιώταις ζητήματος, τοῦ πόθεν ἡ κακία, καὶ περὶ τοῦ γενητὴν ὑπάρχειν τὴν ὕλην· τά τε Κανδίδου εἰς τὴν ἑξαήμερον, καὶ Ἀπίωνος εἰς τὴν αὐτὴν ὑπόθεσιν· ὁμοίως Σέξτου περὶ ἀναστάσεως, καὶ ἄλλη τις ὑπόθεσις Ἀραβιανοῦ, καὶ μυρίων ἄλλων, ὧν διὰ τὸ μηδεμίαν ἔχειν ἀφορμὴν οὐχ οἷόν τε οὔτε τοὺς χρόνους παραδοῦναι γραφῇ οὔθ᾿ ἱστορίας μνήμην ὑποσημήνασθαι. καὶ ἄλλων δὲ πλείστων, ὧν οὐδὲ τὰς προσηγορίας καταλέγειν ἡμῖν δυνατὸν, ἦλθον εἰς ἡμᾶς λόγοι ὀρθοδόξων μὲν καὶ ἐκκλησιαστικῶν, ὥς γε δὴ ἡ ἑκάστου παραδείκνυσι τῆς θείας γραφῆς ἑρμηνεία, ἀδήλων δὲ ὅμως ἡμῖν, ὅτι μὴ τὴν προσηγορίαν ἐπάγεται τῶν συγγραψαμένων.",
+     "text": "Many workes of the Virtuous zeal of the aneient members of rile church of that time have still been widely preserved until now, and we haVc read them OurselveS. such are the writings of Heraclitus on the Epistles, 2 and the writings of Maximus on the problem of the source of eVri; sO much traversed by the heretic, and on whether matter has an origin, the works of Candidus on the Hexaëmeron, 3 and of Apion On the same subject, also of seXtuS on the Resurrection, and another treatise of Arabianus, and eountless Others of whieh We are unable from lack of evidenee to give the date or any aecOunts Of their hiStOry. And there are many otherS alSo which have reaehed uS, but we cannot even giVe their names, yet they are orthodox and Christian, as their interpretation of the dirine Scripture demonstrates, but the writers are unknown to us bccause their names are not given in their writings."
+    }
+   ]
+  },
+  {
+   "number": 28,
+   "verses": [
+    {
+     "number": 1,
+     "greek": "Τούτων ἔν τινος σπουδάσματι μετὰ τῆς Ἀρτέμωνος αἱρέσεως πεπονημένῳ, ἣν αὖθις ὁ ἐκ Σαμοσάτων Παῦλος ὁ καθ᾿ ἡμᾶς ἀνανεώσασθαι πεπείραται, φέρεταί τις διήγησις, ταῖς ἐξεταζομέναις ἡμῖν προσήκουσα ἱστορίαις.",
+     "text": "In a treatise worked out by one of these against the heresy of Artemon, which Paul of Samosata has tried to renew in our time, there is extant an account which bears on the history which we are examining. For he criticizes the abovementioned heresy (which claims that the sarivlour was a mere man) as a recent innovation, beeause those who introduced it wished to make it respectable as being ancient. Among many other points adduced in refutation of their blasphemous falsehood, the treatise rehtes this this: “For For they say that all who went before and the apostles themselves received and taught what they now say, and that the truth of the teaching was preserved until the times of victor, who was the tffihlrteenth bishop in Rome after Peter, but that the truth had been corrupted from the time of his successor, Zephyrinus. What they said might perhaps be plausible if in the nrst place the dirine scriptures were not opposed to them, and there are also writings of certain christians, older than the time of Victor, wHch they wrote to the Gentiles on behalf of the truth and against the heresies of their own time. 1 mean the works of Justin and Miltiades and Tatian and Clement and many others in all of which Christ is treated as God. For who is ignorant of the books of Irenaeus and Melito and the others who announced Christ as God and man? And all the Psalms and hymns which were written by faithful Christians from the beginning sing of the Christ as the LogoS of Ood and treat him as God. How then is it possible that aftcr the mind of the church had been announced for so many years that the generation before Victor can have Preached as these say? Why are they not ashamed of so calumniating Victor when they know quite well that Victor excommunicated Theodotus the cobbler, the founder and father of this insurrection which denie God, when he nrst said that Christ was a mere man? For if Victor was so minded towards them as their blasphemy teaches, how could he have thrown out Theodotus who invented this heresy?” Such were the events of the time of Victor. When he had held his office ten yearS, Zephyrinus WaS appointed his suceessor in the ninth year of the reign of Severus. 1 And the author of the book mentioned about the founder of the above-mentioned heresy adds another incident which happened in the time of Zephyrinus and wTites as follows: “I will at least remind many of the brethren of an event whieh happened in our time whieh I think would have probably been a warning to the men of sodom had it happened in their city. There Was a certain confessor, Natalius, not long ago but in our own time. He was deceived by Asclepiodotus and by a second Theodotus, a banker. These were both ffiscipleS of Theodotus the cobbler, who was first excommunicated by vietor, who, as I said, was then bishop, for this way of thinking, or rather of not thinking. Natalius was persuaded by them to be called bishop of this heresy with a salary, so that he was paid a hundred and Rfty denarii a month by them.1 When he was with them he was often warned by the Lord in visions, for our merciful Ood and Lord, Jesus ChriSt, did not with that there should go out of the church and perish one who had been a vitness of his own sufferings.2 But when he paid indifferent artention to the visions, for he Was entrapped by hiS leading rank among them and by that covetousness which ruins so many, he was at last scourged all night long by holy angels, and suffered not a little, so that in the morning he got up, put on sackcloth, and covered himseR with ashes, and went with much haste, and fell down with tears before Zephyrinus the bishop, rolling at the feet not only of the elergy but also of the laity, and moved vith his tears the compassionate church of the merciful Christ. But for all hiS prayers and the exhibition of the wealS of the stripes he had received, he was searcely admitted into communion.” We would add to this some other Words of the same author on the same persons, Which run as follows : “ They have not feared to corrupt divine scriptures, they have nullified the rule of ancient faith, they have not known Christ, they do not inquire what the divine scriptures sa y, but in- dustriously consider what syllogistic Bgure may be found for the support of their atheiSm. If anyone adduced to them a text of divine Scripture they inquire whether it can be put in the form of a conjunctive or a disjunctive syllogism. They abandon the holy scripture of God and Study geometry, 1 for they are of the earth and they speak of the earth and ffihlm who comes from above they do not know. Some of them, forsooth, study the geometry of Euclid and admire Aristotle and Theophrastus. Galen perhaps is even worshipped by some of them. when they make a bad use of the arts of unbelievers ror the opinions of their heresy, and adulterate the simple faith of the divine seriptures by the cunning of the godless, what need is there to say that they are not even near the faith f For this cause they ffid not fear to lay hands on the divine scriptures, saying that they had eonected them. And that 1 do not calumniate them in saying tffis anywhowish can learn, for if any be willing to collect and compare with each other the texts of each of them, he would hnd them in great discord, for the copies 3 of Asclepiades do not agree vith those of Theodotus, and it is possible to obtain many of them because their disciples have diligently wTitten out copies corrected, as they say, but really corrupted by each of them. Again the eopies of Hermophilus do not agree with these, the copies of APolloniades are not even consistent with themselves, for the eopies copies b y them at Rrst can be compared With those whieh later on underwent a second corruption, and they will be found to disagree greatly. The impudence of this sin can careely be unknown even to them, for either they do not believe that rile diVine scriptures were spoken by the Holy Spirit, and if so they are unbelievers, or they think that they are wiser than the Holy spirit, and what are they but demoniacs? For they cannot even deny that this crime is theirs, seeing that the copies were Written in their own hand, and they did not receive the seriptures in thiS eondition from their teachers, nor can they show originals from whieh they made their copies. some of them have not thOught it neeessary even to emend the text, but simply deny the LaW and the Prophets, and thuS on the pretence 1 of their Wieked and godleSs teaching have fallen to the lowest destruction of ” And let this suffice for these things."
+    },
+    {
+     "number": 2,
+     "greek": "τὴν γάρ τοι δεληλωμἐνην αἵρεσιν, ψιλὸν ἄνθρωπον γενέσθαι τὸν σωτῆρα φάσκουσαν, οὐ πρὸ πολλοῦ νεωτερισθεῖσαν διευθύνων, ἐπειδὴ σεμνύνειν αὐτὴν ὡσὰν ἀρχαίαν οἱ ταύτης ἤθελον εἰσηγηταὶ, πολλὰ καὶ ἄλλα εἰς ἔλεγχον αὐτῶν τῆς βλασφήμου ψευδηγορίας παραθεὶς ὁ λόγος ταῦτα κατὰ λέξιν ἱστορεῖ",
+     "text": ""
+    },
+    {
+     "number": 3,
+     "greek": "“φασὶ γὰρ τοὺς μὲν προτέρους ἅπαντας καὶ αὐτοὺς “τοὺς ἀποστόλους παρειληφέναι τε καὶ δεδιδαχέναι “ταῦτα, ἃ νῦν οὗτοι λέγουσι, καὶ τετηρῆσθαι τὴν “ἀλήθειαν τοῦ κηρύγματος μέχρι τῶν χρόνων τῶν “Βίκτορος, ὃς ἦν τρισκαιδέκατος ἀπὸ Πέτρου ἐν “῾Ρώμη ἐπίσκοπος, ἀπὸ δὲ τοῦ διαδόχου αὐτοῦ Ζε- “φυρίνου παρακεχαράχθαι τὴν ἀλήθειαν.",
+     "text": ""
+    },
+    {
+     "number": 4,
+     "greek": "ἦν δ᾿ “ἂν τυχὸν πιθανὸν τὸ λεγόμενον, εἰ μὴ πρῶτον μὲν “ἀντέπιπτον αὐτοῖς αἱ θεῖαι γραφαί. καὶ ἀδελφῶν “δέ τινων ἐστὶ γράμματα πρεσβύτερα τῶν Βίκτορος “χρόνων, ἃ ἐκεῖνοι πρὸς τὰ ἔθνη ὑπὲρ τῆς ἀληθείας “καὶ πρὸς τὰς τότε αἱρέσεις ἔγραψαν, λέγω δὲ Ἰου- “στίνου καὶ Μιλτιάδου καὶ Τατιανοῦ καὶ Κλήμεντος “καὶ ἑτέρων πλειόνων, ἐν οἷς ἅπασι θεολογεῖται ὁ “Χριστός.",
+     "text": ""
+    },
+    {
+     "number": 5,
+     "greek": "τὰ γὰρ Εἰρηναίου τε καὶ Μελίτωνος “καὶ τῶν λοιπῶν τίς ἀγνοεῖ βιβλία, θεὸν καὶ ἄνθρω- “πον καταγγέλλοντα τὸν Χριστόν; ψαλμοὶ δὲ ὅσοι “καὶ ᾠδαὶ ἀδελφῶν ἀπ᾿ ἀρχῆς ὑπὸ πιστῶν γραφεῖσαι “τὸν λόγον τοῦ θεοῦ τὸν Χριστὸν ὑμνοῦσι θεολο- “γοῦντες.",
+     "text": ""
+    },
+    {
+     "number": 6,
+     "greek": "πῶς οὖν ἐκ τοσούτων ἐτῶν καταγγελ- ’‘λομένου τοῦ ἐκκλησιαστικοῦ φρονήματος ἐνδέχεται “τοὺς μέχρι Βίκτορος οὕτως, ὡς οὗτοι λέγουσι, κεκη- “ρυχέναι; πῶς δὲ οὐκ αἰδοῦνται ταῦτα Βίκτορος “καταψεύδεσθαι, ἀκριβῶς εἰδότες ὅτι Βίκτωρ Θεό- “δοτον τὸν σκυτέα, τὸν ἀρχηγὸν καὶ πατέρα ταύτης “τῆς ἀρνησιθέου ἀποστασίας, ἀπεκήρυξε τῆς κοινω- “νίας, πρῶτον εἰπόντα ψιλὸν ἄνθρωπον τὸν Χριστόν; “εἰ γὰρ Βίκτωρ κατ᾿ αὐτοὺς οὕτως ἐφρόνει ὡς ἡ “τούτων διδάσκει βλασφημία, πῶς ἂν ἀπέβαλλε Θεό- “δοτον τὸν τῆς αἱρέσεως ταύτης εὑρετήν;” καὶ τὰ μὲν κατὰ τὸν Βίκτορα τοιαῦτα.",
+     "text": ""
+    },
+    {
+     "number": 7,
+     "greek": "τούτου δὲ ἔτεσι δέκα προστάντος τῆς λειτουργίας διάδοχος καθίσταται Ζεφυρῖνος, ἀμφὶ τὸ ἔνατον τῆς Σεβήρου βασιλείας ἔτος. προστίθησι δὲ ὁ τὸ προειρημένον συντάξας περὶ τοῦ κατάρξαντος τῆς δηλωθείσης αἱρέσεως βιβλίον καὶ ἄλλην κατὰ Ζεφυρῖνον γενομένην πρᾶξιν, ὧδέ πως αὐτοῖς ῥήμασι γράφων",
+     "text": ""
+    },
+    {
+     "number": 8,
+     "greek": "“ὑπομνήσω γοῦν “πολλοὺς τῶν ἀδελφῶν πρᾶγμα ἐφ᾿ ἡμῶν γενόμενον, “ὃ νομίζω ὅτι εἰ ἐν Σοδόμοις ἐγεγόνει, τυχὸν ἂν “κἀκείνους ἐνουθέτησε. Νατάλιος ἦν τις ὁμολογη- “τὴς, οὐ πάλαι, ἀλλ᾿ ἐπὶ τῶν ἡμετέρων γενόμενος “καιρῶν.",
+     "text": ""
+    },
+    {
+     "number": 9,
+     "greek": "οὗτος ἠπατήθη ποτὲ ὑπὸ Ἀσκληπιοδότου “καὶ ἑτέρου Θεοδότου τινὸς τραπεζίτου. ἦσαν δὲ “οὗτοι ἄμφω Θεοδότου τοῦ σκυτέως μαθηταὶ, τοῦ “πρώτου ἐπὶ ταύτῃ τῇ φρονήσει, μᾶλλον δὲ ἀφρο- “σύνῃ, ἀφορισθέντος τῆς κοινωνίας ὑπὸ Βίκτορος, “ὡς ἔφην, τοῦ τότε ἐπισκόπου.",
+     "text": ""
+    },
+    {
+     "number": 10,
+     "greek": "ἀνεπείσθη δὲ ὁ “Νατάλιος ὑπ᾿ αὐτῶν ἐπὶ σαλαρίῳ ἐπίσκοπος κλη- “ρωθῆναι ταύτης τῆς αἱρέσεως, ὥστε λαμβάνειν παρ᾿ “αὐτῶν μηνιαῖα δηνάρια ἑκατὸν πεντήκοντα.",
+     "text": ""
+    },
+    {
+     "number": 11,
+     "greek": "γε- “νόμενος οὖν σὺν αὐτοῖς δι᾿ ὁραμάτων πολλάκις ἐνου- “θετεῖτο ὑπὸ τοῦ κυρίου. ὁ γὰρ εὔσπλαγχνος θεὸς “καὶ κύριος ἡμῶν Ἰησοῦς Χριστὸς οὐκ ἐβούλετο ἔξω “ἐκκλησίας γενόμενον ἀπολέσθαι μάρτυρα τῶν ἰδίων “παθῶν.",
+     "text": ""
+    },
+    {
+     "number": 12,
+     "greek": "ἐπεὶ δὲ ῥᾳθυμότερον τοῖς ὁράμασι “προσεῖχε, δελεαζόμενος τῇ τε παρ᾿ αὐτοῖς πρωτο- “καθεδρίᾳ καὶ τῇ πλείστους ἀπολλυούσῃ αἰσχροκερ- “δείᾳ, τελευταῖον ὑπὸ ἁγίων ἀγγέλων ἐμαστιγώθη, “δι᾿ ὅλης τῆς νυκτὸς οὐ σμικρῶς αἰκισθεὶς, ὥστε “ἕωθεν ἀναστῆναι, καὶ ἐνδυσάμενον σάκκον καὶ σπο- “δὸν καταπασάμενον μετὰ πολλῆς σπουδῆς καὶ δα- “κρύων προσπεσεῖν Ζεφυρίνῳ τῷ ἐπισκόπῳ, κυλιό- “μενον ὑπὸ τοὺς πόδας οὐ μόνον τῶν ἐν κλήρῳ, “ἀλλὰ καὶ τῶν λαϊκῶν, συγχέαι τε τοῖς δάκρυσι τὴν “εὔσπλαγχνον ἐκκλησίαν τοῦ ἐλεήμονος Χριστοῦ· “πολλῇ τε τῇ δεήσει χρησάμενον, δείξαντά τε τοὺς “μώλωπας ὧν εἰλήφει πληγῶν μόλις κοινωνηθῆναι.”",
+     "text": ""
+    },
+    {
+     "number": 13,
+     "greek": "τούτοις ἐπισυνάψωμεν καὶ ἄλλας περὶ τῶν αὐτῶν τοῦ αὐτοῦ συγγραφέως φωνὰς, τοῦτον ἐχούσας τὸν τρόπον· “γραφὰς μὲν θείας ἀφόβως ῥερᾳδιουργήκασι, “πίστεώς τε ἀρχαίας κανόνα ἠθετήκασι, Χριστὸν δὲ “ἠγνοήκασιν, οὐ τί αἱ θεῖαι λέγουσι γραφαὶ ζητοῦν- “τες, ἀλλ᾿ ὁποἱον σχῆμα συλλογισμοῦ εἰς τὴν τῆς “ἀθεότητος σύστασιν εὑρεθῇ, φιλοπόνως ἀσκοῦντες· “κἂν αὐτοῖς προτείνῃ τις ῥητὸν γραφὴς θεϊκῆς, ἐξε- “τάζουσι, πότερον συνημμένον ἢ διεζευγμένον δύνα- “ται ποιῆσαι σχῆμα συλλογισμοῦ.",
+     "text": ""
+    },
+    {
+     "number": 14,
+     "greek": "καταλιπόντες “δὲ τὰς ἁγίας τοῦ θεοῦ γραφὰς γεωμετρίαν ἐπιτη- “δεύουσιν, ὡσὰν ἐκ τῆς γῆς ὄντες καὶ ἐκ τῆς γῆς “λαλοῦντες, καὶ τὸν ἄνωθεν ἐρχόμενον ἀγνοοῦντες. “Εὐκλείδης γοῦν παρά τισιν αὐτῶν φιλοπόνως γεω- “μετρεῖται, Ἀριστοτέλης δὲ καὶ Θεόφραστος θαυμά- “ζονται, Γαληνὸς γὰρ ἴσως ὑπό τινων καὶ προσκυ- “νεῖται.",
+     "text": ""
+    },
+    {
+     "number": 15,
+     "greek": "οἱ δὲ ταῖς τῶν ἀπίστων τέχναις εἰς τὴν “τῆς αἱρέσεως αὐτῶν γνώμην ἀποχρώμενοι, καὶ τῇ “τῶν ἀθέων πανουργίᾳ τὴν ἁπλῆν τῶν θείων γρα- “φῶν πίστιν καπηλεύοντες, ὅτι μηδὲ ἐγγὺς πίστεως “ὑπάρχουσι, τί δεῖ καὶ λέγειν; διὰ τοῦτο ταῖς θείαις “γραφαῖς ἀφόβως ἐπέβαλον τὰς χεῖρας, λέγοντες αὐ- “τὰς διωρθωκέναι.",
+     "text": ""
+    },
+    {
+     "number": 16,
+     "greek": "καὶ ὅτι τοῦτο μὴ καταψευδό- “μενος αὐτῶν λέγω ὁ βούλομενος δύναται μαθεῖν. “εἰ γάρ τις θελήσει συγκομίσας αὐτῶν ἑκάστου τὰ “ἀντίγραφα ἐξετάζειν πρὸς ἄλληλα, κατὰ πολὺ ἂν “εὕροι διαφωνοῦντα. ἀσύμφωνα γοῦν ἔσται τὰ Ασκλη- ‘πιάδου τοῖς Θεοδότου.",
+     "text": ""
+    },
+    {
+     "number": 17,
+     "greek": "πολλῶν δὲ ἔστιν εὐπο- “ρῆσαι, διὰ τὸ φιλοτίμως ἐγγεγράφθαι τοὺς μαθητὰς “αὐτῶν τὰ ὑφ’ ἑκάστου αὐτῶν, ὡς αὐτοὶ καλοῦσι, ‘κατωρθωμένα, τουτ’ έστιν ἠφανισμένα. πάλιν δὲ τούτοις τὰ Ἑρμοφίλου οὐ συνᾴδει. τὰ γὰρ Ἀπολλωνί- ‘δου οὐδὲ αὐτὰ ἑαυτοῖς ἐστι σύμφωνα. ἔνεστι συγκρῖναι τὰ πρότερον ὑπ’ αὐτῶν κατασκευασθέντα “τοῖς ὕστερον πάλιν ἐπιδιαστραφεῖσι, καὶ εὑρεῖν “πολὺ ἀπᾴδοντα.",
+     "text": ""
+    },
+    {
+     "number": 18,
+     "greek": "ὅσης δὲ τόλμης ἐστὶ τοῦτο τὸ “ἁμάρτημα, εἰκὸς μηδὲ ἐκείνους ἀγνοεῖν. ἢ γὰρ πιστεύουσιν ἁγίῳ πνεύματι λελέχθαι τὰς θείας γραφὰς, καί εἰσιν ἄπιοτοι, ἢ ἑαυτοὺς ἡγοῦνται σοφω- “τέρους τοῦ ἁγίου πνεύματος ὑπάρχειν, καὶ τί ἕτερον ‘ἢ δαιμονῶσιν. οὐδὲ γὰρ ἀρνήσασθαι δύνανται ἑαυτῶν εἶναι τὸ τόλμημα, ὁπόταν καὶ τῇ αὐτῶν χειρὶ “ᾖ γεγραμμένα, καὶ παρ’ ὧν κατηχήθησαν, μὴ παρέλαβον τὰς γραφὰς, καὶ δεῖξαι ἀντίγραφα, “ὅθεν αὐτὰ μετεγράψαντο, μὴ ἔχωσιν.",
+     "text": ""
+    },
+    {
+     "number": 19,
+     "greek": "ἔνιοι δὲ “αὐτῶν οὐδὲ παραχαράσσειν ἠξίωσαν αὐτὰς, ἀλλ’ “ ἁπλῶς ἀρνησάμενοι τόν τε νόμον καὶ τοὺς προφή- “τὰς, ἀνόμου καὶ ἀθέου διδασκαλίας προφάσει χάρι- ‘τος εἰς ἔσχατον ἀπωλείας ὄλεθρον κατωλίσθησαν. καὶ ταῦτα μὲν τοῦτον ἱστορήσθω τὸν τρόπον.",
+     "text": ""
+    }
+   ]
+  }
+ ]
+}

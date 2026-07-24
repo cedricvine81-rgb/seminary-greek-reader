@@ -153,7 +153,9 @@ def main():
     ap.add_argument('--af', action='store_true', help='Apostolic Fathers (works with parallel Greek)')
     ap.add_argument('--philo', action='store_true', help='Philo (works with parallel Greek)')
     ap.add_argument('--justin', action='store_true', help='Justin Martyr (works with parallel Greek)')
-    ap.add_argument('--pseudepigrapha', action='store_true', help='Pseudepigrapha with Greek (Sibylline)')
+    ap.add_argument('--pseudepigrapha', action='store_true', help='Pseudepigrapha with Greek (Sibylline, Aristeas)')
+    ap.add_argument('--testaments', action='store_true', help='Testaments of the Twelve Patriarchs')
+    ap.add_argument('--eusebius', action='store_true', help='Eusebius, Ecclesiastical History')
     ap.add_argument('--only', default=None, help='restrict a dir run to one slug (debugging)')
     args = ap.parse_args()
 
@@ -164,7 +166,9 @@ def main():
                  'public/data/apostolic-fathers' if args.af else
                  'public/data/philo' if args.philo else
                  'public/data/justin' if args.justin else
-                 'public/data/pseudepigrapha' if args.pseudepigrapha else None)
+                 'public/data/pseudepigrapha' if args.pseudepigrapha else
+                 'public/data/pseudepigrapha/testaments' if args.testaments else
+                 'public/data/eusebius' if args.eusebius else None)
     if prose_dir:
         gdir = Path(prose_dir)
         for f in sorted(gdir.glob('*.json')):

@@ -122,6 +122,8 @@ function refLabelFor(w: CatalogWork, item: QueueItem): string {
 
 // Heading over each rendered block. Josephus is pure Niese — show the § span the block covers
 // (prefixed with its book, for multi-book works) instead of the internal Whiston chapter.
+// Works with a second, structural numbering (Hermas) head each chapter with its traditional
+// reference ("Vision 3.6 · Ch. 14") so both citation systems stay visible.
 function blockHeadingFor(w: CatalogWork, block: ChapterBlock): string {
   if (w.source === 'josephus') {
     const nums = block.rows.map(r => r.num)
@@ -130,7 +132,9 @@ function blockHeadingFor(w: CatalogWork, block: ChapterBlock): string {
       : `§§${nums[0]}–${nums[nums.length - 1]}`
     return w.books!.length > 1 ? `Book ${block.book} · ${span}` : span
   }
-  return `Chapter ${block.chapter}`
+  // chapterLabel returns the complete heading (each work formats its own — Hermas appends the
+  // continuous chapter, Eusebius names its preface); default to "Chapter N".
+  return findProseWork(w.source)?.chapterLabel?.(block.chapter) ?? `Chapter ${block.chapter}`
 }
 
 interface TextsReaderProps {
