@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -826,6 +826,27 @@ export const LUCIAN_CATALOG = LUCIAN.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
 }))
 
+// ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
+// A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
+// the NT quotes, its heading naming the source and the NT reference.
+const NT_PAGAN_LABELS = [
+  'Aratus, Phaenomena 1–5 · Acts 17:28',
+  'Cleanthes, Hymn to Zeus 4 · Acts 17:28',
+  'Menander, Thaïs (fr. 165) · 1 Corinthians 15:33',
+  'Epimenides, Cretica · Titus 1:12',
+]
+
+const NT_PAGAN_WORK: ProseWork = {
+  source: 'nt-pagan-sources',
+  name: 'Pagan Sources Quoted in the New Testament',
+  noteBook: 'NTPagan',
+  dataUrl: '/data/greco/nt-pagan-sources.json',
+  chapters: NT_PAGAN_LABELS.length,
+  attribution: 'A curated collection of Greek passages quoted or alluded to in the New Testament (Aratus, Cleanthes, Menander, Epimenides). Aratus follows the Perseus edition; the others follow the standard critical texts, with the New Testament quotations fixing the wording.',
+  parseCitation: () => null,
+  chapterLabel: (ch: number) => NT_PAGAN_LABELS[ch - 1] ?? `Source ${ch}`,
+}
+
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
     attribution: 'Text: the King James Version, 2 Esdras (public domain).',
@@ -945,6 +966,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...PLUTARCH_WORKS,
   ...APOLLODORUS_WORKS,
   ...LUCIAN_WORKS,
+  NT_PAGAN_WORK,
 ]
 
 export function findProseWork(source: string): ProseWork | undefined {

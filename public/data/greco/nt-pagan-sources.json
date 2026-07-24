@@ -1,0 +1,67 @@
+{
+ "work": "Pagan Sources Quoted in the New Testament",
+ "attribution": "A curated collection of Greek passages quoted or alluded to in the New Testament. Aratus follows the Perseus edition of the Phaenomena; the other passages follow the standard critical texts, with the New Testament quotations fixing the wording. Translations are the editor’s, in the public domain.",
+ "greek": true,
+ "chapters": [
+  {
+   "number": 1,
+   "verses": [
+    {
+     "number": 1,
+     "text": "From Zeus let us begin; him do we mortals never leave unspoken.",
+     "greek": "ἐκ Διὸς ἀρχώμεσθα, τὸν οὐδέποτʼ ἄνδρες ἐῶμεν"
+    },
+    {
+     "number": 2,
+     "text": "Filled with Zeus are all the highways,",
+     "greek": "ἄρρητον· μεσταὶ δὲ Διὸς πᾶσαι μὲν ἀγυιαί,"
+    },
+    {
+     "number": 3,
+     "text": "and all the marketplaces of men; filled too the sea",
+     "greek": "πᾶσαι δʼ ἀνθρώπων ἀγοραί, μεστὴ δὲ θάλασσα"
+    },
+    {
+     "number": 4,
+     "text": "and the harbours; and in every way we all have need of Zeus.",
+     "greek": "καὶ λιμένες· πάντη δὲ Διὸς κεχρήμεθα πάντες."
+    },
+    {
+     "number": 5,
+     "text": "For we are also his offspring; and kindly to men he",
+     "greek": "τοῦ γάρ καὶ γένος εἰμέν· ὁ δʼ ἤπιος ἀνθρώποισιν"
+    }
+   ]
+  },
+  {
+   "number": 2,
+   "verses": [
+    {
+     "number": 1,
+     "text": "For we are your offspring, and alone of all that live and move as mortals on the earth we bear the likeness of your voice.",
+     "greek": "ἐκ σοῦ γὰρ γένος ἐσμέν, ἤχου μίμημα λαχόντες μοῦνοι, ὅσα ζώει τε καὶ ἕρπει θνήτʼ ἐπὶ γαῖαν."
+    }
+   ]
+  },
+  {
+   "number": 3,
+   "verses": [
+    {
+     "number": 1,
+     "text": "Bad company corrupts good character.",
+     "greek": "φθείρουσιν ἤθη χρηστὰ ὁμιλίαι κακαί."
+    }
+   ]
+  },
+  {
+   "number": 4,
+   "verses": [
+    {
+     "number": 1,
+     "text": "Cretans are always liars, evil beasts, lazy gluttons. (The words of Acts 17:28a, “in him we live and move and have our being,” are also traditionally ascribed to Epimenides’ Cretica.)",
+     "greek": "Κρῆτες ἀεὶ ψεῦσται, κακὰ θηρία, γαστέρες ἀργαί."
+    }
+   ]
+  }
+ ]
+}
