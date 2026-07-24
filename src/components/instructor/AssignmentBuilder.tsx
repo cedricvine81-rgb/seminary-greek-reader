@@ -168,17 +168,28 @@ interface ScheduledQuiz {
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-/** Return every date in [startDate, startDate + weeks*7) whose weekday is in `days`. */
-function buildSchedule(startDate: string, weeks: number, days: number[]): ScheduledQuiz[] {
+/**
+ * Return every date in [startDate, startDate + weeks*7) whose weekday is in `days`.
+ *
+ * Week numbers count from the COURSE start when one is known, so a series that begins
+ * mid-term (e.g. morphology starting week 3, after the alphabet weeks) is titled
+ * "Week 3 —" and — critically — its vocabulary caps track the words actually taught
+ * by that course week, not by the series' own first week.
+ */
+function buildSchedule(startDate: string, weeks: number, days: number[], courseStart?: string): ScheduledQuiz[] {
   if (!startDate || weeks < 1 || days.length === 0) return []
   const start = parseISO(startDate)
+  const origin = courseStart ? parseISO(courseStart) : start
+  // Days from the course start to the series start (0 when the series starts the term,
+  // never negative — a series scheduled before the course simply counts as week 1).
+  const lead = Math.max(0, Math.round((start.getTime() - origin.getTime()) / 86_400_000))
   const result: ScheduledQuiz[] = []
   const totalDays = weeks * 7
 
   for (let d = 0; d < totalDays; d++) {
     const date = addDays(start, d)
     if (days.includes(getDay(date))) {
-      const week = Math.floor(d / 7) + 1
+      const week = Math.floor((lead + d) / 7) + 1
       result.push({ week, date, label: format(date, 'EEE, MMM d, yyyy') })
     }
   }
@@ -1500,15 +1511,15 @@ function SemesterForm({ courses, defaultCourseId }: { courses: Course[]; default
     setTimeout(() => setPreviewFlash(false), 800)
   }
 
+  const selectedCourse = courses.find(c => c.id === form.courseId)
   const schedule = useMemo(
-    () => buildSchedule(form.startDate, form.weeks, form.days),
-    [form.startDate, form.weeks, form.days]
+    () => buildSchedule(form.startDate, form.weeks, form.days, selectedCourse?.startDate),
+    [form.startDate, form.weeks, form.days, selectedCourse?.startDate]
   )
 
   // The schedule counts weeks forward from the start date and knows nothing about when
   // the course actually ends, so a series can run past the last day of term — those
   // quizzes exist but no student ever sits them. Surface the overrun before it is saved.
-  const selectedCourse = courses.find(c => c.id === form.courseId)
   const overrun = useMemo(() => {
     if (!selectedCourse || schedule.length === 0) return null
     const end = new Date(selectedCourse.endDate).getTime() + 24 * 60 * 60 * 1000
