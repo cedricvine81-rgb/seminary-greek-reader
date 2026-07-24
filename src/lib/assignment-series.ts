@@ -36,7 +36,10 @@ export interface AssignmentSeries {
 export function seriesStem(title: string): string {
   return title
     .replace(/^\s*Week\s+\d+\s*[—–-]\s*/i, '')   // week prefix
-    .replace(/\s*\(§[^)]*\)\s*$/, '')            // section suffix
+    // Trailing parenthetical: the per-quiz qualifier the builders write — "(§1-A)" on
+    // vocabulary quizzes, "(Participles)" on the morphology series. Only at the END of the
+    // title, so passage titles and parentheses mid-title are untouched.
+    .replace(/\s*\([^)]*\)\s*$/, '')
     // "Morphology Quiz 2: Verb Parsing" -> "Morphology Quiz: Verb Parsing". Anchored to
     // the quiz word so passage titles keep their chapter: stripping any "<digits>:" would
     // collapse "Mark 1:9-15" and "Mark 2:9-15" into one bogus series.
