@@ -154,6 +154,7 @@ async function main() {
         dueDate: due,
         level: course.level,
         morphSubtype: spec.subtype,
+        vocabThruLesson: spec.week,   // cap at the vocabulary taught by this week
         timePerQuestion: null,        // untimed — parsing takes thought
         maxRetakes: null,             // unlimited, per the instructor's morphology settings
         allowLate: true,

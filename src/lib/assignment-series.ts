@@ -18,6 +18,7 @@ export interface SeriesMember {
   questionCount: number
   // Current settings, so the editor can show which choice is in force.
   vocabReviewPct?: number | null
+  vocabThruLesson?: number | null
   maxRetakes?: number | null
   timePerQuestion?: number | null
   allowLate?: boolean
@@ -54,7 +55,7 @@ export function seriesStem(title: string): string {
 export function groupIntoSeries<T extends {
   id: string; title: string; type: string; weekNumber: number
   dueDate: string | Date; isPublished: boolean; questionCount: number
-  vocabReviewPct?: number | null; maxRetakes?: number | null
+  vocabReviewPct?: number | null; vocabThruLesson?: number | null; maxRetakes?: number | null
   timePerQuestion?: number | null; allowLate?: boolean; lateDaysLimit?: number | null
 }>(assignments: T[]): AssignmentSeries[] {
   const buckets = new Map<string, AssignmentSeries>()
@@ -70,6 +71,7 @@ export function groupIntoSeries<T extends {
       isPublished: a.isPublished,
       questionCount: a.questionCount,
       vocabReviewPct: a.vocabReviewPct ?? null,
+      vocabThruLesson: a.vocabThruLesson ?? null,
       maxRetakes: a.maxRetakes ?? null,
       timePerQuestion: a.timePerQuestion ?? null,
       allowLate: a.allowLate ?? false,

@@ -175,6 +175,10 @@ export async function POST(req: NextRequest) {
         ...(quizType === 'VOCABULARY_QUIZ'
           ? { vocabReviewPct: Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100) }
           : {}),
+        ...(testConfig
+          ? { morphSubtype: testConfig.subtype,
+              vocabThruLesson: testConfig.vocabAuto ? weekNum : testConfig.vocabThruLesson ?? null }
+          : {}),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
         // Vocab quizzes only — ignore non-positive values
         maxAppeals: quizType === 'VOCABULARY_QUIZ' && maxAppeals != null && Number(maxAppeals) > 0

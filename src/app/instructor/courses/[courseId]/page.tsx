@@ -72,7 +72,7 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
   const assignmentSeries = groupIntoSeries(course.assignments.map(a => ({
     id: a.id, title: a.title, type: a.type as string, weekNumber: a.weekNumber,
     dueDate: a.dueDate, isPublished: a.isPublished, questionCount: a._count.questions,
-    vocabReviewPct: a.vocabReviewPct, maxRetakes: a.maxRetakes,
+    vocabReviewPct: a.vocabReviewPct, vocabThruLesson: a.vocabThruLesson, maxRetakes: a.maxRetakes,
     timePerQuestion: a.timePerQuestion, allowLate: a.allowLate, lateDaysLimit: a.lateDaysLimit,
   })))
 

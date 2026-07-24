@@ -247,6 +247,25 @@ export function AssignmentSeriesEditor({
                   )
                 })()}
 
+                {/* Morphology series: vocabulary cap status. Changing the cap regenerates
+                    questions with each quiz's own fields and filters, which are set at
+                    creation — so the cap is chosen in the series builder ("Match vocabulary
+                    schedule"); here it is reported, so its state is never invisible. */}
+                {s.type === 'MORPHOLOGY_QUIZ' && (() => {
+                  const capped = s.members.every(m => m.vocabThruLesson != null && m.vocabThruLesson === Math.min(m.weekNumber, 16))
+                  const none = s.members.every(m => m.vocabThruLesson == null)
+                  return (
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                      Vocabulary
+                      <span className="ml-1.5 font-normal normal-case text-brand-700">
+                        {capped ? '— each quiz uses only words taught by its week'
+                         : none ? '— no cap: quizzes may use any parsing example'
+                         : '— mixed caps across the series'}
+                      </span>
+                    </p>
+                  )
+                })()}
+
                 {/* Timing + late policy */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>

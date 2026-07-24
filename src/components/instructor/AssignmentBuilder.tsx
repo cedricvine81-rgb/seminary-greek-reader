@@ -105,6 +105,9 @@ const DEFAULT_MORPH_TEST: MorphTestConfig = {
   subtype: 'VERB_PARSING',
   numQuestions: 20,
   vocabThruLesson: null,
+  // Default to the vocabulary schedule: week N tests only words taught through lesson N.
+  // The instructor can still choose "All parsing examples" or a fixed lesson.
+  vocabAuto: true,
   fields: SUBTYPE_FIELD_OPTIONS['VERB_PARSING'].map(f => f.key),
   parseFilter: { ...DEFAULT_PARSE_FILTER },
 }

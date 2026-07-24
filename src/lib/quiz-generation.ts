@@ -348,10 +348,10 @@ export async function generateMorphologyQuestionsBySubtype(
     const keys = lessonSubsectionKeysThrough(vocabThruLesson)
     if (keys.length > 0) {
       const knownLexemes = new Set(wordsForSelection(keys, []).map(w => w.word))
-      const filtered = entries.filter(e => knownLexemes.has(e.lexeme))
-      // Guard against over-filtering into an unusable pool (e.g. a subtype with few
-      // early-lesson forms) — better a broader quiz than a broken one.
-      if (filtered.length >= Math.min(count, 3)) entries = filtered
+      // The cap is explicit instructor intent, so it is NEVER silently relaxed: a thin
+      // early-lesson pool yields a shorter quiz (the caller sees the count), not a quiz
+      // that quietly tests words the schedule hasn't reached.
+      entries = entries.filter(e => knownLexemes.has(e.lexeme))
     }
   }
 
