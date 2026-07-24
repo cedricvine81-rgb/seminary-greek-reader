@@ -262,6 +262,23 @@ def parse_unit_refs(xml_bytes, book_sub, unit_sub, ref_unit):
     return out
 
 
+def build_greek_only(slug, name, urn_dir, urn_base, book_sub, unit_sub, attrib, no_cache):
+    """A book→unit work with no aligned English on Perseus (Marcus Aurelius): chapter = book,
+    verse = unit, Greek only. Translations divide the Meditations on a different chapter scheme
+    than the critical Greek, so pairing an English by number would misalign — hence Greek-only."""
+    grc = parse_units(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache), book_sub, unit_sub)
+    books = {}
+    for (b, u), gr in grc.items():
+        if b and b.isdigit() and u and u.isdigit():
+            books.setdefault(int(b), {})[int(u)] = gr
+    chapters = [{'number': bk, 'verses': [
+        {'number': u, 'text': '', 'greek': books[bk][u]} for u in sorted(books[bk])]} for bk in sorted(books)]
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'greekOnly': True, 'chapters': chapters}
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters),
+             'verses': sum(len(c['verses']) for c in chapters)}]
+
+
 def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache, ref_unit=None):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
@@ -293,6 +310,9 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
 
 
+MARCUS_ATTRIB = ('Greek: Marcus Aurelius, Τὰ εἰς ἑαυτόν (Meditations). Digital edition: Perseus '
+                 'Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu). Greek only — see the note on '
+                 'the work.')
 XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923), public domain; '
                    'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
                    '(perseus.tufts.edu).')
@@ -461,6 +481,9 @@ def main():
     # Xenophon, Memorabilia — the Socratic ethics (four books; cited Mem. book.chapter.section).
     results += build_bcs('xenophon-memorabilia', lambda b: f'Xenophon, Memorabilia (Book {b})',
                          'tlg0032/tlg002', 'tlg0032.tlg002', 'eng2', XENOPHON_ATTRIB, no_cache)
+    # Marcus Aurelius, Meditations — Greek only (no aligned English on Perseus; cited Med. book.chapter).
+    results += build_greek_only('marcus-aurelius-meditations', 'Marcus Aurelius, Meditations',
+                                'tlg0562/tlg001', 'tlg0562.tlg001', 'book', 'chapter', MARCUS_ATTRIB, no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)

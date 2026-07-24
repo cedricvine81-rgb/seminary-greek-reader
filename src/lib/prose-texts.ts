@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -856,6 +856,25 @@ export const XENOPHON_CATALOG = XENOPHON_MEM.map(w => ({
   name: `Xenophon, Memorabilia (Book ${w.book})`, chapters: w.chapters, greek: true,
 }))
 
+// ── Marcus Aurelius, Meditations ──────────────────────────────────────────────────────
+// Greek only (the Perseus edition has no aligned English, and English translations divide the
+// Meditations on a different chapter scheme than the critical Greek, so pairing by number would
+// misalign). chapter = book, verse = the chapter; cited "Marcus Aurelius, Med. 4.3".
+const MARCUS_AURELIUS_WORK: ProseWork = {
+  source: 'marcus-aurelius-meditations',
+  name: 'Marcus Aurelius, Meditations',
+  noteBook: 'MarcusMed',
+  dataUrl: '/data/greco/marcus-aurelius-meditations.json',
+  chapters: 12,
+  attribution: 'Greek: Marcus Aurelius, Τὰ εἰς ἑαυτόν (Meditations). Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only — a chapter-aligned English is not yet available (translations use a different chapter division than the critical Greek).',
+  parseCitation: (text: string) => {
+    const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+    const m = s.match(/^(?:Marcus Aurelius|M\.?\s*Aur(?:elius)?|Aurelius|Marc\. Aur\.)(?:,)?\s+(?:Med(?:itations|\.)?\s+)?(\d+)\.(\d+)/)
+    return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+  },
+  chapterLabel: (ch: number) => `Book ${ch}`,
+}
+
 // ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
 // A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
 // the NT quotes, its heading naming the source and the NT reference.
@@ -997,6 +1016,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...APOLLODORUS_WORKS,
   ...LUCIAN_WORKS,
   ...XENOPHON_WORKS,
+  MARCUS_AURELIUS_WORK,
   NT_PAGAN_WORK,
 ]
 

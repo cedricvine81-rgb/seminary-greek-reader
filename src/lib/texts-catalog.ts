@@ -198,7 +198,9 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     blurb: 'Greco-Roman authors that illuminate the New Testament world — Plato, Aristotle, Plutarch, Epictetus, Lucian (on the early Christians), Diogenes Laertius, and Apollodorus’s Library of myth, with the Greek and public-domain English side by side (Perseus, CC-BY-SA). Includes a curated set of the pagan passages the New Testament quotes.',
     works: [
       { id: 'nt-pagan-sources', name: 'Pagan Sources Quoted in the New Testament', source: 'nt-pagan-sources', chapters: 4, greek: true },
-      ...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...XENOPHON_CATALOG, ...PLUTARCH_CATALOG, ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
+      ...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...XENOPHON_CATALOG, ...PLUTARCH_CATALOG,
+      { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
+      ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
     ],
   },
   {
