@@ -16,6 +16,7 @@ export interface SeriesMember {
   dueDate: string
   isPublished: boolean
   questionCount: number
+  vocabReviewPct?: number | null
 }
 
 export interface AssignmentSeries {
@@ -45,6 +46,7 @@ export function seriesStem(title: string): string {
 export function groupIntoSeries<T extends {
   id: string; title: string; type: string; weekNumber: number
   dueDate: string | Date; isPublished: boolean; questionCount: number
+  vocabReviewPct?: number | null
 }>(assignments: T[]): AssignmentSeries[] {
   const buckets = new Map<string, AssignmentSeries>()
   for (const a of assignments) {
@@ -58,6 +60,7 @@ export function groupIntoSeries<T extends {
       dueDate: new Date(a.dueDate).toISOString(),
       isPublished: a.isPublished,
       questionCount: a.questionCount,
+      vocabReviewPct: a.vocabReviewPct ?? null,
     })
     buckets.set(key, entry)
   }

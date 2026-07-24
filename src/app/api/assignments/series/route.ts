@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { generateVocabQuestionsForLesson } from '@/lib/quiz-generation'
+import { VOCAB_LESSONS, lessonSubsectionKey } from '@/lib/vocab-lesson-map'
 
 /**
  * Bulk edits across a whole assignment series, so a 28-quiz schedule doesn't have to be
@@ -56,6 +58,41 @@ export async function PATCH(req: NextRequest) {
         where: { id: a.id },
         data: { dueDate: new Date(a.dueDate.getTime() + days * 24 * 60 * 60 * 1000) },
       })
+      updated++
+    }
+    return NextResponse.json({ updated })
+  }
+
+  // Cumulative review: rebuild each vocabulary quiz so the given share of its questions
+  // comes from earlier lessons. This regenerates questions (the review mix is baked into
+  // them), so it is refused once students have answered any of them.
+  if (action === 'reviewPct') {
+    const pct = Math.min(Math.max(Number(value), 0), 100)
+    const rows = await prisma.assignment.findMany({
+      where: { id: { in: assignmentIds }, type: 'VOCABULARY_QUIZ' },
+      include: { _count: { select: { questions: true, responses: true } } },
+    })
+    const answered = rows.filter(r => r._count.responses > 0)
+    if (answered.length > 0) {
+      return NextResponse.json({
+        error: `${answered.length} of these have student answers, so their questions can’t be rebuilt.`,
+      }, { status: 409 })
+    }
+    for (const r of rows) {
+      // The builder writes the section into the title ("… (§2-E)"); fall back to the week.
+      const m = r.title.match(/§(\d)-([A-H])/)
+      const lesson = m
+        ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
+        : r.weekNumber
+      if (!lesson) continue
+      const count = r._count.questions || 20
+      const qs = generateVocabQuestionsForLesson(
+        lesson, 'GREEK_TO_ENGLISH', count, r.provideDefinition ? 100 : 0, pct)
+      await prisma.$transaction([
+        prisma.question.deleteMany({ where: { assignmentId: r.id } }),
+        prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
+        prisma.assignment.update({ where: { id: r.id }, data: { vocabReviewPct: pct } }),
+      ])
       updated++
     }
     return NextResponse.json({ updated })

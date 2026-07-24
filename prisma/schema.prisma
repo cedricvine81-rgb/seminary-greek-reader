@@ -432,6 +432,10 @@ model Assignment {
   allowLate    Boolean        @default(false)
   lateDaysLimit Int?           // days after dueDate late submissions are accepted; null = no limit
   provideDefinition Boolean   @default(false)
+  // Vocabulary quizzes: % of questions drawn from lessons BEFORE this one (cumulative
+  // review). Stored so regenerating a quiz keeps the review mix — it used to be applied
+  // at generation time and thrown away, so any regeneration silently dropped it.
+  vocabReviewPct Int?
   // Translation exercises: show a glossary of words rarer than this NT frequency
   // under each verse (e.g. 50 = beginner, 30 = intermediate). Null = no glossary.
   glossFrequency Int?

@@ -171,6 +171,10 @@ export async function POST(req: NextRequest) {
         allowLate: Boolean(allowLate),
         lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
         provideDefinition: Boolean(provideDefinition),
+        // Persist the cumulative-review share so regenerating this quiz later keeps it.
+        ...(quizType === 'VOCABULARY_QUIZ'
+          ? { vocabReviewPct: Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100) }
+          : {}),
         maxRetakes: maxRetakes != null ? Number(maxRetakes) : null,
         // Vocab quizzes only — ignore non-positive values
         maxAppeals: quizType === 'VOCABULARY_QUIZ' && maxAppeals != null && Number(maxAppeals) > 0

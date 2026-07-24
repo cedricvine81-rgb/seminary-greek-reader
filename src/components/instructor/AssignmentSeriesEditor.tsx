@@ -202,6 +202,40 @@ export function AssignmentSeriesEditor({
                   </div>
                 </div>
 
+                {/* Cumulative review — only meaningful for vocabulary series */}
+                {s.type === 'VOCABULARY_QUIZ' && (() => {
+                  const pcts = Array.from(new Set(s.members.map(m => m.vocabReviewPct ?? 0)))
+                  const current = pcts.length === 1 ? pcts[0] : null
+                  return (
+                    <div>
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                        Review from earlier sections —{' '}
+                        <span className="text-brand-700 normal-case">
+                          {current === null ? 'mixed across the series'
+                            : current === 0 ? 'none: each quiz is its own section only'
+                            : `${current}% earlier / ${100 - current}% this section`}
+                        </span>
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {[0, 10, 20, 25, 30, 50].map(pc => (
+                          <Button key={pc} size="sm" variant="secondary" disabled={busy}
+                            onClick={() => {
+                              if (!confirm(`Rebuild all ${s.members.length} quizzes so ${pc}% of each comes from earlier sections?\n\nThis regenerates their questions.`)) return
+                              void run(ids, { action: 'reviewPct', value: pc }, 'PATCH',
+                                n => `Rebuilt ${n} quizzes with ${pc}% earlier-section review.`)
+                            }}>
+                            {pc === 0 ? 'None' : `${pc}%`}
+                          </Button>
+                        ))}
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">
+                        Week 1 has nothing earlier, so it stays on its own words. Rebuilds the
+                        questions, so it is refused once students have answered.
+                      </p>
+                    </div>
+                  )
+                })()}
+
                 {/* Timing + late policy */}
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div>
