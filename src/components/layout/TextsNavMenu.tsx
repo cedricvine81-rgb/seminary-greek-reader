@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { Library, ChevronLeft } from 'lucide-react'
+import { Library, ChevronLeft, ChevronDown } from 'lucide-react'
 import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor } from '@/lib/texts-catalog'
 
 // The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
@@ -49,26 +49,24 @@ export function TextsNavMenu() {
                     (Plato, Homer, …) flies its books out one level further; a lone work opens. */}
                 {cat === c.id && !c.comingSoon && (
                   <div className="absolute right-full top-0 pr-1">
-                    <div className="w-56 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+                    <div className="w-64 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
                       {groupWorksByAuthor(c.works).map(g => g.author ? (
-                        <div key={g.author} className="relative" onMouseEnter={() => setAuthor(g.author)}>
-                          <div className={`flex items-center justify-between gap-2 px-3 py-1.5 text-sm cursor-default ${
-                            author === g.author ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
-                            <ChevronLeft size={14} className="text-gray-300" />
+                        // Multi-work author: hovering it expands its books INLINE below (a third
+                        // side-flyout would run off the left edge, since the author panel is
+                        // already at the far left). The books sit inside this div, so moving the
+                        // mouse down onto them keeps the author expanded.
+                        <div key={g.author} onMouseEnter={() => setAuthor(g.author)}>
+                          <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
+                            author === g.author ? 'text-brand-700 font-medium' : 'text-gray-700'}`}>
+                            <ChevronDown size={13} className={`text-gray-300 transition-transform ${author === g.author ? '' : '-rotate-90'}`} />
                             <span className="flex-1">{g.author}</span>
                           </div>
-                          {author === g.author && (
-                            <div className="absolute right-full top-0 pr-1">
-                              <div className="w-60 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
-                                {g.works.map(w => (
-                                  <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
-                                    className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-                                    {workTitleWithoutAuthor(w)}
-                                  </Link>
-                                ))}
-                              </div>
-                            </div>
-                          )}
+                          {author === g.author && g.works.map(w => (
+                            <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
+                              className="block py-1.5 pl-8 pr-3 text-sm text-gray-600 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+                              {workTitleWithoutAuthor(w)}
+                            </Link>
+                          ))}
                         </div>
                       ) : (
                         <Link key={g.works[0].id} href={`/texts?work=${encodeURIComponent(g.works[0].id)}`} onClick={close}
