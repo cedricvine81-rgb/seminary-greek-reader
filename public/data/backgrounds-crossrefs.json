@@ -63311,6 +63311,109 @@
           "note": "explicitly attributed to 'a certain man among us named John, one of the apostles of Christ'; a key early witness to Revelation's authorship and authority (C. E. Hill)"
         }
       ]
+    },
+    {
+      "book": "Acts",
+      "chapter": 25,
+      "endChapter": 25,
+      "verseStart": 1,
+      "verseEnd": 1,
+      "label": "Acts 25:1",
+      "citations": [
+        {
+          "text": "Josephus, Ant. 20.8.9 §§182–188",
+          "type": "Josephus",
+          "note": "Festus succeeds Felix as procurator of Judea — Josephus narrates the same administration behind Acts 24–26",
+          "added": true
+        }
+      ]
+    },
+    {
+      "book": "Acts",
+      "chapter": 25,
+      "endChapter": 25,
+      "verseStart": 11,
+      "verseEnd": 11,
+      "label": "Acts 25:11",
+      "citations": [
+        {
+          "text": "Pliny the Younger, Ep. 10.96",
+          "type": "Greco-Roman",
+          "note": "a provincial governor refers accused Roman citizens to Rome — the legal setting of Paul’s appeal to Caesar (provocatio)",
+          "added": true
+        }
+      ]
+    },
+    {
+      "book": "Acts",
+      "chapter": 25,
+      "endChapter": 25,
+      "verseStart": 13,
+      "verseEnd": 13,
+      "label": "Acts 25:13",
+      "citations": [
+        {
+          "text": "Josephus, Ant. 20.7.3 §§145–147",
+          "type": "Josephus",
+          "note": "Agrippa II and his sister Bernice, exactly as Acts introduces them",
+          "added": true
+        }
+      ]
+    },
+    {
+      "book": "1Cor",
+      "chapter": 16,
+      "endChapter": 16,
+      "verseStart": 1,
+      "verseEnd": 4,
+      "label": "1 Cor 16:1–4",
+      "citations": [
+        {
+          "text": "Philo, Spec. Laws 1.14 §§77–78",
+          "type": "Philo",
+          "note": "the diaspora’s temple contributions gathered and sent to Jerusalem — background to an organized collection",
+          "added": true
+        },
+        {
+          "text": "Josephus, Ant. 16.6.2 §§163–164",
+          "type": "Josephus",
+          "note": "Rome protects the Jews’ right to collect and send money to Jerusalem",
+          "added": true
+        }
+      ]
+    },
+    {
+      "book": "1Cor",
+      "chapter": 16,
+      "endChapter": 16,
+      "verseStart": 22,
+      "verseEnd": 22,
+      "label": "1 Cor 16:22",
+      "citations": [
+        {
+          "text": "Did. 10.6",
+          "type": "Patristic",
+          "kind": "Parallel",
+          "note": "μαρὰν ἀθά in the Didache’s eucharistic prayer — the closest early parallel to Paul’s Aramaic acclamation",
+          "added": true
+        }
+      ]
+    },
+    {
+      "book": "2Tim",
+      "chapter": 1,
+      "endChapter": 1,
+      "verseStart": 14,
+      "verseEnd": 14,
+      "label": "2 Tim 1:14",
+      "citations": [
+        {
+          "text": "Herodotus 6.86",
+          "type": "Greco-Roman",
+          "note": "the Glaucus story: a deposit (παρακαταθήκη) entrusted, and the ruin that follows betraying it — the classic Greek parallel to guarding the παραθήκη",
+          "added": true
+        }
+      ]
     }
   ]
 }
