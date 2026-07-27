@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -539,6 +539,83 @@ export const QUINTILIAN_CATALOG = QUINTILIAN_BOOKS.map(b => ({
   greek: true,
   primaryLabel: 'Latin',
   ...(b.first === 0 ? { chapterNumbers: quintilianChapterNumbers(b) } : {}),
+}))
+
+// ── Homer, Hesiod, Herodotus ──────────────────────────────────────────────────────────
+// The foundational Greek epics, didactic poetry, and history. Built by scripts/build-perseus.py
+// (build_line_parallel for the poetry, build_bcs for Herodotus). Homer/Hesiod are line-addressed
+// (verse = poem line, the Greek line-by-line with the public-domain English chunked beside it);
+// Herodotus is book→chapter→section prose, one work per book.
+const HOMER_ATTRIB = 'Greek: Homer, ed. D. B. Monro & T. W. Allen (OCT). English: A. T. Murray (Loeb, 1919–1925), public domain — the prose is given per card (a group of lines) beside the Greek. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const HESIOD_ATTRIB = 'Greek: Hesiod (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), public domain, given per ~5-line group beside the Greek; cited by line. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const HERODOTUS_ATTRIB = 'Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 1920–1925), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+
+// "Il. 1.1" / "Od. 1.1" → book (chapter), line (verse).
+const homerCite = (abbr: string) => (text: string): { chapter: number; verse: number } | null => {
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Homer,?\\s*)?${abbr}\\.?\\s+(\\d+)\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+}
+
+const HOMER_WORKS: ProseWork[] = [
+  { source: 'homer-iliad', name: 'Homer, Iliad', noteBook: 'HomIl', dataUrl: '/data/greco/homer-iliad.json',
+    chapters: 24, attribution: HOMER_ATTRIB, parseCitation: homerCite('Il'), chapterLabel: (ch: number) => `Book ${ch}` },
+  { source: 'homer-odyssey', name: 'Homer, Odyssey', noteBook: 'HomOd', dataUrl: '/data/greco/homer-odyssey.json',
+    chapters: 24, attribution: HOMER_ATTRIB, parseCitation: homerCite('Od'), chapterLabel: (ch: number) => `Book ${ch}` },
+]
+
+// A Hesiod poem addressed by line, chunked into 150-line chapters (the Aratus model, with English).
+const HESIOD_CHUNK = 150
+function hesiodWork(source: EmbeddedProseSource, name: string, noteBook: string, slug: string, lineCount: number, abbr: string): ProseWork {
+  return {
+    source, name, noteBook, dataUrl: `/data/greco/${slug}.json`,
+    chapters: Math.ceil(lineCount / HESIOD_CHUNK), attribution: HESIOD_ATTRIB,
+    parseCitation: (text: string) => {
+      const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Hesiod,?\\s*)?${abbr}\\.?\\s+(\\d+)`))
+      if (!m) return null
+      const line = parseInt(m[1], 10)
+      return { chapter: Math.ceil(line / HESIOD_CHUNK), verse: line }
+    },
+    chapterLabel: (ch: number) => `Lines ${(ch - 1) * HESIOD_CHUNK + 1}–${Math.min(ch * HESIOD_CHUNK, lineCount)}`,
+  }
+}
+const HESIOD_WORKS: ProseWork[] = [
+  hesiodWork('hesiod-theogony', 'Hesiod, Theogony', 'HesTh', 'hesiod-theogony', 1022, 'Theog'),
+  hesiodWork('hesiod-works-and-days', 'Hesiod, Works and Days', 'HesWD', 'hesiod-works-and-days', 827, 'Op'),
+  hesiodWork('hesiod-shield', 'Hesiod, Shield of Heracles', 'HesSh', 'hesiod-shield', 479, 'Sc'),
+]
+
+// Herodotus — one work per book (chapter = Herodotus chapter, verse = section). book → last chapter;
+// book 8 is missing chapter 140 in the source, so it carries an explicit chapterNumbers list.
+const HERODOTUS_BOOKS: { book: number; last: number; skip?: number[] }[] = [
+  { book: 1, last: 216 }, { book: 2, last: 182 }, { book: 3, last: 160 }, { book: 4, last: 205 },
+  { book: 5, last: 126 }, { book: 6, last: 140 }, { book: 7, last: 239 }, { book: 8, last: 144, skip: [140] },
+  { book: 9, last: 122 },
+]
+const herodotusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Hdt\\.|Herodotus,?)\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+const HERODOTUS_WORKS: ProseWork[] = HERODOTUS_BOOKS.map(b => ({
+  source: `herodotus-histories-${b.book}` as EmbeddedProseSource,
+  name: `Herodotus, The Histories (Book ${b.book})`,
+  noteBook: `HdtHist${b.book}`,
+  dataUrl: `/data/greco/herodotus-histories-${b.book}.json`,
+  chapters: b.last,
+  attribution: HERODOTUS_ATTRIB,
+  parseCitation: herodotusCite(b.book),
+  chapterLabel: (ch: number) => `Chapter ${ch}`,
+}))
+
+// Catalog ids/names, with the book-8 gap declared so the reader doesn't stall on chapter 140.
+export const HOMER_CATALOG = HOMER_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: 24, greek: true }))
+export const HESIOD_CATALOG = HESIOD_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: w.chapters, greek: true }))
+export const HERODOTUS_CATALOG = HERODOTUS_BOOKS.map(b => ({
+  id: `herodotus-histories-${b.book}`,
+  source: `herodotus-histories-${b.book}` as EmbeddedProseSource,
+  name: `Herodotus, The Histories (Book ${b.book})`,
+  chapters: b.last,
+  greek: true,
+  ...(b.skip ? { chapterNumbers: Array.from({ length: b.last }, (_, i) => i + 1).filter(n => !b.skip!.includes(n)) } : {}),
 }))
 
 // ── The Mishnah ───────────────────────────────────────────────────────────────────────
@@ -1143,6 +1220,9 @@ export const PROSE_WORKS: ProseWork[] = [
   ...JUSTIN_WORKS,
   ...EUSEBIUS_WORKS,
   ...QUINTILIAN_WORKS,
+  ...HOMER_WORKS,
+  ...HESIOD_WORKS,
+  ...HERODOTUS_WORKS,
   ...MISHNAH_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,

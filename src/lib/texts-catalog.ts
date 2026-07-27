@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -256,6 +256,24 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
       ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
     ],
+  },
+  {
+    id: 'homer',
+    label: 'Homer',
+    blurb: 'The Iliad and the Odyssey — the foundational Greek epics. The Greek (Monro–Allen) line-by-line with A. T. Murray’s public-domain Loeb English beside it (Perseus, CC BY-SA); cited by book and line.',
+    works: HOMER_CATALOG,
+  },
+  {
+    id: 'hesiod',
+    label: 'Hesiod',
+    blurb: 'Hesiod’s Theogony, Works and Days, and Shield of Heracles — early Greek didactic and genealogical poetry. Greek with Evelyn-White’s public-domain Loeb English (Perseus, CC BY-SA); cited by line.',
+    works: HESIOD_CATALOG,
+  },
+  {
+    id: 'herodotus',
+    label: 'Herodotus',
+    blurb: 'Herodotus’ Histories — the first great work of Greek prose history (5th c. BCE), in nine books. The Greek with A. D. Godley’s public-domain Loeb English (Perseus, CC BY-SA); cited book.chapter.section.',
+    works: HERODOTUS_CATALOG,
   },
   {
     id: 'mishnah',

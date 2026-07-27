@@ -300,6 +300,106 @@ def build_line_poem(slug, name, urn_dir, urn_base, attrib, no_cache, chunk=150):
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': len(lines)}]
 
 
+def _div_text(el):
+    """Text of a card/div, dropping headings, labels, and the card milestone."""
+    for tag in ('head', 'label'):
+        for x in el.findall(f't:{tag}', NS) + el.findall(f'.//t:{tag}', NS):
+            tail = x.tail; x.clear(); x.text = ''; x.tail = tail
+    return re.sub(r'\s+', ' ', ''.join(el.itertext())).strip()
+
+
+def parse_lines(xml_bytes, per_book):
+    """{(book|None, line): greek} from <l n=..>; book from the (case-insensitive) book div."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    NSU = '{http://www.tei-c.org/ns/1.0}'
+    out = {}
+
+    def add(book, l):
+        n = l.get('n')
+        if n and n.isdigit():
+            t = re.sub(r'\s+', ' ', ''.join(l.itertext())).strip()
+            if t:
+                out[(book, int(n))] = t
+
+    if per_book:
+        for b in root.iter(NSU + 'div'):
+            if (b.get('subtype') or '').lower() != 'book' or not (b.get('n') or '').isdigit():
+                continue
+            for l in b.iter(NSU + 'l'):
+                add(int(b.get('n')), l)
+    else:
+        for l in root.iter(NSU + 'l'):
+            add(None, l)
+    return out
+
+
+def parse_eng_chunks(xml_bytes, per_book):
+    """{(book|None, startline): english}. Homer's Murray is book→card (card n = the starting
+    line); Hesiod's Evelyn-White marks every ~5th line with <l n=..>. Either way the English is
+    keyed by the line it starts at, so it can sit beside that Greek line (the rest are Greek-only,
+    the Eusebius chunk model)."""
+    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    root = ET.fromstring(xml)
+    NSU = '{http://www.tei-c.org/ns/1.0}'
+    out = {}
+    has_cards = any((d.get('subtype') or '').lower() == 'card' for d in root.iter(NSU + 'div'))
+    if has_cards:
+        def walk(el, book):
+            for d in el.findall('t:div', NS):
+                st = (d.get('subtype') or '').lower()
+                if st == 'book' and (d.get('n') or '').isdigit():
+                    walk(d, int(d.get('n')))
+                elif st == 'card' and (d.get('n') or '').isdigit():
+                    t = _div_text(d)
+                    if t:
+                        out[(book if per_book else None, int(d.get('n')))] = t
+                else:
+                    walk(d, book)
+        walk(root.find('.//t:body', NS), None)
+    else:
+        for l in root.iter(NSU + 'l'):
+            n = l.get('n')
+            if n and n.isdigit():
+                t = re.sub(r'\s+', ' ', ''.join(l.itertext())).strip()
+                if t:
+                    out[(None, int(n))] = t
+    return out
+
+
+def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, attrib, no_cache, chunk=150):
+    """A verse work addressed by line (Homer, Hesiod), Greek line-by-line with the public-domain
+    English chunked beside it. per_book (Homer): chapter = book, verse = line ("Il. 1.1"). Flat
+    (Hesiod): lines grouped into `chunk`-line chapters, verse = line ("Theog. 116")."""
+    base = f'{urn_dir}/{urn_base}'
+    grc = parse_lines(fetch(f'{base}.perseus-grc2.xml', no_cache), per_book)
+    eng = parse_eng_chunks(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), per_book)
+    from collections import defaultdict
+    lane = defaultdict(dict)
+    for (b, ln), t in grc.items():
+        lane[b][ln] = t
+    chapters = []
+    if per_book:
+        for b in sorted(lane):
+            chapters.append({'number': b, 'verses': [
+                {'number': ln, 'ref': str(ln), 'text': eng.get((b, ln), ''), 'greek': lane[b][ln]}
+                for ln in sorted(lane[b])]})
+    else:
+        lines = sorted(lane[None])
+        for i in range(0, len(lines), chunk):
+            chapters.append({'number': i // chunk + 1, 'verses': [
+                {'number': ln, 'ref': str(ln), 'text': eng.get((None, ln), ''), 'greek': lane[None][ln]}
+                for ln in lines[i:i + chunk]]})
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
+    if not per_book:
+        doc['lineChunk'] = chunk
+        doc['lineCount'] = len(lane[None])
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    tot = sum(len(c['verses']) for c in chapters)
+    n_eng = sum(1 for c in chapters for v in c['verses'] if v['text'])
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': tot, 'eng': n_eng}]
+
+
 def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache, ref_unit=None):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
@@ -352,6 +452,16 @@ LUCIAN_ATTRIB = ('Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Ox
 APOLLODORUS_ATTRIB = ('Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, '
                       '1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
                       'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+HOMER_ATTRIB = ('Greek: Homer, ed. D. B. Monro & T. W. Allen (OCT). English: A. T. Murray '
+                '(Loeb, 1919–1925), public domain — the prose translation is given per card '
+                '(a group of lines) beside the Greek. Digital edition: Perseus Digital Library, '
+                'CC-BY-SA 4.0 (perseus.tufts.edu).')
+HESIOD_ATTRIB = ('Greek: Hesiod (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), public '
+                 'domain, given per ~5-line group beside the Greek; cited by line. Digital '
+                 'edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+HERODOTUS_ATTRIB = ('Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 1920–1925), public '
+                    'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
+                    'CC-BY-SA 4.0 (perseus.tufts.edu).')
 
 
 def parse_bcs(xml_bytes):
@@ -364,8 +474,9 @@ def parse_bcs(xml_bytes):
         for div in el.findall('t:div', NS):
             if div.get('type') != 'textpart':
                 walk(div, ctx); continue
-            c = dict(ctx); c[div.get('subtype')] = div.get('n')
-            if div.get('subtype') == 'section':
+            sub = (div.get('subtype') or '').lower()   # Herodotus' English uses "Book" (capital)
+            c = dict(ctx); c[sub] = div.get('n')
+            if sub == 'section':
                 out[(c.get('book'), c.get('chapter'), div.get('n'))] = chapter_text(div)
             else:
                 walk(div, c)
@@ -523,6 +634,23 @@ def main():
     # Aratus, Phaenomena — the full didactic poem (Greek only, cited by line; line 5 = Acts 17:28).
     results += build_line_poem('aratus-phaenomena', 'Aratus, Phaenomena',
                                'tlg0653/tlg001', 'tlg0653.tlg001', ARATUS_ATTRIB, no_cache)
+    # Homer — Iliad & Odyssey: Greek line-by-line with Murray's Loeb English per card (chapter =
+    # book, verse = line; "Il. 1.1" → Book 1, line 1).
+    results += build_line_parallel('homer-iliad', 'Homer, Iliad',
+                                   'tlg0012/tlg001', 'tlg0012.tlg001', 'eng3', True, HOMER_ATTRIB, no_cache)
+    results += build_line_parallel('homer-odyssey', 'Homer, Odyssey',
+                                   'tlg0012/tlg002', 'tlg0012.tlg002', 'eng3', True, HOMER_ATTRIB, no_cache)
+    # Hesiod — the three poems, cited by line (Evelyn-White's English per ~5-line group).
+    results += build_line_parallel('hesiod-theogony', 'Hesiod, Theogony',
+                                   'tlg0020/tlg001', 'tlg0020.tlg001', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    results += build_line_parallel('hesiod-works-and-days', 'Hesiod, Works and Days',
+                                   'tlg0020/tlg002', 'tlg0020.tlg002', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    results += build_line_parallel('hesiod-shield', 'Hesiod, Shield of Heracles',
+                                   'tlg0020/tlg003', 'tlg0020.tlg003', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    # Herodotus, The Histories — book→chapter→section, one work per book (Godley's Loeb English;
+    # "Hdt. 1.1.1" → Book 1, chapter 1, section 1).
+    results += build_bcs('herodotus-histories', lambda b: f'Herodotus, The Histories (Book {b})',
+                         'tlg0016/tlg001', 'tlg0016.tlg001', 'eng2', HERODOTUS_ATTRIB, no_cache)
     for r in results:
         print(f'{r["slug"]:26s} chapters={r["chapters"]:2d} verses={r["verses"]:4d}')
     validate(results)
