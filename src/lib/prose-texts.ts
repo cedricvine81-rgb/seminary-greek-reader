@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}`
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
@@ -494,6 +494,53 @@ export const EUSEBIUS_CATALOG = EUSEBIUS_BOOKS.map(b => ({
   ...(b.preface ? { chapterNumbers: eusebiusChapterNumbers(b) } : {}),
 }))
 
+// ── Quintilian, Institutio Oratoria (Latin + English) ─────────────────────────────────
+// The great Roman handbook of rhetorical education (c. 95 CE) — background to the rhetoric of
+// the NT epistles. LATIN, not Greek: no parsing pane (the app has no Latin morphology), and
+// primaryLabel names the first column "Latin". Butler's Latin + the Rev. J. S. Watson's
+// public-domain English (1856), paired at CHAPTER level — the two editions subdivide their
+// sections differently, so a whole English chapter sits beside the whole Latin chapter (section
+// numbers kept inline in the Latin). One work per book. Built by scripts/build-quintilian.py.
+const QUINTILIAN_ATTRIBUTION = 'Latin: Quintilian, Institutio Oratoria, ed. H. E. Butler. English: the Rev. John Selby Watson (1856), public domain. Digital edition: Perseus Digital Library, CC BY-SA 3.0.'
+// book → first chapter (0 when it opens with a preface) and last chapter. From the build.
+const QUINTILIAN_BOOKS: { book: number; first: number; last: number }[] = [
+  { book: 1, first: 0, last: 12 }, { book: 2, first: 1, last: 21 }, { book: 3, first: 1, last: 11 },
+  { book: 4, first: 0, last: 5 }, { book: 5, first: 0, last: 14 }, { book: 6, first: 0, last: 5 },
+  { book: 7, first: 0, last: 10 }, { book: 8, first: 0, last: 6 }, { book: 9, first: 1, last: 4 },
+  { book: 10, first: 1, last: 7 }, { book: 11, first: 1, last: 3 }, { book: 12, first: 0, last: 11 },
+]
+
+const quintilianChapterNumbers = (b: { first: number; last: number }): number[] =>
+  Array.from({ length: b.last - b.first + 1 }, (_, i) => b.first + i)
+
+// "Quintilian, Inst. 10.1.2" → book 10, chapter 1 (section kept inline; chapter-level rows).
+const quintilianCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '')
+  const m = s.match(new RegExp(`^Quint(?:ilian)?\\.?,?\\s+(?:Inst(?:\\.|itutio)?\\s*(?:Or(?:at)?\\.?\\s*)?)?${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const QUINTILIAN_WORKS: ProseWork[] = QUINTILIAN_BOOKS.map(b => ({
+  source: `quintilian-${b.book}` as EmbeddedProseSource,
+  name: `Quintilian, Institutio Oratoria (Book ${b.book})`,
+  noteBook: `QuintInst${b.book}`,
+  dataUrl: `/data/quintilian/inst-${b.book}.json`,
+  chapters: b.last,
+  attribution: QUINTILIAN_ATTRIBUTION,
+  parseCitation: quintilianCite(b.book),
+  chapterLabel: (ch: number) => (ch === 0 ? 'Preface' : `Chapter ${ch}`),
+}))
+
+export const QUINTILIAN_CATALOG = QUINTILIAN_BOOKS.map(b => ({
+  id: `quintilian-${b.book}`,
+  source: `quintilian-${b.book}` as EmbeddedProseSource,
+  name: `Quintilian, Institutio Oratoria (Book ${b.book})`,
+  chapters: b.last,
+  greek: true,
+  primaryLabel: 'Latin',
+  ...(b.first === 0 ? { chapterNumbers: quintilianChapterNumbers(b) } : {}),
+}))
+
 // ── The Mishnah ───────────────────────────────────────────────────────────────────────
 // The cited tractates in Dr. Joshua Kulp's "Mishnah Yomit" translation (CC-BY, via Sefaria),
 // embedded chapter → verse where verse = the mishnah number ("m. Sanh. 4:5" → chapter 4,
@@ -939,6 +986,29 @@ const ARATUS_WORK: ProseWork = {
     `Lines ${(ch - 1) * ARATUS_CHUNK + 1}–${Math.min(ch * ARATUS_CHUNK, ARATUS_LINES)}`,
 }
 
+// ── Theon, Progymnasmata (Greek only) ─────────────────────────────────────────────────
+// Aelius Theon's handbook of preliminary rhetorical exercises (progymnasmata) — background
+// to the composition of the NT epistles and gospels. Greek only (no public-domain English;
+// Kennedy 2003 is under copyright). 5 extant chapters (the exercises), each a run of
+// paragraphs; cited by chapter.paragraph.
+const THEON_TITLES: Record<number, string> = {
+  1: 'Proem', 2: 'On the Education of the Young', 3: 'On Fable', 4: 'On Narrative', 5: 'On the Chreia',
+}
+
+const THEON_WORK: ProseWork = {
+  source: 'theon-progymnasmata',
+  name: 'Theon, Progymnasmata',
+  noteBook: 'TheonProg',
+  dataUrl: '/data/greco/theon-progymnasmata.json',
+  chapters: 5,
+  attribution: 'Greek: Aelius Theon, Progymnasmata, ed. C. Walz. Digital edition: First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. Greek only — the modern English (Kennedy, 2003) is under copyright.',
+  parseCitation: (text: string) => {
+    const m = text.replace(/^cf\.\s*/, '').match(/^Theon,?\s+(?:Progymn?(?:asmata|\.)?\s+)?(\d+)(?:\.(\d+))?/)
+    return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : 1 } : null
+  },
+  chapterLabel: (ch: number) => THEON_TITLES[ch] ?? `Chapter ${ch}`,
+}
+
 // ── Pagan sources quoted in the New Testament ─────────────────────────────────────────
 // A curated collection (scripts/build-nt-pagan-sources.py): each chapter is one pagan passage
 // the NT quotes, its heading naming the source and the NT reference.
@@ -1072,6 +1142,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...ANF_WORKS,
   ...JUSTIN_WORKS,
   ...EUSEBIUS_WORKS,
+  ...QUINTILIAN_WORKS,
   ...MISHNAH_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,
@@ -1084,6 +1155,7 @@ export const PROSE_WORKS: ProseWork[] = [
   PHILOSTRATUS_WORK,
   DIO_WORK,
   ARATUS_WORK,
+  THEON_WORK,
   NT_PAGAN_WORK,
 ]
 

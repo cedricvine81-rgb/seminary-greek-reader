@@ -262,6 +262,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // empty English column.
   const greekOnlyWork = !!work?.greekOnly
   const proseModeEff = greekOnlyWork ? 'greek' : proseMode
+  // The first ("original") column is Greek for almost everything, but Latin for Quintilian.
+  // primaryLabel names it in the mode selector and the search box; it also turns off the
+  // QWERTY→Greek Beta-Code transliteration, which would garble a Latin query.
+  const primaryLabel = work?.primaryLabel ?? 'Greek'
+  const primaryIsGreek = primaryLabel === 'Greek'
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work)
   const showEnglish = translationId !== null
@@ -279,8 +284,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
   const secondLabel = work?.secondaryLabel ?? 'English'
-  const proseModeLabel = proseModeEff === 'greek' ? 'Greek only'
-    : proseModeEff === 'english' ? `${secondLabel} only` : `Greek + ${secondLabel}`
+  const proseModeLabel = proseModeEff === 'greek' ? `${primaryLabel} only`
+    : proseModeEff === 'english' ? `${secondLabel} only` : `${primaryLabel} + ${secondLabel}`
 
   // Which scripts the in-text search can target, given what's on screen.
   const greekSearchable = (isGreek || greekProse) && !greekHidden
@@ -292,7 +297,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     searchLangPref === 'grc' && greekSearchable ? 'grc'
     : searchLangPref === 'en' && englishSearchable ? 'en'
     : greekSearchable ? 'grc' : 'en'
-  const greekTyping = searchLang === 'grc' && greekSearchable
+  // Beta-Code (QWERTY→Greek) transliteration only makes sense when the primary column really
+  // is Greek — a Latin work (Quintilian) searches its text as typed.
+  const greekTyping = searchLang === 'grc' && greekSearchable && primaryIsGreek
 
   // Unique words present in the loaded text, per script, for predictive suggestions. Greek is
   // tokenized from the parsed tokens where available (else whitespace-split); English from the

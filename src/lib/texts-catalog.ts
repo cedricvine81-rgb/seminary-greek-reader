@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -33,6 +33,9 @@ export interface CatalogWork {
   // Name of the second column when it is not English — e.g. the Latin of Augustine's
   // rendering of the Sibylline acrostic. Defaults to 'English'.
   secondaryLabel?: string
+  // Name of the FIRST ("original") column when it is not Greek — 'Latin' for Quintilian.
+  // Defaults to 'Greek'; also turns off the Greek Beta-Code search transliteration.
+  primaryLabel?: string
   // josephus
   work?: string                 // directory under public/data/josephus/
   books?: number[]              // chapter count per book (index → book number - 1)
@@ -249,6 +252,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
       { id: 'philostratus-apollonius', name: 'Philostratus, Life of Apollonius of Tyana', source: 'philostratus-apollonius', chapters: 8, greek: true, greekOnly: true },
       { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
+      { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true, greekOnly: true },
       { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
       ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
     ],
@@ -258,6 +262,12 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     label: 'Mishnah',
     blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
     works: MISHNAH_CATALOG,
+  },
+  {
+    id: 'quintilian',
+    label: 'Quintilian',
+    blurb: 'Quintilian’s Institutio Oratoria — the great Roman handbook of rhetorical education (c. 95 CE), essential background to the rhetoric of the New Testament epistles. The Latin (Butler) beside the Rev. J. S. Watson’s public-domain English (1856), via Perseus (CC BY-SA). Latin, so there is no parsing pane.',
+    works: QUINTILIAN_CATALOG,
   },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]
