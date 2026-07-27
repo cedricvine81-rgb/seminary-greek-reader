@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { SearchPageView } from './SearchPageView'
 import { MorphSearchPage } from './MorphSearchPage'
+import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import type { MasterSearchPreset } from '@/lib/master-search-bus'
+import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // The Master Search as a side panel beside the current page (Reader, Texts, …) instead of a
 // navigation: the page stays mounted and visible, so there is nothing to "return" to and a
@@ -26,6 +28,10 @@ function clampWidth(w: number): number {
 
 export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: { preset?: MasterSearchPreset; onClose: () => void; isAuthenticated?: boolean }) {
   const [width, setWidth] = useState(DEFAULT_W)
+  // The parsing pane is hoisted out of the scrolling results into a real bottom pane (flex-none
+  // below a flex-1 scroll area), like the Reader's, instead of a sticky overlay covering results.
+  const [parseInfo, setParseInfo] = useState<LexicalInfoPanel | null>(null)
+  const [paneActive, setPaneActive] = useState(false)
   const widthRef = useRef(width); widthRef.current = width
   const drag = useRef<{ startX: number; startW: number } | null>(null)
 
@@ -103,30 +109,37 @@ export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: 
       </div>
 
       {/* No separate header row — SearchPageView's sticky controls double as the header in
-          embedded mode ("Search" title + query box + Full search + close ✕ on one line). */}
-      {/* The search itself — its own scroll container (the sticky controls + parsing dock
-          stick within it). pb-16 mirrors the /search page's bottom clearance. */}
-      <div className="flex-1 min-h-0 overflow-y-auto pb-16">
-        {preset?.scope?.startsWith('morph:') ? (
-          // Morphology facet (Grammar-page "See it in the NT" links, Reader "By morphology"):
-          // same split-view panel, its own criteria/results flow.
-          <MorphSearchPage
-            embedded
-            onRequestClose={onClose}
-            features={(preset.features ?? '').split(',').map(f => f.trim()).filter(Boolean)}
-            lemma={(preset.query ?? '').trim()}
-          />
-        ) : (
-          <SearchPageView
-            embedded
-            onRequestClose={onClose}
-            initialQuery={preset?.query}
-            initialScope={preset?.scope}
-            initialLemma={preset?.lemma}
-            initialBooks={preset?.books}
-            initialStrongs={preset?.strongs}
-            isAuthenticated={isAuthenticated}
-          />
+          embedded mode ("Search" title + query box + Full search + close ✕ on one line). A flex
+          column: the results scroll in the flex-1 area, and the Greek parsing pane sits BELOW it
+          as a real bottom pane (like the Reader/Texts), so it never overlays the results. */}
+      <div className="flex-1 min-h-0 flex flex-col">
+        <div className="flex-1 min-h-0 overflow-y-auto pb-4">
+          {preset?.scope?.startsWith('morph:') ? (
+            // Morphology facet (Grammar-page "See it in the NT" links, Reader "By morphology"):
+            // same split-view panel, its own criteria/results flow.
+            <MorphSearchPage
+              embedded
+              onRequestClose={onClose}
+              features={(preset.features ?? '').split(',').map(f => f.trim()).filter(Boolean)}
+              lemma={(preset.query ?? '').trim()}
+            />
+          ) : (
+            <SearchPageView
+              embedded
+              onRequestClose={onClose}
+              initialQuery={preset?.query}
+              initialScope={preset?.scope}
+              initialLemma={preset?.lemma}
+              initialBooks={preset?.books}
+              initialStrongs={preset?.strongs}
+              isAuthenticated={isAuthenticated}
+              onParseInfo={setParseInfo}
+              onParsePaneActive={setPaneActive}
+            />
+          )}
+        </div>
+        {paneActive && (
+          <ResizableParsingPane storageKey="search" info={parseInfo} className="px-3 pb-2" />
         )}
       </div>
     </div>

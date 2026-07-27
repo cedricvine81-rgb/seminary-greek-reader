@@ -189,7 +189,11 @@ function returnLabelFor(from: string): string {
   return RETURN_LABELS.find(r => r.test.test(from))?.label ?? 'page'
 }
 
-export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose, isAuthenticated = false }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void; isAuthenticated?: boolean }) {
+export function SearchPageView({ initialQuery = '', initialScope, initialLemma = false, initialBooks, initialStrongs, returnTo, embedded = false, onRequestClose, isAuthenticated = false, onParseInfo, onParsePaneActive }: { initialQuery?: string; initialScope?: string; initialLemma?: boolean; initialBooks?: string; initialStrongs?: string; returnTo?: string; embedded?: boolean; onRequestClose?: () => void; isAuthenticated?: boolean;
+  // When embedded, the parsing pane is hoisted to the host panel so it sits BELOW the results as
+  // a real bottom pane (not a sticky overlay): onParseInfo streams the current parse up, and
+  // onParsePaneActive says whether Greek results are showing (so the host can mount the pane).
+  onParseInfo?: (info: LexicalInfoPanel | null) => void; onParsePaneActive?: (active: boolean) => void }) {
   const router = useRouter()
   const [query, setQuery] = useState(initialQuery)
   const [scopeVal, setScopeVal] = useState(initialScope || 'trans:en')
@@ -218,7 +222,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // The parsing pane is always the search view's OWN bottom dock — including in the embedded
   // side-panel over the Reader, so a clicked Greek word parses within the panel rather than
   // filling the Reader's pane hidden behind it (a standalone, draggable pane in the panel).
-  const showBgInfo = (i: LexicalInfoPanel | null) => setBgInfo(i)
+  const showBgInfo = (i: LexicalInfoPanel | null) => { setBgInfo(i); onParseInfo?.(i) }
   const lxxWords = useRef<Record<string, { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }[]>>({})
   const morphMaps = useRef<Record<string, Record<string, ([string, string] | null)[]> | null>>({})
   const bgFetching = useRef<Set<string>>(new Set())
@@ -505,6 +509,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       setCtxTransMap({})
     }
   }, [isBiblical, context, displayBib, bg, scope])
+
+  // Tell an embedding host whether Greek background results are on screen, so it can mount its
+  // own bottom parsing pane (a real flex-none pane below the results, not this view's overlay).
+  const greekPaneActive = !loading && !isBiblical && bg?.lang === 'grc' && (bg?.total ?? 0) > 0
+  useEffect(() => { onParsePaneActive?.(greekPaneActive) }, [greekPaneActive, onParsePaneActive])
+  useEffect(() => () => { onParsePaneActive?.(false) }, [onParsePaneActive])
 
   // Predictive typing: autocomplete the last word of the query. Hebrew scope / Hebrew text →
   // pointed Hebrew lemmas (with glosses + Strong's, so a pick runs "all forms"); translation
@@ -1221,8 +1231,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
         )}
 
         {/* Parsing dock for Greek background results (the Greek NT/LXX lanes carry their own
-            inside GreekSearchResults) — visible whenever Greek text is on screen. */}
-        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && <ParsingDock info={bgInfo} />}
+            inside GreekSearchResults). On the full /search page it's this in-flow sticky dock;
+            when embedded, the host panel mounts a real bottom pane instead (see greekPaneActive). */}
+        {!embedded && !loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && <ParsingDock info={bgInfo} />}
       </div>
     </div>
   )
