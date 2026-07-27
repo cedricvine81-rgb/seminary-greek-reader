@@ -42,6 +42,9 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
         if (!tok) return tok
         const end = start + tok.length
         if (/\s/.test(tok)) {
+          // A newline is a real line break in verse texts (Homer, Hesiod: the group's lines are
+          // joined with "\n") — render it as <br/> so poetry keeps its lines beside the English.
+          if (tok.includes('\n')) return <br key={i} />
           // Paint whitespace inside a highlight so consecutive words read as one continuous stroke.
           const sp = hl ? highlightAt(start, end, hl.verseHighlights) : undefined
           return sp ? <span key={i} className={highlightMarkClass(sp.color)}>{tok}</span> : tok

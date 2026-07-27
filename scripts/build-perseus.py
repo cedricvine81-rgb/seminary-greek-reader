@@ -368,32 +368,56 @@ def parse_eng_chunks(xml_bytes, per_book):
 
 
 def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, attrib, no_cache, chunk=150):
-    """A verse work addressed by line (Homer, Hesiod), Greek line-by-line with the public-domain
-    English chunked beside it. per_book (Homer): chapter = book, verse = line ("Il. 1.1"). Flat
-    (Hesiod): lines grouped into `chunk`-line chapters, verse = line ("Theog. 116")."""
+    """A verse work addressed by line (Homer, Hesiod). Murray's / Evelyn-White's Loeb English is
+    not line-aligned — it comes in card / ~5-line groups — so each VERSE is that group: the group's
+    Greek lines together (joined with newlines, which the reader renders as line breaks) beside the
+    group's English, a Loeb facing layout that actually aligns. Homer: chapter = book, verse = the
+    card (numbered by its first line, "Il. 1.1"). Hesiod: verses grouped into `chunk`-line chapters
+    ("Theog. 116" opens the group containing line 116)."""
+    import bisect
+    from collections import defaultdict
     base = f'{urn_dir}/{urn_base}'
     grc = parse_lines(fetch(f'{base}.perseus-grc2.xml', no_cache), per_book)
     eng = parse_eng_chunks(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), per_book)
-    from collections import defaultdict
-    lane = defaultdict(dict)
+    glane, elane = defaultdict(dict), defaultdict(dict)
     for (b, ln), t in grc.items():
-        lane[b][ln] = t
+        glane[b][ln] = t
+    for (b, ln), t in eng.items():
+        elane[b][ln] = t
+
+    def group(book):
+        """[(start_line, end_line, greek_block, english)] — each English chunk with the Greek
+        lines that fall in its range (start ≤ line < next start)."""
+        starts = sorted(elane.get(book, {}))
+        buckets = defaultdict(list)
+        for ln in sorted(glane[book]):
+            i = bisect.bisect_right(starts, ln) - 1 if starts else -1
+            key = starts[i] if i >= 0 else ln   # lines before the first chunk get their own group
+            buckets[key].append(ln)
+        out = []
+        for start in sorted(buckets):
+            lns = buckets[start]
+            out.append((start, lns[-1], '\n'.join(glane[book][x] for x in lns),
+                        elane.get(book, {}).get(start, '')))
+        return out
+
     chapters = []
     if per_book:
-        for b in sorted(lane):
+        for b in sorted(glane):
             chapters.append({'number': b, 'verses': [
-                {'number': ln, 'ref': str(ln), 'text': eng.get((b, ln), ''), 'greek': lane[b][ln]}
-                for ln in sorted(lane[b])]})
+                {'number': s, 'ref': (str(s) if s == e else f'{s}–{e}'), 'text': en, 'greek': g}
+                for (s, e, g, en) in group(b)]})
     else:
-        lines = sorted(lane[None])
-        for i in range(0, len(lines), chunk):
-            chapters.append({'number': i // chunk + 1, 'verses': [
-                {'number': ln, 'ref': str(ln), 'text': eng.get((None, ln), ''), 'greek': lane[None][ln]}
-                for ln in lines[i:i + chunk]]})
+        by_ch = defaultdict(list)
+        for (s, e, g, en) in group(None):
+            by_ch[(s - 1) // chunk + 1].append(
+                {'number': s, 'ref': (str(s) if s == e else f'{s}–{e}'), 'text': en, 'greek': g})
+        for ch in sorted(by_ch):
+            chapters.append({'number': ch, 'verses': by_ch[ch]})
     doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
     if not per_book:
         doc['lineChunk'] = chunk
-        doc['lineCount'] = len(lane[None])
+        doc['lineCount'] = len(glane[None])
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     tot = sum(len(c['verses']) for c in chapters)
     n_eng = sum(1 for c in chapters for v in c['verses'] if v['text'])
