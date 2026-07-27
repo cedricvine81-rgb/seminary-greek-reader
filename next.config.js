@@ -39,6 +39,7 @@ const nextConfig = {
         // function limit (the api/.../course-notes function hit 252.74MB, failing every
         // Production build from that commit on). Excluding them is safe and necessary.
         'public/data/greco/**',
+        'public/data/quintilian/**',
         'public/data/josephus/**',
         'public/data/philo/**',
         'public/data/variants/**',
