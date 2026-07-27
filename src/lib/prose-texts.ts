@@ -892,11 +892,14 @@ const PHILOSTRATUS_WORK: ProseWork = {
   chapterLabel: (ch: number) => `Book ${ch}`,
 }
 
-// The Orations survive under the numbers 1–88 with gaps; chapterNumbers carries the real set.
-const DIO_ORATIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 19, 20, 21, 22, 23, 24, 25, 26,
-  27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
-  51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74,
-  75, 76, 79, 80, 84, 85, 86, 87, 88]
+// The Orations we hold run 1–76 and 79–80 (77/78 is a single discourse not in the
+// Perseus Greek); chapterNumbers carries the real set. (Perseus shelves 14–18 —
+// On Slavery & Freedom I–II, On Pain, On Covetousness, On Public Speaking — under
+// 84–88; build-dio-english.py corrects them back to 14–18.)
+const DIO_ORATIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+  46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+  70, 71, 72, 73, 74, 75, 76, 79, 80]
 
 const DIO_WORK: ProseWork = {
   source: 'dio-chrysostom-orations',
@@ -904,7 +907,7 @@ const DIO_WORK: ProseWork = {
   noteBook: 'DioChrys',
   dataUrl: '/data/greco/dio-chrysostom-orations.json',
   chapters: DIO_ORATIONS[DIO_ORATIONS.length - 1],
-  attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only — a chapter-aligned English is not yet available.',
+  attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. English: J. W. Cohoon & H. Lamar Crosby, Loeb Classical Library (1932–1951), public domain (digitised by Bill Thayer, LacusCurtius).',
   parseCitation: (text: string) => {
     const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:Or(?:ationes|\.)?\s+)?(\d+)\.(\d+)/)
     return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null

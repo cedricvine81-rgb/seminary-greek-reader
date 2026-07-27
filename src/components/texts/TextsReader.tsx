@@ -255,14 +255,21 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // A prose work that carries the original Greek per verse (e.g. Epictetus) — shown in a
   // parallel Greek | English layout, distinct from the word-parsed lxx Greek path.
   const greekProse = !!work?.greek
+  // A Greek-only prose work (no translation shipped, e.g. Philostratus, Aratus,
+  // Marcus Aurelius) is always shown Greek-only — even if a previously-open work
+  // left proseMode on 'both' — and its mode selector is hidden, since there is
+  // no second column to switch to. Derived so it can never get stuck showing an
+  // empty English column.
+  const greekOnlyWork = !!work?.greekOnly
+  const proseModeEff = greekOnlyWork ? 'greek' : proseMode
   const hasEnglish = work ? (work.source === 'lxx' ? !!work.english : true) : false
   const availableTranslations = translationsFor(work)
   const showEnglish = translationId !== null
   // Greek-hidden (English-only): an lxx work with its translation showing, or a greek-prose
   // work whose mode is 'english'.
-  const greekHidden = (greekHiddenPref && isGreek && showEnglish) || (greekProse && proseMode === 'english')
+  const greekHidden = (greekHiddenPref && isGreek && showEnglish) || (greekProse && proseModeEff === 'english')
   // Whether the parallel English column is rendered at all.
-  const englishColShown = (isGreek && showEnglish && hasEnglish) || (greekProse && proseMode !== 'greek')
+  const englishColShown = (isGreek && showEnglish && hasEnglish) || (greekProse && proseModeEff !== 'greek')
   const translationLabel = translationId
     ? (availableTranslations.find(t => t.id === translationId)?.label ?? 'Translation')
     : null
@@ -272,8 +279,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // The second column is English for most prose works, but Latin for the Greek Sibylline
   // (Augustine's rendering of the Book 8 acrostic).
   const secondLabel = work?.secondaryLabel ?? 'English'
-  const proseModeLabel = proseMode === 'greek' ? 'Greek only'
-    : proseMode === 'english' ? `${secondLabel} only` : `Greek + ${secondLabel}`
+  const proseModeLabel = proseModeEff === 'greek' ? 'Greek only'
+    : proseModeEff === 'english' ? `${secondLabel} only` : `Greek + ${secondLabel}`
 
   // Which scripts the in-text search can target, given what's on screen.
   const greekSearchable = (isGreek || greekProse) && !greekHidden
@@ -1108,7 +1115,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
               </div>
             )}
 
-            {greekProse && (
+            {greekProse && !greekOnlyWork && (
               <div className="relative" ref={translationMenuRef}>
                 <button
                   type="button"
@@ -1157,7 +1164,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 // In a greek-prose work's English-only mode, drop the Greek-only §§ (Josephus
                 // English lives once per Whiston section) so the translation reads continuously.
                 const filteredRows = section.rows.filter(matchesSearch)
-                  .filter(r => !(greekProse && proseMode === 'english') || !!r.english)
+                  .filter(r => !(greekProse && proseModeEff === 'english') || !!r.english)
                 if (q && filteredRows.length === 0) return null
                 const noteBook = noteBookFor(work, section)
                 const refLabel = refLabelFor(work, section)

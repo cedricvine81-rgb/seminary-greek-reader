@@ -202,7 +202,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
       { id: 'philostratus-apollonius', name: 'Philostratus, Life of Apollonius of Tyana', source: 'philostratus-apollonius', chapters: 8, greek: true, greekOnly: true },
       { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
-      { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true, greekOnly: true },
+      { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
       ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
     ],
   },
