@@ -11,7 +11,6 @@ import { SearchWords } from './SearchWords'
 import { HebrewSearchResults } from './HebrewSearchResults'
 import { ParsingDock } from './ParsingDock'
 import { markScrollRestore } from '@/lib/scroll-restore'
-import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import { findProseWork } from '@/lib/prose-texts'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { BgResult, BgLang, BgHit } from '@/lib/backgrounds-search-types'
@@ -216,10 +215,10 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // LXX hits from the reader API, Josephus / Greco-Roman prose from their morph sidecars.
   const [bgInfo, setBgInfo] = useState<LexicalInfoPanel | null>(null)
   const [bgSelKey, setBgSelKey] = useState<string | null>(null)
-  // Embedded over a page with a parsing pane (the Reader): send background-Greek parses there
-  // (parsing-info-bus) and skip the internal dock — same routing GreekSearchResults uses.
-  const [parseViaSink] = useState(() => embedded && hasParsingSink())
-  const showBgInfo = (i: LexicalInfoPanel | null) => { if (parseViaSink) emitParsingInfo(i); else setBgInfo(i) }
+  // The parsing pane is always the search view's OWN bottom dock — including in the embedded
+  // side-panel over the Reader, so a clicked Greek word parses within the panel rather than
+  // filling the Reader's pane hidden behind it (a standalone, draggable pane in the panel).
+  const showBgInfo = (i: LexicalInfoPanel | null) => setBgInfo(i)
   const lxxWords = useRef<Record<string, { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }[]>>({})
   const morphMaps = useRef<Record<string, Record<string, ([string, string] | null)[]> | null>>({})
   const bgFetching = useRef<Set<string>>(new Set())
@@ -233,6 +232,9 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [parallelLang, setParallelLang] = useState('en')
   const [context, setContext] = useState(0)   // verse-context radius: 0 (off) … 3
   const [ctxMap, setCtxMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
+  // The English of each background-Greek hit's context verses (fetched from the 'en' facet, same
+  // refs), so expanding the context grows the translation column alongside the Greek.
+  const [ctxTransMap, setCtxTransMap] = useState<Record<string, { chapter: number; verse: number; text: string }[]>>({})
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
   const [greekInput, setGreekInput] = useState(false)   // QWERTY→Greek (Beta Code) typing
   const [suggestions, setSuggestions] = useState<{ word: string; sub?: string; strongs?: string }[]>([])
@@ -472,7 +474,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // verses (same chapter) so it can be read in context. One batched POST; a reqId drops stale.
   useEffect(() => {
     // Neighbour-verse context isn't wired for the MT yet — Hebrew hits show without it.
-    if (context === 0 || scope.kind === 'hebrew') { setCtxMap({}); return }
+    if (context === 0 || scope.kind === 'hebrew') { setCtxMap({}); setCtxTransMap({}); return }
     let body: Record<string, unknown> | null = null
     if (isBiblical) {
       if (!displayBib || displayBib.length === 0) { setCtxMap({}); return }
@@ -490,6 +492,18 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       .then(r => r.ok ? r.json() : { context: {} })
       .then(d => { if (id === ctxReq.current) setCtxMap(d.context || {}) })
       .catch(() => { if (id === ctxReq.current) setCtxMap({}) })
+    // For a Greek background scope, also pull the English of those same context verses (the 'en'
+    // facet, same opaque refs) so the translation column expands with the Greek. Others: clear it.
+    if (!isBiblical && bg && bg.total > 0 && bg.lang === 'grc') {
+      const refs = bg.groups.flatMap(g => g.hits.map(h => bgCtxKey(h.target)))
+      fetch('/api/search/context', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'bg', lang: 'en', radius: context, refs }) })
+        .then(r => r.ok ? r.json() : { context: {} })
+        .then(d => { if (id === ctxReq.current) setCtxTransMap(d.context || {}) })
+        .catch(() => { if (id === ctxReq.current) setCtxTransMap({}) })
+    } else {
+      setCtxTransMap({})
+    }
   }, [isBiblical, context, displayBib, bg, scope])
 
   // Predictive typing: autocomplete the last word of the query. Hebrew scope / Hebrew text →
@@ -651,9 +665,12 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   // Resolve the word data for a hit's token and fill the parsing dock. LXX hits load their
   // chapter from the reader API (full lexeme + morphology); Josephus / Greco-Roman prose load
   // the work's morph sidecar ([lemma, parsing] aligned with the section's whitespace tokens).
-  async function selectBgToken(h: BgHit, ti: number, surface: string, key: string) {
+  async function selectBgToken(h: BgHit, ti: number, surface: string, key: string,
+                               tv?: { chapter: number; verse: number }) {
     setBgSelKey(key)
-    const t = h.target
+    // A word in a grey CONTEXT verse parses against that verse, not the matched one — same
+    // work/corpus, only the chapter/verse differ.
+    const t = tv ? { ...h.target, chapter: tv.chapter, verse: tv.verse } : h.target
     // Literal punctuation class (no \p{} — the repo's TS target predates the u-flag).
     const clean = surface.replace(/^[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+|[.,;:!?"“”‘’'`()[\]{}<>«»¿¡…—–·-]+$/g, '')
     const base: LexicalInfoPanel = { surface: clean || surface, lexeme: '', gloss: '', partOfSpeech: '', parsing: '', reference: h.ref }
@@ -706,15 +723,20 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
   // Windowed, clickable Greek tokens for a background hit — same window budget as the plain
   // snippet, but each word feeds the parsing dock (token index preserved for morph alignment).
-  const bgGreekTokens = (h: BgHit, rowKey: string, text: string, dim = false) => {
+  // Clickable Greek word tokens feeding the parsing dock. `windowed` trims to a snippet around
+  // the match (the no-context single line); off, the whole verse shows (context reading). `dim`
+  // suppresses the red match-mark (grey context verses). `tv` parses the words against that verse
+  // rather than the hit target — so words in a grey CONTEXT verse still parse correctly.
+  const bgGreekTokens = (h: BgHit, rowKey: string, text: string, dim = false,
+                         tv?: { chapter: number; verse: number }, windowed = false) => {
     const toks = text.split(/\s+/).filter(Boolean)
     const folded = toks.map(x => normalizeFold(x))
     const bares = terms.map(x => normalizeFold(x.replace(/"/g, ''))).filter(Boolean)
     const isMatch = (f: string) => bares.some(b => f.includes(b))
     let first = folded.findIndex(isMatch)
     if (first < 0) first = 0
-    const from = Math.max(0, first - 18)
-    const to = Math.min(toks.length, first + 26)
+    const from = windowed ? Math.max(0, first - 18) : 0
+    const to = windowed ? Math.min(toks.length, first + 26) : toks.length
     return (
       <>
         {from > 0 ? '… ' : ''}
@@ -723,8 +745,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
           const key = `${rowKey}.${ti}`
           return (
             <span key={ti}
-              onMouseEnter={() => void selectBgToken(h, ti, tok, key)}
-              onClick={() => void selectBgToken(h, ti, tok, key)}
+              onMouseEnter={() => void selectBgToken(h, ti, tok, key, tv)}
+              onClick={() => void selectBgToken(h, ti, tok, key, tv)}
               className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${bgSelKey === key ? 'bg-brand-100' : ''} ${isMatch(folded[ti]) && !dim ? MARK : ''}`}>
               {tok}{' '}
             </span>
@@ -741,18 +763,24 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const bgHitText = (h: BgHit, rowKey: string) => {
     const isGrc = bg?.lang === 'grc'
     const ctx = context > 0 ? ctxMap[bgCtxKey(h.target)] : undefined
-    const primary = ctx && ctx.length > 0 ? (
+    const hasCtx = !!ctx && ctx.length > 0
+    const isHitVerse = (cv: { chapter: number; verse: number }) =>
+      cv.chapter === h.target.chapter && cv.verse === h.target.verse
+
+    // Primary (Greek, or English for an English scope) column.
+    const primary = hasCtx ? (
       <span className={`block leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
-        {ctx.map(cv => {
-          const isHit = cv.chapter === h.target.chapter && cv.verse === h.target.verse
+        {ctx!.map(cv => {
+          const isHit = isHitVerse(cv)
           return (
             <span key={`${cv.chapter}.${cv.verse}`} className={isHit ? 'text-gray-800' : 'text-gray-400'}>
-              {isGrc && isHit
-                ? bgGreekTokens(h, `${rowKey}.${cv.chapter}.${cv.verse}`, cv.text)
+              {isGrc
+                // Every context verse's words are clickable → parsing dock; grey ones parse
+                // against their own verse (tv) and carry no match-mark (dim).
+                ? bgGreekTokens(h, `${rowKey}.${cv.chapter}.${cv.verse}`, cv.text, !isHit,
+                    isHit ? undefined : { chapter: cv.chapter, verse: cv.verse })
                 : <><SearchWords text={cv.text} terms={isHit ? terms : []}
-                    payload={() => ({ kind: isGrc ? 'greek' : 'translation',
-                      reference: h.ref,
-                      ...(isGrc ? { greekCorpus: 'LXX' as const } : { transLang: 'en' }),
+                    payload={() => ({ kind: 'translation', reference: h.ref, transLang: 'en',
                       ...(scope.kind === 'bg' && scope.category ? { bgCollection: scope.category } : {}) })} />{' '}</>}
             </span>
           )
@@ -760,21 +788,36 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
       </span>
     ) : (
       <span className={`block text-gray-700 leading-relaxed ${isGrc ? 'greek-text' : 'font-reading'}`}>
-        {isGrc ? bgGreekTokens(h, rowKey, h.text)
+        {isGrc ? bgGreekTokens(h, rowKey, h.text, false, undefined, true)
                : <SearchWords text={h.text} terms={terms}
                    payload={() => ({ kind: 'translation', reference: h.ref, transLang: 'en',
                      ...(scope.kind === 'bg' && scope.category ? { bgCollection: scope.category } : {}) })} />}
       </span>
     )
-    // Greek works with an aligned English (Josephus / Whiston, Greco-Roman / Perseus) show their
-    // translation of the matched section beside the Greek — mirroring the biblical results.
-    if (isGrc && h.trans) {
-      return (
-        <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
-          {primary}
-          <span className="block text-gray-500 leading-relaxed font-reading">{clampTrans(h.trans)}</span>
+    // Greek works with an aligned English (LXX / Brenton, Josephus / Whiston, Greco-Roman /
+    // Perseus) show their translation beside the Greek. With Context on it grows to the same
+    // neighbouring verses (the 'en' facet); off, just the matched section's translation.
+    if (isGrc) {
+      const tctx = hasCtx ? ctxTransMap[bgCtxKey(h.target)] : undefined
+      const transCol = tctx && tctx.length > 0 ? (
+        <span className="block leading-relaxed font-reading">
+          {tctx.map(cv => (
+            <span key={`${cv.chapter}.${cv.verse}`} className={isHitVerse(cv) ? 'text-gray-600' : 'text-gray-400'}>
+              {cv.text}{' '}
+            </span>
+          ))}
         </span>
-      )
+      ) : h.trans ? (
+        <span className="block text-gray-500 leading-relaxed font-reading">{clampTrans(h.trans)}</span>
+      ) : null
+      if (transCol) {
+        return (
+          <span className="grid gap-x-4 gap-y-0.5 grid-cols-1 sm:grid-cols-2 items-start">
+            {primary}
+            {transCol}
+          </span>
+        )
+      }
     }
     return primary
   }
@@ -1179,7 +1222,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
 
         {/* Parsing dock for Greek background results (the Greek NT/LXX lanes carry their own
             inside GreekSearchResults) — visible whenever Greek text is on screen. */}
-        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && !parseViaSink && <ParsingDock info={bgInfo} />}
+        {!loading && !isBiblical && bg?.lang === 'grc' && bg.total > 0 && <ParsingDock info={bgInfo} />}
       </div>
     </div>
   )
