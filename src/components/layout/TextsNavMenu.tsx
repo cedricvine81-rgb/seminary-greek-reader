@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { Library, ChevronRight } from 'lucide-react'
-import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
+import { Library, ChevronLeft } from 'lucide-react'
+import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor } from '@/lib/texts-catalog'
 
 // The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
 // category list; hovering a category flies its works out to the RIGHT; clicking a work opens it
@@ -29,7 +29,7 @@ export function TextsNavMenu() {
 
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
       {open && (
-        <div className="hidden md:block absolute left-0 top-full pt-1 z-50">
+        <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TEXT_CATEGORIES.map(c => (
               <div key={c.id} className="relative" onMouseEnter={() => setCat(c.id)}>
@@ -38,23 +38,34 @@ export function TextsNavMenu() {
                     c.comingSoon ? 'text-gray-300'
                     : `cursor-default ${cat === c.id ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}`}
                 >
-                  <span>{c.label}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
-                  {!c.comingSoon && <ChevronRight size={14} className="text-gray-300" />}
+                  {!c.comingSoon && <ChevronLeft size={14} className="text-gray-300" />}
+                  <span className="flex-1">{c.label}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
                 </div>
 
-                {/* Works fly out to the right of the hovered category. */}
+                {/* Works fly out to the LEFT of the hovered category — the "Texts" item sits on
+                    the right of the header, so opening rightward ran the panel off-screen
+                    (notably on iPad). Works are gathered by author (Plato, Aristotle, …). */}
                 {cat === c.id && !c.comingSoon && (
-                  <div className="absolute left-full top-0 pl-1">
+                  <div className="absolute right-full top-0 pr-1">
                     <div className="w-60 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
-                      {c.works.map(w => (
-                        <Link
-                          key={w.id}
-                          href={`/texts?work=${encodeURIComponent(w.id)}`}
-                          onClick={() => { setOpen(false); setCat(null) }}
-                          className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-                        >
-                          {w.name}
-                        </Link>
+                      {groupWorksByAuthor(c.works).map((g, gi) => (
+                        <div key={g.author ?? g.works[0].id} className={gi > 0 && g.author ? 'mt-1 border-t border-gray-100 pt-1' : ''}>
+                          {g.author && (
+                            <div className="px-3 pt-0.5 pb-0.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+                              {g.author}
+                            </div>
+                          )}
+                          {g.works.map(w => (
+                            <Link
+                              key={w.id}
+                              href={`/texts?work=${encodeURIComponent(w.id)}`}
+                              onClick={() => { setOpen(false); setCat(null) }}
+                              className={`block py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors ${g.author ? 'pl-5 pr-3' : 'px-3'}`}
+                            >
+                              {g.author ? workTitleWithoutAuthor(w) : w.name}
+                            </Link>
+                          ))}
+                        </div>
                       ))}
                     </div>
                   </div>

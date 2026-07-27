@@ -7,7 +7,7 @@ import { normalizeGreek } from '@/lib/greek-utils'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
-import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, type CatalogWork } from '@/lib/texts-catalog'
+import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
 import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
@@ -916,16 +916,27 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 >
                   <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
                 </button>
-                {cat.works.map(w => (
-                  <button
-                    key={w.id}
-                    type="button"
-                    onClick={() => { openWork(w); setMenuOpen(false) }}
-                    className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
-                      work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                  >
-                    {w.name}
-                  </button>
+                {/* Works gathered by author (Plato, Aristotle, …) — a subheading for any author
+                    with 2+ works; lone works stay ungrouped with their full name. */}
+                {groupWorksByAuthor(cat.works).map((g, gi) => (
+                  <div key={g.author ?? g.works[0].id} className={gi > 0 && g.author ? 'mt-1 border-t border-gray-100 pt-1' : ''}>
+                    {g.author && (
+                      <div className="px-3 pt-0.5 pb-0.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
+                        {g.author}
+                      </div>
+                    )}
+                    {g.works.map(w => (
+                      <button
+                        key={w.id}
+                        type="button"
+                        onClick={() => { openWork(w); setMenuOpen(false) }}
+                        className={`w-full text-left py-1.5 text-sm transition-colors ${g.author ? 'pl-5 pr-3' : 'px-3'} ${
+                          work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                      >
+                        {g.author ? workTitleWithoutAuthor(w) : w.name}
+                      </button>
+                    ))}
+                  </div>
                 ))}
               </>
             )

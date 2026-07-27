@@ -46,6 +46,53 @@ export interface TextCategory {
   works: CatalogWork[]
 }
 
+// A run of works by one author within a category's menu. `author` is null for a
+// stand-alone work that shouldn't get its own heading.
+export interface AuthorGroup {
+  author: string | null
+  works: CatalogWork[]
+}
+
+/** The "Author" of a work, taken from the "Author, Title" name prefix (else null). */
+function authorOf(w: CatalogWork): string | null {
+  const i = w.name.indexOf(', ')
+  return i > 0 ? w.name.slice(0, i) : null
+}
+
+/** The work's title with the "Author, " prefix stripped — for listing under an author heading. */
+export function workTitleWithoutAuthor(w: CatalogWork): string {
+  const i = w.name.indexOf(', ')
+  return i > 0 ? w.name.slice(i + 2) : w.name
+}
+
+/**
+ * Gather a category's works under their author (e.g. Plato, Aristotle), so the Texts
+ * menus can show author headings instead of a long flat list. Only authors with two or
+ * more works get a heading; a lone work stays ungrouped (author = null) so single-book
+ * authors don't sprout a redundant one-item heading. Input order is preserved (same-author
+ * works are already consecutive in the catalog).
+ */
+export function groupWorksByAuthor(works: CatalogWork[]): AuthorGroup[] {
+  const counts = new Map<string, number>()
+  for (const w of works) {
+    const a = authorOf(w)
+    if (a) counts.set(a, (counts.get(a) ?? 0) + 1)
+  }
+  const groups: AuthorGroup[] = []
+  let cur: AuthorGroup | null = null
+  for (const w of works) {
+    const a = authorOf(w)
+    if (a && (counts.get(a) ?? 0) >= 2) {
+      if (!cur || cur.author !== a) { cur = { author: a, works: [] }; groups.push(cur) }
+      cur.works.push(w)
+    } else {
+      groups.push({ author: null, works: [w] })
+      cur = null
+    }
+  }
+  return groups
+}
+
 export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'apocrypha',

@@ -57,7 +57,7 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
         return (
           <span
             key={i}
-            className={`rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
+            className={`reading-word rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
             {...(select ? { onMouseEnter: select, onClick: select } : {})}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
             onContextMenu={e => {

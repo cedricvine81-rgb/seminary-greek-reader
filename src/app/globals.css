@@ -481,3 +481,19 @@ body.exam-lockdown nav.fixed.bottom-0 {
     padding-right: var(--workbench-panel-w, 30rem);
   }
 }
+
+/* iPad/iOS: long-pressing a reading word must open the app's own word menu (fired via
+   the `contextmenu` event) rather than raising iOS's text-selection + Copy/Look-Up
+   callout, which otherwise appears on top and covers the app menu. Suppress the native
+   callout everywhere, and on touch devices also suppress the long-press text selection.
+   Desktop (fine pointer) keeps text selection so drag-to-highlight still works; on touch,
+   highlighting is done from the word menu's colour palette. */
+.reading-word {
+  -webkit-touch-callout: none;
+}
+@media (hover: none) and (pointer: coarse) {
+  .reading-word {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+}

@@ -91,7 +91,7 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl }: {
               })
             }}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
-            className={`trans-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
+            className={`trans-word reading-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
           >
             {tok}
           </span>
