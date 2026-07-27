@@ -592,7 +592,9 @@ const HERODOTUS_BOOKS: { book: number; last: number; skip?: number[] }[] = [
   { book: 9, last: 122 },
 ]
 const herodotusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
-  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Hdt\\.|Herodotus,?)\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  // Evans writes "Herodotus, Hist. 1.141"; also accept "Hdt. 1.141" / "Herodotus 6.86". The
+  // optional "Hist./Historiae/Histories" between the author and the book.chapter must be allowed.
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Hdt\\.|Herodotus,?)\\s+(?:Hist(?:oriae|ories|\\.)?\\s+)?${book}\\.(\\d+)(?:\\.(\\d+))?`))
   return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
 }
 const HERODOTUS_WORKS: ProseWork[] = HERODOTUS_BOOKS.map(b => ({
@@ -1033,7 +1035,8 @@ const DIO_WORK: ProseWork = {
   chapters: DIO_ORATIONS[DIO_ORATIONS.length - 1],
   attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. English: J. W. Cohoon & H. Lamar Crosby, Loeb Classical Library (1932–1951), public domain (digitised by Bill Thayer, LacusCurtius).',
   parseCitation: (text: string) => {
-    const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:Or(?:ationes|\.)?\s+)?(\d+)\.(\d+)/)
+    // Evans writes "Dio Chrysostom, Disc. 31.86" (Discourse = Oration); also accept "Or." / bare.
+    const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:(?:Or(?:ationes|\.)?|Disc(?:ourses?|\.)?)\s+)?(\d+)\.(\d+)/)
     return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
   },
   chapterLabel: (ch: number) => `Oration ${ch}`,

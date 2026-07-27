@@ -40,8 +40,6 @@ const nextConfig = {
         // Production build from that commit on). Excluding them is safe and necessary.
         'public/data/greco/**',
         'public/data/quintilian/**',
-        // The Backgrounds cross-reference apparatus — fetched client-side by BackgroundsView.
-        'public/data/backgrounds-crossrefs.json',
         'public/data/josephus/**',
         'public/data/philo/**',
         'public/data/variants/**',
