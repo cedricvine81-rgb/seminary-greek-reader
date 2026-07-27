@@ -153,16 +153,6 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {/* Back link — shown for non-passage exercises only (passage has its own toolbar nav) */}
-        {!isPassageExercise && (
-          <Link
-            href="/student/assignments"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
-          >
-            <ArrowLeft size={14} /> Back to assignments
-          </Link>
-        )}
-
         {/* Header badges + instructions — shown for non-passage exercises */}
         {!isPassageExercise && (
           <>

@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { Card, CardTitle } from '@/components/ui/Card'
-import { ChevronDown, ArrowLeft, AtSign } from 'lucide-react'
+import { ChevronDown, ArrowLeft, AtSign, Check } from 'lucide-react'
 import { differenceInCalendarDays } from 'date-fns'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { StudentGradebook, type GradebookRow } from '@/components/student/StudentGradebook'
@@ -120,7 +120,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                     <Link
                       key={a.id}
                       href={assignmentHref(a)}
-                      className={`flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3 ${a.completed ? 'opacity-60' : ''}`}
+                      className="flex items-center justify-between px-3 py-2 rounded-lg border border-gray-100 hover:border-gray-200 hover:bg-gray-50 transition-colors gap-3"
                     >
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-gray-900 truncate">
@@ -128,7 +128,14 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                         </p>
                         <DueLabel dueDate={a.dueDate} />
                       </div>
-                      <span className="shrink-0 text-xs text-gray-500">{TYPE_LABELS[a.type] ?? a.type}</span>
+                      <div className="shrink-0 flex items-center gap-2">
+                        {a.completed && (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200">
+                            <Check size={12} /> Completed
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-500">{TYPE_LABELS[a.type] ?? a.type}</span>
+                      </div>
                     </Link>
                   ))}
                 </div>

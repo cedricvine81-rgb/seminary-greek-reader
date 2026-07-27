@@ -157,8 +157,30 @@ function shuffle<T>(arr: T[]): T[] {
   return a
 }
 
+// Function words that don't carry the meaning of a gloss, so "to loose" and "to see" still count
+// as distinct answers. Content words — including pronouns like "he/she/it" — DO count, so a
+// distractor sharing them ("this, he, she, it" against "he, she, it; same") is rejected.
+const GLOSS_STOPWORDS = new Set(['a', 'an', 'the', 'to', 'of', 'and', 'or'])
+
+function glossKeywords(s: string): Set<string> {
+  return new Set(
+    s.toLowerCase().split(/[\s,;/()[\].]+/)
+      .map(t => t.replace(/[^a-z]/g, ''))
+      .filter(t => t.length > 1 && !GLOSS_STOPWORDS.has(t)),
+  )
+}
+
+// Pick wrong-answer options that are genuinely wrong: never the correct answer, and never a
+// gloss that shares a meaning-word with it (which would make it a second right answer, e.g.
+// "not, lest" beside "no, not"). If too few clean distractors exist, top up with the rest.
+// (For Greek-word pools the keyword sets are empty, so this reduces to "not equal".)
 function pickDistractors(correct: string, pool: string[], count = 3): string[] {
-  return shuffle(pool.filter(s => s !== correct)).slice(0, count)
+  const correctKw = glossKeywords(correct)
+  const shares = (s: string) => Array.from(glossKeywords(s)).some(t => correctKw.has(t))
+  const clean = shuffle(pool.filter(s => s !== correct && !shares(s)))
+  if (clean.length >= count) return clean.slice(0, count)
+  const rest = shuffle(pool.filter(s => s !== correct && !clean.includes(s)))
+  return [...clean, ...rest].slice(0, count)
 }
 
 export async function generateVocabQuestions(
