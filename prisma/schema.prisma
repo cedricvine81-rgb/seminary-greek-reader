@@ -454,6 +454,10 @@ model Assignment {
   // review). Stored so regenerating a quiz keeps the review mix — it used to be applied
   // at generation time and thrown away, so any regeneration silently dropped it.
   vocabReviewPct Int?
+  // Vocabulary quizzes: % of questions that are fill-in-the-blank (the student types the
+  // answer) rather than multiple choice. 0 = all multiple choice, 100 = all fill-in. Stored so
+  // regenerating a quiz keeps the chosen balance. Null = fall back to `provideDefinition`.
+  vocabFillPct Int?
   // Translation exercises: show a glossary of words rarer than this NT frequency
   // under each verse (e.g. 50 = beginner, 30 = intermediate). Null = no glossary.
   glossFrequency Int?

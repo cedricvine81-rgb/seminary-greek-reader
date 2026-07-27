@@ -177,9 +177,11 @@ export async function POST(req: NextRequest) {
         allowLate: Boolean(allowLate),
         lateDaysLimit: allowLate && lateDaysLimit ? Number(lateDaysLimit) : null,
         provideDefinition: Boolean(provideDefinition),
-        // Persist the cumulative-review share so regenerating this quiz later keeps it.
+        // Persist the cumulative-review share and the multiple-choice/fill-in balance so
+        // regenerating this quiz later keeps both.
         ...(quizType === 'VOCABULARY_QUIZ'
-          ? { vocabReviewPct: Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100) }
+          ? { vocabReviewPct: Math.min(Math.max(Number(prevSectionsPct ?? 0), 0), 100),
+              vocabFillPct: Math.min(Math.max(Number(quizStylePct ?? 0), 0), 100) }
           : {}),
         ...(testConfig
           ? { morphSubtype: testConfig.subtype,

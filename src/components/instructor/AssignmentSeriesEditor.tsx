@@ -84,6 +84,7 @@ export function AssignmentSeriesEditor({
         const curRetakes = sharedValue(s.members, m => m.maxRetakes ?? -1)   // -1 = unlimited
         const curTime = sharedValue(s.members, m => m.timePerQuestion ?? 0)
         const curReview = sharedValue(s.members, m => m.vocabReviewPct ?? 0)
+        const curFill = sharedValue(s.members, m => m.vocabFillPct ?? 0)
         const curLate = sharedValue(s.members, m => (m.allowLate ? (m.lateDaysLimit ?? -1) : 0))
         const mixed = <span className="ml-1.5 text-xs font-normal normal-case text-amber-700">(varies across the series)</span>
 
@@ -246,6 +247,38 @@ export function AssignmentSeriesEditor({
                     </div>
                   )
                 })()}
+
+                {/* Multiple-choice vs fill-in balance — vocabulary series only */}
+                {s.type === 'VOCABULARY_QUIZ' && (
+                  <div>
+                    <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">
+                      Question style —{' '}
+                      {curFill === null ? mixed : (
+                        <span className="text-brand-700 normal-case">
+                          {curFill === 0 ? 'all multiple choice'
+                            : curFill === 100 ? 'all fill-in the blank'
+                            : `${curFill}% fill-in / ${100 - curFill}% multiple choice`}
+                        </span>
+                      )}
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {[0, 25, 50, 75, 100].map(pc => (
+                        <Button key={pc} size="sm" variant={curFill === pc ? 'primary' : 'secondary'} disabled={busy}
+                          onClick={() => {
+                            if (!confirm(`Rebuild all ${s.members.length} quizzes so ${pc}% of the questions are fill-in the blank?\n\nThis regenerates their questions.`)) return
+                            void run(ids, { action: 'fillPct', value: pc }, 'PATCH',
+                              n => `Rebuilt ${n} quizzes with ${pc}% fill-in questions.`)
+                          }}>
+                          {pc === 0 ? 'All choice' : pc === 100 ? 'All fill-in' : `${pc}% fill-in`}
+                        </Button>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Fill-in questions ask the student to type the answer; the rest are multiple
+                      choice. Rebuilds the questions, so it is refused once students have answered.
+                    </p>
+                  </div>
+                )}
 
                 {/* Morphology series: vocabulary cap. Regenerates from each quiz's stored
                     recipe (fields, filters, declensions), so the rebuild is faithful. */}

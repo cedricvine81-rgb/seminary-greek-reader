@@ -87,12 +87,47 @@ export async function PATCH(req: NextRequest) {
         : r.weekNumber
       if (!lesson) continue
       const count = r._count.questions || 20
+      const fill = r.vocabFillPct ?? (r.provideDefinition ? 100 : 0)
       const qs = generateVocabQuestionsForLesson(
-        lesson, 'GREEK_TO_ENGLISH', count, r.provideDefinition ? 100 : 0, pct)
+        lesson, 'GREEK_TO_ENGLISH', count, fill, pct)
       await prisma.$transaction([
         prisma.question.deleteMany({ where: { assignmentId: r.id } }),
         prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
         prisma.assignment.update({ where: { id: r.id }, data: { vocabReviewPct: pct } }),
+      ])
+      updated++
+    }
+    return NextResponse.json({ updated })
+  }
+
+  // Multiple-choice vs fill-in balance: rebuild each vocabulary quiz so the given share of its
+  // questions are fill-in-the-blank (the rest multiple choice). Regenerates questions, keeping
+  // each quiz's stored cumulative-review mix; refused once students have answered.
+  if (action === 'fillPct') {
+    const fill = Math.min(Math.max(Number(value), 0), 100)
+    const rows = await prisma.assignment.findMany({
+      where: { id: { in: assignmentIds }, type: 'VOCABULARY_QUIZ' },
+      include: { _count: { select: { questions: true, responses: true } } },
+    })
+    const answered = rows.filter(r => r._count.responses > 0)
+    if (answered.length > 0) {
+      return NextResponse.json({
+        error: `${answered.length} of these have student answers, so their questions can’t be rebuilt.`,
+      }, { status: 409 })
+    }
+    for (const r of rows) {
+      const m = r.title.match(/§(\d)-([A-H])/)
+      const lesson = m
+        ? VOCAB_LESSONS.find(l => lessonSubsectionKey(l.lesson) === `${m[1]}-${m[2]}`)?.lesson
+        : r.weekNumber
+      if (!lesson) continue
+      const count = r._count.questions || 20
+      const qs = generateVocabQuestionsForLesson(
+        lesson, 'GREEK_TO_ENGLISH', count, fill, r.vocabReviewPct ?? 0)
+      await prisma.$transaction([
+        prisma.question.deleteMany({ where: { assignmentId: r.id } }),
+        prisma.question.createMany({ data: qs.map(q => ({ ...q, assignmentId: r.id })) }),
+        prisma.assignment.update({ where: { id: r.id }, data: { vocabFillPct: fill, provideDefinition: fill > 0 } }),
       ])
       updated++
     }
