@@ -245,7 +245,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'greco-roman',
     label: 'Greco-Roman',
-    blurb: 'Greco-Roman authors that illuminate the New Testament world — Plato, Aristotle, Plutarch, Epictetus, Lucian (on the early Christians), Diogenes Laertius, and Apollodorus’s Library of myth, with the Greek and public-domain English side by side (Perseus, CC-BY-SA). Includes a curated set of the pagan passages the New Testament quotes.',
+    blurb: 'Greek and Roman authors that illuminate the New Testament world — Homer, Hesiod, Herodotus, Plato, Aristotle, Xenophon, Plutarch, Epictetus, Lucian, Diogenes Laertius, Apollodorus, and Quintilian, with the Greek (or Latin) and public-domain English side by side (Perseus, CC-BY-SA). Includes a curated set of the pagan passages the New Testament quotes. Browse by author, then work.',
     works: [
       { id: 'nt-pagan-sources', name: 'Pagan Sources Quoted in the New Testament', source: 'nt-pagan-sources', chapters: 4, greek: true },
       ...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...XENOPHON_CATALOG, ...PLUTARCH_CATALOG,
@@ -254,38 +254,15 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
       { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true, greekOnly: true },
       { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
-      ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG,
+      ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
+      ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
     ],
-  },
-  {
-    id: 'homer',
-    label: 'Homer',
-    blurb: 'The Iliad and the Odyssey — the foundational Greek epics. The Greek (Monro–Allen) line-by-line with A. T. Murray’s public-domain Loeb English beside it (Perseus, CC BY-SA); cited by book and line.',
-    works: HOMER_CATALOG,
-  },
-  {
-    id: 'hesiod',
-    label: 'Hesiod',
-    blurb: 'Hesiod’s Theogony, Works and Days, and Shield of Heracles — early Greek didactic and genealogical poetry. Greek with Evelyn-White’s public-domain Loeb English (Perseus, CC BY-SA); cited by line.',
-    works: HESIOD_CATALOG,
-  },
-  {
-    id: 'herodotus',
-    label: 'Herodotus',
-    blurb: 'Herodotus’ Histories — the first great work of Greek prose history (5th c. BCE), in nine books. The Greek with A. D. Godley’s public-domain Loeb English (Perseus, CC BY-SA); cited book.chapter.section.',
-    works: HERODOTUS_CATALOG,
   },
   {
     id: 'mishnah',
     label: 'Mishnah',
     blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
     works: MISHNAH_CATALOG,
-  },
-  {
-    id: 'quintilian',
-    label: 'Quintilian',
-    blurb: 'Quintilian’s Institutio Oratoria — the great Roman handbook of rhetorical education (c. 95 CE), essential background to the rhetoric of the New Testament epistles. The Latin (Butler) beside the Rev. J. S. Watson’s public-domain English (1856), via Perseus (CC BY-SA). Latin, so there is no parsing pane.',
-    works: QUINTILIAN_CATALOG,
   },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]

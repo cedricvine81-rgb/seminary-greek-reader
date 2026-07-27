@@ -162,6 +162,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // more height): menuOpen shows the category list; menuCat drills into one category's works.
   const [menuOpen, setMenuOpen] = useState(false)
   const [menuCat, setMenuCat] = useState<string | null>(null)
+  // Drill level inside a category: an author whose works are being listed (e.g. Plato → its
+  // dialogues). null = show the author list itself. Only used for categories that group by author.
+  const [menuAuthor, setMenuAuthor] = useState<string | null>(null)
   // "Locate a passage" cascade, opened by clicking the work title (like the translation
   // menus). Columns are Book (Josephus multi-book works only) → Chapter → Verse; each new
   // column appears to the right with its first row aligned to the selected row of the one
@@ -882,7 +885,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     <div ref={catRowRef} className={`relative flex-none ${work ? 'md:hidden' : ''}`}>
       <button
         type="button"
-        onClick={() => { setMenuOpen(o => !o); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
+        onClick={() => { setMenuOpen(o => !o); setMenuAuthor(null); setMenuCat(work ? TEXT_CATEGORIES.find(c => c.works.some(w => w.id === work.id))?.id ?? null : null) }}
         className={`inline-flex items-center gap-1 rounded border px-2.5 py-1 text-xs font-medium transition-colors ${
           menuOpen ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 text-gray-600 hover:bg-gray-100'}`}
       >
@@ -900,7 +903,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   key={cat.id}
                   type="button"
                   disabled={cat.comingSoon}
-                  onClick={() => setMenuCat(cat.id)}
+                  onClick={() => { setMenuAuthor(null); setMenuCat(cat.id) }}
                   className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
                     cat.comingSoon ? 'text-gray-300 cursor-default'
                     : isActive ? 'text-brand-700 font-medium hover:bg-brand-50'
@@ -914,6 +917,34 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
           ) : (() => {
             const cat = TEXT_CATEGORIES.find(c => c.id === menuCat)
             if (!cat) return null
+            const groups = groupWorksByAuthor(cat.works)
+            // Level 3 — an author's books (Plato → its dialogues).
+            if (menuAuthor !== null) {
+              const g = groups.find(x => x.author === menuAuthor)
+              return (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setMenuAuthor(null)}
+                    className="w-full flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-gray-500 hover:bg-gray-50 border-b border-gray-100 transition-colors"
+                  >
+                    <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label} › {menuAuthor}
+                  </button>
+                  {g?.works.map(w => (
+                    <button
+                      key={w.id}
+                      type="button"
+                      onClick={() => { openWork(w); setMenuOpen(false) }}
+                      className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                        work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                    >
+                      {workTitleWithoutAuthor(w)}
+                    </button>
+                  ))}
+                </>
+              )
+            }
+            // Level 2 — the author list: multi-work authors drill to their books, lone works open.
             return (
               <>
                 <button
@@ -923,27 +954,27 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 >
                   <ChevronDown size={13} className="rotate-90 text-gray-400" /> {cat.label}
                 </button>
-                {/* Works gathered by author (Plato, Aristotle, …) — a subheading for any author
-                    with 2+ works; lone works stay ungrouped with their full name. */}
-                {groupWorksByAuthor(cat.works).map((g, gi) => (
-                  <div key={g.author ?? g.works[0].id} className={gi > 0 && g.author ? 'mt-1 border-t border-gray-100 pt-1' : ''}>
-                    {g.author && (
-                      <div className="px-3 pt-0.5 pb-0.5 text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                        {g.author}
-                      </div>
-                    )}
-                    {g.works.map(w => (
-                      <button
-                        key={w.id}
-                        type="button"
-                        onClick={() => { openWork(w); setMenuOpen(false) }}
-                        className={`w-full text-left py-1.5 text-sm transition-colors ${g.author ? 'pl-5 pr-3' : 'px-3'} ${
-                          work?.id === w.id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
-                      >
-                        {g.author ? workTitleWithoutAuthor(w) : w.name}
-                      </button>
-                    ))}
-                  </div>
+                {groups.map(g => g.author ? (
+                  <button
+                    key={g.author}
+                    type="button"
+                    onClick={() => setMenuAuthor(g.author)}
+                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left transition-colors ${
+                      work && g.works.some(w => w.id === work.id) ? 'text-brand-700 font-medium hover:bg-brand-50' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    <span>{g.author}</span>
+                    <ChevronDown size={13} className="-rotate-90 text-gray-300" />
+                  </button>
+                ) : (
+                  <button
+                    key={g.works[0].id}
+                    type="button"
+                    onClick={() => { openWork(g.works[0]); setMenuOpen(false) }}
+                    className={`w-full text-left px-3 py-1.5 text-sm transition-colors ${
+                      work?.id === g.works[0].id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'}`}
+                  >
+                    {g.works[0].name}
+                  </button>
                 ))}
               </>
             )
