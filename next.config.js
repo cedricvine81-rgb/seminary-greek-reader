@@ -29,6 +29,31 @@ const nextConfig = {
         'public/data/search-index-*.json.gz',
         // Same for the background-sources search indexes (src/lib/backgrounds-search.ts).
         'public/data/backgrounds-search-*.json.gz',
+        // The Texts/Backgrounds prose corpora (Greco-Roman, Josephus, Philo, church
+        // fathers, targums, variants, …) are ALL fetched client-side as static assets
+        // via their `dataUrl` (see src/lib/prose-texts.ts / texts-catalog.ts and
+        // VariantsView) — no server route reads them via fs. They only end up in the
+        // bundle because reader.ts does a dynamic fs.readFileSync under public/data, so
+        // Next's tracer conservatively pulls in the whole tree. Adding the Greco-Roman
+        // batch (Dio/Aratus/Philostratus) grew this past Vercel's 250MB uncompressed
+        // function limit (the api/.../course-notes function hit 252.74MB, failing every
+        // Production build from that commit on). Excluding them is safe and necessary.
+        'public/data/greco/**',
+        'public/data/josephus/**',
+        'public/data/philo/**',
+        'public/data/variants/**',
+        'public/data/eusebius/**',
+        'public/data/justin/**',
+        'public/data/pseudepigrapha/**',
+        'public/data/pseudepigrapha-b/**',
+        'public/data/apostolic-fathers/**',
+        'public/data/targums/**',
+        'public/data/anf/**',
+        'public/data/mishnah/**',
+        'public/data/apocrypha/**',
+        'public/data/apocrypha-gospels/**',
+        'public/data/brenton/**',
+        'public/data/rhetoric/**',
       ],
     },
   },
