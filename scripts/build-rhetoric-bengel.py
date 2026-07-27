@@ -43,6 +43,30 @@ def fetch(url):
                        capture_output=True, env=env, timeout=40)
     return r.stdout.decode("utf-8", errors="replace")
 
+def tidy(s):
+    """Bengel closes each catchword (the word he comments on) with an unmatched ')', which reads
+    as a stray paren — turn those into a colon, keeping real parentheses. Then fix the source's
+    space-before-punctuation, without splitting chapter:verse references."""
+    out, depth = [], 0
+    for ch in s:
+        if ch == '(':
+            depth += 1; out.append(ch)
+        elif ch == ')':
+            if depth > 0:
+                depth -= 1; out.append(ch)   # a genuine close-paren
+            else:
+                out.append(':')              # Bengel's catchword-close
+        else:
+            out.append(ch)
+    s = ''.join(out)
+    s = re.sub(r'\s+([,;:.!?)\]])', r'\1', s)   # no space before these
+    s = re.sub(r'([(\[])\s+', r'\1', s)          # no space after ( [
+    s = re.sub(r':\s*([,.;)\]])', r'\1', s)      # catchword-close right before other punctuation → drop it
+    s = re.sub(r'(?<=\D):(?=\S)', ': ', s)       # a space after a colon, but not a chapter:verse ref
+    s = re.sub(r'(\d):\s+(\d)', r'\1:\2', s)     # keep chapter:verse tight
+    return re.sub(r'[ \t]{2,}', ' ', s).strip()
+
+
 def bengel_note(h):
     # the section is the "Bengel's Gnom(e/o)n" heading block, up to the next vheading2
     m = re.search(r'<div class="vheading2"><a href="/commentaries/bengel/[^"]*">Bengel[^<]*</a></div>', h)
@@ -53,7 +77,8 @@ def bengel_note(h):
     seg = re.sub(r'^\s*<a [^>]*>[^<]*</a>\.?\s*', '', seg, count=1)   # drop leading verse-ref link
     txt = re.sub(r'<[^>]+>', ' ', seg)
     txt = html.unescape(re.sub(r'\s+', ' ', txt)).strip()
-    return re.sub(r'^[A-Za-z0-9 ]+\d+:\d+[\-–\d]*\s*\.?\s*', '', txt)   # trim any stray leading ref
+    txt = re.sub(r'^[A-Za-z0-9 ]+\d+:\d+[\-–\d]*\s*\.?\s*', '', txt)   # trim any stray leading ref
+    return tidy(txt)
 
 def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
