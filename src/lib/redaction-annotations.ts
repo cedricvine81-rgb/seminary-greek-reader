@@ -7,12 +7,26 @@
 // Editorial stance: notes describe what the texts observably do and how the devices
 // are "often analyzed" — they present the compositional-device reading (Licona,
 // following Theon/Quintilian/Plutarch) as a lens for discussion, not a verdict.
-// Hand-polish freely: this file is meant to grow pericope-by-pericope, like the
-// rhetoric and gloss override sets.
+// SOURCE MODELS: both supported models assume Markan priority, so triple-tradition
+// notes are shared. Where the double tradition makes the direction model-dependent,
+// a note carries two wordings — `farrer` (Luke used Matthew; no Q) and `q`
+// (Two-Source: Matthew and Luke independently used Q) — and the Synopsis tab's
+// "Source model" toggle picks which one students see (default: Farrer). The compare
+// tool itself remains direction-agnostic (any column can be the source), so either
+// model is testable on screen. Hand-polish freely: this file is meant to grow
+// pericope-by-pericope, like the rhetoric and gloss override sets.
 
 import type { NarrativeDeviceName } from './redaction-techniques'
 
-export type PericopeAnnotation = { device: NarrativeDeviceName; note: string }
+export type SourceModel = 'farrer' | 'q'
+export const SOURCE_MODELS: { id: SourceModel; label: string }[] = [
+  { id: 'farrer', label: 'Farrer — Luke used Matthew' },
+  { id: 'q', label: 'Two-Source — Matthew & Luke used Q' },
+]
+export type PericopeAnnotation = { device: NarrativeDeviceName; note: string | { farrer: string; q: string } }
+/** Resolve a note's text under the chosen source model. */
+export const noteFor = (a: PericopeAnnotation, m: SourceModel): string =>
+  typeof a.note === 'string' ? a.note : a.note[m]
 
 export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
   'Baptism of Jesus': [
@@ -20,12 +34,18 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Expansion of narrative details', note: 'Matt 3:14–15 alone records John’s protest and Jesus’ reply ("to fulfill all righteousness"), expanding the scene to answer a question the bare event raises — why the sinless one accepts a baptism of repentance.' },
   ],
   'Temptation of Jesus': [
-    { device: 'Compression', note: 'Mark 1:12–13 compresses the whole forty days into two verses with no dialogue; Matthew and Luke give the three-test exchange in full. Reading Mark beside the others shows how much a compressed account can presuppose.' },
-    { device: 'Displacement', note: 'Matthew and Luke order the second and third temptations differently (temple then kingdoms in Matt 4; kingdoms then temple in Luke 4). At least one evangelist has re-sequenced for climactic effect — Matthew ends on worship, Luke ends at the temple where his Gospel also closes.' },
+    { device: 'Compression', note: 'Mark 1:12–13 gives the whole forty days two verses and no dialogue; Matthew supplies the three-test debate, which Luke takes over. Whether Mark compressed a fuller tradition or Matthew expanded Mark’s summary, reading the two-verse account beside the full one shows how much a summary can presuppose.' },
+    { device: 'Displacement', note: {
+      farrer: 'Luke reorders Matthew’s sequence: Matthew climaxes on the mountain with worship refused (4:8–10), Luke re-sequences to end at the temple in Jerusalem (4:9) — where his Gospel begins and ends. A deliberate Lukan re-staging for his Jerusalem-centered design.',
+      q: 'Matthew and Luke share Q’s temptation dialogue but order the last two tests differently. Most critics think Matthew preserves Q’s climax (the "Away, Satan!" dismissal caps the worship test) and Luke re-sequenced to end at the temple in Jerusalem, where his Gospel begins and ends.',
+    } },
   ],
   "Centurion's servant": [
-    { device: 'Transferal', note: 'In Matt 8:5–13 the centurion comes and speaks in person; in Luke 7:1–10 he sends Jewish elders and then friends, never meeting Jesus. Matthew appears to transfer the delegation’s words to the man himself — ancient audiences heard a message delivered through envoys as the sender’s own speech.' },
-    { device: 'Simplification', note: 'Dropping the two delegations lets Matthew tell the story in half the space while keeping the saying he cares about ("not even in Israel have I found such faith") word-for-word.' },
+    { device: 'Transferal', note: 'In Matt 8:5–13 the centurion comes and speaks in person; in Luke 7:1–10 he sends Jewish elders and then friends, never meeting Jesus. Ancient convention heard an envoy’s words as the sender’s own speech — so if embassies stood behind the event, Matthew’s face-to-face telling is a legitimate transferal; and Luke’s staging keeps the centurion’s words his even at a distance. Either way, the tradition’s best test case for the device.' },
+    { device: 'Expansion of narrative details', note: {
+      farrer: 'On the Farrer view, Luke unfolds Matthew’s compact scene into two embassies, adding the elders’ testimonial ("he loves our nation and built us our synagogue") — expansion serving Luke’s persistent theme of worthy gentiles who honor Israel.',
+      q: 'On the Two-Source view both drew the story from Q, and critics split over which changed the approach: Luke adding the embassies (their testimonial is thoroughly Lukan in theme) or Matthew removing them for speed. The comparison itself shows what is at stake in the choice.',
+    } },
   ],
   'Gerasene demoniac': [
     { device: 'Compression', note: 'Mark 5:1–20 runs twenty verses; Matt 8:28–34 keeps seven, cutting the chains-and-tombs description, the "Legion" dialogue, and the healed man’s commission. What Matthew keeps is the exorcism and the town’s rejection.' },
@@ -64,11 +84,20 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Compression', note: 'Mark 1:16–20 and Matt 4:18–22 give an instant call-and-response with no backstory; Luke 5 expands with the miraculous catch that motivates it, and John 1 recounts a prior meeting by the Jordan. The Synoptic "immediately they left their nets" may compress an acquaintance the fuller accounts unpack.' },
   ],
   "The Lord's Prayer": [
-    { device: 'Displacement', note: 'Matthew sets the prayer inside the Sermon on the Mount (Matt 6); Luke 11 places it later, on the road, prompted by a disciple’s request. Since itinerant teachers repeated material, this may be double tradition rather than displacement — but at least one evangelist chose its literary home.' },
-    { device: 'Paraphrase', note: 'Luke’s form is notably shorter ("Father" for "Our Father in heaven"; no "your will be done…"). Two wordings of one prayer both circulating as THE prayer is itself a lesson in how ancient authors handled even liturgical speech.' },
+    { device: 'Displacement', note: {
+      farrer: 'Matthew houses the prayer inside the Sermon on the Mount (Matt 6); Luke lifts it out and re-sets it on the journey, prompted by a disciple’s "Lord, teach us to pray" (11:1) — teaching re-homed into a scene of Jesus himself at prayer, Luke’s favorite frame.',
+      q: 'Q transmitted the prayer without a narrative home; Matthew housed it in his sermon anthology, Luke in a scene of Jesus at prayer on the journey (11:1). Placement is each evangelist’s own choice — and each placement interprets.',
+    } },
+    { device: 'Paraphrase', note: {
+      farrer: 'Luke’s form is notably shorter ("Father" for "Our Father in heaven"; no "your will be done…"). On the Farrer view, Luke has trimmed Matthew’s fuller wording — or substituted the form his own churches prayed. Either way, liturgy was already shaping the tradition’s words.',
+      q: 'Luke’s shorter form ("Father"; no "your will be done…") is usually judged closer to Q, with Matthew’s fuller wording expanded in liturgical use — the reverse of the Farrer reading. This pericope is the neatest test of how the source model changes who edited whom.',
+    } },
   ],
   'Commissioning the Twelve': [
-    { device: 'Conflation', note: 'Matthew 10 folds into one discourse instructions that Mark and Luke distribute across two missions — the Twelve (Mark 6/Luke 9) and the Seventy-two (Luke 10): the "lambs among wolves," town-by-town judgment, and "the worker deserves his food" material sits in Luke’s second sending. A textbook conflation of related speech material.' },
+    { device: 'Conflation', note: {
+      farrer: 'Matthew 10 gathers all the mission teaching into one charge to the Twelve, conflating Mark’s sending (Mark 6) with further sayings; Luke — with Matthew in hand — splits the material back out: Mark’s sending of the Twelve (Luke 9) and a second sending of the Seventy-two (Luke 10) that carries Matthew’s extra sayings ("lambs among wolves," "the worker deserves his wages"). Anthology and redistribution are the same editorial freedom, running in opposite directions.',
+      q: 'Matthew 10 conflates two sources into one charge — Mark’s sending of the Twelve and Q’s mission discourse — while Luke keeps them apart: Mark’s material for the Twelve (Luke 9), Q’s for the Seventy-two (Luke 10). One evangelist merged his sources; the other preserved their seams as two sendings.',
+    } },
   ],
   'Mustard seed': [
     { device: 'Paraphrase', note: '"Kingdom of God" (Mark 4:30; Luke 13:18) becomes "kingdom of heaven" (Matt 13:31) — Licona’s own first example of paraphrase: same referent, reverent rewording for a Jewish audience. Mark’s "greatest of all shrubs" also grows into a "tree" in Matthew and Luke.' },
@@ -108,13 +137,22 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Compression', note: 'Matt 1:8 jumps from Joram to Uzziah, omitting three kings (Ahaziah, Joash, Amaziah), and 1:11 skips Jehoiakim — compression in service of the 3×14 design Matthew announces at 1:17 (fourteen is the numerical value of "David" in Hebrew). "Father of" in ancient genealogies happily means "ancestor of."' },
   ],
   'Birth of Jesus': [
-    { device: 'Spotlighting', note: 'Matthew narrates the nativity entirely through Joseph (his dilemma, his dreams, his decisions); Luke through Mary (the annunciation, the Magnificat, "Mary treasured these things"). Two spotlights on one event — each account omits nearly everything the other tells, without contradicting it.' },
+    { device: 'Spotlighting', note: {
+      farrer: 'Matthew narrates the nativity entirely through Joseph (his dilemma, his dreams, his decisions); Luke through Mary (the annunciation, the Magnificat, "Mary treasured these things"). On the Farrer view, Luke writes with Matthew’s Joseph-centered account in view and deliberately complements it — two spotlights on one event, each omitting nearly everything the other tells without contradicting it.',
+      q: 'Matthew narrates the nativity entirely through Joseph; Luke through Mary. On the Two-Source view the infancy narratives are independent (Q held sayings, not birth stories) — which makes their complementary spotlights the more striking: two tellings of one event that barely overlap, yet converge on Bethlehem, the virgin conception, and the name.',
+    } },
   ],
   'Return to Nazareth': [
-    { device: 'Compression', note: 'Luke 2:39 moves the family straight from the temple to Nazareth ("when they had performed everything according to the Law… they returned"); Matthew narrates magi, Egypt, and Archelaus in between. Luke’s summary compresses over whatever he does not tell — a compressed account is silent, not exclusive.' },
+    { device: 'Compression', note: {
+      farrer: 'Luke 2:39 moves the family straight from the temple to Nazareth ("when they had performed everything according to the Law… they returned"); Matthew narrates magi, Egypt, and Archelaus in between. On the Farrer view Luke knew that material and compressed over it — a compressed account is silent, not exclusive.',
+      q: 'Luke 2:39 moves the family straight from the temple to Nazareth; Matthew narrates magi, Egypt, and Archelaus in between. On the Two-Source view the accounts are independent: Luke’s summary simply does not cover the interval Matthew fills — silence, not exclusion, either way.',
+    } },
   ],
   'Ministry of John the Baptist': [
-    { device: 'Transferal', note: 'The "brood of vipers" speech targets the Pharisees and Sadducees in Matt 3:7 but "the crowds" in Luke 3:7. One evangelist has re-aimed the audience — Matthew habitually sharpens sayings against the leadership, Luke universalizes.' },
+    { device: 'Transferal', note: {
+      farrer: 'The "brood of vipers" speech targets the Pharisees and Sadducees in Matt 3:7 but "the crowds" in Luke 3:7. On the Farrer view, Luke has re-aimed Matthew’s leadership polemic at everyone — universalizing the call to repentance, as he habitually does.',
+      q: 'The "brood of vipers" speech targets the Pharisees and Sadducees in Matt 3:7 but "the crowds" in Luke 3:7. Q’s speech had one audience; either Matthew sharpened it against the leadership (his habit) or Luke universalized it (his habit) — a small case where each evangelist’s known tendencies pull in opposite directions.',
+    } },
     { device: 'Expansion of narrative details', note: 'Luke 3:10–14 alone adds the crowd’s, tax collectors’, and soldiers’ "What then shall we do?" exchanges; John’s Gospel recasts the whole ministry as the Baptist’s self-testimony under official interrogation (John 1:19–28).' },
   ],
   'Return to Galilee': [
@@ -124,26 +162,47 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Simplification', note: 'Mark 1:26 has the demon "convulsing" (σπαράξαν) the man as it leaves; Luke 4:35 writes "having thrown him down… it came out without harming him" — softening the violence and adding the reassurance. Luke’s medical sensitivity is a running redactional trait worth tracking.' },
   ],
   'Beatitudes': [
-    { device: 'Paraphrase', note: '"Blessed are you poor" (Luke 6:20, second person, paired with woes) becomes "Blessed are the poor in spirit" (Matt 5:3, third person, spiritualized). Whether Matthew interprets or Luke sharpens, one form paraphrases the other — the classic case for studying how a saying’s wording shapes its scope.' },
-    { device: 'Displacement', note: 'Matthew sets the sermon "on the mountain" (5:1), Luke "on a level place" (6:17) after descending. Either one evangelist relocated the scene for theological staging (Matthew’s new-Sinai overtones) or the sermon material was preached more than once.' },
+    { device: 'Paraphrase', note: {
+      farrer: '"Blessed are the poor in spirit" (Matt 5:3, third person) becomes "Blessed are you poor" (Luke 6:20, direct address). On the Farrer view Luke has sharpened Matthew — de-spiritualizing the poverty (consistent with his Gospel’s economics), trimming nine beatitudes to four, and matching them with four woes.',
+      q: '"Blessed are you poor" (Luke 6:20) beside "Blessed are the poor in spirit" (Matt 5:3): on the Two-Source view Luke’s blunt second-person form is usually judged closer to Q, with Matthew interpreting — "in spirit" spelling out a spiritual poverty his community could own. The classic case for studying how wording sets a saying’s scope.',
+    } },
+    { device: 'Displacement', note: {
+      farrer: 'Matthew stages the sermon "on the mountain" (5:1), with new-Sinai overtones; Luke restages it "on a level place" (6:17) after a night of prayer on the mountain — deliberate Lukan re-staging, not a disagreement about geography.',
+      q: 'Q transmitted the sermon’s sayings without scenery; Matthew staged them "on the mountain" (new Sinai), Luke "on a level place" after a night of prayer. Each evangelist built the stage his theology called for.',
+    } },
   ],
   'Expounding the Law': [
-    { device: 'Conflation', note: 'Much of Matt 5 has parallels scattered across Luke (6:29–36; 12:57–59; 16:18) — the Sermon on the Mount is widely analyzed as Matthew’s composed anthology, gathering Jesus’ teaching into one programmatic discourse the way ancient biographers grouped material topically rather than chronologically.' },
+    { device: 'Conflation', note: {
+      farrer: 'The Sermon on the Mount is Matthew’s composed anthology — teaching gathered into one programmatic discourse, as ancient biographers grouped material topically. Luke, with Matthew in hand, redistributes much of it (6:29–36; 12:57–59; 16:18) into his journey narrative, re-homing each saying where his story needs it. Anthology and dispersal are the same freedom in opposite directions.',
+      q: 'Much of Matt 5 appears scattered across Luke (6:29–36; 12:57–59; 16:18). On the Two-Source view Matthew anthologized Q’s sayings into one programmatic sermon while Luke largely kept Q’s scattered arrangement — so whether the Sermon on the Mount was assembled or dismembered is exactly what the source models dispute.',
+    } },
   ],
   'Lamp under a bushel': [
     { device: 'Displacement', note: 'The same lamp saying serves three homes: the disciples as world-light (Matt 5:14–15), the purpose of parables (Mark 4:21), and the hearing of the word (Luke 8:16). Short sayings were portable — evangelists (and Jesus himself, itinerantly) re-homed them where they served.' },
   ],
   'Birds of the air / do not worry': [
-    { device: 'Paraphrase', note: 'Matt 6:26 "birds of the air… your heavenly Father feeds them"; Luke 12:24 "consider the ravens… God feeds them." Luke’s unclean scavenger sharpens the a-fortiori argument; Matthew’s "heavenly Father" matches his sermon’s idiom. Same teaching, each wording tuned to its Gospel’s voice.' },
+    { device: 'Paraphrase', note: {
+      farrer: 'Matt 6:26 "birds of the air… your heavenly Father feeds them" becomes Luke 12:24 "consider the ravens… God feeds them" — Luke sharpening Matthew with an unclean scavenger: if God feeds even ravens, how much more you. Matthew’s "heavenly Father" stays behind as his sermon’s signature idiom.',
+      q: 'Matt 6:26 has "birds of the air… your heavenly Father"; Luke 12:24 "consider the ravens… God." Luke’s unclean scavenger is often judged Q’s original (the harder image), generalized by Matthew — though "heavenly Father" is so Matthean that each wording bears its author’s fingerprints either way.',
+    } },
   ],
   'Discourse on judging': [
-    { device: 'Paraphrase', note: 'The speck-and-log saying is nearly verbatim between Matt 7:3–5 and Luke 6:41–42 — in Greek, striking word-for-word agreement for material they do not share with Mark. Run the compare mode here to see how stable double-tradition sayings could remain.' },
+    { device: 'Paraphrase', note: {
+      farrer: 'The speck-and-log saying is nearly verbatim between Matt 7:3–5 and Luke 6:41–42 — agreement so close in the Greek that it is best explained by direct copying: Luke transcribing Matthew. Run compare mode here to watch literary dependence with your own eyes.',
+      q: 'The speck-and-log saying is nearly verbatim between Matt 7:3–5 and Luke 6:41–42 — on the Two-Source view, both evangelists copying Q almost untouched. Run compare mode here to see how faithfully a written source could be transmitted when neither author had reason to change it.',
+    } },
   ],
   'A tree and its fruit': [
-    { device: 'Displacement', note: 'Matthew deploys the fruit-test twice — against false prophets (7:15–20) and against the Pharisees (12:33–35) — where Luke gives it once, generically (6:43–45). A doublet inside one Gospel is direct evidence of an evangelist re-applying a saying to new targets.' },
+    { device: 'Displacement', note: {
+      farrer: 'Matthew deploys the fruit-test twice — against false prophets (7:15–20) and against the Pharisees (12:33–35); Luke 6:43–45 folds the two applications back into one generic teaching. A doublet inside one Gospel is direct evidence of an evangelist re-applying a saying to new targets.',
+      q: 'Matthew deploys Q’s fruit-test twice — against false prophets (7:15–20) and the Pharisees (12:33–35) — while Luke gives it once, generically (6:43–45), likely as Q had it. Matthew’s doublet is direct evidence of an evangelist re-applying a source’s saying to new targets.',
+    } },
   ],
   'Wise and foolish builders': [
-    { device: 'Paraphrase', note: 'Matthew’s builder chooses rock over sand and faces rain, floods, and wind; Luke’s digs deep to lay a foundation against a river’s torrent (Luke 6:48) — the scenery redrawn, some suggest for non-Palestinian readers, while the punchline structure stays fixed.' },
+    { device: 'Paraphrase', note: {
+      farrer: 'Matthew’s builder chooses rock over sand and faces rain, floods, and wind; Luke redraws the scene — a foundation dug down to rock against a river’s torrent (6:48), plausibly for readers outside Palestine — while the two-hearer punchline structure stands untouched.',
+      q: 'Matthew’s rock-versus-sand storm scene and Luke’s dug foundation against a river torrent (6:48) are two renderings of Q’s closing parable; whose scenery is Q’s is debated, but the redrawn staging around a fixed structure is paraphrase either way.',
+    } },
   ],
   'Cleansing a leper': [
     { device: 'Simplification', note: 'Mark’s Jesus is stirred with strong emotion (1:41; some manuscripts read "moved with anger") and "sternly charged" the man, who then disobeys and broadcasts the healing (1:45). Matthew and Luke drop the emotions and the disobedience — smoothing details that invite hard questions.' },
@@ -164,11 +223,10 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Expansion of narrative details', note: 'Luke 5:39 alone appends "no one after drinking old wine desires new, for he says, ‘The old is good’" — a wry expansion that complicates the parable’s point and is hard to explain as anyone’s invention but preserved tradition or Luke’s own literary shaping.' },
   ],
   'Not peace but a sword': [
-    { device: 'Paraphrase', note: '"I have not come to bring peace, but a sword" (Matt 10:34) stands beside "but rather division" (Luke 12:51) — Luke unpacking Matthew-style metaphor into plain speech (and prefacing it with the fire-and-baptism sayings Matthew lacks). Compare the two to watch an image being interpreted in transmission.' },
+    { device: 'Paraphrase', note: '"I have not come to bring peace, but a sword" (Matt 10:34) stands beside "but rather division" (Luke 12:51). Whether Luke read the saying in Matthew (Farrer) or in Q, the direction is the same: the harder metaphor is unpacked into plain speech — and Luke prefixes the fire-and-baptism sayings Matthew lacks. An image being interpreted in transmission.' },
   ],
   'Messengers from John the Baptist': [
-    { device: 'Expansion of narrative details', note: 'Luke 7:21 adds that "in that hour" Jesus performed healings before the messengers’ eyes, turning Matt 11:4’s "tell John what you hear and see" into an enacted demonstration. Luke stages what Matthew implies.' },
-    { device: 'Compression', note: 'Matthew correspondingly compresses the errand — John "sent word by his disciples" and the answer comes at once, without Luke’s two-stage summons and journey (Luke 7:18–20).' },
+    { device: 'Expansion of narrative details', note: 'Luke 7:21 adds that "in that hour" Jesus performed healings before the messengers’ eyes, turning "tell John what you hear and see" (Matt 11:4) into an enacted demonstration. Whether Luke found the exchange in Matthew (Farrer) or in Q, he has staged as proof what his source left as report.' },
   ],
   'Lord of the Sabbath': [
     { device: 'Simplification', note: 'Mark 2:26 sets the shewbread episode "when Abiathar was high priest" — but 1 Sam 21 names Ahimelech, Abiathar’s father. Matthew and Luke both silently drop the name. Watching two evangelists independently remove a difficulty is redaction criticism at its most visible.' },
@@ -195,7 +253,7 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Compression', note: 'Luke’s whole telling is the leanest (one yield figure, no sun-scorching detail), compressing the parable while preserving every soil.' },
   ],
   'Leaven': [
-    { device: 'Paraphrase', note: 'Matt 13:33 and Luke 13:20–21 agree almost word-for-word ("leaven… three measures of flour… all leavened") — like the speck-and-log saying, a specimen of how stable a twin parable could remain across two Gospels with no Markan anchor.' },
+    { device: 'Paraphrase', note: 'Matt 13:33 and Luke 13:20–21 agree almost word-for-word ("leaven… three measures of flour… all leavened") — agreement this close means direct copying: Luke transcribing Matthew (Farrer) or both transcribing Q (Two-Source). Either way, a specimen of how stable a written saying could remain when no one had reason to change it.' },
   ],
   'Beheading of John the Baptist': [
     { device: 'Compression', note: 'Luke 9:7–9 reduces Mark’s banquet narrative (Herodias, the dance, the oath, the platter — Mark 6:21–29) to Herod’s puzzled retrospect: "John I beheaded, but who is this?" The whole grisly episode survives only as a flashback clause.' },
@@ -228,7 +286,10 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Simplification', note: 'In Mark 9:33–34 Jesus asks what they were discussing and the disciples fall silent, ashamed — they had argued over rank. Matt 18:1 reframes: the disciples openly ask "Who is the greatest in the kingdom?" The embarrassing quarrel becomes a theological question; the Twelve come off cleaner in the retelling.' },
   ],
   'Parable of the Lost Sheep': [
-    { device: 'Displacement', note: 'Luke 15:4–7 aims the parable at Pharisees grumbling over sinners ("joy in heaven over one sinner who repents"); Matt 18:10–14 re-homes it inside church instruction about despising "little ones" who stray. Same shepherd, two flocks of application — placement supplies the moral.' },
+    { device: 'Displacement', note: {
+      farrer: 'Matt 18:10–14 houses the parable in church instruction about "little ones" who stray; Luke 15:4–7 re-homes it against Pharisees grumbling over sinners ("joy in heaven over one sinner who repents"). On the Farrer view Luke lifted Matthew’s community parable into his great lost-and-found chapter — placement supplying a sharper moral.',
+      q: 'Luke 15:4–7 aims the parable at Pharisees grumbling over sinners; Matt 18:10–14 at church care for straying "little ones." On the Two-Source view Luke’s sinner-setting is usually judged closer to Q, with Matthew ecclesializing the parable for community discipline. Same shepherd, two flocks — placement supplies the moral.',
+    } },
   ],
   'Divorce and celibacy': [
     { device: 'Paraphrase', note: 'Mark 10:11–12 envisages either spouse divorcing (a Roman-law scenario); Matt 19:9 speaks only of the husband and adds the exception clause "except for sexual immorality" — the wording of one saying adapted to two legal worlds, and the most consequential paraphrase debate in the Gospels.' },
@@ -253,7 +314,10 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Expansion of narrative details', note: 'Matthew alone adds the application "the kingdom of God will be taken away from you and given to a people producing its fruits" (21:43), making the parable’s target explicit.' },
   ],
   'Great Banquet': [
-    { device: 'Paraphrase', note: 'Luke 14 tells of a man’s dinner, insulting excuses, and the poor compelled in; Matt 22 of a king’s wedding feast, murdered envoys, and a burned city. This is paraphrase at maximum stretch — either one parable radically reworked toward allegory of Jerusalem’s fate, or two similar parables told on different occasions.' },
+    { device: 'Paraphrase', note: {
+      farrer: 'Matt 22 tells of a king’s wedding feast, murdered envoys, and a burned city; Luke 14 of a man’s dinner, insulting excuses, and the poor compelled in. On the Farrer view Luke has reworked Matthew’s allegory-heavy version back toward table-fellowship realism — paraphrase at maximum stretch (unless two similar parables were told on different occasions).',
+      q: 'Luke 14’s dinner with excuses and Matt 22’s royal wedding with murdered envoys and a burned city are two very free renderings of one banquet parable — on the Two-Source view, Matthew allegorizing Q toward Jerusalem’s fate while Luke stays nearer the table. Paraphrase at maximum stretch (unless two parables lie behind the two texts).',
+    } },
     { device: 'Conflation', note: 'Matt 22:11–14 (the guest without a wedding garment) reads like a second parable spliced onto the first — a seam most commentators mark as Matthean conflation of related banquet material.' },
   ],
   'Render unto Caesar': [
@@ -261,7 +325,10 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
   ],
   'Woes to the Pharisees': [
     { device: 'Conflation', note: 'Matthew 23 is a composed indictment: woes that Luke distributes across a dinner scene (Luke 11:37–52) plus Mark’s short warning against the scribes (12:38–40) are gathered into one climactic temple discourse. Compare Luke’s table setting to watch the same woes serve a different dramatic frame.' },
-    { device: 'Compression', note: 'Mark’s two-verse form (beware the scribes: robes, greetings, widows’ houses) is the compressed kernel; whether Mark compressed a fuller tradition or the others expanded him is the Synoptic problem in one pericope.' },
+    { device: 'Displacement', note: {
+      farrer: 'Mark 12:38–40’s short warning against the scribes is the seed; Matthew grows it into the seven woes of chapter 23, and Luke — using both — keeps Mark’s warning in place (20:45–47) while re-staging Matthew’s woes at an earlier Pharisee’s dinner (11:37–52). Two inheritances, two homes.',
+      q: 'Luke keeps his sources apart: Mark’s short warning stays in the temple (20:45–47) and Q’s woes are staged at a Pharisee’s dinner (11:37–52); Matthew merges both into the single temple indictment of chapter 23. One evangelist conflated his sources, the other preserved their separate settings.',
+    } },
   ],
   "The widow's mite": [
     { device: 'Compression', note: 'Luke 21:1–4 tightens Mark 12:41–44: the summoned disciples disappear, and Mark’s explanation for Roman readers ("two lepta, which make a quadrans") drops out. Nothing is added; the scene is simply pared to its pronouncement.' },
@@ -278,7 +345,10 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
     { device: 'Expansion of narrative details', note: 'Luke 12:47–48 adds the graded beatings ("many blows… few blows… to whom much was given") — an expansion on responsibility proportional to knowledge that Matthew lacks.' },
   ],
   'Talents / Minas': [
-    { device: 'Paraphrase', note: 'Matthew’s three servants receive vast, unequal talents; Luke’s ten servants receive one mina each. Sums, casts, and returns all differ while the plot skeleton (entrusting, reckoning, the fearful servant’s cloth) holds — a case study in how much surface a parable could shed in retelling.' },
+    { device: 'Paraphrase', note: {
+      farrer: 'Matthew’s three servants receive vast, unequal talents; Luke’s ten receive one mina each. On the Farrer view Luke has reworked Matthew’s parable wholesale — sums, cast, and returns all changed while the plot skeleton (entrusting, reckoning, the fearful servant’s cloth) holds. A case study in how much surface a parable could shed in retelling.',
+      q: 'Matthew’s talents and Luke’s minas diverge so far — sums, cast, returns — that on the Two-Source view critics debate whether one Q parable lies behind both or the versions reached the evangelists separately. Either way the fixed skeleton under the shifting surface is the lesson: plot travels, wording doesn’t have to.',
+    } },
     { device: 'Conflation', note: 'Luke’s version interleaves a throne-claimant plot — citizens hating the nobleman, an embassy, executions on his return (19:12,14,27), echoing Archelaus’ journey to Rome — widely read as a second parable conflated with the minas story.' },
   ],
   "Judas' bargain": [

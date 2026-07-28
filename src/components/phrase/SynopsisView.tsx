@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import { X } from 'lucide-react'
 import { compareRedaction, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { RedactionKey } from './RedactionKey'
-import { PERICOPE_ANNOTATIONS } from '@/lib/redaction-annotations'
+import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -124,6 +124,18 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [showKey, setShowKey] = useState(false)
   // Which curated device chip's note is open (index into the pericope's annotations).
   const [openDevice, setOpenDevice] = useState<number | null>(null)
+  // Synoptic source model for model-dependent notes (Farrer vs Two-Source/Q).
+  // Defaults to Farrer; persisted per browser. Initialized in an effect so SSR and
+  // first client render agree (no hydration mismatch).
+  const [sourceModel, setSourceModel] = useState<SourceModel>('farrer')
+  useEffect(() => {
+    const s = typeof localStorage !== 'undefined' ? localStorage.getItem('synopsis-source-model') : null
+    if (s === 'q' || s === 'farrer') setSourceModel(s)
+  }, [])
+  const pickSourceModel = (m: SourceModel) => {
+    setSourceModel(m)
+    try { localStorage.setItem('synopsis-source-model', m) } catch { /* private mode */ }
+  }
   const highlights = useHighlights(isAuthenticated)
   const synPaneRef = useRef<HTMLDivElement>(null)
   const highlightSelection = useHighlightSelection(synPaneRef)
@@ -442,11 +454,23 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                 {a.device}
               </button>
             ))}
+            {/* Source-model toggle: notes whose direction depends on the Synoptic
+                source hypothesis carry two wordings; this picks which one is shown. */}
+            <label className="ml-auto flex items-center gap-1.5 text-[11px] text-gray-400" title="Both models assume Mark wrote first. Farrer: Luke also used Matthew (no Q). Two-Source: Matthew and Luke independently used the sayings source Q. Notes whose direction depends on the model change wording accordingly.">
+              Source model
+              <select
+                value={sourceModel}
+                onChange={e => pickSourceModel(e.target.value as SourceModel)}
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-[11px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              >
+                {SOURCE_MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
+              </select>
+            </label>
           </div>
           {openDevice !== null && deviceNotes[openDevice] && (
             <div className="max-w-3xl rounded-lg border border-parchment-200 bg-parchment-50 px-3 py-2 text-xs leading-relaxed text-gray-600">
               <span className="font-semibold text-gray-700">{deviceNotes[openDevice].device}. </span>
-              {deviceNotes[openDevice].note}
+              {noteFor(deviceNotes[openDevice], sourceModel)}
             </div>
           )}
         </div>

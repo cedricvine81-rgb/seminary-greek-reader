@@ -38,7 +38,11 @@ export function RedactionKey() {
           substitution</span>, &ldquo;plus combinations of these.&rdquo; Compare mode detects those four automatically.
           The narrative-level devices below them (catalogued by Michael Licona from Plutarch&rsquo;s parallel
           <span className="italic"> Lives</span>) work at the level of the whole episode — the colors give you the evidence,
-          but naming the device is your exegetical judgment.
+          but naming the device is your exegetical judgment. Examples here are worded from Markan
+          priority, which both major source models share; where a note&rsquo;s direction depends on whether
+          Luke used Matthew (Farrer) or Matthew and Luke independently used Q (Two-Source), the note
+          follows the <span className="font-medium">Source model</span> selector beside the device chips. The compare
+          tool itself takes no position — make any column the source to test a direction of dependence.
         </p>
       </div>
 
