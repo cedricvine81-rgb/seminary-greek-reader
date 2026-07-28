@@ -94,7 +94,12 @@ export function TextsNavMenu() {
                           </div>
                         </div>
                       ) : (
+                        // Lone works have no books flyout of their own, so they must also CLOSE any
+                        // open one — otherwise the previous author keeps its highlight and its panel
+                        // stays overlapping this row (Quintilian's 12 books sat on top of the Theon
+                        // link, since they are neighbours in the Greco-Roman list).
                         <Link key={g.works[0].id} href={`/texts?work=${encodeURIComponent(g.works[0].id)}`} onClick={close}
+                          onMouseEnter={() => setSub(null)}
                           className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
                           {g.works[0].name}
                         </Link>
