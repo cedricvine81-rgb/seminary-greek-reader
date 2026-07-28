@@ -424,9 +424,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   // Apion (up to 42 sections in one "chapter") and the Life (76), where the passage would
   // otherwise be far below the fold.
   const josephusHighlightRef = useRef<HTMLParagraphElement | null>(null)
+  // Scroll to the cited section whenever EITHER the chapter or the target citation changes.
+  // Two citations in the same chapter (e.g. Mark 6:17's Ant. 18.5.2 §116 and 18.5.4 §136) reuse
+  // the cached chapter object, so `josephusChapter` doesn't change by identity on the second
+  // click — without `rightJosephus` here the pane would stay parked on the first and the second
+  // would appear unresponsive.
   useEffect(() => {
     if (josephusChapter) josephusHighlightRef.current?.scrollIntoView({ block: 'start' })
-  }, [josephusChapter])
+  }, [josephusChapter, rightJosephus])
 
   useEffect(() => {
     (['Ant', 'JW', 'AgAp', 'Life'] as JosephusWork[]).forEach(work => {
