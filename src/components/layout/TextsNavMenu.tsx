@@ -20,12 +20,25 @@ export function TextsNavMenu() {
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number } | null>(null)
+  // How far to lift the author flyout so it aligns with the TOP of the category list (not the
+  // hovered row) — otherwise a lower category like Greco-Roman opens mid-screen and its long
+  // author list runs off the bottom, out of reach. `panelTop` caps the flyout's height to the
+  // viewport so long lists scroll inside it instead of overflowing.
+  const [fly, setFly] = useState<{ up: number; panelTop: number }>({ up: 0, panelTop: 0 })
+  const panelRef = useRef<HTMLDivElement | null>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
   // Small delay so moving the mouse across the tiny gap into a sub-panel doesn't close it.
   const closeSoon = () => { closeTimer.current = setTimeout(() => { setOpen(false); setCat(null); setSub(null) }, 160) }
   const close = () => { setOpen(false); setCat(null); setSub(null) }
+
+  function openAuthors(catId: string, rowEl: HTMLElement) {
+    setCat(catId); setSub(null)
+    const p = panelRef.current?.getBoundingClientRect()
+    const r = rowEl.getBoundingClientRect()
+    if (p) setFly({ up: r.top - p.top, panelTop: p.top })
+  }
 
   const BOOKS_W = 240
   function openBooks(author: string, works: CatalogWork[], el: HTMLElement) {
@@ -46,9 +59,9 @@ export function TextsNavMenu() {
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
       {open && (
         <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
-          <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+          <div ref={panelRef} className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TEXT_CATEGORIES.map(c => (
-              <div key={c.id} className="relative" onMouseEnter={() => { setCat(c.id); setSub(null) }}>
+              <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, e.currentTarget)}>
                 <div
                   className={`flex items-center justify-between gap-2 px-3 py-1.5 text-sm ${
                     c.comingSoon ? 'text-gray-300'
@@ -58,10 +71,13 @@ export function TextsNavMenu() {
                   <span className="flex-1">{c.label}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
                 </div>
 
-                {/* Author list, flown out to the left of the hovered category. */}
+                {/* Author list, flown out to the left of the hovered category — lifted to the top
+                    of the category list (style top) and height-capped to the viewport so long
+                    lists (Greco-Roman) scroll instead of running off the bottom of the screen. */}
                 {cat === c.id && !c.comingSoon && (
-                  <div className="absolute right-full top-0 pr-1">
-                    <div className="w-64 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+                  <div className="absolute right-full pr-1" style={{ top: -fly.up }}>
+                    <div className="w-64 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
+                      style={{ maxHeight: `calc(100vh - ${fly.panelTop + 16}px)` }}>
                       {groupWorksByAuthor(c.works).map(g => g.author ? (
                         <div key={g.author} onMouseEnter={e => openBooks(g.author!, g.works, e.currentTarget)}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
