@@ -1,6 +1,8 @@
 'use client'
-import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
+import { compareRedaction, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
+import { RedactionKey } from './RedactionKey'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -111,8 +113,14 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
   const loaded = useRef<Set<string>>(new Set())
-  const [, setVer] = useState(0)
+  // `ver` also keys the compare-mode memo: token caches are refs, so this counter is
+  // what tells the alignment "new text has arrived, recompute".
+  const [ver, setVer] = useState(0)
   const bump = () => setVer(v => v + 1)
+  // Compare mode: color each column's editorial changes relative to a chosen source column.
+  const [compareOn, setCompareOn] = useState(false)
+  const [sourceIdx, setSourceIdx] = useState(0)
+  const [showKey, setShowKey] = useState(false)
   const highlights = useHighlights(isAuthenticated)
   const synPaneRef = useRef<HTMLDivElement>(null)
   const highlightSelection = useHighlightSelection(synPaneRef)
@@ -323,6 +331,62 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
   const isGreek = version === 'gnt' || version === 'na1904'
 
+  // Keep the source pointer valid if the user removes columns while comparing.
+  useEffect(() => { if (sourceIdx >= columns.length) setSourceIdx(0) }, [columns.length, sourceIdx])
+
+  // Default the source to a Mark column when compare is switched on (the most common
+  // classroom direction), but leave the choice fully user-editable — the tool takes no
+  // position on Synoptic source theories.
+  const toggleCompare = () => {
+    setCompareOn(on => {
+      if (!on) {
+        const mk = columns.findIndex(r => r.trim().toLowerCase().startsWith('mark'))
+        setSourceIdx(mk !== -1 ? mk : 0)
+      }
+      return !on
+    })
+  }
+
+  // Word-level redaction comparison: every non-source Greek column aligned against the
+  // source (lemma-level LCS in redaction-compare.ts), tags mapped back onto each
+  // column's per-verse token arrays for rendering. A source word counts as "omitted"
+  // only if no compared column picked it up in any form.
+  type ColCompare = { tagsByVerse: Record<number, RedactionTag[]>; stats: CompareResult['stats'] }
+  const compareData = useMemo(() => {
+    if (!compareOn || !isGreek || columns.length < 2) return null
+    const cols = columns.map(ref => column(ref))
+    const src = sourceIdx < cols.length ? cols[sourceIdx] : null
+    if (!src) return null
+    const flatten = (c: NonNullable<ReturnType<typeof column>>) => {
+      const tokens: CompareToken[] = []
+      const map: { vi: number; ti: number }[] = []
+      c.verses.forEach((v, vi) => (v.tokens ?? []).forEach((t, ti) => {
+        tokens.push({ lemma: t.lemma, surface: t.surface, parsing: t.parsing })
+        map.push({ vi, ti })
+      }))
+      return { tokens, map }
+    }
+    const srcFlat = flatten(src)
+    if (!srcFlat.tokens.length) return null
+    const perCol = new Map<number, ColCompare>()
+    const usedAny: boolean[] = new Array(srcFlat.tokens.length).fill(false)
+    cols.forEach((c, i) => {
+      if (i === sourceIdx || !c) return
+      const tgtFlat = flatten(c)
+      if (!tgtFlat.tokens.length) return
+      const r = compareRedaction(srcFlat.tokens, tgtFlat.tokens)
+      const tagsByVerse: Record<number, RedactionTag[]> = {}
+      tgtFlat.map.forEach((m, k) => { (tagsByVerse[m.vi] ??= [])[m.ti] = r.tags[k] })
+      perCol.set(i, { tagsByVerse, stats: r.stats })
+      r.sourceUsed.forEach((u, k) => { if (u) usedAny[k] = true })
+    })
+    if (!perCol.size) return null
+    const omitByVerse: Record<number, boolean[]> = {}
+    srcFlat.map.forEach((m, k) => { (omitByVerse[m.vi] ??= [])[m.ti] = !usedAny[k] })
+    return { sourceIdx, perCol, omitByVerse, omittedByAll: usedAny.filter(u => !u).length }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [compareOn, isGreek, sourceIdx, columns.join('|'), version, ver, books])
+
   // Default parsing-pane content before any word is clicked: the anchor column's first
   // available token, so the pane never sits empty (mirrors the Phrasing tab's behavior).
   const defaultParsingInfo: LexicalInfoPanel | null = (() => {
@@ -353,6 +417,48 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         </div>
       )}
 
+      {/* Compare mode: color-code each column's editorial changes against a chosen
+          source column (Theon's four modes of paraphrase — see the techniques key).
+          Greek editions only: the alignment runs on lemmas. */}
+      {anchor && isGreek && columns.length >= 2 && (
+        <div className="flex items-center flex-wrap gap-x-3 gap-y-2">
+          <button
+            onClick={toggleCompare}
+            className={`rounded-lg border px-2.5 py-1 text-xs font-medium ${compareOn ? 'border-brand-400 bg-brand-50 text-brand-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+          >
+            Compare editorial changes
+          </button>
+          {compareOn && (
+            <>
+              <label className="flex items-center gap-1.5 text-xs text-gray-500">
+                Source
+                <select
+                  value={sourceIdx}
+                  onChange={e => setSourceIdx(parseInt(e.target.value))}
+                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                >
+                  {columns.map((r, i) => <option key={i} value={i}>{column(r)?.label ?? r}</option>)}
+                </select>
+              </label>
+              <button
+                onClick={() => setShowKey(k => !k)}
+                className={`rounded-lg border px-2.5 py-1 text-xs ${showKey ? 'border-brand-400 bg-brand-50 text-brand-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+              >
+                Techniques key
+              </button>
+              <span className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-600">
+                <span className="rounded border border-gray-300 px-1.5">plain = verbatim</span>
+                <span className="rc-mark rc-form rounded px-1.5">form change</span>
+                <span className="rc-mark rc-moved rounded px-1.5">moved</span>
+                <span className="rc-mark rc-subst rounded px-1.5">substituted</span>
+                <span className="rc-mark rc-added rounded px-1.5">added</span>
+                <span className="rc-mark rc-omitted rounded px-1.5">omitted</span>
+              </span>
+            </>
+          )}
+        </div>
+      )}
+
       {!anchor ? (
         <p className="text-sm text-gray-400 italic">Enter a passage above to anchor the synopsis.</p>
       ) : (
@@ -365,7 +471,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
             return (
               <div key={i} className="w-72 shrink-0 rounded-xl border border-gray-200 p-3 flex flex-col min-h-0">
                 <div className="flex items-center justify-between mb-2 gap-2 shrink-0">
-                  <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}</p>
+                  <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}{compareData && i === compareData.sourceIdx && <span className="ml-1 text-[10px] font-normal text-red-600 uppercase tracking-wide">source</span>}</p>
                   {i > 0 && (
                     <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title="Remove column"><X size={14} /></button>
                   )}
@@ -379,12 +485,24 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                     {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
                 )}
+                {/* Compare mode: the redaction profile — how much of the source this
+                    column keeps and what it does to the rest (Tier-2 summary). */}
+                {compareData && (i === compareData.sourceIdx
+                  ? <p className="mb-1 shrink-0 text-[10px] leading-snug text-gray-400">{compareData.omittedByAll} word{compareData.omittedByAll === 1 ? '' : 's'} picked up by no compared column</p>
+                  : (() => {
+                      const s = compareData.perCol.get(i)?.stats
+                      return s ? (
+                        <p className="mb-1 shrink-0 text-[10px] leading-snug text-gray-400" title="Retention counts source words kept verbatim, re-inflected, or moved. The headline % is over content words only (articles, conjunctions, prepositions, particles, and pronouns excluded); the all-words figure follows in parentheses.">
+                          retains {s.contentRetentionPct}% of content words ({s.retentionPct}% overall) · +{s.added} added · −{s.omitted} omitted · {s.subst} substituted · {s.form + s.moved} recast{s.tenseChanges > 0 ? ` (${s.tenseChanges} tense)` : ''}
+                        </p>
+                      ) : null
+                    })())}
                 {col && col.verses.length > 0 ? (
                   <div
                     className={`flex-1 min-h-0 overflow-y-auto space-y-1 leading-relaxed ${isGreek ? 'font-greek text-gray-900' : 'font-reading text-gray-700'}`}
                     style={{ fontSize: isGreek ? 'var(--syn-fs, 1.45rem)' : 'calc(var(--syn-fs, 1.45rem) * 0.82)' }}
                   >
-                    {col.verses.map(v => (
+                    {col.verses.map((v, vi) => (
                       <p key={v.ref}>
                         {isAuthenticated && (
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
@@ -402,6 +520,15 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                     const key = `${col.book}.${col.chapter}.${v.verse}.${ti}`
                                     const select = () => { setSelectedInfo(toLexicalInfo(tok, col.bookName, v.ref)); setSelectedKey(key) }
                                     const hl = highlightAt(start, end, verseHighlights)
+                                    // Compare mode: the redaction tag colors the word; personal
+                                    // highlight marks pause while comparing so the two ink
+                                    // systems never stack on one word.
+                                    const rcTag = compareData
+                                      ? (i === compareData.sourceIdx
+                                          ? (compareData.omitByVerse[vi]?.[ti] ? 'omitted' : null)
+                                          : (compareData.perCol.get(i)?.tagsByVerse[vi]?.[ti] ?? null))
+                                      : null
+                                    const rcClass = rcTag && rcTag !== 'same' ? `rc-mark rc-${rcTag}` : ''
                                     return (
                                       <span
                                         key={ti}
@@ -420,7 +547,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                           })
                                         }}
                                         {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': col.book, 'data-hl-chapter': col.chapter, 'data-hl-color': hl.color } : {})}
-                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${hl ? highlightMarkClass(hl.color) : ''}`}
+                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${compareData ? rcClass : (hl ? highlightMarkClass(hl.color) : '')}`}
                                       >
                                         {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                                       </span>
@@ -462,6 +589,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           </div>
         </div>
       )}
+
+      {/* Techniques key — the ancient editorial techniques (Theon / Quintilian / Licona)
+          and how each maps to the compare-mode colors. */}
+      {compareOn && showKey && isGreek && <RedactionKey />}
 
       {/* Parsing pane — the same shared component used on the Phrasing tab (Strong's,
           Thayer's, Mounce, Abbott-Smith, LSJ). Always visible for a Greek edition so its

@@ -460,6 +460,29 @@ body.exam-lockdown nav.fixed.bottom-0 {
   mix-blend-mode: screen;
 }
 
+/* Redaction-comparison marks (Synopsis → Compare mode) — same marker-ink treatment as
+   .hl-mark so the categories read as one family with personal highlights, but a fixed
+   scholarly palette: green = addition, amber = substitution, blue = form change,
+   purple = word moved, red strike = omitted from the source. Kept OUTSIDE @layer for
+   the same tree-shaking reason as the hl-* classes (names built as `rc-${tag}`). */
+.rc-mark {
+  background-image: linear-gradient(rgb(var(--rc-ink) / 0.40), rgb(var(--rc-ink) / 0.55));
+  border-radius: 0.14em;
+  mix-blend-mode: multiply;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.rc-added { --rc-ink: 74 222 128; }
+.rc-subst { --rc-ink: 251 191 36; }
+.rc-form  { --rc-ink: 96 165 250; }
+.rc-moved { --rc-ink: 192 132 252; }
+.rc-omitted { --rc-ink: 248 113 113; text-decoration: line-through; text-decoration-thickness: 1px; }
+[data-theme='dim'] .rc-mark,
+[data-theme='dark'] .rc-mark {
+  background-image: linear-gradient(rgb(var(--rc-ink) / 0.30), rgb(var(--rc-ink) / 0.45));
+  mix-blend-mode: screen;
+}
+
 /* ── Master Search side panel (desktop): split view, not overlay ─────────────────────────
    While the panel is open, MasterSearchPanel sets data-search-panel + --search-panel-w on
    <html>; the app content then shifts left into the remaining space instead of being covered,
