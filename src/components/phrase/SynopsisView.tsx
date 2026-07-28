@@ -25,6 +25,15 @@ const FONT_SIZE_MAP: Record<SynFontSize, string> = { sm: '1.05rem', md: '1.25rem
 
 type RefBook = { osisId: string; name: string; abbrev: string; totalChapters: number }
 
+// The redaction categories that carry a colour, in legend order. 'omitted' is the source
+// column's strike-through rather than one of compareRedaction's target tags, so this is a
+// superset of RedactionTag minus 'same' (verbatim words are simply left unmarked).
+const MARK_TAGS = ['form', 'moved', 'subst', 'added', 'omitted'] as const
+type MarkTag = typeof MARK_TAGS[number]
+const MARK_LABELS: Record<MarkTag, string> = {
+  form: 'form change', moved: 'moved', subst: 'substituted', added: 'added', omitted: 'omitted',
+}
+
 /** Parse "John 1:1-5" against the book list (mirror of the other tools' parser). */
 function parseRef(ref: string, books: RefBook[]): { book: RefBook; chapter: number; verseStart: number; verseEnd: number } | null {
   const q = ref.trim().replace(/[–—]/g, '-')
@@ -121,6 +130,16 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const bump = () => setVer(v => v + 1)
   // Compare mode: color each column's editorial changes relative to a chosen source column.
   const [compareOn, setCompareOn] = useState(false)
+  // Which redaction categories are painted. The legend chips toggle these (same idiom as
+  // the Backgrounds cross-reference type filter), so a student can isolate one device —
+  // show only substitutions, say — instead of reading five colours at once. Hidden
+  // categories fall back to plain text; the stats line still reports the full comparison.
+  const [visibleTags, setVisibleTags] = useState<Set<MarkTag>>(new Set(MARK_TAGS))
+  const toggleTag = (t: MarkTag) => setVisibleTags(prev => {
+    const next = new Set(prev)
+    if (next.has(t)) next.delete(t); else next.add(t)
+    return next
+  })
   const [sourceIdx, setSourceIdx] = useState(0)
   const [showKey, setShowKey] = useState(false)
   // Which curated device chip's note is open (index into the pericope's annotations).
@@ -602,13 +621,32 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               >
                 Techniques key
               </button>
+              {/* Legend doubles as a filter: click a category to hide its colour and read
+                  those words as plain text. Dimmed chip = hidden (same idiom as the
+                  Backgrounds type filter). */}
               <span className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-600">
                 <span className="rounded border border-gray-300 px-1.5">plain = verbatim</span>
-                <span className="rc-mark rc-form rounded px-1.5">form change</span>
-                <span className="rc-mark rc-moved rounded px-1.5">moved</span>
-                <span className="rc-mark rc-subst rounded px-1.5">substituted</span>
-                <span className="rc-mark rc-added rounded px-1.5">added</span>
-                <span className="rc-mark rc-omitted rounded px-1.5">omitted</span>
+                {MARK_TAGS.map(t => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => toggleTag(t)}
+                    aria-pressed={visibleTags.has(t)}
+                    title={visibleTags.has(t) ? `Hide ${MARK_LABELS[t]}` : `Show ${MARK_LABELS[t]}`}
+                    className={`rc-mark rc-${t} rounded px-1.5 transition-opacity ${visibleTags.has(t) ? '' : 'opacity-30'}`}
+                  >
+                    {MARK_LABELS[t]}
+                  </button>
+                ))}
+                {visibleTags.size < MARK_TAGS.length && (
+                  <button
+                    type="button"
+                    onClick={() => setVisibleTags(new Set(MARK_TAGS))}
+                    className="rounded border border-gray-300 px-1.5 text-gray-500 hover:bg-gray-50"
+                  >
+                    show all
+                  </button>
+                )}
               </span>
             </>
           )}
@@ -701,7 +739,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                           ? (compareData.omitByVerse[vi]?.[ti] ? 'omitted' : null)
                                           : (compareData.perCol.get(i)?.tagsByVerse[vi]?.[ti] ?? null))
                                       : null
-                                    const rcClass = rcTag && rcTag !== 'same' ? `rc-mark rc-${rcTag}` : ''
+                                    // Painted only if the category is a marked one AND the
+                                    // legend has it switched on; otherwise the word reads plain.
+                                    const rcClass = rcTag && rcTag !== 'same' && visibleTags.has(rcTag as MarkTag)
+                                      ? `rc-mark rc-${rcTag}` : ''
                                     // Cross-column link: this word aligns with the one under
                                     // the pointer, so ring it. Uses an outline rather than a
                                     // background so it stacks cleanly on a redaction colour.
