@@ -250,7 +250,9 @@ const RAW_CATEGORIES: TextCategory[] = [
         { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
         { id: 'philostratus-apollonius', name: 'Philostratus, Life of Apollonius of Tyana', source: 'philostratus-apollonius', chapters: 8, greek: true, greekOnly: true },
         { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
-        { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true, greekOnly: true },
+        // Not greekOnly: the English is our own working translation, made for this app
+        // directly from the public-domain Walz Greek (see scripts/theon-english.json).
+        { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true },
         { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
         ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
         ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
