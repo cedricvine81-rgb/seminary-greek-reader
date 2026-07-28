@@ -1,6 +1,6 @@
 // Editorial-technique key for the Synopsis tab's Compare mode. Two tiers:
-//  1. Word-level paraphrase modes — Theon's closed list (Progymnasmata 101.7-9) — which
-//     the compare engine detects automatically and color-codes.
+//  1. Word-level paraphrase modes — Theon's closed list from his chapter On Paraphrase —
+//     which the compare engine detects automatically and color-codes.
 //  2. Narrative-level compositional devices — the categories Michael Licona documents
 //     from Plutarch and the rhetorical handbooks (Jesus, Contradicted, 2024; Why Are
 //     There Differences in the Gospels?, 2017) — which operate above the word level and
@@ -35,11 +35,25 @@ export type NarrativeTechnique = {
 }
 
 // Public, stable sources: Quintilian in H. E. Butler's public-domain Loeb translation
-// (Perseus / LacusCurtius). Theon survives partly only in Armenian and has no
-// public-domain English translation, so we cite Kennedy's standard SBL translation.
-const THEON = {
-  label: 'Theon, Progymnasmata 101.7–9 (trans. Kennedy, Progymnasmata, SBL 2003, p. 70)',
+// (Perseus / LacusCurtius).
+//
+// THEON — two different citations, because his text is transmitted in two states:
+//  • The Greek breaks off in the chapter on law; everything up to there survives in Greek
+//    (Walz), and we host it ourselves — so the chreia exercises below link into our reader.
+//  • The closing pedagogical chapters (reading, listening, PARAPHRASE, elaboration,
+//    contradiction) are lost in Greek and survive only in a classical-Armenian version;
+//    the standard English of those is Kennedy (SBL 2003), under copyright.
+// Spengel/Walz page numbers therefore exist only for the Greek-extant part: do NOT attach
+// one to the paraphrase chapter (an earlier revision of this file wrongly cited it as
+// "101.7–9").
+const THEON_PARAPHRASE = {
+  label: 'Theon, Progymnasmata, chapter On Paraphrase (extant only in Armenian; Eng. trans. Kennedy, SBL 2003)',
   url: 'https://books.google.com/books/about/Progymnasmata.html?id=21ka6pWJ-pkC',
+}
+/** The chreia exercises — extant in Greek, and readable in this app. */
+const THEON_CHREIA = {
+  label: 'Theon, Progymnasmata, On the Chreia (Greek: Walz) — read it here',
+  url: '/texts?work=theon-progymnasmata',
 }
 const QUINT_1_9 = {
   label: 'Quintilian, Institutio Oratoria 1.9.2',
@@ -69,7 +83,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'The same word kept, but its grammatical form changed — a different tense, mood, case, or number. Mark’s vivid historical presents becoming aorists in Matthew and Luke is the classic Gospel example.',
     example: 'Mark 1:12 ἐκβάλλει (present, “drives out”) → Matt 4:1 ἀνήχθη (aorist).',
-    refs: [THEON, QUINT_1_9],
+    refs: [THEON_PARAPHRASE, QUINT_1_9],
   },
   {
     tag: 'moved',
@@ -78,7 +92,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'The same word retained but relocated — the clause has been rebuilt around it. Includes participles resolved into finite verbs and vice versa.',
     example: 'Mark 1:32 ὄψιας δὲ γενομένης kept by Matt 8:16 but re-positioned in the sentence.',
-    refs: [THEON],
+    refs: [THEON_PARAPHRASE],
   },
   {
     tag: 'added',
@@ -87,7 +101,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'Material with no counterpart in the source: an explanatory phrase, a fulfillment citation, a heightened detail. Quintilian tells students they may “add the vigour of oratory” and make good the source’s omissions.',
     example: 'Matt 3:17 adds ἰδού and λέγουσα to Mark 1:11’s account of the voice.',
-    refs: [THEON, QUINT_10_5],
+    refs: [THEON_PARAPHRASE, QUINT_10_5],
   },
   {
     tag: 'omitted',
@@ -96,7 +110,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'Source material dropped. Struck-through words in the source column were used by none of the compared columns. Wholesale omission across a passage shades into the narrative device of compression.',
     example: 'Matthew routinely drops Mark’s duplicate expressions (e.g. Mark 1:32 “when evening came, when the sun set” → Matt 8:16 keeps only the first).',
-    refs: [THEON, QUINT_1_9],
+    refs: [THEON_PARAPHRASE, QUINT_1_9],
   },
   {
     tag: 'subst',
@@ -105,7 +119,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'A different word in the same slot: a synonym, a clarification, or a theological preference. Transferal of speech (a saying reworded from second to third person, or moved to another speaker) usually surfaces as a run of substitutions.',
     example: '“Kingdom of God” (Mark 4:30) → “kingdom of heaven” (Matt 13:31); Σὺ εἶ (Mark 1:11) → Οὗτός ἐστιν (Matt 3:17).',
-    refs: [THEON, LICONA_JC],
+    refs: [THEON_PARAPHRASE, THEON_CHREIA, LICONA_JC],
   },
 ]
 
@@ -117,7 +131,7 @@ export const NARRATIVE_LEVEL: NarrativeTechnique[] = [
     description: 'Retelling in one’s own words while keeping the sense — the umbrella practice the school exercises trained. Every device below is a species of it.',
     example: 'Most triple-tradition pericopes show 40–80% verbal retention with steady recasting of the remainder.',
     lookFor: 'A mix of every color at moderate density.',
-    refs: [THEON, QUINT_10_5, LICONA_JC],
+    refs: [THEON_PARAPHRASE, QUINT_10_5, LICONA_JC],
   },
   {
     name: 'Compression',
@@ -170,4 +184,4 @@ export const NARRATIVE_LEVEL: NarrativeTechnique[] = [
   },
 ]
 
-export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON, QUINT_1_9, QUINT_10_5, LICONA_JC, LICONA_WD]
+export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON_PARAPHRASE, THEON_CHREIA, QUINT_1_9, QUINT_10_5, LICONA_JC, LICONA_WD]

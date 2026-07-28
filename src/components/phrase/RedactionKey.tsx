@@ -33,9 +33,9 @@ export function RedactionKey() {
         <p className="mt-1 text-xs leading-relaxed text-gray-500">
           The compositional exercises every Greco-Roman student practiced — preserved in Theon&rsquo;s{' '}
           <span className="italic">Progymnasmata</span> and Quintilian&rsquo;s <span className="italic">Institutio Oratoria</span> —
-          taught writers to retell a source in their own words. Theon names exactly four ways
-          (<span className="italic">Progymnasmata</span> 101.7&ndash;9): <span className="font-medium">variation in syntax, addition, subtraction,
-          substitution</span>, &ldquo;plus combinations of these.&rdquo; Compare mode detects those four automatically.
+          taught writers to retell a source in their own words. In his chapter <span className="italic">On Paraphrase</span>{' '}
+          Theon names four ways: <span className="font-medium">variation in syntax, addition, subtraction,
+          substitution</span>, plus combinations of them. Compare mode detects those four automatically.
           The narrative-level devices below them (catalogued by Michael Licona from Plutarch&rsquo;s parallel
           <span className="italic"> Lives</span>) work at the level of the whole episode — the colors give you the evidence,
           but naming the device is your exegetical judgment. Examples here are worded from Markan
@@ -84,9 +84,13 @@ export function RedactionKey() {
 
       <p className="text-[11px] text-gray-400">
         Sources: <Refs refs={TECHNIQUE_SOURCES} />. Quintilian links open the public-domain Butler
-        translation (LacusCurtius / Perseus); Theon&rsquo;s <span className="italic">Progymnasmata</span> has no public-domain
-        English translation — the standard one is George A. Kennedy, <span className="italic">Progymnasmata: Greek Textbooks
-        of Prose Composition and Rhetoric</span> (SBL, 2003).
+        translation (LacusCurtius / Perseus). Theon&rsquo;s Greek breaks off in the chapter on law: the
+        earlier chapters (through <span className="italic">On the Chreia</span>) survive in Greek and can be read in this app,
+        but the closing pedagogical chapters — including <span className="italic">On Paraphrase</span>, the source of the four
+        modes above — are lost in Greek and survive only in a classical-Armenian version. The standard
+        English of those is George A. Kennedy, <span className="italic">Progymnasmata: Greek Textbooks of Prose Composition
+        and Rhetoric</span> (SBL, 2003), which is under copyright; page references to Spengel/Walz exist
+        only for the Greek-extant part.
       </p>
     </div>
   )
