@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'tjob-greek' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 // ── Testament of Job: two incompatible chapter divisions ────────────────────────────
 // Our text is Kohler's 1897 translation, which runs to 12 long chapters. Scholarship
@@ -51,6 +51,12 @@ const tjobCitation = (text: string): { chapter: number; verse?: number } | null 
   if (!m) return null
   const mapped = TJOB_JAMES_TO_KOHLER[parseInt(m[1], 10)]
   return mapped ? { chapter: mapped } : null
+}
+/** The James edition carries the cited numbering natively, so citations resolve
+ *  straight through — no mapping, and every chapter 1-53 is reachable. */
+const tjobGreekCitation = (text: string): { chapter: number; verse?: number } | null => {
+  const m = text.match(/^T\. Job\.?\s+(\d+)(?::(\d+))?/)
+  return m ? { chapter: parseInt(m[1], 10) } : null
 }
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
@@ -1166,6 +1172,11 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
     attribution: 'Text: K. Kohler’s translation of the Testament of Job, 1897 (public domain), which divides the work into 12 chapters. Scholarship cites the 53-chapter division established by M. R. James (Apocrypha Anecdota II, 1897) and followed by Brock and Charlesworth, so the cross-reference apparatus maps those citations onto this text at chapter level; the verse numbering of the two divisions does not correspond.',
     parseCitation: tjobCitation },
+  // The same work in James's 53-chapter division — the numbering scholarship cites —
+  // with his Greek and our own English translation (see scripts/build-tjob-greek.py).
+  { source: 'tjob-greek', name: 'Testament of Job (Greek)', noteBook: 'TJobGk', dataUrl: '/data/pseudepigrapha/tjob-greek.json', chapters: 53,
+    attribution: 'Greek: M. R. James, Apocrypha Anecdota II (1897), public domain. English: our own translation from that Greek, in progress.',
+    parseCitation: tjobGreekCitation },
   { source: 'apocabr', name: 'Apocalypse of Abraham', noteBook: 'ApocAbr', dataUrl: '/data/pseudepigrapha/apocabr.json', chapters: 32,
     attribution: 'Text: the G. H. Box / J. I. Landsman translation of the Apocalypse of Abraham, 1918 (public domain).',
     parseCitation: cite(/^Apoc\. Ab\.\s+(\d+)(?::(\d+))?/) },
