@@ -25,6 +25,34 @@ export interface ProseWork {
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
 export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
+// ── Testament of Job: two incompatible chapter divisions ────────────────────────────
+// Our text is Kohler's 1897 translation, which runs to 12 long chapters. Scholarship
+// cites the 53-chapter division James established the same year (Brock and Charlesworth
+// follow it), so a bare "T. Job 39:11" resolved against our file either missed entirely
+// or — worse — silently opened an unrelated chapter that happened to share the number.
+//
+// Each entry below was fixed by matching the content of the cited chapter against our
+// text and verifying the passage, e.g. James 18 (Satan throws the house down on the
+// children, then Job's seafarer simile) sits at our 4:20-25. Chapter level only: the two
+// divisions' verse numbers have no correspondence, so a verse would be false precision.
+// Unmapped chapters deliberately return null — a citation that cannot be placed should
+// fail visibly rather than open the wrong passage.
+const TJOB_JAMES_TO_KOHLER: Record<number, number> = {
+  1: 1,    // prologue, Job's genealogy (our 1:5)
+  4: 1,    // the angel's promise of restoration and resurrection (our 1:26)
+  5: 1,    // "I shall endure until death"; the idol's temple razed (our 1:27)
+  18: 4,   // the house thrown down on the children; the seafarer simile (our 4:20-25)
+  29: 7,   // the kings cannot believe this is Jobab (our 7:18)
+  39: 9,   // the plea to dig the ruins for the children's bones (our 9:4)
+  48: 11,  // the daughter who sings in the dialect of angels (our 11:24)
+}
+const tjobCitation = (text: string): { chapter: number; verse?: number } | null => {
+  const m = text.match(/^T\. Job\.?\s+(\d+)(?::(\d+))?/)
+  if (!m) return null
+  const mapped = TJOB_JAMES_TO_KOHLER[parseInt(m[1], 10)]
+  return mapped ? { chapter: mapped } : null
+}
+
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
 // the verse.
 const cite = (re: RegExp) => (text: string) => {
@@ -1136,8 +1164,8 @@ export const PROSE_WORKS: ProseWork[] = [
     attribution: 'Text: H. M. Hughes’ translation of 3 Baruch (the Greek Apocalypse of Baruch), 1913 (public domain).',
     parseCitation: cite(/^3 Bar\.\s+(\d+)(?::(\d+))?/) },
   { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
-    attribution: 'Text: the M. R. James / K. Kohler translation of the Testament of Job (public domain). Uses the 12-chapter division; scholarly citations often use the 53-chapter one.',
-    parseCitation: cite(/^T\. Job\.?\s+(\d+)(?::(\d+))?/) },
+    attribution: 'Text: K. Kohler’s translation of the Testament of Job, 1897 (public domain), which divides the work into 12 chapters. Scholarship cites the 53-chapter division established by M. R. James (Apocrypha Anecdota II, 1897) and followed by Brock and Charlesworth, so the cross-reference apparatus maps those citations onto this text at chapter level; the verse numbering of the two divisions does not correspond.',
+    parseCitation: tjobCitation },
   { source: 'apocabr', name: 'Apocalypse of Abraham', noteBook: 'ApocAbr', dataUrl: '/data/pseudepigrapha/apocabr.json', chapters: 32,
     attribution: 'Text: the G. H. Box / J. I. Landsman translation of the Apocalypse of Abraham, 1918 (public domain).',
     parseCitation: cite(/^Apoc\. Ab\.\s+(\d+)(?::(\d+))?/) },
