@@ -52,11 +52,13 @@ const tjobCitation = (text: string): { chapter: number; verse?: number } | null 
   const mapped = TJOB_JAMES_TO_KOHLER[parseInt(m[1], 10)]
   return mapped ? { chapter: mapped } : null
 }
-/** The James edition carries the cited numbering natively, so citations resolve
- *  straight through — no mapping, and every chapter 1-53 is reachable. */
+/** The 53-chapter edition carries the cited numbering natively, so citations resolve
+ *  straight through — no mapping, every chapter 1-53 is reachable, and the verse is
+ *  honoured, since manuscript P's verse numbers are the ones scholarship cites.
+ *  Registered ahead of the Kohler text so T. Job citations land here. */
 const tjobGreekCitation = (text: string): { chapter: number; verse?: number } | null => {
   const m = text.match(/^T\. Job\.?\s+(\d+)(?::(\d+))?/)
-  return m ? { chapter: parseInt(m[1], 10) } : null
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
 }
 
 // Build a citation matcher from a regex whose group 1 is the chapter and (optional) group 2
@@ -1169,14 +1171,16 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '3baruch', name: '3 Baruch', noteBook: '3Baruch', dataUrl: '/data/pseudepigrapha/3baruch.json', chapters: 17,
     attribution: 'Text: H. M. Hughes’ translation of 3 Baruch (the Greek Apocalypse of Baruch), 1913 (public domain).',
     parseCitation: cite(/^3 Bar\.\s+(\d+)(?::(\d+))?/) },
-  { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
-    attribution: 'Text: K. Kohler’s translation of the Testament of Job, 1897 (public domain), which divides the work into 12 chapters. Scholarship cites the 53-chapter division established by M. R. James (Apocrypha Anecdota II, 1897) and followed by Brock and Charlesworth, so the cross-reference apparatus maps those citations onto this text at chapter level; the verse numbering of the two divisions does not correspond.',
-    parseCitation: tjobCitation },
-  // The same work in James's 53-chapter division — the numbering scholarship cites —
-  // with his Greek and our own English translation (see scripts/build-tjob-greek.py).
+  // The work in the 53-chapter division scholarship cites, with the Greek of manuscript P
+  // and our own English translation (see scripts/build-tjob-greek.py). Registered ahead of
+  // the Kohler text so "T. Job 39:8" opens the cited chapter *and verse* here, rather than
+  // the chapter-level approximation the 12-chapter division can offer.
   { source: 'tjob-greek', name: 'Testament of Job (Greek)', noteBook: 'TJobGk', dataUrl: '/data/pseudepigrapha/tjob-greek.json', chapters: 53,
-    attribution: 'Greek: M. R. James, Apocrypha Anecdota II (1897), public domain. English: our own translation from that Greek, in progress.',
+    attribution: 'Greek: manuscript P (11th century), the oldest Greek witness to the Testament of Job, as transcribed by the Online Critical Pseudepigrapha (public domain); chapter and verse numbering follows the division of M. R. James as used by Brock and Charlesworth. English: our own translation, made for Seminary Greek from this Greek — the standard modern English (Spittler, in Charlesworth, 1983) is under copyright and was not used.',
     parseCitation: tjobGreekCitation },
+  { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
+    attribution: 'Text: K. Kohler’s translation of the Testament of Job, 1897 (public domain), which divides the work into 12 chapters. Scholarship cites the 53-chapter division established by M. R. James (Apocrypha Anecdota II, 1897) and followed by Brock and Charlesworth; citations open in our 53-chapter edition, which carries that numbering natively. This text is kept for its own sake as a readable older rendering.',
+    parseCitation: tjobCitation },
   { source: 'apocabr', name: 'Apocalypse of Abraham', noteBook: 'ApocAbr', dataUrl: '/data/pseudepigrapha/apocabr.json', chapters: 32,
     attribution: 'Text: the G. H. Box / J. I. Landsman translation of the Apocalypse of Abraham, 1918 (public domain).',
     parseCitation: cite(/^Apoc\. Ab\.\s+(\d+)(?::(\d+))?/) },

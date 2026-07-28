@@ -196,9 +196,9 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51, chapterNumbers: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51] },
       { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17, chapterNumbers: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17] },
       { id: 'tjob', name: 'Testament of Job', source: 'tjob', chapters: 12 },
-      // James's 53-chapter division — the numbering scholarship cites — with his Greek.
-      // greekOnly until our own English translation of every unit is finished.
-      { id: 'tjob-greek', name: 'Testament of Job (Greek, 53 ch.)', source: 'tjob-greek', chapters: 53, greek: true, greekOnly: true },
+      // The 53-chapter division scholarship cites, in the Greek of manuscript P with our
+      // own English facing it — all 390 verses are translated, so it reads in parallel.
+      { id: 'tjob-greek', name: 'Testament of Job (Greek–English, 53 ch.)', source: 'tjob-greek', chapters: 53, greek: true },
       { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1, greek: true },
