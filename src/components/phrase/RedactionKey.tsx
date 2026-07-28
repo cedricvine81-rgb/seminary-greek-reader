@@ -99,13 +99,14 @@ export function RedactionKey() {
 
       <p className="text-[11px] text-gray-400">
         Sources: <Refs refs={TECHNIQUE_SOURCES} />. Citations marked with a book icon open here in a
-        side panel, beside this key. Theon&rsquo;s Greek breaks off in the chapter on law: the
-        earlier chapters (through <span className="italic">On the Chreia</span>) survive in Greek and can be read in this app,
-        but the closing pedagogical chapters — including <span className="italic">On Paraphrase</span>, the source of the four
-        modes above — are lost in Greek and survive only in a classical-Armenian version. The standard
-        English of those is George A. Kennedy, <span className="italic">Progymnasmata: Greek Textbooks of Prose Composition
-        and Rhetoric</span> (SBL, 2003), which is under copyright; page references to Spengel/Walz exist
-        only for the Greek-extant part.
+        side panel, beside this key. The Theon passages open <span className="italic">our own English translation</span>,
+        made for this app directly from the public-domain Greek of Walz and shown alongside it.
+        Theon&rsquo;s Greek breaks off in the chapter on law: everything through <span className="italic">On the Chreia</span> survives
+        in Greek and is translated here, but the closing pedagogical chapters — including
+        <span className="italic"> On Paraphrase</span>, the source of the four modes above — are lost in Greek and survive only
+        in a classical-Armenian version. That chapter is therefore the one citation with nothing to
+        open; the standard English of it is George A. Kennedy, <span className="italic">Progymnasmata: Greek Textbooks of
+        Prose Composition and Rhetoric</span> (SBL, 2003), which is under copyright.
       </p>
     </div>
   )

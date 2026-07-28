@@ -50,9 +50,13 @@ export type NarrativeTechnique = {
 // Spengel/Walz page numbers therefore exist only for the Greek-extant part: do NOT attach
 // one to the paraphrase chapter (an earlier revision of this file wrongly cited it as
 // "101.7–9").
-const THEON_PARAPHRASE = {
-  label: 'Theon, Progymnasmata, chapter On Paraphrase (extant only in Armenian; Eng. trans. Kennedy, SBL 2003)',
-  url: 'https://books.google.com/books/about/Progymnasmata.html?id=21ka6pWJ-pkC',
+/** The source of the four modes — and the one Theon chapter we cannot show, since the
+ *  Greek is lost and only a classical-Armenian version survives (the standard English of
+ *  it, Kennedy's SBL 2003, is under copyright). Deliberately label-only: a blue link that
+ *  led to a book the student can't read was worse than a plain scholarly note, and every
+ *  Theon citation that CAN be opened now opens our own translation. */
+const THEON_PARAPHRASE: TechniqueRef = {
+  label: 'Theon, Progymnasmata, On Paraphrase — Greek lost, extant only in Armenian (Eng. trans. Kennedy, SBL 2003)',
 }
 /** The chreia exercises — extant in Greek, and readable in this app. */
 const THEON_CHREIA: TechniqueRef = {
@@ -94,7 +98,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'The same word kept, but its grammatical form changed — a different tense, mood, case, or number. Mark’s vivid historical presents becoming aorists in Matthew and Luke is the classic Gospel example.',
     example: 'Mark 1:12 ἐκβάλλει (present, “drives out”) → Matt 4:1 ἀνήχθη (aorist).',
-    refs: [THEON_PARAPHRASE, QUINT_1_9],
+    refs: [THEON_PROEM, THEON_PARAPHRASE, QUINT_1_9],
   },
   {
     tag: 'moved',
@@ -103,7 +107,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'The same word retained but relocated — the clause has been rebuilt around it. Includes participles resolved into finite verbs and vice versa.',
     example: 'Mark 1:32 ὄψιας δὲ γενομένης kept by Matt 8:16 but re-positioned in the sentence.',
-    refs: [THEON_PARAPHRASE],
+    refs: [THEON_PROEM, THEON_PARAPHRASE],
   },
   {
     tag: 'added',
@@ -112,7 +116,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'Material with no counterpart in the source: an explanatory phrase, a fulfillment citation, a heightened detail. Quintilian tells students they may “add the vigour of oratory” and make good the source’s omissions.',
     example: 'Matt 3:17 adds ἰδού and λέγουσα to Mark 1:11’s account of the voice.',
-    refs: [THEON_PARAPHRASE, QUINT_10_5],
+    refs: [THEON_PROEM, THEON_PARAPHRASE, QUINT_10_5],
   },
   {
     tag: 'omitted',
@@ -121,7 +125,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'Source material dropped. Struck-through words in the source column were used by none of the compared columns. Wholesale omission across a passage shades into the narrative device of compression.',
     example: 'Matthew routinely drops Mark’s duplicate expressions (e.g. Mark 1:32 “when evening came, when the sun set” → Matt 8:16 keeps only the first).',
-    refs: [THEON_PARAPHRASE, QUINT_1_9],
+    refs: [THEON_PROEM, THEON_PARAPHRASE, QUINT_1_9],
   },
   {
     tag: 'subst',
@@ -130,7 +134,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     description:
       'A different word in the same slot: a synonym, a clarification, or a theological preference. Transferal of speech (a saying reworded from second to third person, or moved to another speaker) usually surfaces as a run of substitutions.',
     example: '“Kingdom of God” (Mark 4:30) → “kingdom of heaven” (Matt 13:31); Σὺ εἶ (Mark 1:11) → Οὗτός ἐστιν (Matt 3:17).',
-    refs: [THEON_PARAPHRASE, THEON_CHREIA, LICONA_JC],
+    refs: [THEON_CHREIA, THEON_PROEM, THEON_PARAPHRASE, LICONA_JC],
   },
 ]
 
@@ -195,4 +199,6 @@ export const NARRATIVE_LEVEL: NarrativeTechnique[] = [
   },
 ]
 
-export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON_PARAPHRASE, THEON_PROEM, THEON_CHREIA, QUINT_1_9, QUINT_10_5, LICONA_JC, LICONA_WD]
+// Openable sources (our Theon translation, the public-domain Quintilian) first; the
+// unshowable and modern ones after.
+export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON_PROEM, THEON_CHREIA, QUINT_1_9, QUINT_10_5, THEON_PARAPHRASE, LICONA_JC, LICONA_WD]
