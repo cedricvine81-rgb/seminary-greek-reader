@@ -53,7 +53,10 @@ export function RedactionKey() {
           substitution</span>, plus combinations of them. Compare mode detects those four automatically.
           The narrative-level devices below them (catalogued by Michael Licona from Plutarch&rsquo;s parallel
           <span className="italic"> Lives</span>) work at the level of the whole episode — the colors give you the evidence,
-          but naming the device is your exegetical judgment. Examples here are worded from Markan
+          but naming the device is your exegetical judgment. Hover any coloured word for its specific
+          evidence: the source word and reference it was judged against. On the Nestle 1904 edition the
+          alignment also reads the phrase-structure trees — an article travels with its own noun, and a
+          substitution must occupy the same grammatical slot (subject for subject, object for object). Examples here are worded from Markan
           priority, which both major source models share; where a note&rsquo;s direction depends on whether
           Luke used Matthew (Farrer) or Matthew and Luke independently used Q (Two-Source), the note
           follows the <span className="font-medium">Source model</span> selector beside the device chips. The compare

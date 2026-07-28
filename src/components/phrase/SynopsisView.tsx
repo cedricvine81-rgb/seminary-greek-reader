@@ -4,6 +4,7 @@ import { X } from 'lucide-react'
 import { compareRedaction, isFunctionWord, isGlueWord, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { RedactionKey } from './RedactionKey'
 import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
+import { phraseTreeVerses, type PhraseTreeDoc } from '@/lib/phrase-tree-tokens'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -32,6 +33,28 @@ const MARK_TAGS = ['form', 'moved', 'subst', 'added', 'omitted'] as const
 type MarkTag = typeof MARK_TAGS[number]
 const MARK_LABELS: Record<MarkTag, string> = {
   form: 'form change', moved: 'moved', subst: 'substituted', added: 'added', omitted: 'omitted',
+}
+
+// Rationale bubble support: each coloured word can explain itself, because the aligner
+// records which source word it was judged against (CompareResult.links).
+const TAG_TITLES: Record<MarkTag, string> = {
+  form: 'Form change', moved: 'Moved', subst: 'Substituted', added: 'Added', omitted: 'Omitted',
+}
+const ROLE_LABELS: Record<string, string> = {
+  s: 'subject', o: 'object', io: 'indirect object', v: 'verb', adv: 'adverbial',
+  p: 'predicate', vc: 'copular complement', aux: 'auxiliary', o2: 'second object', topic: 'topic',
+}
+/** "Genitive Plural → Nominative Plural" style summary of what changed between two
+ *  parsing strings — just the categories that differ. */
+function parsingDiff(a?: string, b?: string): string {
+  if (!a || !b) return ''
+  const A = a.split(',').map(s => s.trim()).filter(Boolean)
+  const B = b.split(',').map(s => s.trim()).filter(Boolean)
+  const sa = new Set(A), sb = new Set(B)
+  const from = A.filter(x => !sb.has(x))
+  const to = B.filter(x => !sa.has(x))
+  if (!from.length && !to.length) return ''
+  return `${from.join(' ') || '—'} → ${to.join(' ') || '—'}`
 }
 
 /** Parse "John 1:1-5" against the book list (mirror of the other tools' parser). */
@@ -70,7 +93,7 @@ const VERSIONS = [
 // LSJ by Strong's number). Nestle 1904 words (from the phrase tree) ship a ready-made
 // `parsing` string + gloss; Tischendorf words (from /data/gnt) ship structured morph we
 // format the same way. Both ship a Strong's number.
-type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string }
+type WordToken = { surface: string; parsing: string; lemma: string; gloss?: string; strongs?: string; id?: string; syn?: { role?: string; headId?: string } }
 const GNT_MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number', 'casus', 'gender'] as const
 function formatGntMorph(m: Record<string, string | null> | undefined): string {
   if (!m) return ''
@@ -147,6 +170,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // The word currently under the pointer, as "columnIndex.verseIndex.tokenIndex" — drives
   // the cross-column link highlight (its counterparts in every other column light up).
   const [hoverWord, setHoverWord] = useState<string | null>(null)
+  // Rationale bubble for the hovered coloured word: why it wears its tag, citing the
+  // source word and reference it was judged against.
+  const [hoverTip, setHoverTip] = useState<{ x: number; y: number; title: string; body: string } | null>(null)
   // Synoptic source model for model-dependent notes (Farrer vs Two-Source/Q).
   // Defaults to Farrer; persisted per browser. Initialized in an effect so SSR and
   // first client render agree (no hydration mismatch).
@@ -294,25 +320,16 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     loaded.current.add(ck)
     const done = (map: Record<string, string>, patch: Record<string, string>) => { Object.assign(map, patch); bump() }
     if (v === 'na1904') {
-      type Node = { t: string; id?: string; w?: string; parsing?: string; lemma?: string; gloss?: string; strongs?: string; c?: Node[] }
-      fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: { sentences?: { tree: Node }[] }) => {
-        const byVerse: Record<string, { i: number; tok: WordToken }[]> = {}
-        const walk = (n: Node) => {
-          if (n.t === 'w' && n.id) {
-            const [bk, ch, vs, wd] = n.id.split('.')
-            ;(byVerse[`${bk}.${ch}.${vs}`] ??= []).push({
-              i: parseInt(wd || '0', 10),
-              tok: { surface: n.w ?? '', parsing: n.parsing ?? '', lemma: n.lemma ?? '', gloss: n.gloss, strongs: n.strongs },
-            })
-          } else (n.c ?? []).forEach(walk)
-        }
-        for (const s of d.sentences ?? []) walk(s.tree)
+      // Shared extraction (phrase-tree-tokens.ts): words in verse order, each carrying
+      // its clause role + phrase head from the MACULA tree, which the compare-mode
+      // alignment uses for slot-aware substitution and article-to-noun attachment.
+      fetch(`/data/phrase-tree/${osis}.json`).then(r => r.json()).then((d: PhraseTreeDoc) => {
+        const verses = phraseTreeVerses(d)
         const patch: Record<string, string> = {}
         const wpatch: Record<string, WordToken[]> = {}
-        for (const [vKey, ws] of Object.entries(byVerse)) {
-          ws.sort((a, b) => a.i - b.i)
-          patch[vKey] = ws.map(x => x.tok.surface).join(' ')
-          wpatch[vKey] = ws.map(x => x.tok)
+        for (const [vKey, toks] of Object.entries(verses)) {
+          patch[vKey] = toks.map(t => t.surface).join(' ')
+          wpatch[vKey] = toks
         }
         Object.assign((wordCache.current.na1904 ??= {}), wpatch)
         done((cache.current.na1904 ??= {}), patch)
@@ -381,6 +398,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // classroom direction), but leave the choice fully user-editable — the tool takes no
   // position on Synoptic source theories.
   const toggleCompare = () => {
+    setHoverTip(null)
     setCompareOn(on => {
       if (!on) {
         const mk = columns.findIndex(r => r.trim().toLowerCase().startsWith('mark'))
@@ -417,7 +435,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       const tokens: CompareToken[] = []
       const map: { vi: number; ti: number }[] = []
       c.verses.forEach((v, vi) => (v.tokens ?? []).forEach((t, ti) => {
-        tokens.push({ lemma: t.lemma, surface: t.surface, parsing: t.parsing })
+        tokens.push({ lemma: t.lemma, surface: t.surface, parsing: t.parsing, id: t.id, role: t.syn?.role, headId: t.syn?.headId })
         map.push({ vi, ti })
       }))
       return { tokens, map }
@@ -671,7 +689,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         // Capped height with its own scroll (rather than letting the page grow), so a
         // long passage can't push the parsing pane below the fold — it stays visible
         // right after the columns without the user needing to scroll to find it.
-        <div ref={synPaneRef} onMouseLeave={() => setHoverWord(null)} className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+        <div ref={synPaneRef} onMouseLeave={() => { setHoverWord(null); setHoverTip(null) }} onScrollCapture={() => setHoverTip(null)} className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
@@ -759,11 +777,44 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                     // the pointer, so ring it. Uses an outline rather than a
                                     // background so it stacks cleanly on a redaction colour.
                                     const linked = linkedKeys.has(`${i}.${vi}.${ti}`)
+                                    // Rationale bubble for the word's tag, citing the source
+                                    // word + reference it was judged against (the aligner's
+                                    // own evidence, not a generated gloss).
+                                    const showTip = (e: React.MouseEvent) => {
+                                      if (!compareOn || !compareData || !rcClass || !rcTag) { setHoverTip(null); return }
+                                      const rect = e.currentTarget.getBoundingClientRect()
+                                      const x = Math.min(Math.max(rect.left + rect.width / 2, 152), Math.max(window.innerWidth - 152, 152))
+                                      const srcCol = column(columns[compareData.sourceIdx])
+                                      let body = ''
+                                      if (rcTag === 'omitted') body = 'No compared column takes this word up in any form.'
+                                      else if (rcTag === 'added') body = `No counterpart in ${srcCol?.label ?? 'the source'} — new material.`
+                                      else {
+                                        const sFlat = compareData.perCol.get(i)?.linkByVerse[vi]?.[ti]
+                                        const sp = sFlat != null ? compareData.srcPos[sFlat] : undefined
+                                        const sv = sp && srcCol ? srcCol.verses[sp.vi] : undefined
+                                        const stok = sp ? sv?.tokens?.[sp.ti] : undefined
+                                        if (stok && sv && srcCol) {
+                                          const ref = `${srcCol.bookName} ${srcCol.chapter}:${sv.verse}`
+                                          if (rcTag === 'form') {
+                                            const d = parsingDiff(stok.parsing, tok.parsing)
+                                            body = `${stok.surface} (${ref}) → ${tok.surface}${d ? ` — ${d}` : ''}.`
+                                          } else if (rcTag === 'moved') {
+                                            const sameForm = stok.surface.replace(/[.,·;]/g, '') === tok.surface.replace(/[.,·;]/g, '')
+                                            body = `Same word as ${stok.surface} at ${ref}, relocated${sameForm ? '' : ' and re-inflected'}.`
+                                          } else if (rcTag === 'subst') {
+                                            const role = tok.syn?.role ? ROLE_LABELS[tok.syn.role] : undefined
+                                            body = `Replaces ${stok.surface} (${ref}) in the same slot${role ? ` (${role})` : ''}.`
+                                          }
+                                        }
+                                      }
+                                      if (!body) { setHoverTip(null); return }
+                                      setHoverTip({ x, y: rect.top, title: TAG_TITLES[rcTag as MarkTag] ?? rcTag, body })
+                                    }
                                     return (
                                       <span
                                         key={ti}
-                                        onMouseEnter={() => { select(); setHoverWord(`${i}.${vi}.${ti}`) }}
-                                        onClick={() => { select(); setHoverWord(`${i}.${vi}.${ti}`) }}
+                                        onMouseEnter={e => { select(); setHoverWord(`${i}.${vi}.${ti}`); showTip(e) }}
+                                        onClick={e => { select(); setHoverWord(`${i}.${vi}.${ti}`); showTip(e) }}
                                         onContextMenu={e => {
                                           e.preventDefault()
                                           openWordSearch({
@@ -831,6 +882,17 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
           so the text ends cleanly above it instead of the pane floating over it. */}
       {isGreek && (
         <ResizableParsingPane storageKey="synopsis" info={selectedInfo ?? defaultParsingInfo} bgClass="bg-gray-50" growDown />
+      )}
+
+      {/* Rationale bubble — why the hovered word wears its colour, citing the source
+          word and reference the aligner judged it against. */}
+      {hoverTip && (
+        <div className="fixed z-40 -translate-x-1/2 -translate-y-full pointer-events-none" style={{ left: hoverTip.x, top: hoverTip.y - 6 }}>
+          <div className="max-w-[19rem] rounded-lg border border-gray-200 bg-popover px-2.5 py-1.5 shadow-lg">
+            <p className="text-[10px] font-semibold uppercase tracking-wide text-gray-400">{hoverTip.title}</p>
+            <p className="text-xs leading-snug text-gray-700">{hoverTip.body}</p>
+          </div>
+        </div>
       )}
 
       {isAuthenticated && highlightSelection.popup && (

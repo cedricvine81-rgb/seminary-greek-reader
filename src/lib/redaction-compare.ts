@@ -14,7 +14,10 @@ export type RedactionTag =
   | 'subst'   // different lemma filling the same slot (substitution)
   | 'added'   // no counterpart in the source (addition / elaboration)
 
-export type CompareToken = { lemma: string; surface: string; parsing?: string }
+// `id`, `role`, and `headId` are the optional syntax facts from the MACULA phrase tree
+// (see phrase-tree-tokens.ts) — present for the Nestle 1904 edition only. When absent,
+// every syntax-aware rule falls back to the positional heuristics.
+export type CompareToken = { lemma: string; surface: string; parsing?: string; id?: string; role?: string; headId?: string }
 
 export type CompareResult = {
   /** One tag per target token. */
@@ -224,7 +227,12 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
       if ((sGapLen.get(g) ?? 0) > SUBST_GAP_CAP || (tCountByGap.get(g) ?? 0) > SUBST_GAP_CAP) continue
       const cands = sByGap.get(g)
       if (!cands) continue
-      const idx = cands.findIndex(si => sClass[si] === tClass[ti])
+      // Same POS class, and — when both sides carry a clause role from the phrase tree —
+      // the same grammatical slot: subject replaces subject, object replaces object.
+      // Role is advisory (trees have occasional annotation errors), so a missing role on
+      // either side falls back to the POS rule alone.
+      const idx = cands.findIndex(si => sClass[si] === tClass[ti]
+        && (!source[si].role || !target[ti].role || source[si].role === target[ti].role))
       if (idx !== -1) {
         const si = cands.splice(idx, 1)[0]
         sourceUsed[si] = true; links[ti] = si; tags[ti] = 'subst'; subst++
@@ -239,21 +247,49 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
   // form/moved/subst.
   {
     const GLUE_WINDOW = 3
-    for (let ti = 0; ti < target.length; ti++) {
-      if (tClass[ti] !== 'glue') continue
-      let anchor = -1
-      for (let d = 1; d <= GLUE_WINDOW && anchor === -1; d++) {
-        if (ti + d < target.length && links[ti + d] !== null) anchor = ti + d      // prefer following: article → its noun
-        else if (ti - d >= 0 && links[ti - d] !== null) anchor = ti - d
-      }
-      if (anchor === -1) continue                          // inside added material → stays 'added'
-      const s0 = links[anchor]!
-      for (let d = -GLUE_WINDOW; d <= GLUE_WINDOW; d++) {
-        const si = s0 + d
-        if (si < 0 || si >= source.length) continue
-        if (sourceUsed[si] || sClass[si] !== 'glue' || sKeys[si] !== tKeys[ti]) continue
-        sourceUsed[si] = true; links[ti] = si; tags[ti] = 'same'; same++
-        break
+    // id → index maps, for resolving a glue word's phrase head (Nestle 1904 only).
+    const tIdIdx = new Map<string, number>()
+    target.forEach((t, i) => { if (t.id) tIdIdx.set(t.id, i) })
+    // Two rounds: exact inflected form first, lemma-only second. Otherwise, in a flat
+    // phrase like τὰς οἰκοδομὰς τοῦ ἱεροῦ (where both articles head to ἱεροῦ), the
+    // first article in order can steal the source article that belongs to the second.
+    for (const exact of [true, false]) {
+      for (let ti = 0; ti < target.length; ti++) {
+        if (tClass[ti] !== 'glue' || tags[ti] !== 'added') continue
+        let anchor = -1
+        let viaHead = false
+        // Syntax-aware anchoring: an article or preposition belongs to its phrase's head
+        // word (ὁ in [ὁ Ἰησοῦς] → Ἰησοῦς), so when the tree names that head, the glue
+        // follows the head's fate exactly — carried over if the head aligned, added if
+        // the whole phrase is new. Clause-level glue (καί, δέ, negations) has no head and
+        // uses the neighbour window as before.
+        const hid = target[ti].headId
+        if (hid) {
+          const h = tIdIdx.get(hid)
+          if (h !== undefined) {
+            if (links[h] === null) continue                // head unaligned → phrase is added material
+            anchor = h; viaHead = true
+          }
+        }
+        for (let d = 1; d <= GLUE_WINDOW && anchor === -1; d++) {
+          if (ti + d < target.length && links[ti + d] !== null) anchor = ti + d    // prefer following: article → its noun
+          else if (ti - d >= 0 && links[ti - d] !== null) anchor = ti - d
+        }
+        if (anchor === -1) continue                        // inside added material → stays 'added'
+        const s0 = links[anchor]!
+        const s0Id = source[s0].id
+        for (let d = -GLUE_WINDOW; d <= GLUE_WINDOW; d++) {
+          const si = s0 + d
+          if (si < 0 || si >= source.length) continue
+          if (sourceUsed[si] || sClass[si] !== 'glue' || sKeys[si] !== tKeys[ti]) continue
+          if (exact && norm(source[si].surface) !== norm(target[ti].surface)) continue
+          // When anchored through a phrase head, the source glue must belong to that same
+          // head's phrase — a τοῦ from the neighbouring phrase shares ὁ's lemma but is not
+          // this article's counterpart.
+          if (viaHead && source[si].headId && s0Id && source[si].headId !== s0Id) continue
+          sourceUsed[si] = true; links[ti] = si; tags[ti] = 'same'; same++
+          break
+        }
       }
     }
   }
