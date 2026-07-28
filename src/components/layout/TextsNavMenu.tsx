@@ -45,7 +45,13 @@ export function TextsNavMenu() {
   function openBooks(author: string, works: CatalogWork[], el: HTMLElement) {
     const r = el.getBoundingClientRect()
     const left = r.left >= BOOKS_W + 20 ? r.left - BOOKS_W - 4 : r.right + 4  // left if room, else right
-    setSub({ author, works, top: r.top, left })
+    // Open level with the author row, but if the book list would run off the bottom (an author
+    // low in the list, e.g. Xenophon), open UPWARD — align the flyout's bottom with the row so
+    // its last book lines up with the author.
+    const estHeight = works.length * 34 + 12
+    let top = r.top
+    if (top + estHeight > window.innerHeight - 12) top = Math.max(8, r.bottom - estHeight)
+    setSub({ author, works, top, left })
   }
 
   return (
