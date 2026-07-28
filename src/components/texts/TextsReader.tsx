@@ -84,19 +84,6 @@ const SEARCH_RED = SEARCH_MARK
 const foldCh = (c: string) => { const s = normalizeGreek(c); return s.length === 1 ? s : c.toLowerCase() }
 const fold = (s: string) => Array.from(s, foldCh).join('')
 
-function highlight(text: string, q: string, cls: string = SEARCH_RED): ReactNode {
-  if (!q.trim()) return text
-  const idx = fold(text).indexOf(fold(q))
-  if (idx === -1) return text
-  return (
-    <>
-      {text.slice(0, idx)}
-      <mark className={cls}>{text.slice(idx, idx + q.length)}</mark>
-      {highlight(text.slice(idx + q.length), q, cls)}
-    </>
-  )
-}
-
 // Every chapter of a work, in reading order — for Josephus that spans all its books.
 function buildQueue(w: CatalogWork): QueueItem[] {
   if (w.source === 'josephus') {
@@ -868,6 +855,12 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // the accented text ("λόγος").
   const qNorm = q ? fold(q) : ''
   const termNorm = !q && termHighlight ? normalizeGreek(termHighlight) : null
+  // Search marks used to be painted by swapping the word spans for a plain marked-up string,
+  // which cost the reader its right-click menu, its highlighting and (on Greek prose) its
+  // parsing pane for as long as a search was active — including every arrival from a search
+  // result, which sets termHighlight. GreekWords/TransWords mark these themselves now, so the
+  // words stay live. Folded the same way findTermRanges folds the text it scans.
+  const markWords = qNorm ? [qNorm] : termNorm ? [termNorm] : undefined
   const matchesSearch = (r: Row) =>
     !q ||
     !!r.greek && fold(r.greek).includes(qNorm) ||
@@ -1298,9 +1291,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             ) : greekProse ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
                                 {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
-                                {q ? highlight(row.greek ?? '', search)
-                                  : termHighlight ? highlight(row.greek ?? '', termHighlight, SEARCH_RED)
-                                  : <GreekWords text={row.greek ?? ''} reference={citeFor(row)}
+                                {<GreekWords text={row.greek ?? ''} reference={citeFor(row)} terms={markWords}
                                       analyses={row.morph} selectedKey={selectedKey} keyBase={`${section.key}.${row.num}`}
                                       onPick={(pick, key) => {
                                         setSelectedInfo(pick ? { surface: pick.surface, lexeme: pick.lemma, gloss: '', partOfSpeech: '', parsing: pick.parsing, reference: citeFor(row) } : null)
@@ -1313,9 +1304,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               </span>
                             ) : (
                               <span style={{ fontSize: 'var(--tx-fs, 1.45rem)' }} {...verseAnchorProps(noteBook, section.chapter, row.num, layer)}>
-                                {q ? highlight(row.english ?? '', search)
-                                  : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                  : <TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
+                                {<TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                       hl={isAuthenticated ? { isAuthenticated, verseHighlights,
                                         create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, layer),
                                         recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
@@ -1340,17 +1329,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                               )}
                               <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{row.ref ?? row.num}</sup>
                               {greekProse
-                                ? (q ? highlight(row.english ?? '', search)
-                                   : termHighlight ? highlight(row.english ?? '', termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
+                                ? (<TransWords text={row.english ?? ''} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),
                                          remove: id => void highlights.remove(id, noteBook, section.chapter) } : undefined} />)
                                 : row.english
-                                ? (q ? highlight(row.english, search)
-                                   : termHighlight ? highlight(row.english, termHighlight, SEARCH_RED)
-                                   : <TransWords text={row.english} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection}
+                                ? (<TransWords text={row.english} lang="en" reference={citeFor(row)} book={noteBook} bgCollection={bgCollection} terms={markWords}
                                        hl={isAuthenticated ? { isAuthenticated, verseHighlights: englishHighlights,
                                          create: (s, e, c) => void highlights.create(noteBook, section.chapter, row.num, s, e, c, 'en'),
                                          recolor: (id, c) => void highlights.recolor(id, noteBook, section.chapter, c),

@@ -2,6 +2,7 @@
 import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { findTermRanges, SEARCH_MARK } from '@/lib/highlight-terms'
 import type { TransHl } from '@/components/highlights/TransWords'
 
 // Strip leading/trailing punctuation (literal class — no \p{} for the repo's TS target),
@@ -22,8 +23,12 @@ type WordPick = { lemma: string; parsing: string; surface: string }
  * in order. When `hl` is supplied, each word also renders + toggles a highlight (character
  * offsets into `text`) and the right-click menu carries the highlight palette — the same model
  * the Greek reader and translation panes use.
+ *
+ * `terms` (already folded, as findTermRanges expects) marks the words a search matched. Marking
+ * here rather than swapping in a plain marked-up string is the point: a searching reader used to
+ * lose the word menu and the parsing pane on the very passage the search found.
  */
-export function GreekWords({ text, reference, analyses, onPick, selectedKey, keyBase, hl }: {
+export function GreekWords({ text, reference, analyses, onPick, selectedKey, keyBase, hl, terms }: {
   text: string
   reference: string
   analyses?: MorphEntry[]
@@ -31,7 +36,11 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
   selectedKey?: string | null
   keyBase?: string
   hl?: TransHl
+  terms?: string[]
 }) {
+  const termRanges = terms?.length ? findTermRanges(text, terms) : []
+  const inTerm = (start: number, end: number) =>
+    termRanges.some(([rs, re]) => start < re && end > rs)
   let wi = -1  // running index over words only (whitespace tokens don't advance it)
   let pos = 0  // running character offset into `text` (for highlight anchors)
   return (
@@ -60,7 +69,8 @@ export function GreekWords({ text, reference, analyses, onPick, selectedKey, key
         return (
           <span
             key={i}
-            className={`reading-word rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
+            className={`reading-word rounded transition-colors ${onPick ? 'cursor-pointer' : 'cursor-context-menu'} hover:bg-brand-100 ${selected ? 'bg-brand-100' : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}${
+              !mark && inTerm(start, end) ? ` ${SEARCH_MARK}` : ''}`}
             {...(select ? { onMouseEnter: select, onClick: select } : {})}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
             onContextMenu={e => {
