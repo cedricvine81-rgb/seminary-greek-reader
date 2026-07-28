@@ -494,6 +494,16 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
+/* ── Cited-source side panel (Synopsis techniques key → Theon / Quintilian) ──────────────
+   Same split-view treatment as the search panel above: ProsePassagePanel sets
+   data-prose-panel + --prose-panel-w on <html> while open, so the page is squeezed rather
+   than covered and the citation can be read beside the passage that cited it. */
+@media (min-width: 1024px) {
+  html[data-prose-panel] #app-content {
+    padding-right: var(--prose-panel-w, 560px);
+  }
+}
+
 /* ── Translation Workbench side panel (desktop): split view, not overlay ─────────────────
    While a Grammar-page translation/syntax exercise is open, TranslationWorkbench sets
    data-workbench-panel + --workbench-panel-w on <html>; the grammar page shifts left into

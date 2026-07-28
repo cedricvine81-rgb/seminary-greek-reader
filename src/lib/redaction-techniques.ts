@@ -8,8 +8,12 @@
 // All descriptions are original wording; sources are cited for study.
 
 import type { RedactionTag } from './redaction-compare'
+import type { ProsePassageTarget } from './prose-panel-bus'
 
-export type TechniqueRef = { label: string; url?: string }
+/** A citation. `passage` means the work is embedded in this app, so the key can open it in
+ *  the side panel instead of sending the student to an external site; `url` is the fallback
+ *  for sources we don't hold (the Armenian-only chapters, the modern monographs). */
+export type TechniqueRef = { label: string; url?: string; passage?: ProsePassageTarget }
 
 export type WordLevelTechnique = {
   tag: RedactionTag | 'omitted'
@@ -51,17 +55,24 @@ const THEON_PARAPHRASE = {
   url: 'https://books.google.com/books/about/Progymnasmata.html?id=21ka6pWJ-pkC',
 }
 /** The chreia exercises — extant in Greek, and readable in this app. */
-const THEON_CHREIA = {
-  label: 'Theon, Progymnasmata, On the Chreia (Greek: Walz) — read it here',
-  url: '/texts?work=theon-progymnasmata',
+const THEON_CHREIA: TechniqueRef = {
+  label: 'Theon, Progymnasmata, On the Chreia',
+  passage: { source: 'theon-progymnasmata', chapter: 5, verse: 4, label: 'Theon, Progymnasmata', cite: 'On the Chreia — the exercises' },
 }
-const QUINT_1_9 = {
+/** Theon's own defence of paraphrase, with his worked examples of ancient authors
+ *  reshaping Homer and one another — the closest thing in the surviving Greek to the lost
+ *  chapter, and the theoretical warrant for this whole tab. */
+const THEON_PROEM: TechniqueRef = {
+  label: 'Theon, Progymnasmata, Proem — on the usefulness of paraphrase',
+  passage: { source: 'theon-progymnasmata', chapter: 1, verse: 2, label: 'Theon, Progymnasmata', cite: 'Proem — paraphrase and its examples' },
+}
+const QUINT_1_9: TechniqueRef = {
   label: 'Quintilian, Institutio Oratoria 1.9.2',
-  url: 'https://penelope.uchicago.edu/Thayer/E/Roman/Texts/Quintilian/Institutio_Oratoria/1C*.html#9',
+  passage: { source: 'quintilian-1', chapter: 9, verse: 1, label: 'Quintilian, Institutio Oratoria', cite: '1.9.2' },
 }
-const QUINT_10_5 = {
+const QUINT_10_5: TechniqueRef = {
   label: 'Quintilian, Institutio Oratoria 10.5.4–11',
-  url: 'http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A2007.01.0069%3Abook%3D10%3Achapter%3D5',
+  passage: { source: 'quintilian-10', chapter: 5, verse: 1, label: 'Quintilian, Institutio Oratoria', cite: '10.5.4–11' },
 }
 const LICONA_JC = {
   label: 'Licona, Jesus, Contradicted (Zondervan, 2024)',
@@ -131,7 +142,7 @@ export const NARRATIVE_LEVEL: NarrativeTechnique[] = [
     description: 'Retelling in one’s own words while keeping the sense — the umbrella practice the school exercises trained. Every device below is a species of it.',
     example: 'Most triple-tradition pericopes show 40–80% verbal retention with steady recasting of the remainder.',
     lookFor: 'A mix of every color at moderate density.',
-    refs: [THEON_PARAPHRASE, QUINT_10_5, LICONA_JC],
+    refs: [THEON_PROEM, THEON_PARAPHRASE, QUINT_10_5, LICONA_JC],
   },
   {
     name: 'Compression',
@@ -184,4 +195,4 @@ export const NARRATIVE_LEVEL: NarrativeTechnique[] = [
   },
 ]
 
-export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON_PARAPHRASE, THEON_CHREIA, QUINT_1_9, QUINT_10_5, LICONA_JC, LICONA_WD]
+export const TECHNIQUE_SOURCES: TechniqueRef[] = [THEON_PARAPHRASE, THEON_PROEM, THEON_CHREIA, QUINT_1_9, QUINT_10_5, LICONA_JC, LICONA_WD]

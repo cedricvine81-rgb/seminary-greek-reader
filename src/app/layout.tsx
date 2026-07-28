@@ -7,6 +7,7 @@ import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
+import { ProsePanelProvider } from '@/components/texts/ProsePanelProvider'
 import { ScrollRestorer } from '@/components/search/ScrollRestorer'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
@@ -94,6 +95,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NativeMenuGuard />
         <MasterSearchProvider isAuthenticated={headerProps.isAuthenticated} />
         <WordSearchProvider />
+        <ProsePanelProvider />
         <ScrollRestorer />
       </body>
     </html>

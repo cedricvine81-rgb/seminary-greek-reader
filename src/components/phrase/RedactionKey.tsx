@@ -3,17 +3,32 @@
 // (Theon / Quintilian / Licona), how each maps to the color-coding, and where to read
 // more. Rendered inline below the synopsis columns when the user opens the key.
 
+import { BookOpen } from 'lucide-react'
 import { WORD_LEVEL, NARRATIVE_LEVEL, TECHNIQUE_SOURCES, type TechniqueRef } from '@/lib/redaction-techniques'
+import { openProsePassage } from '@/lib/prose-panel-bus'
 
+// A citation. Sources embedded in this app (Theon, Quintilian) open in the side panel
+// beside the key, so a student can read the ancient text against the passage that cited
+// it; everything else stays an ordinary external link.
 function Refs({ refs }: { refs: TechniqueRef[] }) {
   return (
     <span className="text-[11px] text-gray-400">
       {refs.map((r, i) => (
         <span key={i}>
           {i > 0 && ' · '}
-          {r.url
-            ? <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">{r.label}</a>
-            : r.label}
+          {r.passage ? (
+            <button
+              type="button"
+              onClick={() => openProsePassage(r.passage!)}
+              title="Read this passage beside the page"
+              className="inline-flex items-baseline gap-0.5 text-brand-600 hover:underline"
+            >
+              <BookOpen size={11} className="translate-y-px" aria-hidden />
+              {r.label}
+            </button>
+          ) : r.url ? (
+            <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-brand-600 hover:underline">{r.label}</a>
+          ) : r.label}
         </span>
       ))}
     </span>
@@ -83,8 +98,8 @@ export function RedactionKey() {
       </div>
 
       <p className="text-[11px] text-gray-400">
-        Sources: <Refs refs={TECHNIQUE_SOURCES} />. Quintilian links open the public-domain Butler
-        translation (LacusCurtius / Perseus). Theon&rsquo;s Greek breaks off in the chapter on law: the
+        Sources: <Refs refs={TECHNIQUE_SOURCES} />. Citations marked with a book icon open here in a
+        side panel, beside this key. Theon&rsquo;s Greek breaks off in the chapter on law: the
         earlier chapters (through <span className="italic">On the Chreia</span>) survive in Greek and can be read in this app,
         but the closing pedagogical chapters — including <span className="italic">On Paraphrase</span>, the source of the four
         modes above — are lost in Greek and survive only in a classical-Armenian version. The standard
