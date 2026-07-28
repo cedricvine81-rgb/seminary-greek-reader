@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRef, useState } from 'react'
-import { Library, ChevronLeft, ChevronDown } from 'lucide-react'
+import { Library, ChevronLeft } from 'lucide-react'
 import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor } from '@/lib/texts-catalog'
 
 // The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
@@ -13,6 +13,7 @@ export function TextsNavMenu() {
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)  // category whose authors fly out
   const [author, setAuthor] = useState<string | null>(null)  // author whose books fly out
+  const [booksLeft, setBooksLeft] = useState(true)           // side the books panel opens on
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
@@ -51,22 +52,29 @@ export function TextsNavMenu() {
                   <div className="absolute right-full top-0 pr-1">
                     <div className="w-64 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
                       {groupWorksByAuthor(c.works).map(g => g.author ? (
-                        // Multi-work author: hovering it expands its books INLINE below (a third
-                        // side-flyout would run off the left edge, since the author panel is
-                        // already at the far left). The books sit inside this div, so moving the
-                        // mouse down onto them keeps the author expanded.
-                        <div key={g.author} onMouseEnter={() => setAuthor(g.author)}>
+                        // Multi-work author: its books fly out in their OWN side panel (so the
+                        // author list stays stable and scannable). It opens to the left when
+                        // there's room, else to the right — measured on hover so it never runs off
+                        // the screen edge (the whole tree hugs the right of the header).
+                        <div key={g.author} className="relative"
+                          onMouseEnter={e => { setAuthor(g.author); setBooksLeft(e.currentTarget.getBoundingClientRect().left >= 260) }}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
-                            author === g.author ? 'text-brand-700 font-medium' : 'text-gray-700'}`}>
-                            <ChevronDown size={13} className={`text-gray-300 transition-transform ${author === g.author ? '' : '-rotate-90'}`} />
+                            author === g.author ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
+                            <ChevronLeft size={14} className="text-gray-300" />
                             <span className="flex-1">{g.author}</span>
                           </div>
-                          {author === g.author && g.works.map(w => (
-                            <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
-                              className="block py-1.5 pl-8 pr-3 text-sm text-gray-600 hover:bg-brand-50 hover:text-brand-700 transition-colors">
-                              {workTitleWithoutAuthor(w)}
-                            </Link>
-                          ))}
+                          {author === g.author && (
+                            <div className={`absolute top-0 ${booksLeft ? 'right-full pr-1' : 'left-full pl-1'}`}>
+                              <div className="w-60 max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+                                {g.works.map(w => (
+                                  <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
+                                    className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+                                    {workTitleWithoutAuthor(w)}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
                       ) : (
                         <Link key={g.works[0].id} href={`/texts?work=${encodeURIComponent(g.works[0].id)}`} onClick={close}
