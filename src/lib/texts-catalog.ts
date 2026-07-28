@@ -246,16 +246,21 @@ export const TEXT_CATEGORIES: TextCategory[] = [
     id: 'greco-roman',
     label: 'Greco-Roman',
     blurb: 'Greek and Roman authors that illuminate the New Testament world — Homer, Hesiod, Herodotus, Plato, Aristotle, Xenophon, Plutarch, Epictetus, Lucian, Diogenes Laertius, Apollodorus, and Quintilian, with the Greek (or Latin) and public-domain English side by side (Perseus, CC-BY-SA). Includes a curated set of the pagan passages the New Testament quotes. Browse by author, then work.',
+    // The curated "Pagan Sources" overview stays pinned first; every author below it is sorted
+    // alphabetically. Each work's `name` is "Author, Title", so a plain name sort orders them by
+    // author and then title — keeping an author's books consecutive for groupWorksByAuthor.
     works: [
       { id: 'nt-pagan-sources', name: 'Pagan Sources Quoted in the New Testament', source: 'nt-pagan-sources', chapters: 4, greek: true },
-      ...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...XENOPHON_CATALOG, ...PLUTARCH_CATALOG,
-      { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
-      { id: 'philostratus-apollonius', name: 'Philostratus, Life of Apollonius of Tyana', source: 'philostratus-apollonius', chapters: 8, greek: true, greekOnly: true },
-      { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
-      { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true, greekOnly: true },
-      { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
-      ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
-      ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
+      ...([
+        ...PLATO_CATALOG, ...ARISTOTLE_CATALOG, ...XENOPHON_CATALOG, ...PLUTARCH_CATALOG,
+        { id: 'marcus-aurelius-meditations', name: 'Marcus Aurelius, Meditations', source: 'marcus-aurelius-meditations', chapters: 12, greek: true, greekOnly: true },
+        { id: 'philostratus-apollonius', name: 'Philostratus, Life of Apollonius of Tyana', source: 'philostratus-apollonius', chapters: 8, greek: true, greekOnly: true },
+        { id: 'aratus-phaenomena', name: 'Aratus, Phaenomena', source: 'aratus-phaenomena', chapters: 8, greek: true, greekOnly: true },
+        { id: 'theon-progymnasmata', name: 'Theon, Progymnasmata', source: 'theon-progymnasmata', chapters: 5, greek: true, greekOnly: true },
+        { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
+        ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
+        ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
+      ] as CatalogWork[]).sort((a, b) => a.name.localeCompare(b.name)),
     ],
   },
   {
