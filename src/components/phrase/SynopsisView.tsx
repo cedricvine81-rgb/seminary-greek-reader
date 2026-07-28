@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties }
 import { X } from 'lucide-react'
 import { compareRedaction, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { RedactionKey } from './RedactionKey'
+import { PERICOPE_ANNOTATIONS } from '@/lib/redaction-annotations'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
@@ -121,6 +122,8 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [compareOn, setCompareOn] = useState(false)
   const [sourceIdx, setSourceIdx] = useState(0)
   const [showKey, setShowKey] = useState(false)
+  // Which curated device chip's note is open (index into the pericope's annotations).
+  const [openDevice, setOpenDevice] = useState<number | null>(null)
   const highlights = useHighlights(isAuthenticated)
   const synPaneRef = useRef<HTMLDivElement>(null)
   const highlightSelection = useHighlightSelection(synPaneRef)
@@ -224,6 +227,11 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const parallelsLabel = bestGospel ? 'Gospel parallels' : 'Parallel passages'
   // Chips offer to re-add any parallel the user has removed.
   const suggestionChips = best ? best.refs.filter(r => !columns.includes(r)) : []
+  // Tier-3 curated compositional-device notes for this pericope (may be undefined —
+  // the annotation set grows pericope-by-pericope).
+  const deviceNotes = bestGospel ? PERICOPE_ANNOTATIONS[bestGospel.title] : undefined
+  // Close any open note when the pericope changes.
+  useEffect(() => { setOpenDevice(null) }, [bestGospel?.title])
 
   // Auto-load the parallels as columns when the anchor passage changes.
   useEffect(() => {
@@ -414,6 +422,33 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               + {r}
             </button>
           ))}
+        </div>
+      )}
+
+      {/* Curated compositional-device notes for this pericope (Tier 3): chips name the
+          narrative-level devices scholarship most often identifies here; clicking one
+          opens its study note. Independent of compare mode — these are episode-level
+          observations, not word-level computations. */}
+      {deviceNotes && deviceNotes.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center flex-wrap gap-2">
+            <span className="text-xs font-medium text-gray-500">Compositional devices</span>
+            {deviceNotes.map((a, idx) => (
+              <button
+                key={idx}
+                onClick={() => setOpenDevice(d => d === idx ? null : idx)}
+                className={`rounded-lg border px-2.5 py-1 text-xs font-medium transition-colors ${openDevice === idx ? 'border-parchment-400 bg-parchment-200 text-gray-800' : 'border-parchment-300 bg-parchment-50 text-gray-600 hover:bg-parchment-100'}`}
+              >
+                {a.device}
+              </button>
+            ))}
+          </div>
+          {openDevice !== null && deviceNotes[openDevice] && (
+            <div className="max-w-3xl rounded-lg border border-parchment-200 bg-parchment-50 px-3 py-2 text-xs leading-relaxed text-gray-600">
+              <span className="font-semibold text-gray-700">{deviceNotes[openDevice].device}. </span>
+              {deviceNotes[openDevice].note}
+            </div>
+          )}
         </div>
       )}
 

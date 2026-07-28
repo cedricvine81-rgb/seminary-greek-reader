@@ -20,8 +20,14 @@ export type WordLevelTechnique = {
   refs: TechniqueRef[]
 }
 
+/** The narrative-level device vocabulary — shared with the per-pericope annotations
+ *  (redaction-annotations.ts) so chips and key entries stay in sync. */
+export type NarrativeDeviceName =
+  | 'Paraphrase' | 'Compression' | 'Transferal' | 'Displacement'
+  | 'Conflation' | 'Spotlighting' | 'Simplification' | 'Expansion of narrative details'
+
 export type NarrativeTechnique = {
-  name: string
+  name: NarrativeDeviceName
   description: string
   example: string
   lookFor: string          // how it shows up in the color-coding
