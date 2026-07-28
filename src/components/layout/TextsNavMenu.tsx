@@ -20,12 +20,11 @@ export function TextsNavMenu() {
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number } | null>(null)
-  // How far to lift the author flyout so it aligns with the TOP of the category list (not the
-  // hovered row) — otherwise a lower category like Greco-Roman opens mid-screen and its long
-  // author list runs off the bottom, out of reach. `panelTop` caps the flyout's height to the
-  // viewport so long lists scroll inside it instead of overflowing.
-  const [fly, setFly] = useState<{ up: number; panelTop: number }>({ up: 0, panelTop: 0 })
-  const panelRef = useRef<HTMLDivElement | null>(null)
+  // The author flyout opens level with the hovered category row, but if its list would run past
+  // the bottom of the screen (a long one like Greco-Roman) it's lifted up just enough to fit —
+  // short lists (Church Fathers) stay level with their row. `top` is the flyout's resulting
+  // viewport top, used to cap its height so anything still too tall scrolls inside the panel.
+  const [fly, setFly] = useState<{ up: number; top: number }>({ up: 0, top: 0 })
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
@@ -33,11 +32,13 @@ export function TextsNavMenu() {
   const closeSoon = () => { closeTimer.current = setTimeout(() => { setOpen(false); setCat(null); setSub(null) }, 160) }
   const close = () => { setOpen(false); setCat(null); setSub(null) }
 
-  function openAuthors(catId: string, rowEl: HTMLElement) {
+  function openAuthors(catId: string, works: CatalogWork[], rowEl: HTMLElement) {
     setCat(catId); setSub(null)
-    const p = panelRef.current?.getBoundingClientRect()
     const r = rowEl.getBoundingClientRect()
-    if (p) setFly({ up: r.top - p.top, panelTop: p.top })
+    const estHeight = groupWorksByAuthor(works).length * 34 + 20   // rough natural height
+    const overflow = Math.max(0, r.top + estHeight - (window.innerHeight - 12))
+    const up = Math.min(overflow, Math.max(0, r.top - 8))          // never lift above 8px from top
+    setFly({ up, top: r.top - up })
   }
 
   const BOOKS_W = 240
@@ -59,9 +60,9 @@ export function TextsNavMenu() {
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
       {open && (
         <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
-          <div ref={panelRef} className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+          <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
             {TEXT_CATEGORIES.map(c => (
-              <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, e.currentTarget)}>
+              <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, c.works, e.currentTarget)}>
                 <div
                   className={`flex items-center justify-between gap-2 px-3 py-1.5 text-sm ${
                     c.comingSoon ? 'text-gray-300'
@@ -77,7 +78,7 @@ export function TextsNavMenu() {
                 {cat === c.id && !c.comingSoon && (
                   <div className="absolute right-full pr-1" style={{ top: -fly.up }}>
                     <div className="w-64 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
-                      style={{ maxHeight: `calc(100vh - ${fly.panelTop + 16}px)` }}>
+                      style={{ maxHeight: `calc(100vh - ${fly.top + 16}px)` }}>
                       {groupWorksByAuthor(c.works).map(g => g.author ? (
                         <div key={g.author} onMouseEnter={e => openBooks(g.author!, g.works, e.currentTarget)}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
