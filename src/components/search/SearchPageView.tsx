@@ -809,16 +809,23 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     // neighbouring verses (the 'en' facet); off, just the matched section's translation.
     if (isGrc) {
       const tctx = hasCtx ? ctxTransMap[bgCtxKey(h.target)] : undefined
+      // The English gets the same word menu as the Greek beside it. A reader who spots the
+      // telling word in the translation should be able to act on it there, rather than having
+      // to locate its Greek counterpart across the column first.
+      const transPayload = () => ({ kind: 'translation' as const, reference: h.ref, transLang: 'en',
+        ...(scope.kind === 'bg' && scope.category ? { bgCollection: scope.category } : {}) })
       const transCol = tctx && tctx.length > 0 ? (
         <span className="block leading-relaxed font-reading">
           {tctx.map(cv => (
             <span key={`${cv.chapter}.${cv.verse}`} className={isHitVerse(cv) ? 'text-gray-600' : 'text-gray-400'}>
-              {cv.text}{' '}
+              <SearchWords text={cv.text} terms={[]} payload={transPayload} />{' '}
             </span>
           ))}
         </span>
       ) : h.trans ? (
-        <span className="block text-gray-500 leading-relaxed font-reading">{clampTrans(h.trans)}</span>
+        <span className="block text-gray-500 leading-relaxed font-reading">
+          <SearchWords text={clampTrans(h.trans)} terms={[]} payload={transPayload} />
+        </span>
       ) : null
       if (transCol) {
         return (

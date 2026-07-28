@@ -7,6 +7,7 @@ import { normalizeHebrew } from '@/lib/hebrew-fold'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
+import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { ParsingDock } from './ParsingDock'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
@@ -165,10 +166,17 @@ export function HebrewSearchResults({ hits, bookName, onOpen, query = '', transL
                   {hebrewVerse(h)}
                 </p>
                 {showTrans && (
-                  <p className="font-reading leading-relaxed text-gray-700 sm:border-l sm:border-gray-100 sm:pl-4">
+                  // The English carries the same word menu as the Hebrew beside it — it used to
+                  // render as an inert string, so a word noticed in the translation could not be
+                  // searched or looked up without first finding it somewhere else.
+                  <p onContextMenu={forwardContextMenuToNearestTransWord}
+                    className="font-reading leading-relaxed text-gray-700 sm:border-l sm:border-gray-100 sm:pl-4">
                     {vid === null
                       ? <span className="text-gray-400 italic">(superscription)</span>
-                      : trMap[vid] ?? <span className="text-gray-300 italic">…</span>}
+                      : trMap[vid]
+                        ? <TransWords text={trMap[vid]} lang={transLang} book={h.osisId}
+                            reference={`${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`} />
+                        : <span className="text-gray-300 italic">…</span>}
                   </p>
                 )}
               </div>

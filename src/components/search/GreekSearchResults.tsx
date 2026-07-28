@@ -6,7 +6,7 @@ import type { LexicalInfoPanel } from '@/types/lexicon'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
-import { TransWords } from '@/components/highlights/TransWords'
+import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
@@ -216,14 +216,12 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                         {greekCell(h, cv, isHit, rowKey)}
                       </p>
                       {showTrans && (
-                        <p className={`font-reading leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
+                        <p onContextMenu={forwardContextMenuToNearestTransWord}
+                          className={`font-reading leading-relaxed sm:border-l sm:border-gray-100 sm:pl-4 ${isHit ? 'text-gray-700' : 'text-gray-400'}`}>
                           {trMap[vid]
-                            ? (isHit && terms.length
-                                // A hit verse keeps its search-term marks; neighbours are plain
-                                // text, so they can carry the right-click menu instead.
-                                ? hilite(trMap[vid], terms)
-                                : <TransWords
+                            ? (<TransWords
                                     text={trMap[vid]} lang={transLang}
+                                    terms={isHit ? terms : undefined}
                                     reference={`${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`}
                                     book={h.osisId}
                                     hl={isAuthenticated ? {

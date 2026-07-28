@@ -3,6 +3,7 @@ import type { MouseEvent } from 'react'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass, type HighlightColor } from '@/lib/highlight-colors'
+import { findTermRanges, SEARCH_MARK } from '@/lib/highlight-terms'
 import type { HighlightRecord } from '@/components/highlights/useHighlights'
 
 // Strip leading/trailing punctuation from a token (literal class — no \p{} for the repo's
@@ -48,8 +49,13 @@ export interface TransHl {
  * is supplied, each word also renders + toggles a highlight (character offsets into the plain
  * string — the same anchor the Greek side uses, per the Highlight model). Used by every
  * non-Greek reading pane so the interaction is identical everywhere.
+ *
+ * `terms` marks the words a search matched, in the one red style used everywhere. Search
+ * results used to have to choose — marked text (inert) or menu-bearing words (unmarked) —
+ * so the matched verse, the one a reader most wants to dig into, was the one place the menu
+ * was missing. Marking here means a word can do both.
  */
-export function TransWords({ text, lang, reference, book, bgCollection, hl }: {
+export function TransWords({ text, lang, reference, book, bgCollection, hl, terms }: {
   text: string
   lang: string
   reference: string
@@ -58,7 +64,12 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl }: {
   // menu searches that collection instead of the Bible (see WordSearchPayload.bgCollection).
   bgCollection?: { id: string; label: string }
   hl?: TransHl
+  // Normalized search terms to mark (see parseSearchTerms); omit outside search results.
+  terms?: string[]
 }) {
+  const termRanges = terms?.length ? findTermRanges(text, terms) : []
+  const inTerm = (start: number, end: number) =>
+    termRanges.some(([rs, re]) => start < re && end > rs)
   let pos = 0
   return (
     <>
@@ -91,7 +102,8 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl }: {
               })
             }}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
-            className={`trans-word reading-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}
+            className={`trans-word reading-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}${
+              !mark && inTerm(start, end) ? ` ${SEARCH_MARK}` : ''}`}
           >
             {tok}
           </span>
