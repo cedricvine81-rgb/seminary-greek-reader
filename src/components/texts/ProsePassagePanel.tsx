@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { X, ExternalLink } from 'lucide-react'
-import { findProseWork, type ProseDoc } from '@/lib/prose-texts'
+import { findProseWork, type ProseDoc, type ProseVerse } from '@/lib/prose-texts'
+import { SearchWords } from '@/components/search/SearchWords'
 import type { ProsePassageTarget } from '@/lib/prose-panel-bus'
 
 // A cited source (Theon, Quintilian, …) read beside the page that cited it, rather than a
@@ -101,7 +102,11 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
   const heading = target.label ?? work?.name ?? 'Text'
   const chapterLabel = work?.chapterLabel?.(target.chapter)
   // Quintilian's original column is Latin; the Greek works' is Greek.
-  const origLabel = target.source.startsWith('quintilian-') ? 'Latin' : 'Greek'
+  const isGreekWork = !target.source.startsWith('quintilian-')
+  const origLabel = isGreekWork ? 'Greek' : 'Latin'
+  /** Citation shown in the word menu's Copy row. */
+  const citeFor = (v: ProseVerse): string =>
+    `${work?.name ?? ''} ${v.ref ?? `${target.chapter}.${v.number}`}`.trim()
   const readerHref = `/texts?work=${encodeURIComponent(target.source)}&chapter=${target.chapter}`
 
   return (
@@ -178,18 +183,45 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
                   ref={marked ? markedRef : undefined}
                   className={marked ? 'rounded-lg bg-parchment-50 ring-1 ring-parchment-200 px-3 py-2 -mx-1' : ''}
                 >
+                  {/* Editorial section heading, where the work has them (Theon). */}
+                  {v.heading && (
+                    <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-brand-600/80">{v.heading}</p>
+                  )}
                   {chapter.verses.length > 1 && (
                     <p className="mb-1 text-[10px] font-medium uppercase tracking-wide text-brand-500">
                       {v.ref ?? `¶ ${v.number}`}
                     </p>
                   )}
+                  {/* Words carry the app-wide right-click menu (search, lookup, copy), so a
+                      passage opened from a citation can be dug into like any reading pane
+                      rather than being inert text. */}
                   {hasOriginal && v.greek && show !== 'en' && (
-                    <p className="font-greek text-[1.05rem] leading-relaxed text-gray-900">{v.greek}</p>
+                    <SearchWords
+                      text={v.greek}
+                      terms={[]}
+                      className="font-greek text-[1.05rem] leading-relaxed text-gray-900 block"
+                      payload={() => ({
+                        kind: isGreekWork ? 'greek' : 'translation',
+                        reference: citeFor(v),
+                        ...(isGreekWork ? { greekCorpus: 'GNT' as const } : { transLang: 'la' }),
+                        bgCollection: 'greco-roman',
+                        bgCollectionLabel: 'Greco-Roman',
+                      })}
+                    />
                   )}
                   {show !== 'orig' && (
-                    <p className={`font-reading leading-relaxed text-gray-700 ${hasOriginal && v.greek && show === 'both' ? 'mt-2' : ''}`}>
-                      {v.text}
-                    </p>
+                    <SearchWords
+                      text={v.text}
+                      terms={[]}
+                      className={`font-reading leading-relaxed text-gray-700 block ${hasOriginal && v.greek && show === 'both' ? 'mt-2' : ''}`}
+                      payload={() => ({
+                        kind: 'translation',
+                        reference: citeFor(v),
+                        transLang: 'en',
+                        bgCollection: 'greco-roman',
+                        bgCollectionLabel: 'Greco-Roman',
+                      })}
+                    />
                   )}
                 </div>
               )

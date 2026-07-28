@@ -1265,6 +1265,9 @@ export function matchProseCitation(text: string): { work: ProseWork; ref: { chap
 // `ref` is the standard scholarly reference for the verse when it isn't just the number —
 // Plato's Stephanus page+letter ("172a"), Aristotle's Bekker number ("1094a"), a Moralia
 // Stephanus page ("351c"). The reader shows it as the verse marker and cites by it.
-export interface ProseVerse { number: number; ref?: string; text: string; greek?: string }
+// `heading` is an editorial section label for a paragraph, shown above it in the reader —
+// for works whose source runs as unbroken prose (Theon) and would otherwise be a wall of
+// text. Ours, not the ancient author's.
+export interface ProseVerse { number: number; ref?: string; text: string; greek?: string; heading?: string }
 export interface ProseChapter { number: number; verses: ProseVerse[] }
 export interface ProseDoc { work: string; attribution: string; greek?: boolean; chapters: ProseChapter[] }

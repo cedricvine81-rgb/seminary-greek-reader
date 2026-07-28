@@ -42,7 +42,7 @@ type MorphEntry = [string, string] | null
 // number — Plato's Stephanus page+letter ("172a"), Aristotle's Bekker number ("1094a"),
 // Plutarch's Moralia Stephanus page ("351c"). Shown as the verse marker and used in citations;
 // `num` stays the stable integer that anchors notes/highlights.
-type Row = { num: number; ref?: string; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[] }
+type Row = { num: number; ref?: string; tokens?: WordToken[]; greek?: string; english?: string; morph?: MorphEntry[]; heading?: string }
 
 // A single chapter (or, for Josephus, book+chapter) worth of loaded rows.
 type QueueItem = { book?: number; chapter: number }
@@ -516,8 +516,8 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const d = r.ok ? await r.json() : null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     const morph = await loadProseMorph(w)
-    return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string }) =>
-      ({ num: v.number, ref: v.ref, english: v.text, greek: v.greek, morph: morph?.[`${item.chapter}.${v.number}`] }))
+    return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string; heading?: string }) =>
+      ({ num: v.number, ref: v.ref, english: v.text, greek: v.greek, heading: v.heading, morph: morph?.[`${item.chapter}.${v.number}`] }))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -1240,7 +1240,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                         const englishHighlights = layer === 'en' ? verseHighlights
                           : highlights.forVerse(noteBook, section.chapter, row.num, 'en')
                         return (
-                        <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}
+                        <div key={row.num} ref={el => { if (el) verseRefs.current[`${section.key}.${row.num}`] = el }}>
+                        {/* Editorial section heading (works whose source is unbroken prose —
+                            see ProseVerse.heading). Spans both columns, above the row. */}
+                        {row.heading && (
+                          <p className="mt-3 mb-1 text-[11px] font-semibold uppercase tracking-wide text-brand-600/80">{row.heading}</p>
+                        )}
+                        <div
                           className={`grid gap-4 ${!greekHidden && englishColShown ? 'grid-cols-1 lg:grid-cols-2' : 'grid-cols-1'}`}>
                           {/* Greek (or, for prose works, the single English column) — the
                               only column highlighting applies to (see render.tsx: a verse's
@@ -1352,6 +1358,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                 : <span className="text-gray-300 italic">—</span>}
                             </p>
                           )}
+                        </div>
                         </div>
                       )})}
                     </div>

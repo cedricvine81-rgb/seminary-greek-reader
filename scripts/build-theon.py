@@ -90,18 +90,26 @@ def main():
     # Merge our own English (see module docstring). Keys are 'chapter.paragraph'; entries
     # beginning with '_' are notes to the editor, not translations.
     english = {}
+    headings = {}
     if ENGLISH.exists():
-        english = {k: v for k, v in json.loads(ENGLISH.read_text(encoding='utf-8')).items()
-                   if not k.startswith('_')}
+        raw = json.loads(ENGLISH.read_text(encoding='utf-8'))
+        # Our editorial section headings (see the overlay's _headings_readme): the Walz text
+        # is unbroken paragraphs, so these label what each one covers.
+        headings = raw.get('_headings', {})
+        english = {k: v for k, v in raw.items() if not k.startswith('_')}
     done = 0
     total = 0
     for c in chapters:
         for v in c['verses']:
             total += 1
-            t = english.get(f'{c["number"]}.{v["number"]}', '')
+            key = f'{c["number"]}.{v["number"]}'
+            t = english.get(key, '')
             if t:
                 v['text'] = t
                 done += 1
+            h = headings.get(key)
+            if h:
+                v['heading'] = h
     # Only drop greekOnly once the whole work is translated — a half-translated text would
     # otherwise render empty English columns for every paragraph still outstanding.
     complete = done == total
