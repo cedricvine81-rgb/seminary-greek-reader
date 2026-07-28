@@ -102,4 +102,234 @@ export const PERICOPE_ANNOTATIONS: Record<string, PericopeAnnotation[]> = {
   'Women at the tomb': [
     { device: 'Spotlighting', note: 'John 20:1 names only Mary Magdalene, yet her report in 20:2 says "WE do not know where they have laid him" — a seam showing the other women present in the Synoptic lists have been left offstage rather than denied.' },
   ],
+
+  // ── Infancy and Galilean ministry ─────────────────────────────────────────
+  'Genealogy of Jesus': [
+    { device: 'Compression', note: 'Matt 1:8 jumps from Joram to Uzziah, omitting three kings (Ahaziah, Joash, Amaziah), and 1:11 skips Jehoiakim — compression in service of the 3×14 design Matthew announces at 1:17 (fourteen is the numerical value of "David" in Hebrew). "Father of" in ancient genealogies happily means "ancestor of."' },
+  ],
+  'Birth of Jesus': [
+    { device: 'Spotlighting', note: 'Matthew narrates the nativity entirely through Joseph (his dilemma, his dreams, his decisions); Luke through Mary (the annunciation, the Magnificat, "Mary treasured these things"). Two spotlights on one event — each account omits nearly everything the other tells, without contradicting it.' },
+  ],
+  'Return to Nazareth': [
+    { device: 'Compression', note: 'Luke 2:39 moves the family straight from the temple to Nazareth ("when they had performed everything according to the Law… they returned"); Matthew narrates magi, Egypt, and Archelaus in between. Luke’s summary compresses over whatever he does not tell — a compressed account is silent, not exclusive.' },
+  ],
+  'Ministry of John the Baptist': [
+    { device: 'Transferal', note: 'The "brood of vipers" speech targets the Pharisees and Sadducees in Matt 3:7 but "the crowds" in Luke 3:7. One evangelist has re-aimed the audience — Matthew habitually sharpens sayings against the leadership, Luke universalizes.' },
+    { device: 'Expansion of narrative details', note: 'Luke 3:10–14 alone adds the crowd’s, tax collectors’, and soldiers’ "What then shall we do?" exchanges; John’s Gospel recasts the whole ministry as the Baptist’s self-testimony under official interrogation (John 1:19–28).' },
+  ],
+  'Return to Galilee': [
+    { device: 'Compression', note: 'Mark 1:14 and Matt 4:12 step directly from John’s arrest to Galilee, compressing out the early Judean ministry that John 1–4 narrates (John 3:24 explicitly notes John "had not yet been put in prison" during it). The Synoptic jump is a time-compression, not a denial of the interval.' },
+  ],
+  'Exorcism at Capernaum': [
+    { device: 'Simplification', note: 'Mark 1:26 has the demon "convulsing" (σπαράξαν) the man as it leaves; Luke 4:35 writes "having thrown him down… it came out without harming him" — softening the violence and adding the reassurance. Luke’s medical sensitivity is a running redactional trait worth tracking.' },
+  ],
+  'Beatitudes': [
+    { device: 'Paraphrase', note: '"Blessed are you poor" (Luke 6:20, second person, paired with woes) becomes "Blessed are the poor in spirit" (Matt 5:3, third person, spiritualized). Whether Matthew interprets or Luke sharpens, one form paraphrases the other — the classic case for studying how a saying’s wording shapes its scope.' },
+    { device: 'Displacement', note: 'Matthew sets the sermon "on the mountain" (5:1), Luke "on a level place" (6:17) after descending. Either one evangelist relocated the scene for theological staging (Matthew’s new-Sinai overtones) or the sermon material was preached more than once.' },
+  ],
+  'Expounding the Law': [
+    { device: 'Conflation', note: 'Much of Matt 5 has parallels scattered across Luke (6:29–36; 12:57–59; 16:18) — the Sermon on the Mount is widely analyzed as Matthew’s composed anthology, gathering Jesus’ teaching into one programmatic discourse the way ancient biographers grouped material topically rather than chronologically.' },
+  ],
+  'Lamp under a bushel': [
+    { device: 'Displacement', note: 'The same lamp saying serves three homes: the disciples as world-light (Matt 5:14–15), the purpose of parables (Mark 4:21), and the hearing of the word (Luke 8:16). Short sayings were portable — evangelists (and Jesus himself, itinerantly) re-homed them where they served.' },
+  ],
+  'Birds of the air / do not worry': [
+    { device: 'Paraphrase', note: 'Matt 6:26 "birds of the air… your heavenly Father feeds them"; Luke 12:24 "consider the ravens… God feeds them." Luke’s unclean scavenger sharpens the a-fortiori argument; Matthew’s "heavenly Father" matches his sermon’s idiom. Same teaching, each wording tuned to its Gospel’s voice.' },
+  ],
+  'Discourse on judging': [
+    { device: 'Paraphrase', note: 'The speck-and-log saying is nearly verbatim between Matt 7:3–5 and Luke 6:41–42 — in Greek, striking word-for-word agreement for material they do not share with Mark. Run the compare mode here to see how stable double-tradition sayings could remain.' },
+  ],
+  'A tree and its fruit': [
+    { device: 'Displacement', note: 'Matthew deploys the fruit-test twice — against false prophets (7:15–20) and against the Pharisees (12:33–35) — where Luke gives it once, generically (6:43–45). A doublet inside one Gospel is direct evidence of an evangelist re-applying a saying to new targets.' },
+  ],
+  'Wise and foolish builders': [
+    { device: 'Paraphrase', note: 'Matthew’s builder chooses rock over sand and faces rain, floods, and wind; Luke’s digs deep to lay a foundation against a river’s torrent (Luke 6:48) — the scenery redrawn, some suggest for non-Palestinian readers, while the punchline structure stays fixed.' },
+  ],
+  'Cleansing a leper': [
+    { device: 'Simplification', note: 'Mark’s Jesus is stirred with strong emotion (1:41; some manuscripts read "moved with anger") and "sternly charged" the man, who then disobeys and broadcasts the healing (1:45). Matthew and Luke drop the emotions and the disobedience — smoothing details that invite hard questions.' },
+    { device: 'Compression', note: 'Matt 8:1–4 keeps the encounter and the command to the priest but cuts Mark’s aftermath entirely, ending on the pronouncement — a pronouncement-story shape Matthew prefers for miracle accounts.' },
+  ],
+  "Healing Peter's mother-in-law": [
+    { device: 'Spotlighting', note: 'In Mark 1:30 the household "told him about her" and in Luke "they appealed to him"; Matt 8:14 removes the intermediaries — Jesus sees, touches, heals. Matthew regularly trims the supporting cast until only Jesus and the sufferer remain in the light.' },
+    { device: 'Paraphrase', note: 'Mark: he "raised her up, taking her by the hand"; Luke 4:39: he "rebuked the fever," treating it almost as a hostile power — each retelling colors the same cure with its own theology of healing.' },
+  ],
+  'Calming the storm': [
+    { device: 'Paraphrase', note: 'The disciples’ cry mutates tellingly: "Teacher, do you not care that we are perishing?" (Mark 4:38) → "Save us, Lord; we are perishing" (Matt 8:25) → "Master, Master, we are perishing" (Luke 8:24). Matthew turns Mark’s reproach of Jesus into a prayer — paraphrase doing pastoral work.' },
+    { device: 'Simplification', note: 'Matthew also drops Mark’s "just as he was" and the other boats, and moves Jesus’ rebuke of the disciples BEFORE the miracle — softening the scene’s disorder and the disciples’ irreverence in one stroke.' },
+  ],
+  'Calling of Matthew': [
+    { device: 'Transferal', note: 'Mark 2:14 and Luke 5:27 call the tax collector "Levi"; Matt 9:9 calls him "Matthew," matching the apostolic list (10:3 "Matthew the tax collector"). If one man bore both names, no device is present; if not, the First Gospel has transferred the call scene — the double name is exactly why this pericope repays close comparison.' },
+  ],
+  'New wine into old wineskins': [
+    { device: 'Expansion of narrative details', note: 'Luke 5:39 alone appends "no one after drinking old wine desires new, for he says, ‘The old is good’" — a wry expansion that complicates the parable’s point and is hard to explain as anyone’s invention but preserved tradition or Luke’s own literary shaping.' },
+  ],
+  'Not peace but a sword': [
+    { device: 'Paraphrase', note: '"I have not come to bring peace, but a sword" (Matt 10:34) stands beside "but rather division" (Luke 12:51) — Luke unpacking Matthew-style metaphor into plain speech (and prefacing it with the fire-and-baptism sayings Matthew lacks). Compare the two to watch an image being interpreted in transmission.' },
+  ],
+  'Messengers from John the Baptist': [
+    { device: 'Expansion of narrative details', note: 'Luke 7:21 adds that "in that hour" Jesus performed healings before the messengers’ eyes, turning Matt 11:4’s "tell John what you hear and see" into an enacted demonstration. Luke stages what Matthew implies.' },
+    { device: 'Compression', note: 'Matthew correspondingly compresses the errand — John "sent word by his disciples" and the answer comes at once, without Luke’s two-stage summons and journey (Luke 7:18–20).' },
+  ],
+  'Lord of the Sabbath': [
+    { device: 'Simplification', note: 'Mark 2:26 sets the shewbread episode "when Abiathar was high priest" — but 1 Sam 21 names Ahimelech, Abiathar’s father. Matthew and Luke both silently drop the name. Watching two evangelists independently remove a difficulty is redaction criticism at its most visible.' },
+    { device: 'Expansion of narrative details', note: 'Matt 12:5–7 alone adds the temple-priests argument and the Hosea 6:6 citation ("I desire mercy, not sacrifice") — expansion that converts a precedent-claim into a full halakhic case.' },
+  ],
+  'Man with a withered hand': [
+    { device: 'Transferal', note: 'In Mark 3:4 and Luke 6:9 Jesus poses the lawfulness question; in Matt 12:10 the opponents ask it ("Is it lawful to heal on the Sabbath?" — so that they might accuse him). The question has changed mouths, recasting who sets the trap.' },
+    { device: 'Expansion of narrative details', note: 'Matthew adds the sheep-in-a-pit argument (12:11–12), grounding the healing in an a-fortiori appeal his hearers already granted.' },
+  ],
+  'Exorcising a blind and mute man': [
+    { device: 'Displacement', note: 'Matthew tells this exorcism twice — 9:32–34 and 12:22–24 — a doublet framing two different discourses, while Mark 3 attaches the Beelzebul charge to no exorcism at all. The controversy material was clearly detachable from its narrative trigger and was re-homed as each Gospel’s architecture required.' },
+  ],
+  'Strong man parable': [
+    { device: 'Paraphrase', note: 'Mark 3:27’s compact burglar image ("no one can plunder the strong man’s house unless he first binds him") becomes in Luke 11:21–22 an armed palace guarded until "one stronger than he" strips his armor and divides the spoil — the same logic, elaborated toward Isaiah 53:12’s language of dividing spoils.' },
+  ],
+  'The unforgivable sin': [
+    { device: 'Displacement', note: 'Mark 3:28–29 and Matt 12:31–32 anchor the blasphemy saying to the Beelzebul accusation ("because they said, ‘He has an unclean spirit’"); Luke 12:10 relocates it into teaching on confessing the Son of Man under persecution. The new home changes what the warning most naturally means — a prime exhibit for how placement is interpretation.' },
+  ],
+  "Jesus' true relatives": [
+    { device: 'Simplification', note: 'Mark 3:21 has Jesus’ family set out to seize him, saying "He is out of his mind" — perhaps the hardest family notice in the Gospels. Matthew and Luke both omit it, keeping only the arrival and the "whoever does God’s will" pronouncement. The most discussed softening in the Synoptic tradition.' },
+  ],
+  'Parable of the Sower': [
+    { device: 'Paraphrase', note: 'The harvest climbs thirty-sixty-hundredfold in Mark 4:8 but descends hundred-sixty-thirty in Matt 13:8; Luke 8:8 keeps only "a hundredfold." Ordering and selection of the same figures — paraphrase at the level of rhetorical build.' },
+    { device: 'Compression', note: 'Luke’s whole telling is the leanest (one yield figure, no sun-scorching detail), compressing the parable while preserving every soil.' },
+  ],
+  'Leaven': [
+    { device: 'Paraphrase', note: 'Matt 13:33 and Luke 13:20–21 agree almost word-for-word ("leaven… three measures of flour… all leavened") — like the speck-and-log saying, a specimen of how stable a twin parable could remain across two Gospels with no Markan anchor.' },
+  ],
+  'Beheading of John the Baptist': [
+    { device: 'Compression', note: 'Luke 9:7–9 reduces Mark’s banquet narrative (Herodias, the dance, the oath, the platter — Mark 6:21–29) to Herod’s puzzled retrospect: "John I beheaded, but who is this?" The whole grisly episode survives only as a flashback clause.' },
+    { device: 'Simplification', note: 'Mark’s Herod fears, protects, and gladly hears John (6:19–20), executing him only when trapped; Matt 14:5 flattens the psychology — Herod "wanted to put him to death" but feared the crowd. Fewer moving parts, starker villain.' },
+  ],
+  'Healing at Gennesaret': [
+    { device: 'Compression', note: 'Matt 14:34–36 halves Mark’s summary (6:53–56), dropping the marketplaces and the region-wide running to-and-fro while keeping the fringe-of-the-garment detail and adding his signature totality: "as many as touched it were made well."' },
+  ],
+  'Discourse on defilement': [
+    { device: 'Simplification', note: 'Mark 7:19 closes the saying with the editorial bombshell "(Thus he declared all foods clean)". Matthew, writing for a Torah-observant audience, has no such gloss and instead ends "to eat with unwashed hands does not defile" (15:20) — trimming the radical inference back to the original controversy about handwashing.' },
+    { device: 'Compression', note: 'Matthew also compresses Mark’s double explanation (crowd + house scene) and drops the parade of vices to a shorter list — tightening a sprawling discourse into his usual disputation shape.' },
+  ],
+  "Canaanite woman's daughter": [
+    { device: 'Paraphrase', note: 'Mark’s "Syrophoenician by birth" (7:26) becomes Matthew’s archaizing "Canaanite" (15:22) — one word recasting the encounter as Israel-meets-Canaan, with all its biblical freight.' },
+    { device: 'Expansion of narrative details', note: 'Matthew expands the dialogue: the disciples beg him to send her away, Jesus states "I was sent only to the lost sheep of the house of Israel," and the woman kneels with "Lord, help me" (15:23–25) — three beats absent from Mark that heighten both the obstacle and the faith that overcomes it.' },
+  ],
+  'Feeding the 4000': [
+    { device: 'Conflation', note: 'The standing question here runs the other way: is this a second event or a doublet of the 5000 told twice in different (gentile?) dress? Mark and Matthew clearly treat them as two — Jesus himself counts baskets from both (Mark 8:19–20) — so whatever the tradition-history, the evangelists refused to conflate them. Compare the two feedings side by side to see why the question arises.' },
+  ],
+
+  // ── Toward Jerusalem, passion, and resurrection ───────────────────────────
+  'Confession of Peter': [
+    { device: 'Expansion of narrative details', note: 'Matt 16:17–19 alone adds the blessing of Simon — "flesh and blood has not revealed this… on this rock I will build my church" — expanding Mark’s terse confession-and-silencing (8:29–30) into the charter text of Petrine ministry. Luke meanwhile drops the location and adds his signature note that Jesus "was praying alone" (9:18).' },
+  ],
+  'Boy possessed by a demon': [
+    { device: 'Compression', note: 'Mark spends sixteen verses (9:14–29); Matthew eight, Luke seven. Gone in the shorter tellings: the arguing scribes, the boy’s case history, and the father’s "I believe; help my unbelief!" (Mark 9:24) — a reminder that compression has costs, since that lost sentence is many readers’ favorite in Mark.' },
+    { device: 'Simplification', note: 'Mark’s two-stage ending (the boy "like a corpse… but Jesus took him by the hand and lifted him") is smoothed to an instant cure in Matt 17:18 ("the boy was healed from that hour").' },
+  ],
+  'The greatest / little children': [
+    { device: 'Simplification', note: 'In Mark 9:33–34 Jesus asks what they were discussing and the disciples fall silent, ashamed — they had argued over rank. Matt 18:1 reframes: the disciples openly ask "Who is the greatest in the kingdom?" The embarrassing quarrel becomes a theological question; the Twelve come off cleaner in the retelling.' },
+  ],
+  'Parable of the Lost Sheep': [
+    { device: 'Displacement', note: 'Luke 15:4–7 aims the parable at Pharisees grumbling over sinners ("joy in heaven over one sinner who repents"); Matt 18:10–14 re-homes it inside church instruction about despising "little ones" who stray. Same shepherd, two flocks of application — placement supplies the moral.' },
+  ],
+  'Divorce and celibacy': [
+    { device: 'Paraphrase', note: 'Mark 10:11–12 envisages either spouse divorcing (a Roman-law scenario); Matt 19:9 speaks only of the husband and adds the exception clause "except for sexual immorality" — the wording of one saying adapted to two legal worlds, and the most consequential paraphrase debate in the Gospels.' },
+    { device: 'Expansion of narrative details', note: 'Matt 19:10–12 alone appends the disciples’ shocked "better not to marry" and the eunuch-for-the-kingdom saying — expansion that turns a controversy story into teaching on celibacy.' },
+  ],
+  'Jesus predicts his death': [
+    { device: 'Paraphrase', note: 'The third prediction grows in precision: Mark 10:34 has mocking, spitting, flogging, killing; Matt 20:19 names crucifixion; Luke 18:31 adds "everything written by the prophets will be accomplished" and notes the disciples understood none of it. John 12:23–33 recasts the whole theme as the hour of glorification and being "lifted up."' },
+  ],
+  'Son of Man came to serve': [
+    { device: 'Transferal', note: 'In Mark 10:35 James and John request the thrones themselves; in Matt 20:20 their MOTHER kneels to ask. Either Matthew shields the apostles by transferring the ambition, or he preserves the family lobbying Mark abbreviates — the debate is the device in miniature (Jesus’ answer stays addressed to the brothers in both: "You [plural] do not know what you are asking").' },
+    { device: 'Displacement', note: 'Luke has no Zebedee scene here; his rank-dispute and "I am among you as one who serves" appear at the Last Supper table (22:24–27) — service teaching relocated to the meal that enacts it.' },
+  ],
+  'Triumphal entry (Palm Sunday)': [
+    { device: 'Expansion of narrative details', note: 'Matthew quotes Zech 9:9 outright and alone has two animals — "a donkey, and a colt with her… he sat on them" (21:7) — usually analyzed as expansion matching the citation’s poetic parallelism. Luke instead expands the descent with Jesus weeping over Jerusalem (19:41–44).' },
+    { device: 'Paraphrase', note: 'The acclamation is retuned per audience: "Hosanna" (Mark/Matt), "glory in the highest" with no Aramaic (Luke 19:38, echoing his nativity angels), "the King of Israel" (John 12:13). Same shout, four scripts.' },
+  ],
+  'Authority questioned': [
+    { device: 'Paraphrase', note: 'This controversy runs nearly word-for-word across all three Synoptics — question, counter-question about John’s baptism, the leaders’ trapped reasoning, "neither will I tell you." Turn on compare mode here to see how fixed a controversy dialogue could be; the variation is almost all connective tissue.' },
+  ],
+  'Wicked husbandmen': [
+    { device: 'Transferal', note: 'In Mark 12:9 and Luke 20:16 Jesus pronounces the owner’s verdict himself; in Matt 21:41 the HEARERS answer — "He will put those wretches to a miserable death" — condemning themselves out of their own mouths. The verdict has been transferred to the audience, a rhetorically sharper staging.' },
+    { device: 'Expansion of narrative details', note: 'Matthew alone adds the application "the kingdom of God will be taken away from you and given to a people producing its fruits" (21:43), making the parable’s target explicit.' },
+  ],
+  'Great Banquet': [
+    { device: 'Paraphrase', note: 'Luke 14 tells of a man’s dinner, insulting excuses, and the poor compelled in; Matt 22 of a king’s wedding feast, murdered envoys, and a burned city. This is paraphrase at maximum stretch — either one parable radically reworked toward allegory of Jerusalem’s fate, or two similar parables told on different occasions.' },
+    { device: 'Conflation', note: 'Matt 22:11–14 (the guest without a wedding garment) reads like a second parable spliced onto the first — a seam most commentators mark as Matthean conflation of related banquet material.' },
+  ],
+  'Render unto Caesar': [
+    { device: 'Paraphrase', note: 'Another near-verbatim controversy: the flattery, the denarius, "whose image and inscription?", and the punchline agree closely across the Synoptics, with only the framing spies (Luke 20:20) and exit lines varying. A good control case — the tradition could transmit tightly when it chose.' },
+  ],
+  'Woes to the Pharisees': [
+    { device: 'Conflation', note: 'Matthew 23 is a composed indictment: woes that Luke distributes across a dinner scene (Luke 11:37–52) plus Mark’s short warning against the scribes (12:38–40) are gathered into one climactic temple discourse. Compare Luke’s table setting to watch the same woes serve a different dramatic frame.' },
+    { device: 'Compression', note: 'Mark’s two-verse form (beware the scribes: robes, greetings, widows’ houses) is the compressed kernel; whether Mark compressed a fuller tradition or the others expanded him is the Synoptic problem in one pericope.' },
+  ],
+  "The widow's mite": [
+    { device: 'Compression', note: 'Luke 21:1–4 tightens Mark 12:41–44: the summoned disciples disappear, and Mark’s explanation for Roman readers ("two lepta, which make a quadrans") drops out. Nothing is added; the scene is simply pared to its pronouncement.' },
+  ],
+  'Olivet Discourse / Second Coming': [
+    { device: 'Paraphrase', note: 'Mark 13:14’s cipher "the abomination of desolation standing where he ought not (let the reader understand)" becomes in Luke 21:20 "when you see Jerusalem surrounded by armies" — the Danielic riddle decoded for gentile readers. The clearest large-scale case of interpretive paraphrase in the tradition.' },
+    { device: 'Expansion of narrative details', note: 'Matthew extends the discourse with a parable block (the thief, the virgins, the talents, the sheep and goats — chs. 24:37–25:46) that Mark lacks and Luke scatters elsewhere: expansion by anthology.' },
+  ],
+  'Budding fig tree': [
+    { device: 'Paraphrase', note: 'A tight triple-tradition saying; Luke’s one audible touch is "the fig tree and ALL the trees" (21:29) — generalizing Judea’s signature tree for readers who may never have seen one. Small-bore paraphrase with an audience rationale.' },
+  ],
+  'Faithful servant': [
+    { device: 'Displacement', note: 'Matthew keeps the watchful-servant material inside the Olivet discourse (24:42–51); Luke places it mid-journey with Peter asking "Lord, are you telling this parable for us or for all?" (12:41). One saying-cluster, two narrative homes and two audiences.' },
+    { device: 'Expansion of narrative details', note: 'Luke 12:47–48 adds the graded beatings ("many blows… few blows… to whom much was given") — an expansion on responsibility proportional to knowledge that Matthew lacks.' },
+  ],
+  'Talents / Minas': [
+    { device: 'Paraphrase', note: 'Matthew’s three servants receive vast, unequal talents; Luke’s ten servants receive one mina each. Sums, casts, and returns all differ while the plot skeleton (entrusting, reckoning, the fearful servant’s cloth) holds — a case study in how much surface a parable could shed in retelling.' },
+    { device: 'Conflation', note: 'Luke’s version interleaves a throne-claimant plot — citizens hating the nobleman, an embassy, executions on his return (19:12,14,27), echoing Archelaus’ journey to Rome — widely read as a second parable conflated with the minas story.' },
+  ],
+  "Judas' bargain": [
+    { device: 'Expansion of narrative details', note: 'Mark 14:11 says only that the priests promised money; Matt 26:15 fixes the sum at thirty pieces of silver (with Zech 11:12 in the background), and Luke 22:3 supplies the darkest motive-note in the tradition: "Satan entered into Judas." Each expansion answers a different why.' },
+  ],
+  'Last Supper': [
+    { device: 'Paraphrase', note: 'The institution words descend in two liturgical streams: "this is my blood of the covenant, poured out for many" (Mark 14:24/Matt 26:28, Matthew adding "for the forgiveness of sins") beside "this cup… the new covenant in my blood" (Luke 22:20, with Paul in 1 Cor 11:25). Worship communities were already shaping the wording before the Gospels were written.' },
+    { device: 'Displacement', note: 'John sets the meal "before the feast of the Passover" (13:1) with the crucifixion on preparation day (19:14), while the Synoptics present a Passover meal — the most argued chronological displacement in the Gospels, whether John moved the death to the hour the lambs were slain or the Synoptics folded the meal into Passover.' },
+  ],
+  "Peter's denial predicted": [
+    { device: 'Displacement', note: 'Mark 14:27–31 and Matthew place the prediction on the walk to Gethsemane; Luke 22:31–34 and John 13:36–38 set it at the supper table. One tradition, two stagings — and Luke’s table version carries the unique "Satan demanded to sift you… I have prayed for you" saying.' },
+    { device: 'Simplification', note: 'Mark alone has "before the rooster crows TWICE" (14:30); the others say simply "before the rooster crows." The fulfillment scene keeps score accordingly — a small case of the tradition shedding a counting detail while the prophecy-fulfillment frame stands.' },
+  ],
+  'Gethsemane': [
+    { device: 'Compression', note: 'Mark and Matthew narrate three prayer-cycles with three returns to sleeping disciples; Luke 22:39–46 compresses to a single cycle framed by "pray that you may not enter into temptation." John has no agony scene at all — its echo sounds earlier, at 12:27 ("Now is my soul troubled…").' },
+    { device: 'Expansion of narrative details', note: 'Luke 22:43–44 (the strengthening angel and sweat "like great drops of blood") is expansion with an asterisk: the verses are double-bracketed in NA28, absent from many early witnesses — a place where textual criticism and redaction criticism meet.' },
+  ],
+  'Kiss of Judas': [
+    { device: 'Paraphrase', note: 'Jesus’ word at the kiss differs in each telling: silence (Mark), "Friend, do what you came for" (Matt 26:50), "Judas, would you betray the Son of Man with a kiss?" (Luke 22:48). Each evangelist scripts the moment’s meaning; none contradicts the gesture.' },
+    { device: 'Spotlighting', note: 'John omits the kiss entirely: Jesus steps forward, asks "Whom do you seek?", and his "I am he" fells the arresting party (18:4–6). The spotlight swings from Judas’ treachery to Jesus’ sovereignty — John narrates an arrest that Jesus conducts.' },
+  ],
+  'Arrest of Jesus': [
+    { device: 'Spotlighting', note: 'All four report the severed ear; only John names the swordsman (Peter) and the servant (Malchus, 18:10). The Synoptics’ anonymous "one of those standing by" may be protective anonymity while participants lived — John, writing later, can turn the lights on.' },
+    { device: 'Expansion of narrative details', note: 'Luke 22:51 alone adds "and he touched his ear and healed him" — the tradition’s only healing of an enemy in the act of arresting Jesus, and a thoroughly Lukan touch.' },
+  ],
+  'Sanhedrin trial': [
+    { device: 'Compression', note: 'Mark and Matthew narrate a night session plus a morning consultation; Luke 22:66 compresses to one morning hearing. John displaces further: an informal interrogation before Annas (18:12–24), with the decisive council held weeks earlier (11:47–53).' },
+    { device: 'Paraphrase', note: 'The climactic answer shifts: "I am" (Mark 14:62) → "You have said so" (Matt 26:64) → split questions with "You say that I am" (Luke 22:67–70). Whether Matthew’s idiom is affirmation-with-reserve, and why Mark is boldest, is a classic seminar hour.' },
+  ],
+  'Jesus before Pilate': [
+    { device: 'Expansion of narrative details', note: 'Each evangelist expands Mark’s spare hearing differently: Matthew adds Pilate’s wife’s dream and the handwashing (27:19,24), Luke inserts the transfer to Herod Antipas (23:6–12), John unfolds the inside/outside drama and the "What is truth?" dialogue (18:33–38). Comparing them shows four authors filling the same silence with their own emphases.' },
+  ],
+  'Carrying the cross': [
+    { device: 'Spotlighting', note: 'The Synoptics have Simon of Cyrene carry the cross; John 19:17 says Jesus went out "bearing the cross by himself." John’s spotlight (and perhaps a glance at Isaac carrying the wood, Gen 22:6) holds on Jesus alone — while Mark’s naming of Simon’s sons Alexander and Rufus (15:21) spotlights men his readers evidently knew.' },
+    { device: 'Expansion of narrative details', note: 'Luke 23:27–31 alone adds the daughters of Jerusalem and the green-wood saying — an expansion that turns the road to the cross into one last prophetic oracle over the city.' },
+  ],
+  'Crucifixion': [
+    { device: 'Paraphrase', note: 'The titulus reads differently in all four Gospels ("The King of the Jews," Mark 15:26; "This is Jesus, the King of the Jews," Matt; "This is the King of the Jews," Luke; "Jesus of Nazareth, the King of the Jews," John) — four paraphrases of one placard, and the tidiest proof that verbatim precision was not the ancients’ standard of truthfulness.' },
+    { device: 'Spotlighting', note: 'Each evangelist selects different words from the cross: the cry of dereliction (Mark/Matt), the three prayers of mercy and trust (Luke), the three words of completion (John). And Mark/Matt have both bandits revile Jesus where Luke 23:39–43 spotlights the one who turned — selection and spotlight, not contradiction, on the usual analysis.' },
+  ],
+  'Resurrection appearances': [
+    { device: 'Spotlighting', note: 'John 20:14–16 gives Mary Magdalene alone the first appearance ("Mary." — "Rabboni!"), where Matt 28:9 has "the women" meet him together. One account spotlights the named witness; note that Mark 16:9–11 here belongs to the Longer Ending, absent from the earliest manuscripts — flag that for students before building on it.' },
+  ],
+  'Appearance to the apostles': [
+    { device: 'Expansion of narrative details', note: 'Luke 24:36–43 expands the appearance with flesh-and-bones proofs — "touch me and see," the broiled fish eaten before them — answering the suspicion that they saw a spirit. John 20:19–20 keeps the locked doors and the wounds; each expansion serves its Gospel’s argument about the risen body.' },
+  ],
+  'Great Commission': [
+    { device: 'Compression', note: 'Read straight through, Luke 24 seems to run from Easter evening to the ascension in one day — yet Acts 1:3 (same author) spreads the appearances over forty days. Luke compressed his Gospel’s ending and decompressed it in Acts: the tradition’s single clearest self-attested case of deliberate compression.' },
+    { device: 'Displacement', note: 'Matthew’s commission is on a Galilean mountain (28:16); Luke keeps everything in and around Jerusalem, as his two-volume geography requires. Each evangelist stages the sending where his book’s architecture points.' },
+  ],
+  'Ascension': [
+    { device: 'Compression', note: 'Luke 24:50–53 narrates the ascension as if on Easter day; Acts 1:9–11 dates it forty days later with a cloud, two men in white, and the promise of return. Same author, same event, two time-scales and two levels of detail — the interpretive key Licona presses for reading Gospel chronology generally.' },
+  ],
 }
