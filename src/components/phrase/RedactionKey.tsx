@@ -87,6 +87,14 @@ export function RedactionKey() {
 
       <div>
         <h4 className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Narrative-level devices — read from the evidence</h4>
+        <p className="mb-2 text-xs leading-relaxed text-gray-500">
+          Two chip styles keep the registers apart on this page. <span className="rounded border border-parchment-300 bg-parchment-50 px-1 text-gray-700">Parchment chips</span> are
+          curated study notes on the whole pericope. <span className="rounded border border-dashed border-gray-400 px-1 text-gray-600">Dashed chips</span> are
+          computed <span className="italic">signals</span> — person shifts, dropped names, plural-to-singular verbs, add/omit balance,
+          pericope order — each clickable to ring the exact words that generated it. Both are inferences
+          about the whole episode; only the word-level colours above record direct observations, and no
+          device is ever asserted automatically.
+        </p>
         <ul className="grid gap-3 sm:grid-cols-2">
           {NARRATIVE_LEVEL.map(t => (
             <li key={t.name} className="rounded-lg border border-gray-200 p-2.5 flex flex-col gap-0.5">

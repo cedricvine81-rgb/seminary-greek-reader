@@ -1,7 +1,8 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
-import { compareRedaction, isFunctionWord, isGlueWord, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
+import { compareRedaction, isFunctionWord, isGlueWord, morphFacts, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
+import { computeColumnIndicators, computeSequenceShift, type Indicator } from '@/lib/redaction-indicators'
 import { RedactionKey } from './RedactionKey'
 import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
 import { phraseTreeVerses, type PhraseTreeDoc } from '@/lib/phrase-tree-tokens'
@@ -38,7 +39,22 @@ const MARK_LABELS: Record<MarkTag, string> = {
 // Rationale bubble support: each coloured word can explain itself, because the aligner
 // records which source word it was judged against (CompareResult.links).
 const TAG_TITLES: Record<MarkTag, string> = {
-  form: 'Form change', moved: 'Moved', subst: 'Substituted', added: 'Added', omitted: 'Omitted',
+  form: 'Form change · Theon: variation in syntax',
+  moved: 'Moved · Theon: variation in syntax',
+  subst: 'Substituted · Theon: substitution',
+  added: 'Added · Theon: addition',
+  omitted: 'Omitted · Theon: subtraction',
+}
+// Which computed signals corroborate which curated narrative device — used to append a
+// "computed signals agree" line to an open curated note.
+const DEVICE_SIGNALS: Record<string, Indicator['id'][]> = {
+  Transferal: ['transferal'],
+  Spotlighting: ['spotlight-names', 'spotlight-number'],
+  Simplification: ['spotlight-names', 'condense'],
+  Compression: ['condense'],
+  'Expansion of narrative details': ['expand'],
+  Displacement: ['sequence'],
+  Paraphrase: ['hist-present'],
 }
 const ROLE_LABELS: Record<string, string> = {
   s: 'subject', o: 'object', io: 'indirect object', v: 'verb', adv: 'adverbial',
@@ -173,6 +189,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // Rationale bubble for the hovered coloured word: why it wears its tag, citing the
   // source word and reference it was judged against.
   const [hoverTip, setHoverTip] = useState<{ x: number; y: number; title: string; body: string } | null>(null)
+  // The signal chip whose evidence is currently ringed in the columns, as
+  // "columnIndex:indicatorId" plus the word keys it highlights.
+  const [evidence, setEvidence] = useState<{ key: string; keys: Set<string> } | null>(null)
   // Synoptic source model for model-dependent notes (Farrer vs Two-Source/Q).
   // Defaults to Farrer; persisted per browser. Initialized in an effect so SSR and
   // first client render agree (no hydration mismatch).
@@ -393,6 +412,8 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
 
   // Keep the source pointer valid if the user removes columns while comparing.
   useEffect(() => { if (sourceIdx >= columns.length) setSourceIdx(0) }, [columns.length, sourceIdx])
+  // Drop any ringed signal evidence when the comparison it came from changes.
+  useEffect(() => { setEvidence(null) }, [compareOn, sourceIdx, columns.join('|'), version]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Default the source to a Mark column when compare is switched on (the most common
   // classroom direction), but leave the choice fully user-editable — the tool takes no
@@ -422,6 +443,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     /** source verse index → the verses of this column it corresponds to (content-word
      *  aggregate, thresholded — see verseMapOf). */
     verseMap: Record<number, number[]>
+    /** target flat index → position, for mapping indicator evidence back to words. */
+    tgtPos: { vi: number; ti: number }[]
+    /** Narrative-device signals computed from this column's alignment. */
+    indicators: Indicator[]
   }
   // The alignment runs whenever two Greek columns are up, not only in compare mode:
   // "which verse matches which" is useful to a student who isn't thinking about redaction
@@ -488,7 +513,20 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         const si = r.links[k]
         if (si !== null) bySource.set(si, [...(bySource.get(si) ?? []), { vi: m.vi, ti: m.ti }])
       })
-      perCol.set(i, { tagsByVerse, stats: r.stats, linkByVerse, bySource, verseMap: verseMapOf(r.links, tgtFlat.map) })
+      // Narrative-device signals for this column: the word-level detectors, plus the
+      // pericope-order displacement check when both columns are gospels the harmony
+      // dataset places.
+      const indicators = computeColumnIndicators(srcFlat.tokens, tgtFlat.tokens, r)
+      if (bestGospel && src.book !== c.book && GOSPELS.includes(src.book) && GOSPELS.includes(c.book)) {
+        const shift = computeSequenceShift(pericopes, bestGospel.title, src.book, c.book)
+        if (shift) indicators.push({
+          id: 'sequence', device: 'Displacement',
+          label: `sequence · ${shift.dir}`,
+          title: `Among the pericopes both ${src.bookName} and ${c.bookName} contain, this episode sits ${Math.abs(shift.diff)} positions ${shift.dir} in ${c.bookName}'s order than in ${src.bookName}'s — a displacement signal.`,
+          srcEvidence: [], tgtEvidence: [],
+        })
+      }
+      perCol.set(i, { tagsByVerse, stats: r.stats, linkByVerse, bySource, verseMap: verseMapOf(r.links, tgtFlat.map), tgtPos: tgtFlat.map, indicators })
       r.sourceUsed.forEach((u, k) => { if (u) usedAny[k] = true })
     })
     if (!perCol.size) return null
@@ -512,7 +550,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     srcFlat.map.forEach((m, k) => { srcFlatOf[`${m.vi}.${m.ti}`] = k })
     return { sourceIdx, perCol, omitByVerse, srcFlatOf, srcPos: srcFlat.map, omittedByAll: struck }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isGreek, sourceIdx, columns.join('|'), version, ver, books])
+  }, [isGreek, sourceIdx, columns.join('|'), version, ver, books, pericopes, bestGospel?.title])
 
   // Every position that aligns with the hovered word, keyed "col.verse.token" — the word
   // itself plus its counterpart in each other column. Hovering anywhere in the chain
@@ -590,7 +628,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       {deviceNotes && deviceNotes.length > 0 && (
         <div className="space-y-2">
           <div className="flex items-center flex-wrap gap-2">
-            <span className="text-xs font-medium text-gray-500">Compositional devices</span>
+            <span className="text-xs font-medium text-gray-500">Narrative devices <span className="text-[10px] font-normal text-gray-400">· curated</span></span>
             {deviceNotes.map((a, idx) => (
               <button
                 key={idx}
@@ -617,6 +655,24 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
             <div className="max-w-3xl rounded-lg border border-parchment-200 bg-parchment-50 px-3 py-2 text-xs leading-relaxed text-gray-600">
               <span className="font-semibold text-gray-700">{deviceNotes[openDevice].device}. </span>
               {noteFor(deviceNotes[openDevice], sourceModel)}
+              {/* Corroboration: when this curated device's computed signal also fires in
+                  the live comparison, say so — the two registers agreeing is itself
+                  evidence worth showing. Silence when compare mode is off. */}
+              {compareOn && compareData && (() => {
+                const ids = DEVICE_SIGNALS[deviceNotes[openDevice].device] ?? []
+                if (!ids.length) return null
+                const hits: string[] = []
+                Array.from(compareData.perCol.entries()).forEach(([ci, cc]) => {
+                  const col = column(columns[ci])
+                  cc.indicators.filter(x => ids.includes(x.id)).forEach(x => hits.push(`${col?.label ?? ''} — ${x.label}`))
+                })
+                if (!hits.length) return null
+                return (
+                  <p className="mt-1.5 border-t border-parchment-200 pt-1.5 text-[11px] text-gray-500">
+                    Computed signals agree: {hits.join(' · ')}. Click the dashed chips under each column to ring the evidence.
+                  </p>
+                )
+              })()}
             </div>
           )}
         </div>
@@ -655,6 +711,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                   those words as plain text. Dimmed chip = hidden (same idiom as the
                   Backgrounds type filter). */}
               <span className="flex flex-wrap items-center gap-1.5 text-[11px] text-gray-600">
+                <span className="text-[9px] uppercase tracking-wide text-gray-400">word-level</span>
                 <span className="rounded border border-gray-300 px-1.5">plain = verbatim</span>
                 {MARK_TAGS.map(t => (
                   <button
@@ -714,12 +771,48 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                 {compareOn && compareData && (i === compareData.sourceIdx
                   ? <p className="mb-1 shrink-0 text-[10px] leading-snug text-gray-400">{compareData.omittedByAll} word{compareData.omittedByAll === 1 ? '' : 's'} picked up by no compared column</p>
                   : (() => {
-                      const s = compareData.perCol.get(i)?.stats
-                      return s ? (
+                      const cc = compareData.perCol.get(i)
+                      if (!cc) return null
+                      const s = cc.stats
+                      return (
+                        <>
                         <p className="mb-1 shrink-0 text-[10px] leading-snug text-gray-400" title="Retention counts source words kept verbatim, re-inflected, or moved. The headline % is over content words only (articles, conjunctions, prepositions, particles, and pronouns excluded); the all-words figure follows in parentheses.">
                           retains {s.contentRetentionPct}% of content words ({s.retentionPct}% overall) · +{s.added} added · −{s.omitted} omitted · {s.subst} substituted · {s.form + s.moved} recast{s.tenseChanges > 0 ? ` (${s.tenseChanges} tense)` : ''}
                         </p>
-                      ) : null
+                        {/* Narrative-device SIGNALS — dashed chips, deliberately styled apart
+                            from both the word-level colour marks (automatic) and the curated
+                            parchment device chips (human judgment). Clicking one rings the
+                            words that generated it. */}
+                        {cc.indicators.length > 0 && (
+                          <div className="mb-1 shrink-0 flex flex-wrap items-center gap-1">
+                            <span className="text-[9px] uppercase tracking-wide text-gray-400">signals</span>
+                            {cc.indicators.map(ind => {
+                              const k = `${i}:${ind.id}`
+                              const active = evidence?.key === k
+                              const clickable = ind.srcEvidence.length + ind.tgtEvidence.length > 0
+                              return (
+                                <button
+                                  key={ind.id}
+                                  type="button"
+                                  title={ind.title + (clickable ? ' Click to ring the evidence.' : '')}
+                                  onClick={() => {
+                                    if (!clickable) return
+                                    if (active) { setEvidence(null); return }
+                                    const keys = new Set<string>()
+                                    for (const sk of ind.srcEvidence) { const p = compareData.srcPos[sk]; if (p) keys.add(`${compareData.sourceIdx}.${p.vi}.${p.ti}`) }
+                                    for (const tk of ind.tgtEvidence) { const p = cc.tgtPos[tk]; if (p) keys.add(`${i}.${p.vi}.${p.ti}`) }
+                                    setEvidence({ key: k, keys })
+                                  }}
+                                  className={`rounded border border-dashed px-1.5 py-px text-[10px] transition-colors ${active ? 'border-parchment-500 bg-parchment-100 text-gray-800' : 'border-gray-400 text-gray-600 hover:bg-gray-50'} ${clickable ? '' : 'cursor-default opacity-75'}`}
+                                >
+                                  {ind.label}
+                                </button>
+                              )
+                            })}
+                          </div>
+                        )}
+                        </>
+                      )
                     })())}
                 {col && col.verses.length > 0 ? (
                   <div
@@ -777,6 +870,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                     // the pointer, so ring it. Uses an outline rather than a
                                     // background so it stacks cleanly on a redaction colour.
                                     const linked = linkedKeys.has(`${i}.${vi}.${ti}`)
+                                    // Evidence ring for the active signal chip — parchment,
+                                    // to tie it visually to the narrative-device register
+                                    // (and apart from the brand-blue hover-link ring).
+                                    const evid = evidence?.keys.has(`${i}.${vi}.${ti}`) ?? false
                                     // Rationale bubble for the word's tag, citing the source
                                     // word + reference it was judged against (the aligner's
                                     // own evidence, not a generated gloss).
@@ -805,6 +902,14 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                             const role = tok.syn?.role ? ROLE_LABELS[tok.syn.role] : undefined
                                             body = `Replaces ${stok.surface} (${ref}) in the same slot${role ? ` (${role})` : ''}.`
                                           }
+                                          // Narrative-signal note, when this very pair is one:
+                                          // the bridge from the word-level colour to the
+                                          // device vocabulary.
+                                          const fa = morphFacts({ lemma: stok.lemma, surface: stok.surface, parsing: stok.parsing })
+                                          const fb = morphFacts({ lemma: tok.lemma, surface: tok.surface, parsing: tok.parsing })
+                                          if (fa.person && fb.person && fa.person !== fb.person) body += ` Person ${fa.person} → ${fb.person} — a transferal signal.`
+                                          else if (fa.cls === 'verb' && fb.cls === 'verb' && fa.number === 'plural' && fb.number === 'singular') body += ' Plural → singular — a spotlighting signal.'
+                                          else if (fa.cls === 'verb' && fb.cls === 'verb' && fa.indicative && fb.indicative && fa.tense === 'present' && fb.tense === 'aorist') body += ' Historical present smoothed to aorist.'
                                         }
                                       }
                                       if (!body) { setHoverTip(null); return }
@@ -828,7 +933,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                           })
                                         }}
                                         {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': col.book, 'data-hl-chapter': col.chapter, 'data-hl-color': hl.color } : {})}
-                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${compareOn ? rcClass : (hl ? highlightMarkClass(hl.color) : '')} ${linked ? 'outline outline-1 outline-offset-1 outline-brand-500' : ''}`}
+                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${compareOn ? rcClass : (hl ? highlightMarkClass(hl.color) : '')} ${evid ? 'outline outline-2 outline-offset-1 outline-parchment-500' : linked ? 'outline outline-1 outline-offset-1 outline-brand-500' : ''}`}
                                       >
                                         {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                                       </span>

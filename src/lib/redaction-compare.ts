@@ -94,7 +94,7 @@ const POS_RULES: [RegExp, PosClass][] = [
 ]
 const GLUE_LEMMAS = new Set(['ο', 'και', 'δε', 'εν', 'εις', 'εκ', 'γαρ', 'τε', 'αλλα', 'μη', 'ου', 'ουκ', 'ουχ', 'ουδε', 'μηδε', 'ουτε', 'μητε', 'προς', 'επι', 'υπο', 'απο', 'μετα', 'περι', 'δια', 'κατα', 'παρα', 'συν', 'οτι', 'ως', 'ει', 'ινα', 'αν', 'εαν'])
 const PRON_LEMMAS = new Set(['αυτος', 'ουτος', 'συ', 'εγω', 'ος', 'τις', 'εκεινος', 'οστις'])
-function posClassOf(t: CompareToken): PosClass {
+export function posClassOf(t: CompareToken): PosClass {
   // The glue lemma list overrides the POS string: MACULA parses the negations (οὐ, μή,
   // οὐδέ, …) as adverbs, but a negative belongs with its verb — it is no more an
   // independent editorial act than an article. (No lexical lemma collides with this
@@ -107,6 +107,38 @@ function posClassOf(t: CompareToken): PosClass {
 /** Articles, conjunctions, prepositions, particles — the tier that never carries an
  *  editorial tag of its own. Exported for the source column's strike-through logic. */
 export const isGlueWord = (t: CompareToken): boolean => posClassOf(t) === 'glue'
+
+// ── Morphological facts for device signals ──────────────────────────────────────────
+// Person / number / tense read from the parsing string ("Verb, Aorist, Passive,
+// Indicative, 3 person, Singular"), with pronoun person recovered from the lemma where
+// the parsing carries none (Οὗτός parses as a demonstrative without person). These feed
+// the narrative-level SIGNAL detectors (person shifts → transferal, plural → singular →
+// spotlighting, historical presents smoothed) and the rationale bubbles.
+const PERSON_RE = /([123])\s*person/i
+const NUMBER_RE = /\b(singular|plural)\b/i
+const INDICATIVE_RE = /indicative/i
+const PRON_PERSON: Record<string, string> = { εγω: '1', συ: '2', αυτος: '3', ουτος: '3', εκεινος: '3', ος: '3', οστις: '3' }
+export function morphFacts(t: CompareToken): { person?: string; number?: string; tense?: string; indicative: boolean; cls: PosClass } {
+  const cls = posClassOf(t)
+  const p = t.parsing ?? ''
+  let person = p.match(PERSON_RE)?.[1]
+  if (!person && cls === 'pron') person = PRON_PERSON[norm(t.lemma || t.surface)]
+  return {
+    person,
+    number: p.match(NUMBER_RE)?.[1]?.toLowerCase(),
+    tense: tenseOf(p) ?? undefined,
+    indicative: INDICATIVE_RE.test(p),
+    cls,
+  }
+}
+
+/** Proper noun: a noun whose lemma is capitalized (Ἰησοῦς, Πέτρος — MACULA capitalizes
+ *  name lemmas), regardless of the sentence-initial capitals on ordinary words. */
+export function isProperNoun(t: CompareToken): boolean {
+  if (posClassOf(t) !== 'noun') return false
+  const ch = (t.lemma || '').charAt(0)
+  return !!ch && ch === ch.toUpperCase() && ch !== ch.toLowerCase()
+}
 
 /**
  * Longest common subsequence over lemma keys. Passages are pericope-sized (rarely more
