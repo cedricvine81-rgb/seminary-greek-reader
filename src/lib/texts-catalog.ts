@@ -96,7 +96,7 @@ export function groupWorksByAuthor(works: CatalogWork[]): AuthorGroup[] {
   return groups
 }
 
-export const TEXT_CATEGORIES: TextCategory[] = [
+const RAW_CATEGORIES: TextCategory[] = [
   {
     id: 'apocrypha',
     label: 'Apocrypha',
@@ -223,8 +223,8 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   {
     id: 'church-fathers',
     label: 'Church Fathers',
-    blurb: 'The Ante-Nicene Fathers — Justin Martyr’s Dialogue and Apologies, and Irenaeus’s Against Heresies — in the Roberts-Donaldson public-domain translation.',
-    works: [...JUSTIN_CATALOG, ...ANF_CATALOG],
+    blurb: 'The Ante-Nicene Fathers — Justin Martyr’s Dialogue and Apologies, Irenaeus’s Against Heresies, and Eusebius’s Ecclesiastical History — in public-domain translations.',
+    works: [...JUSTIN_CATALOG, ...ANF_CATALOG, ...EUSEBIUS_CATALOG],
   },
   {
     id: 'nt-apocrypha',
@@ -235,12 +235,6 @@ export const TEXT_CATEGORIES: TextCategory[] = [
       { id: 'gospel-of-peter', name: 'The Gospel of Peter', source: 'gospel-of-peter', chapters: 14 },
       { id: 'paul-and-thecla', name: 'The Acts of Paul and Thecla', source: 'paul-and-thecla', chapters: 1 },
     ],
-  },
-  {
-    id: 'eusebius',
-    label: 'Eusebius',
-    blurb: 'Eusebius of Caesarea’s Ecclesiastical History — the foundational narrative of the early church (c. 324 CE), in ten books. Schwartz’s Greek with Lake &amp; Oulton’s English side by side (First1KGreek, CC BY-SA).',
-    works: EUSEBIUS_CATALOG,
   },
   {
     id: 'greco-roman',
@@ -260,7 +254,7 @@ export const TEXT_CATEGORIES: TextCategory[] = [
         { id: 'dio-chrysostom-orations', name: 'Dio Chrysostom, Orations', source: 'dio-chrysostom-orations', chapters: DIO_CHAPTER_NUMBERS[DIO_CHAPTER_NUMBERS.length - 1], chapterNumbers: DIO_CHAPTER_NUMBERS, greek: true },
         ...HOMER_CATALOG, ...HESIOD_CATALOG, ...HERODOTUS_CATALOG,
         ...GRECO_CATALOG, ...LUCIAN_CATALOG, ...APOLLODORUS_CATALOG, ...QUINTILIAN_CATALOG,
-      ] as CatalogWork[]).sort((a, b) => a.name.localeCompare(b.name)),
+      ] as CatalogWork[]).sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })),
     ],
   },
   {
@@ -271,6 +265,18 @@ export const TEXT_CATEGORIES: TextCategory[] = [
   },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]
+
+// Within each category the works are listed alphabetically by author (a plain name sort keeps an
+// author's books consecutive, since every name is "Author, Title"). Two exceptions keep their
+// deliberate order: scripture stays in canonical book order, and Greco-Roman is arranged by hand
+// (its curated "Pagan Sources" overview is pinned first, the rest already alphabetical).
+const KEEP_ORDER = new Set(['apocrypha', 'septuagint', 'greco-roman'])
+export const TEXT_CATEGORIES: TextCategory[] = RAW_CATEGORIES.map(c =>
+  c.comingSoon || KEEP_ORDER.has(c.id)
+    ? c
+    // numeric:true so "Book 2" sorts before "Book 10" (e.g. Eusebius's ten books), not after.
+    : { ...c, works: [...c.works].sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true })) },
+)
 
 // Look up a Greek OT/Apocrypha book by its osisId — used by "Open in Texts" links
 // elsewhere in the app (e.g. Backgrounds' cross-reference pane) to check whether a

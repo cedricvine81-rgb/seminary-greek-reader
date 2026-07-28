@@ -64,12 +64,12 @@ export function TextsNavMenu() {
             {TEXT_CATEGORIES.map(c => (
               <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, c.works, e.currentTarget)}>
                 <div
-                  className={`flex items-center justify-between gap-2 px-3 py-1.5 text-sm ${
+                  className={`flex items-center gap-2 px-3 py-1.5 text-sm ${
                     c.comingSoon ? 'text-gray-300'
                     : `cursor-default ${cat === c.id ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}`}
                 >
-                  {!c.comingSoon && <ChevronLeft size={14} className="text-gray-300" />}
                   <span className="flex-1">{c.label}{c.comingSoon && <span className="ml-1.5 text-[10px] text-gray-300">soon</span>}</span>
+                  {!c.comingSoon && <ChevronLeft size={14} className="text-gray-300" />}
                 </div>
 
                 {/* Author list, flown out to the left of the hovered category — lifted to the top
@@ -83,8 +83,8 @@ export function TextsNavMenu() {
                         <div key={g.author} onMouseEnter={e => openBooks(g.author!, g.works, e.currentTarget)}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
                             sub?.author === g.author ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
-                            <ChevronLeft size={14} className="text-gray-300" />
                             <span className="flex-1">{g.author}</span>
+                            <ChevronLeft size={14} className="text-gray-300" />
                           </div>
                         </div>
                       ) : (
