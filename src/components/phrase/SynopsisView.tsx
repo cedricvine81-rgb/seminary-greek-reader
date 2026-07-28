@@ -790,18 +790,32 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                               const k = `${i}:${ind.id}`
                               const active = evidence?.key === k
                               const clickable = ind.srcEvidence.length + ind.tgtEvidence.length > 0
+                              // Same styled rationale bubble the coloured words get —
+                              // the native title tooltip was slow to appear and
+                              // invisible on touch.
+                              const showChipTip = (e: React.MouseEvent) => {
+                                const rect = e.currentTarget.getBoundingClientRect()
+                                const x = Math.min(Math.max(rect.left + rect.width / 2, 152), Math.max(window.innerWidth - 152, 152))
+                                setHoverTip({
+                                  x, y: rect.top,
+                                  title: ind.device ? `Signal · ${ind.device.toLowerCase()}` : 'Note',
+                                  body: ind.title + (clickable ? (active ? ' Click again to clear the rings.' : ' Click to ring the evidence.') : ''),
+                                })
+                              }
                               return (
                                 <button
                                   key={ind.id}
                                   type="button"
-                                  title={ind.title + (clickable ? ' Click to ring the evidence.' : '')}
-                                  onClick={() => {
-                                    if (!clickable) return
-                                    if (active) { setEvidence(null); return }
+                                  onMouseEnter={showChipTip}
+                                  onMouseLeave={() => setHoverTip(null)}
+                                  onClick={e => {
+                                    if (!clickable) { showChipTip(e); return }
+                                    if (active) { setEvidence(null); showChipTip(e); return }
                                     const keys = new Set<string>()
                                     for (const sk of ind.srcEvidence) { const p = compareData.srcPos[sk]; if (p) keys.add(`${compareData.sourceIdx}.${p.vi}.${p.ti}`) }
                                     for (const tk of ind.tgtEvidence) { const p = cc.tgtPos[tk]; if (p) keys.add(`${i}.${p.vi}.${p.ti}`) }
                                     setEvidence({ key: k, keys })
+                                    showChipTip(e)
                                   }}
                                   className={`rounded border border-dashed px-1.5 py-px text-[10px] transition-colors ${active ? 'border-parchment-500 bg-parchment-100 text-gray-800' : 'border-gray-400 text-gray-600 hover:bg-gray-50'} ${clickable ? '' : 'cursor-default opacity-75'}`}
                                 >

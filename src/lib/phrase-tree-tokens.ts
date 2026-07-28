@@ -32,20 +32,25 @@ export interface PhraseTreeDoc { sentences?: { tree: Node }[] }
 
 const PHRASE_CLS = new Set(['np', 'pp', 'adjp', 'advp'])
 
-/** Lexical head of a phrase subtree: the last noun/pronoun, else the last lexical word. */
+/** Lexical head of a phrase subtree: the last noun; else the last pronoun; else the
+ *  last other lexical word. Nouns must outrank pronouns, or the trailing possessive in
+ *  τὸ πτῶμα αὐτοῦ hijacks headship from πτῶμα — and the article, guarded to its own
+ *  phrase's head, then fails to match its true counterpart. */
 function headOf(n: Node): string | undefined {
   let noun: string | undefined
+  let pron: string | undefined
   let lex: string | undefined
   const scan = (m: Node): void => {
     if (m.t === 'w' && m.id) {
       const c = m.cls ?? ''
-      if (c === 'noun' || c === 'pron') noun = m.id
-      if (c === 'noun' || c === 'pron' || c === 'verb' || c === 'adj' || c === 'num' || c === 'adv') lex = m.id
+      if (c === 'noun') noun = m.id
+      else if (c === 'pron') pron = m.id
+      else if (c === 'verb' || c === 'adj' || c === 'num' || c === 'adv') lex = m.id
     }
     ;(m.c ?? []).forEach(scan)
   }
   scan(n)
-  return noun ?? lex
+  return noun ?? pron ?? lex
 }
 
 /** All of a book's words keyed "Book.chapter.verse", in verse order, with syntax facts. */
