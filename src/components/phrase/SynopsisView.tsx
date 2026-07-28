@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
-import { compareRedaction, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
+import { compareRedaction, isFunctionWord, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { RedactionKey } from './RedactionKey'
 import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -103,9 +103,6 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   useEffect(() => {
     onAttribution?.([parallelsAttribution, ntParallelsAttribution].filter(Boolean).join(' '))
   }, [parallelsAttribution, ntParallelsAttribution, onAttribution])
-  // Clear any clicked-word selection when the anchor passage changes, so the pane falls
-  // back to the new passage's default word instead of showing a stale selection.
-  useEffect(() => { setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
   const cache = useRef<Record<string, Record<string, string>>>({})  // version → verseId → text
   // Greek word-level tokens (surface + parse) for the clickable parsing pane.
   const wordCache = useRef<Record<string, Record<string, WordToken[]>>>({})  // version → verseId → tokens
@@ -113,6 +110,10 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // its exact instance (so highlighting doesn't light up every occurrence of a word).
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
+  // Clear any clicked-word selection when the anchor passage changes, so the pane falls
+  // back to the new passage's default word instead of showing a stale selection. (Must
+  // sit AFTER the state it sets — it previously ran above the declarations.)
+  useEffect(() => { setSelectedInfo(null); setSelectedKey(null) }, [controlledPassage])
   const loaded = useRef<Set<string>>(new Set())
   // `ver` also keys the compare-mode memo: token caches are refs, so this counter is
   // what tells the alignment "new text has arrived, recompute".
@@ -124,6 +125,9 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   const [showKey, setShowKey] = useState(false)
   // Which curated device chip's note is open (index into the pericope's annotations).
   const [openDevice, setOpenDevice] = useState<number | null>(null)
+  // The word currently under the pointer, as "columnIndex.verseIndex.tokenIndex" — drives
+  // the cross-column link highlight (its counterparts in every other column light up).
+  const [hoverWord, setHoverWord] = useState<string | null>(null)
   // Synoptic source model for model-dependent notes (Farrer vs Two-Source/Q).
   // Defaults to Farrer; persisted per browser. Initialized in an effect so SSR and
   // first client render agree (no hydration mismatch).
@@ -371,9 +375,22 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
   // source (lemma-level LCS in redaction-compare.ts), tags mapped back onto each
   // column's per-verse token arrays for rendering. A source word counts as "omitted"
   // only if no compared column picked it up in any form.
-  type ColCompare = { tagsByVerse: Record<number, RedactionTag[]>; stats: CompareResult['stats'] }
+  type ColCompare = {
+    tagsByVerse: Record<number, RedactionTag[]>
+    stats: CompareResult['stats']
+    /** [verse index][token index] → the source token's flat index, or null if added. */
+    linkByVerse: Record<number, (number | null)[]>
+    /** source flat index → every position in THIS column that matched it. */
+    bySource: Map<number, { vi: number; ti: number }[]>
+    /** source verse index → the verses of this column it corresponds to (content-word
+     *  aggregate, thresholded — see verseMapOf). */
+    verseMap: Record<number, number[]>
+  }
+  // The alignment runs whenever two Greek columns are up, not only in compare mode:
+  // "which verse matches which" is useful to a student who isn't thinking about redaction
+  // yet. `compareOn` governs only whether the words get coloured.
   const compareData = useMemo(() => {
-    if (!compareOn || !isGreek || columns.length < 2) return null
+    if (!isGreek || columns.length < 2) return null
     const cols = columns.map(ref => column(ref))
     const src = sourceIdx < cols.length ? cols[sourceIdx] : null
     if (!src) return null
@@ -388,6 +405,36 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
     }
     const srcFlat = flatten(src)
     if (!srcFlat.tokens.length) return null
+
+    /** Aggregate word links into verse correspondences. Content words only — καί and ὁ
+     *  link to nearly everything, so counting them would make every verse "match" every
+     *  other. A target verse is kept when at least two content words land in it AND it
+     *  holds a third of the best-matching verse's share, which keeps genuine two-verse
+     *  spans while dropping one-word coincidences. */
+    const verseMapOf = (links: (number | null)[], tgtMap: { vi: number; ti: number }[]) => {
+      const tally = new Map<number, Map<number, number>>()   // srcVi → tgtVi → count
+      links.forEach((si, k) => {
+        if (si === null || isFunctionWord(srcFlat.tokens[si])) return
+        const sVi = srcFlat.map[si].vi, tVi = tgtMap[k].vi
+        const inner = tally.get(sVi) ?? new Map<number, number>()
+        inner.set(tVi, (inner.get(tVi) ?? 0) + 1)
+        tally.set(sVi, inner)
+      })
+      const out: Record<number, number[]> = {}
+      // Array.from rather than spreading the Map iterators: next dev tolerates the spread
+      // but the strict build (Vercel Production) rejects it without downlevelIteration.
+      Array.from(tally.entries()).forEach(([sVi, inner]) => {
+        const counts = Array.from(inner.values())
+        const top = Math.max.apply(null, counts)
+        const kept = Array.from(inner.entries())
+          .filter(([, n]) => n >= 2 && n >= top / 3)
+          .map(([tVi]) => tVi)
+          .sort((a, b) => a - b)
+        if (kept.length) out[sVi] = kept
+      })
+      return out
+    }
+
     const perCol = new Map<number, ColCompare>()
     const usedAny: boolean[] = new Array(srcFlat.tokens.length).fill(false)
     cols.forEach((c, i) => {
@@ -396,16 +443,66 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       if (!tgtFlat.tokens.length) return
       const r = compareRedaction(srcFlat.tokens, tgtFlat.tokens)
       const tagsByVerse: Record<number, RedactionTag[]> = {}
-      tgtFlat.map.forEach((m, k) => { (tagsByVerse[m.vi] ??= [])[m.ti] = r.tags[k] })
-      perCol.set(i, { tagsByVerse, stats: r.stats })
+      const linkByVerse: Record<number, (number | null)[]> = {}
+      const bySource = new Map<number, { vi: number; ti: number }[]>()
+      tgtFlat.map.forEach((m, k) => {
+        (tagsByVerse[m.vi] ??= [])[m.ti] = r.tags[k]
+        ;(linkByVerse[m.vi] ??= [])[m.ti] = r.links[k]
+        const si = r.links[k]
+        if (si !== null) bySource.set(si, [...(bySource.get(si) ?? []), { vi: m.vi, ti: m.ti }])
+      })
+      perCol.set(i, { tagsByVerse, stats: r.stats, linkByVerse, bySource, verseMap: verseMapOf(r.links, tgtFlat.map) })
       r.sourceUsed.forEach((u, k) => { if (u) usedAny[k] = true })
     })
     if (!perCol.size) return null
     const omitByVerse: Record<number, boolean[]> = {}
     srcFlat.map.forEach((m, k) => { (omitByVerse[m.vi] ??= [])[m.ti] = !usedAny[k] })
-    return { sourceIdx, perCol, omitByVerse, omittedByAll: usedAny.filter(u => !u).length }
+    // Position → flat index for the source column, so hovering a source word can find
+    // everything that matched it.
+    const srcFlatOf: Record<string, number> = {}
+    srcFlat.map.forEach((m, k) => { srcFlatOf[`${m.vi}.${m.ti}`] = k })
+    return { sourceIdx, perCol, omitByVerse, srcFlatOf, srcPos: srcFlat.map, omittedByAll: usedAny.filter(u => !u).length }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [compareOn, isGreek, sourceIdx, columns.join('|'), version, ver, books])
+  }, [isGreek, sourceIdx, columns.join('|'), version, ver, books])
+
+  // Every position that aligns with the hovered word, keyed "col.verse.token" — the word
+  // itself plus its counterpart in each other column. Hovering anywhere in the chain
+  // lights up the whole chain, so a word in Matthew shows both its Markan source and its
+  // Lukan cousin.
+  const linkedKeys = useMemo(() => {
+    const out = new Set<string>()
+    if (!compareData || !hoverWord) return out
+    const [c, v, t] = hoverWord.split('.').map(Number)
+    // Resolve the hovered word to a source-column flat index, whichever side it's on.
+    const srcFlat = c === compareData.sourceIdx
+      ? compareData.srcFlatOf[`${v}.${t}`]
+      : compareData.perCol.get(c)?.linkByVerse[v]?.[t] ?? null
+    if (srcFlat === undefined || srcFlat === null) return out
+    const sp = compareData.srcPos[srcFlat]
+    if (sp) out.add(`${compareData.sourceIdx}.${sp.vi}.${sp.ti}`)
+    Array.from(compareData.perCol.entries()).forEach(([ci, cc]) => {
+      for (const p of cc.bySource.get(srcFlat) ?? []) out.add(`${ci}.${p.vi}.${p.ti}`)
+    })
+    return out
+  }, [compareData, hoverWord])
+
+  /** "Matt 3:16–17" for a run of corresponding verses in a compared column. */
+  const verseMapLabel = (colIdx: number, verseIdxs: number[]): string | null => {
+    const c = column(columns[colIdx])
+    if (!c) return null
+    const nums = verseIdxs.map(vi => c.verses[vi]?.verse).filter((n): n is number => n != null)
+    if (!nums.length) return null
+    // Collapse consecutive runs: [16,17] → "16–17".
+    const parts: string[] = []
+    let start = nums[0], prev = nums[0]
+    for (const n of nums.slice(1)) {
+      if (n === prev + 1) { prev = n; continue }
+      parts.push(start === prev ? `${start}` : `${start}–${prev}`)
+      start = prev = n
+    }
+    parts.push(start === prev ? `${start}` : `${start}–${prev}`)
+    return `${c.book} ${c.chapter}:${parts.join(', ')}`
+  }
 
   // Default parsing-pane content before any word is clicked: the anchor column's first
   // available token, so the pane never sits empty (mirrors the Phrasing tab's behavior).
@@ -524,13 +621,13 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
         // Capped height with its own scroll (rather than letting the page grow), so a
         // long passage can't push the parsing pane below the fold — it stays visible
         // right after the columns without the user needing to scroll to find it.
-        <div ref={synPaneRef} className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
+        <div ref={synPaneRef} onMouseLeave={() => setHoverWord(null)} className="flex gap-4 overflow-x-auto max-h-[48vh] pb-2" style={{ '--syn-fs': FONT_SIZE_MAP[fontSize] } as CSSProperties}>
           {columns.map((ref, i) => {
             const col = column(ref)
             return (
               <div key={i} className="w-72 shrink-0 rounded-xl border border-gray-200 p-3 flex flex-col min-h-0">
                 <div className="flex items-center justify-between mb-2 gap-2 shrink-0">
-                  <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}{compareData && i === compareData.sourceIdx && <span className="ml-1 text-[10px] font-normal text-red-600 uppercase tracking-wide">source</span>}</p>
+                  <p className="text-sm font-semibold text-gray-700 truncate">{col?.label ?? ref}{i === 0 && <span className="ml-1 text-[10px] font-normal text-brand-600 uppercase tracking-wide">anchor</span>}{compareOn && compareData && i === compareData.sourceIdx && <span className="ml-1 text-[10px] font-normal text-red-600 uppercase tracking-wide">source</span>}</p>
                   {i > 0 && (
                     <button onClick={() => setExtraRefs(r => r.filter((_, j) => j !== i - 1))} className="text-gray-400 hover:text-red-600 shrink-0" title="Remove column"><X size={14} /></button>
                   )}
@@ -546,7 +643,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                 )}
                 {/* Compare mode: the redaction profile — how much of the source this
                     column keeps and what it does to the rest (Tier-2 summary). */}
-                {compareData && (i === compareData.sourceIdx
+                {compareOn && compareData && (i === compareData.sourceIdx
                   ? <p className="mb-1 shrink-0 text-[10px] leading-snug text-gray-400">{compareData.omittedByAll} word{compareData.omittedByAll === 1 ? '' : 's'} picked up by no compared column</p>
                   : (() => {
                       const s = compareData.perCol.get(i)?.stats
@@ -567,6 +664,23 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                           <span className="font-sans align-middle mr-0.5"><VerseNoteButton book={col.book} chapter={col.chapter} verse={v.verse} noted={notedKeys.has(`${col.book}.${col.chapter}.${v.verse}`)} onChanged={refreshNotes} /></span>
                         )}
                         <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.ref.split(':')[1]}</sup>
+                        {/* Verse correspondence: in the source column, which verse of each
+                            compared column this one aligns with (aggregated from the word
+                            links, content words only). The parallel structure is then
+                            readable at rest, without hovering anything. */}
+                        {compareData && i === compareData.sourceIdx && (() => {
+                          const chips = Array.from(compareData.perCol.entries())
+                            .map(([ci, cc]) => verseMapLabel(ci, cc.verseMap[vi] ?? []))
+                            .filter((s): s is string => !!s)
+                          if (!chips.length) return null
+                          return (
+                            <span className="font-sans align-middle mr-1 inline-flex flex-wrap gap-1" title="Corresponding verses, from the word alignment — approximate">
+                              {chips.map(t => (
+                                <span key={t} className="rounded bg-brand-50 px-1 py-px text-[9px] font-medium text-brand-700 ring-1 ring-brand-100">{t}</span>
+                              ))}
+                            </span>
+                          )
+                        })()}
                         {/* Greek: hovering (or clicking, for touch) a word updates the parsing
                             pane below — same interaction as the Phrasing tab. Falls back to
                             plain text if word-level tokens haven't loaded (or aren't available). */}
@@ -588,11 +702,15 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                           : (compareData.perCol.get(i)?.tagsByVerse[vi]?.[ti] ?? null))
                                       : null
                                     const rcClass = rcTag && rcTag !== 'same' ? `rc-mark rc-${rcTag}` : ''
+                                    // Cross-column link: this word aligns with the one under
+                                    // the pointer, so ring it. Uses an outline rather than a
+                                    // background so it stacks cleanly on a redaction colour.
+                                    const linked = linkedKeys.has(`${i}.${vi}.${ti}`)
                                     return (
                                       <span
                                         key={ti}
-                                        onMouseEnter={select}
-                                        onClick={select}
+                                        onMouseEnter={() => { select(); setHoverWord(`${i}.${vi}.${ti}`) }}
+                                        onClick={() => { select(); setHoverWord(`${i}.${vi}.${ti}`) }}
                                         onContextMenu={e => {
                                           e.preventDefault()
                                           openWordSearch({
@@ -606,7 +724,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                                           })
                                         }}
                                         {...(hl ? { 'data-highlight-id': hl.id, 'data-hl-book': col.book, 'data-hl-chapter': col.chapter, 'data-hl-color': hl.color } : {})}
-                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${compareData ? rcClass : (hl ? highlightMarkClass(hl.color) : '')}`}
+                                        className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''} ${compareOn ? rcClass : (hl ? highlightMarkClass(hl.color) : '')} ${linked ? 'outline outline-1 outline-offset-1 outline-brand-500' : ''}`}
                                       >
                                         {tok.surface}{ti < v.tokens!.length - 1 ? ' ' : ''}
                                       </span>

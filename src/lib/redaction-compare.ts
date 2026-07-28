@@ -21,6 +21,11 @@ export type CompareResult = {
   tags: RedactionTag[]
   /** Per source token: was it taken up by the target in any way (same/form/moved/subst)? */
   sourceUsed: boolean[]
+  /** Per target token: the index of the source token it was matched to, or null for an
+   *  addition. Every matching pass knows this pairing; keeping it lets the Synopsis tab
+   *  light up a word's counterpart across columns and aggregate the pairs into
+   *  verse-to-verse correspondences. */
+  links: (number | null)[]
   stats: {
     sourceTotal: number
     targetTotal: number
@@ -56,7 +61,7 @@ const tenseOf = (parsing?: string): string | null => parsing?.match(TENSE_RE)?.[
 // for tokens whose parsing is missing.
 const FUNCTION_POS_RE = /article|conjunction|preposition|particle|pronoun|interjection/i
 const FUNCTION_LEMMAS = new Set(['ο', 'και', 'δε', 'εν', 'εις', 'εκ', 'αυτος', 'ουτος', 'συ', 'εγω', 'ος', 'γαρ', 'τε', 'αλλα', 'μη', 'ου', 'ουκ', 'προς', 'επι', 'υπο', 'απο', 'μετα', 'περι', 'δια', 'κατα', 'παρα', 'συν', 'οτι', 'ως', 'ει', 'ινα', 'αν', 'εαν'])
-const isFunctionWord = (t: CompareToken): boolean =>
+export const isFunctionWord = (t: CompareToken): boolean =>
   (t.parsing ? FUNCTION_POS_RE.test(t.parsing) : false) || FUNCTION_LEMMAS.has(norm(t.lemma || t.surface))
 
 /** Alignment key: lemma when present, else the normalized surface. */
@@ -93,10 +98,12 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
 
   const tags: RedactionTag[] = new Array(target.length).fill('added')
   const sourceUsed: boolean[] = new Array(source.length).fill(false)
+  const links: (number | null)[] = new Array(target.length).fill(null)
   let same = 0, form = 0, tenseChanges = 0
 
   const classifyPair = (si: number, ti: number): void => {
     sourceUsed[si] = true
+    links[ti] = si
     if (norm(source[si].surface) === norm(target[ti].surface)) { tags[ti] = 'same'; same++ }
     else {
       tags[ti] = 'form'; form++
@@ -122,6 +129,7 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
     }
     if (best !== -1) {
       sourceUsed[best] = true
+      links[ti] = best
       // Same inflected form, just relocated → still 'moved'; a changed form counts the
       // tense shift like a matched pair would.
       tags[ti] = 'moved'; moved++
@@ -154,7 +162,7 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
       const g = gapOf(ti, matchedT)
       const cands = sByGap.get(g)
       const si = cands?.shift()
-      if (si !== undefined) { sourceUsed[si] = true; tags[ti] = 'subst'; subst++ }
+      if (si !== undefined) { sourceUsed[si] = true; links[ti] = si; tags[ti] = 'subst'; subst++ }
     }
   }
 
@@ -184,7 +192,7 @@ export function compareRedaction(source: CompareToken[], target: CompareToken[])
     if (left > 0) { contentRetained++; retainedBudget.set(k, left - 1) }
   })
   return {
-    tags, sourceUsed,
+    tags, sourceUsed, links,
     stats: {
       sourceTotal: source.length, targetTotal: target.length,
       same, form, moved, subst, added, omitted,
