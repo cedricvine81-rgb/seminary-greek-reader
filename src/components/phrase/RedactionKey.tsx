@@ -66,7 +66,7 @@ export function RedactionKey() {
         <ul className="space-y-3">
           <li className="flex flex-col gap-0.5">
             <span className="rounded border border-gray-300 px-1.5 py-0.5 text-xs font-medium text-gray-700 w-fit">plain — verbatim agreement</span>
-            <span className="text-xs text-gray-500">Unmarked words are identical in form to the source: the copied core both columns share.</span>
+            <span className="text-xs text-gray-500">Unmarked words are identical in form to the source: the copied core both columns share. Function words — articles, conjunctions, prepositions, particles — are never flagged as editorial acts of their own (an article&rsquo;s case follows its noun); they are judged with the phrase they belong to, so they read plain when their phrase is retained and colour only as part of added or omitted material.</span>
           </li>
           {WORD_LEVEL.map(t => (
             <li key={t.tag} className="flex flex-col gap-0.5">

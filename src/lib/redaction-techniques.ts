@@ -105,7 +105,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     name: 'Word order / construction recast',
     ancient: 'Also “variation in syntax” (Theon)',
     description:
-      'The same word retained but relocated — the clause has been rebuilt around it. Includes participles resolved into finite verbs and vice versa.',
+      'The same word retained but relocated — the clause has been rebuilt around it. Includes participles resolved into finite verbs and vice versa. Tracked for lexical words only: a recurring particle or pronoun out of order is coincidence, not relocation.',
     example: 'Mark 1:32 ὄψιας δὲ γενομένης kept by Matt 8:16 but re-positioned in the sentence.',
     refs: [THEON_PROEM, THEON_PARAPHRASE],
   },
@@ -132,7 +132,7 @@ export const WORD_LEVEL: WordLevelTechnique[] = [
     name: 'Substitution',
     ancient: 'Theon’s fourth mode',
     description:
-      'A different word in the same slot: a synonym, a clarification, or a theological preference. Transferal of speech (a saying reworded from second to third person, or moved to another speaker) usually surfaces as a run of substitutions.',
+      'A different word in the same slot: a synonym, a clarification, or a theological preference. Marked only between words of the same part of speech in a local rewrite — inside a wholesale addition or omission no slot-for-slot pairing is claimed. Transferal of speech (a saying reworded from second to third person, or moved to another speaker) usually surfaces as a run of substitutions.',
     example: '“Kingdom of God” (Mark 4:30) → “kingdom of heaven” (Matt 13:31); Σὺ εἶ (Mark 1:11) → Οὗτός ἐστιν (Matt 3:17).',
     refs: [THEON_CHREIA, THEON_PROEM, THEON_PARAPHRASE, LICONA_JC],
   },

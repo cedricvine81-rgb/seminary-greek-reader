@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { X } from 'lucide-react'
-import { compareRedaction, isFunctionWord, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
+import { compareRedaction, isFunctionWord, isGlueWord, type CompareResult, type CompareToken, type RedactionTag } from '@/lib/redaction-compare'
 import { RedactionKey } from './RedactionKey'
 import { PERICOPE_ANNOTATIONS, SOURCE_MODELS, noteFor, type SourceModel } from '@/lib/redaction-annotations'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
@@ -474,13 +474,25 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
       r.sourceUsed.forEach((u, k) => { if (u) usedAny[k] = true })
     })
     if (!perCol.size) return null
+    // Strike-through in the source column. Glue words (articles, particles, …) are only
+    // struck alongside an omitted neighbouring content word — an unused stray καί is not
+    // an omission worth asserting, but a dropped phrase is struck whole.
     const omitByVerse: Record<number, boolean[]> = {}
-    srcFlat.map.forEach((m, k) => { (omitByVerse[m.vi] ??= [])[m.ti] = !usedAny[k] })
+    let struck = 0
+    srcFlat.map.forEach((m, k) => {
+      let strike = !usedAny[k]
+      if (strike && isGlueWord(srcFlat.tokens[k])) {
+        strike = [k - 2, k - 1, k + 1, k + 2].some(j =>
+          j >= 0 && j < srcFlat.tokens.length && !usedAny[j] && !isGlueWord(srcFlat.tokens[j]))
+      }
+      if (strike) struck++
+      ;(omitByVerse[m.vi] ??= [])[m.ti] = strike
+    })
     // Position → flat index for the source column, so hovering a source word can find
     // everything that matched it.
     const srcFlatOf: Record<string, number> = {}
     srcFlat.map.forEach((m, k) => { srcFlatOf[`${m.vi}.${m.ti}`] = k })
-    return { sourceIdx, perCol, omitByVerse, srcFlatOf, srcPos: srcFlat.map, omittedByAll: usedAny.filter(u => !u).length }
+    return { sourceIdx, perCol, omitByVerse, srcFlatOf, srcPos: srcFlat.map, omittedByAll: struck }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isGreek, sourceIdx, columns.join('|'), version, ver, books])
 
