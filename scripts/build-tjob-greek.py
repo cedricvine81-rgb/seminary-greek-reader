@@ -64,6 +64,28 @@ def clean(text: str) -> str:
     return t.strip(' .·;,')
 
 
+# Verse divisions P's transcription cannot supply, because the number itself is
+# absent from the manuscript text. Keyed (chapter, verse) -> (new verse, the word
+# it begins at). 42:5 opens where the Lord turns to address Eliphas directly; the
+# following number (6) is in the transcription, so only this one boundary is ours.
+SPLITS: dict[tuple[int, int], tuple[int, str]] = {
+    (42, 4): (5, 'Τί'),
+}
+
+
+def apply_splits(chapters: dict[int, dict[int, str]]) -> None:
+    for (ch, v), (new_v, marker) in SPLITS.items():
+        text = chapters.get(ch, {}).get(v)
+        if not text or new_v in chapters[ch]:
+            continue
+        at = text.find(' ' + marker + ' ')
+        if at == -1:
+            print(f'WARNING: split marker for {ch}:{v} not found — left merged')
+            continue
+        chapters[ch][v] = text[:at].strip(' ·;,')
+        chapters[ch][new_v] = text[at:].strip(' ·;,')
+
+
 def parse_greek(raw: str) -> dict[int, dict[int, str]]:
     raw = re.sub(r'\s+', ' ', raw).strip()
     chapters: dict[int, dict[int, str]] = {}
@@ -90,7 +112,11 @@ def parse_greek(raw: str) -> dict[int, dict[int, str]]:
                 cur_ch, cur_v = n, 1
                 i += 2
                 continue
-            if cur_ch is not None and cur_v is not None and n == cur_v + 1:
+            # A verse number within the current chapter. Allow a small forward gap:
+            # P's transcription drops the odd verse number (42:5), and a strict
+            # n == cur_v + 1 test would then stall and swallow the rest of the
+            # chapter — 42:6-8 ended up inside 42:4, so citations missed them.
+            if cur_ch is not None and cur_v is not None and cur_v < n <= cur_v + 4:
                 flush(); buf = []
                 cur_v = n
                 i += 1
@@ -98,6 +124,7 @@ def parse_greek(raw: str) -> dict[int, dict[int, str]]:
         buf.append(tok)
         i += 1
     flush()
+    apply_splits(chapters)
     return chapters
 
 
