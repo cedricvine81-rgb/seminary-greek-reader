@@ -278,6 +278,10 @@ const EARLY_JEWISH_WRITINGS: Record<string, string> = {
   '2 En.': '2enoch.html', '3 En.': '3enoch.html', 'Jub.': 'jubilees.html',
   '2 Bar.': '2baruch.html', '3 Bar.': '3baruch.html', '4 Bar.': '4baruch.html',
   '4 Ezra': '2esdras.html', 'Pss. Sol.': 'psalmssolomon.html', 'Sib. Or.': 'sibylline.html',
+  // Was embedded in-app and so needed no link here, until the text was withdrawn (its English
+  // was not the Box translation it claimed to be). Linking out keeps the four "Apoc. Ab."
+  // cross-references usable instead of leaving them as dead text.
+  'Apoc. Ab.': 'apocabraham.html',
   // All twelve individual Testaments live on one combined page (no per-testament URLs).
   'T. Levi': 'testtwelve.html', 'T. Reu': 'testtwelve.html', 'T. Sim': 'testtwelve.html',
   'T. Jud': 'testtwelve.html', 'T. Iss': 'testtwelve.html', 'T. Zeb': 'testtwelve.html',
