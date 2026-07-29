@@ -5,10 +5,12 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { StudentGradebook } from '@/components/student/StudentGradebook'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Grades' }
 
 export default async function StudentScoresPage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -30,7 +32,7 @@ export default async function StudentScoresPage() {
   if (enrollments.length === 0) {
     return (
       <DashboardShell role="STUDENT" pageTitle="Grades">
-        <p className="text-sm text-gray-500">You are not enrolled in any courses yet.</p>
+        <p className="text-sm text-gray-500">{t('grades.notEnrolled')}</p>
       </DashboardShell>
     )
   }
@@ -162,21 +164,21 @@ export default async function StudentScoresPage() {
             <p className="text-3xl font-bold text-brand-700">
               {runningPct !== null ? `${runningPct}%` : '—'}
             </p>
-            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">Running Average</p>
+            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">{t('grades.runningAverage')}</p>
             <p className="text-xs text-gray-400 mt-0.5">assignments taken so far</p>
           </div>
           <div className="bg-surface rounded-xl border border-gray-100 p-5 text-center">
             <p className={`text-3xl font-bold ${semesterPct !== null && semesterPct >= 70 ? 'text-green-600' : semesterPct !== null ? 'text-red-600' : 'text-gray-400'}`}>
               {semesterPct !== null ? `${semesterPct}%` : '—'}
             </p>
-            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">Semester Grade</p>
+            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">{t('grades.semesterGrade')}</p>
             <p className="text-xs text-gray-400 mt-0.5">all assignments including not taken</p>
           </div>
           <div className="bg-surface rounded-xl border border-gray-100 p-5 text-center">
             <p className="text-3xl font-bold text-gray-700">
               {takenRows.length}<span className="text-lg text-gray-400"> / {rows.length}</span>
             </p>
-            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">Completed</p>
+            <p className="text-xs text-gray-500 mt-1 font-medium uppercase tracking-wide">{t('course.completed')}</p>
             <p className="text-xs text-gray-400 mt-0.5">of {rows.length} total assignments</p>
           </div>
         </div>
@@ -184,9 +186,9 @@ export default async function StudentScoresPage() {
         {/* Grade Book — grouped by type with per-group Avg + Overall (matches the
             instructor gradebook layout) */}
         <div>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">Grade Book</h2>
+          <h2 className="text-base font-semibold text-gray-900 mb-3">{t('course.gradeBook')}</h2>
           {rows.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">No assignments yet.</p>
+            <p className="text-sm text-gray-400 italic">{t('assign.noAssignments')}</p>
           ) : (
             <StudentGradebook
               studentName={studentName}

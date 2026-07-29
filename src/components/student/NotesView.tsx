@@ -16,6 +16,7 @@ import { verseAnchorProps, withTokenOffsets, highlightAt } from '@/components/hi
 import { highlightMarkClass } from '@/lib/highlight-colors'
 import { onNotesChanged, emitNotesChanged } from '@/lib/notes-changed-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 
 // A note is either verse-anchored (book/chapter/verse set) or "general" (all null + optional title).
@@ -72,6 +73,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   books: Book[]
   onJumpToPassage: (ref: string) => void
 }) {
+  const t = useT()
   const [folders, setFolders] = useState<FolderT[]>([])
   const [notes, setNotes] = useState<NoteT[]>([])
   const [courseNotes, setCourseNotes] = useState<CourseNotesEntry[]>([])
@@ -84,7 +86,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
   const kindTabsRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('') // free-text search over the notebook list
   const [addingNote, setAddingNote] = useState(false) // composing a new topic (verse-less) note
-  const [addVerse, setAddVerse] = useState<number | null>(null) // "This passage": verse chosen for a new verse note
+  const [addVerse, setAddVerse] = useState<number | null>(null) // {t('notes.thisPassage')}: verse chosen for a new verse note
   const [newFolder, setNewFolder] = useState<{ name: string; color: NoteColor } | null>(null)
   const [editFolder, setEditFolder] = useState<{ id: string; name: string; color: NoteColor } | null>(null)
 
@@ -198,10 +200,10 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     try {
       const [res, cnRes] = await Promise.all([fetch('/api/notes'), fetch('/api/notes/course-notes')])
       const data = await res.json()
-      if (!res.ok) throw new Error(data.error ?? 'Failed to load')
+      if (!res.ok) throw new Error(data.error ?? t('notes.failedToLoad'))
       setFolders(data.folders); setNotes(data.notes)
       if (cnRes.ok) setCourseNotes((await cnRes.json()).entries ?? [])
-    } catch (e) { setError(e instanceof Error ? e.message : 'Failed to load') }
+    } catch (e) { setError(e instanceof Error ? e.message : t('notes.failedToLoad')) }
     finally { setLoading(false) }
   }, [isAuthenticated])
 
@@ -222,9 +224,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
     setEditFolder(null); load()
   }
   async function removeFolder(id: string) {
-    if (!confirm('Delete this folder? Its notes are kept and moved to “Unfiled.”')) return
+    if (!confirm(t('notes.confirmDeleteFolder'))) return
     const res = await fetch(`/api/notes/folders?id=${id}`, { method: 'DELETE' })
-    if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? 'Could not delete this folder.'); return }
+    if (!res.ok) { const d = await res.json().catch(() => ({})); setError(d.error ?? t('notes.couldNotDeleteFolder')); return }
     if (activeFolder === id) setActiveFolder('all')
     setEditFolder(null); load()
   }
@@ -236,14 +238,14 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
       const res = await fetch('/api/notes/course-notes', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ assignmentId }),
       })
-      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error ?? 'Submit failed') }
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error ?? t('notes.submitFailed')) }
       await load()
-    } catch (e) { setError(e instanceof Error ? e.message : 'Submit failed') }
+    } catch (e) { setError(e instanceof Error ? e.message : t('notes.submitFailed')) }
     finally { setSubmitting(null) }
   }
 
   if (!isAuthenticated) {
-    return <p className="text-sm text-gray-500 py-10 text-center">Please sign in to write and save study notes.</p>
+    return <p className="text-sm text-gray-500 py-10 text-center">{t('notes.signInToWrite')}</p>
   }
   if (loading) return <p className="text-sm text-gray-400 py-10 text-center"><Loader2 size={16} className="inline animate-spin" /> Loading notes…</p>
 
@@ -280,7 +282,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
       <div className="flex-1 min-w-0 max-w-3xl space-y-8">
         {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
 
-        {/* (The old "This passage" section — editors for the loaded passage's noted verses +
+        {/* (The old {t('notes.thisPassage')} section — editors for the loaded passage's noted verses +
             an empty-state hint — was cut 2026-07-18 (user request: reclaim the space). Those
             notes still appear in the notebook list below, and "+ New verse note" still opens
             its editor there.) */}
@@ -307,7 +309,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
         {/* ── Notebook ── */}
         <section>
           <div className="flex items-center justify-between gap-2 mb-2">
-            <h3 className="text-sm font-semibold text-gray-800">My notebook</h3>
+            <h3 className="text-sm font-semibold text-gray-800">{t('notes.myNotebook')}</h3>
             <div className="flex items-center gap-2">
               {/* New verse note — a dropdown of the current passage's verses (that don't yet
                   have a note). Picking one opens its editor at the top of the notebook list. */}
@@ -318,7 +320,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                   <select
                     value=""
                     onChange={e => { const v = Number(e.target.value); if (v) setAddVerse(v) }}
-                    title="Add a note on a verse of the current passage"
+                    title={t('notes.addVerseNote')}
                     className="rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
                   >
                     <option value="">+ New verse note</option>
@@ -329,14 +331,14 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               <button
                 onClick={() => setAddingNote(true)}
                 className="inline-flex items-center gap-1 rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50"
-                title="Write a topic note that isn’t tied to a specific verse"
+                title={t('notes.writeTopicNote')}
               >
                 <Plus size={13} /> New topic note
               </button>
             </div>
           </div>
 
-          {/* Kind tabs — "All" is plain; "Verse notes" and "Topic notes" each open a folder
+          {/* Kind tabs — "All" is plain; {t('notes.verseNotes')} and {t('notes.topicNotes')} each open a folder
               dropdown (folders used to be a separate second row). Plus free-text search. */}
           <div className="flex items-center flex-wrap gap-2 mb-3">
             <div ref={kindTabsRef} className="inline-flex rounded-lg border border-gray-300 text-xs">
@@ -345,11 +347,11 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 className={`rounded-l-lg px-2.5 py-1 font-medium ${noteKind === 'all' ? 'bg-brand-600 text-white' : 'bg-surface text-gray-600 hover:bg-gray-50'}`}>
                 All ({notes.length})
               </button>
-              {([['verse', 'Verse notes'], ['general', 'Topic notes']] as const).map(([kind, label]) => {
+              {([['verse', t('notes.verseNotes')], ['general', t('notes.topicNotes')]] as const).map(([kind, label]) => {
                 const activeHere = noteKind === kind
                 const activeF = activeHere && activeFolder !== 'all'
                   ? (activeFolder === 'unfiled'
-                      ? { name: 'Unfiled', color: null as string | null }
+                      ? { name: t('notes.unfiled'), color: null as string | null }
                       : folders.find(f => f.id === activeFolder) ?? null)
                   : null
                 return (
@@ -365,7 +367,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     </button>
                     {openKind === kind && (
                       <div className="absolute left-0 top-full mt-1 z-30 min-w-[13rem] rounded-lg border border-gray-200 bg-popover shadow-lg py-1">
-                        {([['all', 'All folders'], ['unfiled', 'Unfiled']] as const).map(([fk, flabel]) => (
+                        {([['all', t('notes.allFolders')], ['unfiled', t('notes.unfiled')]] as const).map(([fk, flabel]) => (
                           <button key={fk} type="button"
                             onClick={() => { setNoteKind(kind); setActiveFolder(fk); setOpenKind(null) }}
                             className={`flex w-full items-center gap-2 px-3 py-1.5 text-xs text-left hover:bg-gray-50 ${activeHere && activeFolder === fk ? 'bg-brand-50 text-brand-700' : 'text-gray-700'}`}>
@@ -383,7 +385,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                               <span className="flex-1 truncate">{f.name}</span>
                               <span className="text-gray-400">{countKindFolder(kind, f.id)}</span>
                             </button>
-                            <button type="button" title="Edit folder"
+                            <button type="button" title={t('notes.editFolder')}
                               onClick={() => { setEditFolder({ id: f.id, name: f.name, color: (f.color as NoteColor) }); setOpenKind(null) }}
                               className="px-2 py-1.5 text-gray-300 hover:text-gray-600"><Pencil size={11} /></button>
                           </div>
@@ -404,11 +406,11 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
               <input
                 value={query}
                 onChange={e => setQuery(e.target.value)}
-                placeholder="Search notes…"
+                placeholder={t('notes.searchNotes')}
                 className="w-full rounded-lg border border-gray-300 pl-2.5 pr-6 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
               />
               {query && (
-                <button onClick={() => setQuery('')} title="Clear search"
+                <button onClick={() => setQuery('')} title={t('notes.clearSearch')}
                   className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700"><X size={13} /></button>
               )}
             </div>
@@ -425,7 +427,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 onSave={newFolder ? saveNewFolder : saveEditFolder}
                 onCancel={() => { setNewFolder(null); setEditFolder(null) }}
                 onDelete={editFolder && !editingCourseFolder ? () => removeFolder(editFolder.id) : undefined}
-                lockedNote={editingCourseFolder ? 'Course Notes folder — set up by your instructor, so it can’t be deleted.' : undefined}
+                lockedNote={editingCourseFolder ? t('notes.courseFolderLocked') : undefined}
               />
             )
           })()}
@@ -457,7 +459,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 </p>
               ) : (
                 <p className="text-sm text-gray-400 italic py-6">
-                  No notes here yet. Use <span className="font-medium text-gray-600">New topic note</span> for a free-standing note, or open a passage above to write on a verse.
+                  No notes here yet. Use <span className="font-medium text-gray-600">{t('notes.newTopicNote')}</span> for a free-standing note, or open a passage above to write on a verse.
                 </p>
               )
             ) : (
@@ -477,13 +479,13 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
         <div className="rounded-xl border border-gray-200 overflow-hidden flex flex-col" style={{ maxHeight: '55vh' }}>
           <div className="shrink-0 flex items-center justify-between gap-2 px-3 py-1.5 bg-gray-50 border-b border-gray-200">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide truncate">
-              {anchor ? `${anchor.name} ${anchor.chapter}:${anchor.verseStart}${anchor.verseEnd !== anchor.verseStart ? `–${anchor.verseEnd}` : ''}` : 'No passage'}
+              {anchor ? `${anchor.name} ${anchor.chapter}:${anchor.verseStart}${anchor.verseEnd !== anchor.verseStart ? `–${anchor.verseEnd}` : ''}` : t('notes.noPassage')}
             </p>
             <div className="flex items-center gap-1.5 shrink-0">
               <select
                 value={version}
                 onChange={e => setVersion(e.target.value)}
-                title="Text version"
+                title={t('notes.textVersion')}
                 className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
               >
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
@@ -493,7 +495,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 <select
                   value={inlineTrans ?? ''}
                   onChange={e => setInlineTrans(e.target.value || null)}
-                  title="Show a translation inline beneath each Greek verse"
+                  title={t('notes.showTranslationInline')}
                   className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
                 >
                   <option value="">+ translation</option>
@@ -504,9 +506,9 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
           </div>
           <div ref={passagePaneRef} className="flex-1 min-h-0 overflow-y-auto p-3">
             {!anchor ? (
-              <p className="text-xs text-gray-400 italic">Enter a passage above to read it here.</p>
+              <p className="text-xs text-gray-400 italic">{t('notes.enterPassage')}</p>
             ) : passageVerses.length === 0 ? (
-              <p className="text-xs text-gray-300 italic">Loading…</p>
+              <p className="text-xs text-gray-300 italic">{t('action.loading')}</p>
             ) : (
               <div className={`space-y-1 leading-relaxed text-gray-900 ${isGreek ? 'font-greek text-xl' : 'text-sm text-gray-700'}`}>
                 {passageVerses.map(v => {
@@ -606,6 +608,7 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
   onOpen: () => void
   onSubmit: () => void
 }) {
+  const t = useT()
   const overdue = !entry.submittedAt && new Date(entry.dueDate).getTime() < Date.now()
   const graded = entry.grade != null
   return (
@@ -631,7 +634,7 @@ function CourseNotesCard({ entry, noteCount, isActive, submitting, onOpen, onSub
           <button onClick={onSubmit} disabled={submitting}
             className="inline-flex items-center gap-1 rounded-lg bg-brand-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
             {submitting ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
-            {entry.submittedAt ? 'Resubmit' : 'Submit'}
+            {entry.submittedAt ? t('notes.resubmit') : 'Submit'}
           </button>
         </div>
       </div>
@@ -658,11 +661,12 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
   onChange: (v: { name: string; color: NoteColor }) => void
   onSave: () => void; onCancel: () => void; onDelete?: () => void; lockedNote?: string
 }) {
+  const t = useT()
   return (
     <div className="mb-3 flex items-center flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
       <input autoFocus value={value.name} onChange={e => onChange({ ...value, name: e.target.value })}
         onKeyDown={e => { if (e.key === 'Enter') onSave(); if (e.key === 'Escape') onCancel() }}
-        placeholder="Folder name" className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+        placeholder={t('notes.folderName')} className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
       <div className="flex items-center gap-1">
         {NOTE_COLOR_KEYS.map(c => (
           <button key={c} title={NOTE_COLORS[c].label} onClick={() => onChange({ ...value, color: c })}
@@ -696,6 +700,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
   onJump?: () => void
   onCancel?: () => void
 }) {
+  const t = useT()
   const isGeneral = existing ? existing.book == null : !!general
   const isNew = !existing
   const [folderId, setFolderId] = useState<string | null>(existing?.folderId ?? defaultFolderId ?? null)
@@ -816,7 +821,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
             value={titleDraft}
             onChange={e => setTitleDraft(e.target.value)}
             onBlur={() => void save(finalOnBlur)}
-            placeholder="Topic note title (optional)"
+            placeholder={t('notes.topicTitleOptional')}
             maxLength={200}
             autoFocus={isNew}
             className="flex-1 min-w-0 text-xs font-semibold text-gray-700 bg-transparent rounded border border-transparent hover:border-gray-200 focus:border-brand-400 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
@@ -826,24 +831,24 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         ) : (
           <span className="text-xs font-semibold text-gray-500">{anchor?.label}</span>
         )}
-        {isGeneral && <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">Topic note</span>}
+        {isGeneral && <span className="shrink-0 rounded-full bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5">{t('notes.topicNote')}</span>}
         {folder && <span className={`inline-flex items-center gap-1 rounded-full border px-1.5 py-0.5 text-[10px] ${colorOf(folder.color).chip}`}><span className={`h-1.5 w-1.5 rounded-full ${colorOf(folder.color).dot}`} />{folder.name}</span>}
         <span className="ml-auto flex items-center gap-2">
           {saving && <Loader2 size={12} className="animate-spin text-gray-400" />}
           <select value={existing?.folderId ?? folderId ?? ''} onChange={e => changeFolder(e.target.value || null)}
-            className="rounded border border-gray-200 text-[11px] text-gray-500 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400" title="File in folder">
-            <option value="">Unfiled</option>
+            className="rounded border border-gray-200 text-[11px] text-gray-500 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400" title={t('notes.fileInFolder')}>
+            <option value="">{t('notes.unfiled')}</option>
             {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>
-          {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged(); emitNotesChanged() }} className="text-gray-300 hover:text-red-600" title="Delete note"><Trash2 size={13} /></button>}
+          {existing && <button onClick={async () => { discarded.current = true; await fetch(`/api/notes?id=${existing.id}`, { method: 'DELETE' }); onChanged(); emitNotesChanged() }} className="text-gray-300 hover:text-red-600" title={t('notes.deleteNote')}><Trash2 size={13} /></button>}
         </span>
       </div>
       <NoteComposer initialHtml={toNoteHtml(draft)} onChange={setDraft} onBlur={() => void save(finalOnBlur)} autoFocus={isNew && !isGeneral} fontScale={fontScale} onFontScale={setFontScale} lineScale={lineSpacing} />
       {isNew && isGeneral && (
         <div className="flex items-center justify-end gap-2 mt-2">
-          <span className="mr-auto text-[11px] text-gray-400">Saves automatically</span>
-          <button onClick={discard} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">Cancel</button>
-          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">Save note</button>
+          <span className="mr-auto text-[11px] text-gray-400">{t('notes.savesAutomatically')}</span>
+          <button onClick={discard} className="text-xs text-gray-500 hover:text-gray-800 px-2 py-1">{t('action.cancel')}</button>
+          <button onClick={() => void save(true)} disabled={saving} className="text-xs font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg px-3 py-1 disabled:opacity-50">{t('notes.saveNote')}</button>
         </div>
       )}
     </div>

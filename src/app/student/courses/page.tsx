@@ -15,6 +15,7 @@ import { PendingEnrollments } from '@/components/student/PendingEnrollments'
 import { MessageInstructorButton } from '@/components/student/MessageInstructorButton'
 import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { isPreviewMode } from '@/lib/preview'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'My Courses' }
 
@@ -25,6 +26,7 @@ const courseIncludes = {
 } as const
 
 export default async function StudentCoursesPage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -72,7 +74,7 @@ export default async function StudentCoursesPage() {
     }),
 
     // Institution courses — filtered by student's institution if they have one,
-    // otherwise ALL institution courses (shown as "Request Access")
+    // otherwise ALL institution courses (shown as {t('courses.requestAccess')})
     hasInstitution
       ? prisma.course.findMany({
           where: {
@@ -96,9 +98,9 @@ export default async function StudentCoursesPage() {
 
         {/* ── Enrolled courses ── */}
         <div className="space-y-4">
-          <h2 className="text-base font-semibold text-gray-900">Enrolled Courses</h2>
+          <h2 className="text-base font-semibold text-gray-900">{t('courses.enrolled')}</h2>
           {approvedEnrollments.length === 0 ? (
-            <p className="text-sm text-gray-400 italic">You are not enrolled in any courses yet.</p>
+            <p className="text-sm text-gray-400 italic">{t('grades.notEnrolled')}</p>
           ) : (
             <div className="space-y-5">
             {/* Grouped so a student sees the course they are actually taking first,
@@ -172,9 +174,9 @@ export default async function StudentCoursesPage() {
         {/* ── Open courses (no institution) ── */}
         <CourseEnrollment
           initialCourses={openCourses}
-          sectionTitle="Available Courses"
+          sectionTitle={t('courses.available')}
           sectionDescription="Open courses you can request to join. Your instructor will confirm your place."
-          buttonLabel="Request to Join"
+          buttonLabel={t('courses.requestToJoin')}
           isPreview={preview}
         />
 
@@ -184,15 +186,15 @@ export default async function StudentCoursesPage() {
             initialCourses={institutionCourses}
             sectionTitle={`Courses at ${student!.institution}`}
             sectionDescription="Courses run by your institution. Request to join and your instructor will approve."
-            buttonLabel="Request to Join"
+            buttonLabel={t('courses.requestToJoin')}
             isPreview={preview}
           />
         ) : (
           <CourseEnrollment
             initialCourses={institutionCourses}
-            sectionTitle="Institutional Courses"
+            sectionTitle={t('courses.institutional')}
             sectionDescription="These courses are run by specific institutions. You can request access — the instructor will review your application."
-            buttonLabel="Request Access"
+            buttonLabel={t('courses.requestAccess')}
             showInstitution
             isPreview={preview}
           />

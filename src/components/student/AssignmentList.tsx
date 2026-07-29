@@ -4,6 +4,7 @@ import type { Assignment } from '@/types/assignment'
 import { format } from 'date-fns'
 import { ChevronRight } from 'lucide-react'
 import { LocalDeadline } from './LocalDeadline'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface AssignmentListProps {
   assignments: Assignment[]
@@ -36,13 +37,14 @@ const hrefFor = (a: { id: string; type: string }) =>
   a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
 
 export function AssignmentList({ assignments, completedIds = new Set() }: AssignmentListProps) {
+  const t = useT()
   if (assignments.length === 0) {
     return (
       <div className="text-center py-10 space-y-2">
-        <p className="text-sm text-gray-400">No assignments yet.</p>
+        <p className="text-sm text-gray-400">{t('assign.noAssignments')}</p>
         <p className="text-sm text-gray-400">
           Your instructor hasn't published any assignments.{' '}
-          <Link href="/student/courses" className="text-brand-600 hover:underline">Check your courses →</Link>
+          <Link href="/student/courses" className="text-brand-600 hover:underline">{t('assign.checkCourses')}</Link>
         </p>
       </div>
     )
@@ -70,8 +72,8 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
               </div>
               {(a.round1Deadline || a.round2Deadline) && (
                 <div className="flex flex-col gap-0.5 mt-0.5">
-                  {a.round1Deadline && <LocalDeadline label="Round 1 closes" iso={a.round1Deadline} />}
-                  {a.round2Deadline && <LocalDeadline label="Round 2 closes" iso={a.round2Deadline} />}
+                  {a.round1Deadline && <LocalDeadline label={t('assign.round1Closes')} iso={a.round1Deadline} />}
+                  {a.round2Deadline && <LocalDeadline label={t('assign.round2Closes')} iso={a.round2Deadline} />}
                 </div>
               )}
             </div>

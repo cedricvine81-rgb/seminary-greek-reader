@@ -5,10 +5,12 @@ import { AssignmentList } from '@/components/student/AssignmentList'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Assignments' }
 
 export default async function StudentAssignmentsPage() {
+  const t = getServerT()
   const token = getTokenFromCookies()
   const payload = token ? verifyToken(token) : null
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
@@ -64,13 +66,13 @@ export default async function StudentAssignmentsPage() {
         <div className="space-y-6">
           {live.length > 0 && (
             <div className="space-y-2">
-              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">Current courses</h2>}
+              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.currentCourses')}</h2>}
               <AssignmentList assignments={live} completedIds={completedIds} />
             </div>
           )}
           {earlier.length > 0 && (
             <div className="space-y-2">
-              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">Earlier courses</h2>}
+              {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.earlierCourses')}</h2>}
               <AssignmentList assignments={earlier} completedIds={completedIds} />
             </div>
           )}
