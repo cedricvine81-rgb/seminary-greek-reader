@@ -1049,7 +1049,11 @@ const DIO_WORK: ProseWork = {
   noteBook: 'DioChrys',
   dataUrl: '/data/greco/dio-chrysostom-orations.json',
   chapters: DIO_ORATIONS[DIO_ORATIONS.length - 1],
-  attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. English: J. W. Cohoon & H. Lamar Crosby, Loeb Classical Library (1932–1951), public domain (digitised by Bill Thayer, LacusCurtius).',
+  // NO English is shipped, and none should be added from the Loeb: Cohoon & Crosby's
+  // volumes (1932-1951) are still in copyright in the US. This attribution previously
+  // claimed that translation, which the data never contained — a stale claim of exactly
+  // the kind that would invite someone to import it.
+  attribution: 'Greek: Dio Chrysostom, Orations. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only.',
   parseCitation: (text: string) => {
     // Evans writes "Dio Chrysostom, Disc. 31.86" (Discourse = Oration); also accept "Or." / bare.
     const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:(?:Or(?:ationes|\.)?|Disc(?:ourses?|\.)?)\s+)?(\d+)\.(\d+)/)
@@ -1157,7 +1161,12 @@ export const PROSE_WORKS: ProseWork[] = [
     attribution: 'Greek: manuscript P (11th century), the oldest Greek witness to the Testament of Job, as transcribed by the Online Critical Pseudepigrapha (public domain); chapter and verse numbering follows the division of M. R. James as used by Brock and Charlesworth. English: our own translation, made for Seminary Greek from this Greek — the standard modern English (Spittler, in Charlesworth, 1983) is under copyright and was not used.',
     parseCitation: tjobGreekCitation },
   { source: 'josaseneth', name: 'Joseph and Aseneth', noteBook: 'JosAsen', dataUrl: '/data/pseudepigrapha/josaseneth.json', chapters: 29,
-    attribution: 'Text: a public-domain English translation of Joseph and Aseneth (29 chapters). Verse divisions vary between editions, so some scholarly citations resolve at the chapter level only.',
+    // PROVENANCE UNCONFIRMED. The translator is not recorded, and this is NOT E. W. Brooks
+    // (1918), the known public-domain English — Brooks has "Pentephres" throughout where
+    // this has "Poti-pherah", a word absent from Brooks. The diction is archaic, so it is
+    // probably an older rendering, but that has not been established. Verify before relying
+    // on it, and see the Apocalypse of Abraham (removed 2026-07-28) for why this matters.
+    attribution: 'Text: an English translation of Joseph and Aseneth (29 chapters) whose translator is not recorded; it is not E. W. Brooks (1918). Verse divisions vary between editions, so some scholarly citations resolve at the chapter level only.',
     parseCitation: cite(/^Jos\. Asen\.\s+(\d+)(?::(\d+))?/) },
   // The Sibylline Oracles are stored with each BOOK as a chapter. Terry's marginal line
   // numbers aren't preserved in the source, so a "Sib. Or. 3:636" reference resolves to
