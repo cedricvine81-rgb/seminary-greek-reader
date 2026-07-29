@@ -37,6 +37,14 @@ OUT_DIR = Path('public/data/philo')
 CROSSREFS = Path('public/data/backgrounds-crossrefs.json')
 UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Safari/605.1'
 ATTRIB = 'Text: C. D. Yonge’s translation of Philo (1854–1855), public domain. Section numbers follow the Cohn-Wendland edition. Source: earlychristianwritings.com/yonge.'
+# Yonge stops at Book III of the Questions and Answers on Genesis. Book IV (Genesis
+# 18-28) survives complete only in Armenian, and its sole full English — Marcus, Loeb
+# Supplement I (1953) — is in copyright, so it cannot be added. Said plainly in the
+# work's attribution rather than left as a silent gap.
+QG_NOTE = (' Yonge renders only Books I-III of the Questions and Answers on Genesis; Book IV '
+           '(on Genesis 18-28) is not included here, because the work survives complete only '
+           'in Armenian and the sole full English — Ralph Marcus, Loeb Classical Library '
+           'Supplement I (1953) — is in copyright.')
 
 # slug, display name, noteBook (stable note-anchor prefix), multiBook, [(bookNo|None, page)]
 # bookNo None means "read the book number from the marker" (only Dreams, whose two books
@@ -169,7 +177,7 @@ def build_work(slug, name, note_book, multi, pages, no_cache):
     for i, book in enumerate(ordered):
         verses = [{'number': s, 'text': by_book[book][s]} for s in sorted(by_book[book])]
         chapters.append({'number': book if contiguous else i + 1, 'verses': verses})
-    doc = {'work': name, 'attribution': ATTRIB, 'chapters': chapters}
+    doc = {'work': name, 'attribution': ATTRIB + (QG_NOTE if slug == 'qg' else ''), 'chapters': chapters}
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     nverses = sum(len(c['verses']) for c in chapters)
     return {'slug': slug, 'chapters': len(chapters), 'verses': nverses,

@@ -160,18 +160,23 @@ const PHILO: { slug: string; name: string; noteBook: string; chapters: number; m
   { slug: 'hypothetica', name: 'Hypothetica (Apology for the Jews)', noteBook: 'PhiloHypoth', chapters: 4, multi: false, abbrevs: ['Hypothetica'] },
   { slug: 'providence', name: 'On Providence', noteBook: 'PhiloProv', chapters: 2, multi: true, abbrevs: ['Providence'] },
   { slug: 'embassy', name: 'On the Embassy to Gaius', noteBook: 'PhiloLegat', chapters: 1, multi: false, abbrevs: ['Embassy'] },
+  // Books I-III only — see the attribution: Book IV survives just in Armenian and its
+  // sole English (Marcus, Loeb Supplement I, 1953) is in copyright.
   { slug: 'qg', name: 'Questions and Answers on Genesis', noteBook: 'PhiloQG', chapters: 3, multi: true, abbrevs: ['QG'] },
   { slug: 'world', name: 'On the World (Appendix)', noteBook: 'PhiloWorld', chapters: 1, multi: false, abbrevs: ['On the World'] },
   { slug: 'fragments', name: 'Fragments (Appendix)', noteBook: 'PhiloFrag', chapters: 1, multi: false, abbrevs: [] },
 ]
 
+const PHILO_QG_NOTE = ' Yonge renders only Books I-III of the Questions and Answers on Genesis; Book IV (on Genesis 18-28) is not included here, because the work survives complete only in Armenian and the sole full English — Ralph Marcus, Loeb Classical Library Supplement I (1953) — is in copyright.'
 const PHILO_WORKS: ProseWork[] = PHILO.map(p => ({
   source: `philo-${p.slug}` as EmbeddedProseSource,
   name: p.name,
   noteBook: p.noteBook,
   dataUrl: `/data/philo/${p.slug}.json`,
   chapters: p.chapters,
-  attribution: PHILO_ATTRIBUTION,
+  // The reader shows THIS string (TextsReader reads prose.attribution), so a limit on what
+  // we hold has to be stated here, not only in the data file.
+  attribution: PHILO_ATTRIBUTION + (p.slug === 'qg' ? PHILO_QG_NOTE : ''),
   parseCitation: philoCite(p.abbrevs, p.multi),
 }))
 
