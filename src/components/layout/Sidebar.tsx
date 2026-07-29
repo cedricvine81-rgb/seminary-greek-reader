@@ -12,39 +12,40 @@ import {
 } from 'lucide-react'
 
 interface NavItem {
+  /** i18n key, not display text — resolved with t() where the item is rendered. */
   label: string
   href: string
   icon: React.ReactNode
 }
 
 const instructorNav: NavItem[] = [
-  { label: 'Dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
-  { label: 'Requests',    href: '/instructor/requests',      icon: <Bell size={16} /> },
-  { label: 'Messages',    href: '/instructor/messages',      icon: <Mail size={16} /> },
-  { label: 'Assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
-  { label: 'Appeals',     href: '/instructor/appeals',       icon: <Gavel size={16} /> },
-  { label: 'Materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
-  { label: 'Reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
-  { label: 'Archive',     href: '/instructor/archive',       icon: <Archive size={16} /> },
+  { label: 'nav.dashboard',   href: '/instructor',               icon: <LayoutDashboard size={16} /> },
+  { label: 'nav.requests',    href: '/instructor/requests',      icon: <Bell size={16} /> },
+  { label: 'nav.messages',    href: '/instructor/messages',      icon: <Mail size={16} /> },
+  { label: 'nav.assignments', href: '/instructor/assignments',   icon: <ClipboardList size={16} /> },
+  { label: 'nav.appeals',     href: '/instructor/appeals',       icon: <Gavel size={16} /> },
+  { label: 'nav.materials',   href: '/instructor/materials',     icon: <FileText size={16} /> },
+  { label: 'nav.reports',     href: '/instructor/reports',       icon: <BarChart2 size={16} /> },
+  { label: 'nav.archive',     href: '/instructor/archive',       icon: <Archive size={16} /> },
 ]
 
 const adminNav: NavItem[] = [
-  { label: 'Dashboard',     href: '/admin',                    icon: <LayoutDashboard size={16} /> },
-  { label: 'Users',         href: '/admin/users',              icon: <Users size={16} /> },
-  { label: 'Courses',       href: '/admin/courses',            icon: <BookOpen size={16} /> },
-  { label: 'Institutions',  href: '/admin/institutions',       icon: <Building2 size={16} /> },
-  { label: 'Vocab Synonyms',href: '/admin/vocab/synonyms',     icon: <BookMarked size={16} /> },
-  { label: 'Vocab Appeals', href: '/admin/appeals',            icon: <Gavel size={16} /> },
-  { label: 'Audit Log',     href: '/admin/audit',              icon: <ShieldAlert size={16} /> },
-  { label: 'Notifications', href: '/admin/settings',           icon: <Settings size={16} /> },
+  { label: 'nav.dashboard',     href: '/admin',                    icon: <LayoutDashboard size={16} /> },
+  { label: 'nav.users',         href: '/admin/users',              icon: <Users size={16} /> },
+  { label: 'nav.courses',       href: '/admin/courses',            icon: <BookOpen size={16} /> },
+  { label: 'nav.institutions',  href: '/admin/institutions',       icon: <Building2 size={16} /> },
+  { label: 'nav.vocabSynonyms',href: '/admin/vocab/synonyms',     icon: <BookMarked size={16} /> },
+  { label: 'nav.vocabAppeals', href: '/admin/appeals',            icon: <Gavel size={16} /> },
+  { label: 'nav.auditLog',     href: '/admin/audit',              icon: <ShieldAlert size={16} /> },
+  { label: 'nav.notifications', href: '/admin/settings',           icon: <Settings size={16} /> },
 ]
 
 const studentNav: NavItem[] = [
-  { label: 'Dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} /> },
-  { label: 'Calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
-  { label: 'Assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
-  { label: 'Messages',    href: '/student/messages',         icon: <Mail size={16} /> },
-  { label: 'Materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
+  { label: 'nav.dashboard',   href: '/student',                  icon: <LayoutDashboard size={16} /> },
+  { label: 'nav.calendar',    href: '/student/calendar',         icon: <Calendar size={16} /> },
+  { label: 'nav.assignments', href: '/student/assignments',      icon: <ClipboardList size={16} /> },
+  { label: 'nav.messages',    href: '/student/messages',         icon: <Mail size={16} /> },
+  { label: 'nav.materials',   href: '/student/materials',        icon: <BookMarked size={16} /> },
 ]
 
 interface SidebarProps {
@@ -110,7 +111,7 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
               )}
             >
               {item.icon}
-              <span className="flex-1">{item.label}</span>
+              <span className="flex-1">{t(item.label)}</span>
               {isRequests && liveRequests > 0 && (
                 <span className="ml-auto flex items-center justify-center h-5 min-w-[1.25rem] rounded-full bg-amber-500 text-white text-xs font-bold px-1">
                   {liveRequests}

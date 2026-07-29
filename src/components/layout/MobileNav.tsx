@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useApi } from '@/lib/api-client'
 import {
   LayoutDashboard, Calendar, ClipboardList,
@@ -10,26 +11,26 @@ import {
 } from 'lucide-react'
 
 const instructorTabs = [
-  { label: 'Dashboard',   href: '/instructor',             icon: LayoutDashboard },
-  { label: 'Requests',    href: '/instructor/requests',    icon: Bell },
-  { label: 'Messages',    href: '/instructor/messages',    icon: Mail },
-  { label: 'Assignments', href: '/instructor/assignments', icon: ClipboardList },
-  { label: 'Materials',   href: '/instructor/materials',   icon: FileText },
-  { label: 'Reports',     href: '/instructor/reports',     icon: BarChart2 },
+  { label: 'nav.dashboard',   href: '/instructor',             icon: LayoutDashboard },
+  { label: 'nav.requests',    href: '/instructor/requests',    icon: Bell },
+  { label: 'nav.messages',    href: '/instructor/messages',    icon: Mail },
+  { label: 'nav.assignments', href: '/instructor/assignments', icon: ClipboardList },
+  { label: 'nav.materials',   href: '/instructor/materials',   icon: FileText },
+  { label: 'nav.reports',     href: '/instructor/reports',     icon: BarChart2 },
 ]
 
 const studentTabs = [
-  { label: 'Dashboard',   href: '/student',                icon: LayoutDashboard },
-  { label: 'Assignments', href: '/student/assignments',    icon: ClipboardList },
-  { label: 'Messages',    href: '/student/messages',       icon: Mail },
-  { label: 'Grades',      href: '/student/scores',         icon: BarChart2 },
+  { label: 'nav.dashboard',   href: '/student',                icon: LayoutDashboard },
+  { label: 'nav.assignments', href: '/student/assignments',    icon: ClipboardList },
+  { label: 'nav.messages',    href: '/student/messages',       icon: Mail },
+  { label: 'nav.grades',      href: '/student/scores',         icon: BarChart2 },
 ]
 
 const adminTabs = [
-  { label: 'Dashboard',    href: '/admin',               icon: LayoutDashboard },
-  { label: 'Users',        href: '/admin/users',         icon: Users },
-  { label: 'Courses',      href: '/admin/courses',       icon: BookOpen },
-  { label: 'Institutions', href: '/admin/institutions',  icon: Building2 },
+  { label: 'nav.dashboard',    href: '/admin',               icon: LayoutDashboard },
+  { label: 'nav.users',        href: '/admin/users',         icon: Users },
+  { label: 'nav.courses',      href: '/admin/courses',       icon: BookOpen },
+  { label: 'nav.institutions', href: '/admin/institutions',  icon: Building2 },
   { label: 'Audit',        href: '/admin/audit',         icon: ShieldAlert },
   { label: 'Notifications', href: '/admin/settings',     icon: Settings },
 ]
@@ -40,6 +41,7 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
+  const t = useT()
   const pathname = usePathname()
   const tabs = role === 'INSTRUCTOR' ? instructorTabs : role === 'ADMIN' ? adminTabs : studentTabs
 
@@ -74,7 +76,7 @@ export function MobileNav({ role, pendingRequests = 0 }: MobileNavProps) {
               )}
             </div>
             {/* truncate within the equal-width cell so long labels never wrap/misalign */}
-            <span className="max-w-full truncate px-0.5">{label}</span>
+            <span className="max-w-full truncate px-0.5">{t(label)}</span>
           </Link>
         )
       })}

@@ -6,6 +6,28 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { userMustChangePassword } from '@/lib/must-change-password'
 import { studentHasAccess } from '@/lib/subscription'
+import { getServerT } from '@/lib/i18n/server'
+
+
+// Page headings arrive as English text from 36 pages. Rather than edit every one, they are
+// mapped here to catalogue keys and translated on the way through; a title not listed (a
+// course name, an assignment title) falls through untouched, which is correct — those are
+// user data, not interface text.
+const TITLE_KEYS: Record<string, string> = {
+  'Dashboard': 'nav.dashboard', 'Assignments': 'nav.assignments', 'Grades': 'nav.grades',
+  'Messages': 'nav.messages', 'Materials': 'nav.materials', 'Courses': 'nav.courses',
+  'Calendar': 'nav.calendar', 'Settings': 'account.settings', 'Reports': 'nav.reports',
+  'Users': 'nav.users', 'Institutions': 'nav.institutions', 'Notifications': 'nav.notifications',
+  'Audit Log': 'nav.auditLog', 'Vocab Appeals': 'nav.vocabAppeals',
+  'Vocab Synonyms': 'nav.vocabSynonyms', 'Accuracy': 'nav.accuracy',
+  'Admin Dashboard': 'page.adminDashboard', 'Course Archive': 'page.courseArchive',
+  'Create Course': 'page.createCourse', 'Edit Course': 'page.editCourse',
+  'Enrollment Requests': 'page.enrollmentRequests', 'Exegesis Workspace': 'page.exegesisWorkspace',
+  'Flashcards': 'page.flashcards', 'Group Presentations': 'page.groupPresentations',
+  'My Courses': 'page.myCourses', 'New Assignment': 'page.newAssignment',
+  'Students': 'page.students', 'Submission': 'page.submission',
+  'Use Existing Assignments': 'page.useExisting',
+}
 
 interface DashboardShellProps {
   role: 'INSTRUCTOR' | 'STUDENT' | 'ADMIN'
@@ -39,6 +61,7 @@ async function getPendingRequestCount(instructorId: string): Promise<number> {
 export async function DashboardShell({
   role, children, pageTitle, pageDescription, actions, pendingCount,
 }: DashboardShellProps) {
+  const t = getServerT()
   // Force users who must change their password (admin-created accounts) through the
   // password-change screen before they can access any dashboard page. This is the
   // single chokepoint — every authenticated page renders inside DashboardShell.
@@ -74,7 +97,7 @@ export async function DashboardShell({
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <div>
               {pageTitle && (
-                <h1 className="text-2xl font-bold text-gray-900">{pageTitle}</h1>
+                <h1 className="text-2xl font-bold text-gray-900">{TITLE_KEYS[pageTitle] ? t(TITLE_KEYS[pageTitle]) : pageTitle}</h1>
               )}
               {pageDescription && (
                 <p className="text-sm text-gray-500 mt-0.5">{pageDescription}</p>

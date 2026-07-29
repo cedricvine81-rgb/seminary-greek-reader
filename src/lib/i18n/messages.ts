@@ -20,6 +20,19 @@ export type Message = string | Partial<Record<Intl.LDMLPluralRule, string>>
 export type Catalogue = Record<string, Message>
 
 const en: Catalogue = {
+  'page.adminDashboard': 'Admin Dashboard',
+  'page.courseArchive': 'Course Archive',
+  'page.createCourse': 'Create Course',
+  'page.editCourse': 'Edit Course',
+  'page.enrollmentRequests': 'Enrollment Requests',
+  'page.exegesisWorkspace': 'Exegesis Workspace',
+  'page.flashcards': 'Flashcards',
+  'page.groupPresentations': 'Group Presentations',
+  'page.myCourses': 'My Courses',
+  'page.newAssignment': 'New Assignment',
+  'page.students': 'Students',
+  'page.submission': 'Submission',
+  'page.useExisting': 'Use Existing Assignments',
   'morph.tense': 'Tense',
   'morph.voice': 'Voice',
   'morph.mood': 'Mood',
@@ -240,6 +253,19 @@ const en: Catalogue = {
 }
 
 const es: Catalogue = {
+  'page.adminDashboard': 'Panel de administración',
+  'page.courseArchive': 'Archivo de cursos',
+  'page.createCourse': 'Crear un curso',
+  'page.editCourse': 'Editar el curso',
+  'page.enrollmentRequests': 'Solicitudes de matrícula',
+  'page.exegesisWorkspace': 'Taller de exégesis',
+  'page.flashcards': 'Tarjetas de estudio',
+  'page.groupPresentations': 'Presentaciones en grupo',
+  'page.myCourses': 'Mis cursos',
+  'page.newAssignment': 'Nueva tarea',
+  'page.students': 'Estudiantes',
+  'page.submission': 'Entrega',
+  'page.useExisting': 'Usar tareas existentes',
   'morph.tense': 'Tiempo',
   'morph.voice': 'Voz',
   'morph.mood': 'Modo',
@@ -450,6 +476,19 @@ const es: Catalogue = {
 }
 
 const ru: Catalogue = {
+  'page.adminDashboard': 'Панель администратора',
+  'page.courseArchive': 'Архив курсов',
+  'page.createCourse': 'Создать курс',
+  'page.editCourse': 'Редактировать курс',
+  'page.enrollmentRequests': 'Заявки на зачисление',
+  'page.exegesisWorkspace': 'Мастерская экзегезы',
+  'page.flashcards': 'Карточки',
+  'page.groupPresentations': 'Групповые презентации',
+  'page.myCourses': 'Мои курсы',
+  'page.newAssignment': 'Новое задание',
+  'page.students': 'Студенты',
+  'page.submission': 'Работа',
+  'page.useExisting': 'Использовать существующие задания',
   'morph.tense': 'Время',
   'morph.voice': 'Залог',
   'morph.mood': 'Наклонение',
@@ -666,6 +705,19 @@ const ru: Catalogue = {
 }
 
 const zh: Catalogue = {
+  'page.adminDashboard': '管理員主頁',
+  'page.courseArchive': '課程存檔',
+  'page.createCourse': '建立課程',
+  'page.editCourse': '編輯課程',
+  'page.enrollmentRequests': '選課申請',
+  'page.exegesisWorkspace': '釋經工作區',
+  'page.flashcards': '字卡',
+  'page.groupPresentations': '小組報告',
+  'page.myCourses': '我的課程',
+  'page.newAssignment': '新增作業',
+  'page.students': '學生',
+  'page.submission': '繳交',
+  'page.useExisting': '使用現有作業',
   'morph.tense': '時態',
   'morph.voice': '語態',
   'morph.mood': '語氣',
