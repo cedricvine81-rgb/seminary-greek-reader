@@ -67,13 +67,17 @@ def roman_to_int(s):
 
 def clean_ocr(t):
     t = t.replace('—', '—').replace('‘', '‘').replace('’', '’')
-    t = re.sub(r'(\w)-\s*\n\s*(\w)', r'\1\2', t)            # hyphenation across lines
+    # Running heads FIRST. A word hyphenated across a page break has the head sitting between
+    # its halves ("keep His com-" / "THE TWELVE PATRIARCHS 103" / "mandments"), so repairing
+    # the hyphen first glues the word to the head instead — which is how "comTHE TWELVE
+    # PATRIARCHS 103 mandments" ended up inside T. Benjamin 3:1.
     t = re.sub(r'\n?\s*\d{1,3}\s+THE\s+TESTAMENTS\s+OF\s*', '\n', t)   # running heads
     # The recto head is "THE TWELVE PATRIARCHS <page>", but the scan mangles TWELVE every way
     # it can — T\\VEL\\'E, TWEU'E, T\\AELVE, TWEU^E, T\\\\TLVE — and the page number with it
     # ("6i", "loi"). Matching on PATRIARCHS instead catches all of them. A head left in place
     # takes the following verse number with it: that is how T. Levi 6:3 went missing.
     t = re.sub(r'\n[^\n]{0,30}PATRIARCHS[^\n]{0,8}\n', '\n', t)
+    t = re.sub(r'(\w)-\s*\n\s*(\w)', r'\1\2', t)            # hyphenation across lines
     t = re.sub(r'[ \t]+', ' ', t)
     # "ll" misread as U or h, only inside a word between letters
     for bad, good in (('shaU', 'shall'), ('shah', 'shall'), ('wiU', 'will'), ('aU', 'all'),
@@ -165,6 +169,14 @@ SECTION_HDR = re.compile(
 # period ("IL And now hear me") and misreads arabic verse numbers as Roman ("II." for 11),
 # so its value cannot be trusted. Position in the stream gives the chapter number instead.
 TURN = re.compile(r'\s(?=[IVXLCDJ]{1,8}[.,]?\s+[A-Z])')
+# Fallback for a numeral the scan has mangled past that pattern: lowercase ("in." for III,
+# T. Reuben 3) or followed by a word whose own first letter was misread ("V. rpor\"\" evil are
+# women", T. Reuben 5). Only tried when the strict form finds nothing, and only immediately
+# after sentence-ending punctuation, so it cannot cut into the middle of a sentence.
+# The stop after the numeral is REQUIRED here. Without it the bare pronoun "I" reads as a
+# numeral, and since the last match wins, "…what I did. I saw a man in distress" split at
+# the pronoun and lost it — T. Zebulun 7:1 opened "saw a man in distress".
+TURN_LOOSE = re.compile(r'(?<=[.;!?])\s(?=[IVXLCDJivxlcdjn]{1,6}[.,]\s+\S)')
 
 
 def align_runs(runs, expected):
@@ -263,12 +275,16 @@ def verse_runs(body):
             # leaves unnumbered — is sitting at the tail of the verse just stored. Cut it
             # back off at the chapter numeral.
             tail = cur.pop(prev, '')
-            splits = list(TURN.finditer(tail))
+            splits = list(TURN.finditer(tail)) or list(TURN_LOOSE.finditer(tail))
             if splits:
                 at = splits[-1].start()
                 cur[prev] = clean(tail[:at])
                 runs.append(cur)
-                cur = {1: clean(re.sub(r'^[IVXLCDJ]{1,8}[.,]?\s+', '', tail[at:].strip()))}
+                # Strip the opening numeral, but never a bare "I" with no stop after it —
+                # that is the pronoun, not chapter one.
+                head = re.sub(r'^(?:[IVXLCDJivxlcdjn]{1,8}[.,]\s+|[IVXLCDJ]{2,8}\s+(?=[A-Z]))',
+                              '', tail[at:].strip())
+                cur = {1: clean(head)}
             else:
                 cur[prev] = clean(tail)
                 runs.append(cur)
@@ -281,8 +297,11 @@ def verse_runs(body):
 
 
 def clean(t):
-    # A chapter's opening numeral misread as a bare letter ("L The copy of the
-    # testament of Asher" for "I. The copy…"), left at the head of verse 1.
+    # A chapter's opening numeral, left at the head of its verse 1. Verses reached here by
+    # several paths (first run of a testament, a chapter turn, a run merged by align_runs),
+    # so it is stripped once here rather than at each of them. Never a bare "I" without a
+    # stop — that is the pronoun.
+    t = re.sub(r'^\s*[IVXLCDJivxlcdjn]{1,6}[.,]\s+(?=[A-Z\[\'"])', '', t.lstrip())
     t = re.sub(r'^\s*L\s+(?=[A-Z])', '', t)
     return re.sub(r'\s{2,}', ' ', t).strip(' ;,')
 
