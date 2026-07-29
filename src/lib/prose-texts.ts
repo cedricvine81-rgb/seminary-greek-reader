@@ -23,39 +23,16 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob' | 'tjob-greek' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob-greek' | 'apocabr' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
-// ── Testament of Job: two incompatible chapter divisions ────────────────────────────
-// Our text is Kohler's 1897 translation, which runs to 12 long chapters. Scholarship
-// cites the 53-chapter division James established the same year (Brock and Charlesworth
-// follow it), so a bare "T. Job 39:11" resolved against our file either missed entirely
-// or — worse — silently opened an unrelated chapter that happened to share the number.
-//
-// Each entry below was fixed by matching the content of the cited chapter against our
-// text and verifying the passage, e.g. James 18 (Satan throws the house down on the
-// children, then Job's seafarer simile) sits at our 4:20-25. Chapter level only: the two
-// divisions' verse numbers have no correspondence, so a verse would be false precision.
-// Unmapped chapters deliberately return null — a citation that cannot be placed should
-// fail visibly rather than open the wrong passage.
-const TJOB_JAMES_TO_KOHLER: Record<number, number> = {
-  1: 1,    // prologue, Job's genealogy (our 1:5)
-  4: 1,    // the angel's promise of restoration and resurrection (our 1:26)
-  5: 1,    // "I shall endure until death"; the idol's temple razed (our 1:27)
-  18: 4,   // the house thrown down on the children; the seafarer simile (our 4:20-25)
-  29: 7,   // the kings cannot believe this is Jobab (our 7:18)
-  39: 9,   // the plea to dig the ruins for the children's bones (our 9:4)
-  48: 11,  // the daughter who sings in the dialect of angels (our 11:24)
-}
-const tjobCitation = (text: string): { chapter: number; verse?: number } | null => {
-  const m = text.match(/^T\. Job\.?\s+(\d+)(?::(\d+))?/)
-  if (!m) return null
-  const mapped = TJOB_JAMES_TO_KOHLER[parseInt(m[1], 10)]
-  return mapped ? { chapter: mapped } : null
-}
-/** The 53-chapter edition carries the cited numbering natively, so citations resolve
- *  straight through — no mapping, every chapter 1-53 is reachable, and the verse is
- *  honoured, since manuscript P's verse numbers are the ones scholarship cites.
- *  Registered ahead of the Kohler text so T. Job citations land here. */
+/** The Testament of Job carries the cited numbering natively — the 53-chapter division of
+ *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
+ *  no mapping, every chapter 1-53 reachable, and the verse honoured, since manuscript P's
+ *  verse numbers are the ones scholarship cites.
+ *
+ *  (We used to ship Kohler's 1897 English alongside it, in an incompatible 12-chapter
+ *  division. Citations had to be mapped onto it by hand, chapter-level only, and 46 of the
+ *  53 chapters had no mapping at all. It was retired once this edition was complete.) */
 const tjobGreekCitation = (text: string): { chapter: number; verse?: number } | null => {
   const m = text.match(/^T\. Job\.?\s+(\d+)(?::(\d+))?/)
   return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
@@ -1171,16 +1148,11 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '3baruch', name: '3 Baruch', noteBook: '3Baruch', dataUrl: '/data/pseudepigrapha/3baruch.json', chapters: 17,
     attribution: 'Text: H. M. Hughes’ translation of 3 Baruch (the Greek Apocalypse of Baruch), 1913 (public domain).',
     parseCitation: cite(/^3 Bar\.\s+(\d+)(?::(\d+))?/) },
-  // The work in the 53-chapter division scholarship cites, with the Greek of manuscript P
-  // and our own English translation (see scripts/build-tjob-greek.py). Registered ahead of
-  // the Kohler text so "T. Job 39:8" opens the cited chapter *and verse* here, rather than
-  // the chapter-level approximation the 12-chapter division can offer.
-  { source: 'tjob-greek', name: 'Testament of Job (Greek)', noteBook: 'TJobGk', dataUrl: '/data/pseudepigrapha/tjob-greek.json', chapters: 53,
+  // The Greek of manuscript P with our own English translation (scripts/build-tjob-greek.py),
+  // in the 53-chapter division scholarship cites — so "T. Job 39:8" opens that chapter and verse.
+  { source: 'tjob-greek', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob-greek.json', chapters: 53,
     attribution: 'Greek: manuscript P (11th century), the oldest Greek witness to the Testament of Job, as transcribed by the Online Critical Pseudepigrapha (public domain); chapter and verse numbering follows the division of M. R. James as used by Brock and Charlesworth. English: our own translation, made for Seminary Greek from this Greek — the standard modern English (Spittler, in Charlesworth, 1983) is under copyright and was not used.',
     parseCitation: tjobGreekCitation },
-  { source: 'tjob', name: 'Testament of Job', noteBook: 'TJob', dataUrl: '/data/pseudepigrapha/tjob.json', chapters: 12,
-    attribution: 'Text: K. Kohler’s translation of the Testament of Job, 1897 (public domain), which divides the work into 12 chapters. Scholarship cites the 53-chapter division established by M. R. James (Apocrypha Anecdota II, 1897) and followed by Brock and Charlesworth; citations open in our 53-chapter edition, which carries that numbering natively. This text is kept for its own sake as a readable older rendering.',
-    parseCitation: tjobCitation },
   { source: 'apocabr', name: 'Apocalypse of Abraham', noteBook: 'ApocAbr', dataUrl: '/data/pseudepigrapha/apocabr.json', chapters: 32,
     attribution: 'Text: the G. H. Box / J. I. Landsman translation of the Apocalypse of Abraham, 1918 (public domain).',
     parseCitation: cite(/^Apoc\. Ab\.\s+(\d+)(?::(\d+))?/) },
