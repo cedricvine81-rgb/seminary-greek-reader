@@ -56,6 +56,29 @@ def fetch(rel, no_cache):
 
 
 def chapter_text(div):
+    # A place carries a gazetteer annotation in <reg> — not the regularised reading that tag
+    # normally signals — in either of two shapes:
+    #   <name type="place"><reg>Athens [23.7333,37.9667] (Perseus)</reg><placeName>Athens</placeName></name>
+    #   <name type="place"><reg>Athens [23.7333,37.9667] (Perseus)</reg>Athens</name>
+    # Keeping it, as we rightly do against <sic>, printed "Athens [23.7333,37.9667]
+    # (Perseus)Athens" into the text students read — 1212 times in Herodotus alone.
+    # Drop the <reg> only when the name still reads without it, so a <reg> that is the sole
+    # content of its element is never discarded.
+    reg_tag, name_tag = f'{{{NS["t"]}}}reg', f'{{{NS["t"]}}}name'
+    for nm in div.iter(name_tag):
+        regs = [c for c in nm if c.tag == reg_tag]
+        if not regs:
+            continue
+        rest = nm.text or ''
+        for child in nm:
+            if child.tag != reg_tag:
+                rest += ''.join(child.itertext())
+            rest += child.tail or ''
+        if rest.strip():
+            for reg in regs:
+                tail = reg.tail
+                reg.clear(); reg.text = ''; reg.tail = tail
+
     # Drop the chapter heading, editorial notes, and the non-preferred half of an editorial
     # choice (<sic>/<orig>/<abbr> — keeping the accompanying <corr>/<reg>/<expan>), then flatten.
     # Some Perseus texts (Lucian) nest <sic><corr> malformedly, which would otherwise duplicate
