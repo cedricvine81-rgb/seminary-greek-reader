@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { MessageGroupButton } from '@/components/student/MessageGroupButton'
 import { Users, Loader2, CheckCircle2, Clock, Lock, ShieldCheck, Send, RotateCcw } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface Member {
   userId: string
@@ -55,16 +56,17 @@ interface GroupMessage {
 }
 
 export function StudentGroupPresentations() {
+  const t = useT()
   const { data, isLoading, mutate } = useApi<{ entries: Entry[] }>('/api/group-presentations')
 
-  if (isLoading) return <p className="text-sm text-gray-400 py-10 text-center"><Loader2 size={16} className="inline animate-spin" /> Loading…</p>
+  if (isLoading) return <p className="text-sm text-gray-400 py-10 text-center"><Loader2 size={16} className="inline animate-spin" /> {t('action.loading')}</p>
   const entries = data?.entries ?? []
   if (entries.length === 0) {
     return (
       <div className="text-center py-12 space-y-2">
         <Users size={28} className="mx-auto text-gray-300" />
-        <p className="text-sm text-gray-500">You&rsquo;re not in any group presentations yet.</p>
-        <p className="text-xs text-gray-400">Your instructor assigns you to a group; it will appear here when they do.</p>
+        <p className="text-sm text-gray-500">{t('group.none.title')}</p>
+        <p className="text-xs text-gray-400">{t('group.none.hint')}</p>
       </div>
     )
   }
@@ -77,6 +79,7 @@ export function StudentGroupPresentations() {
 }
 
 function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () => void }) {
+  const t = useT()
   const [body, setBody] = useState(entry.me.body)
   const [ai, setAi] = useState(entry.me.aiDeclaration)
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
@@ -99,7 +102,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
     })
     if (!res.ok) {
       const b = await res.json().catch(() => ({}))
-      setError(b.error ?? 'Something went wrong. Please try again.')
+      setError(b.error ?? t('error.generic'))
       return false
     }
     return true
@@ -120,7 +123,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       })
       if (!res.ok) {
         const b = await res.json().catch(() => ({}))
-        setError(b.error ?? 'Couldn’t save. We’ll retry as you keep editing.')
+        setError(b.error ?? t('error.saveRetryEditing'))
         setSaveState('error')
         return false
       }
@@ -129,7 +132,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       onChanged()
       return true
     } catch {
-      setError('Couldn’t save — check your connection. We’ll retry as you keep editing.')
+      setError(t('error.saveOffline'))
       setSaveState('error')
       return false
     }
@@ -179,11 +182,16 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
   async function submit() {
     // Submitting now locks only this student's own section, so the warning is about their
     // own readiness — a teammate who hasn't finished is no longer their problem to weigh.
-    const gaps: string[] = []
-    if (isHtmlEmpty(body)) gaps.push('written your section')
-    if (!entry.me.attestedAt) gaps.push('signed your AI/sources statement')
-    if (gaps.length > 0 &&
-        !window.confirm(`You haven’t ${gaps.join(' or ')}. Submitting hands in your section as it stands and locks it for grading. Submit anyway?`)) return
+    // Three whole sentences rather than one assembled from fragments: "you haven't X or Y"
+    // cannot be built by joining clauses across languages — word order and agreement differ,
+    // and the Russian and Chinese would come out broken.
+    const noSection = isHtmlEmpty(body)
+    const noSignature = !entry.me.attestedAt
+    const warning = noSection && noSignature ? t('group.confirmNeither')
+      : noSection ? t('group.confirmNoSection')
+      : noSignature ? t('group.confirmNoSignature')
+      : null
+    if (warning && !window.confirm(warning)) return
     setBusy('submit')
     // Flush any pending edits before the submission locks the section for grading.
     if (await persist() && await act({ action: 'submit' })) onChanged()
@@ -200,9 +208,9 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
 
   function renderSaveStatus() {
     if (entry.locked) return null
-    if (saveState === 'saving') return <span className="text-[11px] text-gray-400">Saving…</span>
-    if (saveState === 'error') return <span className="text-[11px] text-amber-600">Couldn’t save — will retry</span>
-    if (saveState === 'saved') return <span className="text-[11px] text-gray-400 inline-flex items-center gap-0.5"><CheckCircle2 size={11} /> Saved</span>
+    if (saveState === 'saving') return <span className="text-[11px] text-gray-400">{t('group.saving')}</span>
+    if (saveState === 'error') return <span className="text-[11px] text-amber-600">{t('group.saveRetry')}</span>
+    if (saveState === 'saved') return <span className="text-[11px] text-gray-400 inline-flex items-center gap-0.5"><CheckCircle2 size={11} /> {t('group.saved')}</span>
     return null
   }
 
@@ -217,14 +225,14 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
         <div className="flex flex-col items-end gap-1.5">
           {/* Whole group in, then my own status, then the deadline — most specific first. */}
           {entry.submitted
-            ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> All {entry.memberCount} submitted</span>
+            ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> {t('group.allSubmitted', { count: entry.memberCount })}</span>
             : entry.mySubmitted
-              ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> Your section is in</span>
+              ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> {t('group.yourSectionIn')}</span>
               : entry.pastDeadline
-                ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> Past deadline</span>
-                : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> Due {deadline.toLocaleDateString()}</span>}
+                ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> {t('group.pastDeadline')}</span>
+                : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> {t('group.due', { date: deadline.toLocaleDateString() })}</span>}
           {!entry.submitted && entry.submittedCount > 0 && (
-            <span className="text-[11px] text-gray-400">{entry.submittedCount} of {entry.memberCount} submitted</span>
+            <span className="text-[11px] text-gray-400">{t('group.nOfMSubmitted', { done: entry.submittedCount, total: entry.memberCount })}</span>
           )}
           <MessageGroupButton courseId={entry.courseId}
             group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }}
@@ -237,7 +245,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       {/* Grade (when graded) */}
       {entry.grade !== null && (
         <div className="mb-3 rounded-lg border border-brand-200 bg-brand-50 p-3">
-          <p className="text-sm font-semibold text-brand-800">Grade: {entry.grade}%</p>
+          <p className="text-sm font-semibold text-brand-800">{t('group.grade', { pct: entry.grade })}</p>
           {entry.gradeNote && <p className="text-xs text-brand-700 mt-1 whitespace-pre-line">{entry.gradeNote}</p>}
         </div>
       )}
@@ -245,17 +253,17 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       {/* My section */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
-          <h4 className="text-sm font-semibold text-gray-700">Your section</h4>
+          <h4 className="text-sm font-semibold text-gray-700">{t('group.yourSection')}</h4>
           {entry.locked && (
             <span className="inline-flex items-center gap-1 text-[11px] text-gray-400">
-              <Lock size={11} /> {entry.mySubmitted ? 'Locked (you submitted)' : 'Locked (past deadline)'}
+              <Lock size={11} /> {entry.mySubmitted ? t('group.lockedYouSubmitted') : t('group.lockedPastDeadline')}
             </span>
           )}
           {renderSaveStatus()}
         </div>
         {entry.locked ? (
           isHtmlEmpty(sanitizeNoteHtml(toNoteHtml(body)))
-            ? <p className="text-sm text-gray-400 italic">You didn&rsquo;t write a section.</p>
+            ? <p className="text-sm text-gray-400 italic">{t('group.noSection')}</p>
             : <div className="prose-notes text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: sanitizeNoteHtml(toNoteHtml(body)) }} />
         ) : (
           <NoteComposer initialHtml={toNoteHtml(body)} onChange={setBody} onBlur={() => void persist()} fontScale={1} minHeight={360} maxHeight={1000} />
@@ -265,14 +273,14 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       {/* AI / sources attestation */}
       <div className="mt-4 space-y-2">
         <div className="flex items-center gap-2">
-          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><ShieldCheck size={14} /> AI &amp; sources statement</h4>
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><ShieldCheck size={14} /> {t('group.aiStatement')}</h4>
           {!attested && renderSaveStatus()}
         </div>
         <p className="text-xs text-gray-500">
-          Declare any use of AI tools, collaboration, and sources for your section, and confirm the work is your own.
+          {t('group.aiDeclare')}
         </p>
         {entry.locked ? (
-          <p className="text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 whitespace-pre-line">{ai || <span className="text-gray-400 italic">No statement provided.</span>}</p>
+          <p className="text-sm text-gray-700 rounded-lg border border-gray-200 bg-surface p-3 whitespace-pre-line">{ai || <span className="text-gray-400 italic">{t('group.noStatement')}</span>}</p>
         ) : (
           <textarea
             value={ai}
@@ -285,10 +293,10 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           />
         )}
         {attested ? (
-          <p className="text-xs text-green-700 inline-flex items-center gap-1"><CheckCircle2 size={13} /> Signed {entry.me.attestedAt ? `on ${new Date(entry.me.attestedAt).toLocaleDateString()}` : ''}</p>
+          <p className="text-xs text-green-700 inline-flex items-center gap-1"><CheckCircle2 size={13} /> {entry.me.attestedAt ? t('group.signedOn', { date: new Date(entry.me.attestedAt).toLocaleDateString() }) : t('group.signed')}</p>
         ) : !entry.locked && (
           <Button size="sm" variant="secondary" onClick={sign} loading={busy === 'attest'} disabled={ai.trim() === ''}>
-            Sign statement
+            {t('group.signStatement')}
           </Button>
         )}
       </div>
@@ -296,7 +304,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       {/* Teammates */}
       {entry.members.filter(m => !m.isMe).length > 0 && (
         <div className="mt-4">
-          <h4 className="text-sm font-semibold text-gray-700 mb-2">Your group</h4>
+          <h4 className="text-sm font-semibold text-gray-700 mb-2">{t('group.yourGroup')}</h4>
           <div className="space-y-2">
             {entry.members.filter(m => !m.isMe).map(m => {
               const html = sanitizeNoteHtml(toNoteHtml(m.body))
@@ -311,7 +319,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
                     {m.submitted && <span className="text-[11px] text-green-700 inline-flex items-center gap-1"><Send size={11} /> submitted</span>}
                   </div>
                   {isHtmlEmpty(html)
-                    ? <p className="text-xs text-gray-400 italic">Nothing written yet.</p>
+                    ? <p className="text-xs text-gray-400 italic">{t('group.nothingWritten')}</p>
                     : <div className="prose-notes text-sm text-gray-600 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5" dangerouslySetInnerHTML={{ __html: html }} />}
                 </div>
               )
@@ -323,14 +331,14 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       {/* Group messages — visible to this group's members only. */}
       <div className="mt-4 border-t border-gray-100 pt-3">
         <div className="flex items-center justify-between gap-2 mb-2">
-          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><Users size={14} /> Group messages</h4>
+          <h4 className="text-sm font-semibold text-gray-700 flex items-center gap-1.5"><Users size={14} /> {t('group.messages')}</h4>
           <MessageGroupButton courseId={entry.courseId}
             group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }}
             onSent={onChanged} />
         </div>
-        <p className="text-[11px] text-gray-400 mb-2">Only your group members can see these messages.</p>
+        <p className="text-[11px] text-gray-400 mb-2">{t('group.messagesPrivate')}</p>
         {entry.messages.length === 0 ? (
-          <p className="text-sm text-gray-400 italic">No group messages yet. Use “Message Group” to start the conversation.</p>
+          <p className="text-sm text-gray-400 italic">{t('group.noMessages')}</p>
         ) : (
           <div className="space-y-2">
             {entry.messages.map(m => (
@@ -355,28 +363,28 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
           <p className="text-xs text-gray-500">
             {entry.canSubmit
-              ? 'Submits your section only, and locks it for grading. Your group-mates hand in their own sections separately.'
+              ? t('group.submitHint')
               : entry.pastDeadline
-                ? 'The deadline has passed. Ask your instructor to approve a late submission.'
+                ? t('group.lateHint')
                 : ''}
           </p>
           <Button onClick={submit} loading={busy === 'submit'} disabled={!entry.canSubmit} className="flex items-center gap-1.5">
-            <Send size={14} /> Submit my section
+            <Send size={14} /> {t('group.submitMySection')}
           </Button>
         </div>
       )}
       {entry.mySubmitted && (
         <div className="mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
           <p className="text-xs text-gray-500">
-            {entry.mySubmittedAt ? `You submitted your section on ${new Date(entry.mySubmittedAt).toLocaleString()}.` : 'Your section is submitted.'}
-            {!entry.submitted && ` Waiting on ${entry.memberCount - entry.submittedCount} of ${entry.memberCount}.`}
-            {!entry.pastDeadline && ' You can reopen your own section to keep editing before the deadline.'}
+            {entry.mySubmittedAt ? t('group.submittedOn', { date: new Date(entry.mySubmittedAt).toLocaleString() }) : t('group.sectionSubmitted')}
+            {!entry.submitted && ' ' + t('group.membersWaiting', { count: entry.memberCount - entry.submittedCount })}
+            {!entry.pastDeadline && ' ' + t('group.reopenHint')}
           </p>
           {/* Before the deadline a member can undo their OWN submission; after it, only the
               instructor can reopen — and that reopens the whole group. */}
           {!entry.pastDeadline && (
             <Button variant="secondary" size="sm" onClick={reopen} loading={busy === 'reopen'} className="flex items-center gap-1.5">
-              <RotateCcw size={13} /> Reopen mine
+              <RotateCcw size={13} /> {t('group.reopenMine')}
             </Button>
           )}
         </div>
