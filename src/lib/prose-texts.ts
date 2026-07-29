@@ -458,7 +458,7 @@ export const JUSTIN_CATALOG = JUSTIN.map(w => ({
 // scripts/build-eusebius.py. Cited "Eusebius, Hist. eccl. <book>.<chapter>.<section>"; the
 // book's work resolves it at chapter (+section) precision. Books 2, 5, 7, 8 open with a
 // preface, stored as chapter 0 — hence the per-book chapterNumbers below.
-const EUSEBIUS_ATTRIBUTION = 'Greek: Eusebius, Historia Ecclesiastica, ed. E. Schwartz (GCS). English: the Loeb translation by Kirsopp Lake & J. E. L. Oulton (public domain). Both via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0.'
+const EUSEBIUS_ATTRIBUTION = 'Greek: Eusebius, Historia Ecclesiastica, ed. E. Schwartz (GCS), via the First Thousand Years of Greek (Open Greek and Latin), CC BY-SA 4.0. English: A. C. McGiffert, Nicene and Post-Nicene Fathers, second series, vol. 1 (1890), public domain, via CCEL — numbered by the standard book.chapter.section divisions, so "Hist. eccl. 3.39.15" resolves to the section.'
 
 // book → last chapter number and whether it opens with a preface (chapter 0). From the build.
 const EUSEBIUS_BOOKS: { book: number; last: number; preface: boolean }[] = [
@@ -477,13 +477,16 @@ const EUSEBIUS_BOOKS: { book: number; last: number; preface: boolean }[] = [
 const eusebiusChapterNumbers = (b: { last: number; preface: boolean }): number[] =>
   Array.from({ length: b.last - (b.preface ? 0 : 1) + 1 }, (_, i) => (b.preface ? 0 : 1) + i)
 
-// "Eusebius, Hist. eccl. 3.39.15" → book 3, chapter 39 (the section is kept inline in the Greek
-// but each chapter is a single row, so citations open at chapter level). Only Hist. eccl.
+// "Eusebius, Hist. eccl. 3.39.15" → book 3, chapter 39, section 15 — the section is the row,
+// so the citation lands on the sentence it names rather than a chapter of several thousand
+// characters. Where Schwartz's Greek and McGiffert's English divide a chapter differently the
+// build leaves it as one row (see scripts/build-eusebius-npnf.py); the reader then falls back
+// to the nearest preceding row, so such a citation still opens the chapter. Only Hist. eccl.
 // matches (not Praep. ev. or other Eusebian works).
 const eusebiusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
   const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
-  const m = s.match(new RegExp(`^Eusebius,\\s*Hist\\. eccl\\.\\s+${book}\\.(\\d+)`))
-  return m ? { chapter: parseInt(m[1], 10) } : null
+  const m = s.match(new RegExp(`^Eusebius,\\s*Hist\\. eccl\\.\\s+${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
 }
 
 const EUSEBIUS_WORKS: ProseWork[] = EUSEBIUS_BOOKS.map(b => ({
