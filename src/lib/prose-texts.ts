@@ -769,8 +769,31 @@ const SENECA_ATTRIBUTION = 'Text: Seneca, Moral Letters to Lucilius, tr. Richard
 // to the external link rather than resolving to the wrong place.
 const senecaEpCite = (text: string): { chapter: number; verse?: number } | null => {
   const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
-  const m = s.match(/^Seneca,?\s*Ep(?:ist)?\.\s+(\d+)(?:\.(\d+))?/)
+  // "Lucil." is the dataset's other name for the same work (Epistulae ad Lucilium).
+  const m = s.match(/^Seneca,?\s*(?:Ep(?:ist)?\.|Lucil\.)\s+(\d+)(?:\.(\d+))?/)
   return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+// Seneca's Dialogues and On Benefits, from Stewart's Bohn translation (build-seneca-dialogues.py).
+// Stewart prints chapters but not the Loeb sections, so these resolve to CHAPTER and drop any
+// section — "Ira 2.32.2" opens On Anger 2 chapter 32 rather than pointing at a sentence that
+// may not be section 2 in this edition.
+const SENECA_DIALOGUE_ATTRIB = 'Text: Seneca, tr. Aubrey Stewart (Bohn’s Classical Library, George Bell and Sons, 1889), public domain. Source: Project Gutenberg. Cited by chapter; Stewart prints no Loeb section numbers.'
+
+// A multi-book work cited "Seneca, <abbrev> <book>.<chapter>" — e.g. "Seneca, Ira 2.32.2".
+const senecaBookCite = (abbrev: string, book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp(`^Seneca,?\\s*${abbrev}\\s+${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+// A single-book work cited "Seneca, <abbrev> <chapter>" (any further section is ignored).
+const senecaFlatCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    const m = s.match(new RegExp(`^Seneca,?\\s*${ab}\\s+(\\d+)`))
+    if (m) return { chapter: parseInt(m[1], 10) }
+  }
+  return null
 }
 
 const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation']; chapterLabel?: (ch: number) => string; greek?: boolean }[] = [
@@ -784,6 +807,28 @@ const GRECO: { slug: string; name: string; noteBook: string; chapters: number; a
   // no parallel original to show, so `greek: false` keeps the reader from opening an empty
   // second column.
   { slug: 'greco-seneca-epistles', name: 'Seneca, Moral Letters to Lucilius', noteBook: 'SenecaEp', chapters: 124, attribution: SENECA_ATTRIBUTION, parseCitation: senecaEpCite, chapterLabel: (ch: number) => `Letter ${ch}`, greek: false },
+  // The Dialogues and On Benefits (Stewart 1889). English only, like the Epistles.
+  { slug: 'greco-seneca-anger-1', name: 'Seneca, On Anger, Book 1', noteBook: 'SenecaIra1', chapters: 21, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ira', 1), greek: false },
+  { slug: 'greco-seneca-anger-2', name: 'Seneca, On Anger, Book 2', noteBook: 'SenecaIra2', chapters: 36, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ira', 2), greek: false },
+  { slug: 'greco-seneca-anger-3', name: 'Seneca, On Anger, Book 3', noteBook: 'SenecaIra3', chapters: 43, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ira', 3), greek: false },
+  { slug: 'greco-seneca-benefits-1', name: 'Seneca, On Benefits, Book 1', noteBook: 'SenecaBen1', chapters: 15, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 1), greek: false },
+  { slug: 'greco-seneca-benefits-2', name: 'Seneca, On Benefits, Book 2', noteBook: 'SenecaBen2', chapters: 35, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 2), greek: false },
+  { slug: 'greco-seneca-benefits-3', name: 'Seneca, On Benefits, Book 3', noteBook: 'SenecaBen3', chapters: 38, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 3), greek: false },
+  { slug: 'greco-seneca-benefits-4', name: 'Seneca, On Benefits, Book 4', noteBook: 'SenecaBen4', chapters: 40, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 4), greek: false },
+  { slug: 'greco-seneca-benefits-5', name: 'Seneca, On Benefits, Book 5', noteBook: 'SenecaBen5', chapters: 25, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 5), greek: false },
+  { slug: 'greco-seneca-benefits-6', name: 'Seneca, On Benefits, Book 6', noteBook: 'SenecaBen6', chapters: 43, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 6), greek: false },
+  { slug: 'greco-seneca-benefits-7', name: 'Seneca, On Benefits, Book 7', noteBook: 'SenecaBen7', chapters: 32, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 7), greek: false },
+  { slug: 'greco-seneca-clemency-1', name: 'Seneca, On Clemency, Book 1', noteBook: 'SenecaClem1', chapters: 26, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Clem\\.', 1), greek: false },
+  { slug: 'greco-seneca-clemency-2', name: 'Seneca, On Clemency, Book 2', noteBook: 'SenecaClem2', chapters: 7, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Clem\\.', 2), greek: false },
+  { slug: 'greco-seneca-happy-life', name: 'Seneca, On the Happy Life', noteBook: 'SenecaVitBeat', chapters: 28, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Vit\\. beat\\.', 'De vita beata']), greek: false },
+  { slug: 'greco-seneca-tranquillity', name: 'Seneca, On Peace of Mind', noteBook: 'SenecaTranq', chapters: 17, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Tranq\\.']), greek: false },
+  { slug: 'greco-seneca-brevity', name: 'Seneca, On the Shortness of Life', noteBook: 'SenecaBrevVit', chapters: 20, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Brev\\. vit\\.']), greek: false },
+  { slug: 'greco-seneca-leisure', name: 'Seneca, On Leisure', noteBook: 'SenecaOt', chapters: 8, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Ot\\.']), greek: false },
+  { slug: 'greco-seneca-providence', name: 'Seneca, On Providence', noteBook: 'SenecaProv', chapters: 6, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Prov\\.', 'De providentia']), greek: false },
+  { slug: 'greco-seneca-constancy', name: 'Seneca, On the Constancy of the Wise Man', noteBook: 'SenecaConst', chapters: 19, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Const\\.', 'De constantia']), greek: false },
+  { slug: 'greco-seneca-marcia', name: 'Seneca, Of Consolation: To Marcia', noteBook: 'SenecaMarc', chapters: 26, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Marc\\.', 'Ad Marciam']), greek: false },
+  { slug: 'greco-seneca-helvia', name: 'Seneca, Of Consolation: To Helvia', noteBook: 'SenecaHelv', chapters: 20, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Helv\\.', 'Ad Helviam']), greek: false },
+  { slug: 'greco-seneca-polybius', name: 'Seneca, Of Consolation: To Polybius', noteBook: 'SenecaPolyb', chapters: 18, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Polyb\\.', 'Ad Polybium']), greek: false },
 ]
 
 const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({

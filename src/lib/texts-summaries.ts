@@ -1367,6 +1367,94 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'Its account of plot, recognition and reversal is a standard tool in the literary study of the Gospels and of New Testament narrative.',
   ),
 
+  // ── Seneca's Dialogues and On Benefits ──────────────────────────────────────────────
+  // Keyed without a book number so all three books of On Anger, all seven of On Benefits and
+  // both of On Clemency share one summary (see the fallback in getTextSummary).
+  'greco-seneca-anger': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to his brother Novatus.',
+    'Written under Caligula or Claudius, when imperial rage was a lethal political fact rather than a private failing.',
+    'Three books: what anger is and whether it is ever useful, how it arises and may be checked, and — in the third book — how to remove it, with a gallery of tyrants destroyed by their own fury.',
+    'It denies that anger is ever justified or serviceable, even in punishing wrongdoing, and treats it as a temporary madness to be uprooted rather than moderated.',
+    'The fullest ancient treatment of an emotion the New Testament repeatedly warns against, and a close parallel to the apostolic instruction to put away wrath and be slow to anger (Ephesians 4:31; James 1:19–20).',
+  ),
+  'greco-seneca-benefits': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Aebutius Liberalis.',
+    'Written for a Roman society organised around patronage, where giving and repaying favours structured public life.',
+    'Seven books on how a benefit should be given and received: the intention that makes a gift a benefit, ingratitude, whether a benefit can be given to the unworthy, and whether one can repay a parent or a god.',
+    'It locates the value of a gift in the giver’s will rather than the thing given, and holds that a benefit must be bestowed without calculation of return.',
+    'The most sustained ancient discussion of grace and gratitude as a social relation, and a standard comparison for New Testament language about a gift freely given and the obligation it creates (Romans 4–5; 2 Corinthians 8–9).',
+  ),
+  'greco-seneca-clemency': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to the young emperor Nero.',
+    'Written about 55–56 CE, early in Nero’s reign, while Seneca still hoped to shape him.',
+    'Two books urging mercy on an absolute ruler: clemency as the virtue proper to a prince, its distinction from pity, and the argument that a king is safest when he is loved.',
+    'It presents mercy as strength rather than weakness, and the ruler as answerable for the lives in his power.',
+    'A rare ancient argument for mercy from a position of power, written to the emperor before whom Paul was to appeal — and by the brother of the Gallio of Acts 18.',
+  ),
+  'greco-seneca-happy-life': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to his brother Gallio.',
+    'Written by one of the richest men in Rome, and partly a defence against the charge that his wealth belied his philosophy.',
+    'An argument that the happy life is the life according to virtue and nature, with a defence of the philosopher who possesses riches but is not possessed by them.',
+    'It distinguishes pleasure from the good, and holds that externals may be used without being loved.',
+    'Its addressee is the Gallio who dismissed the case against Paul at Corinth (Acts 18:12–17), and its treatment of contentment amid plenty parallels Philippians 4:11–13.',
+  ),
+  'greco-seneca-tranquillity': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), answering a request from his friend Serenus.',
+    'Framed as a reply to Serenus’ description of his own unsettled state of mind.',
+    'A diagnosis of restlessness — the aimless travel, the changes of occupation, the disgust with oneself — and remedies: self-knowledge, suitable work, chosen friends, and acceptance of what cannot be altered.',
+    'It treats peace of mind as the fruit of ordered desire rather than of changed circumstances.',
+    'Its account of anxiety and of contentment learned rather than found is a close pagan analogue to New Testament teaching on being anxious for nothing (Philippians 4:6–7).',
+  ),
+  'greco-seneca-brevity': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Paulinus.',
+    'Written to a busy Roman official responsible for the corn supply.',
+    'An argument that life is not short but squandered: the preoccupied never live, while the person who gives time to wisdom extends life by joining it to the past.',
+    'It treats time as the one possession genuinely our own, and its waste as the deepest folly.',
+    'Its urgency about the use of a life comes close to New Testament exhortations to redeem the time and to number our days (Ephesians 5:16; cf. Psalm 90:12).',
+  ),
+  'greco-seneca-leisure': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Serenus; the text is incomplete.',
+    'Written amid the Stoic debate over whether the wise man must take part in public affairs.',
+    'A defence of withdrawal for the sake of contemplation, arguing that the philosopher serves the wider commonwealth of humanity even when retired from his own city.',
+    'It holds that contemplation is itself a form of service, and that a corrupt state may leave no honourable place for action.',
+    'Relevant to New Testament questions about the believer’s relation to a hostile public order, and to Paul’s counsel about remaining as one is called.',
+  ),
+  'greco-seneca-providence': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Lucilius.',
+    'Written for readers who saw the prosperity of the wicked and the suffering of the good as evidence against divine government.',
+    'An answer to the question why misfortune befalls good men if providence exists: hardship is God’s training of those he approves, and the good man is tested as a soldier or athlete is tested.',
+    'It presents suffering as discipline rather than abandonment, and holds that nothing bad can happen to a good man.',
+    'The closest pagan parallel to the argument of Hebrews 12:5–11 that hardship is the discipline of a Father who receives his children, and to Romans 5:3–5 on suffering producing endurance.',
+  ),
+  'greco-seneca-constancy': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Serenus.',
+    'Written in a society where insult and injury to honour demanded public retaliation.',
+    'An argument that the wise man can receive neither injury nor insult, because what does not touch virtue does not harm, illustrated from Cato and Stilbo.',
+    'It locates invulnerability in character rather than circumstance, and makes the refusal to be provoked a mark of strength.',
+    'Its treatment of enduring insult without retaliation stands beside New Testament teaching on returning blessing for reviling (1 Peter 2:23; 3:9).',
+  ),
+  'greco-seneca-marcia': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Marcia, daughter of the historian Cordus.',
+    'Written to a woman who had grieved for three years over the death of her son.',
+    'A consolation urging that grief has a limit, drawing on examples of bereaved parents, the universality of death, and the thought that the dead are released rather than lost.',
+    'It treats mortality as the condition on which life is lent, and excessive mourning as a refusal of that condition.',
+    'The clearest surviving example of the ancient consolation, the genre against which New Testament comfort for the bereaved — grieving, but not as those without hope (1 Thessalonians 4:13) — is best measured.',
+  ),
+  'greco-seneca-helvia': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to his mother during his own exile.',
+    'Written from Corsica, where Seneca was banished by Claudius in 41 CE, to console his mother for his absence.',
+    'A consolation that reverses the usual direction: the exile comforts those at home, arguing that exile is only a change of place, that the mind carries its goods with it, and that poverty and obscurity are no evils.',
+    'It holds that the wise person is at home anywhere, since virtue and the contemplation of the universe are not confined by geography.',
+    'A striking parallel to New Testament language about believers as strangers and exiles whose citizenship lies elsewhere (Philippians 3:20; 1 Peter 2:11), and to Paul writing to comfort others from confinement.',
+  ),
+  'greco-seneca-polybius': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), addressed to Polybius, a freedman of the emperor Claudius.',
+    'Written during Seneca’s exile, and read by many as an attempt to win favour at court; its flattery of Claudius is conspicuous.',
+    'A consolation on the death of Polybius’ brother, arguing that public duty and literary work leave no room for unrestrained grief.',
+    'It presents the mourner’s obligations to others as a limit on private sorrow.',
+    'Useful as a specimen of the consolation genre and of the pressures of imperial patronage in the decades of the New Testament.',
+  ),
+
   // ── Stoics and moralists ────────────────────────────────────────────────────────────
   'greco-seneca-epistles': S(
     'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), Stoic philosopher, dramatist, and tutor and minister to Nero.',
