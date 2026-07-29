@@ -1,5 +1,21 @@
 #!/usr/bin/env python3
 """
+!! NOT RUN, AND NOT TO BE RUN WITHOUT A DECISION ON THE COPYRIGHT. !!
+
+This script would import the Cohoon & Crosby Loeb translation (1932-1951) on the strength
+of a claim that its US copyrights lapsed without renewal. That claim may well be right --
+LacusCurtius is careful, and many Loebs of that era were not renewed -- but it is an
+assertion this repository has not verified, and two texts had to be pulled on 2026-07-28
+(the 3 Baruch Greek, Picard/Brill 1967; the Apocalypse of Abraham, attributed to Box but
+not Box) for exactly this kind of unchecked provenance.
+
+Until someone confirms the non-renewal in the Catalog of Copyright Entries, Dio ships
+Greek only and its attribution says so. The oration renumbering this script also carried
+(84-88 -> 14-18) now happens at build time in scripts/build-perseus.py (DIO_RELABEL), so
+nothing else here is needed.
+"""
+
+"""
 Fill in the English translation for Dio Chrysostom, Orations.
 
 The Greek (von Arnim, from Perseus) was ingested Greek-only because no

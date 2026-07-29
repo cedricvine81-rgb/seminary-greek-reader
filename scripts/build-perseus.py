@@ -285,13 +285,28 @@ def parse_unit_refs(xml_bytes, book_sub, unit_sub, ref_unit):
     return out
 
 
-def build_greek_only(slug, name, urn_dir, urn_base, book_sub, unit_sub, attrib, no_cache):
+# Perseus' Dio labels five orations wrongly and one pair jointly, which between them hid ten
+# numbers. Orations 14-18 carry n="84".."88" — numbers outside the 80-oration corpus, and the
+# count only reconciles to 80 if they are 14-18. Confirmed by their openings: 84 is "Οἱ
+# ἄνθρωποι ἐπιθυμοῦσι μὲν ἐλεύθεροι εἶναι" (On Slavery and Freedom I), 85 its sequel, 86 On
+# Grief, 87 On Covetousness, 88 To Nicomachus. Document order proves nothing here — the file
+# runs 1-13, 7, 31-80, 84-88, 19-30 — so the identification rests on content and the count.
+# 77 and 78 are transmitted as one continuous work and tagged n="77_78"; it is filed under 77.
+DIO_RELABEL = {'84': '14', '85': '15', '86': '16', '87': '17', '88': '18', '77_78': '77'}
+
+
+def build_greek_only(slug, name, urn_dir, urn_base, book_sub, unit_sub, attrib, no_cache,
+                     relabel=None):
     """A book→unit work with no aligned English on Perseus (Marcus Aurelius): chapter = book,
     verse = unit, Greek only. Translations divide the Meditations on a different chapter scheme
-    than the critical Greek, so pairing an English by number would misalign — hence Greek-only."""
+    than the critical Greek, so pairing an English by number would misalign — hence Greek-only.
+
+    `relabel` renames a book before it is read, for a source whose own labels are wrong or
+    non-numeric — see DIO_RELABEL."""
     grc = parse_units(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache), book_sub, unit_sub)
     books = {}
     for (b, u), gr in grc.items():
+        b = (relabel or {}).get(b, b)
         if b and b.isdigit() and u and u.isdigit():
             books.setdefault(int(b), {})[int(u)] = gr
     chapters = [{'number': bk, 'verses': [
@@ -739,7 +754,8 @@ def main():
     results += build_greek_only('philostratus-apollonius', 'Philostratus, Life of Apollonius of Tyana',
                                 'tlg0638/tlg001', 'tlg0638.tlg001', 'book', 'chapter', PHILOSTRATUS_ATTRIB, no_cache)
     results += build_greek_only('dio-chrysostom-orations', 'Dio Chrysostom, Orations',
-                                'tlg0612/tlg001', 'tlg0612.tlg001', 'speech', 'section', DIO_ATTRIB, no_cache)
+                                'tlg0612/tlg001', 'tlg0612.tlg001', 'speech', 'section', DIO_ATTRIB,
+                                no_cache, relabel=DIO_RELABEL)
     # Aratus, Phaenomena — the full didactic poem (Greek only, cited by line; line 5 = Acts 17:28).
     results += build_line_poem('aratus-phaenomena', 'Aratus, Phaenomena',
                                'tlg0653/tlg001', 'tlg0653.tlg001', ARATUS_ATTRIB, no_cache)

@@ -1041,14 +1041,15 @@ const PHILOSTRATUS_WORK: ProseWork = {
   chapterLabel: (ch: number) => `Book ${ch}`,
 }
 
-// The Orations we hold run 1–76 and 79–80 (77/78 is a single discourse not in the
-// Perseus Greek); chapterNumbers carries the real set. (Perseus shelves 14–18 —
-// On Slavery & Freedom I–II, On Pain, On Covetousness, On Public Speaking — under
-// 84–88; build-dio-english.py corrects them back to 14–18.)
+// The Orations we hold run 1–77 and 79–80 — every discourse of the corpus. 77 and 78 are
+// one continuous work, tagged n="77_78" in the Perseus Greek and filed here under 77, so
+// there is no separate 78. Perseus also shelves 14–18 (On Slavery & Freedom I–II, On Pain,
+// On Covetousness, To Nicomachus) under 84–88; scripts/build-perseus.py corrects that at
+// build time via DIO_RELABEL. chapterNumbers carries the real set.
 const DIO_ORATIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
   22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
   46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
-  70, 71, 72, 73, 74, 75, 76, 79, 80]
+  70, 71, 72, 73, 74, 75, 76, 77, 79, 80]
 
 const DIO_WORK: ProseWork = {
   source: 'dio-chrysostom-orations',
@@ -1064,7 +1065,11 @@ const DIO_WORK: ProseWork = {
   parseCitation: (text: string) => {
     // Evans writes "Dio Chrysostom, Disc. 31.86" (Discourse = Oration); also accept "Or." / bare.
     const m = text.replace(/^cf\.\s*/, '').match(/^Dio(?: Chrysostom| Chrys\.| Cocceianus)?,?\s+(?:(?:Or(?:ationes|\.)?|Disc(?:ourses?|\.)?)\s+)?(\d+)\.(\d+)/)
-    return m ? { chapter: parseInt(m[1], 10), verse: parseInt(m[2], 10) } : null
+    if (!m) return null
+    // 78 is the second half of the one continuous discourse filed under 77, so a citation to
+    // it opens there rather than at an oration that does not exist on its own.
+    const ch = parseInt(m[1], 10)
+    return { chapter: ch === 78 ? 77 : ch, verse: parseInt(m[2], 10) }
   },
   chapterLabel: (ch: number) => `Oration ${ch}`,
 }
