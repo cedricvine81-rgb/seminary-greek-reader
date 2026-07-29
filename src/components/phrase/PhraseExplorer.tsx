@@ -106,17 +106,10 @@ function NodeView({ node, depth }: { node: TreeNode; depth: number }) {
   return <GroupNode node={node} depth={depth} />
 }
 
-// Translations available in the Reader (mirrors GreekReader's PARALLEL_LANGS).
-export const LANGS = [
-  { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible · public domain' },
-  { code: 'en', label: 'English (WEB)', sub: 'World English Bible · public domain' },
-  { code: 'es', label: 'Spanish', sub: 'Reina-Valera 1909 · public domain' },
-  { code: 'fr', label: 'French', sub: 'Louis Segond 1910 · public domain' },
-  { code: 'pt', label: 'Portuguese', sub: 'João Ferreira de Almeida (ARC)' },
-  { code: 'ru', label: 'Russian', sub: 'Russian Synodal Bible · public domain' },
-  { code: 'ko', label: 'Korean', sub: 'Korean Revised Version' },
-  { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version · public domain' },
-]
+// Re-exported from lib/reading-language.ts, which the Reader and the Settings picker also
+// read. This was a hand-maintained copy of the Reader's list and had already drifted from it.
+export { READING_LANGS as LANGS } from '@/lib/reading-language'
+import { READING_LANGS as LANGS } from '@/lib/reading-language'
 const langLabel = (code: string) => LANGS.find(l => l.code === code)?.label ?? code
 
 // Greek editions for the middle column (the tree itself is Nestle 1904).

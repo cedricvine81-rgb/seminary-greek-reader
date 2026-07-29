@@ -43,6 +43,7 @@ import { HighlightPopup } from '@/components/highlights/HighlightPopup'
 import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/highlights/TransWords'
 import { highlightAt, verseAnchorProps } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { READING_LANGS, readReadingLang, writeReadingLang } from '@/lib/reading-language'
 
 // ── BSB alignment loader ───────────────────────────────────────────────────────
 
@@ -124,16 +125,9 @@ const FONT_SIZE_MAP: Record<FontSize, string> = {
   xl: '1.65rem',
 }
 
-const PARALLEL_LANGS = [
-  { code: 'en',  label: 'English', sub: 'World English Bible' },
-  { code: 'bsb', label: 'English (BSB)', sub: 'Berean Standard Bible' },
-  { code: 'es', label: 'Spanish', sub: 'Reina-Valera 1909' },
-  { code: 'fr', label: 'French', sub: 'Louis Segond 1910' },
-  { code: 'pt', label: 'Portuguese', sub: 'João Ferreira de Almeida (ARC)' },
-  { code: 'ru', label: 'Russian', sub: 'Russian Synodal Bible' },
-  { code: 'ko', label: 'Korean', sub: 'Korean Revised Version' },
-  { code: 'zh', label: 'Mandarin', sub: 'Chinese Union Version' },
-]
+// The list now lives in lib/reading-language.ts, shared with the Phrase explorer and the
+// Settings picker so the three can't drift apart (they had already).
+const PARALLEL_LANGS = READING_LANGS
 
 // BSB is shown beside the Greek NT from a word-alignment file (GNT-only), and beside the
 // Hebrew as plain text — but the LXX has no alignment and different versification, so BSB
@@ -154,8 +148,9 @@ function scrollPanelToVerse(panel: HTMLElement | null, el: HTMLElement): void {
 
 // The reader shows the Greek text and, optionally, ONE translation inline beneath each
 // verse (Greek verse → its translation → next verse …). parallelLang holds the chosen
-// translation code, or null for Greek only. The choice is persisted under this key.
-const PARALLEL_LANG_STORAGE_KEY = 'reader-parallel-lang'
+// translation code, or null for Greek only. Persistence is shared with the Settings picker
+// (lib/reading-language.ts), which reads the same cookie and falls back to the legacy
+// localStorage key so an existing choice is not lost.
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -284,17 +279,20 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   // Restore the reader's chosen inline translation on return. Hydrated after mount to
   // avoid an SSR mismatch; persisted whenever it changes.
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(PARALLEL_LANG_STORAGE_KEY)
-      if (raw && PARALLEL_LANGS.some(l => l.code === raw)) setParallelLang(raw)
-    } catch { /* ignore */ }
+    setParallelLang(readReadingLang())
+    // Follow the Settings picker live, so changing the language in another pane updates the
+    // open Reader instead of needing a reload.
+    const onChange = (e: Event) => setParallelLang((e as CustomEvent<string | null>).detail ?? null)
+    window.addEventListener('pref:reading-language', onChange)
+    return () => window.removeEventListener('pref:reading-language', onChange)
   }, [])
-  useEffect(() => {
-    try {
-      if (parallelLang) localStorage.setItem(PARALLEL_LANG_STORAGE_KEY, parallelLang)
-      else localStorage.removeItem(PARALLEL_LANG_STORAGE_KEY)
-    } catch { /* ignore */ }
-  }, [parallelLang])
+  // NOTE: the choice is persisted in switchView, where the student actually makes it — NOT in
+  // an effect on parallelLang. An effect cannot do this safely: it runs in the same commit as
+  // the hydrating read above, so it sees the initial null and would erase the saved language;
+  // and StrictMode's double-invocation in development defeats a skip-the-first-run guard.
+  // Persisting at the point of the user action also keeps the two transient reasons the
+  // language changes — arriving from a translation search, and dropping an incompatible
+  // translation for the LXX — from overwriting what the student chose.
   // Fetched translation text, cached per language: transByLang[lang][verseId] = text.
   // Keyed by language (not a single flat map) so swiping back to a translation you've
   // already seen is instant and does zero network, and so neighboring views can be
@@ -760,6 +758,9 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
   function switchView(next: string | null) {
     anchorVerseRef.current = visibleVerseId()
     setParallelLang(next)
+    // The student chose this, so remember it — and tell the Settings picker and any other
+    // open pane, which listen on the same event.
+    try { writeReadingLang(next) } catch { /* storage disabled */ }
   }
 
   // If the shown translation isn't compatible with the corpus we've switched to (BSB + LXX),

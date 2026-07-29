@@ -69,6 +69,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
     /* Unified reading font — every reading / translation / cross-reference
        prose column uses this so panes read as one family (see .font-reading). */
     --reading-font: 'Gentium Plus', 'GFS Didot', Georgia, serif;
+    /* CJK needs its own stack rather than extra families appended to the one above: that
+       list ends in the generic `serif`, which always matches, so the browser would stop
+       there and never reach a named CJK family. Gentium leads so Latin and Greek inside a
+       Chinese verse (numerals, references) stay consistent with the rest of the page;
+       Traditional families come before Simplified because our Chinese text is the
+       Union Version in Traditional characters. */
+    --reading-font-cjk: 'Gentium Plus', 'Noto Serif CJK TC', 'Noto Serif TC', 'Songti TC',
+      'PMingLiU', 'Noto Serif CJK SC', 'Songti SC', 'SimSun', 'Microsoft YaHei', serif;
   }
 
   /* ── Sepia (warm beige, light) ───────────────────────────── */
@@ -216,6 +224,18 @@ body.exam-lockdown nav.fixed.bottom-0 {
      font across all reading panes). */
   .font-reading {
     font-family: var(--reading-font);
+  }
+
+  /* Chinese, Japanese and Korean text (the lang attribute comes from TransWords). Without
+     this the Latin reading stack has no Han glyphs and the browser silently substitutes
+     whatever the platform supplies, which differs on every machine. The looser line-height
+     is for the same reason CJK typography normally uses one: dense square glyphs need more
+     room between lines than Latin at the same size. */
+  [lang='zh'],
+  [lang='ja'],
+  [lang='ko'] {
+    font-family: var(--reading-font-cjk);
+    line-height: 1.9;
   }
 
   /* Verse numbers */

@@ -102,6 +102,7 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl, term
               })
             }}
             {...(mark ? { 'data-highlight-id': mark.id } : {})}
+            lang={lang}
             className={`trans-word reading-word${mark ? ` ${highlightMarkClass(mark.color)}` : ''}${
               !mark && inTerm(start, end) ? ` ${SEARCH_MARK}` : ''}`}
           >
