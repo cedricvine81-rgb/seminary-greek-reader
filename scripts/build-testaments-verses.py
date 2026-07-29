@@ -82,7 +82,7 @@ def clean_ocr(t):
 
 
 def parse_charles(raw):
-    """{slug: {chapter: {verse: text}}} from the OCR."""
+    """{slug: [run, ...]} from the OCR — runs, not chapters; see align_runs."""
     t = clean_ocr(raw)
     spans = [(m.start(), m.group(1)) for m in re.finditer(HEADING, t)]
     # keep the first run of 12 headings in order (later ones are the index)
@@ -91,7 +91,7 @@ def parse_charles(raw):
     for i, (pos, _name) in enumerate(spans):
         end = spans[i + 1][0] if i + 1 < len(spans) else len(t)
         body = t[pos:end]
-        out[SLUGS[i]] = parse_testament(body)
+        out[SLUGS[i]] = verse_runs(body)
     return out
 
 
@@ -120,8 +120,84 @@ SECTION_HDR = re.compile(
 TURN = re.compile(r'\s(?=[IVXLCDJ]{1,8}[.,]?\s+[A-Z])')
 
 
-def parse_testament(body):
-    """{chapter: {verse: text}} — chapters cut where the verse numbering restarts."""
+def align_runs(runs, expected):
+    """Fit the runs of verses cut from the scan onto the chapters the Greek says exist.
+
+    A reset in the numbering is a good chapter signal but not a perfect one: the scan drops
+    the odd verse number (so two chapters run together into one run) and sometimes prints a
+    stray number that looks like a restart (so one chapter breaks into two). Left alone,
+    either mistake shifts every chapter after it — which is why matching by position alone
+    stalled at 67 of 142.
+
+    So the runs are aligned to the expected chapter lengths, allowing a run to be merged
+    with its neighbour or split in two, and the alignment is chosen to fit the most
+    chapters exactly. An error then costs one chapter instead of all the rest.
+
+    Returns [{verse: text}] positionally per chapter, with None where nothing fits.
+    """
+    n, m = len(runs), len(expected)
+    NEG = float('-inf')
+    # score[i][j] = best number of exactly-matching chapters using runs[i:] for expected[j:]
+    score = [[NEG] * (m + 1) for _ in range(n + 1)]
+    back = [[None] * (m + 1) for _ in range(n + 1)]
+    score[n][m] = 0
+    for i in range(n, -1, -1):
+        for j in range(m, -1, -1):
+            if i == n and j == m:
+                continue
+            best, mv = NEG, None
+            if i < n and j < m:                      # run i is chapter j
+                s = score[i + 1][j + 1]
+                if s > NEG:
+                    best, mv = s + (1 if len(runs[i]) == expected[j] else 0), ('take', 1, 1)
+            if i + 1 < n and j < m:                  # a missed reset: two runs are one chapter
+                s = score[i + 2][j + 1]
+                if s > NEG:
+                    got = len(runs[i]) + len(runs[i + 1])
+                    cand = s + (1 if got == expected[j] else 0)
+                    if cand > best:
+                        best, mv = cand, ('merge', 2, 1)
+            if i < n and j + 1 < m:                  # a stray number: one run is two chapters
+                s = score[i + 1][j + 2]
+                if s > NEG and len(runs[i]) == expected[j] + expected[j + 1]:
+                    if s + 2 > best:                  # both halves land exactly or not at all
+                        best, mv = s + 2, ('split', 1, 2)
+            if i < n and j == m:                     # leftover run (front matter): drop it
+                s = score[i + 1][j]
+                if s > NEG and s > best:
+                    best, mv = s, ('drop', 1, 0)
+            if j < m and i == n:                     # chapter with nothing left: unfilled
+                s = score[i][j + 1]
+                if s > NEG and s > best:
+                    best, mv = s, ('gap', 0, 1)
+            score[i][j], back[i][j] = best, mv
+
+    out, i, j = [], 0, 0
+    while j < m:
+        mv = back[i][j]
+        if mv is None:
+            out.append(None); j += 1; continue
+        kind, di, dj = mv
+        if kind == 'take':
+            out.append(runs[i])
+        elif kind == 'merge':
+            merged = dict(runs[i])
+            base = max(merged) if merged else 0
+            for k, v in runs[i + 1].items():
+                merged[base + k] = v
+            out.append(merged)
+        elif kind == 'split':
+            first = {k: v for k, v in runs[i].items() if k <= expected[j]}
+            rest = {k - expected[j]: v for k, v in runs[i].items() if k > expected[j]}
+            out.append(first); out.append(rest);
+        elif kind == 'gap':
+            out.append(None)
+        i += di; j += dj
+    return out
+
+
+def verse_runs(body):
+    """The testament as runs of verses, cut where the numbering restarts."""
     body = SECTION_HDR.sub('\n', body)
     body = re.sub(r'(?:^|\n)\s*THE\s+TESTAMENT\s+OF[^\n]*', '\n', body)
     body = re.sub(r'\s*\n\s*', ' ', body).strip()
@@ -133,28 +209,28 @@ def parse_testament(body):
     for i in range(1, len(parts) - 1, 2):
         stream.append((int(parts[i]), parts[i + 1]))
 
-    chapters, cur, ch, prev = {}, {}, 1, 0
+    runs, cur, prev = [], {}, 0
     for n, txt in stream:
         if n <= prev:
-            # The numbering restarted, so this chapter's verse 1 — which the print leaves
-            # unnumbered — is sitting at the tail of the verse just stored. Cut it back off
-            # at the chapter numeral.
+            # The numbering restarted, so the next chapter's verse 1 — which the print
+            # leaves unnumbered — is sitting at the tail of the verse just stored. Cut it
+            # back off at the chapter numeral.
             tail = cur.pop(prev, '')
             splits = list(TURN.finditer(tail))
             if splits:
                 at = splits[-1].start()
                 cur[prev] = clean(tail[:at])
-                chapters[ch] = cur
-                ch, cur = ch + 1, {1: clean(re.sub(r'^[IVXLCDJ]{1,8}[.,]?\s+', '', tail[at:].strip()))}
+                runs.append(cur)
+                cur = {1: clean(re.sub(r'^[IVXLCDJ]{1,8}[.,]?\s+', '', tail[at:].strip()))}
             else:
                 cur[prev] = clean(tail)
-                chapters[ch] = cur
-                ch, cur = ch + 1, {}
+                runs.append(cur)
+                cur = {}
         cur[n] = clean(txt)
         prev = n
     if cur:
-        chapters[ch] = cur
-    return chapters
+        runs.append(cur)
+    return runs
 
 
 def clean(t):
@@ -188,41 +264,41 @@ def fetch(no_cache):
 
 def main():
     charles = parse_charles(fetch('--no-cache' in sys.argv))
-    mismatches, written = [], 0
+    undivided, divided, total = [], 0, 0
 
     for slug in SLUGS:
         f = DATA / f'{slug}.json'
         d = json.loads(f.read_text(encoding='utf-8'))
-        en = charles.get(slug, {})
-        for c in d['chapters']:
-            n = c['number']
-            gv = greek_verses(c['verses'][0].get('greek'))
-            ev = en.get(n, {})
-            if not gv:
-                mismatches.append(f'{slug} {n}: no Greek verse numbers')
-                continue
-            if not ev:
-                mismatches.append(f'{slug} {n}: Charles chapter not parsed')
-                continue
-            if max(gv) != max(ev) or len(gv) != len(ev):
-                mismatches.append(f'{slug} {n}: Greek has {len(gv)} verses (max {max(gv)}), '
-                                  f'Charles {len(ev)} (max {max(ev)}) — left undivided')
-                continue
-            c['verses'] = [{'number': v, 'text': ev.get(v, ''), 'greek': gv[v]}
-                           for v in sorted(gv)]
-        d['attribution'] = ATTRIBUTION
-        f.write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
-        written += 1
+        greek = [greek_verses(c['verses'][0].get('greek')) for c in d['chapters']]
+        aligned = align_runs(charles.get(slug, []), [len(g) for g in greek])
 
-    tot = sum(len(json.loads((DATA / f'{s}.json').read_text())['chapters']) for s in SLUGS)
-    vs = sum(len(c['verses']) for s in SLUGS
-             for c in json.loads((DATA / f'{s}.json').read_text())['chapters'])
-    print(f'{written} testaments, {tot} chapters, {vs} verses')
-    print(f'agreed and divided: {tot - len(mismatches)}/{tot} chapters')
-    if mismatches:
-        print(f'\n{len(mismatches)} chapters left undivided (sources disagree):')
-        for m in mismatches:
-            print('  ' + m)
+        for i, c in enumerate(d['chapters']):
+            total += 1
+            gv, ev = greek[i], (aligned[i] if i < len(aligned) else None)
+            n = c['number']
+            if not gv:
+                undivided.append(f'{slug} {n}: the Greek carries no verse numbers')
+                continue
+            # Divide only where the two independent sources agree on the verse count. A
+            # disagreement means one of them was misread, and there is no way to tell which
+            # — so the chapter is left exactly as it was rather than divided on a guess.
+            if not ev or len(ev) != len(gv) or sorted(ev) != sorted(gv):
+                got = len(ev) if ev else 0
+                undivided.append(f'{slug} {n}: Greek {len(gv)} verses, Charles {got}')
+                continue
+            c['verses'] = [{'number': v, 'text': ev[v], 'greek': gv[v]} for v in sorted(gv)]
+            divided += 1
+
+        # Charles is only credited where his verses were actually used.
+        if any(len(c['verses']) > 1 for c in d['chapters']):
+            d['attribution'] = ATTRIBUTION
+        f.write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+
+    print(f'divided {divided}/{total} chapters (both sources agree on the verse count)')
+    if undivided:
+        print(f'\n{len(undivided)} left whole — sources disagree, so no division was guessed:')
+        for u in undivided:
+            print('  ' + u)
 
 
 if __name__ == '__main__':

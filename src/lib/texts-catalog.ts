@@ -194,7 +194,8 @@ const RAW_CATEGORIES: TextCategory[] = [
       { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
       { id: 'apocmoses', name: 'Apocalypse of Moses', source: 'apocmoses', chapters: 43 },
       { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51, chapterNumbers: [1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34, 35, 36, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51] },
-      { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17, chapterNumbers: [1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 13, 14, 15, 16, 17] },
+      // All 17 chapters now present: the Greek supplied 4 and 12, which our English lacks.
+      { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17, greek: true },
       // The 53-chapter division scholarship cites, in the Greek of manuscript P with our
       // own English facing it — all 390 verses are translated, so it reads in parallel.
       { id: 'tjob-greek', name: 'Testament of Job', source: 'tjob-greek', chapters: 53, greek: true },
