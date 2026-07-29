@@ -69,7 +69,11 @@ def clean_ocr(t):
     t = t.replace('—', '—').replace('‘', '‘').replace('’', '’')
     t = re.sub(r'(\w)-\s*\n\s*(\w)', r'\1\2', t)            # hyphenation across lines
     t = re.sub(r'\n?\s*\d{1,3}\s+THE\s+TESTAMENTS\s+OF\s*', '\n', t)   # running heads
-    t = re.sub(r'\n?\s*THE\s+TWELVE\s+PATRIARCHS\s+\d{1,3}\s*', '\n', t)
+    # The recto head is "THE TWELVE PATRIARCHS <page>", but the scan mangles TWELVE every way
+    # it can — T\\VEL\\'E, TWEU'E, T\\AELVE, TWEU^E, T\\\\TLVE — and the page number with it
+    # ("6i", "loi"). Matching on PATRIARCHS instead catches all of them. A head left in place
+    # takes the following verse number with it: that is how T. Levi 6:3 went missing.
+    t = re.sub(r'\n[^\n]{0,30}PATRIARCHS[^\n]{0,8}\n', '\n', t)
     t = re.sub(r'[ \t]+', ' ', t)
     # "ll" misread as U or h, only inside a word between letters
     for bad, good in (('shaU', 'shall'), ('shah', 'shall'), ('wiU', 'will'), ('aU', 'all'),
@@ -78,19 +82,53 @@ def clean_ocr(t):
                       ('foUow', 'follow'), ('beUy', 'belly'), ('eviU', 'evil')):
         t = re.sub(r'\b' + bad + r'\b', good, t)
         t = re.sub(r'\b' + bad.capitalize() + r'\b', good.capitalize(), t)
+    # Digits misread as letters in verse-marker position. Only the unambiguous ones: "I." is
+    # left alone because it is also the Roman numeral opening chapter 1, and rewriting it
+    # would break the chapter detection that depends on those numerals.
+    t = re.sub(r'(?<![A-Za-z0-9])g\.(?=\s+[A-Z])', '9.', t)
+    t = re.sub(r'(?<![A-Za-z0-9])ii\.(?=\s+[A-Z])', '11.', t)
     return t
+
+
+def fix_eleven(t):
+    """"II." after verse 10 is the digits 11, not the Roman numeral.
+
+    The typeface makes 11 and II identical, so the scan prints T. Gad 5:11 as "II. Since,
+    therefore, my liver…". Read as a numeral it looks like the start of chapter 2, which
+    split the chapter there and cost the next chapter its verse 1. It cannot be fixed
+    blindly — "II." really does open chapter 2 elsewhere — so it is only rewritten where
+    the verse run has just reached 10.
+    """
+    out, last = [], 0
+    for piece in re.split(r'(?<![\d.,])(\d{1,3})\s*\.\s', t):
+        if piece.isdigit() and len(piece) <= 3:
+            last = int(piece)
+            out.append(piece + '. ')
+        else:
+            if last == 10:
+                # anywhere in the verse-10 text, not only at its start
+                piece = re.sub(r'(?<=\s)II\.(?=\s+[A-Za-z])', '11.', piece, count=1)
+            out.append(piece)
+    return ''.join(out)
 
 
 def parse_charles(raw):
     """{slug: [run, ...]} from the OCR — runs, not chapters; see align_runs."""
-    t = clean_ocr(raw)
-    spans = [(m.start(), m.group(1)) for m in re.finditer(HEADING, t)]
+    t = fix_eleven(clean_ocr(raw))
+    spans = [(m.start(), m.end(), m.group(1)) for m in re.finditer(HEADING, t)]
     # keep the first run of 12 headings in order (later ones are the index)
     spans = spans[:12]
     out = {}
-    for i, (pos, _name) in enumerate(spans):
+    for i, (pos, hend, _name) in enumerate(spans):
         end = spans[i + 1][0] if i + 1 < len(spans) else len(t)
-        body = t[pos:end]
+        # From the END of the heading — and the heading wraps ("THE TESTAMENT OF ASHER, THE
+        # TENTH / SON OF JACOB AND ZILPAH"), so drop the continuation line too, or it lands
+        # inside the chapter's verse 1.
+        body = t[hend:end]
+        # HEADING stops at the testament's name, so the rest of the heading block still
+        # follows (", THE TENTH / SON OF JACOB AND ZILPAH"). Drop everything through the
+        # blank line that closes it, or it lands inside that chapter's verse 1.
+        body = re.sub(r'^.*?\n\s*\n', '', body, count=1, flags=re.S)
         out[SLUGS[i]] = verse_runs(body)
     return out
 
@@ -104,13 +142,19 @@ def parse_charles(raw):
 # numbered verses, and a chapter ends where the numbering RESTARTS — a number that does not
 # continue the run. That boundary is then checked against the verse count of the Greek
 # chapter, which came from an unrelated source; both have to agree.
-VERSE = re.compile(r'(?<![\d.,])(\d{1,3})\s*\.\s+(?=[A-Za-z(\[\'"“‘])')
+# The scan sometimes drops a stray quote between the verse number's stop and the text
+# ("3.' And I saw concerning him"), which is how T. Levi 11:3 went missing.
+VERSE = re.compile(r'(?<![\d.,])(\d{1,3})\s*\.\s*[\'"‘’“”]?\s+(?=[A-Za-z(\[\'"“‘])')
 # Editorial section headers ("VI. 5-12. An Exhortation to obey Levi") carry digits that
 # would otherwise read as verse markers. Their ranges appear as arabic or as lowercase
 # roman ("I. i-io. Introduction").
+# The title wraps ("I. i-VI. 6. Asher on the Two Faces of Vice and Virtue / the Good and the
+# Evil Tendency"), so removing only the line carrying the range left the remainder to be read
+# as text — T. Reuben 1:1 came out as the words "and Repentance" and nothing else. Consume
+# the whole header block, up to the blank line that closes it.
 SECTION_HDR = re.compile(
     r'(?:^|\n)\s*[IVXLC]{1,8}[.,]?\s*(?:\d{1,3}|[ivxl]{1,6})\s*[-–]\s*'
-    r'(?:[IVXLC]{1,8}[.,]?\s*)?(?:\d{1,3}|[ivxlo]{1,6})\s*\.[^\n]*', re.I)
+    r'(?:[IVXLC]{1,8}[.,]?\s*)?(?:\d{1,3}|[ivxlo]{1,6})\s*\.[\s\S]*?(?=\n\s*\n)', re.I)
 
 
 # A chapter turn, inside the text that trails a chapter's last verse: the opening numeral,
@@ -234,6 +278,9 @@ def verse_runs(body):
 
 
 def clean(t):
+    # A chapter's opening numeral misread as a bare letter ("L The copy of the
+    # testament of Asher" for "I. The copy…"), left at the head of verse 1.
+    t = re.sub(r'^\s*L\s+(?=[A-Z])', '', t)
     return re.sub(r'\s{2,}', ' ', t).strip(' ;,')
 
 
@@ -262,6 +309,21 @@ def fetch(no_cache):
     return data
 
 
+def chapter_greek(chapter):
+    """{verse: greek} for a chapter, however it is currently stored.
+
+    Once a chapter has been divided its Greek no longer carries the inline verse numbers —
+    they became the rows. Reading only the undivided form made this script destroy its own
+    expectation on a second run: every already-divided chapter looked like ZERO verses, which
+    threw the alignment for the chapters around it. Handling both shapes makes it idempotent,
+    so it can be re-run to pick up chapters that failed last time.
+    """
+    verses = chapter.get('verses') or []
+    if len(verses) > 1:
+        return {v['number']: v.get('greek', '') for v in verses}
+    return greek_verses(verses[0].get('greek') if verses else '')
+
+
 def main():
     charles = parse_charles(fetch('--no-cache' in sys.argv))
     undivided, divided, total = [], 0, 0
@@ -269,7 +331,7 @@ def main():
     for slug in SLUGS:
         f = DATA / f'{slug}.json'
         d = json.loads(f.read_text(encoding='utf-8'))
-        greek = [greek_verses(c['verses'][0].get('greek')) for c in d['chapters']]
+        greek = [chapter_greek(c) for c in d['chapters']]
         aligned = align_runs(charles.get(slug, []), [len(g) for g in greek])
 
         for i, c in enumerate(d['chapters']):
