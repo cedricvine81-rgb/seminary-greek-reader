@@ -436,15 +436,19 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     refs = parse_unit_refs(grc_bytes, book_sub, unit_sub, ref_unit) if ref_unit else {}
     if book_sub:
         books = {}
-        for (b, u), en in eng.items():
+        for (b, u) in set(eng) | set(grc):
             if b and b.isdigit() and u and u.isdigit():
-                books.setdefault(int(b), {})[int(u)] = (en, grc.get((b, u), ''), refs.get((b, u)))
+                books.setdefault(int(b), {})[int(u)] = (eng.get((b, u), ''), grc.get((b, u), ''), refs.get((b, u)))
         chapters = [{'number': bk, 'verses': [
             {'number': u, 'text': books[bk][u][0], **({'greek': books[bk][u][1]} if books[bk][u][1] else {}),
              **({'ref': books[bk][u][2]} if books[bk][u][2] else {})}
             for u in sorted(books[bk])]} for bk in sorted(books)]
     else:
-        units = {int(u): (en, grc.get((None, u), ''), refs.get((None, u))) for (b, u), en in eng.items() if u and u.isdigit()}
+        # Union again: Fowler & Fowler leave Alexander 41-42 untranslated (the passage on
+        # Alexander's sexual practices — a Victorian omission, not a defect in the Greek), and
+        # keying off the English dropped both chapters from the work entirely.
+        units = {int(u): (eng.get((b, u), ''), grc.get((None, u), ''), refs.get((None, u)))
+                 for (b, u) in set(eng) | set(grc) if u and u.isdigit()}
         chapters = [{'number': u, 'verses': [
             {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {}),
              **({'ref': units[u][2]} if units[u][2] else {})}]}
@@ -472,7 +476,9 @@ XENOPHON_ATTRIB = ('Text: Xenophon, Memorabilia, tr. E. C. Marchant (Loeb, 1923)
                    '(perseus.tufts.edu).')
 LUCIAN_ATTRIB = ('Text: The Works of Lucian, tr. H. W. Fowler & F. G. Fowler (Oxford, 1905), '
                  'public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
-                 'CC-BY-SA 4.0 (perseus.tufts.edu).')
+                 'CC-BY-SA 4.0 (perseus.tufts.edu). The Fowlers leave Alexander 41-42 '
+                 'untranslated — a Victorian omission of the passage on Alexander\u2019s sexual '
+                 'conduct — so those two chapters appear in Greek only.')
 APOLLODORUS_ATTRIB = ('Text: Apollodorus, The Library, tr. Sir James George Frazer (Loeb, '
                       '1921), public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
                       'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
@@ -547,11 +553,17 @@ def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_c
     grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
     eng = parse_bcs(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache))
     books = {}
-    for (b, ch, sec), en in eng.items():
+    # Walk the union, not just the English: a translator's omission is not a gap in the work.
+    # Herodotus' English skips nine sections the Greek has (7.19.2, 7.37.3, 7.41.2, 7.67.2 …),
+    # which is why those chapters ran 1, 3. Such a row carries the Greek with no English
+    # beside it, which is the truth of the edition rather than a hole in the text.
+    for key_raw in set(eng) | set(grc):
+        b, ch, sec = key_raw
         key = bcs_key(b, ch, sec)
         if key:
             bk, cn, suffix, s = key
-            books.setdefault(bk, {}).setdefault(cn, {})[(suffix, s)] = (en, grc.get((b, ch, sec), ''))
+            books.setdefault(bk, {}).setdefault(cn, {})[(suffix, s)] = (
+                eng.get(key_raw, ''), grc.get(key_raw, ''))
     results = []
     for bk in sorted(books):
         chapters = []

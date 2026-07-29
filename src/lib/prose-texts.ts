@@ -953,7 +953,7 @@ const lucianCite = (abbrevs: string[]) => (text: string): { chapter: number; ver
 
 const LUCIAN: { slug: string; name: string; chapters: number; noteBook: string; abbrevs: string[] }[] = [
   { slug: 'lucian-peregrinus', name: 'Lucian, The Passing of Peregrinus', chapters: 45, noteBook: 'LucianPeregr', abbrevs: ['Peregr.', 'De mort. Peregr.'] },
-  { slug: 'lucian-alexander', name: 'Lucian, Alexander the False Prophet', chapters: 59, noteBook: 'LucianAlex', abbrevs: ['Alex.'] },
+  { slug: 'lucian-alexander', name: 'Lucian, Alexander the False Prophet', chapters: 61, noteBook: 'LucianAlex', abbrevs: ['Alex.'] },
 ]
 
 const LUCIAN_WORKS: ProseWork[] = LUCIAN.map(w => ({
