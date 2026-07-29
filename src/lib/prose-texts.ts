@@ -1144,7 +1144,7 @@ const NT_PAGAN_WORK: ProseWork = {
 
 export const PROSE_WORKS: ProseWork[] = [
   { source: '2esdras', name: '2 Esdras', noteBook: '2Esdras', dataUrl: '/data/apocrypha/2esdras.json', chapters: 16,
-    attribution: 'Text: the King James Version, 2 Esdras (public domain).',
+    attribution: 'Text: the King James Version, 2 Esdras (public domain). Chapter 7 is the Revised Version (Apocrypha, 1895, public domain), which restores 7:36–105 — seventy verses lost from the Latin manuscripts behind the KJV — and with them the standard verse numbering (KJV 7:36–70 = 7:106–140).',
     parseCitation: cite(/(?:2 Esdr\.?|4 Ezra)\s+(\d+):(\d+)/) },
   { source: '1enoch', name: '1 Enoch', noteBook: '1Enoch', dataUrl: '/data/pseudepigrapha/1enoch.json', chapters: 108,
     attribution: 'Text: R. H. Charles’ translation of 1 Enoch, 1917 (public domain).',
