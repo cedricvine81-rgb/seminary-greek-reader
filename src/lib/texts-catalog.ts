@@ -198,6 +198,7 @@ const RAW_CATEGORIES: TextCategory[] = [
       // All 51 chapters: 3, 32 and 37 were never missing, only run into the chapter before
       // them by a reader that expected one shape of marker (scripts/build-lae.py).
       { id: 'lae', name: 'Life of Adam and Eve', source: 'lae', chapters: 51 },
+      { id: 'assumption-moses', name: 'The Assumption of Moses', source: 'assumption-moses', chapters: 12 },
       // All 17 chapters: 4 and 12 were never missing, only run into their neighbours by a
       // reader of the source page that expected one shape of chapter marker (build-3baruch.py).
       { id: '3baruch', name: '3 Baruch (Greek Apocalypse)', source: '3baruch', chapters: 17 },

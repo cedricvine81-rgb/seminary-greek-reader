@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -1155,6 +1155,12 @@ export const PROSE_WORKS: ProseWork[] = [
   { source: '2baruch', name: '2 Baruch', noteBook: '2Baruch', dataUrl: '/data/pseudepigrapha/2baruch.json', chapters: 87,
     attribution: '2 Baruch (The Syriac Apocalypse of Baruch), translated by R. H. Charles, public domain. Chapters 1-84 follow the Wesley Center Online text of his 1913 translation, which ends at 85:2; chapters 85-87 are supplied from his 1918 edition (SPCK, Translations of Early Documents), so the seam falls at a chapter break rather than inside one.',
     parseCitation: cite(/^2 Bar\.\s+(\d+)(?::(\d+))?/) },
+  // The text behind Jude 9: the dispute over the body of Moses is traced to its lost
+  // ending. Chapter level only — the source prints each chapter as continuous prose
+  // (see scripts/build-assumption-moses.py).
+  { source: 'assumption-moses', name: 'The Assumption of Moses', noteBook: 'AsMos', dataUrl: '/data/pseudepigrapha/assumption-moses.json', chapters: 12,
+    attribution: 'The Assumption of Moses (also called the Testament of Moses), translated by R. H. Charles, The Apocrypha and Pseudepigrapha of the Old Testament (1913), public domain. Source: Wesley Center Online. That text prints each chapter as continuous prose, so citations resolve at chapter level. The work survives only in one sixth-century Latin palimpsest and breaks off unfinished in chapter 12; its lost ending is generally held to lie behind Jude 9.',
+    parseCitation: cite(/^(?:As(?:s(?:um(?:p)?)?)?\. Mos\.|T\. Mos\.|Assumption of Moses|Testament of Moses)\s+(\d+)(?::(\d+))?/) },
   { source: '2enoch', name: '2 Enoch', noteBook: '2Enoch', dataUrl: '/data/pseudepigrapha/2enoch.json', chapters: 68,
     attribution: 'Text: W. R. Morfill’s translation of 2 Enoch (the Slavonic Secrets of Enoch), 1896 (public domain).',
     parseCitation: cite(/^2 En\.\s+(\d+)(?::(\d+))?/) },
