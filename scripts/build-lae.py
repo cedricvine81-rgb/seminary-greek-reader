@@ -1,27 +1,9 @@
 """Rebuild the Life of Adam and Eve, recovering chapters 3, 32 and 37.
 
-!! NOT FINISHED — DOES NOT YET WRITE CORRECT DATA. The repo still ships the 48-chapter
-!! file; run this only while working on it, and check the output before keeping it.
-
 WHY THIS EXISTS
 We shipped 48 of the 51 chapters. The audit read 3, 32 and 37 as missing text; they are not.
 All three are present in the source and were run into the chapter before them, so the
 preceding chapter silently carried two chapters' worth of text.
-
-WHERE IT STANDS
-The diagnosis is settled and the chapter recovery works — 51 chapters, no gaps, and the word
-count rises (nothing is lost). What is not right yet is the verse detail:
-
-  · 32:1 and 37:1 are still missing. Their text is the unmarked paragraph that trails the
-    previous chapter's last verse; the attempt to cut it back off at the last paragraph
-    break does not fire, so it stays attached to 31:3 and 36:2. Debug why the newline is
-    not where it is expected — plain() keeps \n, but the verse text handed to the split may
-    already have been normalised upstream.
-  · 3:1 keeps a stray leading "I" (that chapter's verse 1 is a Roman numeral, not arabic).
-  · 15 comes out as verses [1, 3]: the transcription labels one unit "1,2" and the second
-    number is dropped rather than recorded.
-
-Fix those three and the build is shippable; the surrounding logic is verified.
 
 Two different causes, and they need different handling:
 
@@ -120,11 +102,11 @@ def main():
     if not marks:
         raise SystemExit('refusing to write: no chapter markers found')
 
-    chapters = {}
+    chapters, VERSE_LABELS = {}, {}
     for i, (n, _mstart, start) in enumerate(marks):
         # stop at the NEXT marker's start, or its numeral trails into this chapter's text
         end = marks[i + 1][1] if i + 1 < len(marks) else len(x)
-        body = x[start:end]
+        body = re.sub(r'^\s*[IVX]{1,3}\s+(?=[A-Z])', ' ', x[start:end])
         # Split the chunk on its verse numbers. Verse 1 carries no marker at a marked
         # chapter opening (the numeral served), so lead text is verse 1.
         parts = VS.split(body)
@@ -133,6 +115,8 @@ def main():
             seq.append((1, parts[0]))
         for k in range(1, len(parts) - 1, 2):
             seq.append((int(parts[k]), parts[k + 1]))
+        labels = {int(lm.group(1)): lm.group(0).strip()
+                  for lm in VS.finditer(body) if ',' in lm.group(0)}
 
         # A verse number that does not continue the run means the NEXT chapter began here
         # without a printed numeral (32 and 37). Split there and carry on.
@@ -146,10 +130,14 @@ def main():
                 run[num] = txt; prev = num
         if extra and run:
             last = max(run)
-            head, sep, tail = run[last].rpartition('\n')
-            if sep and tail.strip():
-                run[last] = head
-                extra.insert(0, (1, tail))
+            # Drop empty paragraphs first: the chunk ends on a blank line, so the last
+            # element is '' and the split would never fire.
+            paras = [q for q in re.split(r'\n\s*\n', run[last]) if q.strip()]
+            if len(paras) > 1:
+                run[last] = '\n\n'.join(paras[:-1])
+                extra.insert(0, (1, paras[-1]))
+        for vnum, lbl in labels.items():
+            VERSE_LABELS[(n, vnum)] = lbl
         chapters[n] = run
         if extra:
             # The unmarked chapter takes the number the printed sequence skipped — the break
@@ -161,8 +149,16 @@ def main():
 
     doc_chapters = []
     for n in sorted(out):
-        verses = [{'number': v, 'text': re.sub(r'\s+', ' ', out[n][v]).strip(' ;,')}
-                  for v in sorted(out[n]) if out[n][v].strip()]
+        verses = []
+        for v in sorted(out[n]):
+            txt = re.sub(r'\s+', ' ', out[n][v]).strip(' ;,')
+            if not txt:
+                continue
+            row = {'number': v, 'text': txt}
+            lbl = VERSE_LABELS.get((n, v))
+            if lbl:
+                row['ref'] = lbl          # e.g. "1,2" where the edition merges two verses
+            verses.append(row)
         if verses:
             doc_chapters.append({'number': n, 'verses': verses})
 
