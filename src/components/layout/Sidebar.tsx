@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { useApi } from '@/lib/api-client'
 import {
   LayoutDashboard, BookMarked, Calendar, Archive,
@@ -52,6 +53,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
+  const t = useT()
   const pathname = usePathname()
   const items = role === 'INSTRUCTOR' ? instructorNav : role === 'ADMIN' ? adminNav : studentNav
 
@@ -146,7 +148,7 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
           )}
         >
           <Settings size={16} />
-          Settings
+          {t('account.settings')}
         </Link>
       </div>
     </aside>

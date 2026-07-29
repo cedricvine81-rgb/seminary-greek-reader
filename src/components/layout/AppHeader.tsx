@@ -4,6 +4,7 @@ import { AccountMenu } from './AccountMenu'
 import { MasterSearchButton } from '@/components/search/MasterSearchButton'
 import { TextsNavMenu } from './TextsNavMenu'
 import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
+import { getServerT } from '@/lib/i18n/server'
 
 interface AppHeaderProps {
   isAuthenticated?: boolean
@@ -14,6 +15,7 @@ interface AppHeaderProps {
 // The `.app-header` class hooks the mobile auto-hide behavior in globals.css;
 // the reader toggles html[data-immersive] as the user scrolls. See GreekReader.
 export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHeaderProps) {
+  const t = getServerT()
   // Brand/logo sends signed-in users to their dashboard, not the Reader at "/".
   const brandHref = isAuthenticated
     ? userRole === 'INSTRUCTOR' ? '/instructor'
@@ -37,16 +39,16 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
         {/* Center nav — icons only on mobile, icons + text on md+ */}
         <nav className="flex items-center gap-0.5">
           <Link href="/reader" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookOpen size={18} /> <span className="hidden md:inline">Reader</span>
+            <BookOpen size={18} /> <span className="hidden md:inline">{t('nav.reader')}</span>
           </Link>
           <Link href="/vocab" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <BookMarked size={18} /> <span className="hidden md:inline">Vocab</span>
+            <BookMarked size={18} /> <span className="hidden md:inline">{t('nav.vocab')}</span>
           </Link>
           <Link href="/grammar" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Table2 size={18} /> <span className="hidden md:inline">Grammar</span>
+            <Table2 size={18} /> <span className="hidden md:inline">{t('nav.grammar')}</span>
           </Link>
           <Link href="/exegesis" className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5">
-            <Scroll size={18} /> <span className="hidden md:inline">Exegesis</span>
+            <Scroll size={18} /> <span className="hidden md:inline">{t('nav.exegesis')}</span>
           </Link>
           <TextsNavMenu />
           {isAuthenticated && (userRole === 'INSTRUCTOR' || userRole === 'STUDENT' || userRole === 'ADMIN') && (
@@ -54,7 +56,7 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
               href={userRole === 'INSTRUCTOR' ? '/instructor' : userRole === 'ADMIN' ? '/admin' : '/student'}
               className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5"
             >
-              <LayoutDashboard size={18} /> <span className="hidden md:inline">Dashboard</span>
+              <LayoutDashboard size={18} /> <span className="hidden md:inline">{t('nav.dashboard')}</span>
             </Link>
           )}
         </nav>

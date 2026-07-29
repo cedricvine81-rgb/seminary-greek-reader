@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { DisplaySettings } from '@/components/settings/DisplaySettings'
 import { ReadingLanguageSettings } from '@/components/settings/ReadingLanguageSettings'
+import { LanguageSettings } from '@/components/settings/LanguageSettings'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -241,6 +242,7 @@ function PasswordSection() {
 export function SettingsForm(props: ProfileProps) {
   return (
     <div className="space-y-6 max-w-2xl">
+      <LanguageSettings />
       <DisplaySettings />
       <ReadingLanguageSettings />
       <ProfileSection {...props} />

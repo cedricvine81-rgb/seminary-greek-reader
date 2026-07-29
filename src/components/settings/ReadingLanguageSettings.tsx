@@ -2,6 +2,7 @@
 import { Check } from 'lucide-react'
 import { Card, CardTitle, CardDescription } from '@/components/ui/Card'
 import { useReadingLanguage, READING_LANGS } from '@/lib/reading-language'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 /**
  * Picks the translation shown beside the Greek and Hebrew. The Reader has always had this
@@ -11,10 +12,11 @@ import { useReadingLanguage, READING_LANGS } from '@/lib/reading-language'
  */
 export function ReadingLanguageSettings() {
   const [lang, setLang] = useReadingLanguage()
+  const t = useT()
 
   return (
     <Card>
-      <CardTitle>Reading language</CardTitle>
+      <CardTitle>{t('settings.reading.title')}</CardTitle>
       <CardDescription>
         The translation shown beside the Greek and Hebrew. The Greek text itself never changes —
         this is the language you read it <em>with</em>. Applies to the Reader and the Phrase
@@ -23,7 +25,7 @@ export function ReadingLanguageSettings() {
 
       <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
         {/* Greek only comes first: it is the default, and the one choice that isn't a language. */}
-        {[{ code: null as string | null, label: 'Greek only', sub: 'No parallel translation' }, ...READING_LANGS].map(l => {
+        {[{ code: null as string | null, label: t('settings.reading.greekOnly'), sub: t('settings.reading.noParallel') }, ...READING_LANGS].map(l => {
           const active = lang === l.code
           return (
             <button

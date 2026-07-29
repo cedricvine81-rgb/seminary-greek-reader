@@ -1,12 +1,14 @@
 'use client'
 import { usePathname } from 'next/navigation'
 import { EyeOff } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface PreviewBannerInnerProps {
   show: boolean
 }
 
 export function PreviewBannerInner({ show }: PreviewBannerInnerProps) {
+  const t = useT()
   const pathname = usePathname()
   if (!show || !pathname.startsWith('/student')) return null
 
@@ -14,7 +16,7 @@ export function PreviewBannerInner({ show }: PreviewBannerInnerProps) {
     <div className="w-full bg-amber-500 text-white px-4 py-2.5 flex items-center justify-between gap-4 z-50">
       <div className="flex items-center gap-2 text-sm font-medium">
         <EyeOff size={16} className="shrink-0" />
-        <span>Instructor Preview — you are viewing the student experience</span>
+        <span>{t('preview.instructorPreview')}</span>
       </div>
       <a
         href="/api/preview?mode=exit"

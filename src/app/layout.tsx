@@ -12,6 +12,9 @@ import { ScrollRestorer } from '@/components/search/ScrollRestorer'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { cookies } from 'next/headers'
+import { getServerLocale } from '@/lib/i18n/server'
+import { HTML_LANG } from '@/lib/i18n/locale'
+import { LocaleProvider } from '@/lib/i18n/LocaleProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -71,8 +74,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : themeCookie === 'dim' || themeCookie === 'dark' ? themeCookie
     : 'sepia'
 
+  // Interface language, from its own cookie for the same reason as the theme: rendered
+  // server-side so the first paint is already in the student's language. Drives <html lang>,
+  // which is what selects the CJK font stack and the screen-reader voice.
+  const locale = getServerLocale()
+
   return (
-    <html lang="en" data-theme={dataTheme}>
+    <html lang={HTML_LANG[locale]} data-theme={dataTheme}>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -82,6 +90,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className={inter.className}>
+        <LocaleProvider locale={locale}>
         <div className="min-h-screen flex flex-col">
           <PreviewBannerInner show={isInstructorPreview} />
           <AppHeader {...headerProps} />
@@ -97,6 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <WordSearchProvider />
         <ProsePanelProvider />
         <ScrollRestorer />
+        </LocaleProvider>
       </body>
     </html>
   )

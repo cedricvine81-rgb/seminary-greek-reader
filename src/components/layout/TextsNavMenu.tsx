@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Library, ChevronLeft } from 'lucide-react'
+import { useT } from '@/lib/i18n/LocaleProvider'
 import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 
 // The header "Texts" destination with a hover mega-menu (desktop): hovering the item opens the
@@ -17,6 +18,7 @@ import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor, type Catal
 // off. Portalling to <body> escapes the clip; its side (left/right of the author) is chosen from
 // the author row's measured position so it never runs off the screen edge.
 export function TextsNavMenu() {
+  const t = useT()
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number } | null>(null)
@@ -60,7 +62,7 @@ export function TextsNavMenu() {
         href="/texts"
         className="px-2 py-1.5 text-sm text-gray-600 hover:text-brand-700 hover:bg-brand-50 rounded-lg transition-colors flex items-center gap-1.5"
       >
-        <Library size={18} /> <span className="hidden md:inline">Texts</span>
+        <Library size={18} /> <span className="hidden md:inline">{t('nav.texts')}</span>
       </Link>
 
       {/* Desktop hover menu only — pt-1 keeps the panel hover-connected across the gap. */}
