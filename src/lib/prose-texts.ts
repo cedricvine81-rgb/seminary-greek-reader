@@ -687,7 +687,11 @@ const MISHNAH: { slug: string; name: string; noteBook: string; chapters: number;
   { slug: 'm-bikkurim', name: 'm. Bikkurim (First Fruits)', noteBook: 'MishBikkurim', chapters: 4, abbrevs: ['m. Bik.'] },
   { slug: 'm-sotah', name: 'm. Sotah (The Suspected Adulteress)', noteBook: 'MishSotah', chapters: 9, abbrevs: ['m. Soṭah'] },
   { slug: 'm-chullin', name: 'm. Chullin (Non-Consecrated Animals)', noteBook: 'MishChullin', chapters: 12, abbrevs: ['m. Ḥul.'] },
-  { slug: 'm-avot', name: 'm. Avot (Ethics of the Fathers)', noteBook: 'MishAvot', chapters: 6, abbrevs: ['m. ʾAbot', 'm. Abot'] },
+  // Also accepts the bare tractate name: the cross-reference dataset cites Pirkei Avot as
+  // "ʾAbot 1:12" without the "m." prefix it uses for every other tractate. Safe against
+  // Avot de-Rabbi Nathan ("ʾAbot R. Nat. (A) 24.3"), a different work we don't hold,
+  // because mishnahCite requires a chapter number immediately after the abbreviation.
+  { slug: 'm-avot', name: 'm. Avot (Ethics of the Fathers)', noteBook: 'MishAvot', chapters: 6, abbrevs: ['m. ʾAbot', 'm. Abot', 'ʾAbot', 'Abot'] },
   { slug: 'm-gittin', name: 'm. Gittin (Bills of Divorce)', noteBook: 'MishGittin', chapters: 9, abbrevs: ['m. Giṭ.'] },
   { slug: 'm-taanit', name: 'm. Taanit (Fasts)', noteBook: 'MishTaanit', chapters: 4, abbrevs: ['m. Taʿan.'] },
   { slug: 'm-eduyot', name: 'm. Eduyot (Testimonies)', noteBook: 'MishEduyot', chapters: 8, abbrevs: ['m. ʿEd.'] },
