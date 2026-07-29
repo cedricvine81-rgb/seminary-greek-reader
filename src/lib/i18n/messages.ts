@@ -20,6 +20,14 @@ export type Message = string | Partial<Record<Intl.LDMLPluralRule, string>>
 export type Catalogue = Record<string, Message>
 
 const en: Catalogue = {
+  'tab.syntax': 'Syntax',
+  'tab.phrasing': 'Phrasing',
+  'tab.synopsis': 'Synopsis',
+  'tab.variants': 'Variants',
+  'tab.backgrounds': 'Backgrounds',
+  'tab.rhetoric': 'Rhetoric',
+  'tab.commentary': 'Commentary',
+  'tab.notes': 'Notes',
   'page.adminDashboard': 'Admin Dashboard',
   'page.courseArchive': 'Course Archive',
   'page.createCourse': 'Create Course',
@@ -253,6 +261,14 @@ const en: Catalogue = {
 }
 
 const es: Catalogue = {
+  'tab.syntax': 'Sintaxis',
+  'tab.phrasing': 'Segmentación',
+  'tab.synopsis': 'Sinopsis',
+  'tab.variants': 'Variantes',
+  'tab.backgrounds': 'Trasfondo',
+  'tab.rhetoric': 'Retórica',
+  'tab.commentary': 'Comentario',
+  'tab.notes': 'Notas',
   'page.adminDashboard': 'Panel de administración',
   'page.courseArchive': 'Archivo de cursos',
   'page.createCourse': 'Crear un curso',
@@ -476,6 +492,14 @@ const es: Catalogue = {
 }
 
 const ru: Catalogue = {
+  'tab.syntax': 'Синтаксис',
+  'tab.phrasing': 'Членение',
+  'tab.synopsis': 'Синопсис',
+  'tab.variants': 'Разночтения',
+  'tab.backgrounds': 'Контекст',
+  'tab.rhetoric': 'Риторика',
+  'tab.commentary': 'Комментарий',
+  'tab.notes': 'Заметки',
   'page.adminDashboard': 'Панель администратора',
   'page.courseArchive': 'Архив курсов',
   'page.createCourse': 'Создать курс',
@@ -705,6 +729,14 @@ const ru: Catalogue = {
 }
 
 const zh: Catalogue = {
+  'tab.syntax': '句法',
+  'tab.phrasing': '分句',
+  'tab.synopsis': '對照',
+  'tab.variants': '異文',
+  'tab.backgrounds': '背景',
+  'tab.rhetoric': '修辭',
+  'tab.commentary': '註釋',
+  'tab.notes': '筆記',
   'page.adminDashboard': '管理員主頁',
   'page.courseArchive': '課程存檔',
   'page.createCourse': '建立課程',

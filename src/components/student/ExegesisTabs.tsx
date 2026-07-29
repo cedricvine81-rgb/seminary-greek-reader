@@ -14,6 +14,7 @@ import { CommentaryView } from '@/components/commentary/CommentaryView'
 import { TextSizeControls } from '@/components/reader/TextSizeControls'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 type Section = { c: number; v: number; ec: number; ev: number; t: string }
 type Pericopes = Record<string, Section[]>
@@ -38,16 +39,18 @@ const norm = (s: string) => s.toLowerCase().replace(/[\s.]/g, '')
 type ExegesisTab = 'workspace' | 'phrasing' | 'synopsis' | 'variants' | 'backgrounds' | 'rhetoric' | 'notes' | 'commentary'
 const EXEGESIS_TABS: ExegesisTab[] = ['workspace', 'phrasing', 'synopsis', 'variants', 'backgrounds', 'rhetoric', 'notes', 'commentary']
 
-// Tab id → label + icon, shared by the desktop tab bar and the mobile hamburger menu.
+// Tab id → i18n key + icon, shared by the desktop tab bar and the mobile hamburger menu.
+// `label` is a catalogue key, not display text: this is module scope, so it cannot call the
+// hook, and the two render sites below resolve it with t().
 const TAB_LIST: { id: ExegesisTab; label: string; Icon: LucideIcon }[] = [
-  { id: 'workspace',   label: 'Syntax',      Icon: PencilLine },
-  { id: 'phrasing',    label: 'Phrasing',    Icon: ListTree },
-  { id: 'synopsis',    label: 'Synopsis',    Icon: Columns3 },
-  { id: 'variants',    label: 'Variants',    Icon: Rows3 },
-  { id: 'backgrounds', label: 'Backgrounds', Icon: Scroll },
-  { id: 'rhetoric',    label: 'Rhetoric',    Icon: Feather },
-  { id: 'commentary',  label: 'Commentary',  Icon: BookOpen },
-  { id: 'notes',       label: 'Notes',       Icon: StickyNote },
+  { id: 'workspace',   label: 'tab.syntax',      Icon: PencilLine },
+  { id: 'phrasing',    label: 'tab.phrasing',    Icon: ListTree },
+  { id: 'synopsis',    label: 'tab.synopsis',    Icon: Columns3 },
+  { id: 'variants',    label: 'tab.variants',    Icon: Rows3 },
+  { id: 'backgrounds', label: 'tab.backgrounds', Icon: Scroll },
+  { id: 'rhetoric',    label: 'tab.rhetoric',    Icon: Feather },
+  { id: 'commentary',  label: 'tab.commentary',  Icon: BookOpen },
+  { id: 'notes',       label: 'tab.notes',       Icon: StickyNote },
 ]
 
 // Mobile switches tabs from inside the ⋮ menu and omits the wide desktop-only views
@@ -56,6 +59,7 @@ const MOBILE_HIDDEN_TABS: ExegesisTab[] = ['backgrounds', 'synopsis', 'rhetoric'
 const MOBILE_TAB_LIST = TAB_LIST.filter(t => !MOBILE_HIDDEN_TABS.includes(t.id))
 
 export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAuthenticated: boolean; initialTab?: string; initialOpen?: string; initialRef?: string }) {
+  const t = useT()
   const router = useRouter()
   // Deep-link support: /exegesis?tab=phrasing opens straight to that tab (used by the
   // mobile Reader menu). Unknown/absent values fall back to the default Syntax tab.
@@ -270,7 +274,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
           rather than wrapping to a second row — saves vertical space. */}
       <div className="flex-none flex items-center flex-nowrap gap-2 lg:gap-3 mb-2">
         <div className="flex items-center min-w-0 flex-1 lg:flex-none">
-          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">Passage</span>
+          <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">{t('study.passage')}</span>
           {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}
           <div ref={passageBoxRef} className="relative flex-1 min-w-0 lg:flex-none">
             {ghost && (
@@ -315,7 +319,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
           {/* Desktop: inline (horizontally scrolling) tab bar. */}
           <div className="hidden lg:flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
             {TAB_LIST.map(({ id, label, Icon }) => (
-              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} /> {label}</button>
+              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} /> {t(label)}</button>
             ))}
           </div>
 
@@ -352,7 +356,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                           tab === id ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-700 hover:bg-gray-50'
                         }`}
                       >
-                        <Icon size={16} className="shrink-0" /> {label}
+                        <Icon size={16} className="shrink-0" /> {t(label)}
                       </button>
                     ))}
                   </div>
