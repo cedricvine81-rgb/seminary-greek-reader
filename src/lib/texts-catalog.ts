@@ -190,7 +190,9 @@ const RAW_CATEGORIES: TextCategory[] = [
     works: [
       { id: '1enoch', name: '1 Enoch', source: '1enoch', chapters: 108 },
       { id: 'jubilees', name: 'Jubilees', source: 'jubilees', chapters: 50 },
-      { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 85 },
+      // 87, not 85: the Wesley Center text we imported stops at 85:2, so the end of the
+      // Epistle came from Charles's 1918 edition (scripts/build-2baruch-tail.py).
+      { id: '2baruch', name: '2 Baruch (Syriac Apocalypse)', source: '2baruch', chapters: 87 },
       { id: '2enoch', name: '2 Enoch (Secrets of Enoch)', source: '2enoch', chapters: 68 },
       { id: 'apocmoses', name: 'Apocalypse of Moses', source: 'apocmoses', chapters: 43 },
       // All 51 chapters: 3, 32 and 37 were never missing, only run into the chapter before
