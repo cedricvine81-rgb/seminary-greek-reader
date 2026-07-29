@@ -200,7 +200,6 @@ const RAW_CATEGORIES: TextCategory[] = [
       // The 53-chapter division scholarship cites, in the Greek of manuscript P with our
       // own English facing it — all 390 verses are translated, so it reads in parallel.
       { id: 'tjob-greek', name: 'Testament of Job', source: 'tjob-greek', chapters: 53, greek: true },
-      { id: 'apocabr', name: 'Apocalypse of Abraham', source: 'apocabr', chapters: 32 },
       { id: 'josaseneth', name: 'Joseph and Aseneth', source: 'josaseneth', chapters: 29 },
       { id: 'aristeas', name: 'Letter of Aristeas', source: 'aristeas', chapters: 1, greek: true },
       { id: 'sibylline', name: 'Sibylline Oracles', source: 'sibylline', chapters: 14, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14] },
