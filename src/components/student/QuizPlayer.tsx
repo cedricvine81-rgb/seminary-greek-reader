@@ -7,6 +7,7 @@ import { Select } from '@/components/ui/Select'
 import { MORPH_OPTIONS } from '@/data/morphology-options'
 import { isAnswerCorrect, isMultipleChoiceCorrect } from '@/lib/answer-matching'
 import type { QuizQuestion, QuizResult } from '@/types/quiz'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface QuizPlayerProps {
   assignmentId: string
@@ -70,6 +71,7 @@ function formatCorrectAnswer(ca: string): string {
 
 
 export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, provideDefinition = false, maxRetakes = null, maxAppeals = 0, questionsPerAttempt, attemptCount: initialAttemptCount = 0, bestPct: initialBestPct = null }: QuizPlayerProps) {
+  const t = useT()
   const router = useRouter()
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -98,7 +100,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   // Per-response appeal status (after submit): which responseIds the student has appealed.
   const [appealedIds, setAppealedIds] = useState<Set<string>>(new Set())
   const [appealError, setAppealError] = useState<string | null>(null)
-  // Mid-quiz "Appeal this answer" intent: the questionIds marked for appeal.
+  // Mid-quiz {t('quiz.appealAnswer')} intent: the questionIds marked for appeal.
   // Actual appeals are POSTed after the quiz submits (responseIds don't exist mid-quiz).
   const [markedForAppeal, setMarkedForAppeal] = useState<Set<string>>(new Set())
 
@@ -107,9 +109,9 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
   if (questions.length === 0) {
     return (
       <div className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 px-5 py-8 text-center space-y-2">
-        <p className="text-base font-semibold text-amber-900">This quiz has no questions yet.</p>
+        <p className="text-base font-semibold text-amber-900">{t('quiz.noQuestions')}</p>
         <p className="text-sm text-amber-800">
-          Open the assignment&rsquo;s builder and click <strong>Generate Questions</strong>, then return here.
+          Open the assignment&rsquo;s builder and click <strong>{t('quiz.generateQuestions')}</strong>, then return here.
         </p>
       </div>
     )
@@ -234,7 +236,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       const data = await res.json().catch(() => ({}))
       if (!res.ok || !data?.result) {
         // Keep the student's answers intact and let them retry — never silently lose work
-        setSubmitError(data?.error || 'Submission failed. Your answers are saved locally — please try again.')
+        setSubmitError(data?.error || t('error.submitFailedLocal'))
         return
       }
       setResult(data.result)
@@ -266,7 +268,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         setAppealedIds(submitted)
       }
     } catch {
-      setSubmitError('Network error — your answers are saved locally. Please try again.')
+      setSubmitError(t('error.networkSavedLocally'))
     } finally {
       setSubmitting(false)
     }
@@ -299,12 +301,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        setAppealError(data.error ?? 'Could not submit appeal.')
+        setAppealError(data.error ?? t('error.appealFailed'))
         return
       }
       setAppealedIds(prev => new Set(prev).add(responseId))
     } catch {
-      setAppealError('Network error — please try again.')
+      setAppealError(t('error.network'))
     }
   }
 
@@ -325,12 +327,13 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // ── Attempts indicator ────────────────────────────────────────────────────
   function AttemptsIndicator() {
+  const t = useT()
     if (attemptCount === 0 && maxRetakes === null) return null
     return (
       <div className="flex items-center justify-between text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
         <span>
           {attemptCount === 0
-            ? 'First attempt'
+            ? t('quiz.firstAttempt')
             : `Attempt ${attemptCount + 1} of ${maxAllowed ?? '∞'}`}
           {bestPct !== null && (
             <span className="ml-2 text-brand-700 font-semibold">Best: {bestPct}%</span>
@@ -338,7 +341,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         </span>
         {maxRetakes !== null && (
           <span className={retakesRemaining === 0 ? 'text-red-500 font-medium' : 'text-gray-500'}>
-            {retakesRemaining === 0 ? 'No retakes remaining' : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
+            {retakesRemaining === 0 ? t('quiz.noRetakes') : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
           </span>
         )}
       </div>
@@ -347,6 +350,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // ── Running score chip ─────────────────────────────────────────────────────
   function RunningScore() {
+  const t = useT()
     if (answeredSoFar === 0) return null
     return (
       <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
@@ -376,7 +380,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <div className="space-y-3 text-center py-2">
             <p className="text-sm text-red-600">{submitError}</p>
             <Button onClick={handleSubmit} loading={submitting} variant="primary">
-              Try Again
+              {t('quiz.tryAgain')}
             </Button>
           </div>
         ) : (
@@ -385,7 +389,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
             </svg>
-            Submitting…
+            {t('ex.submitting')}
           </div>
         )}
       </div>
@@ -401,14 +405,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           <p className="text-4xl font-bold text-brand-700">{result.percentage}%</p>
           <p className="text-gray-600 mt-1">{result.correctAnswers} / {result.totalQuestions} correct — submitted for grading</p>
           {result.isNewBest ? (
-            <p className="text-xs text-green-600 mt-1 font-medium">New best score!</p>
+            <p className="text-xs text-green-600 mt-1 font-medium">{t('quiz.newBest')}</p>
           ) : (
             <p className="text-xs text-gray-400 mt-1">Best score: {bestPct}%</p>
           )}
           {maxRetakes !== null && (
             <p className="text-xs text-gray-500 mt-2">
               Attempt {attemptCount} of {maxAllowed} ·{' '}
-              {retakesRemaining === 0 ? 'No retakes remaining' : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
+              {retakesRemaining === 0 ? t('quiz.noRetakes') : `${retakesRemaining} retake${retakesRemaining === 1 ? '' : 's'} remaining`}
             </p>
           )}
         </div>
@@ -448,12 +452,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                           <div className="flex-1 min-w-0">
                             <span className={`${hasGreek(b.prompt) ? 'font-greek' : ''} text-base`}>{b.prompt}</span>
                             {b.yourAnswer ? (
-                              <p className="mt-0.5">Your answer: <span className={`${hasGreek(b.yourAnswer) ? 'font-greek' : ''} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
+                              <p className="mt-0.5">{t('quiz.yourAnswer')}<span className={`${hasGreek(b.yourAnswer) ? 'font-greek' : ''} ${b.isCorrect ? 'text-green-700 font-medium' : 'text-red-600 line-through'}`}>{b.yourAnswer}</span></p>
                             ) : (
-                              <p className="mt-0.5 text-gray-400 italic">No answer</p>
+                              <p className="mt-0.5 text-gray-400 italic">{t('quiz.noAnswer')}</p>
                             )}
                             {!b.isCorrect && (
-                              <p>Correct: <span className={`${hasGreek(b.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
+                              <p>{t('quiz.correctIs')}<span className={`${hasGreek(b.correctAnswer) ? 'font-greek' : ''} text-green-700 font-medium`}>{formatCorrectAnswer(b.correctAnswer)}</span></p>
                             )}
                             {appealsEnabled && !b.isCorrect && !!b.responseId && (
                               <div className="mt-2">
@@ -468,7 +472,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                                     Appeal this answer
                                   </button>
                                 ) : remainingAppeals === 0 ? (
-                                  <span className="text-xs text-gray-400">No appeals remaining for this attempt.</span>
+                                  <span className="text-xs text-gray-400">{t('quiz.noAppeals')}</span>
                                 ) : null}
                               </div>
                             )}
@@ -549,12 +553,12 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         <div>
           <p className="text-xs text-gray-400 uppercase tracking-wide mb-2">
             {type === 'MORPHOLOGY_QUIZ'
-              ? 'Identify the morphology'
+              ? t('quiz.identifyMorphology')
               : q.type === 'ENGLISH_TO_GREEK'
-                ? 'Write the Greek word'
+                ? t('quiz.writeGreek')
                 : q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
-                  ? 'Choose the correct definition'
-                  : 'Write the English meaning'}
+                  ? t('quiz.chooseDefinition')
+                  : t('quiz.writeEnglish')}
           </p>
           <p className={`${hasGreek(q?.prompt) ? 'font-greek' : ''} text-3xl text-ink-900 leading-relaxed`}>{q?.prompt}</p>
         </div>
@@ -589,8 +593,8 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
           // Open-ended: student types their answer
           const placeholder = q.type === 'ENGLISH_TO_GREEK'
-            ? 'Type the Greek word…'
-            : 'Type the English meaning…'
+            ? t('quiz.typeGreek')
+            : t('quiz.typeEnglish')
           return (
             <input
               ref={inputRef}
@@ -631,14 +635,14 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
           const pos = correctObj.partOfSpeech
           // Fields to show as dropdowns (non-null fields except partOfSpeech which is shown as label)
           const FIELD_MAP: Record<string, { label: string; optsKey: keyof typeof MORPH_OPTIONS | 'case' }> = {
-            tense:  { label: 'Tense',  optsKey: 'tense'  },
-            voice:  { label: 'Voice',  optsKey: 'voice'  },
-            mood:   { label: 'Mood',   optsKey: 'mood'   },
-            person: { label: 'Person', optsKey: 'person' },
-            number: { label: 'Number', optsKey: 'number' },
-            casus:  { label: 'Case',   optsKey: 'case'   },
-            gender: { label: 'Gender', optsKey: 'gender' },
-            pronounType: { label: 'Pronoun type', optsKey: 'pronounType' },
+            tense:  { label: t('morph.tense'),  optsKey: 'tense'  },
+            voice:  { label: t('morph.voice'),  optsKey: 'voice'  },
+            mood:   { label: t('morph.mood'),   optsKey: 'mood'   },
+            person: { label: t('morph.person'), optsKey: 'person' },
+            number: { label: t('morph.number'), optsKey: 'number' },
+            casus:  { label: t('morph.case'),   optsKey: 'case'   },
+            gender: { label: t('morph.gender'), optsKey: 'gender' },
+            pronounType: { label: t('quiz.pronounType'), optsKey: 'pronounType' },
           }
           const activeFields = Object.keys(FIELD_MAP).filter(f => correctObj[f])
           const requiredFilled = activeFields.every(f => morphDraft[f])
@@ -688,7 +692,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 : <XCircle size={18} className="text-red-500 shrink-0" />
               }
               <span className={`text-sm font-semibold ${clientCorrect[q.id] ? 'text-green-700' : 'text-red-600'}`}>
-                {timedOut ? 'Time\'s up!' : clientCorrect[q.id] ? 'Correct!' : 'Incorrect'}
+                {timedOut ? 'Time\'s up!' : clientCorrect[q.id] ? t('quiz.correct') : t('quiz.incorrect')}
               </span>
             </div>
             {answers[q.id] && (
@@ -718,7 +722,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
                 }
                 if (remaining === 0) {
                   return (
-                    <p className="text-xs text-gray-500 pt-1">No appeals remaining for this attempt.</p>
+                    <p className="text-xs text-gray-500 pt-1">{t('quiz.noAppeals')}</p>
                   )
                 }
                 return (
@@ -745,7 +749,7 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
         {phase === 'answering' ? (
           <>
             <span /> {/* spacer */}
-            {/* Show "Check Answer" for open-ended vocab (not multiple choice) and morphology (non-MC) */}
+            {/* Show {t('quiz.checkAnswer')} for open-ended vocab (not multiple choice) and morphology (non-MC) */}
             {(() => {
               const isVocabMC = type === 'VOCABULARY_QUIZ' && q.type === 'MULTIPLE_CHOICE' && Array.isArray(q.options) && q.options.length > 0
               const isMorphMC = type === 'MORPHOLOGY_QUIZ' && q.type === 'MULTIPLE_CHOICE'
@@ -769,11 +773,11 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
             {/* Only show the Next button for typed/open-ended answers; multiple-choice auto-advances (per-question) */}
             {(q.type !== 'MULTIPLE_CHOICE' || !(Array.isArray(q.options) && q.options.length > 0)) ? (
               <Button onClick={handleNext}>
-                {idx < total - 1 ? 'Next Question' : 'Finish Quiz'}
+                {idx < total - 1 ? t('quiz.nextQuestion') : t('quiz.finishQuiz')}
               </Button>
             ) : (
               <span className="text-xs text-gray-400 animate-pulse">
-                {idx < total - 1 ? 'Next…' : 'Finishing…'}
+                {idx < total - 1 ? t('quiz.next') : t('quiz.finishing')}
               </span>
             )}
           </>
