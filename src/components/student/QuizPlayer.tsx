@@ -327,7 +327,6 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // ── Attempts indicator ────────────────────────────────────────────────────
   function AttemptsIndicator() {
-  const t = useT()
     if (attemptCount === 0 && maxRetakes === null) return null
     return (
       <div className="flex items-center justify-between text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
@@ -350,7 +349,6 @@ export function QuizPlayer({ assignmentId, questions, type, timePerQuestion, pro
 
   // ── Running score chip ─────────────────────────────────────────────────────
   function RunningScore() {
-  const t = useT()
     if (answeredSoFar === 0) return null
     return (
       <div className="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
