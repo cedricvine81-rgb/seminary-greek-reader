@@ -35,7 +35,11 @@ for (const cat of BACKGROUND_SUMMARIES) {
 export function getTextSummary(work: Pick<CatalogWork, 'id' | 'name'>): TextSummary | null {
   const bg = _bgByName.get(norm(work.name)) ?? _bgByName.get(norm(work.name.replace(/\s*\(.*\)$/, '')))
   if (bg && bg.length) return { sections: bg }
-  const authored = TEXT_SUMMARIES[work.id]
+  // A work split across several catalog entries (Herodotus' nine books, Quintilian's twelve,
+  // Eusebius' ten) shares one summary: fall back to the id with its trailing book number
+  // stripped, so "herodotus-histories-7" finds "herodotus-histories". A book that genuinely
+  // warrants its own entry can still have one — an exact-id match always wins.
+  const authored = TEXT_SUMMARIES[work.id] ?? TEXT_SUMMARIES[work.id.replace(/-\d+$/, '')]
   if (authored) return { sections: authored.sections, aiDrafted: true }
   return null
 }
@@ -1280,5 +1284,289 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'The ritual washing of hands and related purity questions, including the debate over which books "defile the hands" (i.e., are canonical Scripture).',
     'It regulates ritual hand-purity and preserves evidence about the recognition of sacred books.',
     'Its hand-washing rules illuminate the Gospel controversy over the disciples eating with unwashed hands (Mark 7; Matthew 15).',
+  ),
+
+  // ── Plato ───────────────────────────────────────────────────────────────────────────
+  'plato-apology': S(
+    'By Plato (c. 428–348 BCE), presenting the defence speech of his teacher Socrates.',
+    'Socrates was tried at Athens in 399 BCE for impiety and corrupting the young, and executed.',
+    'Socrates’ defence before the Athenian jury: his account of the oracle at Delphi, his cross-examination of those reputed wise, his refusal to abandon philosophy to save his life, and his response to the death sentence.',
+    'It presents the philosopher as one who obeys God rather than men and who holds that the unexamined life is not worth living, and that it is better to suffer wrong than to do it.',
+    'Socrates’ willingness to die rather than stop obeying his divine calling is a standing classical parallel to the apostolic answer that one must obey God rather than men (Acts 4:19; 5:29), and to Paul’s defence speeches.',
+  ),
+  'plato-crito': S(
+    'By Plato (c. 428–348 BCE); a dialogue between Socrates and his friend Crito.',
+    'Set in Socrates’ prison cell in 399 BCE, days before his execution.',
+    'Crito urges Socrates to escape; Socrates argues that one must never return wrong for wrong, and imagines the Laws of Athens asking whether a citizen may break the agreements under which he has lived.',
+    'It develops the duty of the individual to the civic order, and the principle that retaliation is never justified.',
+    'The refusal to repay evil with evil stands beside Romans 12:17 and 1 Peter 3:9; the argument from the citizen’s obligation to the Laws is often set beside Romans 13.',
+  ),
+  'plato-phaedo': S(
+    'By Plato (c. 428–348 BCE), narrating Socrates’ last conversation.',
+    'Set on the day of Socrates’ execution in 399 BCE, among his friends.',
+    'Arguments for the soul’s immortality — from opposites, recollection, and the soul’s affinity with the unchanging Forms — followed by a myth of the soul’s destiny and the account of Socrates’ death.',
+    'It presents the body as a hindrance to the soul and philosophy as a preparation for dying, with the soul surviving and being judged.',
+    'Its dualism of body and soul shaped later Greek-speaking thought about the afterlife, and provides the philosophical background against which the New Testament’s hope of bodily resurrection is distinctive.',
+  ),
+  'plato-phaedrus': S(
+    'By Plato (c. 428–348 BCE); a dialogue between Socrates and the young Phaedrus.',
+    'Set outside the walls of Athens, on the banks of the Ilissus.',
+    'Three speeches on love, rising to Socrates’ myth of the soul as a charioteer with two horses; then a critique of rhetoric, and a famous complaint that writing weakens memory and cannot answer questions.',
+    'It treats desire as capable of being ordered toward the vision of true beauty, and distinguishes persuasion that serves truth from mere flattery.',
+    'The charioteer image of the soul divided against itself informs later moral psychology, and the critique of rhetoric bears on Paul’s disavowal of persuasive words of wisdom (1 Corinthians 2:1–5).',
+  ),
+  'plato-symposium': S(
+    'By Plato (c. 428–348 BCE); a series of speeches at a drinking party.',
+    'Set at the house of the tragedian Agathon in Athens, c. 416 BCE.',
+    'Successive speakers praise Eros, culminating in Socrates’ report of the priestess Diotima’s teaching that love ascends from particular beauties to Beauty itself; the drunken Alcibiades then delivers an encomium of Socrates.',
+    'It presents love as desire for what is good and lasting, and as the soul’s ladder from the visible to the eternal.',
+    'Its vocabulary of love and ascent forms part of the Hellenistic background to New Testament language about love, though the New Testament’s central term for love is not the erōs discussed here.',
+  ),
+  'plato-gorgias': S(
+    'By Plato (c. 428–348 BCE); a debate with the rhetorician Gorgias and his followers.',
+    'Written when rhetoric was the principal training for public life in the Greek cities.',
+    'Whether rhetoric is an art or mere flattery; Socrates argues that it is better to suffer injustice than to commit it, and that the unjust are better off punished than escaping punishment — closing with a myth of judgement after death.',
+    'It sets the good of the soul above worldly success and insists that justice matters more than power or reputation.',
+    'Its judgement myth and its insistence that wrongdoing harms the wrongdoer most provide background to New Testament teaching on final judgement and on gaining the world at the cost of one’s soul.',
+  ),
+  'plato-protagoras': S(
+    'By Plato (c. 428–348 BCE); a contest between Socrates and the sophist Protagoras.',
+    'Set in Athens during the sophists’ heyday, when they were paid to teach civic excellence.',
+    'Whether virtue can be taught; Protagoras’ myth of Prometheus and the gift of political skill; a debate over whether the virtues are one or many, and whether anyone does wrong willingly.',
+    'It probes the unity of the virtues and the claim that wrongdoing is a form of ignorance.',
+    'The description of the sophist as a merchant of wares for the soul illuminates New Testament warnings about teachers who peddle the word of God for gain (2 Corinthians 2:17).',
+  ),
+  'plato-timaeus': S(
+    'By Plato (c. 428–348 BCE); a discourse delivered by the Pythagorean Timaeus.',
+    'Plato’s most influential cosmological work, widely read in the Hellenistic and Roman periods.',
+    'An account of the making of the cosmos by a good craftsman (the Demiurge) who forms the visible world after an eternal pattern, together with the composition of the world-soul, time, the elements, and the human body.',
+    'It presents the universe as the deliberate work of a good maker, ordered and intelligible rather than random.',
+    'Its craftsman-creator and eternal pattern deeply shaped Hellenistic Jewish thought, especially Philo, and so lie behind the Logos language of John’s prologue and later Christian doctrines of creation.',
+  ),
+
+  // ── Aristotle ───────────────────────────────────────────────────────────────────────
+  'aristotle-nicomachean-ethics': S(
+    'By Aristotle (384–322 BCE), pupil of Plato and tutor of Alexander.',
+    'Lecture notes from the Lyceum at Athens, named for Aristotle’s son Nicomachus.',
+    'An inquiry into the human good: happiness as activity of the soul in accordance with virtue, the moral virtues as means between extremes, choice and responsibility, weakness of will, friendship, and the contemplative life.',
+    'It grounds ethics in character formed by habit rather than in rules alone, and treats the good life as the fulfilment of human nature.',
+    'Its vocabulary of virtue and its analysis of the divided will provide the philosophical context for New Testament virtue lists and for Paul’s account of willing the good but not doing it (Romans 7).',
+  ),
+  'aristotle-rhetoric': S(
+    'By Aristotle (384–322 BCE).',
+    'The foundational Greek handbook of persuasion, shaping rhetorical education for centuries.',
+    'Three books on the means of persuasion — the speaker’s character (ēthos), the hearers’ emotions (pathos), and the argument itself (logos) — with analyses of the emotions, of types of speech, and of style and arrangement.',
+    'It treats persuasion as a rational art that can serve truth, not merely a technique for winning.',
+    'Its categories underlie the rhetorical training of the Greco-Roman world and are widely used in modern analysis of the structure and argument of the New Testament letters.',
+  ),
+  'aristotle-poetics': S(
+    'By Aristotle (384–322 BCE); the surviving book treats tragedy and epic.',
+    'Written for the Lyceum; the promised treatment of comedy is lost.',
+    'The theory of imitation (mimēsis), the definition of tragedy, the primacy of plot, reversal and recognition, the tragic flaw, and the purging of pity and fear (katharsis).',
+    'It analyses how narrative shapes an audience’s understanding and emotion.',
+    'Its account of plot, recognition and reversal is a standard tool in the literary study of the Gospels and of New Testament narrative.',
+  ),
+
+  // ── Stoics and moralists ────────────────────────────────────────────────────────────
+  'greco-seneca-epistles': S(
+    'By Lucius Annaeus Seneca (c. 4 BCE – 65 CE), Stoic philosopher, dramatist, and tutor and minister to Nero.',
+    'Written in Seneca’s last years, after his withdrawal from Nero’s court and before his forced suicide in 65 CE — the same decades as Paul’s letters.',
+    '124 letters to his friend Lucilius on living well: the use of time, friendship, poverty and wealth, the fear of death, self-examination, the indwelling divine spirit, illness, and the progress of the soul toward virtue.',
+    'It presents philosophy as daily practice rather than theory, insisting that the divine is near and within, that externals are indifferent, and that the wise person is free whatever the circumstances.',
+    'The closest pagan parallel in tone and period to the New Testament letters. Seneca’s "a holy spirit indwells within us" (Ep. 41), his teaching on conscience, contentment and equality of slaves, and his letter-essay form are constantly compared with Paul — though the later correspondence between Paul and Seneca is a Christian forgery.',
+  ),
+  'marcus-aurelius-meditations': S(
+    'By Marcus Aurelius (121–180 CE), Roman emperor and Stoic.',
+    'Private notebooks written in Greek during the emperor’s campaigns on the northern frontier.',
+    'Twelve books of aphorisms and self-address on providence, the shortness of life, duty to the common good, the acceptance of what is fated, and the discipline of judgement, desire, and action.',
+    'It shows Stoic practice as daily self-examination and consent to the rational order governing the universe.',
+    'Written after the New Testament, it illuminates the moral world of the second-century empire in which the church was expanding — and contains one of the earliest imperial references to the Christians.',
+  ),
+  'dio-chrysostom-orations': S(
+    'By Dio Cocceianus of Prusa (c. 40 – c. 115 CE), called Chrysostom, "golden-mouthed".',
+    'A sophist and moral philosopher who was exiled under Domitian and travelled as a wandering preacher before returning to honour under Trajan.',
+    'Eighty orations on kingship, moral reform, civic concord, slavery and freedom, the gods and their images, and the simple life — including the Euboean discourse on rural poverty.',
+    'It combines Stoic and Cynic moral teaching with public rhetoric, urging virtue on cities and rulers alike.',
+    'Dio is the closest analogue to the travelling preacher of the first-century Greek East, and his addresses on concord, self-presentation, and the itinerant philosopher illuminate Paul’s public ministry and the Corinthian correspondence.',
+  ),
+  'xenophon-memorabilia': S(
+    'By Xenophon (c. 430 – c. 354 BCE), soldier, historian, and companion of Socrates.',
+    'Written to defend Socrates’ memory against the charges on which he was condemned.',
+    'Four books of recollections and conversations presenting Socrates as pious, self-controlled, and useful to his friends and the city.',
+    'It portrays a practical Socrates concerned with self-mastery, piety, and duty rather than metaphysics, and includes an argument for design in nature.',
+    'A rare example of a disciple writing to vindicate an executed teacher, it offers a standing comparison for the Gospels as portraits of a master remembered by his followers.',
+  ),
+
+  // ── Historians and biographers ──────────────────────────────────────────────────────
+  'herodotus-histories': S(
+    'By Herodotus of Halicarnassus (c. 484 – c. 425 BCE), called the father of history.',
+    'Written in the generation after the Persian Wars, drawing on travel and oral inquiry across the eastern Mediterranean.',
+    'Nine books tracing the conflict between Greeks and Persians to its climax at Salamis and Plataea, with long ethnographic digressions on Egypt, Scythia, Babylon, and Persia.',
+    'It sets human affairs under divine envy and reversal, warning that great prosperity invites a fall.',
+    'Its account of Egypt, Babylon and Persia is a primary source for the world of the later Old Testament, and its method of inquiry stands behind the historiographical tradition Luke works within.',
+  ),
+  'plutarch-alexander': S(
+    'By Plutarch of Chaeronea (c. 46 – c. 120 CE), biographer and priest at Delphi.',
+    'One of the Parallel Lives, pairing a Greek and a Roman figure; Alexander is paired with Julius Caesar.',
+    'The life of Alexander the Great from his birth and education under Aristotle through his conquest of the Persian Empire to his death at Babylon in 323 BCE.',
+    'Plutarch states that he writes lives, not histories, seeking the revealing anecdote that discloses character rather than the full record of deeds.',
+    'Alexander’s conquests created the Hellenistic world of the New Testament; Plutarch’s biographical method — character shown through selected incident — is regularly compared with the Gospels.',
+  ),
+  'plutarch-antony': S(
+    'By Plutarch of Chaeronea (c. 46 – c. 120 CE).',
+    'One of the Parallel Lives, paired with Demetrius as a study of great gifts ruined.',
+    'The career of Mark Antony: his rise after Caesar’s assassination, his rule in the East, his relationship with Cleopatra, and his defeat at Actium and death.',
+    'It is a moral study of a capable man undone by appetite and infatuation.',
+    'It documents the Roman East a generation before Paul, including Ephesus, Tarsus, and the client-kingdoms, and illustrates the moral biography that shaped Greco-Roman expectations of a life story.',
+  ),
+  'plutarch-isis-osiris': S(
+    'By Plutarch of Chaeronea (c. 46 – c. 120 CE), writing as a priest of Apollo at Delphi.',
+    'Addressed to Clea, a priestess, at a time when Egyptian cults were spreading through the empire.',
+    'The myth of Isis, Osiris and Typhon, retold and then interpreted allegorically as a philosophical account of the divine, matter, and the soul.',
+    'It argues that the myths of the nations point, when rightly read, to one divine reality apprehended under many names.',
+    'The fullest ancient account of a mystery-cult myth, it is central to discussion of dying-and-rising deities and of the religious environment in which the early church proclaimed a risen Lord.',
+  ),
+
+  // ── Epic and didactic poetry ────────────────────────────────────────────────────────
+  'homer-iliad': S(
+    'Attributed to Homer; the poem took its present shape by about the eighth or seventh century BCE.',
+    'The foundational poem of Greek education, memorised and quoted throughout antiquity.',
+    'Twenty-four books on the wrath of Achilles during a few weeks of the Trojan War, ending with Priam’s ransom of Hector’s body.',
+    'It confronts mortality, honour, and the cost of anger, with gods who intervene constantly yet cannot avert death.',
+    'Homer was the shared literary inheritance of every educated Greek speaker; his language and scenes shaped the vocabulary, imagery and rhetorical training of the world in which the New Testament was written.',
+  ),
+  'homer-odyssey': S(
+    'Attributed to Homer; in its present form from about the eighth or seventh century BCE.',
+    'Companion to the Iliad and equally central to ancient education.',
+    'Twenty-four books on Odysseus’ ten-year return from Troy, his wanderings and descent to the dead, and his recovery of his household on Ithaca.',
+    'It explores endurance, hospitality, disguise and recognition, and the guest-friendship owed to strangers under divine protection.',
+    'Its ethic of hospitality to the unknown traveller, and its recognition scenes, are frequently compared with Gospel narratives such as the road to Emmaus.',
+  ),
+  'hesiod-theogony': S(
+    'By Hesiod, a Boeotian farmer-poet of about 700 BCE.',
+    'Composed in the same early period as the Homeric poems.',
+    'The origin of the gods from Chaos, the succession of Ouranos, Kronos and Zeus, the war with the Titans, and the ordering of the cosmos under Zeus.',
+    'It presents the divine order as achieved through conflict and established by power.',
+    'The standard Greek account of the gods’ origins and of Tartarus, it supplies the background against which Jewish and Christian claims about one uncreated Creator were heard.',
+  ),
+  'hesiod-works-and-days': S(
+    'By Hesiod (c. 700 BCE), addressed to his brother Perses in a dispute over their inheritance.',
+    'The earliest Greek poem of practical moral instruction.',
+    'Advice on justice, honest work and the farming year, framed by the myths of Prometheus and Pandora and the five ages of humankind.',
+    'It insists that Zeus watches over justice, that honest labour is honourable, and that wrongdoing brings ruin on a whole community.',
+    'Its wisdom-poetry form invites comparison with Proverbs, and its declining ages of the world parallel the sequence of kingdoms in Daniel.',
+  ),
+  'hesiod-shield': S(
+    'Attributed to Hesiod, though generally regarded as the work of a later imitator.',
+    'A short epic piece in the Hesiodic tradition.',
+    'The combat of Heracles with Cycnus, with a long ecphrastic description of the shield of Heracles.',
+    'It illustrates the hero as the agent who rids the world of violent men.',
+    'Chiefly valuable as an example of the ecphrasis — the elaborate description of an object — that shaped ancient literary technique.',
+  ),
+  'aratus-phaenomena': S(
+    'By Aratus of Soli (c. 315 – c. 240 BCE), a Stoic-influenced poet at the Macedonian court.',
+    'One of the most widely read and translated poems of the Hellenistic world.',
+    'A verse handbook of the constellations and of weather signs, opening with a hymn to Zeus who fills the heavens, the sea and human life.',
+    'It presents the ordered heavens as evidence of a divine reason pervading all things.',
+    'Paul quotes its opening hymn at Athens — "for we are indeed his offspring" (Acts 17:28) — making it one of the few pagan works cited in the New Testament.',
+  ),
+  'apollodorus-library': S(
+    'Attributed to Apollodorus of Athens, but in fact compiled by an unknown hand, probably in the first or second century CE.',
+    'A systematic handbook drawing on earlier poets and mythographers, many now lost.',
+    'A comprehensive summary of Greek myth from the origin of the gods through the great heroic cycles to the aftermath of the Trojan War.',
+    'It is a reference work rather than an argument, preserving the standard forms of the myths.',
+    'The most convenient ancient guide to the mythology assumed by Greek-speaking audiences, useful for recognising the allusions and assumptions of the New Testament’s cultural setting.',
+  ),
+
+  // ── Rhetoric and satire ─────────────────────────────────────────────────────────────
+  'quintilian': S(
+    'By Marcus Fabius Quintilianus (c. 35 – c. 100 CE), Rome’s leading teacher of rhetoric.',
+    'Written after twenty years of teaching, under Domitian, for the education of the Roman elite.',
+    'Twelve books on the whole training of the orator, from the child’s earliest schooling through invention, arrangement, style, memory and delivery, to the character of the ideal speaker.',
+    'It defines the orator as "a good man skilled in speaking", making moral character inseparable from persuasive power.',
+    'The fullest surviving account of Greco-Roman education and rhetorical technique, it illuminates how the New Testament letters were composed, delivered and heard.',
+  ),
+  'theon-progymnasmata': S(
+    'By Aelius Theon of Alexandria, a rhetorician usually dated to the first century CE.',
+    'The earliest surviving handbook of the progymnasmata, the standard preliminary exercises of ancient education.',
+    'Graded composition exercises — fable, narrative, anecdote (chreia), maxim, refutation and confirmation, commonplace, encomium, comparison, characterisation, description, thesis and law.',
+    'It shows how ancient students were trained to expand, condense, rearrange and recast a received story or saying.',
+    'Directly relevant to Gospel study: the chreia exercises describe the very techniques of adapting a remembered saying or incident that are invoked in explaining the differences among the Synoptic Gospels.',
+  ),
+  'lucian-peregrinus': S(
+    'By Lucian of Samosata (c. 125 – after 180 CE), satirist and rhetorician.',
+    'Written after the self-immolation of the Cynic Peregrinus Proteus at the Olympic Games of 165 CE.',
+    'A satirical account of Peregrinus’ career, including a period among the Christians in Palestine, and his theatrical suicide by fire.',
+    'It mocks the pursuit of fame through spectacular renunciation.',
+    'Contains one of the earliest pagan descriptions of Christians — their care for imprisoned believers, their contempt for death, their sharing of goods, and their worship of "that crucified sophist".',
+  ),
+  'lucian-alexander': S(
+    'By Lucian of Samosata (c. 125 – after 180 CE).',
+    'An exposé of a contemporary oracle-cult in Paphlagonia.',
+    'The career of Alexander of Abonoteichos, who established a lucrative oracle of the snake-god Glycon by means of staged miracles and manufactured prophecies.',
+    'It is a sceptic’s anatomy of religious fraud and of the credulity that sustains it.',
+    'Valuable evidence for how new cults were founded, publicised and financed in the second-century empire, and for how outsiders assessed claims of miracle and prophecy.',
+  ),
+  'philostratus-apollonius': S(
+    'By Flavius Philostratus (c. 170 – c. 250 CE), commissioned by the empress Julia Domna.',
+    'Written well over a century after its subject, in an age of renewed interest in holy men.',
+    'The life and travels of Apollonius of Tyana, a first-century Pythagorean sage credited with wonders, exorcisms, prophecy, a trial before Domitian, and a disappearance at the end of his life.',
+    'It presents the ideal of the divinely inspired ascetic philosopher.',
+    'The most-discussed pagan parallel to the Gospels: a wonder-working teacher with disciples, a hostile trial, and a departure from the world — though written later and with very different aims.',
+  ),
+  'nt-pagan-sources': S(
+    'A curated collection of the Greek authors quoted or alluded to in the New Testament.',
+    'These lines were proverbial in the Hellenistic world and reached the New Testament writers as common currency rather than through direct study.',
+    'The passages behind Acts 17:28 (Aratus, Phaenomena; Cleanthes, Hymn to Zeus), 1 Corinthians 15:33 (Menander, Thaïs), and Titus 1:12 (Epimenides), with the verbatim quotations anchored to the Greek New Testament.',
+    'It shows New Testament writers appealing to what their hearers already granted, using pagan poets as a point of contact rather than as authorities.',
+    'The clearest evidence of direct engagement with Greek literature in the New Testament, central to discussion of Paul’s Areopagus speech and his missionary method.',
+  ),
+
+  // ── Church Fathers ──────────────────────────────────────────────────────────────────
+  'eusebius-he': S(
+    'By Eusebius of Caesarea (c. 260 – c. 340 CE), bishop and scholar, the first church historian.',
+    'Written across the Great Persecution and completed after Constantine’s victory, drawing on the library at Caesarea.',
+    'Ten books from the apostolic age to Constantine: the succession of bishops in the major sees, the writers and heresies of each generation, the persecutions and their martyrs, and the formation of the New Testament canon.',
+    'It presents the church’s survival and eventual triumph as the work of divine providence.',
+    'Indispensable for New Testament study: Eusebius preserves lost writers such as Papias and Hegesippus, and reports the earliest traditions about the writing of the Gospels and the fate of the apostles.',
+  ),
+
+  // ── NT Apocrypha ────────────────────────────────────────────────────────────────────
+  'protevangelium': S(
+    'Anonymous, though it claims to be by James, the Lord’s brother; usually dated to the mid or later second century.',
+    'Composed as interest grew in the family and childhood of Jesus, questions the canonical Gospels leave largely unanswered.',
+    'The miraculous birth and temple upbringing of Mary, her betrothal to the widower Joseph, the annunciation, and the birth of Jesus in a cave, with the ordeal that vindicates Mary’s virginity.',
+    'It is concerned above all to defend and magnify Mary’s purity, presenting her virginity as perpetual.',
+    'The fountainhead of later Marian devotion and of the tradition that Jesus’ "brothers" were Joseph’s sons by an earlier marriage; it also shows how the infancy narratives of Matthew and Luke were being elaborated by the second century.',
+  ),
+  'gospel-of-peter': S(
+    'Anonymous, circulating under Peter’s name; the surviving portion comes from a fragment found at Akhmîm in Egypt in 1886.',
+    'Known to Bishop Serapion of Antioch around 200 CE, who at first permitted and then forbade its use.',
+    'A fragmentary passion and resurrection narrative: the trial before Herod, the crucifixion, the sealed and guarded tomb, and an account of the resurrection witnessed by the soldiers, with a walking cross that speaks.',
+    'It shifts blame for the crucifixion from Pilate toward Herod and the Jewish authorities, and displays a tendency to portray Jesus as beyond suffering.',
+    'The only surviving early narrative of the resurrection itself as an observed event, it is central to debate about how the passion tradition developed outside the canonical Gospels.',
+  ),
+  'paul-and-thecla': S(
+    'Anonymous; part of the Acts of Paul, which Tertullian says was written by a presbyter in Asia who was removed from office for it.',
+    'Composed in the later second century, when stories of apostolic travel and of ascetic women were widely popular.',
+    'Thecla of Iconium hears Paul preach, breaks her engagement to live in celibacy, survives burning and the beasts, baptises herself, and is finally commissioned to teach.',
+    'It celebrates continence as the way of salvation and presents a woman authorised to teach and baptise.',
+    'It contains the only physical description of Paul from antiquity, and its portrait of an independent woman teacher is important evidence for debates about women’s roles in the early church.',
+  ),
+
+  // ── Pseudepigrapha and Apostolic Fathers ────────────────────────────────────────────
+  'assumption-moses': S(
+    'Anonymous, also called the Testament of Moses; written in the first century CE, surviving only in a single incomplete Latin palimpsest.',
+    'Composed in Judea around the time of Herod’s death or shortly after, in circles resisting accommodation with foreign rule.',
+    'Moses’ farewell prophecy to Joshua, surveying Israel’s history to the Hasmoneans and Herod, the persecution and the martyrdom of the righteous Taxo, and the coming appearance of God’s kingdom. The manuscript breaks off unfinished.',
+    'It insists that deliverance comes from God alone, without human revolt, and that the righteous who suffer will be vindicated.',
+    'Its lost ending is generally held to lie behind Jude 9, where Michael disputes with the devil over the body of Moses — the New Testament’s one clear allusion to this book.',
+  ),
+  'af-hermas': S(
+    'By Hermas, a Christian of Rome; the Muratorian Fragment says he was the brother of Bishop Pius, placing him in the mid second century.',
+    'Written for a Roman church troubled by wealth, worldliness, and believers who had denied the faith under pressure.',
+    'Five Visions, twelve Mandates and ten Similitudes: the church appears as an aged woman and as a tower under construction, followed by moral commandments and extended parables.',
+    'Its central concern is whether sins after baptism can be forgiven; it answers that one further repentance is granted, but only one.',
+    'One of the most widely read early Christian works — some treated it as Scripture — and the fullest evidence for how the second-century church handled post-baptismal sin and the pastoral care of the wealthy.',
   ),
 }
