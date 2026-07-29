@@ -94,6 +94,11 @@ def clean_ocr(t):
     t = re.sub(r'(?<![A-Za-z0-9])S\.(?=\s+[A-Z])', '8.', t)
     # "10" set as the letters l-o: "lo. And wine and strong drink I drank not" is T. Reuben 1:10.
     t = re.sub(r'(?<![A-Za-z0-9])lo\.(?=\s+[A-Z])', '10.', t)
+    # 5 printed as a caret: "^. Then shall the sceptre of my kingdom shine forth" is
+    # T. Judah 24:5. Anchored to the start of a line, because Charles also uses ^ to close
+    # a bracket round words absent from the Armenian ('...my infirmity"^. My land...'),
+    # which would otherwise read as a verse and invent one.
+    t = re.sub(r'(?<=\n)\^\.(?=\s+[A-Z])', '5.', t)
     return t
 
 
@@ -225,6 +230,15 @@ def align_runs(runs, expected):
                 s = score[i + 1][j]
                 if s > NEG and s > best:
                     best, mv = s, ('drop', 1, 0)
+            # A stray fragment belonging to no chapter — the scan prints a number the text
+            # does not carry, or a header's digits survive as a run. T. Judah opens with a
+            # spurious [1, 3] and T. Reuben has a bare [4]; without a way to pass over them
+            # every later chapter was compared against its neighbour's run. Only short runs
+            # may be skipped, so this cannot discard a real chapter to force a fit.
+            if i < n and j < m and len(runs[i]) <= 2:
+                s = score[i + 1][j]
+                if s > NEG and s > best:
+                    best, mv = s, ('skip', 1, 0)
             if j < m and i == n:                     # chapter with nothing left: unfilled
                 s = score[i][j + 1]
                 if s > NEG and s > best:
@@ -251,6 +265,8 @@ def align_runs(runs, expected):
             out.append(first); out.append(rest);
         elif kind == 'gap':
             out.append(None)
+        elif kind in ('drop', 'skip'):
+            pass                                     # this run belongs to no chapter
         i += di; j += dj
     return out
 
