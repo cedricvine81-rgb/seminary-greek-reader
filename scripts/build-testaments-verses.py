@@ -87,6 +87,9 @@ def clean_ocr(t):
     # would break the chapter detection that depends on those numerals.
     t = re.sub(r'(?<![A-Za-z0-9])g\.(?=\s+[A-Z])', '9.', t)
     t = re.sub(r'(?<![A-Za-z0-9])ii\.(?=\s+[A-Z])', '11.', t)
+    t = re.sub(r'(?<![A-Za-z0-9])S\.(?=\s+[A-Z])', '8.', t)
+    # "10" set as the letters l-o: "lo. And wine and strong drink I drank not" is T. Reuben 1:10.
+    t = re.sub(r'(?<![A-Za-z0-9])lo\.(?=\s+[A-Z])', '10.', t)
     return t
 
 
@@ -153,8 +156,8 @@ VERSE = re.compile(r'(?<![\d.,])(\d{1,3})\s*\.\s*[\'"‘’“”]?\s+(?=[A-Za-z
 # as text — T. Reuben 1:1 came out as the words "and Repentance" and nothing else. Consume
 # the whole header block, up to the blank line that closes it.
 SECTION_HDR = re.compile(
-    r'(?:^|\n)\s*[IVXLC]{1,8}[.,]?\s*(?:\d{1,3}|[ivxl]{1,6})\s*[-–]\s*'
-    r'(?:[IVXLC]{1,8}[.,]?\s*)?(?:\d{1,3}|[ivxlo]{1,6})\s*\.[\s\S]*?(?=\n\s*\n)', re.I)
+    r'(?:^|\n)\s*[IVXLCn]{1,8}[.,]?\s*(?:\d{1,3}|[ivxlgo]{1,6})\s*[-–]\s*'
+    r'(?:[IVXLCn]{1,8}[.,]?\s*)?(?:\d{1,3}|[ivxlgo]{1,6})\s*\.[\s\S]*?(?=\n\s*\n)', re.I)
 
 
 # A chapter turn, inside the text that trails a chapter's last verse: the opening numeral,
