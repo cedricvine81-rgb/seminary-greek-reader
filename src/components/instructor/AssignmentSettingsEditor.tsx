@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { toEndOfDayLocalISO } from '@/lib/due-date'
+import { toEndOfDayLocalISO, toDueISO, fromDueISO } from '@/lib/due-date'
 import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { Card, CardTitle } from '@/components/ui/Card'
@@ -64,7 +64,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
-  const [dueDate, setDueDate] = useState(initial.dueDate.slice(0, 10))
+  // Date and time of day are held separately: a blank time means end of that day, which is
+  // what every assignment set before timed deadlines existed will show.
+  const [dueDate, setDueDate] = useState(fromDueISO(initial.dueDate).date)
+  const [dueTime, setDueTime] = useState(fromDueISO(initial.dueDate).time)
   const [instructions, setInstructions] = useState(initial.instructions ?? '')
   const [reference, setReference] = useState(initial.reference ?? '')
   // For translation: timePerQuestion stores stage-1 seconds; display as minutes
@@ -126,7 +129,11 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           weekNumber,
           // Translation exercises derive their due date from the Round deadlines
           // (Round 1 → Round 2 → existing), since the Due date field is hidden for them.
-          dueDate: toEndOfDayLocalISO(isTranslation ? ((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate) : dueDate),
+          // Translation exercises take their close date from the Round deadlines and have
+          // no time of their own; everything else honours the optional Due time.
+          dueDate: isTranslation
+            ? toEndOfDayLocalISO((round1Deadline || round2Deadline)?.slice(0, 10) || dueDate)
+            : toDueISO(dueDate, dueTime),
           instructions,
           reference: (isTranslation || isExam) ? reference : undefined,
           // Convert back to seconds for storage
@@ -225,6 +232,24 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
               value={dueDate}
               onChange={e => setDueDate(e.target.value)}
             />
+          )}
+          {/* Optional time of day. Left blank the assignment closes at the end of the due
+              date, which is how every assignment behaved before this existed. */}
+          {!isTranslation && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Due time (optional)</label>
+              <input
+                type="time"
+                value={dueTime}
+                onChange={e => setDueTime(e.target.value)}
+                className="input"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                {dueTime
+                  ? `Closes at ${dueTime} your time.`
+                  : 'Leave blank to close at the end of the due date (11:59 pm).'}
+              </p>
+            </div>
           )}
         </div>
 

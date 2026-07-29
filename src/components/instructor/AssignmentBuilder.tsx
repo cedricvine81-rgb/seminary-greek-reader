@@ -8,7 +8,7 @@ import { Select } from '@/components/ui/Select'
 import { GRAMMAR_HOMEWORK_SETS } from '@/data/grammar-homework'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
-import { toEndOfDayLocalISO } from '@/lib/due-date'
+import { toEndOfDayLocalISO, toDueISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import { subsectionKeysBefore, wordsForSelection } from '@/lib/vocab-subsections'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
@@ -245,6 +245,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     level: courseLevel, reference: '', instructions: '', numQuestions: 10,
     allowLate: false, lateDaysLimit: 7, notesFolderName: '', homeworkSet: '',
   })
+  // Optional time of day for the due date. Kept out of `form` because the whole form is
+  // spread into the create request, and this is a display-side companion to dueDate that
+  // gets folded into it on save rather than a field of its own.
+  const [dueTime, setDueTime] = useState('')
   const [quizStylePct, setQuizStylePct] = useState(0)
   // Vocab word selection over the BGVB list: frequency subsections.
   const [vocabSubsections, setVocabSubsections] = useState<string[]>([])
@@ -298,8 +302,8 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ courseId, ...form,
           // A calendar due date closes at the end of that day in the instructor's
-          // local timezone (not UTC midnight).
-          ...(form.dueDate ? { dueDate: toEndOfDayLocalISO(form.dueDate) } : {}),
+          // local timezone (not UTC midnight) — or at the Due time if one was given.
+          ...(form.dueDate ? { dueDate: toDueISO(form.dueDate, dueTime) } : {}),
           // Exams hide Week/Due date — default them so the record stays valid (week 1;
           // due date = the exam's close date, falling back to today).
           ...(form.type === 'TRANSLATION_EXAM' ? {
@@ -536,6 +540,17 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           {form.type !== 'TRANSLATION_EXERCISE' && (
             <Input label="Due date" type="date" required value={form.dueDate}
               onChange={e => set('dueDate', e.target.value)} />
+          )}
+          {/* Optional. Blank closes the assignment at the end of the due date, which is how
+              every assignment behaved before timed deadlines existed. */}
+          {form.type !== 'TRANSLATION_EXERCISE' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Due time (optional)</label>
+              <input type="time" value={dueTime} onChange={e => setDueTime(e.target.value)} className="input" />
+              <p className="text-xs text-gray-500 mt-1">
+                {dueTime ? `Closes at ${dueTime} your time.` : 'Blank = end of the due date (11:59 pm).'}
+              </p>
+            </div>
           )}
         </div>
       )}
