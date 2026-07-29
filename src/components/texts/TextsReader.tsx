@@ -642,6 +642,23 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // there, preloading a small window on both sides (mirroring the Reader page's
   // reference jump) so scrolling in either direction works immediately, then scrolls to
   // the target chapter (or, if given, that exact verse) rather than just the panel top.
+  // The row CONTAINING a numbered unit that isn't itself a row. Line-cited poetry (Homer,
+  // Hesiod) is stored as line groups labelled with the group's first line, so only a line
+  // that opens a group has a row of its own — "Il. 6.146" would otherwise find nothing and
+  // fall back to the top of the book. Snap to the nearest preceding unit instead, which is
+  // the group the line sits in. Works with exact-numbered texts too: they simply hit the
+  // exact key first and never reach this.
+  const containingUnit = (targetKey: string, verse: number): HTMLElement | null => {
+    const prefix = `${targetKey}.`
+    let best = -1, el: HTMLElement | null = null
+    for (const [k, node] of Object.entries(verseRefs.current)) {
+      if (!k.startsWith(prefix) || !node) continue
+      const n = parseInt(k.slice(prefix.length), 10)
+      if (Number.isFinite(n) && n <= verse && n > best) { best = n; el = node }
+    }
+    return el
+  }
+
   const openAt = useCallback(async (w: CatalogWork, book: number | undefined, ch: number, verse?: number) => {
     const q = buildQueue(w)
     const idx = Math.max(0, q.findIndex(it => sameItem(it, book, ch)))
@@ -673,7 +690,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       const panel = panelRef.current
       if (!panel) return true
       if (!targetKey) { panel.scrollTop = 0; return true }
-      const vTarget = verse != null ? verseRefs.current[`${targetKey}.${verse}`] : null
+      const vTarget = verse != null
+        ? verseRefs.current[`${targetKey}.${verse}`] ?? containingUnit(targetKey, verse)
+        : null
       const target = vTarget ?? sectionRefs.current[targetKey]
       if (!target) return false
       // getBoundingClientRect (not offsetTop) — offsetTop is only meaningful relative to
