@@ -761,13 +761,29 @@ const diogenesCite = (text: string): { chapter: number; verse?: number } | null 
   return { chapter: p[0], verse: p[p.length - 1] }
 }
 
-const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation'] }[] = [
+const SENECA_ATTRIBUTION = 'Text: Seneca, Moral Letters to Lucilius, tr. Richard Mott Gummere, Loeb Classical Library vols 1–3 (1917, 1920, 1925), public domain. Source: Wikisource. Cited by letter and Loeb section.'
+
+// "Seneca, Ep. 76.23" → letter 76, section 23; a bare "Seneca, Ep. 76" opens the letter.
+// Anchored on "Seneca" so Pliny the Younger's Ep. can't match, and the section must be a
+// number, so the dataset's malformed run-together citations ("Seneca, Ep. Ira") fall through
+// to the external link rather than resolving to the wrong place.
+const senecaEpCite = (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(/^Seneca,?\s*Ep(?:ist)?\.\s+(\d+)(?:\.(\d+))?/)
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation']; chapterLabel?: (ch: number) => string; greek?: boolean }[] = [
   { slug: 'greco-epictetus-discourses-1', name: 'Epictetus, Discourses 1', noteBook: 'EpictDisc1', chapters: 30, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(1) },
   { slug: 'greco-epictetus-discourses-2', name: 'Epictetus, Discourses 2', noteBook: 'EpictDisc2', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(2) },
   { slug: 'greco-epictetus-discourses-3', name: 'Epictetus, Discourses 3', noteBook: 'EpictDisc3', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(3) },
   { slug: 'greco-epictetus-discourses-4', name: 'Epictetus, Discourses 4', noteBook: 'EpictDisc4', chapters: 13, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(4) },
   { slug: 'greco-epictetus-enchiridion', name: 'Epictetus, Enchiridion', noteBook: 'EpictEnch', chapters: 53, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusEnchCite },
   { slug: 'greco-diogenes-laertius', name: 'Diogenes Laertius, Lives of the Philosophers', noteBook: 'DiogLaert', chapters: 10, attribution: DIOGENES_ATTRIBUTION, parseCitation: diogenesCite },
+  // English only: Seneca wrote in Latin, and unlike the Perseus-sourced works above there is
+  // no parallel original to show, so `greek: false` keeps the reader from opening an empty
+  // second column.
+  { slug: 'greco-seneca-epistles', name: 'Seneca, Moral Letters to Lucilius', noteBook: 'SenecaEp', chapters: 124, attribution: SENECA_ATTRIBUTION, parseCitation: senecaEpCite, chapterLabel: (ch: number) => `Letter ${ch}`, greek: false },
 ]
 
 const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
@@ -778,11 +794,14 @@ const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
   chapters: w.chapters,
   attribution: w.attribution,
   parseCitation: w.parseCitation,
+  ...(w.chapterLabel ? { chapterLabel: w.chapterLabel } : {}),
 }))
 
-// Ids/names the catalog needs; `greek: true` tells the reader to show the parallel Greek.
+// Ids/names the catalog needs; `greek` tells the reader to show the parallel original.
+// Defaults true — every work here came from Perseus with its Greek alongside — but a
+// Latin author added from elsewhere sets it false.
 export const GRECO_CATALOG = GRECO.map(w => ({
-  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: true,
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: w.greek !== false,
 }))
 
 // ── Plato ─────────────────────────────────────────────────────────────────────────────
