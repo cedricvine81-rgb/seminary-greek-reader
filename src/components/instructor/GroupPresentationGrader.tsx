@@ -11,6 +11,8 @@ interface Member {
   name: string
   contributed: boolean
   attested: boolean
+  submitted: boolean        // this member handed in their own section
+  submittedAt: string | null
   body: string          // raw stored HTML; sanitized client-side before render
   aiDeclaration: string
   grade: number | null      // per-member override; null = inherits the group grade
@@ -19,8 +21,12 @@ interface Member {
 interface Group {
   groupId: string
   name: string
+  // Members hand in independently, so `submitted` means every member is in.
+  // submittedCount/memberCount show progress toward that.
   submitted: boolean
   submittedAt: string | null
+  submittedCount: number
+  memberCount: number
   pastDeadline: boolean
   lateApproved: boolean
   grade: number | null
@@ -126,7 +132,7 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
   }
 
   async function reopen() {
-    if (!window.confirm(`Reopen ${group.name}’s submission? This clears their submitted status and lets them edit and resubmit (late approval is granted).`)) return
+    if (!window.confirm(`Reopen ${group.name}? This clears the submitted status of all ${group.memberCount} members — including any who have already handed in — and lets them edit and resubmit (late approval is granted).`)) return
     setReopening(true)
     try { await post({ reopen: true }); onChanged() }
     catch { alert('Could not reopen the submission. Please try again.') }
@@ -149,12 +155,14 @@ function GroupCard({ group, assignmentId, expanded, onToggle, onChanged }: {
 
         <div className="shrink-0 text-center">
           {group.submitted
-            ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">Submitted</span>
-            : group.pastDeadline
-              ? <span className="text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md">Past deadline</span>
-              : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>}
+            ? <span className="text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md">All submitted</span>
+            : group.submittedCount > 0
+              ? <span className="text-xs font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md">{group.submittedCount} / {group.memberCount} submitted</span>
+              : group.pastDeadline
+                ? <span className="text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md">Past deadline</span>
+                : <span className="text-xs font-medium text-gray-400 bg-gray-100 px-2 py-0.5 rounded-md">Not submitted</span>}
           {group.submittedAt && <p className="mt-1 text-[11px] text-gray-400">{new Date(group.submittedAt).toLocaleDateString()}</p>}
-          {group.submitted && (
+          {(group.submitted || group.submittedCount > 0) && (
             <button onClick={reopen} disabled={reopening} className="mt-1 inline-flex items-center gap-1 text-[11px] text-gray-500 hover:text-brand-700 disabled:opacity-50">
               <RotateCcw size={11} /> {reopening ? 'Reopening…' : 'Reopen'}
             </button>
@@ -272,6 +280,9 @@ function MemberSection({ member, groupGrade, assignmentId, groupId, onChanged }:
         {member.attested
           ? <span className="inline-flex items-center gap-1 text-[11px] text-brand-700"><CheckCircle2 size={12} /> Attested</span>
           : <span className="inline-flex items-center gap-1 text-[11px] text-amber-600"><Clock size={12} /> Not attested</span>}
+        {member.submitted
+          ? <span className="inline-flex items-center gap-1 text-[11px] text-green-700" title={member.submittedAt ? new Date(member.submittedAt).toLocaleString() : undefined}><CheckCircle2 size={12} /> Submitted</span>
+          : <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><Clock size={12} /> Not submitted</span>}
 
         {/* Per-member grade override */}
         <div className="ml-auto flex items-center gap-1.5">

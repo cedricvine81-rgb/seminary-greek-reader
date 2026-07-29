@@ -15,6 +15,7 @@ interface Member {
   body: string       // raw HTML; sanitized before render
   contributed: boolean
   attested: boolean
+  submitted: boolean // this member has handed in their own section
 }
 interface Entry {
   groupId: string
@@ -26,8 +27,14 @@ interface Entry {
   instructions: string | null
   deadline: string
   pastDeadline: boolean
+  // `submitted` is the whole group being in (every member has handed their section in);
+  // `mySubmitted` is just this student. Editing is gated by mySubmitted, never by the group.
   submitted: boolean
   submittedAt: string | null
+  mySubmitted: boolean
+  mySubmittedAt: string | null
+  submittedCount: number
+  memberCount: number
   lateApproved: boolean
   canSubmit: boolean
   locked: boolean
@@ -170,15 +177,13 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
   }
 
   async function submit() {
-    // Warn about teammates whose work isn't ready, since submitting locks everyone.
-    const noSection = entry.members.filter(m => !m.contributed).length
-    const noSign = entry.members.filter(m => !m.attested).length
-    if (noSection > 0 || noSign > 0) {
-      const bits: string[] = []
-      if (noSection > 0) bits.push(`${noSection} ${noSection === 1 ? "hasn’t" : "haven’t"} written a section`)
-      if (noSign > 0) bits.push(`${noSign} ${noSign === 1 ? "hasn’t" : "haven’t"} signed their statement`)
-      if (!window.confirm(`${bits.join(' and ')} (of ${entry.members.length} members). Submitting locks everyone’s work for grading. Submit anyway?`)) return
-    }
+    // Submitting now locks only this student's own section, so the warning is about their
+    // own readiness — a teammate who hasn't finished is no longer their problem to weigh.
+    const gaps: string[] = []
+    if (isHtmlEmpty(body)) gaps.push('written your section')
+    if (!entry.me.attestedAt) gaps.push('signed your AI/sources statement')
+    if (gaps.length > 0 &&
+        !window.confirm(`You haven’t ${gaps.join(' or ')}. Submitting hands in your section as it stands and locks it for grading. Submit anyway?`)) return
     setBusy('submit')
     // Flush any pending edits before the submission locks the section for grading.
     if (await persist() && await act({ action: 'submit' })) onChanged()
@@ -210,11 +215,17 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
           <p className="text-xs text-gray-400">{entry.courseName} · {entry.groupName}</p>
         </div>
         <div className="flex flex-col items-end gap-1.5">
+          {/* Whole group in, then my own status, then the deadline — most specific first. */}
           {entry.submitted
-            ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> Submitted</span>
-            : entry.pastDeadline
-              ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> Past deadline</span>
-              : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> Due {deadline.toLocaleDateString()}</span>}
+            ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> All {entry.memberCount} submitted</span>
+            : entry.mySubmitted
+              ? <span className="inline-flex items-center gap-1 text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-md"><CheckCircle2 size={13} /> Your section is in</span>
+              : entry.pastDeadline
+                ? <span className="inline-flex items-center gap-1 text-xs font-medium text-red-700 bg-red-50 px-2 py-0.5 rounded-md"><Clock size={13} /> Past deadline</span>
+                : <span className="inline-flex items-center gap-1 text-xs font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded-md"><Clock size={13} /> Due {deadline.toLocaleDateString()}</span>}
+          {!entry.submitted && entry.submittedCount > 0 && (
+            <span className="text-[11px] text-gray-400">{entry.submittedCount} of {entry.memberCount} submitted</span>
+          )}
           <MessageGroupButton courseId={entry.courseId}
             group={{ id: entry.groupId, name: entry.groupName, memberCount: entry.members.length }}
             onSent={onChanged} />
@@ -235,7 +246,11 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <h4 className="text-sm font-semibold text-gray-700">Your section</h4>
-          {entry.locked && <span className="inline-flex items-center gap-1 text-[11px] text-gray-400"><Lock size={11} /> Locked (submitted)</span>}
+          {entry.locked && (
+            <span className="inline-flex items-center gap-1 text-[11px] text-gray-400">
+              <Lock size={11} /> {entry.mySubmitted ? 'Locked (you submitted)' : 'Locked (past deadline)'}
+            </span>
+          )}
           {renderSaveStatus()}
         </div>
         {entry.locked ? (
@@ -293,6 +308,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
                       ? <span className="text-[11px] text-green-700 inline-flex items-center gap-1"><CheckCircle2 size={11} /> contributed</span>
                       : <span className="text-[11px] text-gray-400">no section yet</span>}
                     {m.attested && <span className="text-[11px] text-brand-700 inline-flex items-center gap-1"><ShieldCheck size={11} /> signed</span>}
+                    {m.submitted && <span className="text-[11px] text-green-700 inline-flex items-center gap-1"><Send size={11} /> submitted</span>}
                   </div>
                   {isHtmlEmpty(html)
                     ? <p className="text-xs text-gray-400 italic">Nothing written yet.</p>
@@ -333,31 +349,34 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
 
       {error && <p className="mt-3 text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
 
-      {/* Submit */}
-      {!entry.submitted && (
+      {/* Submit — my own section only. A teammate handing in early neither submits for me
+          nor stops me, so this panel is driven by mySubmitted, not the group roll-up. */}
+      {!entry.mySubmitted && (
         <div className="mt-4 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
           <p className="text-xs text-gray-500">
             {entry.canSubmit
-              ? 'Submitting locks every member’s section for grading. Any group member can submit.'
+              ? 'Submits your section only, and locks it for grading. Your group-mates hand in their own sections separately.'
               : entry.pastDeadline
                 ? 'The deadline has passed. Ask your instructor to approve a late submission.'
                 : ''}
           </p>
           <Button onClick={submit} loading={busy === 'submit'} disabled={!entry.canSubmit} className="flex items-center gap-1.5">
-            <Send size={14} /> Submit presentation
+            <Send size={14} /> Submit my section
           </Button>
         </div>
       )}
-      {entry.submitted && (
+      {entry.mySubmitted && (
         <div className="mt-3 flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
           <p className="text-xs text-gray-500">
-            {entry.submittedAt ? `Submitted on ${new Date(entry.submittedAt).toLocaleString()}.` : 'Submitted.'}
-            {!entry.pastDeadline && ' You can reopen it to keep editing before the deadline.'}
+            {entry.mySubmittedAt ? `You submitted your section on ${new Date(entry.mySubmittedAt).toLocaleString()}.` : 'Your section is submitted.'}
+            {!entry.submitted && ` Waiting on ${entry.memberCount - entry.submittedCount} of ${entry.memberCount}.`}
+            {!entry.pastDeadline && ' You can reopen your own section to keep editing before the deadline.'}
           </p>
-          {/* Before the deadline, any member can undo the submission; after it, only the instructor can reopen. */}
+          {/* Before the deadline a member can undo their OWN submission; after it, only the
+              instructor can reopen — and that reopens the whole group. */}
           {!entry.pastDeadline && (
             <Button variant="secondary" size="sm" onClick={reopen} loading={busy === 'reopen'} className="flex items-center gap-1.5">
-              <RotateCcw size={13} /> Reopen
+              <RotateCcw size={13} /> Reopen mine
             </Button>
           )}
         </div>

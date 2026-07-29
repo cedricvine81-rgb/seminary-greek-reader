@@ -232,6 +232,11 @@ model GroupContribution {
   body         String   @default("")  // sanitized rich-text HTML: this member's section
   aiDeclaration String  @default("")  // member's use-of-AI / sources / originality statement
   attestedAt   DateTime?              // set when the member signs their declaration
+  // Set when this member submits their OWN section. Submission is per-member: one member
+  // submitting no longer freezes their teammates, so each can finish and hand in
+  // independently. The group-level GroupSubmission.submittedAt is the roll-up, set only
+  // once every member has submitted.
+  submittedAt  DateTime?
   // Optional per-member grade override. Null = this member inherits the group grade
   // (GroupSubmission.grade); set it to give an individual a different grade for their
   // contribution.
@@ -249,12 +254,15 @@ model GroupContribution {
   @@index([userId])
 }
 
-// The group-level record for a Group Presentation: one submission + one grade for the
-// whole group. lateApproved lets an instructor accept a post-deadline submission.
+// The group-level record for a Group Presentation: one grade for the whole group.
+// lateApproved lets an instructor accept a post-deadline submission.
 model GroupSubmission {
   id           String    @id @default(cuid())
   groupId      String    @unique
   assignmentId String
+  // Roll-up only: set when every member has submitted their own section, cleared when any
+  // of them reopens theirs. Members submit against GroupContribution.submittedAt — this
+  // field no longer gates anyone's editing, it just tells the gradebook the group is in.
   submittedAt  DateTime?
   lateApproved Boolean   @default(false)  // instructor accepted a submission after the deadline
   grade        Int?      // 0–100, applied to the whole group

@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
 import { logError } from '@/lib/logger'
+import { syncGroupSubmittedForGroup } from '@/lib/group-presentations'
 
 async function authorize(courseId: string, groupId: string, userId: string) {
   if (!await isInstructorOfCourse(courseId, userId)) return false
@@ -71,6 +72,10 @@ export async function PATCH(req: NextRequest, { params }: { params: { courseId: 
     }
 
     if (ops.length) await prisma.$transaction(ops)
+    // Membership changes move the goalposts for "everyone has submitted": adding a member
+    // to a completed group must drop it back to in-progress, and removing the last
+    // outstanding member completes it. Recomputed after the writes land.
+    if (Array.isArray(memberIds)) await syncGroupSubmittedForGroup(groupId)
     revalidatePath(`/instructor/courses/${courseId}`)
     return NextResponse.json({ ok: true })
   } catch (err) {
