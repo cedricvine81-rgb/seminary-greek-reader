@@ -7,8 +7,9 @@ import { X, Check, Send, ChevronRight, CheckCircle2 } from 'lucide-react'
 import { Select } from '@/components/ui/Select'
 import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
 import type { HomeworkWord } from '@/data/grammar-homework'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
-// Graded grammar homework (deck "Exercises A / B" as a Translation Exercise).
+// Graded grammar homework (deck {t('ex.exercisesAB')} as a Translation Exercise).
 // Each sentence opens in a right-hand pane — the Translation Workbench layout —
 // where the student enters parsing, syntax and translation per word plus a
 // whole-sentence translation. Work autosaves locally on every change; Submit
@@ -54,6 +55,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
   dueDate: string | null
   round2Deadline: string | null
 }) {
+  const t = useT()
   const router = useRouter()
   // Round phases (evaluated once per mount — a reload moves the clock on).
   const now = Date.now()
@@ -176,7 +178,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
           })
       if (!res.ok) {
         const b = await res.json().catch(() => ({}))
-        setError(b.error ?? 'Something went wrong — please try again.')
+        setError(b.error ?? t('error.tryAgain'))
         return
       }
       if (correctionOpen) setR2Submitted(true)
@@ -224,7 +226,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
             {round2Deadline && !pastDue
               ? <>Round 1 submitted. The correction round opens after the deadline and runs until {fmt(round2Deadline)} — you can revise your work then.</>
               : round2Deadline
-                ? <>Submitted for grading.</>
+                ? <>{t('ex.submittedForGrading')}</>
                 : <>Submitted for grading. This homework takes a single submission — no further changes can be made.</>}
           </span>
         </div>
@@ -262,7 +264,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
       <div className="flex items-center justify-between gap-3 border-t border-gray-100 pt-3">
         <p className="text-xs text-gray-500">
           {locked
-            ? 'Your submission is shown above (read-only).'
+            ? t('ex.submissionShownAbove')
             : correctionOpen
               ? `${doneCount}/${questions.length} sentences complete · autosaves on this device. One corrections submission — check your revisions before submitting.`
               : `${doneCount}/${questions.length} sentences complete · autosaves on this device. You get one submission — check your work before submitting.`}
@@ -274,7 +276,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
             disabled={submitting}
             className="btn btn-primary px-5 py-2 inline-flex items-center gap-1.5 disabled:opacity-60"
           >
-            <Send size={14} /> {submitting ? 'Submitting…' : correctionOpen ? 'Submit corrections' : 'Submit homework'}
+            <Send size={14} /> {submitting ? t('ex.submitting') : correctionOpen ? t('ex.submitCorrections') : t('ex.submitHomework')}
           </button>
         )}
       </div>
@@ -285,15 +287,15 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
           <div className="flex items-center justify-between gap-2 border-b border-gray-200 bg-surface px-4 py-3">
             <div className="min-w-0">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-700">
-                {correctionOpen ? 'Round 2 corrections' : 'Homework'} — sentence {open! + 1} of {questions.length}
+                {correctionOpen ? t('ex.round2') : t('study.homework')} — sentence {open! + 1} of {questions.length}
               </p>
               <p className="truncate text-xs text-gray-500">
-                {locked ? 'Submitted — read-only.'
-                  : correctionOpen ? 'Revise each word — your Round 1 answers are shown beneath the fields.'
+                {locked ? t('ex.submittedReadOnly')
+                  : correctionOpen ? t('ex.reviseEachWord')
                   : 'Enter parsing, syntax and translation for each word, then translate the sentence.'}
               </p>
             </div>
-            <button type="button" onClick={() => setOpen(null)} title="Close"
+            <button type="button" onClick={() => setOpen(null)} title={t('action.close')}
               className="rounded-lg p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600">
               <X size={17} />
             </button>
@@ -346,7 +348,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
                 return (
                   <>
                     <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">Parsing</label>
+                      <label className="mb-1 block text-xs font-medium text-gray-600">{t('study.parsing')}</label>
                       <input type="text" className={inputCls} disabled={locked}
                         placeholder="case, number, gender / tense, voice, mood… — lexical form"
                         value={wordEntry.parsing}
@@ -354,15 +356,15 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
                       {hint(r1?.parsing)}
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">Syntax</label>
+                      <label className="mb-1 block text-xs font-medium text-gray-600">{t('study.syntax')}</label>
                       <Select value={wordEntry.syntax} disabled={locked}
                         onChange={e => updateWord(open!, wordIdx, { syntax: e.target.value })}
-                        placeholder="Select syntax category…" options={SYNTAX_OPTS} />
+                        placeholder={t('ex.selectSyntax')} options={SYNTAX_OPTS} />
                       {hint(r1?.syntax)}
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs font-medium text-gray-600">Translation</label>
-                      <input type="text" className={inputCls} disabled={locked} placeholder="Translate this word…"
+                      <label className="mb-1 block text-xs font-medium text-gray-600">{t('study.translation')}</label>
+                      <input type="text" className={inputCls} disabled={locked} placeholder={t('ex.translateWord')}
                         value={wordEntry.gloss}
                         onChange={e => updateWord(open!, wordIdx, { gloss: e.target.value })} />
                       {hint(r1?.gloss)}
@@ -373,14 +375,14 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
               {wordIdx < q.words.length - 1 && (
                 <button type="button" onClick={() => setWordIdx(i => i + 1)}
                   className="rounded-lg border border-gray-200 bg-surface px-3 py-1.5 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700">
-                  Next word →
+                  {t('ex.nextWord')}
                 </button>
               )}
             </div>
 
             <div className="rounded-xl border border-gray-200 bg-surface p-4 space-y-2">
-              <label className="block text-xs font-medium text-gray-600">Now translate the whole sentence</label>
-              <textarea rows={2} className={inputCls} disabled={locked} placeholder="Enter your translation…"
+              <label className="block text-xs font-medium text-gray-600">{t('ex.translateWholeSentence')}</label>
+              <textarea rows={2} className={inputCls} disabled={locked} placeholder={t('ex.enterTranslation')}
                 value={entry.translation}
                 onChange={e => setEntries(prev => prev.map((s, i) => i !== open ? s : { ...s, translation: e.target.value }))} />
               {(correctionOpen || r2Done || r2Submitted) && q.prior && (
@@ -397,7 +399,7 @@ export function GrammarHomework({ assignmentId, questions, attemptCount, dueDate
               <button type="button" disabled={open === questions.length - 1}
                 onClick={() => { setOpen(o => (o ?? 0) + 1); setWordIdx(0) }}
                 className="text-xs font-medium text-brand-600 hover:text-brand-700 disabled:opacity-40">
-                Next sentence →
+                {t('ex.nextSentence')}
               </button>
             </div>
           </div>

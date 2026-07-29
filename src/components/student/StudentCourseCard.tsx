@@ -10,6 +10,7 @@ import type { CategoryWeights } from '@/lib/grade-weights'
 import { CalendarGrid } from '@/components/calendar/CalendarGrid'
 import { clsx } from 'clsx'
 import { courseStatus, courseTiming } from '@/lib/course-status'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 export interface StudentCourse {
   id: string
@@ -23,9 +24,11 @@ export interface StudentCourse {
   gradeCategoryWeights: CategoryWeights | null
 }
 
-const TYPE_LABELS: Record<string, string> = {
-  VOCABULARY_QUIZ: 'Vocab', MORPHOLOGY_QUIZ: 'Morphology',
-  TRANSLATION_EXERCISE: 'Translation', PASSAGE_VOCABULARY: 'Passage',
+// i18n keys, not display text — a module constant cannot call the hook, so the lookup is
+// resolved with t() where it is rendered.
+const TYPE_LABEL_KEYS: Record<string, string> = {
+  VOCABULARY_QUIZ: 'study.vocab', MORPHOLOGY_QUIZ: 'study.morphology',
+  TRANSLATION_EXERCISE: 'study.translation', PASSAGE_VOCABULARY: 'study.passage',
 }
 
 // Group presentations live on their own page (per-member sections + attestation); everything
@@ -35,14 +38,16 @@ function assignmentHref(a: { id: string; type: string }): string {
 }
 
 function DueLabel({ dueDate }: { dueDate: string }) {
+  const t = useT()
   const days = differenceInCalendarDays(new Date(dueDate), new Date())
-  if (days === 0) return <span className="text-xs text-red-500 font-semibold">Due today</span>
-  if (days === 1) return <span className="text-xs text-amber-600 font-medium">Due tomorrow</span>
+  if (days === 0) return <span className="text-xs text-red-500 font-semibold">{t('course.dueToday')}</span>
+  if (days === 1) return <span className="text-xs text-amber-600 font-medium">{t('course.dueTomorrow')}</span>
   if (days > 1 && days <= 3) return <span className="text-xs text-amber-500 font-medium">Due in {days} days</span>
   return <span className="text-xs text-gray-400">Due {new Date(dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
 }
 
 export function StudentCourseCard({ course, studentName }: { course: StudentCourse; studentName: string }) {
+  const t = useT()
   const [open, setOpen] = useState(false)
   const status = courseStatus(course.startDate, course.endDate)
   const sortedAssignments = [...course.assignments].sort((a, b) => a.weekNumber - b.weekNumber)
@@ -87,7 +92,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
               onClick={collapse}
               className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
             >
-              <ArrowLeft size={14} /> Back to dashboard
+              <ArrowLeft size={14} /> {t('course.backToDashboard')}
             </button>
             <div className="flex items-center gap-4 shrink-0">
               <MessageInstructorButton courseId={course.id} courseName={course.name} instructorName={course.instructorName} />
@@ -95,9 +100,9 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                 <a
                   href={`mailto:${encodeURIComponent(course.instructorEmail)}?subject=${encodeURIComponent(`[${course.name}] `)}`}
                   className="inline-flex items-center gap-1.5 text-sm text-brand-600 hover:underline"
-                  title={`Email ${course.instructorName} via your mail program`}
+                  title={t('course.emailTitle', { name: course.instructorName })}
                 >
-                  <AtSign size={14} /> Email
+                  <AtSign size={14} /> {t('course.email')}
                 </a>
               )}
             </div>
@@ -113,7 +118,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
             </summary>
             <div className="mt-3">
               {sortedAssignments.length === 0 ? (
-                <p className="text-sm text-gray-400 italic">No assignments yet.</p>
+                <p className="text-sm text-gray-400 italic">{t('course.noAssignments')}</p>
               ) : (
                 <div className="space-y-1.5">
                   {sortedAssignments.map(a => (
@@ -131,10 +136,10 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                       <div className="shrink-0 flex items-center gap-2">
                         {a.completed && (
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-green-50 text-green-700 border border-green-200">
-                            <Check size={12} /> Completed
+                            <Check size={12} /> {t('course.completed')}
                           </span>
                         )}
-                        <span className="text-xs text-gray-500">{TYPE_LABELS[a.type] ?? a.type}</span>
+                        <span className="text-xs text-gray-500">{TYPE_LABEL_KEYS[a.type] ? t(TYPE_LABEL_KEYS[a.type]) : a.type}</span>
                       </div>
                     </Link>
                   ))}
@@ -146,13 +151,13 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
           {/* ── Grade Book ── */}
           <details className="border-t border-gray-100 pt-3">
             <summary className="flex items-center justify-between cursor-pointer list-none">
-              <CardTitle className="mb-0">Grade Book</CardTitle>
+              <CardTitle className="mb-0">{t('course.gradeBook')}</CardTitle>
               <ChevronDown size={16} className="text-gray-400 shrink-0" />
             </summary>
             <div className="mt-3">
               {course.gradebookRows.length > 0
                 ? <StudentGradebook studentName={studentName} rows={course.gradebookRows} weights={course.gradeCategoryWeights} />
-                : <p className="text-sm text-gray-400 italic">No grades yet.</p>}
+                : <p className="text-sm text-gray-400 italic">{t('course.noGrades')}</p>}
             </div>
           </details>
 
@@ -160,7 +165,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
           {sortedAssignments.length > 0 && (
             <details className="border-t border-gray-100 pt-3">
               <summary className="flex items-center justify-between cursor-pointer list-none">
-                <CardTitle className="mb-0">Schedule</CardTitle>
+                <CardTitle className="mb-0">{t('course.schedule')}</CardTitle>
                 <ChevronDown size={16} className="text-gray-400 shrink-0" />
               </summary>
               <div className="mt-3">

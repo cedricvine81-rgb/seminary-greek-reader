@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button'
 import { Select } from '@/components/ui/Select'
 import { ALL_SYNTAX_OPTIONS } from '@/data/syntax-categories'
 import type { QuizQuestion } from '@/types/quiz'
+import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface TranslationExerciseProps {
   assignmentId: string
@@ -12,6 +13,7 @@ interface TranslationExerciseProps {
 }
 
 export function TranslationExercise({ assignmentId, questions }: TranslationExerciseProps) {
+  const t = useT()
   const router = useRouter()
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
@@ -41,9 +43,9 @@ export function TranslationExercise({ assignmentId, questions }: TranslationExer
   if (submitted) {
     return (
       <div className="text-center py-12">
-        <p className="text-xl font-semibold text-green-700">Submitted!</p>
-        <p className="text-sm text-gray-500 mt-1">Your translation exercise has been submitted for review.</p>
-        <Button className="mt-6" onClick={() => { router.push('/student/assignments'); router.refresh() }}>Back to Assignments</Button>
+        <p className="text-xl font-semibold text-green-700">{t('ex.submitted')}</p>
+        <p className="text-sm text-gray-500 mt-1">{t('ex.submittedForReview')}</p>
+        <Button className="mt-6" onClick={() => { router.push('/student/assignments'); router.refresh() }}>{t('ex.backToAssignments')}</Button>
       </div>
     )
   }
@@ -55,7 +57,7 @@ export function TranslationExercise({ assignmentId, questions }: TranslationExer
           <div className="flex items-center gap-2 text-xs text-gray-500 uppercase tracking-wide">
             <span>Question {i + 1}</span>
             <span>·</span>
-            <span>{q.type === 'TRANSLATION' ? 'Translation' : 'Syntax Identification'}</span>
+            <span>{q.type === 'TRANSLATION' ? t('study.translation') : t('ex.syntaxIdentification')}</span>
             {q.reference && <><span>·</span><span>{q.reference}</span></>}
           </div>
 
@@ -63,28 +65,28 @@ export function TranslationExercise({ assignmentId, questions }: TranslationExer
 
           {q.type === 'TRANSLATION' ? (
             <div>
-              <label className="label">Your translation</label>
+              <label className="label">{t('ex.yourTranslation')}</label>
               <textarea
                 rows={3}
                 className="input"
-                placeholder="Enter your translation…"
+                placeholder={t('ex.enterTranslation')}
                 value={answers[q.id] ?? ''}
                 onChange={e => setAnswer(q.id, e.target.value)}
               />
             </div>
           ) : (
             <Select
-              label="Syntax category"
+              label={t('ex.syntaxCategory')}
               value={answers[q.id] ?? ''}
               onChange={e => setAnswer(q.id, e.target.value)}
-              placeholder="Select syntax category…"
+              placeholder={t('ex.selectSyntax')}
               options={ALL_SYNTAX_OPTIONS.map(o => ({ value: o, label: o }))}
             />
           )}
         </div>
       ))}
 
-      <Button onClick={handleSubmit} loading={loading}>Submit Exercise</Button>
+      <Button onClick={handleSubmit} loading={loading}>{t('ex.submitExercise')}</Button>
     </div>
   )
 }
