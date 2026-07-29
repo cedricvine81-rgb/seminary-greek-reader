@@ -508,22 +508,72 @@ def parse_bcs(xml_bytes):
     return out
 
 
+# A chapter number, optionally with the letter suffix editors give a long chapter's parts:
+# Herodotus prints Xerxes' council as 7.8A-D, the Corinthian speech on tyranny as 5.92A-G,
+# and Alexander's speech to the Athenians as 8.140A-B. Sections are numeric, except for the
+# proem, labelled "pr".
+CH_PARTS = re.compile(r'^(\d+)([A-Za-z]*)$')
+
+
+def bcs_key(b, ch, sec):
+    """(book, chapter, suffix, section) for a unit, or None if it isn't addressable.
+
+    These used to be required to be all-digits, which silently discarded 110 units of
+    Herodotus — not only the whole of 8.140, which has no unlettered part at all, but the
+    body of every lettered chapter, leaving just its opening section behind.
+    """
+    if not (b and b.isdigit()):
+        return None
+    m = CH_PARTS.match(ch or '')
+    if not m:
+        return None
+    if sec and sec.isdigit():
+        s = int(sec)
+    elif sec == 'pr':
+        s = 0                                    # the proem sorts before section 1
+    else:
+        return None
+    return int(b), int(m.group(1)), m.group(2), s
+
+
 def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_cache):
     """A book→chapter→section work, one file per book (chapter = chapter, verse = section), so
-    "Apollod. 1.9.16" / "Xen. Mem. 1.2.3" opens Book 1, chapter 9/2, section 16/3."""
+    "Apollod. 1.9.16" / "Xen. Mem. 1.2.3" opens Book 1, chapter 9/2, section 16/3.
+
+    A chapter's lettered parts are folded into it in printed order and numbered straight
+    through, so the chapter reads as one piece; each row keeps the edition's own label in
+    `ref` ("A.3"), which is what the reader shows, so the real citation stays visible."""
     base = f'{urn_dir}/{urn_base}'
     grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
     eng = parse_bcs(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache))
     books = {}
     for (b, ch, sec), en in eng.items():
-        if all(x and x.isdigit() for x in (b, ch, sec)):
-            books.setdefault(int(b), {}).setdefault(int(ch), {})[int(sec)] = (en, grc.get((b, ch, sec), ''))
+        key = bcs_key(b, ch, sec)
+        if key:
+            bk, cn, suffix, s = key
+            books.setdefault(bk, {}).setdefault(cn, {})[(suffix, s)] = (en, grc.get((b, ch, sec), ''))
     results = []
     for bk in sorted(books):
-        chapters = [{'number': ch, 'verses': [
-            {'number': sec, 'text': books[bk][ch][sec][0],
-             **({'greek': books[bk][ch][sec][1]} if books[bk][ch][sec][1] else {})}
-            for sec in sorted(books[bk][ch])]} for ch in sorted(books[bk])]
+        chapters = []
+        for ch in sorted(books[bk]):
+            parts = books[bk][ch]
+            # Only a chapter with lettered parts is renumbered, and it has to be: A.1 and B.1
+            # would otherwise collide. Everything else keeps the edition's own section
+            # numbers, which are not always contiguous — Herodotus 7.19 runs 1, 3 — so
+            # numbering those sequentially would quietly move "7.37.4" to another section.
+            lettered = any(suffix for suffix, _ in parts)
+            verses = []
+            for n, (suffix, s) in enumerate(sorted(parts), start=1):
+                en, gr = parts[(suffix, s)]
+                v = {'number': n if lettered else s, 'text': en}
+                if gr:
+                    v['greek'] = gr
+                if lettered:
+                    v['ref'] = f'{suffix}.{s}' if suffix else str(s)
+                elif s == 0:
+                    v['ref'] = 'pr'              # the proem is unnumbered in the edition
+                verses.append(v)
+            chapters.append({'number': ch, 'verses': verses})
         doc = {'work': name_fmt(bk), 'attribution': attrib, 'greek': True, 'chapters': chapters}
         slug = f'{slug_prefix}-{bk}'
         (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')

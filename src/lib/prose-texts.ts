@@ -604,7 +604,9 @@ const HESIOD_WORKS: ProseWork[] = [
 // book 8 is missing chapter 140 in the source, so it carries an explicit chapterNumbers list.
 const HERODOTUS_BOOKS: { book: number; last: number; skip?: number[] }[] = [
   { book: 1, last: 216 }, { book: 2, last: 182 }, { book: 3, last: 160 }, { book: 4, last: 205 },
-  { book: 5, last: 126 }, { book: 6, last: 140 }, { book: 7, last: 239 }, { book: 8, last: 144, skip: [140] },
+  // 8.140 is no longer skipped: it is printed only as 140A/140B, which the Perseus reader
+  // used to discard along with every other lettered chapter (see scripts/build-perseus.py).
+  { book: 5, last: 126 }, { book: 6, last: 140 }, { book: 7, last: 239 }, { book: 8, last: 144 },
   { book: 9, last: 122 },
 ]
 const herodotusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
