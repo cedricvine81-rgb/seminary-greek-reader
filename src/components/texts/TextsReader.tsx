@@ -525,7 +525,13 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const rows = await fetchChapterRows(w, item)
     setSeries(prev => ({
       ...prev,
-      sections: [...prev.sections, blockFor(item, rows)],
+      // Skip a chapter already on screen. Forward loading walks queueIdx down while backward
+      // loading walks backIdx up, and the two are guarded independently — so when they meet in
+      // the middle both can claim the same item and render it twice, giving React two children
+      // with the same key (e.g. ".12") and licensing it to drop or duplicate a chapter.
+      sections: prev.sections.some(s => s.key === keyFor(item))
+        ? prev.sections
+        : [...prev.sections, blockFor(item, rows)],
       queueIdx: prev.queueIdx + 1,
       done: prev.queueIdx + 1 >= q.length,
     }))
@@ -546,7 +552,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     const rows = await fetchChapterRows(w, item)
     setSeries(prev => ({
       ...prev,
-      sections: [blockFor(item, rows), ...prev.sections],
+      // Same guard as loadMore, from the other end.
+      sections: prev.sections.some(s => s.key === keyFor(item))
+        ? prev.sections
+        : [blockFor(item, rows), ...prev.sections],
       backIdx: prev.backIdx - 1,
       backDone: prev.backIdx - 1 < 0,
     }))
