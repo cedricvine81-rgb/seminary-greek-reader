@@ -12,6 +12,8 @@ import zlib from 'zlib'
 import { normalizeGreek } from './greek-utils'
 import { termIsEmpty, type ConstructQuery, type ConstructTerm } from './construct-query'
 import { CATEGORY_OF_TOKEN } from './morph-features'
+import { lemmaEntry } from './construct-lemmas'
+import { CONSTRUCT_CORPORA } from './construct-query'
 
 // [strongs, lemmaNorm, parsingLower] — the parsing is a ', '-joined token list, e.g.
 // 'verb, aorist, active, participle, nominative, masculine, singular'.
@@ -27,6 +29,13 @@ type CorpusIndex = Record<string, BookIndex>
 // corpora come to ~2.4M words on top of the ~725k in the GNT and LXX, which parses to well over
 // 100 MB — far too much to pull in on a cold start just to search one text.
 const _corpora: Record<string, CorpusIndex> = {}
+
+// Drop a corpus's index. Searching every corpus at once would otherwise hold all nine — measured
+// at 557 MB of heap — so that path loads, scans and releases one at a time, trading a re-parse on
+// the next search for a peak of roughly one corpus.
+function releaseCorpus(corpus: string): void {
+  delete _corpora[corpus]
+}
 
 function getCorpus(corpus: string): CorpusIndex {
   if (_corpora[corpus]) return _corpora[corpus]
@@ -171,10 +180,26 @@ function valueIn(tok: TokenRow, category: string): string | null {
   return null
 }
 
+// A term's Strong's numbers are only meaningful for the corpus they were looked up in — the client
+// holds one corpus's table at a time, and "search all" has no single table at all. So a term naming
+// a word is re-resolved here against the corpus actually being searched: the Septuagint matches by
+// number (its `lemma` field is only a surface form), everything else by lemma string. Without this,
+// a lexeme search would silently return nothing from whichever corpus disagreed.
+function resolveTerms(corpus: string, terms: ConstructTerm[]): ConstructTerm[] {
+  return terms.map(t => {
+    if (!t.lemma) return t
+    const entry = lemmaEntry(corpus, t.lemma)
+    const numbers = entry?.s as unknown as string[] | undefined
+    if (numbers?.length) return { ...t, strongs: numbers }
+    const { strongs: _drop, ...rest } = t
+    return rest
+  })
+}
+
 export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; truncated: boolean } {
   // Keep each usable term's ORIGINAL index: `agreeWith` refers to "Word N" as the user numbered
   // them, which is not the position in this filtered list.
-  const usable = query.terms
+  const usable = resolveTerms(query.corpus, query.terms)
     .map((t, i) => ({ term: t, index: i }))
     .filter(({ term }) => !termIsEmpty(term))
   // Positive terms drive the positioning; negated ones only forbid.
@@ -281,4 +306,32 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   }
 
   return { hits, truncated }
+}
+
+
+// ─── Every corpus at once ─────────────────────────────────────────────────────
+// Reported as a DISTRIBUTION — a true count per corpus plus a small sample from each — rather than
+// one flat capped list. Corpora are stored in canonical order, so a flat cap would return Matthew
+// through Acts and never reach Josephus or the Greco-Roman texts, leaving the impression that a
+// construction is rare outside the New Testament when it may be the reverse. The counts are the
+// answer to the question a cross-corpus search is actually asked: is this distinctive, or is it
+// just ordinary Greek?
+
+export interface CorpusTally {
+  corpus: string
+  count: number          // the TRUE total for this corpus, not the sample size
+  hits: ConstructHit[]   // a sample, `sampleLimit` long
+}
+
+export function searchConstructAll(query: ConstructQuery, sampleLimit = 5): { tallies: CorpusTally[]; total: number } {
+  const tallies: CorpusTally[] = []
+  let total = 0
+  for (const c of CONSTRUCT_CORPORA) {
+    // Uncapped, because a capped count would be a floor rather than a number.
+    const { hits } = searchConstruct({ ...query, corpus: c.id }, Number.MAX_SAFE_INTEGER)
+    tallies.push({ corpus: c.id, count: hits.length, hits: hits.slice(0, sampleLimit) })
+    total += hits.length
+    releaseCorpus(c.id)
+  }
+  return { tallies, total }
 }

@@ -45,13 +45,17 @@ export const CONSTRUCT_CORPORA = [
   { id: 'greco', label: 'Greco-Roman', kind: 'prose', tagging: 'machine' },
 ] as const
 
-export type ConstructCorpus = typeof CONSTRUCT_CORPORA[number]['id']
+// 'ALL' searches every corpus and reports a distribution (see searchConstructAll). Deliberately
+// NOT a member of CONSTRUCT_CORPORA — that list is what the engine iterates and what has index
+// files, and folding a pseudo-corpus into it would mean guarding every loop.
+export const CONSTRUCT_ALL = 'ALL'
+export type ConstructCorpus = typeof CONSTRUCT_CORPORA[number]['id'] | 'ALL'
 
 export function corpusInfo(id: string) {
   return CONSTRUCT_CORPORA.find(c => c.id === id) ?? CONSTRUCT_CORPORA[0]
 }
 export function isProseCorpus(id: string): boolean {
-  return corpusInfo(id).kind === 'prose'
+  return id !== CONSTRUCT_ALL && corpusInfo(id).kind === 'prose'
 }
 
 export interface ConstructQuery {
@@ -179,7 +183,9 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
   const books = one(params.books).split(',').map(s => s.trim()).filter(Boolean)
   return {
     // Only a corpus we actually index; anything else falls back rather than reading a missing file.
-    corpus: (CONSTRUCT_CORPORA.find(c => c.id === one(params.in))?.id ?? 'GNT') as ConstructCorpus,
+    corpus: (one(params.in) === CONSTRUCT_ALL
+      ? CONSTRUCT_ALL
+      : CONSTRUCT_CORPORA.find(c => c.id === one(params.in))?.id ?? 'GNT') as ConstructCorpus,
     // Always present the builder with at least two term cards.
     terms: terms.length >= 2 ? terms.slice(0, CONSTRUCT_MAX_TERMS) : [...terms, emptyTerm(), emptyTerm()].slice(0, 2),
     within: Number.isFinite(w) && w >= 1 ? Math.min(w, CONSTRUCT_MAX_WITHIN) : CONSTRUCT_DEFAULT_WITHIN,

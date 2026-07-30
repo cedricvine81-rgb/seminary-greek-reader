@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
 import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, verseTextsByIds, type SearchCorpus } from '@/lib/search'
 import { searchTranslation } from '@/lib/translation-search'
-import { searchConstruct } from '@/lib/construct-search'
-import { decodeConstruct, isProseCorpus, queryIsRunnable } from '@/lib/construct-query'
+import { searchConstruct, searchConstructAll } from '@/lib/construct-search'
+import { CONSTRUCT_ALL, decodeConstruct, isProseCorpus, queryIsRunnable } from '@/lib/construct-query'
 import { proseHitText } from '@/lib/construct-prose'
 
 export async function GET(req: NextRequest) {
@@ -34,6 +34,41 @@ export async function GET(req: NextRequest) {
     if (type === 'construct') {
       const query = decodeConstruct(Object.fromEntries(searchParams.entries()))
       if (!queryIsRunnable(query)) return NextResponse.json({ results: [], truncated: false })
+      // Every corpus at once: a true count per corpus plus a small sample, each shaped for the
+      // renderer that corpus uses.
+      if (query.corpus === CONSTRUCT_ALL) {
+        const { tallies, total } = searchConstructAll(query, 5)
+        return NextResponse.json({
+          all: true,
+          total,
+          corpora: tallies.map(t => {
+            if (isProseCorpus(t.corpus)) {
+              return {
+                corpus: t.corpus, count: t.count, prose: true,
+                results: t.hits.map(h => {
+                  const pt = proseHitText(h.bookId, h.chapter, h.verse)
+                  return {
+                    bookId: h.bookId, chapter: h.chapter, verse: h.verse,
+                    reference: pt?.reference ?? `${h.bookId} ${h.chapter}:${h.verse}`,
+                    text: pt?.greek ?? '', english: pt?.english ?? '',
+                    target: pt?.target ?? null,
+                    matchedWords: h.matchedWords, crossesVerse: h.crossesVerse,
+                  }
+                }),
+              }
+            }
+            const texts = verseTextsByIds(t.hits.map(h => h.verseId))
+            return {
+              corpus: t.corpus, count: t.count, prose: false,
+              results: t.hits.map(h => ({
+                bookId: h.bookId, chapter: h.chapter, verse: h.verse,
+                text: texts.get(h.verseId) ?? '',
+                matchedLemmas: h.matchedLemmas, crossesVerse: h.crossesVerse,
+              })),
+            }
+          }),
+        })
+      }
       const { hits, truncated } = searchConstruct(query)
       // Prose hits aren't in the biblical search index, and carry their own name and Texts link.
       if (isProseCorpus(query.corpus)) {

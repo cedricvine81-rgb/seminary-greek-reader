@@ -6,9 +6,10 @@ import { ArrowLeft, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
+import { ConstructAllResults, type CorpusBlock } from './ConstructAllResults'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
-  termIsEmpty, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
+  termIsEmpty, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
   type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { FEATURE_LABEL } from '@/lib/morph-features'
@@ -44,6 +45,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
   const [transLang, setTransLang] = useState('en')
   const [showProseEnglish, setShowProseEnglish] = useState(false)
+  // 'Search all' returns a per-corpus distribution rather than one list.
+  const [allBlocks, setAllBlocks] = useState<{ blocks: CorpusBlock[]; total: number } | null>(null)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   // normalized lemma → the forms that lemma is attested in, so typing a Greek word narrows that
@@ -79,8 +82,23 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     params.set('type', 'construct')
     fetch(`/api/search?${params.toString()}`)
       .then(r => r.ok ? r.json() : { results: [] })
-      .then((d: { prose?: boolean; results?: any[]; truncated?: boolean }) => {
+      .then((d: { all?: boolean; corpora?: any[]; total?: number; prose?: boolean; results?: any[]; truncated?: boolean }) => {
         if (!live) return
+        if (d.all) {
+          // The biblical renderer keys hits by `osisId`; the API speaks `bookId`. Without this the
+          // reference renders as a bare "2:1" with no book name.
+          const blocks = (d.corpora ?? []).map((b: any) => b.prose ? b : {
+            ...b,
+            results: (b.results ?? []).map((v: any) => ({
+              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
+              matchedLemmas: v.matchedLemmas, crossesVerse: v.crossesVerse,
+            })),
+          })
+          setAllBlocks({ blocks: blocks as CorpusBlock[], total: d.total ?? 0 })
+          setHits(null); setProseHits(null); setTruncated(false)
+          return
+        }
+        setAllBlocks(null)
         if (d.prose) {
           setProseHits((d.results ?? []) as ProseHit[])
           setHits(null)
@@ -93,7 +111,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         }
         setTruncated(!!d.truncated)
       })
-      .catch(() => { if (live) { setHits([]); setProseHits(null); setTruncated(false) } })
+      .catch(() => { if (live) { setHits([]); setProseHits(null); setAllBlocks(null); setTruncated(false) } })
       .finally(() => { if (live) setLoading(false) })
     return () => { live = false }
   }, [ran])
@@ -170,6 +188,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           <select value={query.corpus}
             onChange={e => setQuery(q => ({ ...q, corpus: e.target.value as ConstructCorpus }))}
             className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <option value={CONSTRUCT_ALL}>All Greek texts — where does it occur?</option>
             <optgroup label="Biblical (hand-tagged)">
               {CONSTRUCT_CORPORA.filter(c => c.kind === 'bible').map(c => (
                 <option key={c.id} value={c.id}>{c.label}</option>
@@ -187,7 +206,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
       </p>
-      {corpusInfo(query.corpus).tagging === 'machine' && (
+      {query.corpus !== CONSTRUCT_ALL && corpusInfo(query.corpus).tagging === 'machine' && (
         <p className="mb-4 rounded-lg border border-amber-200/70 bg-amber-50/50 px-3 py-2 text-xs text-gray-600">
           This text is <strong className="font-semibold">machine-parsed</strong> (roughly 90–95% accurate), unlike the
           New Testament and Septuagint, which are hand-tagged. Treat a hit as a lead to check in the
@@ -272,6 +291,20 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             <p className="inline-flex w-full items-center justify-center gap-2 py-16 text-center text-sm text-gray-400">
               <Loader2 size={16} className="animate-spin" /> Searching…
             </p>
+          ) : ran.corpus === CONSTRUCT_ALL ? (
+            !allBlocks || allBlocks.total === 0 ? (
+              <p className="py-16 text-center text-sm text-gray-400">No matches in any text. Try a larger distance, or fewer constraints.</p>
+            ) : (
+              <ConstructAllResults
+                blocks={allBlocks.blocks}
+                total={allBlocks.total}
+                bookName={bookName}
+                transLang="none"
+                onOpen={openHit}
+                onDrillDown={c => { const next = { ...query, corpus: c }; setQuery(next); router.replace(`/search/construct?${encodeConstruct(next).toString()}`, { scroll: false }); setRan(next) }}
+                isAuthenticated={isAuthenticated}
+              />
+            )
           ) : isProseCorpus(ran.corpus) ? (
             // Prose corpora get their own view — see ConstructProseResults.
             !proseHits || proseHits.length === 0 ? (
