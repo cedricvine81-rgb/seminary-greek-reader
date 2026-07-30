@@ -83,4 +83,10 @@ export interface AssignmentFormData {
   lateDaysLimit?: number
   notesFolderName?: string   // COURSE_NOTES: the folder each student is given and submits
   homeworkSet?: string       // TRANSLATION_EXERCISE: grammar-homework pack id (deck Exercises A/B)
+  // CONSTRUCT_SEARCH: the search itself (a /search/construct link, stored in `reference`)
+  // and how the find-list is set up.
+  constructUrl?: string
+  constructCount?: number
+  constructAskTranslation?: boolean
+  constructAskComment?: boolean
 }

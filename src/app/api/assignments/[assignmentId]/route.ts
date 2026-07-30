@@ -5,6 +5,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
+import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
 import { normalizeWeights } from '@/lib/exam-grading'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
 import { requireStudentAccess } from '@/lib/subscription'
@@ -71,7 +72,7 @@ export async function PATCH(
     timePerQuestion, reviewTimeSeconds, provideDefinition, maxRetakes,
     allowLate, lateDaysLimit, opensAt, submissionDeadline, round1Deadline, round2Deadline,
     allowReaderInRound2, maxAppeals, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations,
-    notesFolderName,
+    notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment,
   } = body
 
   const data: Record<string, unknown> = {}
@@ -84,6 +85,22 @@ export async function PATCH(
     if (weekNumber !== undefined)   data.weekNumber = Number(weekNumber)
     if (dueDate !== undefined)      data.dueDate = new Date(dueDate)
     if (instructions !== undefined) data.instructions = instructions || null
+    // Construct searches: the search link replaces the reference, and is re-parsed rather
+    // than trusted (so a pasted absolute URL is stored as the path it decodes to).
+    if (constructUrl !== undefined) {
+      const link = parseConstructLink(String(constructUrl ?? ''))
+      if (!link) {
+        return NextResponse.json({ error: 'That isn’t a construct search link — copy it from the Construct search page.' }, { status: 400 })
+      }
+      data.reference = link.href
+    }
+    if (constructCount !== undefined || constructAskTranslation !== undefined || constructAskComment !== undefined) {
+      data.constructConfig = { ...normalizeConstructConfig({
+        requiredCount: constructCount,
+        askTranslation: constructAskTranslation,
+        askComment: constructAskComment,
+      }) }
+    }
     // Passage reference (translation exercises). Reject clearing it to empty.
     if (reference !== undefined) {
       if (typeof reference === 'string' && reference.trim()) data.reference = reference.trim()

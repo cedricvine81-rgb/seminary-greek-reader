@@ -12,6 +12,8 @@ import { toEndOfDayLocalISO, toDueISO } from '@/lib/due-date'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import { subsectionKeysBefore, wordsForSelection } from '@/lib/vocab-subsections'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
+import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
+import { DEFAULT_CONSTRUCT_CONFIG, parseConstructLink } from '@/lib/construct-assignment'
 import type { AssignmentFormData, AssignmentType } from '@/types/assignment'
 import type { MorphologySubtype, MorphTestConfig, MorphParseFilter } from '@/lib/quiz-fields'
 import { SUBTYPE_FIELD_OPTIONS, VERB_TENSES, VERB_VOICES, VERB_MOODS, PERSONS, NUMBERS, NOUN_CASES, GENDERS, PRONOUN_TYPES } from '@/lib/quiz-fields'
@@ -276,6 +278,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     setForm(prev => ({ ...prev, [key]: val }))
   }
 
+  // The quiz chrome below (question count, per-question timer, retakes) only means anything
+  // for the types whose questions are generated. Every other type has its own panel above.
+  const isQuizType = form.type === 'VOCABULARY_QUIZ' || form.type === 'MORPHOLOGY_QUIZ' || form.type === 'PASSAGE_VOCABULARY'
+
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError('')
@@ -288,6 +294,11 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
     }
     if (form.type === 'COURSE_NOTES' && !form.notesFolderName?.trim()) {
       setError('A folder name is required (e.g. "Judaism").')
+      return
+    }
+    // The construct link IS the assignment, so it has to be one the app can actually run.
+    if (form.type === 'CONSTRUCT_SEARCH' && !parseConstructLink(form.constructUrl ?? '')) {
+      setError('Paste a construct search link — run your search on the Construct page, then use its “Copy link” button.')
       return
     }
     if (form.round1Deadline && form.round2Deadline && new Date(form.round2Deadline) <= new Date(form.round1Deadline)) {
@@ -325,7 +336,10 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           // Appeals are only meaningful on vocab quizzes; ignore the value otherwise
           maxAppeals: form.type === 'VOCABULARY_QUIZ' ? maxAppeals : 0,
           // quizStylePct (0–100) is the real open-ended/MC mix; provideDefinition is derived (>0 → typed answers graded leniently).
-          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}) }),
+          isPublished: publishRef.current, ...(form.type === 'VOCABULARY_QUIZ' ? { quizStylePct, provideDefinition: quizStylePct > 0, vocabSubsections, vocabReviewPct } : {}), ...(form.type === 'MORPHOLOGY_QUIZ' ? { morphologySubtype, vocabThruLesson, fields: morphologyFields, parseFilter: morphParseFilter } : {}),
+          // Construct searches store the search as the assignment's reference — the server
+          // re-parses it, so a pasted absolute URL is normalised to a same-origin path there.
+          ...(form.type === 'CONSTRUCT_SEARCH' ? { constructUrl: form.constructUrl, constructCount: form.constructCount, constructAskTranslation: form.constructAskTranslation, constructAskComment: form.constructAskComment } : {}) }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error ?? 'Failed to create assignment')
@@ -371,8 +385,22 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           { value: 'TRANSLATION_EXAM',     label: 'Translation Exam' },
           { value: 'COURSE_NOTES',         label: 'Course Notes' },
           { value: 'GROUP_PRESENTATION',   label: 'Group Presentation' },
+          { value: 'CONSTRUCT_SEARCH',     label: 'Construct Search' },
         ]}
       />
+
+      {form.type === 'CONSTRUCT_SEARCH' && (
+        <ConstructSearchFields
+          url={form.constructUrl ?? ''}
+          onUrl={v => set('constructUrl', v)}
+          count={form.constructCount ?? DEFAULT_CONSTRUCT_CONFIG.requiredCount}
+          onCount={v => set('constructCount', v)}
+          askTranslation={form.constructAskTranslation ?? DEFAULT_CONSTRUCT_CONFIG.askTranslation}
+          onAskTranslation={v => set('constructAskTranslation', v)}
+          askComment={form.constructAskComment ?? DEFAULT_CONSTRUCT_CONFIG.askComment}
+          onAskComment={v => set('constructAskComment', v)}
+        />
+      )}
 
       {form.type === 'COURSE_NOTES' && (
         <div className="rounded-xl border border-brand-200 bg-brand-50 p-4 space-y-3">
@@ -799,12 +827,12 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
           rows={3} className="input" placeholder="Additional instructions for students…" />
       </div>
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
+      {isQuizType && (
         <Input label="Number of questions" type="number" min={1} max={50} value={form.numQuestions}
           onChange={e => set('numQuestions', Number(e.target.value))} />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
+      {isQuizType && (
         <Input
           label="Time per question (seconds, 0 = untimed)"
           type="number"
@@ -815,7 +843,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
         />
       )}
 
-      {form.type !== 'TRANSLATION_EXERCISE' && form.type !== 'TRANSLATION_EXAM' && form.type !== 'COURSE_NOTES' && form.type !== 'GROUP_PRESENTATION' && (
+      {isQuizType && (
         <Select
           label="Quiz retakes allowed"
           value={maxRetakes === null ? '' : String(maxRetakes)}

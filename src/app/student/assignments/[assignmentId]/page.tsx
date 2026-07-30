@@ -8,6 +8,7 @@ import { GrammarHomework } from '@/components/student/GrammarHomework'
 import { TranslationExercise } from '@/components/student/TranslationExercise'
 import { ExegesisWorkspace } from '@/components/student/ExegesisWorkspace'
 import { ExamOpensNotice } from '@/components/student/ExamOpensNotice'
+import { ConstructSearchWorkspace } from '@/components/student/ConstructSearchWorkspace'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages, isPreviewMode } from '@/lib/preview'
@@ -16,6 +17,7 @@ import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { ArrowLeft } from 'lucide-react'
 import { LocalDateTime } from '@/components/ui/LocalDateTime'
+import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construct-assignment'
 
 export const metadata: Metadata = { title: 'Assignment' }
 
@@ -161,10 +163,16 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
               <Badge variant={COURSE_LEVEL_VARIANTS[assignment.level] ?? 'gray'}>
                 {COURSE_LEVEL_LABELS[assignment.level] ?? assignment.level}
               </Badge>
-              {assignment.reference && <Badge variant="gray">{assignment.reference}</Badge>}
+              {assignment.type === 'CONSTRUCT_SEARCH'
+                ? (() => {
+                    // Its reference is the search link — show which text it runs over instead.
+                    const link = constructLinkFromReference(assignment.reference)
+                    return link ? <Badge variant="gray">{constructCorpusLabel(link.query)}</Badge> : null
+                  })()
+                : assignment.reference && <Badge variant="gray">{assignment.reference}</Badge>}
             </div>
 
-            {assignment.instructions && (
+            {assignment.instructions && assignment.type !== 'CONSTRUCT_SEARCH' && (
               <div className="text-sm text-gray-600 bg-gray-50 rounded-lg p-4 space-y-2">
                 <p>{assignment.instructions}</p>
                 {assignment.instructions.includes('Vocabulary Builder') && (
@@ -289,7 +297,14 @@ export default async function StudentAssignmentPage({ params }: { params: { assi
           </div>
         )}
 
-        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && (
+        {/* Construct searches: students run the instructor's search and write up what they
+            find. Shown even when closed — the workspace itself goes read-only, so a student
+            can still read their own submitted list and their grade. */}
+        {assignment.type === 'CONSTRUCT_SEARCH' && (
+          <ConstructSearchWorkspace assignmentId={assignment.id} previewMode={previewMode} />
+        )}
+
+        {(!isClosed || previewMode) && !isPassageExercise && !isGrammarHomework && assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'CONSTRUCT_SEARCH' && (
           <QuizPlayer
             assignmentId={assignment.id}
             questions={quizQuestions}

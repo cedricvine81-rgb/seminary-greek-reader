@@ -64,7 +64,7 @@ function LetterStrip({ label, value, onChange, available }: {
   )
 }
 
-export function AdminUsersTable() {
+export function AdminUsersTable({ initialPendingOnly = false }: { initialPendingOnly?: boolean }) {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [editId, setEditId] = useState<string | null>(null)
@@ -78,9 +78,13 @@ export function AdminUsersTable() {
   const [page, setPage] = useState(1)
   // When true, the table also lists soft-deleted (in-trash) users. Default off.
   const [showDeleted, setShowDeleted] = useState(false)
+  // When true, the table shows ONLY instructors waiting to be approved. An instructor who
+  // signs up sits invisible among ninety-odd users otherwise, and the sign-up is dead until
+  // someone approves it — so the banner turns this on rather than saying "look below".
+  const [pendingOnly, setPendingOnly] = useState(initialPendingOnly)
 
   // Reset to page 1 whenever the filters change so we don't land on an empty page.
-  useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted])
+  useEffect(() => { setPage(1) }, [search, firstLetter, lastLetter, showDeleted, pendingOnly])
 
   async function load() {
     try {
@@ -202,12 +206,16 @@ Best wishes,`
     load()
   }
 
+  // Instructors who signed up and are still waiting on an admin.
+  const isPendingInstructor = (u: User) => u.role === 'INSTRUCTOR' && !u.approved && !u.deletedAt
+  const pendingInstructors = users.filter(isPendingInstructor)
+
   // Free-text search (name / email / role / institution).
   const matchSearch = (u: User) => {
     const q = search.toLowerCase()
     return !q || `${u.firstName} ${u.surname} ${u.email} ${u.role} ${u.institution ?? ''}`.toLowerCase().includes(q)
   }
-  const searched = users.filter(matchSearch)
+  const searched = users.filter(matchSearch).filter(u => !pendingOnly || isPendingInstructor(u))
 
   // Which first/last initials actually have users (so empty letters can be dimmed).
   // Cross-aware: the First-name strip reflects the chosen Last-name letter and vice versa.
@@ -230,8 +238,6 @@ Best wishes,`
   const paged = matched.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE)
 
   if (loading) return <p className="text-gray-400 animate-pulse">Loading users…</p>
-
-  const pendingInstructors = users.filter(u => u.role === 'INSTRUCTOR' && !u.approved)
 
   return (
     <Card>
@@ -256,10 +262,32 @@ Best wishes,`
           />
         </div>
       </div>
-      {pendingInstructors.length > 0 && (
-        <div className="mb-4 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800">
-          <span className="font-semibold">{pendingInstructors.length}</span> instructor
-          {pendingInstructors.length === 1 ? '' : 's'} awaiting approval — review and approve below.
+      {(pendingInstructors.length > 0 || pendingOnly) && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-800">
+          <div className="min-w-0">
+            <span className="font-semibold">{pendingInstructors.length}</span> instructor
+            {pendingInstructors.length === 1 ? '' : 's'} awaiting approval
+            {pendingInstructors.length > 0 && (
+              <span className="text-amber-700">
+                {' — '}
+                {pendingInstructors.slice(0, 3).map(u => `${u.firstName} ${u.surname}`).join(', ')}
+                {pendingInstructors.length > 3 ? ` and ${pendingInstructors.length - 3} more` : ''}
+              </span>
+            )}
+          </div>
+          <Button
+            size="sm"
+            variant={pendingOnly ? 'secondary' : 'primary'}
+            onClick={() => {
+              // Clear the other filters, or "show only these" can still come back empty.
+              setPendingOnly(v => !v)
+              setSearch('')
+              setFirstLetter('All')
+              setLastLetter('All')
+            }}
+          >
+            {pendingOnly ? 'Show all users' : 'Show only these'}
+          </Button>
         </div>
       )}
       {error && <p className="text-sm text-red-600 mb-3 bg-red-50 rounded px-3 py-1">{error}</p>}
@@ -286,7 +314,14 @@ Best wishes,`
           </thead>
           <tbody className="divide-y divide-gray-50">
             {paged.map(u => (
-              <tr key={u.id} className={`hover:bg-gray-50 ${u.deletedAt ? 'opacity-60 bg-gray-50/60' : ''}`}>
+              <tr
+                key={u.id}
+                className={`hover:bg-gray-50 ${u.deletedAt ? 'opacity-60 bg-gray-50/60' : ''} ${
+                  // An unapproved instructor is an action item, so the row says so even when
+                  // you're scrolling past it for some other reason.
+                  isPendingInstructor(u) ? 'bg-amber-50/70 shadow-[inset_3px_0_0_0_theme(colors.amber.400)]' : ''
+                }`}
+              >
                 {editId === u.id ? (
                   <>
                     <td className="py-2 pr-4">
@@ -332,7 +367,7 @@ Best wishes,`
                         <Badge variant="green">Approved</Badge>
                       ) : (
                         <div className="flex items-center gap-2">
-                          <Badge variant="gray">Pending</Badge>
+                          <Badge variant={u.role === 'INSTRUCTOR' ? 'amber' : 'gray'}>Pending</Badge>
                           <Button size="sm" onClick={() => approveUser(u.id)}>
                             <Check size={13} /> Approve
                           </Button>

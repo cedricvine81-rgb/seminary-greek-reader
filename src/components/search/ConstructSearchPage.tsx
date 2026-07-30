@@ -14,6 +14,7 @@ import {
   termIsEmpty, toBiblicalHit, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
   type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
+import { describeConstruct } from '@/lib/construct-assignment'
 import { FEATURE_LABEL } from '@/lib/morph-features'
 import { isExamLocked } from '@/lib/exam-lockdown'
 
@@ -219,32 +220,9 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     router.push(`/reader?ref=${encodeURIComponent(`${h.osisId} ${h.chapter}:${h.verse}`)}`)
   }, [router])
 
-  // Plain-language echo of what was searched, above the results.
-  const summary = useMemo(() => {
-    if (!ran) return ''
-    const describe = (t: ConstructTerm) => {
-      const feats = Object.values(t.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
-      const desc = feats.length ? feats.join(' ') : 'any word'
-      const withLemma = t.lemma ? `${desc} (${t.lemma})` : desc
-      // Agreement is part of what the construct MEANS, so it belongs in the echo, not just the form.
-      const agreeing = t.agreeOn?.length && t.agreeWith !== undefined
-        ? `${withLemma} agreeing with word ${t.agreeWith + 1} in ${t.agreeOn.join('/')}`
-        : withLemma
-      return agreeing
-    }
-    const used = ran.terms.filter(t => !termIsEmpty(t))
-    const positive = used.filter(t => !t.negate)
-    const forbidden = used.filter(t => t.negate)
-    const join = ran.ordered ? ' then ' : ' + '
-    const head = positive.map(describe).join(join)
-    const tail = forbidden.length
-      ? `, with no ${forbidden.map(describe).join(' or ')} in between`
-      : ''
-    const scoped = ran.books?.length
-      ? `, in ${ran.books.length} ${isProseCorpus(ran.corpus) ? 'work' : 'book'}${ran.books.length === 1 ? '' : 's'}`
-      : ''
-    return `${head} · within ${ran.within} word${ran.within === 1 ? '' : 's'}${ran.ordered ? ', in order' : ''}${ran.sameVerse ? ', same verse' : ''}${scoped}${tail}`
-  }, [ran])
+  // Plain-language echo of what was searched, above the results. Shared with the
+  // Construct Search assignment views, which print the same line without running anything.
+  const summary = useMemo(() => (ran ? describeConstruct(ran) : ''), [ran])
 
   const crossCount = hits?.filter(h => h.crossesVerse).length ?? 0
   const scopeNoun = isProseCorpus(query.corpus) ? 'work' : 'book'

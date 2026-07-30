@@ -5,6 +5,7 @@ import { AssignmentList } from '@/components/student/AssignmentList'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
+import { completedAssignmentIds } from '@/lib/assignment-completion'
 import { getServerT } from '@/lib/i18n/server'
 
 export const metadata: Metadata = { title: 'Assignments' }
@@ -18,9 +19,10 @@ export default async function StudentAssignmentsPage() {
 
   const enrollments = await prisma.enrollment.findMany({
     where: { userId: payload.sub, status: 'APPROVED' },
-    select: { course: { select: { id: true, endDate: true, isArchived: true } } },
+    select: { course: { select: { id: true, name: true, endDate: true, isArchived: true } } },
   })
   const courseIds = enrollments.map(e => e.course.id)
+  const courseNames = Object.fromEntries(enrollments.map(e => [e.course.id, e.course.name]))
   // "Live" courses (not archived, not yet ended) surface at the top; "earlier" courses
   // (ended or archived) sink to the bottom.
   const now = new Date()
@@ -28,19 +30,16 @@ export default async function StudentAssignmentsPage() {
     enrollments.filter(e => !e.course.isArchived && e.course.endDate >= now).map(e => e.course.id),
   )
 
-  const [assignments, responses] = await Promise.all([
+  const [assignments, completedIds] = await Promise.all([
     prisma.assignment.findMany({
       where: { courseId: { in: courseIds }, isPublished: true },
       orderBy: [{ weekNumber: 'asc' }, { dueDate: 'asc' }],
     }),
-    prisma.response.findMany({
-      where: { userId: payload.sub },
-      select: { assignmentId: true },
-      distinct: ['assignmentId'],
-    }),
+    // Every kind of submission, not just quiz Responses — otherwise handed-in translation
+    // exercises, course notes, group sections and construct searches show as outstanding here
+    // while the same assignment reads Completed on the student's course card.
+    completedAssignmentIds(payload.sub),
   ])
-
-  const completedIds = new Set(responses.map(r => r.assignmentId))
   const serialized = assignments.map(a => ({
     ...a,
     dueDate: a.dueDate.toISOString(),
@@ -61,19 +60,19 @@ export default async function StudentAssignmentsPage() {
   return (
     <DashboardShell role="STUDENT" pageTitle="Assignments">
       {serialized.length === 0 ? (
-        <AssignmentList assignments={serialized} completedIds={completedIds} />
+        <AssignmentList assignments={serialized} completedIds={completedIds} courseNames={courseNames} />
       ) : (
         <div className="space-y-6">
           {live.length > 0 && (
             <div className="space-y-2">
               {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.currentCourses')}</h2>}
-              <AssignmentList assignments={live} completedIds={completedIds} />
+              <AssignmentList assignments={live} completedIds={completedIds} courseNames={courseNames} />
             </div>
           )}
           {earlier.length > 0 && (
             <div className="space-y-2">
               {bothGroups && <h2 className="text-xs font-semibold uppercase tracking-wide text-gray-400">{t('assign.earlierCourses')}</h2>}
-              <AssignmentList assignments={earlier} completedIds={completedIds} />
+              <AssignmentList assignments={earlier} completedIds={completedIds} courseNames={courseNames} />
             </div>
           )}
         </div>

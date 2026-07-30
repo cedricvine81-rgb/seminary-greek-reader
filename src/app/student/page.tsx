@@ -8,6 +8,7 @@ import { canViewStudentPages } from '@/lib/preview'
 import { prisma } from '@/lib/db'
 import { effectiveDeadline } from '@/lib/assignment-deadline'
 import { normalizeCategoryWeights } from '@/lib/grade-weights'
+import { completedAssignmentIds } from '@/lib/assignment-completion'
 
 export const metadata: Metadata = { title: 'Student Dashboard' }
 
@@ -17,7 +18,7 @@ export default async function StudentPage() {
   if (!canViewStudentPages(payload)) redirect('/auth/sign-in')
   if (!payload) redirect('/auth/sign-in')
 
-  const [user, enrollments, completedResponses, exegesisSessions, bestAttempts] = await Promise.all([
+  const [user, enrollments, completedIds, exegesisSessions, bestAttempts, constructSubmissions] = await Promise.all([
     prisma.user.findUnique({ where: { id: payload.sub }, select: { firstName: true, surname: true } }),
     prisma.enrollment.findMany({
       where: { userId: payload.sub, status: 'APPROVED' },
@@ -30,20 +31,22 @@ export default async function StudentPage() {
         },
       },
     }),
-    prisma.response.findMany({
-      where: { userId: payload.sub },
-      select: { assignmentId: true },
-      distinct: ['assignmentId'],
-    }),
-    // Translation exercises: submittedAt → completed; grade → per-course gradebook.
+    // Shared with the Assignments list, so the two never disagree about what's been handed in.
+    completedAssignmentIds(payload.sub),
+    // Translation exercises: the instructor's grade for the per-course grade book.
     prisma.exegesisSession.findMany({
-      where: { userId: payload.sub, assignmentId: { not: null } },
-      select: { assignmentId: true, submittedAt: true, grade: true },
+      where: { userId: payload.sub, assignmentId: { not: null }, grade: { not: null } },
+      select: { assignmentId: true, grade: true },
     }),
     // Best quiz attempt per quiz (stored per-attempt %, correct for re-sampling pools).
     prisma.quizAttempt.findMany({
       where: { userId: payload.sub, isBest: true },
       select: { assignmentId: true, percentage: true },
+    }),
+    // Construct searches: the instructor's grade for the per-course grade book.
+    prisma.constructSubmission.findMany({
+      where: { userId: payload.sub, grade: { not: null } },
+      select: { assignmentId: true, grade: true },
     }),
   ])
 
@@ -54,17 +57,16 @@ export default async function StudentPage() {
   const gradeByAssignment = new Map(
     exegesisSessions.filter(s => s.grade != null && s.assignmentId).map(s => [s.assignmentId as string, s.grade as number]),
   )
+  const constructGradeByAssignment = new Map(
+    constructSubmissions.filter(c => c.grade != null).map(c => [c.assignmentId, c.grade as number]),
+  )
   function scoreFor(a: { id: string; type: string }): number | null {
     if (a.type === 'TRANSLATION_EXERCISE' || a.type === 'TRANSLATION_EXAM') return gradeByAssignment.get(a.id) ?? null
+    if (a.type === 'CONSTRUCT_SEARCH') return constructGradeByAssignment.get(a.id) ?? null
     return bestPctByAssignment.get(a.id) ?? null
   }
 
   const allAssignments = enrollments.flatMap(e => e.course.assignments)
-  const completedIds = new Set(completedResponses.map(r => r.assignmentId))
-  // A submitted translation exercise is also "completed" (it has no quiz Response rows).
-  for (const s of exegesisSessions) {
-    if (s.submittedAt && s.assignmentId) completedIds.add(s.assignmentId)
-  }
   const pending = allAssignments.filter(a => !completedIds.has(a.id) && effectiveDeadline(a) >= new Date())
   // Header nudge: assignments due within the next 3 days.
   const dueSoonCount = pending.filter(a => {

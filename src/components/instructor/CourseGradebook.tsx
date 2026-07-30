@@ -16,6 +16,7 @@ const GROUPS = [
   { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
   { type: 'COURSE_NOTES',         label: 'Course Notes' },
   { type: 'GROUP_PRESENTATION',   label: 'Group Presentations' },
+  { type: 'CONSTRUCT_SEARCH',     label: 'Construct Searches' },
 ] as const
 
 function PctCell({ pct, muted = false }: { pct: number | null; muted?: boolean }) {
@@ -71,8 +72,10 @@ export async function CourseGradebook({ courseId }: Props) {
   const courseNotesIds = assignments.filter(a => a.type === 'COURSE_NOTES').map(a => a.id)
   // Group Presentations get one group grade (GroupSubmission.grade), shared by every member.
   const groupPresentationIds = assignments.filter(a => a.type === 'GROUP_PRESENTATION').map(a => a.id)
+  // Construct searches are graded 0–100 on the student's find-list (ConstructSubmission.grade).
+  const constructIds = assignments.filter(a => a.type === 'CONSTRUCT_SEARCH').map(a => a.id)
 
-  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups] = await Promise.all([
+  const [realAttempts, realResponses, exegesisGrades, noteGrades, presentationGroups, constructGrades] = await Promise.all([
     prisma.quizAttempt.findMany({
       where: { assignmentId: { in: assignmentIds }, isBest: true },
       select: { userId: true, assignmentId: true, percentage: true },
@@ -106,6 +109,12 @@ export async function CourseGradebook({ courseId }: Props) {
           },
         })
       : Promise.resolve([]),
+    constructIds.length > 0
+      ? prisma.constructSubmission.findMany({
+          where: { assignmentId: { in: constructIds }, grade: { not: null } },
+          select: { userId: true, assignmentId: true, grade: true },
+        })
+      : Promise.resolve([]),
   ])
 
   // Flatten group presentations to per-student grades. Each member gets their per-member
@@ -129,6 +138,10 @@ export async function CourseGradebook({ courseId }: Props) {
     }
     if (assignment.type === 'COURSE_NOTES') {
       const sub = noteGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
+      return sub?.grade ?? null
+    }
+    if (assignment.type === 'CONSTRUCT_SEARCH') {
+      const sub = constructGrades.find(g => g.userId === userId && g.assignmentId === assignment.id)
       return sub?.grade ?? null
     }
     if (assignment.type === 'GROUP_PRESENTATION') {

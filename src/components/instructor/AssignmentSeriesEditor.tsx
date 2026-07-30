@@ -12,7 +12,7 @@ const TYPE_LABEL: Record<string, string> = {
   VOCABULARY_QUIZ: 'Vocabulary', MORPHOLOGY_QUIZ: 'Morphology',
   TRANSLATION_EXERCISE: 'Translation', TRANSLATION_EXAM: 'Exam',
   PASSAGE_VOCABULARY: 'Passage vocab', GROUP_PRESENTATION: 'Group presentation',
-  COURSE_NOTES: 'Notes', GRAMMAR_HOMEWORK: 'Grammar',
+  COURSE_NOTES: 'Notes', GRAMMAR_HOMEWORK: 'Grammar', CONSTRUCT_SEARCH: 'Construct search',
 }
 
 /**

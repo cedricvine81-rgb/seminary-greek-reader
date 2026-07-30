@@ -5,6 +5,7 @@ import { DashboardShell } from '@/components/layout/DashboardShell'
 import { AssignmentResultsGrid } from '@/components/instructor/AssignmentResultsGrid'
 import { CourseNotesGrader } from '@/components/instructor/CourseNotesGrader'
 import { GroupPresentationGrader } from '@/components/instructor/GroupPresentationGrader'
+import { ConstructSearchGrader } from '@/components/instructor/ConstructSearchGrader'
 import { GrammarHomeworkGrader } from '@/components/instructor/GrammarHomeworkGrader'
 import { Badge } from '@/components/ui/Badge'
 import { getTokenFromCookies, verifyToken } from '@/lib/auth'
@@ -37,7 +38,8 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
 
         <div className="flex gap-2 flex-wrap items-center">
           <Badge variant="gray">Week {assignment.weekNumber}</Badge>
-          {assignment.reference && <Badge variant="blue">{assignment.reference}</Badge>}
+          {/* A construct search's reference is its query link, which the grader itself renders. */}
+          {assignment.reference && assignment.type !== 'CONSTRUCT_SEARCH' && <Badge variant="blue">{assignment.reference}</Badge>}
           <Badge variant={assignment.isPublished ? 'green' : 'gray'}>
             {assignment.isPublished ? 'Published' : 'Draft'}
           </Badge>
@@ -45,11 +47,13 @@ export default async function GradeAssignmentPage({ params }: { params: { assign
 
         {assignment.type === 'COURSE_NOTES'
           ? <CourseNotesGrader assignmentId={assignment.id} />
+          : assignment.type === 'CONSTRUCT_SEARCH'
+          ? <ConstructSearchGrader assignmentId={assignment.id} />
           : assignment.type === 'GROUP_PRESENTATION'
-            ? <GroupPresentationGrader assignmentId={assignment.id} />
-            : (assignment.questions[0]?.options[0] ?? '').includes('"hw":1')
-              ? <GrammarHomeworkGrader assignmentId={assignment.id} />
-              : <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />}
+          ? <GroupPresentationGrader assignmentId={assignment.id} />
+          : (assignment.questions[0]?.options[0] ?? '').includes('"hw":1')
+          ? <GrammarHomeworkGrader assignmentId={assignment.id} />
+          : <AssignmentResultsGrid assignmentId={assignment.id} autoLoad />}
       </div>
     </DashboardShell>
   )

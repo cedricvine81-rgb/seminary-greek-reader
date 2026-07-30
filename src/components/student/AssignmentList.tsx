@@ -9,6 +9,9 @@ import { useT } from '@/lib/i18n/LocaleProvider'
 interface AssignmentListProps {
   assignments: Assignment[]
   completedIds?: Set<string>
+  /** courseId → course name. This list mixes every enrolled course, and two courses can
+      easily both have a "Week 3 Quiz" — without the course a student can open the wrong one. */
+  courseNames?: Record<string, string>
 }
 
 const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
@@ -19,6 +22,7 @@ const typeColors: Record<string, 'blue' | 'purple' | 'green'> = {
   TRANSLATION_EXAM: 'green',
   COURSE_NOTES: 'blue',
   GROUP_PRESENTATION: 'purple',
+  CONSTRUCT_SEARCH: 'green',
 }
 
 const typeLabels: Record<string, string> = {
@@ -29,6 +33,7 @@ const typeLabels: Record<string, string> = {
   TRANSLATION_EXAM: 'Translation Exam',
   COURSE_NOTES: 'Course Notes',
   GROUP_PRESENTATION: 'Group Presentation',
+  CONSTRUCT_SEARCH: 'Construct Search',
 }
 
 // Group presentations are worked on in a dedicated collaborative page, not the generic
@@ -36,7 +41,7 @@ const typeLabels: Record<string, string> = {
 const hrefFor = (a: { id: string; type: string }) =>
   a.type === 'GROUP_PRESENTATION' ? '/student/group-presentations' : `/student/assignments/${a.id}`
 
-export function AssignmentList({ assignments, completedIds = new Set() }: AssignmentListProps) {
+export function AssignmentList({ assignments, completedIds = new Set(), courseNames = {} }: AssignmentListProps) {
   const t = useT()
   if (assignments.length === 0) {
     return (
@@ -68,6 +73,9 @@ export function AssignmentList({ assignments, completedIds = new Set() }: Assign
               <p className="text-sm font-semibold text-gray-900 truncate">{a.title}</p>
               <div className="flex items-center gap-2 flex-wrap">
                 <Badge variant={typeColors[a.type] ?? 'gray'}>{typeLabels[a.type] ?? a.type}</Badge>
+                {courseNames[a.courseId] && (
+                  <span className="text-xs font-medium text-gray-500">{courseNames[a.courseId]}</span>
+                )}
                 <span className="text-xs text-gray-400">Week {a.weekNumber} · Due {format(new Date(finalDue), 'MMM d, yyyy')}</span>
               </div>
               {(a.round1Deadline || a.round2Deadline) && (

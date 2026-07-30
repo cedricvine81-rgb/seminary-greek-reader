@@ -9,6 +9,8 @@ import { Select } from '@/components/ui/Select'
 import { Card, CardTitle } from '@/components/ui/Card'
 import { FrequencySectionPicker } from '@/components/vocab/FrequencySectionPicker'
 import { MIN_LOCKDOWN_AUTOSUBMIT } from '@/lib/constants'
+import { ConstructSearchFields } from '@/components/instructor/ConstructSearchFields'
+import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
 
 interface Props {
   assignmentId: string
@@ -38,6 +40,7 @@ interface Props {
     gradeWeights: { parsing: number; syntax: number; translation: number } | null  // translation exams only
     lockdown: boolean                  // translation exams only
     lockdownMaxViolations: number | null  // translation exams only
+    constructConfig: unknown           // construct searches only; reference holds the search link
   }
 }
 
@@ -61,6 +64,10 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   // Hide that quiz chrome below.
   const isNotes = assignmentType === 'COURSE_NOTES'
   const isGroup = assignmentType === 'GROUP_PRESENTATION'
+  // Construct searches have no questions either — their "settings" are the search link
+  // and the shape of the find-list.
+  const isConstruct = assignmentType === 'CONSTRUCT_SEARCH'
+  const construct = normalizeConstructConfig(initial.constructConfig)
 
   const [title, setTitle] = useState(initial.title)
   const [weekNumber, setWeekNumber] = useState(initial.weekNumber)
@@ -107,10 +114,18 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
   const weightSum = weights.parsing + weights.syntax + weights.translation
   const [lockdown, setLockdown] = useState(initial.lockdown)
   const [lockdownMaxViolations, setLockdownMaxViolations] = useState<number | null>(initial.lockdownMaxViolations)
+  // Construct search: the link lives in `reference`, so it shares that state.
+  const [constructCount, setConstructCount] = useState(construct.requiredCount)
+  const [constructAskTranslation, setConstructAskTranslation] = useState(construct.askTranslation)
+  const [constructAskComment, setConstructAskComment] = useState(construct.askComment)
 
   async function handleSave() {
     if ((isTranslation || isExam) && !reference.trim()) {
       setError('At least one passage reference is required (e.g. "John 1:1–18").')
+      return
+    }
+    if (isConstruct && !parseConstructLink(reference)) {
+      setError('Paste a construct search link — copy it from the Construct search page after running your search.')
       return
     }
     if (isTranslation && round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
@@ -136,6 +151,11 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             : toDueISO(dueDate, dueTime),
           instructions,
           reference: (isTranslation || isExam) ? reference : undefined,
+          // The construct link is validated and normalised server-side, then stored as the reference.
+          constructUrl: isConstruct ? reference : undefined,
+          constructCount: isConstruct ? constructCount : undefined,
+          constructAskTranslation: isConstruct ? constructAskTranslation : undefined,
+          constructAskComment: isConstruct ? constructAskComment : undefined,
           // Convert back to seconds for storage
           timePerQuestion: isTranslation ? timePerQuestion * 60 || 0 : timePerQuestion,
           reviewTimeSeconds: reviewTimeSeconds * 60 || 0,
@@ -207,7 +227,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
 
   return (
     <Card>
-      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : 'Quiz Settings'}</CardTitle>
+      <CardTitle>{isExam ? 'Exam Settings' : isTranslation ? 'Exercise Settings' : isNotes ? 'Notes Settings' : isGroup ? 'Presentation Settings' : isConstruct ? 'Search Settings' : 'Quiz Settings'}</CardTitle>
       <div className="mt-5 space-y-5">
 
         <div className="grid grid-cols-2 gap-4">
@@ -482,6 +502,17 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
             </>
             )}
           </div>
+        ) : isConstruct ? (
+          <ConstructSearchFields
+            url={reference}
+            onUrl={setReference}
+            count={constructCount}
+            onCount={setConstructCount}
+            askTranslation={constructAskTranslation}
+            onAskTranslation={setConstructAskTranslation}
+            askComment={constructAskComment}
+            onAskComment={setConstructAskComment}
+          />
         ) : (isNotes || isGroup) ? null : (
           <Input
             label="Time per question (seconds, 0 = untimed)"
@@ -572,7 +603,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
           </div>
         )}
 
-        {!isTranslation && !isNotes && !isGroup && (
+        {!isTranslation && !isNotes && !isGroup && !isConstruct && (
           <Select
             label="Quiz retakes allowed"
             value={maxRetakes === null ? '' : String(maxRetakes)}

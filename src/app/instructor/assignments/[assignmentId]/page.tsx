@@ -15,6 +15,7 @@ import { getTokenFromCookies, verifyToken } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { COURSE_LEVEL_LABELS, COURSE_LEVEL_VARIANTS } from '@/lib/constants'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
+import { constructCorpusLabel, constructLinkFromReference } from '@/lib/construct-assignment'
 
 export const metadata: Metadata = { title: 'Edit Assignment' }
 
@@ -68,6 +69,12 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             assignment.reference && (
               <Badge variant="blue">{assignment.reference}</Badge>
             )
+          ) : assignment.type === 'CONSTRUCT_SEARCH' ? (
+            // The search itself, said back in words — the badge a construct search actually needs.
+            (() => {
+              const link = constructLinkFromReference(assignment.reference)
+              return link ? <Badge variant="blue">{constructCorpusLabel(link.query)}</Badge> : null
+            })()
           ) : (assignment.type === 'COURSE_NOTES' || assignment.type === 'GROUP_PRESENTATION') ? null : (() => {
             // Re-sampling vocab quizzes store the whole pool and show `perAttempt`
             // random questions each attempt — show that, not the raw pool size.
@@ -135,10 +142,11 @@ export default async function AssignmentDetailPage({ params }: { params: { assig
             gradeWeights: (assignment.gradeWeights as { parsing: number; syntax: number; translation: number } | null) ?? null,
             lockdown: assignment.lockdown,
             lockdownMaxViolations: assignment.lockdownMaxViolations,
+            constructConfig: assignment.constructConfig,
           }}
         />
 
-        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && (
+        {assignment.type !== 'TRANSLATION_EXERCISE' && assignment.type !== 'TRANSLATION_EXAM' && assignment.type !== 'COURSE_NOTES' && assignment.type !== 'GROUP_PRESENTATION' && assignment.type !== 'CONSTRUCT_SEARCH' && (
           <QuizPreview
             questions={assignment.questions.map(q => ({
               id: q.id,

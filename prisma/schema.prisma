@@ -88,6 +88,7 @@ model User {
   noteFolders        NoteFolder[]
   verseNotes         VerseNote[]
   noteSubmissions    NoteSubmission[]
+  constructSubmissions ConstructSubmission[]
   highlights         Highlight[]
   groupMemberships   CourseGroupMember[]
   groupContributions GroupContribution[]
@@ -502,6 +503,10 @@ model Assignment {
   // For COURSE_NOTES: the name of the notes folder each enrolled student is given and
   // submits for grading (e.g. "Judaism"). Null for every other assignment type.
   notesFolderName String?
+  // For CONSTRUCT_SEARCH: how the find-list is set up —
+  // { requiredCount: number, askTranslation: boolean, askComment: boolean }.
+  // The search itself is the link in `reference`, which is the whole query (construct-query.ts).
+  constructConfig Json?
   isPublished  Boolean        @default(false)
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -517,8 +522,36 @@ model Assignment {
   groups             CourseGroup[]       @relation("GroupPresentationGroups")
   groupContributions GroupContribution[]
   groupSubmissions   GroupSubmission[]
+  constructSubmissions ConstructSubmission[]
 
   @@index([courseId])
+}
+
+// A student's work on a CONSTRUCT_SEARCH assignment: the examples they found by running the
+// instructor's construct search, plus the instructor's grade. One row per student per
+// assignment — they build it up over several sittings, so it exists (unsubmitted) from the
+// first save. Findings are the whole find-list, not one row each: the list is edited and
+// re-saved as a unit, and grading reads it as a unit.
+model ConstructSubmission {
+  id           String    @id @default(cuid())
+  userId       String
+  assignmentId String
+  // [{ ref, greek, translation, comment }] in the order the student entered them. Kept as
+  // JSON rather than columns because which fields are asked for is per-assignment
+  // (Assignment.constructConfig), and an unanswered column is simply absent.
+  findings     Json      @default("[]")
+  notes        String    @default("")   // the "what did you notice" box under the list
+  submittedAt  DateTime?                // null = still a draft
+  grade        Int?                     // instructor-entered score 0-100
+  gradeNote    String?                  // instructor feedback, shown to the student
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignment Assignment @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, assignmentId])
+  @@index([assignmentId])
 }
 
 // ─── Questions ────────────────────────────────────────────────────

@@ -8,6 +8,7 @@ const GROUPS = [
   { type: 'MORPHOLOGY_QUIZ',      label: 'Morphology Quizzes' },
   { type: 'TRANSLATION_EXERCISE', label: 'Translation Exercises' },
   { type: 'TRANSLATION_EXAM',     label: 'Translation Exams' },
+  { type: 'CONSTRUCT_SEARCH',     label: 'Construct Searches' },
 ] as const
 
 export interface GradebookRow {

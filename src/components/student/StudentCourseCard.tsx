@@ -31,6 +31,12 @@ const TYPE_LABEL_KEYS: Record<string, string> = {
   TRANSLATION_EXERCISE: 'study.translation', PASSAGE_VOCABULARY: 'study.passage',
 }
 
+// Types added after the label keys were translated (course notes, group presentations,
+// construct searches) fall back to their own name in words rather than SHOUTING_SNAKE_CASE.
+function typeName(type: string): string {
+  return type.toLowerCase().split('_').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
+}
+
 // Group presentations live on their own page (per-member sections + attestation); everything
 // else opens the generic assignment page. Mirrors AssignmentList so both entry points agree.
 function assignmentHref(a: { id: string; type: string }): string {
@@ -139,7 +145,7 @@ export function StudentCourseCard({ course, studentName }: { course: StudentCour
                             <Check size={12} /> {t('course.completed')}
                           </span>
                         )}
-                        <span className="text-xs text-gray-500">{TYPE_LABEL_KEYS[a.type] ? t(TYPE_LABEL_KEYS[a.type]) : a.type}</span>
+                        <span className="text-xs text-gray-500">{TYPE_LABEL_KEYS[a.type] ? t(TYPE_LABEL_KEYS[a.type]) : typeName(a.type)}</span>
                       </div>
                     </Link>
                   ))}

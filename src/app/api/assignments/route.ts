@@ -6,6 +6,7 @@ import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
 import { isInstructorOfCourse } from '@/lib/course-auth'
 import { ensureCourseNotesFoldersForAssignment } from '@/lib/notes'
+import { normalizeConstructConfig, parseConstructLink } from '@/lib/construct-assignment'
 import { generateVocabQuestions, generateVocabPoolFromSelection, generateMorphologyQuestionsBySubtype, type MorphologySubtype } from '@/lib/quiz-generation'
 import type { AssignmentType, QuestionType } from '@/types/assignment'
 import type { CourseLevel } from '@/types/course'
@@ -41,7 +42,18 @@ export async function POST(req: NextRequest) {
   if (!payload || payload.role !== 'INSTRUCTOR') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json()
-  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, notesFolderName } = body
+  const { courseId, title, type, weekNumber, dueDate, level, reference, instructions, homeworkSet, numQuestions, timePerQuestion, reviewTimeSeconds, opensAt, submissionDeadline, round1Deadline, round2Deadline, allowLate, lateDaysLimit, provideDefinition, allowReaderInRound2, glossFrequency, gradeWeights, lockdown, lockdownMaxViolations, maxAppeals, maxRetakes, isPublished, quizStylePct, vocabSubsections, vocabPos, vocabReviewPct, morphologySubtype, vocabThruLesson, notesFolderName, constructUrl, constructCount, constructAskTranslation, constructAskComment } = body
+
+  // Construct searches: the search link is the assignment, so it is parsed here rather than
+  // trusted — what gets stored is the same-origin path it decodes to.
+  const constructLink = type === 'CONSTRUCT_SEARCH' ? parseConstructLink(String(constructUrl ?? reference ?? '')) : null
+  const constructConfig = type === 'CONSTRUCT_SEARCH'
+    ? normalizeConstructConfig({
+        requiredCount: constructCount,
+        askTranslation: constructAskTranslation,
+        askComment: constructAskComment,
+      })
+    : null
 
   // Vocab word selection (frequency subsections + parts of speech) over the BGVB list.
   // perAttempt = how many questions each attempt shows; the quiz stores the whole
@@ -71,6 +83,9 @@ export async function POST(req: NextRequest) {
   if ((type === 'TRANSLATION_EXERCISE' || type === 'TRANSLATION_EXAM') && !reference?.trim() && !hwSet) {
     return NextResponse.json({ error: 'At least one passage reference is required.' }, { status: 400 })
   }
+  if (type === 'CONSTRUCT_SEARCH' && !constructLink) {
+    return NextResponse.json({ error: 'A construct search link is required — copy it from the Construct search page.' }, { status: 400 })
+  }
   if (round1Deadline && round2Deadline && new Date(round2Deadline) <= new Date(round1Deadline)) {
     return NextResponse.json({ error: 'Round 2 deadline must be after the Round 1 deadline.' }, { status: 400 })
   }
@@ -87,7 +102,7 @@ export async function POST(req: NextRequest) {
       weekNumber: Number(weekNumber),
       dueDate: new Date(dueDate),
       level: level as CourseLevel,
-      reference: reference?.trim() ? reference : hwSet ? hwSet.title : reference,
+      reference: constructLink ? constructLink.href : reference?.trim() ? reference : hwSet ? hwSet.title : reference,
       instructions,
       timePerQuestion: timePerQuestion ? Number(timePerQuestion) : null,
       reviewTimeSeconds: reviewTimeSeconds ? Number(reviewTimeSeconds) : null,
@@ -116,6 +131,14 @@ export async function POST(req: NextRequest) {
       vocabSelection: vocabSel ?? undefined,
       // Course Notes: the folder name each student is given and submits (defaults to the title).
       notesFolderName: type === 'COURSE_NOTES' ? (String(notesFolderName ?? title).trim() || title) : undefined,
+      // Construct searches: how many examples to find and which columns to ask for.
+      constructConfig: constructConfig
+        ? {
+            requiredCount: constructConfig.requiredCount,
+            askTranslation: constructConfig.askTranslation,
+            askComment: constructConfig.askComment,
+          }
+        : undefined,
       createdById: payload.sub,
       isPublished: Boolean(isPublished),
     },
