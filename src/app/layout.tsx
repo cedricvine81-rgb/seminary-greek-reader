@@ -5,6 +5,7 @@ import { AppHeader } from '@/components/layout/AppHeader'
 import { AppFooter } from '@/components/layout/AppFooter'
 import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
+import { ChunkErrorReload } from '@/components/layout/ChunkErrorReload'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
 import { ProsePanelProvider } from '@/components/texts/ProsePanelProvider'
@@ -90,6 +91,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className={inter.className}>
+        <ChunkErrorReload />
         <LocaleProvider locale={locale}>
         <div className="min-h-screen flex flex-col">
           <PreviewBannerInner show={isInstructorPreview} />

@@ -9,41 +9,23 @@ import { prisma } from './db'
  * how the Assignments list came to show "Overdue — Submit" on work a student had already
  * turned in, while the same assignment on their course card showed Completed. Both pages
  * now call this, so the two views cannot disagree again.
+ *
+ * One UNION, not five findMany calls: DATABASE_URL runs with connection_limit=1 (pgbouncer),
+ * so every query on a page is serialized through a single connection and page latency is
+ * queries × round-trip. Five parallel-looking reads here made the dashboard measurably
+ * slower the day this shipped; as raw SQL the whole answer is one round trip.
  */
 export async function completedAssignmentIds(userId: string): Promise<Set<string>> {
-  const [responses, exegesisSessions, noteSubmissions, groupContributions, constructSubmissions] = await Promise.all([
-    prisma.response.findMany({
-      where: { userId },
-      select: { assignmentId: true },
-      distinct: ['assignmentId'],
-    }),
-    // Translation exercises and exams: submitted when the exegesis session is submitted.
-    prisma.exegesisSession.findMany({
-      where: { userId, assignmentId: { not: null }, submittedAt: { not: null } },
-      select: { assignmentId: true },
-    }),
-    // Course notes: the row exists only once the student submits their folder.
-    prisma.noteSubmission.findMany({
-      where: { userId },
-      select: { assignmentId: true },
-    }),
-    // Group presentations: each member hands in their own section.
-    prisma.groupContribution.findMany({
-      where: { userId, submittedAt: { not: null } },
-      select: { assignmentId: true },
-    }),
-    // Construct searches: submitted when the find-list is handed in.
-    prisma.constructSubmission.findMany({
-      where: { userId, submittedAt: { not: null } },
-      select: { assignmentId: true },
-    }),
-  ])
-
-  const ids = new Set<string>()
-  for (const r of responses) ids.add(r.assignmentId)
-  for (const s of exegesisSessions) if (s.assignmentId) ids.add(s.assignmentId)
-  for (const n of noteSubmissions) ids.add(n.assignmentId)
-  for (const g of groupContributions) ids.add(g.assignmentId)
-  for (const c of constructSubmissions) ids.add(c.assignmentId)
-  return ids
+  const rows = await prisma.$queryRaw<{ id: string }[]>`
+    SELECT DISTINCT "assignmentId" AS id FROM "Response"            WHERE "userId" = ${userId}
+    UNION
+    SELECT "assignmentId" FROM "ExegesisSession"    WHERE "userId" = ${userId} AND "assignmentId" IS NOT NULL AND "submittedAt" IS NOT NULL
+    UNION
+    SELECT "assignmentId" FROM "NoteSubmission"     WHERE "userId" = ${userId}
+    UNION
+    SELECT "assignmentId" FROM "GroupContribution"  WHERE "userId" = ${userId} AND "submittedAt" IS NOT NULL
+    UNION
+    SELECT "assignmentId" FROM "ConstructSubmission" WHERE "userId" = ${userId} AND "submittedAt" IS NOT NULL
+  `
+  return new Set(rows.map(r => r.id))
 }

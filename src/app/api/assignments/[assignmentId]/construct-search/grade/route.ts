@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { getConstructGrading, gradeConstructSubmission, reopenConstructSubmission } from '@/lib/construct-submissions'
 
@@ -21,6 +23,15 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
     logError('api/assignments/[id]/construct-search/grade GET', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
+}
+
+
+// The gradebook lives on the cached course page; without busting it a saved grade sits in
+// the database while the page keeps serving the old numbers (same fix as course-notes).
+async function bustGradebook(assignmentId: string) {
+  const a = await prisma.assignment.findUnique({ where: { id: assignmentId }, select: { courseId: true } })
+  if (a) revalidatePath(`/instructor/courses/${a.courseId}`)
+  revalidatePath('/student')
 }
 
 // POST { userId, grade?, gradeNote? } — save a grade; { userId, reopen: true } — hand a
@@ -45,6 +56,7 @@ export async function POST(req: NextRequest, { params }: { params: { assignmentI
     const grade = b.grade == null || b.grade === '' ? null : Math.max(0, Math.min(100, Math.round(Number(b.grade))))
     const gradeNote = typeof b.gradeNote === 'string' ? b.gradeNote : null
     const saved = await gradeConstructSubmission(params.assignmentId, userId, { grade, gradeNote })
+    await bustGradebook(params.assignmentId)
     return NextResponse.json({ grade: saved.grade, gradeNote: saved.gradeNote })
   } catch (err) {
     logError('api/assignments/[id]/construct-search/grade POST', err)

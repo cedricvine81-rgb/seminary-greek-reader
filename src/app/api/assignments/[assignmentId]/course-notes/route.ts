@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { logError } from '@/lib/logger'
 import { prisma } from '@/lib/db'
 import { getPayload } from '@/lib/auth'
@@ -126,6 +127,19 @@ export async function POST(req: NextRequest, { params }: { params: { assignmentI
       update: { grade, gradeNote },
       create: { userId, assignmentId: params.assignmentId, folderId: folder?.id ?? null, grade, gradeNote },
     })
+
+    // The gradebook is a server component on the course page, so without this the grade sits
+    // in the database while the instructor keeps being served the cached page — it looked
+    // like saving was slow when it was the page that was stale. Quiz grading has always done
+    // this (results/route.ts); notes grading never did.
+    const a = await prisma.assignment.findUnique({
+      where: { id: params.assignmentId }, select: { courseId: true },
+    })
+    if (a) revalidatePath(`/instructor/courses/${a.courseId}`)
+    revalidatePath(`/instructor/assignments/${params.assignmentId}/grade`)
+    revalidatePath('/student')
+    revalidatePath(`/student/assignments/${params.assignmentId}`)
+
     return NextResponse.json({ grade: saved.grade, gradeNote: saved.gradeNote })
   } catch (err) {
     logError('api/assignments/[id]/course-notes POST', err)

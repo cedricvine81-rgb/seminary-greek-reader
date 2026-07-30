@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { logError } from '@/lib/logger'
 import { getPayload } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import { isAuthorizedForAssignment } from '@/lib/course-auth'
 import { getGroupPresentationGrading, gradeGroupPresentation, gradeGroupMember, setGroupLateApproval, reopenGroupSubmission } from '@/lib/group-presentations'
 
@@ -17,6 +19,15 @@ export async function GET(_req: NextRequest, { params }: { params: { assignmentI
     logError('api/assignments/[id]/group-presentation GET', err)
     return NextResponse.json({ error: 'Server error.' }, { status: 500 })
   }
+}
+
+
+// The gradebook lives on the cached course page; without busting it a saved grade sits in
+// the database while the page keeps serving the old numbers (same fix as course-notes).
+async function bustGradebook(assignmentId: string) {
+  const a = await prisma.assignment.findUnique({ where: { id: assignmentId }, select: { courseId: true } })
+  if (a) revalidatePath(`/instructor/courses/${a.courseId}`)
+  revalidatePath('/student')
 }
 
 // POST { groupId, grade?, gradeNote?, lateApproved? } — grade a group, or approve/revoke
@@ -48,10 +59,12 @@ export async function POST(req: NextRequest, { params }: { params: { assignmentI
     // A memberUserId routes to a per-member grade override; otherwise it's the group grade.
     if (b.memberUserId) {
       const saved = await gradeGroupMember(params.assignmentId, groupId, String(b.memberUserId), { grade, gradeNote })
+      await bustGradebook(params.assignmentId)
       return NextResponse.json({ grade: saved.grade, gradeNote: saved.gradeNote })
     }
 
     const saved = await gradeGroupPresentation(params.assignmentId, groupId, { grade, gradeNote })
+    await bustGradebook(params.assignmentId)
     return NextResponse.json({ grade: saved.grade, gradeNote: saved.gradeNote })
   } catch (err) {
     if (err instanceof Error && (err.message === 'Group not found' || err.message === 'Group member not found')) {
