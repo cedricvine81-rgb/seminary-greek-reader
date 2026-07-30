@@ -42,6 +42,16 @@ const lemmaPosCounts = {}
 // nothing else, so gender stops being a question; a noun never found in the vocative doesn't
 // offer one (which would only ever return nothing). Output: public/data/lemma-forms.json
 const lemmaFeatCounts = {}
+// normalized lemma → { <accented spelling>: count } and → { <gloss>: count }, plus a total
+// occurrence count. These drive the predictive dropdown on the word field: suggest the properly
+// accented lemma, show what it means, and rank by how common it is in the corpus.
+const lemmaSpellingCounts = {}
+const lemmaGlossCounts = {}
+const lemmaTotals = {}
+// normalized lemma → { <strongs>: count }, so the dropdown's gloss can come from the lexicon
+// (a LEXICAL gloss) rather than the corpus's per-form gloss — the commonest corpus gloss for
+// ἔρχομαι is "having come", which is a participle's sense, not the word's.
+const lemmaStrongsCounts = {}
 
 for (const osis of GNT) {
   const file = path.join(process.cwd(), 'public', 'data', 'phrase-tree', `${osis}.json`)
@@ -69,6 +79,22 @@ for (const osis of GNT) {
         counts[pos] = (counts[pos] ?? 0) + 1
         const feats = (lemmaFeatCounts[lemmaNorm] ??= {})
         for (const t of toks.slice(1)) feats[t] = (feats[t] ?? 0) + 1
+        lemmaTotals[lemmaNorm] = (lemmaTotals[lemmaNorm] ?? 0) + 1
+        // The lemma as the corpus spells it, accents and all — what the dropdown should show.
+        const spelling = n.lemma ? String(n.lemma).trim() : ''
+        if (spelling) {
+          const sp = (lemmaSpellingCounts[lemmaNorm] ??= {})
+          sp[spelling] = (sp[spelling] ?? 0) + 1
+        }
+        const gloss = n.gloss ? String(n.gloss).trim() : ''
+        if (gloss) {
+          const gl = (lemmaGlossCounts[lemmaNorm] ??= {})
+          gl[gloss] = (gl[gloss] ?? 0) + 1
+        }
+        if (strongs) {
+          const st = (lemmaStrongsCounts[lemmaNorm] ??= {})
+          st[strongs] = (st[strongs] ?? 0) + 1
+        }
       }
     } else {
       ;(n.c ?? []).forEach(walk)
@@ -116,12 +142,31 @@ const CATEGORIES = {
 // Pure attestation (count >= 1): a value is offered if the corpus ever tags this lemma that way.
 // No frequency threshold — pruning rare-but-real forms would make a legitimate search
 // unexpressible, and this corpus is hand-tagged, so stray values are not a real problem.
+// Thayer's opening clause makes a serviceable one-line gloss ("I come, go" for ἔρχομαι). Missing
+// lexicon entries fall back to the corpus's commonest gloss for the lemma.
+const lexicon = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'public', 'data', 'greek-lexicon.json'), 'utf8'))
+const shortGloss = s => {
+  if (!s) return ''
+  const first = String(s).trim().split(/[;.]/)[0].trim()
+  return first.length > 32 ? first.slice(0, 30).replace(/[,\s]+\S*$/, '') + '…' : first
+}
+
 const lemmaForms = {}
-let singlePos = 0, fixedGender = 0
+let singlePos = 0, fixedGender = 0, lexGloss = 0
 for (const lemma in lemmaPosCounts) {
   const entry = {}
   // Parts of speech this lemma is attested as, commonest first. One → not a question at all.
   entry.p = Object.entries(lemmaPosCounts[lemma]).sort((a, b) => b[1] - a[1]).map(([p]) => p)
+  // For the predictive dropdown: commonest spelling (accented), commonest gloss, frequency.
+  const topOf = counts => (counts ? Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0] : '')
+  const spelling = topOf(lemmaSpellingCounts[lemma])
+  if (spelling && spelling !== lemma) entry.d = spelling
+  const strongs = topOf(lemmaStrongsCounts[lemma])
+  const fromLexicon = strongs ? shortGloss(lexicon[`G${strongs}`]?.thayer) : ''
+  if (fromLexicon) lexGloss++
+  const gloss = fromLexicon || topOf(lemmaGlossCounts[lemma])
+  if (gloss) entry.g = gloss
+  entry.n = lemmaTotals[lemma] ?? 0
   if (entry.p.length === 1) singlePos++
   const feats = lemmaFeatCounts[lemma] ?? {}
   for (const [cat, values] of Object.entries(CATEGORIES)) {
@@ -138,4 +183,4 @@ const formsFile = path.join(process.cwd(), 'public', 'data', 'lemma-forms.json')
 fs.writeFileSync(formsFile, JSON.stringify(lemmaForms))
 // The old pos-only file is superseded by this one.
 fs.rmSync(path.join(process.cwd(), 'public', 'data', 'lemma-pos.json'), { force: true })
-console.log(`lemma forms: ${Object.keys(lemmaForms).length} lemmas · ${singlePos} with a single part of speech · ${fixedGender} with a fixed gender · ${(fs.statSync(formsFile).size / 1024).toFixed(0)} KB`)
+console.log(`lemma forms: ${Object.keys(lemmaForms).length} lemmas · ${singlePos} with a single part of speech · ${fixedGender} with a fixed gender · ${lexGloss} lexicon glosses · ${(fs.statSync(formsFile).size / 1024).toFixed(0)} KB`)

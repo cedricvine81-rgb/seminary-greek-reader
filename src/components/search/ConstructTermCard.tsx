@@ -1,6 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState, type ChangeEvent } from 'react'
+// The React KeyboardEvent is aliased so it doesn't shadow the DOM one that MorphSelect's
+// document-level key listener below relies on.
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { ChevronDown, Trash2, Check } from 'lucide-react'
 import { categoriesFor, FEATURE_LABEL, POS_FEATURES, type MorphGroup } from '@/lib/morph-features'
 import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
@@ -105,6 +107,9 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
   onRemove?: () => void
 }) {
   const [greekInput, setGreekInput] = useState(true)
+  const [openSug, setOpenSug] = useState(false)
+  const [activeSug, setActiveSug] = useState(-1)
+  const inputRef = useRef<HTMLInputElement>(null)
   const pos = term.features.pos?.[0] ?? ''
   const categories = categoriesFor(pos, term.features.mood ?? [])
 
@@ -150,10 +155,7 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
     onChange({ ...term, features })
   }
 
-  const onLemmaChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const el = e.target
-    const caret = el.selectionStart ?? el.value.length
-    const next = greekInput ? betaCodeToGreek(el.value) : el.value
+  const applyLemma = (next: string) => {
     const nextForms = lemmaForms?.get(normalizeGreek(next.trim())) ?? null
     // Only fill in the part of speech when the word leaves no doubt; a lemma attested as both
     // (say) noun and adjective keeps the choice open, just narrowed to those two.
@@ -162,7 +164,60 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
     // was legal for the old one (a feminine left over after switching to λόγος).
     const features = prune(found && found !== pos ? { ...term.features, pos: [found] } : term.features, nextForms)
     onChange({ ...term, lemma: next, features })
+  }
+
+  const onLemmaChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const el = e.target
+    const caret = el.selectionStart ?? el.value.length
+    const next = greekInput ? betaCodeToGreek(el.value) : el.value
+    applyLemma(next)
+    setOpenSug(true); setActiveSug(-1)
     if (greekInput) requestAnimationFrame(() => { try { el.setSelectionRange(caret, caret) } catch {} })
+  }
+
+  // ─── Predictive lexemes ─────────────────────────────────────────────────────
+  // Matched entirely in the browser against the already-loaded lemma table, so it responds on
+  // every keystroke with no request — and can only ever suggest words that are genuinely in the
+  // corpus, which is what this field needs. Prefix match first (accent-insensitive, so `logos`
+  // and `λογος` both find λόγος), then anything containing the string, each ranked by how often
+  // the word occurs in the New Testament.
+  const suggestions = useMemo(() => {
+    const q = normalizeGreek((term.lemma ?? '').trim())
+    if (!lemmaForms || q.length < 2) return []
+    const starts: { key: string; e: LemmaForms }[] = []
+    const contains: { key: string; e: LemmaForms }[] = []
+    // forEach, not for..of — a Map iterator needs downlevelIteration under this tsconfig, which
+    // next dev tolerates and next build does not.
+    lemmaForms.forEach((e, key) => {
+      if (key.startsWith(q)) starts.push({ key, e })
+      else if (key.includes(q)) contains.push({ key, e })
+    })
+    const byFreq = (a: { e: LemmaForms }, b: { e: LemmaForms }) => Number(b.e.n ?? 0) - Number(a.e.n ?? 0)
+    starts.sort(byFreq); contains.sort(byFreq)
+    return [...starts, ...contains].slice(0, 8).map(({ key, e }) => ({
+      display: (e.d as unknown as string) || key,
+      gloss: (e.g as unknown as string) || '',
+      count: Number(e.n ?? 0),
+      pos: e.p?.[0] ?? '',
+    }))
+  }, [term.lemma, lemmaForms])
+
+  // Nothing to offer if the only hit is exactly what's already typed.
+  const showSug = openSug && suggestions.length > 0 &&
+    !(suggestions.length === 1 && suggestions[0].display === (term.lemma ?? '').trim())
+
+  const pickSuggestion = (display: string) => {
+    applyLemma(display)
+    setOpenSug(false); setActiveSug(-1)
+    inputRef.current?.focus()
+  }
+
+  const onLemmaKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
+    if (!showSug) return
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveSug(i => (i + 1) % suggestions.length) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveSug(i => (i <= 0 ? suggestions.length : i) - 1) }
+    else if (e.key === 'Enter' && activeSug >= 0) { e.preventDefault(); pickSuggestion(suggestions[activeSug].display) }
+    else if (e.key === 'Escape') { e.stopPropagation(); setOpenSug(false); setActiveSug(-1) }
   }
 
   return (
@@ -181,13 +236,36 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
           then say what form it's in. Optional: leave it blank and the term is defined purely
           by grammar ("any aorist participle"), which is the other half of what this tool is for. */}
       <div className="flex flex-wrap items-end gap-2">
-        <div className="min-w-0 flex-1">
+        <div className="relative min-w-0 flex-1">
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">
             <span className="text-gray-500">1 · Greek word</span>
             <span className="font-normal normal-case tracking-normal text-gray-300"> — any form of it; leave blank for any word</span>
           </label>
-          <input value={term.lemma ?? ''} onChange={onLemmaChange} placeholder="e.g. πνεῦμα — or leave blank"
+          <input ref={inputRef} value={term.lemma ?? ''} onChange={onLemmaChange} onKeyDown={onLemmaKeyDown}
+            onFocus={() => { if (suggestions.length) setOpenSug(true) }}
+            autoComplete="off" spellCheck={false} placeholder="e.g. πνεῦμα — or leave blank"
             className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekInput ? 'greek-text' : ''}`} />
+
+          {/* Predictive lexemes — commonest first, with the gloss and how often the word occurs.
+              Mouse-down rather than click so picking wins the race against the input's blur. */}
+          {showSug && (
+            <>
+              <div className="fixed inset-0 z-30" onClick={() => setOpenSug(false)} />
+              <div className="absolute left-0 right-0 top-full z-40 mt-1 max-h-64 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg">
+                {suggestions.map((s, i) => (
+                  <button key={s.display} type="button"
+                    onMouseDown={e => { e.preventDefault(); pickSuggestion(s.display) }}
+                    onMouseEnter={() => setActiveSug(i)}
+                    className={`flex w-full items-baseline gap-2 border-b border-gray-50 px-3 py-2 text-left last:border-0 ${
+                      i === activeSug ? 'bg-brand-50' : 'hover:bg-brand-50'}`}>
+                    <span className="greek-text shrink-0 text-base text-gray-800">{s.display}</span>
+                    {s.gloss && <span className="truncate text-xs text-gray-400">{s.gloss}</span>}
+                    <span className="ml-auto shrink-0 text-[10px] text-gray-300">{s.pos} · {s.count}×</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
           {/* Tells you the word was recognised (and what it set), or that it wasn't found —
               accent-insensitive, so a miss really is a spelling issue or a non-NT word. */}
           {forms ? (
