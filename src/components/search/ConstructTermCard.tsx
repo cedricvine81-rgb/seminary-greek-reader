@@ -130,8 +130,9 @@ export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, o
   const [activeSug, setActiveSug] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const typed = (term.lemma ?? '').trim()
-  // Only the GNT has genuine lemmas; see the word field's label for why this matters.
-  const lexemeIsExact = corpus !== 'GNT'
+  // A word only degrades to exact-form matching when the table has no Strong's for it — see
+  // settleAgainst. The LXX has no real lemmas, so its lexemes are identified by number instead.
+  const lexemeIsExact = corpus !== 'GNT' && !(term.strongs?.length)
 
   // Remote lookup, for corpora with no in-page table (the Septuagint). Debounced, and keyed by the
   // text it answered so a late reply can't be mistaken for the current word's.
@@ -238,9 +239,20 @@ export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, o
     return prune(found && found !== pos ? { ...features, pos: [found] } : features, f)
   }
 
+  // Strong's numbers from the table are what the engine actually matches on for a corpus whose
+  // own lemma field is only a surface form. Dropped when the word no longer resolves, so a stale
+  // number can't outlive the word it came from.
+  const strongsOf = (f: LemmaForms | null): string[] | undefined => {
+    const s = f?.s as unknown as string[] | undefined
+    return s?.length ? s : undefined
+  }
+
   const applyLemma = (next: string) => {
     const nextForms = lemmaForms?.get(normalizeGreek(next.trim())) ?? null
-    onChange({ ...term, lemma: next, features: settleAgainst(term.features, nextForms) })
+    const nextTerm: ConstructTerm = { ...term, lemma: next, features: settleAgainst(term.features, nextForms) }
+    const s = strongsOf(nextForms)
+    if (s) nextTerm.strongs = s; else delete nextTerm.strongs
+    onChange(nextTerm)
   }
 
   // With no in-page table the lookup is async, so the settling happens when the answer lands
@@ -248,7 +260,14 @@ export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, o
   useEffect(() => {
     if (lemmaForms || !typed || remote.q !== typed || !remote.exact) return
     const next = settleAgainst(term.features, remote.exact)
-    if (JSON.stringify(next) !== JSON.stringify(term.features)) onChange({ ...term, features: next })
+    const s = strongsOf(remote.exact)
+    const changed = JSON.stringify(next) !== JSON.stringify(term.features)
+      || JSON.stringify(s ?? null) !== JSON.stringify(term.strongs ?? null)
+    if (changed) {
+      const nextTerm: ConstructTerm = { ...term, features: next }
+      if (s) nextTerm.strongs = s; else delete nextTerm.strongs
+      onChange(nextTerm)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remote, typed, lemmaForms])
 

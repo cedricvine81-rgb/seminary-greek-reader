@@ -170,7 +170,14 @@ function collectLXX(osis) {
 
 // ─── Per-corpus build ─────────────────────────────────────────────────────────
 
-function buildCorpus(name, osisIds, collect) {
+// `keyBy` decides what counts as "the same word" when building the lemma table:
+//   'lemma'   — the GNT trees carry real lemmas, so group by those.
+//   'strongs' — the LXX chapter files DON'T: their `lemma` is a verbatim copy of the surface form
+//               (identical in 100% of sampled words). Strong's numbers are the only lexeme
+//               identity available there — 91.9% of tokens carry one, they group inflected forms
+//               correctly (ἠγάπησάς / ἀγαπᾷς / ἀγαπᾶν all under G25), and the lexicon supplies a
+//               dictionary form for 98.6% of them.
+function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
   const books = {}
   let wordCount = 0, noPos = 0
   // Lemma statistics, for the word field's predictive dropdown and form narrowing.
@@ -197,14 +204,16 @@ function buildCorpus(name, osisIds, collect) {
 
       const pos = t.toks[0]
       if (!pos) noPos++
-      if (lemmaNorm && pos) {
-        ;(posCounts[lemmaNorm] ??= {})[pos] = ((posCounts[lemmaNorm] ?? {})[pos] ?? 0) + 1
-        const feats = (featCounts[lemmaNorm] ??= {})
+      // What groups this token with its fellow forms — see keyBy above.
+      const key = keyBy === 'strongs' ? t.strongs : lemmaNorm
+      if (key && pos) {
+        ;(posCounts[key] ??= {})[pos] = ((posCounts[key] ?? {})[pos] ?? 0) + 1
+        const feats = (featCounts[key] ??= {})
         for (const tok of t.toks.slice(1)) feats[tok] = (feats[tok] ?? 0) + 1
-        totals[lemmaNorm] = (totals[lemmaNorm] ?? 0) + 1
-        if (t.lemmaRaw) (spellingCounts[lemmaNorm] ??= {})[t.lemmaRaw] = ((spellingCounts[lemmaNorm] ?? {})[t.lemmaRaw] ?? 0) + 1
-        if (t.gloss) (glossCounts[lemmaNorm] ??= {})[t.gloss] = ((glossCounts[lemmaNorm] ?? {})[t.gloss] ?? 0) + 1
-        if (t.strongs) (strongsCounts[lemmaNorm] ??= {})[t.strongs] = ((strongsCounts[lemmaNorm] ?? {})[t.strongs] ?? 0) + 1
+        totals[key] = (totals[key] ?? 0) + 1
+        if (t.lemmaRaw) (spellingCounts[key] ??= {})[t.lemmaRaw] = ((spellingCounts[key] ?? {})[t.lemmaRaw] ?? 0) + 1
+        if (t.gloss) (glossCounts[key] ??= {})[t.gloss] = ((glossCounts[key] ?? {})[t.gloss] ?? 0) + 1
+        if (t.strongs) (strongsCounts[key] ??= {})[t.strongs] = ((strongsCounts[key] ?? {})[t.strongs] ?? 0) + 1
       }
     }
     books[osis] = { w, v }
@@ -229,23 +238,34 @@ const topOf = counts => (counts ? Object.entries(counts).sort((a, b) => b[1] - a
 // Pure attestation (count >= 1): a value is offered if the corpus ever tags this lemma that way.
 // No frequency threshold — pruning rare-but-real forms would make a legitimate search
 // unexpressible, and the GNT tagging is hand-made, so stray values are not a real problem.
-function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strongsCounts, totals }) {
+function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strongsCounts, totals }, keyBy = 'lemma') {
   const table = {}
-  let singlePos = 0, fixedGender = 0, lexGloss = 0
-  for (const lemma in posCounts) {
+  let singlePos = 0, fixedGender = 0, lexGloss = 0, noDictionaryForm = 0
+  for (const group in posCounts) {
     const entry = {}
-    entry.p = Object.entries(posCounts[lemma]).sort((a, b) => b[1] - a[1]).map(([p]) => p)
+    entry.p = Object.entries(posCounts[group]).sort((a, b) => b[1] - a[1]).map(([p]) => p)
     if (entry.p.length === 1) singlePos++
-    const spelling = topOf(spellingCounts[lemma])
+    const strongs = keyBy === 'strongs' ? group : topOf(strongsCounts[group])
+    // The key the user types against. Grouped by Strong's, that's the lexicon's dictionary form —
+    // the whole point, since the corpus itself only has surface forms. Where the lexicon has no
+    // entry (58 of 4,045 LXX numbers, mostly extended 7xxxx codes) fall back to the commonest
+    // surface form, which at least remains findable.
+    const spelling = keyBy === 'strongs'
+      ? (lexicon[`G${strongs}`]?.lemma || topOf(spellingCounts[group]))
+      : topOf(spellingCounts[group])
+    if (keyBy === 'strongs' && !lexicon[`G${strongs}`]?.lemma) noDictionaryForm++
+    const lemma = keyBy === 'strongs' ? normalize(String(spelling).replace(LETTERS, '')) : group
+    if (!lemma) continue
     if (spelling && spelling !== lemma) entry.d = spelling
-    const strongs = topOf(strongsCounts[lemma])
+    // Carried so the engine can match every inflected form by number rather than by string.
+    if (keyBy === 'strongs' && strongs) entry.s = [strongs]
     const fromLexicon = strongs ? shortGloss(lexicon[`G${strongs}`]?.thayer) : ''
     if (fromLexicon) lexGloss++
-    const gloss = fromLexicon || topOf(glossCounts[lemma])
+    const gloss = fromLexicon || topOf(glossCounts[group])
     if (gloss) entry.g = gloss
-    entry.n = totals[lemma] ?? 0
+    entry.n = totals[group] ?? 0
 
-    const feats = featCounts[lemma] ?? {}
+    const feats = featCounts[group] ?? {}
     // The categories any of this lemma's attested parts of speech could take. Recording one as
     // EMPTY within that set is what lets the reader hide it: ἵνα is tagged conjunction or adverb,
     // so "degree" is on the table in principle but never occurs, and offering it would only ever
@@ -256,16 +276,32 @@ function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strong
       if (seen.length < values.length && (seen.length > 0 || relevant.has(cat))) entry[cat] = seen
     }
     if (entry.gender?.length === 1) fixedGender++
+    // Two Strong's numbers can share a dictionary form. Merge rather than clobber, so a search on
+    // that word still reaches every number behind it.
+    const prev = table[lemma]
+    if (prev) {
+      const union = (a = [], b = []) => Array.from(new Set([...a, ...b]))
+      entry.p = union(prev.p, entry.p)
+      entry.s = union(prev.s, entry.s)
+      entry.n = (prev.n ?? 0) + (entry.n ?? 0)
+      entry.d = prev.d ?? entry.d
+      entry.g = prev.g ?? entry.g
+      // A category is only a restriction if it restricts for BOTH; otherwise drop it.
+      for (const cat of Object.keys(CATEGORIES)) {
+        if (prev[cat] && entry[cat]) entry[cat] = union(prev[cat], entry[cat])
+        else delete entry[cat]
+      }
+    }
     table[lemma] = entry
   }
-  return { table, singlePos, fixedGender, lexGloss }
+  return { table, singlePos, fixedGender, lexGloss, noDictionaryForm }
 }
 
 // ─── Run ──────────────────────────────────────────────────────────────────────
 
 const corpora = [
   buildCorpus('GNT', booksMeta.gnt.map(b => b.osisId), collectGNT),
-  buildCorpus('LXX', booksMeta.lxx.map(b => b.osisId), collectLXX),
+  buildCorpus('LXX', booksMeta.lxx.map(b => b.osisId), collectLXX, 'strongs'),
 ]
 
 const index = { version: 3, corpora: {} }
@@ -279,26 +315,22 @@ for (const c of corpora) {
   console.log(`  ${c.name}: ${Object.keys(c.books).length} books · ${verses} verses · ${c.wordCount} words · ${c.noPos} without a part of speech`)
 }
 
-// The GNT table is small enough for the browser to hold, which makes its word field instant.
-// The LXX has 44,249 lemmas — mostly rare proper nouns — and comes to 8 MB, too much to load into
-// a page, so it ships GZIPPED and is read server-side by /api/construct/lemmas instead. Both live
-// under public/data because that is what reliably reaches the deployment.
+// Both lemma tables ship to the browser, so the word field responds per keystroke with no
+// request. /api/construct/lemmas serves the same data for anything too large to ship that way —
+// it is what the LXX needed before Strong's grouping shrank it, and what the prose corpora will
+// need in Phase 3.
 for (const c of corpora) {
-  const { table, singlePos, fixedGender, lexGloss } = lemmaTable(c.stats)
+  const keyBy = c.name === 'GNT' ? 'lemma' : 'strongs'
+  const { table, singlePos, fixedGender, lexGloss, noDictionaryForm } = lemmaTable(c.stats, keyBy)
   const n = Object.keys(table).length
+  // Both tables are small enough to hold in the page now: grouping the LXX by Strong's collapsed
+  // 44,249 surface forms into ~4,000 real lexemes, taking it from 8 MB to ~130 KB.
   const stem = `lemma-forms-${c.name.toLowerCase()}`
-  const json = JSON.stringify(table)
-  let written
-  if (c.name === 'GNT') {
-    written = path.join(DATA, `${stem}.json`)
-    fs.writeFileSync(written, json)
-  } else {
-    written = path.join(DATA, `${stem}.json.gz`)
-    fs.writeFileSync(written, zlib.gzipSync(Buffer.from(json, 'utf8'), { level: 9 }))
-  }
-  console.log(`${path.basename(written)}: ${n} lemmas · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
+  const written = path.join(DATA, `${stem}.json`)
+  fs.writeFileSync(written, JSON.stringify(table))
+  console.log(`${path.basename(written)}: ${n} lexemes (by ${keyBy}) · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses${noDictionaryForm ? ` · ${noDictionaryForm} without a dictionary form` : ''} · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
 }
 // Superseded by the per-corpus tables above.
 fs.rmSync(path.join(DATA, 'lemma-forms.json'), { force: true })
 fs.rmSync(path.join(DATA, 'lemma-pos.json'), { force: true })
-fs.rmSync(path.join(DATA, 'lemma-forms-lxx.json'), { force: true })
+fs.rmSync(path.join(DATA, 'lemma-forms-lxx.json.gz'), { force: true })

@@ -53,13 +53,18 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         if (!d) return
         setBookName(new Map([...(d.gnt ?? []), ...(d.lxx ?? [])].map(b => [b.osisId, b.name])))
       }).catch(() => {})
-    // Only the New Testament table is small enough to ship (the LXX's 44,249 lemmas come to 8 MB
-    // — see scripts/build-construct-index.mjs). Searching the Septuagint works regardless; its
-    // word field just doesn't get suggestions or form-narrowing yet.
-    fetch('/data/lemma-forms-gnt.json').then(r => r.ok ? r.json() : null)
-      .then((d: Record<string, LemmaForms> | null) => { if (d) setLemmaForms(new Map(Object.entries(d))) })
-      .catch(() => {})
   }, [])
+
+  // The lemma table for the chosen corpus. Small enough to hold in the page for both, so the word
+  // field never waits on a request; re-fetched when the corpus changes (cached by the browser).
+  useEffect(() => {
+    let live = true
+    setLemmaForms(undefined)
+    fetch(`/data/lemma-forms-${query.corpus.toLowerCase()}.json`).then(r => r.ok ? r.json() : null)
+      .then((d: Record<string, LemmaForms> | null) => { if (live && d) setLemmaForms(new Map(Object.entries(d))) })
+      .catch(() => {})
+    return () => { live = false }
+  }, [query.corpus])
 
   // Run whenever a search is committed (`ran`), including on load from a shared link.
   useEffect(() => {
@@ -159,7 +164,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           <div key={i}>
             <ConstructTermCard
               index={i} term={t} corpus={query.corpus}
-              lemmaForms={query.corpus === 'GNT' ? lemmaForms : undefined}
+              lemmaForms={lemmaForms}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
             />

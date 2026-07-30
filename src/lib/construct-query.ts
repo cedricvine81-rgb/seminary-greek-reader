@@ -10,6 +10,11 @@ export interface ConstructTerm {
   features: Record<string, string[]>
   // Optional lexeme restriction — any inflected form of this lemma (normalized server-side).
   lemma?: string
+  // Strong's numbers standing for that lexeme, when the corpus has no real lemmas to match on.
+  // The LXX chapter files store the surface form in their `lemma` field, so matching the string
+  // would only ever find one spelling; its numbers group the inflected forms properly. Set from
+  // the lemma table, so `lemma` stays what the user typed and this is how it's actually matched.
+  strongs?: string[]
 }
 
 // Which Greek text to search. One at a time: results render through GreekSearchResults, which
@@ -56,7 +61,7 @@ export function defaultQuery(): ConstructQuery {
 
 // A term is only usable once it constrains something.
 export function termIsEmpty(t: ConstructTerm): boolean {
-  return !t.lemma && Object.values(t.features).every(v => v.length === 0)
+  return !t.lemma && !t.strongs?.length && Object.values(t.features).every(v => v.length === 0)
 }
 
 // Flat list of the parsing tokens a term requires, for display.
@@ -73,10 +78,16 @@ function encodeTerm(t: ConstructTerm): string {
   const groups = Object.entries(t.features)
     .filter(([, vals]) => vals.length > 0)
     .map(([cat, vals]) => `${cat}.${vals.join('|')}`)
-  return groups.join(':') + (t.lemma ? `@${t.lemma}` : '')
+  return groups.join(':')
+    + (t.lemma ? `@${t.lemma}` : '')
+    + (t.strongs?.length ? `#${t.strongs.join('.')}` : '')
 }
 
 function decodeTerm(s: string): ConstructTerm {
+  // Strong's numbers come after the lemma, as '#1234.5678'.
+  const hash = s.indexOf('#')
+  const strongs = hash >= 0 ? s.slice(hash + 1).split('.').map(x => x.trim()).filter(Boolean) : []
+  s = hash >= 0 ? s.slice(0, hash) : s
   const at = s.indexOf('@')
   const lemma = at >= 0 ? s.slice(at + 1).trim() : ''
   const body = at >= 0 ? s.slice(0, at) : s
@@ -88,7 +99,10 @@ function decodeTerm(s: string): ConstructTerm {
     const vals = group.slice(dot + 1).split('|').map(v => v.trim()).filter(Boolean)
     if (vals.length) features[cat] = vals
   }
-  return lemma ? { features, lemma } : { features }
+  const term: ConstructTerm = { features }
+  if (lemma) term.lemma = lemma
+  if (strongs.length) term.strongs = strongs
+  return term
 }
 
 export function encodeConstruct(q: ConstructQuery): URLSearchParams {

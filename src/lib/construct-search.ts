@@ -40,17 +40,23 @@ function getIndex(): ConstructIndex {
 interface CompiledTerm {
   groups: string[][]
   lemma: string | null
+  strongs: Set<string> | null
 }
 
 function compile(term: ConstructTerm): CompiledTerm {
   return {
     groups: Object.values(term.features).map(vals => vals.map(v => v.toLowerCase().trim()).filter(Boolean)).filter(g => g.length > 0),
     lemma: term.lemma ? normalizeGreek(term.lemma) : null,
+    strongs: term.strongs?.length ? new Set(term.strongs.map(String)) : null,
   }
 }
 
 function tokenMatches(tok: TokenRow, t: CompiledTerm): boolean {
-  if (t.lemma && tok[1] !== t.lemma) return false
+  // Strong's wins when present: it identifies the lexeme even where the corpus's own lemma field
+  // is just the surface form (the LXX), so it matches every inflected form rather than one
+  // spelling. Falls back to the lemma string, which is what the GNT trees actually carry.
+  if (t.strongs) { if (!t.strongs.has(tok[0])) return false }
+  else if (t.lemma && tok[1] !== t.lemma) return false
   if (t.groups.length === 0) return true
   const parsing = tok[2]
   if (!parsing) return false

@@ -135,6 +135,33 @@ describe('construct search', () => {
     expect(r.hits.length).toBeGreaterThan(500)
   })
 
+  it("matches a Septuagint lexeme by Strong's, not by string", () => {
+    // The LXX chapter files store the surface form in their `lemma` field, so ἀγαπάω — a
+    // dictionary form that never occurs as a surface form — is unfindable by string. Its Strong's
+    // number reaches every inflection. This is the regression that matters: string matching
+    // returned nothing at all rather than failing loudly.
+    const ANY_NOUN = { features: { pos: ['noun'] } }
+    const byString = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω' }, ANY_NOUN] }), BIG)
+    const byStrongs = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω', strongs: ['25'] }, ANY_NOUN] }), BIG)
+    expect(byString.hits).toHaveLength(0)
+    expect(byStrongs.hits.length).toBeGreaterThan(200)
+  })
+
+  it("prefers Strong's over the lemma string when both are given", () => {
+    // A mismatched pair proves which one is authoritative: the number wins.
+    const ANY_NOUN = { features: { pos: ['noun'] } }
+    const r = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'πνεῦμα', strongs: ['25'] }, ANY_NOUN] }), BIG)
+    expect(r.hits.length).toBeGreaterThan(200)
+  })
+
+  it("round-trips Strong's numbers through the URL", () => {
+    const original = q({ corpus: 'LXX', terms: [
+      { features: { pos: ['verb'] }, lemma: 'ἀγαπάω', strongs: ['25'] },
+      { features: { pos: ['noun'] } },
+    ] })
+    expect(decodeConstruct(Object.fromEntries(encodeConstruct(original).entries()))).toEqual(original)
+  })
+
   it('honours a book scope and caps results', () => {
     const scoped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN], books: ['Phlm', 'Jude'] }), BIG)
     expect(scoped.hits.every(h => h.bookId === 'Phlm' || h.bookId === 'Jude')).toBe(true)
