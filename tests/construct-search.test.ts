@@ -6,9 +6,9 @@
  */
 import {
   decodeConstruct, encodeConstruct, queryIsRunnable, termIsEmpty,
-  CONSTRUCT_DEFAULT_WITHIN, type ConstructQuery,
+  CONSTRUCT_CORPORA, CONSTRUCT_DEFAULT_WITHIN, type ConstructQuery,
 } from '@/lib/construct-query'
-import { searchConstruct } from '@/lib/construct-search'
+import { searchConstruct, searchConstructAll } from '@/lib/construct-search'
 
 const q = (o: Partial<ConstructQuery>): ConstructQuery =>
   ({ corpus: 'GNT', terms: [], within: 4, ordered: false, sameVerse: false, ...o }) as ConstructQuery
@@ -135,23 +135,39 @@ describe('construct search', () => {
     expect(r.hits.length).toBeGreaterThan(500)
   })
 
-  it("matches a Septuagint lexeme by Strong's, not by string", () => {
-    // The LXX chapter files store the surface form in their `lemma` field, so ἀγαπάω — a
-    // dictionary form that never occurs as a surface form — is unfindable by string. Its Strong's
-    // number reaches every inflection. This is the regression that matters: string matching
-    // returned nothing at all rather than failing loudly.
+  it('finds every form of a Septuagint lexeme from the word alone', () => {
+    // The LXX chapter files store the surface form in their `lemma` field, so ἀγαπάω — a dictionary
+    // form that never occurs as a surface form — would be unfindable by string. The engine resolves
+    // the word against that corpus's own table and matches on its Strong's number instead, so the
+    // caller needs to supply nothing but the word. The regression this guards is silent emptiness:
+    // string matching returned zero rather than failing loudly.
     const ANY_NOUN = { features: { pos: ['noun'] } }
-    const byString = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω' }, ANY_NOUN] }), BIG)
-    const byStrongs = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω', strongs: ['25'] }, ANY_NOUN] }), BIG)
-    expect(byString.hits).toHaveLength(0)
-    expect(byStrongs.hits.length).toBeGreaterThan(200)
+    const fromWord = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω' }, ANY_NOUN] }), BIG)
+    expect(fromWord.hits.length).toBeGreaterThan(200)
+    // Supplying the number explicitly must land in the same place.
+    const withNumber = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'ἀγαπάω', strongs: ['25'] }, ANY_NOUN] }), BIG)
+    expect(withNumber.hits.length).toBe(fromWord.hits.length)
   })
 
-  it("prefers Strong's over the lemma string when both are given", () => {
-    // A mismatched pair proves which one is authoritative: the number wins.
+  it("ignores Strong's numbers belonging to another corpus", () => {
+    // A term keeps whatever numbers the last corpus's table gave it, so the engine re-resolves the
+    // word rather than trusting them — otherwise switching corpus would search for the wrong word.
     const ANY_NOUN = { features: { pos: ['noun'] } }
-    const r = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'πνεῦμα', strongs: ['25'] }, ANY_NOUN] }), BIG)
-    expect(r.hits.length).toBeGreaterThan(200)
+    const honest = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'πνεῦμα' }, ANY_NOUN] }), BIG)
+    const stale = searchConstruct(q({ corpus: 'LXX', within: 5, terms: [{ features: {}, lemma: 'πνεῦμα', strongs: ['25'] }, ANY_NOUN] }), BIG)
+    expect(stale.hits.length).toBe(honest.hits.length)
+  })
+
+  it('reports a per-corpus distribution when searching every text', () => {
+    const { tallies, total } = searchConstructAll(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN] }), 3)
+    expect(tallies).toHaveLength(CONSTRUCT_CORPORA.length)
+    // Counts are true totals, not sample sizes — that's the whole point of the view.
+    const gnt = tallies.find(t => t.corpus === 'GNT')!
+    expect(gnt.hits.length).toBe(3)
+    expect(gnt.count).toBeGreaterThan(300)
+    expect(total).toBe(tallies.reduce((n, t) => n + t.count, 0))
+    // Every corpus reached, including the last one in the list.
+    expect(tallies.find(t => t.corpus === 'greco')!.count).toBeGreaterThan(0)
   })
 
   it("round-trips Strong's numbers through the URL", () => {
