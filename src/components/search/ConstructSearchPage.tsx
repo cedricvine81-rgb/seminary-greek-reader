@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, ChevronDown, Library, Lightbulb, Loader2, Plus, Search } from 'lucide-react'
+import { ArrowLeft, Check, ChevronDown, Library, Lightbulb, Link2, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
@@ -100,6 +100,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [scopes, setScopes] = useState<Record<string, ScopeEntry[]>>({})
   const [showScope, setShowScope] = useState(false)
   const [showExamples, setShowExamples] = useState(false)
+  const [copied, setCopied] = useState(false)
 
   // Book display names (osisId → name) for both corpora, as on the other search pages.
   useEffect(() => {
@@ -430,7 +431,41 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             <Plus size={13} /> Add a word
           </button>
         )}
-        <button type="button" onClick={runSearch} disabled={!runnable}
+        {/* A construct is entirely described by its URL, so a search can be handed to students as a
+            link — pasted into an assignment's instructions, or into a message. Copies the search
+            that RAN, not the one being edited, so the link always matches what was seen. */}
+        {ran && (
+          <button type="button"
+            onClick={() => {
+              const url = `${window.location.origin}/search/construct?${encodeConstruct(ran).toString()}`
+              const done = () => { setCopied(true); setTimeout(() => setCopied(false), 2000) }
+              // The clipboard API needs a secure context and permission, and silently rejects
+              // otherwise — leaving the button looking broken. Fall back to a selected textarea,
+              // which works anywhere, and only report success when something actually copied.
+              const fallback = () => {
+                const el = document.createElement('textarea')
+                el.value = url
+                el.style.position = 'fixed'
+                el.style.opacity = '0'
+                document.body.appendChild(el)
+                el.select()
+                let ok = false
+                try { ok = document.execCommand('copy') } catch { ok = false }
+                document.body.removeChild(el)
+                if (ok) done(); else window.prompt('Copy this link:', url)
+              }
+              if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(url).then(done).catch(fallback)
+              } else {
+                fallback()
+              }
+            }}
+            title="Copy a link to this exact search — paste it into an assignment or a message"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-3 py-1.5 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
+            {copied ? <><Check size={13} /> Link copied</> : <><Link2 size={13} /> Copy link</>}
+          </button>
+        )}
+                <button type="button" onClick={runSearch} disabled={!runnable}
           title={runnable ? undefined : 'Give a word something to match — a part of speech, a form, or a lexeme'}
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400">
           <Search size={14} /> Search
