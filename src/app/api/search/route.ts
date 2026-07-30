@@ -3,7 +3,7 @@ import { logError } from '@/lib/logger'
 import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, verseTextsByIds, type SearchCorpus } from '@/lib/search'
 import { searchTranslation } from '@/lib/translation-search'
 import { searchConstruct, searchConstructAll } from '@/lib/construct-search'
-import { CONSTRUCT_ALL, decodeConstruct, isProseCorpus, queryIsRunnable } from '@/lib/construct-query'
+import { CONSTRUCT_ALL, corpusInfo, decodeConstruct, isProseCorpus, queryIsRunnable } from '@/lib/construct-query'
 import { proseHitText } from '@/lib/construct-prose'
 
 export async function GET(req: NextRequest) {
@@ -58,12 +58,16 @@ export async function GET(req: NextRequest) {
               }
             }
             const texts = verseTextsByIds(t.hits.map(h => h.verseId))
+            const aligned = corpusInfo(t.corpus).readerAligned
             return {
               corpus: t.corpus, count: t.count, prose: false,
               results: t.hits.map(h => ({
                 bookId: h.bookId, chapter: h.chapter, verse: h.verse,
                 text: texts.get(h.verseId) ?? '',
-                matchedLemmas: h.matchedLemmas, crossesVerse: h.crossesVerse,
+                matchedLemmas: h.matchedLemmas,
+                // Only where the index and the reader agree on tokenisation.
+                ...(aligned ? { matchedWords: h.matchedWords } : {}),
+                crossesVerse: h.crossesVerse,
               })),
             }
           }),
@@ -90,12 +94,14 @@ export async function GET(req: NextRequest) {
         })
       }
       const texts = verseTextsByIds(hits.map(h => h.verseId))
+      const aligned = corpusInfo(query.corpus).readerAligned
       return NextResponse.json({
         truncated, total,
         results: hits.map(h => ({
           bookId: h.bookId, chapter: h.chapter, verse: h.verse,
           text: texts.get(h.verseId) ?? '',
           matchedLemmas: h.matchedLemmas,
+          ...(aligned ? { matchedWords: h.matchedWords } : {}),
           crossesVerse: h.crossesVerse,
         })),
       })

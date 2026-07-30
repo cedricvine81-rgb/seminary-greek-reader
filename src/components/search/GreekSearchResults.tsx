@@ -24,7 +24,11 @@ const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number
 type Token = { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }
 // matchedLemmas: normalized lemmas of the word(s) a morphology search matched in this verse,
 // so exactly those tokens can be red-highlighted (surface/lemma terms cover the other searches).
-export type GreekHit = { osisId: string; chapter: number; verse: number; text: string; matchedLemmas?: string[] }
+// matchedWords: 0-based indices of the words a construct search matched IN THIS VERSE. Present only
+// where the search index's tokens line up with the reader's (see readerAligned in construct-query),
+// and preferred over matchedLemmas when it is — lemma highlighting marks every occurrence of a
+// matched lexeme, so a search on the article lights up every article in the verse.
+export type GreekHit = { osisId: string; chapter: number; verse: number; text: string; matchedLemmas?: string[]; matchedWords?: number[] }
 type CtxVerse = { chapter: number; verse: number; text: string }
 
 function formatMorph(m?: Record<string, string | null>): string {
@@ -151,6 +155,8 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       return <span className={isHit ? '' : 'text-gray-400'}>{hilite(cv.text, terms)}</span>
     }
     const hitLemmas = h.matchedLemmas?.length ? new Set(h.matchedLemmas.map(normalizeFold)) : null
+    // Exact positions win when the caller could supply them.
+    const hitWords = h.matchedWords?.length ? new Set(h.matchedWords) : null
     // Char offsets into the verse's canonical text (tokens joined by single spaces), the
     // same basis the reader's highlights use, so a highlight made here lands identically.
     let pos = 0
@@ -160,9 +166,11 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       const key = `${rowKey}.${ti}`
       const { start, end } = spans[ti]
       const mark = verseHl.length ? highlightAt(start, end, verseHl) : undefined
-      const matched = termSet.has(normalizeFold(tok.surface))
-        || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
-        || (!!hitLemmas && hitLemmas.has(normalizeFold(tok.lemma)))
+      const matched = hitWords
+        ? hitWords.has(ti)
+        : termSet.has(normalizeFold(tok.surface))
+          || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
+          || (!!hitLemmas && hitLemmas.has(normalizeFold(tok.lemma)))
       const select = () => {
         showInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
         setSelKey(key)

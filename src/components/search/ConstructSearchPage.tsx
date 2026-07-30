@@ -93,7 +93,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             ...b,
             results: (b.results ?? []).map((v: any) => ({
               osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
-              matchedLemmas: v.matchedLemmas, crossesVerse: v.crossesVerse,
+              matchedLemmas: v.matchedLemmas, matchedWords: v.matchedWords, crossesVerse: v.crossesVerse,
             })),
           })
           setAllBlocks({ blocks: blocks as CorpusBlock[], total: d.total ?? 0 })
@@ -108,7 +108,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           setProseHits(null)
           setHits((d.results ?? []).map((v: any) => ({
             osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
-            matchedLemmas: v.matchedLemmas, crossesVerse: v.crossesVerse,
+            matchedLemmas: v.matchedLemmas, matchedWords: v.matchedWords, crossesVerse: v.crossesVerse,
           })))
         }
         setTruncated(!!d.truncated)

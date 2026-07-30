@@ -33,16 +33,23 @@ export interface ConstructTerm {
 // `tagging` is the honest part: the New Testament and Septuagint are hand-tagged, the prose corpora
 // are Stanza output at roughly 90-95%. A hit in prose is evidence, not proof, and the UI says so —
 // this is a teaching tool, and a student shouldn't cite a mistagged aorist on our authority.
+// `readerAligned` says whether the index's word positions line up with the text the reader renders,
+// which is what allows results to mark exactly the matched words rather than every occurrence of
+// their lemma. The Septuagint's index is built from the very chapter files /api/reader serves, so it
+// does (checked: 1,600 verses, no mismatches). The New Testament's comes from the parsing trees —
+// gold hand-tagging, but a DIFFERENT edition from the reader's text, differing in word count in
+// 159 of 1,599 sampled verses (δαυιδ/δαβιδ, βοες/βοοζ, ασαφ/ασα). Marking by position there would
+// mark the wrong words, so it stays on lemma highlighting.
 export const CONSTRUCT_CORPORA = [
-  { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold' },
-  { id: 'LXX', label: 'Greek Old Testament (Septuagint)', kind: 'bible', tagging: 'gold' },
-  { id: 'josephus', label: 'Josephus', kind: 'prose', tagging: 'machine' },
-  { id: 'philo', label: 'Philo', kind: 'prose', tagging: 'machine' },
-  { id: 'apostolic-fathers', label: 'Apostolic Fathers', kind: 'prose', tagging: 'machine' },
-  { id: 'pseudepigrapha', label: 'Pseudepigrapha', kind: 'prose', tagging: 'machine' },
-  { id: 'eusebius', label: 'Eusebius', kind: 'prose', tagging: 'machine' },
-  { id: 'justin', label: 'Justin Martyr', kind: 'prose', tagging: 'machine' },
-  { id: 'greco', label: 'Greco-Roman', kind: 'prose', tagging: 'machine' },
+  { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold', readerAligned: false },
+  { id: 'LXX', label: 'Greek Old Testament (Septuagint)', kind: 'bible', tagging: 'gold', readerAligned: true },
+  { id: 'josephus', label: 'Josephus', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'philo', label: 'Philo', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'apostolic-fathers', label: 'Apostolic Fathers', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'pseudepigrapha', label: 'Pseudepigrapha', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'eusebius', label: 'Eusebius', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'justin', label: 'Justin Martyr', kind: 'prose', tagging: 'machine', readerAligned: true },
+  { id: 'greco', label: 'Greco-Roman', kind: 'prose', tagging: 'machine', readerAligned: true },
 ] as const
 
 // 'ALL' searches every corpus and reports a distribution (see searchConstructAll). Deliberately
