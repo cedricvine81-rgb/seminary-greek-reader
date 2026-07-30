@@ -441,6 +441,9 @@ for (const c of corpora) {
   const written = path.join(DATA, inPage ? `${stem}.json` : `${stem}.json.gz`)
   const body = JSON.stringify(table)
   fs.writeFileSync(written, inPage ? body : zlib.gzipSync(Buffer.from(body, 'utf8'), { level: 9 }))
+  // Remove the other form, so switching a corpus between shipped and server-side can't leave a
+  // stale multi-megabyte copy behind — publicly served, redundant, and silently out of date.
+  fs.rmSync(path.join(DATA, inPage ? `${stem}.json.gz` : `${stem}.json`), { force: true })
   console.log(`${path.basename(written)}: ${n} lexemes (by ${keyBy}) · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses${noDictionaryForm ? ` · ${noDictionaryForm} without a dictionary form` : ''} · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
 }
 // Superseded by the per-corpus tables above.
