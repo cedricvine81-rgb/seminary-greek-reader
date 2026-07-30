@@ -35,8 +35,18 @@ function MorphSelect({ group, selected, onChange }: {
     return () => { document.removeEventListener('keydown', onKey); document.removeEventListener('mousedown', onOutside) }
   }, [open])
 
-  const toggle = (v: string) =>
-    onChange(selected.includes(v) ? selected.filter(x => x !== v) : [...selected, v])
+  // A plain click picks that one value and CLOSES — picking one thing shouldn't cost a second
+  // click to dismiss the menu, which is the common case by far. Multi-select (the OR) is still
+  // there on ⌘/Ctrl/shift-click, which toggles and leaves the menu open so you can add more.
+  // Clicking the value that's already the sole selection clears it.
+  const pick = (v: string, additive: boolean) => {
+    if (additive) {
+      onChange(selected.includes(v) ? selected.filter(x => x !== v) : [...selected, v])
+      return
+    }
+    onChange(selected.length === 1 && selected[0] === v ? [] : [v])
+    setOpen(false)
+  }
 
   const label = selected.length === 0
     ? 'any'
@@ -66,8 +76,9 @@ function MorphSelect({ group, selected, onChange }: {
           {group.features.map(f => {
             const on = selected.includes(f.value)
             return (
-              <button key={f.value} type="button" onClick={() => toggle(f.value)}
-                className={`flex w-full items-center gap-2 rounded px-2 py-1 text-left text-xs transition-colors ${
+              <button key={f.value} type="button"
+                onClick={e => pick(f.value, e.metaKey || e.ctrlKey || e.shiftKey)}
+                className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-xs transition-colors ${
                   on ? 'bg-brand-50 text-brand-700' : 'text-gray-700 hover:bg-gray-50'}`}>
                 <span className={`flex h-3.5 w-3.5 flex-none items-center justify-center rounded border ${
                   on ? 'border-brand-400 bg-brand-500 text-white' : 'border-gray-300'}`}>
@@ -77,6 +88,9 @@ function MorphSelect({ group, selected, onChange }: {
               </button>
             )
           })}
+          <p className="mt-1 border-t border-gray-100 px-2 pt-1 text-[10px] leading-snug text-gray-300">
+            ⌘-click to pick more than one <span className="text-gray-400">(either)</span>
+          </p>
         </div>
       )}
     </div>

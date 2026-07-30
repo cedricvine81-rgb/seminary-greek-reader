@@ -18,7 +18,8 @@ interface BookIndex {
   w: TokenRow[]
   v: [number, number, number][]   // [chapter, verse, startIndex], ascending by startIndex
 }
-interface ConstructIndex { version: number; books: Record<string, BookIndex> }
+// Books per corpus, each in canonical order (the engine relies on that for reading-order hits).
+interface ConstructIndex { version: number; corpora: Record<string, Record<string, BookIndex>> }
 
 let _index: ConstructIndex | null = null
 
@@ -28,7 +29,7 @@ function getIndex(): ConstructIndex {
   try {
     _index = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')) as ConstructIndex
   } catch {
-    _index = { version: 0, books: {} }
+    _index = { version: 0, corpora: {} }
   }
   return _index!
 }
@@ -149,7 +150,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   let truncated = false
 
   // Books are stored in canonical order, so iterating the object yields reading order.
-  for (const [osisId, book] of Object.entries(idx.books)) {
+  for (const [osisId, book] of Object.entries(idx.corpora[query.corpus] ?? {})) {
     if (bookFilter && !bookFilter.has(osisId)) continue
 
     // Positions per term, ascending.

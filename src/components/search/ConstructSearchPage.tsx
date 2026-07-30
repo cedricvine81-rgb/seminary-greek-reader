@@ -7,13 +7,14 @@ import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
-  termIsEmpty, type ConstructQuery, type ConstructTerm, type LemmaForms,
+  termIsEmpty, type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { FEATURE_LABEL } from '@/lib/morph-features'
 import { isExamLocked } from '@/lib/exam-lockdown'
 
 // Construct search — "find an aorist participle within 4 words of a dative noun". Two or three
-// morphological terms plus a distance, run over the flat GNT token index (construct-search.ts).
+// morphological terms plus a distance, run over the flat token index for the chosen corpus —
+// New Testament or Septuagint, one at a time (construct-search.ts).
 //
 // Reached from the "Construct" link on the full /search page. Deliberately its own route rather
 // than a scope of SearchPageView: the builder needs vertical room, and the text-query search is
@@ -45,14 +46,17 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   // card to real choices only (scripts/build-construct-index.mjs).
   const [lemmaForms, setLemmaForms] = useState<Map<string, LemmaForms>>()
 
-  // Book display names (osisId → name), as on the other search pages.
+  // Book display names (osisId → name) for both corpora, as on the other search pages.
   useEffect(() => {
     fetch('/data/books.json').then(r => r.ok ? r.json() : null)
-      .then((d: { gnt?: { osisId: string; name: string }[] } | null) => {
-        if (!d?.gnt) return
-        setBookName(new Map(d.gnt.map(b => [b.osisId, b.name])))
+      .then((d: { gnt?: { osisId: string; name: string }[]; lxx?: { osisId: string; name: string }[] } | null) => {
+        if (!d) return
+        setBookName(new Map([...(d.gnt ?? []), ...(d.lxx ?? [])].map(b => [b.osisId, b.name])))
       }).catch(() => {})
-    fetch('/data/lemma-forms.json').then(r => r.ok ? r.json() : null)
+    // Only the New Testament table is small enough to ship (the LXX's 44,249 lemmas come to 8 MB
+    // — see scripts/build-construct-index.mjs). Searching the Septuagint works regardless; its
+    // word field just doesn't get suggestions or form-narrowing yet.
+    fetch('/data/lemma-forms-gnt.json').then(r => r.ok ? r.json() : null)
       .then((d: Record<string, LemmaForms> | null) => { if (d) setLemmaForms(new Map(Object.entries(d))) })
       .catch(() => {})
   }, [])
@@ -130,13 +134,26 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         <ArrowLeft size={16} /> Back to Search
       </button>
 
-      <div className="mb-1 flex items-baseline gap-2">
+      <div className="mb-1 flex flex-wrap items-baseline justify-between gap-2">
         <h1 className="text-lg font-semibold text-gray-900">Construct search</h1>
-        <span className="text-[11px] text-gray-400">· New Testament</span>
+        {/* Which Greek text. One at a time — see ConstructCorpus. Switching corpus keeps the
+            construct you've built, so you can run the same query against the other text. */}
+        <label className="flex items-center gap-1.5 text-xs text-gray-500">
+          Search in
+          <select value={query.corpus}
+            onChange={e => setQuery(q => ({ ...q, corpus: e.target.value as ConstructCorpus }))}
+            className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            <option value="GNT">Greek New Testament</option>
+            <option value="LXX">Greek Old Testament (Septuagint)</option>
+          </select>
+        </label>
       </div>
       <p className="mb-4 text-xs text-gray-500">
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
+        {query.corpus === 'LXX' && (
+          <span className="text-gray-400"> The Septuagint&rsquo;s word field has no suggestions yet — type a lexeme and it still searches.</span>
+        )}
       </p>
 
       {/* ─── Builder ─────────────────────────────────────────────────────── */}
@@ -144,7 +161,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {query.terms.map((t, i) => (
           <div key={i}>
             <ConstructTermCard
-              index={i} term={t} lemmaForms={lemmaForms}
+              index={i} term={t} lemmaForms={query.corpus === 'GNT' ? lemmaForms : undefined}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
             />
@@ -241,7 +258,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               <GreekSearchResults
                 hits={hits}
                 terms={[]}
-                corpus="GNT"
+                corpus={ran.corpus}
                 bookName={bookName}
                 context={0}
                 ctxMap={{}}

@@ -11,7 +11,7 @@ import {
 import { searchConstruct } from '@/lib/construct-search'
 
 const q = (o: Partial<ConstructQuery>): ConstructQuery =>
-  ({ terms: [], within: 4, ordered: false, sameVerse: false, ...o }) as ConstructQuery
+  ({ corpus: 'GNT', terms: [], within: 4, ordered: false, sameVerse: false, ...o }) as ConstructQuery
 
 const ids = (r: { hits: { bookId: string; chapter: number; verse: number }[] }) =>
   r.hits.map(h => `${h.bookId} ${h.chapter}:${h.verse}`)
@@ -24,7 +24,7 @@ describe('construct query encoding', () => {
   it('round-trips terms, distance, order and verse confinement', () => {
     const original = q({
       terms: [AOR_PTCP, { features: { pos: ['noun'], case: ['genitive', 'dative'] }, lemma: 'πνεῦμα' }],
-      within: 7, ordered: true, sameVerse: true,
+      within: 7, ordered: true, sameVerse: true, corpus: 'LXX',
     })
     const back = decodeConstruct(Object.fromEntries(encodeConstruct(original).entries()))
     expect(back).toEqual(original)
@@ -113,6 +113,26 @@ describe('construct search', () => {
     const r = searchConstruct(q({ within: 2, terms: [AOR_PTCP, DAT_NOUN] }), BIG)
     const matt21 = r.hits.find(h => h.bookId === 'Matt' && h.chapter === 2 && h.verse === 1)
     expect(matt21?.matchedLemmas.sort()).toEqual(['βηθλεεμ', 'γενναω'])
+  })
+
+  it('searches the chosen corpus only', () => {
+    const gnt = searchConstruct(q({ terms: [AOR_PTCP, DAT_NOUN] }), BIG)
+    const lxx = searchConstruct(q({ corpus: 'LXX', terms: [AOR_PTCP, DAT_NOUN] }), BIG)
+    expect(gnt.hits.length).toBeGreaterThan(0)
+    expect(lxx.hits.length).toBeGreaterThan(0)
+    // No book appears in both results — the two corpora share no osisIds.
+    const gntBooks = new Set(gnt.hits.map(h => h.bookId))
+    expect(lxx.hits.some(h => gntBooks.has(h.bookId))).toBe(false)
+    expect(lxx.hits[0].bookId).toBe('Gen')
+  })
+
+  it('maps the Septuagint perfect, which its tagging encodes as X', () => {
+    // πεπτωκότας and friends: absent unless the X tag is normalised to `perfect`.
+    const r = searchConstruct(q({ corpus: 'LXX', within: 3, terms: [
+      { features: { pos: ['verb'], tense: ['perfect'] } },
+      { features: { pos: ['noun'] } },
+    ] }), BIG)
+    expect(r.hits.length).toBeGreaterThan(500)
   })
 
   it('honours a book scope and caps results', () => {

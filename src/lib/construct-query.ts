@@ -12,7 +12,13 @@ export interface ConstructTerm {
   lemma?: string
 }
 
+// Which Greek text to search. One at a time: results render through GreekSearchResults, which
+// fetches word data for a single corpus, and mixing the two would mean changing a component the
+// other search paths share.
+export type ConstructCorpus = 'GNT' | 'LXX'
+
 export interface ConstructQuery {
+  corpus: ConstructCorpus
   terms: ConstructTerm[]
   // Maximum distance between the matched words, in words. Adjacent words are 1 apart.
   within: number
@@ -45,7 +51,7 @@ export function emptyTerm(): ConstructTerm {
 }
 
 export function defaultQuery(): ConstructQuery {
-  return { terms: [emptyTerm(), emptyTerm()], within: CONSTRUCT_DEFAULT_WITHIN, ordered: false, sameVerse: false }
+  return { corpus: 'GNT', terms: [emptyTerm(), emptyTerm()], within: CONSTRUCT_DEFAULT_WITHIN, ordered: false, sameVerse: false }
 }
 
 // A term is only usable once it constrains something.
@@ -87,6 +93,7 @@ function decodeTerm(s: string): ConstructTerm {
 
 export function encodeConstruct(q: ConstructQuery): URLSearchParams {
   const p = new URLSearchParams()
+  if (q.corpus !== 'GNT') p.set('in', q.corpus)
   p.set('c', q.terms.map(encodeTerm).join('~'))
   p.set('w', String(q.within))
   if (q.ordered) p.set('ord', '1')
@@ -104,6 +111,7 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
   const w = Number(one(params.w))
   const books = one(params.books).split(',').map(s => s.trim()).filter(Boolean)
   return {
+    corpus: one(params.in) === 'LXX' ? 'LXX' : 'GNT',
     // Always present the builder with at least two term cards.
     terms: terms.length >= 2 ? terms.slice(0, CONSTRUCT_MAX_TERMS) : [...terms, emptyTerm(), emptyTerm()].slice(0, 2),
     within: Number.isFinite(w) && w >= 1 ? Math.min(w, CONSTRUCT_MAX_WITHIN) : CONSTRUCT_DEFAULT_WITHIN,
