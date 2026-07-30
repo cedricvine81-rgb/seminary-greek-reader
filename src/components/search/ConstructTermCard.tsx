@@ -110,38 +110,65 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
   const [openSug, setOpenSug] = useState(false)
   const [activeSug, setActiveSug] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
-  const pos = term.features.pos?.[0] ?? ''
-  const categories = categoriesFor(pos, term.features.mood ?? [])
-
   // What the typed word settles. A recognised lemma fixes its part of speech and often more:
   // λόγος is a masculine noun, so neither is a question — those controls become plain text and
   // the rest of the dropdowns offer only the values the word actually occurs in.
   const forms = lemmaForms?.get(normalizeGreek((term.lemma ?? '').trim())) ?? null
 
-  // The values still worth offering for a category, given the word (if any).
+  const posOptions = forms?.p ?? POS_FEATURES.map(f => f.value)
+  // A part of speech the word can't be is STALE — it survived a word change and would search for
+  // something that cannot exist (a verb whose lemma is ἵνα: no matches, no explanation). Ignore
+  // it for display; prune() strips it from the query itself.
+  const rawPos = term.features.pos?.[0] ?? ''
+  const pos = rawPos && posOptions.includes(rawPos) ? rawPos : ''
+
+  // The values still worth offering for a category, given the word (if any). An empty array in
+  // the data means "this word never occurs in that category" (ἵνα has no degree) — distinct from
+  // the key being absent, which means no restriction at all.
   const optionsFor = (group: MorphGroup, f: LemmaForms | null = forms): string[] => {
     const all = group.features.map(x => x.value)
     const attested = f?.[group.key]
-    return attested?.length ? all.filter(v => attested.includes(v)) : all
+    if (!attested) return all
+    return all.filter(v => attested.includes(v))
   }
-  const posOptions = forms?.p ?? POS_FEATURES.map(f => f.value)
+
+  // Which categories to show. With no part of speech chosen but a recognised word, offer the
+  // union over the tags that word actually carries — so ἵνα (conjunction or adverb) offers no
+  // inflection at all, rather than the full set it would get from "any".
+  const groupsFor = (posVal: string, moods: string[], f: LemmaForms | null): MorphGroup[] => {
+    const list = posVal ? [posVal] : f ? f.p : ['']
+    const seen = new Set<string>()
+    const out: MorphGroup[] = []
+    for (const p of list) {
+      for (const g of categoriesFor(p, moods)) {
+        if (seen.has(g.key)) continue
+        seen.add(g.key)
+        // Drop a category the word is never attested in — selecting it could only return nothing.
+        if (optionsFor(g, f).length > 0) out.push(g)
+      }
+    }
+    return out
+  }
+  const categories = groupsFor(pos, term.features.mood ?? [], forms)
 
   // The categories the word leaves no choice in (λόγος → "masculine"), for the recognised line.
   const settled = forms
-    ? categoriesFor(forms.p[0] ?? '', term.features.mood ?? [])
-        .map(g => optionsFor(g))
-        .filter(o => o.length === 1)
-        .map(o => FEATURE_LABEL.get(o[0]) ?? o[0])
+    ? categories.map(g => optionsFor(g)).filter(o => o.length === 1).map(o => FEATURE_LABEL.get(o[0]) ?? o[0])
     : []
 
   // Drop any constraint that is no longer selectable — one the part of speech can't take (a
   // leftover dative on a term switched to Verb), or one the word is never attested in. Either
   // would sit there invisibly and match nothing.
   const prune = (features: Record<string, string[]>, f: LemmaForms | null) => {
-    const groups = categoriesFor(features.pos?.[0] ?? '', features.mood ?? [])
     const out: Record<string, string[]> = {}
-    if (features.pos) out.pos = features.pos
-    for (const g of groups) {
+    // The part of speech goes first, because everything else depends on it. Keep it only if the
+    // word can actually be that; if the word has exactly one tag, adopt it.
+    const allowed = f?.p ?? null
+    const current = features.pos?.[0] ?? ''
+    let posVal = current
+    if (allowed && current && !allowed.includes(current)) posVal = allowed.length === 1 ? allowed[0] : ''
+    if (posVal) out.pos = [posVal]
+    for (const g of groupsFor(posVal, features.mood ?? [], f)) {
       const kept = (features[g.key] ?? []).filter(v => optionsFor(g, f).includes(v))
       if (kept.length) out[g.key] = kept
     }

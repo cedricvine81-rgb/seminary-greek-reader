@@ -139,6 +139,22 @@ const CATEGORIES = {
   degree: ['comparative', 'superlative'],
 }
 
+// Mirrors POS_CATEGORIES in src/lib/morph-features.ts — which categories each part of speech
+// can take at all (keep the two in step).
+const POS_CATEGORIES = {
+  noun:         ['case', 'number', 'gender'],
+  verb:         ['tense', 'voice', 'mood', 'person', 'number', 'case', 'gender'],
+  article:      ['case', 'number', 'gender'],
+  adjective:    ['case', 'number', 'gender', 'degree'],
+  pronoun:      ['person', 'case', 'number', 'gender'],
+  number:       ['case', 'number', 'gender'],
+  adverb:       ['degree'],
+  preposition:  [],
+  conjunction:  [],
+  particle:     [],
+  interjection: [],
+}
+
 // Pure attestation (count >= 1): a value is offered if the corpus ever tags this lemma that way.
 // No frequency threshold — pruning rare-but-real forms would make a legitimate search
 // unexpressible, and this corpus is hand-tagged, so stray values are not a real problem.
@@ -169,12 +185,15 @@ for (const lemma in lemmaPosCounts) {
   entry.n = lemmaTotals[lemma] ?? 0
   if (entry.p.length === 1) singlePos++
   const feats = lemmaFeatCounts[lemma] ?? {}
+  // The categories any of this lemma's attested parts of speech could take. Recording a category
+  // as EMPTY within that set is what lets the reader hide it: ἵνα is tagged conjunction or
+  // adverb, so "degree" is on the table in principle but never actually occurs, and offering it
+  // would only ever return nothing. Categories outside this set are simply absent.
+  const relevant = new Set(entry.p.flatMap(p => POS_CATEGORIES[p] ?? []))
   for (const [cat, values] of Object.entries(CATEGORIES)) {
     const seen = values.filter(v => feats[v])
-    // Only worth recording when it actually NARROWS the category. A missing entry means "no
-    // restriction" — the reader falls back to the full option list, which is also the right
-    // answer for a category this part of speech doesn't use at all (categoriesFor hides those).
-    if (seen.length && seen.length < values.length) entry[cat] = seen
+    // Only worth recording when it NARROWS the category — absent means "no restriction".
+    if (seen.length < values.length && (seen.length > 0 || relevant.has(cat))) entry[cat] = seen
   }
   if (entry.gender?.length === 1) fixedGender++
   lemmaForms[lemma] = entry
