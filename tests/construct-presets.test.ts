@@ -22,9 +22,15 @@ describe('construct presets', () => {
       'Double accusatives',
       'Conditional sentences',
       'Result, correlation and comparison',
+      'Verb forms — second aorist and deponents',
       'Other constructions',
     ])
-    expect(all.length).toBeGreaterThanOrEqual(44)
+    expect(all.length).toBeGreaterThanOrEqual(53)
+    // The participle's uses, as a syntax course divides them.
+    const ptcp = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the participle')!
+    for (const use of ['Substantival', 'Attributive', 'Predicate', 'Adverbial', 'Periphrastic', 'Genitive absolute', 'Complementary']) {
+      expect(ptcp.presets.some(p => p.label.startsWith(use))).toBe(true)
+    }
     // The three conditional classes the New Testament actually uses, in order.
     const conditional = CONSTRUCT_PRESETS.find(g => g.heading === 'Conditional sentences')!
     expect(conditional.presets.map(p => p.label.split(' —')[0])).toEqual(['First class', 'Second class', 'Third class'])

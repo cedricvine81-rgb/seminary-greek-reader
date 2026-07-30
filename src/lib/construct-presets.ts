@@ -19,6 +19,7 @@ export interface PresetGroup { heading: string; presets: ConstructPreset[] }
 const subj = (extra: Record<string, string[]> = {}): ConstructTerm =>
   ({ features: { pos: ['verb'], mood: ['subjunctive'], ...extra } })
 const word = (lemma: string): ConstructTerm => ({ features: {}, lemma })
+const verb = (lemma: string): ConstructTerm => ({ features: { pos: ['verb'] }, lemma })
 const agreeing = (pos: string, withTerm: number): ConstructTerm =>
   ({ features: { pos: [pos] }, agreeWith: withTerm, agreeOn: ['case', 'number', 'gender'] })
 
@@ -152,6 +153,33 @@ const PARTICIPLE: ConstructPreset[] = [
     ] },
   },
   {
+    label: 'Adverbial — finite verb then anarthrous participle',
+    note: 'The circumstantial participle, telling how or when the main verb happened. The forbidden article is what does the work: an ARTICULAR participle is attributive or substantival, an anarthrous one adverbial. Only finds participles AFTER their verb — a search can’t forbid an article before the first matched word.',
+    approx: 1478,
+    query: { ...base, within: 5, terms: [
+      { features: { pos: ['verb'], mood: ['indicative'] } },
+      ptcp(),
+      { features: { pos: ['article'] }, negate: true },
+    ] },
+  },
+  {
+    label: 'Predicate — article, noun, participle with no second article',
+    note: 'The participle asserting something of the noun rather than modifying it — the same test as the predicate adjective, and the same forbidden article.',
+    approx: 355,
+    query: { ...base, within: 4, terms: [
+      { features: { pos: ['article'] } },
+      agreeing('noun', 0),
+      { ...ptcp(), agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+      { features: { pos: ['article'] }, negate: true },
+    ] },
+  },
+  {
+    label: 'Complementary — παύομαι + participle',
+    note: 'The participle completing the verb’s idea: ἐπαύσατο λαλῶν, “he stopped speaking” (Luke 5:4). Note ἄρχομαι takes an INFINITIVE instead (ἤρξατο λέγειν), which is why it isn’t here — searching it returns nothing, as it should.',
+    approx: 10,
+    query: { ...base, within: 4, terms: [verb('παύω'), ptcp()] },
+  },
+  {
     label: 'Periphrastic — εἰμί + participle',
     note: 'A form of εἰμί with a participle doing the work of one verb: ἦν διδάσκων, “he was teaching”. Proximity can’t tell a true periphrastic from an εἰμί that merely happens to be near a participle, so read before concluding.',
     approx: 477,
@@ -213,7 +241,6 @@ const PREPOSITION: ConstructPreset[] = [
 
 const accNoun: ConstructTerm = { features: { pos: ['noun'], case: ['accusative'] } }
 const accPron: ConstructTerm = { features: { pos: ['pronoun'], case: ['accusative'] } }
-const verb = (lemma: string): ConstructTerm => ({ features: { pos: ['verb'] }, lemma })
 
 // Double accusatives. Two accusatives standing near each other prove nothing — an article and its
 // noun are two accusatives, and 1,360 New Testament verses have a pair within four words. What
@@ -370,6 +397,53 @@ const PREDICATE_NOM: ConstructPreset[] = [
   },
 ]
 
+
+// Deponency and the second aorist are NOT searchable as categories: the parsing trees the index is
+// built from record voice as active/middle/passive and tense simply as "aorist". The reader's own
+// chapter files do carry `Deponent` (1,685 words) and `2nd Aorist` (5,111), so a search for them
+// waits on re-sourcing the New Testament index from those files.
+//
+// What can be done meanwhile is to anchor on verbs that EXHIBIT each, so a student sees the forms
+// even though the category can't be queried.
+const VERB_FORMS: ConstructPreset[] = [
+  {
+    label: 'Second aorist — every aorist of λαμβάνω',
+    note: 'ἔλαβον, ἔλαβεν, λαβών: a second aorist takes the aorist endings onto a changed stem, with no -σα. The category itself isn’t searchable yet — see the note on this group.',
+    approx: 175,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], tense: ['aorist'] }, lemma: 'λαμβάνω' }] },
+  },
+  {
+    label: 'Second aorist — every aorist of ὁράω',
+    note: 'εἶδον, ἰδών — a suppletive second aorist, formed from a different root altogether.',
+    approx: 549,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], tense: ['aorist'] }, lemma: 'ὁράω' }] },
+  },
+  {
+    label: 'Second aorist — every aorist of λέγω',
+    note: 'εἶπον, εἰπών — the commonest suppletive aorist in the New Testament.',
+    approx: 860,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], tense: ['aorist'] }, lemma: 'λέγω' }] },
+  },
+  {
+    label: 'Deponent — middle and passive forms of ἔρχομαι',
+    note: 'Middle or passive in form, active in meaning. The index records the FORM, so these come back as middle or passive; nothing marks them deponent.',
+    approx: 239,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], voice: ['middle', 'passive', 'middlepassive'] }, lemma: 'ἔρχομαι' }] },
+  },
+  {
+    label: 'Deponent — middle and passive forms of ἀποκρίνομαι',
+    note: 'ἀπεκρίθη is passive in form and plainly active in sense — the clearest demonstration of why deponency is worth naming.',
+    approx: 231,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], voice: ['middle', 'passive', 'middlepassive'] }, lemma: 'ἀποκρίνομαι' }] },
+  },
+  {
+    label: 'Deponent — middle and passive forms of γίνομαι',
+    note: 'The commonest deponent in the New Testament.',
+    approx: 567,
+    query: { ...base, within: 4, terms: [{ features: { pos: ['verb'], voice: ['middle', 'passive', 'middlepassive'] }, lemma: 'γίνομαι' }] },
+  },
+]
+
 export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'Uses of the subjunctive', presets: SUBJUNCTIVE },
   { heading: 'Uses of the adjective', presets: ADJECTIVE },
@@ -380,5 +454,6 @@ export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'Double accusatives', presets: DOUBLE_ACC },
   { heading: 'Conditional sentences', presets: CONDITIONAL },
   { heading: 'Result, correlation and comparison', presets: RESULT },
+  { heading: 'Verb forms — second aorist and deponents', presets: VERB_FORMS },
   { heading: 'Other constructions', presets: OTHER },
 ]
