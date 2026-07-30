@@ -359,6 +359,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 hits={hits}
                 terms={[]}
                 corpus={ran.corpus === 'LXX' ? 'LXX' : 'GNT'}
+                snippetLongVerses
                 bookName={bookName}
                 context={0}
                 ctxMap={{}}

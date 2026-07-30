@@ -10,6 +10,7 @@ import { TransWords, forwardContextMenuToNearestTransWord } from '@/components/h
 import { useHighlights } from '@/components/highlights/useHighlights'
 import { highlightAt } from '@/components/highlights/render'
 import { highlightMarkClass } from '@/lib/highlight-colors'
+import { shouldSnippet, snippetRanges } from '@/lib/snippet'
 
 // Two-column parallel view for a Greek search: each hit verse shows the Greek (word-by-word,
 // clickable → parsing pane) beside a parallel translation, with one ParsingPanel pinned at the
@@ -40,7 +41,16 @@ function hilite(text: string, terms: string[]): ReactNode {
   return ranges.length ? <>{markSlice(text, ranges, 0, text.length, MARK)}</> : text
 }
 
-export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false, isAuthenticated = false }: {
+// A verse long enough that printing all of it buries the match. The New Testament has none — its
+// longest is Revelation 20:4 at 58 words — but the Septuagint has 19 over 100, because our source
+// collapses Rahlfs's letter sub-verses into the base number: 1Kgs 12:24 carries the whole of
+// 12:24a-24z (the alternate Jeroboam narrative) at 1,017 words, and Esther's Additions sit inside
+// 4:17, 8:12, 1:1, 3:13 and 10:3. Windowing needs exact matched positions, so it only applies where
+// the caller can supply them.
+const LONG_VERSE = 60
+const CONTEXT_WORDS = 12
+
+export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName, context, ctxMap, transLang, onOpen, embedded = false, isAuthenticated = false, snippetLongVerses = false }: {
   hits: GreekHit[]
   terms: string[]
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
@@ -57,12 +67,17 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   embedded?: boolean
   // Enables the highlighter row in the right-click menu; searching works signed out.
   isAuthenticated?: boolean
+  // Opt-in: show a window around the match in very long verses instead of the whole thing. Off by
+  // default so the morphology and word searches, which share this component, are unaffected.
+  snippetLongVerses?: boolean
 }) {
   // A search hit is real text, so it gets the same right-click menu as the reader: search
   // the word, and highlight it (the highlight is stored against the verse, so it shows up
   // in the reader too).
   const highlights = useHighlights(isAuthenticated)
   const [info, setInfo] = useState<LexicalInfoPanel | null>(null)
+  // Verses the reader has asked to see in full.
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const [selKey, setSelKey] = useState<string | null>(null)
   const [, bump] = useState(0)
   // Embedded in the side panel over a page with its own parsing pane (the Reader): feed word
@@ -157,12 +172,21 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
     const hitLemmas = h.matchedLemmas?.length ? new Set(h.matchedLemmas.map(normalizeFold)) : null
     // Exact positions win when the caller could supply them.
     const hitWords = h.matchedWords?.length ? new Set(h.matchedWords) : null
+    const positions = h.matchedWords ?? []
+    const long = snippetLongVerses && isHit && !expanded[rowKey]
+      && shouldSnippet(toks.length, positions, LONG_VERSE, CONTEXT_WORDS)
+    const ranges = long
+      ? snippetRanges(positions, toks.length, CONTEXT_WORDS)
+      : [{ from: 0, to: toks.length }]
     // Char offsets into the verse's canonical text (tokens joined by single spaces), the
     // same basis the reader's highlights use, so a highlight made here lands identically.
     let pos = 0
     const spans = toks.map(t => { const start = pos; pos += t.surface.length + 1; return { start, end: start + t.surface.length } })
     const verseHl = isAuthenticated ? highlights.forVerse(h.osisId, cv.chapter, cv.verse, 'grc') : []
-    return toks.map((tok, ti) => {
+    const body = ranges.flatMap((rg, ri) => [
+      ...(ri > 0 || rg.from > 0 ? [<span key={`gap${ri}`} className="text-gray-300">… </span>] : []),
+      ...toks.slice(rg.from, rg.to).map((tok, k) => {
+      const ti = rg.from + k
       const key = `${rowKey}.${ti}`
       const { start, end } = spans[ti]
       const mark = verseHl.length ? highlightAt(start, end, verseHl) : undefined
@@ -194,10 +218,21 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
             })
           }}
           className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selKey === key ? 'bg-brand-100' : ''} ${matched ? MARK : ''}${mark ? ` ${highlightMarkClass(mark.color)}` : ''}`}>
-          {tok.surface}{ti < toks.length - 1 ? ' ' : ''}
+          {tok.surface}{ti < rg.to - 1 ? ' ' : ''}
         </span>
       )
-    })
+    })])
+    if (!long) return body
+    return (
+      <>
+        {body}
+        {ranges[ranges.length - 1].to < toks.length && <span className="text-gray-300"> …</span>}
+        <button type="button" onClick={() => setExpanded(e => ({ ...e, [rowKey]: true }))}
+          className="ml-2 align-baseline font-sans text-[11px] text-brand-600 hover:underline">
+          show all {toks.length} words
+        </button>
+      </>
+    )
   }
 
   return (

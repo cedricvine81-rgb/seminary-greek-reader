@@ -95,6 +95,7 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
                   transLang={transLang}
                   onOpen={onOpen}
                   isAuthenticated={isAuthenticated}
+                  snippetLongVerses
                 />}
           </div>
         )

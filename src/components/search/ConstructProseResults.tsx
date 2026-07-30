@@ -1,7 +1,9 @@
 'use client'
 
+import { useState } from 'react'
 import { ArrowUpRight } from 'lucide-react'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
+import { shouldSnippet, snippetRanges } from '@/lib/snippet'
 
 // Results for a construct searched in a prose corpus (Josephus, Philo, the Fathers, the
 // Greco-Roman texts). Separate from GreekSearchResults, which builds its display from per-verse
@@ -30,13 +32,29 @@ function textsHref(target: ProseHit['target']): string | null {
   return target ? `/texts?open=${encodeURIComponent(JSON.stringify(target))}` : null
 }
 
+// A passage long enough that showing all of it buries the match. Eusebius and Justin are divided
+// by chapter rather than verse (mean ~400 words, longest 5,182), and the Greco-Roman texts have
+// 2,229 units over 100 words — so this is the common case there, not an edge one.
+const LONG_PASSAGE = 60
+const CONTEXT_WORDS = 12
+
 export function ConstructProseResults({ hits, showEnglish }: { hits: ProseHit[]; showEnglish: boolean }) {
+  // Which passages the reader has asked to see in full.
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   return (
     <div className="divide-y divide-gray-100">
       {hits.map((h, i) => {
         const href = textsHref(h.target)
         const marked = new Set(h.matchedWords ?? [])
         const words = h.text ? h.text.trim().split(/\s+/) : []
+        const key = `${h.bookId}.${h.chapter}.${h.verse}.${i}`
+        // A window per cluster of matches rather than the whole passage. Only possible because the
+        // matched positions are exact — there is no guessing where to centre them.
+        const positions = h.matchedWords ?? []
+        const long = !expanded[key] && shouldSnippet(words.length, positions, LONG_PASSAGE, CONTEXT_WORDS)
+        const ranges = long
+          ? snippetRanges(positions, words.length, CONTEXT_WORDS)
+          : [{ from: 0, to: words.length }]
         return (
           <div key={`${h.bookId}.${h.chapter}.${h.verse}.${i}`} className="py-2.5">
             <div className="flex items-baseline gap-2">
@@ -57,11 +75,26 @@ export function ConstructProseResults({ hits, showEnglish }: { hits: ProseHit[];
             </div>
             {words.length > 0 ? (
               <p className="greek-text mt-1 leading-relaxed text-gray-900">
-                {words.map((w, wi) => (
-                  <span key={wi} className={marked.has(wi) ? SEARCH_MARK : undefined}>
-                    {w}{wi < words.length - 1 ? ' ' : ''}
+                {ranges.map((rg, ri) => (
+                  <span key={ri}>
+                    {(ri > 0 || rg.from > 0) && <span className="text-gray-300">… </span>}
+                    {words.slice(rg.from, rg.to).map((w, k) => {
+                      const wi = rg.from + k
+                      return (
+                        <span key={wi} className={marked.has(wi) ? SEARCH_MARK : undefined}>
+                          {w}{wi < rg.to - 1 ? ' ' : ''}
+                        </span>
+                      )
+                    })}
                   </span>
                 ))}
+                {ranges[ranges.length - 1].to < words.length && <span className="text-gray-300"> …</span>}
+                {long && (
+                  <button type="button" onClick={() => setExpanded(e => ({ ...e, [key]: true }))}
+                    className="ml-2 align-baseline font-sans text-[11px] text-brand-600 hover:underline">
+                    show all {words.length} words
+                  </button>
+                )}
               </p>
             ) : (
               <p className="mt-1 text-xs italic text-gray-300">No Greek text stored for this passage.</p>
