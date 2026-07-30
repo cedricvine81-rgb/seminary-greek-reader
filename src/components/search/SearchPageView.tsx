@@ -570,6 +570,19 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
     return `/search?${p.toString()}`
   })()
 
+  // Straight to the Construct builder in a new tab, so a grammar search doesn't cost a trip through
+  // the search page first. A single Greek word in the box becomes the construct's FIRST word (the
+  // rest is a grammar question the text query can't express); anything longer opens the builder
+  // blank. The Greek scope carries over, so a Septuagint search opens against the Septuagint.
+  const constructHref = (() => {
+    const p = new URLSearchParams()
+    if (scope.kind === 'greek' && scope.corpus === 'LXX') p.set('in', 'LXX')
+    const one = query.trim()
+    if (one && !/\s/.test(one) && GREEK_RE.test(one)) p.set('c', `@${one}~`)
+    const qs = p.toString()
+    return qs ? `/search/construct?${qs}` : '/search/construct'
+  })()
+
   function pickSuggestion(word: string, strongs?: string) {
     const next = query.replace(/\S*$/, word)
     lastPickedRef.current = next.trim()
@@ -936,6 +949,11 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <a href={fullSearchHref} target="_blank" rel="noopener" title="Open this search in the full Search page (new tab)"
               className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
               <ArrowUpRight size={13} /> Full search
+            </a>
+            <a href={constructHref} target="_blank" rel="noopener"
+              title="Open Construct search in a new tab — two or three words near each other by their grammar"
+              className="flex-none inline-flex items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+              <Blocks size={13} /> Construct
             </a>
             <button type="button" onClick={() => onRequestClose?.()} title="Close search (Esc)" aria-label="Close search"
               className="flex-none p-1.5 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors">
