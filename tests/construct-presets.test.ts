@@ -83,6 +83,21 @@ describe('construct presets', () => {
     }
   })
 
+  it('explains an empty result by counting each word on its own', () => {
+    // A term matching nothing can never combine, and without this the failure is silent — which is
+    // how a stale part of speech ("a verb whose lemma is ἵνα") once returned zero with no clue why.
+    const r = searchConstruct({
+      corpus: 'GNT', ordered: true, sameVerse: false, within: 5,
+      terms: [
+        { features: { pos: ['verb'] }, lemma: 'ἵνα' },                       // impossible
+        { features: { pos: ['verb'], mood: ['subjunctive'] } },              // common
+      ],
+    }, 1)
+    expect(r.total).toBe(0)
+    expect(r.termTotals[0]).toBe(0)
+    expect(r.termTotals[1]).toBeGreaterThan(1000)
+  })
+
   it('includes a single-word construction, which the engine must accept', () => {
     const hortatory = all.find(([, p]) => p.label.startsWith('Hortatory'))![1]
     expect(hortatory.query.terms.filter(t => Object.keys(t.features).length > 0)).toHaveLength(1)

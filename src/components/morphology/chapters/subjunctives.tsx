@@ -10,6 +10,10 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
 } from '../shared'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+
+// The subjunctive presets from Construct search, so the chapter and the search can't drift apart.
+const SUBJUNCTIVE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the subjunctive')!.presets
 
 export const SUBJUNCTIVES_CONTENT = (
   <>
@@ -265,6 +269,17 @@ export const SUBJUNCTIVES_CONTENT = (
         { label: 'Aorist subjunctives — prohibitions, conditions, purpose clauses', features: ['verb', 'subjunctive', 'aorist'] },
         { label: <>Every <span className="normal-case">ἵνα</span> — check the subjunctive that follows each one</>, lemma: 'ἵνα' },
       ]}
+    />
+
+    {/* The uses of the subjunctive are RELATIONS between words — a flag word and a mood — so they
+        need Construct search rather than the one-word morphology search above. Each of these is a
+        preset, and opens in the builder where it can be narrowed or run against another text. */}
+    <LiveExamples
+      intro={<>Now the uses, each as a search you can open and adjust:</>}
+      links={SUBJUNCTIVE_USES.map(p => ({
+        label: <>{p.label} <span className="text-gray-400">— {p.approx.toLocaleString()} in the NT</span></>,
+        construct: p.query,
+      }))}
     />
 
     {/* ── 8 · Going deeper (Intermediate only) ───────────── */}

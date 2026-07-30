@@ -31,6 +31,44 @@ import { isExamLocked } from '@/lib/exam-lockdown'
 
 type Hit = GreekHit & { crossesVerse?: boolean }
 
+// Why a construct found nothing. A term matching zero words is a different problem from two terms
+// that both match but never stand near each other, and without this the two look identical — which
+// is how a stale part of speech ("a verb whose lemma is ἵνα") once returned nothing in silence.
+function NoMatches({ query, termTotals }: { query: ConstructQuery; termTotals: number[] }) {
+  const used = query.terms.filter(t => !termIsEmpty(t) && !t.negate)
+  const describe = (t: ConstructTerm) => {
+    const feats = Object.values(t.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
+    const desc = feats.length ? feats.join(' ') : 'any word'
+    return t.lemma ? `${desc} (${t.lemma})` : desc
+  }
+  const empties = used.filter((_, i) => (termTotals[i] ?? 0) === 0)
+  return (
+    <div className="py-12 text-center">
+      <p className="text-sm text-gray-500">No matches.</p>
+      {termTotals.length > 0 && (
+        <div className="mx-auto mt-3 max-w-md text-left">
+          <p className="mb-1 text-[10px] font-bold uppercase tracking-widest text-gray-400">What each word found on its own</p>
+          <div className="space-y-0.5">
+            {used.map((t, i) => (
+              <p key={i} className="flex items-baseline justify-between gap-3 text-xs">
+                <span className="truncate text-gray-600">{describe(t)}</span>
+                <span className={`flex-none tabular-nums ${(termTotals[i] ?? 0) === 0 ? 'font-semibold text-red-600' : 'text-gray-400'}`}>
+                  {(termTotals[i] ?? 0).toLocaleString()}
+                </span>
+              </p>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] leading-snug text-gray-500">
+            {empties.length > 0
+              ? 'A word matching nothing on its own can never combine — check that its form is one that word actually takes.'
+              : 'Each word occurs, but never within the distance you set. Try a larger distance, either order, or fewer constraints.'}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   initial: ConstructQuery
   isAuthenticated?: boolean
@@ -45,6 +83,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [truncated, setTruncated] = useState(false)
   // The true number of matching passages, which can exceed the number returned.
   const [total, setTotal] = useState(0)
+  // How many words each term matched on its own — the explanation when a construct finds nothing.
+  const [termTotals, setTermTotals] = useState<number[]>([])
   const [loading, setLoading] = useState(false)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
   const [transLang, setTransLang] = useState('en')
@@ -127,7 +167,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     params.set('type', 'construct')
     fetch(`/api/search?${params.toString()}`)
       .then(r => r.ok ? r.json() : { results: [] })
-      .then((d: { all?: boolean; corpora?: any[]; total?: number; prose?: boolean; results?: any[]; truncated?: boolean }) => {
+      .then((d: { all?: boolean; corpora?: any[]; total?: number; termTotals?: number[]; prose?: boolean; results?: any[]; truncated?: boolean }) => {
         if (!live) return
         if (d.all) {
           // The biblical renderer keys hits by `osisId`; the API speaks `bookId`. Without this the
@@ -150,6 +190,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         }
         setTruncated(!!d.truncated)
         setTotal(d.total ?? (d.results ?? []).length)
+        setTermTotals(d.termTotals ?? [])
       })
       .catch(() => { if (live) { setHits([]); setProseHits(null); setAllBlocks(null); setTruncated(false) } })
       .finally(() => { if (live) setLoading(false) })
@@ -424,7 +465,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           ) : isProseCorpus(ran.corpus) ? (
             // Prose corpora get their own view — see ConstructProseResults.
             !proseHits || proseHits.length === 0 ? (
-              <p className="py-16 text-center text-sm text-gray-400">No matches. Try a larger distance, or fewer constraints.</p>
+              <NoMatches query={ran} termTotals={termTotals} />
             ) : (
               <>
                 <div className="flex items-center justify-between gap-3 pb-2">
@@ -449,7 +490,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               </>
             )
           ) : !hits || hits.length === 0 ? (
-            <p className="py-16 text-center text-sm text-gray-400">No matches. Try a larger distance, or fewer constraints.</p>
+            <NoMatches query={ran} termTotals={termTotals} />
           ) : (
             <>
               <div className="flex items-center justify-between gap-3 pb-2">

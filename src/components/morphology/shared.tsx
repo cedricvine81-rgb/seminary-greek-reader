@@ -15,6 +15,7 @@ import clsx from 'clsx'
 import { GLOSSARY } from './glossary'
 import { openTranslationWorkbench, type WorkbenchSentence } from '@/lib/translation-workbench-bus'
 import { openMasterSearch } from '@/lib/master-search-bus'
+import { encodeConstruct, type ConstructQuery } from '@/lib/construct-query'
 
 export type MorphLevel = 'beginning' | 'intermediate'
 
@@ -879,7 +880,15 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
  */
 export function LiveExamples({ intro, links }: {
   intro?: React.ReactNode
-  links: { label: React.ReactNode; features?: string[]; lemma?: string }[]
+  // `features`/`lemma` open the one-word morphology search. `construct` opens Construct search
+  // instead, which is what SYNTAX needs — attributive position, a genitive absolute or a
+  // second-class condition are relations between words, and no single-word search can express them.
+  links: {
+    label: React.ReactNode
+    features?: string[]
+    lemma?: string
+    construct?: Omit<ConstructQuery, 'corpus'>
+  }[]
 }) {
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-100 bg-brand-50/40 px-4 py-3.5">
@@ -888,19 +897,32 @@ export function LiveExamples({ intro, links }: {
       <ul className="space-y-1.5">
         {links.map((l, i) => (
           <li key={i}>
-            {/* Opens the morphology search in the SIDE PANEL (split view, like Reader
-                searches) — the Grammar page stays visible; matches highlight in red. */}
-            <button
-              type="button"
-              onClick={() => openMasterSearch({
-                query: l.lemma ?? '',
-                scope: 'morph:GNT',
-                features: l.features?.join(','),
-              })}
-              className="text-left text-sm text-brand-600 hover:text-brand-700 hover:underline"
-            >
-              {l.label} →
-            </button>
+            {l.construct ? (
+              /* Construct search needs the builder's room, so it opens in a new tab rather than the
+                 side panel — the Grammar page stays where it is either way. */
+              <a
+                href={`/search/construct?${encodeConstruct({ ...l.construct, corpus: 'GNT' }).toString()}`}
+                target="_blank"
+                rel="noopener"
+                className="text-left text-sm text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                {l.label} →
+              </a>
+            ) : (
+              /* Opens the morphology search in the SIDE PANEL (split view, like Reader
+                 searches) — the Grammar page stays visible; matches highlight in red. */
+              <button
+                type="button"
+                onClick={() => openMasterSearch({
+                  query: l.lemma ?? '',
+                  scope: 'morph:GNT',
+                  features: l.features?.join(','),
+                })}
+                className="text-left text-sm text-brand-600 hover:text-brand-700 hover:underline"
+              >
+                {l.label} →
+              </button>
+            )}
           </li>
         ))}
       </ul>

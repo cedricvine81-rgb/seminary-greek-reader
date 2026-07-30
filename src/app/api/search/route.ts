@@ -74,11 +74,11 @@ export async function GET(req: NextRequest) {
         })
       }
       const limit = Math.min(Math.max(Number(searchParams.get('limit')) || 300, 1), 300)
-      const { hits, total, truncated } = searchConstruct(query, limit)
+      const { hits, total, truncated, termTotals } = searchConstruct(query, limit)
       // Prose hits aren't in the biblical search index, and carry their own name and Texts link.
       if (isProseCorpus(query.corpus)) {
         return NextResponse.json({
-          truncated, total,
+          truncated, total, termTotals,
           prose: true,
           results: hits.map(h => {
             const t = proseHitText(h.bookId, h.chapter, h.verse)
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
       // Per corpus, then per verse: the GNT aligns for about 90% of its verses.
       const corpusAligned = corpusInfo(query.corpus).readerAligned
       return NextResponse.json({
-        truncated, total,
+        truncated, total, termTotals,
         results: hits.map(h => ({
           bookId: h.bookId, chapter: h.chapter, verse: h.verse,
           text: texts.get(h.verseId) ?? '',

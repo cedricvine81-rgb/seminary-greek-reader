@@ -232,7 +232,11 @@ function resolveTerms(corpus: string, terms: ConstructTerm[]): ConstructTerm[] {
 // `total` is the TRUE number of matching verses; `hits` is capped at `limit`. Counting past the cap
 // costs a full scan of the corpus (~600ms for the largest), which is worth paying: "300+" told the
 // reader nothing, and it contradicted the per-corpus totals in the cross-corpus view.
-export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; total: number; truncated: boolean } {
+// `termTotals` counts how many words each searched term matched ON ITS OWN, in term order. When a
+// construct finds nothing this says why — one term matching zero is a different problem from two
+// terms that both match but never near each other, and the difference is invisible otherwise. It is
+// what would have exposed the stale-part-of-speech bug ("verb whose lemma is ἵνα": 0) immediately.
+export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; total: number; truncated: boolean; termTotals: number[] } {
   // Keep each usable term's ORIGINAL index: `agreeWith` refers to "Word N" as the user numbered
   // them, which is not the position in this filtered list.
   const usable = resolveTerms(query.corpus, query.terms)
@@ -243,7 +247,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   const negative = usable.filter(u => u.term.negate).map(u => compile(u.term))
   // One constrained word is a legitimate search — "every hortatory subjunctive" is a single term,
   // and so is any "find all X". Distance and order simply don't apply.
-  if (positive.length < 1) return { hits: [], total: 0, truncated: false }
+  if (positive.length < 1) return { hits: [], total: 0, truncated: false, termTotals: [] }
 
   const terms = positive.map(u => compile(u.term))
   // Agreement, resolved onto positions within the positive list.
@@ -263,6 +267,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   const books = getCorpus(query.corpus)
   const hits: ConstructHit[] = []
   let total = 0
+  const termTotals = new Array<number>(terms.length).fill(0)
 
   // Books are stored in canonical order, so iterating the object yields reading order.
   for (const [osisId, book] of Object.entries(books)) {
@@ -274,6 +279,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
       const tok = book.w[i]
       for (let t = 0; t < terms.length; t++) if (tokenMatches(tok, terms[t])) positions[t].push(i)
     }
+    for (let t = 0; t < terms.length; t++) termTotals[t] += positions[t].length
     if (positions.some(p => p.length === 0)) continue
 
     let raw = findMatches(positions, within, query.ordered)
@@ -348,7 +354,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
     }
   }
 
-  return { hits, total, truncated: total > hits.length }
+  return { hits, total, truncated: total > hits.length, termTotals }
 }
 
 
