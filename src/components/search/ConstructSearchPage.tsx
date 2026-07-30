@@ -7,7 +7,7 @@ import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
-  termIsEmpty, type ConstructQuery, type ConstructTerm,
+  termIsEmpty, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { FEATURE_LABEL } from '@/lib/morph-features'
 import { isExamLocked } from '@/lib/exam-lockdown'
@@ -41,9 +41,9 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [transLang, setTransLang] = useState('en')
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  // normalized lemma → part of speech, so typing a Greek word collapses that card's form
-  // dropdowns to the categories the word can actually take (scripts/build-construct-index.mjs).
-  const [lemmaPos, setLemmaPos] = useState<Map<string, string>>()
+  // normalized lemma → the forms that lemma is attested in, so typing a Greek word narrows that
+  // card to real choices only (scripts/build-construct-index.mjs).
+  const [lemmaForms, setLemmaForms] = useState<Map<string, LemmaForms>>()
 
   // Book display names (osisId → name), as on the other search pages.
   useEffect(() => {
@@ -52,8 +52,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         if (!d?.gnt) return
         setBookName(new Map(d.gnt.map(b => [b.osisId, b.name])))
       }).catch(() => {})
-    fetch('/data/lemma-pos.json').then(r => r.ok ? r.json() : null)
-      .then((d: Record<string, string> | null) => { if (d) setLemmaPos(new Map(Object.entries(d))) })
+    fetch('/data/lemma-forms.json').then(r => r.ok ? r.json() : null)
+      .then((d: Record<string, LemmaForms> | null) => { if (d) setLemmaForms(new Map(Object.entries(d))) })
       .catch(() => {})
   }, [])
 
@@ -144,7 +144,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {query.terms.map((t, i) => (
           <div key={i}>
             <ConstructTermCard
-              index={i} term={t} lemmaPos={lemmaPos}
+              index={i} term={t} lemmaForms={lemmaForms}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
             />

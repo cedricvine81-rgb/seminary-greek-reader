@@ -5,7 +5,7 @@ import { ChevronDown, Trash2, Check } from 'lucide-react'
 import { categoriesFor, FEATURE_LABEL, POS_FEATURES, type MorphGroup } from '@/lib/morph-features'
 import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
 import { normalizeGreek } from '@/lib/greek-utils'
-import type { ConstructTerm } from '@/lib/construct-query'
+import type { ConstructTerm, LemmaForms } from '@/lib/construct-query'
 
 // One word of a construct: a part-of-speech dropdown, then only the parsing categories that
 // part of speech can actually take (categoriesFor), plus an optional lexeme restriction.
@@ -81,12 +81,26 @@ function MorphSelect({ group, selected, onChange }: {
   )
 }
 
-export function ConstructTermCard({ index, term, lemmaPos, onChange, onRemove }: {
+// A category the word already settles — shown in the same slot a dropdown would occupy, so the
+// card keeps its shape, but plainly not interactive. Not sent as a search constraint either:
+// the lemma already implies it.
+function Fixed({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">{label}</label>
+      <p className="rounded-md border border-dashed border-gray-200 px-2 py-1.5 text-xs text-gray-500" title="Fixed by the word you chose">
+        {value}
+      </p>
+    </div>
+  )
+}
+
+export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove }: {
   index: number
   term: ConstructTerm
-  // normalized lemma → part of speech, from the corpus (public/data/lemma-pos.json). Absent
-  // until it loads, in which case the card just doesn't auto-fill.
-  lemmaPos?: Map<string, string>
+  // normalized lemma → the forms that lemma is attested in (public/data/lemma-forms.json).
+  // Absent until it loads, in which case every option stays on offer.
+  lemmaForms?: Map<string, LemmaForms>
   onChange: (t: ConstructTerm) => void
   onRemove?: () => void
 }) {
@@ -94,35 +108,59 @@ export function ConstructTermCard({ index, term, lemmaPos, onChange, onRemove }:
   const pos = term.features.pos?.[0] ?? ''
   const categories = categoriesFor(pos, term.features.mood ?? [])
 
-  // Drop any constraint the part of speech (and mood) can't take, so a term never carries an
-  // invisible one — a leftover dative on a term switched to Verb would silently match nothing.
-  const prune = (features: Record<string, string[]>) => {
-    const allowed = new Set(categoriesFor(features.pos?.[0] ?? '', features.mood ?? []).map(g => g.key))
+  // What the typed word settles. A recognised lemma fixes its part of speech and often more:
+  // λόγος is a masculine noun, so neither is a question — those controls become plain text and
+  // the rest of the dropdowns offer only the values the word actually occurs in.
+  const forms = lemmaForms?.get(normalizeGreek((term.lemma ?? '').trim())) ?? null
+
+  // The values still worth offering for a category, given the word (if any).
+  const optionsFor = (group: MorphGroup, f: LemmaForms | null = forms): string[] => {
+    const all = group.features.map(x => x.value)
+    const attested = f?.[group.key]
+    return attested?.length ? all.filter(v => attested.includes(v)) : all
+  }
+  const posOptions = forms?.p ?? POS_FEATURES.map(f => f.value)
+
+  // The categories the word leaves no choice in (λόγος → "masculine"), for the recognised line.
+  const settled = forms
+    ? categoriesFor(forms.p[0] ?? '', term.features.mood ?? [])
+        .map(g => optionsFor(g))
+        .filter(o => o.length === 1)
+        .map(o => FEATURE_LABEL.get(o[0]) ?? o[0])
+    : []
+
+  // Drop any constraint that is no longer selectable — one the part of speech can't take (a
+  // leftover dative on a term switched to Verb), or one the word is never attested in. Either
+  // would sit there invisibly and match nothing.
+  const prune = (features: Record<string, string[]>, f: LemmaForms | null) => {
+    const groups = categoriesFor(features.pos?.[0] ?? '', features.mood ?? [])
     const out: Record<string, string[]> = {}
-    for (const k of Object.keys(features)) if (k === 'pos' || allowed.has(k)) out[k] = features[k]
+    if (features.pos) out.pos = features.pos
+    for (const g of groups) {
+      const kept = (features[g.key] ?? []).filter(v => optionsFor(g, f).includes(v))
+      if (kept.length) out[g.key] = kept
+    }
     return out
   }
 
   const setCategory = (key: string, vals: string[]) => {
     let features = { ...term.features }
     if (vals.length) features[key] = vals; else delete features[key]
-    if (key === 'pos' || key === 'mood') features = prune(features)
+    if (key === 'pos' || key === 'mood') features = prune(features, forms)
     onChange({ ...term, features })
   }
-
-  // The word decides which options are relevant: as soon as what's typed matches a New Testament
-  // lexeme, its part of speech is filled in and the form dropdowns collapse to that word's
-  // categories (θεός → Case/Number/Gender; ἔρχομαι → Tense/Voice/Mood/Person/Number). Still
-  // overridable by hand, and an unrecognised word just leaves the dropdowns alone.
-  const derivedPos = lemmaPos?.get(normalizeGreek((term.lemma ?? '').trim())) ?? null
 
   const onLemmaChange = (e: ChangeEvent<HTMLInputElement>) => {
     const el = e.target
     const caret = el.selectionStart ?? el.value.length
     const next = greekInput ? betaCodeToGreek(el.value) : el.value
-    const found = lemmaPos?.get(normalizeGreek(next.trim())) ?? null
-    let features = term.features
-    if (found && found !== pos) features = prune({ ...features, pos: [found] })
+    const nextForms = lemmaForms?.get(normalizeGreek(next.trim())) ?? null
+    // Only fill in the part of speech when the word leaves no doubt; a lemma attested as both
+    // (say) noun and adjective keeps the choice open, just narrowed to those two.
+    const found = nextForms?.p.length === 1 ? nextForms.p[0] : null
+    // Re-prune against the NEW word either way: changing the word can invalidate a form that
+    // was legal for the old one (a feminine left over after switching to λόγος).
+    const features = prune(found && found !== pos ? { ...term.features, pos: [found] } : term.features, nextForms)
     onChange({ ...term, lemma: next, features })
     if (greekInput) requestAnimationFrame(() => { try { el.setSelectionRange(caret, caret) } catch {} })
   }
@@ -152,11 +190,12 @@ export function ConstructTermCard({ index, term, lemmaPos, onChange, onRemove }:
             className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekInput ? 'greek-text' : ''}`} />
           {/* Tells you the word was recognised (and what it set), or that it wasn't found —
               accent-insensitive, so a miss really is a spelling issue or a non-NT word. */}
-          {derivedPos ? (
+          {forms ? (
             <p className="mt-1 text-[11px] text-brand-600">
-              Recognised as a{'aeiou'.includes(derivedPos[0]) ? 'n' : ''} {derivedPos} — showing {derivedPos} forms below
+              Recognised — {forms.p.join(' or ')}
+              {settled.length > 0 && <span className="text-gray-400"> · always {settled.join(', ')}</span>}
             </p>
-          ) : (term.lemma ?? '').trim().length >= 3 && lemmaPos ? (
+          ) : (term.lemma ?? '').trim().length >= 3 && lemmaForms ? (
             <p className="mt-1 text-[11px] text-gray-400">Not a New Testament word — check the spelling, or set the form by hand</p>
           ) : null}
         </div>
@@ -174,19 +213,34 @@ export function ConstructTermCard({ index, term, lemmaPos, onChange, onRemove }:
         <span className="font-normal normal-case tracking-normal text-gray-300"> — leave as “any” to match every form</span>
       </p>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
-        <div>
-          <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
-          <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
-            className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
-            <option value="">any</option>
-            {POS_FEATURES.map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
-          </select>
-        </div>
+        {/* Part of speech: a dropdown only while it's still open. Once the word settles it
+            (λόγος can only be a noun) there is nothing to pick, so it reads as a fact. */}
+        {posOptions.length === 1 && forms ? (
+          <Fixed label="Part of speech" value={FEATURE_LABEL.get(posOptions[0]) ?? posOptions[0]} />
+        ) : (
+          <div>
+            <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
+            <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
+              className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
+              <option value="">any</option>
+              {POS_FEATURES.filter(f => posOptions.includes(f.value))
+                .map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
+            </select>
+          </div>
+        )}
 
-        {categories.map(g => (
-          <MorphSelect key={g.key} group={g} selected={term.features[g.key] ?? []}
-            onChange={vals => setCategory(g.key, vals)} />
-        ))}
+        {/* Same rule per category: λόγος is masculine, so Gender is a statement, not a menu.
+            Where a choice remains, the menu lists only forms the word actually occurs in. */}
+        {categories.map(g => {
+          const opts = optionsFor(g)
+          if (opts.length === 1) return <Fixed key={g.key} label={g.label} value={FEATURE_LABEL.get(opts[0]) ?? opts[0]} />
+          return (
+            <MorphSelect key={g.key}
+              group={opts.length === g.features.length ? g : { ...g, features: g.features.filter(f => opts.includes(f.value)) }}
+              selected={term.features[g.key] ?? []}
+              onChange={vals => setCategory(g.key, vals)} />
+          )
+        })}
       </div>
     </div>
   )

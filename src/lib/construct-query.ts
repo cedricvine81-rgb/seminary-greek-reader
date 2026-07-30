@@ -26,6 +26,16 @@ export interface ConstructQuery {
   books?: string[]
 }
 
+// public/data/lemma-forms.json (scripts/build-construct-index.mjs): what each lemma is actually
+// attested as in the corpus. `p` is its parts of speech, commonest first. Every other key is a
+// parsing category holding only the values that NARROW it — a category is absent when the lemma
+// covers all of them (or the part of speech doesn't use it), meaning "no restriction". A category
+// left with a single value isn't a choice at all: λόγος is masculine and that's that.
+export interface LemmaForms {
+  p: string[]
+  [category: string]: string[]
+}
+
 export const CONSTRUCT_DEFAULT_WITHIN = 4
 export const CONSTRUCT_MAX_WITHIN = 30
 export const CONSTRUCT_MAX_TERMS = 3

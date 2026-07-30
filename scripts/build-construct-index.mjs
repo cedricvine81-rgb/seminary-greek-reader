@@ -35,8 +35,13 @@ const books = {}
 let wordCount = 0
 // normalized lemma → { pos: count } — collapsed below into the DOMINANT part of speech per
 // lemma, so Construct search can derive a word's part of speech from the word itself and show
-// only the categories that word can take. Output: public/data/lemma-pos.json
+// only the categories that word can take.
 const lemmaPosCounts = {}
+// normalized lemma → { <parsing token>: count } over every OTHER parsing token, so the form
+// dropdowns can offer only what that word is actually ATTESTED in. λόγος is masculine and
+// nothing else, so gender stops being a question; a noun never found in the vocative doesn't
+// offer one (which would only ever return nothing). Output: public/data/lemma-forms.json
+const lemmaFeatCounts = {}
 
 for (const osis of GNT) {
   const file = path.join(process.cwd(), 'public', 'data', 'phrase-tree', `${osis}.json`)
@@ -55,11 +60,15 @@ for (const osis of GNT) {
       const parsing = String(n.parsing ?? '').toLowerCase().trim()
       if (!strongs && !parsing) return
       raw.push({ chapter, verse, num, row: [strongs, lemmaNorm, parsing] })
-      // First parsing token is the part of speech ('verb, aorist, active, …').
-      const pos = parsing.split(',')[0].trim()
+      // First parsing token is the part of speech ('verb, aorist, active, …'); the rest are the
+      // form's features.
+      const toks = parsing.split(',').map(t => t.trim()).filter(Boolean)
+      const pos = toks[0]
       if (lemmaNorm && pos) {
         const counts = (lemmaPosCounts[lemmaNorm] ??= {})
         counts[pos] = (counts[pos] ?? 0) + 1
+        const feats = (lemmaFeatCounts[lemmaNorm] ??= {})
+        for (const t of toks.slice(1)) feats[t] = (feats[t] ?? 0) + 1
       }
     } else {
       ;(n.c ?? []).forEach(walk)
@@ -90,19 +99,43 @@ fs.writeFileSync(path.join(process.cwd(), 'public', 'data', 'construct-index.jso
 const verseCount = Object.values(books).reduce((n, b) => n + b.v.length, 0)
 console.log(`books: ${Object.keys(books).length} · verses: ${verseCount} · words: ${wordCount} · ${(gz.length / 1e6).toFixed(2)} MB gz (${(json.length / 1e6).toFixed(1)} MB raw)`)
 
-// ─── lemma → dominant part of speech ──────────────────────────────────────────
-// Keep only the commonest tagging per lemma. Genuinely dual-class words exist (e.g. adjectives
-// used substantivally), but the dominant tag is what makes the form dropdowns useful, and the
-// user can always override the part of speech by hand.
-const lemmaPos = {}
-let ambiguous = 0
-for (const lemma in lemmaPosCounts) {
-  const counts = lemmaPosCounts[lemma]
-  const ranked = Object.entries(counts).sort((a, b) => b[1] - a[1])
-  lemmaPos[lemma] = ranked[0][0]
-  // "Ambiguous" = the runner-up is at least a third as common as the winner.
-  if (ranked.length > 1 && ranked[1][1] * 3 >= ranked[0][1]) ambiguous++
+// ─── lemma → the forms it is actually attested in ─────────────────────────────
+// Mirrors MORPH_GROUPS in src/lib/morph-features.ts (this script is standalone node, so the
+// vocabulary is repeated here — keep the two in step).
+const CATEGORIES = {
+  tense:  ['present', 'imperfect', 'future', 'aorist', 'perfect', 'pluperfect'],
+  voice:  ['active', 'middle', 'passive', 'middlepassive'],
+  mood:   ['indicative', 'subjunctive', 'imperative', 'optative', 'infinitive', 'participle'],
+  person: ['1 person', '2 person', '3 person'],
+  case:   ['nominative', 'genitive', 'dative', 'accusative', 'vocative'],
+  number: ['singular', 'plural'],
+  gender: ['masculine', 'feminine', 'neuter'],
+  degree: ['comparative', 'superlative'],
 }
-const posFile = path.join(process.cwd(), 'public', 'data', 'lemma-pos.json')
-fs.writeFileSync(posFile, JSON.stringify(lemmaPos))
-console.log(`lemma→pos: ${Object.keys(lemmaPos).length} lemmas · ${ambiguous} with a close runner-up · ${(fs.statSync(posFile).size / 1024).toFixed(0)} KB`)
+
+// Pure attestation (count >= 1): a value is offered if the corpus ever tags this lemma that way.
+// No frequency threshold — pruning rare-but-real forms would make a legitimate search
+// unexpressible, and this corpus is hand-tagged, so stray values are not a real problem.
+const lemmaForms = {}
+let singlePos = 0, fixedGender = 0
+for (const lemma in lemmaPosCounts) {
+  const entry = {}
+  // Parts of speech this lemma is attested as, commonest first. One → not a question at all.
+  entry.p = Object.entries(lemmaPosCounts[lemma]).sort((a, b) => b[1] - a[1]).map(([p]) => p)
+  if (entry.p.length === 1) singlePos++
+  const feats = lemmaFeatCounts[lemma] ?? {}
+  for (const [cat, values] of Object.entries(CATEGORIES)) {
+    const seen = values.filter(v => feats[v])
+    // Only worth recording when it actually NARROWS the category. A missing entry means "no
+    // restriction" — the reader falls back to the full option list, which is also the right
+    // answer for a category this part of speech doesn't use at all (categoriesFor hides those).
+    if (seen.length && seen.length < values.length) entry[cat] = seen
+  }
+  if (entry.gender?.length === 1) fixedGender++
+  lemmaForms[lemma] = entry
+}
+const formsFile = path.join(process.cwd(), 'public', 'data', 'lemma-forms.json')
+fs.writeFileSync(formsFile, JSON.stringify(lemmaForms))
+// The old pos-only file is superseded by this one.
+fs.rmSync(path.join(process.cwd(), 'public', 'data', 'lemma-pos.json'), { force: true })
+console.log(`lemma forms: ${Object.keys(lemmaForms).length} lemmas · ${singlePos} with a single part of speech · ${fixedGender} with a fixed gender · ${(fs.statSync(formsFile).size / 1024).toFixed(0)} KB`)
