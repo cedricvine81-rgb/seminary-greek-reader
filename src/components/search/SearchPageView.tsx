@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical } from 'lucide-react'
+import Link from 'next/link'
+import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
@@ -975,9 +976,21 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </span>
             )}
 
-          {/* Search types — ml-auto pins it (and the ⋮ next to it) to the row's right edge. */}
+          {/* The extras group — ml-auto pins Construct, Search types and the ⋮ display menu
+              together at the row's right edge (ml-auto on any one of them alone would eat the
+              free space and wrap the rest onto a second line). Full page only. */}
           {!embedded && (
-          <div className="relative flex-none ml-auto">
+          <div className="ml-auto flex flex-none items-center gap-1.5">
+
+          {/* Construct search — a grammar query rather than a text query, so it gets its own
+              page (the builder needs room). */}
+            <Link href="/search/construct" title="Find two or three words near each other by their grammar"
+              className="inline-flex flex-none items-center gap-1 rounded border border-gray-300 bg-surface px-2 py-1 text-xs text-gray-600 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700">
+              <Blocks size={13} /> Construct
+            </Link>
+
+          {/* Search types */}
+          <div className="relative flex-none">
             <button type="button" onClick={() => setShowTypes(v => !v)} aria-expanded={showTypes}
               className={`inline-flex items-center gap-1 rounded border px-2 py-1 text-xs transition-colors ${
                 showTypes ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
@@ -1011,10 +1024,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
               </>
             )}
           </div>
-          )}
 
           {/* ⋮ display options (result-text size) */}
-          {!embedded && (
           <div className="relative flex-none">
             <button type="button" onClick={() => setShowDisplay(v => !v)} aria-expanded={showDisplay} title="Display options"
               className={`inline-flex h-7 w-7 items-center justify-center rounded border transition-colors ${
@@ -1040,6 +1051,8 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
                 </div>
               </>
             )}
+          </div>
+
           </div>
           )}
         </div>

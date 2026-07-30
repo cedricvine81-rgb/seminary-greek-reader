@@ -166,6 +166,16 @@ function versesFor(matched: Set<string>, corpus: SearchCorpus): BiblicalVerse[] 
   return out
 }
 
+// Verse text for a set of verse ids. Construct search (construct-search.ts) matches on its own
+// flat token index and already returns hits in canonical order, so it needs the display text
+// back rather than a re-ordered verse list.
+export function verseTextsByIds(ids: Iterable<string>): Map<string, string> {
+  const want = ids instanceof Set ? ids : new Set(ids)
+  const out = new Map<string, string>()
+  for (const v of getIndex()) if (want.has(v.id)) out.set(v.id, v.text)
+  return out
+}
+
 export interface MorphCriteria {
   features: string[]     // lowercased parsing tokens that must ALL be present, e.g. ['verb','aorist','participle']
   lemma?: string         // optional: also require this lexeme (any inflected form)

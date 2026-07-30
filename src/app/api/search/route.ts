@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
-import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, type SearchCorpus } from '@/lib/search'
+import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, verseTextsByIds, type SearchCorpus } from '@/lib/search'
 import { searchTranslation } from '@/lib/translation-search'
+import { searchConstruct } from '@/lib/construct-search'
+import { decodeConstruct, queryIsRunnable } from '@/lib/construct-query'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
   const q = searchParams.get('q')
-  const type = searchParams.get('type') as 'word' | 'reference' | 'morph' | 'strongs'
+  const type = searchParams.get('type') as 'word' | 'reference' | 'morph' | 'strongs' | 'construct'
   const corpus = (searchParams.get('corpus') ?? 'BOTH') as SearchCorpus
   // When set on a word search, search that translation's text instead of the Greek.
   const lang = searchParams.get('lang')
@@ -24,6 +26,24 @@ export async function GET(req: NextRequest) {
       const features = (searchParams.get('features') ?? '').split(',').map(f => f.trim()).filter(Boolean)
       const lemmaFilter = searchParams.get('lemma') || undefined
       return NextResponse.json({ results: await searchByMorph({ features, lemma: lemmaFilter }, corpus) })
+    }
+    // Construct search: two or three morphological terms within N words of each other.
+    // Criteria travel in the same compact URL form the builder puts in the address bar
+    // (construct-query.ts), so an API call and a shareable link are the same string. NT-only.
+    if (type === 'construct') {
+      const query = decodeConstruct(Object.fromEntries(searchParams.entries()))
+      if (!queryIsRunnable(query)) return NextResponse.json({ results: [], truncated: false })
+      const { hits, truncated } = searchConstruct(query)
+      const texts = verseTextsByIds(hits.map(h => h.verseId))
+      return NextResponse.json({
+        truncated,
+        results: hits.map(h => ({
+          bookId: h.bookId, chapter: h.chapter, verse: h.verse,
+          text: texts.get(h.verseId) ?? '',
+          matchedLemmas: h.matchedLemmas,
+          crossesVerse: h.crossesVerse,
+        })),
+      })
     }
     if (!q) return NextResponse.json({ error: 'Missing query' }, { status: 400 })
     // Hebrew (Masoretic Text) word search: "all forms" (type=strongs) covers every inflection of
