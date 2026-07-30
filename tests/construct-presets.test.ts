@@ -18,6 +18,8 @@ describe('construct presets', () => {
       'Uses of the participle',
       'The articular infinitive',
       'Prepositions and their cases',
+      'Double accusatives',
+      'Other constructions',
     ])
     expect(all.length).toBeGreaterThanOrEqual(30)
   })
@@ -40,6 +42,24 @@ describe('construct presets', () => {
     expect(count('διά + genitive')).toBeGreaterThan(count('διά + accusative'))     // through > because of
     expect(count('κατά + accusative')).toBeGreaterThan(count('κατά + genitive'))   // according to > against
     expect(count('μετά + genitive')).toBeGreaterThan(count('μετά + accusative'))   // with > after
+  })
+
+  it('anchors double accusatives on a verb that governs two objects', () => {
+    // The point of the group: two accusatives near each other prove nothing. Without a verb anchor
+    // the same shape matches 1,000+ verses, most of them an article with its noun.
+    const unanchored = searchConstruct({
+      corpus: 'GNT', ordered: true, sameVerse: false, within: 4,
+      terms: [
+        { features: { pos: ['noun'], case: ['accusative'] } },
+        { features: { pos: ['noun'], case: ['accusative'] } },
+      ],
+    }, 1).total
+    expect(unanchored).toBeGreaterThan(1000)
+    for (const [, p] of all.filter(([h]) => h === 'Double accusatives')) {
+      const anchored = searchConstruct({ ...p.query, corpus: 'GNT' }, 1).total
+      expect(anchored).toBeLessThan(unanchored / 10)
+      expect(p.query.terms.some(t => !!t.lemma)).toBe(true)     // the verb anchor
+    }
   })
 
   it('includes a single-word construction, which the engine must accept', () => {

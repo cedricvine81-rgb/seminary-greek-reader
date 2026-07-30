@@ -210,10 +210,72 @@ const PREPOSITION: ConstructPreset[] = [
     query: { ...base, within: 2, terms: [word('εἰς'), nounIn('accusative')] } },
 ]
 
+
+const accNoun: ConstructTerm = { features: { pos: ['noun'], case: ['accusative'] } }
+const accPron: ConstructTerm = { features: { pos: ['pronoun'], case: ['accusative'] } }
+const verb = (lemma: string): ConstructTerm => ({ features: { pos: ['verb'] }, lemma })
+
+// Double accusatives. Two accusatives standing near each other prove nothing — an article and its
+// noun are two accusatives, and 1,360 New Testament verses have a pair within four words. What
+// makes a double accusative is the VERB: only certain verbs govern two objects. So each of these is
+// anchored on such a verb, which takes the count from 1,360 to single or low double figures.
+//
+// Still a strong lead rather than a guarantee: the verb and two accusatives can be near each other
+// without both belonging to it (Matt 7:29 has διδάσκων αὐτούς with ἐξουσίαν belonging to ἔχων).
+const DOUBLE_ACC: ConstructPreset[] = [
+  {
+    label: 'Object-complement — καλέω + two accusatives',
+    note: 'Calling something something: καλέσεις τὸ ὄνομα αὐτοῦ Ἰησοῦν (Matt 1:21). The second accusative renames the first.',
+    approx: 13,
+    query: { ...base, within: 6, terms: [verb('καλέω'), accNoun, accNoun] },
+  },
+  {
+    label: 'Object-complement — ποιέω + two accusatives',
+    note: 'Making something something: “make his paths straight” (Matt 3:3). The complement states what the object becomes.',
+    approx: 33,
+    query: { ...base, within: 6, terms: [verb('ποιέω'), accNoun, accNoun] },
+  },
+  {
+    label: 'Person and thing — διδάσκω',
+    note: 'Teaching someone something. The person is usually a pronoun, the thing a noun, which is how this is framed.',
+    approx: 8,
+    query: { ...base, within: 6, terms: [verb('διδάσκω'), accPron, accNoun] },
+  },
+  {
+    label: 'Person and thing — ἐρωτάω',
+    note: 'Asking someone something: ἐρωτήσω ὑμᾶς κἀγὼ λόγον ἕνα (Matt 21:24).',
+    approx: 10,
+    query: { ...base, within: 6, terms: [verb('ἐρωτάω'), accPron, accNoun] },
+  },
+  {
+    label: 'Person and thing — ἐνδύω',
+    note: 'Clothing someone with something: ἐνέδυσαν αὐτὸν τὰ ἱμάτια αὐτοῦ (Matt 27:31).',
+    approx: 3,
+    query: { ...base, within: 6, terms: [verb('ἐνδύω'), accPron, accNoun] },
+  },
+]
+
+const OTHER: ConstructPreset[] = [
+  {
+    label: 'Granville Sharp shape — article, noun, καί, noun',
+    note: 'Two nouns joined by καί under ONE article, agreeing — the shape Sharp’s rule is about. The rule itself applies only to singular, personal, non-proper nouns, so add Singular and read before concluding: most of these hits will not qualify.',
+    approx: 159,
+    query: { ...base, within: 5, terms: [
+      { features: { pos: ['article'] } },
+      agreeing('noun', 0),
+      word('καί'),
+      agreeing('noun', 0),
+      { features: { pos: ['article'] }, negate: true },
+    ] },
+  },
+]
+
 export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'Uses of the subjunctive', presets: SUBJUNCTIVE },
   { heading: 'Uses of the adjective', presets: ADJECTIVE },
   { heading: 'Uses of the participle', presets: PARTICIPLE },
   { heading: 'The articular infinitive', presets: INFINITIVE },
   { heading: 'Prepositions and their cases', presets: PREPOSITION },
+  { heading: 'Double accusatives', presets: DOUBLE_ACC },
+  { heading: 'Other constructions', presets: OTHER },
 ]
