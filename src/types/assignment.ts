@@ -1,6 +1,8 @@
 import type { CourseLevel } from './course'
 
-export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION'
+// Mirrors the AssignmentType enum in prisma/schema.prisma — the two must be kept in step, and
+// the Postgres enum gains the value first (a value can be added to an enum but never removed).
+export type AssignmentType = 'VOCABULARY_QUIZ' | 'PASSAGE_VOCABULARY' | 'MORPHOLOGY_QUIZ' | 'TRANSLATION_EXERCISE' | 'TRANSLATION_EXAM' | 'COURSE_NOTES' | 'GROUP_PRESENTATION' | 'CONSTRUCT_SEARCH'
 
 export type QuestionType =
   | 'GREEK_TO_ENGLISH'

@@ -436,6 +436,10 @@ enum AssignmentType {
   TRANSLATION_EXAM
   COURSE_NOTES
   GROUP_PRESENTATION
+  // A Construct search handed to students as a link (stored in `reference`), e.g. "find ten
+  // genitive absolutes in Mark and parse them". Added to the Postgres enum by hand first —
+  // a value can be added to an enum but never removed.
+  CONSTRUCT_SEARCH
 }
 
 model Assignment {
