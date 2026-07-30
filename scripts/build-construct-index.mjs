@@ -446,6 +446,39 @@ for (const c of corpora) {
   fs.rmSync(path.join(DATA, inPage ? `${stem}.json.gz` : `${stem}.json`), { force: true })
   console.log(`${path.basename(written)}: ${n} lexemes (by ${keyBy}) · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses${noDictionaryForm ? ` · ${noDictionaryForm} without a dictionary form` : ''} · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
 }
+// ─── Scope manifest ───────────────────────────────────────────────────────────
+// What the reader can limit a search to, per corpus. The biblical corpora scope by book (from
+// books.json, which already carries abbreviations); the prose corpora scope by WORK, whose display
+// name comes from the work file's own `work` field — Josephus adds its book number, since its
+// files are the books ('The Jewish War 4').
+const scopes = {}
+for (const c of corpora) {
+  const ids = Object.keys(c.books)
+  if (c.name === 'GNT' || c.name === 'LXX') {
+    const meta = c.name === 'GNT' ? booksMeta.gnt : booksMeta.lxx
+    const byId = Object.fromEntries(meta.map(b => [b.osisId, b]))
+    scopes[c.name] = ids.map(id => ({
+      id,
+      label: byId[id]?.name ?? id,
+      short: byId[id]?.abbrev ?? id,
+      group: c.name === 'GNT' ? 'New Testament' : 'Septuagint',
+    }))
+    continue
+  }
+  scopes[c.name] = ids.map(id => {
+    let label = id, group = c.name
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(DATA, `${id}.json`), 'utf8'))
+      if (d.work) { label = d.number ? `${d.work} ${d.number}` : d.work; group = d.work }
+      else if (d.title) label = d.title
+    } catch { /* keep the path as the label rather than dropping the work */ }
+    return { id, label, short: label, group }
+  }).sort((a, b) => a.label.localeCompare(b.label))
+}
+const scopeFile = path.join(outDir, 'works.json')
+fs.writeFileSync(scopeFile, JSON.stringify(scopes))
+console.log(`scope manifest: ${Object.values(scopes).reduce((n, v) => n + v.length, 0)} entries · ${(fs.statSync(scopeFile).size / 1024).toFixed(0)} KB`)
+
 // Superseded by the per-corpus tables above.
 fs.rmSync(path.join(DATA, 'lemma-forms.json'), { force: true })
 fs.rmSync(path.join(DATA, 'lemma-pos.json'), { force: true })

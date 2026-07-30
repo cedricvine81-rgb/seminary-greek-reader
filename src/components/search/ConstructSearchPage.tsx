@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Loader2, Plus, Search } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Library, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import { ConstructAllResults, type CorpusBlock } from './ConstructAllResults'
+import { ConstructScopePicker, type ScopeEntry } from './ConstructScopePicker'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
   termIsEmpty, toBiblicalHit, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
@@ -54,9 +55,15 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   // normalized lemma → the forms that lemma is attested in, so typing a Greek word narrows that
   // card to real choices only (scripts/build-construct-index.mjs).
   const [lemmaForms, setLemmaForms] = useState<Map<string, LemmaForms>>()
+  // What each corpus can be limited to — books for the biblical texts, works for the prose ones.
+  const [scopes, setScopes] = useState<Record<string, ScopeEntry[]>>({})
+  const [showScope, setShowScope] = useState(false)
 
   // Book display names (osisId → name) for both corpora, as on the other search pages.
   useEffect(() => {
+    fetch('/data/construct/works.json').then(r => r.ok ? r.json() : null)
+      .then((d: Record<string, ScopeEntry[]> | null) => { if (d) setScopes(d) })
+      .catch(() => {})
     fetch('/data/books.json').then(r => r.ok ? r.json() : null)
       .then((d: { gnt?: { osisId: string; name: string }[]; lxx?: { osisId: string; name: string }[] } | null) => {
         if (!d) return
@@ -155,10 +162,14 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     const tail = forbidden.length
       ? `, with no ${forbidden.map(describe).join(' or ')} in between`
       : ''
-    return `${head} · within ${ran.within} word${ran.within === 1 ? '' : 's'}${ran.ordered ? ', in order' : ''}${ran.sameVerse ? ', same verse' : ''}${tail}`
+    const scoped = ran.books?.length
+      ? `, in ${ran.books.length} ${isProseCorpus(ran.corpus) ? 'work' : 'book'}${ran.books.length === 1 ? '' : 's'}`
+      : ''
+    return `${head} · within ${ran.within} word${ran.within === 1 ? '' : 's'}${ran.ordered ? ', in order' : ''}${ran.sameVerse ? ', same verse' : ''}${scoped}${tail}`
   }, [ran])
 
   const crossCount = hits?.filter(h => h.crossesVerse).length ?? 0
+  const scopeNoun = isProseCorpus(query.corpus) ? 'work' : 'book'
 
   // Never available during a lockdown exam — same rule as the rest of Search.
   if (mounted && isExamLocked()) {
@@ -183,7 +194,12 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         <label className="flex items-center gap-1.5 text-xs text-gray-500">
           Search in
           <select value={query.corpus}
-            onChange={e => setQuery(q => ({ ...q, corpus: e.target.value as ConstructCorpus }))}
+            onChange={e => {
+              // Book ids are corpus-specific, so a scope can't survive the switch.
+              const corpus = e.target.value as ConstructCorpus
+              setQuery(q => ({ ...q, corpus, books: undefined }))
+              setShowScope(false)
+            }}
             className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
             <option value={CONSTRUCT_ALL}>All Greek texts — where does it occur?</option>
             <optgroup label="Biblical (hand-tagged)">
@@ -203,6 +219,33 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
       </p>
+      {/* Limit to particular books or works. Not offered for "search all", where a book id would be
+          ambiguous across corpora — the distribution is how you narrow there. */}
+      {query.corpus !== CONSTRUCT_ALL && (scopes[query.corpus]?.length ?? 0) > 0 && (
+        <div className="mb-3">
+          <button type="button" onClick={() => setShowScope(v => !v)} aria-expanded={showScope}
+            className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
+              query.books?.length
+                ? 'border-brand-300 bg-brand-50 text-brand-700'
+                : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
+            <Library size={13} />
+            {query.books?.length
+              ? `${query.books.length} ${scopeNoun}${query.books.length === 1 ? '' : 's'}`
+              : `All ${scopeNoun}s`}
+            <ChevronDown size={12} className={`transition-transform ${showScope ? 'rotate-180' : ''}`} />
+          </button>
+          {showScope && (
+            <ConstructScopePicker
+              entries={scopes[query.corpus] ?? []}
+              selected={query.books ?? []}
+              biblical={!isProseCorpus(query.corpus)}
+              onChange={ids => setQuery(q => ({ ...q, books: ids.length ? ids : undefined }))}
+              onClose={() => setShowScope(false)}
+            />
+          )}
+        </div>
+      )}
+
       {query.corpus !== CONSTRUCT_ALL && corpusInfo(query.corpus).tagging === 'machine' && (
         <p className="mb-4 rounded-lg border border-amber-200/70 bg-amber-50/50 px-3 py-2 text-xs text-gray-600">
           This text is <strong className="font-semibold">machine-parsed</strong> (roughly 90–95% accurate), unlike the
