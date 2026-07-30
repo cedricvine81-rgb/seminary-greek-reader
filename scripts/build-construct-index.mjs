@@ -117,6 +117,39 @@ function lxxTokens(morph) {
 // ─── Collection ───────────────────────────────────────────────────────────────
 // Each corpus yields, per book, a list of { chapter, verse, num, strongs, lemmaRaw, gloss, toks }.
 
+// Whether a GNT verse's parsing-tree tokens line up with the text the READER shows, per verse.
+//
+// The two are different editions — the trees are gold hand-tagging, the reader's chapter files are
+// the text on screen — and they disagree on word count in about 9% of verses (Δαυίδ/Δαβίδ,
+// Βοές/Βοόζ, Ἀσάφ/Ἀσά and the like). Where they agree, results can mark exactly the matched words;
+// where they don't, marking by position would confidently mark the WRONG words, so those verses
+// fall back to lemma highlighting. Storing this per verse keeps the gold parsing and still gets
+// exact marking for the ~90% that align — better than re-sourcing the index from the reader's own
+// files, whose morphology packs person/case/number into shifted fields for 1st and 2nd person
+// pronouns (ἡμῶν arrives as casus=1, number=G, gender=P).
+const alignNorm = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(LETTERS, '')
+
+function readerVerses(osis) {
+  const out = new Map()   // 'ch.vs' -> [surface, ...]
+  const dir = path.join(DATA, 'gnt')
+  for (const f of fs.readdirSync(dir).filter(f => f.startsWith(`${osis}_`) && f.endsWith('.json'))) {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))
+      for (const v of d.verses ?? []) out.set(`${v.chapter}.${v.verse}`, (v.words ?? []).map(w => alignNorm(w.surface)))
+    } catch { /* a missing chapter just means those verses can't be aligned */ }
+  }
+  return out
+}
+
+// Same length, and mostly the same words in the same places. The threshold admits variant
+// spellings at a shared slot while rejecting a verse whose words genuinely differ in order.
+function versesAlign(treeSurfaces, readerSurfaces) {
+  if (!readerSurfaces || treeSurfaces.length !== readerSurfaces.length || treeSurfaces.length === 0) return false
+  let same = 0
+  for (let i = 0; i < treeSurfaces.length; i++) if (treeSurfaces[i] === readerSurfaces[i]) same++
+  return same / treeSurfaces.length >= 0.8
+}
+
 function collectGNT(osis) {
   const d = JSON.parse(fs.readFileSync(path.join(DATA, 'phrase-tree', `${osis}.json`), 'utf8'))
   const out = []
@@ -130,6 +163,7 @@ function collectGNT(osis) {
       if (!strongs && !parsing) return
       out.push({
         chapter, verse, num, strongs,
+        surface: n.w ? String(n.w) : '',
         lemmaRaw: n.lemma ? String(n.lemma).trim() : '',
         gloss: n.gloss ? String(n.gloss).trim() : '',
         toks: parsing.split(',').map(t => t.trim()).filter(Boolean),
@@ -270,6 +304,8 @@ function collectProse(relPath) {
 //               identity available there — 91.9% of tokens carry one, they group inflected forms
 //               correctly (ἠγάπησάς / ἀγαπᾷς / ἀγαπᾶν all under G25), and the lexicon supplies a
 //               dictionary form for 98.6% of them.
+let alignedVerses = 0, totalVerses = 0
+
 function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
   const books = {}
   let wordCount = 0, noPos = 0
@@ -290,6 +326,9 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
     // for the LXX, so both corpora are sorted by their word ids.
     raw.sort((a, b) => a.chapter - b.chapter || a.verse - b.verse || a.num - b.num)
 
+    // Only the GNT needs an alignment check: the LXX and the prose corpora are indexed FROM the
+    // files their readers display, so they always line up.
+    const reader = name === 'GNT' ? readerVerses(osis) : null
     const w = [], v = []
     let curCh = -1, curV = -1
     for (const t of raw) {
@@ -314,6 +353,20 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
         if (t.gloss) (glossCounts[key] ??= {})[t.gloss] = ((glossCounts[key] ?? {})[t.gloss] ?? 0) + 1
         if (t.strongs) (strongsCounts[key] ??= {})[t.strongs] = ((strongsCounts[key] ?? {})[t.strongs] ?? 0) + 1
       }
+    }
+    if (reader) {
+      // A fourth element per verse: 1 when its words can be marked by position.
+      let aligned = 0
+      for (let i = 0; i < v.length; i++) {
+        const start = v[i][2]
+        const end = i + 1 < v.length ? v[i + 1][2] : w.length
+        const surfaces = raw.slice(start, end).map(t => alignNorm(t.surface))
+        const ok = versesAlign(surfaces, reader.get(`${v[i][0]}.${v[i][1]}`))
+        v[i].push(ok ? 1 : 0)
+        if (ok) aligned++
+      }
+      alignedVerses += aligned
+      totalVerses += v.length
     }
     books[osis] = { w, v }
     wordCount += w.length
@@ -421,6 +474,7 @@ for (const c of corpora) {
   console.log(`  ${c.name.padEnd(18)} ${String(Object.keys(c.books).length).padStart(3)} works · ${String(verses).padStart(6)} verses · ${String(c.wordCount).padStart(7)} words · ${(gz.length / 1e6).toFixed(2)} MB gz${c.noPos ? ` · ${c.noPos} untagged` : ''}`)
 }
 console.log(`index total: ${(totalGz / 1e6).toFixed(2)} MB gz across ${corpora.length} files`)
+console.log(`  GNT verses aligned with the reader's text: ${alignedVerses}/${totalVerses} (${(100 * alignedVerses / totalVerses).toFixed(1)}%) — the rest fall back to lemma highlighting`)
 // Superseded by the per-corpus files.
 fs.rmSync(path.join(DATA, 'construct-index.json.gz'), { force: true })
 

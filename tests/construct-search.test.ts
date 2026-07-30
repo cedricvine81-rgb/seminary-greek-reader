@@ -245,6 +245,29 @@ describe('construct search', () => {
     expect(decodeConstruct(Object.fromEntries(encodeConstruct(original).entries()))).toEqual(original)
   })
 
+  it('marks New Testament words by position only where the editions agree', () => {
+    // The parsing trees and the reader's text are different editions, differing in word count in
+    // about 9% of verses. Those verses must NOT claim positions — marking by position there would
+    // confidently mark the wrong words.
+    const r = searchConstruct(q({ within: 3, ordered: true, terms: [
+      { features: { pos: ['article'] } },
+      { features: { pos: ['adjective'] }, agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+      { features: { pos: ['noun'] }, agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+    ] }), BIG)
+    const aligned = r.hits.filter(h => h.aligned)
+    expect(aligned.length).toBeGreaterThan(r.hits.length * 0.8)
+    expect(aligned.length).toBeLessThan(r.hits.length)     // some verses genuinely don't align
+    // Matt 5:16 (τὰ καλὰ ἔργα) is one that does, and its three words are known.
+    const m516 = r.hits.find(h => h.bookId === 'Matt' && h.chapter === 5 && h.verse === 16)
+    expect(m516?.aligned).toBe(true)
+    expect(m516?.matchedWords).toHaveLength(3)
+  })
+
+  it('treats corpora built from their own reader files as always aligned', () => {
+    const lxx = searchConstruct(q({ corpus: 'LXX', within: 3, terms: [AOR_PTCP, DAT_NOUN] }), 50)
+    expect(lxx.hits.every(h => h.aligned)).toBe(true)
+  })
+
   it('honours a book scope and caps results', () => {
     const scoped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN], books: ['Phlm', 'Jude'] }), BIG)
     expect(scoped.hits.every(h => h.bookId === 'Phlm' || h.bookId === 'Jude')).toBe(true)

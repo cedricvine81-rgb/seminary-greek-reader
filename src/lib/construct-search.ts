@@ -20,7 +20,10 @@ import { CONSTRUCT_CORPORA } from './construct-query'
 type TokenRow = [string, string, string]
 interface BookIndex {
   w: TokenRow[]
-  v: [number, number, number][]   // [chapter, verse, startIndex], ascending by startIndex
+  // [chapter, verse, startIndex, aligned?] — ascending by startIndex. `aligned` is present only for
+  // the GNT, where the index's edition and the reader's differ in about 9% of verses; 1 means this
+  // verse's words can be marked by position, 0 that they can't. See build-construct-index.mjs.
+  v: [number, number, number, number?][]
 }
 // Books of ONE corpus, in canonical order (the engine relies on that for reading-order hits).
 type CorpusIndex = Record<string, BookIndex>
@@ -157,13 +160,16 @@ export interface ConstructHit {
   // sidecar's word count), so those results can mark the actual matched words rather than every
   // occurrence of their lemma. Words from a match's other verse are naturally absent.
   matchedWords: number[]
+  // Whether those indices may be trusted against the text the reader renders — false for a GNT
+  // verse whose editions disagree, where marking by position would mark the wrong words.
+  aligned: boolean
   // True when at least one match in this verse straddles a verse boundary (a verse can hold
   // both kinds) — worth flagging in the results, since the second word is in the next verse.
   crossesVerse: boolean
 }
 
 // Locate a token position's verse via the book's ascending verse-offset table.
-function verseAt(book: BookIndex, pos: number): [number, number, number] {
+function verseAt(book: BookIndex, pos: number): [number, number, number, number?] {
   let lo = 0, hi = book.v.length - 1, best = 0
   while (lo <= hi) {
     const mid = (lo + hi) >> 1
@@ -282,7 +288,10 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
       if (query.sameVerse && crossesVerse) continue
       const verseId = `${osisId}.${ch}.${vs}`
       let hit = perVerse.get(verseId)
-      if (!hit) perVerse.set(verseId, (hit = { verseId, bookId: osisId, chapter: ch, verse: vs, matchedLemmas: [], matchedWords: [], crossesVerse }))
+      // Absent (the LXX and the prose corpora) means always aligned: those indexes are built from
+      // the very files their readers display.
+      const alignedHere = verseAt(book, lo)[3] !== 0
+      if (!hit) perVerse.set(verseId, (hit = { verseId, bookId: osisId, chapter: ch, verse: vs, matchedLemmas: [], matchedWords: [], aligned: alignedHere, crossesVerse }))
       hit.crossesVerse = hit.crossesVerse || crossesVerse
       const verseStart = verseAt(book, lo)[2]
       for (const p of group) {
