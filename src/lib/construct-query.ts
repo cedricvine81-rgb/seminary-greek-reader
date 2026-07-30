@@ -26,10 +26,33 @@ export interface ConstructTerm {
   negate?: boolean
 }
 
-// Which Greek text to search. One at a time: results render through GreekSearchResults, which
-// fetches word data for a single corpus, and mixing the two would mean changing a component the
-// other search paths share.
-export type ConstructCorpus = 'GNT' | 'LXX'
+// Which Greek text to search — one at a time. The biblical corpora render through
+// GreekSearchResults (per-verse word data from /api/reader); the prose corpora have their own
+// view, since /api/reader doesn't serve them.
+//
+// `tagging` is the honest part: the New Testament and Septuagint are hand-tagged, the prose corpora
+// are Stanza output at roughly 90-95%. A hit in prose is evidence, not proof, and the UI says so —
+// this is a teaching tool, and a student shouldn't cite a mistagged aorist on our authority.
+export const CONSTRUCT_CORPORA = [
+  { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold' },
+  { id: 'LXX', label: 'Greek Old Testament (Septuagint)', kind: 'bible', tagging: 'gold' },
+  { id: 'josephus', label: 'Josephus', kind: 'prose', tagging: 'machine' },
+  { id: 'philo', label: 'Philo', kind: 'prose', tagging: 'machine' },
+  { id: 'apostolic-fathers', label: 'Apostolic Fathers', kind: 'prose', tagging: 'machine' },
+  { id: 'pseudepigrapha', label: 'Pseudepigrapha', kind: 'prose', tagging: 'machine' },
+  { id: 'eusebius', label: 'Eusebius', kind: 'prose', tagging: 'machine' },
+  { id: 'justin', label: 'Justin Martyr', kind: 'prose', tagging: 'machine' },
+  { id: 'greco', label: 'Greco-Roman', kind: 'prose', tagging: 'machine' },
+] as const
+
+export type ConstructCorpus = typeof CONSTRUCT_CORPORA[number]['id']
+
+export function corpusInfo(id: string) {
+  return CONSTRUCT_CORPORA.find(c => c.id === id) ?? CONSTRUCT_CORPORA[0]
+}
+export function isProseCorpus(id: string): boolean {
+  return corpusInfo(id).kind === 'prose'
+}
 
 export interface ConstructQuery {
   corpus: ConstructCorpus
@@ -155,7 +178,8 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
   const w = Number(one(params.w))
   const books = one(params.books).split(',').map(s => s.trim()).filter(Boolean)
   return {
-    corpus: one(params.in) === 'LXX' ? 'LXX' : 'GNT',
+    // Only a corpus we actually index; anything else falls back rather than reading a missing file.
+    corpus: (CONSTRUCT_CORPORA.find(c => c.id === one(params.in))?.id ?? 'GNT') as ConstructCorpus,
     // Always present the builder with at least two term cards.
     terms: terms.length >= 2 ? terms.slice(0, CONSTRUCT_MAX_TERMS) : [...terms, emptyTerm(), emptyTerm()].slice(0, 2),
     within: Number.isFinite(w) && w >= 1 ? Math.min(w, CONSTRUCT_MAX_WITHIN) : CONSTRUCT_DEFAULT_WITHIN,

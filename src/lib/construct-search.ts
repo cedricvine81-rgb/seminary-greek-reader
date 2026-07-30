@@ -143,6 +143,11 @@ export interface ConstructHit {
   // Normalized lemmas of the matched words, so the results view red-highlights them
   // (same contract as searchByMorph's matchedLemmas).
   matchedLemmas: string[]
+  // 0-based indices of the matched words WITHIN this verse. The prose corpora's sidecars are
+  // token-aligned with their text (verified: whitespace-splitting the verse yields exactly the
+  // sidecar's word count), so those results can mark the actual matched words rather than every
+  // occurrence of their lemma. Words from a match's other verse are naturally absent.
+  matchedWords: number[]
   // True when at least one match in this verse straddles a verse boundary (a verse can hold
   // both kinds) — worth flagging in the results, since the second word is in the next verse.
   crossesVerse: boolean
@@ -249,12 +254,20 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
       if (query.sameVerse && crossesVerse) continue
       const verseId = `${osisId}.${ch}.${vs}`
       let hit = perVerse.get(verseId)
-      if (!hit) perVerse.set(verseId, (hit = { verseId, bookId: osisId, chapter: ch, verse: vs, matchedLemmas: [], crossesVerse }))
+      if (!hit) perVerse.set(verseId, (hit = { verseId, bookId: osisId, chapter: ch, verse: vs, matchedLemmas: [], matchedWords: [], crossesVerse }))
       hit.crossesVerse = hit.crossesVerse || crossesVerse
+      const verseStart = verseAt(book, lo)[2]
       for (const p of group) {
         const lemma = book.w[p][1]
         if (lemma && !hit.matchedLemmas.includes(lemma)) hit.matchedLemmas.push(lemma)
+        // Only words in THIS verse get an index; a cross-boundary partner belongs to the next one.
+        const [pch, pvs] = verseAt(book, p)
+        if (pch === ch && pvs === vs) {
+          const idx = p - verseStart
+          if (!hit.matchedWords.includes(idx)) hit.matchedWords.push(idx)
+        }
       }
+      hit.matchedWords.sort((a, b) => a - b)
     }
 
     // Verse order within the book (the map is keyed by id, filled in position order already,

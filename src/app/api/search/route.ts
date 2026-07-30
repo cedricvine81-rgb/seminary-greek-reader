@@ -3,7 +3,8 @@ import { logError } from '@/lib/logger'
 import { searchByGreekWord, searchByReference, searchByLemma, searchByMorph, searchByStrongs, searchHebrewByStrongs, searchHebrewBySurface, verseTextsByIds, type SearchCorpus } from '@/lib/search'
 import { searchTranslation } from '@/lib/translation-search'
 import { searchConstruct } from '@/lib/construct-search'
-import { decodeConstruct, queryIsRunnable } from '@/lib/construct-query'
+import { decodeConstruct, isProseCorpus, queryIsRunnable } from '@/lib/construct-query'
+import { proseHitText } from '@/lib/construct-prose'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = req.nextUrl
@@ -34,6 +35,25 @@ export async function GET(req: NextRequest) {
       const query = decodeConstruct(Object.fromEntries(searchParams.entries()))
       if (!queryIsRunnable(query)) return NextResponse.json({ results: [], truncated: false })
       const { hits, truncated } = searchConstruct(query)
+      // Prose hits aren't in the biblical search index, and carry their own name and Texts link.
+      if (isProseCorpus(query.corpus)) {
+        return NextResponse.json({
+          truncated,
+          prose: true,
+          results: hits.map(h => {
+            const t = proseHitText(h.bookId, h.chapter, h.verse)
+            return {
+              bookId: h.bookId, chapter: h.chapter, verse: h.verse,
+              reference: t?.reference ?? `${h.bookId} ${h.chapter}:${h.verse}`,
+              text: t?.greek ?? '',
+              english: t?.english ?? '',
+              target: t?.target ?? null,
+              matchedWords: h.matchedWords,
+              crossesVerse: h.crossesVerse,
+            }
+          }),
+        })
+      }
       const texts = verseTextsByIds(hits.map(h => h.verseId))
       return NextResponse.json({
         truncated,

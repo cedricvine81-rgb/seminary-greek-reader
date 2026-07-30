@@ -5,9 +5,11 @@ import { useRouter } from 'next/navigation'
 import { ArrowLeft, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
+import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
-  termIsEmpty, type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
+  termIsEmpty, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
+  type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { FEATURE_LABEL } from '@/lib/morph-features'
 import { isExamLocked } from '@/lib/exam-lockdown'
@@ -36,10 +38,12 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   // editing the builder doesn't invalidate what's on screen until you press Search.
   const [ran, setRan] = useState<ConstructQuery | null>(() => (queryIsRunnable(initial) ? initial : null))
   const [hits, setHits] = useState<Hit[] | null>(null)
+  const [proseHits, setProseHits] = useState<ProseHit[] | null>(null)
   const [truncated, setTruncated] = useState(false)
   const [loading, setLoading] = useState(false)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
   const [transLang, setTransLang] = useState('en')
+  const [showProseEnglish, setShowProseEnglish] = useState(false)
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
   // normalized lemma → the forms that lemma is attested in, so typing a Greek word narrows that
@@ -75,15 +79,21 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     params.set('type', 'construct')
     fetch(`/api/search?${params.toString()}`)
       .then(r => r.ok ? r.json() : { results: [] })
-      .then((d: { results?: { bookId: string; chapter: number; verse: number; text: string; matchedLemmas?: string[]; crossesVerse?: boolean }[]; truncated?: boolean }) => {
+      .then((d: { prose?: boolean; results?: any[]; truncated?: boolean }) => {
         if (!live) return
-        setHits((d.results ?? []).map(v => ({
-          osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
-          matchedLemmas: v.matchedLemmas, crossesVerse: v.crossesVerse,
-        })))
+        if (d.prose) {
+          setProseHits((d.results ?? []) as ProseHit[])
+          setHits(null)
+        } else {
+          setProseHits(null)
+          setHits((d.results ?? []).map((v: any) => ({
+            osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
+            matchedLemmas: v.matchedLemmas, crossesVerse: v.crossesVerse,
+          })))
+        }
         setTruncated(!!d.truncated)
       })
-      .catch(() => { if (live) { setHits([]); setTruncated(false) } })
+      .catch(() => { if (live) { setHits([]); setProseHits(null); setTruncated(false) } })
       .finally(() => { if (live) setLoading(false) })
     return () => { live = false }
   }, [ran])
@@ -160,8 +170,16 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           <select value={query.corpus}
             onChange={e => setQuery(q => ({ ...q, corpus: e.target.value as ConstructCorpus }))}
             className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
-            <option value="GNT">Greek New Testament</option>
-            <option value="LXX">Greek Old Testament (Septuagint)</option>
+            <optgroup label="Biblical (hand-tagged)">
+              {CONSTRUCT_CORPORA.filter(c => c.kind === 'bible').map(c => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Other Greek texts (machine-tagged)">
+              {CONSTRUCT_CORPORA.filter(c => c.kind === 'prose').map(c => (
+                <option key={c.id} value={c.id}>{c.label}</option>
+              ))}
+            </optgroup>
           </select>
         </label>
       </div>
@@ -169,6 +187,13 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
       </p>
+      {corpusInfo(query.corpus).tagging === 'machine' && (
+        <p className="mb-4 rounded-lg border border-amber-200/70 bg-amber-50/50 px-3 py-2 text-xs text-gray-600">
+          This text is <strong className="font-semibold">machine-parsed</strong> (roughly 90–95% accurate), unlike the
+          New Testament and Septuagint, which are hand-tagged. Treat a hit as a lead to check in the
+          text, not as a settled parse.
+        </p>
+      )}
 
       {/* ─── Builder ─────────────────────────────────────────────────────── */}
       <div className="space-y-2">
@@ -247,6 +272,31 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             <p className="inline-flex w-full items-center justify-center gap-2 py-16 text-center text-sm text-gray-400">
               <Loader2 size={16} className="animate-spin" /> Searching…
             </p>
+          ) : isProseCorpus(ran.corpus) ? (
+            // Prose corpora get their own view — see ConstructProseResults.
+            !proseHits || proseHits.length === 0 ? (
+              <p className="py-16 text-center text-sm text-gray-400">No matches. Try a larger distance, or fewer constraints.</p>
+            ) : (
+              <>
+                <div className="flex items-center justify-between gap-3 pb-2">
+                  <p className="text-xs text-gray-400">
+                    {proseHits.length}{truncated ? '+' : ''} passage{proseHits.length === 1 ? '' : 's'}
+                  </p>
+                  <label className="flex items-center gap-1.5 text-[11px] text-gray-500">
+                    <input type="checkbox" checked={showProseEnglish}
+                      onChange={e => setShowProseEnglish(e.target.checked)}
+                      className="h-3 w-3 accent-brand-600" />
+                    Show the English
+                  </label>
+                </div>
+                {truncated && (
+                  <p className="mb-2 text-[11px] text-gray-400">
+                    Showing the first {proseHits.length} passages — narrow the construct to see the rest.
+                  </p>
+                )}
+                <ConstructProseResults hits={proseHits} showEnglish={showProseEnglish} />
+              </>
+            )
           ) : !hits || hits.length === 0 ? (
             <p className="py-16 text-center text-sm text-gray-400">No matches. Try a larger distance, or fewer constraints.</p>
           ) : (
@@ -270,10 +320,11 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                   Showing the first {hits.length} verses — narrow the construct to see the rest.
                 </p>
               )}
+              {/* Biblical only — the prose branch above returns before reaching this. */}
               <GreekSearchResults
                 hits={hits}
                 terms={[]}
-                corpus={ran.corpus}
+                corpus={ran.corpus === 'LXX' ? 'LXX' : 'GNT'}
                 bookName={bookName}
                 context={0}
                 ctxMap={{}}

@@ -145,9 +145,10 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   const [activeSug, setActiveSug] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
   const typed = (term.lemma ?? '').trim()
-  // A word only degrades to exact-form matching when the table has no Strong's for it — see
-  // settleAgainst. The LXX has no real lemmas, so its lexemes are identified by number instead.
-  const lexemeIsExact = corpus !== 'GNT' && !(term.strongs?.length)
+  // Exact-form matching is only the Septuagint's problem: its chapter files store the surface form
+  // in the `lemma` field, so without a Strong's number there is nothing but the spelling to match.
+  // The GNT trees and the prose sidecars (Stanza) both carry real lemmas, so "any form" holds.
+  const lexemeIsExact = corpus === 'LXX' && !(term.strongs?.length)
 
   // Remote lookup, for corpora with no in-page table (the Septuagint). Debounced, and keyed by the
   // text it answered so a late reply can't be mistaken for the current word's.
