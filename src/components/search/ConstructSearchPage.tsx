@@ -9,7 +9,7 @@ import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import { ConstructAllResults, type CorpusBlock } from './ConstructAllResults'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
-  termIsEmpty, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
+  termIsEmpty, toBiblicalHit, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
   type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { FEATURE_LABEL } from '@/lib/morph-features'
@@ -91,10 +91,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           // reference renders as a bare "2:1" with no book name.
           const blocks = (d.corpora ?? []).map((b: any) => b.prose ? b : {
             ...b,
-            results: (b.results ?? []).map((v: any) => ({
-              osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
-              matchedLemmas: v.matchedLemmas, matchedWords: v.matchedWords, crossesVerse: v.crossesVerse,
-            })),
+            results: (b.results ?? []).map(toBiblicalHit),
           })
           setAllBlocks({ blocks: blocks as CorpusBlock[], total: d.total ?? 0 })
           setHits(null); setProseHits(null); setTruncated(false)
@@ -106,10 +103,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           setHits(null)
         } else {
           setProseHits(null)
-          setHits((d.results ?? []).map((v: any) => ({
-            osisId: v.bookId, chapter: v.chapter, verse: v.verse, text: v.text,
-            matchedLemmas: v.matchedLemmas, matchedWords: v.matchedWords, crossesVerse: v.crossesVerse,
-          })))
+          setHits((d.results ?? []).map(toBiblicalHit))
         }
         setTruncated(!!d.truncated)
         setTotal(d.total ?? (d.results ?? []).length)

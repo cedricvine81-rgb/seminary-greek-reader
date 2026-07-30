@@ -202,6 +202,31 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
   }
 }
 
+// The search API speaks `bookId`; the biblical results view keys hits by `osisId`. Kept here as one
+// function used by both the single-corpus and cross-corpus paths, because getting it wrong renders
+// a reference as a bare "2:1" with no book name — which is exactly what happened when the
+// cross-corpus path did its own mapping and forgot the rename.
+export interface ApiBiblicalHit {
+  bookId: string
+  chapter: number
+  verse: number
+  text: string
+  matchedLemmas?: string[]
+  matchedWords?: number[]
+  crossesVerse?: boolean
+}
+export function toBiblicalHit(v: ApiBiblicalHit) {
+  return {
+    osisId: v.bookId,
+    chapter: v.chapter,
+    verse: v.verse,
+    text: v.text,
+    matchedLemmas: v.matchedLemmas,
+    matchedWords: v.matchedWords,
+    crossesVerse: v.crossesVerse,
+  }
+}
+
 // Is this query runnable? Needs at least two constrained terms that must APPEAR — a negated term
 // says where a match may not be, so it can't define the construct on its own.
 export function queryIsRunnable(q: ConstructQuery): boolean {
