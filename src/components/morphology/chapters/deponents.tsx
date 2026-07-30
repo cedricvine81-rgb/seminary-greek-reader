@@ -9,6 +9,12 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
 } from '../shared'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+
+// Deponency is not a searchable CATEGORY: the index records voice as active/middle/passive, so
+// these anchor on verbs that exhibit it. See construct-presets.ts for why.
+const DEPONENT_SEARCHES = CONSTRUCT_PRESETS.find(g => g.heading === 'Verb forms — second aorist and deponents')!
+  .presets.filter(p => p.label.startsWith('Deponent'))
 
 export const DEPONENTS_CONTENT = (
   <>
@@ -234,6 +240,16 @@ export const DEPONENTS_CONTENT = (
           translation: "The scribes began to speak.",
         },
       ]}
+    />
+
+    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+        these open Construct search instead. */}
+    <LiveExamples
+      intro={<>Deponency itself can't be searched — the corpus records the form (middle or passive), not the category — so these show the forms of verbs that are deponent:</>}
+      links={DEPONENT_SEARCHES.map(pr => ({
+        label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
+        construct: pr.query,
+      }))}
     />
 
     <LiveExamples

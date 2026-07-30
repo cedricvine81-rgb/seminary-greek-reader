@@ -10,6 +10,11 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
 } from '../shared'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+
+// The participle's uses from Construct search — drawn from the preset list rather than
+// restated, so the chapter and the search can't drift apart.
+const PARTICIPLE_USES = CONSTRUCT_PRESETS.find(g => g.heading === 'Uses of the participle')!.presets
 
 export const PARTICIPLES_CONTENT = (
   <>
@@ -444,6 +449,16 @@ export const PARTICIPLES_CONTENT = (
 
     </LevelOnly>
     <HomeworkAssignments chapter="participles" />
+
+    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+        these open Construct search instead. */}
+    <LiveExamples
+      intro={<>Now the uses, each as a search you can open and adjust:</>}
+      links={PARTICIPLE_USES.map(pr => ({
+        label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
+        construct: pr.query,
+      }))}
+    />
 
     <LiveExamples
       intro={<>Participles are everywhere — roughly one NT word in twenty. Watch the patterns repeat.</>}

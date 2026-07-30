@@ -9,6 +9,11 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice, HomeworkAssignments,
 } from '../shared'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+
+// Preposition-plus-case searches from Construct search, drawn from the preset list so the
+// chapter and the search stay in step.
+const PREPOSITION_CASES = CONSTRUCT_PRESETS.find(g => g.heading === 'Prepositions and their cases')!.presets
 
 export const PREPOSITIONS_CONTENT = (
   <>
@@ -310,6 +315,16 @@ export const PREPOSITIONS_CONTENT = (
     />
 
     <HomeworkAssignments chapter="prepositions" />
+
+    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+        these open Construct search instead. */}
+    <LiveExamples
+      intro={<>The same preposition in different cases — see how the sense turns on the case:</>}
+      links={PREPOSITION_CASES.map(pr => ({
+        label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
+        construct: pr.query,
+      }))}
+    />
 
     <LiveExamples
       intro={<>Prepositions saturate the NT — watch the same word shift meaning with its case.</>}

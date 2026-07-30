@@ -10,6 +10,12 @@ import {
   P, SectionHeading, LevelOnly, Term, Practice, LiveExamples, InfoBox,
   ClassSentences, DropdownPractice,
 } from '../shared'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+
+// The second aorist is not a searchable CATEGORY: the index records tense simply as 'aorist',
+// so these anchor on verbs that form one. See construct-presets.ts for why.
+const SECOND_AORIST_SEARCHES = CONSTRUCT_PRESETS.find(g => g.heading === 'Verb forms — second aorist and deponents')!
+  .presets.filter(p => p.label.startsWith('Second aorist'))
 
 export const SECOND_AORISTS_CONTENT = (
   <>
@@ -219,6 +225,16 @@ export const SECOND_AORISTS_CONTENT = (
     />
 
     <HomeworkAssignments chapter="second-aorists" />
+
+    {/* Syntax is a relation between words, which the one-word morphology search can't express;
+        these open Construct search instead. */}
+    <LiveExamples
+      intro={<>The second aorist can't be searched as a category — the corpus records the tense simply as aorist — so these show every aorist of verbs that form one:</>}
+      links={SECOND_AORIST_SEARCHES.map(pr => ({
+        label: <>{pr.label} <span className="text-gray-400">— {pr.approx.toLocaleString()} in the NT</span></>,
+        construct: pr.query,
+      }))}
+    />
 
     <LiveExamples
       intro={<>The 2nd-aorist club dominates NT narrative — every story runs on these forms.</>}
