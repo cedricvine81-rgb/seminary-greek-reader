@@ -88,7 +88,7 @@ export function ConstructAllResults({ blocks, total, bookName, transLang, onOpen
               : <GreekSearchResults
                   hits={b.results as GreekHit[]}
                   terms={[]}
-                  corpus={b.corpus === 'LXX' ? 'LXX' : 'GNT'}
+                  corpus={b.corpus === 'LXX' ? 'LXX' : 'NA1904'}
                   bookName={bookName}
                   context={0}
                   ctxMap={{}}

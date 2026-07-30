@@ -56,7 +56,9 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   // Folded lemma for an "all forms" search: matched words are inflected forms that don't contain
   // the lemma string, so they're highlighted by their lemma instead of their surface.
   searchLemma?: string
-  corpus: 'GNT' | 'LXX'
+  // NA1904 is Nestle 1904, which is what the parsing trees behind Construct search ARE — so
+  // rendering construct hits against it makes the word positions exact by construction.
+  corpus: 'GNT' | 'LXX' | 'NA1904'
   bookName: Map<string, string>
   context: number
   ctxMap: Record<string, CtxVerse[]>
@@ -207,7 +209,9 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
             openWordSearch({
               x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
               reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`,
-              kind: 'greek', greekCorpus: corpus, book: h.osisId,
+              // NA1904 is a display edition, not a search scope — a word looked up from it searches
+              // the New Testament.
+              kind: 'greek', greekCorpus: corpus === 'LXX' ? 'LXX' : 'GNT', book: h.osisId,
               highlight: isAuthenticated ? {
                 activeColor: existing?.color ?? null,
                 onPick: c => existing

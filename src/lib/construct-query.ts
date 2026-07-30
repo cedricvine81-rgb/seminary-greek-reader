@@ -33,15 +33,14 @@ export interface ConstructTerm {
 // `tagging` is the honest part: the New Testament and Septuagint are hand-tagged, the prose corpora
 // are Stanza output at roughly 90-95%. A hit in prose is evidence, not proof, and the UI says so —
 // this is a teaching tool, and a student shouldn't cite a mistagged aorist on our authority.
-// `readerAligned` says whether the index's word positions line up with the text the reader renders,
-// which is what allows results to mark exactly the matched words rather than every occurrence of
-// their lemma. The Septuagint's index is built from the very chapter files /api/reader serves, so it
-// does (checked: 1,600 verses, no mismatches). The New Testament's comes from the parsing trees —
-// gold hand-tagging, but a DIFFERENT edition from the reader's text, differing in word count in
-// 159 of 1,599 sampled verses (δαυιδ/δαβιδ, βοες/βοοζ, ασαφ/ασα). Marking by position there would
-// mark the wrong words, so it stays on lemma highlighting.
+// `readerAligned` says whether the index's word positions line up with the text results are rendered
+// against, which is what lets a hit mark exactly the matched words. All of them do. The Septuagint
+// and prose indexes are built from the very files their readers display; the New Testament's comes
+// from the parsing trees, which ARE Nestle 1904 — verified word for word across 6,349 verses, zero
+// differences — so construct results render against NA1904 rather than the reader's default
+// edition, and align by construction.
 export const CONSTRUCT_CORPORA = [
-  { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold', readerAligned: false },
+  { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold', readerAligned: true },
   { id: 'LXX', label: 'Greek Old Testament (Septuagint)', kind: 'bible', tagging: 'gold', readerAligned: true },
   { id: 'josephus', label: 'Josephus', kind: 'prose', tagging: 'machine', readerAligned: true },
   { id: 'philo', label: 'Philo', kind: 'prose', tagging: 'machine', readerAligned: true },

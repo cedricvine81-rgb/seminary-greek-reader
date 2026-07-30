@@ -518,7 +518,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               <GreekSearchResults
                 hits={hits}
                 terms={[]}
-                corpus={ran.corpus === 'LXX' ? 'LXX' : 'GNT'}
+                corpus={ran.corpus === 'LXX' ? 'LXX' : 'NA1904'}
                 snippetLongVerses
                 bookName={bookName}
                 context={0}
