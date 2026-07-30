@@ -151,9 +151,6 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
       <p className="mb-4 text-xs text-gray-500">
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
-        {query.corpus === 'LXX' && (
-          <span className="text-gray-400"> The Septuagint&rsquo;s word field has no suggestions yet — type a lexeme and it still searches.</span>
-        )}
       </p>
 
       {/* ─── Builder ─────────────────────────────────────────────────────── */}
@@ -161,7 +158,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {query.terms.map((t, i) => (
           <div key={i}>
             <ConstructTermCard
-              index={i} term={t} lemmaForms={query.corpus === 'GNT' ? lemmaForms : undefined}
+              index={i} term={t} corpus={query.corpus}
+              lemmaForms={query.corpus === 'GNT' ? lemmaForms : undefined}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
             />

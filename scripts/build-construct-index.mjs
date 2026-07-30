@@ -279,23 +279,26 @@ for (const c of corpora) {
   console.log(`  ${c.name}: ${Object.keys(c.books).length} books · ${verses} verses · ${c.wordCount} words · ${c.noPos} without a part of speech`)
 }
 
-// The lemma table is fetched by the browser, so only the GNT's is written. The LXX has 44,249
-// lemmas — mostly rare proper nouns — which comes to 8 MB (1.1 MB gzipped), far too much to load
-// into a page. Searching the LXX doesn't need it (the engine matches lemma strings out of the
-// index); it only powers the word field's suggestions and form-narrowing, so the Septuagint wants
-// a server-side lookup endpoint instead. Until then its word field just offers every option.
+// The GNT table is small enough for the browser to hold, which makes its word field instant.
+// The LXX has 44,249 lemmas — mostly rare proper nouns — and comes to 8 MB, too much to load into
+// a page, so it ships GZIPPED and is read server-side by /api/construct/lemmas instead. Both live
+// under public/data because that is what reliably reaches the deployment.
 for (const c of corpora) {
   const { table, singlePos, fixedGender, lexGloss } = lemmaTable(c.stats)
   const n = Object.keys(table).length
-  if (c.name !== 'GNT') {
-    console.log(`lemma-forms-${c.name.toLowerCase()}: ${n} lemmas — NOT written (too large to ship to the browser)`)
-    continue
+  const stem = `lemma-forms-${c.name.toLowerCase()}`
+  const json = JSON.stringify(table)
+  let written
+  if (c.name === 'GNT') {
+    written = path.join(DATA, `${stem}.json`)
+    fs.writeFileSync(written, json)
+  } else {
+    written = path.join(DATA, `${stem}.json.gz`)
+    fs.writeFileSync(written, zlib.gzipSync(Buffer.from(json, 'utf8'), { level: 9 }))
   }
-  const file = path.join(DATA, `lemma-forms-${c.name.toLowerCase()}.json`)
-  fs.writeFileSync(file, JSON.stringify(table))
-  console.log(`lemma-forms-${c.name.toLowerCase()}: ${n} lemmas · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses · ${(fs.statSync(file).size / 1024).toFixed(0)} KB`)
+  console.log(`${path.basename(written)}: ${n} lemmas · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
 }
-// Superseded by the per-corpus table above.
+// Superseded by the per-corpus tables above.
 fs.rmSync(path.join(DATA, 'lemma-forms.json'), { force: true })
 fs.rmSync(path.join(DATA, 'lemma-pos.json'), { force: true })
 fs.rmSync(path.join(DATA, 'lemma-forms-lxx.json'), { force: true })

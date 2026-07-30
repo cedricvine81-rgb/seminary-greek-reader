@@ -111,11 +111,16 @@ function Fixed({ label, value }: { label: string; value: string }) {
   )
 }
 
-export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove }: {
+interface Suggestion { display: string; gloss: string; count: number; pos: string }
+
+export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, onRemove }: {
   index: number
   term: ConstructTerm
-  // normalized lemma → the forms that lemma is attested in (public/data/lemma-forms.json).
-  // Absent until it loads, in which case every option stays on offer.
+  corpus: string
+  // normalized lemma → the forms that lemma is attested in. Present for the New Testament, whose
+  // table is small enough to hold in the page; absent for the Septuagint, which is queried through
+  // /api/construct/lemmas instead (44,249 lemmas is too much to ship). Same behaviour either way,
+  // the remote path just lands a moment later.
   lemmaForms?: Map<string, LemmaForms>
   onChange: (t: ConstructTerm) => void
   onRemove?: () => void
@@ -124,10 +129,38 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
   const [openSug, setOpenSug] = useState(false)
   const [activeSug, setActiveSug] = useState(-1)
   const inputRef = useRef<HTMLInputElement>(null)
+  const typed = (term.lemma ?? '').trim()
+  // Only the GNT has genuine lemmas; see the word field's label for why this matters.
+  const lexemeIsExact = corpus !== 'GNT'
+
+  // Remote lookup, for corpora with no in-page table (the Septuagint). Debounced, and keyed by the
+  // text it answered so a late reply can't be mistaken for the current word's.
+  const [remote, setRemote] = useState<{ q: string; suggestions: Suggestion[]; exact: LemmaForms | null }>({ q: '', suggestions: [], exact: null })
+  useEffect(() => {
+    if (lemmaForms) return
+    if (typed.length < 2) { setRemote({ q: typed, suggestions: [], exact: null }); return }
+    const ctrl = new AbortController()
+    const t = setTimeout(() => {
+      fetch(`/api/construct/lemmas?corpus=${encodeURIComponent(corpus)}&q=${encodeURIComponent(typed)}`, { signal: ctrl.signal })
+        .then(r => (r.ok ? r.json() : null))
+        .then((d: { suggestions?: Suggestion[]; exact?: LemmaForms | null } | null) => {
+          if (d) setRemote({ q: typed, suggestions: d.suggestions ?? [], exact: d.exact ?? null })
+        })
+        .catch(() => {})
+    }, 150)
+    return () => { clearTimeout(t); ctrl.abort() }
+  }, [typed, corpus, lemmaForms])
+
+  // Whether a lookup has actually answered for what's typed — governs the recognised / not-found
+  // line, which mustn't claim "not a word" while a request is still in flight.
+  const resolved = !!lemmaForms || remote.q === typed
+
   // What the typed word settles. A recognised lemma fixes its part of speech and often more:
   // λόγος is a masculine noun, so neither is a question — those controls become plain text and
   // the rest of the dropdowns offer only the values the word actually occurs in.
-  const forms = lemmaForms?.get(normalizeGreek((term.lemma ?? '').trim())) ?? null
+  const forms = lemmaForms
+    ? lemmaForms.get(normalizeGreek(typed)) ?? null
+    : remote.q === typed ? remote.exact : null
 
   const posOptions = forms?.p ?? POS_FEATURES.map(f => f.value)
   // A part of speech the word can't be is STALE — it survived a word change and would search for
@@ -196,16 +229,28 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
     onChange({ ...term, features })
   }
 
+  // Settle the card against a word's attested forms: adopt the part of speech when the word leaves
+  // no doubt (a lemma attested as both noun and adjective keeps the choice open, just narrowed to
+  // those two), and re-prune either way, since changing the word can invalidate a form that was
+  // legal for the old one (a feminine left over after switching to λόγος).
+  const settleAgainst = (features: Record<string, string[]>, f: LemmaForms | null) => {
+    const found = f?.p.length === 1 ? f.p[0] : null
+    return prune(found && found !== pos ? { ...features, pos: [found] } : features, f)
+  }
+
   const applyLemma = (next: string) => {
     const nextForms = lemmaForms?.get(normalizeGreek(next.trim())) ?? null
-    // Only fill in the part of speech when the word leaves no doubt; a lemma attested as both
-    // (say) noun and adjective keeps the choice open, just narrowed to those two.
-    const found = nextForms?.p.length === 1 ? nextForms.p[0] : null
-    // Re-prune against the NEW word either way: changing the word can invalidate a form that
-    // was legal for the old one (a feminine left over after switching to λόγος).
-    const features = prune(found && found !== pos ? { ...term.features, pos: [found] } : term.features, nextForms)
-    onChange({ ...term, lemma: next, features })
+    onChange({ ...term, lemma: next, features: settleAgainst(term.features, nextForms) })
   }
+
+  // With no in-page table the lookup is async, so the settling happens when the answer lands
+  // rather than on the keystroke. Compared before writing so this can't loop.
+  useEffect(() => {
+    if (lemmaForms || !typed || remote.q !== typed || !remote.exact) return
+    const next = settleAgainst(term.features, remote.exact)
+    if (JSON.stringify(next) !== JSON.stringify(term.features)) onChange({ ...term, features: next })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [remote, typed, lemmaForms])
 
   const onLemmaChange = (e: ChangeEvent<HTMLInputElement>) => {
     const el = e.target
@@ -222,9 +267,10 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
   // corpus, which is what this field needs. Prefix match first (accent-insensitive, so `logos`
   // and `λογος` both find λόγος), then anything containing the string, each ranked by how often
   // the word occurs in the New Testament.
-  const suggestions = useMemo(() => {
-    const q = normalizeGreek((term.lemma ?? '').trim())
-    if (!lemmaForms || q.length < 2) return []
+  const suggestions = useMemo<Suggestion[]>(() => {
+    const q = normalizeGreek(typed)
+    if (!lemmaForms) return remote.q === typed ? remote.suggestions : []
+    if (q.length < 2) return []
     const starts: { key: string; e: LemmaForms }[] = []
     const contains: { key: string; e: LemmaForms }[] = []
     // forEach, not for..of — a Map iterator needs downlevelIteration under this tsconfig, which
@@ -278,13 +324,23 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
           by grammar ("any aorist participle"), which is the other half of what this tool is for. */}
       <div className="flex flex-wrap items-end gap-2">
         <div className="relative min-w-0 flex-1">
+          {/* The New Testament trees carry real lemmas, so its field means "any form of this
+              word". The Septuagint chapter files don't — their `lemma` is a verbatim copy of the
+              surface form — so there the field can only mean "this exact form", and says so
+              rather than promising something it can't do. Strong's numbers would give the LXX a
+              true lexeme, which is the proper fix. */}
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            <span className="text-gray-500">1 · Greek word</span>
-            <span className="font-normal normal-case tracking-normal text-gray-300"> — any form of it; leave blank for any word</span>
+            <span className="text-gray-500">1 · Greek word{lexemeIsExact ? ' form' : ''}</span>
+            <span className="font-normal normal-case tracking-normal text-gray-300">
+              {lexemeIsExact
+                ? ' — this exact form; leave blank for any word'
+                : ' — any form of it; leave blank for any word'}
+            </span>
           </label>
           <input ref={inputRef} value={term.lemma ?? ''} onChange={onLemmaChange} onKeyDown={onLemmaKeyDown}
             onFocus={() => { if (suggestions.length) setOpenSug(true) }}
-            autoComplete="off" spellCheck={false} placeholder="e.g. πνεῦμα — or leave blank"
+            autoComplete="off" spellCheck={false}
+            placeholder={lexemeIsExact ? 'e.g. σκότος — one exact form' : 'e.g. πνεῦμα — or leave blank'}
             className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekInput ? 'greek-text' : ''}`} />
 
           {/* Predictive lexemes — commonest first, with the gloss and how often the word occurs.
@@ -311,11 +367,11 @@ export function ConstructTermCard({ index, term, lemmaForms, onChange, onRemove 
               accent-insensitive, so a miss really is a spelling issue or a non-NT word. */}
           {forms ? (
             <p className="mt-1 text-[11px] text-brand-600">
-              Recognised — {forms.p.join(' or ')}
+              {lexemeIsExact ? 'Found' : 'Recognised'} — {forms.p.join(' or ')}
               {settled.length > 0 && <span className="text-gray-400"> · always {settled.join(', ')}</span>}
             </p>
-          ) : (term.lemma ?? '').trim().length >= 3 && lemmaForms ? (
-            <p className="mt-1 text-[11px] text-gray-400">Not a New Testament word — check the spelling, or set the form by hand</p>
+          ) : typed.length >= 3 && resolved ? (
+            <p className="mt-1 text-[11px] text-gray-400">Not found in this text — check the spelling, or set the form by hand</p>
           ) : null}
         </div>
         <button type="button" onClick={() => setGreekInput(v => !v)}

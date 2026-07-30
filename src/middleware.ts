@@ -8,6 +8,7 @@ const PUBLIC_API_PREFIXES = [
   '/api/search',
   '/api/lexicon',
   '/api/suggest',
+  '/api/construct', // Construct search's lexeme lookup — public read-only corpus data, like /api/suggest
   '/api/vocab-sentence', // "Identify the word" drill — public read-only Bible text, like /api/reader
   '/api/preview',
   '/api/profile/institutions', // institution list for the sign-up dropdown (public, non-sensitive)
