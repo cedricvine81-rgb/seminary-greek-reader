@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, ChevronDown, Library, Loader2, Plus, Search } from 'lucide-react'
+import { ArrowLeft, ChevronDown, Library, Lightbulb, Loader2, Plus, Search } from 'lucide-react'
 import { GreekSearchResults, type GreekHit } from './GreekSearchResults'
 import { ConstructTermCard } from './ConstructTermCard'
 import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import { ConstructAllResults, type CorpusBlock } from './ConstructAllResults'
 import { ConstructScopePicker, type ScopeEntry } from './ConstructScopePicker'
+import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
   termIsEmpty, toBiblicalHit, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
@@ -58,6 +59,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   // What each corpus can be limited to — books for the biblical texts, works for the prose ones.
   const [scopes, setScopes] = useState<Record<string, ScopeEntry[]>>({})
   const [showScope, setShowScope] = useState(false)
+  const [showExamples, setShowExamples] = useState(false)
 
   // Book display names (osisId → name) for both corpora, as on the other search pages.
   useEffect(() => {
@@ -253,6 +255,46 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         Find two or three words near each other by their grammar — e.g. an aorist participle within
         four words of a dative noun. Ticking more than one option in a box means <em>either</em>.
       </p>
+      {/* Worked constructions. The builder is powerful and a blank one teaches nothing — these open
+          it on something real, and each is an ordinary query that can then be edited or re-scoped.
+          Counts are the New Testament's, checked against the corpus, so a wrong result shows. */}
+      <div className="mb-3">
+        <button type="button" onClick={() => setShowExamples(v => !v)} aria-expanded={showExamples}
+          className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
+            showExamples ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
+          <Lightbulb size={13} /> Examples
+          <ChevronDown size={12} className={`transition-transform ${showExamples ? 'rotate-180' : ''}`} />
+        </button>
+        {showExamples && (
+          <div className="mt-2 max-h-[46vh] space-y-3 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
+            {CONSTRUCT_PRESETS.map(group => (
+              <div key={group.heading}>
+                <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400">{group.heading}</p>
+                <div className="space-y-1">
+                  {group.presets.map(preset => (
+                    <button key={preset.label} type="button"
+                      onClick={() => {
+                        const next = { ...preset.query, corpus: query.corpus } as ConstructQuery
+                        setQuery(next)
+                        setShowExamples(false)
+                        router.replace(`/search/construct?${encodeConstruct(next).toString()}`, { scroll: false })
+                        setRan(next)
+                      }}
+                      className="w-full rounded-lg border border-gray-100 px-2.5 py-1.5 text-left transition-colors hover:border-brand-200 hover:bg-brand-50">
+                      <span className="flex items-baseline justify-between gap-3">
+                        <span className="text-xs font-medium text-gray-800">{preset.label}</span>
+                        <span className="flex-none text-[10px] tabular-nums text-gray-400">{preset.approx.toLocaleString()} in the NT</span>
+                      </span>
+                      <span className="mt-0.5 block text-[11px] leading-snug text-gray-500">{preset.note}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {/* Limit to particular books or works. Not offered for "search all", where a book id would be
           ambiguous across corpora — the distribution is how you narrow there. */}
       {query.corpus !== CONSTRUCT_ALL && (scopes[query.corpus]?.length ?? 0) > 0 && (
@@ -348,12 +390,12 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           </button>
         )}
         <button type="button" onClick={runSearch} disabled={!runnable}
-          title={runnable ? undefined : 'Give at least two words something to match — a part of speech, a form, or a lexeme'}
+          title={runnable ? undefined : 'Give a word something to match — a part of speech, a form, or a lexeme'}
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400">
           <Search size={14} /> Search
         </button>
         {!runnable && (
-          <span className="text-xs text-gray-400">Set a part of speech, form, or lexeme on at least two words.</span>
+          <span className="text-xs text-gray-400">Set a part of speech, form, or lexeme on at least one word.</span>
         )}
       </div>
 

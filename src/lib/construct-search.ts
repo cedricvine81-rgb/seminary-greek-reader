@@ -241,7 +241,9 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   // Positive terms drive the positioning; negated ones only forbid.
   const positive = usable.filter(u => !u.term.negate)
   const negative = usable.filter(u => u.term.negate).map(u => compile(u.term))
-  if (positive.length < 2) return { hits: [], total: 0, truncated: false }
+  // One constrained word is a legitimate search — "every hortatory subjunctive" is a single term,
+  // and so is any "find all X". Distance and order simply don't apply.
+  if (positive.length < 1) return { hits: [], total: 0, truncated: false }
 
   const terms = positive.map(u => compile(u.term))
   // Agreement, resolved onto positions within the positive list.

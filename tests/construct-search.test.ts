@@ -50,8 +50,17 @@ describe('construct query encoding', () => {
 })
 
 describe('construct search', () => {
-  it('needs two constrained terms to return anything', () => {
-    expect(searchConstruct(q({ terms: [AOR_PTCP, { features: {} }] })).hits).toHaveLength(0)
+  it('runs on a single constrained term', () => {
+    // "Every hortatory subjunctive" is one word, not a construct — and still a search worth making.
+    const r = searchConstruct(q({ terms: [
+      { features: { pos: ['verb'], mood: ['subjunctive'], person: ['1 person'], number: ['plural'] } },
+      { features: {} },
+    ] }), BIG)
+    expect(r.total).toBeGreaterThan(50)
+  })
+
+  it('returns nothing when no word is constrained', () => {
+    expect(searchConstruct(q({ terms: [{ features: {} }, { features: {} }] })).hits).toHaveLength(0)
   })
 
   it('measures distance as a gap between words', () => {
@@ -228,12 +237,21 @@ describe('construct search', () => {
     expect(noConj.hits.every(h => plainIds.has(h.verseId))).toBe(true)
   })
 
-  it('does not treat a negated term as one of the two required words', () => {
-    const r = searchConstruct(q({ terms: [
+  it('never lets a negated term stand in for a searched word', () => {
+    // A forbidden word says where a match may NOT be, so it can't define a search on its own.
+    expect(searchConstruct(q({ terms: [
+      { features: {} },
+      { features: { pos: ['noun'] }, negate: true },
+    ] }), BIG).hits).toHaveLength(0)
+
+    // With a single positive word there is no "between" for it to apply to, so it is inert rather
+    // than silently narrowing — the same result as searching that word alone.
+    const withForbidden = searchConstruct(q({ terms: [
       { features: { pos: ['article'] } },
       { features: { pos: ['noun'] }, negate: true },
     ] }), BIG)
-    expect(r.hits).toHaveLength(0)
+    const alone = searchConstruct(q({ terms: [{ features: { pos: ['article'] } }] }), BIG)
+    expect(withForbidden.total).toBe(alone.total)
   })
 
   it('round-trips agreement and negation through the URL', () => {

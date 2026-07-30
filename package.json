@@ -14,7 +14,8 @@
     "db:studio": "prisma studio",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
-    "data:nestle1904": "node scripts/import-nestle1904.js"
+    "data:nestle1904": "node scripts/import-nestle1904.js",
+    "build:construct": "node scripts/build-construct-index.mjs"
   },
   "dependencies": {
     "@paddle/paddle-js": "^1.6.4",

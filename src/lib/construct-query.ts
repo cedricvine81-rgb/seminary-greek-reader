@@ -227,8 +227,9 @@ export function toBiblicalHit(v: ApiBiblicalHit) {
   }
 }
 
-// Is this query runnable? Needs at least two constrained terms that must APPEAR — a negated term
-// says where a match may not be, so it can't define the construct on its own.
+// Runnable once ONE word is constrained — a single term is a legitimate search ("every hortatory
+// subjunctive"), it just isn't a construct. A negated term says where a match may not be, so it
+// can't define the search on its own.
 export function queryIsRunnable(q: ConstructQuery): boolean {
-  return q.terms.filter(t => !termIsEmpty(t) && !t.negate).length >= 2
+  return q.terms.filter(t => !termIsEmpty(t) && !t.negate).length >= 1
 }
