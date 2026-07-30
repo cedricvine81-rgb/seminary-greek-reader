@@ -18,12 +18,13 @@ describe('construct presets', () => {
       'Uses of the participle',
       'The articular infinitive',
       'Prepositions and their cases',
+      'The predicate nominative',
       'Double accusatives',
       'Conditional sentences',
       'Result, correlation and comparison',
       'Other constructions',
     ])
-    expect(all.length).toBeGreaterThanOrEqual(40)
+    expect(all.length).toBeGreaterThanOrEqual(44)
     // The three conditional classes the New Testament actually uses, in order.
     const conditional = CONSTRUCT_PRESETS.find(g => g.heading === 'Conditional sentences')!
     expect(conditional.presets.map(p => p.label.split(' —')[0])).toEqual(['First class', 'Second class', 'Third class'])
@@ -47,6 +48,15 @@ describe('construct presets', () => {
     expect(count('διά + genitive')).toBeGreaterThan(count('διά + accusative'))     // through > because of
     expect(count('κατά + accusative')).toBeGreaterThan(count('κατά + genitive'))   // according to > against
     expect(count('μετά + genitive')).toBeGreaterThan(count('μετά + accusative'))   // with > after
+  })
+
+  it('covers all three predicate constructions', () => {
+    // Predicate adjective, predicate nominative and predicate accusative (object-complement) —
+    // the three places a predicate shows up, each in its own group.
+    const labels = all.map(([, p]) => p.label)
+    expect(labels.some(l => l.startsWith('Predicate —'))).toBe(true)              // adjective
+    expect(labels.some(l => l.startsWith('Predicate nominative'))).toBe(true)     // nominative
+    expect(labels.some(l => l.startsWith('Object-complement'))).toBe(true)        // accusative
   })
 
   it('anchors double accusatives on a verb that governs two objects', () => {

@@ -341,12 +341,42 @@ const RESULT: ConstructPreset[] = [
   },
 ]
 
+
+const nomNoun: ConstructTerm = { features: { pos: ['noun'], case: ['nominative'] } }
+const article: ConstructTerm = { features: { pos: ['article'] } }
+
+// The predicate nominative — the third of the predicate constructions, alongside the predicate
+// adjective (under the adjective) and the predicate accusative (the object-complement double
+// accusatives). Its interest is which of two nominatives is the SUBJECT, which is what the article
+// settles and what Colwell's rule is about.
+const PREDICATE_NOM: ConstructPreset[] = [
+  {
+    label: 'Predicate nominative — nominative, εἰμί, nominative',
+    note: 'Two nominatives joined by “to be”: ὁ λύχνος … ἐστιν ὁ ὀφθαλμός. Both are nominative, so word order and the article — not case — tell you which is the subject.',
+    approx: 172,
+    query: { ...base, within: 5, terms: [nomNoun, verb('εἰμί'), nomNoun] },
+  },
+  {
+    label: 'Colwell shape — nominative, εἰμί, article, nominative',
+    note: 'A preverbal predicate nominative with the articular subject after the verb: κύριός ἐστιν ὁ υἱὸς τοῦ ἀνθρώπου (Mark 2:28), ὁ ἀγρός ἐστιν ὁ κόσμος (Matt 13:38). NOTE the search cannot require the FIRST noun to be anarthrous — a search forbids a word between two others, never before them — so check each hit before treating it as Colwell’s rule.',
+    approx: 31,
+    query: { ...base, within: 4, terms: [nomNoun, verb('εἰμί'), article, nomNoun] },
+  },
+  {
+    label: 'Predicate nominative with γίνομαι',
+    note: '“Become” takes a predicate nominative too, and is worth seeing beside εἰμί.',
+    approx: 29,
+    query: { ...base, within: 5, terms: [verb('γίνομαι'), nomNoun, nomNoun] },
+  },
+]
+
 export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'Uses of the subjunctive', presets: SUBJUNCTIVE },
   { heading: 'Uses of the adjective', presets: ADJECTIVE },
   { heading: 'Uses of the participle', presets: PARTICIPLE },
   { heading: 'The articular infinitive', presets: INFINITIVE },
   { heading: 'Prepositions and their cases', presets: PREPOSITION },
+  { heading: 'The predicate nominative', presets: PREDICATE_NOM },
   { heading: 'Double accusatives', presets: DOUBLE_ACC },
   { heading: 'Conditional sentences', presets: CONDITIONAL },
   { heading: 'Result, correlation and comparison', presets: RESULT },
