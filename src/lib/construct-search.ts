@@ -20,20 +20,23 @@ interface BookIndex {
   w: TokenRow[]
   v: [number, number, number][]   // [chapter, verse, startIndex], ascending by startIndex
 }
-// Books per corpus, each in canonical order (the engine relies on that for reading-order hits).
-interface ConstructIndex { version: number; corpora: Record<string, Record<string, BookIndex>> }
+// Books of ONE corpus, in canonical order (the engine relies on that for reading-order hits).
+type CorpusIndex = Record<string, BookIndex>
 
-let _index: ConstructIndex | null = null
+// One file per corpus, loaded on demand and cached. Deliberately not one combined file: the prose
+// corpora come to ~2.4M words on top of the ~725k in the GNT and LXX, which parses to well over
+// 100 MB — far too much to pull in on a cold start just to search one text.
+const _corpora: Record<string, CorpusIndex> = {}
 
-function getIndex(): ConstructIndex {
-  if (_index) return _index
-  const file = path.join(process.cwd(), 'public', 'data', 'construct-index.json.gz')
+function getCorpus(corpus: string): CorpusIndex {
+  if (_corpora[corpus]) return _corpora[corpus]
+  const file = path.join(process.cwd(), 'public', 'data', 'construct', `${corpus}.json.gz`)
   try {
-    _index = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')) as ConstructIndex
+    _corpora[corpus] = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')) as CorpusIndex
   } catch {
-    _index = { version: 0, corpora: {} }
+    _corpora[corpus] = {}
   }
-  return _index!
+  return _corpora[corpus]
 }
 
 // ─── Term matching ────────────────────────────────────────────────────────────
@@ -189,12 +192,12 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
 
   const within = Math.max(1, query.within)
   const bookFilter = query.books?.length ? new Set(query.books) : null
-  const idx = getIndex()
+  const books = getCorpus(query.corpus)
   const hits: ConstructHit[] = []
   let truncated = false
 
   // Books are stored in canonical order, so iterating the object yields reading order.
-  for (const [osisId, book] of Object.entries(idx.corpora[query.corpus] ?? {})) {
+  for (const [osisId, book] of Object.entries(books)) {
     if (bookFilter && !bookFilter.has(osisId)) continue
 
     // Positions per term, ascending.

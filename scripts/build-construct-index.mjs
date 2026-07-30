@@ -168,6 +168,99 @@ function collectLXX(osis) {
   return out
 }
 
+// ─── Prose corpora ────────────────────────────────────────────────────────────
+// Josephus, Philo, the Apostolic Fathers, the pseudepigrapha, Eusebius, Justin and the
+// Greco-Roman texts carry Stanza-tagged `.morph.json` sidecars beside their chapter files
+// (scripts/build-texts-morph.py). Shape: { "<chapter>.<verse>": [[lemma, "POS, Case, …"], …] }.
+//
+// MACHINE-TAGGED, unlike the GNT (hand-tagged) and the LXX. Roughly 90-95% accurate, so a hit is
+// evidence rather than proof — the UI says so. The vocabulary is close to ours and maps cleanly.
+const PROSE_POS = {
+  Noun: 'noun', Verb: 'verb', Article: 'article', Adjective: 'adjective', Adverb: 'adverb',
+  Conjunction: 'conjunction', Preposition: 'preposition', Particle: 'particle',
+  Pronoun: 'pronoun', Interjection: 'interjection', Numeral: 'number',
+}
+const PROSE_TOKEN = {
+  // Person is spelled ordinally here.
+  '1st': '1 person', '2nd': '2 person', '3rd': '3 person',
+  Nominative: 'nominative', Genitive: 'genitive', Dative: 'dative', Accusative: 'accusative', Vocative: 'vocative',
+  Singular: 'singular', Plural: 'plural',
+  Masculine: 'masculine', Feminine: 'feminine', Neuter: 'neuter',
+  Present: 'present', Imperfect: 'imperfect', Future: 'future', Aorist: 'aorist',
+  Perfect: 'perfect', Pluperfect: 'pluperfect',
+  Active: 'active', Middle: 'middle', Passive: 'passive',
+  Indicative: 'indicative', Subjunctive: 'subjunctive', Imperative: 'imperative',
+  Optative: 'optative', Infinitive: 'infinitive', Participle: 'participle',
+  Comparative: 'comparative', Superlative: 'superlative',
+  // 'Dual' is dropped: 2,126 tokens in 2.4M (0.09%), and adding a dual to the vocabulary would put
+  // an option on every card that can never match in the New Testament or the Septuagint. Those
+  // words stay searchable by their other features.
+}
+
+// Corpora to index, and where their works live. The book key is the work's data path relative to
+// /data, minus the extension ('greco/aristotle-poetics') — the server maps that back to the entry
+// in prose-texts.ts (by dataUrl) for its display name and Texts-reader link, so this script needs
+// no knowledge of the registry's id conventions.
+const PROSE_CORPORA = {
+  josephus: 'josephus',
+  philo: 'philo',
+  'apostolic-fathers': 'apostolic-fathers',
+  pseudepigrapha: 'pseudepigrapha',
+  eusebius: 'eusebius',
+  justin: 'justin',
+  greco: 'greco',
+}
+
+function proseWorks(dir) {
+  const root = path.join(DATA, dir)
+  const out = []
+  const walk = d => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name)
+      if (e.isDirectory()) walk(p)
+      else if (e.name.endsWith('.morph.json')) {
+        const rel = path.relative(DATA, p).replace(/\.morph\.json$/, '')
+        out.push(rel)
+      }
+    }
+  }
+  walk(root)
+  return out.sort()
+}
+
+function collectProse(relPath) {
+  const morph = JSON.parse(fs.readFileSync(path.join(DATA, `${relPath}.morph.json`), 'utf8'))
+  const out = []
+  // Two key shapes in the wild: '<chapter>.<verse>' for most works, and a bare '<verse>' for
+  // Josephus, whose files ARE the chapter ('josephus/jewish-war/4.morph.json'). Getting this wrong
+  // silently indexes nothing, which is exactly what happened before the fallback existed.
+  const fileChapter = Number(path.basename(relPath))
+  for (const key of Object.keys(morph)) {
+    const parts = key.split('.').map(Number)
+    const chapter = parts.length > 1 ? parts[0] : fileChapter
+    const verse = parts.length > 1 ? parts[1] : parts[0]
+    if (!Number.isFinite(chapter) || !Number.isFinite(verse)) continue
+    const words = morph[key] ?? []
+    words.forEach((w, i) => {
+      if (!w) return
+      const toks = String(w[1] ?? '').split(',').map(t => t.trim()).filter(Boolean)
+      const mapped = []
+      const pos = PROSE_POS[toks[0]]
+      if (pos) mapped.push(pos)
+      for (const t of toks.slice(1)) { const v = PROSE_TOKEN[t]; if (v) mapped.push(v) }
+      if (!mapped.length && !w[0]) return
+      out.push({
+        chapter, verse, num: i + 1,
+        strongs: '',                       // the prose sidecars carry no Strong's numbers
+        lemmaRaw: w[0] ? String(w[0]).trim() : '',
+        gloss: '',
+        toks: mapped,
+      })
+    })
+  }
+  return out
+}
+
 // ─── Per-corpus build ─────────────────────────────────────────────────────────
 
 // `keyBy` decides what counts as "the same word" when building the lemma table:
@@ -185,8 +278,14 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
 
   for (const osis of osisIds) {
     let raw
-    try { raw = collect(osis) } catch { continue }     // book not present in this corpus's data
-    if (!raw.length) continue
+    try {
+      raw = collect(osis)
+    } catch (err) {
+      // Loudly: a silently skipped work is indistinguishable from one with no matches.
+      console.warn(`  ! ${name}: could not read ${osis} — ${err.message}`)
+      continue
+    }
+    if (!raw.length) { console.warn(`  ! ${name}: ${osis} yielded no tagged words`); continue }
     // The GNT tree walk can't be trusted for order (see header note 2), and sorting is harmless
     // for the LXX, so both corpora are sorted by their word ids.
     raw.sort((a, b) => a.chapter - b.chapter || a.verse - b.verse || a.num - b.num)
@@ -302,32 +401,46 @@ function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strong
 const corpora = [
   buildCorpus('GNT', booksMeta.gnt.map(b => b.osisId), collectGNT),
   buildCorpus('LXX', booksMeta.lxx.map(b => b.osisId), collectLXX, 'strongs'),
+  // Prose: machine-tagged, no Strong's numbers, so lexemes group by the sidecar's own lemma —
+  // which here IS a real lemma (Stanza emits one), unlike the LXX chapter files.
+  ...Object.entries(PROSE_CORPORA).map(([name, dir]) =>
+    buildCorpus(name, proseWorks(dir), collectProse)),
 ]
 
-const index = { version: 3, corpora: {} }
-for (const c of corpora) index.corpora[c.name] = c.books
-const json = JSON.stringify(index)
-const gz = zlib.gzipSync(Buffer.from(json, 'utf8'), { level: 9 })
-fs.writeFileSync(path.join(DATA, 'construct-index.json.gz'), gz)
-console.log(`index: ${(gz.length / 1e6).toFixed(2)} MB gz (${(json.length / 1e6).toFixed(1)} MB raw)`)
+// One file per corpus under public/data/construct/, loaded on demand by the engine. The prose
+// corpora are far too large to sit in one combined index — see getCorpus in construct-search.ts.
+const outDir = path.join(DATA, 'construct')
+fs.mkdirSync(outDir, { recursive: true })
+let totalGz = 0
 for (const c of corpora) {
+  const json = JSON.stringify(c.books)
+  const gz = zlib.gzipSync(Buffer.from(json, 'utf8'), { level: 9 })
+  fs.writeFileSync(path.join(outDir, `${c.name}.json.gz`), gz)
+  totalGz += gz.length
   const verses = Object.values(c.books).reduce((n, b) => n + b.v.length, 0)
-  console.log(`  ${c.name}: ${Object.keys(c.books).length} books · ${verses} verses · ${c.wordCount} words · ${c.noPos} without a part of speech`)
+  console.log(`  ${c.name.padEnd(18)} ${String(Object.keys(c.books).length).padStart(3)} works · ${String(verses).padStart(6)} verses · ${String(c.wordCount).padStart(7)} words · ${(gz.length / 1e6).toFixed(2)} MB gz${c.noPos ? ` · ${c.noPos} untagged` : ''}`)
 }
+console.log(`index total: ${(totalGz / 1e6).toFixed(2)} MB gz across ${corpora.length} files`)
+// Superseded by the per-corpus files.
+fs.rmSync(path.join(DATA, 'construct-index.json.gz'), { force: true })
 
 // Both lemma tables ship to the browser, so the word field responds per keystroke with no
 // request. /api/construct/lemmas serves the same data for anything too large to ship that way —
 // it is what the LXX needed before Strong's grouping shrank it, and what the prose corpora will
 // need in Phase 3.
 for (const c of corpora) {
-  const keyBy = c.name === 'GNT' ? 'lemma' : 'strongs'
+  const keyBy = c.name === 'LXX' ? 'strongs' : 'lemma'
   const { table, singlePos, fixedGender, lexGloss, noDictionaryForm } = lemmaTable(c.stats, keyBy)
   const n = Object.keys(table).length
-  // Both tables are small enough to hold in the page now: grouping the LXX by Strong's collapsed
-  // 44,249 surface forms into ~4,000 real lexemes, taking it from 8 MB to ~130 KB.
+  // The biblical tables are small enough to hold in the page, which keeps those word fields
+  // instant: grouping the LXX by Strong's collapsed 44,249 surface forms into ~4,000 lexemes.
+  // The prose corpora are another matter — Greco-Roman alone has 43,890 lexemes / 6.9 MB — so
+  // theirs ship gzipped and are read by /api/construct/lemmas instead.
   const stem = `lemma-forms-${c.name.toLowerCase()}`
-  const written = path.join(DATA, `${stem}.json`)
-  fs.writeFileSync(written, JSON.stringify(table))
+  const inPage = c.name === 'GNT' || c.name === 'LXX'
+  const written = path.join(DATA, inPage ? `${stem}.json` : `${stem}.json.gz`)
+  const body = JSON.stringify(table)
+  fs.writeFileSync(written, inPage ? body : zlib.gzipSync(Buffer.from(body, 'utf8'), { level: 9 }))
   console.log(`${path.basename(written)}: ${n} lexemes (by ${keyBy}) · ${singlePos} single-pos · ${fixedGender} fixed gender · ${lexGloss} lexicon glosses${noDictionaryForm ? ` · ${noDictionaryForm} without a dictionary form` : ''} · ${(fs.statSync(written).size / 1024).toFixed(0)} KB`)
 }
 // Superseded by the per-corpus tables above.
