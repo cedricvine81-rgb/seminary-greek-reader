@@ -2,14 +2,16 @@
 // Server-only: reads public/data/construct-index.json.gz (scripts/build-construct-index.mjs),
 // a flat per-book token stream with verse offsets, cached in-process like the other indexes.
 //
-// GNT only in this pass. The LXX chapter files already carry full morphology, so a second
-// index can be added without touching this file's matching logic.
+// Covers both corpora (New Testament and Septuagint), one per search — see ConstructCorpus.
+// Beyond positioning, a term can require AGREEMENT with another word in case/number/gender, or be
+// NEGATED so the construct only matches where no such word stands between the others.
 
 import fs from 'fs'
 import path from 'path'
 import zlib from 'zlib'
 import { normalizeGreek } from './greek-utils'
 import { termIsEmpty, type ConstructQuery, type ConstructTerm } from './construct-query'
+import { CATEGORY_OF_TOKEN } from './morph-features'
 
 // [strongs, lemmaNorm, parsingLower] — the parsing is a ', '-joined token list, e.g.
 // 'verb, aorist, active, participle, nominative, masculine, singular'.
@@ -77,7 +79,15 @@ function tokenMatches(tok: TokenRow, t: CompiledTerm): boolean {
 // boundary, and a hit is filed under the verse of its FIRST word, so a wider-but-still-legal
 // pairing can land in an earlier verse than a tighter one. Missing those loses whole verses.
 //
-// Returns the matched token positions for each hit (used to highlight, and to locate the verse).
+// Returns one entry per match, holding each TERM's position in term order (not sorted) — agreement
+// has to know which word is which. Use spanOf() for the extent.
+
+// Lowest and highest position in a match.
+function spanOf(group: number[]): [number, number] {
+  let lo = group[0], hi = group[0]
+  for (const p of group) { if (p < lo) lo = p; if (p > hi) hi = p }
+  return [lo, hi]
+}
 
 // Index of the first entry in `arr` (ascending) that is >= `min`.
 function lowerBound(arr: number[], min: number): number {
@@ -98,7 +108,7 @@ function findMatches(positions: number[][], within: number, ordered: boolean): n
   // rather than rescanning from the front — with two very common parts of speech (article +
   // noun) a naive scan is O(n·m).
   const walk = (termIdx: number, mn: number, mx: number) => {
-    if (termIdx === n) { hits.push(chosen.slice().sort((a, b) => a - b)); return }
+    if (termIdx === n) { hits.push(chosen.slice()); return }   // slot order, NOT sorted
     const list = positions[termIdx]
     // Any candidate must keep the whole span within `within`; ordered also forces it past
     // the previous pick.
@@ -145,9 +155,37 @@ function verseAt(book: BookIndex, pos: number): [number, number, number] {
   return book.v[best]
 }
 
+// The value a token carries in a category ('genitive' for 'case'), or null if it has none.
+function valueIn(tok: TokenRow, category: string): string | null {
+  const parsing = tok[2]
+  if (!parsing) return null
+  for (const t of parsing.split(', ')) if (CATEGORY_OF_TOKEN.get(t) === category) return t
+  return null
+}
+
 export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; truncated: boolean } {
-  const terms = query.terms.filter(t => !termIsEmpty(t)).map(compile)
-  if (terms.length < 2) return { hits: [], truncated: false }
+  // Keep each usable term's ORIGINAL index: `agreeWith` refers to "Word N" as the user numbered
+  // them, which is not the position in this filtered list.
+  const usable = query.terms
+    .map((t, i) => ({ term: t, index: i }))
+    .filter(({ term }) => !termIsEmpty(term))
+  // Positive terms drive the positioning; negated ones only forbid.
+  const positive = usable.filter(u => !u.term.negate)
+  const negative = usable.filter(u => u.term.negate).map(u => compile(u.term))
+  if (positive.length < 2) return { hits: [], truncated: false }
+
+  const terms = positive.map(u => compile(u.term))
+  // Agreement, resolved onto positions within the positive list.
+  const slotOfOriginal = new Map(positive.map((u, slot) => [u.index, slot]))
+  const agreements = positive
+    .map((u, slot) => {
+      const other = u.term.agreeWith !== undefined ? slotOfOriginal.get(u.term.agreeWith) : undefined
+      const cats = (u.term.agreeOn ?? []).filter(Boolean)
+      // A word can't agree with itself, and agreement with a word that isn't in play is dropped
+      // rather than silently failing every verse.
+      return other !== undefined && other !== slot && cats.length ? { slot, other, cats } : null
+    })
+    .filter((a): a is { slot: number; other: number; cats: string[] } => !!a)
 
   const within = Math.max(1, query.within)
   const bookFilter = query.books?.length ? new Set(query.books) : null
@@ -167,14 +205,43 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
     }
     if (positions.some(p => p.length === 0)) continue
 
-    const raw = findMatches(positions, within, query.ordered)
+    let raw = findMatches(positions, within, query.ordered)
+
+    // Agreement: both words must carry a value in the category and the values must match. A word
+    // with no value there (an indeclinable, a finite verb asked for case) cannot agree, so it
+    // fails rather than passing by omission.
+    if (agreements.length) {
+      raw = raw.filter(group => {
+        const bySlot = group      // group[i] is term i's position
+        return agreements.every(({ slot, other, cats }) =>
+          cats.every(cat => {
+            const a = valueIn(book.w[bySlot[slot]], cat)
+            const b = valueIn(book.w[bySlot[other]], cat)
+            return a !== null && b !== null && a === b
+          }))
+      })
+    }
+
+    // Negation: nothing matching a forbidden term may stand between the matched words. The span is
+    // inclusive of the endpoints, but the endpoints are themselves matched words, so in practice
+    // this reads as "with no such word in between".
+    if (negative.length) {
+      raw = raw.filter(group => {
+        const [lo, hi] = spanOf(group)
+        for (let i = lo + 1; i < hi; i++) {
+          for (const neg of negative) if (tokenMatches(book.w[i], neg)) return false
+        }
+        return true
+      })
+    }
 
     // Collapse to one hit per verse (the verse of the first matched word), unioning the
     // matched lemmas so every participating word in that verse gets highlighted.
     const perVerse = new Map<string, ConstructHit>()
     for (const group of raw) {
-      const [ch, vs] = verseAt(book, group[0])
-      const last = verseAt(book, group[group.length - 1])
+      const [lo, hi] = spanOf(group)
+      const [ch, vs] = verseAt(book, lo)
+      const last = verseAt(book, hi)
       const crossesVerse = last[0] !== ch || last[1] !== vs
       if (query.sameVerse && crossesVerse) continue
       const verseId = `${osisId}.${ch}.${vs}`

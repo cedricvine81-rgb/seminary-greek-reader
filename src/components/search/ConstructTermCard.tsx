@@ -4,7 +4,7 @@
 // document-level key listener below relies on.
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { ChevronDown, Trash2, Check } from 'lucide-react'
-import { categoriesFor, FEATURE_LABEL, POS_FEATURES, type MorphGroup } from '@/lib/morph-features'
+import { AGREEMENT_CATEGORIES, categoriesFor, FEATURE_LABEL, POS_FEATURES, type MorphGroup } from '@/lib/morph-features'
 import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
 import { normalizeGreek } from '@/lib/greek-utils'
 import type { ConstructTerm, LemmaForms } from '@/lib/construct-query'
@@ -113,8 +113,10 @@ function Fixed({ label, value }: { label: string; value: string }) {
 
 interface Suggestion { display: string; gloss: string; count: number; pos: string }
 
-export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, onRemove }: {
+export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, onChange, onRemove }: {
   index: number
+  // How many words the construct has, so a card knows which others it could agree with.
+  termCount: number
   term: ConstructTerm
   corpus: string
   // normalized lemma → the forms that lemma is attested in. Present for the New Testament, whose
@@ -125,6 +127,19 @@ export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, o
   onChange: (t: ConstructTerm) => void
   onRemove?: () => void
 }) {
+  // Agreement: which other word, and in which categories. Defaults to the first other word.
+  const otherWords = Array.from({ length: termCount }, (_, i) => i).filter(i => i !== index)
+  const agreeOn = (term.agreeOn ?? []).filter(c => (AGREEMENT_CATEGORIES as readonly string[]).includes(c))
+  const agreeWith = term.agreeWith !== undefined && otherWords.includes(term.agreeWith)
+    ? term.agreeWith
+    : otherWords[0] ?? 0
+  const setAgreement = (cats: string[], withIdx: number) => {
+    const next = { ...term }
+    if (cats.length) { next.agreeOn = cats; next.agreeWith = withIdx }
+    else { delete next.agreeOn; delete next.agreeWith }
+    onChange(next)
+  }
+
   const [greekInput, setGreekInput] = useState(true)
   const [openSug, setOpenSug] = useState(false)
   const [activeSug, setActiveSug] = useState(-1)
@@ -436,6 +451,55 @@ export function ConstructTermCard({ index, term, corpus, lemmaForms, onChange, o
           )
         })}
       </div>
+
+      {/* Step 3 — HOW IT RELATES to the other words: whether it must be there at all, and whether
+          it has to agree. Agreement is the point of the whole feature for teaching — attributive
+          vs predicate position, Granville Sharp — so it sits on the card, not behind a menu. */}
+      {termCount > 1 && (
+        <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-gray-100 pt-2.5">
+          <span className="flex items-center gap-2 text-xs text-gray-600">
+            {([[false, 'must appear'], [true, 'must NOT appear']] as const).map(([val, label]) => (
+              <label key={label} className="flex cursor-pointer items-center gap-1"
+                title={val ? 'Match only where no such word stands between the others' : undefined}>
+                <input type="radio" name={`negate-${index}`} checked={!!term.negate === val}
+                  onChange={() => onChange({ ...term, negate: val || undefined })}
+                  className="h-3 w-3 accent-brand-600" />
+                {label}
+              </label>
+            ))}
+          </span>
+
+          {/* A forbidden word isn't positioned, so it has nothing to agree with. */}
+          {!term.negate && (
+            <span className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
+              <label className="flex cursor-pointer items-center gap-1">
+                <input type="checkbox" checked={agreeOn.length > 0}
+                  onChange={e => setAgreement(e.target.checked ? [...AGREEMENT_CATEGORIES] : [], agreeWith)}
+                  className="h-3 w-3 accent-brand-600" />
+                agrees with
+              </label>
+              {otherWords.length === 1 ? (
+                <span className="text-gray-500">Word {otherWords[0] + 1}</span>
+              ) : (
+                <select value={agreeWith} onChange={e => setAgreement(agreeOn, Number(e.target.value))}
+                  className="rounded border border-gray-300 bg-surface px-1 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                  {otherWords.map(i => <option key={i} value={i}>Word {i + 1}</option>)}
+                </select>
+              )}
+              <span className="text-gray-400">in</span>
+              {AGREEMENT_CATEGORIES.map(cat => (
+                <label key={cat} className="flex cursor-pointer items-center gap-1">
+                  <input type="checkbox" checked={agreeOn.includes(cat)}
+                    onChange={e => setAgreement(
+                      e.target.checked ? [...agreeOn, cat] : agreeOn.filter(c => c !== cat), agreeWith)}
+                    className="h-3 w-3 accent-brand-600" />
+                  {cat}
+                </label>
+              ))}
+            </span>
+          )}
+        </div>
+      )}
     </div>
   )
 }

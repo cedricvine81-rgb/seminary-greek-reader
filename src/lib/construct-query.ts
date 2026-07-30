@@ -15,6 +15,15 @@ export interface ConstructTerm {
   // would only ever find one spelling; its numbers group the inflected forms properly. Set from
   // the lemma table, so `lemma` stays what the user typed and this is how it's actually matched.
   strongs?: string[]
+  // Require this word to AGREE with another (by its index in `terms`) in the given categories —
+  // 'case', 'number', 'gender'. This is what expresses adjectival concord, and with it the
+  // queries that actually matter for teaching: attributive vs predicate position, Granville
+  // Sharp. Both words must carry a value in the category and the values must be equal.
+  agreeWith?: number
+  agreeOn?: string[]
+  // Invert the term: the construct matches only where NO such word appears between the others.
+  // "An article, then a noun, with no intervening article" — the Colwell/Sharp shape.
+  negate?: boolean
 }
 
 // Which Greek text to search. One at a time: results render through GreekSearchResults, which
@@ -81,9 +90,28 @@ function encodeTerm(t: ConstructTerm): string {
   return groups.join(':')
     + (t.lemma ? `@${t.lemma}` : '')
     + (t.strongs?.length ? `#${t.strongs.join('.')}` : '')
+    + (t.agreeWith !== undefined && t.agreeOn?.length ? `=${t.agreeWith}.${t.agreeOn.join('|')}` : '')
+    + (t.negate ? '!' : '')
 }
 
 function decodeTerm(s: string): ConstructTerm {
+  // Trailing '!' negates the term.
+  const negate = s.endsWith('!')
+  if (negate) s = s.slice(0, -1)
+  // Agreement comes last, as '=<termIndex>.<category>|<category>'.
+  const eq = s.indexOf('=')
+  let agreeWith: number | undefined
+  let agreeOn: string[] = []
+  if (eq >= 0) {
+    const spec = s.slice(eq + 1)
+    s = s.slice(0, eq)
+    const dot = spec.indexOf('.')
+    const idx = Number(dot >= 0 ? spec.slice(0, dot) : spec)
+    if (Number.isInteger(idx) && idx >= 0) {
+      agreeWith = idx
+      agreeOn = (dot >= 0 ? spec.slice(dot + 1) : '').split('|').map(x => x.trim()).filter(Boolean)
+    }
+  }
   // Strong's numbers come after the lemma, as '#1234.5678'.
   const hash = s.indexOf('#')
   const strongs = hash >= 0 ? s.slice(hash + 1).split('.').map(x => x.trim()).filter(Boolean) : []
@@ -102,6 +130,8 @@ function decodeTerm(s: string): ConstructTerm {
   const term: ConstructTerm = { features }
   if (lemma) term.lemma = lemma
   if (strongs.length) term.strongs = strongs
+  if (agreeWith !== undefined && agreeOn.length) { term.agreeWith = agreeWith; term.agreeOn = agreeOn }
+  if (negate) term.negate = true
   return term
 }
 
@@ -135,8 +165,8 @@ export function decodeConstruct(params: RawParams): ConstructQuery {
   }
 }
 
-// Is this query runnable? Needs at least two constrained terms.
+// Is this query runnable? Needs at least two constrained terms that must APPEAR — a negated term
+// says where a match may not be, so it can't define the construct on its own.
 export function queryIsRunnable(q: ConstructQuery): boolean {
-  const filled = q.terms.filter(t => !termIsEmpty(t))
-  return filled.length >= 2
+  return q.terms.filter(t => !termIsEmpty(t) && !t.negate).length >= 2
 }

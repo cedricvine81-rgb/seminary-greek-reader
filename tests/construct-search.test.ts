@@ -162,6 +162,62 @@ describe('construct search', () => {
     expect(decodeConstruct(Object.fromEntries(encodeConstruct(original).entries()))).toEqual(original)
   })
 
+  it('requires agreement in the named categories', () => {
+    const ART = { features: { pos: ['article'] } }
+    const ADJ = { features: { pos: ['adjective'] } }
+    const NOUN = { features: { pos: ['noun'] } }
+    const loose = searchConstruct(q({ within: 3, ordered: true, terms: [ART, ADJ, NOUN] }), BIG)
+    const concord = searchConstruct(q({ within: 3, ordered: true, terms: [
+      ART,
+      { ...ADJ, agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+      { ...NOUN, agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+    ] }), BIG)
+    // Attributive position: τὰ καλὰ ἔργα. A strict narrowing of the unconstrained search.
+    expect(concord.hits.length).toBeGreaterThan(0)
+    expect(concord.hits.length).toBeLessThan(loose.hits.length)
+    const looseIds = new Set(loose.hits.map(h => h.verseId))
+    expect(concord.hits.every(h => looseIds.has(h.verseId))).toBe(true)
+  })
+
+  it('fails agreement rather than passing when a word has no value in the category', () => {
+    // A conjunction has no case, so "agreeing in case" is unsatisfiable — it must return nothing
+    // instead of quietly ignoring the constraint.
+    const r = searchConstruct(q({ within: 4, terms: [
+      { features: { pos: ['verb'], mood: ['indicative'] } },
+      { features: { pos: ['conjunction'] }, agreeWith: 0, agreeOn: ['case'] },
+    ] }), BIG)
+    expect(r.hits).toHaveLength(0)
+  })
+
+  it('excludes matches with a forbidden word in between', () => {
+    const NOM = { features: { pos: ['noun'], case: ['nominative'] } }
+    const plain = searchConstruct(q({ within: 6, ordered: true, terms: [NOM, NOM] }), BIG)
+    const noConj = searchConstruct(q({ within: 6, ordered: true, terms: [
+      NOM, NOM, { features: { pos: ['conjunction'] }, negate: true },
+    ] }), BIG)
+    // καί between two nominatives is very common, so this must bite hard, and only ever narrow.
+    expect(noConj.hits.length).toBeLessThan(plain.hits.length)
+    const plainIds = new Set(plain.hits.map(h => h.verseId))
+    expect(noConj.hits.every(h => plainIds.has(h.verseId))).toBe(true)
+  })
+
+  it('does not treat a negated term as one of the two required words', () => {
+    const r = searchConstruct(q({ terms: [
+      { features: { pos: ['article'] } },
+      { features: { pos: ['noun'] }, negate: true },
+    ] }), BIG)
+    expect(r.hits).toHaveLength(0)
+  })
+
+  it('round-trips agreement and negation through the URL', () => {
+    const original = q({ terms: [
+      { features: { pos: ['article'] } },
+      { features: { pos: ['adjective'] }, agreeWith: 0, agreeOn: ['case', 'gender'] },
+      { features: { pos: ['article'] }, negate: true },
+    ] })
+    expect(decodeConstruct(Object.fromEntries(encodeConstruct(original).entries()))).toEqual(original)
+  })
+
   it('honours a book scope and caps results', () => {
     const scoped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN], books: ['Phlm', 'Jude'] }), BIG)
     expect(scoped.hits.every(h => h.bookId === 'Phlm' || h.bookId === 'Jude')).toBe(true)

@@ -43,6 +43,18 @@ export const ALL_MORPH_FEATURES = new Set(MORPH_GROUPS.flatMap(g => g.features.m
 
 export const MORPH_GROUP_BY_KEY = new Map(MORPH_GROUPS.map(g => [g.key, g]))
 
+// parsing token → the category it belongs to ('genitive' → 'case'), so a matched word's parsing
+// can be read back apart. Agreement checking needs this: to know whether two words share a case,
+// you have to pull each one's case out of its parsing string.
+export const CATEGORY_OF_TOKEN = new Map(
+  MORPH_GROUPS.flatMap(g => g.features.map(f => [f.value, g.key] as const)),
+)
+
+// The categories two words can be required to agree in. Person is deliberately absent: agreement
+// in Greek is adjectival concord, and a finite verb agreeing with its subject in person is a
+// different relation than the one this expresses.
+export const AGREEMENT_CATEGORIES = ['case', 'number', 'gender'] as const
+
 // value → human label, for criteria chips and dropdown buttons.
 export const FEATURE_LABEL = new Map(MORPH_GROUPS.flatMap(g => g.features.map(f => [f.value, f.label] as const)))
 

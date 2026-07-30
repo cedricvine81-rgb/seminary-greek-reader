@@ -112,13 +112,25 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   // Plain-language echo of what was searched, above the results.
   const summary = useMemo(() => {
     if (!ran) return ''
-    const parts = ran.terms.filter(t => !termIsEmpty(t)).map(t => {
+    const describe = (t: ConstructTerm) => {
       const feats = Object.values(t.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
       const desc = feats.length ? feats.join(' ') : 'any word'
-      return t.lemma ? `${desc} (${t.lemma})` : desc
-    })
+      const withLemma = t.lemma ? `${desc} (${t.lemma})` : desc
+      // Agreement is part of what the construct MEANS, so it belongs in the echo, not just the form.
+      const agreeing = t.agreeOn?.length && t.agreeWith !== undefined
+        ? `${withLemma} agreeing with word ${t.agreeWith + 1} in ${t.agreeOn.join('/')}`
+        : withLemma
+      return agreeing
+    }
+    const used = ran.terms.filter(t => !termIsEmpty(t))
+    const positive = used.filter(t => !t.negate)
+    const forbidden = used.filter(t => t.negate)
     const join = ran.ordered ? ' then ' : ' + '
-    return `${parts.join(join)} · within ${ran.within} word${ran.within === 1 ? '' : 's'}${ran.ordered ? ', in order' : ''}${ran.sameVerse ? ', same verse' : ''}`
+    const head = positive.map(describe).join(join)
+    const tail = forbidden.length
+      ? `, with no ${forbidden.map(describe).join(' or ')} in between`
+      : ''
+    return `${head} · within ${ran.within} word${ran.within === 1 ? '' : 's'}${ran.ordered ? ', in order' : ''}${ran.sameVerse ? ', same verse' : ''}${tail}`
   }, [ran])
 
   const crossCount = hits?.filter(h => h.crossesVerse).length ?? 0
@@ -163,7 +175,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         {query.terms.map((t, i) => (
           <div key={i}>
             <ConstructTermCard
-              index={i} term={t} corpus={query.corpus}
+              index={i} termCount={query.terms.length} term={t} corpus={query.corpus}
               lemmaForms={lemmaForms}
               onChange={nt => setTerm(i, nt)}
               onRemove={query.terms.length > 2 ? () => removeTerm(i) : undefined}
