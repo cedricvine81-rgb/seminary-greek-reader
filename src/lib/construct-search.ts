@@ -28,27 +28,54 @@ interface BookIndex {
 // Books of ONE corpus, in canonical order (the engine relies on that for reading-order hits).
 type CorpusIndex = Record<string, BookIndex>
 
-// One file per corpus, loaded on demand and cached. Deliberately not one combined file: the prose
-// corpora come to ~2.4M words on top of the ~725k in the GNT and LXX, which parses to well over
-// 100 MB — far too much to pull in on a cold start just to search one text.
-const _corpora: Record<string, CorpusIndex> = {}
+// One file per corpus, loaded on demand and kept in a size-bounded cache. Deliberately not one
+// combined file: the nine corpora come to 160 MB of parsed JSON, far too much to pull in on a cold
+// start just to search one text.
+//
+// The cache is bounded rather than unlimited, and least-recently-used rather than cleared: measured
+// in production, RELEASING each corpus after use made "search all" re-parse all nine on every
+// request — a flat 6.8-7.6s, uncomfortably near Vercel's function limit — while keeping all nine
+// costs 557 MB of heap. Holding the ~2 largest covers the common cases (repeat searches, and the
+// expensive tail of a cross-corpus search) inside a budget that leaves room to work in.
+// Budgeted in JSON TEXT, which is what we can measure cheaply — the parsed object graph runs about
+// 3.5x that (160 MB of text became 557 MB of heap), so this holds roughly one large corpus plus a
+// small one, ~150 MB of actual heap. Cross-corpus searches no longer rely on this: they run one
+// request per corpus, so an instance normally touches one.
+const CACHE_BUDGET_BYTES = 40 * 1024 * 1024
 
-// Drop a corpus's index. Searching every corpus at once would otherwise hold all nine — measured
-// at 557 MB of heap — so that path loads, scans and releases one at a time, trading a re-parse on
-// the next search for a peak of roughly one corpus.
-function releaseCorpus(corpus: string): void {
-  delete _corpora[corpus]
+interface CachedCorpus { index: CorpusIndex; bytes: number; used: number }
+const _corpora = new Map<string, CachedCorpus>()
+let _clock = 0
+
+function evictTo(budget: number): void {
+  let total = 0
+  _corpora.forEach(c => { total += c.bytes })
+  while (total > budget && _corpora.size > 1) {
+    let oldest: string | null = null
+    let oldestUsed = Infinity
+    _corpora.forEach((c, k) => { if (c.used < oldestUsed) { oldestUsed = c.used; oldest = k } })
+    if (!oldest) break
+    total -= _corpora.get(oldest)!.bytes
+    _corpora.delete(oldest)
+  }
 }
 
 function getCorpus(corpus: string): CorpusIndex {
-  if (_corpora[corpus]) return _corpora[corpus]
+  const hit = _corpora.get(corpus)
+  if (hit) { hit.used = ++_clock; return hit.index }
   const file = path.join(process.cwd(), 'public', 'data', 'construct', `${corpus}.json.gz`)
+  let index: CorpusIndex = {}
+  let bytes = 0
   try {
-    _corpora[corpus] = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')) as CorpusIndex
+    const raw = zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')
+    bytes = raw.length
+    index = JSON.parse(raw) as CorpusIndex
   } catch {
-    _corpora[corpus] = {}
+    index = {}
   }
-  return _corpora[corpus]
+  _corpora.set(corpus, { index, bytes, used: ++_clock })
+  evictTo(CACHE_BUDGET_BYTES)
+  return index
 }
 
 // ─── Term matching ────────────────────────────────────────────────────────────
@@ -345,7 +372,6 @@ export function searchConstructAll(query: ConstructQuery, sampleLimit = 5): { ta
     const { hits, total: count } = searchConstruct({ ...query, corpus: c.id }, sampleLimit)
     tallies.push({ corpus: c.id, count, hits })
     total += count
-    releaseCorpus(c.id)
   }
   return { tallies, total }
 }

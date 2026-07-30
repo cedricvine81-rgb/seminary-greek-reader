@@ -87,6 +87,40 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
     if (!ran) return
     let live = true
     setLoading(true)
+    // "All Greek texts" runs ONE REQUEST PER CORPUS rather than one that walks all nine. Measured in
+    // production, the single-request version took a flat 6.8-7.6s — it has to JSON.parse 160 MB of
+    // index every time — which sits uncomfortably close to Vercel's function limit. Nine parallel
+    // requests spread that across instances, each parsing one corpus, and rows appear as they land.
+    if (ran.corpus === CONSTRUCT_ALL) {
+      const blocks: CorpusBlock[] = []
+      let done = 0
+      CONSTRUCT_CORPORA.forEach(c => {
+        const p = encodeConstruct({ ...ran, corpus: c.id })
+        p.set('type', 'construct')
+        p.set('limit', '5')
+        fetch(`/api/search?${p.toString()}`)
+          .then(r => (r.ok ? r.json() : null))
+          .then((d: any) => {
+            if (!live) return
+            blocks.push({
+              corpus: c.id,
+              count: d?.total ?? 0,
+              prose: !!d?.prose,
+              results: d?.prose ? (d.results ?? []) : (d?.results ?? []).map(toBiblicalHit),
+            })
+            // Show the table as each corpus reports, in the canonical order rather than arrival.
+            const ordered = CONSTRUCT_CORPORA
+              .map(x => blocks.find(b => b.corpus === x.id))
+              .filter((b): b is CorpusBlock => !!b)
+            setAllBlocks({ blocks: ordered, total: ordered.reduce((n, b) => n + b.count, 0) })
+          })
+          .catch(() => {})
+          .finally(() => { if (live && ++done === CONSTRUCT_CORPORA.length) setLoading(false) })
+      })
+      setHits(null); setProseHits(null); setTruncated(false)
+      return () => { live = false }
+    }
+
     const params = encodeConstruct(ran)
     params.set('type', 'construct')
     fetch(`/api/search?${params.toString()}`)

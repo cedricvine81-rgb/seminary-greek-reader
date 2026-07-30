@@ -73,7 +73,8 @@ export async function GET(req: NextRequest) {
           }),
         })
       }
-      const { hits, total, truncated } = searchConstruct(query)
+      const limit = Math.min(Math.max(Number(searchParams.get('limit')) || 300, 1), 300)
+      const { hits, total, truncated } = searchConstruct(query, limit)
       // Prose hits aren't in the biblical search index, and carry their own name and Texts link.
       if (isProseCorpus(query.corpus)) {
         return NextResponse.json({
