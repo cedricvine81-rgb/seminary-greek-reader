@@ -270,6 +270,77 @@ const OTHER: ConstructPreset[] = [
   },
 ]
 
+
+const indic = (extra: Record<string, string[]> = {}): ConstructTerm =>
+  ({ features: { pos: ['verb'], mood: ['indicative'], ...extra } })
+
+// The conditional sentences, by class. The protasis is what a search can see: the conjunction plus
+// the mood (and, for the second class, a secondary tense with ἄν in the apodosis). The FOURTH class
+// (εἰ + optative) is left out because the New Testament has no complete example of it.
+const CONDITIONAL: ConstructPreset[] = [
+  {
+    label: 'First class — εἰ + indicative',
+    note: 'Assumed true for the sake of the argument: “if — and let’s say it is”. Not a statement that the condition IS true, which is the usual mistake.',
+    approx: 270,
+    query: { ...base, within: 4, terms: [word('εἰ'), indic()] },
+  },
+  {
+    label: 'Second class — εἰ + past indicative, with ἄν',
+    note: 'Contrary to fact: “if it were… (but it isn’t)”. A secondary tense in the protasis and ἄν in the apodosis — the ἄν is what separates it from the first class.',
+    approx: 33,
+    query: { ...base, within: 12, terms: [
+      word('εἰ'), indic({ tense: ['imperfect', 'aorist', 'pluperfect'] }), word('ἄν'),
+    ] },
+  },
+  {
+    label: 'Third class — ἐάν + subjunctive',
+    note: 'A live possibility: “if, and it may well happen”. The commonest condition in the New Testament.',
+    approx: 297,
+    query: { ...base, within: 5, terms: [word('ἐάν'), subj()] },
+  },
+]
+
+const RESULT: ConstructPreset[] = [
+  {
+    label: 'Result — ὥστε + infinitive',
+    note: 'The usual result clause: “so that”, “with the result that”. Naturally consequent rather than actual.',
+    approx: 42,
+    query: { ...base, within: 4, terms: [word('ὥστε'), infinitive] },
+  },
+  {
+    label: 'Actual result — ὥστε + indicative',
+    note: 'The rarer construction, stating a result that in fact happened.',
+    approx: 11,
+    query: { ...base, within: 4, terms: [word('ὥστε'), indic()] },
+  },
+  {
+    label: 'Correlation — μέν … δέ',
+    note: '“On the one hand… on the other”. The pair sets two things against each other; μέν alone often just marks emphasis.',
+    approx: 112,
+    query: { ...base, within: 12, terms: [word('μέν'), word('δέ')] },
+  },
+  {
+    label: 'Comparison — comparative adjective + genitive',
+    note: 'The genitive of comparison: “greater THAN…”, without ἤ. Compare the same idea expressed with ἤ.',
+    approx: 55,
+    query: { ...base, within: 3, terms: [
+      { features: { pos: ['adjective'], degree: ['comparative'] } },
+      { features: { pos: ['noun'], case: ['genitive'] } },
+    ] },
+  },
+  {
+    label: 'Attributive participle, second position',
+    note: 'Article, noun, article, participle — ὁ ἄνθρωπος ὁ σπείρων. The repeated article is what makes it attributive rather than predicate.',
+    approx: 190,
+    query: { ...base, within: 4, terms: [
+      { features: { pos: ['article'] } },
+      agreeing('noun', 0),
+      { features: { pos: ['article'] }, agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+      { ...ptcp(), agreeWith: 0, agreeOn: ['case', 'number', 'gender'] },
+    ] },
+  },
+]
+
 export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'Uses of the subjunctive', presets: SUBJUNCTIVE },
   { heading: 'Uses of the adjective', presets: ADJECTIVE },
@@ -277,5 +348,7 @@ export const CONSTRUCT_PRESETS: PresetGroup[] = [
   { heading: 'The articular infinitive', presets: INFINITIVE },
   { heading: 'Prepositions and their cases', presets: PREPOSITION },
   { heading: 'Double accusatives', presets: DOUBLE_ACC },
+  { heading: 'Conditional sentences', presets: CONDITIONAL },
+  { heading: 'Result, correlation and comparison', presets: RESULT },
   { heading: 'Other constructions', presets: OTHER },
 ]

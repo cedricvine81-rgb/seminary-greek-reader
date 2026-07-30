@@ -19,9 +19,14 @@ describe('construct presets', () => {
       'The articular infinitive',
       'Prepositions and their cases',
       'Double accusatives',
+      'Conditional sentences',
+      'Result, correlation and comparison',
       'Other constructions',
     ])
-    expect(all.length).toBeGreaterThanOrEqual(30)
+    expect(all.length).toBeGreaterThanOrEqual(40)
+    // The three conditional classes the New Testament actually uses, in order.
+    const conditional = CONSTRUCT_PRESETS.find(g => g.heading === 'Conditional sentences')!
+    expect(conditional.presets.map(p => p.label.split(' —')[0])).toEqual(['First class', 'Second class', 'Third class'])
   })
 
   it.each(all)('%s › %s finds what it claims', (_heading, preset) => {
