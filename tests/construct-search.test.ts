@@ -158,6 +158,17 @@ describe('construct search', () => {
     expect(stale.hits.length).toBe(honest.hits.length)
   })
 
+  it('reports the same total whether or not a corpus is drilled into', () => {
+    // The inconsistency this guards: the distribution said Josephus 2,748 while opening Josephus
+    // said "300+".
+    const terms = [AOR_PTCP, DAT_NOUN]
+    const { tallies } = searchConstructAll(q({ within: 4, terms }), 5)
+    for (const id of ['GNT', 'josephus'] as const) {
+      const drilled = searchConstruct(q({ corpus: id, within: 4, terms }))
+      expect(drilled.total).toBe(tallies.find(t => t.corpus === id)!.count)
+    }
+  })
+
   it('reports a per-corpus distribution when searching every text', () => {
     const { tallies, total } = searchConstructAll(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN] }), 3)
     expect(tallies).toHaveLength(CONSTRUCT_CORPORA.length)
@@ -237,8 +248,14 @@ describe('construct search', () => {
   it('honours a book scope and caps results', () => {
     const scoped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN], books: ['Phlm', 'Jude'] }), BIG)
     expect(scoped.hits.every(h => h.bookId === 'Phlm' || h.bookId === 'Jude')).toBe(true)
+    // The cap limits what comes back, never the count: "300+" used to be all a caller could know,
+    // and it contradicted the true per-corpus totals in the cross-corpus view.
     const capped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN] }), 10)
+    const uncapped = searchConstruct(q({ within: 4, terms: [AOR_PTCP, DAT_NOUN] }), BIG)
     expect(capped.hits).toHaveLength(10)
     expect(capped.truncated).toBe(true)
+    expect(capped.total).toBe(uncapped.total)
+    expect(uncapped.truncated).toBe(false)
+    expect(uncapped.hits).toHaveLength(uncapped.total)
   })
 })

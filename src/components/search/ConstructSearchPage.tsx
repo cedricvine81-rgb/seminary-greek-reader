@@ -41,6 +41,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const [hits, setHits] = useState<Hit[] | null>(null)
   const [proseHits, setProseHits] = useState<ProseHit[] | null>(null)
   const [truncated, setTruncated] = useState(false)
+  // The true number of matching passages, which can exceed the number returned.
+  const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
   const [bookName, setBookName] = useState<Map<string, string>>(new Map())
   const [transLang, setTransLang] = useState('en')
@@ -110,6 +112,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           })))
         }
         setTruncated(!!d.truncated)
+        setTotal(d.total ?? (d.results ?? []).length)
       })
       .catch(() => { if (live) { setHits([]); setProseHits(null); setAllBlocks(null); setTruncated(false) } })
       .finally(() => { if (live) setLoading(false) })
@@ -313,7 +316,9 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               <>
                 <div className="flex items-center justify-between gap-3 pb-2">
                   <p className="text-xs text-gray-400">
-                    {proseHits.length}{truncated ? '+' : ''} passage{proseHits.length === 1 ? '' : 's'}
+                    {truncated
+                      ? <>showing {proseHits.length} of {total.toLocaleString()} passages</>
+                      : <>{total.toLocaleString()} passage{total === 1 ? '' : 's'}</>}
                   </p>
                   <label className="flex items-center gap-1.5 text-[11px] text-gray-500">
                     <input type="checkbox" checked={showProseEnglish}
@@ -324,7 +329,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 </div>
                 {truncated && (
                   <p className="mb-2 text-[11px] text-gray-400">
-                    Showing the first {proseHits.length} passages — narrow the construct to see the rest.
+                    Showing the first {proseHits.length} of {total.toLocaleString()} — narrow the construct to see the rest.
                   </p>
                 )}
                 <ConstructProseResults hits={proseHits} showEnglish={showProseEnglish} />
@@ -336,7 +341,9 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             <>
               <div className="flex items-center justify-between gap-3 pb-2">
                 <p className="text-xs text-gray-400">
-                  {hits.length}{truncated ? '+' : ''} verse{hits.length === 1 ? '' : 's'}
+                  {truncated
+                    ? <>showing {hits.length} of {total.toLocaleString()} verses</>
+                    : <>{total.toLocaleString()} verse{total === 1 ? '' : 's'}</>}
                   {crossCount > 0 && <span className="text-gray-300"> · {crossCount} straddle a verse boundary</span>}
                 </p>
                 <select value={transLang} onChange={e => setTransLang(e.target.value)}
@@ -350,7 +357,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               </div>
               {truncated && (
                 <p className="mb-2 text-[11px] text-gray-400">
-                  Showing the first {hits.length} verses — narrow the construct to see the rest.
+                  Showing the first {hits.length} of {total.toLocaleString()} — narrow the construct to see the rest.
                 </p>
               )}
               {/* Biblical only — the prose branch above returns before reaching this. */}

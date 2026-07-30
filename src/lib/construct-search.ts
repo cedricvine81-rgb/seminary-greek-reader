@@ -196,7 +196,10 @@ function resolveTerms(corpus: string, terms: ConstructTerm[]): ConstructTerm[] {
   })
 }
 
-export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; truncated: boolean } {
+// `total` is the TRUE number of matching verses; `hits` is capped at `limit`. Counting past the cap
+// costs a full scan of the corpus (~600ms for the largest), which is worth paying: "300+" told the
+// reader nothing, and it contradicted the per-corpus totals in the cross-corpus view.
+export function searchConstruct(query: ConstructQuery, limit = 300): { hits: ConstructHit[]; total: number; truncated: boolean } {
   // Keep each usable term's ORIGINAL index: `agreeWith` refers to "Word N" as the user numbered
   // them, which is not the position in this filtered list.
   const usable = resolveTerms(query.corpus, query.terms)
@@ -205,7 +208,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   // Positive terms drive the positioning; negated ones only forbid.
   const positive = usable.filter(u => !u.term.negate)
   const negative = usable.filter(u => u.term.negate).map(u => compile(u.term))
-  if (positive.length < 2) return { hits: [], truncated: false }
+  if (positive.length < 2) return { hits: [], total: 0, truncated: false }
 
   const terms = positive.map(u => compile(u.term))
   // Agreement, resolved onto positions within the positive list.
@@ -224,7 +227,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
   const bookFilter = query.books?.length ? new Set(query.books) : null
   const books = getCorpus(query.corpus)
   const hits: ConstructHit[] = []
-  let truncated = false
+  let total = 0
 
   // Books are stored in canonical order, so iterating the object yields reading order.
   for (const [osisId, book] of Object.entries(books)) {
@@ -298,14 +301,16 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
     // Verse order within the book (the map is keyed by id, filled in position order already,
     // but a cross-verse match can seed a later verse first — sort to be safe).
     const inBook = Array.from(perVerse.values()).sort((a, b) => a.chapter - b.chapter || a.verse - b.verse)
+    total += inBook.length
+    // Keep scanning past the cap so `total` is a number rather than a floor; only the returned
+    // sample is limited.
     for (const h of inBook) {
-      if (hits.length >= limit) { truncated = true; break }
+      if (hits.length >= limit) break
       hits.push(h)
     }
-    if (truncated) break
   }
 
-  return { hits, truncated }
+  return { hits, total, truncated: total > hits.length }
 }
 
 
@@ -327,10 +332,10 @@ export function searchConstructAll(query: ConstructQuery, sampleLimit = 5): { ta
   const tallies: CorpusTally[] = []
   let total = 0
   for (const c of CONSTRUCT_CORPORA) {
-    // Uncapped, because a capped count would be a floor rather than a number.
-    const { hits } = searchConstruct({ ...query, corpus: c.id }, Number.MAX_SAFE_INTEGER)
-    tallies.push({ corpus: c.id, count: hits.length, hits: hits.slice(0, sampleLimit) })
-    total += hits.length
+    // searchConstruct counts every match regardless of the cap, so only the sample is built.
+    const { hits, total: count } = searchConstruct({ ...query, corpus: c.id }, sampleLimit)
+    tallies.push({ corpus: c.id, count, hits })
+    total += count
     releaseCorpus(c.id)
   }
   return { tallies, total }

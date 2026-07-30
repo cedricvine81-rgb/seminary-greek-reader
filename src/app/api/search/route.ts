@@ -69,11 +69,11 @@ export async function GET(req: NextRequest) {
           }),
         })
       }
-      const { hits, truncated } = searchConstruct(query)
+      const { hits, total, truncated } = searchConstruct(query)
       // Prose hits aren't in the biblical search index, and carry their own name and Texts link.
       if (isProseCorpus(query.corpus)) {
         return NextResponse.json({
-          truncated,
+          truncated, total,
           prose: true,
           results: hits.map(h => {
             const t = proseHitText(h.bookId, h.chapter, h.verse)
@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
       }
       const texts = verseTextsByIds(hits.map(h => h.verseId))
       return NextResponse.json({
-        truncated,
+        truncated, total,
         results: hits.map(h => ({
           bookId: h.bookId, chapter: h.chapter, verse: h.verse,
           text: texts.get(h.verseId) ?? '',
