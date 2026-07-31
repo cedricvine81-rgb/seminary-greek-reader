@@ -5,6 +5,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { Fragment } from 'react'
 import { DashboardShell } from '@/components/layout/DashboardShell'
+import { Suspense } from 'react'
 import { CourseGradebook } from '@/components/instructor/CourseGradebook'
 import { MessageClassPanel } from '@/components/instructor/MessageClassPanel'
 import { CourseGroupsPanel } from '@/components/instructor/CourseGroupsPanel'
@@ -268,7 +269,12 @@ export default async function CourseDetailPage({ params }: { params: { courseId:
               <ChevronDown size={16} className="text-gray-400" />
             </summary>
             <div className="mt-4">
-              <CourseGradebook courseId={course.id} />
+              {/* The gradebook is the page's heaviest query set (attempts, responses, sessions,
+                  notes, groups — and one connection serializes them). Streaming it keeps those
+                  queries off the page's first byte: the course page paints, the table follows. */}
+              <Suspense fallback={<div className="h-40 rounded-xl bg-gray-100 animate-pulse" />}>
+                <CourseGradebook courseId={course.id} />
+              </Suspense>
             </div>
           </details>
         </Card>
