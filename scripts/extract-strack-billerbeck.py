@@ -56,6 +56,11 @@ SBL = {
 }
 
 HEADING = re.compile(r'^\s{0,6}(\d{1,2})\s?,\s?(\d{1,3})\s*[:.]')
+# Philemon, 2 John, 3 John and Jude have a single chapter, so Billerbeck heads their sections
+# with a bare verse number — "7:" rather than "1,7:". Reading them with the two-part pattern
+# above found no headings at all, which is why those books came back empty.
+SINGLE_CHAPTER = {'Phlm', '2John', '3John', 'Jude'}
+VERSE_ONLY_HEADING = re.compile(r'^\s{0,6}(\d{1,3})\s*[:.]\s')
 CITATION = re.compile(
     r'\b(p|T)?(' + '|'.join(sorted(WORKS, key=len, reverse=True)) + r')\s?\.?\s?(\d{1,3})\s*[«°^\'"]?\s*([ab])?\b'
 )
@@ -117,13 +122,15 @@ def held_mishnah() -> dict:
     return out
 
 
-def sections(lines):
+def sections(lines, single_chapter=False):
     """Heading positions as (line, chapter, verse), in document order."""
     out = []
     for n, l in enumerate(lines):
         m = HEADING.match(l)
         if m:
             out.append((n, int(m.group(1)), int(m.group(2))))
+        elif single_chapter and (m := VERSE_ONLY_HEADING.match(l or '')):
+            out.append((n, 1, int(m.group(1))))
     return out
 
 
@@ -192,9 +199,31 @@ def book_span(lines, book):
             if not m or not (rng[0] <= int(m.group(1)) <= rng[1]):
                 continue
         hits.append(n)
-    if len(hits) < 3:
-        sys.exit(f'only {len(hits)} running heads for {book} — refusing to guess')
-    return hits[0], hits[-1] + 1
+    if len(hits) >= 3:
+        return hits[0], hits[-1] + 1
+
+    # Some books are too short to leave a usable trail of running heads: Billerbeck gives
+    # Philemon three pages, and Titus produced none at all in this OCR. Their NEIGHBOURS pin
+    # them exactly, though — a book sits between the end of the one before it and the start of
+    # the one after — so fall back to that gap rather than giving up. Deterministic, not a guess.
+    def heads_of(other):
+        op = re.compile(RUNNING_HEAD[other])
+        return [n for n, l in enumerate(lines)
+                if op.search(l or '') and re.search(r'\d', l or '')
+                and not re.search(r'\d+\s*[—–]\s*\d+', l)]
+    order = ['Rom', '1Cor', '2Cor', 'Gal', 'Eph', 'Phil', 'Col', '1Thess', '2Thess', '1Tim',
+             '2Tim', 'Titus', 'Phlm', 'Heb', 'Jas', '1Pet', '2Pet', '1John', '2John', '3John',
+             'Jude', 'Rev']
+    if book in order:
+        i = order.index(book)
+        before = next((max(h) for b in reversed(order[:i]) if (h := heads_of(b))), None)
+        after = next((min(h) for b in order[i + 1:] if (h := heads_of(b))), None)
+        # A book's own heads, where it has any, narrow the gap further.
+        lo = max([before + 1] + hits) if before is not None else (hits[0] if hits else None)
+        hi = after if after is not None else None
+        if lo is not None and hi is not None and hi > lo:
+            return lo, hi
+    sys.exit(f'only {len(hits)} running heads for {book}, and its neighbours do not bound it')
 
 
 def classify(pre, work, num, side, bavli, yer, mish, tos):
@@ -231,7 +260,7 @@ def main():
     bavli, yer, mish, tos = held_dapim(), held_yerushalmi(), held_mishnah(), held_tosefta()
 
     begin, stop = book_span(lines, a.book)
-    book = [(n, c, v) for n, c, v in sections(lines) if begin <= n < stop]
+    book = [(n, c, v) for n, c, v in sections(lines, a.book in SINGLE_CHAPTER) if begin <= n < stop]
     if not book:
         sys.exit(f'no verse headings inside the {a.book} section (lines {begin}-{stop})')
     print(f'{a.book} section: lines {begin}–{stop}')

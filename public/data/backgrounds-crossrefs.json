@@ -1,5 +1,5 @@
 {
- "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
+ "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
  "entries": [
   {
    "book": "Matt",
@@ -64701,6 +64701,11 @@
     {
      "text": "Maximus of Tyre, Diss. 16.3",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "t. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -64929,6 +64934,11 @@
     {
      "text": "Philo, Good Person 79",
      "type": "Philo"
+    },
+    {
+     "text": "m. Giṭ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -74545,6 +74555,36 @@
     {
      "text": "Cicero, Acad. 4.45",
      "type": "Greco-Roman"
+    }
+   ]
+  },
+  {
+   "book": "Jude",
+   "chapter": 1,
+   "endChapter": 1,
+   "verseStart": 1,
+   "verseEnd": 1,
+   "label": "Jude 1:1",
+   "citations": [
+    {
+     "text": "m. Yoma 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Jude",
+   "chapter": 1,
+   "endChapter": 1,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Jude 1:2",
+   "citations": [
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
