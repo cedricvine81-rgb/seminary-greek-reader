@@ -55,6 +55,27 @@ const nextConfig = {
         'public/data/apocrypha-gospels/**',
         'public/data/brenton/**',
         'public/data/rhetoric/**',
+        // The Jerusalem Talmud (client-fetched via its dataUrl, like every prose corpus).
+        // NB: every NEW public/data directory must be added here unless server code
+        // fs-reads it — reader.ts's dynamic read pulls the whole tree into every function
+        // otherwise. Forgetting this list is how /api/reader's cold start reached 68
+        // seconds (measured 2026-07-30): these client-only files below were riding along
+        // in every server bundle.
+        'public/data/yerushalmi/**',
+        // Reader syntax layers — SyntaxMenu/GreekReader fetch them client-side.
+        'public/data/abs-syntax.json',
+        'public/data/gbi.json',
+        'public/data/syntax.json',
+        'public/data/macula-syntax.json',
+        // ParsingPanel lexica — client-fetched.
+        'public/data/lsj.json',
+        'public/data/greek-lexicon.json',
+        // Client-fetched alignment/overview data (TextsReader, Synopsis, Backgrounds).
+        'public/data/bsb-alignment.json',
+        'public/data/backgrounds-crossrefs.json',
+        'public/data/pericopes.json',
+        'public/data/nt-parallels.json',
+        'public/data/gospel-parallels.json',
       ],
     },
   },
