@@ -1,5 +1,5 @@
 {
- "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
+ "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
  "entries": [
   {
    "book": "Matt",
@@ -10432,6 +10432,31 @@
    "book": "Mark",
    "chapter": 1,
    "endChapter": 1,
+   "verseStart": 38,
+   "verseEnd": 38,
+   "label": "Mark 1:38",
+   "citations": [
+    {
+     "text": "m. Ketub. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ber. 18b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 1,
+   "endChapter": 1,
    "verseStart": 40,
    "verseEnd": 40,
    "label": "Mark 1:40",
@@ -10536,6 +10561,11 @@
     {
      "text": "b. Ned. 41a",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Yoma 85b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -11545,6 +11575,16 @@
     {
      "text": "b. Ber. 31a",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Sanh. 105a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -11886,6 +11926,26 @@
    "book": "Mark",
    "chapter": 5,
    "endChapter": 5,
+   "verseStart": 23,
+   "verseEnd": 23,
+   "label": "Mark 5:23",
+   "citations": [
+    {
+     "text": "m. Yebam. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ketub. 39a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 5,
+   "endChapter": 5,
    "verseStart": 28,
    "verseEnd": 28,
    "label": "Mark 5:28",
@@ -11921,6 +11981,26 @@
   },
   {
    "book": "Mark",
+   "chapter": 5,
+   "endChapter": 5,
+   "verseStart": 41,
+   "verseEnd": 41,
+   "label": "Mark 5:41",
+   "citations": [
+    {
+     "text": "b. Šabb. 110b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ber. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
    "chapter": 6,
    "endChapter": 6,
    "verseStart": 3,
@@ -11938,6 +12018,11 @@
     {
      "text": "Qur’an 5.112",
      "type": "DSS"
+    },
+    {
+     "text": "t. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -12172,6 +12257,16 @@
     {
      "text": "2 Bar. 29:1–8",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Menaḥ. 29b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 63a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -12246,6 +12341,46 @@
     {
      "text": "m. Yad. 1:1–2:3",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. B. Bat. 126b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 108b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -12492,6 +12627,46 @@
    "book": "Mark",
    "chapter": 8,
    "endChapter": 8,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Mark 8:2",
+   "citations": [
+    {
+     "text": "t. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 67a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 8,
+   "endChapter": 8,
+   "verseStart": 4,
+   "verseEnd": 4,
+   "label": "Mark 8:4",
+   "citations": [
+    {
+     "text": "b. Ḥul. 137b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 8,
+   "endChapter": 8,
    "verseStart": 11,
    "verseEnd": 13,
    "label": "Mark 8:11–13",
@@ -12622,6 +12797,26 @@
     {
      "text": "Tg. Hos. 6:2",
      "type": "Rabbinic"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 8,
+   "endChapter": 8,
+   "verseStart": 32,
+   "verseEnd": 32,
+   "label": "Mark 8:32",
+   "citations": [
+    {
+     "text": "b. Sukkah 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 7a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -13128,6 +13323,31 @@
     {
      "text": "Sent. Sextus 12–13, 273",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Soṭah 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Menaḥ. 21a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Tamid 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Menaḥ. 20a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -13888,6 +14108,31 @@
   },
   {
    "book": "Mark",
+   "chapter": 10,
+   "endChapter": 10,
+   "verseStart": 51,
+   "verseEnd": 51,
+   "label": "Mark 10:51",
+   "citations": [
+    {
+     "text": "y. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Meg. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
    "chapter": 11,
    "endChapter": 11,
    "verseStart": 1,
@@ -13943,6 +14188,26 @@
       "chapter": 4,
       "verse": 21
      }
+    },
+    {
+     "text": "b. Ber. 16b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Meg. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -14456,6 +14721,11 @@
     {
      "text": "Josephus, Ant. 18.1.4 §16",
      "type": "Josephus"
+    },
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -14632,6 +14902,26 @@
     {
      "text": "t. Soṭah 7.17",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Ḥag. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ber. 6a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ber. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Pesaḥ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -14716,6 +15006,16 @@
       "chapter": 6,
       "verse": 4
      }
+    },
+    {
+     "text": "b. Roš Haš. 26a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 58b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -14822,6 +15122,36 @@
     {
      "text": "b. Ber. 24b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. B. Bat. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 57b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Roš Haš. 17b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 12b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -14871,6 +15201,21 @@
     {
      "text": "m. Šeqal. 6:5",
      "type": "Rabbinic"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 12,
+   "endChapter": 12,
+   "verseStart": 42,
+   "verseEnd": 42,
+   "label": "Mark 12:42",
+   "citations": [
+    {
+     "text": "b. B. Bat. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -15653,6 +15998,46 @@
     {
      "text": "Mek. on Exod 16:28–36 (Vayassa’ §6)",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 7b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥul. 139b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -16284,6 +16669,21 @@
     {
      "text": "Catullus 11.13",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ketub. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -16394,6 +16794,21 @@
    "book": "Mark",
    "chapter": 14,
    "endChapter": 14,
+   "verseStart": 51,
+   "verseEnd": 51,
+   "label": "Mark 14:51",
+   "citations": [
+    {
+     "text": "b. Šabb. 25b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 14,
+   "endChapter": 14,
    "verseStart": 52,
    "verseEnd": 52,
    "label": "Mark 14:52",
@@ -16401,6 +16816,21 @@
     {
      "text": "T. Jos. 8:3",
      "type": "Pseudepigrapha"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 14,
+   "endChapter": 14,
+   "verseStart": 56,
+   "verseEnd": 56,
+   "label": "Mark 14:56",
+   "citations": [
+    {
+     "text": "b. ʿAbod. Zar. 4a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -16652,6 +17082,11 @@
     {
      "text": "T. Jos. 13:2",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Šebu. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -17248,6 +17683,16 @@
     {
      "text": "t. Sanh. 9.7",
      "type": "Rabbinic"
+    },
+    {
+     "text": "t. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -17292,6 +17737,31 @@
     {
      "text": "Petronius, Sat. 111",
      "type": "Greco-Roman"
+    }
+   ]
+  },
+  {
+   "book": "Mark",
+   "chapter": 16,
+   "endChapter": 16,
+   "verseStart": 1,
+   "verseEnd": 1,
+   "label": "Mark 16:1",
+   "citations": [
+    {
+     "text": "m. Šabb. 23",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 3b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -17914,6 +18384,21 @@
     },
     {
      "text": "y. Yoma 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥul. 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -18674,6 +19159,21 @@
      "text": "y. Giṭ. 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 17",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -19080,6 +19580,21 @@
      "text": "m. B. Meṣiʿa 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -19336,6 +19851,21 @@
      "text": "m. Yoma 3",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ketub. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -19389,6 +19919,11 @@
     },
     {
      "text": "b. Ber. 64a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -19612,6 +20147,11 @@
     },
     {
      "text": "b. Ketub. 50a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -20040,6 +20580,11 @@
      "text": "b. Ber. 7a",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -20288,6 +20833,11 @@
      "text": "m. Soṭah 3",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -20503,6 +21053,11 @@
      "type": "Patristic",
      "kind": "Allusion",
      "note": "love of enemies, doing good to those who hate (Berding; Niederwimmer)"
+    },
+    {
+     "text": "y. Meg. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -21942,6 +22497,21 @@
      "text": "b. Sanh. 98a",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yebam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Hor. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Pesaḥ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -22299,6 +22869,11 @@
      "text": "b. Sanh. 29b",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Menaḥ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -22558,6 +23133,11 @@
      "text": "m. Soṭah 9",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -22746,6 +23326,11 @@
     },
     {
      "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sukkah 2",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -23048,6 +23633,11 @@
      "text": "b. Yoma 66b",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -23236,6 +23826,11 @@
     },
     {
      "text": "b. Ber. 31b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 4",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -23478,6 +24073,16 @@
     },
     {
      "text": "b. Sanh. 99a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -23982,6 +24587,11 @@
      "text": "y. Šabb. 3",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -24183,6 +24793,11 @@
      "text": "m. Ketub. 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ketub. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -24283,6 +24898,11 @@
     },
     {
      "text": "y. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 9",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -24754,6 +25374,21 @@
     },
     {
      "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 8",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -26779,6 +27414,11 @@
      "text": "b. Sanh. 68a",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -26936,6 +27576,11 @@
     },
     {
      "text": "y. Sukkah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -31960,6 +32605,11 @@
      "text": "m. Tamid 5",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -32028,6 +32678,11 @@
     },
     {
      "text": "b. Ḥag. 14b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Menaḥ. 11",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -32220,6 +32875,26 @@
     },
     {
      "text": "b. B. Meṣiʿa 84a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yebam. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yebam. 4",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -32639,6 +33314,11 @@
      "text": "y. Ketub. 12",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -32913,6 +33593,16 @@
      "text": "m. Tamid 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Hor. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -33132,6 +33822,11 @@
      "text": "m. Sanh. 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Yoma 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -33226,6 +33921,11 @@
     },
     {
      "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. ʿAbod. Zar. 3",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -33369,6 +34069,21 @@
      "text": "m. Pesaḥ. 10",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Meg. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -33382,6 +34097,11 @@
    "citations": [
     {
      "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -33446,6 +34166,16 @@
     },
     {
      "text": "b. Yebam. 96b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sukkah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 4",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -33812,6 +34542,11 @@
     },
     {
      "text": "b. Soṭah 13a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 4",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -34678,6 +35413,11 @@
      "text": "m. Sanh. 10",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -34788,6 +35528,11 @@
     },
     {
      "text": "b. Šabb. 31a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -35047,6 +35792,16 @@
      "text": "m. B. Bat. 2",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -35145,6 +35900,16 @@
     },
     {
      "text": "b. Ber. 28b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 1",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -35553,6 +36318,16 @@
     },
     {
      "text": "b. Yoma 20b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Pesaḥ. 4",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -36430,6 +37205,11 @@
      "text": "m. Sanh. 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -36671,6 +37451,11 @@
     },
     {
      "text": "y. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 8",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }
@@ -37555,6 +38340,11 @@
      "text": "y. Qidd. 3",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -37807,6 +38597,11 @@
     },
     {
      "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 7",
      "type": "Rabbinic",
      "source": "Strack–Billerbeck"
     }

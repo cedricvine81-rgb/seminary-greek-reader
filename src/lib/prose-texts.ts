@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -897,6 +897,101 @@ export const BAVLI_CATALOG = BAVLI.map(w => ({
   greek: true, greekOnly: true, script: 'hebrew' as const,
 }))
 
+
+// ── The Tosefta ───────────────────────────────────────────────────────────────────────
+// 61 tractates in Hebrew, from the public-domain text on Sefaria (Zuckermandel / Machon Mamre).
+// NOT Lieberman's critical edition, which is modern and in copyright; build-tosefta.py picks the
+// version by LICENCE per tractate, since the public-domain titles are inconsistent.
+// Chapter → halakhah, matching how it is cited ("t. Ber. 3:7"). Hebrew only: Sefaria's English
+// is the same partial community translation the Bavli has. Built by scripts/build-tosefta.py.
+const TOSEFTA_ATTRIBUTION = 'Text: the Tosefta (Zuckermandel / Machon Mamre), public domain. Source: Sefaria. Hebrew only.'
+
+const toseftaCite = (abbrev: string) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const m = s.match(new RegExp('^' + abbrev.replace(/\./g, '\\.') + '\\s+(\\d+)(?::(\\d+))?'))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+
+const TOSEFTA: { slug: string; name: string; noteBook: string; chapters: number }[] = [
+  { slug: 't-berakhot', name: 't. Berakhot', noteBook: 'TosBerakhot', chapters: 6 },
+  { slug: 't-peah', name: 't. Peah', noteBook: 'TosPeah', chapters: 4 },
+  { slug: 't-demai', name: 't. Demai', noteBook: 'TosDemai', chapters: 8 },
+  { slug: 't-terumot', name: 't. Terumot', noteBook: 'TosTerumot', chapters: 10 },
+  { slug: 't-sheviit', name: 't. Sheviit', noteBook: 'TosSheviit', chapters: 8 },
+  { slug: 't-kilayim', name: 't. Kilayim', noteBook: 'TosKilayim', chapters: 5 },
+  { slug: 't-maasrot', name: 't. Maasrot', noteBook: 'TosMaasrot', chapters: 3 },
+  { slug: 't-maaser-sheni', name: 't. Maaser Sheni', noteBook: 'TosMaaserSheni', chapters: 5 },
+  { slug: 't-orlah', name: 't. Orlah', noteBook: 'TosOrlah', chapters: 1 },
+  { slug: 't-challah', name: 't. Challah', noteBook: 'TosChallah', chapters: 2 },
+  { slug: 't-bikkurim', name: 't. Bikkurim', noteBook: 'TosBikkurim', chapters: 2 },
+  { slug: 't-shabbat', name: 't. Shabbat', noteBook: 'TosShabbat', chapters: 18 },
+  { slug: 't-eruvin', name: 't. Eruvin', noteBook: 'TosEruvin', chapters: 8 },
+  { slug: 't-pesachim', name: 't. Pesachim', noteBook: 'TosPesachim', chapters: 10 },
+  { slug: 't-shekalim', name: 't. Shekalim', noteBook: 'TosShekalim', chapters: 3 },
+  { slug: 't-yoma', name: 't. Yoma', noteBook: 'TosYoma', chapters: 4 },
+  { slug: 't-sukkah', name: 't. Sukkah', noteBook: 'TosSukkah', chapters: 4 },
+  { slug: 't-beitzah', name: 't. Beitzah', noteBook: 'TosBeitzah', chapters: 4 },
+  { slug: 't-rosh-hashanah', name: 't. Rosh Hashanah', noteBook: 'TosRoshHashanah', chapters: 2 },
+  { slug: 't-ta-anit', name: 't. Ta\'anit', noteBook: 'TosTa\'anit', chapters: 3 },
+  { slug: 't-megillah', name: 't. Megillah', noteBook: 'TosMegillah', chapters: 3 },
+  { slug: 't-moed-katan', name: 't. Moed Katan', noteBook: 'TosMoedKatan', chapters: 2 },
+  { slug: 't-chagigah', name: 't. Chagigah', noteBook: 'TosChagigah', chapters: 3 },
+  { slug: 't-yevamot', name: 't. Yevamot', noteBook: 'TosYevamot', chapters: 14 },
+  { slug: 't-ketubot', name: 't. Ketubot', noteBook: 'TosKetubot', chapters: 12 },
+  { slug: 't-nedarim', name: 't. Nedarim', noteBook: 'TosNedarim', chapters: 7 },
+  { slug: 't-nazir', name: 't. Nazir', noteBook: 'TosNazir', chapters: 6 },
+  { slug: 't-sotah', name: 't. Sotah', noteBook: 'TosSotah', chapters: 15 },
+  { slug: 't-gittin', name: 't. Gittin', noteBook: 'TosGittin', chapters: 7 },
+  { slug: 't-kiddushin', name: 't. Kiddushin', noteBook: 'TosKiddushin', chapters: 5 },
+  { slug: 't-bava-kamma', name: 't. Bava Kamma', noteBook: 'TosBavaKamma', chapters: 11 },
+  { slug: 't-bava-metzia', name: 't. Bava Metzia', noteBook: 'TosBavaMetzia', chapters: 11 },
+  { slug: 't-bava-batra', name: 't. Bava Batra', noteBook: 'TosBavaBatra', chapters: 11 },
+  { slug: 't-sanhedrin', name: 't. Sanhedrin', noteBook: 'TosSanhedrin', chapters: 14 },
+  { slug: 't-makkot', name: 't. Makkot', noteBook: 'TosMakkot', chapters: 4 },
+  { slug: 't-shevuot', name: 't. Shevuot', noteBook: 'TosShevuot', chapters: 6 },
+  { slug: 't-eduyot', name: 't. Eduyot', noteBook: 'TosEduyot', chapters: 3 },
+  { slug: 't-avodah-zarah', name: 't. Avodah Zarah', noteBook: 'TosAvodahZarah', chapters: 9 },
+  { slug: 't-horayot', name: 't. Horayot', noteBook: 'TosHorayot', chapters: 2 },
+  { slug: 't-zevachim', name: 't. Zevachim', noteBook: 'TosZevachim', chapters: 13 },
+  { slug: 't-chullin', name: 't. Chullin', noteBook: 'TosChullin', chapters: 10 },
+  { slug: 't-menachot', name: 't. Menachot', noteBook: 'TosMenachot', chapters: 13 },
+  { slug: 't-bekhorot', name: 't. Bekhorot', noteBook: 'TosBekhorot', chapters: 7 },
+  { slug: 't-arakhin', name: 't. Arakhin', noteBook: 'TosArakhin', chapters: 5 },
+  { slug: 't-temurah', name: 't. Temurah', noteBook: 'TosTemurah', chapters: 4 },
+  { slug: 't-meilah', name: 't. Meilah', noteBook: 'TosMeilah', chapters: 3 },
+  { slug: 't-keritot', name: 't. Keritot', noteBook: 'TosKeritot', chapters: 4 },
+  { slug: 't-kelim-kamma', name: 't. Kelim Kamma', noteBook: 'TosKelimKamma', chapters: 7 },
+  { slug: 't-kelim-metzia', name: 't. Kelim Metzia', noteBook: 'TosKelimMetzia', chapters: 11 },
+  { slug: 't-kelim-batra', name: 't. Kelim Batra', noteBook: 'TosKelimBatra', chapters: 7 },
+  { slug: 't-oholot', name: 't. Oholot', noteBook: 'TosOholot', chapters: 18 },
+  { slug: 't-negaim', name: 't. Negaim', noteBook: 'TosNegaim', chapters: 9 },
+  { slug: 't-parah', name: 't. Parah', noteBook: 'TosParah', chapters: 12 },
+  { slug: 't-niddah', name: 't. Niddah', noteBook: 'TosNiddah', chapters: 9 },
+  { slug: 't-mikvaot', name: 't. Mikvaot', noteBook: 'TosMikvaot', chapters: 8 },
+  { slug: 't-tahorot', name: 't. Tahorot', noteBook: 'TosTahorot', chapters: 11 },
+  { slug: 't-makhshirin', name: 't. Makhshirin', noteBook: 'TosMakhshirin', chapters: 3 },
+  { slug: 't-zavim', name: 't. Zavim', noteBook: 'TosZavim', chapters: 5 },
+  { slug: 't-yadayim', name: 't. Yadayim', noteBook: 'TosYadayim', chapters: 2 },
+  { slug: 't-tevul-yom', name: 't. Tevul Yom', noteBook: 'TosTevulYom', chapters: 2 },
+  { slug: 't-oktsin', name: 't. Oktsin', noteBook: 'TosOktsin', chapters: 3 },
+]
+
+const TOSEFTA_WORKS: ProseWork[] = TOSEFTA.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/tosefta/${w.slug.replace(/^t-/, '')}.json`,
+  chapters: w.chapters,
+  attribution: TOSEFTA_ATTRIBUTION,
+  // "t. Ber. 3:7" — the SBL abbreviation is the display name with the tractate spelled out.
+  parseCitation: toseftaCite(w.name),
+}))
+
+export const TOSEFTA_CATALOG = TOSEFTA.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+  greek: true, greekOnly: true, script: 'hebrew' as const,
+}))
+
 // ── Greco-Roman (Perseus) ─────────────────────────────────────────────────────────────
 // Epictetus — the Discourses (one work per book) and the Enchiridion — from the Perseus
 // Digital Library's canonical TEI editions, which carry the standard citation numbering
@@ -1510,6 +1605,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...MISHNAH_WORKS,
   ...YERUSHALMI_WORKS,
   ...BAVLI_WORKS,
+  ...TOSEFTA_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,
   ...ARISTOTLE_WORKS,

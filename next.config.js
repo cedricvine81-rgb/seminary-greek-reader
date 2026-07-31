@@ -63,6 +63,7 @@ const nextConfig = {
         // in every server bundle.
         'public/data/yerushalmi/**',
         'public/data/bavli/**',
+        'public/data/tosefta/**',
         // Jastrow's dictionary is fetched by the Talmud reader only (src/lib/jastrow.ts).
         'public/data/jastrow.json',
         // Reader syntax layers — SyntaxMenu/GreekReader fetch them client-side.

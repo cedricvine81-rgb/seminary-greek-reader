@@ -95,6 +95,17 @@ def held_yerushalmi() -> dict:
     return out
 
 
+def held_tosefta() -> dict:
+    out = {}
+    for slug in set(WORKS.values()):
+        try:
+            d = json.load(open(f'public/data/tosefta/{slug}.json'))
+            out[slug] = {c['number'] for c in d['chapters']}
+        except Exception:
+            pass
+    return out
+
+
 def held_mishnah() -> dict:
     out = {}
     for slug in set(WORKS.values()):
@@ -165,11 +176,11 @@ def book_span(lines, book):
     return hits[0], hits[-1] + 1
 
 
-def classify(pre, work, num, side, bavli, yer, mish):
+def classify(pre, work, num, side, bavli, yer, mish, tos):
     """Which corpus a citation points at, and whether we actually hold it."""
     slug = WORKS[work]
     if pre == 'T':
-        return ('Tosefta', f't. {SBL[slug]} {num}', False)          # not held
+        return ('Tosefta', f't. {SBL[slug]} {num}', num in (tos.get(slug) or ()))
     if pre == 'p':
         ok = num in (yer.get(slug) or {})
         return ('Yerushalmi', f'y. {SBL[slug]} {num}', ok)
@@ -191,7 +202,7 @@ def main():
     vc = verse_counts(a.book)
     if not vc:
         sys.exit(f'no GNT chapter files for {a.book}')
-    bavli, yer, mish = held_dapim(), held_yerushalmi(), held_mishnah()
+    bavli, yer, mish, tos = held_dapim(), held_yerushalmi(), held_mishnah(), held_tosefta()
 
     begin, stop = book_span(lines, a.book)
     book = [(n, c, v) for n, c, v in sections(lines) if begin <= n < stop]
@@ -214,7 +225,7 @@ def main():
         context = re.sub(r'\s+', ' ', block)[:400]
         seen = set()
         for pre, work, num, side in CITATION.findall(block):
-            corpus, cite, ok = classify(pre, work, int(num), side, bavli, yer, mish)
+            corpus, cite, ok = classify(pre, work, int(num), side, bavli, yer, mish, tos)
             stats[corpus] += 1
             if not ok:
                 stats[f'{corpus} (not held)'] += 1
