@@ -113,7 +113,7 @@ export function MasterSearchPanel({ preset, onClose, isAuthenticated = false }: 
           column: the results scroll in the flex-1 area, and the Greek parsing pane sits BELOW it
           as a real bottom pane (like the Reader/Texts), so it never overlays the results. */}
       <div className="flex-1 min-h-0 flex flex-col">
-        <div className="flex-1 min-h-0 overflow-y-auto pb-4">
+        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain pb-4">
           {preset?.scope?.startsWith('morph:') ? (
             // Morphology facet (Grammar-page "See it in the NT" links, Reader "By morphology"):
             // same split-view panel, its own criteria/results flow.

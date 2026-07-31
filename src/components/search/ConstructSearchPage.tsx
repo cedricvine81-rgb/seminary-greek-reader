@@ -217,9 +217,8 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const removeTerm = (i: number) =>
     setQuery(q => ({ ...q, terms: q.terms.filter((_, j) => j !== i) }))
 
-  // Clicking a hit opens the passage in a panel docked to the LEFT of the builder and its
-  // results, rather than navigating to the reader and losing the search. Both kinds of
-  // result feed the same panel; it knows how to load each.
+  // Clicking a hit opens the passage in a side panel rather than navigating to the reader
+  // and losing the search. Both kinds of result feed the same panel; it knows how to load each.
   const [panel, setPanel] = useState<{ target: ConstructTextTarget; nonce: number } | null>(null)
   const showPanel = useCallback((target: ConstructTextTarget) => {
     // nonce keys the panel, so clicking a second hit while one is open remounts it on the new
@@ -575,7 +574,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         </div>
       )}
 
-      {/* The clicked passage, docked left of the builder and results (see ConstructTextPanel). */}
+      {/* The clicked passage, read beside the builder and results (see ConstructTextPanel). */}
       {panel && (
         <ConstructTextPanel key={panel.nonce} target={panel.target} onClose={() => setPanel(null)} />
       )}

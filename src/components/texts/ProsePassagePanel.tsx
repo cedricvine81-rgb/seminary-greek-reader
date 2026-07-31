@@ -166,7 +166,7 @@ export function ProsePassagePanel({ target, onClose }: { target: ProsePassageTar
         )}
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-3">
+      <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-3">
         {failed || !work ? (
           <p className="text-sm text-gray-400 italic">Couldn&rsquo;t load this text.</p>
         ) : !doc ? (

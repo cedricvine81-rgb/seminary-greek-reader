@@ -524,14 +524,14 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
-/* ── Construct hit side panel (desktop): docks LEFT ──────────────────────────────────────
+/* ── Construct hit side panel (desktop) ──────────────────────────────────────────────────
    Clicking a construct search result used to navigate to the full reader, losing the query
    that found it. ConstructTextPanel opens the passage beside the search instead, setting
-   data-construct-panel + --construct-panel-w on <html>. This one pads on the LEFT: the
-   passage sits to the left of the builder and its results, which stay put. */
+   data-construct-panel + --construct-panel-w on <html> — same right-hand dock as the search
+   and cited-source panels above, so the builder and its results simply narrow. */
 @media (min-width: 1024px) {
   html[data-construct-panel] #app-content {
-    padding-left: var(--construct-panel-w, 560px);
+    padding-right: var(--construct-panel-w, 560px);
   }
 }
 
