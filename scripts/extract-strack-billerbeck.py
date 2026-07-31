@@ -237,8 +237,19 @@ def classify(pre, work, num, side, bavli, yer, mish, tos):
     if side:
         chapter = (num - 1) * 2 + (2 if side == 'b' else 1)
         return ('Bavli', f'b. {SBL[slug]} {num}{side}', chapter in bavli.get(slug, ()))
-    ok = num in (mish.get(slug) or {})
-    return ('Mishnah', f'm. {SBL[slug]} {num}', ok)
+
+    # No side, so this is either a Mishnah chapter or a Bavli folio whose superscript ᵃ/ᵇ the
+    # OCR lost. The tractate itself decides: Shabbat has 24 mishnaic chapters, so "Schab 138"
+    # cannot be Mishnah and must be a folio. Roughly 2,000 citations were being discarded as
+    # impossible Mishnah chapters when they were really dapim.
+    if num in (mish.get(slug) or {}):
+        return ('Mishnah', f'm. {SBL[slug]} {num}', True)
+    chapter = (num - 1) * 2 + 1                     # the folio's first half
+    if chapter in bavli.get(slug, ()):
+        # Written WITHOUT a side: we know the folio, not which column, and saying "138a" would
+        # assert something Billerbeck may not have meant.
+        return ('Bavli (side-less)', f'b. {SBL[slug]} {num}', True)
+    return ('Mishnah', f'm. {SBL[slug]} {num}', False)
 
 
 def main():

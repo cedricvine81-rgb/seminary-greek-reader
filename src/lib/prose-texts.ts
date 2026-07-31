@@ -825,7 +825,11 @@ export const bavliDaf = (chapter: number): string => {
 const bavliCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
   const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
   for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
-    const m = s.match(new RegExp('^' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)([ab])'))
+    // The side is OPTIONAL. Strack–Billerbeck's superscript ᵃ/ᵇ frequently did not survive
+    // OCR, so a large body of citations name only the folio ("b. Šabb. 138"). Rather than
+    // invent a side, those are written side-less and open at the folio's first half — the
+    // reader is one column away from the other, and scrolls straight into it.
+    const m = s.match(new RegExp('^' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)([ab])?'))
     if (m) return { chapter: (parseInt(m[1], 10) - 1) * 2 + (m[2] === 'b' ? 2 : 1) }
   }
   return null
