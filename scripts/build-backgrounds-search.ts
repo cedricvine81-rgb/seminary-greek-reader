@@ -42,7 +42,10 @@ function indexProse(work: CatalogWork) {
   for (const ch of doc.chapters) {
     for (const vs of ch.verses) {
       if (vs.text) en.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.text })
-      if (vs.greek) grc.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.greek })
+      // The grc facet is labelled Greek and folds Greek diacritics, so a Hebrew-script work
+      // (the Talmud Bavli's Aramaic) is excluded rather than filed under it. Its text is read
+      // in Texts; giving Aramaic its own facet is a separate job.
+      if (vs.greek && work.script !== 'hebrew') grc.push({ g: work.id, s: work.source, c: ch.number, v: vs.number, t: vs.greek })
     }
   }
 }

@@ -262,6 +262,10 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // A prose work that carries the original Greek per verse (e.g. Epictetus) — shown in a
   // parallel Greek | English layout, distinct from the word-parsed lxx Greek path.
   const greekProse = !!work?.greek
+  // The Talmud Bavli's Aramaic occupies the same "original text" slot as a Greek prose work,
+  // but reads right-to-left in a Hebrew face, and its words must not go through the Greek
+  // tokeniser (which normalises Greek diacritics and offers Greek lexicon lookups).
+  const hebrewProse = work?.script === 'hebrew'
   // A Greek-only prose work (no translation shipped, e.g. Philostratus, Aratus,
   // Marcus Aurelius) is always shown Greek-only — even if a previously-open work
   // left proseMode on 'both' — and its mode selector is hidden, since there is
@@ -1260,7 +1264,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                 const notedKeys = notedMap[`${noteBook}.${section.chapter}`] ?? new Set<number>()
                 return (
                   <div key={section.key} ref={el => { if (el) sectionRefs.current[section.key] = el }}>
-                    <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">
+                    {/* Daf sides are written lowercase ("28b"), so the Talmud opts out of the
+                        heading's uppercasing — "28B" is not how anyone cites it. */}
+                    <p className={`text-xs font-semibold tracking-wide text-gray-400 mb-2 ${hebrewProse ? 'normal-case' : 'uppercase'}`}>
                       {blockHeadingFor(work, section)}
                     </p>
                     <div className="space-y-2">
@@ -1330,6 +1336,11 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                                       )
                                     })
                                   : row.greek}
+                              </span>
+                            ) : hebrewProse ? (
+                              <span dir="rtl" lang="he" className="font-hebrew block" style={{ fontSize: 'var(--tx-fs, 1.35rem)' }}
+                                {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
+                                {row.greek}
                               </span>
                             ) : greekProse ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}

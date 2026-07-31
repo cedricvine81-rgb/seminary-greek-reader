@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -797,6 +797,106 @@ export const YERUSHALMI_CATALOG = YERUSHALMI.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+
+// ── The Babylonian Talmud (Talmud Bavli) ──────────────────────────────────────────────
+// All 37 tractates in Aramaic, from the Wikisource Vilna text (CC BY-SA 4.0 via Sefaria).
+// ARAMAIC ONLY: the Bavli's one good English is the Koren-Steinsaltz William Davidson edition,
+// which is CC-BY-NC and so cannot ship in a subscription app without permission (requested).
+// The CC0 community translation is far too patchy to stand in. Built by scripts/build-bavli.py.
+//
+// A daf is a chapter. Sefaria stores a tractate as a flat array of dapim, two per folio from 1a,
+// so chapter = index + 1 and the citation "b. Ber. 28b" lands at chapter (28-1)*2+2 = 56. 1a and
+// 1b are empty in every tractate (a Talmud opens at 2a), hence `first: 3`. chapterLabel turns the
+// number back into the daf a reader recognises.
+const BAVLI_ATTRIBUTION = 'Text: the Babylonian Talmud (Vilna), Hebrew Wikisource, CC BY-SA 4.0. Source: Sefaria. Aramaic only.'
+
+/** Chapter number → the daf as scholarship writes it: 3 → "2a", 56 → "28b". */
+export const bavliDaf = (chapter: number): string => {
+  const i = chapter - 1
+  return `${Math.floor(i / 2) + 1}${i % 2 === 0 ? 'a' : 'b'}`
+}
+
+// Recognise "b. <Tractate> <daf><a|b>" and return the chapter that daf lives at. A trailing
+// line/section number is ignored — our verses are Wikisource's line divisions, which are not
+// what a citation's second number would mean.
+const bavliCite = (abbrevs: string[]) => (text: string): { chapter: number; verse?: number } | null => {
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  for (const ab of [...abbrevs].sort((a, b) => b.length - a.length)) {
+    const m = s.match(new RegExp('^' + ab.replace(/\./g, '\\.') + '\\s+(\\d+)([ab])'))
+    if (m) return { chapter: (parseInt(m[1], 10) - 1) * 2 + (m[2] === 'b' ? 2 : 1) }
+  }
+  return null
+}
+
+// first/last are chapter numbers (see above); `skip` lists interior dapim the source lacks.
+const BAVLI: { slug: string; name: string; noteBook: string; first: number; last: number; skip?: number[]; abbrevs: string[] }[] = [
+  { slug: 'b-berakhot', name: 'b. Berakhot (Blessings)', noteBook: 'BavBerakhot', first: 3, last: 127, abbrevs: ['b. Ber.'] },
+  { slug: 'b-shabbat', name: 'b. Shabbat (Sabbath)', noteBook: 'BavShabbat', first: 3, last: 314, abbrevs: ['b. Šabb.'] },
+  { slug: 'b-eruvin', name: 'b. Eruvin (Sabbath Boundaries)', noteBook: 'BavEruvin', first: 3, last: 209, abbrevs: ['b. ʿErub.'] },
+  { slug: 'b-pesachim', name: 'b. Pesachim (Passover)', noteBook: 'BavPesachim', first: 3, last: 242, abbrevs: ['b. Pesaḥ.'] },
+  { slug: 'b-rosh-hashanah', name: 'b. Rosh Hashanah (The New Year)', noteBook: 'BavRoshHashanah', first: 3, last: 69, abbrevs: ['b. Roš Haš.'] },
+  { slug: 'b-yoma', name: 'b. Yoma (The Day of Atonement)', noteBook: 'BavYoma', first: 3, last: 175, abbrevs: ['b. Yoma'] },
+  { slug: 'b-sukkah', name: 'b. Sukkah (The Booth)', noteBook: 'BavSukkah', first: 3, last: 112, abbrevs: ['b. Sukkah'] },
+  { slug: 'b-beitzah', name: 'b. Beitzah (The Egg)', noteBook: 'BavBeitzah', first: 3, last: 80, abbrevs: ['b. Beṣah'] },
+  { slug: 'b-taanit', name: 'b. Taanit (Fasts)', noteBook: 'BavTaanit', first: 3, last: 61, abbrevs: ['b. Taʿan.'] },
+  { slug: 'b-megillah', name: 'b. Megillah (The Scroll of Esther)', noteBook: 'BavMegillah', first: 3, last: 63, abbrevs: ['b. Meg.'] },
+  { slug: 'b-moed-katan', name: 'b. Moed Katan (The Minor Festival)', noteBook: 'BavMoedKatan', first: 3, last: 57, abbrevs: ['b. Moʾed Qaṭ.', 'b. Moʾed Qaṭan'] },
+  { slug: 'b-chagigah', name: 'b. Chagigah (The Festival Offering)', noteBook: 'BavChagigah', first: 3, last: 53, abbrevs: ['b. Ḥag.'] },
+  { slug: 'b-yevamot', name: 'b. Yevamot (Levirate Marriages)', noteBook: 'BavYevamot', first: 3, last: 244, abbrevs: ['b. Yebam.', 'b. Yeb.'] },
+  { slug: 'b-ketubot', name: 'b. Ketubot (Marriage Contracts)', noteBook: 'BavKetubot', first: 3, last: 224, abbrevs: ['b. Ketub.'] },
+  { slug: 'b-nedarim', name: 'b. Nedarim (Vows)', noteBook: 'BavNedarim', first: 3, last: 182, abbrevs: ['b. Ned.'] },
+  { slug: 'b-nazir', name: 'b. Nazir (The Nazirite)', noteBook: 'BavNazir', first: 3, last: 132, skip: [66], abbrevs: ['b. Naz.'] },
+  { slug: 'b-sotah', name: 'b. Sotah (The Suspected Adulteress)', noteBook: 'BavSotah', first: 3, last: 98, abbrevs: ['b. Soṭah'] },
+  { slug: 'b-gittin', name: 'b. Gittin (Bills of Divorce)', noteBook: 'BavGittin', first: 3, last: 180, abbrevs: ['b. Giṭ.'] },
+  { slug: 'b-kiddushin', name: 'b. Kiddushin (Betrothals)', noteBook: 'BavKiddushin', first: 3, last: 164, abbrevs: ['b. Qidd.'] },
+  { slug: 'b-bava-kamma', name: 'b. Bava Kamma (The First Gate)', noteBook: 'BavBavaKamma', first: 3, last: 238, abbrevs: ['b. B. Qam.'] },
+  { slug: 'b-bava-metzia', name: 'b. Bava Metzia (The Middle Gate)', noteBook: 'BavBavaMetzia', first: 3, last: 237, abbrevs: ['b. B. Meṣiʿa'] },
+  { slug: 'b-bava-batra', name: 'b. Bava Batra (The Last Gate)', noteBook: 'BavBavaBatra', first: 3, last: 352, abbrevs: ['b. B. Bat.', 'b. B. Batr.'] },
+  { slug: 'b-sanhedrin', name: 'b. Sanhedrin (The Court)', noteBook: 'BavSanhedrin', first: 3, last: 226, abbrevs: ['b. Sanh.'] },
+  { slug: 'b-makkot', name: 'b. Makkot (Lashes)', noteBook: 'BavMakkot', first: 3, last: 48, abbrevs: ['b. Mak.'] },
+  { slug: 'b-shevuot', name: 'b. Shevuot (Oaths)', noteBook: 'BavShevuot', first: 3, last: 98, abbrevs: ['b. Šebu.'] },
+  { slug: 'b-avodah-zarah', name: 'b. Avodah Zarah (Idolatry)', noteBook: 'BavAvodahZarah', first: 3, last: 152, abbrevs: ['b. ʿAbod. Zar.'] },
+  { slug: 'b-horayot', name: 'b. Horayot (Rulings)', noteBook: 'BavHorayot', first: 3, last: 27, abbrevs: ['b. Hor.'] },
+  { slug: 'b-zevachim', name: 'b. Zevachim (Animal Sacrifices)', noteBook: 'BavZevachim', first: 3, last: 240, abbrevs: ['b. Zebaḥ.'] },
+  { slug: 'b-menachot', name: 'b. Menachot (Meal Offerings)', noteBook: 'BavMenachot', first: 3, last: 219, abbrevs: ['b. Menaḥ.'] },
+  { slug: 'b-chullin', name: 'b. Chullin (Non-Consecrated Animals)', noteBook: 'BavChullin', first: 3, last: 283, abbrevs: ['b. Ḥul.'] },
+  { slug: 'b-bekhorot', name: 'b. Bekhorot (Firstborns)', noteBook: 'BavBekhorot', first: 3, last: 121, abbrevs: ['b. Bek.'] },
+  { slug: 'b-arakhin', name: 'b. Arakhin (Valuations)', noteBook: 'BavArakhin', first: 3, last: 67, abbrevs: ['b. ʿArak.'] },
+  { slug: 'b-temurah', name: 'b. Temurah (Substitution)', noteBook: 'BavTemurah', first: 3, last: 67, abbrevs: ['b. Temurah'] },
+  { slug: 'b-keritot', name: 'b. Keritot (Excisions)', noteBook: 'BavKeritot', first: 3, last: 56, abbrevs: ['b. Ker.'] },
+  { slug: 'b-meilah', name: 'b. Meilah (Sacrilege)', noteBook: 'BavMeilah', first: 3, last: 43, abbrevs: ['b. Meʿil.'] },
+  { slug: 'b-tamid', name: 'b. Tamid (The Daily Offering)', noteBook: 'BavTamid', first: 50, last: 66, abbrevs: ['b. Tamid'] },
+  { slug: 'b-niddah', name: 'b. Niddah (The Menstruant)', noteBook: 'BavNiddah', first: 3, last: 145, abbrevs: ['b. Nid.'] },
+]
+
+/** Every daf a tractate actually holds, for the reader's chapter cascade. */
+function bavliChapters(w: { first: number; last: number; skip?: number[] }): number[] {
+  const skip = new Set(w.skip ?? [])
+  const out: number[] = []
+  for (let n = w.first; n <= w.last; n++) if (!skip.has(n)) out.push(n)
+  return out
+}
+
+const BAVLI_WORKS: ProseWork[] = BAVLI.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/bavli/${w.slug.replace(/^b-/, '')}.json`,
+  chapters: w.last,
+  attribution: BAVLI_ATTRIBUTION,
+  parseCitation: bavliCite(w.abbrevs),
+  chapterLabel: (ch: number) => `Daf ${bavliDaf(ch)}`,
+}))
+
+// Ids/names the catalog needs to list the tractates under one Texts category. `greek: true`
+// is the parallel-original slot the reader renders (the Aramaic lives there); `script: 'hebrew'`
+// makes it render right-to-left in the Hebrew face, and `greekOnly` since there is no English.
+export const BAVLI_CATALOG = BAVLI.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name,
+  chapters: w.last, chapterNumbers: bavliChapters(w),
+  greek: true, greekOnly: true, script: 'hebrew' as const,
+}))
+
 // ── Greco-Roman (Perseus) ─────────────────────────────────────────────────────────────
 // Epictetus — the Discourses (one work per book) and the Enchiridion — from the Perseus
 // Digital Library's canonical TEI editions, which carry the standard citation numbering
@@ -1409,6 +1509,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...HERODOTUS_WORKS,
   ...MISHNAH_WORKS,
   ...YERUSHALMI_WORKS,
+  ...BAVLI_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,
   ...ARISTOTLE_WORKS,

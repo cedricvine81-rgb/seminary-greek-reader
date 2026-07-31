@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, YERUSHALMI_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, YERUSHALMI_CATALOG, BAVLI_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -30,6 +30,9 @@ export interface CatalogWork {
   // Opens in Greek-only view (the Greek Sibylline, whose second column is empty for all but
   // the Book 8 acrostic). The Greek/second-column selector is still offered.
   greekOnly?: boolean
+  // 'hebrew' renders the original column right-to-left in the Hebrew face (the Talmud Bavli's
+  // Aramaic). Absent means Greek/Latin, i.e. left-to-right.
+  script?: 'hebrew'
   // Name of the second column when it is not English — e.g. the Latin of Augustine's
   // rendering of the Sibylline acrostic. Defaults to 'English'.
   secondaryLabel?: string
@@ -272,6 +275,12 @@ const RAW_CATEGORIES: TextCategory[] = [
     label: 'Mishnah',
     blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
     works: MISHNAH_CATALOG,
+  },
+  {
+    id: 'bavli',
+    label: 'Babylonian Talmud',
+    blurb: 'The Talmud Bavli (c. 500 CE) — all 37 tractates in Aramaic, cited by daf, from the Wikisource Vilna text (CC BY-SA, via Sefaria). No English: the one good translation is licensed non-commercially.',
+    works: BAVLI_CATALOG,
   },
   {
     id: 'yerushalmi',
