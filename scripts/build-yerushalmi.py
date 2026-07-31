@@ -13,8 +13,9 @@
 # exactly the granularity they are written in, and the Venice folio some citations add
 # ("y. Ber. 1:1 (3a)") is simply ignored by the matcher in prose-texts.ts.
 #
-# Guggenheimer's footnotes are part of the CC-BY text and are dropped here: they are dense
-# text-critical apparatus keyed to his printed page, of no use in a reading pane.
+# Guggenheimer's footnotes are dropped: they are dense text-critical apparatus, and they sit
+# INLINE in each segment rather than in a field of their own, so removing them takes a parser
+# (see _Stripper) — a regex leaks half of every note into the middle of the sentence.
 #
 # Usage:  python3 scripts/build-yerushalmi.py   (fetches over HTTPS, caching under /tmp;
 #         pass --no-cache to force re-fetch). Run from the repo root. Prints a report and
@@ -22,6 +23,7 @@
 
 import html
 import json
+from html.parser import HTMLParser
 import re
 import ssl
 import sys
@@ -112,13 +114,64 @@ def fetch(index: str, no_cache: bool):
     return versions[0].get('text') or []
 
 
+class _Stripper(HTMLParser):
+    """Text of a Guggenheimer segment, with his apparatus removed.
+
+    His footnotes are not separate fields: each sits inline in the segment as
+    <sup class="footnote-marker">n</sup><i class="footnote">…</i>, right in the middle of the
+    sentence it annotates. They must be dropped as whole elements — and by a parser, not a
+    regex, because a footnote contains nested <i> and <a> tags, so `<i class="footnote">.*?</i>`
+    stops at the first nested close and spills the rest of the note into the running text.
+    That is exactly what shipped first time round: page after page of text-critical notes
+    embedded mid-sentence. Track the depth instead and skip everything inside."""
+
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.out = []
+        self.skip_depth = 0     # >0 while inside a footnote
+        self.tag_depth = 0      # nesting of the element being skipped
+
+    def handle_starttag(self, tag, attrs):
+        cls = dict(attrs).get('class', '')
+        if self.skip_depth:
+            if tag == self.skip_tag:
+                self.tag_depth += 1
+            return
+        if tag == 'sup' and 'footnote-marker' in cls:
+            self.skip_depth, self.skip_tag, self.tag_depth = 1, 'sup', 1
+        elif tag == 'i' and 'footnote' in cls:
+            self.skip_depth, self.skip_tag, self.tag_depth = 1, 'i', 1
+        else:
+            return
+        # A removed note leaves the words either side touching ("…dawn.It happened…"), since
+        # the marker sat between them. Leave a space; the punctuation pass below takes it back
+        # off again where the note interrupted a sentence rather than ended one.
+        self.out.append(' ')
+
+    def handle_endtag(self, tag):
+        if self.skip_depth and tag == self.skip_tag:
+            self.tag_depth -= 1
+            if self.tag_depth == 0:
+                self.skip_depth = 0
+
+    def handle_data(self, data):
+        if not self.skip_depth:
+            self.out.append(data)
+
+    def text(self) -> str:
+        return ''.join(self.out)
+
+
 def clean(s: str) -> str:
-    # Guggenheimer's footnote markers are <sup> anchors; the notes themselves are separate
-    # segments Sefaria wraps in <i>. Strip the markup, keep the text, squash the whitespace.
-    s = re.sub(r'<sup[^>]*>.*?</sup>', ' ', s, flags=re.S)
-    s = html.unescape(s)
-    s = re.sub(r'<[^>]+>', ' ', s)
-    return re.sub(r'\s+', ' ', s).strip()
+    p = _Stripper()
+    p.feed(s)
+    out = html.unescape(p.text())
+    # Whitespace, then the seams the removed markers leave: a space before punctuation, and
+    # the stray "?." Guggenheimer's own text carries where a marker sat mid-sentence.
+    out = re.sub(r'\s+', ' ', out)
+    out = re.sub(r'\s+([,.;:?!])', r'\1', out)
+    out = out.replace('?.', '?')
+    return out.strip()
 
 
 def build_work(slug, tractate, gloss, abbrevs, no_cache):
