@@ -7,6 +7,8 @@ import { ChevronDown, Trash2, Check } from 'lucide-react'
 import { type MorphGroup } from '@/lib/morph-features'
 import { vocabFor, type MorphVocab } from '@/lib/morph-vocab'
 import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
+import { latinToHebrew, HEBREW_LEGEND } from '@/lib/hebrew-translit'
+import { normalizeHebrew } from '@/lib/hebrew-fold'
 import { normalizeGreek } from '@/lib/greek-utils'
 import type { ConstructTerm, LemmaForms } from '@/lib/construct-query'
 
@@ -131,6 +133,10 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
 }) {
   // Greek or Hebrew, decided by the corpus: the two share this card but no categories.
   const vocab = vocabFor(corpus)
+  const isHebrew = vocab.script === 'hebrew'
+  // The lemma table is keyed by the corpus's own fold (build-construct-index.mjs): Hebrew by
+  // its consonantal skeleton, Greek by accent-stripped lowercase.
+  const foldWord = (t: string) => (isHebrew ? normalizeHebrew(t).replace(/\s+/g, '') : normalizeGreek(t))
   // Agreement: which other word, and in which categories. Defaults to the first other word.
   const otherWords = Array.from({ length: termCount }, (_, i) => i).filter(i => i !== index)
   const agreeOn = (term.agreeOn ?? []).filter(c => vocab.agreementCategories.includes(c))
@@ -180,7 +186,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   // λόγος is a masculine noun, so neither is a question — those controls become plain text and
   // the rest of the dropdowns offer only the values the word actually occurs in.
   const forms = lemmaForms
-    ? lemmaForms.get(normalizeGreek(typed)) ?? null
+    ? lemmaForms.get(foldWord(typed)) ?? null
     : remote.q === typed ? remote.exact : null
 
   const posOptions = forms?.p ?? vocab.posFeatures.map(f => f.value)
@@ -268,7 +274,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   }
 
   const applyLemma = (next: string) => {
-    const nextForms = lemmaForms?.get(normalizeGreek(next.trim())) ?? null
+    const nextForms = lemmaForms?.get(foldWord(next.trim())) ?? null
     const nextTerm: ConstructTerm = { ...term, lemma: next, features: settleAgainst(term.features, nextForms) }
     const s = strongsOf(nextForms)
     if (s) nextTerm.strongs = s; else delete nextTerm.strongs
@@ -294,7 +300,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   const onLemmaChange = (e: ChangeEvent<HTMLInputElement>) => {
     const el = e.target
     const caret = el.selectionStart ?? el.value.length
-    const next = greekInput ? betaCodeToGreek(el.value) : el.value
+    const next = greekInput ? (isHebrew ? latinToHebrew(el.value) : betaCodeToGreek(el.value)) : el.value
     applyLemma(next)
     setOpenSug(true); setActiveSug(-1)
     if (greekInput) requestAnimationFrame(() => { try { el.setSelectionRange(caret, caret) } catch {} })
@@ -307,7 +313,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   // and `λογος` both find λόγος), then anything containing the string, each ranked by how often
   // the word occurs in the New Testament.
   const suggestions = useMemo<Suggestion[]>(() => {
-    const q = normalizeGreek(typed)
+    const q = foldWord(typed)
     if (!lemmaForms) return remote.q === typed ? remote.suggestions : []
     if (q.length < 2) return []
     const starts: { key: string; e: LemmaForms }[] = []
@@ -379,8 +385,12 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
           <input ref={inputRef} value={term.lemma ?? ''} onChange={onLemmaChange} onKeyDown={onLemmaKeyDown}
             onFocus={() => { if (suggestions.length) setOpenSug(true) }}
             autoComplete="off" spellCheck={false}
-            placeholder={lexemeIsExact ? 'e.g. σκότος — one exact form' : 'e.g. πνεῦμα — or leave blank'}
-            className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekInput ? 'greek-text' : ''}`} />
+            placeholder={isHebrew
+              ? (lexemeIsExact ? 'e.g. דָּבָר — one exact form' : 'e.g. דבר — or leave blank')
+              : (lexemeIsExact ? 'e.g. σκότος — one exact form' : 'e.g. πνεῦμα — or leave blank')}
+            dir={isHebrew ? 'rtl' : undefined}
+            lang={isHebrew ? 'he' : undefined}
+            className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${isHebrew ? 'font-hebrew text-base' : greekInput ? 'greek-text' : ''}`} />
 
           {/* Predictive lexemes — commonest first, with the gloss and how often the word occurs.
               Mouse-down rather than click so picking wins the race against the input's blur. */}
@@ -394,7 +404,8 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
                     onMouseEnter={() => setActiveSug(i)}
                     className={`flex w-full items-baseline gap-2 border-b border-gray-50 px-3 py-2 text-left last:border-0 ${
                       i === activeSug ? 'bg-brand-50' : 'hover:bg-brand-50'}`}>
-                    <span className="greek-text shrink-0 text-base text-gray-800">{s.display}</span>
+                    <span dir={isHebrew ? 'rtl' : undefined}
+                      className={`shrink-0 text-base text-gray-800 ${isHebrew ? 'font-hebrew' : 'greek-text'}`}>{s.display}</span>
                     {s.gloss && <span className="truncate text-xs text-gray-400">{s.gloss}</span>}
                     <span className="ml-auto shrink-0 text-[10px] text-gray-300">{s.pos} · {s.count}×</span>
                   </button>
@@ -414,10 +425,12 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
           ) : null}
         </div>
         <button type="button" onClick={() => setGreekInput(v => !v)}
-          title={greekInput ? `Greek keyboard on — ${BETA_LEGEND}` : 'Greek keyboard off — type Latin letters'}
+          title={greekInput
+            ? (isHebrew ? `Hebrew keyboard on — ${HEBREW_LEGEND}` : `Greek keyboard on — ${BETA_LEGEND}`)
+            : `${isHebrew ? 'Hebrew' : 'Greek'} keyboard off — type Latin letters`}
           className={`flex-none rounded-md border px-2 py-1.5 text-xs transition-colors ${
             greekInput ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-500 hover:bg-gray-50'}`}>
-          <span className="greek-text">α</span>
+          <span className={isHebrew ? 'font-hebrew' : 'greek-text'}>{isHebrew ? 'א' : 'α'}</span>
         </button>
       </div>
 

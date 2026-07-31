@@ -39,7 +39,15 @@ const DATA = path.join(process.cwd(), 'public', 'data')
 const booksMeta = JSON.parse(fs.readFileSync(path.join(DATA, 'books.json'), 'utf8'))
 
 const LETTERS = /[^A-Za-zÀ-ɏͰ-῿]/g
-const normalize = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
+const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+// Hebrew needs its own fold: its vowel points live at U+0591–U+05C7, outside the combining
+// range `normalize` strips, so a pointed dictionary form (דָּבָר) would never match the
+// unpointed word a reader types (דבר). Mirrors normalizeHebrew in src/lib/hebrew-fold.ts.
+const HEB_FINALS = { 'ך': 'כ', 'ם': 'מ', 'ן': 'נ', 'ף': 'פ', 'ץ': 'צ' }
+const normalizeHeb = s => String(s ?? '')
+  .replace(/[\u0591-\u05c7]/g, '')
+  .replace(/[ךםןףץ]/g, c => HEB_FINALS[c])
+  .replace(/[^\u05d0-\u05ea]/g, '')
 
 // ─── Morphology vocabulary ────────────────────────────────────────────────────
 // Mirrors MORPH_GROUPS / POS_CATEGORIES in src/lib/morph-features.ts (this script is standalone
@@ -548,6 +556,8 @@ const topOf = counts => (counts ? Object.entries(counts).sort((a, b) => b[1] - a
 // No frequency threshold — pruning rare-but-real forms would make a legitimate search
 // unexpressible, and the GNT tagging is hand-made, so stray values are not a real problem.
 function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strongsCounts, totals }, keyBy = 'lemma', lex = 'greek') {
+  // Hebrew folds its own way (see normalizeHeb); everything else is Greek/Latin.
+  const fold = lex === 'hebrew' ? normalizeHeb : (t => normalize(String(t).replace(LETTERS, '')))
   // Which lexicon supplies the dictionary form and gloss for a Strong's-grouped corpus.
   const dictForm = n => (lex === 'hebrew' ? hebLexicon[String(n)]?.lemma : lexicon[`G${n}`]?.lemma)
   const dictGloss = n => (lex === 'hebrew' ? hebLexicon[String(n)]?.gloss : shortGloss(lexicon[`G${n}`]?.thayer))
@@ -566,7 +576,7 @@ function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strong
       ? (dictForm(strongs) || topOf(spellingCounts[group]))
       : topOf(spellingCounts[group])
     if (keyBy === 'strongs' && !dictForm(strongs)) noDictionaryForm++
-    const lemma = keyBy === 'strongs' ? normalize(String(spelling).replace(LETTERS, '')) : group
+    const lemma = keyBy === 'strongs' ? fold(spelling) : group
     if (!lemma) continue
     if (spelling && spelling !== lemma) entry.d = spelling
     // Carried so the engine can match every inflected form by number rather than by string.

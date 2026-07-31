@@ -203,14 +203,20 @@ export function ConstructTextPanel({ target, onClose }: { target: ConstructTextT
   // Greek rendered as clickable tokens (biblical) so a word can be parsed where it sits.
   const renderTokens = useMemo(() => (row: Row, refLabel: string) => (
     <p className="greek-text leading-relaxed block text-gray-900">
-      {(row.tokens ?? []).map((tok, i) => (
+      {(row.tokens ?? []).map((tok, i) => {
+        // Hover AND click, like the results list beside it: sweeping a mouse along a verse is
+        // how you read a parse per word, and the click is what touch devices have instead.
+        const select = () => setSelectedInfo({
+          surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '',
+          partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: refLabel,
+        })
+        return (
         <span key={i}>
           <button
             type="button"
-            onClick={() => setSelectedInfo({
-              surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '',
-              partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: refLabel,
-            })}
+            onMouseEnter={select}
+            onFocus={select}
+            onClick={select}
             className={`reading-word rounded px-0.5 transition-colors hover:bg-brand-100 ${
               selectedInfo?.surface === tok.surface && selectedInfo?.reference === refLabel ? 'bg-brand-100' : ''}`}
           >
@@ -218,7 +224,8 @@ export function ConstructTextPanel({ target, onClose }: { target: ConstructTextT
           </button>
           {i < (row.tokens?.length ?? 0) - 1 ? ' ' : ''}
         </span>
-      ))}
+        )
+      })}
     </p>
   ), [selectedInfo])
 
