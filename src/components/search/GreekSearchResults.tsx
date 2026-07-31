@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { ParsingDock } from './ParsingDock'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { buildHebrewInfo } from '@/components/reader/HebrewWord'
+import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
 import { findTermRanges, markSlice, normalizeFold, SEARCH_MARK } from '@/lib/highlight-terms'
 import { emitParsingInfo, hasParsingSink } from '@/lib/parsing-info-bus'
 import { openWordSearch } from '@/lib/word-search-bus'
@@ -22,7 +24,12 @@ const MORPH_ORDER = ['partOfSpeech', 'tense', 'voice', 'mood', 'person', 'number
 // `transLang === 'none'` turns the parallel column off (Greek only) — never fetched, never
 // rendered as a column. The selector itself lives in SearchPageView's controls bar.
 
-type Token = { surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string }
+type Token = {
+  surface: string; lemma: string; gloss?: string; strongs?: string; parsing: string
+  // Hebrew (MT) only: the raw OSHB code, the morpheme breakdown, and the language flag, which
+  // buildHebrewInfo turns into a Hebrew parsing panel (lemma, transliteration, BDB, prefixes).
+  heb?: { morph: string; morphemes?: { text: string; strongs: string; morph: string }[]; lang?: 'H' | 'A' }
+}
 // matchedLemmas: normalized lemmas of the word(s) a morphology search matched in this verse,
 // so exactly those tokens can be red-highlighted (surface/lemma terms cover the other searches).
 // matchedWords: 0-based indices of the words a construct search matched IN THIS VERSE. Present only
@@ -86,6 +93,12 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   // parses THERE via the bus and drop the panel's internal dock — one pane, no duplication.
   // Decided once at mount (the host page registers its sink before the panel can open).
   const [useSink] = useState(() => embedded && hasParsingSink())
+  // The Hebrew Strong's lexicon, fetched once when the MT is on screen — it supplies the
+  // dictionary form, transliteration and BDB entry the Hebrew parsing panel shows.
+  const [hebrewLex, setHebrewLex] = useState<HebrewLexicon | null>(null)
+  useEffect(() => {
+    if (corpus === 'MT' && !hebrewLex) loadHebrewLexicon().then(setHebrewLex).catch(() => {})
+  }, [corpus, hebrewLex])
   const showInfo = (i: LexicalInfoPanel | null) => { if (useSink) emitParsingInfo(i); else setInfo(i) }
 
   // verseId → tokens (Greek, per corpus) and verseId → translation text (per lang), lazily filled.
@@ -124,6 +137,27 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
       const tokKey = `${corpus}.${ck}`
       if (!fetchedTok.current.has(tokKey)) {
         fetchedTok.current.add(tokKey)
+        if (corpus === 'MT') {
+          // Straight from the MT chapter files, like the Hebrew Reader (GreekReader) does.
+          // /api/reader flattens Hebrew into the Greek word shape — Strong's arrives as "G7225"
+          // and the OSHB code is dropped — so a Hebrew word looked up as Greek, which is why the
+          // pane showed Liddell-Scott for בְּרֵאשִׁית.
+          fetch(`/data/mt/${osis}_${ch}.json`)
+            .then(r => (r.ok ? r.json() : null))
+            .then((d: { verses?: { verse: number; words?: { surface: string; strongs?: string; morph?: string; lang?: 'H' | 'A'; morphemes?: { text: string; strongs: string; morph: string }[] }[] }[] } | null) => {
+              if (!d?.verses) return
+              for (const v of d.verses) {
+                tokens.current[`${osis}.${ch}.${v.verse}`] = (v.words ?? []).map(w => ({
+                  surface: w.surface,
+                  lemma: '',                        // filled from the lexicon when the pane is built
+                  strongs: w.strongs,
+                  parsing: '',
+                  heb: { morph: w.morph ?? '', morphemes: w.morphemes, lang: w.lang },
+                }))
+              }
+              bump(x => x + 1)
+            }).catch(() => { fetchedTok.current.delete(tokKey) })
+        } else {
         fetch(`/api/reader?book=${osis}&chapter=${ch}&corpus=${corpus}`)
           .then(r => (r.ok ? r.json() : null))
           .then((d: { verses?: { verse: number; words?: { surface: string; lexeme?: { lexeme: string; gloss?: string; strongs?: string }; parses?: Record<string, string | null>[] }[] }[] } | null) => {
@@ -136,6 +170,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
             }
             bump(x => x + 1)
           }).catch(() => { fetchedTok.current.delete(tokKey) })
+        }
       }
       const trKey = `${transLang}.${ck}`
       if (transLang !== 'none' && !fetchedTr.current.has(trKey)) {
@@ -198,7 +233,16 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
           || (!!searchLemma && normalizeFold(tok.lemma) === searchLemma)
           || (!!hitLemmas && hitLemmas.has(normalizeFold(tok.lemma)))
       const select = () => {
-        showInfo({ surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference: `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}` })
+        const reference = `${bookName.get(h.osisId) ?? h.osisId} ${cv.chapter}:${cv.verse}`
+        showInfo(tok.heb
+          // Hebrew: the same panel the Reader builds — dictionary form, transliteration, the
+          // decoded OSHB parse, Strong's + BDB, and the prefix/suffix breakdown for compounds.
+          ? buildHebrewInfo(
+              { surface: tok.surface, strongs: tok.strongs ?? '', morph: tok.heb.morph, lang: tok.heb.lang, morphemes: tok.heb.morphemes } as never,
+              reference,
+              hebrewLex,
+            )
+          : { surface: tok.surface, lexeme: tok.lemma, gloss: tok.gloss ?? '', partOfSpeech: '', parsing: tok.parsing, strongs: tok.strongs, reference })
         setSelKey(key)
       }
       return (

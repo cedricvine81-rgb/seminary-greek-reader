@@ -569,7 +569,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 bookName={bookName}
                 context={0}
                 ctxMap={{}}
-                transLang={ran.corpus === 'MT' ? 'none' : transLang}
+                transLang={transLang}
                 onOpen={openHit}
                 isAuthenticated={isAuthenticated}
               />
