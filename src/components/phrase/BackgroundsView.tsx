@@ -7,6 +7,7 @@ import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { buildHebrewInfo } from '@/components/reader/HebrewWord'
 import { HEBREW_LAYER } from '@/components/reader/HebrewVerse'
 import { loadHebrewLexicon, type HebrewLexicon } from '@/lib/hebrew-lexicon'
+import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/lib/jastrow'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 import type { VerseWord } from '@/types/biblical-text'
 import type { PhraseFontSize } from './PhraseExplorer'
@@ -379,6 +380,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
 
   // ── Shared parsing pane (driven by either column) ──
   const [selectedInfo, setSelectedInfo] = useState<LexicalInfoPanel | null>(null)
+  // Jastrow's dictionary, for the Aramaic of the Bavli and Tosefta. Fetched only once one of
+  // those passages is actually open, like the Hebrew lexicon below it.
+  const [jastrow, setJastrow] = useState<JastrowData | null>(null)
   const [selectedKey, setSelectedKey] = useState<string | null>(null)
 
   // ── Per-verse personal notes (signed-in users), left + right columns share one set ──
@@ -739,7 +743,9 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
   // parsing pane can render lemma/transliteration/definition for each Hebrew word.
   useEffect(() => {
     if (rightVersion === 'mt' && !hebrewLex) loadHebrewLexicon().then(setHebrewLex).catch(() => {})
-  }, [rightVersion, hebrewLex])
+    // A Talmud or Tosefta citation is open: bring in Jastrow so its words can be looked up.
+    if (rightProse?.work.script === 'hebrew' && !jastrow) loadJastrow().then(setJastrow).catch(() => {})
+  }, [rightVersion, hebrewLex, rightProse, jastrow])
 
   const isGreek = version === 'gnt' || version === 'na1904'
   const isRightGreek = rightVersion === 'gnt' || rightVersion === 'na1904'
@@ -1169,9 +1175,40 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           {rightProse.work.script === 'hebrew' ? (
                             // The Bavli and Tosefta: Aramaic, right-to-left, and stored in the
                             // verse's `greek` field. TransWords is for left-to-right translations.
+                            // Each word is clickable, and looks itself up in Jastrow — the same
+                            // dictionary the Talmud reader uses, since the text carries no
+                            // morphology to parse.
                             <span dir="rtl" lang="he" className="font-hebrew"
                               {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
-                              {v.greek ?? ''}
+                              {(v.greek ?? '').split(/(\s+)/).map((tok, ti) => {
+                                if (!tok.trim()) return tok
+                                const key = `jas.${proseChapter.number}.${v.number}.${ti}`
+                                const select = () => {
+                                  const hits = lookupAramaic(jastrow, tok)
+                                  const ref = `${rightProse.work.name} ${proseChapter.number}:${v.number}`
+                                  const first = hits[0]
+                                  setSelectedInfo(first
+                                    ? {
+                                        surface: tok, lexeme: first.headword, gloss: first.entry.s[0] ?? '',
+                                        partOfSpeech: first.entry.m ?? '',
+                                        parsing: first.inferred ? `possible reading: ${strippedLabel(first)}` : 'Jastrow entry',
+                                        reference: ref, script: 'hebrew',
+                                        definition: first.entry.s.slice(1).join(' · ') || undefined,
+                                        bdbDefinition: hits.length > 1
+                                          ? `Other possibilities: ${hits.slice(1, 4).map(h => `${h.headword} — ${h.entry.s[0] ?? ''}`).join('  |  ')}`
+                                          : undefined,
+                                      }
+                                    : { surface: tok, lexeme: '', gloss: jastrow ? 'No Jastrow entry found for this form.' : 'Loading Jastrow…',
+                                        partOfSpeech: '', parsing: '', reference: ref, script: 'hebrew' })
+                                  setSelectedKey(key)
+                                }
+                                return (
+                                  <span key={ti} onMouseEnter={select} onClick={select}
+                                    className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
+                                    {tok}
+                                  </span>
+                                )
+                              })}
                             </span>
                           ) : (
                           <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
