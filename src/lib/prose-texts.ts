@@ -18,6 +18,9 @@ export interface ProseWork {
   // Traditional reference for a chapter, shown in the reader's chapter headings — for works
   // whose chapters carry a second, structural numbering (Hermas: "Vision 3.6" for chapter 14).
   chapterLabel?: (chapter: number) => string
+  // 'hebrew' for the Bavli and Tosefta: their text is right-to-left, and it lives in the
+  // verse's `greek` field (the parallel-original slot) rather than `text`.
+  script?: 'hebrew'
 }
 
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
@@ -886,6 +889,7 @@ const BAVLI_WORKS: ProseWork[] = BAVLI.map(w => ({
   attribution: BAVLI_ATTRIBUTION,
   parseCitation: bavliCite(w.abbrevs),
   chapterLabel: (ch: number) => `Daf ${bavliDaf(ch)}`,
+  script: 'hebrew',
 }))
 
 // Ids/names the catalog needs to list the tractates under one Texts category. `greek: true`
@@ -988,6 +992,7 @@ const TOSEFTA_WORKS: ProseWork[] = TOSEFTA.map(w => ({
   attribution: TOSEFTA_ATTRIBUTION,
   // "t. Ber. 3:7" — the SBL abbreviation is the display name with the tractate spelled out.
   parseCitation: toseftaCite([w.name, ...(w.abbrev ? [`t. ${w.abbrev}`] : [])]),
+  script: 'hebrew',
 }))
 
 export const TOSEFTA_CATALOG = TOSEFTA.map(w => ({

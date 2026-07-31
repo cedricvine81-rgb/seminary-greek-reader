@@ -67,6 +67,10 @@ export function TransWords({ text, lang, reference, book, bgCollection, hl, term
   // Normalized search terms to mark (see parseSearchTerms); omit outside search results.
   terms?: string[]
 }) {
+  // Defensive: a caller passing undefined used to throw inside split() and take the entire
+  // page down through the error boundary — the Backgrounds pane did exactly that for the
+  // Bavli, whose text lives in a different field.
+  text = text ?? ''
   const termRanges = terms?.length ? findTermRanges(text, terms) : []
   const inTerm = (start: number, end: number) =>
     termRanges.some(([rs, re]) => start < re && end > rs)

@@ -1166,6 +1166,14 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                           className={v.number === rightProse.ref.verse ? 'bg-brand-50 -mx-1 px-1 rounded' : undefined}
                         >
                           <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{v.number}</sup>
+                          {rightProse.work.script === 'hebrew' ? (
+                            // The Bavli and Tosefta: Aramaic, right-to-left, and stored in the
+                            // verse's `greek` field. TransWords is for left-to-right translations.
+                            <span dir="rtl" lang="he" className="font-hebrew"
+                              {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
+                              {v.greek ?? ''}
+                            </span>
+                          ) : (
                           <span {...verseAnchorProps(rightProse.work.noteBook, proseChapter.number, v.number, 'en')}>
                             <TransWords text={v.text} lang="en" reference={`${rightProse.work.name} ${proseChapter.number}:${v.number}`} book={rightProse.work.noteBook}
                               hl={isAuthenticated ? { isAuthenticated, verseHighlights,
@@ -1173,6 +1181,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                                 recolor: (id, c) => void highlights.recolor(id, rightProse.work.noteBook, proseChapter.number, c),
                                 remove: id => void highlights.remove(id, rightProse.work.noteBook, proseChapter.number) } : undefined} />
                           </span>
+                          )}
                         </p>
                       )})}
                     </div>
