@@ -255,6 +255,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
 
   const crossCount = hits?.filter(h => h.crossesVerse).length ?? 0
   const scopeNoun = isProseCorpus(query.corpus) ? 'work' : 'book'
+  const scopeAvailable = query.corpus !== CONSTRUCT_ALL && (scopes[query.corpus]?.length ?? 0) > 0
 
   // Never available during a lockdown exam — same rule as the rest of Search.
   if (mounted && isExamLocked()) {
@@ -308,12 +309,40 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           it on something real, and each is an ordinary query that can then be edited or re-scoped.
           Counts are the New Testament's, checked against the corpus, so a wrong result shows. */}
       <div className="mb-3">
-        <button type="button" onClick={() => setShowExamples(v => !v)} aria-expanded={showExamples}
-          className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
-            showExamples ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
-          <Lightbulb size={13} /> Examples
-          <ChevronDown size={12} className={`transition-transform ${showExamples ? 'rotate-180' : ''}`} />
-        </button>
+        {/* Both pickers share one row — they are each a single short chip, and stacking them
+            cost a whole row of vertical space above the builder. Their panels open beneath. */}
+        <div className="flex flex-wrap items-center gap-2">
+          <button type="button" onClick={() => setShowExamples(v => !v)} aria-expanded={showExamples}
+            className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
+              showExamples ? 'border-brand-300 bg-brand-50 text-brand-700' : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
+            <Lightbulb size={13} /> Examples
+            <ChevronDown size={12} className={`transition-transform ${showExamples ? 'rotate-180' : ''}`} />
+          </button>
+          {/* Limit to particular books or works. Not offered for "search all", where a book id
+              would be ambiguous across corpora — the distribution is how you narrow there. */}
+          {scopeAvailable && (
+            <button type="button" onClick={() => setShowScope(v => !v)} aria-expanded={showScope}
+              className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
+                query.books?.length
+                  ? 'border-brand-300 bg-brand-50 text-brand-700'
+                  : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
+              <Library size={13} />
+              {query.books?.length
+                ? `${query.books.length} ${scopeNoun}${query.books.length === 1 ? '' : 's'}`
+                : `All ${scopeNoun}s`}
+              <ChevronDown size={12} className={`transition-transform ${showScope ? 'rotate-180' : ''}`} />
+            </button>
+          )}
+        </div>
+        {scopeAvailable && showScope && (
+          <ConstructScopePicker
+            entries={scopes[query.corpus] ?? []}
+            selected={query.books ?? []}
+            biblical={!isProseCorpus(query.corpus)}
+            onChange={ids => setQuery(q => ({ ...q, books: ids.length ? ids : undefined }))}
+            onClose={() => setShowScope(false)}
+          />
+        )}
         {showExamples && (
           <div className="mt-2 max-h-[46vh] space-y-3 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
             {CONSTRUCT_PRESETS.map(group => (
@@ -343,33 +372,6 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
           </div>
         )}
       </div>
-
-      {/* Limit to particular books or works. Not offered for "search all", where a book id would be
-          ambiguous across corpora — the distribution is how you narrow there. */}
-      {query.corpus !== CONSTRUCT_ALL && (scopes[query.corpus]?.length ?? 0) > 0 && (
-        <div className="mb-3">
-          <button type="button" onClick={() => setShowScope(v => !v)} aria-expanded={showScope}
-            className={`inline-flex items-center gap-1.5 rounded border px-2 py-1 text-xs transition-colors ${
-              query.books?.length
-                ? 'border-brand-300 bg-brand-50 text-brand-700'
-                : 'border-gray-300 bg-surface text-gray-600 hover:bg-gray-50'}`}>
-            <Library size={13} />
-            {query.books?.length
-              ? `${query.books.length} ${scopeNoun}${query.books.length === 1 ? '' : 's'}`
-              : `All ${scopeNoun}s`}
-            <ChevronDown size={12} className={`transition-transform ${showScope ? 'rotate-180' : ''}`} />
-          </button>
-          {showScope && (
-            <ConstructScopePicker
-              entries={scopes[query.corpus] ?? []}
-              selected={query.books ?? []}
-              biblical={!isProseCorpus(query.corpus)}
-              onChange={ids => setQuery(q => ({ ...q, books: ids.length ? ids : undefined }))}
-              onClose={() => setShowScope(false)}
-            />
-          )}
-        </div>
-      )}
 
       {query.corpus !== CONSTRUCT_ALL && corpusInfo(query.corpus).tagging === 'machine' && (
         <p className="mb-4 rounded-lg border border-amber-200/70 bg-amber-50/50 px-3 py-2 text-xs text-gray-600">
