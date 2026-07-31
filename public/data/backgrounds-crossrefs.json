@@ -1,5 +1,5 @@
 {
- "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
+ "attribution": "Cross-references adapted from Craig A. Evans, Ancient Texts for New Testament Studies: A Guide to the Background Literature (Peabody, MA: Hendrickson, 2005), Appendix Two: \"Quotations, Allusions, and Parallels to the New Testament.\" Used for instructional purposes in a login-gated course tool. Additional NT–OT intertextual citations (quotations and allusions) adapted from G.K. Beale & D.A. Carson (eds.), Commentary on the New Testament Use of the Old Testament (Baker Academic, 2007); R.T. France, The Gospel of Matthew (NICNT, Eerdmans, 2007); Richard B. Hays, Echoes of Scripture in the Letters of Paul (Yale UP, 1989); and other named commentaries per citation. Used for instructional purposes in a login-gated course tool. Patristic (early-Christian reception) references — citations of and allusions to the New Testament in the Apostolic Fathers, second-century apologists, Irenaeus, and Tertullian — are drawn from the accompanying Patristic References to the New Testament guide. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli. Rabbinic parallels for Luke and Acts additionally drawn from the citation apparatus of Hermann L. Strack & Paul Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch (München: Beck, 1922–28), which is in the public domain; references only, verified against the embedded Mishnah, Yerushalmi and Bavli.",
  "entries": [
   {
    "book": "Matt",
@@ -30,6 +30,31 @@
    "book": "Matt",
    "chapter": 1,
    "endChapter": 1,
+   "verseStart": 8,
+   "verseEnd": 8,
+   "label": "Matt 1:8",
+   "citations": [
+    {
+     "text": "y. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 4a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 1,
+   "endChapter": 1,
    "verseStart": 11,
    "verseEnd": 11,
    "label": "Matt 1:11",
@@ -42,6 +67,91 @@
       "chapter": 1,
       "verse": 32
      }
+    },
+    {
+     "text": "y. Soṭah 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 1,
+   "endChapter": 1,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 1:12",
+   "citations": [
+    {
+     "text": "y. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 1,
+   "endChapter": 1,
+   "verseStart": 16,
+   "verseEnd": 16,
+   "label": "Matt 1:16",
+   "citations": [
+    {
+     "text": "m. B. Bat. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 1,
+   "endChapter": 1,
+   "verseStart": 20,
+   "verseEnd": 20,
+   "label": "Matt 1:20",
+   "citations": [
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 38b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -274,6 +384,21 @@
    "book": "Matt",
    "chapter": 2,
    "endChapter": 2,
+   "verseStart": 11,
+   "verseEnd": 11,
+   "label": "Matt 2:11",
+   "citations": [
+    {
+     "text": "b. Šabb. 104b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 2,
+   "endChapter": 2,
    "verseStart": 15,
    "verseEnd": 15,
    "label": "Matt 2:15",
@@ -323,6 +448,26 @@
       "chapter": 31,
       "verse": 15
      }
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 2,
+   "endChapter": 2,
+   "verseStart": 20,
+   "verseEnd": 20,
+   "label": "Matt 2:20",
+   "citations": [
+    {
+     "text": "m. Mak. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -467,6 +612,11 @@
     {
      "text": "Ap. Jas. (NHC I) 9:24–10:6",
      "type": "Christian Apocrypha"
+    },
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -551,6 +701,26 @@
     {
      "text": "Homer, Od. 1.320",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. ʿErub. 18b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 108b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -715,6 +885,36 @@
    "book": "Matt",
    "chapter": 4,
    "endChapter": 4,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 4:12",
+   "citations": [
+    {
+     "text": "m. B. Bat. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿErub. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 4,
+   "endChapter": 4,
    "verseStart": 15,
    "verseEnd": 15,
    "label": "Matt 4:15",
@@ -751,6 +951,51 @@
      "text": "cf. Tg. Isa. 9:1–6",
      "type": "Rabbinic",
      "cf": true
+    },
+    {
+     "text": "t. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 3b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -770,6 +1015,61 @@
       "chapter": 25,
       "verse": 7
      }
+    },
+    {
+     "text": "t. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Roš Haš. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 90b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 5b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -825,6 +1125,176 @@
      "type": "Patristic",
      "kind": "Allusion",
      "note": "beatitude form echoed (Berding; Hartog)"
+    },
+    {
+     "text": "t. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 60b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Pesaḥ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 48b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 29b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 38b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 138b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 151b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 145b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 28b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 42b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1137,6 +1607,16 @@
     {
      "text": "b. Ber. 8b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Šabb. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1187,6 +1667,11 @@
       "chapter": 4,
       "verse": 1
      }
+    },
+    {
+     "text": "m. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1214,6 +1699,166 @@
     {
      "text": "ʾAbot 5:23",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Šabb. 138b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 11b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Meṣiʿa 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 43a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 9b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 57b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Mak. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1402,6 +2047,26 @@
       "chapter": 28,
       "verse": 7
      }
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 105b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1430,6 +2095,16 @@
     {
      "text": "Valerius Maximus, Fact. dict. 2.1.6",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "y. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1453,6 +2128,61 @@
       "chapter": 8,
       "verse": 1
      }
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 17b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1499,6 +2229,31 @@
     {
      "text": "t. Šebu. 3.6",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1533,6 +2288,116 @@
     {
      "text": "Aelian, Var. hist. 14.28, 42",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "m. Soṭah 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Giṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Giṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Giṭ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Giṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 64b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yebam. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1863,6 +2728,26 @@
       "chapter": 24,
       "verse": 20
      }
+    },
+    {
+     "text": "m. Mak. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 83b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1889,6 +2774,101 @@
     {
      "text": "Sent. Sextus 17",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. B. Qam. 92b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 58b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 114b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Meṣiʿa 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 35b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 101b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 30b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 99b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 31b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Meṣiʿa 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 61b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -1981,6 +2961,101 @@
       "chapter": 19,
       "verse": 18
      }
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 13b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 58b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 76b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 39b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -2037,6 +3112,31 @@
      "type": "Patristic",
      "kind": "Quotation",
      "note": "love of enemies; no reward for loving only those who love you (Grant)"
+    },
+    {
+     "text": "b. Šabb. 88b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -2095,6 +3195,46 @@
    "book": "Matt",
    "chapter": 5,
    "endChapter": 5,
+   "verseStart": 47,
+   "verseEnd": 47,
+   "label": "Matt 5:47",
+   "citations": [
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 5,
+   "endChapter": 5,
    "verseStart": 48,
    "verseEnd": 48,
    "label": "Matt 5:48",
@@ -2111,6 +3251,11 @@
     {
      "text": "Epictetus, Ench. 5",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -2130,6 +3275,76 @@
       "chapter": 12,
       "verse": 8
      }
+    },
+    {
+     "text": "m. Giṭ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 41b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -2813,6 +4028,41 @@
     {
      "text": "C.Tg. (C) Gen 34:23",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. B. Qam. 90a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥul. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -2835,6 +4085,31 @@
     {
      "text": "Pesiq. Rab. Kah. 8.1",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 82b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 39b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3055,6 +4330,61 @@
     {
      "text": "Sent. Sextus 183–184",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Soṭah 47a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 107b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 60b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 92b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3353,6 +4683,36 @@
     {
      "text": "Tg. Ps.-J. Lev 19:18",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Ḥag. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sukkah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3610,6 +4970,31 @@
       "chapter": 8,
       "verse": 16
      }
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 89a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 16a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3716,6 +5101,21 @@
   },
   {
    "book": "Matt",
+   "chapter": 7,
+   "endChapter": 7,
+   "verseStart": 29,
+   "verseEnd": 29,
+   "label": "Matt 7:29",
+   "citations": [
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
    "chapter": 8,
    "endChapter": 8,
    "verseStart": 4,
@@ -3734,6 +5134,26 @@
     {
      "text": "m. Neg. 3:1",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 8,
+   "endChapter": 8,
+   "verseStart": 6,
+   "verseEnd": 6,
+   "label": "Matt 8:6",
+   "citations": [
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3792,6 +5212,71 @@
     {
      "text": "Tg. Mic. 5:1–3",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Qidd. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 31b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 45b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 27b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 6b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Roš Haš. 5b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3836,6 +5321,21 @@
     {
      "text": "b. Ber. 34b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Sanh. 38b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 66b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3859,6 +5359,11 @@
     {
      "text": "Tg. Isa. 52:13–53:12",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Sanh. 98b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3877,6 +5382,26 @@
     {
      "text": "Epictetus 3.22.9–11",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 27b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 99b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3951,6 +5476,41 @@
       "chapter": 65,
       "verse": 5
      }
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Roš Haš. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Roš Haš. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Roš Haš. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -3979,6 +5539,216 @@
     {
      "text": "1 En. 16:1",
      "type": "Pseudepigrapha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 8,
+   "endChapter": 8,
+   "verseStart": 30,
+   "verseEnd": 30,
+   "label": "Matt 8:30",
+   "citations": [
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 8,
+   "endChapter": 8,
+   "verseStart": 32,
+   "verseEnd": 32,
+   "label": "Matt 8:32",
+   "citations": [
+    {
+     "text": "m. B. Bat. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Bat. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 17a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 9,
+   "endChapter": 9,
+   "verseStart": 10,
+   "verseEnd": 10,
+   "label": "Matt 9:10",
+   "citations": [
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 9,
+   "endChapter": 9,
+   "verseStart": 11,
+   "verseEnd": 11,
+   "label": "Matt 9:11",
+   "citations": [
+    {
+     "text": "b. Sukkah 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 95a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 9b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 14b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 62b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 57a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ketub. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ketub. 7b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Pesaḥ. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ketub. 17a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 101a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ber. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4029,6 +5799,16 @@
       "chapter": 9,
       "verse": 10
      }
+    },
+    {
+     "text": "m. ʿAbod. Zar. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4043,6 +5823,11 @@
     {
      "text": "b. Taʿan. 23b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4057,6 +5842,36 @@
     {
      "text": "m. Ketub. 4:4",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Šabb. 23",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Moʾed Qaṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 9,
+   "endChapter": 9,
+   "verseStart": 24,
+   "verseEnd": 24,
+   "label": "Matt 9:24",
+   "citations": [
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4093,6 +5908,26 @@
     {
      "text": "T. Sol. 12:2",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 71a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4206,6 +6041,161 @@
    "book": "Matt",
    "chapter": 10,
    "endChapter": 10,
+   "verseStart": 4,
+   "verseEnd": 4,
+   "label": "Matt 10:4",
+   "citations": [
+    {
+     "text": "m. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 19",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Qam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Roš Haš. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Roš Haš. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 10,
+   "endChapter": 10,
    "verseStart": 6,
    "verseEnd": 6,
    "label": "Matt 10:6",
@@ -4277,6 +6267,21 @@
    "book": "Matt",
    "chapter": 10,
    "endChapter": 10,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 10:12",
+   "citations": [
+    {
+     "text": "m. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 10,
+   "endChapter": 10,
    "verseStart": 15,
    "verseEnd": 15,
    "label": "Matt 10:15",
@@ -4309,6 +6314,11 @@
     {
      "text": "T. Benj. 9:1",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "t. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4359,6 +6369,21 @@
    "book": "Matt",
    "chapter": 10,
    "endChapter": 10,
+   "verseStart": 20,
+   "verseEnd": 20,
+   "label": "Matt 10:20",
+   "citations": [
+    {
+     "text": "b. Qidd. 70b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 10,
+   "endChapter": 10,
    "verseStart": 21,
    "verseEnd": 21,
    "label": "Matt 10:21",
@@ -4402,6 +6427,86 @@
       "chapter": 1,
       "verse": 11
      }
+    },
+    {
+     "text": "m. ʿAbod. Zar. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 62b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 58b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 174b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥul. 105b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Pesaḥ. 113b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 25b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4473,6 +6578,66 @@
     {
      "text": "Seneca, Ira Ep. 79.14",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 17",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 16b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 91b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Meg. 25a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 107b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 144b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4553,6 +6718,16 @@
      "type": "Patristic",
      "kind": "Quotation",
      "note": "'whoever confesses me before others...' introduced as dominical saying (Tuckett)"
+    },
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 46b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4584,6 +6759,16 @@
     {
      "text": "3 Bar. 4:17",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4606,6 +6791,21 @@
     {
      "text": "Epictetus 4.1.164–165",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. Šabb. 83b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 57b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 18",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4628,6 +6828,21 @@
     {
      "text": "Mek. on Exod 18:12 (Amalek §3)",
      "type": "Rabbinic"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 10,
+   "endChapter": 10,
+   "verseStart": 41,
+   "verseEnd": 41,
+   "label": "Matt 10:41",
+   "citations": [
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4658,6 +6873,26 @@
     {
      "text": "Gen. Rab. 58.8 (on Gen 23:17)",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 91b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4691,6 +6926,41 @@
     {
      "text": "Josephus, Ant. 18.5.2 §§118–119",
      "type": "Josephus"
+    },
+    {
+     "text": "y. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Moʾed Qaṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4811,6 +7081,11 @@
       "chapter": 23,
       "verse": 20
      }
+    },
+    {
+     "text": "b. B. Meṣiʿa 85b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4832,6 +7107,51 @@
    "book": "Matt",
    "chapter": 11,
    "endChapter": 11,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 11:12",
+   "citations": [
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 99b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 11,
+   "endChapter": 11,
+   "verseStart": 13,
+   "verseEnd": 13,
+   "label": "Matt 11:13",
+   "citations": [
+    {
+     "text": "b. Sanh. 99a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 11,
+   "endChapter": 11,
    "verseStart": 14,
    "verseEnd": 14,
    "label": "Matt 11:14",
@@ -4844,6 +7164,11 @@
       "chapter": 48,
       "verse": 10
      }
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -4954,6 +7279,11 @@
       "chapter": 16,
       "verse": 17
      }
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5193,6 +7523,31 @@
       "chapter": 23,
       "verse": 25
      }
+    },
+    {
+     "text": "y. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 113b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5221,6 +7576,41 @@
       "chapter": 5,
       "verse": 14
      }
+    },
+    {
+     "text": "b. Šabb. 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 2a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5240,6 +7630,11 @@
       "chapter": 21,
       "verse": 1
      }
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5273,6 +7668,41 @@
     {
      "text": "b. Šabb. 132b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 18",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 19",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Roš Haš. 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 17",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 151b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5296,6 +7726,116 @@
     {
      "text": "ʾAbot R. Nat. §4",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Yoma 19b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 12,
+   "endChapter": 12,
+   "verseStart": 10,
+   "verseEnd": 10,
+   "label": "Matt 12:10",
+   "citations": [
+    {
+     "text": "t. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 85a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 132a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 85b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 82a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 18",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 16",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 84b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 101a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 22",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 108b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5332,6 +7872,31 @@
     {
      "text": "m. Beṣah 3:4",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Šabb. 128b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 12,
+   "endChapter": 12,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 12:12",
+   "citations": [
+    {
+     "text": "b. Šabb. 12a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5417,6 +7982,31 @@
     {
      "text": "T. Sol. 6:1–11",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Soṭah 47a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 12b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5471,6 +8061,31 @@
     {
      "text": "y. Ber. 9.5",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 86a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 44b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5550,6 +8165,81 @@
    "book": "Matt",
    "chapter": 12,
    "endChapter": 12,
+   "verseStart": 36,
+   "verseEnd": 36,
+   "label": "Matt 12:36",
+   "citations": [
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ber. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Qam. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 21",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 12,
+   "endChapter": 12,
    "verseStart": 37,
    "verseEnd": 37,
    "label": "Matt 12:37",
@@ -5589,6 +8279,21 @@
     {
      "text": "Josephus, Ant. 20.8.6 §§169–170",
      "type": "Josephus"
+    },
+    {
+     "text": "y. Šabb. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 35b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5765,6 +8470,21 @@
    "book": "Matt",
    "chapter": 13,
    "endChapter": 13,
+   "verseStart": 3,
+   "verseEnd": 3,
+   "label": "Matt 13:3",
+   "citations": [
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 13,
+   "endChapter": 13,
    "verseStart": 5,
    "verseEnd": 5,
    "label": "Matt 13:5",
@@ -5777,6 +8497,11 @@
       "chapter": 40,
       "verse": 15
      }
+    },
+    {
+     "text": "m. Giṭ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5796,6 +8521,111 @@
       "chapter": 18,
       "verse": 6
      }
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 13,
+   "endChapter": 13,
+   "verseStart": 8,
+   "verseEnd": 8,
+   "label": "Matt 13:8",
+   "citations": [
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 105b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 34b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 13,
+   "endChapter": 13,
+   "verseStart": 11,
+   "verseEnd": 11,
+   "label": "Matt 13:11",
+   "citations": [
+    {
+     "text": "y. Roš Haš. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 14a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 13,
+   "endChapter": 13,
+   "verseStart": 13,
+   "verseEnd": 13,
+   "label": "Matt 13:13",
+   "citations": [
+    {
+     "text": "t. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 109a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5845,6 +8675,11 @@
     {
      "text": "b. Ḥag. 14b",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -5899,6 +8734,21 @@
     {
      "text": "Seneca, Ep. 73.16",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "t. Šabb. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 18",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6081,6 +8931,16 @@
       "chapter": 3,
       "verse": 6
      }
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 40b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6116,6 +8976,11 @@
     {
      "text": "T. Levi 65:8, 11",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6219,6 +9084,11 @@
     {
      "text": "ʾAbot R. Nat. (A) 40.9",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 3b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6263,6 +9133,61 @@
    "book": "Matt",
    "chapter": 13,
    "endChapter": 13,
+   "verseStart": 51,
+   "verseEnd": 51,
+   "label": "Matt 13:51",
+   "citations": [
+    {
+     "text": "y. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 49a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 86b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 67a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 104b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 13,
+   "endChapter": 13,
    "verseStart": 52,
    "verseEnd": 52,
    "label": "Matt 13:52",
@@ -6295,6 +9220,106 @@
    "book": "Matt",
    "chapter": 14,
    "endChapter": 14,
+   "verseStart": 4,
+   "verseEnd": 4,
+   "label": "Matt 14:4",
+   "citations": [
+    {
+     "text": "m. ʿAbod. Zar. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 63a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sukkah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 14,
+   "endChapter": 14,
+   "verseStart": 10,
+   "verseEnd": 10,
+   "label": "Matt 14:10",
+   "citations": [
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 14,
+   "endChapter": 14,
+   "verseStart": 11,
+   "verseEnd": 11,
+   "label": "Matt 14:11",
+   "citations": [
+    {
+     "text": "b. Šabb. 140b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šebu. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ber. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 74b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ned. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Moʾed Qaṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 11a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 14,
+   "endChapter": 14,
    "verseStart": 19,
    "verseEnd": 20,
    "label": "Matt 14:19–20",
@@ -6302,6 +9327,56 @@
     {
      "text": "4 Bar. 9:21",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Yoma 39a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 21",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 14,
+   "endChapter": 14,
+   "verseStart": 25,
+   "verseEnd": 25,
+   "label": "Matt 14:25",
+   "citations": [
+    {
+     "text": "m. Ber. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 14,
+   "endChapter": 14,
+   "verseStart": 26,
+   "verseEnd": 26,
+   "label": "Matt 14:26",
+   "citations": [
+    {
+     "text": "b. B. Bat. 73a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 44a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6351,6 +9426,126 @@
    "book": "Matt",
    "chapter": 15,
    "endChapter": 15,
+   "verseStart": 1,
+   "verseEnd": 1,
+   "label": "Matt 15:1",
+   "citations": [
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 14b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 30a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ber. 53b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 18b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ber. 51a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 50b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 30b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 31b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 66a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ned. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
    "verseStart": 4,
    "verseEnd": 4,
    "label": "Matt 15:4",
@@ -6385,6 +9580,56 @@
    "book": "Matt",
    "chapter": 15,
    "endChapter": 15,
+   "verseStart": 6,
+   "verseEnd": 6,
+   "label": "Matt 15:6",
+   "citations": [
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
+   "verseStart": 7,
+   "verseEnd": 7,
+   "label": "Matt 15:7",
+   "citations": [
+    {
+     "text": "b. Qidd. 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
    "verseStart": 8,
    "verseEnd": 9,
    "label": "Matt 15:8–9",
@@ -6400,6 +9645,21 @@
       "chapter": 29,
       "verse": 13
      }
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
+   "verseStart": 11,
+   "verseEnd": 11,
+   "label": "Matt 15:11",
+   "citations": [
+    {
+     "text": "b. Šabb. 152b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6432,6 +9692,51 @@
     {
      "text": "Cicero, Tusc. 5.38",
      "type": "Greco-Roman"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
+   "verseStart": 26,
+   "verseEnd": 26,
+   "label": "Matt 15:26",
+   "citations": [
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 92b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 155b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 15,
+   "endChapter": 15,
+   "verseStart": 27,
+   "verseEnd": 27,
+   "label": "Matt 15:27",
+   "citations": [
+    {
+     "text": "m. B. Bat. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6490,6 +9795,26 @@
     {
      "text": "Liv. Pro. 10:10–11",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "y. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6516,6 +9841,21 @@
     {
      "text": "Gos. Thom. §91",
      "type": "Christian Apocrypha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 16,
+   "endChapter": 16,
+   "verseStart": 6,
+   "verseEnd": 6,
+   "label": "Matt 16:6",
+   "citations": [
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6660,6 +10000,46 @@
    "book": "Matt",
    "chapter": 16,
    "endChapter": 16,
+   "verseStart": 23,
+   "verseEnd": 23,
+   "label": "Matt 16:23",
+   "citations": [
+    {
+     "text": "b. Šabb. 33b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Meṣiʿa 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Hor. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 16,
+   "endChapter": 16,
    "verseStart": 26,
    "verseEnd": 26,
    "label": "Matt 16:26",
@@ -6671,6 +10051,11 @@
     {
      "text": "Plato, Phaedo 107C",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6759,6 +10144,46 @@
    "book": "Matt",
    "chapter": 17,
    "endChapter": 17,
+   "verseStart": 3,
+   "verseEnd": 3,
+   "label": "Matt 17:3",
+   "citations": [
+    {
+     "text": "b. Soṭah 14a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 13b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 28a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 17a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 55b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 17,
+   "endChapter": 17,
    "verseStart": 5,
    "verseEnd": 5,
    "label": "Matt 17:5",
@@ -6800,6 +10225,31 @@
    "book": "Matt",
    "chapter": 17,
    "endChapter": 17,
+   "verseStart": 20,
+   "verseEnd": 20,
+   "label": "Matt 17:20",
+   "citations": [
+    {
+     "text": "m. B. Bat. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 17,
+   "endChapter": 17,
    "verseStart": 24,
    "verseEnd": 24,
    "label": "Matt 17:24",
@@ -6807,6 +10257,31 @@
     {
      "text": "4Q159 frg. 1 ii 6–7",
      "type": "DSS"
+    },
+    {
+     "text": "m. Yoma 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 17,
+   "endChapter": 17,
+   "verseStart": 26,
+   "verseEnd": 26,
+   "label": "Matt 17:26",
+   "citations": [
+    {
+     "text": "m. B. Bat. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6833,6 +10308,71 @@
     {
      "text": "Jerome, Comm. Matt. 3.17.26 (on Matt 17:24–27)",
      "type": "Christian Apocrypha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 18,
+   "endChapter": 18,
+   "verseStart": 5,
+   "verseEnd": 5,
+   "label": "Matt 18:5",
+   "citations": [
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 65b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 29b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 17",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -6988,6 +10528,11 @@
     {
      "text": "Aristotle, Eth. nic. 9.3",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 20b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7027,6 +10572,21 @@
     {
      "text": "t. Šeb. 5.4",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7096,6 +10656,31 @@
     {
      "text": "Frg. Tg. (Vatican MS) Exod 20:21",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Qidd. 30b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 22b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 86b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7164,6 +10749,36 @@
       "chapter": 28,
       "verse": 1
      }
+    },
+    {
+     "text": "y. B. Qam. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 17b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7243,6 +10858,41 @@
    "book": "Matt",
    "chapter": 19,
    "endChapter": 19,
+   "verseStart": 3,
+   "verseEnd": 3,
+   "label": "Matt 19:3",
+   "citations": [
+    {
+     "text": "b. Sanh. 58a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Giṭ. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Giṭ. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 19,
+   "endChapter": 19,
    "verseStart": 5,
    "verseEnd": 5,
    "label": "Matt 19:5",
@@ -7280,6 +10930,21 @@
    "book": "Matt",
    "chapter": 19,
    "endChapter": 19,
+   "verseStart": 8,
+   "verseEnd": 8,
+   "label": "Matt 19:8",
+   "citations": [
+    {
+     "text": "b. Qidd. 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 19,
+   "endChapter": 19,
    "verseStart": 10,
    "verseEnd": 10,
    "label": "Matt 19:10",
@@ -7302,6 +10967,126 @@
    "book": "Matt",
    "chapter": 19,
    "endChapter": 19,
+   "verseStart": 16,
+   "verseEnd": 16,
+   "label": "Matt 19:16",
+   "citations": [
+    {
+     "text": "y. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Qidd. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 19,
+   "endChapter": 19,
+   "verseStart": 19,
+   "verseEnd": 19,
+   "label": "Matt 19:19",
+   "citations": [
+    {
+     "text": "b. Yebam. 47b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 87b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 59b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 19,
+   "endChapter": 19,
+   "verseStart": 24,
+   "verseEnd": 24,
+   "label": "Matt 19:24",
+   "citations": [
+    {
+     "text": "b. B. Meṣiʿa 38b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 19,
+   "endChapter": 19,
    "verseStart": 28,
    "verseEnd": 28,
    "label": "Matt 19:28",
@@ -7309,6 +11094,31 @@
     {
      "text": "4 Ezra 7:75",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7364,6 +11174,46 @@
     {
      "text": "y. Ber. 2.8",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 89b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 107b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Meṣiʿa 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7397,6 +11247,61 @@
   },
   {
    "book": "Matt",
+   "chapter": 20,
+   "endChapter": 20,
+   "verseStart": 21,
+   "verseEnd": 21,
+   "label": "Matt 20:21",
+   "citations": [
+    {
+     "text": "t. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 9a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 20,
+   "endChapter": 20,
+   "verseStart": 26,
+   "verseEnd": 26,
+   "label": "Matt 20:26",
+   "citations": [
+    {
+     "text": "b. Sanh. 14b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Matt 21:2",
+   "citations": [
+    {
+     "text": "m. B. Bat. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Meṣiʿa 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
    "chapter": 21,
    "endChapter": 21,
    "verseStart": 5,
@@ -7420,6 +11325,36 @@
       "chapter": 9,
       "verse": 9
      }
+    },
+    {
+     "text": "b. Sanh. 99a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 98a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 8,
+   "verseEnd": 8,
+   "label": "Matt 21:8",
+   "citations": [
+    {
+     "text": "t. Sukkah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 118b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7461,6 +11396,41 @@
       "chapter": 17,
       "verse": 30
      }
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 15a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ber. 7a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Meg. 17b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ber. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Pesaḥ. 57a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7541,6 +11511,116 @@
     {
      "text": "Mek. on Exod 15:1 (Shirata’ §1)",
      "type": "Rabbinic"
+    },
+    {
+     "text": "t. Soṭah 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 23,
+   "verseEnd": 23,
+   "label": "Matt 21:23",
+   "citations": [
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 88b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 24,
+   "verseEnd": 24,
+   "label": "Matt 21:24",
+   "citations": [
+    {
+     "text": "b. Sanh. 65b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 25,
+   "verseEnd": 25,
+   "label": "Matt 21:25",
+   "citations": [
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 27a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 86a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 12b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ned. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥul. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥul. 54a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 9a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7559,6 +11639,41 @@
     {
      "text": "Deut. Rab. 7.4 (on Deut 28:1)",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. B. Meṣiʿa 87a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 49a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7595,6 +11710,11 @@
       "chapter": 118,
       "verse": 22
      }
+    },
+    {
+     "text": "y. Yoma 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7609,6 +11729,46 @@
     {
      "text": "2 Esdr 1:24",
      "type": "Pseudepigrapha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 21,
+   "endChapter": 21,
+   "verseStart": 45,
+   "verseEnd": 45,
+   "label": "Matt 21:45",
+   "citations": [
+    {
+     "text": "b. Sukkah 49a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 22,
+   "endChapter": 22,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Matt 22:2",
+   "citations": [
+    {
+     "text": "t. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7672,6 +11832,21 @@
     {
      "text": "Virgil, Aen. 6.557",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. Giṭ. 55b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7704,6 +11879,46 @@
     {
      "text": "T. Jos. 7:1",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Ketub. 50b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 22,
+   "endChapter": 22,
+   "verseStart": 28,
+   "verseEnd": 28,
+   "label": "Matt 22:28",
+   "citations": [
+    {
+     "text": "b. Sanh. 37b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 92b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 22,
+   "endChapter": 22,
+   "verseStart": 29,
+   "verseEnd": 29,
+   "label": "Matt 22:29",
+   "citations": [
+    {
+     "text": "b. Šabb. 30b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7736,6 +11951,86 @@
     {
      "text": "T. Jud. 25:1",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Sanh. 90b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 91a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 92a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 65b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 22,
+   "endChapter": 22,
+   "verseStart": 35,
+   "verseEnd": 35,
+   "label": "Matt 22:35",
+   "citations": [
+    {
+     "text": "b. B. Bat. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 67a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 24a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Mak. 23b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 55b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 74a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7801,6 +12096,26 @@
    "book": "Matt",
    "chapter": 22,
    "endChapter": 22,
+   "verseStart": 40,
+   "verseEnd": 40,
+   "label": "Matt 22:40",
+   "citations": [
+    {
+     "text": "m. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 22,
+   "endChapter": 22,
    "verseStart": 44,
    "verseEnd": 44,
    "label": "Matt 22:44",
@@ -7834,6 +12149,41 @@
     {
      "text": "Pesiq. Rab. Kah. 1.7",
      "type": "Rabbinic"
+    },
+    {
+     "text": "y. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 15b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 94b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 29b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7928,6 +12278,16 @@
     {
      "text": "Dio Chrysostom, Disc. 1.22",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. Roš Haš. 10b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Roš Haš. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7946,6 +12306,16 @@
     {
      "text": "Epictetus 1.19.9",
      "type": "Greco-Roman"
+    },
+    {
+     "text": "b. Sanh. 92a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 91a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -7960,6 +12330,111 @@
     {
      "text": "Sipre Deut. §38 (on Deut 11:10)",
      "type": "Rabbinic"
+    },
+    {
+     "text": "b. Soṭah 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 32b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 23:12",
+   "citations": [
+    {
+     "text": "b. Qidd. 49b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 72b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 86b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 103b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 3b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Soṭah 47a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yebam. 48b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yebam. 109b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 70b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 31a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 30b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Roš Haš. 17a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8014,6 +12489,56 @@
     {
      "text": "m. Šebu. 4:13",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 14",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8098,6 +12623,36 @@
    "book": "Matt",
    "chapter": 23,
    "endChapter": 23,
+   "verseStart": 24,
+   "verseEnd": 24,
+   "label": "Matt 23:24",
+   "citations": [
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 20",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 12",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
    "verseStart": 26,
    "verseEnd": 26,
    "label": "Matt 23:26",
@@ -8113,6 +12668,46 @@
     {
      "text": "Gos. Thom. §22",
      "type": "Christian Apocrypha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
+   "verseStart": 27,
+   "verseEnd": 27,
+   "label": "Matt 23:27",
+   "citations": [
+    {
+     "text": "m. Moʾed Qaṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Meṣiʿa 85b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
+   "verseStart": 28,
+   "verseEnd": 28,
+   "label": "Matt 23:28",
+   "citations": [
+    {
+     "text": "y. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8152,6 +12747,36 @@
     {
      "text": "J.W. 5.12.2 §506",
      "type": "Pseudepigrapha"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
+   "verseStart": 32,
+   "verseEnd": 32,
+   "label": "Matt 23:32",
+   "citations": [
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 23,
+   "endChapter": 23,
+   "verseStart": 33,
+   "verseEnd": 33,
+   "label": "Matt 23:33",
+   "citations": [
+    {
+     "text": "b. B. Meṣiʿa 84b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8202,6 +12827,21 @@
     {
      "text": "2 Esdr 1:32",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "t. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8293,6 +12933,16 @@
     {
      "text": "Tg. Isa. 32:14",
      "type": "Rabbinic"
+    },
+    {
+     "text": "m. Ḥul. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sukkah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8358,6 +13008,51 @@
     {
      "text": "4 Ezra 5:2",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Matt 24:2",
+   "citations": [
+    {
+     "text": "m. Tamid 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 9b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 96b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8461,6 +13156,21 @@
    "book": "Matt",
    "chapter": 24,
    "endChapter": 24,
+   "verseStart": 9,
+   "verseEnd": 9,
+   "label": "Matt 24:9",
+   "citations": [
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
    "verseStart": 11,
    "verseEnd": 11,
    "label": "Matt 24:11",
@@ -8486,6 +13196,21 @@
     {
      "text": "m. Soṭah 9:15",
      "type": "Rabbinic"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
+   "verseStart": 13,
+   "verseEnd": 13,
+   "label": "Matt 24:13",
+   "citations": [
+    {
+     "text": "b. Sanh. 97b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8620,6 +13345,16 @@
     {
      "text": "2 Bar. 48:34",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Sanh. 97a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 98a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8785,6 +13520,36 @@
    "book": "Matt",
    "chapter": 24,
    "endChapter": 24,
+   "verseStart": 36,
+   "verseEnd": 36,
+   "label": "Matt 24:36",
+   "citations": [
+    {
+     "text": "y. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
    "verseStart": 37,
    "verseEnd": 39,
    "label": "Matt 24:37–39",
@@ -8845,6 +13610,41 @@
    "book": "Matt",
    "chapter": 24,
    "endChapter": 24,
+   "verseStart": 43,
+   "verseEnd": 43,
+   "label": "Matt 24:43",
+   "citations": [
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
+   "verseStart": 48,
+   "verseEnd": 48,
+   "label": "Matt 24:48",
+   "citations": [
+    {
+     "text": "m. B. Bat. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 24,
+   "endChapter": 24,
    "verseStart": 51,
    "verseEnd": 51,
    "label": "Matt 24:51",
@@ -8864,6 +13664,31 @@
    "book": "Matt",
    "chapter": 25,
    "endChapter": 25,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 25:12",
+   "citations": [
+    {
+     "text": "m. B. Meṣiʿa 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 152b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 25,
+   "endChapter": 25,
    "verseStart": 14,
    "verseEnd": 30,
    "label": "Matt 25:14–30",
@@ -8871,6 +13696,41 @@
     {
      "text": "Ahiqar 192",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Yoma 83b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 75b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Ḥag. 14a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -8963,6 +13823,41 @@
     {
      "text": "T. Jos. 1:5",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "t. Sanh. 13",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Qidd. 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Šabb. 88b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 10",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 72b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Pesaḥ. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Pesaḥ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9119,6 +14014,21 @@
    "book": "Matt",
    "chapter": 26,
    "endChapter": 26,
+   "verseStart": 12,
+   "verseEnd": 12,
+   "label": "Matt 26:12",
+   "citations": [
+    {
+     "text": "m. Šabb. 23",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
    "verseStart": 13,
    "verseEnd": 13,
    "label": "Matt 26:13",
@@ -9126,6 +14036,11 @@
     {
      "text": "1 En. 103:4",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Yoma 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9171,6 +14086,11 @@
     {
      "text": "Jer 32:6–15",
      "type": "OT"
+    },
+    {
+     "text": "m. B. Qam. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9189,6 +14109,76 @@
     {
      "text": "2 Bar. 10:6",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Ḥag. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
+   "verseStart": 28,
+   "verseEnd": 28,
+   "label": "Matt 26:28",
+   "citations": [
+    {
+     "text": "t. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Šabb. 15",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
+   "verseStart": 30,
+   "verseEnd": 30,
+   "label": "Matt 26:30",
+   "citations": [
+    {
+     "text": "m. B. Qam. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Qam. 82b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Tamid 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sukkah 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9255,6 +14245,56 @@
    "book": "Matt",
    "chapter": 26,
    "endChapter": 26,
+   "verseStart": 47,
+   "verseEnd": 47,
+   "label": "Matt 26:47",
+   "citations": [
+    {
+     "text": "m. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
+   "verseStart": 49,
+   "verseEnd": 49,
+   "label": "Matt 26:49",
+   "citations": [
+    {
+     "text": "t. Naz. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Qidd. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. B. Bat. 16a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Soṭah 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
    "verseStart": 52,
    "verseEnd": 52,
    "label": "Matt 26:52",
@@ -9305,6 +14345,61 @@
    "book": "Matt",
    "chapter": 26,
    "endChapter": 26,
+   "verseStart": 60,
+   "verseEnd": 60,
+   "label": "Matt 26:60",
+   "citations": [
+    {
+     "text": "m. Sanh. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 25b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 37b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Mak. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Mak. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 26,
+   "endChapter": 26,
    "verseStart": 64,
    "verseEnd": 64,
    "label": "Matt 26:64",
@@ -9312,6 +14407,101 @@
     {
      "text": "1 En. 69:27",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "b. Šabb. 88b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Moʾed Qaṭ. 25b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 60a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 66a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 56a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sukkah 52a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 45b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Qam. 8",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Qam. 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Soṭah 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9348,6 +14538,36 @@
     {
      "text": "b. ʿErub. 53b",
      "type": "Rabbinic"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 2,
+   "verseEnd": 2,
+   "label": "Matt 27:2",
+   "citations": [
+    {
+     "text": "m. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. Šabb. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9393,6 +14613,21 @@
     {
      "text": "Jer 32:6–15",
      "type": "OT"
+    },
+    {
+     "text": "y. Yoma 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9547,6 +14782,26 @@
    "book": "Matt",
    "chapter": 27,
    "endChapter": 27,
+   "verseStart": 16,
+   "verseEnd": 16,
+   "label": "Matt 27:16",
+   "citations": [
+    {
+     "text": "y. Roš Haš. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Soṭah 9",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
    "verseStart": 19,
    "verseEnd": 19,
    "label": "Matt 27:19",
@@ -9621,6 +14876,16 @@
     {
      "text": "T. Levi 16:3",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "y. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 4",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9656,6 +14921,96 @@
    "book": "Matt",
    "chapter": 27,
    "endChapter": 27,
+   "verseStart": 26,
+   "verseEnd": 26,
+   "label": "Matt 27:26",
+   "citations": [
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 46b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 27,
+   "verseEnd": 27,
+   "label": "Matt 27:27",
+   "citations": [
+    {
+     "text": "b. Sanh. 45b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 35,
+   "verseEnd": 35,
+   "label": "Matt 27:35",
+   "citations": [
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 37,
+   "verseEnd": 37,
+   "label": "Matt 27:37",
+   "citations": [
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Sanh. 11",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 38,
+   "verseEnd": 38,
+   "label": "Matt 27:38",
+   "citations": [
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
    "verseStart": 43,
    "verseEnd": 43,
    "label": "Matt 27:43",
@@ -9677,6 +15032,11 @@
       "chapter": 2,
       "verse": 13
      }
+    },
+    {
+     "text": "m. ʿAbod. Zar. 3",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9713,6 +15073,46 @@
     {
      "text": "2 En. 70:16",
      "type": "Pseudepigrapha"
+    },
+    {
+     "text": "m. Tamid 7",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 56b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 54a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Yoma 21b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Yoma 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Yoma 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. ʿAbod. Zar. 8b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9782,6 +15182,56 @@
       "chapter": 38,
       "verse": 11
      }
+    },
+    {
+     "text": "m. Šabb. 1",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    }
+   ]
+  },
+  {
+   "book": "Matt",
+   "chapter": 27,
+   "endChapter": 27,
+   "verseStart": 57,
+   "verseEnd": 57,
+   "label": "Matt 27:57",
+   "citations": [
+    {
+     "text": "m. Sanh. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. B. Bat. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "y. Moʾed Qaṭ. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. B. Bat. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "t. B. Bat. 6",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Sanh. 47b",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
@@ -9833,6 +15283,26 @@
     {
      "text": "Sem. 2.7",
      "type": "Other"
+    },
+    {
+     "text": "m. ʿAbod. Zar. 5",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 2",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "m. Šabb. 19",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
+    },
+    {
+     "text": "b. Giṭ. 77a",
+     "type": "Rabbinic",
+     "source": "Strack–Billerbeck"
     }
    ]
   },
