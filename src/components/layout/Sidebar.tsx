@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { useApi } from '@/lib/api-client'
+import { Search } from 'lucide-react'
+import { openMasterSearch } from '@/lib/master-search-bus'
 import {
   LayoutDashboard, BookMarked, Calendar, Archive,
   ClipboardList, BarChart2, FileText,
@@ -93,6 +95,18 @@ export function Sidebar({ role, pendingRequests = 0 }: SidebarProps) {
   return (
     <aside className="w-56 shrink-0 hidden lg:flex flex-col bg-surface border-r border-gray-100 min-h-screen pt-6">
       <nav className="flex flex-col gap-0.5 px-3 flex-1">
+        {/* Search sits in the sidebar itself, not only behind the header icon: on a tablet the
+            icon is easy to miss, and every other destination is listed here. Opens the same
+            app-wide pane as ⌘K. */}
+        <button
+          type="button"
+          onClick={() => openMasterSearch()}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900"
+        >
+          <Search size={16} />
+          <span className="flex-1 text-left">{t('account.search')}</span>
+          <span className="text-[10px] text-gray-300">⌘K</span>
+        </button>
         {items.map(item => {
           const active = pathname === item.href || (item.href !== '/instructor' && item.href !== '/student' && item.href !== '/admin' && pathname.startsWith(item.href))
           const isRequests = item.href === '/instructor/requests'

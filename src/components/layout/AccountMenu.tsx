@@ -78,10 +78,12 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
 
       {open && (
         <div className="absolute right-0 top-11 w-56 bg-popover rounded-xl shadow-lg border border-gray-100 py-1 z-50 max-h-[80vh] overflow-y-auto">
-          {/* Search — mobile only (desktop uses the header search icon). */}
+          {/* Search — shown wherever the sidebar is not (it appears at lg and up). This was
+              md:hidden, which hid it from 768px: on an iPad the sidebar had not appeared yet,
+              so search was missing from both surfaces at once. */}
           <button
             onClick={() => { setOpen(false); openMasterSearch() }}
-            className="md:hidden flex w-full items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
+            className="lg:hidden flex w-full items-center gap-2.5 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors border-b border-gray-100"
           >
             <Search size={15} className="text-gray-400 shrink-0" /> {t('account.search')}
           </button>

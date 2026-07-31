@@ -887,11 +887,22 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             to exactly where they were. Navigate to the origin URL directly (not router.back())
             so it's reliable after a refresh / intermediate navigation, where history-relative
             back would misfire; the scroll snapshot (sessionStorage, keyed by URL) restores. */}
-        {returnTo && (
+        {returnTo ? (
           <button type="button" onClick={() => { markScrollRestore(returnTo); router.push(returnTo) }}
             title={`Return to ${returnLabelFor(returnTo)}`}
             className="flex-none inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 transition-colors">
             <ArrowLeft size={16} /> {returnLabelFor(returnTo)}
+          </button>
+        ) : !embedded && (
+          // Reached without an origin — a bookmark, a shared link, or the tab bar on a phone,
+          // where the panel is not what opens. There was no way out at all: on mobile, with no
+          // browser chrome, that meant closing the app. Step back if there is history, and fall
+          // back to the reader if this is the first page of the session.
+          <button type="button"
+            onClick={() => { if (window.history.length > 1) router.back(); else router.push('/reader') }}
+            title="Back"
+            className="flex-none inline-flex items-center gap-1 text-sm text-brand-600 hover:text-brand-800 transition-colors">
+            <ArrowLeft size={16} /> Back
           </button>
         )}
         {/* Embedded: this sticky row doubles as the panel header — title, then the query box,
