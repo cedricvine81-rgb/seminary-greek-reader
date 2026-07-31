@@ -217,6 +217,11 @@ def main():
     ap.add_argument('ocr')
     ap.add_argument('--book', required=True, help='osisId, e.g. Luke or Acts')
     ap.add_argument('--out', required=True)
+    # Billerbeck parks whole excursuses under a single verse — the ʿam ha-aretz essay sits under
+    # John 7:49, the Memra one under 1:51 — and those blocks run 2,000 lines against a median of
+    # 26, dumping 70+ references onto one verse. That is an essay's bibliography, not a
+    # cross-reference list, so the head of each verse's list is kept and the tail dropped.
+    ap.add_argument('--max-per-verse', type=int, default=12)
     a = ap.parse_args()
 
     lines = open(a.ocr, encoding='utf-8', errors='ignore').read().split('\n')
@@ -261,6 +266,15 @@ def main():
                 'context': context,
             })
 
+    capped, per_verse, over = [], Counter(), 0
+    for r in rows:
+        key = (r['chapter'], r['verse'])
+        if per_verse[key] >= a.max_per_verse:
+            over += 1
+            continue
+        per_verse[key] += 1
+        capped.append(r)
+    rows = capped
     verses = {(r['chapter'], r['verse']) for r in rows}
     json.dump({
         'source': ('Strack–Billerbeck, Kommentar zum Neuen Testament aus Talmud und Midrasch '
@@ -272,7 +286,8 @@ def main():
     print(f'{a.book}: {len(book)} headings ({dropped_anchor} discarded as impossible verses)')
     for k, n in stats.most_common():
         print(f'   {k:24} {n}')
-    print(f'   → {len(rows)} verified candidate references across {len(verses)} verses')
+    print(f'   → {len(rows)} verified candidate references across {len(verses)} verses'
+          + (f' ({over} dropped over the {a.max_per_verse}-per-verse cap)' if over else ''))
     print(f'   → {a.out}')
 
 
