@@ -71,7 +71,15 @@ const PREFIXES = ['ד', 'ו', 'ב', 'כ', 'ל', 'מ', 'ה', 'ש']
 // Pronominal and determinative endings. Riskier than prefixes — dropping the ו of אותו leaves
 // אות, a real and different word — so a suffix match is only tried when everything else has
 // failed, and is flagged like any other inferred one. Longest first, so 'ייהו' wins over 'ו'.
-const SUFFIXES = ['ייהו', 'הו', 'יהו', 'כון', 'כם', 'הא', 'יה', 'נו', 'א', 'ה', 'ו', 'ך', 'י', 'ן', 'ם']
+// NB these are matched against the FOLDED form, where final letters are already normalised —
+// so a masculine plural ends 'ימ', not 'ים'. Writing them unfolded silently matches nothing,
+// which is how a first attempt at the plural endings appeared to add no coverage at all.
+const SUFFIXES = [
+  // pronominal and determinative
+  'ייהו', 'יהו', 'הו', 'כונ', 'כמ', 'יהמ', 'יהנ', 'הא', 'יה', 'נו', 'א', 'ה', 'ו', 'ך', 'י', 'נ', 'מ',
+  // plural and construct-plural, Hebrew and Aramaic
+  'ימ', 'ינ', 'ות', 'יות', 'ותא', 'ותמ', 'ותיו', 'ייא', 'תא', 'אי',
+]
 
 /**
  * Jastrow entries a written form could belong to.
