@@ -15,6 +15,7 @@ import {
   type ConstructCorpus, type ConstructQuery, type ConstructTerm, type LemmaForms,
 } from '@/lib/construct-query'
 import { describeConstruct } from '@/lib/construct-assignment'
+import { ConstructTextPanel, type ConstructTextTarget } from './ConstructTextPanel'
 import { FEATURE_LABEL } from '@/lib/morph-features'
 import { isExamLocked } from '@/lib/exam-lockdown'
 
@@ -216,9 +217,38 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
   const removeTerm = (i: number) =>
     setQuery(q => ({ ...q, terms: q.terms.filter((_, j) => j !== i) }))
 
+  // Clicking a hit opens the passage in a panel docked to the LEFT of the builder and its
+  // results, rather than navigating to the reader and losing the search. Both kinds of
+  // result feed the same panel; it knows how to load each.
+  const [panel, setPanel] = useState<{ target: ConstructTextTarget; nonce: number } | null>(null)
+  const showPanel = useCallback((target: ConstructTextTarget) => {
+    // nonce keys the panel, so clicking a second hit while one is open remounts it on the new
+    // passage (fresh fetch + scroll) instead of leaving the previous text in place.
+    setPanel(prev => ({ target, nonce: (prev?.nonce ?? 0) + 1 }))
+  }, [])
+
   const openHit = useCallback((h: GreekHit) => {
-    router.push(`/reader?ref=${encodeURIComponent(`${h.osisId} ${h.chapter}:${h.verse}`)}`)
-  }, [router])
+    showPanel({
+      kind: 'biblical',
+      osisId: h.osisId,
+      chapter: h.chapter,
+      verse: h.verse,
+      corpus: ran?.corpus === 'LXX' ? 'LXX' : 'NA1904',
+      label: `${bookName.get(h.osisId) ?? h.osisId} ${h.chapter}:${h.verse}`,
+    })
+  }, [showPanel, ran, bookName])
+
+  const openProseHit = useCallback((h: ProseHit) => {
+    if (!h.target) return
+    showPanel({
+      kind: 'prose',
+      source: h.target.source,
+      chapter: h.target.chapter,
+      verse: h.target.verse ?? h.verse,
+      label: h.reference,
+      href: `/texts?open=${encodeURIComponent(JSON.stringify(h.target))}`,
+    })
+  }, [showPanel])
 
   // Plain-language echo of what was searched, above the results. Shared with the
   // Construct Search assignment views, which print the same line without running anything.
@@ -499,7 +529,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                     Showing the first {proseHits.length} of {total.toLocaleString()} — narrow the construct to see the rest.
                   </p>
                 )}
-                <ConstructProseResults hits={proseHits} showEnglish={showProseEnglish} />
+                <ConstructProseResults hits={proseHits} showEnglish={showProseEnglish} onOpen={openProseHit} />
               </>
             )
           ) : !hits || hits.length === 0 ? (
@@ -543,6 +573,11 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
             </>
           )}
         </div>
+      )}
+
+      {/* The clicked passage, docked left of the builder and results (see ConstructTextPanel). */}
+      {panel && (
+        <ConstructTextPanel key={panel.nonce} target={panel.target} onClose={() => setPanel(null)} />
       )}
     </div>
   )

@@ -38,7 +38,12 @@ function textsHref(target: ProseHit['target']): string | null {
 const LONG_PASSAGE = 60
 const CONTEXT_WORDS = 12
 
-export function ConstructProseResults({ hits, showEnglish }: { hits: ProseHit[]; showEnglish: boolean }) {
+export function ConstructProseResults({ hits, showEnglish, onOpen }: {
+  hits: ProseHit[]
+  showEnglish: boolean
+  /** Open the passage in the side panel beside the search. Absent = link out as before. */
+  onOpen?: (h: ProseHit) => void
+}) {
   // Which passages the reader has asked to see in full.
   const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   return (
@@ -58,7 +63,14 @@ export function ConstructProseResults({ hits, showEnglish }: { hits: ProseHit[];
         return (
           <div key={`${h.bookId}.${h.chapter}.${h.verse}.${i}`} className="py-2.5">
             <div className="flex items-baseline gap-2">
-              {href ? (
+              {href && onOpen ? (
+                // Beside the search, not away from it — the query that found this stays on screen.
+                <button type="button" onClick={() => onOpen(h)}
+                  className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
+                  title="Read this passage beside your search">
+                  {h.reference} <ArrowUpRight size={11} className="flex-none" />
+                </button>
+              ) : href ? (
                 <a href={href} target="_blank" rel="noopener"
                   className="inline-flex items-center gap-1 text-xs font-medium text-brand-600 hover:underline"
                   title="Open this passage in the Texts reader">
