@@ -8,7 +8,7 @@
 //   1enoch / jubilees / 2baruch / 2enoch / tp-* (Testaments of the Twelve Patriarchs)
 //            → public/data/pseudepigrapha/… (chapter→verse English prose; the full registry
 //              lives in lib/prose-texts.ts, which also drives the Backgrounds cross-ref pane)
-import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
+import { TWELVE_PATRIARCHS_CATALOG, PHILO_CATALOG, AF_CATALOG, TG_CATALOG, ANF_CATALOG, JUSTIN_CATALOG, EUSEBIUS_CATALOG, MISHNAH_CATALOG, YERUSHALMI_CATALOG, GRECO_CATALOG, PLATO_CATALOG, ARISTOTLE_CATALOG, PLUTARCH_CATALOG, APOLLODORUS_CATALOG, LUCIAN_CATALOG, XENOPHON_CATALOG, QUINTILIAN_CATALOG, HOMER_CATALOG, HESIOD_CATALOG, HERODOTUS_CATALOG, DIO_CHAPTER_NUMBERS, type EmbeddedProseSource } from '@/lib/prose-texts'
 
 export type TextSource = 'lxx' | 'josephus' | EmbeddedProseSource
 
@@ -272,6 +272,12 @@ const RAW_CATEGORIES: TextCategory[] = [
     label: 'Mishnah',
     blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
     works: MISHNAH_CATALOG,
+  },
+  {
+    id: 'yerushalmi',
+    label: 'Jerusalem Talmud',
+    blurb: 'The Talmud Yerushalmi (c. 400 CE) — all 39 tractates, cited chapter:halakhah, in Heinrich Guggenheimer’s translation (De Gruyter, CC-BY, via Sefaria).',
+    works: YERUSHALMI_CATALOG,
   },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]

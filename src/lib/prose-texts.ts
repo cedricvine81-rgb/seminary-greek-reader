@@ -23,7 +23,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -726,6 +726,77 @@ export const MISHNAH_CATALOG = MISHNAH.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
 }))
 
+
+// ── The Jerusalem Talmud (Talmud Yerushalmi) ──────────────────────────────────────────
+// All 39 tractates in Heinrich Guggenheimer's translation (de Gruyter, 1999-2015), which
+// Sefaria carries under plain CC-BY — the one Talmud whose good English a paid app may
+// ship (the Bavli's Koren-Steinsaltz is CC-BY-NC). Chapter → verse where verse = the
+// halakhah ("y. Ber. 1:1" → chapter 1, halakhah 1); Sefaria's third level (segments) is
+// joined into the halakhah by scripts/build-yerushalmi.py, which also emits this table.
+const YERUSHALMI_ATTRIBUTION = 'Text: the Jerusalem Talmud, translation and commentary by Heinrich W. Guggenheimer (De Gruyter, 1999-2015), CC-BY. Source: Sefaria.'
+
+// Same citation grammar as the Mishnah ("y. Ber. 1:1" beside "m. Ber. 1:1"), so the same
+// matcher builder serves both. A trailing Venice folio ("y. Ber. 1:1 (3a)") is ignored,
+// since the matcher stops reading after chapter:verse.
+const YERUSHALMI: { slug: string; name: string; noteBook: string; chapters: number; abbrevs: string[] }[] = [
+  { slug: 'y-berakhot', name: 'y. Berakhot (Blessings)', noteBook: 'YerBerakhot', chapters: 9, abbrevs: ['y. Ber.'] },
+  { slug: 'y-peah', name: 'y. Peah (Corner of the Field)', noteBook: 'YerPeah', chapters: 8, abbrevs: ['y. Peʾah'] },
+  { slug: 'y-demai', name: 'y. Demai (Doubtfully Tithed Produce)', noteBook: 'YerDemai', chapters: 7, abbrevs: ['y. Demai'] },
+  { slug: 'y-kilayim', name: 'y. Kilayim (Mixed Kinds)', noteBook: 'YerKilayim', chapters: 9, abbrevs: ['y. Kilʾayim', 'y. Kil.'] },
+  { slug: 'y-sheviit', name: 'y. Sheviit (The Sabbatical Year)', noteBook: 'YerSheviit', chapters: 10, abbrevs: ['y. Šeb.'] },
+  { slug: 'y-terumot', name: 'y. Terumot (Heave Offerings)', noteBook: 'YerTerumot', chapters: 11, abbrevs: ['y. Terumot', 'y. Ter.'] },
+  { slug: 'y-maasrot', name: 'y. Maasrot (Tithes)', noteBook: 'YerMaasrot', chapters: 5, abbrevs: ['y. Maʿaś.'] },
+  { slug: 'y-maaser-sheni', name: 'y. Maaser Sheni (The Second Tithe)', noteBook: 'YerMaaserSheni', chapters: 5, abbrevs: ['y. Maʿaś. Š.'] },
+  { slug: 'y-challah', name: 'y. Challah (Dough Offering)', noteBook: 'YerChallah', chapters: 4, abbrevs: ['y. Ḥal.'] },
+  { slug: 'y-orlah', name: 'y. Orlah (Fruit of Young Trees)', noteBook: 'YerOrlah', chapters: 3, abbrevs: ['y. ʿOrlah'] },
+  { slug: 'y-bikkurim', name: 'y. Bikkurim (First Fruits)', noteBook: 'YerBikkurim', chapters: 3, abbrevs: ['y. Bik.'] },
+  { slug: 'y-shabbat', name: 'y. Shabbat (Sabbath)', noteBook: 'YerShabbat', chapters: 24, abbrevs: ['y. Šabb.'] },
+  { slug: 'y-eruvin', name: 'y. Eruvin (Sabbath Boundaries)', noteBook: 'YerEruvin', chapters: 10, abbrevs: ['y. ʿErub.'] },
+  { slug: 'y-pesachim', name: 'y. Pesachim (Passover)', noteBook: 'YerPesachim', chapters: 10, abbrevs: ['y. Pesaḥ.'] },
+  { slug: 'y-yoma', name: 'y. Yoma (The Day of Atonement)', noteBook: 'YerYoma', chapters: 8, abbrevs: ['y. Yoma'] },
+  { slug: 'y-shekalim', name: 'y. Shekalim (Shekels)', noteBook: 'YerShekalim', chapters: 8, abbrevs: ['y. Šeqal.'] },
+  { slug: 'y-sukkah', name: 'y. Sukkah (The Booth)', noteBook: 'YerSukkah', chapters: 5, abbrevs: ['y. Sukkah'] },
+  { slug: 'y-rosh-hashanah', name: 'y. Rosh Hashanah (The New Year)', noteBook: 'YerRoshHashanah', chapters: 4, abbrevs: ['y. Roš Haš.'] },
+  { slug: 'y-beitzah', name: 'y. Beitzah (The Egg)', noteBook: 'YerBeitzah', chapters: 5, abbrevs: ['y. Beṣah'] },
+  { slug: 'y-taanit', name: 'y. Taanit (Fasts)', noteBook: 'YerTaanit', chapters: 4, abbrevs: ['y. Taʿan.'] },
+  { slug: 'y-megillah', name: 'y. Megillah (The Scroll of Esther)', noteBook: 'YerMegillah', chapters: 4, abbrevs: ['y. Meg.'] },
+  { slug: 'y-chagigah', name: 'y. Chagigah (The Festival Offering)', noteBook: 'YerChagigah', chapters: 3, abbrevs: ['y. Ḥag.'] },
+  { slug: 'y-moed-katan', name: 'y. Moed Katan (The Minor Festival)', noteBook: 'YerMoedKatan', chapters: 3, abbrevs: ['y. Moʾed Qaṭ.'] },
+  { slug: 'y-yevamot', name: 'y. Yevamot (Levirate Marriages)', noteBook: 'YerYevamot', chapters: 16, abbrevs: ['y. Yebam.', 'y. Yeb.'] },
+  { slug: 'y-sotah', name: 'y. Sotah (The Suspected Adulteress)', noteBook: 'YerSotah', chapters: 9, abbrevs: ['y. Soṭah'] },
+  { slug: 'y-ketubot', name: 'y. Ketubot (Marriage Contracts)', noteBook: 'YerKetubot', chapters: 13, abbrevs: ['y. Ketub.'] },
+  { slug: 'y-nedarim', name: 'y. Nedarim (Vows)', noteBook: 'YerNedarim', chapters: 11, abbrevs: ['y. Ned.'] },
+  { slug: 'y-nazir', name: 'y. Nazir (The Nazirite)', noteBook: 'YerNazir', chapters: 9, abbrevs: ['y. Naz.'] },
+  { slug: 'y-gittin', name: 'y. Gittin (Bills of Divorce)', noteBook: 'YerGittin', chapters: 9, abbrevs: ['y. Giṭ.'] },
+  { slug: 'y-kiddushin', name: 'y. Kiddushin (Betrothals)', noteBook: 'YerKiddushin', chapters: 4, abbrevs: ['y. Qidd.'] },
+  { slug: 'y-bava-kamma', name: 'y. Bava Kamma (The First Gate)', noteBook: 'YerBavaKamma', chapters: 10, abbrevs: ['y. B. Qam.'] },
+  { slug: 'y-bava-metzia', name: 'y. Bava Metzia (The Middle Gate)', noteBook: 'YerBavaMetzia', chapters: 10, abbrevs: ['y. B. Meṣiʿa'] },
+  { slug: 'y-bava-batra', name: 'y. Bava Batra (The Last Gate)', noteBook: 'YerBavaBatra', chapters: 10, abbrevs: ['y. B. Bat.', 'y. B. Batr.'] },
+  { slug: 'y-sanhedrin', name: 'y. Sanhedrin (The Court)', noteBook: 'YerSanhedrin', chapters: 11, abbrevs: ['y. Sanh.'] },
+  { slug: 'y-shevuot', name: 'y. Shevuot (Oaths)', noteBook: 'YerShevuot', chapters: 8, abbrevs: ['y. Šebu.'] },
+  { slug: 'y-avodah-zarah', name: 'y. Avodah Zarah (Idolatry)', noteBook: 'YerAvodahZarah', chapters: 5, abbrevs: ['y. ʿAbod. Zar.'] },
+  { slug: 'y-makkot', name: 'y. Makkot (Lashes)', noteBook: 'YerMakkot', chapters: 3, abbrevs: ['y. Mak.'] },
+  { slug: 'y-horayot', name: 'y. Horayot (Rulings)', noteBook: 'YerHorayot', chapters: 3, abbrevs: ['y. Hor.'] },
+  { slug: 'y-niddah', name: 'y. Niddah (The Menstruant)', noteBook: 'YerNiddah', chapters: 4, abbrevs: ['y. Nid.'] },
+]
+
+const YERUSHALMI_WORKS: ProseWork[] = YERUSHALMI.map(w => ({
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  noteBook: w.noteBook,
+  dataUrl: `/data/yerushalmi/${w.slug.replace(/^y-/, '')}.json`,
+  chapters: w.chapters,
+  attribution: YERUSHALMI_ATTRIBUTION,
+  parseCitation: mishnahCite(w.abbrevs),
+  // The verse number is a halakhah, and the reader's chapter heading should say so.
+  chapterLabel: (chapter: number) => `Chapter ${chapter}`,
+}))
+
+// Ids/names the catalog needs to list the tractates under one Texts category.
+export const YERUSHALMI_CATALOG = YERUSHALMI.map(w => ({
+  id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters,
+}))
+
 // ── Greco-Roman (Perseus) ─────────────────────────────────────────────────────────────
 // Epictetus — the Discourses (one work per book) and the Enchiridion — from the Perseus
 // Digital Library's canonical TEI editions, which carry the standard citation numbering
@@ -1337,6 +1408,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...HESIOD_WORKS,
   ...HERODOTUS_WORKS,
   ...MISHNAH_WORKS,
+  ...YERUSHALMI_WORKS,
   ...GRECO_WORKS,
   ...PLATO_WORKS,
   ...ARISTOTLE_WORKS,
