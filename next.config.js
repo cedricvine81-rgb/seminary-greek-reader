@@ -62,6 +62,9 @@ const nextConfig = {
         // seconds (measured 2026-07-30): these client-only files below were riding along
         // in every server bundle.
         'public/data/yerushalmi/**',
+        'public/data/bavli/**',
+        // Jastrow's dictionary is fetched by the Talmud reader only (src/lib/jastrow.ts).
+        'public/data/jastrow.json',
         // Reader syntax layers — SyntaxMenu/GreekReader fetch them client-side.
         'public/data/abs-syntax.json',
         'public/data/gbi.json',

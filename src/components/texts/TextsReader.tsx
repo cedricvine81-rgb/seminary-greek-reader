@@ -7,6 +7,7 @@ import { normalizeGreek } from '@/lib/greek-utils'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { VerseNoteButton } from '@/components/notes/VerseNoteButton'
 import type { LexicalInfoPanel } from '@/types/lexicon'
+import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/lib/jastrow'
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
@@ -266,6 +267,36 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   // but reads right-to-left in a Hebrew face, and its words must not go through the Greek
   // tokeniser (which normalises Greek diacritics and offers Greek lexicon lookups).
   const hebrewProse = work?.script === 'hebrew'
+  // Jastrow's dictionary, fetched once when a Talmud word is first consulted.
+  const [jastrow, setJastrow] = useState<JastrowData | null>(null)
+  useEffect(() => {
+    if (hebrewProse && !jastrow) loadJastrow().then(setJastrow).catch(() => {})
+  }, [hebrewProse, jastrow])
+
+  /** A Talmud word's Jastrow candidates, shaped for the shared parsing pane. */
+  const jastrowInfo = useCallback((word: string, reference: string): LexicalInfoPanel => {
+    const hits = lookupAramaic(jastrow, word)
+    if (hits.length === 0) {
+      return { surface: word, lexeme: '', gloss: jastrow ? 'No Jastrow entry found for this form.' : 'Loading Jastrow…',
+               partOfSpeech: '', parsing: '', reference, script: 'hebrew' }
+    }
+    const first = hits[0]
+    // Anything that needed a prefix or ending removed is a CANDIDATE, and says so: the text
+    // carries no morphology, so the split is our guess rather than Jastrow's analysis.
+    const label = strippedLabel(first)
+    const others = hits.slice(1, 4).map(h => `${h.headword}${strippedLabel(h) ? ` (${strippedLabel(h)})` : ''} — ${h.entry.s[0] ?? ''}`)
+    return {
+      surface: word,
+      lexeme: first.headword,
+      gloss: first.entry.s[0] ?? '',
+      partOfSpeech: first.entry.m ?? '',
+      parsing: first.inferred ? `possible reading: ${label}` : 'Jastrow entry',
+      reference,
+      script: 'hebrew',
+      definition: first.entry.s.slice(1).join(' · ') || undefined,
+      bdbDefinition: others.length ? `Other possibilities: ${others.join('  |  ')}` : undefined,
+    }
+  }, [jastrow])
   // A Greek-only prose work (no translation shipped, e.g. Philostratus, Aratus,
   // Marcus Aurelius) is always shown Greek-only — even if a previously-open work
   // left proseMode on 'both' — and its mode selector is hidden, since there is
@@ -1340,7 +1371,17 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                             ) : hebrewProse ? (
                               <span dir="rtl" lang="he" className="font-hebrew block" style={{ fontSize: 'var(--tx-fs, 1.35rem)' }}
                                 {...verseAnchorProps(noteBook, section.chapter, row.num, 'grc')}>
-                                {row.greek}
+                                {(row.greek ?? '').split(/(\s+)/).map((tok, ti) => {
+                                  if (!tok.trim()) return tok
+                                  const key = `${section.key}.${row.num}.${ti}`
+                                  const select = () => { setSelectedInfo(jastrowInfo(tok, citeFor(row))); setSelectedKey(key) }
+                                  return (
+                                    <span key={ti} onMouseEnter={select} onClick={select}
+                                      className={`cursor-pointer rounded px-0.5 transition-colors hover:bg-brand-100 ${selectedKey === key ? 'bg-brand-100' : ''}`}>
+                                      {tok}
+                                    </span>
+                                  )
+                                })}
                               </span>
                             ) : greekProse ? (
                               <span className="font-greek" style={{ fontSize: 'var(--tx-fs, 1.45rem)' }}
@@ -1412,7 +1453,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
         </div>
 
         {/* Parsing window — Greek works only */}
-        {(isGreek || greekProse) && !greekHidden && <ResizableParsingPane storageKey="texts" info={selectedInfo} bgClass="bg-gray-50" />}
+        {(isGreek || greekProse || hebrewProse) && !greekHidden && <ResizableParsingPane storageKey="texts" info={selectedInfo} bgClass="bg-gray-50" />}
       </div>
 
       {isAuthenticated && highlightSelection.popup && (
