@@ -145,34 +145,55 @@ def sections(lines):
 # Nothing else in this OCR is reliable: inferring boundaries from chapter numbers put Luke's
 # whole section under Acts (571 references landed on Acts 27:10), matching the section title
 # caught the preface, and matching the book name alone let Luke run through John into Acts.
+# Boundaries come from the running heads, which name the book on every page. Volume 2's are
+# bare book names ("Lukas 3, 14  87"); volume 3's spell out the epistle and number it
+# ("1. Brief an die Korinther 1, 19  395"), which is also how 1 and 2 Corinthians are told
+# apart. A book spans its first such head to its last.
+#
+# Nothing else in this OCR is reliable, and every alternative failed SILENTLY: inferring
+# boundaries from chapter numbers put Luke's whole section under Acts (571 references landed on
+# Acts 27:10); matching the section title caught the preface; matching a bare book name let Luke
+# run through John into Acts. Volume 3's table of contents is too OCR-damaged to use at all.
 RUNNING_HEAD = {
-    'Matt': 'Matth', 'Mark': 'Markus', 'Luke': 'Lukas',
-    'John': 'Johannes', 'Acts': 'Apostelgeschichte',
+    # Volume 2 — the Gospels and Acts.
+    'Matt': r'\bMatth\w*\b', 'Mark': r'\bMarkus\b', 'Luke': r'\bLukas\b',
+    'John': r'\bJohannes\b', 'Acts': r'\bApostelgeschichte\b',
+    # Volume 3 — the Epistles and Revelation.
+    'Rom': r'Brief an die R[öo]mer', '1Cor': r'1\.\s*Brief an die Korinther',
+    '2Cor': r'2\.\s*Brief an die Korinther', 'Gal': r'Brief an die Galater',
+    'Eph': r'Brief an die Epheser', 'Phil': r'Brief an die Philipper',
+    'Col': r'Brief an die Kolosser', '1Thess': r'1\.\s*Brief an die Thessalonicher',
+    '2Thess': r'2\.\s*Brief an die Thessalonicher', '1Tim': r'1\.\s*Brief an Timotheus',
+    '2Tim': r'2\.\s*Brief an Timotheus', 'Titus': r'Brief an Titus',
+    'Phlm': r'Brief an Philemon', 'Heb': r'Brief an die Hebr[äa]er',
+    'Jas': r'Brief des Jakobus', '1Pet': r'1\.\s*Brief Petri', '2Pet': r'2\.\s*Brief Petri',
+    '1John': r'1\.\s*Brief Johannis', '2John': r'2\.\s*Brief Johannis',
+    '3John': r'3\.\s*Brief Johannis', 'Jude': r'Brief Jud[äa]', 'Rev': r'Offenbarung Johannis',
 }
-# Table of contents of the volume being read, as printed page ranges.
-VOLUME_PAGES = {
-    'Mark': (1, 54), 'Luke': (55, 301), 'John': (302, 587), 'Acts': (588, 773),
-}
-HEAD_LINE = re.compile(
-    r'^\s*(?:(\d{1,3})\s+)?(Markus|Lukas|Johannes|Apostelgeschichte|Matth\w*)\b.*?(?:\s(\d{1,3}))?\s*$'
-)
+# Volume 2's own contents, used to confirm the Gospel spans. Volume 3 has none usable, so its
+# books are bounded by their running heads alone.
+VOLUME_PAGES = {'Mark': (1, 54), 'Luke': (55, 301), 'John': (302, 587), 'Acts': (588, 773)}
 
 
 def book_span(lines, book):
     """(start, end) line numbers for one book, from its page-numbered running heads."""
-    if book not in RUNNING_HEAD or book not in VOLUME_PAGES:
-        sys.exit(f'no running head / page range known for {book}')
-    name, (lo, hi) = RUNNING_HEAD[book], VOLUME_PAGES[book]
+    if book not in RUNNING_HEAD:
+        sys.exit(f'no running head known for {book}')
+    pat = re.compile(RUNNING_HEAD[book])
+    rng = VOLUME_PAGES.get(book)
     hits = []
     for n, l in enumerate(lines):
-        m = HEAD_LINE.match(l or '')
-        if not m or not m.group(2).startswith(name):
+        if not pat.search(l or '') or not re.search(r'\d', l or ''):
             continue
-        page = m.group(1) or m.group(3)
-        if page and lo <= int(page) <= hi:
-            hits.append(n)
-    if len(hits) < 20:
-        sys.exit(f'only {len(hits)} page-numbered running heads for {book} — refusing to guess')
+        if re.search(r'\d+\s*[—–]\s*\d+', l):     # a contents row, not a running head
+            continue
+        if rng:                                     # where the contents are legible, honour them
+            m = re.match(r'^\s*(\d{1,3})\s', l) or re.search(r'\s(\d{1,3})\s*$', l)
+            if not m or not (rng[0] <= int(m.group(1)) <= rng[1]):
+                continue
+        hits.append(n)
+    if len(hits) < 3:
+        sys.exit(f'only {len(hits)} running heads for {book} — refusing to guess')
     return hits[0], hits[-1] + 1
 
 
