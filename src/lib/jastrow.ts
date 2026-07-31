@@ -65,8 +65,9 @@ export function normalizeAramaic(s: string): string {
 }
 
 // The particles Aramaic fuses onto the front of a word. ד (that/of) and ו (and) stack freely,
-// which is why stripping is applied up to twice rather than once.
-const PREFIXES = ['ד', 'ו', 'ב', 'כ', 'ל', 'מ', 'ה', 'ש']
+// which is why stripping is applied up to twice rather than once. ק is the Babylonian qa-
+// participial (קאמר, קתני) — not a Hebrew prefix, but ubiquitous in the Bavli's own voice.
+const PREFIXES = ['ד', 'ו', 'ב', 'כ', 'ל', 'מ', 'ה', 'ש', 'ק']
 
 // Pronominal and determinative endings. Riskier than prefixes — dropping the ו of אותו leaves
 // אות, a real and different word — so a suffix match is only tried when everything else has
