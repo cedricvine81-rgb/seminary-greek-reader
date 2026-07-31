@@ -139,6 +139,23 @@ interface TextsReaderProps {
   initialWorkId?: string
 }
 
+
+// One download per data file per session. Chapter loading used to re-fetch the WORK's whole
+// JSON for every chapter it appended — opening a tractate downloaded the same file three
+// times before the first scroll, and once more per chapter after that. The cache stores the
+// in-flight promise, so parallel chapter loads share one request rather than racing three.
+const workFileCache = new Map<string, Promise<unknown | null>>()
+function fetchWorkJson(url: string): Promise<unknown | null> {
+  let p = workFileCache.get(url)
+  if (!p) {
+    p = fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null)
+    // A failed download must not poison the session — retry next time.
+    p.then(d => { if (d === null) workFileCache.delete(url) })
+    workFileCache.set(url, p)
+  }
+  return p
+}
+
 export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest, initialWorkId }: TextsReaderProps) {
   const isFontSizeControlled = onFontSize !== undefined
   const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
@@ -488,8 +505,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
       }))
     }
     if (w.source === 'josephus') {
-      const r = await fetch(`/data/josephus/${w.work}/${item.book}.json`)
-      const d = r.ok ? await r.json() : null
+      const d = await fetchWorkJson(`/data/josephus/${w.work}/${item.book}.json`) as { chapters?: { number: number; sections?: { number: number; text: string; greek?: string }[] }[] } | null
       const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
       const morph = await loadMorph(w.work!, item.book!)
       // Niese §§ carry parallel Greek; the Whiston English is attached once per Whiston
@@ -499,8 +515,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     }
     // 2 Esdras / 1 Enoch / Jubilees / 2 Baruch / 2 Enoch — plain English prose stored as
     // chapter→verses; the registry knows where each one's JSON lives.
-    const r = await fetch(findProseWork(w.source)!.dataUrl)
-    const d = r.ok ? await r.json() : null
+    const d = await fetchWorkJson(findProseWork(w.source)!.dataUrl) as { chapters?: { number: number; verses?: { number: number; ref?: string; text: string; greek?: string; heading?: string }[] }[] } | null
     const ch = d?.chapters?.find((c: { number: number }) => c.number === item.chapter)
     const morph = await loadProseMorph(w)
     return (ch?.verses ?? []).map((v: { number: number; ref?: string; text: string; greek?: string; heading?: string }) =>
@@ -747,9 +762,9 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
   function loadLocateSections(w: CatalogWork, book: number) {
     setLocateSections(null)
     const token = ++fetchTokenRef.current
-    fetch(`/data/josephus/${w.work}/${book}.json`)
-      .then(r => (r.ok ? r.json() : null))
-      .then((d: { chapters?: { number: number; sections?: { number: number }[] }[] } | null) => {
+    const filePromise = fetchWorkJson(`/data/josephus/${w.work}/${book}.json`) as Promise<{ chapters?: { number: number; sections?: { number: number }[] }[] } | null>
+    filePromise
+      .then(d => {
         if (fetchTokenRef.current !== token) return
         const secs: { n: number; chapter: number }[] = []
         for (const ch of d?.chapters ?? [])
