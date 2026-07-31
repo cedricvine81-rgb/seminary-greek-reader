@@ -906,14 +906,17 @@ export const BAVLI_CATALOG = BAVLI.map(w => ({
 // is the same partial community translation the Bavli has. Built by scripts/build-tosefta.py.
 const TOSEFTA_ATTRIBUTION = 'Text: the Tosefta (Zuckermandel / Machon Mamre), public domain. Source: Sefaria. Hebrew only.'
 
-const toseftaCite = (abbrev: string) => (text: string): { chapter: number; verse?: number } | null => {
+const toseftaCite = (forms: string[]) => (text: string): { chapter: number; verse?: number } | null => {
   const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
-  const m = s.match(new RegExp('^' + abbrev.replace(/\./g, '\\.') + '\\s+(\\d+)(?::(\\d+))?'))
-  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+  for (const f of [...forms].sort((a, b) => b.length - a.length)) {
+    const m = s.match(new RegExp('^' + f.replace(/\./g, '\\.') + '\\s+(\\d+)(?::(\\d+))?'))
+    if (m) return { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined }
+  }
+  return null
 }
 
-const TOSEFTA: { slug: string; name: string; noteBook: string; chapters: number }[] = [
-  { slug: 't-berakhot', name: 't. Berakhot', noteBook: 'TosBerakhot', chapters: 6 },
+const TOSEFTA: { slug: string; name: string; noteBook: string; chapters: number; abbrev?: string }[] = [
+  { slug: 't-berakhot', name: 't. Berakhot', noteBook: 'TosBerakhot', chapters: 6, abbrev: 'Ber.' },
   { slug: 't-peah', name: 't. Peah', noteBook: 'TosPeah', chapters: 4 },
   { slug: 't-demai', name: 't. Demai', noteBook: 'TosDemai', chapters: 8 },
   { slug: 't-terumot', name: 't. Terumot', noteBook: 'TosTerumot', chapters: 10 },
@@ -924,49 +927,49 @@ const TOSEFTA: { slug: string; name: string; noteBook: string; chapters: number 
   { slug: 't-orlah', name: 't. Orlah', noteBook: 'TosOrlah', chapters: 1 },
   { slug: 't-challah', name: 't. Challah', noteBook: 'TosChallah', chapters: 2 },
   { slug: 't-bikkurim', name: 't. Bikkurim', noteBook: 'TosBikkurim', chapters: 2 },
-  { slug: 't-shabbat', name: 't. Shabbat', noteBook: 'TosShabbat', chapters: 18 },
-  { slug: 't-eruvin', name: 't. Eruvin', noteBook: 'TosEruvin', chapters: 8 },
-  { slug: 't-pesachim', name: 't. Pesachim', noteBook: 'TosPesachim', chapters: 10 },
+  { slug: 't-shabbat', name: 't. Shabbat', noteBook: 'TosShabbat', chapters: 18, abbrev: 'Šabb.' },
+  { slug: 't-eruvin', name: 't. Eruvin', noteBook: 'TosEruvin', chapters: 8, abbrev: 'ʿErub.' },
+  { slug: 't-pesachim', name: 't. Pesachim', noteBook: 'TosPesachim', chapters: 10, abbrev: 'Pesaḥ.' },
   { slug: 't-shekalim', name: 't. Shekalim', noteBook: 'TosShekalim', chapters: 3 },
-  { slug: 't-yoma', name: 't. Yoma', noteBook: 'TosYoma', chapters: 4 },
-  { slug: 't-sukkah', name: 't. Sukkah', noteBook: 'TosSukkah', chapters: 4 },
-  { slug: 't-beitzah', name: 't. Beitzah', noteBook: 'TosBeitzah', chapters: 4 },
-  { slug: 't-rosh-hashanah', name: 't. Rosh Hashanah', noteBook: 'TosRoshHashanah', chapters: 2 },
+  { slug: 't-yoma', name: 't. Yoma', noteBook: 'TosYoma', chapters: 4, abbrev: 'Yoma' },
+  { slug: 't-sukkah', name: 't. Sukkah', noteBook: 'TosSukkah', chapters: 4, abbrev: 'Sukkah' },
+  { slug: 't-beitzah', name: 't. Beitzah', noteBook: 'TosBeitzah', chapters: 4, abbrev: 'Beṣah' },
+  { slug: 't-rosh-hashanah', name: 't. Rosh Hashanah', noteBook: 'TosRoshHashanah', chapters: 2, abbrev: 'Roš Haš.' },
   { slug: 't-ta-anit', name: 't. Ta\'anit', noteBook: 'TosTa\'anit', chapters: 3 },
-  { slug: 't-megillah', name: 't. Megillah', noteBook: 'TosMegillah', chapters: 3 },
-  { slug: 't-moed-katan', name: 't. Moed Katan', noteBook: 'TosMoedKatan', chapters: 2 },
-  { slug: 't-chagigah', name: 't. Chagigah', noteBook: 'TosChagigah', chapters: 3 },
-  { slug: 't-yevamot', name: 't. Yevamot', noteBook: 'TosYevamot', chapters: 14 },
-  { slug: 't-ketubot', name: 't. Ketubot', noteBook: 'TosKetubot', chapters: 12 },
-  { slug: 't-nedarim', name: 't. Nedarim', noteBook: 'TosNedarim', chapters: 7 },
-  { slug: 't-nazir', name: 't. Nazir', noteBook: 'TosNazir', chapters: 6 },
-  { slug: 't-sotah', name: 't. Sotah', noteBook: 'TosSotah', chapters: 15 },
-  { slug: 't-gittin', name: 't. Gittin', noteBook: 'TosGittin', chapters: 7 },
-  { slug: 't-kiddushin', name: 't. Kiddushin', noteBook: 'TosKiddushin', chapters: 5 },
-  { slug: 't-bava-kamma', name: 't. Bava Kamma', noteBook: 'TosBavaKamma', chapters: 11 },
-  { slug: 't-bava-metzia', name: 't. Bava Metzia', noteBook: 'TosBavaMetzia', chapters: 11 },
-  { slug: 't-bava-batra', name: 't. Bava Batra', noteBook: 'TosBavaBatra', chapters: 11 },
-  { slug: 't-sanhedrin', name: 't. Sanhedrin', noteBook: 'TosSanhedrin', chapters: 14 },
-  { slug: 't-makkot', name: 't. Makkot', noteBook: 'TosMakkot', chapters: 4 },
-  { slug: 't-shevuot', name: 't. Shevuot', noteBook: 'TosShevuot', chapters: 6 },
+  { slug: 't-megillah', name: 't. Megillah', noteBook: 'TosMegillah', chapters: 3, abbrev: 'Meg.' },
+  { slug: 't-moed-katan', name: 't. Moed Katan', noteBook: 'TosMoedKatan', chapters: 2, abbrev: 'Moʾed Qaṭ.' },
+  { slug: 't-chagigah', name: 't. Chagigah', noteBook: 'TosChagigah', chapters: 3, abbrev: 'Ḥag.' },
+  { slug: 't-yevamot', name: 't. Yevamot', noteBook: 'TosYevamot', chapters: 14, abbrev: 'Yebam.' },
+  { slug: 't-ketubot', name: 't. Ketubot', noteBook: 'TosKetubot', chapters: 12, abbrev: 'Ketub.' },
+  { slug: 't-nedarim', name: 't. Nedarim', noteBook: 'TosNedarim', chapters: 7, abbrev: 'Ned.' },
+  { slug: 't-nazir', name: 't. Nazir', noteBook: 'TosNazir', chapters: 6, abbrev: 'Naz.' },
+  { slug: 't-sotah', name: 't. Sotah', noteBook: 'TosSotah', chapters: 15, abbrev: 'Soṭah' },
+  { slug: 't-gittin', name: 't. Gittin', noteBook: 'TosGittin', chapters: 7, abbrev: 'Giṭ.' },
+  { slug: 't-kiddushin', name: 't. Kiddushin', noteBook: 'TosKiddushin', chapters: 5, abbrev: 'Qidd.' },
+  { slug: 't-bava-kamma', name: 't. Bava Kamma', noteBook: 'TosBavaKamma', chapters: 11, abbrev: 'B. Qam.' },
+  { slug: 't-bava-metzia', name: 't. Bava Metzia', noteBook: 'TosBavaMetzia', chapters: 11, abbrev: 'B. Meṣiʿa' },
+  { slug: 't-bava-batra', name: 't. Bava Batra', noteBook: 'TosBavaBatra', chapters: 11, abbrev: 'B. Bat.' },
+  { slug: 't-sanhedrin', name: 't. Sanhedrin', noteBook: 'TosSanhedrin', chapters: 14, abbrev: 'Sanh.' },
+  { slug: 't-makkot', name: 't. Makkot', noteBook: 'TosMakkot', chapters: 4, abbrev: 'Mak.' },
+  { slug: 't-shevuot', name: 't. Shevuot', noteBook: 'TosShevuot', chapters: 6, abbrev: 'Šebu.' },
   { slug: 't-eduyot', name: 't. Eduyot', noteBook: 'TosEduyot', chapters: 3 },
-  { slug: 't-avodah-zarah', name: 't. Avodah Zarah', noteBook: 'TosAvodahZarah', chapters: 9 },
-  { slug: 't-horayot', name: 't. Horayot', noteBook: 'TosHorayot', chapters: 2 },
-  { slug: 't-zevachim', name: 't. Zevachim', noteBook: 'TosZevachim', chapters: 13 },
-  { slug: 't-chullin', name: 't. Chullin', noteBook: 'TosChullin', chapters: 10 },
-  { slug: 't-menachot', name: 't. Menachot', noteBook: 'TosMenachot', chapters: 13 },
-  { slug: 't-bekhorot', name: 't. Bekhorot', noteBook: 'TosBekhorot', chapters: 7 },
-  { slug: 't-arakhin', name: 't. Arakhin', noteBook: 'TosArakhin', chapters: 5 },
-  { slug: 't-temurah', name: 't. Temurah', noteBook: 'TosTemurah', chapters: 4 },
-  { slug: 't-meilah', name: 't. Meilah', noteBook: 'TosMeilah', chapters: 3 },
-  { slug: 't-keritot', name: 't. Keritot', noteBook: 'TosKeritot', chapters: 4 },
+  { slug: 't-avodah-zarah', name: 't. Avodah Zarah', noteBook: 'TosAvodahZarah', chapters: 9, abbrev: 'ʿAbod. Zar.' },
+  { slug: 't-horayot', name: 't. Horayot', noteBook: 'TosHorayot', chapters: 2, abbrev: 'Hor.' },
+  { slug: 't-zevachim', name: 't. Zevachim', noteBook: 'TosZevachim', chapters: 13, abbrev: 'Zebaḥ.' },
+  { slug: 't-chullin', name: 't. Chullin', noteBook: 'TosChullin', chapters: 10, abbrev: 'Ḥul.' },
+  { slug: 't-menachot', name: 't. Menachot', noteBook: 'TosMenachot', chapters: 13, abbrev: 'Menaḥ.' },
+  { slug: 't-bekhorot', name: 't. Bekhorot', noteBook: 'TosBekhorot', chapters: 7, abbrev: 'Bek.' },
+  { slug: 't-arakhin', name: 't. Arakhin', noteBook: 'TosArakhin', chapters: 5, abbrev: 'ʿArak.' },
+  { slug: 't-temurah', name: 't. Temurah', noteBook: 'TosTemurah', chapters: 4, abbrev: 'Temurah' },
+  { slug: 't-meilah', name: 't. Meilah', noteBook: 'TosMeilah', chapters: 3, abbrev: 'Meʿil.' },
+  { slug: 't-keritot', name: 't. Keritot', noteBook: 'TosKeritot', chapters: 4, abbrev: 'Ker.' },
   { slug: 't-kelim-kamma', name: 't. Kelim Kamma', noteBook: 'TosKelimKamma', chapters: 7 },
   { slug: 't-kelim-metzia', name: 't. Kelim Metzia', noteBook: 'TosKelimMetzia', chapters: 11 },
   { slug: 't-kelim-batra', name: 't. Kelim Batra', noteBook: 'TosKelimBatra', chapters: 7 },
   { slug: 't-oholot', name: 't. Oholot', noteBook: 'TosOholot', chapters: 18 },
   { slug: 't-negaim', name: 't. Negaim', noteBook: 'TosNegaim', chapters: 9 },
   { slug: 't-parah', name: 't. Parah', noteBook: 'TosParah', chapters: 12 },
-  { slug: 't-niddah', name: 't. Niddah', noteBook: 'TosNiddah', chapters: 9 },
+  { slug: 't-niddah', name: 't. Niddah', noteBook: 'TosNiddah', chapters: 9, abbrev: 'Nid.' },
   { slug: 't-mikvaot', name: 't. Mikvaot', noteBook: 'TosMikvaot', chapters: 8 },
   { slug: 't-tahorot', name: 't. Tahorot', noteBook: 'TosTahorot', chapters: 11 },
   { slug: 't-makhshirin', name: 't. Makhshirin', noteBook: 'TosMakhshirin', chapters: 3 },
@@ -984,7 +987,7 @@ const TOSEFTA_WORKS: ProseWork[] = TOSEFTA.map(w => ({
   chapters: w.chapters,
   attribution: TOSEFTA_ATTRIBUTION,
   // "t. Ber. 3:7" — the SBL abbreviation is the display name with the tractate spelled out.
-  parseCitation: toseftaCite(w.name),
+  parseCitation: toseftaCite([w.name, ...(w.abbrev ? [`t. ${w.abbrev}`] : [])]),
 }))
 
 export const TOSEFTA_CATALOG = TOSEFTA.map(w => ({
