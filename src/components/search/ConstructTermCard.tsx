@@ -4,7 +4,8 @@
 // document-level key listener below relies on.
 import { useEffect, useMemo, useRef, useState, type ChangeEvent, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { ChevronDown, Trash2, Check } from 'lucide-react'
-import { AGREEMENT_CATEGORIES, categoriesFor, FEATURE_LABEL, POS_FEATURES, type MorphGroup } from '@/lib/morph-features'
+import { type MorphGroup } from '@/lib/morph-features'
+import { vocabFor, type MorphVocab } from '@/lib/morph-vocab'
 import { betaCodeToGreek, BETA_LEGEND } from '@/lib/greek-translit'
 import { normalizeGreek } from '@/lib/greek-utils'
 import type { ConstructTerm, LemmaForms } from '@/lib/construct-query'
@@ -16,10 +17,11 @@ import type { ConstructTerm, LemmaForms } from '@/lib/construct-query'
 // Across categories the constraints are AND'd. That's why these are checkbox popovers rather
 // than plain <select>s: Accordance needs an explicit OR operator for the same thing.
 
-function MorphSelect({ group, selected, onChange }: {
+function MorphSelect({ group, selected, onChange, vocab }: {
   group: MorphGroup
   selected: string[]
   onChange: (vals: string[]) => void
+  vocab: MorphVocab
 }) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -51,7 +53,7 @@ function MorphSelect({ group, selected, onChange }: {
   const label = selected.length === 0
     ? 'any'
     : selected.length <= 2
-      ? selected.map(v => FEATURE_LABEL.get(v) ?? v).join(', ')
+      ? selected.map(v => vocab.label(v)).join(', ')
       : `${selected.length} selected`
 
   return (
@@ -127,9 +129,11 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
   onChange: (t: ConstructTerm) => void
   onRemove?: () => void
 }) {
+  // Greek or Hebrew, decided by the corpus: the two share this card but no categories.
+  const vocab = vocabFor(corpus)
   // Agreement: which other word, and in which categories. Defaults to the first other word.
   const otherWords = Array.from({ length: termCount }, (_, i) => i).filter(i => i !== index)
-  const agreeOn = (term.agreeOn ?? []).filter(c => (AGREEMENT_CATEGORIES as readonly string[]).includes(c))
+  const agreeOn = (term.agreeOn ?? []).filter(c => vocab.agreementCategories.includes(c))
   const agreeWith = term.agreeWith !== undefined && otherWords.includes(term.agreeWith)
     ? term.agreeWith
     : otherWords[0] ?? 0
@@ -179,7 +183,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
     ? lemmaForms.get(normalizeGreek(typed)) ?? null
     : remote.q === typed ? remote.exact : null
 
-  const posOptions = forms?.p ?? POS_FEATURES.map(f => f.value)
+  const posOptions = forms?.p ?? vocab.posFeatures.map(f => f.value)
   // A part of speech the word can't be is STALE — it survived a word change and would search for
   // something that cannot exist (a verb whose lemma is ἵνα: no matches, no explanation). Ignore
   // it for display; prune() strips it from the query itself.
@@ -204,7 +208,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
     const seen = new Set<string>()
     const out: MorphGroup[] = []
     for (const p of list) {
-      for (const g of categoriesFor(p, moods)) {
+      for (const g of vocab.categoriesFor(p, moods)) {
         if (seen.has(g.key)) continue
         seen.add(g.key)
         // Drop a category the word is never attested in — selecting it could only return nothing.
@@ -217,7 +221,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
 
   // The categories the word leaves no choice in (λόγος → "masculine"), for the recognised line.
   const settled = forms
-    ? categories.map(g => optionsFor(g)).filter(o => o.length === 1).map(o => FEATURE_LABEL.get(o[0]) ?? o[0])
+    ? categories.map(g => optionsFor(g)).filter(o => o.length === 1).map(o => vocab.label(o[0]))
     : []
 
   // Drop any constraint that is no longer selectable — one the part of speech can't take (a
@@ -365,7 +369,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
               rather than promising something it can't do. Strong's numbers would give the LXX a
               true lexeme, which is the proper fix. */}
           <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">
-            <span className="text-gray-500">1 · Greek word{lexemeIsExact ? ' form' : ''}</span>
+            <span className="text-gray-500">1 · {vocab.wordLabel}{lexemeIsExact ? ' form' : ''}</span>
             <span className="font-normal normal-case tracking-normal text-gray-300">
               {lexemeIsExact
                 ? ' — this exact form; leave blank for any word'
@@ -426,14 +430,14 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
         {/* Part of speech: a dropdown only while it's still open. Once the word settles it
             (λόγος can only be a noun) there is nothing to pick, so it reads as a fact. */}
         {posOptions.length === 1 && forms ? (
-          <Fixed label="Part of speech" value={FEATURE_LABEL.get(posOptions[0]) ?? posOptions[0]} />
+          <Fixed label="Part of speech" value={vocab.label(posOptions[0])} />
         ) : (
           <div>
             <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
             <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
               className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
               <option value="">any</option>
-              {POS_FEATURES.filter(f => posOptions.includes(f.value))
+              {vocab.posFeatures.filter(f => posOptions.includes(f.value))
                 .map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
             </select>
           </div>
@@ -443,12 +447,13 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
             Where a choice remains, the menu lists only forms the word actually occurs in. */}
         {categories.map(g => {
           const opts = optionsFor(g)
-          if (opts.length === 1) return <Fixed key={g.key} label={g.label} value={FEATURE_LABEL.get(opts[0]) ?? opts[0]} />
+          if (opts.length === 1) return <Fixed key={g.key} label={g.label} value={vocab.label(opts[0])} />
           return (
             <MorphSelect key={g.key}
               group={opts.length === g.features.length ? g : { ...g, features: g.features.filter(f => opts.includes(f.value)) }}
               selected={term.features[g.key] ?? []}
-              onChange={vals => setCategory(g.key, vals)} />
+              onChange={vals => setCategory(g.key, vals)}
+              vocab={vocab} />
           )
         })}
       </div>
@@ -475,7 +480,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
             <span className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
               <label className="flex cursor-pointer items-center gap-1">
                 <input type="checkbox" checked={agreeOn.length > 0}
-                  onChange={e => setAgreement(e.target.checked ? [...AGREEMENT_CATEGORIES] : [], agreeWith)}
+                  onChange={e => setAgreement(e.target.checked ? [...vocab.agreementCategories] : [], agreeWith)}
                   className="h-3 w-3 accent-brand-600" />
                 agrees with
               </label>
@@ -488,7 +493,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
                 </select>
               )}
               <span className="text-gray-400">in</span>
-              {AGREEMENT_CATEGORIES.map(cat => (
+              {vocab.agreementCategories.map(cat => (
                 <label key={cat} className="flex cursor-pointer items-center gap-1">
                   <input type="checkbox" checked={agreeOn.includes(cat)}
                     onChange={e => setAgreement(

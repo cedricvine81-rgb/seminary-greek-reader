@@ -42,6 +42,11 @@ export interface ConstructTerm {
 export const CONSTRUCT_CORPORA = [
   { id: 'GNT', label: 'Greek New Testament', kind: 'bible', tagging: 'gold', readerAligned: true },
   { id: 'LXX', label: 'Greek Old Testament (Septuagint)', kind: 'bible', tagging: 'gold', readerAligned: true },
+  // The Hebrew Bible. Hand-tagged (OSHB/ETCBC) like the other two biblical corpora, and indexed
+  // by MORPHEME rather than by written word — the article, the conjunction waw and the
+  // prepositions ב/כ/ל are searchable in their own right, though they are prefixes rather than
+  // separate words. Distance is still counted in words (see construct-search.ts).
+  { id: 'MT', label: 'Hebrew Bible (Masoretic Text)', kind: 'bible', tagging: 'gold', readerAligned: true, script: 'hebrew' },
   { id: 'josephus', label: 'Josephus', kind: 'prose', tagging: 'machine', readerAligned: true },
   { id: 'philo', label: 'Philo', kind: 'prose', tagging: 'machine', readerAligned: true },
   { id: 'apostolic-fathers', label: 'Apostolic Fathers', kind: 'prose', tagging: 'machine', readerAligned: true },

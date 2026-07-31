@@ -9,6 +9,8 @@ import { ConstructProseResults, type ProseHit } from './ConstructProseResults'
 import { ConstructAllResults, type CorpusBlock } from './ConstructAllResults'
 import { ConstructScopePicker, type ScopeEntry } from './ConstructScopePicker'
 import { CONSTRUCT_PRESETS } from '@/lib/construct-presets'
+import { HEBREW_CONSTRUCT_PRESETS } from '@/lib/construct-presets-hebrew'
+import { vocabFor } from '@/lib/morph-vocab'
 import {
   CONSTRUCT_MAX_TERMS, CONSTRUCT_MAX_WITHIN, emptyTerm, encodeConstruct, queryIsRunnable,
   termIsEmpty, toBiblicalHit, CONSTRUCT_ALL, CONSTRUCT_CORPORA, corpusInfo, isProseCorpus,
@@ -345,7 +347,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
         )}
         {showExamples && (
           <div className="mt-2 max-h-[46vh] space-y-3 overflow-y-auto rounded-xl border border-gray-200 bg-surface p-3">
-            {CONSTRUCT_PRESETS.map(group => (
+            {(query.corpus === 'MT' ? HEBREW_CONSTRUCT_PRESETS : CONSTRUCT_PRESETS).map(group => (
               <div key={group.heading}>
                 <p className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-gray-400">{group.heading}</p>
                 <div className="space-y-1">
@@ -361,7 +363,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                       className="w-full rounded-lg border border-gray-100 px-2.5 py-1.5 text-left transition-colors hover:border-brand-200 hover:bg-brand-50">
                       <span className="flex items-baseline justify-between gap-3">
                         <span className="text-xs font-medium text-gray-800">{preset.label}</span>
-                        <span className="flex-none text-[10px] tabular-nums text-gray-400">{preset.approx.toLocaleString()} in the NT</span>
+                        <span className="flex-none text-[10px] tabular-nums text-gray-400">{preset.approx.toLocaleString()} in the {query.corpus === 'MT' ? 'MT' : 'NT'}</span>
                       </span>
                       <span className="mt-0.5 block text-[11px] leading-snug text-gray-500">{preset.note}</span>
                     </button>
@@ -562,12 +564,12 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               <GreekSearchResults
                 hits={hits}
                 terms={[]}
-                corpus={ran.corpus === 'LXX' ? 'LXX' : 'NA1904'}
+                corpus={ran.corpus === 'LXX' ? 'LXX' : ran.corpus === 'MT' ? 'MT' : 'NA1904'}
                 snippetLongVerses
                 bookName={bookName}
                 context={0}
                 ctxMap={{}}
-                transLang={transLang}
+                transLang={ran.corpus === 'MT' ? 'none' : transLang}
                 onOpen={openHit}
                 isAuthenticated={isAuthenticated}
               />

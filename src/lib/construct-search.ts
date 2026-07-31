@@ -15,9 +15,14 @@ import { CATEGORY_OF_TOKEN } from './morph-features'
 import { lemmaEntry } from './construct-lemmas'
 import { CONSTRUCT_CORPORA } from './construct-query'
 
-// [strongs, lemmaNorm, parsingLower] — the parsing is a ', '-joined token list, e.g.
+// [strongs, lemmaNorm, parsingLower, wordIndex?] — the parsing is a ', '-joined token list, e.g.
 // 'verb, aorist, active, participle, nominative, masculine, singular'.
-type TokenRow = [string, string, string]
+//
+// `wordIndex` appears only where a corpus is indexed more finely than the reader counts words:
+// the MT is indexed by MORPHEME, so בְּרֵאשִׁית is two tokens (the preposition and the noun) of
+// one written word, and both carry the same word index. Distance is then measured in words, the
+// way a reader counts them. Greek has one token per word and omits it.
+type TokenRow = [string, string, string, number?]
 interface BookIndex {
   w: TokenRow[]
   // [chapter, verse, startIndex, aligned?] — ascending by startIndex. `aligned` is present only for
@@ -141,10 +146,24 @@ function lowerBound(arr: number[], min: number): number {
   return lo
 }
 
-function findMatches(positions: number[][], within: number, ordered: boolean): number[][] {
+// `wordOf` maps a token index to the position distance is measured in, and `firstTokenOfWord`
+// maps back — both null for a corpus whose tokens ARE its words (every Greek corpus), where the
+// two spaces coincide and every comparison below is exactly what it was.
+function findMatches(
+  positions: number[][],
+  within: number,
+  ordered: boolean,
+  wordOf: Int32Array | null = null,
+  firstTokenOfWord: Int32Array | null = null,
+): number[][] {
   const n = positions.length
   const hits: number[][] = []
   const chosen = new Array<number>(n)
+  const wOf = wordOf ? (i: number) => wordOf[i] : (i: number) => i
+  // The earliest token that could still be within range, given a floor expressed in words.
+  const tokFloor = firstTokenOfWord
+    ? (w: number) => (w <= 0 ? 0 : w >= firstTokenOfWord.length ? Infinity : firstTokenOfWord[w])
+    : (w: number) => w
 
   // Depth-first over the terms. Each step binary-searches into the next term's positions
   // rather than rescanning from the front — with two very common parts of speech (article +
@@ -154,10 +173,11 @@ function findMatches(positions: number[][], within: number, ordered: boolean): n
     const list = positions[termIdx]
     // Any candidate must keep the whole span within `within`; ordered also forces it past
     // the previous pick.
-    const floor = ordered ? Math.max(chosen[termIdx - 1] + 1, mx - within) : mx - within
+    const rangeFloor = tokFloor(wOf(mx) - within)
+    const floor = ordered ? Math.max(chosen[termIdx - 1] + 1, rangeFloor) : rangeFloor
     for (let i = lowerBound(list, floor); i < list.length; i++) {
       const p = list[i]
-      if (p > mn + within) break                 // ascending → no later one fits either
+      if (wOf(p) > wOf(mn) + within) break       // ascending → no later one fits either
       // Distinct words per term (ordered mode gets this free from the increasing floor).
       if (!ordered) {
         let clash = false
@@ -282,7 +302,23 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
     for (let t = 0; t < terms.length; t++) termTotals[t] += positions[t].length
     if (positions.some(p => p.length === 0)) continue
 
-    let raw = findMatches(positions, within, query.ordered)
+    // Morpheme-indexed corpora (the MT) measure distance in written words; see TokenRow.
+    const morphemeIndexed = book.w.length > 0 && book.w[0].length > 3
+    let wordOf: Int32Array | null = null
+    let firstTokenOfWord: Int32Array | null = null
+    if (morphemeIndexed) {
+      wordOf = new Int32Array(book.w.length)
+      for (let i = 0; i < book.w.length; i++) wordOf[i] = book.w[i][3] ?? i
+      const wordCount = (wordOf[wordOf.length - 1] ?? 0) + 1
+      firstTokenOfWord = new Int32Array(wordCount).fill(-1)
+      for (let i = book.w.length - 1; i >= 0; i--) firstTokenOfWord[wordOf[i]] = i
+      // A word with no token of its own (impossible today, but cheap to be safe about) inherits
+      // the next one's first token, keeping the array monotonic for the floor lookup.
+      for (let w = wordCount - 2; w >= 0; w--) if (firstTokenOfWord[w] < 0) firstTokenOfWord[w] = firstTokenOfWord[w + 1]
+    }
+    const wordAt = (i: number) => (wordOf ? wordOf[i] : i)
+
+    let raw = findMatches(positions, within, query.ordered, wordOf, firstTokenOfWord)
 
     // Agreement: both words must carry a value in the category and the values must match. A word
     // with no value there (an indeclinable, a finite verb asked for case) cannot agree, so it
@@ -335,7 +371,7 @@ export function searchConstruct(query: ConstructQuery, limit = 300): { hits: Con
         // Only words in THIS verse get an index; a cross-boundary partner belongs to the next one.
         const [pch, pvs] = verseAt(book, p)
         if (pch === ch && pvs === vs) {
-          const idx = p - verseStart
+          const idx = wordAt(p) - wordAt(verseStart)
           if (!hit.matchedWords.includes(idx)) hit.matchedWords.push(idx)
         }
       }

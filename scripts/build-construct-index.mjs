@@ -202,6 +202,149 @@ function collectLXX(osis) {
   return out
 }
 
+
+// ─── Hebrew (Masoretic Text) ──────────────────────────────────────────────────
+// The MT is indexed by MORPHEME, not by written word. Hebrew fuses its function words onto the
+// front of the next word — the article, the conjunction waw, and the prepositions ב/כ/ל — and
+// the queries that matter most for teaching are precisely about those: "ל + infinitive
+// construct", "article + noun + article + adjective" (attributive) against the same pair without
+// them (predicate). Indexing whole words would put every one of those out of reach, since only
+// the head morpheme carries a part of speech.
+//
+// public/data/mt/*.json keeps OSHB's full breakdown in `morphemes` for compound words (the
+// top-level strongs/morph describe the stem). Each morpheme becomes its own token, and every
+// token records the WORD it belongs to (see wordKey below) so "within 4 words" still counts
+// words the way a reader does — בְּרֵאשִׁית is two tokens but one word.
+//
+// Vocabulary mirrors src/lib/hebrew-morph.ts (which decodes the same codes for the parsing pane)
+// and src/lib/morph-features-hebrew.ts (which offers them in the builder) — keep the three in step.
+
+const H_STEM = {
+  q: 'qal', N: 'niphal', p: 'piel', P: 'pual', h: 'hiphil', H: 'hophal', t: 'hithpael',
+  Q: 'qal passive', o: 'polel', O: 'polal', r: 'poel', R: 'poal', m: 'polel', M: 'polal',
+  k: 'palel', K: 'palal', l: 'pilpel', L: 'polpal', f: 'hithpalpel', D: 'nithpael',
+  j: 'pealal', i: 'pilel', u: 'hothpaal', c: 'tiphil', v: 'hishtaphel', w: 'nithpalel',
+  y: 'nithpael', z: 'hithpoel', Z: 'nithpoel',
+}
+// Aramaic (Daniel, Ezra) shares the letters with different binyan names.
+const A_STEM = {
+  q: 'peal', Q: 'peil', u: 'hithpeel', N: 'niphal', p: 'pael', P: 'pual', M: 'ithpaal',
+  a: 'aphel', h: 'haphel', s: 'saphel', e: 'shaphel', H: 'hophal', i: 'hithpaal', t: 'hishtaphel',
+}
+const H_CONJ = {
+  p: 'perfect', q: 'sequential perfect', i: 'imperfect', w: 'sequential imperfect',
+  h: 'cohortative', j: 'jussive', v: 'imperative',
+  a: 'infinitive absolute', c: 'infinitive construct',
+  r: 'active participle', s: 'passive participle',
+}
+const H_GENDER = { m: 'masculine', f: 'feminine', b: 'both genders', c: 'common' }
+const H_NUMBER = { s: 'singular', p: 'plural', d: 'dual' }
+const H_STATE  = { a: 'absolute', c: 'construct', d: 'determined' }
+const H_PERSON = { 1: '1 person', 2: '2 person', 3: '3 person' }
+// Two-letter parts of speech. Each is offered as its own choice in the builder rather than
+// collapsed into "particle": for a Hebrew student the direct-object marker and the negative
+// particle are different things to go looking for.
+const H_POS2 = {
+  Nc: 'noun', Np: 'proper noun', Ng: 'gentilic noun', Nx: 'noun',
+  Aa: 'adjective', Ac: 'cardinal number', Ag: 'gentilic adjective', Ao: 'ordinal number',
+  Pd: 'demonstrative pronoun', Pf: 'indefinite pronoun', Pi: 'interrogative pronoun',
+  Pp: 'personal pronoun', Pr: 'relative pronoun',
+  Sd: 'directional he', Sh: 'paragogic he', Sn: 'paragogic nun', Sp: 'pronominal suffix',
+  Ta: 'affirmation particle', Td: 'article', Te: 'exhortation particle',
+  Ti: 'interrogative particle', Tj: 'interjection', Tm: 'demonstrative particle',
+  Tn: 'negative particle', To: 'direct object marker', Tr: 'relative particle',
+}
+const H_POS1 = { C: 'conjunction', D: 'adverb', R: 'preposition', A: 'adjective', N: 'noun', P: 'pronoun', S: 'suffix', T: 'particle' }
+
+// One OSHB code → the feature tokens the engine matches on, part of speech first (the same
+// contract as lxxTokens). `lang` is 'A' for the Aramaic portions.
+function hebTokens(code, lang) {
+  if (!code) return []
+  const out = []
+  if (code[0] === 'V') {
+    out.push('verb')
+    const stem = (lang === 'A' ? A_STEM : H_STEM)[code[1]]
+    if (stem) out.push(stem)
+    const conj = H_CONJ[code[2]]
+    if (conj) out.push(conj)
+    const rest = code.slice(3)
+    if (code[2] === 'r' || code[2] === 's') {
+      // Participles decline: gender, number, state.
+      if (H_GENDER[rest[0]]) out.push(H_GENDER[rest[0]])
+      if (H_NUMBER[rest[1]]) out.push(H_NUMBER[rest[1]])
+      if (H_STATE[rest[2]]) out.push(H_STATE[rest[2]])
+    } else {
+      // Finite forms: person, gender, number. (Infinitives carry none of it.)
+      if (H_PERSON[rest[0]]) out.push(H_PERSON[rest[0]])
+      if (H_GENDER[rest[1]]) out.push(H_GENDER[rest[1]])
+      if (H_NUMBER[rest[2]]) out.push(H_NUMBER[rest[2]])
+    }
+    return out
+  }
+  const pos = H_POS2[code.slice(0, 2)] ?? H_POS1[code[0]]
+  if (!pos) return out
+  out.push(pos)
+  const head = code.slice(0, 2)
+  if (head[0] === 'N' || head[0] === 'A') {
+    // Nouns and adjectives: gender, number, state — state is what a construct chain turns on.
+    const r = code.slice(2)
+    if (H_GENDER[r[0]]) out.push(H_GENDER[r[0]])
+    if (H_NUMBER[r[1]]) out.push(H_NUMBER[r[1]])
+    if (H_STATE[r[2]]) out.push(H_STATE[r[2]])
+  } else if (head === 'Sp' || head[0] === 'P') {
+    // Suffixes and pronouns: person, gender, number.
+    const r = code.slice(2)
+    if (H_PERSON[r[0]]) out.push(H_PERSON[r[0]])
+    if (H_GENDER[r[1]]) out.push(H_GENDER[r[1]])
+    if (H_NUMBER[r[2]]) out.push(H_NUMBER[r[2]])
+  } else if (code === 'Rd') {
+    // A preposition that has swallowed the article (בַּ = בְּ + הַ); both are true of it.
+    out.push('article')
+  }
+  return out
+}
+
+// A prefix morpheme's Strong's is a letter ('b', 'l', 'c', 'd'), not a number. Those are kept as
+// they are: they group the prefixed particles together in the lemma table, where a numeric
+// Strong's would be wrong.
+function collectMT(osis) {
+  const out = []
+  const files = fs.readdirSync(path.join(DATA, 'mt'))
+    .filter(f => f.startsWith(`${osis}_`) && f.endsWith('.json'))
+    .sort((a, b) => Number(a.match(/_(\d+)\.json$/)?.[1] ?? 0) - Number(b.match(/_(\d+)\.json$/)?.[1] ?? 0))
+  for (const f of files) {
+    const d = JSON.parse(fs.readFileSync(path.join(DATA, 'mt', f), 'utf8'))
+    for (const v of d.verses ?? []) {
+      for (const w of v.words ?? []) {
+        const lang = w.lang === 'A' ? 'A' : 'H'
+        const pos = Number(w.position ?? 0)
+        // Compound words carry every morpheme; simple ones are their own single morpheme.
+        const morphemes = Array.isArray(w.morphemes) && w.morphemes.length
+          ? w.morphemes
+          : [{ text: w.surface, strongs: w.strongs, morph: w.morph }]
+        morphemes.forEach((m, mi) => {
+          const toks = hebTokens(String(m.morph ?? ''), lang)
+          const strongs = m.strongs ? String(m.strongs) : ''
+          if (!strongs && toks.length === 0) return
+          out.push({
+            chapter: Number(v.chapter), verse: Number(v.verse),
+            // Morphemes sort inside their word; the word's own order is `pos`.
+            num: pos * 100 + mi,
+            // Every morpheme of one written word shares a key, so distance counts words.
+            wordKey: `${v.chapter}.${v.verse}.${pos}`,
+            strongs,
+            lemmaRaw: '',            // the MT files carry no lemma — grouped by Strong's instead
+            gloss: '',
+            surface: String(m.text ?? ''),
+            toks,
+          })
+        })
+      }
+    }
+  }
+  return out
+}
+
 // ─── Prose corpora ────────────────────────────────────────────────────────────
 // Josephus, Philo, the Apostolic Fathers, the pseudepigrapha, Eusebius, Justin and the
 // Greco-Roman texts carry Stanza-tagged `.morph.json` sidecars beside their chapter files
@@ -331,6 +474,9 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
     const reader = name === 'GNT' ? readerVerses(osis) : null
     const w = [], v = []
     let curCh = -1, curV = -1
+    // Written-word counter for morpheme-indexed corpora (see the push below).
+    let wordIdx = -1, lastWordKey
+
     for (const t of raw) {
       if (t.chapter !== curCh || t.verse !== curV) {
         v.push([t.chapter, t.verse, w.length])
@@ -338,7 +484,16 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
       }
       const parsing = t.toks.join(', ')
       const lemmaNorm = t.lemmaRaw ? normalize(t.lemmaRaw.replace(LETTERS, '')) : ''
-      w.push([t.strongs, lemmaNorm, parsing])
+      // A fourth element, only where a collector supplies `wordKey`: the index of the WRITTEN
+      // word this token belongs to. Hebrew indexes morphemes, so several tokens share a word,
+      // and "within N words" must count words rather than tokens. Greek has one token per word,
+      // omits this, and the engine falls back to the token index — unchanged behaviour.
+      if (t.wordKey !== undefined) {
+        if (t.wordKey !== lastWordKey) { lastWordKey = t.wordKey; wordIdx++ }
+        w.push([t.strongs, lemmaNorm, parsing, wordIdx])
+      } else {
+        w.push([t.strongs, lemmaNorm, parsing])
+      }
 
       const pos = t.toks[0]
       if (!pos) noPos++
@@ -380,6 +535,8 @@ function buildCorpus(name, osisIds, collect, keyBy = 'lemma') {
 // than the corpus's per-form gloss, whose commonest value for ἔρχομαι is "having come", a
 // participle's sense rather than the word's.
 const lexicon = JSON.parse(fs.readFileSync(path.join(DATA, 'greek-lexicon.json'), 'utf8'))
+// Hebrew is keyed by the bare Strong's number ('430'), Greek by a 'G'-prefixed one.
+const hebLexicon = JSON.parse(fs.readFileSync(path.join(DATA, 'hebrew-lexicon.json'), 'utf8'))
 const shortGloss = s => {
   if (!s) return ''
   const first = String(s).trim().split(/[;.]/)[0].trim()
@@ -390,7 +547,10 @@ const topOf = counts => (counts ? Object.entries(counts).sort((a, b) => b[1] - a
 // Pure attestation (count >= 1): a value is offered if the corpus ever tags this lemma that way.
 // No frequency threshold — pruning rare-but-real forms would make a legitimate search
 // unexpressible, and the GNT tagging is hand-made, so stray values are not a real problem.
-function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strongsCounts, totals }, keyBy = 'lemma') {
+function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strongsCounts, totals }, keyBy = 'lemma', lex = 'greek') {
+  // Which lexicon supplies the dictionary form and gloss for a Strong's-grouped corpus.
+  const dictForm = n => (lex === 'hebrew' ? hebLexicon[String(n)]?.lemma : lexicon[`G${n}`]?.lemma)
+  const dictGloss = n => (lex === 'hebrew' ? hebLexicon[String(n)]?.gloss : shortGloss(lexicon[`G${n}`]?.thayer))
   const table = {}
   let singlePos = 0, fixedGender = 0, lexGloss = 0, noDictionaryForm = 0
   for (const group in posCounts) {
@@ -403,15 +563,15 @@ function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strong
     // entry (58 of 4,045 LXX numbers, mostly extended 7xxxx codes) fall back to the commonest
     // surface form, which at least remains findable.
     const spelling = keyBy === 'strongs'
-      ? (lexicon[`G${strongs}`]?.lemma || topOf(spellingCounts[group]))
+      ? (dictForm(strongs) || topOf(spellingCounts[group]))
       : topOf(spellingCounts[group])
-    if (keyBy === 'strongs' && !lexicon[`G${strongs}`]?.lemma) noDictionaryForm++
+    if (keyBy === 'strongs' && !dictForm(strongs)) noDictionaryForm++
     const lemma = keyBy === 'strongs' ? normalize(String(spelling).replace(LETTERS, '')) : group
     if (!lemma) continue
     if (spelling && spelling !== lemma) entry.d = spelling
     // Carried so the engine can match every inflected form by number rather than by string.
     if (keyBy === 'strongs' && strongs) entry.s = [strongs]
-    const fromLexicon = strongs ? shortGloss(lexicon[`G${strongs}`]?.thayer) : ''
+    const fromLexicon = strongs ? dictGloss(strongs) : ''
     if (fromLexicon) lexGloss++
     const gloss = fromLexicon || topOf(glossCounts[group])
     if (gloss) entry.g = gloss
@@ -449,11 +609,26 @@ function lemmaTable({ posCounts, featCounts, spellingCounts, glossCounts, strong
   return { table, singlePos, fixedGender, lexGloss, noDictionaryForm }
 }
 
+// The MT books present on disk, in books.json's canonical order where it knows them.
+function mtBooks() {
+  const present = new Set(fs.readdirSync(path.join(DATA, 'mt'))
+    .filter(f => f.endsWith('.json'))
+    .map(f => f.replace(/_\d+\.json$/, '')))
+  const ordered = (booksMeta.mt ?? booksMeta.ot ?? []).map(b => b.osisId).filter(id => present.has(id))
+  // Anything on disk the metadata doesn't order still gets indexed, just at the end.
+  for (const id of present) if (!ordered.includes(id)) ordered.push(id)
+  return ordered
+}
+
 // ─── Run ──────────────────────────────────────────────────────────────────────
 
 const corpora = [
   buildCorpus('GNT', booksMeta.gnt.map(b => b.osisId), collectGNT),
   buildCorpus('LXX', booksMeta.lxx.map(b => b.osisId), collectLXX, 'strongs'),
+  // The Hebrew Bible, indexed by morpheme (see collectMT). Grouped by Strong's for the same
+  // reason as the LXX: the corpus stores surface forms, so the dictionary form comes from the
+  // lexicon. Books come from the MT's own directory — the Hebrew canon, not the LXX's order.
+  buildCorpus('MT', mtBooks(), collectMT, 'strongs'),
   // Prose: machine-tagged, no Strong's numbers, so lexemes group by the sidecar's own lemma —
   // which here IS a real lemma (Stanza emits one), unlike the LXX chapter files.
   ...Object.entries(PROSE_CORPORA).map(([name, dir]) =>
@@ -483,15 +658,15 @@ fs.rmSync(path.join(DATA, 'construct-index.json.gz'), { force: true })
 // it is what the LXX needed before Strong's grouping shrank it, and what the prose corpora will
 // need in Phase 3.
 for (const c of corpora) {
-  const keyBy = c.name === 'LXX' ? 'strongs' : 'lemma'
-  const { table, singlePos, fixedGender, lexGloss, noDictionaryForm } = lemmaTable(c.stats, keyBy)
+  const keyBy = c.name === 'LXX' || c.name === 'MT' ? 'strongs' : 'lemma'
+  const { table, singlePos, fixedGender, lexGloss, noDictionaryForm } = lemmaTable(c.stats, keyBy, c.name === 'MT' ? 'hebrew' : 'greek')
   const n = Object.keys(table).length
   // The biblical tables are small enough to hold in the page, which keeps those word fields
   // instant: grouping the LXX by Strong's collapsed 44,249 surface forms into ~4,000 lexemes.
   // The prose corpora are another matter — Greco-Roman alone has 43,890 lexemes / 6.9 MB — so
   // theirs ship gzipped and are read by /api/construct/lemmas instead.
   const stem = `lemma-forms-${c.name.toLowerCase()}`
-  const inPage = c.name === 'GNT' || c.name === 'LXX'
+  const inPage = c.name === 'GNT' || c.name === 'LXX' || c.name === 'MT'
   const written = path.join(DATA, inPage ? `${stem}.json` : `${stem}.json.gz`)
   const body = JSON.stringify(table)
   fs.writeFileSync(written, inPage ? body : zlib.gzipSync(Buffer.from(body, 'utf8'), { level: 9 }))

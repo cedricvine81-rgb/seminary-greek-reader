@@ -58,7 +58,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
   searchLemma?: string
   // NA1904 is Nestle 1904, which is what the parsing trees behind Construct search ARE — so
   // rendering construct hits against it makes the word positions exact by construction.
-  corpus: 'GNT' | 'LXX' | 'NA1904'
+  corpus: 'GNT' | 'LXX' | 'NA1904' | 'MT'
   bookName: Map<string, string>
   context: number
   ctxMap: Record<string, CtxVerse[]>
@@ -205,6 +205,10 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
         <span key={ti} onMouseEnter={select} onClick={select}
           onContextMenu={e => {
             e.preventDefault()
+            // The word-search panel is Greek-only (its scopes and lexicon are). A Hebrew word
+            // would open it pointed at the wrong corpus, so the MT keeps hover-parsing and the
+            // parsing pane but no right-click search until that panel learns Hebrew.
+            if (corpus === 'MT') return
             const existing = verseHl.find(hh => start < hh.endOffset && end > hh.startOffset)
             openWordSearch({
               x: e.clientX, y: e.clientY, surface: tok.surface, lemma: tok.lemma || null,
@@ -216,7 +220,7 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                 activeColor: existing?.color ?? null,
                 onPick: c => existing
                   ? void highlights.recolor(existing.id, h.osisId, cv.chapter, c)
-                  : void highlights.create(h.osisId, cv.chapter, cv.verse, start, end, c, 'grc'),
+                  : void highlights.create(h.osisId, cv.chapter, cv.verse, start, end, c, 'grc'),   // Greek only — the MT returns above
                 onRemove: () => { if (existing) void highlights.remove(existing.id, h.osisId, cv.chapter) },
               } : undefined,
             })
@@ -258,7 +262,13 @@ export function GreekSearchResults({ hits, terms, searchLemma, corpus, bookName,
                   const rowKey = `${i}.${cv.chapter}.${cv.verse}`
                   return (
                     <div key={rowKey} className={`grid gap-x-4 gap-y-0.5 ${showTrans ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1'}`}>
-                      <p className={`greek-text leading-relaxed ${isHit ? 'text-gray-900' : 'text-gray-400'}`}>
+                      {/* The MT is the one right-to-left corpus here: it needs dir="rtl" and the
+                          Hebrew font, or the verse renders reversed in a Greek face. */}
+                      <p
+                        dir={corpus === 'MT' ? 'rtl' : undefined}
+                        lang={corpus === 'MT' ? 'he' : undefined}
+                        className={`${corpus === 'MT' ? 'font-hebrew text-[1.15rem]' : 'greek-text'} leading-relaxed ${isHit ? 'text-gray-900' : 'text-gray-400'}`}
+                      >
                         <sup className="text-[10px] text-brand-500 mr-0.5 font-sans">{cv.verse}</sup>
                         {greekCell(h, cv, isHit, rowKey)}
                       </p>

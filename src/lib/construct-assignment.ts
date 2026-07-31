@@ -7,7 +7,7 @@ import {
   CONSTRUCT_ALL, corpusInfo, decodeConstruct, isProseCorpus, queryIsRunnable, termIsEmpty,
   type ConstructQuery, type ConstructTerm,
 } from './construct-query'
-import { FEATURE_LABEL } from './morph-features'
+import { vocabFor } from './morph-vocab'
 
 // Assignment.constructConfig
 export interface ConstructConfig {
@@ -120,8 +120,10 @@ export function constructLinkFromReference(reference: string | null | undefined)
 
 // ─── Plain-language echo ──────────────────────────────────────────────────────
 
-function describeTerm(t: ConstructTerm): string {
-  const feats = Object.values(t.features).flat().map(v => FEATURE_LABEL.get(v) ?? v)
+function describeTerm(t: ConstructTerm, corpus = 'GNT'): string {
+  // Labels come from the corpus's own vocabulary — "Construct" and "Wayyiqtol" are Hebrew words
+  // for Hebrew categories, and the Greek table has never heard of them.
+  const feats = Object.values(t.features).flat().map(v => vocabFor(corpus).label(v))
   const desc = feats.length ? feats.join(' ') : 'any word'
   const withLemma = t.lemma ? `${desc} (${t.lemma})` : desc
   // Agreement is part of what the construct MEANS, so it belongs in the echo, not just the form.
@@ -140,9 +142,9 @@ export function describeConstruct(q: ConstructQuery): string {
   const positive = used.filter(t => !t.negate)
   const forbidden = used.filter(t => t.negate)
   const join = q.ordered ? ' then ' : ' + '
-  const head = positive.map(describeTerm).join(join)
+  const head = positive.map(t => describeTerm(t, q.corpus)).join(join)
   const tail = forbidden.length
-    ? `, with no ${forbidden.map(describeTerm).join(' or ')} in between`
+    ? `, with no ${forbidden.map(t => describeTerm(t, q.corpus)).join(' or ')} in between`
     : ''
   const scoped = q.books?.length
     ? `, in ${q.books.length} ${isProseCorpus(q.corpus) ? 'work' : 'book'}${q.books.length === 1 ? '' : 's'}`
