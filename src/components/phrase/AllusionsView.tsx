@@ -83,6 +83,15 @@ interface CrossrefEntry { book: string; chapter: number; endChapter?: number; ve
 
 const RARE = 150   // LXX verse-count below which a shared word is treated as a strong signal
 
+// Auto-suggest ("Suggest the rarest words"). The cut is a SHARE of the LXX rather than a
+// fixed count, so the selection adapts to the passage: a verse thick with distinctive
+// vocabulary offers all of it, a verse of ordinary words still falls back to its rarest few.
+// 1% of verses sits just under RARE on a corpus this size, so the bar is "at least as
+// distinctive as the badge already calls rare".
+const SUGGEST_SHARE = 0.01
+const SUGGEST_MIN = 5    // the old fixed count, now the floor when nothing clears the bar
+const SUGGEST_MAX = 12   // beyond this the candidate scan widens for no real gain (API cap 40)
+
 const foldGreek = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 // Module-level caches (survive tab switches; the Exegesis tabs stay mounted).
@@ -130,6 +139,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   // Selection: word keys `${verse}:${idx}`.
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [freqs, setFreqs] = useState<Record<string, number>>({})
+  // LXX corpus size, returned with the rarity badges — the denominator the auto-suggest
+  // threshold is a share of.
+  const [totalVerses, setTotalVerses] = useState(0)
   // Adjacent selected words auto-group into a PHRASE; a group key in here is split back
   // into independent words instead.
   const [splitGroups, setSplitGroups] = useState<Set<string>>(new Set())
@@ -230,7 +242,10 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     if (all.length === 0) return
     fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'freq', strongs: all }) })
-      .then(r => r.json()).then((d: { counts?: Record<string, number> }) => { if (d.counts) setFreqs(f => ({ ...f, ...d.counts })) })
+      .then(r => r.json()).then((d: { counts?: Record<string, number>; totalVerses?: number }) => {
+        if (d.counts) setFreqs(f => ({ ...f, ...d.counts }))
+        if (d.totalVerses) setTotalVerses(d.totalVerses)
+      })
       .catch(() => {})
   }, [shownVerses])
 
@@ -298,8 +313,16 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     setSelected(prev => { const n = new Set(prev); if (n.has(key)) n.delete(key); else n.add(key); return n })
   }
 
-  // Auto-suggest: the five rarest words present in the LXX at all (a word the LXX never
-  // uses cannot match). Selects each word's first occurrence.
+  // Auto-suggest: every word distinctive enough to count as evidence, rather than a fixed
+  // five. Allison's device 4 weighs RARITY, so the cut is a share of the corpus — a word in
+  // more than SUGGEST_SHARE of LXX verses (λέγω, ποιέω) scores ~ln(1) ≈ 0 in the weighting
+  // anyway, so selecting it adds noise and, worse, seeds the candidate scan on half the LXX.
+  // Words the LXX never uses are still excluded: they cannot match.
+  //
+  // Bounded at both ends. A long passage must not select thirty words (slow, and it floods
+  // the window scorer); a passage of ordinary vocabulary must still get something to work
+  // with, so if nothing clears the bar we fall back to the rarest few — which is the old
+  // behaviour, now the floor rather than the rule.
   function suggest() {
     const seen = new Map<string, { verse: number; idx: number }>()
     for (const v of shownVerses) v.words.forEach((tok, i) => {
@@ -309,8 +332,13 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
       .map(([s, pos]) => ({ s, pos, n: freqs[s] ?? Infinity }))
       .filter(x => x.n > 0 && Number.isFinite(x.n))
       .sort((a, b) => a.n - b.n)
-      .slice(0, 5)
-    setSelected(new Set(ranked.map(x => `${x.pos.verse}:${x.pos.idx}`)))
+
+    // totalVerses arrives with the rarity badges; before it does, fall back to the floor.
+    const cutoff = totalVerses > 0 ? totalVerses * SUGGEST_SHARE : 0
+    const distinctive = ranked.filter(x => x.n <= cutoff)
+    const chosen = (distinctive.length >= SUGGEST_MIN ? distinctive : ranked.slice(0, SUGGEST_MIN))
+      .slice(0, SUGGEST_MAX)
+    setSelected(new Set(chosen.map(x => `${x.pos.verse}:${x.pos.idx}`)))
   }
 
   async function runSearch() {
@@ -585,8 +613,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               })
             })}
             <button type="button" onClick={suggest}
+              title="Select every word distinctive enough in the LXX to carry weight — or the rarest few, if none are"
               className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700">
-              <Sparkles size={13} /> Suggest the rarest words
+              <Sparkles size={13} /> Suggest the distinctive words
             </button>
             <button type="button" disabled={terms.length === 0 || searching} onClick={runSearch}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
