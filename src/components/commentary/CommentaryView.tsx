@@ -239,7 +239,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
           <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Greek</span>
           <select value={gntEdition} onChange={e => setGntEdition(e.target.value as 'nestle1904' | 'tischendorf')}
             title="Choose the Greek edition"
-            className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+            className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
             <option value="nestle1904">Nestle 1904</option>
             <option value="tischendorf">Tischendorf 8th</option>
           </select>
@@ -287,7 +287,7 @@ export function CommentaryView({ anchor, isAuthenticated = false, onAttribution 
       <div className="flex flex-col min-h-0">
         <div className="flex items-center gap-2 mb-2 flex-wrap">
           <select value={commentaryId} onChange={e => setCommentaryId(e.target.value)}
-            className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400">
+            className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
             {commentaries.length === 0 && <option value="robertson">Robertson — Word Pictures in the NT</option>}
             {commentaries.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
           </select>

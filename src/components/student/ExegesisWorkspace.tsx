@@ -210,7 +210,7 @@ function AnnotationPanel({
             value={ann[field]}
             disabled={locked}
             onChange={e => onChange(key, field, e.target.value)}
-            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+            className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
           />
         </div>
       ))}
@@ -1809,7 +1809,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                   type="checkbox"
                   checked={rulesAck}
                   onChange={e => setRulesAck(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-brand-600 focus:ring-brand-400"
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                 />
                 <span className="text-sm text-gray-800">I have read and understand these rules, I agree to abide by them, and I consent to my exam being recorded for academic integrity as described above.</span>
               </label>
@@ -1944,7 +1944,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                     commitOnBlur
                     error={passageError}
                     placeholder="e.g. Matthew 3:1-3"
-                    inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                 </div>
                 {isLoading && <span className="text-sm text-gray-400">Loading…</span>}
@@ -1984,7 +1984,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
             <select
               value={glossPref ?? ''}
               onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
-              className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             >
               <option value="">Off</option>
               <option value="50">Words less frequent than 50×</option>
@@ -2288,7 +2288,7 @@ export const ExegesisWorkspace = forwardRef<ExegesisWorkspaceHandle, {
                     disabled={isLocked}
                     rows={2}
                     placeholder={isLocked ? '' : 'Write your translation of this whole verse…'}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed"
                   />
                 </div>
 

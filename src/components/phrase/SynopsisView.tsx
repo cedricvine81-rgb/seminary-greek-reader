@@ -645,7 +645,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               <select
                 value={sourceModel}
                 onChange={e => pickSourceModel(e.target.value as SourceModel)}
-                className="rounded border border-gray-300 px-1.5 py-0.5 text-[11px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-[11px] text-gray-600 focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {SOURCE_MODELS.map(m => <option key={m.id} value={m.id}>{m.label}</option>)}
               </select>
@@ -696,7 +696,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                 <select
                   value={sourceIdx}
                   onChange={e => setSourceIdx(parseInt(e.target.value))}
-                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
                   {columns.map((r, i) => <option key={i} value={i}>{column(r)?.label ?? r}</option>)}
                 </select>
@@ -761,7 +761,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
                   <select
                     value={version}
                     onChange={e => setVersion(e.target.value)}
-                    className="mb-2 w-full shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    className="mb-2 w-full shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                   </select>
@@ -982,7 +982,7 @@ export function SynopsisView({ controlledPassage, isAuthenticated = false, fontS
               onCommit={v => addRef(v)}
               placeholder="e.g. Mark 1:9-11"
               error={addError}
-              inputClassName="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+              inputClassName="w-full border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
             <button onClick={() => addRef()} className="mt-2 w-full rounded-lg bg-brand-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-700">Add</button>
             {addError && <p className="text-xs text-red-500 mt-1">Couldn&rsquo;t parse that reference.</p>}

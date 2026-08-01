@@ -645,7 +645,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                       type="number" min={0} max={100}
                       value={w[c]}
                       onChange={e => set('gradeWeights', { ...w, [c]: Number(e.target.value) })}
-                      className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                      className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                     <span className="text-xs text-gray-400">%</span>
                   </div>
@@ -684,7 +684,7 @@ function SingleForm({ courses, defaultCourseId }: { courses: Course[]; defaultCo
                       set('lockdownMaxViolations', v != null && v > 0 ? Math.max(v, MIN_LOCKDOWN_AUTOSUBMIT) : undefined)
                     }}
                     placeholder="—"
-                    className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                   />
                   <span className="text-xs text-gray-600">violations (blank = warn only, never auto-submit)</span>
                 </div>

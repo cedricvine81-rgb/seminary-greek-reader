@@ -203,7 +203,7 @@ export function GrammarHomeworkGrader({ assignmentId }: { assignmentId: string }
                               type="number" min={0} max={q.points} step={0.5}
                               value={scores[r.id] ?? (r.score ?? '')}
                               onChange={e => setScores(prev => ({ ...prev, [r.id]: e.target.value }))}
-                              className="w-20 rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                              className="w-20 rounded-lg border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                             />
                             <span className="text-xs text-gray-400">/ {q.points}</span>
                             <button

@@ -87,7 +87,7 @@ export function NoteComposer({
         role="textbox"
         aria-multiline
         style={{ fontSize: `${fontScale}rem`, lineHeight: lineScale, minHeight, maxHeight }}
-        className="prose-notes w-full overflow-y-auto rounded-md border border-gray-300 bg-input px-2 py-1.5 leading-snug shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-400 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+        className="prose-notes w-full overflow-y-auto rounded-md border border-gray-300 bg-input px-2 py-1.5 leading-snug shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-500 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
       />
     </div>
   )

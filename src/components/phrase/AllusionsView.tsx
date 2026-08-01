@@ -612,7 +612,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                     <label className="flex items-center gap-1.5 text-xs text-gray-500">
                       Translation
                       <select value={transLang} onChange={e => setTransLang(e.target.value)}
-                        className="rounded-lg border border-gray-300 bg-input px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                        className="rounded-lg border border-gray-300 bg-input px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                         {RESULT_TRANSLATIONS.map(t => <option key={t.code} value={t.code}>{t.label}</option>)}
                       </select>
                     </label>

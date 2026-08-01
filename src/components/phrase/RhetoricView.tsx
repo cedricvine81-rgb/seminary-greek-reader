@@ -410,7 +410,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
               <select
                 value={version}
                 onChange={e => setVersion(e.target.value)}
-                className="shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="shrink-0 rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
@@ -697,7 +697,7 @@ export function RhetoricView({ controlledPassage, isAuthenticated = false, onAtt
                   return (
                     <div className="mt-2 pt-2 border-t border-brand-100">
                       <select value={previewTrans} onChange={e => setPreviewTrans(e.target.value)}
-                        className="mb-1 rounded border border-gray-300 bg-white px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400">
+                        className="mb-1 rounded border border-gray-300 bg-white px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-500">
                         {TRANS_VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
                       </select>
                       {tt ? (

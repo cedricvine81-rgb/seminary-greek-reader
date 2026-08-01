@@ -288,7 +288,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
               setQuery(q => ({ ...q, corpus, books: undefined }))
               setShowScope(false)
             }}
-            className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
             <option value={CONSTRUCT_ALL}>All Greek texts — where does it occur?</option>
             <optgroup label="Biblical (hand-tagged)">
               {CONSTRUCT_CORPORA.filter(c => c.kind === 'bible').map(c => (
@@ -399,7 +399,7 @@ export function ConstructSearchPage({ initial, isAuthenticated = false }: {
                 <label className="flex items-center gap-1.5 text-xs text-gray-600">
                   within
                   <select value={query.within} onChange={e => setQuery(q => ({ ...q, within: Number(e.target.value) }))}
-                    className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                    className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                     {Array.from({ length: CONSTRUCT_MAX_WITHIN }, (_, n) => n + 1).map(n => (
                       <option key={n} value={n}>{n}</option>
                     ))}

@@ -868,7 +868,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
               <select
                 value={version}
                 onChange={e => setVersion(e.target.value)}
-                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
@@ -1073,7 +1073,7 @@ export function BackgroundsView({ controlledPassage, isAuthenticated = false, fo
                   <select
                     value={rightVersion}
                     onChange={e => setRightVersion(e.target.value)}
-                    className="rounded-lg border border-gray-300 px-1.5 py-1 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    className="rounded-lg border border-gray-300 px-1.5 py-1 text-[11px] focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     {rightVersionOptions(rightRef.citation.ref.book, gntBooks.some(b => b.osisId === rightRef.citation.ref!.book))
                       .map(v => <option key={v.code} value={v.code}>{v.label}</option>)}

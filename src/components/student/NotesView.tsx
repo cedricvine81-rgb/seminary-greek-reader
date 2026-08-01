@@ -321,7 +321,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                     value=""
                     onChange={e => { const v = Number(e.target.value); if (v) setAddVerse(v) }}
                     title={t('notes.addVerseNote')}
-                    className="rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                    className="rounded-lg border border-gray-300 px-2 py-1 text-xs text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-500"
                   >
                     <option value="">+ New verse note</option>
                     {addable.map(v => <option key={v} value={v}>{anchor.name} {anchor.chapter}:{v}</option>)}
@@ -407,7 +407,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 value={query}
                 onChange={e => setQuery(e.target.value)}
                 placeholder={t('notes.searchNotes')}
-                className="w-full rounded-lg border border-gray-300 pl-2.5 pr-6 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="w-full rounded-lg border border-gray-300 pl-2.5 pr-6 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               />
               {query && (
                 <button onClick={() => setQuery('')} title={t('notes.clearSearch')}
@@ -486,7 +486,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                 value={version}
                 onChange={e => setVersion(e.target.value)}
                 title={t('notes.textVersion')}
-                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
               >
                 {VERSIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
               </select>
@@ -496,7 +496,7 @@ export function NotesView({ isAuthenticated, anchor, books, onJumpToPassage }: {
                   value={inlineTrans ?? ''}
                   onChange={e => setInlineTrans(e.target.value || null)}
                   title={t('notes.showTranslationInline')}
-                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  className="rounded border border-gray-300 px-1.5 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500"
                 >
                   <option value="">+ translation</option>
                   {TRANSLATIONS.map(v => <option key={v.code} value={v.code}>{v.label}</option>)}
@@ -666,7 +666,7 @@ function FolderForm({ value, onChange, onSave, onCancel, onDelete, lockedNote }:
     <div className="mb-3 flex items-center flex-wrap gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3">
       <input autoFocus value={value.name} onChange={e => onChange({ ...value, name: e.target.value })}
         onKeyDown={e => { if (e.key === 'Enter') onSave(); if (e.key === 'Escape') onCancel() }}
-        placeholder={t('notes.folderName')} className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400" />
+        placeholder={t('notes.folderName')} className="rounded-md border border-gray-300 px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
       <div className="flex items-center gap-1">
         {NOTE_COLOR_KEYS.map(c => (
           <button key={c} title={NOTE_COLORS[c].label} onClick={() => onChange({ ...value, color: c })}
@@ -824,7 +824,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
             placeholder={t('notes.topicTitleOptional')}
             maxLength={200}
             autoFocus={isNew}
-            className="flex-1 min-w-0 text-xs font-semibold text-gray-700 bg-transparent rounded border border-transparent hover:border-gray-200 focus:border-brand-400 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+            className="flex-1 min-w-0 text-xs font-semibold text-gray-700 bg-transparent rounded border border-transparent hover:border-gray-200 focus:border-brand-400 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-500"
           />
         ) : onJump ? (
           <button onClick={onJump} className="text-xs font-semibold text-brand-700 hover:underline">{anchor?.label}</button>
@@ -836,7 +836,7 @@ function NoteEditor({ existing, anchor, general, defaultFolderId, folders, onCha
         <span className="ml-auto flex items-center gap-2">
           {saving && <Loader2 size={12} className="animate-spin text-gray-400" />}
           <select value={existing?.folderId ?? folderId ?? ''} onChange={e => changeFolder(e.target.value || null)}
-            className="rounded border border-gray-200 text-[11px] text-gray-500 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400" title={t('notes.fileInFolder')}>
+            className="rounded border border-gray-200 text-[11px] text-gray-500 px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-500" title={t('notes.fileInFolder')}>
             <option value="">{t('notes.unfiled')}</option>
             {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
           </select>

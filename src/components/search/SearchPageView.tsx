@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { Search, Loader2, ChevronDown, Lightbulb, X, Copy, Check, ArrowLeft, ArrowUpRight, MoreVertical, Blocks } from 'lucide-react'
 import { TEXT_CATEGORIES } from '@/lib/texts-catalog'
 import { FONT_SIZES, FONT_SIZE_MAP, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
+import { TextSizeSlider } from '@/components/reader/TextSizeControls'
+import { usePref } from '@/lib/use-pref'
 import { BookPicker, type BookGroup, type PickBook } from './BookPicker'
 import { GreekSearchResults } from './GreekSearchResults'
 import { SearchWords } from './SearchWords'
@@ -204,17 +206,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
   const [showTypes, setShowTypes] = useState(false)
   // ⋮ display menu: result-text size (defaults to Large, like the exegesis panes), persisted.
   const [showDisplay, setShowDisplay] = useState(false)
-  const [fontSize, setFontSize] = useState<PhraseFontSize>('lg')
-  useEffect(() => {
-    try {
-      const v = localStorage.getItem(FONT_SIZE_KEY) as PhraseFontSize | null
-      if (v && FONT_SIZES.includes(v)) setFontSize(v)
-    } catch { /* ignore */ }
-  }, [])
-  function pickFontSize(v: PhraseFontSize) {
-    setFontSize(v)
-    try { localStorage.setItem(FONT_SIZE_KEY, v) } catch { /* ignore */ }
-  }
+  const [fontSize, pickFontSize] = usePref<PhraseFontSize>(FONT_SIZE_KEY, FONT_SIZES, 'lg')
   // Parsing pane for Greek background results (the Greek NT/LXX lanes have their own inside
   // GreekSearchResults). Filled by hovering/clicking a word; word data is fetched lazily —
   // LXX hits from the reader API, Josephus / Greco-Roman prose from their morph sidecars.
@@ -975,7 +967,7 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             <label className="flex items-center gap-1.5 text-xs text-gray-500">
               In
               <select value={scopeVal} onChange={e => setScopeVal(e.target.value)}
-                className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                className="rounded border border-gray-300 bg-surface px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                 <optgroup label="Greek">
                   <option value="greek:GNT">Greek — New Testament{optCount('greek:GNT')}</option>
                   <option value="greek:LXX">Greek — Septuagint{optCount('greek:LXX')}</option>
@@ -1064,19 +1056,15 @@ export function SearchPageView({ initialQuery = '', initialScope, initialLemma =
             {showDisplay && (
               <>
                 <div className="fixed inset-0 z-20" onClick={() => setShowDisplay(false)} />
-                <div className="absolute right-0 top-full mt-2 z-30 w-60 rounded-xl border border-gray-200 bg-popover p-3 shadow-2xl">
-                  {/* Same Α-slider text-size control as the exegesis panes' tools menu. */}
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-500">Text Size</p>
-                  <div className="flex items-center gap-3">
-                    <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                    <input
-                      type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                      value={FONT_SIZES.indexOf(fontSize)}
-                      onChange={e => pickFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                      className="flex-1 accent-brand-600 cursor-pointer"
-                    />
-                    <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
+                {/* Same container + slider as the Reader/Exegesis tools menus. */}
+                <div className="absolute right-0 top-full mt-2 z-30 w-72 rounded-xl border border-gray-200 bg-popover p-4 space-y-4 shadow-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-semibold text-gray-800">Display options</span>
+                    <button onClick={() => setShowDisplay(false)} className="text-gray-400 hover:text-gray-600">
+                      <X size={15} />
+                    </button>
                   </div>
+                  <TextSizeSlider options={FONT_SIZES} value={fontSize} onChange={pickFontSize} />
                 </div>
               </>
             )}

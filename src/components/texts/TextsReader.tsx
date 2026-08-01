@@ -1,6 +1,6 @@
 'use client'
 import { Fragment, useCallback, useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { Search, ChevronDown } from 'lucide-react'
+import { Search, ChevronDown, MoreVertical, X } from 'lucide-react'
 import { betaCodeToGreek } from '@/lib/greek-translit'
 import { SEARCH_MARK } from '@/lib/highlight-terms'
 import { normalizeGreek } from '@/lib/greek-utils'
@@ -11,7 +11,9 @@ import { loadJastrow, lookupAramaic, strippedLabel, type JastrowData } from '@/l
 import { TEXT_CATEGORIES, findLxxWork, findJosephusWork, findWork, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 import { getTextSummary } from '@/lib/texts-summaries'
 import { findProseWork } from '@/lib/prose-texts'
-import type { PhraseFontSize } from '@/components/phrase/PhraseExplorer'
+import { FONT_SIZES, type PhraseFontSize } from '@/components/phrase/PhraseExplorer'
+import { TextSizeSlider } from '@/components/reader/TextSizeControls'
+import { usePref } from '@/lib/use-pref'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { openWordSearch } from '@/lib/word-search-bus'
 import { onNotesChanged } from '@/lib/notes-changed-bus'
@@ -159,8 +161,12 @@ function fetchWorkJson(url: string): Promise<unknown | null> {
 
 export function TextsReader({ isAuthenticated = false, fontSize: controlledFontSize, onFontSize, onAttribution, openRequest, initialWorkId }: TextsReaderProps) {
   const isFontSizeControlled = onFontSize !== undefined
-  const [internalFontSize, setInternalFontSize] = useState<PhraseFontSize>('lg')
+  const [internalFontSize, pickFontSize] = usePref<PhraseFontSize>('texts-font-size', FONT_SIZES, 'lg')
   const fontSize = isFontSizeControlled ? (controlledFontSize ?? 'lg') : internalFontSize
+  // Standalone /texts owns its size (no controlling parent), so it gets the same ⋮
+  // display-options popover as the Reader/Search, remembered on this device.
+  const [displayMenuOpen, setDisplayMenuOpen] = useState(false)
+  const displayMenuRef = useRef<HTMLDivElement | null>(null)
 
   const [work, setWork] = useState<CatalogWork | null>(null)
   // The single "Texts" dropdown (replaced the row of category chips to give the reading panes
@@ -420,6 +426,16 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
     if (!work) return
     return onNotesChanged(() => seriesRef.current.sections.forEach(s => void refreshNotesFor(noteBookFor(work, s), s.chapter)))
   }, [work, refreshNotesFor])
+
+  // Close the display-options (text size) popover on an outside click.
+  useEffect(() => {
+    if (!displayMenuOpen) return
+    function onMouseDown(e: MouseEvent) {
+      if (displayMenuRef.current && !displayMenuRef.current.contains(e.target as Node)) setDisplayMenuOpen(false)
+    }
+    document.addEventListener('mousedown', onMouseDown)
+    return () => document.removeEventListener('mousedown', onMouseDown)
+  }, [displayMenuOpen])
 
   // Close the Texts dropdown on an outside click.
   useEffect(() => {
@@ -1160,7 +1176,7 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
                   else if (e.key === 'Escape') setSuggestOpen(false)
                 }}
                 placeholder={greekTyping ? 'Search Greek…' : 'Search this text…'}
-                className={`w-40 sm:w-52 rounded-md border border-gray-300 pl-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400 ${greekSearchable && englishSearchable ? 'pr-8' : 'pr-2'} ${greekTyping ? 'greek-text' : ''}`}
+                className={`w-40 sm:w-52 rounded-md border border-gray-300 pl-7 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500 ${greekSearchable && englishSearchable ? 'pr-8' : 'pr-2'} ${greekTyping ? 'greek-text' : ''}`}
               />
               {/* Greek ⇄ English input toggle, shown only when both are on screen. */}
               {greekSearchable && englishSearchable && (
@@ -1265,6 +1281,34 @@ export function TextsReader({ isAuthenticated = false, fontSize: controlledFontS
             )}
 
             <span className="text-xs text-gray-400 ml-auto">Scroll to keep reading</span>
+
+            {/* ⋮ display options (text size) — standalone page only; embedded use
+                (Exegesis Backgrounds) gets its size from the parent tools menu. */}
+            {!isFontSizeControlled && (
+              <div className="relative flex-none" ref={displayMenuRef}>
+                <button
+                  type="button"
+                  title="Display options"
+                  aria-label="Display options"
+                  aria-expanded={displayMenuOpen}
+                  onClick={() => setDisplayMenuOpen(o => !o)}
+                  className={`p-1.5 rounded-lg transition-colors ${displayMenuOpen ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
+                >
+                  <MoreVertical size={18} />
+                </button>
+                {displayMenuOpen && (
+                  <div className="absolute right-0 top-full mt-1 z-40 w-72 bg-popover border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-semibold text-gray-800">Display options</span>
+                      <button onClick={() => setDisplayMenuOpen(false)} className="text-gray-400 hover:text-gray-600">
+                        <X size={15} />
+                      </button>
+                    </div>
+                    <TextSizeSlider options={FONT_SIZES} value={fontSize} onChange={pickFontSize} />
+                  </div>
+                )}
+              </div>
+            )}
           </>)}
         </div>
 

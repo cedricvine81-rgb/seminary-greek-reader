@@ -63,7 +63,7 @@ export function StudentMaterials() {
         <label className="ml-auto flex items-center gap-1.5 text-xs text-gray-500">
           Sort
           <select value={sort} onChange={e => setSort(e.target.value as MaterialSort)}
-            className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+            className="rounded-md border border-gray-300 px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
             {SORT_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
         </label>

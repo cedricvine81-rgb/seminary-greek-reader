@@ -138,7 +138,7 @@ function StudentRow({ row, assignmentId, expanded, onToggle, onSaved }: {
             type="number" min={0} max={100} value={grade}
             onChange={e => setGrade(e.target.value)}
             placeholder="—"
-            className="w-16 text-center text-sm rounded-lg border border-gray-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-400"
+            className="w-16 text-center text-sm rounded-lg border border-gray-200 px-2 py-1 focus:outline-none focus:ring-1 focus:ring-brand-500"
             title="Grade (0–100)"
           />
           <span className="text-xs text-gray-400">%</span>
@@ -158,7 +158,7 @@ function StudentRow({ row, assignmentId, expanded, onToggle, onSaved }: {
               onChange={e => setGradeNote(e.target.value)}
               rows={2}
               placeholder="Optional feedback shown to the student with their grade."
-              className="w-full text-sm rounded-lg border border-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+              className="w-full text-sm rounded-lg border border-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-500"
             />
           </div>
 

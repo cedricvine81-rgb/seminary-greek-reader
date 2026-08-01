@@ -1,9 +1,10 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { Card } from '@/components/ui/Card'
+import { Card, CardTitle, CardDescription } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
-import { Bell, CheckCircle2, Loader2 } from 'lucide-react'
+import { FormMessage } from '@/components/ui/FormMessage'
+import { Loader2 } from 'lucide-react'
 
 /**
  * Admin form for the addresses notified when a new instructor registers. Two fields —
@@ -39,6 +40,7 @@ export function AdminSettingsForm() {
       if (!res.ok) { setError(d.error ?? 'Could not save settings.'); return }
       setPrimary(d.instructorNotifyEmail ?? ''); setSecond(d.instructorNotifyEmail2 ?? '')
       setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
     } catch {
       setError('Network error — please try again.')
     } finally {
@@ -48,19 +50,16 @@ export function AdminSettingsForm() {
 
   return (
     <Card>
-      <div className="flex items-center gap-2 mb-1">
-        <Bell size={18} className="text-brand-600" />
-        <h2 className="font-semibold text-gray-900">New-instructor notifications</h2>
-      </div>
-      <p className="text-sm text-gray-500 mb-4">
+      <CardTitle>New-instructor notifications</CardTitle>
+      <CardDescription>
         When someone registers as an instructor, an email is sent to these addresses so they can be approved.
         Leave a field blank to disable it.
-      </p>
+      </CardDescription>
 
       {loading ? (
         <p className="text-sm text-gray-400 py-4"><Loader2 size={15} className="inline animate-spin" /> Loading…</p>
       ) : (
-        <div className="space-y-4 max-w-md">
+        <div className="mt-5 space-y-4 max-w-lg">
           <Input
             label="Notification email"
             type="email"
@@ -75,11 +74,9 @@ export function AdminSettingsForm() {
             onChange={e => { setSecond(e.target.value); setSaved(false) }}
             placeholder="another@example.com"
           />
-          {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-3 py-2">{error}</p>}
-          <div className="flex items-center gap-3">
-            <Button onClick={save} loading={saving}>Save</Button>
-            {saved && <span className="inline-flex items-center gap-1 text-sm text-green-600"><CheckCircle2 size={15} /> Saved</span>}
-          </div>
+          {error && <FormMessage kind="error">{error}</FormMessage>}
+          {saved && <FormMessage kind="success">Settings saved.</FormMessage>}
+          <Button onClick={save} loading={saving} size="sm">Save</Button>
         </div>
       )}
     </Card>

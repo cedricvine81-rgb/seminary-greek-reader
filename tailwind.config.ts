@@ -41,6 +41,16 @@ const config: Config = {
         topbar: 'rgb(var(--topbar) / <alpha-value>)',
         // Text-entry fields (matches the header off-white on the sepia palette).
         input: 'rgb(var(--input) / <alpha-value>)',
+        // Form feedback (see FormMessage) — themed so "Saved."/error boxes are
+        // readable on the dark palettes instead of glowing light-green/red.
+        success: {
+          bg: 'rgb(var(--success-bg) / <alpha-value>)',
+          fg: 'rgb(var(--success-fg) / <alpha-value>)',
+        },
+        danger: {
+          bg: 'rgb(var(--danger-bg) / <alpha-value>)',
+          fg: 'rgb(var(--danger-fg) / <alpha-value>)',
+        },
         parchment: {
           50:  'rgb(var(--parchment-50) / <alpha-value>)',
           100: 'rgb(var(--parchment-100) / <alpha-value>)',

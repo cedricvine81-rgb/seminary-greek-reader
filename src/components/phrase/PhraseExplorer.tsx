@@ -166,7 +166,7 @@ function OptionSelect({ value, onChange, options }: { value: string; onChange: (
     <select
       value={value}
       onChange={e => onChange(e.target.value)}
-      className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+      className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
     >
       {options.map(o => <option key={o.code} value={o.code}>{o.label}</option>)}
     </select>
@@ -460,7 +460,7 @@ export function PhraseExplorer({ controlledPassage, isAuthenticated = false, fon
               commitOnBlur
               error={inputError}
               placeholder="e.g. Matthew 3:1-3"
-              inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              inputClassName="border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-56 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           {loading && <span className="text-sm text-gray-400">Loading…</span>}

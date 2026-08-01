@@ -3,6 +3,64 @@ import { AlignJustify } from 'lucide-react'
 import { FONT_SCALES, LINE_SPACINGS } from '@/lib/note-prefs'
 
 /**
+ * The app-wide "Text Size" slider — the ONE implementation every tools/settings
+ * menu uses (Reader, Exegesis tabs, Search, Texts, Notes, Commentary), so the
+ * control looks and reads the same everywhere: A…A ends, title-case heading,
+ * and step labels. Callers own the value and its persistence; the scale is
+ * whatever ordered list of sizes the surface uses (string steps or numeric).
+ */
+export function TextSizeSlider<T extends string | number>({ options, value, onChange }: {
+  options: readonly T[]
+  value: T
+  onChange: (v: T) => void
+}) {
+  const idx = Math.max(0, options.indexOf(value))
+  return (
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
+      <div className="flex items-center gap-3">
+        <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
+        <input
+          type="range" min={0} max={options.length - 1} step={1} value={idx}
+          aria-label="Text size"
+          onChange={e => onChange(options[e.target.valueAsNumber])}
+          className="flex-1 accent-brand-600 cursor-pointer"
+        />
+        <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '1.35rem' }}>A</span>
+      </div>
+      {options.length === 4 && (
+        <div className="flex justify-between text-xs text-gray-400 mt-1 px-1">
+          <span>Small</span><span>Med</span><span>Large</span><span>X-Lg</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** Line-spacing companion slider (Notes and Commentary panes). */
+export function LineSpacingSlider({ value, onChange }: {
+  value: number
+  onChange: (v: number) => void
+}) {
+  const idx = Math.max(0, LINE_SPACINGS.indexOf(value))
+  return (
+    <div>
+      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Line Spacing</p>
+      <div className="flex items-center gap-3">
+        <AlignJustify size={13} className="text-gray-400 shrink-0" />
+        <input
+          type="range" min={0} max={LINE_SPACINGS.length - 1} step={1} value={idx}
+          aria-label="Line spacing"
+          onChange={e => onChange(LINE_SPACINGS[e.target.valueAsNumber])}
+          className="flex-1 accent-brand-600 cursor-pointer"
+        />
+        <AlignJustify size={18} className="text-gray-400 shrink-0" />
+      </div>
+    </div>
+  )
+}
+
+/**
  * Text Size + Line Spacing sliders, shared by the Notes and Commentary panels inside
  * the exegesis tools menu. Presentational only — the caller owns open/close state and
  * the trigger button (the shared "⋮" menu in ExegesisTabs).
@@ -15,38 +73,10 @@ export function TextSizeControls({
   lineSpacing: number
   onLineSpacing: (v: number) => void
 }) {
-  const fontIdx = Math.max(0, FONT_SCALES.indexOf(fontScale))
-  const lineIdx = Math.max(0, LINE_SPACINGS.indexOf(lineSpacing))
-
   return (
     <>
-      {/* Text size */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
-        <div className="flex items-center gap-3">
-          <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
-          <input
-            type="range" min={0} max={FONT_SCALES.length - 1} step={1} value={fontIdx}
-            onChange={e => onFontScale(FONT_SCALES[e.target.valueAsNumber])}
-            className="flex-1 accent-brand-600 cursor-pointer"
-          />
-          <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '1.35rem' }}>A</span>
-        </div>
-      </div>
-
-      {/* Line spacing */}
-      <div>
-        <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Line Spacing</p>
-        <div className="flex items-center gap-3">
-          <AlignJustify size={13} className="text-gray-400 shrink-0" />
-          <input
-            type="range" min={0} max={LINE_SPACINGS.length - 1} step={1} value={lineIdx}
-            onChange={e => onLineSpacing(LINE_SPACINGS[e.target.valueAsNumber])}
-            className="flex-1 accent-brand-600 cursor-pointer"
-          />
-          <AlignJustify size={18} className="text-gray-400 shrink-0" />
-        </div>
-      </div>
+      <TextSizeSlider options={FONT_SCALES} value={fontScale} onChange={onFontScale} />
+      <LineSpacingSlider value={lineSpacing} onChange={onLineSpacing} />
     </>
   )
 }

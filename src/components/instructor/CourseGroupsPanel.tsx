@@ -156,7 +156,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
                         defaultValue={group.name}
                         onBlur={e => { if (e.target.value.trim() && e.target.value.trim() !== group.name) void rename(group.id, e.target.value) }}
                         onKeyDown={e => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur() }}
-                        className="flex-1 rounded-lg border border-transparent hover:border-gray-200 focus:border-brand-400 px-2 py-1 text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-400"
+                        className="flex-1 rounded-lg border border-transparent hover:border-gray-200 focus:border-brand-400 px-2 py-1 text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-brand-500"
                         aria-label="Group name"
                       />
                       <span className="text-xs text-gray-400">{group.members.length} member{group.members.length === 1 ? '' : 's'}</span>
@@ -171,7 +171,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
                       <select
                         value={group.assignmentId ?? ''}
                         onChange={e => setAssignment(group.id, e.target.value || null)}
-                        className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-400"
+                        className="flex-1 rounded-lg border border-gray-200 px-2 py-1 text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-500"
                       >
                         <option value="">No assignment (messaging only)</option>
                         {presentations.map(p => (
@@ -189,7 +189,7 @@ export function CourseGroupsPanel({ courseId, students, presentations = [] }: Pr
                               type="checkbox"
                               checked={inThis}
                               onChange={e => toggleMember(group, s, e.target.checked)}
-                              className="rounded border-gray-300 text-brand-600 focus:ring-brand-400"
+                              className="rounded border-gray-300 text-brand-600 focus:ring-brand-500"
                             />
                             <span className="truncate">{s.name}</span>
                             {elsewhere && <span className="text-[10px] text-gray-400 shrink-0">in {groupOf.get(s.id)}</span>}

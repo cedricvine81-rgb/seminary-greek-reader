@@ -48,6 +48,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --ink-50:  244 244 245;
     --ink-900: 24 24 27;
 
+    /* Form feedback (saved / error). Themed like everything else: the literal
+       green-50/red-50 boxes these replaced stayed bright on the dark themes. */
+    --success-bg: 240 253 244;
+    --success-fg: 21 128 61;
+    --danger-bg:  254 242 242;
+    --danger-fg:  220 38 38;
+
     --brand-50:  239 246 255;
     --brand-100: 219 234 254;
     --brand-200: 191 219 254;
@@ -102,6 +109,12 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --ink-50:  250 243 228;
     --ink-900: 33 24 15;
 
+    /* Warmed slightly so the feedback boxes sit on the beige page, not on white. */
+    --success-bg: 236 248 236;
+    --success-fg: 21 115 57;
+    --danger-bg:  252 236 232;
+    --danger-fg:  198 40 33;
+
     /* Keep the brand blue on warm paper — crisp accents, consistent identity. */
     --brand-50:  239 246 255;
     --brand-100: 219 234 254;
@@ -143,6 +156,12 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --ink-50:  39 51 73;
     --ink-900: 241 245 249;
 
+    /* Dark themes invert: a deep tinted panel with a light readable foreground. */
+    --success-bg: 27 58 44;
+    --success-fg: 134 224 172;
+    --danger-bg:  70 34 36;
+    --danger-fg:  252 165 165;
+
     --brand-50:  30 45 72;
     --brand-100: 38 56 92;
     --brand-200: 48 72 118;
@@ -182,6 +201,11 @@ body.exam-lockdown nav.fixed.bottom-0 {
 
     --ink-50:  39 39 42;
     --ink-900: 244 244 245;
+
+    --success-bg: 24 56 40;
+    --success-fg: 134 224 172;
+    --danger-bg:  66 32 34;
+    --danger-fg:  252 165 165;
 
     --brand-50:  27 38 64;
     --brand-100: 33 48 82;

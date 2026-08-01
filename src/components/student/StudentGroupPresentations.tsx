@@ -289,7 +289,7 @@ function PresentationCard({ entry, onChanged }: { entry: Entry; onChanged: () =>
             rows={3}
             disabled={attested}
             placeholder="e.g. I used a lexicon and ChatGPT to check one parsing; the analysis and writing are my own."
-            className="w-full text-sm rounded-lg border border-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-500"
+            className="w-full text-sm rounded-lg border border-gray-200 px-2.5 py-1.5 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:bg-gray-50 disabled:text-gray-500"
           />
         )}
         {attested ? (

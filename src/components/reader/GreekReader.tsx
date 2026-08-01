@@ -3,10 +3,13 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import {
-  MoreVertical, X, ChevronRight, Menu,
+  MoreVertical, X, ChevronRight, Menu, Check,
   LayoutDashboard, BookOpen, BookMarked, Table2, PencilLine, ListTree, Library, StickyNote,
   Settings, LogOut, LogIn, UserPlus,
 } from 'lucide-react'
+import { TextSizeSlider } from './TextSizeControls'
+import { OnOff } from '@/components/ui/OnOff'
+import { usePref } from '@/lib/use-pref'
 import { SearchBar } from './SearchBar'
 import { PassagePicker } from './PassagePicker'
 import { GreekVerse } from './GreekVerse'
@@ -117,6 +120,8 @@ interface ChapterItem {
 }
 
 type FontSize = 'sm' | 'md' | 'lg' | 'xl'
+
+const READER_FONT_SIZES: FontSize[] = ['sm', 'md', 'lg', 'xl']
 
 const FONT_SIZE_MAP: Record<FontSize, string> = {
   sm: '0.9rem',
@@ -274,7 +279,8 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
 
   // ── Settings ─────────────────────────────────────────────────────────────────
   const [showSettings, setShowSettings]     = useState(false)
-  const [fontSize, setFontSize]             = useState<FontSize>('md')
+  // Persisted per device (it previously reset to 'md' on every reload).
+  const [fontSize, setFontSize]             = usePref<FontSize>('reader-font-size', READER_FONT_SIZES, 'md')
   const [parallelLang, setParallelLang]     = useState<string | null>(null)
   // Restore the reader's chosen inline translation on return. Hydrated after mount to
   // avoid an SSR mismatch; persisted whenever it changes.
@@ -1806,7 +1812,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           value={parallelLang ?? ''}
           onChange={e => switchView(e.target.value || null)}
           title="Show a parallel translation column"
-          className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400 max-w-[10rem]"
+          className="hidden lg:block shrink-0 self-stretch lg:ml-auto rounded-lg border border-gray-300 px-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500 max-w-[10rem]"
         >
           <option value="">Greek only</option>
           {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
@@ -1815,6 +1821,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
           <button
             title="Menu"
             aria-label="Menu"
+            aria-expanded={showSettings}
             onClick={() => setShowSettings(v => !v)}
             className={`p-1.5 rounded-lg transition-colors ${showSettings ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
           >
@@ -1828,6 +1835,10 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
             // left-popping flyouts get hidden — overflow-y-auto forces overflow-x to auto too.
             <div className="absolute right-0 top-full mt-1 z-50 w-72 max-h-[calc(100svh-5rem)] overflow-y-auto lg:overflow-visible bg-popover border border-gray-200 rounded-xl p-4 space-y-4 shadow-lg">
               <div className="flex items-center justify-between">
+                {/* Title convention: a display-only popover is "Display options"
+                    (Texts, Search); this one also holds contents, sources and help,
+                    so it keeps the broader "Settings" — and "Menu" on mobile, where
+                    it carries the whole navigation too. */}
                 <span className="text-sm font-semibold text-gray-800">
                   <span className="lg:hidden">Menu</span><span className="hidden lg:inline">Settings</span>
                 </span>
@@ -1875,25 +1886,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
               </div>
 
               {/* Text Size */}
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text Size</p>
-                <div className="flex items-center gap-3">
-                  <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '0.8rem' }}>A</span>
-                  <input
-                    type="range"
-                    min={0}
-                    max={3}
-                    step={1}
-                    value={(['sm','md','lg','xl'] as FontSize[]).indexOf(fontSize)}
-                    onChange={e => setFontSize((['sm','md','lg','xl'] as FontSize[])[e.target.valueAsNumber])}
-                    className="flex-1 accent-brand-600 cursor-pointer"
-                  />
-                  <span className="font-reading text-gray-400 select-none leading-none" style={{ fontSize: '1.35rem' }}>A</span>
-                </div>
-                <div className="flex justify-between text-xs text-gray-400 mt-1 px-1">
-                  <span>Small</span><span>Med</span><span>Large</span><span>X-Lg</span>
-                </div>
-              </div>
+              <TextSizeSlider options={READER_FONT_SIZES} value={fontSize} onChange={setFontSize} />
 
               {/* Contents flyout trigger */}
               <div className="relative" onMouseLeave={scheduleFlyoutClose} onMouseEnter={cancelFlyoutClose}>
@@ -1921,13 +1914,15 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                         <button
                           key={value}
                           onClick={() => setGntEdition(value)}
-                          className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
+                          aria-pressed={gntEdition === value}
+                          className={`w-full flex items-center justify-between gap-2 text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
                             gntEdition === value
                               ? 'bg-brand-50 text-brand-700 font-medium'
                               : 'text-gray-600 hover:bg-gray-50'
                           }`}
                         >
                           {label}
+                          {gntEdition === value && <Check size={14} className="shrink-0 text-brand-600" />}
                         </button>
                       ))}
                     </div>
@@ -1984,21 +1979,7 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                       ]).map(({ label, value, set }) => (
                         <div key={label} className="flex items-center justify-between">
                           <span className="text-base text-gray-700">{label}</span>
-                          <div className="flex rounded-md border border-gray-200 overflow-hidden text-sm">
-                            {([true, false] as const).map(on => (
-                              <button
-                                key={String(on)}
-                                onClick={() => set(on)}
-                                className={`px-4 py-1.5 transition-colors ${
-                                  value === on
-                                    ? 'bg-brand-50 text-brand-700 font-medium'
-                                    : 'text-gray-500 hover:bg-gray-50'
-                                }`}
-                              >
-                                {on ? 'On' : 'Off'}
-                              </button>
-                            ))}
-                          </div>
+                          <OnOff value={value} onChange={set} />
                         </div>
                       ))}
                     </div>
@@ -2064,22 +2045,28 @@ export function GreekReader({ initialRef, initialHighlight, initialTransLang, in
                     <p className="lg:hidden text-xs text-gray-400 px-1 pb-1">Shown inline beneath each Greek verse.</p>
                     <button
                       onClick={() => switchView(null)}
-                      className={`w-full text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
+                      aria-pressed={parallelLang === null}
+                      className={`w-full flex items-center justify-between gap-2 text-left px-4 py-2.5 rounded-lg text-base transition-colors ${
                         parallelLang === null ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                       }`}
                     >
                       None
+                      {parallelLang === null && <Check size={14} className="shrink-0 text-brand-600" />}
                     </button>
                     {PARALLEL_LANGS.filter(l => transCompatible(l.code, corpus)).map(l => (
                       <button
                         key={l.code}
                         onClick={() => switchView(l.code)}
-                        className={`w-full text-left px-4 py-2.5 rounded-lg transition-colors ${
+                        aria-pressed={parallelLang === l.code}
+                        className={`w-full flex items-center justify-between gap-2 text-left px-4 py-2.5 rounded-lg transition-colors ${
                           parallelLang === l.code ? 'bg-brand-50 text-brand-700 font-medium' : 'text-gray-600 hover:bg-gray-50'
                         }`}
                       >
-                        <span className="text-base">{l.label}</span>
-                        <span className="block text-sm text-gray-400">{l.sub}</span>
+                        <span className="min-w-0">
+                          <span className="text-base">{l.label}</span>
+                          <span className="block text-sm text-gray-400">{l.sub}</span>
+                        </span>
+                        {parallelLang === l.code && <Check size={14} className="shrink-0 text-brand-600" />}
                       </button>
                     ))}
                   </div>

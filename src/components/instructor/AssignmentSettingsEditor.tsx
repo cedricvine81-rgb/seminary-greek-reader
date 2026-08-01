@@ -360,7 +360,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                           type="number" min={0} max={100}
                           value={weights[c]}
                           onChange={e => setWeights(w => ({ ...w, [c]: Number(e.target.value) }))}
-                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                         />
                         <span className="text-xs text-gray-400">%</span>
                       </div>
@@ -403,7 +403,7 @@ export function AssignmentSettingsEditor({ assignmentId, assignmentType, isVocab
                             setLockdownMaxViolations(v != null && v > 0 ? Math.max(v, MIN_LOCKDOWN_AUTOSUBMIT) : null)
                           }}
                           placeholder="—"
-                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                          className="w-20 border border-gray-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                         />
                         <span className="text-xs text-gray-600">violations (blank = warn only)</span>
                       </div>

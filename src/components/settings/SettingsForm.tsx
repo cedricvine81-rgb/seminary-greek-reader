@@ -1,9 +1,11 @@
 'use client'
 import { useState, FormEvent, useEffect, useRef } from 'react'
-import { CheckCircle2, ChevronDown, Building2, UserCircle } from 'lucide-react'
+import { Building2, UserCircle } from 'lucide-react'
 import { Input } from '@/components/ui/Input'
+import { Select } from '@/components/ui/Select'
 import { Button } from '@/components/ui/Button'
 import { Card, CardTitle } from '@/components/ui/Card'
+import { FormMessage } from '@/components/ui/FormMessage'
 import { DisplaySettings } from '@/components/settings/DisplaySettings'
 import { ReadingLanguageSettings } from '@/components/settings/ReadingLanguageSettings'
 import { LanguageSettings } from '@/components/settings/LanguageSettings'
@@ -106,7 +108,7 @@ function ProfileSection({
 
         {/* Title */}
         <Input
-          label={<span>Title <span className="text-gray-400 font-normal">(optional)</span></span> as unknown as string}
+          label={<span>Title <span className="text-gray-400 font-normal">(optional)</span></span>}
           value={title}
           onChange={e => setTitle(e.target.value)}
           placeholder="Dr., Prof., Rev., Pastor…"
@@ -114,35 +116,29 @@ function ProfileSection({
 
         {/* Institution */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Institution</label>
-          <div className="relative">
-            <select
-              value={selectValue}
-              onChange={e => { setSelectValue(e.target.value); setError('') }}
-              className="w-full appearance-none rounded-lg border border-gray-300 bg-input px-3 py-2 pr-9 text-sm
-                focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-            >
-              <option value={PRIVATE_USER}>Private User (no institution)</option>
-              {institutions.length > 0 && (
-                <optgroup label="Existing institutions">
-                  {institutions.map(name => (
-                    <option key={name} value={name}>{name}</option>
-                  ))}
-                </optgroup>
-              )}
-              <option value={NEW_INSTITUTION}>+ Type a new institution…</option>
-            </select>
-            <ChevronDown
-              size={15}
-              className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-          </div>
-          <div className="mt-1.5 flex items-center gap-1.5 text-xs text-gray-400">
-            {selectValue === PRIVATE_USER
-              ? <><UserCircle size={13} /> Not associated with an institution</>
-              : <><Building2 size={13} /> {selectValue === NEW_INSTITUTION ? 'Enter your institution below' : selectValue}</>
+          <Select
+            label="Institution"
+            value={selectValue}
+            onChange={e => { setSelectValue(e.target.value); setError('') }}
+            hint={
+              <span className="flex items-center gap-1.5">
+                {selectValue === PRIVATE_USER
+                  ? <><UserCircle size={13} /> Not associated with an institution</>
+                  : <><Building2 size={13} /> {selectValue === NEW_INSTITUTION ? 'Enter your institution below' : selectValue}</>
+                }
+              </span>
             }
-          </div>
+          >
+            <option value={PRIVATE_USER}>Private User (no institution)</option>
+            {institutions.length > 0 && (
+              <optgroup label="Existing institutions">
+                {institutions.map(name => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </optgroup>
+            )}
+            <option value={NEW_INSTITUTION}>+ Type a new institution…</option>
+          </Select>
           {selectValue === NEW_INSTITUTION && (
             <input
               ref={customRef}
@@ -156,12 +152,8 @@ function ProfileSection({
           )}
         </div>
 
-        {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
-        {success && (
-          <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3">
-            <CheckCircle2 size={16} /> Profile updated.
-          </div>
-        )}
+        {error && <FormMessage kind="error">{error}</FormMessage>}
+        {success && <FormMessage kind="success">Profile updated.</FormMessage>}
 
         <Button type="submit" loading={loading} size="sm">Save Profile</Button>
       </form>
@@ -224,12 +216,8 @@ function PasswordSection() {
           onChange={e => { setConfirm(e.target.value); setError('') }}
         />
 
-        {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg p-3">{error}</p>}
-        {success && (
-          <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 rounded-lg p-3">
-            <CheckCircle2 size={16} /> Password updated.
-          </div>
-        )}
+        {error && <FormMessage kind="error">{error}</FormMessage>}
+        {success && <FormMessage kind="success">Password updated.</FormMessage>}
 
         <Button type="submit" loading={loading} size="sm">Update Password</Button>
       </form>

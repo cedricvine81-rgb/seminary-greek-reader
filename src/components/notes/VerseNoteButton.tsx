@@ -204,7 +204,7 @@ export function VerseNoteButton({ book, chapter, verse, noted, onChanged }: {
               <select
                 value={folderId ?? ''}
                 onChange={e => setFolderId(e.target.value || null)}
-                className="rounded border border-gray-200 text-xs text-gray-600 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-400"
+                className="rounded border border-gray-200 text-xs text-gray-600 px-1.5 py-0.5 focus:outline-none focus:ring-1 focus:ring-brand-500"
                 title="File this note in a folder"
               >
                 <option value="">Unfiled</option>

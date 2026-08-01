@@ -12,7 +12,10 @@ import { AllusionsView } from '@/components/phrase/AllusionsView'
 import { LIBRARY_WORKS } from '@/lib/backgrounds-library'
 import { NotesView, type NoteAnchor } from './NotesView'
 import { CommentaryView } from '@/components/commentary/CommentaryView'
-import { TextSizeControls } from '@/components/reader/TextSizeControls'
+import { TextSizeControls, TextSizeSlider } from '@/components/reader/TextSizeControls'
+import { OnOff } from '@/components/ui/OnOff'
+import { Select } from '@/components/ui/Select'
+import { usePref } from '@/lib/use-pref'
 import { useCommentaryFontScale, useCommentaryLineSpacing, useNoteFontScale, useNoteLineSpacing } from '@/lib/note-prefs'
 import { SBL_ABBREVIATIONS } from '@/lib/sbl-abbreviations'
 import { useT } from '@/lib/i18n/LocaleProvider'
@@ -92,14 +95,16 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
   const [savedSessions, setSavedSessions] = useState<SavedSession[]>([])
   const [showToolsMenu, setShowToolsMenu] = useState(false)
   const toolsMenuRef = useRef<HTMLDivElement>(null)
-  // Phrasing / Synopsis text size (categorical, not persisted) and their static/derived
-  // "sources & copyright" content, lifted up from each view so the shared menu can show it.
-  const [phraseFontSize, setPhraseFontSize] = useState<PhraseFontSize>('lg')
-  const [synFontSize, setSynFontSize] = useState<PhraseFontSize>('lg')
+  // Per-tab text size, each remembered on this device (they used to reset to 'lg' on
+  // every reload), plus the static/derived "sources & copyright" content, lifted up
+  // from each view so the shared menu can show it. Separate keys because a reader may
+  // legitimately want large Greek in Phrasing and compact text in Backgrounds.
+  const [phraseFontSize, setPhraseFontSize] = usePref<PhraseFontSize>('phrasing-font-size', FONT_SIZES, 'lg')
+  const [synFontSize, setSynFontSize] = usePref<PhraseFontSize>('synopsis-font-size', FONT_SIZES, 'lg')
   const [synopsisAttribution, setSynopsisAttribution] = useState('')
-  const [bgFontSize, setBgFontSize] = useState<PhraseFontSize>('lg')
+  const [bgFontSize, setBgFontSize] = usePref<PhraseFontSize>('backgrounds-font-size', FONT_SIZES, 'lg')
   const [backgroundsAttribution, setBackgroundsAttribution] = useState('')
-  const [variantsFontSize, setVariantsFontSize] = useState<PhraseFontSize>('lg')
+  const [variantsFontSize, setVariantsFontSize] = usePref<PhraseFontSize>('variants-font-size', FONT_SIZES, 'lg')
   const [variantsAttribution, setVariantsAttribution] = useState('')
   const [rhetoricAttribution, setRhetoricAttribution] = useState('')
   const [allusionsAttribution, setAllusionsAttribution] = useState('')
@@ -267,9 +272,14 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       active ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'
     }`
 
+  // Menu-title convention (shared with the Reader, Texts and Search menus):
+  // a display-only popover is always "Display options"; anything holding more
+  // than display settings names what else is in it.
   const toolsMenuTitles: Record<typeof tab, string> = {
-    workspace: 'Syntax tools', phrasing: 'Settings & sources', synopsis: 'Settings & sources',
-    variants: 'Settings & sources', backgrounds: 'Settings & sources', allusions: 'Sources', rhetoric: 'Sources', commentary: 'Commentary text', notes: 'Note text',
+    workspace: 'Syntax tools', phrasing: 'Display options & sources', synopsis: 'Display options & sources',
+    variants: 'Display options & sources', backgrounds: 'Display options & sources',
+    allusions: 'Sources', rhetoric: 'Sources',
+    commentary: 'Display options', notes: 'Display options',
   }
   const toolsMenuTitle = toolsMenuTitles[tab]
 
@@ -296,7 +306,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
               onFocus={() => { if (chapterSecs.length) setPredOpen(true) }}
               onBlur={() => { commitPassage(input.trim()); setGhost(''); setPredOpen(false) }}
               placeholder="e.g. Matthew 3:1-3"
-              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-32 xl:w-40 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-32 xl:w-40 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
 
             {/* Predictive chapter sections — click one to jump straight to that pericope. */}
@@ -339,6 +349,8 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
             <button
               type="button"
               title={toolsMenuTitle}
+              aria-label={toolsMenuTitle}
+              aria-expanded={showToolsMenu}
               onClick={() => setShowToolsMenu(v => !v)}
               className={`p-1.5 rounded-lg transition-colors ${showToolsMenu ? 'bg-brand-100 text-brand-700' : 'text-gray-500 hover:bg-gray-100'}`}
             >
@@ -377,16 +389,17 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
                     {/* Vocabulary */}
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Vocabulary</p>
-                      <select
+                      <Select
                         value={glossPref ?? ''}
                         onChange={e => setGlossPref(e.target.value ? Number(e.target.value) : null)}
                         title="Show glosses for less common words"
-                        className="w-full rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
-                      >
-                        <option value="">Off</option>
-                        <option value="50">Words less frequent than 50×</option>
-                        <option value="30">Words less frequent than 30×</option>
-                      </select>
+                        aria-label="Vocabulary glosses"
+                        options={[
+                          { value: '',   label: 'Off' },
+                          { value: '50', label: 'Words less frequent than 50×' },
+                          { value: '30', label: 'Words less frequent than 30×' },
+                        ]}
+                      />
                     </div>
 
                     {/* Download as PDF — close the menu and let it actually unmount (a
@@ -436,38 +449,14 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
                 {tab === 'phrasing' && (
                   <>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                        <input
-                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                          value={FONT_SIZES.indexOf(phraseFontSize)}
-                          onChange={e => setPhraseFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                          className="flex-1 accent-brand-600"
-                        />
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                      </div>
-                    </div>
+                    <TextSizeSlider options={FONT_SIZES} value={phraseFontSize} onChange={setPhraseFontSize} />
                     <PhrasingSourcesPanel />
                   </>
                 )}
 
                 {tab === 'synopsis' && (
                   <>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                        <input
-                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                          value={FONT_SIZES.indexOf(synFontSize)}
-                          onChange={e => setSynFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                          className="flex-1 accent-brand-600"
-                        />
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                      </div>
-                    </div>
+                    <TextSizeSlider options={FONT_SIZES} value={synFontSize} onChange={setSynFontSize} />
                     {synopsisAttribution && (
                       <details className="border-t border-gray-100 pt-2">
                         <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
@@ -479,27 +468,14 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
                 {tab === 'variants' && (
                   <>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                        <input
-                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                          value={FONT_SIZES.indexOf(variantsFontSize)}
-                          onChange={e => setVariantsFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                          className="flex-1 accent-brand-600"
-                        />
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                      </div>
-                    </div>
-                    <label className="flex items-start gap-2 cursor-pointer">
-                      <input type="checkbox" checked={variantsDiplomatic} onChange={e => toggleDiplomatic(e.target.checked)}
-                        className="mt-0.5 accent-brand-600" />
+                    <TextSizeSlider options={FONT_SIZES} value={variantsFontSize} onChange={setVariantsFontSize} />
+                    <div className="flex items-start justify-between gap-3">
                       <span className="text-sm text-gray-700">
                         Diplomatic view
                         <span className="block text-xs text-gray-400">Show manuscripts as transcribed — bare, unaccented, medial σ.</span>
                       </span>
-                    </label>
+                      <OnOff value={variantsDiplomatic} onChange={toggleDiplomatic} />
+                    </div>
                     {variantsAttribution && (
                       <details className="border-t border-gray-100 pt-2">
                         <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Sources &amp; copyright</summary>
@@ -525,19 +501,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
 
                 {tab === 'backgrounds' && (
                   <>
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">Text size</p>
-                      <div className="flex items-center gap-3">
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '0.85rem' }}>Α</span>
-                        <input
-                          type="range" min={0} max={FONT_SIZES.length - 1} step={1}
-                          value={FONT_SIZES.indexOf(bgFontSize)}
-                          onChange={e => setBgFontSize(FONT_SIZES[e.target.valueAsNumber])}
-                          className="flex-1 accent-brand-600"
-                        />
-                        <span className="text-gray-400 select-none font-greek leading-none" style={{ fontSize: '1.5rem' }}>Α</span>
-                      </div>
-                    </div>
+                    <TextSizeSlider options={FONT_SIZES} value={bgFontSize} onChange={setBgFontSize} />
                     <details className="border-t border-gray-100 pt-2">
                       <summary className="cursor-pointer text-xs font-semibold uppercase tracking-wide text-gray-500">Abbreviations (SBL)</summary>
                       <div className="mt-2 max-h-64 overflow-y-auto space-y-1.5 pr-1">

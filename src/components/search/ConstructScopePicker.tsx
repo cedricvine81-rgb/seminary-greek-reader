@@ -68,7 +68,7 @@ export function ConstructScopePicker({ entries, selected, onChange, onClose, bib
       {!biblical && (
         <div className="border-b border-gray-100 px-2.5 py-1.5">
           <input value={filter} onChange={e => setFilter(e.target.value)} placeholder="Filter works…"
-            className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400" />
+            className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500" />
         </div>
       )}
 

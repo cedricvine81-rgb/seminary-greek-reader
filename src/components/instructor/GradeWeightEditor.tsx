@@ -82,7 +82,7 @@ export function GradeWeightEditor({ courseId, activeTypes, initial }: {
                   type="number" min={0} max={100}
                   value={weights[c.type]}
                   onChange={e => setWeights(w => ({ ...w, [c.type]: e.target.value }))}
-                  className="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                  className="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                 />
                 <span className="w-4 text-xs text-gray-400">%</span>
               </div>

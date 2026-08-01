@@ -390,7 +390,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
               : (lexemeIsExact ? 'e.g. σκότος — one exact form' : 'e.g. πνεῦμα — or leave blank')}
             dir={isHebrew ? 'rtl' : undefined}
             lang={isHebrew ? 'he' : undefined}
-            className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 ${isHebrew ? 'font-hebrew text-base' : greekInput ? 'greek-text' : ''}`} />
+            className={`w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 ${isHebrew ? 'font-hebrew text-base' : greekInput ? 'greek-text' : ''}`} />
 
           {/* Predictive lexemes — commonest first, with the gloss and how often the word occurs.
               Mouse-down rather than click so picking wins the race against the input's blur. */}
@@ -448,7 +448,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
           <div>
             <label className="mb-1 block text-[10px] font-semibold uppercase tracking-wider text-gray-400">Part of speech</label>
             <select value={pos} onChange={e => setCategory('pos', e.target.value ? [e.target.value] : [])}
-              className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-400">
+              className="w-full rounded-md border border-gray-300 bg-surface px-2 py-1.5 text-xs text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
               <option value="">any</option>
               {vocab.posFeatures.filter(f => posOptions.includes(f.value))
                 .map(f => <option key={f.value} value={f.value}>{f.label}</option>)}
@@ -501,7 +501,7 @@ export function ConstructTermCard({ index, termCount, term, corpus, lemmaForms, 
                 <span className="text-gray-500">Word {otherWords[0] + 1}</span>
               ) : (
                 <select value={agreeWith} onChange={e => setAgreement(agreeOn, Number(e.target.value))}
-                  className="rounded border border-gray-300 bg-surface px-1 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                  className="rounded border border-gray-300 bg-surface px-1 py-0.5 text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
                   {otherWords.map(i => <option key={i} value={i}>Word {i + 1}</option>)}
                 </select>
               )}
