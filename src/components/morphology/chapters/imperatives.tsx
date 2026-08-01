@@ -44,9 +44,6 @@ export const IMPERATIVES_CONTENT = (
         <Ex grc="λύετε" en="loose! (you all)" />
         <Ex grc="πίστευε" en="believe! (keep believing)" />
       </>}
-      intermediate={<>
-        <p>Present vs. aorist imperative is aspect: present = ongoing / general, aorist = a single specific act. Beware the look-alike future indicative — the ending decides (<Gk>πίστευσον</Gk> "believe!" vs. <Gk>πιστεύσομεν</Gk> "we will believe").</p>
-      </>}
     >
       <MorphTable flush title={gt("Most Common Imperative Forms — λύω")} headers={['','Present Active','Aorist Active']}
         rows={[
@@ -144,7 +141,7 @@ export const IMPERATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Identify person, number, tense — then feel the aspect. Vocabulary: <span className="normal-case">ἀκούω</span> "hear" · <span className="normal-case">ἔγειρε</span> "rise" · <span className="normal-case">δός</span> (aor. impv. of δίδωμι, "give").</>}
@@ -210,12 +207,6 @@ export const IMPERATIVES_CONTENT = (
         to a superior is an entreaty. Every petition of the Lord's Prayer is an aorist imperative —
         <Gk> ἁγιασθήτω, ἐλθέτω, γενηθήτω, δός, ἄφες</Gk> — prayer language, not barked orders. Translating
         "give us" as rude misreads the mood's range.
-      </P>
-      <P>
-        <strong>The conditional imperative.</strong> Imperative + <Gk>καί</Gk> + future indicative can carry
-        an "if… then" force: <Gk>λύσατε τὸν ναὸν τοῦτον καὶ ἐν τρισὶν ἡμέραις ἐγερῶ αὐτόν</Gk> — "destroy
-        this temple [= if you destroy it], and in three days I will raise it" (John 2:19). The imperative
-        states the condition, not a wish.
       </P>
       <P>
         <strong>Permission and toleration.</strong> Occasionally the imperative concedes rather than

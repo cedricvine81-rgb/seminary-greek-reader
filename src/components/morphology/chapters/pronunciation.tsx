@@ -255,9 +255,6 @@ export const PRONUNCIATION_CONTENT = (
         <AsideLabel>Why we choose Erasmian</AsideLabel>
         <p>Because you are learning to <em>read and spell</em>, not to order coffee in Athens: one-sound-per-letter makes vocabulary stick and dictation possible. Whichever scheme you adopt later, consistency now is what matters.</p>
       </>}
-      intermediate={<>
-        <p>The mergers are not just phonetics trivia — scribes spelled by ear, so manuscripts confuse look-alike sounds constantly. The classic: <Gk>ἡμεῖς</Gk> "we" vs. <Gk>ὑμεῖς</Gk> "you," pronounced identically by the Byzantine era — which is why manuscripts split between "your joy" and "our joy" at 1 John 1:4. Pronunciation history is a text-critical tool.</p>
-      </>}
     >
       <MorphTable flush title="The three schemes, side by side" headers={['Word', 'Erasmian (ours)', 'Reconstructed Koine', 'Modern Greek']} firstColIsData
         rows={[
@@ -270,7 +267,7 @@ export const PRONUNCIATION_CONTENT = (
     </TableAside>
 
     {/* ── 8 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice A — sound out the Greek"
       intro={<>Write (or say) each word in English letters, then guess the meaning — these all became English words.</>}

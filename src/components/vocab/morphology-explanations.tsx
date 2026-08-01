@@ -282,8 +282,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat name="Subject of Infinitive" eg="“I want him to learn”" ex={[{ g: "δεῖ ὑμᾶς γεννηθῆναι ἄνωθεν", e: "you must be born again", r: "John 3:7" }, { g: "ἐν τῷ ὑποστρέφειν τὸν Ἰησοῦν", e: "when Jesus returned", r: "Luke 8:40" }]}>the accusative that acts as an infinitive's subject</Cat>
           <Cat name="After certain prepositions" ex={[{ g: "ἀπέστειλεν ὁ θεὸς τὸν υἱὸν εἰς τὸν κόσμον", e: "God sent the Son into the world", r: "John 3:17" }, { g: "πάντες ἔρχονται πρὸς αὐτόν", e: "everyone is coming to him", r: "John 3:26" }]}>prepositions that govern the accusative</Cat>
         </CatGroup>
-        <Hook>Time expressions sort by case: "<strong>at</strong>" a point = dative · "<strong>during</strong>" = genitive · "<strong>how long</strong>" = accusative (<G>νυκτί</G> "at night" · <G>νυκτός</G> "during the night" · <G>νύκτα</G> "for the whole night").</Hook>
-        <P><strong>The article</strong> also carries syntax. An adjective inside the article is <strong>attributive</strong> ("the good word"); outside it, <strong>predicate</strong> ("the word <em>is</em> good"). Two famous article rules: the <strong>Granville Sharp rule</strong> (one article joining two singular nouns points to one person) and <strong>Colwell's rule</strong> (an anarthrous predicate nominative before the verb can still be definite).</P>
       </Note>
     ),
   },
@@ -296,9 +294,8 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P><G>αὐτός</G> does triple duty: alone in an oblique case = personal pronoun ("him"); in the attributive position (<G>ὁ αὐτός</G>) = "the same"; in the predicate position (<G>αὐτὸς ὁ…</G>) = intensive "himself."</P>
         <Hook>Is "himself" intensive or reflexive? <strong>Delete it.</strong> If the basic meaning is unchanged, it was intensive ("the king himself came"); if not, it was reflexive ("he saw himself"). And a very short word with a <em>rough</em> breathing is almost always a relative pronoun (<G>ὅς, ἥ, ὅ</G>).</Hook>
-        <P>Distinguish <G>τις</G> (enclitic, unaccented = "someone / anyone") from <G>τίς</G> (accented = "who? what?") purely by the accent. Relative pronouns take their <em>gender and number</em> from their antecedent but their <em>case</em> from their own clause — a frequent parsing trap. And watch for forms of <G>οὗτος</G> that drop the <G>τ</G> (<G>οὗτος / αὕτη</G>).</P>
+        <P>Relative pronouns take their <em>gender and number</em> from their antecedent but their <em>case</em> from their own clause — a frequent parsing trap. And watch for forms of <G>οὗτος</G> that drop the <G>τ</G> (<G>οὗτος / αὕτη</G>).</P>
       </Note>
     ),
   },
@@ -312,7 +309,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P>A rough logic underlies the cases: <strong>genitive</strong> often = motion away / source, <strong>dative</strong> = position / rest, <strong>accusative</strong> = motion toward / extent. So with a three-case preposition like <G>ἐπί</G>, the case shifts the sense (<G>ἐπί</G> + gen. "on," + dat. "at," + acc. "onto / against").</P>
-        <P>Prepositions also fuse onto verbs (compound verbs), strengthening or redirecting meaning. In Koine the edges blur — <G>εἰς</G> and <G>ἐν</G> overlap at times — so weigh context alongside the case.</P>
         <Hook>Where English uses "<strong>by</strong>" or "<strong>with</strong>" to show the instrument, Greek often needs <em>no preposition at all</em> — just the plain <strong>dative</strong> (<G>τῷ λόγῳ</G> = "with a word").</Hook>
       </Note>
     ),
@@ -386,7 +382,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
           <Cat name="Imperatival Future" ex={[{ g: "ἀγαπήσεις τὸν πλησίον σου", e: "you shall love your neighbor", r: "Matt 22:39" }, { g: "οὐ φονεύσεις", e: "you shall not murder", r: "Matt 5:21" }]}>a future used as a command ("you shall not…")</Cat>
           <Cat name="Deliberative Future" ex={[{ g: "κύριε, πρὸς τίνα ἀπελευσόμεθα;", e: "Lord, to whom shall we go?", r: "John 6:68" }, { g: "πῶς ἔτι ζήσομεν ἐν αὐτῇ;", e: "how shall we still live in it?", r: "Rom 6:2" }]}>a real or rhetorical question ("what shall we do?")</Cat>
         </CatGroup>
-        <P>Voice matters for exegesis too: a passive often hides its agent (the "divine passive" implying God). But reserve heavy tense-based theology for places where the author had a real choice of forms — much tense selection is just default narration.</P>
       </Note>
     ),
   },
@@ -509,7 +504,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P>The iota-reduplication marks <strong>present/imperfect only</strong>; elsewhere μι-verbs revert to the short stem and act like <G>‑ω</G> verbs, with an aorist in <G>‑κα</G> (<G>ἔδωκα, ἔθηκα</G>) rather than <G>‑σα</G>.</P>
-        <P><G>ἵστημι</G> is doubly tricky: transitive in some tenses ("I set / place") but intransitive in others ("I stand"), and its perfect <G>ἕστηκα</G> means a present state "I stand." Since many key NT terms are μι-compounds (<G>ἀφίημι</G> "forgive," <G>παραδίδωμι</G> "hand over / betray"), fluency here pays off fast.</P>
       </Note>
     ),
   },
@@ -538,7 +532,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P>Parse a deponent exactly as you would any middle/passive form (tense, person, number), but translate with the <em>active</em> gloss your lexicon gives. Some are middle in the future/aorist; others are passive in the aorist (<G>ἀποκρίνομαι → ἀπεκρίθην</G>).</P>
-        <P>Many grammarians now question the label "deponent," arguing the Greek <strong>middle voice</strong> genuinely fits these verbs (subject-affectedness) rather than being a defective active — a useful nuance, though the practical rule (active meaning) still holds. Watch, too, for <strong>semi-deponents</strong>, which are deponent in only some tenses.</P>
       </Note>
     ),
   },
@@ -553,7 +546,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P><G>οὗτος</G> follows the article's front-end pattern (rough breathing in the nom. masc./fem., <G>τ‑</G> elsewhere) with 1st/2nd-declension endings. Standing alone it is a full pronoun (<G>οὗτός ἐστιν ὁ υἱός μου</G>).</P>
-        <P>It can point backward (anaphoric, <G>μετὰ ταῦτα</G>) or forward to a coming definition (cataphoric — John's <G>αὕτη ἐστὶν ἡ ἐντολή, ἵνα…</G>), and on hostile lips it sneers: "this fellow." The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</P>
+        <P>The interpretive interest is in <em>how</em> it points — backward, forward, or with attitude ("Going deeper" below walks through the options). The reflexive <G>ἑαυτοῦ</G> and reciprocal <G>ἀλλήλων</G> complete the pointing family.</P>
       </Note>
     ),
   },
@@ -567,8 +560,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P>The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong>: a genitive or dative antecedent often pulls the relative into its own case (<G>πάντων ὧν ἐποίησεν</G>, Luke 3:19). Headless relatives act as nouns ("whoever / whatever"), and <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</P>
-        <P>Bare-relative openings (<G>ὅς ἐστιν εἰκὼν τοῦ θεοῦ</G>, Col 1:15) are a fingerprint of quoted hymnic material.</P>
+        <P>The agreement rule ("gender/number backward, case inward") bends under <strong>attraction</strong> — a genitive or dative antecedent often pulls the relative into its own case ("Going deeper" below shows it in action). <G>ὃς ἄν</G> + subjunctive generalizes: "whoever."</P>
       </Note>
     ),
   },
@@ -582,7 +574,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P>Master shortcuts: like vowels → the long version (<G>ε+ε=ει</G>); an o-sound anywhere wins (<G>→ ου/ω/οι</G>); <G>α</G> + e-sound → <G>α/ᾳ</G>; long vowels swallow short ones. Only the present and imperfect contract — every other tense lengthens and regularizes.</P>
+        <P>Only the present and imperfect actually contract — every other tense lengthens the stem vowel and regularizes. (The vowel-merge shortcuts sit beside the contraction table below.)</P>
         <P>Exceptions worth flagging: <G>καλέω</G> refuses to lengthen (<G>ἐκάλεσα</G>), <G>ζάω</G> contracts with η (<G>ζῇ</G>), and liquid futures mimic -έω presents (see Liquid Verbs).</P>
       </Note>
     ),
@@ -598,7 +590,6 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     intermediate: (
       <Note>
         <P>The stem-stretch (<G>μεν → μειν</G>) is <em>compensatory lengthening</em> — the lost σ's weight preserved in the vowel. Distinguish the liquid 1st aorist (<G>ἔκρινα</G>, α-endings) from the imperfect (<G>ἔκρινον</G>) by the ending vowel.</P>
-        <P>Key liquid vocabulary is theologically loaded: <G>ἐγείρω</G> (divine-passive <G>ἠγέρθη</G> "he was raised"), <G>ἀποστέλλω</G> (the apostle-verb), <G>μένω</G> (John's "abide").</P>
       </Note>
     ),
   },
@@ -612,8 +603,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P>Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system (part 3 minus the augment gives the aorist participle, infinitive, subjunctive, imperative). The future passive grows from part <em>6</em>, not part 2 (<G>λυθήσομαι</G> ← <G>ἐλύθην</G>).</P>
-        <P>Where parts come from different roots (<G>λέγω / ἐρῶ / εἶπον</G>) you're seeing <em>suppletion</em> — ancient verbs merged into one paradigm, like go/went.</P>
+        <P>Think in <strong>tense-systems</strong>, not tenses: each part's stem serves every mood of its system. The asides beside the grid map which endings and moods belong to which part, and "Going deeper" below follows the idea further.</P>
       </Note>
     ),
   },
@@ -627,8 +617,7 @@ export const TAB_EXPLANATIONS: Record<string, Explanation> = {
     ),
     intermediate: (
       <Note>
-        <P>Three schemes coexist: <strong>Erasmian</strong> (classroom convention — maximally distinct), <strong>reconstructed Koine</strong> (closest to first-century speech), and <strong>Modern Greek</strong> (the living tradition, with <em>itacism</em>: <G>η ι υ ει οι υι</G> all sounding "ee").</P>
-        <P>The mergers matter beyond the classroom: scribes spelled by ear, so itacism drives manuscript variants — <G>ἡμεῖς</G>/<G>ὑμεῖς</G> ("we/you") became homophones, splitting the witnesses at places like 1 John 1:4. Pronunciation history doubles as a text-critical tool.</P>
+        <P>Three schemes coexist: <strong>Erasmian</strong> (classroom convention — maximally distinct), <strong>reconstructed Koine</strong> (closest to first-century speech), and <strong>Modern Greek</strong> (the living tradition, with <em>itacism</em>: <G>η ι υ ει οι υι</G> all sounding "ee"). Why the mergers matter for the manuscripts is the story of "Going deeper" below.</P>
       </Note>
     ),
   },

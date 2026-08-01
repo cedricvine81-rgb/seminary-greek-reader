@@ -244,12 +244,6 @@ export const NOUNS_CONTENT = (
         <Ex grc="τὸ ἔργον" en="the work (neut.)" />
         <p>Memorize the article's forms early — it is the highest-value memory work in all of Greek.</p>
       </>}
-      intermediate={<>
-        <p>The article can turn almost anything into a noun (substantivize): <Gk>τὸ ἀγαθόν</Gk> "the good thing,"
-        <Gk> οἱ πιστεύοντες</Gk> "the believers."</p>
-        <p>Greek has no indefinite article — an anarthrous noun is often "a(n) …," but word order and context
-        can still make it definite (Colwell's rule).</p>
-      </>}
     >
       <MorphTable flush title="Article & Noun Paradigm" headers={['','','Art.','Noun','Art.','Noun','Art.','Noun']}
         rows={[

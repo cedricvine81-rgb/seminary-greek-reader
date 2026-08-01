@@ -162,7 +162,7 @@ export const RELATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse the relative and translate"
       intro={<>For each relative: gender/number (from what antecedent?) and case (what job?).</>}

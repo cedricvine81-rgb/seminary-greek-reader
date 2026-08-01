@@ -52,7 +52,7 @@ export const INDICATIVES_CONTENT = (
         <Ex grc="ὁ Ἰησοῦς διδάσκει" en="Jesus teaches / is teaching" />
       </>}
       intermediate={<>
-        <p>Present = <em>imperfective</em> <Term t="aspect">aspect</Term> (ongoing). Watch for the <strong>historical present</strong> — a present-tense verb telling a past story for vividness (<Gk>λέγει αὐτῷ</Gk> = "he said to him").</p>
+        <p>Present = <em>imperfective</em> <Term t="aspect">aspect</Term> (ongoing).</p>
       </>}
     >
       <MorphTable flush title={gt("Present Tense — λύω (I loose, I am loosing)")} headers={['Person','Greek','Translation']}

@@ -190,7 +190,7 @@ export const CONJ_ADV_CONTENT = (
       ]}
     />
 
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — name the sign's function"
       intro={<>For each connective: coordinating or subordinating? And what logical move does it make?</>}

@@ -39,9 +39,6 @@ export const INFINITIVES_CONTENT = (
         <Ex grc="θέλω λύειν" en="I want to loose" />
         <Ex grc="λύσαι" en="to loose (aorist — σ, but no augment)" />
       </>}
-      intermediate={<>
-        <p>It's a <strong>verbal noun</strong>: it can take an article (<Gk>τό</Gk>) and even an accusative subject (<Gk>θέλω τὸν ἄγγελον ἀπελθεῖν</Gk> "I want the messenger to depart"). Present vs. aorist = aspect, not time.</p>
-      </>}
     >
       <MorphTable flush title={gt("Most Common Infinitive Forms — λύω")} headers={['','Present Active','Aorist Active']}
         rows={[['Infinitive','λύειν','λύσαι']]}

@@ -148,7 +148,7 @@ export const CONTRACT_VERBS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Name the family (-έω / -άω / -όω), then the form.</>}

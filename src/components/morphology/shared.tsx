@@ -301,12 +301,18 @@ export function Term({ t, children }: { t: string; children?: React.ReactNode })
   )
 }
 
-/** An exercise block with tap-to-reveal answers. */
-export function Practice({ title = 'Try it', intro, items }: {
+/** An exercise block with tap-to-reveal answers.
+ *  Practice blocks are drill material from the Beginning course, so by default
+ *  they render only at the Beginning level — the Intermediate view keeps just
+ *  the tables and the intermediate notes. Pass level="both" to show anyway. */
+export function Practice({ title = 'Try it', intro, items, level = 'beginning' }: {
   title?: string
   intro?: React.ReactNode
   items: { q: React.ReactNode; a: React.ReactNode }[]
+  level?: MorphLevel | 'both'
 }) {
+  const cur = useContext(LevelContext)
+  if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-gray-200 bg-gray-50 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{title}</p>
@@ -335,15 +341,19 @@ export function Practice({ title = 'Try it', intro, items }: {
  * to the current prompt and surfaces the next one, mirroring how the
  * instructor prompts the class. The final translation appears at the end.
  */
-export function GuidedExample({ title = 'Together: work it through', sentence, source, translation, steps }: {
+export function GuidedExample({ title = 'Together: work it through', sentence, source, translation, steps, level = 'beginning' }: {
   title?: string
   sentence: React.ReactNode
   /** Optional verse reference; rendered as a link into the Reader. */
   source?: { ref: string; label?: string }
   translation?: React.ReactNode
   steps: { prompt: React.ReactNode; answer: React.ReactNode }[]
+  /** Beginning-course drill material — hidden at Intermediate by default. */
+  level?: MorphLevel | 'both'
 }) {
   const [revealed, setRevealed] = useState(0)
+  const cur = useContext(LevelContext)
+  if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-1.5">{title}</p>
@@ -390,12 +400,15 @@ export function GuidedExample({ title = 'Together: work it through', sentence, s
  * wrong, shows the correct answer. `options` is the shared dropdown list; an item can
  * override it with its own.
  */
-export function DropdownPractice({ title = 'Practice', intro, options, items }: {
+export function DropdownPractice({ title = 'Practice', intro, options, items, level = 'beginning' }: {
   title?: string
   intro?: React.ReactNode
   options: string[]
   items: { q: React.ReactNode; answer: string; options?: string[]; note?: React.ReactNode }[]
+  /** Beginning-course drill material — hidden at Intermediate by default. */
+  level?: MorphLevel | 'both'
 }) {
+  const curLevel = useContext(LevelContext)
   const [chosen, setChosen] = useState<Record<number, string>>({})
   // Quiz-from-memory mode (for in-class use): "Quiz me" BLANKS the table this practice
   // drills (the nearest preceding table on the page), answers give no feedback until
@@ -450,6 +463,8 @@ export function DropdownPractice({ title = 'Practice', intro, options, items }: 
     setMode('open')
     unblankTable()
   }
+
+  if (level !== 'both' && curLevel !== level) return null
 
   const answered = Object.keys(chosen).filter(k => chosen[Number(k)] !== '').length
   const right = items.filter((it, i) => chosen[i] === it.answer).length
@@ -565,12 +580,16 @@ export function DropdownPractice({ title = 'Practice', intro, options, items }: 
  * student clicks each word and enters its parsing, syntax and translation.
  * A "Show translation" fallback keeps the block usable as plain reading.
  */
-export function ClassSentences({ lesson, intro, items }: {
+export function ClassSentences({ lesson, intro, items, level = 'beginning' }: {
   /** Which deck these mirror, e.g. "Lesson 3 · Prepositions". */
   lesson: string
   intro?: React.ReactNode
   items: Omit<WorkbenchSentence, 'lesson'>[]
+  /** Mirrors the Beginning course's lesson decks — hidden at Intermediate by default. */
+  level?: MorphLevel | 'both'
 }) {
+  const cur = useContext(LevelContext)
+  if (level !== 'both' && cur !== level) return null
   return (
     <div className="my-5 max-w-3xl rounded-xl border border-brand-200 bg-brand-50/40 px-4 py-3.5">
       <p className="text-xs font-semibold uppercase tracking-wide text-brand-700 mb-0.5">
@@ -729,7 +748,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
           const r2Val = r2Dates[key] ?? (existing?.round2Deadline ? toLocalInput(existing.round2Deadline) : '')
           // Round 2 must end after Round 1 (the due date).
           const r2Invalid = r2On && !!r2Val && !!dtVal && new Date(r2Val) <= new Date(dtVal)
-          const fieldCls = 'rounded-lg border border-gray-300 bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400'
+          const fieldCls = 'rounded-lg border border-gray-300 bg-input px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500'
           // Late policy sent to the API: null days = accept indefinitely.
           const latePayload = { allowLate: lateVal, lateDaysLimit: lateVal && daysVal > 0 ? daysVal : null }
           const r2Payload = { round2Deadline: r2On && r2Val ? new Date(r2Val).toISOString() : null }
@@ -801,7 +820,7 @@ export function HomeworkAssignments({ chapter }: { chapter: string }) {
                       type="number" min={0} max={30}
                       value={daysVal}
                       onChange={e => setLateDays(prev => ({ ...prev, [key]: Number(e.target.value) }))}
-                      className="w-14 rounded-lg border border-gray-300 px-1.5 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-brand-400"
+                      className="w-14 rounded-lg border border-gray-300 px-1.5 py-1 text-center text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
                     />
                     {daysVal > 0 ? (daysVal === 1 ? 'day late' : 'days late') : 'days (0 = no limit)'}
                   </label>

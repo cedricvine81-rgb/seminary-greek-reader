@@ -40,9 +40,6 @@ export const CONJUNCTIONS_CONTENT = (
         <p>A conditional has an "if" clause (protasis) and a "then" clause (apodosis). Count the words to classify it: <Gk>εἰ</Gk> = One Word (1st) · <Gk>εἰ … ἄν</Gk> = Two Words (2nd) · <Gk>ἐάν</Gk> = Three Letters (3rd).</p>
         <Ex grc="εἰ υἱὸς εἶ τοῦ θεοῦ…" en="if you are the Son of God… (1st class)" />
       </>}
-      intermediate={<>
-        <p>Classify by the <em>protasis</em>. The class shows the speaker's rhetorical stance, not objective fact — a 1st-class condition can frame something known to be false. A <strong>"would"</strong> in English (and <Gk>ἄν</Gk> in Greek) flags the contrary-to-fact 2nd class.</p>
-      </>}
     >
       <MorphTable flush title="Conditional Sentences" headers={['Class','Protasis','Apodosis']}
         rows={[
@@ -78,7 +75,7 @@ export const CONJUNCTIONS_CONTENT = (
         <Ex grc="εἰ δὲ ὑμεῖς Χριστοῦ, ἄρα τοῦ Ἀβραὰμ σπέρμα ἐστέ" en="if you are Christ's, then you are Abraham's offspring (Gal 3:29)" />
       </>}
       intermediate={<>
-        <p>Since the assumption is rhetorical, a 1st-class protasis can be something the speaker affirms (Gal 3:29), doubts, or even mocks — the taunt <Gk>εἰ σὺ εἶ ὁ βασιλεὺς τῶν Ἰουδαίων, σῶσον σεαυτόν</Gk> (Luke 23:37) is 1st class. So never auto-translate <Gk>εἰ</Gk> as "since."</p>
+        <p>A 1st-class protasis can be something the speaker affirms, doubts, or even mocks — the taunt <Gk>εἰ σὺ εἶ ὁ βασιλεὺς τῶν Ἰουδαίων, σῶσον σεαυτόν</Gk> (Luke 23:37) is 1st class. So never auto-translate <Gk>εἰ</Gk> as "since."</p>
       </>}
     >
       <MorphTable flush title="First class anatomy" headers={['Piece', 'Form', 'Note']} firstColIsData
@@ -165,7 +162,7 @@ export const CONJUNCTIONS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — classify and translate"
       intro={<>Name the class first (count the words!), then translate.</>}

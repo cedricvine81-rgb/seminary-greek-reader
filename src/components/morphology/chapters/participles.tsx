@@ -56,7 +56,7 @@ export const PARTICIPLES_CONTENT = (
         <Ex grc="ὁ ὢν ἐν τῷ οὐρανῷ" en="the one who is in heaven" />
       </>}
       intermediate={<>
-        <p><Gk>εἰμί</Gk> has only a present participle; it helps build <em>periphrastic</em> tenses (<Gk>ἦν διδάσκων</Gk> "he was teaching").</p>
+        <p><Gk>εἰμί</Gk> has only a present participle — the building block of the <em>periphrastic</em> tenses covered in "Going deeper" below.</p>
       </>}
     >
       <MorphTable flush title={gt("Present Participle of εἰμί (ὤν, οὖσα, ὄν)")} headers={['','Masculine','Neuter','Feminine']} dividerRows={[0,5]}

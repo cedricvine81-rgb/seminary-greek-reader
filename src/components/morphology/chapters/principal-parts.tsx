@@ -152,7 +152,7 @@ export const PRINCIPAL_PARTS_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — trace the form to its row"
       intro={<>Name the principal part it comes from, the dictionary verb, and translate.</>}

@@ -154,9 +154,6 @@ export const MI_VERBS_CONTENT = (
         <Ex grc="ἀφίημι τὰς ἁμαρτίας" en="I forgive sins" />
         <Ex grc="παρέδωκεν αὐτόν" en="he handed him over" />
       </>}
-      intermediate={<>
-        <p><Gk>παραδίδωμι</Gk> is the passion narrative's hinge-word — Judas "hands over" Jesus, but so does God (Rom 8:32, <Gk>ὑπὲρ ἡμῶν παρέδωκεν αὐτόν</Gk>). One verb, two theologies of the cross.</p>
-      </>}
     >
       <MorphTable flush title="Key μι-compounds" headers={['Compound', 'Built from', 'Meaning']} firstColIsData
         rows={[
@@ -197,7 +194,7 @@ export const MI_VERBS_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Front of the word first: iota? augment? reduplication?</>}

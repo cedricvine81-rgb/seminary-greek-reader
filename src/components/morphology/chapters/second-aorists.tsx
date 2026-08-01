@@ -53,10 +53,6 @@ export const SECOND_AORISTS_CONTENT = (
         <Ex grc="λαμβάνω → ἔλαβον" en="I take → I took" />
         <p>It uses the imperfect's endings, but with a changed stem — read the row left to right: present → aorist → meaning.</p>
       </>}
-      intermediate={<>
-        <p>Three clues together identify it: an <strong>augment</strong>, a stem <strong>different from the present</strong>, and <strong>no σα/θη</strong> marker.</p>
-        <p>Some are <em>suppletive</em> — they borrow a whole different root (<Gk>λέγω → εἶπον</Gk>, <Gk>ὁράω → εἶδον</Gk>). Learn the aorist stem as part of the verb's principal parts.</p>
-      </>}
     >
     <MorphTable striped
       flush
@@ -180,7 +176,7 @@ export const SECOND_AORISTS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Ask: augment? σα? changed stem? Then check the table above.</>}

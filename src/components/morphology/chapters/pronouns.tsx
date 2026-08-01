@@ -45,9 +45,6 @@ export const PRONOUNS_CONTENT = (
         <Ex grc="βλέπω αὐτόν" en="I see him" />
         <Ex grc="ὁ λόγος αὐτοῦ" en="his word" />
       </>}
-      intermediate={<>
-        <p><Gk>αὐτός</Gk> does triple duty: alone in an oblique case = "him"; in the attributive position (<Gk>ὁ αὐτός</Gk>) = "the same"; in the predicate position (<Gk>αὐτὸς ὁ…</Gk>) = intensive "himself."</p>
-      </>}
     >
       <MorphTable flush title={gt("3rd Person Pronoun — αὐτός (he, she, it)")} headers={['','','Masc.','Eng.','Fem.','Eng.','Neut.','Eng.']}
         rows={[
@@ -346,7 +343,7 @@ export const PRONOUNS_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <DropdownPractice
       title="Practice — τις or τίς?"
       intro={<>Read the accent first — it is the only difference between "someone" and "who?"</>}

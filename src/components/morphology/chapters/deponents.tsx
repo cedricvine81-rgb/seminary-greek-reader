@@ -50,10 +50,6 @@ export const DEPONENTS_CONTENT = (
         <Ex grc="ἔρχομαι" en="I come / go" />
         <Ex grc="ἀποκρίνομαι" en="I answer" />
       </>}
-      intermediate={<>
-        <p>Parse it exactly as a middle/passive (tense, person, number), then use the active gloss. Some are <strong>middle</strong> in the future/aorist, others <strong>passive</strong> (<Gk>ἀποκρίνομαι → ἀπεκρίθην</Gk>).</p>
-        <p>Many now argue the Greek <strong>middle voice</strong> genuinely fits these verbs (subject-affectedness) rather than being a defective active — but the practical rule (active meaning) still holds.</p>
-      </>}
     >
     <MorphTable striped
       flush
@@ -184,7 +180,7 @@ export const DEPONENTS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Parse the form honestly (middle/passive!), then translate actively.</>}

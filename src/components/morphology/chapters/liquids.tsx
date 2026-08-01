@@ -91,9 +91,6 @@ export const LIQUIDS_CONTENT = (
         <Ex grc="ἀπέστειλα" en="I sent (στελλ → στειλ)" />
         <p>Augment + stretched stem + α-endings, no σ.</p>
       </>}
-      intermediate={<>
-        <p>Duff's summary: <em>in liquid verbs there is no σ in the future or aorist.</em> The stem-stretch (compensatory lengthening) is the σ's ghost — the syllable's weight preserved after the sound was lost.</p>
-      </>}
     >
       <MorphTable flush title="Common liquid verbs" headers={['Present', 'Future', 'Aorist', 'Meaning']} firstColIsData
         rows={[
@@ -135,7 +132,7 @@ export const LIQUIDS_CONTENT = (
     </InfoBox>
 
     {/* ── 5 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Watch accents and stem-stretches. Vocabulary: <span className="normal-case">καρπός</span> "fruit" · <span className="normal-case">νεκρός</span> "dead."</>}

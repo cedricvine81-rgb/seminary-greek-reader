@@ -190,9 +190,6 @@ export const PREPOSITIONS_CONTENT = (
         <Ex grc="ἐπὶ τῆς γῆς" en="on the earth (gen.)" />
         <Ex grc="ἐπὶ τὸ βιβλίον" en="onto the book (acc.)" />
       </>}
-      intermediate={<>
-        <p>In Koine the edges blur — <Gk>εἰς</Gk> and <Gk>ἐν</Gk> sometimes overlap — so weigh context alongside the case rather than trusting a one-word gloss.</p>
-      </>}
     >
       <MorphTable flush title="Three-case Prepositions" headers={['', 'Case', 'Meaning']} firstColIsData
         rows={[
@@ -241,7 +238,7 @@ export const PREPOSITIONS_CONTENT = (
     </InfoBox>
 
     {/* ── 7 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — translate the phrase"
       intro={<>Read the case first, then choose the meaning. Vocabulary: <span className="normal-case">οἶκος</span> "house" · <span className="normal-case">σάββατον</span> "Sabbath" · <span className="normal-case">νόμος</span> "law" · <span className="normal-case">μαθητής</span> "disciple."</>}

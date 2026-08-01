@@ -48,7 +48,6 @@ export const DEMONSTRATIVES_CONTENT = (
         <p>Standing alone, it's a pronoun: <Gk>οὗτος</Gk> "this one / he."</p>
       </>}
       intermediate={<>
-        <p>Front-end rule: rough breathing in the nom. masc./fem. (where the article has it), <Gk>τ‑</Gk> everywhere else — exactly the article's own pattern.</p>
         <p>The neuter plural <Gk>ταῦτα</Gk> may be the most common demonstrative form in the NT — "these things."</p>
       </>}
     >
@@ -119,9 +118,6 @@ export const DEMONSTRATIVES_CONTENT = (
         <Ex grc="οὗτος ὁ λόγος" en="this word" />
         <Ex grc="ἐκείνη ἡ ἡμέρα" en="that day" />
         <p>Note the article is still there — demonstrative + article + noun.</p>
-      </>}
-      intermediate={<>
-        <p>Standing alone, the demonstrative is a full pronoun and can even be the subject of an equative clause: <Gk>οὗτός ἐστιν ὁ υἱός μου</Gk>, "<em>this</em> is my Son" (Matt 3:17) — where "this one" points to Jesus just baptized.</p>
       </>}
     >
       <MorphTable flush title="Adjective vs. demonstrative position" headers={['Pattern', 'Meaning']} firstColIsData
@@ -194,7 +190,7 @@ export const DEMONSTRATIVES_CONTENT = (
     </InfoBox>
 
     {/* ── 6 · Try it ─────────────────────────────────────── */}
-    <SectionHeading>Try it</SectionHeading>
+    <LevelOnly level="beginning"><SectionHeading>Try it</SectionHeading></LevelOnly>
     <Practice
       title="Practice — parse and translate"
       intro={<>Vocabulary: <span className="normal-case">πρόβατον</span> "sheep" · <span className="normal-case">συνάγω</span> "gather" · <span className="normal-case">παραβολή</span> "parable."</>}

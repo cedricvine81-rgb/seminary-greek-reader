@@ -65,7 +65,7 @@ export const SUBJUNCTIVES_CONTENT = (
         <Ex grc="ἐὰν λύσῃ" en="if he looses" />
       </>}
       intermediate={<>
-        <p>Aspect only: aorist = perfective (a whole action), present = ongoing. Prohibitions use <Gk>μή</Gk> + aorist subjunctive ("don't ever…"), and <Gk>οὐ μή</Gk> + aorist subjunctive is the strongest "no."</p>
+        <p>Aspect only: aorist = perfective (a whole action), present = ongoing.</p>
       </>}
     >
       <MorphTable flush title={gt("Aorist Subjunctive — λύω")} headers={['','Pers.','Active','Middle','Passive']}

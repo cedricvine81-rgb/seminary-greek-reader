@@ -17,8 +17,7 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="τὸν λόγον" en="the word (direct object)" />
         </>}
         intermediate={<>
-          <p>One paradigm covers nouns <em>and</em> adjectives. Endings repeat across genders (<Gk>‒ων</Gk> is the genitive plural everywhere), so let the article settle an ambiguous form.</p>
-          <p>Two memory savers: neuter matches masculine except in the nom./acc., and neuter nom. = neuter acc.</p>
+          <p>One paradigm covers nouns <em>and</em> adjectives.</p>
           <AsideLabel>In a sentence</AsideLabel>
           <Ex grc="ὁ ἀπόστολος λέγει τὸν λόγον τοῦ θεοῦ" en="the apostle speaks the word of God" />
         </>}
@@ -52,8 +51,7 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="τὴν σάρκα" en="the flesh (object)" />
         </>}
         intermediate={<>
-          <p>Parse a 3rd-declension noun from its <em>genitive</em>: when <Gk>‒ς</Gk> is added in the nominative, stem consonants (<Gk>τ, δ, θ</Gk>) drop out and disguise the word.</p>
-          <p>The dative plural <Gk>‒σι(ν)</Gk> triggers the same consonant + <Gk>σ</Gk> changes you meet in the future and aorist.</p>
+          <AsideLabel>Worked example</AsideLabel>
           <Ex grc="ἐλπίς, ἐλπίδος" en="hope → dat. pl. ἐλπίσι" />
         </>}
       >
@@ -85,9 +83,7 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="ἐλυόμεθα" en="we were loosing (for ourselves)" />
         </>}
         intermediate={<>
-          <p>These two rows are the <strong>base</strong> for the whole indicative — every other tense just inserts a marker and reuses them.</p>
-          <p>The augment <Gk>ε‒</Gk> on the imperfect is the surest sign of a past-time indicative. Present/imperfect carry <em>imperfective</em> aspect (ongoing action).</p>
-          <p>The 2nd-sg. middle <Gk>‒ῃ / ‒ου</Gk> looks odd because an intervocalic <Gk>σ</Gk> dropped out (<Gk>‒σαι → ‒ῃ</Gk>).</p>
+          <p>Present/imperfect carry <em>imperfective</em> aspect (ongoing action).</p>
         </>}
       >
         <div className="mb-3 grid grid-cols-2 gap-2 text-xs font-semibold text-center">
@@ -117,10 +113,6 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="λύω → λύσω" en="the ‒σ‒ makes it future: “I will loose”" />
           <Ex grc="ἔλυσα" en="the ‒σα‒ makes it aorist: “I loosed”" />
         </>}
-        intermediate={<>
-          <p>The identifier sits <em>between</em> the stem and the ending, so parsing is a two-step scan: find the marker (tense/voice), then read the ending (person/number).</p>
-          <p>Recognize the <em>family</em> rather than an exact string: a <Gk>σ</Gk>-cluster = aorist/future, a <Gk>θ</Gk>-cluster = passive. The perfect's reduplication (<Gk>λε‒λυ‒κα</Gk>) reinforces its <Gk>‒κα</Gk>.</p>
-        </>}
       >
         <MorphTable flush headers={['Identifier', 'Tense']} firstColIsData highlight="text-blue-600" highlightCols={[0]}
           rows={[
@@ -142,10 +134,6 @@ export const ESS_SECTIONS: EssSection[] = [
           <p>Start from the present or imperfect endings, then change the connecting vowel with the right identifier. Past tenses build on <em>imperfect</em> endings; non-past on <em>present</em> endings.</p>
           <Ex grc="ἔλυον → ἔλυσα" en="imperfect endings + σα = aorist “I loosed”" />
           <Ex grc="λύω → λύσω" en="present endings + σ = future “I will loose”" />
-        </>}
-        intermediate={<>
-          <p>You never memorize a new paradigm, only a <em>transformation</em> of a base. "Insert" operations (future) keep primary endings; "replace" operations (aorist/perfect) reshape the connecting vowel and take secondary endings.</p>
-          <p>Run it backwards to parse the unknown: strip the ending, spot the marker, subtract it, and you're left with the lexical stem to look up.</p>
         </>}
       >
         <p className="text-xs text-gray-500 mb-3">All other tenses use the Present or Imperfect endings as a base. The tense identifier modifies the connecting vowel as follows:</p>
@@ -174,10 +162,6 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="λύων" en="loosing" />
           <Ex grc="λυόμενος" en="being loosed" />
           <Ex grc="ὁ ἄνθρωπος ὁ λύων" en="the man who is loosing" />
-        </>}
-        intermediate={<>
-          <p>A participle carries tense (aspect) and voice but <em>no person</em>, so translate it relative to the main verb: present participle = same time / ongoing, aorist participle = usually prior action.</p>
-          <p>The active endings decline on a 3rd-declension pattern for masc./neut. (hence the <Gk>‒ντ‒</Gk>) plus 1st-declension for the feminine.</p>
         </>}
       >
         <div className="space-y-4">
@@ -210,10 +194,6 @@ export const ESS_SECTIONS: EssSection[] = [
           <Ex grc="λῦε" en="loose! (you, sg.)" />
           <Ex grc="λυέτω" en="let him loose" />
           <Ex grc="λύετε" en="loose! (you all)" />
-        </>}
-        intermediate={<>
-          <p>Neither mood ever takes an augment — even the aorist subjunctive/imperative — because they express <em>aspect</em>, not time: aorist = a single whole action, present = ongoing.</p>
-          <p>Greek's 3rd-person imperative has no clean English equal, so render it with "let / should."</p>
         </>}
       >
         <MorphTable flush title={<>7-A  ·  Subjunctive of <span className="normal-case">εἰμί</span></>} headers={['','Pers.','Form']} highlight="text-red-600" highlightCols={[2]}
