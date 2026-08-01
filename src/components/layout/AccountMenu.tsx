@@ -9,6 +9,7 @@ import {
   BookMarked, Archive, Mail, Users,
 } from 'lucide-react'
 import { openMasterSearch } from '@/lib/master-search-bus'
+import { PageGuideMenuItem } from '@/components/help/PageGuideButton'
 import { useT } from '@/lib/i18n/LocaleProvider'
 
 interface AppMenuProps {
@@ -87,6 +88,9 @@ export function AccountMenu({ isAuthenticated, userRole, userName }: AppMenuProp
           >
             <Search size={15} className="text-gray-400 shrink-0" /> {t('account.search')}
           </button>
+          {/* "About this page" — the header's ? button is desktop-only, same as search above.
+              PageGuideMenuItem hides itself on pages that have no guide. */}
+          <PageGuideMenuItem onNavigate={() => setOpen(false)} />
           {isAuthenticated ? (
             <>
               {/* User info */}

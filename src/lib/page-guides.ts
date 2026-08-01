@@ -1,0 +1,433 @@
+// Page guides — "what is this page for, and how do I use it?"
+//
+// Plain authored prose, one entry per study tool, resolved from the current route. No model,
+// no corpus lookup, no per-question logic: this is documentation that happens to be delivered
+// in context rather than in a manual nobody opens.
+//
+// WRITING RULE — keep entries conceptual, not pixel-level. "Right-click a word for its syntax
+// categories" survives a redesign; "click the third button in the top bar" does not, and a
+// guide that lies is worse than no guide because students trust it. When a control genuinely
+// has to be named, name it by its label or its icon's meaning, never by position.
+//
+// These are deliberately in one file so a UI change has one obvious place to update — the same
+// discipline that keeps the attribution strings honest.
+
+export interface GuideSection {
+  heading: string
+  body: string
+}
+
+/** A keyboard or mouse interaction a student would never guess. */
+export interface GuideGesture {
+  /** What to do — "Right-click a word", "Shift". */
+  does: string
+  /** What happens. */
+  gets: string
+}
+
+export interface PageGuide {
+  id: string
+  /** Shown as the panel heading. */
+  title: string
+  /** One sentence: what this page is for. Answers "am I in the right place?". */
+  lede: string
+  sections: GuideSection[]
+  gestures?: GuideGesture[]
+  /** Where to go next; hrefs are in-app routes. */
+  related?: { label: string; href: string }[]
+}
+
+// ── The study tools ──────────────────────────────────────────────────────────────────────
+
+export const PAGE_GUIDES: PageGuide[] = [
+  {
+    id: 'reader',
+    title: 'The Reader',
+    lede: 'Read continuous Greek or Hebrew with the lexicon, parsing and syntax a click away.',
+    sections: [
+      {
+        heading: 'Finding a passage',
+        body: 'Type a reference into the search box — "John 3:16", "Rom 8", "Matt 5:3-12" all work. Typing a Greek word instead searches for it, and the NT / LXX / HB buttons switch which corpus you are reading. The text keeps loading as you scroll, so you can read past the end of a chapter without doing anything.',
+      },
+      {
+        heading: 'Understanding a word',
+        body: 'Hovering any word fills the panel below with its lexical entry, parsing and glosses. That panel follows your mouse, which is useful while reading and annoying while writing — press Shift to freeze it on the word you are looking at, and Shift again to release it.',
+      },
+      {
+        heading: 'Syntax',
+        body: 'Right-clicking a word opens its syntax categories, drawn from four independent treebanks: Wallace, PROIEL, GBI and the ABS Syntax Database. They disagree with each other, which is the point — where they differ, the construction is genuinely contested. You can turn individual sources off in the menu if the comparison is more noise than help.',
+      },
+      {
+        heading: 'Reading with a translation',
+        body: 'The translation selector adds a translation beside or beneath the Greek. The Berean Standard Bible is aligned word by word against the Greek New Testament; the others appear verse by verse. Choosing "Greek only" removes it again.',
+      },
+    ],
+    gestures: [
+      { does: 'Hover a word', gets: 'lexical entry, parsing and glosses in the panel below' },
+      { does: 'Shift', gets: 'freezes the parsing panel on the current word — Shift again to unfreeze' },
+      { does: 'Right-click a word', gets: 'syntax categories, plus search options for that word' },
+      { does: '⌘K / Ctrl-K', gets: 'search across every corpus and translation' },
+    ],
+    related: [
+      { label: 'Grammar — the paradigms behind the parsing', href: '/grammar' },
+      { label: 'Exegesis — work through a passage in depth', href: '/exegesis' },
+    ],
+  },
+
+  {
+    id: 'grammar',
+    title: 'Grammar',
+    lede: 'A full Greek grammar, from the alphabet to μι-verbs, written at two levels.',
+    sections: [
+      {
+        heading: 'Beginning and Intermediate',
+        body: 'The level toggle changes what the page shows, not just how much of it. Beginning gives you the English-grammar starting point, the paradigms, worked examples and practice drills. Intermediate drops the drills and adds the syntax categories — the functions each form can carry, after Wallace — plus a closing section on the interpretive questions the forms raise. Your choice is remembered.',
+      },
+      {
+        heading: 'Minimums',
+        body: 'The Minimums tab holds the eight paradigm sets that carry the most weight: master these and most of the New Testament becomes readable. They are worth returning to long after you have moved past them.',
+      },
+      {
+        heading: 'Practice',
+        body: 'On Beginning, most chapters carry drills with immediate feedback, sentences taken from class, and a guided worked example that reveals one step at a time. The "Quiz me" control inside a drill blanks the table it is testing, so you answer from memory rather than by reading upward.',
+      },
+      {
+        heading: 'Seeing it in real text',
+        body: 'Each chapter ends with links into the tagged New Testament — every genitive noun, every aorist participle, and so on. These open a search beside the chapter rather than navigating away, so you can check a claim without losing your place.',
+      },
+    ],
+    gestures: [
+      { does: 'Tap a dotted-underlined term', gets: 'a plain-English definition of that grammatical term' },
+      { does: 'Tap adjacent words in a drill', gets: 'answers reveal individually — nothing is graded or recorded' },
+    ],
+    related: [
+      { label: 'Vocabulary — the words to go with the forms', href: '/vocab' },
+      { label: 'Reader — see the forms in continuous text', href: '/reader' },
+    ],
+  },
+
+  {
+    id: 'vocab',
+    title: 'Vocabulary',
+    lede: 'Flashcards and quizzes for Greek and Hebrew, ordered by how often a word actually occurs.',
+    sections: [
+      {
+        heading: 'How the deck is ordered',
+        body: 'Words are grouped by frequency, so the earliest sections are the ones that pay off fastest — the handful of words that make up a large share of every page. Working down the list in order is usually better than picking sections that look interesting.',
+      },
+      {
+        heading: 'Greek and Hebrew',
+        body: 'The language toggle switches the whole deck between Greek and Hebrew. They track separately, so progress in one does not disturb the other.',
+      },
+      {
+        heading: 'Review',
+        body: 'A quiz can draw a proportion of its questions from sections you have already finished. That is what keeps earlier vocabulary from quietly fading while you learn new words, and it is worth leaving on even though it makes each quiz slightly harder.',
+      },
+    ],
+    related: [
+      { label: 'Grammar — the forms these words appear in', href: '/grammar' },
+    ],
+  },
+
+  {
+    id: 'search',
+    title: 'Search',
+    lede: 'One search across the Greek New Testament, the Septuagint, the translations and the background library.',
+    sections: [
+      {
+        heading: 'What you can type',
+        body: 'A Greek word, an English word, a phrase in quotation marks, or a reference. The tabs above the results show how many hits each corpus has, so you can see at a glance whether a word is common in the New Testament but rare in the Septuagint — often the more interesting fact.',
+      },
+      {
+        heading: 'Typing Greek without a Greek keyboard',
+        body: 'Type Beta Code and it converts as you go: "logos" becomes λογος. This works throughout the app, not only here.',
+      },
+      {
+        heading: 'Narrowing',
+        body: 'The scope selector restricts a search to one corpus, one translation or one background collection, and you can further limit it to particular books. The context slider around each result widens the surrounding verses, crossing chapter boundaries where needed.',
+      },
+      {
+        heading: 'Where it opens',
+        body: 'Search opens as a panel beside whatever you were reading, so results can be compared with the passage that prompted them. The full page still exists for direct links and for longer sessions.',
+      },
+    ],
+    gestures: [
+      { does: '⌘K / Ctrl-K', gets: 'opens search from anywhere in the app' },
+      { does: 'Right-click a word in the Reader', gets: 'searches that word or its lemma without retyping it' },
+    ],
+    related: [
+      { label: 'Construct search — search by grammar rather than by word', href: '/search/construct' },
+    ],
+  },
+
+  {
+    id: 'construct',
+    title: 'Construct search',
+    lede: 'Search for grammatical constructions rather than words — every articular infinitive, every genitive absolute.',
+    sections: [
+      {
+        heading: 'What makes this different',
+        body: 'Ordinary search finds words. This finds shapes: a preposition governing a particular case, a participle agreeing with a noun, a subjunctive after ἵνα. You are describing a pattern, and the search returns every place in the corpus that matches it — across the Greek New Testament, the Septuagint, the Hebrew Bible and the wider library.',
+      },
+      {
+        heading: 'Start from a preset',
+        body: 'The presets are the fastest way in, and the fastest way to learn the query language: pick one that resembles what you want, run it, then modify it. Building a query from nothing is possible but rarely the quickest route.',
+      },
+      {
+        heading: 'Refining a query',
+        body: 'Terms can require agreement with each other, exclude a feature rather than require it, and be scoped to a clause or a distance. Searching across all texts at once gives a distribution instead of a hit list — useful for showing that a construction clusters in one author.',
+      },
+      {
+        heading: 'One thing to watch',
+        body: 'Word-distance is counted in gaps, not in words: two words either side of a term is a distance of three, not two. If a query returns less than you expected, widening the distance by one is usually the fix.',
+      },
+    ],
+    related: [
+      { label: 'Search — find words and phrases instead', href: '/search' },
+    ],
+  },
+
+  {
+    id: 'texts',
+    title: 'Texts',
+    lede: 'The background library — Josephus, Philo, the Apostolic Fathers, the Targums, the Mishnah, the Greco-Roman authors and more.',
+    sections: [
+      {
+        heading: 'Finding a work',
+        body: 'The Texts menu opens by category, then by author where a category has several, then by work. Once a work is open, clicking its title drops down a book-chapter-verse cascade for jumping to a specific passage.',
+      },
+      {
+        heading: 'Greek and English together',
+        body: 'Where a work has both, the display selector switches between the original, the translation, or the two in parallel columns. Not every work has a Greek text — some are English-only because no public-domain edition of the original was available.',
+      },
+      {
+        heading: 'Reading around a citation',
+        body: 'Search within the open work to find a phrase, and use the Summary for an orientation to a work you have not read before. Where a Greek text is tagged, clicking a word gives you its parsing just as in the Reader.',
+      },
+    ],
+    related: [
+      { label: 'Exegesis → Backgrounds — see which of these a verse cites', href: '/exegesis?tab=backgrounds' },
+    ],
+  },
+
+  // ── Exegesis: one entry for the page, then one per tab ────────────────────────────────
+
+  {
+    id: 'exegesis',
+    title: 'The Exegesis workspace',
+    lede: 'Nine views of one passage — put a reference in the box at the top and every tab follows it.',
+    sections: [
+      {
+        heading: 'How the tabs relate',
+        body: 'They are not a sequence to work through. Each is a different question you might ask of the same verses: how does it parse, how does it divide, who else tells this story, what do the manuscripts read, what is it quoting, how is it argued, what have others said, and what do you think. Move between them as the passage demands.',
+      },
+      {
+        heading: 'The passage box',
+        body: 'One reference drives all nine tabs. Changing it moves every view at once, so you can parse a verse, then look at its manuscripts, then its Old Testament background, without retyping anything.',
+      },
+      {
+        heading: 'Per-view settings',
+        body: 'Each tab has its own menu holding the settings that apply to that view — text size, source visibility, and the copyright statements for whatever data that tab is showing. On a phone, the same menu is also where you switch tabs.',
+      },
+    ],
+    related: [
+      { label: 'Reader — read continuously instead', href: '/reader' },
+    ],
+  },
+
+  {
+    id: 'exegesis:workspace',
+    title: 'Exegesis · Syntax',
+    lede: 'Parse a passage word by word and write your own translation of it.',
+    sections: [
+      {
+        heading: 'What to do here',
+        body: 'Each word can be given its parsing and its syntactic function, and each verse has a box for your translation. The point is the doing: the app can already parse every word, so what this view records is your account of the passage, not its.',
+      },
+      {
+        heading: 'Glosses',
+        body: 'You can have glosses shown for words below a frequency you choose — so the vocabulary you have not met yet is supplied, while the words you should know are not. Set it high while you are starting out and lower it as your vocabulary grows.',
+      },
+      {
+        heading: 'Keeping your work',
+        body: 'Signed in, sessions can be saved and reopened later, and a finished passage can be exported as a PDF to hand in or print.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:phrasing',
+    title: 'Exegesis · Phrasing',
+    lede: 'See the passage laid out by clause and phrase rather than as a run of words.',
+    sections: [
+      {
+        heading: 'What you are looking at',
+        body: 'The indentation reflects the syntactic tree from the treebank data: subordinate elements sit under what they modify. Long, tangled sentences — Ephesians 1, for instance — become far easier to hold in view once the subordination is visible.',
+      },
+      {
+        heading: 'Using it',
+        body: 'This is the view to reach for when the question is "what is the main verb, and what hangs off it?" It is also the fastest way to see that a phrase you assumed modified one thing actually modifies another.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:synopsis',
+    title: 'Exegesis · Synopsis',
+    lede: 'Gospel parallels side by side, with the editorial changes marked.',
+    sections: [
+      {
+        heading: 'Comparing accounts',
+        body: 'Add the parallel passages and the accounts appear in columns. The comparison is where redaction criticism starts: what one evangelist adds, drops or rewords is visible immediately rather than reconstructed from memory.',
+      },
+      {
+        heading: 'Editorial changes',
+        body: 'The compare mode marks the kinds of change being made and reports how much of the wording is retained, which turns an impression that "Matthew tightened this" into something measurable.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:variants',
+    title: 'Exegesis · Variants',
+    lede: 'What the manuscripts actually read, witness by witness.',
+    sections: [
+      {
+        heading: 'Reading the collation',
+        body: 'Each row is a manuscript and each column a point of variation, in the style of a Swanson collation. The data covers the uncials and ninety papyri. Clicking a witness tells you what it is, when it dates from, and why it matters — worth doing, because the weight of a reading depends entirely on who is carrying it.',
+      },
+      {
+        heading: 'Diplomatic view',
+        body: 'Normally the manuscript text is shown in readable, accented form. Diplomatic view shows it as transcribed instead — bare, unaccented, with the medial sigma — which is what you want when the question concerns the writing itself rather than the words.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:backgrounds',
+    title: 'Exegesis · Backgrounds',
+    lede: 'What this passage quotes, echoes, or shares a world with.',
+    sections: [
+      {
+        heading: 'Cross-references',
+        body: 'The apparatus gathers Old Testament citations and the parallels noted in the standard reference works, so you can see at a glance what a verse is drawing on.',
+      },
+      {
+        heading: 'The background library',
+        body: 'Citations into Josephus, Philo, the Apostolic Fathers, the Targums, the Mishnah and the rest open in place. You can also search the whole library for a phrase — useful when a turn of expression feels idiomatic and you want to know whether it is.',
+      },
+      {
+        heading: 'A caution',
+        body: 'A parallel is not a source. That two texts share wording may mean dependence, a common tradition, or simply that both are writing ordinary Greek about a common subject. The apparatus finds candidates; the argument is still yours.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:allusions',
+    title: 'Exegesis · Allusions',
+    lede: 'Hunt for Septuagint allusions behind a New Testament passage, following Allison’s method.',
+    sections: [
+      {
+        heading: 'How to use it',
+        body: 'Select the words that feel loaded — or take the suggestion, which picks the ones distinctive enough in the Septuagint to count as evidence — and search. Candidates come back ranked, strongest first.',
+      },
+      {
+        heading: 'Why rarity matters',
+        body: 'Sharing a rare word is evidence; sharing a common one is not. The ranking weights each shared word by how rare it is in the Septuagint, and looks for runs of words appearing in the same order, which is what distinguishes a quotation from a coincidence.',
+      },
+      {
+        heading: 'The checklist',
+        body: 'Allison’s tests run down the side. The app answers the two it can measure — whether the source is named, and whether words have been transplanted — and leaves the rest to you, because they are judgments about circumstance and structure that no amount of word-counting settles.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:rhetoric',
+    title: 'Exegesis · Rhetoric',
+    lede: 'The figures of speech at work in a passage, with Bengel’s commentary alongside.',
+    sections: [
+      {
+        heading: 'Reading the three columns',
+        body: 'The passage sits on the left, the figures identified in it in the middle, and an explanation on the right. The figures follow Bullinger’s classification and are grouped by type, so related devices sit together.',
+      },
+      {
+        heading: 'What it is for',
+        body: 'Naming a figure is not the end of the work, but it is often the start: recognising that a construction is deliberate rather than incidental changes what you think the author is doing with it.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:commentary',
+    title: 'Exegesis · Commentary',
+    lede: 'Public-domain commentary on the open passage.',
+    sections: [
+      {
+        heading: 'Using it',
+        body: 'The commentary follows the passage in the box above. Text size and line spacing can be adjusted for longer reading, and the copyright statement for whatever is being shown is in the menu.',
+      },
+      {
+        heading: 'What to expect',
+        body: 'These are older works, freely licensed, and they show their age in places. They are most useful for the questions they raise and the parallels they gather, rather than as a settled verdict.',
+      },
+    ],
+  },
+
+  {
+    id: 'exegesis:notes',
+    title: 'Exegesis · Notes',
+    lede: 'Your own notes, attached to the verses they belong to.',
+    sections: [
+      {
+        heading: 'How notes attach',
+        body: 'A note belongs to a verse, so it comes back whenever you return to that verse anywhere in the app — the note icons in the Reader and in this workspace are the same notes. Folders keep a long-running project separate from day-to-day reading.',
+      },
+      {
+        heading: 'Reading comfort',
+        body: 'Text size and line spacing are adjustable and apply to every note pane at once, so a setting chosen here follows you to the Reader.',
+      },
+    ],
+  },
+]
+
+// ── Resolution ───────────────────────────────────────────────────────────────────────────
+
+const BY_ID = new Map(PAGE_GUIDES.map(g => [g.id, g]))
+
+export function guideById(id: string): PageGuide | undefined {
+  return BY_ID.get(id)
+}
+
+/** Every Exegesis sub-guide, in tab order — the panel offers these as a picker. */
+export const EXEGESIS_GUIDE_IDS = PAGE_GUIDES
+  .filter(g => g.id.startsWith('exegesis:'))
+  .map(g => g.id)
+
+/**
+ * Which guide covers the page at this URL. Returns undefined for pages that have no guide
+ * (settings, dashboards, marketing) — the trigger hides itself rather than opening an empty
+ * panel.
+ *
+ * Exegesis reads its active tab from the query string, which ExegesisTabs keeps in sync as
+ * you switch tabs. It writes that with history.replaceState, so the value is correct whenever
+ * the panel opens; the panel additionally offers a picker so any tab's guide can be read from
+ * any tab.
+ */
+export function guideForPath(pathname: string, search: string): PageGuide | undefined {
+  const path = pathname.replace(/\/+$/, '') || '/'
+
+  if (path === '/search/construct') return BY_ID.get('construct')
+  if (path.startsWith('/search')) return BY_ID.get('search')
+  if (path.startsWith('/reader')) return BY_ID.get('reader')
+  if (path.startsWith('/grammar')) return BY_ID.get('grammar')
+  if (path.startsWith('/vocab')) return BY_ID.get('vocab')
+  if (path.startsWith('/texts')) return BY_ID.get('texts')
+
+  if (path.startsWith('/exegesis')) {
+    const tab = new URLSearchParams(search).get('tab')
+    return (tab && BY_ID.get(`exegesis:${tab}`)) || BY_ID.get('exegesis')
+  }
+  return undefined
+}

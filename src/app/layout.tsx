@@ -7,6 +7,7 @@ import { PreviewBannerInner } from '@/components/layout/PreviewBanner'
 import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
 import { ChunkErrorReload } from '@/components/layout/ChunkErrorReload'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
+import { PageGuideProvider } from '@/components/help/PageGuideProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
 import { ProsePanelProvider } from '@/components/texts/ProsePanelProvider'
 import { ScrollRestorer } from '@/components/search/ScrollRestorer'
@@ -105,6 +106,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </div>
         <NativeMenuGuard />
         <MasterSearchProvider isAuthenticated={headerProps.isAuthenticated} />
+        <PageGuideProvider />
         <WordSearchProvider />
         <ProsePanelProvider />
         <ScrollRestorer />

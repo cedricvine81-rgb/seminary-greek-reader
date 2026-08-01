@@ -538,6 +538,16 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
+/* ── Page guide side panel ("About this page") ───────────────────────────────────────────
+   Same split-view treatment as the search panel above: PageGuidePanel sets data-guide-panel
+   + --guide-panel-w on <html> while open, so the page is squeezed rather than covered and the
+   instructions can be followed with the actual page still in view. */
+@media (min-width: 1024px) {
+  html[data-guide-panel] #app-content {
+    padding-right: var(--guide-panel-w, 420px);
+  }
+}
+
 /* ── Cited-source side panel (Synopsis techniques key → Theon / Quintilian) ──────────────
    Same split-view treatment as the search panel above: ProsePassagePanel sets
    data-prose-panel + --prose-panel-w on <html> while open, so the page is squeezed rather

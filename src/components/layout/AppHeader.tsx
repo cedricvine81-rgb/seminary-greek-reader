@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { AccountMenu } from './AccountMenu'
 import { MasterSearchButton } from '@/components/search/MasterSearchButton'
+import { PageGuideButton } from '@/components/help/PageGuideButton'
 import { TextsNavMenu } from './TextsNavMenu'
 import { BookOpen, BookMarked, Table2, Scroll, LayoutDashboard } from 'lucide-react'
 import { getServerT } from '@/lib/i18n/server'
@@ -61,8 +62,9 @@ export function AppHeader({ isAuthenticated = false, userRole, userName }: AppHe
           )}
         </nav>
 
-        {/* Right: search icon (desktop) + hamburger menu */}
+        {/* Right: page guide + search icon (desktop) + hamburger menu */}
         <div className="flex items-center gap-1">
+          <PageGuideButton />
           <MasterSearchButton />
           <AccountMenu isAuthenticated={isAuthenticated} userRole={userRole} userName={userName} />
         </div>
