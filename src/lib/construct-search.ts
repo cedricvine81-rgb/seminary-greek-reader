@@ -83,6 +83,13 @@ function getCorpus(corpus: string): CorpusIndex {
   return index
 }
 
+// The allusion engine (src/lib/allusion-search.ts) scans the same token streams; sharing this
+// accessor keeps ONE size-bounded corpus cache per instance instead of two competing ones.
+export function getCorpusIndex(corpus: string): CorpusIndex {
+  return getCorpus(corpus)
+}
+export type { TokenRow, BookIndex, CorpusIndex }
+
 // ─── Term matching ────────────────────────────────────────────────────────────
 
 // A compiled term: every category is an OR-set, and all categories must be satisfied (AND).
