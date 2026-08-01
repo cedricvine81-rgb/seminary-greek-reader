@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
+import { openWordSearch } from '@/lib/word-search-bus'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Allusions tab ───────────────────────────────────────────────────────────────────────
@@ -90,6 +91,22 @@ let bsbInflight: Promise<void> | null = null
 let lxxNamesCache: Record<string, string> | null = null
 let crossrefsCache: CrossrefEntry[] | null = null
 const brentonCache: Record<string, Record<string, string>> = {}   // osis → "Osis.ch.v" → English
+// Other translations, fetched per chapter: "lang.Osis.ch" → "Osis.ch.v" → text.
+const transCache: Record<string, Record<string, string>> = {}
+
+// Translations offered for the LXX results column. Brenton is the only one made FROM the
+// LXX; the rest translate the Hebrew, whose versification can differ (Psalms, Jeremiah).
+const RESULT_TRANSLATIONS = [
+  { code: 'brenton', label: 'Brenton (LXX, 1851)' },
+  { code: 'bsb', label: 'English (BSB)' },
+  { code: 'en', label: 'English (WEB)' },
+  { code: 'es', label: 'Spanish' },
+  { code: 'fr', label: 'French' },
+  { code: 'pt', label: 'Portuguese' },
+  { code: 'ru', label: 'Russian' },
+  { code: 'ko', label: 'Korean' },
+  { code: 'zh', label: 'Mandarin' },
+]
 
 const SOURCE_ATTR = 'Method: the allusion devices and criteria of Dale C. Allison, Jr., The New Moses: '
   + 'A Matthean Typology (Minneapolis: Fortress Press, 1993), 19–23. '
@@ -127,6 +144,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   const [searchedFor, setSearchedFor] = useState<string[]>([])
   const [expanded, setExpanded] = useState<Set<number>>(new Set())
   const [activeHit, setActiveHit] = useState<number | null>(null)
+  const [transLang, setTransLang] = useState('brenton')
   const lxxChapters = useRef<Record<string, { verse: number; words: LxxWord[] }[]>>({})
   const [, setLxxTick] = useState(0)
   const [lxxNames, setLxxNames] = useState<Record<string, string>>(lxxNamesCache ?? {})
@@ -333,12 +351,44 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
           setLxxTick(t => t + 1)
         }).catch(() => { delete lxxChapters.current[ck]; setLxxTick(t => t + 1) })
     }
-    // Brenton's English for the right column, per book.
-    if (!brentonCache[osis]) {
+    // The chosen translation for the right column.
+    loadTranslation(osis, chapter, transLang)
+  }
+
+  function loadTranslation(osis: string, chapter: number, lang: string) {
+    if (lang === 'brenton') {
+      if (brentonCache[osis]) return
       fetch(`/data/brenton/${osis}.json`).then(r => (r.ok ? r.json() : {}))
         .then(d => { brentonCache[osis] = d; setLxxTick(t => t + 1) })
         .catch(() => { brentonCache[osis] = {} })
+      return
     }
+    const ck = `${lang}.${osis}.${chapter}`
+    if (transCache[ck]) return
+    transCache[ck] = {}
+    fetch(`/api/translation?book=${osis}&chapter=${chapter}&lang=${lang}`)
+      .then(r => (r.ok ? r.json() : {}))
+      .then((d: { verses?: Record<string, string> }) => { transCache[ck] = d.verses ?? {}; setLxxTick(t => t + 1) })
+      .catch(() => { setLxxTick(t => t + 1) })
+  }
+
+  // Switching translation fetches it for every already-expanded hit.
+  useEffect(() => {
+    if (!hits) return
+    expanded.forEach(i => {
+      const h = hits[i]; if (!h) return
+      loadTranslation(h.osis, h.chapter, transLang)
+      if (h.endChapter) loadTranslation(h.osis, h.endChapter, transLang)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [transLang])
+
+  // Translation text for one result verse, in the chosen language.
+  function resultEnglish(osis: string, chapter: number, verse: number): string {
+    const key = `${osis}.${chapter}.${verse}`
+    return transLang === 'brenton'
+      ? brentonCache[osis]?.[key] ?? ''
+      : transCache[`${transLang}.${osis}.${chapter}`]?.[key] ?? ''
   }
 
   function toggleExpand(i: number, h: Hit) {
@@ -463,6 +513,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                             type="button"
                             onClick={() => toggleWord(v.verse, i, w)}
                             onMouseEnter={() => setParseInfo({ surface: w.surface, lexeme: w.lemma, gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}` })}
+                            onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lemma || null, reference: `${parsed!.name} ${parsed!.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'GNT', book: parsed!.osis }) }}
                             title={w.gloss ? `${w.gloss}${n != null ? ` — in ${n} LXX verses` : ''}` : undefined}
                             className={`rounded px-0.5 transition-colors ${
                               sel ? 'bg-brand-600 text-white'
@@ -546,10 +597,35 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
           {/* Results */}
           {hits && (
             <div className="mt-4">
-              <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">
-                {hits.length === 0 ? 'No LXX passage shares two of those words closely.' :
-                  <>Candidates, strongest first — searched for <span className="font-reading normal-case">{searchedFor.join(', ')}</span></>}
-              </p>
+              <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1.5">
+                <p className="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                  {hits.length === 0 ? 'No LXX passage shares two of those words closely.' :
+                    <>Candidates, strongest first — searched for <span className="font-reading normal-case">{searchedFor.join(', ')}</span></>}
+                </p>
+                {hits.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
+                    <span className="flex items-center gap-3 text-[11px] text-gray-400">
+                      <span><span className="font-semibold text-red-600">red</span> = key word</span>
+                      <span><span className="font-semibold text-blue-700">blue</span> = phrase</span>
+                      <span>hover a coloured word for the test it meets</span>
+                    </span>
+                    <label className="flex items-center gap-1.5 text-xs text-gray-500">
+                      Translation
+                      <select value={transLang} onChange={e => setTransLang(e.target.value)}
+                        className="rounded-lg border border-gray-300 bg-input px-1.5 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-brand-400">
+                        {RESULT_TRANSLATIONS.map(t => <option key={t.code} value={t.code}>{t.label}</option>)}
+                      </select>
+                    </label>
+                  </div>
+                )}
+              </div>
+              {transLang !== 'brenton' && hits.length > 0 && (
+                <p className="mb-2 text-[11px] text-gray-400">
+                  Only Brenton translates the Septuagint itself; the others translate the Hebrew, whose chapter/verse
+                  numbering can differ from the LXX (notably in Psalms and Jeremiah), and which lacks the
+                  deutero-canonical books.
+                </p>
+              )}
               <div className="space-y-2">
                 {hits.map((h, i) => {
                   const open = expanded.has(i)
@@ -587,7 +663,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                         <ExpandedHit
                           hit={h}
                           label={refLabel(h)}
+                          bookName={lxxNames[h.osis] ?? h.osis}
                           chapters={lxxChapters.current}
+                          english={(ch, v) => resultEnglish(h.osis, ch, v)}
                           onOpenInTexts={onOpenInTexts}
                           onHoverWord={setParseInfo}
                         />
@@ -733,46 +811,119 @@ function ChecklistRow({ label, hint, auto, autoNote, manual, onManual }: {
   )
 }
 
-// The expanded LXX text of a hit: two columns — Greek (matched words in red) with
-// Brenton's English to the right, verse by verse. Hovering a Greek word fills the
-// shared parsing pane.
-function ExpandedHit({ hit, label, chapters, onOpenInTexts, onHoverWord }: {
+// What a highlighted result word contributes to the case: which Allison test(s) it meets.
+interface WordEvidence {
+  kind: 'word' | 'phrase'
+  lines: string[]
+}
+
+// The expanded LXX text of a hit: two columns — Greek with the chosen translation to the
+// right, verse by verse. Key words are red, matched PHRASES blue; hovering a coloured word
+// shows which of Allison's tests it meets (and fills the shared parsing pane); right-click
+// opens the word-search menu.
+function ExpandedHit({ hit, label, bookName, chapters, english, onOpenInTexts, onHoverWord }: {
   hit: Hit
   label: string
+  bookName: string
   chapters: Record<string, { verse: number; words: LxxWord[] }[]>
+  english: (chapter: number, verse: number) => string
   onOpenInTexts?: (t: OpenInTextsTarget) => void
   onHoverWord: (info: LexicalInfoPanel) => void
 }) {
-  // A phrase match's key is its members joined '+': split so each member word highlights.
-  const matchSet = new Set(hit.matches.flatMap(m => m.strongs.split('+')))
+  const [tip, setTip] = useState<{ x: number; y: number; ev: WordEvidence } | null>(null)
+  const rootRef = useRef<HTMLDivElement>(null)
+
+  const wordMatches = new Map(hit.matches.filter(m => m.kind !== 'phrase').map(m => [m.strongs, m]))
+  const phraseMatches = hit.matches.filter(m => m.kind === 'phrase')
+  const nearVerbatim = !!hit.run && hit.run.length >= 4 && hit.run.exactForms / hit.run.length >= 0.7
+
   const segments: { chapter: number; vLo: number; vHi: number }[] = hit.endChapter
     ? [{ chapter: hit.chapter, vLo: hit.vStart, vHi: 999 }, { chapter: hit.endChapter, vLo: 1, vHi: hit.vEnd }]
     : [{ chapter: hit.chapter, vLo: hit.vStart, vHi: hit.vEnd }]
   const anyLoaded = segments.some(s => (chapters[`${hit.osis}.${s.chapter}`] ?? []).length > 0)
-  const english = brentonCache[hit.osis] ?? {}
+
+  // Mark each verse position: is it part of a matched phrase sequence (blue), part of the
+  // detected run, and/or a matched key word (red)? Mirrors the engine's gap-≤1 phrase scan.
+  function markVerse(words: LxxWord[]): { phrase?: string; run?: boolean; word?: Match }[] {
+    const marks: { phrase?: string; run?: boolean; word?: Match }[] = words.map(() => ({}))
+    const scanSeq = (seq: string[], apply: (pos: number) => void) => {
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].strongs !== seq[0]) continue
+        const path = [i]
+        let at = i, ok = true
+        for (let k = 1; k < seq.length; k++) {
+          let found = -1
+          for (let j = at + 1; j <= at + 2 && j < words.length; j++) {
+            if (words[j].strongs === seq[k]) { found = j; break }
+          }
+          if (found < 0) { ok = false; break }
+          path.push(found); at = found
+        }
+        if (ok) path.forEach(apply)
+      }
+    }
+    for (const pm of phraseMatches) scanSeq(pm.strongs.split('+'), pos => { marks[pos].phrase = pm.form })
+    if (hit.run && hit.run.length >= 3) scanSeq(hit.run.strongs, pos => { marks[pos].run = true })
+    words.forEach((w, i) => { if (w.strongs && wordMatches.has(w.strongs)) marks[i].word = wordMatches.get(w.strongs) })
+    return marks
+  }
+
+  function evidenceFor(mark: { phrase?: string; run?: boolean; word?: Match }): WordEvidence | null {
+    const lines: string[] = []
+    if (mark.phrase) {
+      const pm = phraseMatches.find(m => m.form === mark.phrase)
+      lines.push(`Part of the phrase “${mark.phrase}” — tests 2 & 6 (implicit citation; word order)${pm ? `: this sequence occurs ${pm.verses}× in the whole LXX` : ''}.`)
+    }
+    if (mark.word) {
+      lines.push(`Key word — test 4 (shared vocabulary): in ${mark.word.verses} LXX verses${mark.word.verses < RARE ? ' — rare, so it carries real weight' : ' — common, so it carries little weight alone'}.${mark.word.exactForm ? ' Same inflected form as your passage.' : ''}`)
+    }
+    if (mark.run && hit.run) {
+      lines.push(`Inside a run of ${hit.run.length} words in your passage's order — test 6${nearVerbatim ? ', and near-verbatim, so test 2 (implicit citation) as well' : ''}.`)
+    }
+    return lines.length ? { kind: mark.phrase ? 'phrase' : 'word', lines } : null
+  }
+
+  const showTip = (e: React.MouseEvent, ev: WordEvidence) => {
+    const box = rootRef.current?.getBoundingClientRect()
+    if (!box) return
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect()
+    setTip({ x: Math.min(r.left - box.left, box.width - 290), y: r.bottom - box.top + 4, ev })
+  }
+
   return (
-    <div className="border-t border-gray-100 px-3.5 py-3">
+    <div ref={rootRef} className="relative border-t border-gray-100 px-3.5 py-3">
       {!anyLoaded && <p className="text-sm text-gray-400">Loading the Greek…</p>}
       {segments.map(seg => {
         const vv = (chapters[`${hit.osis}.${seg.chapter}`] ?? []).filter(v => v.verse >= seg.vLo && v.verse <= seg.vHi)
-        return vv.map(v => (
-          <div key={`${seg.chapter}.${v.verse}`} className="mb-2 md:grid md:grid-cols-2 md:gap-x-5">
-            <p className="font-reading leading-relaxed" style={{ fontSize: '1.25rem' }}>
-              <sup className="text-[11px] text-gray-400 mr-1">{seg.chapter}:{v.verse}</sup>
-              {v.words.map((w, i) => (
-                <span key={i}>
-                  <span
-                    onMouseEnter={() => onHoverWord({ surface: w.surface, lexeme: w.lemma ?? '', gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${label.split(' ').slice(0, -1).join(' ')} ${seg.chapter}:${v.verse}` })}
-                    className={`cursor-default ${w.strongs && matchSet.has(w.strongs) ? 'text-red-600 font-semibold' : ''}`}
-                  >{w.surface}</span>{' '}
-                </span>
-              ))}
-            </p>
-            <p className="mt-0.5 md:mt-1 text-sm leading-relaxed text-gray-600">
-              {english[`${hit.osis}.${seg.chapter}.${v.verse}`] ?? ''}
-            </p>
-          </div>
-        ))
+        return vv.map(v => {
+          const marks = markVerse(v.words)
+          return (
+            <div key={`${seg.chapter}.${v.verse}`} className="mb-2 md:grid md:grid-cols-2 md:gap-x-5">
+              <p className="font-reading leading-relaxed" style={{ fontSize: '1.25rem' }}>
+                <sup className="text-[11px] text-gray-400 mr-1">{seg.chapter}:{v.verse}</sup>
+                {v.words.map((w, i) => {
+                  const ev = evidenceFor(marks[i])
+                  const cls = marks[i].phrase ? 'text-blue-700 font-semibold bg-blue-50/70 rounded-sm'
+                    : marks[i].word ? 'text-red-600 font-semibold'
+                    : marks[i].run ? 'underline decoration-dotted decoration-gray-400 underline-offset-4' : ''
+                  return (
+                    <span key={i}>
+                      <span
+                        onMouseEnter={e => { onHoverWord({ surface: w.surface, lexeme: w.lemma ?? '', gloss: w.gloss ?? '', partOfSpeech: '', parsing: w.parsing ?? '', strongs: w.strongs, reference: `${bookName} ${seg.chapter}:${v.verse}` }); if (ev) showTip(e, ev); else setTip(null) }}
+                        onMouseLeave={() => setTip(null)}
+                        onContextMenu={e => { e.preventDefault(); openWordSearch({ x: e.clientX, y: e.clientY, surface: w.surface, lemma: w.lemma || null, reference: `${bookName} ${seg.chapter}:${v.verse}`, kind: 'greek', greekCorpus: 'LXX', book: hit.osis }) }}
+                        className={`cursor-default ${cls}`}
+                      >{w.surface}</span>{' '}
+                    </span>
+                  )
+                })}
+              </p>
+              <p className="mt-0.5 md:mt-1 text-sm leading-relaxed text-gray-600">
+                {english(seg.chapter, v.verse)}
+              </p>
+            </div>
+          )
+        })
       })}
       {onOpenInTexts && (
         <button type="button"
@@ -780,6 +931,16 @@ function ExpandedHit({ hit, label, chapters, onOpenInTexts, onHoverWord }: {
           className="mt-1 text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">
           Open in Texts →
         </button>
+      )}
+      {/* Allison-test popup for the hovered coloured word. */}
+      {tip && (
+        <div className="pointer-events-none absolute z-30 w-72 rounded-lg border border-gray-200 bg-popover px-3 py-2 shadow-lg"
+          style={{ left: Math.max(0, tip.x), top: tip.y }}>
+          <p className={`text-[11px] font-semibold uppercase tracking-wide mb-1 ${tip.ev.kind === 'phrase' ? 'text-blue-700' : 'text-red-600'}`}>
+            {tip.ev.kind === 'phrase' ? 'Phrase evidence' : 'Key-word evidence'}
+          </p>
+          {tip.ev.lines.map((l, i) => <p key={i} className="text-xs leading-relaxed text-gray-700 mb-0.5">{l}</p>)}
+        </div>
       )}
     </div>
   )
