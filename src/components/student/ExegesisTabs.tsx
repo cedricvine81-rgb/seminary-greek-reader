@@ -259,8 +259,11 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
     }
   }
 
+  // Nine tabs have to share the row with the passage box. Below xl they go slightly tighter
+  // and a shade smaller so the last tab (Notes) stays on screen — the translated labels
+  // (Segmentación, Разночтения…) run longer than the English and set the real budget.
   const tabClass = (active: boolean) =>
-    `inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors shrink-0 ${
+    `inline-flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-[13px] xl:px-2.5 xl:text-sm font-medium transition-colors shrink-0 ${
       active ? 'bg-brand-100 text-brand-800' : 'text-gray-500 hover:bg-gray-100'
     }`
 
@@ -275,13 +278,13 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
       {/* Shared passage box + tabs, kept on ONE row at every width: the passage box holds a
           fixed width and the tab bar sits parallel to it (scrolling horizontally if narrow),
           rather than wrapping to a second row — saves vertical space. */}
-      <div className="flex-none flex items-center flex-nowrap gap-2 lg:gap-3 mb-2">
+      <div className="flex-none flex items-center flex-nowrap gap-2 mb-2">
         <div className="flex items-center min-w-0 flex-1 lg:flex-none">
           <span className="px-3 py-1.5 rounded-l-lg bg-brand-600 text-white text-sm font-medium shrink-0">{t('study.passage')}</span>
           {/* Relative wrapper so the grey ghost-text can overlay the input exactly. */}
           <div ref={passageBoxRef} className="relative flex-1 min-w-0 lg:flex-none">
             {ghost && (
-              <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-full lg:w-56 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
+              <div aria-hidden className="pointer-events-none absolute inset-0 px-3 py-1.5 text-sm w-full lg:w-32 xl:w-40 whitespace-pre overflow-hidden border border-transparent rounded-l-none rounded-r-lg">
                 <span className="invisible">{input}</span><span className="text-gray-400">{ghost}</span>
               </div>
             )}
@@ -293,7 +296,7 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
               onFocus={() => { if (chapterSecs.length) setPredOpen(true) }}
               onBlur={() => { commitPassage(input.trim()); setGhost(''); setPredOpen(false) }}
               placeholder="e.g. Matthew 3:1-3"
-              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-56 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-400"
+              className="relative bg-transparent border border-gray-300 rounded-l-none rounded-r-lg px-3 py-1.5 text-sm w-full lg:w-32 xl:w-40 min-w-0 focus:outline-none focus:ring-2 focus:ring-brand-400"
             />
 
             {/* Predictive chapter sections — click one to jump straight to that pericope. */}
@@ -321,8 +324,12 @@ export function ExegesisTabs({ isAuthenticated, initialTab, initialRef }: { isAu
         <div className="flex items-center gap-1 shrink-0 lg:shrink lg:min-w-0">
           {/* Desktop: inline (horizontally scrolling) tab bar. */}
           <div className="hidden lg:flex items-center gap-1 overflow-x-auto min-w-0 [&::-webkit-scrollbar]:hidden" style={{ scrollbarWidth: 'none' }}>
+            {/* Icons only on genuinely wide screens: nine tabs plus the passage box fill the
+                row, and the translated labels (Segmentación, Разночтения…) set the budget —
+                measured, Spanish still clips at 1600px with icons on. Labels alone fit from
+                lg upward, so below 1750px the icon is dropped rather than the last tab. */}
             {TAB_LIST.map(({ id, label, Icon }) => (
-              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} /> {t(label)}</button>
+              <button key={id} type="button" onClick={() => setTab(id)} className={tabClass(tab === id)}><Icon size={16} className="hidden min-[1750px]:block" /> {t(label)}</button>
             ))}
           </div>
 
