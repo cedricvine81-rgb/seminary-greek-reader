@@ -91,7 +91,8 @@ let lxxNamesCache: Record<string, string> | null = null
 let crossrefsCache: CrossrefEntry[] | null = null
 const brentonCache: Record<string, Record<string, string>> = {}   // osis → "Osis.ch.v" → English
 
-const SOURCE_ATTR = 'Method: the allusion devices and criteria of Dale C. Allison, The New Moses (1993). '
+const SOURCE_ATTR = 'Method: the allusion devices and criteria of Dale C. Allison, Jr., The New Moses: '
+  + 'A Matthean Typology (Minneapolis: Fortress Press, 1993), 19–23. '
   + 'Rankings weight shared vocabulary by its rarity in the Septuagint and flag words appearing in the same order; '
   + 'they SUGGEST candidates — they do not establish allusions. Septuagint text: Rahlfs; apparatus: Craig A. Evans, '
   + 'Ancient Texts for New Testament Studies, with additions.'
@@ -680,6 +681,10 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                 <li>Confidence grows when other ancient writers made the <b>same typological use</b> of the material.</li>
                 <li><b>Unusual imagery</b> shared between the texts counts for far more than commonplaces.</li>
               </ul>
+              <p className="mt-2 text-[11px] leading-relaxed text-gray-400">
+                Dale C. Allison, Jr., <em>The New Moses: A Matthean Typology</em> (Minneapolis: Fortress
+                Press, 1993). The six devices: pp. 19–23; the guidelines above: pp. 21–22.
+              </p>
             </details>
             <p className="mt-3 text-[11px] leading-relaxed text-gray-400">
               Devices 1–2 are readily perceived; 3–6 are indistinct and can occur by chance. A high score here is a
