@@ -18,6 +18,7 @@ import { TranslationWorkbench } from '@/components/morphology/TranslationWorkben
 import { useCourseProgress } from '@/components/morphology/useCourseProgress'
 import { ESS_SECTIONS } from '@/components/morphology/chapters/essentials'
 import { PRONUNCIATION_CONTENT } from '@/components/morphology/chapters/pronunciation'
+import { PARSING_CONTENT } from '@/components/morphology/chapters/parsing'
 import { NOUNS_CONTENT } from '@/components/morphology/chapters/nouns'
 import { PRONOUNS_CONTENT } from '@/components/morphology/chapters/pronouns'
 import { DEMONSTRATIVES_CONTENT } from '@/components/morphology/chapters/demonstratives'
@@ -88,7 +89,7 @@ function ExplanationCard({ explanation, level }: { explanation?: Explanation; le
    Top-level tab definitions
 ───────────────────────────────────────────── */
 
-type MainTab = 'essentials' | 'pronunciation' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
+type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
                'conjunctions' | 'conj-adv' | 'indicatives' | 'contract-verbs' | 'liquids' | 'principal-parts' |
                'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
@@ -103,6 +104,9 @@ type MainTab = 'essentials' | 'pronunciation' | 'nouns' | 'pronouns' | 'demonstr
 const MAIN_TABS: { id: MainTab; label: string }[] = [
   { id: 'essentials',      label: 'Minimums'       },
   { id: 'pronunciation',   label: 'Pronunciation'   },
+  // Sits before the first paradigm on purpose: the student learns the shape of
+  // the ANSWER (which slots, in what order) before meeting forms to fill it in.
+  { id: 'parsing',         label: 'Parsing'         },
   { id: 'nouns',           label: 'Nouns/Adj.'      },
   { id: 'prepositions',    label: 'Prepositions'    },
   { id: 'pronouns',        label: 'Pronouns'        },
@@ -126,6 +130,7 @@ const MAIN_TABS: { id: MainTab; label: string }[] = [
 const REVISION_CONTENT: Record<MainTab, React.ReactNode> = {
   essentials:        null,
   pronunciation:     PRONUNCIATION_CONTENT,
+  parsing:           PARSING_CONTENT,
   nouns:             NOUNS_CONTENT,
   pronouns:          PRONOUNS_CONTENT,
   demonstratives:    DEMONSTRATIVES_CONTENT,
