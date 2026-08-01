@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { logError } from '@/lib/logger'
-import { searchAllusions, strongsFrequencies, type SourceToken } from '@/lib/allusion-search'
+import { searchAllusions, strongsFrequencies, termFrequencies, type SourceToken, type AllusionTerm } from '@/lib/allusion-search'
 
 // Allusion search over the LXX (Exegesis → Allusions tab).
 //
-// POST { action: 'freq',   strongs: string[] }
+// POST { action: 'freq',      strongs: string[] }
 //   → { totalVerses, counts }        — rarity badges for a passage's words
-// POST { action: 'search', selected: string[], selectedForms?: Record<string,string[]>,
-//        sourceTokens?: { s, f }[] }
+// POST { action: 'termfreq',  terms: AllusionTerm[] }
+//   → { totalVerses, counts }        — same, but a phrase is counted as a SEQUENCE
+// POST { action: 'search',    terms: AllusionTerm[], sourceTokens?: { s, f }[] }
 //   → { totalVerses, hits, frequencies }
 //
 // Public data, no auth. Input sizes are capped: a passage is a few hundred words, so
@@ -15,6 +16,8 @@ import { searchAllusions, strongsFrequencies, type SourceToken } from '@/lib/all
 
 const MAX_STRONGS = 400
 const MAX_SOURCE_TOKENS = 1200
+const MAX_TERMS = 40
+const MAX_PHRASE_LEN = 12
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,22 +27,31 @@ export async function POST(req: NextRequest) {
     const strs = (v: unknown, cap: number): string[] =>
       Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string' && /^\d{1,6}$/.test(x)).slice(0, cap) : []
 
+    const parseTerms = (v: unknown): AllusionTerm[] =>
+      Array.isArray(v)
+        ? v.slice(0, MAX_TERMS).flatMap(raw => {
+            const o = raw as { kind?: unknown; strongs?: unknown; forms?: unknown }
+            const ss = strs(o?.strongs, MAX_PHRASE_LEN)
+            if (ss.length === 0) return []
+            const kind: AllusionTerm['kind'] = o?.kind === 'phrase' && ss.length > 1 ? 'phrase' : 'word'
+            const forms = Array.isArray(o?.forms)
+              ? (o.forms as unknown[]).filter((x): x is string => typeof x === 'string').slice(0, 12).map(f => f.slice(0, 40))
+              : []
+            return [{ kind, strongs: ss, forms }]
+          })
+        : []
+
     if (body.action === 'freq') {
       return NextResponse.json(strongsFrequencies(strs(body.strongs, MAX_STRONGS)))
     }
 
-    if (body.action === 'search') {
-      const selected = strs(body.selected, 40)
-      if (selected.length === 0) return NextResponse.json({ error: 'Select at least one word' }, { status: 400 })
+    if (body.action === 'termfreq') {
+      return NextResponse.json(termFrequencies(parseTerms(body.terms)))
+    }
 
-      const selectedForms: Record<string, string[]> = {}
-      if (body.selectedForms && typeof body.selectedForms === 'object') {
-        for (const [k, v] of Object.entries(body.selectedForms as Record<string, unknown>)) {
-          if (/^\d{1,6}$/.test(k) && Array.isArray(v)) {
-            selectedForms[k] = v.filter((x): x is string => typeof x === 'string').slice(0, 10)
-          }
-        }
-      }
+    if (body.action === 'search') {
+      const terms = parseTerms(body.terms)
+      if (terms.length === 0) return NextResponse.json({ error: 'Select at least one word' }, { status: 400 })
 
       const sourceTokens: SourceToken[] = Array.isArray(body.sourceTokens)
         ? (body.sourceTokens as unknown[]).slice(0, MAX_SOURCE_TOKENS).flatMap(t => {
@@ -49,7 +61,7 @@ export async function POST(req: NextRequest) {
           })
         : []
 
-      return NextResponse.json(searchAllusions({ selected, selectedForms, sourceTokens }))
+      return NextResponse.json(searchAllusions({ terms, sourceTokens }))
     }
 
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })

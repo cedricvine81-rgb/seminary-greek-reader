@@ -23,12 +23,22 @@ import { getCorpusIndex, type BookIndex } from './construct-search'
 // A word of the NT source passage, in reading order: Strong's + folded surface form.
 export interface SourceToken { s: string; f: string }
 
+// What the student picked: a single word, or a PHRASE of consecutive words treated as a unit.
+// A phrase is scored on its own corpus rarity, not its members': "ἐν ἀρχῇ" is two ordinary
+// words but an uncommon pairing, which is exactly the signal an allusion hunt wants.
+export interface AllusionTerm {
+  kind: 'word' | 'phrase'
+  strongs: string[]     // 1 entry for a word, 2+ in reading order for a phrase
+  forms?: string[]      // the NT inflected form(s), for the exact-form bonus
+}
+
 export interface AllusionMatch {
-  strongs: string
-  form: string          // the folded form as it appears in the LXX hit (first occurrence)
+  strongs: string       // for a phrase, its members joined with '+'
+  kind: 'word' | 'phrase'
+  form: string          // the folded form(s) as they appear in the LXX hit
   count: number         // occurrences inside the window
   exactForm: boolean    // some occurrence matches the selected NT word's inflected form
-  verses: number        // LXX verse-count of this Strong's (rarity, for the UI badge)
+  verses: number        // LXX frequency (verses for a word, occurrences for a phrase)
 }
 
 export interface AllusionRun {
@@ -61,6 +71,11 @@ const WINDOW = 1          // verses of context either side: a 3-verse sliding wi
 const MAX_HITS = 40
 const RUN_CANDIDATES = 200 // run detection only on the best N windows (it's O(n·m))
 const MIN_RUN = 3
+// Intervening tokens tolerated inside a phrase, so "ἐν ἀρχῇ" still matches "ἐν τῇ ἀρχῇ".
+const PHRASE_GAP = 1
+// A matched phrase is Allison's device 2/6 territory — categorically better evidence than the
+// same words happening to co-occur, so its (already rarity-based) weight is scaled up again.
+const PHRASE_WEIGHT = 1.6
 
 // ─── Corpus statistics (computed once per process; the index is static) ────────────────
 
@@ -99,83 +114,166 @@ export function strongsFrequencies(strongs: string[]): { totalVerses: number; co
   return { totalVerses, counts }
 }
 
+// How often a phrase's Strong's occur in order (gap ≤ PHRASE_GAP) anywhere in the LXX. This is
+// the number that makes phrase search worth having: ἐν (G1722) and ἀρχή (G746) are common on
+// their own, but the SEQUENCE is not, and only the sequence count says so.
+const _phraseCounts = new Map<string, number>()
+export function phraseOccurrences(strongs: string[]): number {
+  if (strongs.length < 2) return 0
+  const key = strongs.join('+')
+  const cached = _phraseCounts.get(key)
+  if (cached != null) return cached
+  const index = getCorpusIndex(CORPUS)
+  let total = 0
+  for (const book of Object.values(index)) {
+    for (let t = 0; t < book.w.length; t++) {
+      if (book.w[t][0] !== strongs[0]) continue
+      let at = t, ok = true
+      for (let k = 1; k < strongs.length; k++) {
+        let found = -1
+        for (let j = at + 1; j <= at + 1 + PHRASE_GAP && j < book.w.length; j++) {
+          if (book.w[j][0] === strongs[k]) { found = j; break }
+        }
+        if (found < 0) { ok = false; break }
+        at = found
+      }
+      if (ok) total++
+    }
+  }
+  _phraseCounts.set(key, total)
+  return total
+}
+
+/** Frequencies for a mixed set of terms, keyed by strongs.join('+') — the UI's rarity badges. */
+export function termFrequencies(terms: AllusionTerm[]): { totalVerses: number; counts: Record<string, number> } {
+  const { totalVerses, verseFreq } = getStats()
+  const counts: Record<string, number> = {}
+  for (const t of terms) {
+    counts[t.strongs.join('+')] = t.kind === 'phrase' && t.strongs.length > 1
+      ? phraseOccurrences(t.strongs)
+      : verseFreq.get(t.strongs[0]) ?? 0
+  }
+  return { totalVerses, counts }
+}
+
 // ─── Search ─────────────────────────────────────────────────────────────────────────────
 
 export function searchAllusions(input: {
-  selected: string[]                       // Strong's numbers the student picked
-  selectedForms?: Record<string, string[]> // strongs → NT inflected forms (for the exact-form bonus)
+  terms: AllusionTerm[]
   sourceTokens?: SourceToken[]             // the whole NT passage, in order (for run detection)
 }): AllusionResult {
   const index = getCorpusIndex(CORPUS)
   const { totalVerses, verseFreq } = getStats()
 
-  const selectedSet = new Set(input.selected.filter(Boolean))
-  const freqOut: Record<string, number> = {}
-  selectedSet.forEach(s => { freqOut[s] = verseFreq.get(s) ?? 0 })
-  if (selectedSet.size === 0) return { totalVerses, hits: [], frequencies: freqOut }
+  const terms = input.terms.filter(t => t.strongs.length > 0)
+  const freqOut = termFrequencies(terms).counts
+  if (terms.length === 0) return { totalVerses, hits: [], frequencies: freqOut }
 
   const idf = (s: string) => Math.log((totalVerses + 1) / ((verseFreq.get(s) ?? 0) + 1))
+  // A phrase's weight comes from how rare the SEQUENCE is, not its member words.
+  const termWeight = (t: AllusionTerm) => t.kind === 'phrase' && t.strongs.length > 1
+    ? Math.log((totalVerses + 1) / (phraseOccurrences(t.strongs) + 1)) * PHRASE_WEIGHT
+    : idf(t.strongs[0])
 
-  // Folded NT forms per selected Strong's, for the exact-form bonus.
-  const formsOf = new Map<string, Set<string>>()
-  for (const [s, forms] of Object.entries(input.selectedForms ?? {})) {
-    formsOf.set(s, new Set(forms.map(normalizeGreek)))
-  }
+  const termKey = (t: AllusionTerm) => t.strongs.join('+')
+  const formsOf = new Map<string, Set<string>>(
+    terms.map(t => [termKey(t), new Set((t.forms ?? []).map(normalizeGreek))]))
+
+  // Every Strong's mentioned by any term - the trigger set for locating candidate verses.
+  const anyStrongs = new Set<string>()
+  for (const t of terms) for (const s of t.strongs) anyStrongs.add(s)
 
   // Source token stream for run detection (only tokens with a Strong's).
   const source: SourceToken[] = (input.sourceTokens ?? [])
     .filter(t => t.s)
     .map(t => ({ s: t.s, f: normalizeGreek(t.f) }))
 
-  // At least two distinct shared words unless only one was selected — a lone common word
-  // would otherwise return half the Septuagint.
-  const minDistinct = Math.min(2, selectedSet.size)
-
   interface Window {
     osis: string; viStart: number; viEnd: number
-    hits: { s: string; f: string; ti: number }[]   // ti = token index within the book
+    matches: AllusionMatch[]
     score: number
   }
   const windows: Window[] = []
 
   for (const [osis, book] of Object.entries(index)) {
     if (!book.v?.length) continue
-    // verse index → matched tokens in that verse
-    const byVerse = new Map<number, { s: string; f: string; ti: number }[]>()
+    // Which verses contain any trigger word at all.
+    const seeded = new Set<number>()
     let vi = 0
     for (let t = 0; t < book.w.length; t++) {
       while (vi + 1 < book.v.length && book.v[vi + 1][2] <= t) vi++
-      const s = book.w[t][0]
-      if (selectedSet.has(s)) {
-        const arr = byVerse.get(vi) ?? []
-        arr.push({ s, f: book.w[t][1], ti: t })
-        byVerse.set(vi, arr)
-      }
+      if (anyStrongs.has(book.w[t][0])) seeded.add(vi)
     }
-    if (byVerse.size === 0) continue
+    if (seeded.size === 0) continue
 
-    for (const center of Array.from(byVerse.keys())) {
+    // Centre a window on every verse WITHIN REACH of a seeded verse, not only on the seeded
+    // verses themselves. Centring only on seeds silently loses any pair of matches exactly
+    // 2*WINDOW apart - John 1:1's arche/phos against Gen 1:1 and Gen 1:3, whose shared
+    // window is centred on the unmatched Gen 1:2.
+    const centers = new Set<number>()
+    seeded.forEach(v => {
+      for (let c = Math.max(0, v - WINDOW); c <= Math.min(book.v.length - 1, v + WINDOW); c++) centers.add(c)
+    })
+
+    for (const center of Array.from(centers)) {
       const viStart = Math.max(0, center - WINDOW)
       const viEnd = Math.min(book.v.length - 1, center + WINDOW)
-      const hits: { s: string; f: string; ti: number }[] = []
-      for (let v = viStart; v <= viEnd; v++) hits.push(...(byVerse.get(v) ?? []))
+      const [t0] = verseRange(book, viStart)
+      const [, t1] = verseRange(book, viEnd)
 
-      const distinct = new Map<string, { count: number; exact: boolean; form: string }>()
-      for (const h of hits) {
-        const d = distinct.get(h.s) ?? { count: 0, exact: false, form: h.f }
-        d.count++
-        if (formsOf.get(h.s)?.has(h.f)) d.exact = true
-        distinct.set(h.s, d)
+      const matches: AllusionMatch[] = []
+      let sawPhrase = false
+      for (const term of terms) {
+        const key = termKey(term)
+        const wanted = formsOf.get(key) ?? new Set<string>()
+        let count = 0, exactForm = false, form = ''
+        if (term.kind === 'phrase' && term.strongs.length > 1) {
+          for (let t = t0; t < t1; t++) {
+            if (book.w[t][0] !== term.strongs[0]) continue
+            const path = [t]
+            let at = t, ok = true
+            for (let k = 1; k < term.strongs.length; k++) {
+              let found = -1
+              for (let j = at + 1; j <= at + 1 + PHRASE_GAP && j < t1; j++) {
+                if (book.w[j][0] === term.strongs[k]) { found = j; break }
+              }
+              if (found < 0) { ok = false; break }
+              path.push(found); at = found
+            }
+            if (!ok) continue
+            count++
+            const words = path.map(p => book.w[p][1])
+            if (!form) form = words.join(' ')
+            if (wanted.size > 0 && words.every(w => wanted.has(normalizeGreek(w)))) exactForm = true
+          }
+          if (count > 0) sawPhrase = true
+        } else {
+          for (let t = t0; t < t1; t++) {
+            if (book.w[t][0] !== term.strongs[0]) continue
+            count++
+            if (!form) form = book.w[t][1]
+            if (wanted.has(normalizeGreek(book.w[t][1]))) exactForm = true
+          }
+        }
+        if (count > 0) {
+          matches.push({ strongs: key, kind: term.kind, form, count, exactForm,
+            verses: freqOut[key] ?? 0 })
+        }
       }
-      if (distinct.size < minDistinct) continue
+
+      // Two independent signals, or one matched phrase (a rare sequence stands on its own),
+      // or the student only gave us one term to work with.
+      if (matches.length === 0) continue
+      if (!(matches.length >= 2 || sawPhrase || terms.length === 1)) continue
 
       let score = 0
-      for (const [s, d] of Array.from(distinct.entries())) {
-        const w = idf(s)
-        score += w * (d.exact ? 1.25 : 1)
-        score += Math.min(d.count - 1, 3) * 0.1 * w   // repeats help a little, capped
+      for (const m of matches) {
+        const term = terms.find(t => termKey(t) === m.strongs)!
+        const w = termWeight(term)
+        score += w * (m.exactForm ? 1.25 : 1)
+        score += Math.min(m.count - 1, 3) * 0.1 * w   // repeats help a little, capped
       }
-      windows.push({ osis, viStart, viEnd, hits, score })
+      windows.push({ osis, viStart, viEnd, matches, score })
     }
   }
 
@@ -223,22 +321,17 @@ export function searchAllusions(input: {
           strongs: winRun.map(t => t[0]),
         }
         // A run is categorically stronger evidence than co-occurrence (Allison's device 2
-        // beats device 4): weight by the run's own information content.
-        const runIdf = winRun.reduce((a, t) => a + idf(t[0]), 0)
-        w.score += runIdf * 1.5
-        if (exactForms / best >= 0.7) w.score += runIdf * 0.75   // near-verbatim
+        // beats device 4): weight by the run's own information content. But only from FOUR
+        // words up — three common words in a row ("ὁ λόγος οὗτος", "τὸ φῶς τοῦ") recur all
+        // over the LXX by chance, and were out-scoring genuine candidates. A three-word run
+        // is still reported as a badge; if the student thinks it deliberate, selecting it as
+        // a PHRASE scores it on the sequence's own measured rarity.
+        if (best >= 4) {
+          const runIdf = winRun.reduce((a, t) => a + idf(t[0]), 0)
+          w.score += runIdf * 1.5
+          if (exactForms / best >= 0.7) w.score += runIdf * 0.75   // near-verbatim
+        }
       }
-    }
-
-    const distinct = new Map<string, AllusionMatch>()
-    for (const h of w.hits) {
-      const d = distinct.get(h.s)
-      if (d) { d.count++; d.exactForm ||= formsOf.get(h.s)?.has(h.f) ?? false }
-      else distinct.set(h.s, {
-        strongs: h.s, form: h.f, count: 1,
-        exactForm: formsOf.get(h.s)?.has(h.f) ?? false,
-        verses: verseFreq.get(h.s) ?? 0,
-      })
     }
 
     const hit: AllusionHit = {
@@ -247,7 +340,9 @@ export function searchAllusions(input: {
       vStart: book.v[w.viStart][1],
       vEnd: book.v[w.viEnd][1],
       score: w.score,
-      matches: Array.from(distinct.values()).sort((a, b) => a.verses - b.verses),
+      // Phrases first, then rarest word: the order the evidence should be read in.
+      matches: w.matches.slice().sort((a, b) =>
+        (a.kind === b.kind ? 0 : a.kind === 'phrase' ? -1 : 1) || a.verses - b.verses),
       run,
     }
     // The window may cross a chapter boundary; carry it so the UI can label

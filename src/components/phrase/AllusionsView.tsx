@@ -73,7 +73,8 @@ function parseOtCitation(text: string): { osis: string; chapter: number } | null
 // ── Data shapes (mirroring /api/allusions and the reader API) ──────────────────────────
 
 interface WordTok { surface: string; strongs?: string; lemma: string; gloss?: string; parsing?: string }
-interface Match { strongs: string; form: string; count: number; exactForm: boolean; verses: number }
+interface Term { kind: 'word' | 'phrase'; strongs: string[]; forms: string[] }
+interface Match { strongs: string; kind?: 'word' | 'phrase'; form: string; count: number; exactForm: boolean; verses: number }
 interface Run { length: number; exactForms: number; text: string; strongs: string[] }
 interface Hit { osis: string; chapter: number; vStart: number; vEnd: number; endChapter?: number; score: number; matches: Match[]; run?: Run }
 interface LxxWord { surface: string; strongs?: string; lemma?: string; gloss?: string; parsing?: string }
@@ -111,6 +112,13 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   // Selection: word keys `${verse}:${idx}`.
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [freqs, setFreqs] = useState<Record<string, number>>({})
+  // Adjacent selected words auto-group into a PHRASE; a group key in here is split back
+  // into independent words instead.
+  const [splitGroups, setSplitGroups] = useState<Set<string>>(new Set())
+  // Frequencies per term key (strongs joined '+'): a phrase's is its SEQUENCE count.
+  const [termFreqs, setTermFreqs] = useState<Record<string, number>>({})
+  // Scope: search from the whole passage, or from one verse of it.
+  const [scopeVerse, setScopeVerse] = useState<number | null>(null)
 
   // Results.
   const [hits, setHits] = useState<Hit[] | null>(null)
@@ -153,6 +161,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   useEffect(() => {
     setSelected(new Set()); setHits(null); setActiveHit(null); setExpanded(new Set())
     setChecks({}); setShowApparatus(false); setSearchedFor([])
+    setSplitGroups(new Set()); setScopeVerse(null)
     if (!parsed) { setVerses([]); setLoadState(controlledPassage?.trim() ? 'missing' : 'idle'); return }
     setLoadState('loading')
     let alive = true
@@ -179,11 +188,22 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
     return () => { alive = false }
   }, [parsed, controlledPassage])
 
-  const shownVerses = useMemo(() => {
+  // The verses of the committed passage — and, inside those, the current search scope
+  // (all of them, or one verse to narrow the hunt).
+  const passageVerses = useMemo(() => {
     if (!parsed) return verses
     if (parsed.vStart === 0) return verses
     return verses.filter(v => v.verse >= parsed.vStart && v.verse <= parsed.vEnd)
   }, [verses, parsed])
+  const shownVerses = useMemo(
+    () => (scopeVerse == null ? passageVerses : passageVerses.filter(v => v.verse === scopeVerse)),
+    [passageVerses, scopeVerse])
+
+  // Narrowing the scope drops any selected words that fell outside it.
+  function setScope(v: number | null) {
+    setScopeVerse(v)
+    if (v != null) setSelected(prev => new Set(Array.from(prev).filter(k => k.startsWith(`${v}:`))))
+  }
 
   // Rarity badges: fetch LXX verse-frequencies for every word of the shown passage.
   useEffect(() => {
@@ -195,18 +215,63 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
       .catch(() => {})
   }, [shownVerses])
 
-  // The selection, resolved.
-  const selectedWords = useMemo(() => {
-    const out: { key: string; tok: WordTok }[] = []
-    for (const v of shownVerses) v.words.forEach((tok, i) => {
-      const key = `${v.verse}:${i}`
-      if (selected.has(key)) out.push({ key, tok })
-    })
+  // The selection resolved into GROUPS: consecutive selected words in one verse form a
+  // group; a group of 2+ is a phrase candidate (unless the student split it). This is how
+  // "combination of the two" works — select ἐν + ἀρχῇ side by side and it becomes one
+  // phrase chip; select φῶς elsewhere and it stays a word chip.
+  interface SelGroup { key: string; verse: number; words: { key: string; tok: WordTok }[]; isPhrase: boolean }
+  const selectedGroups = useMemo(() => {
+    const groups: SelGroup[] = []
+    for (const v of shownVerses) {
+      let cur: { key: string; tok: WordTok }[] = []
+      const flush = () => {
+        if (cur.length === 0) return
+        const key = `${v.verse}:${cur[0].key.split(':')[1]}-${cur[cur.length - 1].key.split(':')[1]}`
+        groups.push({ key, verse: v.verse, words: cur, isPhrase: cur.length >= 2 && !splitGroups.has(key) })
+        cur = []
+      }
+      v.words.forEach((tok, i) => {
+        const key = `${v.verse}:${i}`
+        if (selected.has(key) && tok.strongs) cur.push({ key, tok })
+        else flush()
+      })
+      flush()
+    }
+    return groups
+  }, [shownVerses, selected, splitGroups])
+
+  // Groups → search terms: phrases as sequences, everything else as single words
+  // (duplicate words merged, their inflected forms pooled).
+  const terms = useMemo(() => {
+    const out: Term[] = []
+    const wordAt = new Map<string, Term>()
+    const addWord = (tok: WordTok) => {
+      const ex = wordAt.get(tok.strongs!)
+      if (ex) { if (!ex.forms.includes(tok.surface)) ex.forms.push(tok.surface) }
+      else { const t: Term = { kind: 'word', strongs: [tok.strongs!], forms: [tok.surface] }; wordAt.set(tok.strongs!, t); out.push(t) }
+    }
+    for (const g of selectedGroups) {
+      if (g.isPhrase) out.push({ kind: 'phrase', strongs: g.words.map(w => w.tok.strongs!), forms: g.words.map(w => w.tok.surface) })
+      else g.words.forEach(w => addWord(w.tok))
+    }
     return out
-  }, [shownVerses, selected])
-  const selectedStrongs = useMemo(
-    () => Array.from(new Set(selectedWords.map(w => w.tok.strongs).filter((s): s is string => !!s))),
-    [selectedWords])
+  }, [selectedGroups])
+
+  const termKey = (t: Term) => t.strongs.join('+')
+
+  // Phrase-sequence frequencies for the chips (words reuse the passage-wide freq map).
+  useEffect(() => {
+    const missing = terms.filter(t => t.kind === 'phrase' && termFreqs[termKey(t)] == null)
+    if (missing.length === 0) return
+    const timer = setTimeout(() => {
+      fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'termfreq', terms: missing }) })
+        .then(r => r.json()).then((d: { counts?: Record<string, number> }) => { if (d.counts) setTermFreqs(f => ({ ...f, ...d.counts })) })
+        .catch(() => {})
+    }, 250)
+    return () => clearTimeout(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [terms])
 
   function toggleWord(verse: number, idx: number, tok: WordTok) {
     if (!tok.strongs) return
@@ -230,20 +295,16 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   }
 
   async function runSearch() {
-    if (selectedStrongs.length === 0 || searching) return
+    if (terms.length === 0 || searching) return
     setSearching(true)
     try {
-      const selectedForms: Record<string, string[]> = {}
-      for (const { tok } of selectedWords) {
-        if (!tok.strongs) continue
-        ;(selectedForms[tok.strongs] ??= []).push(tok.surface)
-      }
+      // Run detection reads the scoped verses only — narrowing to one verse narrows both.
       const sourceTokens = shownVerses.flatMap(v => v.words.filter(w => w.strongs).map(w => ({ s: w.strongs!, f: w.surface })))
       const r = await fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'search', selected: selectedStrongs, selectedForms, sourceTokens }) })
+        body: JSON.stringify({ action: 'search', terms, sourceTokens }) })
       const d = await r.json()
       setHits(Array.isArray(d.hits) ? d.hits : [])
-      setSearchedFor(selectedWords.map(w => w.tok.surface))
+      setSearchedFor(terms.map(t => t.kind === 'phrase' ? `“${t.forms.join(' ')}”` : t.forms[0]))
       setExpanded(new Set()); setActiveHit(null)
     } catch {
       setHits([])
@@ -325,6 +386,8 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   const active = activeHit != null && hits ? hits[activeHit] : null
   const rareMatched = active ? active.matches.filter(m => m.verses > 0 && m.verses < RARE).length : 0
   const nearVerbatim = !!active?.run && active.run.length >= 4 && active.run.exactForms / active.run.length >= 0.7
+  // A matched phrase is sequence evidence in its own right (Allison's device 6).
+  const phraseMatched = active ? active.matches.filter(m => m.kind === 'phrase') : []
   const topScore = hits?.[0]?.score ?? 1
 
   const refLabel = (h: Hit) => {
@@ -366,6 +429,23 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                 English
               </label>
             </div>
+
+            {/* Search scope: the whole passage, or one verse of it. */}
+            {passageVerses.length > 1 && (
+              <div className="mb-2.5 flex flex-wrap items-center gap-1">
+                <span className="text-[11px] text-gray-400 mr-1">Search from:</span>
+                <button type="button" onClick={() => setScope(null)}
+                  className={`rounded-md px-2 py-0.5 text-xs font-medium ${scopeVerse == null ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-brand-50'}`}>
+                  All verses
+                </button>
+                {passageVerses.map(v => (
+                  <button key={v.verse} type="button" onClick={() => setScope(v.verse)}
+                    className={`rounded-md px-2 py-0.5 text-xs font-medium tabular-nums ${scopeVerse === v.verse ? 'bg-brand-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-brand-50'}`}>
+                    v.{v.verse}
+                  </button>
+                ))}
+              </div>
+            )}
             <div className="space-y-2.5">
               {shownVerses.map(v => (
                 <div key={v.verse}>
@@ -403,32 +483,60 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
             </div>
             <p className="mt-2.5 text-xs text-gray-400">
               Dotted words are <b>rare in the LXX</b> — sharing one is worth far more than sharing a common word.
-              Hover a word for its gloss and LXX frequency.
+              Tap <b>adjacent</b> words and they become a phrase, searched as a sequence
+              (&ldquo;ἐν ἀρχῇ&rdquo; is two common words but a rare pairing). Hover a word for its gloss.
             </p>
           </div>
 
-          {/* Selection chips + actions */}
+          {/* Selection chips + actions. A chip is a GROUP: a phrase (adjacent words, searched
+              as a sequence, badge = how often that sequence occurs in the LXX) or one word. */}
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            {selectedWords.map(({ key, tok }) => {
-              const n = tok.strongs ? freqs[tok.strongs] : undefined
-              const rare = n != null && n > 0 && n < RARE
-              return (
-                <span key={key} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-sm ${
-                  rare ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 bg-gray-50 text-gray-700'}`}>
-                  <span className="font-reading">{tok.surface}</span>
-                  {n != null && <span className={`text-[10px] ${rare ? 'text-brand-600 font-semibold' : 'text-gray-400'}`}>
-                    {n === 0 ? 'not in LXX' : `×${n}`}
-                  </span>}
-                  <button type="button" onClick={() => setSelected(prev => { const s = new Set(prev); s.delete(key); return s })}
-                    className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
-                </span>
-              )
+            {selectedGroups.map(g => {
+              if (g.isPhrase) {
+                const key = g.words.map(w => w.tok.strongs).join('+')
+                const n = termFreqs[key]
+                const rare = n != null && n < RARE
+                return (
+                  <span key={g.key} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-sm ${
+                    rare ? 'border-blue-300 bg-blue-50 text-blue-900' : 'border-blue-200 bg-blue-50/50 text-blue-800'}`}>
+                    <span className="font-reading">“{g.words.map(w => w.tok.surface).join(' ')}”</span>
+                    <span className={`text-[10px] ${rare ? 'text-blue-700 font-semibold' : 'text-blue-400'}`}>
+                      {n == null ? 'phrase' : n === 0 ? 'sequence not in LXX' : `sequence ×${n}`}
+                    </span>
+                    <button type="button" title="Search these as separate words instead"
+                      onClick={() => setSplitGroups(prev => new Set(prev).add(g.key))}
+                      className="text-[10px] font-medium text-blue-400 hover:text-blue-700">split</button>
+                    <button type="button" onClick={() => setSelected(prev => { const s = new Set(prev); g.words.forEach(w => s.delete(w.key)); return s })}
+                      className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
+                  </span>
+                )
+              }
+              return g.words.map(({ key, tok }) => {
+                const n = tok.strongs ? freqs[tok.strongs] : undefined
+                const rare = n != null && n > 0 && n < RARE
+                return (
+                  <span key={key} className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-sm ${
+                    rare ? 'border-brand-300 bg-brand-50 text-brand-800' : 'border-gray-300 bg-gray-50 text-gray-700'}`}>
+                    <span className="font-reading">{tok.surface}</span>
+                    {n != null && <span className={`text-[10px] ${rare ? 'text-brand-600 font-semibold' : 'text-gray-400'}`}>
+                      {n === 0 ? 'not in LXX' : `×${n}`}
+                    </span>}
+                    {g.words.length >= 2 && (
+                      <button type="button" title="Rejoin into a phrase"
+                        onClick={() => setSplitGroups(prev => { const s = new Set(prev); s.delete(g.key); return s })}
+                        className="text-[10px] font-medium text-gray-400 hover:text-brand-700">join</button>
+                    )}
+                    <button type="button" onClick={() => setSelected(prev => { const s = new Set(prev); s.delete(key); return s })}
+                      className="text-gray-400 hover:text-gray-600"><X size={12} /></button>
+                  </span>
+                )
+              })
             })}
             <button type="button" onClick={suggest}
               className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-surface px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:border-brand-300 hover:text-brand-700">
               <Sparkles size={13} /> Suggest the rarest words
             </button>
-            <button type="button" disabled={selectedStrongs.length === 0 || searching} onClick={runSearch}
+            <button type="button" disabled={terms.length === 0 || searching} onClick={runSearch}
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
               <Search size={13} /> {searching ? 'Searching…' : 'Search the Septuagint'}
             </button>
@@ -463,10 +571,12 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                         </div>
                         <div className="mt-1 ml-6 flex flex-wrap gap-1.5">
                           {h.matches.map(m => (
-                            <span key={m.strongs} title={`in ${m.verses} LXX verses`}
+                            <span key={m.strongs}
+                              title={m.kind === 'phrase' ? `this sequence occurs ${m.verses}× in the LXX` : `in ${m.verses} LXX verses`}
                               className={`rounded px-1.5 py-0.5 text-xs font-reading ${
-                                m.verses < RARE ? 'bg-brand-50 text-brand-800 border border-brand-200' : 'bg-gray-50 text-gray-600 border border-gray-200'}`}>
-                              {m.form}{m.count > 1 ? ` ×${m.count}` : ''}{m.exactForm ? ' ✓' : ''}
+                                m.kind === 'phrase' ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                                : m.verses < RARE ? 'bg-brand-50 text-brand-800 border border-brand-200' : 'bg-gray-50 text-gray-600 border border-gray-200'}`}>
+                              {m.kind === 'phrase' ? `“${m.form}”` : m.form}{m.count > 1 ? ` ×${m.count}` : ''}{m.exactForm ? ' ✓' : ''}
                             </span>
                           ))}
                           {h.run && <span className="text-xs text-gray-400 font-reading">“{h.run.text}”</span>}
@@ -551,8 +661,12 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               <ChecklistRow label="5 · Narrative structure" auto={null} manual={checks['d5']} onManual={v => setChecks(c => ({ ...c, d5: v }))}
                 hint="Does the shape of the story itself follow the subtext? Only you can judge this." />
               <ChecklistRow label="6 · Word order & rhythm" hint="Imitative sequence."
-                auto={active ? (active.run && active.run.length >= 3 ? 'yes' : 'no') : null}
-                autoNote={active?.run ? `${active.run.length} words appear in the same order` : undefined} />
+                auto={active ? ((active.run && active.run.length >= 3) || phraseMatched.length > 0 ? 'yes' : 'no') : null}
+                autoNote={active
+                  ? [phraseMatched.length > 0 ? `matched the phrase ${phraseMatched.map(m => `“${m.form}”`).join(', ')}` : '',
+                     active.run ? `${active.run.length} words appear in the same order` : '']
+                      .filter(Boolean).join('; ') || undefined
+                  : undefined} />
             </ul>
             <details className="mt-3">
               <summary className="cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden text-xs font-medium text-brand-600 hover:text-brand-700">
@@ -624,7 +738,8 @@ function ExpandedHit({ hit, label, chapters, onOpenInTexts, onHoverWord }: {
   onOpenInTexts?: (t: OpenInTextsTarget) => void
   onHoverWord: (info: LexicalInfoPanel) => void
 }) {
-  const matchSet = new Set(hit.matches.map(m => m.strongs))
+  // A phrase match's key is its members joined '+': split so each member word highlights.
+  const matchSet = new Set(hit.matches.flatMap(m => m.strongs.split('+')))
   const segments: { chapter: number; vLo: number; vHi: number }[] = hit.endChapter
     ? [{ chapter: hit.chapter, vLo: hit.vStart, vHi: 999 }, { chapter: hit.endChapter, vLo: 1, vHi: hit.vEnd }]
     : [{ chapter: hit.chapter, vLo: hit.vStart, vHi: hit.vEnd }]
