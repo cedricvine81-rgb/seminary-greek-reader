@@ -42,6 +42,11 @@ export interface CatalogWork {
   // josephus
   work?: string                 // directory under public/data/josephus/
   books?: number[]              // chapter count per book (index → book number - 1)
+  // Explicit menu grouping, for collections whose sub-heading isn't an author. Greco-Roman
+  // derives its middle menu level from the "Author, Title" name prefix; the Rabbinic corpora
+  // need the same two-level layout but their names are sigla ("b. Berakhot"), and `name` is
+  // also the reader heading and the copied citation, so it can't be rewritten to suit a menu.
+  group?: string
 }
 
 export interface TextCategory {
@@ -59,14 +64,17 @@ export interface AuthorGroup {
   works: CatalogWork[]
 }
 
-/** The "Author" of a work, taken from the "Author, Title" name prefix (else null). */
+/** A work's menu sub-heading: an explicit `group`, else the "Author, Title" name prefix. */
 function authorOf(w: CatalogWork): string | null {
+  if (w.group) return w.group
   const i = w.name.indexOf(', ')
   return i > 0 ? w.name.slice(0, i) : null
 }
 
-/** The work's title with the "Author, " prefix stripped — for listing under an author heading. */
+/** The work's title as listed under its heading — the "Author, " prefix stripped, or for an
+ *  explicitly grouped work the citation siglum ("b. ", "m. ") that the heading already says. */
 export function workTitleWithoutAuthor(w: CatalogWork): string {
+  if (w.group) return w.name.replace(/^[a-z]{1,2}\.\s+/, '')
   const i = w.name.indexOf(', ')
   return i > 0 ? w.name.slice(i + 2) : w.name
 }
@@ -271,37 +279,33 @@ const RAW_CATEGORIES: TextCategory[] = [
     ],
   },
   {
-    id: 'mishnah',
-    label: 'Mishnah',
-    blurb: 'The Mishnah — the foundational rabbinic law code (c. 200 CE). The cited tractates in Dr. Joshua Kulp’s translation (CC-BY, via Sefaria).',
-    works: MISHNAH_CATALOG,
-  },
-  {
-    id: 'tosefta',
-    label: 'Tosefta',
-    blurb: 'The Tosefta — the companion collection to the Mishnah (c. 200–300 CE), 61 tractates in Hebrew from the public-domain text via Sefaria. Cited by chapter and halakhah.',
-    works: TOSEFTA_CATALOG,
-  },
-  {
-    id: 'bavli',
-    label: 'Babylonian Talmud',
-    blurb: 'The Talmud Bavli (c. 500 CE) — all 37 tractates in Aramaic, cited by daf, from the Wikisource Vilna text (CC BY-SA, via Sefaria). No English: the one good translation is licensed non-commercially.',
-    works: BAVLI_CATALOG,
-  },
-  {
-    id: 'yerushalmi',
-    label: 'Jerusalem Talmud',
-    blurb: 'The Talmud Yerushalmi (c. 400 CE) — all 39 tractates, cited chapter:halakhah, in Heinrich Guggenheimer’s translation (De Gruyter, CC-BY, via Sefaria).',
-    works: YERUSHALMI_CATALOG,
+    id: 'rabbinic',
+    label: 'Rabbinic',
+    blurb: 'The classical rabbinic corpora, browsed by collection and then tractate. The Mishnah — the foundational law code (c. 200 CE), in Dr. Joshua Kulp’s translation (CC-BY). The Tosefta — its companion collection (c. 200–300 CE), 61 tractates in Hebrew from the public-domain text. The Jerusalem Talmud (c. 400 CE), all 39 tractates in Heinrich Guggenheimer’s translation (De Gruyter, CC-BY). The Babylonian Talmud (c. 500 CE), all 37 tractates in Aramaic from the Wikisource Vilna text (CC BY-SA) — no English, its one good translation being licensed non-commercially. All via Sefaria.',
+    // Chronological by collection (Mishnah → Tosefta → Yerushalmi → Bavli) rather than
+    // alphabetical, which is why 'rabbinic' is in KEEP_ORDER below. groupWorksByAuthor needs a
+    // collection's tractates to be consecutive, and each *_CATALOG is already one run.
+    works: ([
+      [MISHNAH_CATALOG, 'Mishnah'],
+      [TOSEFTA_CATALOG, 'Tosefta'],
+      [YERUSHALMI_CATALOG, 'Jerusalem Talmud'],
+      [BAVLI_CATALOG, 'Babylonian Talmud'],
+    ] as [CatalogWork[], string][]).flatMap(([works, group]) =>
+      works.map(w => ({ ...w, group }))
+        // The registries are in their own order (the Mishnah's starts at Sanhedrin); the
+        // category-level sort no longer reaches these, so each collection sorts its own
+        // tractates alphabetically here.
+        .sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }))),
   },
   { id: 'dss', label: 'Dead Sea Scrolls', comingSoon: true, works: [] },
 ]
 
 // Within each category the works are listed alphabetically by author (a plain name sort keeps an
 // author's books consecutive, since every name is "Author, Title"). Two exceptions keep their
-// deliberate order: scripture stays in canonical book order, and Greco-Roman is arranged by hand
-// (its curated "Pagan Sources" overview is pinned first, the rest already alphabetical).
-const KEEP_ORDER = new Set(['apocrypha', 'septuagint', 'greco-roman'])
+// deliberate order: scripture stays in canonical book order, Greco-Roman is arranged by hand
+// (its curated "Pagan Sources" overview is pinned first, the rest already alphabetical), and
+// Rabbinic runs chronologically by collection (each sorting its own tractates as it is built).
+const KEEP_ORDER = new Set(['apocrypha', 'septuagint', 'greco-roman', 'rabbinic'])
 export const TEXT_CATEGORIES: TextCategory[] = RAW_CATEGORIES.map(c =>
   c.comingSoon || KEEP_ORDER.has(c.id)
     ? c
