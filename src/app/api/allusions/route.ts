@@ -8,7 +8,7 @@ import { searchAllusions, strongsFrequencies, termFrequencies, type SourceToken,
 //   → { totalVerses, counts }        — rarity badges for a passage's words
 // POST { action: 'termfreq',  terms: AllusionTerm[] }
 //   → { totalVerses, counts }        — same, but a phrase is counted as a SEQUENCE
-// POST { action: 'search',    terms: AllusionTerm[], sourceTokens?: { s, f }[] }
+// POST { action: 'search',    terms: AllusionTerm[], sourceTokens?: { s, f }[], useSynonyms?: boolean }
 //   → { totalVerses, hits, frequencies }
 //
 // Public data, no auth. Input sizes are capped: a passage is a few hundred words, so
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
           })
         : []
 
-      return NextResponse.json(searchAllusions({ terms, sourceTokens }))
+      return NextResponse.json(searchAllusions({ terms, sourceTokens, useSynonyms: body.useSynonyms === true }))
     }
 
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })

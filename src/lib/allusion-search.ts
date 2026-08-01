@@ -19,6 +19,7 @@
 
 import { normalizeGreek } from './greek-utils'
 import { getCorpusIndex, type BookIndex } from './construct-search'
+import { matchesStrongs, isSynonymMatch, synonymsOf } from './greek-synonyms'
 
 // A word of the NT source passage, in reading order: Strong's + folded surface form.
 export interface SourceToken { s: string; f: string }
@@ -38,6 +39,7 @@ export interface AllusionMatch {
   form: string          // the folded form(s) as they appear in the LXX hit
   count: number         // occurrences inside the window
   exactForm: boolean    // some occurrence matches the selected NT word's inflected form
+  viaSynonym?: boolean  // matched through a near-synonym, not the identical lemma
   verses: number        // LXX frequency (verses for a word, occurrences for a phrase)
 }
 
@@ -76,6 +78,9 @@ const PHRASE_GAP = 1
 // A matched phrase is Allison's device 2/6 territory — categorically better evidence than the
 // same words happening to co-occur, so its (already rarity-based) weight is scaled up again.
 const PHRASE_WEIGHT = 1.6
+// A match reached through a synonym counts, but below an identical lemma: the author having
+// used the very same word is the stronger claim.
+const SYNONYM_WEIGHT = 0.7
 
 // ─── Corpus statistics (computed once per process; the index is static) ────────────────
 
@@ -161,15 +166,23 @@ export function termFrequencies(terms: AllusionTerm[]): { totalVerses: number; c
 export function searchAllusions(input: {
   terms: AllusionTerm[]
   sourceTokens?: SourceToken[]             // the whole NT passage, in order (for run detection)
+  useSynonyms?: boolean                    // let a near-synonym stand in for the exact lemma
 }): AllusionResult {
   const index = getCorpusIndex(CORPUS)
   const { totalVerses, verseFreq } = getStats()
+  const syn = !!input.useSynonyms
+  const hits = (wanted: string, candidate: string) => matchesStrongs(wanted, candidate, syn)
 
   const terms = input.terms.filter(t => t.strongs.length > 0)
   const freqOut = termFrequencies(terms).counts
   if (terms.length === 0) return { totalVerses, hits: [], frequencies: freqOut }
 
-  const idf = (s: string) => Math.log((totalVerses + 1) / ((verseFreq.get(s) ?? 0) + 1))
+  // With synonyms on, a term is as common as its whole set — otherwise a rare word paired
+  // with a frequent synonym would keep a rarity weight it no longer earns.
+  const dfOf = (s: string) => syn
+    ? Array.from(synonymsOf(s)).reduce((n, x) => n + (verseFreq.get(x) ?? 0), 0)
+    : (verseFreq.get(s) ?? 0)
+  const idf = (s: string) => Math.log((totalVerses + 1) / (dfOf(s) + 1))
   // A phrase's weight comes from how rare the SEQUENCE is, not its member words.
   const termWeight = (t: AllusionTerm) => t.kind === 'phrase' && t.strongs.length > 1
     ? Math.log((totalVerses + 1) / (phraseOccurrences(t.strongs) + 1)) * PHRASE_WEIGHT
@@ -180,8 +193,13 @@ export function searchAllusions(input: {
     terms.map(t => [termKey(t), new Set((t.forms ?? []).map(normalizeGreek))]))
 
   // Every Strong's mentioned by any term - the trigger set for locating candidate verses.
+  // With synonyms on this widens to the whole set, or a verse holding only the synonym would
+  // never be seeded and so never scored.
   const anyStrongs = new Set<string>()
-  for (const t of terms) for (const s of t.strongs) anyStrongs.add(s)
+  for (const t of terms) for (const s of t.strongs) {
+    if (syn) synonymsOf(s).forEach(x => anyStrongs.add(x))
+    else anyStrongs.add(s)
+  }
 
   // Source token stream for run detection (only tokens with a Strong's).
   const source: SourceToken[] = (input.sourceTokens ?? [])
@@ -226,22 +244,25 @@ export function searchAllusions(input: {
       for (const term of terms) {
         const key = termKey(term)
         const wanted = formsOf.get(key) ?? new Set<string>()
-        let count = 0, exactForm = false, form = ''
+        let count = 0, exactForm = false, form = '', viaSynonym = false
         if (term.kind === 'phrase' && term.strongs.length > 1) {
           for (let t = t0; t < t1; t++) {
-            if (book.w[t][0] !== term.strongs[0]) continue
+            if (!hits(term.strongs[0], book.w[t][0])) continue
             const path = [t]
+            let inexact = isSynonymMatch(term.strongs[0], book.w[t][0])
             let at = t, ok = true
             for (let k = 1; k < term.strongs.length; k++) {
               let found = -1
               for (let j = at + 1; j <= at + 1 + PHRASE_GAP && j < t1; j++) {
-                if (book.w[j][0] === term.strongs[k]) { found = j; break }
+                if (hits(term.strongs[k], book.w[j][0])) { found = j; break }
               }
               if (found < 0) { ok = false; break }
+              if (isSynonymMatch(term.strongs[k], book.w[found][0])) inexact = true
               path.push(found); at = found
             }
             if (!ok) continue
             count++
+            if (inexact) viaSynonym = true
             const words = path.map(p => book.w[p][1])
             if (!form) form = words.join(' ')
             if (wanted.size > 0 && words.every(w => wanted.has(normalizeGreek(w)))) exactForm = true
@@ -249,14 +270,15 @@ export function searchAllusions(input: {
           if (count > 0) sawPhrase = true
         } else {
           for (let t = t0; t < t1; t++) {
-            if (book.w[t][0] !== term.strongs[0]) continue
+            if (!hits(term.strongs[0], book.w[t][0])) continue
             count++
+            if (isSynonymMatch(term.strongs[0], book.w[t][0])) viaSynonym = true
             if (!form) form = book.w[t][1]
             if (wanted.has(normalizeGreek(book.w[t][1]))) exactForm = true
           }
         }
         if (count > 0) {
-          matches.push({ strongs: key, kind: term.kind, form, count, exactForm,
+          matches.push({ strongs: key, kind: term.kind, form, count, exactForm, viaSynonym,
             verses: freqOut[key] ?? 0 })
         }
       }
@@ -269,7 +291,8 @@ export function searchAllusions(input: {
       let score = 0
       for (const m of matches) {
         const term = terms.find(t => termKey(t) === m.strongs)!
-        const w = termWeight(term)
+        // A synonym is real evidence but weaker than the author reaching for the same word.
+        const w = termWeight(term) * (m.viaSynonym ? SYNONYM_WEIGHT : 1)
         score += w * (m.exactForm ? 1.25 : 1)
         score += Math.min(m.count - 1, 3) * 0.1 * w   // repeats help a little, capped
       }

@@ -4,6 +4,7 @@ import { Search, ChevronDown, ChevronRight, Sparkles, X } from 'lucide-react'
 import type { OpenInTextsTarget } from '@/components/phrase/BackgroundsView'
 import { ResizableParsingPane } from '@/components/reader/ResizableParsingPane'
 import { openWordSearch } from '@/lib/word-search-bus'
+import { CITATION_STOP, detectCitation } from '@/lib/citation-formula'
 import type { LexicalInfoPanel } from '@/types/lexicon'
 
 // ── Allusions tab ───────────────────────────────────────────────────────────────────────
@@ -75,7 +76,7 @@ function parseOtCitation(text: string): { osis: string; chapter: number } | null
 
 interface WordTok { surface: string; strongs?: string; lemma: string; gloss?: string; parsing?: string }
 interface Term { kind: 'word' | 'phrase'; strongs: string[]; forms: string[] }
-interface Match { strongs: string; kind?: 'word' | 'phrase'; form: string; count: number; exactForm: boolean; verses: number }
+interface Match { strongs: string; kind?: 'word' | 'phrase'; form: string; count: number; exactForm: boolean; verses: number; viaSynonym?: boolean }
 interface Run { length: number; exactForms: number; text: string; strongs: string[] }
 interface Hit { osis: string; chapter: number; vStart: number; vEnd: number; endChapter?: number; score: number; matches: Match[]; run?: Run }
 interface LxxWord { surface: string; strongs?: string; lemma?: string; gloss?: string; parsing?: string }
@@ -91,6 +92,19 @@ const RARE = 150   // LXX verse-count below which a shared word is treated as a 
 const SUGGEST_SHARE = 0.01
 const SUGGEST_MIN = 5    // the old fixed count, now the floor when nothing clears the bar
 const SUGGEST_MAX = 12   // beyond this the candidate scan widens for no real gain (API cap 40)
+
+// A word too common to qualify on its own is still diagnostic when it sits NEXT TO one that
+// did: ἀποστέλλω (625 LXX verses) and πρόσωπον (1,146) are ordinary words, but
+// "ἀποστέλλω τὸν ἄγγελόν μου πρὸ προσώπου" is Exod 23:20 and nothing else. Neighbours of a
+// selected word are admitted under this looser bar — one hop only, so it cannot run away.
+const SUGGEST_ADJACENT_SHARE = 0.05
+
+// …but only for CONTENT words. Adjacent selections merge into a phrase searched as a
+// sequence, and the LXX index tags enclitic pronouns so unevenly that a sequence containing
+// one effectively never matches: "ἄγγελος + ἐγώ" is found in 2 LXX verses and
+// "ἄγγελος + ἐγώ + πρό + πρόσωπον" in none — though Exod 23:20 reads exactly that. Dragging
+// μου/σου into a phrase therefore destroys the term. "πρό + πρόσωπον" alone matches 98×.
+const CONTENT_POS = /^(Noun|Verb|Adjective|Adverb|Preposition)/
 
 const foldGreek = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
@@ -142,6 +156,9 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   // LXX corpus size, returned with the rarity badges — the denominator the auto-suggest
   // threshold is a share of.
   const [totalVerses, setTotalVerses] = useState(0)
+  // Let a near-synonym stand in for the exact lemma (Mal 3:1's ἐξαποστελῶ for Mark's
+  // ἀποστέλλω). Off by default: an inexact match is a weaker claim and should be asked for.
+  const [useSynonyms, setUseSynonyms] = useState(false)
   // Adjacent selected words auto-group into a PHRASE; a group key in here is split back
   // into independent words instead.
   const [splitGroups, setSplitGroups] = useState<Set<string>>(new Set())
@@ -229,6 +246,11 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   const shownVerses = useMemo(
     () => (scopeVerse == null ? passageVerses : passageVerses.filter(v => v.verse === scopeVerse)),
     [passageVerses, scopeVerse])
+
+  // Explicit-citation signal (Allison device 1) for the passage in scope.
+  const citation = useMemo(
+    () => detectCitation(shownVerses.flatMap(v => v.words)),
+    [shownVerses])
 
   // Narrowing the scope drops any selected words that fell outside it.
   function setScope(v: number | null) {
@@ -324,21 +346,43 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
   // with, so if nothing clears the bar we fall back to the rarest few — which is the old
   // behaviour, now the floor rather than the rule.
   function suggest() {
-    const seen = new Map<string, { verse: number; idx: number }>()
+    // A word is worth suggesting if the LXX uses it (it cannot match otherwise) and it is
+    // not citation furniture — γέγραπται and the prophet's name frame the quotation instead
+    // of being quoted, and searching them returns every "as it is written" in the corpus.
+    const usable = (s?: string): s is string =>
+      !!s && !CITATION_STOP.has(s) && !!freqs[s] && Number.isFinite(freqs[s])
+
+    const firstAt = new Map<string, { verse: number; idx: number }>()
     for (const v of shownVerses) v.words.forEach((tok, i) => {
-      if (tok.strongs && !seen.has(tok.strongs)) seen.set(tok.strongs, { verse: v.verse, idx: i })
+      if (tok.strongs && !firstAt.has(tok.strongs)) firstAt.set(tok.strongs, { verse: v.verse, idx: i })
     })
-    const ranked = Array.from(seen.entries())
-      .map(([s, pos]) => ({ s, pos, n: freqs[s] ?? Infinity }))
-      .filter(x => x.n > 0 && Number.isFinite(x.n))
+    const ranked = Array.from(firstAt.entries())
+      .filter(([s]) => usable(s))
+      .map(([s, pos]) => ({ s, pos, n: freqs[s] }))
       .sort((a, b) => a.n - b.n)
 
     // totalVerses arrives with the rarity badges; before it does, fall back to the floor.
     const cutoff = totalVerses > 0 ? totalVerses * SUGGEST_SHARE : 0
     const distinctive = ranked.filter(x => x.n <= cutoff)
-    const chosen = (distinctive.length >= SUGGEST_MIN ? distinctive : ranked.slice(0, SUGGEST_MIN))
+    const core = (distinctive.length >= SUGGEST_MIN ? distinctive : ranked.slice(0, SUGGEST_MIN))
       .slice(0, SUGGEST_MAX)
-    setSelected(new Set(chosen.map(x => `${x.pos.verse}:${x.pos.idx}`)))
+
+    const keys = new Set(core.map(x => `${x.pos.verse}:${x.pos.idx}`))
+    // One hop out from the core, under the looser neighbour bar. Tested against a snapshot
+    // so the pass is order-independent and cannot chain across a whole verse.
+    const coreKeys = new Set(keys)
+    const adjCut = totalVerses > 0 ? totalVerses * SUGGEST_ADJACENT_SHARE : 0
+    for (const v of shownVerses) {
+      v.words.forEach((tok, i) => {
+        if (keys.size >= SUGGEST_MAX * 2) return
+        if (!usable(tok.strongs) || freqs[tok.strongs] > adjCut) return
+        if (!CONTENT_POS.test(tok.parsing ?? '')) return
+        const key = `${v.verse}:${i}`
+        if (coreKeys.has(key)) return
+        if ([i - 1, i + 1].some(j => coreKeys.has(`${v.verse}:${j}`))) keys.add(key)
+      })
+    }
+    setSelected(keys)
   }
 
   async function runSearch() {
@@ -348,7 +392,7 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
       // Run detection reads the scoped verses only — narrowing to one verse narrows both.
       const sourceTokens = shownVerses.flatMap(v => v.words.filter(w => w.strongs).map(w => ({ s: w.strongs!, f: w.surface })))
       const r = await fetch('/api/allusions', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'search', terms, sourceTokens }) })
+        body: JSON.stringify({ action: 'search', terms, sourceTokens, useSynonyms }) })
       const d = await r.json()
       setHits(Array.isArray(d.hits) ? d.hits : [])
       setSearchedFor(terms.map(t => t.kind === 'phrase' ? `“${t.forms.join(' ')}”` : t.forms[0]))
@@ -621,6 +665,12 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-700 disabled:opacity-50">
               <Search size={13} /> {searching ? 'Searching…' : 'Search the Septuagint'}
             </button>
+            <label className="inline-flex items-center gap-1.5 text-xs text-gray-500 cursor-pointer"
+              title="Let a close relative of a word count as a match — ἐξαποστέλλω for ἀποστέλλω, βοάω for κράζω. Marked ≈ in the results and scored below an exact match.">
+              <input type="checkbox" checked={useSynonyms} onChange={e => setUseSynonyms(e.target.checked)}
+                className="h-3.5 w-3.5 rounded border-gray-300 text-brand-600 focus:ring-brand-500" />
+              Include close synonyms
+            </label>
           </div>
 
           {/* Results */}
@@ -678,11 +728,12 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                         <div className="mt-1 ml-6 flex flex-wrap gap-1.5">
                           {h.matches.map(m => (
                             <span key={m.strongs}
-                              title={m.kind === 'phrase' ? `this sequence occurs ${m.verses}× in the LXX` : `in ${m.verses} LXX verses`}
+                              title={`${m.kind === 'phrase' ? `this sequence occurs ${m.verses}× in the LXX` : `in ${m.verses} LXX verses`}${m.viaSynonym ? ' · matched through a near-synonym, not the identical word' : ''}`}
                               className={`rounded px-1.5 py-0.5 text-xs font-reading ${
-                                m.kind === 'phrase' ? 'bg-blue-50 text-blue-800 border border-blue-200'
+                                m.viaSynonym ? 'bg-amber-50 text-amber-800 border border-amber-200 border-dashed'
+                                : m.kind === 'phrase' ? 'bg-blue-50 text-blue-800 border border-blue-200'
                                 : m.verses < RARE ? 'bg-brand-50 text-brand-800 border border-brand-200' : 'bg-gray-50 text-gray-600 border border-gray-200'}`}>
-                              {m.kind === 'phrase' ? `“${m.form}”` : m.form}{m.count > 1 ? ` ×${m.count}` : ''}{m.exactForm ? ' ✓' : ''}
+                              {m.viaSynonym ? '≈ ' : ''}{m.kind === 'phrase' ? `“${m.form}”` : m.form}{m.count > 1 ? ` ×${m.count}` : ''}{m.exactForm ? ' ✓' : ''}
                             </span>
                           ))}
                           {h.run && <span className="text-xs text-gray-400 font-reading">“{h.run.text}”</span>}
@@ -756,7 +807,17 @@ export function AllusionsView({ controlledPassage, onAttribution, onOpenInTexts 
                 : 'Select a candidate on the left to assess it. The app fills what it can measure; the rest is your judgment.'}
             </p>
             <ul className="space-y-2.5 text-sm">
-              <ChecklistRow label="1 · Explicit statement" auto={null} manual={checks['d1']} onManual={v => setChecks(c => ({ ...c, d1: v }))}
+              {/* Device 1 is about the NT passage, not the candidate, so it can be answered
+                  before anything is selected — and a citation formula is one of the few
+                  Allison devices a machine can genuinely see. */}
+              <ChecklistRow label="1 · Explicit statement" manual={checks['d1']} onManual={v => setChecks(c => ({ ...c, d1: v }))}
+                auto={citation.formula ? 'yes' : citation.sources.length ? 'partial' : 'no'}
+                autoNote={
+                  citation.formula
+                    ? `citation formula (${citation.formulaWords.join(', ')})${citation.sources.length ? ` naming ${citation.sources.join(' and ')}` : ', source unnamed'}`
+                    : citation.sources.length
+                      ? `names ${citation.sources.join(' and ')}, but with no citation formula`
+                      : 'no citation formula in this passage'}
                 hint="Does the author name the source or the figure (“as Moses…”)?" />
               <ChecklistRow label="2 · Implicit citation" hint="Words transplanted without acknowledgement."
                 auto={active ? (nearVerbatim ? 'yes' : active.run ? 'partial' : 'no') : null}
