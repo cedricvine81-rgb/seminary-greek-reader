@@ -282,6 +282,25 @@ export function MorphologyView() {
     try { sessionStorage.setItem('morph-level', l) } catch { /* ignore */ }
   }
 
+  // Deep link: /grammar?chapter=nouns&level=intermediate. The Reader's right-click syntax
+  // menu links here from a word's syntactic category, so a student can go from "Partitive
+  // Genitive" on a word straight to the section that teaches it, at the level the category is
+  // pitched at.
+  //
+  // Runs AFTER the sessionStorage effect above so an explicit level in the URL wins over the
+  // remembered one. Reads window.location rather than useSearchParams: the page is otherwise
+  // static, and useSearchParams would opt it into dynamic rendering (and want a Suspense
+  // boundary) for what is a one-shot read on mount.
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const chapter = params.get('chapter')
+      if (chapter && MAIN_TABS.some(t => t.id === chapter)) setMainTab(chapter as MainTab)
+      const l = params.get('level')
+      if (l === 'beginning' || l === 'intermediate') setLevel(l)
+    } catch { /* ignore */ }
+  }, [])
+
   // Course mode (opt-in overlay). Same hydrate-from-localStorage pattern as
   // the level toggle; completion state via useCourseProgress (local + account).
   const [courseMode, setCourseMode] = useState(false)

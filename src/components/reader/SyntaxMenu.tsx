@@ -1,6 +1,8 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import { X, Info } from 'lucide-react'
+import Link from 'next/link'
+import { X, Info, GraduationCap } from 'lucide-react'
+import { chapterForCategory, grammarHref, CHAPTER_LABEL } from '@/lib/syntax-grammar-map'
 import type { VerseWord } from '@/types/biblical-text'
 import type { SyntaxEntry, SyntaxContext, WallaceCategory } from '@/lib/wallace-categories'
 import { getWallaceCategories } from '@/lib/wallace-categories'
@@ -253,17 +255,31 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
         })()}
 
         {/* Wallace categories — always at top, always all levels (Beginner + Intermediate) */}
-        {cats.length > 0 && cats.map((cat, i) => (
-          <div key={i} className={`rounded-lg border px-3 py-2 ${LEVEL_COLORS[cat.level]}`}>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-semibold">{cat.name}</span>
-              <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${LEVEL_BADGE[cat.level]}`}>
-                {cat.level === 'beginner' ? 'Beginner' : 'Intermediate'}
-              </span>
+        {cats.length > 0 && cats.map((cat, i) => {
+          // Where this category is taught. null when the Grammar doesn't cover it — then no
+          // link, rather than sending the student to a chapter that won't discuss it.
+          const chapter = chapterForCategory(cat.name)
+          return (
+            <div key={i} className={`rounded-lg border px-3 py-2 ${LEVEL_COLORS[cat.level]}`}>
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-sm font-semibold">{cat.name}</span>
+                <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full shrink-0 ${LEVEL_BADGE[cat.level]}`}>
+                  {cat.level === 'beginner' ? 'Beginner' : 'Intermediate'}
+                </span>
+              </div>
+              <p className="text-xs leading-relaxed opacity-80 whitespace-pre-line">{cat.desc}</p>
+              {chapter && (
+                <Link
+                  href={grammarHref(chapter, cat.level)}
+                  className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline"
+                >
+                  <GraduationCap size={11} className="shrink-0" />
+                  Learn this — Grammar: {CHAPTER_LABEL[chapter]}
+                </Link>
+              )}
             </div>
-            <p className="text-xs leading-relaxed opacity-80 whitespace-pre-line">{cat.desc}</p>
-          </div>
-        ))}
+          )
+        })}
 
         {/* PROIEL dependency relation */}
         {proiel && (
