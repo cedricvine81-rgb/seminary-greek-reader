@@ -76,17 +76,20 @@ def strip_notes(xml_bytes):
     xml = re.sub(r'(?is)</?note\b[^>]*>', '', xml)
     xml = re.sub(r'(?is)</?q\b[^>]*>', '', xml)
 
-    # A <foreign> tagged Latin or English is the editor's apparatus rather than anything the
-    # author wrote. Most of it sits where chapter_text never reads, but some is inline in the
-    # running text and survives note-stripping — Büttner-Wobst's Polybius printed 11 such
-    # references into the text we built, among them "[πολψβ. ιιι, 2, 6]", which is "Polyb. III,
-    # 2, 6" transliterated into Greek letters, and several "ιδεμ" for "idem". Left alone they
+    # In a GREEK edition, a <foreign> tagged Latin or English is the editor's apparatus rather
+    # than anything the author wrote. Most sits where chapter_text never reads, but some is
+    # inline in the running text and survives note-stripping: Büttner-Wobst's Polybius printed
+    # 11 such references into the text we built, among them "[πολψβ. ιιι, 2, 6]" — "Polyb. III,
+    # 2, 6" transliterated into Greek letters — and several "ιδεμ" for "idem". Left alone they
     # are read, searched and morphologically tagged as if Polybius had written them. Square
-    # brackets around such a reference belong to it and go too. Polybius is the only corpus
-    # whose output this changes: Strabo and Plutarch keep their apparatus out of the text
-    # already, and Thucydides and Pausanias have no <foreign> at all.
-    xml = re.sub(r'(?is)\[\s*<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>\s*\]', '', xml)
-    xml = re.sub(r'(?is)<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>', '', xml)
+    # brackets around such a reference belong to it and go too.
+    #
+    # ONLY in a Greek edition. In an English one the same tag marks a Latin phrase the
+    # TRANSLATOR wrote, and stripping it silently deleted "ad infinitum" from twenty-five
+    # sections of the Nicomachean Ethics. The edition div declares its language, so ask it.
+    if re.search(r'(?is)<div\b[^>]*type="edition"[^>]*xml:lang="grc"', xml):
+        xml = re.sub(r'(?is)\[\s*<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>\s*\]', '', xml)
+        xml = re.sub(r'(?is)<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>', '', xml)
     return drop_stray_closes(xml)
 
 
@@ -342,7 +345,13 @@ BABBITT_ATTRIB = ('Text: Plutarch’s Moralia, tr. Frank Cole Babbitt (Loeb, 192
 # Cherniss (1957). The tables below name the edition chosen for each work, and check_licence()
 # re-derives the choice from the TEI headers so a wrong suffix fails the build rather than
 # quietly shipping a translation we have no right to.
-PD_CUTOFF = 1930
+# A US work published in this year or later may still be in copyright; anything earlier is free.
+# The term for a work published 1923-1977 is 95 years from publication and expires on the 31st of
+# December, so the boundary MOVES ON EVERY 1 JANUARY: 1929 fell in on 1 Jan 2025, 1930 on 1 Jan
+# 2026, and 1931 will on 1 Jan 2027. Set for 2026 — Lamb's Loeb Lysias (1930) is therefore usable
+# and Babbitt's 1931 Moralia volume is not. Raise it by one each new year, and re-run the build:
+# check_licence() will then let in whatever has just become free.
+PD_CUTOFF = 1931
 
 # English editions outside the Plutarch tables that check_licence() should also confirm, as
 # (urn dir, urn base, suffix). Perseus often carries an in-copyright Loeb of the same work under
@@ -505,6 +514,167 @@ PLUTARCH_MORALIA_CH = [
     ('tlg087', 'fortune-of-alexander', 'On the Fortune or the Virtue of Alexander', 'De Alexandri magni fortuna aut virtute', 'eng4', PLUTARCH_MORALIA_ATTRIB),
     ('tlg133', 'platonic-questions', 'Platonic Questions', 'Platonicae quaestiones', 'eng2', PLUTARCH_MORALIA_ATTRIB),
 ]
+
+# ── The Attic orators ─────────────────────────────────────────────────────────────────
+# Demosthenes, Isocrates and Lysias, one work per speech. Every speech carries its Greek; the
+# English is attached only where Perseus' translation is out of copyright, which is a minority
+# for two of the three:
+#   Lysias      34/34  — Lamb's Loeb (1930), which fell into the public domain on 1 Jan 2026
+#   Demosthenes 20/63  — the Vinces' Loeb (1926, 1930); Murray (1936-39) and DeWitt (1949) are
+#                        still in copyright, so their speeches are Greek-only
+#   Isocrates   11/30  — Norlin's first Loeb volume (1928); Van Hook (1945) is not free
+# A row is (Perseus work id, slug, title, Greek suffix, English suffix or None, book div or
+# None). Nearly all are flat sections; the Exordia and the Letters divide one level higher.
+DEMOSTHENES_ATTRIB = ('Text: Demosthenes, tr. J. H. and C. A. Vince (Loeb, 1926–1930), public '
+                      'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
+                      'CC-BY-SA 4.0 (perseus.tufts.edu).')
+ISOCRATES_ATTRIB = ('Text: Isocrates, tr. George Norlin (Loeb, 1928), public domain; Greek ed. '
+                    'Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
+LYSIAS_ATTRIB = ('Text: Lysias, tr. W. R. M. Lamb (Loeb, 1930), public domain; Greek ed. Perseus. '
+                 'Digital edition: Perseus Digital Library, CC-BY-SA 4.0.')
+ORATOR_GRC_ONLY = ('Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. '
+                   'Greek only: the only English translation Perseus carries for this speech is '
+                   'still in copyright.')
+
+# ── Demosthenes ────────────────────────────────────────
+DEM_WORKS = [
+    ('tlg001', 'dem-first-olynthiac', 'First Olynthiac', 'grc2', 'eng2', None),
+    ('tlg002', 'dem-second-olynthiac', 'Second Olynthiac', 'grc2', 'eng2', None),
+    ('tlg003', 'dem-third-olynthiac', 'Third Olynthiac', 'grc2', 'eng2', None),
+    ('tlg004', 'dem-first-philippic', 'First Philippic', 'grc2', 'eng2', None),
+    ('tlg005', 'dem-on-the-peace', 'On the Peace', 'grc2', 'eng2', None),
+    ('tlg006', 'dem-second-philippic', 'Second Philippic', 'grc2', 'eng2', None),
+    ('tlg007', 'dem-on-halonnesus', 'On Halonnesus', 'grc2', 'eng2', None),
+    ('tlg008', 'dem-on-the-chersonese', 'On the Chersonese', 'grc2', 'eng2', None),
+    ('tlg009', 'dem-third-philippic', 'Third Philippic', 'grc2', 'eng2', None),
+    ('tlg010', 'dem-fourth-philippic', 'Fourth Philippic', 'grc2', 'eng2', None),
+    ('tlg011', 'dem-answer-to-philip-s-letter', 'Answer to Philip’s Letter', 'grc2', 'eng2', None),
+    ('tlg012', 'dem-philip-s-letter', 'Philip’s Letter', 'grc2', 'eng2', None),
+    ('tlg013', 'dem-on-organization', 'On Organization', 'grc2', 'eng2', None),
+    ('tlg014', 'dem-on-the-navy-boards', 'On the Navy-Boards', 'grc2', 'eng2', None),
+    ('tlg015', 'dem-for-the-liberty-of-the-rhodians', 'For the Liberty of the Rhodians', 'grc2', 'eng2', None),
+    ('tlg016', 'dem-for-the-people-of-megalopolis', 'For the People of Megalopolis', 'grc2', 'eng2', None),
+    ('tlg017', 'dem-on-the-treaty-with-alexander', 'On the Treaty with Alexander', 'grc2', 'eng2', None),
+    ('tlg018', 'dem-on-the-crown', 'On the Crown', 'grc2', 'eng2', None),
+    ('tlg019', 'dem-on-the-false-embassy', 'On the False Embassy', 'grc2', 'eng2', None),
+    ('tlg020', 'dem-against-leptines', 'Against Leptines', 'grc2', 'eng2', None),
+    ('tlg021', 'dem-against-meidias', 'Against Meidias', 'grc2', None, None),
+    ('tlg022', 'dem-against-androtion', 'Against Androtion', 'grc2', None, None),
+    ('tlg023', 'dem-against-aristocrates', 'Against Aristocrates', 'grc2', None, None),
+    ('tlg024', 'dem-against-timocrates', 'Against Timocrates', 'grc2', None, None),
+    ('tlg025', 'dem-against-aristogeiton-i', 'Against Aristogeiton I', 'grc2', None, None),
+    ('tlg026', 'dem-against-aristogeiton-ii', 'Against Aristogeiton II', 'grc2', None, None),
+    ('tlg027', 'dem-against-aphobus-i', 'Against Aphobus I', 'grc2', None, None),
+    ('tlg028', 'dem-against-aphobus-ii', 'Against Aphobus II', 'grc2', None, None),
+    ('tlg029', 'dem-against-aphobus-iii', 'Against Aphobus III', 'grc2', None, None),
+    ('tlg030', 'dem-against-onetor-i', 'Against Onetor I', 'grc2', None, None),
+    ('tlg031', 'dem-against-onetor-ii', 'Against Onetor II', 'grc2', None, None),
+    ('tlg032', 'dem-against-zenothemis', 'Against Zenothemis', 'grc2', None, None),
+    ('tlg033', 'dem-against-apaturius', 'Against Apaturius', 'grc2', None, None),
+    ('tlg034', 'dem-against-phormio', 'Against Phormio', 'grc2', None, None),
+    ('tlg035', 'dem-against-lacritus', 'Against Lacritus', 'grc2', None, None),
+    ('tlg036', 'dem-for-phormio', 'For Phormio', 'grc2', None, None),
+    ('tlg037', 'dem-against-pantaenetus', 'Against Pantaenetus', 'grc2', None, None),
+    ('tlg038', 'dem-against-nausimachus-and-xenopeithes', 'Against Nausimachus and Xenopeithes', 'grc2', None, None),
+    ('tlg039', 'dem-against-boeotus-i', 'Against Boeotus I', 'grc2', None, None),
+    ('tlg040', 'dem-against-boeotus-ii', 'Against Boeotus II', 'grc2', None, None),
+    ('tlg041', 'dem-against-spudias', 'Against Spudias', 'grc2', None, None),
+    ('tlg042', 'dem-against-phaenippus', 'Against Phaenippus', 'grc2', None, None),
+    ('tlg043', 'dem-against-macartatus', 'Against Macartatus', 'grc2', None, None),
+    ('tlg044', 'dem-against-leochares', 'Against Leochares', 'grc2', None, None),
+    ('tlg045', 'dem-against-stephanus-i', 'Against Stephanus I', 'grc2', None, None),
+    ('tlg046', 'dem-against-stephanus-ii', 'Against Stephanus II', 'grc2', None, None),
+    ('tlg047', 'dem-against-evergus-and-mnesibulus', 'Against Evergus and Mnesibulus', 'grc2', None, None),
+    ('tlg048', 'dem-against-olympiodorus', 'Against Olympiodorus', 'grc2', None, None),
+    ('tlg049', 'dem-apollodorus-against-timotheus', 'Apollodorus Against Timotheus', 'grc2', None, None),
+    ('tlg050', 'dem-apollodorus-against-polycles', 'Apollodorus Against Polycles', 'grc2', None, None),
+    ('tlg051', 'dem-on-the-trierarchic-crown', 'On the Trierarchic Crown', 'grc2', None, None),
+    ('tlg052', 'dem-apollodorus-against-callippus', 'Apollodorus Against Callippus', 'grc2', None, None),
+    ('tlg053', 'dem-apollodorus-against-nicostratus', 'Apollodorus Against Nicostratus', 'grc2', None, None),
+    ('tlg054', 'dem-against-conon', 'Against Conon', 'grc2', None, None),
+    ('tlg055', 'dem-against-callicles', 'Against Callicles', 'grc2', None, None),
+    ('tlg056', 'dem-against-dionysodorus', 'Against Dionysodorus', 'grc2', None, None),
+    ('tlg057', 'dem-against-eubulides', 'Against Eubulides', 'grc2', None, None),
+    ('tlg058', 'dem-against-theocrines', 'Against Theocrines', 'grc2', None, None),
+    ('tlg059', 'dem-theomnestus-and-apollodorus-against-neaera', 'Theomnestus and Apollodorus Against Neaera', 'grc2', None, None),
+    ('tlg060', 'dem-the-funeral-speech', 'The Funeral Speech', 'grc2', None, None),
+    ('tlg061', 'dem-the-erotic-essay', 'The Erotic Essay', 'grc2', None, None),
+    ('tlg062', 'dem-exordia', 'Exordia', 'grc2', None, 'exordium'),
+    ('tlg063', 'dem-letters', 'Letters', 'grc2', None, 'letter'),
+]
+
+# ── Isocrates ────────────────────────────────────────
+ISOC_WORKS = [
+    ('tlg001', 'isoc-against-euthynus', 'Against Euthynus', 'grc2', None, None),
+    ('tlg002', 'isoc-against-callimachus', 'Against Callimachus', 'grc2', None, None),
+    ('tlg003', 'isoc-against-lochites', 'Against Lochites', 'grc2', None, None),
+    ('tlg004', 'isoc-concerning-the-team-of-horses', 'Concerning the Team of Horses', 'grc2', None, None),
+    ('tlg005', 'isoc-trapeziticus', 'Trapeziticus', 'grc2', None, None),
+    ('tlg006', 'isoc-aegineticus', 'Aegineticus', 'grc2', None, None),
+    ('tlg007', 'isoc-to-demonicus', 'To Demonicus', 'grc2', 'eng2', None),
+    ('tlg008', 'isoc-against-the-sophists', 'Against the Sophists', 'grc2', 'eng2', None),
+    ('tlg009', 'isoc-helen', 'Helen', 'grc2', None, None),
+    ('tlg010', 'isoc-busiris', 'Busiris', 'grc2', None, None),
+    ('tlg011', 'isoc-panegyricus', 'Panegyricus', 'grc2', 'eng2', None),
+    ('tlg012', 'isoc-plataicus', 'Plataicus', 'grc2', None, None),
+    ('tlg013', 'isoc-to-nicocles', 'To Nicocles', 'grc2', 'eng2', None),
+    ('tlg014', 'isoc-nicocles-or-the-cyprians', 'Nicocles or the Cyprians', 'grc2', 'eng2', None),
+    ('tlg015', 'isoc-evagoras', 'Evagoras', 'grc2', None, None),
+    ('tlg016', 'isoc-archidamus', 'Archidamus', 'grc2', 'eng2', None),
+    ('tlg017', 'isoc-on-the-peace', 'On the Peace', 'grc2', 'eng2', None),
+    ('tlg018', 'isoc-areopagiticus', 'Areopagiticus', 'grc2', 'eng2', None),
+    ('tlg019', 'isoc-antidosis', 'Antidosis', 'grc2', 'eng2', None),
+    ('tlg020', 'isoc-to-philip', 'To Philip', 'grc2', 'eng2', None),
+    ('tlg021', 'isoc-panathenaicus', 'Panathenaicus', 'grc2', 'eng2', None),
+    ('tlg022', 'isoc-to-dionysius', 'To Dionysius', 'grc2', None, None),
+    ('tlg023', 'isoc-to-the-children-of-jason', 'To the Children of Jason', 'grc2', None, None),
+    ('tlg024', 'isoc-to-archidamus', 'To Archidamus', 'grc2', None, None),
+    ('tlg025', 'isoc-to-the-rulers-of-the-mytilenaeans', 'To the Rulers of the Mytilenaeans', 'grc2', None, None),
+    ('tlg026', 'isoc-to-timotheus', 'To Timotheus', 'grc3', None, None),
+    ('tlg027', 'isoc-to-philip-i', 'To Philip, I', 'grc2', None, None),
+    ('tlg028', 'isoc-to-alexander', 'To Alexander', 'grc2', None, None),
+    ('tlg029', 'isoc-to-antipater', 'To Antipater', 'grc2', None, None),
+    ('tlg030', 'isoc-to-philip-ii', 'To Philip, II', 'grc2', None, None),
+]
+
+# ── Lysias ────────────────────────────────────────
+LYS_WORKS = [
+    ('tlg001', 'lys-on-the-murder-of-eratosthenes', 'On the Murder of Eratosthenes', 'grc2', 'eng2', None),
+    ('tlg002', 'lys-funeral-oration', 'Funeral Oration', 'grc2', 'eng2', None),
+    ('tlg003', 'lys-against-simon', 'Against Simon', 'grc2', 'eng2', None),
+    ('tlg004', 'lys-on-a-wound-by-premeditation', 'On A Wound By Premeditation', 'grc2', 'eng2', None),
+    ('tlg005', 'lys-for-callias', 'For Callias', 'grc2', 'eng2', None),
+    ('tlg006', 'lys-against-andocides', 'Against Andocides', 'grc2', 'eng2', None),
+    ('tlg007', 'lys-on-the-olive-stump', 'On the Olive Stump', 'grc2', 'eng2', None),
+    ('tlg008', 'lys-accusation-of-calumny', 'Accusation of Calumny', 'grc2', 'eng2', None),
+    ('tlg009', 'lys-for-the-soldier', 'For The Soldier', 'grc2', 'eng2', None),
+    ('tlg010', 'lys-against-theomnestus-1', 'Against Theomnestus 1', 'grc2', 'eng2', None),
+    ('tlg011', 'lys-against-theomnestus-2', 'Against Theomnestus 2', 'grc2', 'eng2', None),
+    ('tlg012', 'lys-against-eratosthenes', 'Against Eratosthenes', 'grc2', 'eng2', None),
+    ('tlg013', 'lys-against-agoratus', 'Against Agoratus', 'grc2', 'eng2', None),
+    ('tlg014', 'lys-against-alcibiades-1', 'Against Alcibiades 1', 'grc2', 'eng2', None),
+    ('tlg015', 'lys-against-alcibiades-2', 'Against Alcibiades 2', 'grc2', 'eng2', None),
+    ('tlg016', 'lys-in-defense-of-mantitheus', 'In Defense of Mantitheus', 'grc2', 'eng2', None),
+    ('tlg017', 'lys-on-the-property-of-eraton', 'On The Property Of Eraton', 'grc2', 'eng2', None),
+    ('tlg018', 'lys-on-the-confiscation-of-the-property-of-the-b', 'On the Confiscation of the Property Of The Brother Of Nicias', 'grc2', 'eng2', None),
+    ('tlg019', 'lys-on-the-property-of-aristophanes', 'On the Property of Aristophanes', 'grc2', 'eng2', None),
+    ('tlg020', 'lys-for-polystratus', 'For Polystratus', 'grc2', 'eng2', None),
+    ('tlg021', 'lys-defense-against-a-charge-of-taking-bribes', 'Defense Against A Charge Of Taking Bribes', 'grc2', 'eng2', None),
+    ('tlg022', 'lys-against-the-corn-dealers', 'Against The Corn-Dealers', 'grc2', 'eng2', None),
+    ('tlg023', 'lys-against-pancleon', 'Against Pancleon', 'grc2', 'eng2', None),
+    ('tlg024', 'lys-on-the-refusal-of-a-pension', 'On The Refusal Of A Pension', 'grc2', 'eng2', None),
+    ('tlg025', 'lys-defense-against-a-charge-of-subverting-the-d', 'Defense Against a Charge of Subverting the Democracy', 'grc2', 'eng2', None),
+    ('tlg026', 'lys-on-the-scrutiny-of-evandros', 'On the Scrutiny of Evandros', 'grc2', 'eng2', None),
+    ('tlg027', 'lys-against-epicrates-and-his-fellow-envoys', 'Against Epicrates and his Fellow-envoys', 'grc2', 'eng2', None),
+    ('tlg028', 'lys-against-ergocles', 'Against Ergocles', 'grc2', 'eng2', None),
+    ('tlg029', 'lys-against-philocrates', 'Against Philocrates', 'grc2', 'eng2', None),
+    ('tlg030', 'lys-against-nicomachus', 'Against Nicomachus', 'grc2', 'eng2', None),
+    ('tlg031', 'lys-against-philon', 'Against Philon', 'grc2', 'eng2', None),
+    ('tlg032', 'lys-against-diogeiton', 'Against Diogeiton', 'grc2', 'eng2', None),
+    ('tlg033', 'lys-olympic-oration', 'Olympic Oration', 'grc2', 'eng2', None),
+    ('tlg034', 'lys-against-the-subversion-of-the-ancestral-cons', 'Against The Subversion of the Ancestral Constitution', 'grc2', 'eng2', None),
+]
+
 
 # Perseus files a work's Greek under -grc2 almost everywhere; these are the exceptions. The
 # apophthegmata group (081–088) carries both -grc3 and -grc4, and only -grc4 divides the same
@@ -785,7 +955,11 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
     base = f'{urn_dir}/{urn_base}'
     grc_bytes = fetch(f'{base}.perseus-{grc_suffix}.xml', no_cache)
     grc = parse_units(grc_bytes, book_sub, unit_sub)
-    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub)
+    # eng_suffix None builds the Greek alone. Used where Perseus' only English translation is
+    # still in copyright — most of Demosthenes and two thirds of Isocrates — so the Greek can
+    # still be read, searched and parsed rather than the work being left out altogether.
+    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub) \
+        if eng_suffix else {}
     refs = parse_unit_refs(grc_bytes, book_sub, unit_sub, ref_unit) if ref_unit else {}
     if book_sub:
         books = {}
@@ -807,6 +981,8 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
              **({'ref': units[u][2]} if units[u][2] else {})}]}
             for u in sorted(units)]
     doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    if not eng_suffix:
+        doc['greekOnly'] = True
     chapters = doc['chapters']
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
@@ -1137,15 +1313,22 @@ def build_bcs_chapter_pair(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix,
 
 
 def edition_year(xml_bytes):
-    """The latest printed-edition year in a TEI header — what decides whether the translation
-    may be shipped. Taking the latest, not the earliest, keeps the check conservative, and it
-    has to: a multi-volume Loeb carries a RANGE, and the range is where the danger is. Strabo's
-    Hamilton reads <date>1854-1857</date> and is safe throughout, while Pausanias' Jones reads
-    <date>1918-1935</date> — volumes 1-2 out of copyright and volumes 3-4 emphatically not.
-    Reading only a bare four-digit year missed both."""
+    """The year the PRINTED edition was published, read from the source description's <imprint>.
+
+    Taking the latest year inside the imprint, not the earliest, keeps the check conservative,
+    and it has to: a multi-volume Loeb carries a RANGE, and the range is where the danger lies.
+    Strabo's Hamilton reads <date>1854-1857</date> and is safe throughout, while Pausanias' Jones
+    reads <date>1918-1935</date> — volumes 1-2 out of copyright and volumes 3-4 emphatically not.
+
+    But it must be the imprint and nothing else. Reading every <date> in the header instead took
+    the latest of all of them, which for the whole of Demosthenes is Perseus' own digitisation
+    date of 1996 — so a translation actually printed in 1926 looked unverifiable and the guard
+    blocked the entire author. The imprint is where the press and the year live."""
     head = xml_bytes[:20000].decode('utf-8', 'replace')
-    years = [int(y) for y in re.findall(r'<date[^>]*>[^<]*?(1[89]\d\d)(?:[^<]*?(1[89]\d\d))?[^<]*?</date>',
-                                        head) for y in y if y]
+    imprint = re.search(r'(?is)<imprint\b.*?</imprint>', head)
+    scope = imprint.group(0) if imprint else head
+    years = [int(y) for pair in re.findall(r'(?is)<date[^>]*>[^<]*?(1[89]\d\d)(?:[^<]*?(1[89]\d\d))?[^<]*?</date>', scope)
+             for y in pair if y]
     return max(years) if years else None
 
 
@@ -1159,7 +1342,10 @@ def check_licence(no_cache):
             + [(f'tlg0007/{w}', f'tlg0007.{w}', e)
                for w, _s, _t, _l, e, _a in PLUTARCH_MORALIA + PLUTARCH_MORALIA_CH]
             + [(f'tlg0007/{w}', f'tlg0007.{w}', e) for w, e in PLUTARCH_EXTRA_EDITIONS]
-            + PD_ENGLISH_EDITIONS)
+            + PD_ENGLISH_EDITIONS
+            + [(f'{a}/{w}', f'{a}.{w}', e)
+               for a, rows in (('tlg0014', DEM_WORKS), ('tlg0010', ISOC_WORKS), ('tlg0540', LYS_WORKS))
+               for w, _s, _t, _g, e, _b in rows if e])
     bad = []
     for urn_dir, urn_base, suffix in rows:
         yr = edition_year(fetch(f'{urn_dir}/{urn_base}.perseus-{suffix}.xml', no_cache))
@@ -1343,6 +1529,16 @@ def main():
                                    'tlg0020/tlg002', 'tlg0020.tlg002', 'eng2', False, HESIOD_ATTRIB, no_cache)
     results += build_line_parallel('hesiod-shield', 'Hesiod, Shield of Heracles',
                                    'tlg0020/tlg003', 'tlg0020.tlg003', 'eng2', False, HESIOD_ATTRIB, no_cache)
+    # The Attic orators — one work per speech, Greek always, English where it is free.
+    for author, rows, attrib, label in (('tlg0014', DEM_WORKS, DEMOSTHENES_ATTRIB, 'Demosthenes'),
+                                        ('tlg0010', ISOC_WORKS, ISOCRATES_ATTRIB, 'Isocrates'),
+                                        ('tlg0540', LYS_WORKS, LYSIAS_ATTRIB, 'Lysias')):
+        for wid, slug, title, grc_suffix, eng_suffix, book_sub in rows:
+            results += build_units(slug, f'{label}, {title}',
+                                   f'{author}/{wid}', f'{author}.{wid}', eng_suffix,
+                                   book_sub, 'section',
+                                   attrib if eng_suffix else f'{label}: {ORATOR_GRC_ONLY}',
+                                   no_cache, grc_suffix=grc_suffix)
     # Thucydides, History of the Peloponnesian War — book→chapter→section, one work per book.
     # Crawley's 1914 English divides exactly as the Greek does (3,587 sections either side);
     # Perseus also carries Smith's Loeb, which is still in copyright. "Thuc. 1.22.1" → Book 1,

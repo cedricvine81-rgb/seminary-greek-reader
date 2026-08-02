@@ -40,7 +40,12 @@ export function getTextSummary(work: Pick<CatalogWork, 'id' | 'name'>): TextSumm
   // Eusebius' ten) shares one summary: fall back to the id with its trailing book number
   // stripped, so "herodotus-histories-7" finds "herodotus-histories". A book that genuinely
   // warrants its own entry can still have one — an exact-id match always wins.
-  const authored = TEXT_SUMMARIES[work.id] ?? TEXT_SUMMARIES[work.id.replace(/-\d+$/, '')]
+  // An orator's speeches all share their author's summary. Their ids are "dem-first-olynthiac",
+  // "lys-against-simon" and so on — no trailing number for the rule above to strip — so the
+  // author prefix is tried last.
+  const authored = TEXT_SUMMARIES[work.id]
+    ?? TEXT_SUMMARIES[work.id.replace(/-\d+$/, '')]
+    ?? TEXT_SUMMARIES[work.id.slice(0, work.id.indexOf('-'))]
   if (authored) return { sections: authored.sections, aiDrafted: true }
   return null
 }
@@ -1746,6 +1751,27 @@ export const TEXT_SUMMARIES: Record<string, AuthoredSummary> = {
     'His largest surviving Greek work, though much is lost: Books 1, 2, 4, 5, 6, 10, 13, 19, 20, 28 and 32 survive, covering John in great detail as far as chapter 13. Book 1 alone spends its whole length on the opening words "In the beginning was the Word". Divided here one work per surviving book, the verse rows being Preuschen’s sections.',
     'It is the first full-scale Christian commentary, and works out in practice Origen’s conviction that scripture has a bodily, a psychic and a spiritual sense, the last being the one the mature reader seeks.',
     'The foundation of Christian biblical commentary as a form, the principal source for Heracleon and so for Gnostic exegesis of John, and an unequalled record of how a third-century scholar read the Fourth Gospel word by word.',
+  ),
+  'dem': S(
+    'By Demosthenes of Athens (384–322 BCE), the greatest of the Attic orators, who spent his career urging Athens to resist the growing power of Macedon and took poison rather than fall into Macedonian hands.',
+    'Fourth-century Athens, where public policy was decided by speeches in the assembly and private disputes by speeches in the courts. Demosthenes began as a speechwriter for others, and the corpus mixes his own political orations with courtroom speeches written for clients — some of which are certainly not his.',
+    'Sixty-one speeches, with the Exordia and Letters. The political core is the Olynthiacs and Philippics, urging war against Philip II; the masterpiece is On the Crown, his defence of a lifetime\u2019s policy after Chaeronea. The rest are prosecutions, defences and private suits over inheritance, banking, trade and citizenship. Each speech is a separate work here, cited by speech and section, "Dem. 18.35".',
+    'Not a religious corpus, but a moral and political one: Demosthenes argues throughout from what a citizen owes his city and from the difference between flattering an audience and telling it the truth.',
+    'The high-water mark of Greek prose style, and the standard by which ancient critics judged persuasion — the background against which Paul\u2019s disavowal of rhetorical display in 1 Corinthians 2 was heard. The private speeches are unmatched evidence for daily life, money, marriage, slavery and the law courts in a Greek city.',
+  ),
+  'isoc': S(
+    'By Isocrates of Athens (436–338 BCE), pupil of the sophists, founder of the most influential school in Greece, and the teacher through whom Greek rhetorical education reached the Roman world.',
+    'Isocrates wrote rather than spoke: a weak voice kept him from the assembly, so he published discourses meant to be read. His school shaped the ideal of the cultivated citizen — philosophia understood as the training of judgement and expression together, not as speculation.',
+    'Twenty-one discourses and nine letters. The best known are the Panegyricus and To Philip, urging the Greek states to unite against Persia; the Antidosis, his apologia and account of his own teaching; and the hortatory pieces To Demonicus and To Nicocles, which became school texts for two thousand years. Cited by number and section, "Isoc. 4.50"; the letters "Isoc. Ep. 2.5".',
+    'His conviction that right speech and right character are inseparable, and that education should form the whole person for public usefulness, became the governing idea of the liberal arts.',
+    'The single most important influence on the rhetorical education that every literate writer of the New Testament period had absorbed, directly or at second hand; To Demonicus in particular is a close formal parallel to the hortatory sections of the epistles.',
+  ),
+  'lys': S(
+    'By Lysias (c. 445 – c. 380 BCE), a metic — a resident foreigner — at Athens, whose family fortune was seized and whose brother was killed by the Thirty Tyrants, and who afterwards made his living writing speeches for others to deliver.',
+    'Written for the Athenian courts in the generation after the Peloponnesian War, during the restoration of the democracy and the settling of scores that followed the tyranny of 404 BCE.',
+    'Thirty-four speeches, almost all for litigants: prosecutions and defences over murder, impiety, embezzlement, disputed inheritance, army service and citizenship. Against Eratosthenes prosecutes one of the Thirty for his brother\u2019s death and is his only speech delivered in person; On the Murder of Eratosthenes, a husband\u2019s defence for killing his wife\u2019s lover, is the most read. Cited by speech and section, "Lys. 12.5".',
+    'Lysias is valued for ēthopoiia — the art of writing so that each speaker sounds like himself, a farmer like a farmer and an invalid like an invalid — which ancient critics treated as the highest technical achievement in prose.',
+    'The plainest and most transparent Attic prose, long the first author students read after the New Testament; and, because his clients were ordinary people, an unusually direct window onto the households, marriages, quarrels and religion of a Greek city.',
   ),
   'af-hermas': S(
     'By Hermas, a Christian of Rome; the Muratorian Fragment says he was the brother of Bishop Pius, placing him in the mid second century.',

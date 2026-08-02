@@ -26,7 +26,7 @@ export interface ProseWork {
 // The `tp-<slug>` members are the twelve Testaments of the Twelve Patriarchs, the
 // `philo-<slug>` members are Philo of Alexandria's treatises, the `af-<slug>` members are
 // the Apostolic Fathers, and the `tg-<slug>` members are the Targums (see below).
-export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}`
+export type EmbeddedProseSource = '2esdras' | '1enoch' | 'jubilees' | '2baruch' | '2enoch' | 'apocmoses' | 'lae' | 'assumption-moses' | '3baruch' | 'tjob-greek' | 'josaseneth' | 'aristeas' | 'sibylline' | 'sibylline-greek' | 'pseudo-philo' | 'odes-of-solomon' | 'ascension-of-isaiah' | 'protevangelium' | 'gospel-of-peter' | 'paul-and-thecla' | 'nt-pagan-sources' | 'marcus-aurelius-meditations' | 'philostratus-apollonius' | 'dio-chrysostom-orations' | 'aratus-phaenomena' | 'theon-progymnasmata' | `tp-${string}` | `philo-${string}` | `af-${string}` | `tg-${string}` | `anf-${string}` | `m-${string}` | `y-${string}` | `b-${string}` | `t-${string}` | `justin-${string}` | `greco-${string}` | `eusebius-${string}` | `clement-${string}` | `origen-${string}` | `athanasius-${string}` | `plato-${string}` | `aristotle-${string}` | `plutarch-${string}` | `apollodorus-${string}` | `lucian-${string}` | `xenophon-${string}` | `quintilian-${string}` | 'homer-iliad' | 'homer-odyssey' | 'hesiod-theogony' | 'hesiod-works-and-days' | 'hesiod-shield' | `herodotus-histories-${string}` | `dem-${string}` | `isoc-${string}` | `lys-${string}`
 
 /** The Testament of Job carries the cited numbering natively — the 53-chapter division of
  *  M. R. James, followed by Brock and Charlesworth — so citations resolve straight through:
@@ -1044,6 +1044,203 @@ export const PAUSANIAS_CATALOG = PAUSANIAS_BOOKS.map(b => ({
   chapters: b.last, greek: true,
   // Books 6-10 have no English column at all, so they open in Greek-only view.
   ...(b.book >= 6 ? { greekOnly: true } : {}),
+}))
+
+// ── The Attic orators ─────────────────────────────────────────────────────────────────
+// Demosthenes, Isocrates and Lysias, one work per speech, built by scripts/build-perseus.py.
+// Every speech carries its Greek; the English is present only where Perseus' translation is out
+// of copyright — all of Lysias (Lamb 1930, free since 1 Jan 2026), the Vinces' Demosthenes
+// (1926, 1930), and Norlin's first Isocrates volume (1928). Murray's and DeWitt's Demosthenes
+// and Van Hook's Isocrates are not free, so those speeches are `greekOnly` — still searchable,
+// still parsed, just without a translation beside them.
+//
+// `num` is the traditional speech number, which is what citations use. For Demosthenes and
+// Lysias it happens to match Perseus' work id; for Isocrates it does not — Perseus follows the
+// Loeb's order, so its tlg001 is Against Euthynus, which is Isocrates 21. `letter` marks the
+// nine Epistles, cited "Isoc. Ep. 2.5".
+const ORATOR_ATTRIB: Record<string, string> = {
+  Demosthenes: 'Text: Demosthenes, tr. J. H. and C. A. Vince (Loeb, 1926–1930), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.',
+  Isocrates: 'Text: Isocrates, tr. George Norlin (Loeb, 1928), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.',
+  Lysias: 'Text: Lysias, tr. W. R. M. Lamb (Loeb, 1930), public domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.',
+}
+const ORATOR_GRC_ONLY_ATTRIB = 'Greek ed. Perseus. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Greek only: the only English translation Perseus carries for this speech is still in copyright.'
+
+interface OratorWork {
+  slug: string
+  name: string
+  noteBook: string
+  chapters: number
+  num?: number
+  letter?: boolean
+  greekOnly?: boolean
+  chapterNumbers?: number[]
+}
+
+const ORATORS: OratorWork[] = [
+  // Demosthenes
+  { slug: 'dem-first-olynthiac', name: 'Demosthenes, First Olynthiac', noteBook: 'DemFirstOlynthiac', chapters: 28, num: 1 },
+  { slug: 'dem-second-olynthiac', name: 'Demosthenes, Second Olynthiac', noteBook: 'DemSecondOlynthiac', chapters: 31, num: 2 },
+  { slug: 'dem-third-olynthiac', name: 'Demosthenes, Third Olynthiac', noteBook: 'DemThirdOlynthiac', chapters: 36, num: 3 },
+  { slug: 'dem-first-philippic', name: 'Demosthenes, First Philippic', noteBook: 'DemFirstPhilippic', chapters: 51, num: 4 },
+  { slug: 'dem-on-the-peace', name: 'Demosthenes, On the Peace', noteBook: 'DemOnThePeace', chapters: 25, num: 5 },
+  { slug: 'dem-second-philippic', name: 'Demosthenes, Second Philippic', noteBook: 'DemSecondPhilippic', chapters: 37, num: 6 },
+  { slug: 'dem-on-halonnesus', name: 'Demosthenes, On Halonnesus', noteBook: 'DemOnHalonnesus', chapters: 46, num: 7 },
+  { slug: 'dem-on-the-chersonese', name: 'Demosthenes, On the Chersonese', noteBook: 'DemOnTheChersonese', chapters: 77, num: 8 },
+  { slug: 'dem-third-philippic', name: 'Demosthenes, Third Philippic', noteBook: 'DemThirdPhilippic', chapters: 76, num: 9 },
+  { slug: 'dem-fourth-philippic', name: 'Demosthenes, Fourth Philippic', noteBook: 'DemFourthPhilippic', chapters: 76, num: 10 },
+  { slug: 'dem-answer-to-philip-s-letter', name: 'Demosthenes, Answer to Philip’s Letter', noteBook: 'DemAnswerToPhilipSLetter', chapters: 23, num: 11 },
+  { slug: 'dem-philip-s-letter', name: 'Demosthenes, Philip’s Letter', noteBook: 'DemPhilipSLetter', chapters: 23, num: 12 },
+  { slug: 'dem-on-organization', name: 'Demosthenes, On Organization', noteBook: 'DemOnOrganization', chapters: 36, num: 13 },
+  { slug: 'dem-on-the-navy-boards', name: 'Demosthenes, On the Navy-Boards', noteBook: 'DemOnTheNavyBoards', chapters: 41, num: 14 },
+  { slug: 'dem-for-the-liberty-of-the-rhodians', name: 'Demosthenes, For the Liberty of the Rhodians', noteBook: 'DemForTheLibertyOfTheRhodians', chapters: 35, num: 15 },
+  { slug: 'dem-for-the-people-of-megalopolis', name: 'Demosthenes, For the People of Megalopolis', noteBook: 'DemForThePeopleOfMegalopolis', chapters: 32, num: 16 },
+  { slug: 'dem-on-the-treaty-with-alexander', name: 'Demosthenes, On the Treaty with Alexander', noteBook: 'DemOnTheTreatyWithAlexander', chapters: 30, num: 17 },
+  { slug: 'dem-on-the-crown', name: 'Demosthenes, On the Crown', noteBook: 'DemOnTheCrown', chapters: 324, num: 18 },
+  { slug: 'dem-on-the-false-embassy', name: 'Demosthenes, On the False Embassy', noteBook: 'DemOnTheFalseEmbassy', chapters: 343, num: 19, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321, 322, 323, 324, 325, 326, 327, 328, 329, 330, 331, 332, 333, 334, 335, 336, 337, 338, 339, 340, 341, 342, 343] },
+  { slug: 'dem-against-leptines', name: 'Demosthenes, Against Leptines', noteBook: 'DemAgainstLeptines', chapters: 167, num: 20 },
+  { slug: 'dem-against-meidias', name: 'Demosthenes, Against Meidias', noteBook: 'DemAgainstMeidias', chapters: 227, num: 21, greekOnly: true },
+  { slug: 'dem-against-androtion', name: 'Demosthenes, Against Androtion', noteBook: 'DemAgainstAndrotion', chapters: 78, num: 22, greekOnly: true },
+  { slug: 'dem-against-aristocrates', name: 'Demosthenes, Against Aristocrates', noteBook: 'DemAgainstAristocrates', chapters: 220, num: 23, greekOnly: true },
+  { slug: 'dem-against-timocrates', name: 'Demosthenes, Against Timocrates', noteBook: 'DemAgainstTimocrates', chapters: 218, num: 24, greekOnly: true },
+  { slug: 'dem-against-aristogeiton-i', name: 'Demosthenes, Against Aristogeiton I', noteBook: 'DemAgainstAristogeitonI', chapters: 101, num: 25, greekOnly: true },
+  { slug: 'dem-against-aristogeiton-ii', name: 'Demosthenes, Against Aristogeiton II', noteBook: 'DemAgainstAristogeitonIi', chapters: 27, num: 26, greekOnly: true },
+  { slug: 'dem-against-aphobus-i', name: 'Demosthenes, Against Aphobus I', noteBook: 'DemAgainstAphobusI', chapters: 69, num: 27, greekOnly: true },
+  { slug: 'dem-against-aphobus-ii', name: 'Demosthenes, Against Aphobus II', noteBook: 'DemAgainstAphobusIi', chapters: 24, num: 28, greekOnly: true },
+  { slug: 'dem-against-aphobus-iii', name: 'Demosthenes, Against Aphobus III', noteBook: 'DemAgainstAphobusIii', chapters: 60, num: 29, greekOnly: true },
+  { slug: 'dem-against-onetor-i', name: 'Demosthenes, Against Onetor I', noteBook: 'DemAgainstOnetorI', chapters: 39, num: 30, greekOnly: true },
+  { slug: 'dem-against-onetor-ii', name: 'Demosthenes, Against Onetor II', noteBook: 'DemAgainstOnetorIi', chapters: 14, num: 31, greekOnly: true },
+  { slug: 'dem-against-zenothemis', name: 'Demosthenes, Against Zenothemis', noteBook: 'DemAgainstZenothemis', chapters: 32, num: 32, greekOnly: true },
+  { slug: 'dem-against-apaturius', name: 'Demosthenes, Against Apaturius', noteBook: 'DemAgainstApaturius', chapters: 38, num: 33, greekOnly: true },
+  { slug: 'dem-against-phormio', name: 'Demosthenes, Against Phormio', noteBook: 'DemAgainstPhormio', chapters: 52, num: 34, greekOnly: true },
+  { slug: 'dem-against-lacritus', name: 'Demosthenes, Against Lacritus', noteBook: 'DemAgainstLacritus', chapters: 56, num: 35, greekOnly: true },
+  { slug: 'dem-for-phormio', name: 'Demosthenes, For Phormio', noteBook: 'DemForPhormio', chapters: 62, num: 36, greekOnly: true },
+  { slug: 'dem-against-pantaenetus', name: 'Demosthenes, Against Pantaenetus', noteBook: 'DemAgainstPantaenetus', chapters: 60, num: 37, greekOnly: true },
+  { slug: 'dem-against-nausimachus-and-xenopeithes', name: 'Demosthenes, Against Nausimachus and Xenopeithes', noteBook: 'DemAgainstNausimachusAndXenop', chapters: 28, num: 38, greekOnly: true },
+  { slug: 'dem-against-boeotus-i', name: 'Demosthenes, Against Boeotus I', noteBook: 'DemAgainstBoeotusI', chapters: 41, num: 39, greekOnly: true },
+  { slug: 'dem-against-boeotus-ii', name: 'Demosthenes, Against Boeotus II', noteBook: 'DemAgainstBoeotusIi', chapters: 61, num: 40, greekOnly: true },
+  { slug: 'dem-against-spudias', name: 'Demosthenes, Against Spudias', noteBook: 'DemAgainstSpudias', chapters: 30, num: 41, greekOnly: true },
+  { slug: 'dem-against-phaenippus', name: 'Demosthenes, Against Phaenippus', noteBook: 'DemAgainstPhaenippus', chapters: 32, num: 42, greekOnly: true },
+  { slug: 'dem-against-macartatus', name: 'Demosthenes, Against Macartatus', noteBook: 'DemAgainstMacartatus', chapters: 84, num: 43, greekOnly: true },
+  { slug: 'dem-against-leochares', name: 'Demosthenes, Against Leochares', noteBook: 'DemAgainstLeochares', chapters: 68, num: 44, greekOnly: true },
+  { slug: 'dem-against-stephanus-i', name: 'Demosthenes, Against Stephanus I', noteBook: 'DemAgainstStephanusI', chapters: 88, num: 45, greekOnly: true },
+  { slug: 'dem-against-stephanus-ii', name: 'Demosthenes, Against Stephanus II', noteBook: 'DemAgainstStephanusIi', chapters: 28, num: 46, greekOnly: true },
+  { slug: 'dem-against-evergus-and-mnesibulus', name: 'Demosthenes, Against Evergus and Mnesibulus', noteBook: 'DemAgainstEvergusAndMnesibulu', chapters: 82, num: 47, greekOnly: true },
+  { slug: 'dem-against-olympiodorus', name: 'Demosthenes, Against Olympiodorus', noteBook: 'DemAgainstOlympiodorus', chapters: 58, num: 48, greekOnly: true },
+  { slug: 'dem-apollodorus-against-timotheus', name: 'Demosthenes, Apollodorus Against Timotheus', noteBook: 'DemApollodorusAgainstTimotheu', chapters: 69, num: 49, greekOnly: true },
+  { slug: 'dem-apollodorus-against-polycles', name: 'Demosthenes, Apollodorus Against Polycles', noteBook: 'DemApollodorusAgainstPolycles', chapters: 68, num: 50, greekOnly: true },
+  { slug: 'dem-on-the-trierarchic-crown', name: 'Demosthenes, On the Trierarchic Crown', noteBook: 'DemOnTheTrierarchicCrown', chapters: 22, num: 51, greekOnly: true },
+  { slug: 'dem-apollodorus-against-callippus', name: 'Demosthenes, Apollodorus Against Callippus', noteBook: 'DemApollodorusAgainstCallippu', chapters: 33, num: 52, greekOnly: true },
+  { slug: 'dem-apollodorus-against-nicostratus', name: 'Demosthenes, Apollodorus Against Nicostratus', noteBook: 'DemApollodorusAgainstNicostra', chapters: 29, num: 53, greekOnly: true },
+  { slug: 'dem-against-conon', name: 'Demosthenes, Against Conon', noteBook: 'DemAgainstConon', chapters: 44, num: 54, greekOnly: true },
+  { slug: 'dem-against-callicles', name: 'Demosthenes, Against Callicles', noteBook: 'DemAgainstCallicles', chapters: 35, num: 55, greekOnly: true },
+  { slug: 'dem-against-dionysodorus', name: 'Demosthenes, Against Dionysodorus', noteBook: 'DemAgainstDionysodorus', chapters: 50, num: 56, greekOnly: true },
+  { slug: 'dem-against-eubulides', name: 'Demosthenes, Against Eubulides', noteBook: 'DemAgainstEubulides', chapters: 70, num: 57, greekOnly: true },
+  { slug: 'dem-against-theocrines', name: 'Demosthenes, Against Theocrines', noteBook: 'DemAgainstTheocrines', chapters: 70, num: 58, greekOnly: true },
+  { slug: 'dem-theomnestus-and-apollodorus-against-neaera', name: 'Demosthenes, Theomnestus and Apollodorus Against Neaera', noteBook: 'DemTheomnestusAndApollodorusA', chapters: 126, num: 59, greekOnly: true },
+  { slug: 'dem-the-funeral-speech', name: 'Demosthenes, The Funeral Speech', noteBook: 'DemTheFuneralSpeech', chapters: 37, num: 60, greekOnly: true },
+  { slug: 'dem-the-erotic-essay', name: 'Demosthenes, The Erotic Essay', noteBook: 'DemTheEroticEssay', chapters: 57, num: 61, greekOnly: true },
+  { slug: 'dem-exordia', name: 'Demosthenes, Exordia', noteBook: 'DemExordia', chapters: 56, num: 62, greekOnly: true },
+  { slug: 'dem-letters', name: 'Demosthenes, Letters', noteBook: 'DemLetters', chapters: 6, num: 63, greekOnly: true },
+  // Isocrates
+  { slug: 'isoc-against-euthynus', name: 'Isocrates, Against Euthynus', noteBook: 'IsocAgainstEuthynus', chapters: 21, num: 21, greekOnly: true },
+  { slug: 'isoc-against-callimachus', name: 'Isocrates, Against Callimachus', noteBook: 'IsocAgainstCallimachus', chapters: 68, num: 18, greekOnly: true },
+  { slug: 'isoc-against-lochites', name: 'Isocrates, Against Lochites', noteBook: 'IsocAgainstLochites', chapters: 22, num: 20, greekOnly: true },
+  { slug: 'isoc-concerning-the-team-of-horses', name: 'Isocrates, Concerning the Team of Horses', noteBook: 'IsocConcerningTheTeamOfHorses', chapters: 50, num: 16, greekOnly: true },
+  { slug: 'isoc-trapeziticus', name: 'Isocrates, Trapeziticus', noteBook: 'IsocTrapeziticus', chapters: 58, num: 17, greekOnly: true },
+  { slug: 'isoc-aegineticus', name: 'Isocrates, Aegineticus', noteBook: 'IsocAegineticus', chapters: 51, num: 19, greekOnly: true },
+  { slug: 'isoc-to-demonicus', name: 'Isocrates, To Demonicus', noteBook: 'IsocToDemonicus', chapters: 52, num: 1 },
+  { slug: 'isoc-against-the-sophists', name: 'Isocrates, Against the Sophists', noteBook: 'IsocAgainstTheSophists', chapters: 22, num: 13 },
+  { slug: 'isoc-helen', name: 'Isocrates, Helen', noteBook: 'IsocHelen', chapters: 69, num: 10, greekOnly: true },
+  { slug: 'isoc-busiris', name: 'Isocrates, Busiris', noteBook: 'IsocBusiris', chapters: 50, num: 11, greekOnly: true },
+  { slug: 'isoc-panegyricus', name: 'Isocrates, Panegyricus', noteBook: 'IsocPanegyricus', chapters: 189, num: 4 },
+  { slug: 'isoc-plataicus', name: 'Isocrates, Plataicus', noteBook: 'IsocPlataicus', chapters: 63, num: 14, greekOnly: true },
+  { slug: 'isoc-to-nicocles', name: 'Isocrates, To Nicocles', noteBook: 'IsocToNicocles', chapters: 54, num: 2 },
+  { slug: 'isoc-nicocles-or-the-cyprians', name: 'Isocrates, Nicocles or the Cyprians', noteBook: 'IsocNicoclesOrTheCyprians', chapters: 64, num: 3 },
+  { slug: 'isoc-evagoras', name: 'Isocrates, Evagoras', noteBook: 'IsocEvagoras', chapters: 81, num: 9, greekOnly: true },
+  { slug: 'isoc-archidamus', name: 'Isocrates, Archidamus', noteBook: 'IsocArchidamus', chapters: 111, num: 6 },
+  { slug: 'isoc-on-the-peace', name: 'Isocrates, On the Peace', noteBook: 'IsocOnThePeace', chapters: 145, num: 8 },
+  { slug: 'isoc-areopagiticus', name: 'Isocrates, Areopagiticus', noteBook: 'IsocAreopagiticus', chapters: 84, num: 7 },
+  { slug: 'isoc-antidosis', name: 'Isocrates, Antidosis', noteBook: 'IsocAntidosis', chapters: 323, num: 15 },
+  { slug: 'isoc-to-philip', name: 'Isocrates, To Philip', noteBook: 'IsocToPhilip', chapters: 155, num: 5 },
+  { slug: 'isoc-panathenaicus', name: 'Isocrates, Panathenaicus', noteBook: 'IsocPanathenaicus', chapters: 272, num: 12 },
+  { slug: 'isoc-to-dionysius', name: 'Isocrates, To Dionysius', noteBook: 'IsocToDionysius', chapters: 10, num: 1, letter: true, greekOnly: true },
+  { slug: 'isoc-to-the-children-of-jason', name: 'Isocrates, To the Children of Jason', noteBook: 'IsocToTheChildrenOfJason', chapters: 14, num: 6, letter: true, greekOnly: true },
+  { slug: 'isoc-to-archidamus', name: 'Isocrates, To Archidamus', noteBook: 'IsocToArchidamus', chapters: 19, num: 9, letter: true, greekOnly: true },
+  { slug: 'isoc-to-the-rulers-of-the-mytilenaeans', name: 'Isocrates, To the Rulers of the Mytilenaeans', noteBook: 'IsocToTheRulersOfTheMytilenaea', chapters: 10, num: 8, letter: true, greekOnly: true },
+  { slug: 'isoc-to-timotheus', name: 'Isocrates, To Timotheus', noteBook: 'IsocToTimotheus', chapters: 13, num: 7, letter: true, greekOnly: true },
+  { slug: 'isoc-to-philip-i', name: 'Isocrates, To Philip, I', noteBook: 'IsocToPhilipI', chapters: 24, num: 2, letter: true, greekOnly: true },
+  { slug: 'isoc-to-alexander', name: 'Isocrates, To Alexander', noteBook: 'IsocToAlexander', chapters: 5, num: 5, letter: true, greekOnly: true },
+  { slug: 'isoc-to-antipater', name: 'Isocrates, To Antipater', noteBook: 'IsocToAntipater', chapters: 13, num: 4, letter: true, greekOnly: true },
+  { slug: 'isoc-to-philip-ii', name: 'Isocrates, To Philip, II', noteBook: 'IsocToPhilipIi', chapters: 6, num: 3, letter: true, greekOnly: true },
+  // Lysias
+  { slug: 'lys-on-the-murder-of-eratosthenes', name: 'Lysias, On the Murder of Eratosthenes', noteBook: 'LysOnTheMurderOfEratosthenes', chapters: 50, num: 1 },
+  { slug: 'lys-funeral-oration', name: 'Lysias, Funeral Oration', noteBook: 'LysFuneralOration', chapters: 81, num: 2 },
+  { slug: 'lys-against-simon', name: 'Lysias, Against Simon', noteBook: 'LysAgainstSimon', chapters: 48, num: 3 },
+  { slug: 'lys-on-a-wound-by-premeditation', name: 'Lysias, On A Wound By Premeditation', noteBook: 'LysOnAWoundByPremeditation', chapters: 20, num: 4 },
+  { slug: 'lys-for-callias', name: 'Lysias, For Callias', noteBook: 'LysForCallias', chapters: 5, num: 5 },
+  { slug: 'lys-against-andocides', name: 'Lysias, Against Andocides', noteBook: 'LysAgainstAndocides', chapters: 55, num: 6 },
+  { slug: 'lys-on-the-olive-stump', name: 'Lysias, On the Olive Stump', noteBook: 'LysOnTheOliveStump', chapters: 43, num: 7 },
+  { slug: 'lys-accusation-of-calumny', name: 'Lysias, Accusation of Calumny', noteBook: 'LysAccusationOfCalumny', chapters: 20, num: 8 },
+  { slug: 'lys-for-the-soldier', name: 'Lysias, For The Soldier', noteBook: 'LysForTheSoldier', chapters: 22, num: 9 },
+  { slug: 'lys-against-theomnestus-1', name: 'Lysias, Against Theomnestus 1', noteBook: 'LysAgainstTheomnestus1', chapters: 32, num: 10 },
+  { slug: 'lys-against-theomnestus-2', name: 'Lysias, Against Theomnestus 2', noteBook: 'LysAgainstTheomnestus2', chapters: 12, num: 11 },
+  { slug: 'lys-against-eratosthenes', name: 'Lysias, Against Eratosthenes', noteBook: 'LysAgainstEratosthenes', chapters: 100, num: 12 },
+  { slug: 'lys-against-agoratus', name: 'Lysias, Against Agoratus', noteBook: 'LysAgainstAgoratus', chapters: 97, num: 13 },
+  { slug: 'lys-against-alcibiades-1', name: 'Lysias, Against Alcibiades 1', noteBook: 'LysAgainstAlcibiades1', chapters: 47, num: 14 },
+  { slug: 'lys-against-alcibiades-2', name: 'Lysias, Against Alcibiades 2', noteBook: 'LysAgainstAlcibiades2', chapters: 12, num: 15 },
+  { slug: 'lys-in-defense-of-mantitheus', name: 'Lysias, In Defense of Mantitheus', noteBook: 'LysInDefenseOfMantitheus', chapters: 21, num: 16 },
+  { slug: 'lys-on-the-property-of-eraton', name: 'Lysias, On The Property Of Eraton', noteBook: 'LysOnThePropertyOfEraton', chapters: 10, num: 17 },
+  { slug: 'lys-on-the-confiscation-of-the-property-of-the-b', name: 'Lysias, On the Confiscation of the Property Of The Brother Of Nicias', noteBook: 'LysOnTheConfiscationOfTheProp', chapters: 27, num: 18 },
+  { slug: 'lys-on-the-property-of-aristophanes', name: 'Lysias, On the Property of Aristophanes', noteBook: 'LysOnThePropertyOfAristophane', chapters: 64, num: 19 },
+  { slug: 'lys-for-polystratus', name: 'Lysias, For Polystratus', noteBook: 'LysForPolystratus', chapters: 36, num: 20 },
+  { slug: 'lys-defense-against-a-charge-of-taking-bribes', name: 'Lysias, Defense Against A Charge Of Taking Bribes', noteBook: 'LysDefenseAgainstAChargeOfTak', chapters: 25, num: 21 },
+  { slug: 'lys-against-the-corn-dealers', name: 'Lysias, Against The Corn-Dealers', noteBook: 'LysAgainstTheCornDealers', chapters: 22, num: 22 },
+  { slug: 'lys-against-pancleon', name: 'Lysias, Against Pancleon', noteBook: 'LysAgainstPancleon', chapters: 16, num: 23 },
+  { slug: 'lys-on-the-refusal-of-a-pension', name: 'Lysias, On The Refusal Of A Pension', noteBook: 'LysOnTheRefusalOfAPension', chapters: 27, num: 24 },
+  { slug: 'lys-defense-against-a-charge-of-subverting-the-d', name: 'Lysias, Defense Against a Charge of Subverting the Democracy', noteBook: 'LysDefenseAgainstAChargeOfSub', chapters: 35, num: 25 },
+  { slug: 'lys-on-the-scrutiny-of-evandros', name: 'Lysias, On the Scrutiny of Evandros', noteBook: 'LysOnTheScrutinyOfEvandros', chapters: 24, num: 26 },
+  { slug: 'lys-against-epicrates-and-his-fellow-envoys', name: 'Lysias, Against Epicrates and his Fellow-envoys', noteBook: 'LysAgainstEpicratesAndHisFell', chapters: 16, num: 27 },
+  { slug: 'lys-against-ergocles', name: 'Lysias, Against Ergocles', noteBook: 'LysAgainstErgocles', chapters: 17, num: 28 },
+  { slug: 'lys-against-philocrates', name: 'Lysias, Against Philocrates', noteBook: 'LysAgainstPhilocrates', chapters: 14, num: 29 },
+  { slug: 'lys-against-nicomachus', name: 'Lysias, Against Nicomachus', noteBook: 'LysAgainstNicomachus', chapters: 35, num: 30 },
+  { slug: 'lys-against-philon', name: 'Lysias, Against Philon', noteBook: 'LysAgainstPhilon', chapters: 34, num: 31 },
+  { slug: 'lys-against-diogeiton', name: 'Lysias, Against Diogeiton', noteBook: 'LysAgainstDiogeiton', chapters: 29, num: 32 },
+  { slug: 'lys-olympic-oration', name: 'Lysias, Olympic Oration', noteBook: 'LysOlympicOration', chapters: 9, num: 33 },
+  { slug: 'lys-against-the-subversion-of-the-ancestral-cons', name: 'Lysias, Against The Subversion of the Ancestral Constitution', noteBook: 'LysAgainstTheSubversionOfTheA', chapters: 11, num: 34 },
+]
+
+// "Dem. 18.35", "Demosthenes 18.35", "Isoc. 4.50", "Isoc. Ep. 2.5", "Lys. 12.5" — the speech
+// number identifies the work, so only the section is returned as the chapter.
+const oratorCite = (author: string, num?: number, letter?: boolean) => (text: string): { chapter: number; verse?: number } | null => {
+  if (num === undefined) return null
+  const abbrev = author === 'Demosthenes' ? 'Dem' : author === 'Isocrates' ? 'Isoc' : 'Lys'
+  const s = text.replace(/^cf\.\s*/, '').replace(/^idem,\s*/, '')
+  const ep = letter ? '(?:Ep(?:ist)?\\.|Letter)\\s*' : ''
+  const m = s.match(new RegExp(`^(?:${abbrev}\\.|${author},?)\\s+${ep}${num}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+
+const ORATOR_WORKS: ProseWork[] = ORATORS.map(w => {
+  const author = w.name.slice(0, w.name.indexOf(','))
+  return {
+    source: w.slug as EmbeddedProseSource,
+    name: w.name,
+    noteBook: w.noteBook,
+    dataUrl: `/data/greco/${w.slug}.json`,
+    chapters: w.chapters,
+    attribution: w.greekOnly ? `${author}: ${ORATOR_GRC_ONLY_ATTRIB}` : ORATOR_ATTRIB[author],
+    parseCitation: oratorCite(author, w.num, w.letter),
+  }
+})
+
+export const ORATOR_CATALOG = ORATORS.map(w => ({
+  id: w.slug,
+  source: w.slug as EmbeddedProseSource,
+  name: w.name,
+  chapters: w.chapters,
+  greek: true,
+  ...(w.greekOnly ? { greekOnly: true } : {}),
+  ...(w.chapterNumbers ? { chapterNumbers: w.chapterNumbers } : {}),
 }))
 
 // Catalog ids/names, with the book-8 gap declared so the reader doesn't stall on chapter 140.
@@ -2212,6 +2409,7 @@ export const PROSE_WORKS: ProseWork[] = [
   ...POLYBIUS_WORKS,
   ...STRABO_WORKS,
   ...PAUSANIAS_WORKS,
+  ...ORATOR_WORKS,
   ...MISHNAH_WORKS,
   ...YERUSHALMI_WORKS,
   ...BAVLI_WORKS,
