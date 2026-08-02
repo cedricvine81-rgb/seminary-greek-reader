@@ -23,11 +23,13 @@ export function TextsNavMenu() {
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
   const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number; rowTop: number; rowBottom: number } | null>(null)
   const booksRef = useRef<HTMLDivElement>(null)
-  // The author flyout opens level with the hovered category row, but if its list would run past
-  // the bottom of the screen (a long one like Greco-Roman) it's lifted up just enough to fit —
-  // short lists (Church Fathers) stay level with their row. `top` is the flyout's resulting
-  // viewport top, used to cap its height so anything still too tall scrolls inside the panel.
-  const [fly, setFly] = useState<{ up: number; top: number }>({ up: 0, top: 0 })
+  // The author flyout opens level with the hovered category row and is lifted only as far as it
+  // must be to stay on screen — never so far that it stops covering that row, since reaching it
+  // means moving the pointer straight sideways. `up` is how far it has been lifted (it is
+  // positioned relative to the row); `rowTop`/`rowBottom` are kept so the layout effect below
+  // can place it once its real height is known.
+  const [fly, setFly] = useState<{ up: number; rowTop: number; rowBottom: number }>({ up: 0, rowTop: 0, rowBottom: 0 })
+  const authorsRef = useRef<HTMLDivElement>(null)
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const openNow = () => { if (closeTimer.current) clearTimeout(closeTimer.current); setOpen(true) }
@@ -38,11 +40,23 @@ export function TextsNavMenu() {
   function openAuthors(catId: string, works: CatalogWork[], rowEl: HTMLElement) {
     setCat(catId); setSub(null)
     const r = rowEl.getBoundingClientRect()
-    const estHeight = groupWorksByAuthor(works).length * 34 + 20   // rough natural height
-    const overflow = Math.max(0, r.top + estHeight - (window.innerHeight - 12))
-    const up = Math.min(overflow, Math.max(0, r.top - 8))          // never lift above 8px from top
-    setFly({ up, top: r.top - up })
+    setFly({ up: 0, rowTop: r.top, rowBottom: r.bottom })   // measured and lifted below
   }
+
+  // Same story as the book flyout: this used to guess its height at 34px an author and lift
+  // itself by the shortfall, which is wrong the moment the guess is — and it is what leaves the
+  // last author of a long category (Xenophon, in Greco-Roman) sitting under the bottom edge of
+  // the window. Measure instead, and lift only as far as two limits allow: the panel must not
+  // run off the bottom, and its own bottom must not rise above the category row it belongs to.
+  useLayoutEffect(() => {
+    const el = authorsRef.current
+    if (!cat || !el) return
+    const h = el.offsetHeight
+    const needed = Math.max(0, fly.rowTop + h - (window.innerHeight - 12))
+    const limit = Math.max(0, Math.min(h - (fly.rowBottom - fly.rowTop), fly.rowTop - 8))
+    const up = Math.min(needed, limit)
+    if (Math.abs(up - fly.up) > 1) setFly(f => ({ ...f, up }))
+  }, [cat, fly])
 
   const BOOKS_W = 240
 
@@ -111,8 +125,11 @@ export function TextsNavMenu() {
                     lists (Greco-Roman) scroll instead of running off the bottom of the screen. */}
                 {cat === c.id && !c.comingSoon && (
                   <div className="absolute right-full pr-1" style={{ top: -fly.up }}>
-                    <div className="w-64 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
-                      style={{ maxHeight: `calc(100vh - ${fly.top + 16}px)` }}>
+                    {/* Capped to the viewport, NOT to the space below its top: the layout effect
+                        measures this element, so its height must not depend on where it sits. */}
+                    <div ref={authorsRef}
+                      className="w-64 overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
+                      style={{ maxHeight: 'calc(100vh - 24px)' }}>
                       {groupWorksByAuthor(c.works).map(g => g.author ? (
                         <div key={g.author} onMouseEnter={e => openBooks(g.author!, g.works, e.currentTarget)}>
                           <div className={`flex items-center gap-2 px-3 py-1.5 text-sm cursor-default ${
