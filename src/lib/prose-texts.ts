@@ -683,7 +683,7 @@ const CLEMENT_WORKS_TABLE: { slug: string; name: string; noteBook: string; chapt
   { slug: 'clement-stromateis-2', name: 'Clement of Alexandria, Stromateis (Book 2)', noteBook: 'ClemStrom2', chapters: 23, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 2 },
   { slug: 'clement-stromateis-3', name: 'Clement of Alexandria, Stromateis (Book 3)', noteBook: 'ClemStrom3', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 3, greekOnly: true },
   { slug: 'clement-stromateis-4', name: 'Clement of Alexandria, Stromateis (Book 4)', noteBook: 'ClemStrom4', chapters: 26, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 4 },
-  { slug: 'clement-stromateis-5', name: 'Clement of Alexandria, Stromateis (Book 5)', noteBook: 'ClemStrom5', chapters: 13, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 5 },
+  { slug: 'clement-stromateis-5', name: 'Clement of Alexandria, Stromateis (Book 5)', noteBook: 'ClemStrom5', chapters: 14, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 5 },
   { slug: 'clement-stromateis-6', name: 'Clement of Alexandria, Stromateis (Book 6)', noteBook: 'ClemStrom6', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 6 },
   { slug: 'clement-stromateis-7', name: 'Clement of Alexandria, Stromateis (Book 7)', noteBook: 'ClemStrom7', chapters: 18, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 7 },
   { slug: 'clement-stromateis-8', name: 'Clement of Alexandria, Stromateis (Book 8)', noteBook: 'ClemStrom8', chapters: 9, abbrevs: ['Strom.', 'Stromateis', 'Stromata'], book: 8 },
@@ -947,7 +947,7 @@ const POLYBIUS_BOOKS: { book: number; last: number; chapterNumbers?: number[] }[
   { book: 9, last: 45 }, { book: 10, last: 49 }, { book: 11, last: 34 }, { book: 12, last: 28 },
   { book: 13, last: 10 }, { book: 14, last: 12 }, { book: 15, last: 37 }, { book: 16, last: 40 },
   // Book 18 follows 16: Book 17 does not survive.
-  { book: 18, last: 55 }, { book: 19, last: 2, chapterNumbers: [0, 1, 2] }, { book: 20, last: 12 },
+  { book: 18, last: 55 }, { book: 19, last: 1, chapterNumbers: [0, 1] }, { book: 20, last: 12 },
   { book: 21, last: 48 }, { book: 22, last: 22 }, { book: 23, last: 18 }, { book: 24, last: 15 },
   { book: 25, last: 6 }, { book: 26, last: 1 }, { book: 27, last: 20 }, { book: 28, last: 23 },
   { book: 29, last: 27 }, { book: 30, last: 32 }, { book: 31, last: 33 }, { book: 32, last: 28 },
@@ -1683,7 +1683,7 @@ const senecaFlatCite = (abbrevs: string[]) => (text: string): { chapter: number;
   return null
 }
 
-const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation']; chapterLabel?: (ch: number) => string; greek?: boolean }[] = [
+const GRECO: { slug: string; name: string; noteBook: string; chapters: number; attribution: string; parseCitation: ProseWork['parseCitation']; chapterLabel?: (ch: number) => string; greek?: boolean; chapterNumbers?: number[] }[] = [
   { slug: 'greco-epictetus-discourses-1', name: 'Epictetus, Discourses 1', noteBook: 'EpictDisc1', chapters: 30, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(1) },
   { slug: 'greco-epictetus-discourses-2', name: 'Epictetus, Discourses 2', noteBook: 'EpictDisc2', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(2) },
   { slug: 'greco-epictetus-discourses-3', name: 'Epictetus, Discourses 3', noteBook: 'EpictDisc3', chapters: 26, attribution: EPICTETUS_ATTRIBUTION, parseCitation: epictetusDiscCite(3) },
@@ -1705,7 +1705,7 @@ const GRECO: { slug: string; name: string; noteBook: string; chapters: number; a
   { slug: 'greco-seneca-benefits-5', name: 'Seneca, On Benefits, Book 5', noteBook: 'SenecaBen5', chapters: 25, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 5), greek: false },
   { slug: 'greco-seneca-benefits-6', name: 'Seneca, On Benefits, Book 6', noteBook: 'SenecaBen6', chapters: 43, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 6), greek: false },
   { slug: 'greco-seneca-benefits-7', name: 'Seneca, On Benefits, Book 7', noteBook: 'SenecaBen7', chapters: 32, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Ben\\.', 7), greek: false },
-  { slug: 'greco-seneca-clemency-1', name: 'Seneca, On Clemency, Book 1', noteBook: 'SenecaClem1', chapters: 26, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Clem\\.', 1), greek: false },
+  { slug: 'greco-seneca-clemency-1', name: 'Seneca, On Clemency, Book 1', noteBook: 'SenecaClem1', chapters: 26, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Clem\\.', 1), greek: false, chapterNumbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 26] },
   { slug: 'greco-seneca-clemency-2', name: 'Seneca, On Clemency, Book 2', noteBook: 'SenecaClem2', chapters: 7, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaBookCite('Clem\\.', 2), greek: false },
   { slug: 'greco-seneca-happy-life', name: 'Seneca, On the Happy Life', noteBook: 'SenecaVitBeat', chapters: 28, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Vit\\. beat\\.', 'De vita beata']), greek: false },
   { slug: 'greco-seneca-tranquillity', name: 'Seneca, On Peace of Mind', noteBook: 'SenecaTranq', chapters: 17, attribution: SENECA_DIALOGUE_ATTRIB, parseCitation: senecaFlatCite(['Tranq\\.']), greek: false },
@@ -1734,6 +1734,9 @@ const GRECO_WORKS: ProseWork[] = GRECO.map(w => ({
 // Latin author added from elsewhere sets it false.
 export const GRECO_CATALOG = GRECO.map(w => ({
   id: w.slug, source: w.slug as EmbeddedProseSource, name: w.name, chapters: w.chapters, greek: w.greek !== false,
+  // Without this a work whose source skips a chapter — On Clemency I has no 25 — leaves the
+  // reader queueing a chapter that has no text and stalling on "Loading next chapter…".
+  ...(w.chapterNumbers ? { chapterNumbers: w.chapterNumbers } : {}),
 }))
 
 // ── Plato ─────────────────────────────────────────────────────────────────────────────

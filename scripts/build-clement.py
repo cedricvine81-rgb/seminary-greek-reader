@@ -102,8 +102,29 @@ def book_chapters(ed):
     return out
 
 
+_CHAPTER_NUMERAL = re.compile(r'^\s*([IVXL]+)\s*\.\s*')
+_ROMAN = {'I': 1, 'V': 5, 'X': 10, 'L': 50}
+
+
+def roman(s):
+    total = 0
+    for i, ch in enumerate(s):
+        v = _ROMAN[ch]
+        total += -v if i + 1 < len(s) and v < _ROMAN[s[i + 1]] else v
+    return total
+
+
 def book_chapter_sections(ed):
-    """{book: {chapter: joined text with section numbers inline}} (Stromateis)."""
+    """{book: {chapter: joined text with section numbers inline}} (Stromateis).
+
+    Perseus runs two of the standard chapters together in one div — Stromateis V 13 and 14, the
+    second being the long argument that the Greeks plagiarised the barbarians, which is among
+    the most cited chapters Clement wrote. The text says so itself: its section 89 opens with
+    the numeral "XIV.". So a section whose Greek announces a chapter other than the one it is
+    filed under starts a new chapter here, which restores the scholarly numbering and, with it,
+    the ANF's chapter 14 — that English was being dropped for want of a Greek chapter to sit
+    beside. Scanning the whole work finds exactly this one boundary; the rule is written from
+    the source's own marking rather than hardcoded so a second one could not pass unnoticed."""
     out = {}
     for b in ed.findall('t:div', NS):
         if not (b.get('n') or '').isdigit():
@@ -112,21 +133,30 @@ def book_chapter_sections(ed):
         for c in b.findall('t:div', NS):
             if not (c.get('n') or '').isdigit():
                 continue
-            secs = {int(s.get('n')): strip_text(s) for s in c.findall('t:div', NS)
-                    if (s.get('n') or '').isdigit() and strip_text(s)}
-            if not secs:
+            groups, current = {}, int(c.get('n'))
+            for s in c.findall('t:div', NS):
+                if not (s.get('n') or '').isdigit():
+                    continue
+                text = strip_text(s)
+                if not text:
+                    continue
+                m = _CHAPTER_NUMERAL.match(text)
+                if m and roman(m.group(1)) != current:
+                    current = roman(m.group(1))
+                    text = text[m.end():]           # the numeral is the editor's, not Clement's
+                groups.setdefault(current, {})[int(s.get('n'))] = text
+            if not groups:
                 t = strip_text(c)
                 if t:
-                    secs = {1: t}
-            if not secs:
-                continue
-            order = sorted(secs)
-            lead_is_one = order[0] == 1
-            # As in build-eusebius-pe.py: the reader already prints "1" as the verse marker, so
-            # only sections 2+ take an inline number.
-            chapters[int(c.get('n'))] = ' '.join(
-                (secs[s] if (i == 0 and lead_is_one) else f'{s} {secs[s]}')
-                for i, s in enumerate(order))
+                    groups = {int(c.get('n')): {1: t}}
+            for ch, secs in groups.items():
+                order = sorted(secs)
+                lead_is_one = order[0] == 1
+                # As in build-eusebius-pe.py: the reader already prints "1" as the verse marker,
+                # so only sections 2+ take an inline number.
+                chapters[ch] = ' '.join(
+                    (secs[s] if (i == 0 and lead_is_one) else f'{s} {secs[s]}')
+                    for i, s in enumerate(order))
         out[int(b.get('n'))] = chapters
     return out
 
