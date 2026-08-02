@@ -74,7 +74,80 @@ def strip_notes(xml_bytes):
     xml = re.sub(r'(?is)<note\b[^>]*/>', '', xml)
     xml = re.sub(r'(?is)<note\b[^>]*>.*?</note>', '', xml)
     xml = re.sub(r'(?is)</?note\b[^>]*>', '', xml)
-    return re.sub(r'(?is)</?q\b[^>]*>', '', xml)
+    xml = re.sub(r'(?is)</?q\b[^>]*>', '', xml)
+
+    # A <foreign> tagged Latin or English is the editor's apparatus rather than anything the
+    # author wrote. Most of it sits where chapter_text never reads, but some is inline in the
+    # running text and survives note-stripping — Büttner-Wobst's Polybius printed 11 such
+    # references into the text we built, among them "[πολψβ. ιιι, 2, 6]", which is "Polyb. III,
+    # 2, 6" transliterated into Greek letters, and several "ιδεμ" for "idem". Left alone they
+    # are read, searched and morphologically tagged as if Polybius had written them. Square
+    # brackets around such a reference belong to it and go too. Polybius is the only corpus
+    # whose output this changes: Strabo and Plutarch keep their apparatus out of the text
+    # already, and Thucydides and Pausanias have no <foreign> at all.
+    xml = re.sub(r'(?is)\[\s*<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>\s*\]', '', xml)
+    xml = re.sub(r'(?is)<foreign\b[^>]*xml:lang="(?:lat|eng)"[^>]*>.*?</foreign>', '', xml)
+    return drop_stray_closes(xml)
+
+
+def parse_xml(xml):
+    """ElementTree, falling back to lxml's recovering parser for a document Perseus has left
+    genuinely unparseable.
+
+    Polybius' Shuckburgh English embeds a genealogical table of the Scipios whose <rs> elements
+    each close before the next one opens — the first opening tag is simply absent — so the file
+    is malformed from Book 31 onward and no tag-specific patch rescues it. Stripping <rs>, <ref>
+    and <persName> in turn each just moved the error along the same line.
+
+    Only reached when the strict parse fails, so the 625 well-formed files in the corpus are
+    untouched and produce byte-identical output. All we take from the document is its text, and
+    recover=True keeps that while discarding the unmatched tags."""
+    try:
+        return ET.fromstring(xml)
+    except ET.ParseError:
+        try:
+            from lxml import etree as lxml_etree
+        except ImportError:
+            raise SystemExit('this source needs lxml to parse (pip install lxml)')
+        root = lxml_etree.fromstring(xml.encode('utf-8'),
+                                     lxml_etree.XMLParser(recover=True, huge_tree=True))
+        if root is None:
+            raise
+        # Recovery drops whatever follows the damage, so say so rather than let a corpus lose
+        # its tail in silence — that is exactly how Books 33-39 of Polybius nearly went missing.
+        print(f'   WARNING: recovered a malformed document by discarding markup; '
+              f'{len(lxml_etree.tostring(root))} of {len(xml.encode("utf-8"))} bytes kept')
+        return ET.fromstring(lxml_etree.tostring(root))
+
+
+def drop_stray_closes(xml):
+    """Remove closing tags that close nothing at all, leaving everything else untouched.
+
+    Two independent defects in Polybius' Shuckburgh English need this, and between them they
+    made the whole 3 MB file unparseable:
+      * a paragraph closed twice — `…know well.</p></p></div>` at 1.6;
+      * a genealogical table of the Scipios in Book 31 whose <rs> entries each close before the
+        next opens, the very first opening tag being absent (19 opens against 20 closes).
+
+    A close is dropped only when its element name is nowhere open, so a well-formed document
+    comes back byte for byte unchanged. Doing it this way rather than leaning on lxml's
+    recover=True matters: recovery silently discarded everything after the damage, taking
+    Books 33-39 of the English with it, and a build that loses seven books without saying so is
+    worse than one that fails."""
+    stack, out = [], []
+    for tok in re.split(r'(</?[a-zA-Z][a-zA-Z0-9]*(?:\s[^>]*?)?/?>)', xml):
+        m = re.fullmatch(r'(?is)<(/?)([a-zA-Z][a-zA-Z0-9]*)(?:\s[^>]*?)?(/?)>', tok or '')
+        if m:
+            closing, name, self_closing = m.group(1), m.group(2).lower(), m.group(3)
+            if closing:
+                if name not in stack:
+                    continue                       # closes nothing — drop it
+                while stack and stack.pop() != name:
+                    pass                           # also unwinds anything left open inside it
+            elif not self_closing:
+                stack.append(name)
+        out.append(tok)
+    return ''.join(out)
 
 
 def chapter_text(div):
@@ -116,7 +189,7 @@ def parse_chapters(xml_bytes):
     """Return {(book|None, chapter): text} at chapter granularity (both the English and Greek
     Perseus editions divide to chapter; only the Greek goes to section, so we align on chapter)."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     out = {}
 
     def walk(el, ctx):
@@ -136,7 +209,7 @@ def parse_sections(xml_bytes):
     """Return {(book|None, section): text} at section granularity, keyed by the book and the
     (book-continuous) section number — used when both editions divide to section."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     out = {}
 
     def walk(el, ctx):
@@ -215,7 +288,7 @@ def _segments(el, unit):
 def _pages_by_ref(xml_bytes, unit):
     """{page:int -> {ref:str -> text}} from the milestone references (e.g. 172 -> {'172a': …})."""
     xml = strip_notes(xml_bytes)
-    body = ET.fromstring(xml).find('.//t:body', NS)
+    body = parse_xml(xml).find('.//t:body', NS)
     out = {}
     for ref, text in _segments(body, unit):
         m = re.match(r'(\d+)[a-z]*$', ref or '')
@@ -276,6 +349,11 @@ PD_CUTOFF = 1930
 # a neighbouring suffix, so every choice made in main() belongs here.
 PD_ENGLISH_EDITIONS = [
     ('tlg0003/tlg001', 'tlg0003.tlg001', 'eng6'),   # Thucydides — Crawley 1914 (not Smith's Loeb)
+    ('tlg0543/tlg001', 'tlg0543.tlg001', 'eng2'),   # Polybius   — Shuckburgh 1889
+    ('tlg0099/tlg001', 'tlg0099.tlg001', 'eng4'),   # Strabo     — Hamilton & Falconer 1854-57
+    # Pausanias is deliberately NOT listed: Perseus dates the whole Jones/Ormerod Loeb
+    # 1918-1935, so edition_year reads 1935 and the guard would (rightly) stop the build.
+    # Only Books 1-5 take the English — see the eng_books argument in main().
 ]
 
 
@@ -456,7 +534,7 @@ def parse_units(xml_bytes, book_sub, unit_sub):
     div subtype that carries the book number (None for treatises without books); `unit_sub` is
     the verse-level div subtype (a Nicomachean Ethics 'section', a Rhetoric/Poetics 'chapter')."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     out = {}
 
     def walk(el, book):
@@ -499,7 +577,7 @@ def parse_unit_refs(xml_bytes, book_sub, unit_sub, ref_unit):
     """{(book,unit) -> ref} using the first `ref_unit` milestone inside each unit div — the
     standard reference (Aristotle's Bekker "page" milestone, "1094a")."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     out = {}
 
     def walk(el, book):
@@ -556,7 +634,7 @@ def build_line_poem(slug, name, urn_dir, urn_base, attrib, no_cache, chunk=150):
     lines are grouped into chapters of `chunk` for lazy loading, each verse keeping its poem line
     number as its reference (so "Phaen. 5" cites line 5)."""
     xml = strip_notes(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     lines = [re.sub(r'\s+', ' ', ''.join(l.itertext())).strip()
              for l in root.iter('{http://www.tei-c.org/ns/1.0}l')]
     lines = [l for l in lines if l]
@@ -583,7 +661,7 @@ def _div_text(el):
 def parse_lines(xml_bytes, per_book):
     """{(book|None, line): greek} from <l n=..>; book from the (case-insensitive) book div."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     NSU = '{http://www.tei-c.org/ns/1.0}'
     out = {}
 
@@ -612,7 +690,7 @@ def parse_eng_chunks(xml_bytes, per_book):
     keyed by the line it starts at, so it can sit beside that Greek line (the rest are Greek-only,
     the Eusebius chunk model)."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     NSU = '{http://www.tei-c.org/ns/1.0}'
     out = {}
     has_cards = any((d.get('subtype') or '').lower() == 'card' for d in root.iter(NSU + 'div'))
@@ -765,6 +843,18 @@ HOMER_ATTRIB = ('Greek: Homer, ed. D. B. Monro & T. W. Allen (OCT). English: A. 
 HESIOD_ATTRIB = ('Greek: Hesiod (Perseus). English: Hugh G. Evelyn-White (Loeb, 1914), public '
                  'domain, given per ~5-line group beside the Greek; cited by line. Digital '
                  'edition: Perseus Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+POLYBIUS_ATTRIB = ('Text: Polybius, The Histories, tr. Evelyn S. Shuckburgh (1889), public domain; '
+                   'Greek ed. Büttner-Wobst. Digital edition: Perseus Digital Library, CC-BY-SA '
+                   '4.0 (perseus.tufts.edu). Shuckburgh divides only to chapter, so the English '
+                   'stands beside the whole Greek chapter.')
+STRABO_ATTRIB = ('Text: Strabo, Geography, tr. H. C. Hamilton and W. Falconer (Bohn, 1854–1857), '
+                 'public domain; Greek ed. Meineke. Digital edition: Perseus Digital Library, '
+                 'CC-BY-SA 4.0 (perseus.tufts.edu).')
+PAUSANIAS_ATTRIB = ('Text: Pausanias, Description of Greece, tr. W. H. S. Jones and H. A. Ormerod '
+                    '(Loeb, 1918–1926), public domain; Greek ed. Spiro. Digital edition: Perseus '
+                    'Digital Library, CC-BY-SA 4.0 (perseus.tufts.edu). English for Books 1–5 '
+                    'only: the Loeb volumes covering Books 6–10 (1933, 1935) are still in '
+                    'copyright, so those books are shown in Greek alone.')
 THUCYDIDES_ATTRIB = ('Text: Thucydides, tr. Richard Crawley (1914), public domain; Greek ed. '
                      'H. S. Jones. Digital edition: Perseus Digital Library, CC-BY-SA 4.0 '
                      '(perseus.tufts.edu).')
@@ -776,7 +866,7 @@ HERODOTUS_ATTRIB = ('Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 192
 def parse_bcs(xml_bytes):
     """Return {(book, chapter, section): text} for a book→chapter→section TEI (Apollodorus)."""
     xml = strip_notes(xml_bytes)
-    root = ET.fromstring(xml)
+    root = parse_xml(xml)
     out = {}
 
     def walk(el, ctx):
@@ -821,13 +911,20 @@ def bcs_key(b, ch, sec):
     return int(b), int(m.group(1)), m.group(2), s
 
 
-def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_cache):
+def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_cache,
+              eng_books=None):
     """A book→chapter→section work, one file per book (chapter = chapter, verse = section), so
     "Apollod. 1.9.16" / "Xen. Mem. 1.2.3" opens Book 1, chapter 9/2, section 16/3.
 
     A chapter's lettered parts are folded into it in printed order and numbered straight
     through, so the chapter reads as one piece; each row keeps the edition's own label in
-    `ref` ("A.3"), which is what the reader shows, so the real citation stays visible."""
+    `ref` ("A.3"), which is what the reader shows, so the real citation stays visible.
+
+    `eng_books` limits which books may carry the English, for a translation that is only partly
+    out of copyright. Pausanias is the case: Perseus has the whole of Jones and Ormerod's Loeb
+    as one document dated 1918-1935, but only volumes 1-2 — Books 1-5 — are public domain.
+    Books 6-10 are shipped as Greek alone rather than distributing Loeb volumes 3 (1933) and
+    4 (1935)."""
     base = f'{urn_dir}/{urn_base}'
     grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
     eng = parse_bcs(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache))
@@ -847,7 +944,8 @@ def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_c
             bk, cn, suffix, s = key
             row = books.setdefault(bk, {}).setdefault(cn, {})
             was_eng, was_grc = row.get((suffix, s), ('', ''))
-            row[(suffix, s)] = (eng.get(key_raw) or was_eng, grc.get(key_raw) or was_grc)
+            en = eng.get(key_raw) if (eng_books is None or bk in eng_books) else ''
+            row[(suffix, s)] = (en or was_eng, grc.get(key_raw) or was_grc)
     results = []
     for bk in sorted(books):
         chapters = []
@@ -926,7 +1024,7 @@ def build_named_book(slug, name, urn_dir, urn_base, eng_suffix, book_n, attrib, 
     is selected by its book name and emitted as its own work, numbered the way it is cited
     (Plut. Cleom. 10.1)."""
     def in_book(xml_bytes):
-        root = ET.fromstring(strip_notes(xml_bytes))
+        root = parse_xml(strip_notes(xml_bytes))
         out = {}
 
         def sections(el, chapter):
@@ -1001,11 +1099,53 @@ def build_coarse_english(slug, name, urn_dir, urn_base, eng_suffix, eng_unit, at
              'verses': sum(1 for c in chapters for v in c['verses'] if 'greek' in v)}]
 
 
+def build_bcs_chapter_pair(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_cache):
+    """A book→chapter→section Greek whose English only divides to chapter, one work per book,
+    verse = chapter with the chapter's Greek read as one piece.
+
+    Polybius is the case: Büttner-Wobst numbers 12,153 sections, Shuckburgh's 1889 English only
+    1,179 chapters. Keying on sections would leave nine rows in ten with Greek and an empty
+    English column, so the pair is made at the level both editions share — the same choice
+    already made for Quintilian and Eusebius. The section numbers are not written into the Greek,
+    which would break the morph sidecar's alignment with the reader's tokenizer; a citation to
+    "Polyb. 6.11.2" therefore opens chapter 11 rather than the section within it."""
+    base = f'{urn_dir}/{urn_base}'
+    grc = parse_bcs(fetch(f'{base}.perseus-grc2.xml', no_cache))
+    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), 'book', 'chapter')
+    joined = {}
+    for (b, ch, sec), text in grc.items():
+        if b and b.isdigit() and ch and ch.isdigit() and sec and sec.isdigit():
+            joined.setdefault((int(b), int(ch)), {})[int(sec)] = text
+    books = {}
+    for (b, ch) in set(joined) | {(int(b), int(c)) for (b, c) in eng
+                                  if b and b.isdigit() and c and c.isdigit()}:
+        gk = ' '.join(joined.get((b, ch), {})[s] for s in sorted(joined.get((b, ch), {})))
+        books.setdefault(b, {})[ch] = (eng.get((str(b), str(ch)), ''), gk)
+    results = []
+    for bk in sorted(books):
+        chapters = [{'number': ch, 'verses': [
+            {'number': 1, 'text': books[bk][ch][0],
+             **({'greek': books[bk][ch][1]} if books[bk][ch][1] else {})}]}
+            for ch in sorted(books[bk])]
+        doc = {'work': name_fmt(bk), 'attribution': attrib, 'greek': True,
+               'chapters': drop_empty(chapters)}
+        slug = f'{slug_prefix}-{bk}'
+        (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+        results.append({'slug': slug, 'doc': doc, 'chapters': len(doc['chapters']),
+                        'verses': sum(1 for c in doc['chapters'] for v in c['verses'] if 'greek' in v)})
+    return results
+
+
 def edition_year(xml_bytes):
     """The latest printed-edition year in a TEI header — what decides whether the translation
-    may be shipped. Taking the latest, not the earliest, keeps the licence check conservative."""
-    years = [int(y) for y in re.findall(r'<date[^>]*>\s*(1[89]\d\d)\s*</date>',
-                                        xml_bytes[:20000].decode('utf-8', 'replace'))]
+    may be shipped. Taking the latest, not the earliest, keeps the check conservative, and it
+    has to: a multi-volume Loeb carries a RANGE, and the range is where the danger is. Strabo's
+    Hamilton reads <date>1854-1857</date> and is safe throughout, while Pausanias' Jones reads
+    <date>1918-1935</date> — volumes 1-2 out of copyright and volumes 3-4 emphatically not.
+    Reading only a bare four-digit year missed both."""
+    head = xml_bytes[:20000].decode('utf-8', 'replace')
+    years = [int(y) for y in re.findall(r'<date[^>]*>[^<]*?(1[89]\d\d)(?:[^<]*?(1[89]\d\d))?[^<]*?</date>',
+                                        head) for y in y if y]
     return max(years) if years else None
 
 
@@ -1079,6 +1219,7 @@ build_greek_only = _gate(build_greek_only)
 build_line_poem = _gate(build_line_poem)
 build_line_parallel = _gate(build_line_parallel)
 build_bcs = _gate(build_bcs)
+build_bcs_chapter_pair = _gate(build_bcs_chapter_pair)
 
 
 def main():
@@ -1208,6 +1349,16 @@ def main():
     # chapter 22, section 1.
     results += build_bcs('thucydides-war', lambda b: f'Thucydides, History of the Peloponnesian War (Book {b})',
                          'tlg0003/tlg001', 'tlg0003.tlg001', 'eng6', THUCYDIDES_ATTRIB, no_cache)
+    # Polybius, The Histories — 40 books as transmitted, most surviving only in excerpts.
+    results += build_bcs_chapter_pair('polybius-histories', lambda b: f'Polybius, The Histories (Book {b})',
+                                      'tlg0543/tlg001', 'tlg0543.tlg001', 'eng2', POLYBIUS_ATTRIB, no_cache)
+    # Strabo, Geography — 17 books; Hamilton & Falconer divide to section as the Greek does.
+    results += build_bcs('strabo-geography', lambda b: f'Strabo, Geography (Book {b})',
+                         'tlg0099/tlg001', 'tlg0099.tlg001', 'eng4', STRABO_ATTRIB, no_cache)
+    # Pausanias, Description of Greece — 10 books, English on Books 1-5 only (see eng_books).
+    results += build_bcs('pausanias-greece', lambda b: f'Pausanias, Description of Greece (Book {b})',
+                         'tlg0525/tlg001', 'tlg0525.tlg001', 'eng2', PAUSANIAS_ATTRIB, no_cache,
+                         eng_books={1, 2, 3, 4, 5})
     # Herodotus, The Histories — book→chapter→section, one work per book (Godley's Loeb English;
     # "Hdt. 1.1.1" → Book 1, chapter 1, section 1).
     results += build_bcs('herodotus-histories', lambda b: f'Herodotus, The Histories (Book {b})',

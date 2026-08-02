@@ -666,6 +666,116 @@ export const THUCYDIDES_CATALOG = THUCYDIDES_BOOKS.map(b => ({
   greek: true,
 }))
 
+// Polybius — one work per book. The Greek divides to section but Shuckburgh's 1889 English only
+// to chapter, so the two are paired at the chapter both share (see build_bcs_chapter_pair): a
+// verse is a whole chapter, and "Polyb. 6.11.2" opens chapter 11 rather than the section in it.
+// Book 17 is missing because it is lost in transmission — from the Greek as well as the English.
+const POLYBIUS_ATTRIB = 'Text: Polybius, The Histories, tr. Evelyn S. Shuckburgh (1889), public domain; Greek ed. Büttner-Wobst. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. Shuckburgh divides only to chapter, so the English stands beside the whole Greek chapter.'
+const POLYBIUS_BOOKS: { book: number; last: number; chapterNumbers?: number[] }[] = [
+  { book: 1, last: 88 }, { book: 2, last: 71 }, { book: 3, last: 118 }, { book: 4, last: 87 },
+  { book: 5, last: 111 }, { book: 6, last: 59 }, { book: 7, last: 18 }, { book: 8, last: 38 },
+  { book: 9, last: 45 }, { book: 10, last: 49 }, { book: 11, last: 34 }, { book: 12, last: 28 },
+  { book: 13, last: 10 }, { book: 14, last: 12 }, { book: 15, last: 37 }, { book: 16, last: 40 },
+  // Book 18 follows 16: Book 17 does not survive.
+  { book: 18, last: 55 }, { book: 19, last: 2, chapterNumbers: [0, 1, 2] }, { book: 20, last: 12 },
+  { book: 21, last: 48 }, { book: 22, last: 22 }, { book: 23, last: 18 }, { book: 24, last: 15 },
+  { book: 25, last: 6 }, { book: 26, last: 1 }, { book: 27, last: 20 }, { book: 28, last: 23 },
+  { book: 29, last: 27 }, { book: 30, last: 32 }, { book: 31, last: 33 }, { book: 32, last: 28 },
+  { book: 33, last: 21, chapterNumbers: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] },
+  { book: 34, last: 14 }, { book: 35, last: 6 }, { book: 36, last: 17 }, { book: 37, last: 10 },
+  { book: 38, last: 22 }, { book: 39, last: 19 },
+]
+const polybiusCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  // "Polybius 6.11.2", "Polyb. 6.11.2", "Polybius, Hist. 6.11". The section, where given, is
+  // dropped: this edition's verses are whole chapters.
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Polyb(?:ius)?,?)\\.?\\s+(?:Hist(?:oriae|ories|\\.)?\\s+)?${book}\\.(\\d+)`))
+  return m ? { chapter: parseInt(m[1], 10) } : null
+}
+const POLYBIUS_WORKS: ProseWork[] = POLYBIUS_BOOKS.map(b => ({
+  source: `polybius-histories-${b.book}` as EmbeddedProseSource,
+  name: `Polybius, The Histories (Book ${b.book})`,
+  noteBook: `PolybHist${b.book}`,
+  dataUrl: `/data/greco/polybius-histories-${b.book}.json`,
+  chapters: b.last,
+  attribution: POLYBIUS_ATTRIB,
+  parseCitation: polybiusCite(b.book),
+  chapterLabel: (ch: number) => `Chapter ${ch}`,
+}))
+export const POLYBIUS_CATALOG = POLYBIUS_BOOKS.map(b => ({
+  id: `polybius-histories-${b.book}`,
+  source: `polybius-histories-${b.book}` as EmbeddedProseSource,
+  name: `Polybius, The Histories (Book ${b.book})`,
+  chapters: b.last, greek: true,
+  ...(b.chapterNumbers ? { chapterNumbers: b.chapterNumbers } : {}),
+}))
+
+// Strabo — one work per book, book→chapter→section throughout. Hamilton and Falconer's Bohn
+// translation (1854–57) divides exactly as Meineke's Greek does, so every section is parallel.
+const STRABO_ATTRIB = 'Text: Strabo, Geography, tr. H. C. Hamilton and W. Falconer (Bohn, 1854–1857), public domain; Greek ed. Meineke. Digital edition: Perseus Digital Library, CC-BY-SA 4.0.'
+const STRABO_BOOKS: { book: number; last: number }[] = [
+  { book: 1, last: 4 }, { book: 2, last: 5 }, { book: 3, last: 5 }, { book: 4, last: 6 },
+  { book: 5, last: 4 }, { book: 6, last: 4 }, { book: 7, last: 7 }, { book: 8, last: 8 },
+  { book: 9, last: 5 }, { book: 10, last: 5 }, { book: 11, last: 14 }, { book: 12, last: 8 },
+  { book: 13, last: 4 }, { book: 14, last: 6 }, { book: 15, last: 3 }, { book: 16, last: 4 },
+  { book: 17, last: 3 },
+]
+const straboCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  // "Strabo 14.5.13", "Strab. 14.5.13", "Strabo, Geogr. 14.5.13"; a trailing Casaubon page
+  // ("Strabo 16.2.34 (C 760)") is simply not read, the match stopping at the section.
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Strab(?:o)?,?)\\.?\\s+(?:Geogr?(?:aphy|aphica|\\.)?\\s+)?${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+const STRABO_WORKS: ProseWork[] = STRABO_BOOKS.map(b => ({
+  source: `strabo-geography-${b.book}` as EmbeddedProseSource,
+  name: `Strabo, Geography (Book ${b.book})`,
+  noteBook: `StraboGeo${b.book}`,
+  dataUrl: `/data/greco/strabo-geography-${b.book}.json`,
+  chapters: b.last,
+  attribution: STRABO_ATTRIB,
+  parseCitation: straboCite(b.book),
+  chapterLabel: (ch: number) => `Chapter ${ch}`,
+}))
+export const STRABO_CATALOG = STRABO_BOOKS.map(b => ({
+  id: `strabo-geography-${b.book}`,
+  source: `strabo-geography-${b.book}` as EmbeddedProseSource,
+  name: `Strabo, Geography (Book ${b.book})`,
+  chapters: b.last, greek: true,
+}))
+
+// Pausanias — one work per book, book→chapter→section, Spiro's Greek throughout. The English is
+// Jones and Ormerod's Loeb, of which only volumes 1–2 (Books 1–5) are out of copyright; Books
+// 6–10 are therefore Greek alone rather than shipping the 1933 and 1935 volumes. Those books are
+// still fully searchable in Greek and carry the parsing pane.
+const PAUSANIAS_ATTRIB = 'Text: Pausanias, Description of Greece, tr. W. H. S. Jones and H. A. Ormerod (Loeb, 1918–1926), public domain; Greek ed. Spiro. Digital edition: Perseus Digital Library, CC-BY-SA 4.0. English for Books 1–5 only — the Loeb volumes covering Books 6–10 (1933, 1935) are still in copyright, so those books are shown in Greek alone.'
+const PAUSANIAS_BOOKS: { book: number; last: number }[] = [
+  { book: 1, last: 44 }, { book: 2, last: 38 }, { book: 3, last: 26 }, { book: 4, last: 36 },
+  { book: 5, last: 27 }, { book: 6, last: 26 }, { book: 7, last: 27 }, { book: 8, last: 54 },
+  { book: 9, last: 41 }, { book: 10, last: 38 },
+]
+const pausaniasCite = (book: number) => (text: string): { chapter: number; verse?: number } | null => {
+  // "Pausanias 1.24.5", "Paus. 1.24.5", "Pausanias, Descr. 1.24.5".
+  const m = text.replace(/^cf\.\s*/, '').match(new RegExp(`^(?:Paus(?:anias)?,?)\\.?\\s+(?:Descr?(?:iption)?\\.?\\s+)?${book}\\.(\\d+)(?:\\.(\\d+))?`))
+  return m ? { chapter: parseInt(m[1], 10), verse: m[2] ? parseInt(m[2], 10) : undefined } : null
+}
+const PAUSANIAS_WORKS: ProseWork[] = PAUSANIAS_BOOKS.map(b => ({
+  source: `pausanias-greece-${b.book}` as EmbeddedProseSource,
+  name: `Pausanias, Description of Greece (Book ${b.book})`,
+  noteBook: `PausDescr${b.book}`,
+  dataUrl: `/data/greco/pausanias-greece-${b.book}.json`,
+  chapters: b.last,
+  attribution: PAUSANIAS_ATTRIB,
+  parseCitation: pausaniasCite(b.book),
+  chapterLabel: (ch: number) => `Chapter ${ch}`,
+}))
+export const PAUSANIAS_CATALOG = PAUSANIAS_BOOKS.map(b => ({
+  id: `pausanias-greece-${b.book}`,
+  source: `pausanias-greece-${b.book}` as EmbeddedProseSource,
+  name: `Pausanias, Description of Greece (Book ${b.book})`,
+  chapters: b.last, greek: true,
+  // Books 6-10 have no English column at all, so they open in Greek-only view.
+  ...(b.book >= 6 ? { greekOnly: true } : {}),
+}))
+
 // Catalog ids/names, with the book-8 gap declared so the reader doesn't stall on chapter 140.
 export const HOMER_CATALOG = HOMER_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: 24, greek: true }))
 export const HESIOD_CATALOG = HESIOD_WORKS.map(w => ({ id: w.source, source: w.source, name: w.name, chapters: w.chapters, greek: true }))
@@ -1824,6 +1934,9 @@ export const PROSE_WORKS: ProseWork[] = [
   ...HESIOD_WORKS,
   ...HERODOTUS_WORKS,
   ...THUCYDIDES_WORKS,
+  ...POLYBIUS_WORKS,
+  ...STRABO_WORKS,
+  ...PAUSANIAS_WORKS,
   ...MISHNAH_WORKS,
   ...YERUSHALMI_WORKS,
   ...BAVLI_WORKS,
