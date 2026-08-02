@@ -2,7 +2,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { X, Info, GraduationCap } from 'lucide-react'
-import { chapterForCategory, grammarHref, CHAPTER_LABEL } from '@/lib/syntax-grammar-map'
+import { chapterForCategory, grammarHref, CHAPTER_LABEL, type GrammarChapter } from '@/lib/syntax-grammar-map'
+import { openGrammarPanel, hasGrammarPanel } from '@/lib/grammar-panel-bus'
 import type { VerseWord } from '@/types/biblical-text'
 import type { SyntaxEntry, SyntaxContext, WallaceCategory } from '@/lib/wallace-categories'
 import { getWallaceCategories } from '@/lib/wallace-categories'
@@ -12,6 +13,38 @@ import { buildAbsDisplay, type AbsSyntaxEntry } from '@/lib/abs-syntax'
 import { formatMaculaClauseRule, getMaculaClauseRoleLabel } from '@/lib/macula-syntax'
 import { HighlightSwatches } from '@/components/highlights/HighlightSwatches'
 import type { WordHighlight } from '@/lib/word-search-bus'
+
+/**
+ * "Learn this" — opens the Grammar chapter that teaches this syntax category BESIDE the text
+ * (GrammarPanel), so the verse stays on screen. Falls back to an ordinary link when no panel
+ * is mounted — on /grammar itself, where a panel over the page would be absurd, and on any
+ * surface that doesn't host the provider.
+ */
+function GrammarLink({ chapter, level, category }: {
+  chapter: GrammarChapter
+  level: 'beginner' | 'intermediate'
+  category: string
+}) {
+  const cls = 'mb-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline'
+  const label = <><GraduationCap size={11} className="shrink-0" /> Learn this — Grammar: {CHAPTER_LABEL[chapter]}</>
+
+  if (!hasGrammarPanel()) {
+    return <Link href={grammarHref(chapter, level)} className={cls}>{label}</Link>
+  }
+  return (
+    <button
+      type="button"
+      className={cls}
+      onClick={() => openGrammarPanel({
+        chapter,
+        level: level === 'beginner' ? 'beginning' : 'intermediate',
+        fromCategory: category,
+      })}
+    >
+      {label}
+    </button>
+  )
+}
 
 export type WordSearchAction = 'lemma' | 'form' | 'morph' | 'lexicon' | 'backgrounds'
 export type SearchScope = 'GNT' | 'LXX' | 'BOTH'
@@ -271,13 +304,11 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
                   to several paragraphs, so a link placed after one sits below the fold of the
                   popup and is never seen. */}
               {chapter && (
-                <Link
-                  href={grammarHref(chapter, cat.level)}
-                  className="mb-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline"
-                >
-                  <GraduationCap size={11} className="shrink-0" />
-                  Learn this — Grammar: {CHAPTER_LABEL[chapter]}
-                </Link>
+                <GrammarLink
+                  chapter={chapter}
+                  level={cat.level}
+                  category={cat.name}
+                />
               )}
               <p className="text-xs leading-relaxed opacity-80 whitespace-pre-line">{cat.desc}</p>
             </div>

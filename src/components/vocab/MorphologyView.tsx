@@ -89,7 +89,7 @@ function ExplanationCard({ explanation, level }: { explanation?: Explanation; le
    Top-level tab definitions
 ───────────────────────────────────────────── */
 
-type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
+export type MainTab = 'essentials' | 'pronunciation' | 'parsing' | 'nouns' | 'pronouns' | 'demonstratives' | 'relatives' | 'prepositions' |
                'conjunctions' | 'conj-adv' | 'indicatives' | 'contract-verbs' | 'liquids' | 'principal-parts' |
                'infinitives' | 'imperatives' | 'participles' | 'subjunctives' | 'mi-verbs' |
                '2nd-aorists' | 'deponents'
@@ -260,8 +260,25 @@ function CourseNav({ index, completed, onComplete, goTo }: {
    Main export
 ───────────────────────────────────────────── */
 
-export function MorphologyView() {
-  const [mainTab, setMainTab] = useState<MainTab>('essentials')
+/**
+ * `embedded` renders the Grammar inside the side panel opened from the Reader's syntax menu
+ * (GrammarPanel), rather than as the full page. Two differences: the chapter/level come from
+ * props instead of the URL — the panel owns no address bar — and the compact chapter menu is
+ * used at every width, because the desktop tab bar's 21 chips are unusable in a 620px panel
+ * and CSS media queries see the viewport, not the panel.
+ */
+export function MorphologyView({
+  embedded = false,
+  initialChapter,
+  initialLevel,
+  onRequestClose,
+}: {
+  embedded?: boolean
+  initialChapter?: MainTab
+  initialLevel?: MorphLevel
+  onRequestClose?: () => void
+} = {}) {
+  const [mainTab, setMainTab] = useState<MainTab>(initialChapter ?? 'essentials')
   const [essId, setEssId]     = useState(1)
 
   // Beginning / Intermediate explanation level. Beginning is the DEFAULT on
@@ -269,13 +286,15 @@ export function MorphologyView() {
   // session (sessionStorage), so the Grammar pages always open at Beginning
   // rather than whatever a student picked weeks ago. Hydrate after first
   // paint to avoid a hydration mismatch.
-  const [level, setLevel] = useState<MorphLevel>('beginning')
+  const [level, setLevel] = useState<MorphLevel>(initialLevel ?? 'beginning')
   useEffect(() => {
+    if (initialLevel) return   // the panel was opened at an explicit level — don't override it
     try {
       const saved = sessionStorage.getItem('morph-level')
       if (saved === 'beginning' || saved === 'intermediate') setLevel(saved)
       localStorage.removeItem('morph-level') // retire the old cross-visit memory
     } catch { /* ignore */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   function changeLevel(l: MorphLevel) {
     setLevel(l)
@@ -292,6 +311,7 @@ export function MorphologyView() {
   // static, and useSearchParams would opt it into dynamic rendering (and want a Suspense
   // boundary) for what is a one-shot read on mount.
   useEffect(() => {
+    if (embedded) return   // the panel supplies chapter/level as props; it owns no URL
     try {
       const params = new URLSearchParams(window.location.search)
       const chapter = params.get('chapter')
@@ -339,8 +359,8 @@ export function MorphologyView() {
     <div className="flex flex-col min-h-0">
       {/* Translation Workbench side panel (opened from ClassSentences blocks). */}
       <TranslationWorkbench />
-      {/* Mobile: topic tabs + section sub-nav collapse into a hamburger. */}
-      <div ref={menuRef} className="lg:hidden relative">
+      {/* Mobile — and the side panel at any width — collapse the topic tabs into a hamburger. */}
+      <div ref={menuRef} className={`${embedded ? '' : 'lg:hidden'} relative`}>
         <button
           onClick={() => setMenuOpen(o => !o)}
           className="w-full flex items-center justify-between gap-2 py-2 border-b border-gray-100 bg-surface text-left"
@@ -396,8 +416,8 @@ export function MorphologyView() {
         )}
       </div>
 
-      {/* Desktop: inline topic tab bar. */}
-      <div className="hidden lg:block">
+      {/* Desktop: inline topic tab bar. Never in the panel — 21 chips don't fit 620px. */}
+      <div className={embedded ? 'hidden' : 'hidden lg:block'}>
         <div className="flex flex-wrap gap-1.5 py-2 border-b border-gray-100 bg-surface">
           {MAIN_TABS.map(t => (
             <button
@@ -425,8 +445,8 @@ export function MorphologyView() {
         {courseMode && <CourseHeader completed={completed} goTo={goToChapter} />}
         {mainTab === 'essentials' ? (
           <>
-            {/* Ess. 1–8 sub-navigation (desktop; mobile uses the hamburger) */}
-            <div className="hidden lg:flex gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-surface">
+            {/* Ess. 1–8 sub-navigation (desktop; mobile and the panel use the hamburger) */}
+            <div className={`${embedded ? 'hidden' : 'hidden lg:flex'} gap-1.5 flex-wrap py-3 border-b border-gray-100 bg-surface`}>
               {ESS_SECTIONS.map(s => (
                 <button
                   key={s.id}

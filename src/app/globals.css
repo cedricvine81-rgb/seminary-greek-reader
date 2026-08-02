@@ -538,6 +538,16 @@ body.exam-lockdown nav.fixed.bottom-0 {
   }
 }
 
+/* ── Grammar side panel (Reader syntax menu → "Learn this") ──────────────────────────────
+   Same split-view treatment as the search panel: GrammarPanel sets data-grammar-panel +
+   --grammar-panel-w on <html> while open, so the verse stays visible beside the chapter that
+   explains its syntax instead of being covered. */
+@media (min-width: 1024px) {
+  html[data-grammar-panel] #app-content {
+    padding-right: var(--grammar-panel-w, 640px);
+  }
+}
+
 /* ── Page guide side panel ("About this page") ───────────────────────────────────────────
    Same split-view treatment as the search panel above: PageGuidePanel sets data-guide-panel
    + --guide-panel-w on <html> while open, so the page is squeezed rather than covered and the

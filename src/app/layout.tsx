@@ -8,6 +8,7 @@ import { NativeMenuGuard } from '@/components/layout/NativeMenuGuard'
 import { ChunkErrorReload } from '@/components/layout/ChunkErrorReload'
 import { MasterSearchProvider } from '@/components/search/MasterSearchProvider'
 import { PageGuideProvider } from '@/components/help/PageGuideProvider'
+import { GrammarPanelProvider } from '@/components/grammar/GrammarPanelProvider'
 import { WordSearchProvider } from '@/components/search/WordSearchProvider'
 import { ProsePanelProvider } from '@/components/texts/ProsePanelProvider'
 import { ScrollRestorer } from '@/components/search/ScrollRestorer'
@@ -107,6 +108,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <NativeMenuGuard />
         <MasterSearchProvider isAuthenticated={headerProps.isAuthenticated} />
         <PageGuideProvider />
+        <GrammarPanelProvider />
         <WordSearchProvider />
         <ProsePanelProvider />
         <ScrollRestorer />
