@@ -44,16 +44,28 @@ export function TextsNavMenu() {
   }
 
   const BOOKS_W = 240
+  // A flyout shorter than this is not worth reading, so a cramped one is allowed to rise — but
+  // never so far that it stops covering the row that opened it.
+  const BOOKS_MIN_H = 260
+
   function openBooks(author: string, works: CatalogWork[], el: HTMLElement) {
     const r = el.getBoundingClientRect()
     const left = r.left >= BOOKS_W + 20 ? r.left - BOOKS_W - 4 : r.right + 4  // left if room, else right
-    // Open level with the author row, but if the book list would run off the bottom (an author
-    // low in the list, e.g. Xenophon), open UPWARD — align the flyout's bottom with the row so
-    // its last book lines up with the author.
-    const estHeight = works.length * 34 + 12
-    let top = r.top
-    if (top + estHeight > window.innerHeight - 12) top = Math.max(8, r.bottom - estHeight)
-    setSub({ author, works, top, left })
+    // The flyout must always cover the author's own row, because the only way to reach it is to
+    // move the pointer straight sideways: go up or down instead and you cross another author,
+    // which swaps the flyout out from under you.
+    //
+    // It used to estimate its height at 34px a row and, when that ran past the bottom of the
+    // screen, flip the whole panel up to END level with the row. Two things went wrong. The
+    // estimate is wrong whenever a title wraps — "Description of Greece (Book 10)" wraps in a
+    // 240px panel, so Pausanias' ten books are half again as tall as the guess — and the flip
+    // put the panel some 300px ABOVE the cursor. Every author low in a long list was unopenable.
+    //
+    // So: anchor to the row and cap the height to the space below (the panel already scrolls),
+    // rising only when that space is too cramped, and never past the row's own bottom.
+    const room = window.innerHeight - 12 - r.top
+    const rise = Math.max(0, Math.min(BOOKS_MIN_H - room, r.top - 8))
+    setSub({ author, works, top: Math.max(8, r.top - rise), left })
   }
 
   return (
@@ -126,7 +138,10 @@ export function TextsNavMenu() {
       {open && sub && typeof document !== 'undefined' && createPortal(
         <div className="fixed z-[60]" style={{ top: sub.top, left: Math.max(8, sub.left), width: BOOKS_W }}
           onMouseEnter={openNow} onMouseLeave={closeSoon}>
-          <div className="max-h-[75vh] overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+          {/* Height capped to whatever is left below the flyout's top, so a long list scrolls
+              inside the panel instead of running off the bottom of the screen. */}
+          <div className="overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
+            style={{ maxHeight: `calc(100vh - ${sub.top + 16}px)` }}>
             {sub.works.map(w => (
               <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
                 className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
