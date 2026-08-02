@@ -55,6 +55,28 @@ def fetch(rel, no_cache):
     return data
 
 
+def strip_notes(xml_bytes):
+    """Decode and remove the editorial apparatus, in an order that survives Perseus' own
+    malformed files. Three things bite, all found in Plutarch:
+
+    1. A *self-closing* <note/> appears (Lycurgus, De garrulitate), and always inside an XML
+       comment: `<!--<note/>-->`. A plain `<note\\b.*?</note>` starts matching at that empty tag
+       and runs on to the next real `</note>`, swallowing the comment's `-->` along with
+       whatever text lies between — 208 characters of Lycurgus 14.2, and an unclosed comment
+       that makes the file unparseable. So comments go first, then self-closing notes.
+    2. Perseus leaves a stray `</note>` with no opening tag (Regum et imperatorum
+       apophthegmata), which no pair-matching pattern can reach; the last sweep drops it.
+    3. <q> quotation tags are left unbalanced (Phocion). Nothing here reads <q>, and the text
+       inside it is kept either way, so the tags themselves are dropped.
+    """
+    xml = xml_bytes.decode('utf-8', 'replace')
+    xml = re.sub(r'(?s)<!--.*?-->', '', xml)
+    xml = re.sub(r'(?is)<note\b[^>]*/>', '', xml)
+    xml = re.sub(r'(?is)<note\b[^>]*>.*?</note>', '', xml)
+    xml = re.sub(r'(?is)</?note\b[^>]*>', '', xml)
+    return re.sub(r'(?is)</?q\b[^>]*>', '', xml)
+
+
 def chapter_text(div):
     # A place carries a gazetteer annotation in <reg> — not the regularised reading that tag
     # normally signals — in either of two shapes:
@@ -93,7 +115,7 @@ def chapter_text(div):
 def parse_chapters(xml_bytes):
     """Return {(book|None, chapter): text} at chapter granularity (both the English and Greek
     Perseus editions divide to chapter; only the Greek goes to section, so we align on chapter)."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     out = {}
 
@@ -113,7 +135,7 @@ def parse_chapters(xml_bytes):
 def parse_sections(xml_bytes):
     """Return {(book|None, section): text} at section granularity, keyed by the book and the
     (book-continuous) section number — used when both editions divide to section."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     out = {}
 
@@ -192,7 +214,7 @@ def _segments(el, unit):
 
 def _pages_by_ref(xml_bytes, unit):
     """{page:int -> {ref:str -> text}} from the milestone references (e.g. 172 -> {'172a': …})."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     body = ET.fromstring(xml).find('.//t:body', NS)
     out = {}
     for ref, text in _segments(body, unit):
@@ -217,7 +239,8 @@ def build_stephanus(slug, name, urn_dir, urn_base, eng_suffix, unit, attrib, no_
                 v['greek'] = g
             verses.append(v)
         chapters.append({'number': page, 'verses': verses})
-    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    chapters = doc['chapters']
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
@@ -236,13 +259,196 @@ PLUTARCH_ATTRIB = ('Text: Plutarch’s Lives, tr. Bernadotte Perrin (Loeb, 1914�
 PLUTARCH_MORALIA_ATTRIB = ('Text: Plutarch’s Morals, tr. William W. Goodwin et al. (1874), '
                            'public domain; Greek ed. Perseus. Digital edition: Perseus Digital '
                            'Library, CC-BY-SA 4.0 (perseus.tufts.edu).')
+BABBITT_ATTRIB = ('Text: Plutarch’s Moralia, tr. Frank Cole Babbitt (Loeb, 1927–1928), public '
+                  'domain; Greek ed. Perseus. Digital edition: Perseus Digital Library, '
+                  'CC-BY-SA 4.0 (perseus.tufts.edu).')
+
+# Perseus offers several English translations per work and only some are out of copyright.
+# A US work published before this year is public domain; Babbitt's Moralia volumes of 1927–28
+# have fallen in, his 1931 volume has not, and neither have Fowler (1936), Helmbold (1939) or
+# Cherniss (1957). The tables below name the edition chosen for each work, and check_licence()
+# re-derives the choice from the TEI headers so a wrong suffix fails the build rather than
+# quietly shipping a translation we have no right to.
+PD_CUTOFF = 1930
+
+
+# Plutarch — the whole surviving corpus, built from Perseus' canonical TEI. Each row is
+#   (Perseus work id, slug suffix, English title, English edition suffix)
+# and for the Moralia the Latin title too, which is how the essays are cited. The English
+# edition is chosen per work as the newest one out of copyright: Perrin's Loeb (1914–26)
+# for the Lives, Babbitt (1927–28) where his Loeb volumes have fallen in, otherwise the
+# 1874 Goodwin collection. Perseus also carries Babbitt 1931+, Fowler, Helmbold and
+# Cherniss — all still in copyright, and deliberately not used. See PD_CUTOFF.
+PLUTARCH_LIVES = [
+    ('tlg001', 'theseus', 'Life of Theseus', 'eng3'),
+    ('tlg002', 'romulus', 'Life of Romulus', 'eng2'),
+    ('tlg003', 'comp-theseus-romulus', 'Comparison of Theseus and Romulus', 'eng2'),
+    ('tlg004', 'lycurgus', 'Life of Lycurgus', 'eng2'),
+    ('tlg005', 'numa', 'Life of Numa', 'eng2'),
+    ('tlg006', 'comp-lycurgus-numa', 'Comparison of Lycurgus and Numa', 'eng2'),
+    ('tlg007', 'solon', 'Life of Solon', 'eng2'),
+    ('tlg008', 'publicola', 'Life of Publicola', 'eng2'),
+    ('tlg009', 'comp-solon-publicola', 'Comparison of Solon and Publicola', 'eng2'),
+    ('tlg010', 'themistocles', 'Life of Themistocles', 'eng2'),
+    ('tlg011', 'camillus', 'Life of Camillus', 'eng2'),
+    ('tlg012', 'pericles', 'Life of Pericles', 'eng2'),
+    ('tlg013', 'fabius-maximus', 'Life of Fabius Maximus', 'eng2'),
+    ('tlg014', 'comp-pericles-fabius', 'Comparison of Pericles and Fabius Maximus', 'eng2'),
+    ('tlg015', 'alcibiades', 'Life of Alcibiades', 'eng2'),
+    ('tlg016', 'coriolanus', 'Life of Coriolanus', 'eng2'),
+    ('tlg017', 'comp-alcibiades-coriolanus', 'Comparison of Alcibiades and Coriolanus', 'eng2'),
+    ('tlg018', 'timoleon', 'Life of Timoleon', 'eng2'),
+    ('tlg019', 'aemilius-paulus', 'Life of Aemilius Paulus', 'eng2'),
+    ('tlg020', 'comp-timoleon-aemilius', 'Comparison of Timoleon and Aemilius Paulus', 'eng2'),
+    ('tlg021', 'pelopidas', 'Life of Pelopidas', 'eng2'),
+    ('tlg022', 'marcellus', 'Life of Marcellus', 'eng2'),
+    ('tlg023', 'comp-pelopidas-marcellus', 'Comparison of Pelopidas and Marcellus', 'eng2'),
+    ('tlg024', 'aristides', 'Life of Aristides', 'eng2'),
+    ('tlg025', 'cato-the-elder', 'Life of Cato the Elder', 'eng2'),
+    ('tlg026', 'comp-aristides-cato', 'Comparison of Aristides and Cato the Elder', 'eng2'),
+    ('tlg027', 'philopoemen', 'Life of Philopoemen', 'eng2'),
+    ('tlg028', 'flamininus', 'Life of Titus Flamininus', 'eng2'),
+    ('tlg029', 'comp-philopoemen-flamininus', 'Comparison of Philopoemen and Titus Flamininus', 'eng2'),
+    ('tlg030', 'pyrrhus', 'Life of Pyrrhus', 'eng2'),
+    ('tlg031', 'marius', 'Life of Caius Marius', 'eng2'),
+    ('tlg032', 'lysander', 'Life of Lysander', 'eng2'),
+    ('tlg033', 'sulla', 'Life of Sulla', 'eng2'),
+    ('tlg034', 'comp-lysander-sulla', 'Comparison of Lysander and Sulla', 'eng2'),
+    ('tlg035', 'cimon', 'Life of Cimon', 'eng2'),
+    ('tlg036', 'lucullus', 'Life of Lucullus', 'eng2'),
+    ('tlg037', 'comp-cimon-lucullus', 'Comparison of Cimon and Lucullus', 'eng2'),
+    ('tlg038', 'nicias', 'Life of Nicias', 'eng2'),
+    ('tlg039', 'crassus', 'Life of Crassus', 'eng2'),
+    ('tlg040', 'comp-nicias-crassus', 'Comparison of Nicias and Crassus', 'eng2'),
+    ('tlg041', 'eumenes', 'Life of Eumenes', 'eng2'),
+    ('tlg042', 'sertorius', 'Life of Sertorius', 'eng2'),
+    ('tlg043', 'comp-sertorius-eumenes', 'Comparison of Sertorius and Eumenes', 'eng2'),
+    ('tlg044', 'agesilaus', 'Life of Agesilaus', 'eng2'),
+    ('tlg045', 'pompey', 'Life of Pompey', 'eng2'),
+    ('tlg046', 'comp-agesilaus-pompey', 'Comparison of Agesilaus and Pompey', 'eng2'),
+    ('tlg047', 'alexander', 'Life of Alexander', 'eng2'),
+    ('tlg048', 'caesar', 'Life of Caesar', 'eng2'),
+    ('tlg049', 'phocion', 'Life of Phocion', 'eng2'),
+    ('tlg050', 'cato-the-younger', 'Life of Cato the Younger', 'eng2'),
+    ('tlg053', 'comp-agis-cleomenes-gracchi', 'Comparison of Agis and Cleomenes and the Gracchi', 'eng2'),
+    ('tlg054', 'demosthenes', 'Life of Demosthenes', 'eng2'),
+    ('tlg055', 'cicero', 'Life of Cicero', 'eng2'),
+    ('tlg056', 'comp-demosthenes-cicero', 'Comparison of Demosthenes and Cicero', 'eng2'),
+    ('tlg057', 'demetrius', 'Life of Demetrius', 'eng2'),
+    ('tlg058', 'antony', 'Life of Antony', 'eng2'),
+    ('tlg059', 'comp-demetrius-antony', 'Comparison of Demetrius and Antony', 'eng2'),
+    ('tlg060', 'dion', 'Life of Dion', 'eng2'),
+    ('tlg061', 'brutus', 'Life of Brutus', 'eng2'),
+    ('tlg062', 'comp-dion-brutus', 'Comparison of Dion and Brutus', 'eng2'),
+    ('tlg063', 'aratus', 'Life of Aratus', 'eng2'),
+    ('tlg064', 'artaxerxes', 'Life of Artaxerxes', 'eng2'),
+    ('tlg065', 'galba', 'Life of Galba', 'eng2'),
+    ('tlg066', 'otho', 'Life of Otho', 'eng2'),
+]
+
+# Flat-section essays: chapter = section, each carrying its Stephanus page as `ref`.
+PLUTARCH_MORALIA = [
+    ('tlg067', 'education-of-children', 'On the Education of Children', 'De liberis educandis', 'eng3', BABBITT_ATTRIB),
+    ('tlg068', 'study-of-poetry', 'How the Young Man Should Study Poetry', 'Quomodo adolescens poetas audire debeat', 'eng3', BABBITT_ATTRIB),
+    ('tlg069', 'listening-to-lectures', 'On Listening to Lectures', 'De recta ratione audiendi', 'eng3', BABBITT_ATTRIB),
+    ('tlg070', 'flatterer-and-friend', 'How to Tell a Flatterer from a Friend', 'Quomodo adulator ab amico internoscatur', 'eng3', BABBITT_ATTRIB),
+    ('tlg071', 'progress-in-virtue', 'How a Man May Become Aware of His Progress in Virtue', 'Quomodo quis suos in virtute sentiat profectus', 'eng3', BABBITT_ATTRIB),
+    ('tlg072', 'profit-by-enemies', 'How to Profit by One\'s Enemies', 'De capienda ex inimicis utilitate', 'eng3', BABBITT_ATTRIB),
+    ('tlg073', 'having-many-friends', 'On Having Many Friends', 'De amicorum multitudine', 'eng3', BABBITT_ATTRIB),
+    ('tlg074', 'on-chance', 'On Chance', 'De fortuna', 'eng3', BABBITT_ATTRIB),
+    ('tlg075', 'virtue-and-vice', 'On Virtue and Vice', 'De virtute et vitio', 'eng3', BABBITT_ATTRIB),
+    ('tlg076', 'consolation-to-apollonius', 'A Letter of Condolence to Apollonius', 'Consolatio ad Apollonium', 'eng3', BABBITT_ATTRIB),
+    ('tlg077', 'keeping-well', 'Advice about Keeping Well', 'De tuenda sanitate praecepta', 'eng3', BABBITT_ATTRIB),
+    ('tlg078', 'advice-to-bride-and-groom', 'Advice to Bride and Groom', 'Conjugalia praecepta', 'eng3', BABBITT_ATTRIB),
+    ('tlg079', 'dinner-of-the-seven-wise-men', 'The Dinner of the Seven Wise Men', 'Septem sapientium convivium', 'eng3', BABBITT_ATTRIB),
+    ('tlg080', 'on-superstition', 'On Superstition', 'De superstitione', 'eng3', BABBITT_ATTRIB),
+    ('tlg083', 'bravery-of-women', 'Bravery of Women', 'Mulierum virtutes', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg085', 'parallel-stories', 'Greek and Roman Parallel Stories', 'Parallela minora', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg086', 'fortune-of-the-romans', 'On the Fortune of the Romans', 'De fortuna Romanorum', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg088', 'glory-of-athens', 'Were the Athenians More Famous in War or in Wisdom?', 'De gloria Atheniensium', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg089', 'isis-osiris', 'On Isis and Osiris', 'De Iside et Osiride', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg090', 'the-e-at-delphi', 'The E at Delphi', 'De E apud Delphos', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg091', 'oracles-at-delphi', 'The Oracles at Delphi No Longer Given in Verse', 'De Pythiae oraculis', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg092', 'obsolescence-of-oracles', 'The Obsolescence of Oracles', 'De defectu oraculorum', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg093', 'can-virtue-be-taught', 'Can Virtue Be Taught?', 'An virtus doceri possit', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg094', 'on-moral-virtue', 'On Moral Virtue', 'De virtute morali', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg095', 'control-of-anger', 'On the Control of Anger', 'De cohibenda ira', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg096', 'tranquillity-of-mind', 'On Tranquillity of Mind', 'De tranquillitate animi', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg097', 'brotherly-love', 'On Brotherly Love', 'De fraterno amore', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg098', 'affection-for-offspring', 'On Affection for Offspring', 'De amore prolis', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg099', 'vice-and-unhappiness', 'Whether Vice Be Sufficient to Cause Unhappiness', 'An vitiositas ad infelicitatem sufficiat', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg100', 'soul-or-body', 'Whether the Affections of the Soul Are Worse than Those of the Body', 'Animine an corporis affectiones sint peiores', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg101', 'on-talkativeness', 'On Talkativeness', 'De garrulitate', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg102', 'on-being-a-busybody', 'On Being a Busybody', 'De curiositate', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg103', 'love-of-wealth', 'On Love of Wealth', 'De cupiditate divitiarum', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg104', 'on-compliancy', 'On Compliancy', 'De vitioso pudore', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg105', 'envy-and-hate', 'On Envy and Hate', 'De invidia et odio', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg106', 'praising-oneself', 'On Praising Oneself Inoffensively', 'De se ipsum citra invidiam laudando', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg107', 'delays-of-divine-vengeance', 'On the Delays of the Divine Vengeance', 'De sera numinis vindicta', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg108', 'on-fate', 'On Fate', 'De fato', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg109', 'sign-of-socrates', 'On the Sign of Socrates', 'De genio Socratis', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg110', 'on-exile', 'On Exile', 'De exilio', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg111', 'consolation-to-his-wife', 'Consolation to His Wife', 'Consolatio ad uxorem', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg113', 'dialogue-on-love', 'Dialogue on Love', 'Amatorius', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg115', 'philosopher-and-men-in-power', 'That a Philosopher Ought to Converse Especially With Men in Power', 'Maxime cum principibus viris philosopho esse disserendum', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg116', 'to-an-uneducated-ruler', 'To an Uneducated Ruler', 'Ad principem ineruditum', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg117', 'old-man-in-public-affairs', 'Whether an Old Man Should Engage in Public Affairs', 'An seni respublica gerenda sit', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg118', 'precepts-of-statecraft', 'Precepts of Statecraft', 'Praecepta gerendae reipublicae', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg119', 'monarchy-democracy-oligarchy', 'On Monarchy, Democracy, and Oligarchy', 'De unius in republica dominatione', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg120', 'we-ought-not-to-borrow', 'That We Ought Not to Borrow', 'De vitando aere alieno', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg122', 'aristophanes-and-menander', 'Summary of a Comparison Between Aristophanes and Menander', 'Comparationis Aristophanis et Menandri compendium', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg123', 'malice-of-herodotus', 'On the Malice of Herodotus', 'De Herodoti malignitate', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg125', 'natural-phenomena', 'Causes of Natural Phenomena', 'Quaestiones naturales', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg126', 'face-on-the-moon', 'Concerning the Face Which Appears in the Orb of the Moon', 'De facie quae in orbe lunae apparet', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg127', 'principle-of-cold', 'On the Principle of Cold', 'De primo frigido', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg128', 'fire-or-water', 'Whether Fire or Water Is More Useful', 'Aquane an ignis sit utilior', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg129', 'cleverness-of-animals', 'Whether Land or Sea Animals Are Cleverer', 'De sollertia animalium', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg130', 'beasts-are-rational', 'Beasts Are Rational', 'Bruta animalia ratione uti', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg131', 'eating-of-flesh-1', 'On the Eating of Flesh I', 'De esu carnium I', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg132', 'eating-of-flesh-2', 'On the Eating of Flesh II', 'De esu carnium II', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg134', 'generation-of-the-soul', 'On the Generation of the Soul in the Timaeus', 'De animae procreatione in Timaeo', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg136', 'stoic-self-contradictions', 'On Stoic Self-Contradictions', 'De Stoicorum repugnantiis', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg137', 'stoics-and-poets', 'The Stoics Talk More Paradoxically than the Poets', 'Compendium argumenti Stoicos absurdiora poetis dicere', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg138', 'common-conceptions', 'On Common Conceptions Against the Stoics', 'De communibus notitiis adversus Stoicos', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg139', 'epicurus-pleasant-life', 'That Epicurus Actually Makes a Pleasant Life Impossible', 'Non posse suaviter vivi secundum Epicurum', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg140', 'reply-to-colotes', 'Reply to Colotes', 'Adversus Coloten', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg141', 'live-unknown', 'Is "Live Unknown" a Wise Precept?', 'An recte dictum sit latenter esse vivendum', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+]
+
+# The three essays Perseus divides chapter → section rather than flat.
+PLUTARCH_MORALIA_CH = [
+    ('tlg087', 'fortune-of-alexander', 'On the Fortune or the Virtue of Alexander', 'De Alexandri magni fortuna aut virtute', 'eng4', PLUTARCH_MORALIA_ATTRIB),
+    ('tlg133', 'platonic-questions', 'Platonic Questions', 'Platonicae quaestiones', 'eng2', PLUTARCH_MORALIA_ATTRIB),
+]
+
+# Perseus files a work's Greek under -grc2 almost everywhere; these are the exceptions. The
+# apophthegmata group (081–088) carries both -grc3 and -grc4, and only -grc4 divides the same
+# way as the English beside it.
+PLUTARCH_GRC = {
+    'tlg051': 'grc1', 'tlg052': 'grc1', 'tlg081': 'grc4', 'tlg082': 'grc4', 'tlg083': 'grc4',
+    'tlg085': 'grc4', 'tlg086': 'grc4', 'tlg087': 'grc4', 'tlg088': 'grc4', 'tlg127': 'grc3',
+}
+
+# Works whose shape needs its own call in main() rather than a table row (paired Lives, the
+# nine books of the Table Talk, and two essays Perseus divides unlike their neighbours). Listed
+# here only so check_licence() covers their English editions too.
+PLUTARCH_EXTRA_EDITIONS = [
+    ('tlg081', 'eng4'),   # Regum et imperatorum apophthegmata — Hinton, in Goodwin 1874
+    ('tlg082', 'eng4'),   # Apophthegmata Laconica  — Goodwin 1874
+    ('tlg051', 'eng1'),   # Agis and Cleomenes      — Perrin 1921
+    ('tlg052', 'eng1'),   # Tiberius and Caius Gracchus — Perrin 1921
+    ('tlg112', 'eng2'),   # Quaestiones convivales  — Creech, in Goodwin 1874
+    ('tlg114', 'eng4'),   # Amatoriae narrationes   — Goodwin 1874
+    ('tlg121', 'eng4'),   # Vitae decem oratorum    — Goodwin 1874
+]
+
 
 
 def parse_units(xml_bytes, book_sub, unit_sub):
     """Return {(book|None, unit): text} for a book→unit (or flat unit) TEI. `book_sub` is the
     div subtype that carries the book number (None for treatises without books); `unit_sub` is
     the verse-level div subtype (a Nicomachean Ethics 'section', a Rhetoric/Poetics 'chapter')."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     out = {}
 
@@ -251,9 +457,19 @@ def parse_units(xml_bytes, book_sub, unit_sub):
             if div.get('type') != 'textpart':
                 walk(div, book); continue
             sub = div.get('subtype')
-            if book_sub and sub == book_sub:
+            kids = [k for k in div.findall('t:div', NS) if k.get('type') == 'textpart']
+            if book_sub and sub == book_sub and (book is None or kids):
                 walk(div, div.get('n'))
             elif sub == unit_sub:
+                out[(book, div.get('n'))] = chapter_text(div)
+            elif book_sub and book is not None and not kids:
+                # A leaf already inside a book-level div is a unit whatever its label says.
+                # Perseus tags the sub-divisions of Comparison of Lysander and Sulla 5 as
+                # "chapter" — the same subtype as the book level — rather than "section", yet
+                # numbers them 2..5, continuing from the "section" 1 beside them and matching
+                # the English's five sections word for word. Taking the label at face value
+                # recursed into them as if they were chapters of their own and left all four
+                # with English and no Greek.
                 out[(book, div.get('n'))] = chapter_text(div)
             else:
                 walk(div, book)
@@ -261,10 +477,21 @@ def parse_units(xml_bytes, book_sub, unit_sub):
     return out
 
 
+def drop_empty(chapters):
+    """Drop rows, and then chapters, carrying neither Greek nor English. Perseus has Table Talk
+    9.7–9.11 as empty section shells, which would otherwise open as blank pages in the reader."""
+    out = []
+    for c in chapters:
+        verses = [v for v in c['verses'] if v.get('text', '').strip() or v.get('greek', '').strip()]
+        if verses:
+            out.append({**c, 'verses': verses})
+    return out
+
+
 def parse_unit_refs(xml_bytes, book_sub, unit_sub, ref_unit):
     """{(book,unit) -> ref} using the first `ref_unit` milestone inside each unit div — the
     standard reference (Aristotle's Bekker "page" milestone, "1094a")."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     out = {}
 
@@ -321,7 +548,7 @@ def build_line_poem(slug, name, urn_dir, urn_base, attrib, no_cache, chunk=150):
     """A continuous verse poem addressed by line number (Aratus's Phaenomena). Greek only; the
     lines are grouped into chapters of `chunk` for lazy loading, each verse keeping its poem line
     number as its reference (so "Phaen. 5" cites line 5)."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache).decode('utf-8', 'replace'))
+    xml = strip_notes(fetch(f'{urn_dir}/{urn_base}.perseus-grc2.xml', no_cache))
     root = ET.fromstring(xml)
     lines = [re.sub(r'\s+', ' ', ''.join(l.itertext())).strip()
              for l in root.iter('{http://www.tei-c.org/ns/1.0}l')]
@@ -348,7 +575,7 @@ def _div_text(el):
 
 def parse_lines(xml_bytes, per_book):
     """{(book|None, line): greek} from <l n=..>; book from the (case-insensitive) book div."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     NSU = '{http://www.tei-c.org/ns/1.0}'
     out = {}
@@ -377,7 +604,7 @@ def parse_eng_chunks(xml_bytes, per_book):
     line); Hesiod's Evelyn-White marks every ~5th line with <l n=..>. Either way the English is
     keyed by the line it starts at, so it can sit beside that Greek line (the rest are Greek-only,
     the Eusebius chunk model)."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     NSU = '{http://www.tei-c.org/ns/1.0}'
     out = {}
@@ -452,7 +679,8 @@ def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, att
                 {'number': s, 'ref': (str(s) if s == e else f'{s}–{e}'), 'text': en, 'greek': g})
         for ch in sorted(by_ch):
             chapters.append({'number': ch, 'verses': by_ch[ch]})
-    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    chapters = doc['chapters']
     if not per_book:
         doc['lineChunk'] = chunk
         doc['lineCount'] = len(glane[None])
@@ -462,13 +690,15 @@ def build_line_parallel(slug, name, urn_dir, urn_base, eng_suffix, per_book, att
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': tot, 'eng': n_eng}]
 
 
-def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache, ref_unit=None):
+def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, attrib, no_cache,
+                ref_unit=None, grc_suffix='grc2'):
     """One work with a book→unit or flat-unit TEI (Aristotle treatises, Plutarch Lives/Moralia).
     With books: chapter = book, verse = unit (Eth. nic. 1.7 → book 1 §7; Plut. Ant. 25.2 → ch. 25
     §2). Without books: chapter = unit, one verse (Poet. 6). `ref_unit` attaches the standard
-    reference milestone (Aristotle's Bekker number) to each verse."""
+    reference milestone (Aristotle's Bekker number) to each verse. Nearly every Perseus text
+    files its Greek under -grc2, but a handful do not — see PLUTARCH_GRC."""
     base = f'{urn_dir}/{urn_base}'
-    grc_bytes = fetch(f'{base}.perseus-grc2.xml', no_cache)
+    grc_bytes = fetch(f'{base}.perseus-{grc_suffix}.xml', no_cache)
     grc = parse_units(grc_bytes, book_sub, unit_sub)
     eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), book_sub, unit_sub)
     refs = parse_unit_refs(grc_bytes, book_sub, unit_sub, ref_unit) if ref_unit else {}
@@ -491,7 +721,8 @@ def build_units(slug, name, urn_dir, urn_base, eng_suffix, book_sub, unit_sub, a
             {'number': 1, 'text': units[u][0], **({'greek': units[u][1]} if units[u][1] else {}),
              **({'ref': units[u][2]} if units[u][2] else {})}]}
             for u in sorted(units)]
-    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': chapters}
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    chapters = doc['chapters']
     (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
     n_grk = sum(1 for c in chapters for v in c['verses'] if 'greek' in v)
     return [{'slug': slug, 'doc': doc, 'chapters': len(chapters), 'verses': n_grk}]
@@ -534,7 +765,7 @@ HERODOTUS_ATTRIB = ('Text: Herodotus, The Histories, tr. A. D. Godley (Loeb, 192
 
 def parse_bcs(xml_bytes):
     """Return {(book, chapter, section): text} for a book→chapter→section TEI (Apollodorus)."""
-    xml = re.sub(r'(?is)<note\b.*?</note>', '', xml_bytes.decode('utf-8', 'replace'))
+    xml = strip_notes(xml_bytes)
     root = ET.fromstring(xml)
     out = {}
 
@@ -595,13 +826,18 @@ def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_c
     # Herodotus' English skips nine sections the Greek has (7.19.2, 7.37.3, 7.41.2, 7.67.2 …),
     # which is why those chapters ran 1, 3. Such a row carries the Greek with no English
     # beside it, which is the truth of the edition rather than a hole in the text.
+    # Two raw keys can land on the same row: Herodotus' proem is section n="0" in the Greek but
+    # n="pr" in Godley's English, and bcs_key rightly folds both to section 0. Assigning the row
+    # instead of merging it let whichever key the set happened to yield second overwrite the
+    # other, so the proem showed its Greek or its English depending on the run's hash order.
     for key_raw in set(eng) | set(grc):
         b, ch, sec = key_raw
         key = bcs_key(b, ch, sec)
         if key:
             bk, cn, suffix, s = key
-            books.setdefault(bk, {}).setdefault(cn, {})[(suffix, s)] = (
-                eng.get(key_raw, ''), grc.get(key_raw, ''))
+            row = books.setdefault(bk, {}).setdefault(cn, {})
+            was_eng, was_grc = row.get((suffix, s), ('', ''))
+            row[(suffix, s)] = (eng.get(key_raw) or was_eng, grc.get(key_raw) or was_grc)
     results = []
     for bk in sorted(books):
         chapters = []
@@ -624,7 +860,8 @@ def build_bcs(slug_prefix, name_fmt, urn_dir, urn_base, eng_suffix, attrib, no_c
                     v['ref'] = 'pr'              # the proem is unnumbered in the edition
                 verses.append(v)
             chapters.append({'number': ch, 'verses': verses})
-        doc = {'work': name_fmt(bk), 'attribution': attrib, 'greek': True, 'chapters': chapters}
+        doc = {'work': name_fmt(bk), 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+        chapters = doc['chapters']
         slug = f'{slug_prefix}-{bk}'
         (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
         results.append({'slug': slug, 'doc': doc, 'chapters': len(chapters),
@@ -671,6 +908,119 @@ def resolve(text):
     return None
 
 
+def build_named_book(slug, name, urn_dir, urn_base, eng_suffix, book_n, attrib, no_cache):
+    """One Life out of a file that holds a pair of them. Perseus keeps Agis with Cleomenes, and
+    the two Gracchi together, as a single book→chapter→section document whose books are *named*
+    ("Agis", "Cleomenes", "Tiberius", "Caius") and whose chapter numbers restart in each. Reading
+    it with the ordinary chapter→section walk would collide Agis 1 with Cleomenes 1, so each Life
+    is selected by its book name and emitted as its own work, numbered the way it is cited
+    (Plut. Cleom. 10.1)."""
+    def in_book(xml_bytes):
+        root = ET.fromstring(strip_notes(xml_bytes))
+        out = {}
+
+        def sections(el, chapter):
+            for div in el.findall('t:div', NS):
+                if div.get('type') != 'textpart':
+                    sections(div, chapter); continue
+                if div.get('subtype') == 'section':
+                    out[(chapter, div.get('n'))] = chapter_text(div)
+                elif div.get('subtype') == 'chapter':
+                    sections(div, div.get('n'))
+                else:
+                    sections(div, chapter)
+
+        def find_book(el):
+            for div in el.findall('t:div', NS):
+                if div.get('type') == 'textpart' and div.get('subtype') == 'book':
+                    if (div.get('n') or '') == book_n:
+                        sections(div, None)
+                else:
+                    find_book(div)
+        find_book(root.find('.//t:body', NS))
+        return out
+
+    base = f'{urn_dir}/{urn_base}'
+    grc = in_book(fetch(f'{base}.perseus-grc1.xml', no_cache))
+    eng = in_book(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache))
+    chapters_map = {}
+    for (ch, sec) in set(eng) | set(grc):
+        if ch and ch.isdigit() and sec and sec.isdigit():
+            chapters_map.setdefault(int(ch), {})[int(sec)] = (eng.get((ch, sec), ''), grc.get((ch, sec), ''))
+    chapters = [{'number': ch, 'verses': [
+        {'number': s, 'text': chapters_map[ch][s][0],
+         **({'greek': chapters_map[ch][s][1]} if chapters_map[ch][s][1] else {})}
+        for s in sorted(chapters_map[ch])]} for ch in sorted(chapters_map)]
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    chapters = doc['chapters']
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters),
+             'verses': sum(1 for c in chapters for v in c['verses'] if 'greek' in v)}]
+
+
+def build_coarse_english(slug, name, urn_dir, urn_base, eng_suffix, eng_unit, attrib, no_cache,
+                         grc_suffix='grc2'):
+    """A work whose Greek divides finer than its public-domain English, but on the same frame.
+
+    The two collections of sayings are the case: the Greek numbers every apophthegm — 500 in
+    the Kings and Commanders, 416 in the Spartans — while Goodwin's 1874 English gives one
+    block per figure. The figures themselves correspond exactly (92 and 69 of them, Artaxerxes
+    against Ἀρτοξέρξης, Agasicles against Ἀγασικλῆς), so the chapter is the figure: its Greek
+    read as one piece, beside the English for the same person. Babbitt's Loeb does number the
+    sayings individually and would align verse for verse, but it is still in copyright.
+
+    Building these off the section numbers instead left the Spartans with no English at all and
+    the Kings with Greek on a third of its verses."""
+    base = f'{urn_dir}/{urn_base}'
+    grc_bytes = fetch(f'{base}.perseus-{grc_suffix}.xml', no_cache)
+    grc = parse_chapters(grc_bytes)
+    refs = parse_unit_refs(grc_bytes, None, 'chapter', 'stephpage')
+    eng = parse_units(fetch(f'{base}.perseus-{eng_suffix}.xml', no_cache), None, eng_unit)
+    units = {}
+    for (_b, n) in set(grc) | set(eng):
+        if n and n.isdigit():
+            units[int(n)] = (eng.get((None, n), ''), grc.get((None, n), ''), refs.get((None, n)))
+    chapters = [{'number': n, 'verses': [
+        {'number': 1, 'text': units[n][0],
+         **({'greek': units[n][1]} if units[n][1] else {}),
+         **({'ref': units[n][2]} if units[n][2] else {})}]} for n in sorted(units)]
+    doc = {'work': name, 'attribution': attrib, 'greek': True, 'chapters': drop_empty(chapters)}
+    chapters = doc['chapters']
+    (OUT_DIR / f'{slug}.json').write_text(json.dumps(doc, ensure_ascii=False), encoding='utf-8')
+    return [{'slug': slug, 'doc': doc, 'chapters': len(chapters),
+             'verses': sum(1 for c in chapters for v in c['verses'] if 'greek' in v)}]
+
+
+def edition_year(xml_bytes):
+    """The latest printed-edition year in a TEI header — what decides whether the translation
+    may be shipped. Taking the latest, not the earliest, keeps the licence check conservative."""
+    years = [int(y) for y in re.findall(r'<date[^>]*>\s*(1[89]\d\d)\s*</date>',
+                                        xml_bytes[:20000].decode('utf-8', 'replace'))]
+    return max(years) if years else None
+
+
+def check_licence(no_cache):
+    """Re-derive, from the TEI headers themselves, that every English edition the Plutarch
+    tables name is out of copyright. Perseus ships in-copyright Loeb translations of the same
+    works alongside the public-domain ones, distinguished only by a suffix digit, so a typo in
+    a table row is the difference between Goodwin 1874 and Cherniss 1957. This fails the build
+    rather than letting that ship."""
+    rows = ([(w, e, 'Lives') for w, _s, _t, e in PLUTARCH_LIVES]
+            + [(w, e, 'Moralia') for w, _s, _t, _l, e, _a in PLUTARCH_MORALIA + PLUTARCH_MORALIA_CH]
+            + [(w, e, 'Moralia') for w, e in PLUTARCH_EXTRA_EDITIONS])
+    bad = []
+    for wid, suffix, _group in rows:
+        yr = edition_year(fetch(f'tlg0007/{wid}/tlg0007.{wid}.perseus-{suffix}.xml', no_cache))
+        if yr is None or yr >= PD_CUTOFF:
+            bad.append((wid, suffix, yr))
+    print(f'\nLicence check: {len(rows)} Plutarch English editions, '
+          f'{len(rows) - len(bad)} confirmed pre-{PD_CUTOFF}')
+    if bad:
+        for wid, suffix, yr in bad:
+            print(f'   IN COPYRIGHT  tlg0007.{wid} {suffix} ({yr})')
+        sys.exit(f'refusing to build: {len(bad)} edition(s) are not public domain')
+
+
 def validate(results):
     by_slug = {r['slug']: r for r in results}
     data = json.loads(CROSSREFS.read_text())
@@ -694,8 +1044,36 @@ def validate(results):
         print(f'   MISS  {text:34s} -> {why}')
 
 
+# `--only <prefix>` restricts the run to slugs starting with that prefix, so adding one corpus
+# doesn't rebuild all 120 files (Plutarch alone is 275 source documents). Every builder takes
+# its slug — or, for the per-book ones, the slug prefix — as its first argument, so a single
+# gate wrapped round them all covers every call site.
+ONLY = None
+
+
+def _gate(fn):
+    def gated(slug, *args, **kwargs):
+        return [] if ONLY and not slug.startswith(ONLY) else fn(slug, *args, **kwargs)
+    return gated
+
+
+build = _gate(build)
+build_sections = _gate(build_sections)
+build_stephanus = _gate(build_stephanus)
+build_units = _gate(build_units)
+build_named_book = _gate(build_named_book)
+build_coarse_english = _gate(build_coarse_english)
+build_greek_only = _gate(build_greek_only)
+build_line_poem = _gate(build_line_poem)
+build_line_parallel = _gate(build_line_parallel)
+build_bcs = _gate(build_bcs)
+
+
 def main():
+    global ONLY
     no_cache = '--no-cache' in sys.argv
+    if '--only' in sys.argv:
+        ONLY = sys.argv[sys.argv.index('--only') + 1]
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     results = []
     results += build('epictetus-discourses', lambda b: f'Epictetus, Discourses (Book {b})',
@@ -724,16 +1102,56 @@ def main():
                            'tlg0086/tlg038', 'tlg0086.tlg038', 'eng2', 'book', 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
     results += build_units('aristotle-poetics', 'Aristotle, Poetics',
                            'tlg0086/tlg034', 'tlg0086.tlg034', 'eng2', None, 'chapter', ARISTOTLE_ATTRIB, no_cache, ref_unit='page')
-    # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section).
-    results += build_units('plutarch-antony', 'Plutarch, Life of Antony',
-                           'tlg0007/tlg058', 'tlg0007.tlg058', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
-    results += build_units('plutarch-alexander', 'Plutarch, Life of Alexander',
-                           'tlg0007/tlg047', 'tlg0007.tlg047', 'eng2', 'chapter', 'section', PLUTARCH_ATTRIB, no_cache)
-    # Plutarch, Moralia — On Isis and Osiris. Goodwin's public-domain English has no Stephanus
-    # milestones, so it stays section-aligned (1–80); each section carries its Stephanus page
-    # reference ("351c", the standard Moralia citation) from the Greek's "stephpage" milestone.
-    results += build_units('plutarch-isis-osiris', 'Plutarch, On Isis and Osiris',
-                           'tlg0007/tlg089', 'tlg0007.tlg089', 'eng4', None, 'section', PLUTARCH_MORALIA_ATTRIB, no_cache, ref_unit='stephpage')
+    # Plutarch — the Lives (Perrin's public-domain Loeb, chapter→section), including the
+    # synkriseis, the paired comparisons that close most of the pairs.
+    check_licence(no_cache)
+    for wid, slug, title, eng_suffix in PLUTARCH_LIVES:
+        results += build_units(f'plutarch-{slug}', f'Plutarch, {title}',
+                               f'tlg0007/{wid}', f'tlg0007.{wid}', eng_suffix, 'chapter', 'section',
+                               PLUTARCH_ATTRIB, no_cache,
+                               grc_suffix=PLUTARCH_GRC.get(wid, 'grc2'))
+    # Agis/Cleomenes and the two Gracchi share a document apiece — see build_named_book.
+    for wid, book, slug, title in [
+        ('tlg051', 'Agis', 'agis', 'Life of Agis'),
+        ('tlg051', 'Cleomenes', 'cleomenes', 'Life of Cleomenes'),
+        ('tlg052', 'Tiberius', 'tiberius-gracchus', 'Life of Tiberius Gracchus'),
+        ('tlg052', 'Caius', 'caius-gracchus', 'Life of Caius Gracchus'),
+    ]:
+        results += build_named_book(f'plutarch-{slug}', f'Plutarch, {title}',
+                                    f'tlg0007/{wid}', f'tlg0007.{wid}', 'eng1', book,
+                                    PLUTARCH_ATTRIB, no_cache)
+    # Plutarch, Moralia. The public-domain English carries no Stephanus milestones, so the
+    # essays stay section-aligned; each section takes its Stephanus page ("351c", the standard
+    # Moralia citation) from the Greek's "stephpage" milestone and shows it as the reference.
+    for wid, slug, title, _latin, eng_suffix, attrib in PLUTARCH_MORALIA:
+        results += build_units(f'plutarch-{slug}', f'Plutarch, {title}',
+                               f'tlg0007/{wid}', f'tlg0007.{wid}', eng_suffix, None, 'section',
+                               attrib, no_cache, ref_unit='stephpage',
+                               grc_suffix=PLUTARCH_GRC.get(wid, 'grc2'))
+    for wid, slug, title, _latin, eng_suffix, attrib in PLUTARCH_MORALIA_CH:
+        results += build_units(f'plutarch-{slug}', f'Plutarch, {title}',
+                               f'tlg0007/{wid}', f'tlg0007.{wid}', eng_suffix, 'chapter', 'section',
+                               attrib, no_cache, ref_unit='stephpage',
+                               grc_suffix=PLUTARCH_GRC.get(wid, 'grc2'))
+    # The two collections of sayings, whose public-domain English is coarser than the Greek.
+    results += build_coarse_english('plutarch-sayings-of-kings', 'Plutarch, Sayings of Kings and Commanders',
+                                    'tlg0007/tlg081', 'tlg0007.tlg081', 'eng4', 'section',
+                                    PLUTARCH_MORALIA_ATTRIB, no_cache, grc_suffix='grc4')
+    results += build_coarse_english('plutarch-sayings-of-spartans', 'Plutarch, Sayings of Spartans',
+                                    'tlg0007/tlg082', 'tlg0007.tlg082', 'eng4', 'chapter',
+                                    PLUTARCH_MORALIA_ATTRIB, no_cache, grc_suffix='grc4')
+    # The Table Talk is book→chapter→section (each book opening with an unnumbered preface as
+    # chapter 0), so it goes one work per book like Herodotus.
+    results += build_bcs('plutarch-table-talk', lambda b: f'Plutarch, Table Talk (Book {b})',
+                         'tlg0007/tlg112', 'tlg0007.tlg112', 'eng2', PLUTARCH_MORALIA_ATTRIB, no_cache)
+    # Two essays Perseus divides unlike their neighbours: the Love Stories to chapter, and the
+    # (spurious) Lives of the Ten Orators to a nested section the flat walk reads at its top level.
+    results += build_units('plutarch-love-stories', 'Plutarch, Love Stories',
+                           'tlg0007/tlg114', 'tlg0007.tlg114', 'eng4', None, 'chapter',
+                           PLUTARCH_MORALIA_ATTRIB, no_cache, ref_unit='stephpage')
+    results += build_units('plutarch-ten-orators', 'Plutarch, Lives of the Ten Orators',
+                           'tlg0007/tlg121', 'tlg0007.tlg121', 'eng4', None, 'section',
+                           PLUTARCH_MORALIA_ATTRIB, no_cache, ref_unit='stephpage')
     # Lucian — the two works bearing on early Christianity (Fowler's public-domain English,
     # flat sections; cited by section). Alexander has 61 Greek but 59 English sections.
     results += build_units('lucian-peregrinus', 'Lucian, The Passing of Peregrinus',

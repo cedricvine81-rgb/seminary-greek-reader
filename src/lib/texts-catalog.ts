@@ -258,7 +258,7 @@ const RAW_CATEGORIES: TextCategory[] = [
   {
     id: 'greco-roman',
     label: 'Greco-Roman',
-    blurb: 'Greek and Roman authors that illuminate the New Testament world — Homer, Hesiod, Herodotus, Plato, Aristotle, Xenophon, Plutarch, Epictetus, Lucian, Diogenes Laertius, Apollodorus, and Quintilian, with the Greek (or Latin) and public-domain English side by side (Perseus, CC-BY-SA). Includes a curated set of the pagan passages the New Testament quotes. Browse by author, then work.',
+    blurb: 'Greek and Roman authors that illuminate the New Testament world — Homer, Hesiod, Herodotus, Plato, Aristotle, Xenophon, Epictetus, Lucian, Diogenes Laertius, Apollodorus, Seneca and Quintilian, with the Greek (or Latin) and public-domain English side by side (Perseus, CC-BY-SA). Plutarch is here complete: all the Parallel Lives with their comparisons, and the whole of the Moralia. Includes a curated set of the pagan passages the New Testament quotes. Browse by author, then work.',
     // The curated "Pagan Sources" overview stays pinned first; every author below it is sorted
     // alphabetically. Each work's `name` is "Author, Title", so a plain name sort orders them by
     // author and then title — keeping an author's books consecutive for groupWorksByAuthor.
