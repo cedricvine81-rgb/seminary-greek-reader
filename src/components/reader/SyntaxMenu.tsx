@@ -267,16 +267,19 @@ export function SyntaxMenu({ word, syntax, gbiEntry, absEntry, ctx, x, y, wallac
                   {cat.level === 'beginner' ? 'Beginner' : 'Intermediate'}
                 </span>
               </div>
-              <p className="text-xs leading-relaxed opacity-80 whitespace-pre-line">{cat.desc}</p>
+              {/* Directly under the name, BEFORE the description. Wallace's descriptions run
+                  to several paragraphs, so a link placed after one sits below the fold of the
+                  popup and is never seen. */}
               {chapter && (
                 <Link
                   href={grammarHref(chapter, cat.level)}
-                  className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline"
+                  className="mb-1.5 inline-flex items-center gap-1 text-[11px] font-medium text-brand-700 hover:underline"
                 >
                   <GraduationCap size={11} className="shrink-0" />
                   Learn this — Grammar: {CHAPTER_LABEL[chapter]}
                 </Link>
               )}
+              <p className="text-xs leading-relaxed opacity-80 whitespace-pre-line">{cat.desc}</p>
             </div>
           )
         })}
