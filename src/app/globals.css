@@ -44,6 +44,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --popover: 255 255 255;   /* floating pop-outs (menus, note/right-click popovers) */
     --topbar:  255 255 255;   /* app header — lighter/brighter than the page */
     --input:   255 255 255;   /* text-entry fields */
+    /* The Texts map (src/components/map/PlacesMap.tsx) draws its own coastline as SVG — there is
+       no tile server — so sea, land, coast and label are theme colours like any others. Full
+       colour values rather than RGB triplets: they are consumed as fill-[var(--map-sea)]. */
+    --map-sea:   #cfe0f0;
+    --map-land:  #f6f2e9;
+    --map-coast: #b9ae98;
+    --map-label: #5b5750;
 
     --ink-50:  244 244 245;
     --ink-900: 24 24 27;
@@ -105,6 +112,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --popover: 245 236 219;
     --topbar:  255 255 255;   /* header brighter than the warm page */
     --input:   255 255 255;   /* text-entry fields match the header off-white */
+    /* The Texts map (src/components/map/PlacesMap.tsx) draws its own coastline as SVG — there is
+       no tile server — so sea, land, coast and label are theme colours like any others. Full
+       colour values rather than RGB triplets: they are consumed as fill-[var(--map-sea)]. */
+    --map-sea:   #cfdfeb;
+    --map-land:  #f3ece0;
+    --map-coast: #b6a98f;
+    --map-label: #5c5346;
 
     --ink-50:  250 243 228;
     --ink-900: 33 24 15;
@@ -152,6 +166,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --popover: 51 66 92;      /* pop-outs sit higher still (lighter) */
     --topbar:  58 74 104;     /* header lighter than the page */
     --input:   40 52 74;      /* text-entry fields (= surface in this theme) */
+    /* The Texts map (src/components/map/PlacesMap.tsx) draws its own coastline as SVG — there is
+       no tile server — so sea, land, coast and label are theme colours like any others. Full
+       colour values rather than RGB triplets: they are consumed as fill-[var(--map-sea)]. */
+    --map-sea:   #1b2740;
+    --map-land:  #2b3a56;
+    --map-coast: #4a5b7a;
+    --map-label: #a9b4c6;
 
     --ink-50:  39 51 73;
     --ink-900: 241 245 249;
@@ -198,6 +219,13 @@ body.exam-lockdown nav.fixed.bottom-0 {
     --popover: 46 46 52;      /* pop-outs sit higher still (lighter) */
     --topbar:  52 52 58;      /* header lighter than the page */
     --input:   35 35 39;      /* text-entry fields (= surface in this theme) */
+    /* The Texts map (src/components/map/PlacesMap.tsx) draws its own coastline as SVG — there is
+       no tile server — so sea, land, coast and label are theme colours like any others. Full
+       colour values rather than RGB triplets: they are consumed as fill-[var(--map-sea)]. */
+    --map-sea:   #141419;
+    --map-land:  #26262c;
+    --map-coast: #43434b;
+    --map-label: #a1a1aa;
 
     --ink-50:  39 39 42;
     --ink-900: 244 244 245;

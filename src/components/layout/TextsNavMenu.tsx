@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Library, ChevronLeft } from 'lucide-react'
+import { Library, ChevronLeft, Map } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
 import { TEXT_CATEGORIES, groupWorksByAuthor, workTitleWithoutAuthor, type CatalogWork } from '@/lib/texts-catalog'
 
@@ -69,6 +69,13 @@ export function TextsNavMenu() {
       {open && (
         <div className="hidden md:block absolute right-0 top-full pt-1 z-50">
           <div className="w-56 rounded-xl border border-gray-200 bg-popover shadow-lg py-1">
+            {/* The map is built from these same texts (scripts/build-places.py), so it belongs
+                with them rather than as another top-level nav item. */}
+            <Link href="/map" onClick={close} onMouseEnter={() => { setCat(null); setSub(null) }}
+              className="flex items-center gap-2 px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
+              <Map size={14} className="text-gray-400" /> Map of places
+            </Link>
+            <div className="my-1 border-t border-gray-100" />
             {TEXT_CATEGORIES.map(c => (
               <div key={c.id} className="relative" onMouseEnter={e => openAuthors(c.id, c.works, e.currentTarget)}>
                 <div
