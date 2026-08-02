@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Library, ChevronLeft, Map } from 'lucide-react'
 import { useT } from '@/lib/i18n/LocaleProvider'
@@ -21,7 +21,8 @@ export function TextsNavMenu() {
   const t = useT()
   const [open, setOpen] = useState(false)      // category list shown
   const [cat, setCat] = useState<string | null>(null)          // category whose authors show
-  const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number } | null>(null)
+  const [sub, setSub] = useState<{ author: string; works: CatalogWork[]; top: number; left: number; rowTop: number; rowBottom: number } | null>(null)
+  const booksRef = useRef<HTMLDivElement>(null)
   // The author flyout opens level with the hovered category row, but if its list would run past
   // the bottom of the screen (a long one like Greco-Roman) it's lifted up just enough to fit —
   // short lists (Church Fathers) stay level with their row. `top` is the flyout's resulting
@@ -44,29 +45,35 @@ export function TextsNavMenu() {
   }
 
   const BOOKS_W = 240
-  // A flyout shorter than this is not worth reading, so a cramped one is allowed to rise — but
-  // never so far that it stops covering the row that opened it.
-  const BOOKS_MIN_H = 260
 
   function openBooks(author: string, works: CatalogWork[], el: HTMLElement) {
     const r = el.getBoundingClientRect()
     const left = r.left >= BOOKS_W + 20 ? r.left - BOOKS_W - 4 : r.right + 4  // left if room, else right
-    // The flyout must always cover the author's own row, because the only way to reach it is to
-    // move the pointer straight sideways: go up or down instead and you cross another author,
-    // which swaps the flyout out from under you.
-    //
-    // It used to estimate its height at 34px a row and, when that ran past the bottom of the
-    // screen, flip the whole panel up to END level with the row. Two things went wrong. The
-    // estimate is wrong whenever a title wraps — "Description of Greece (Book 10)" wraps in a
-    // 240px panel, so Pausanias' ten books are half again as tall as the guess — and the flip
-    // put the panel some 300px ABOVE the cursor. Every author low in a long list was unopenable.
-    //
-    // So: anchor to the row and cap the height to the space below (the panel already scrolls),
-    // rising only when that space is too cramped, and never past the row's own bottom.
-    const room = window.innerHeight - 12 - r.top
-    const rise = Math.max(0, Math.min(BOOKS_MIN_H - room, r.top - 8))
-    setSub({ author, works, top: Math.max(8, r.top - rise), left })
+    // Open level with the row; useLayoutEffect below moves it once its real height is known.
+    setSub({ author, works, top: Math.max(8, r.top), left, rowTop: r.top, rowBottom: r.bottom })
   }
+
+  // The flyout MUST overlap the author's own row, because the only way into it is a straight
+  // sideways move: go up or down to reach it and you cross another author, which swaps it out
+  // from under the pointer.
+  //
+  // Two earlier attempts got this wrong by guessing the height. Estimating 34px a row and
+  // flipping the panel up when it ran past the bottom threw Pausanias' books ~300px above the
+  // cursor, because "Description of Greece (Book 10)" wraps in a 240px panel. Raising a cramped
+  // panel by a fixed amount then broke the opposite case: Xenophon has four books, so its panel
+  // is shorter than the rise and floated clear off the top of its row.
+  //
+  // So measure it. The panel's height is fixed (it scrolls at 100vh), so one pass settles it:
+  // put it on screen, but never let its bottom rise above the row's bottom.
+  useLayoutEffect(() => {
+    const el = booksRef.current
+    if (!sub || !el) return
+    const h = el.offsetHeight
+    let top = Math.min(sub.rowTop, window.innerHeight - 12 - h)
+    top = Math.max(top, sub.rowBottom - h)
+    top = Math.max(8, top)
+    if (Math.abs(top - sub.top) > 1) setSub(prev => (prev ? { ...prev, top } : prev))
+  }, [sub])
 
   return (
     <div className="relative" onMouseEnter={openNow} onMouseLeave={closeSoon}>
@@ -138,10 +145,11 @@ export function TextsNavMenu() {
       {open && sub && typeof document !== 'undefined' && createPortal(
         <div className="fixed z-[60]" style={{ top: sub.top, left: Math.max(8, sub.left), width: BOOKS_W }}
           onMouseEnter={openNow} onMouseLeave={closeSoon}>
-          {/* Height capped to whatever is left below the flyout's top, so a long list scrolls
-              inside the panel instead of running off the bottom of the screen. */}
-          <div className="overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
-            style={{ maxHeight: `calc(100vh - ${sub.top + 16}px)` }}>
+          {/* Capped to the viewport, NOT to the space below `top`: the layout effect above
+              measures this element, so its height must not depend on where it has been put. */}
+          <div ref={booksRef}
+            className="overflow-y-auto rounded-xl border border-gray-200 bg-popover shadow-lg py-1"
+            style={{ maxHeight: 'calc(100vh - 24px)' }}>
             {sub.works.map(w => (
               <Link key={w.id} href={`/texts?work=${encodeURIComponent(w.id)}`} onClick={close}
                 className="block px-3 py-1.5 text-sm text-gray-700 hover:bg-brand-50 hover:text-brand-700 transition-colors">
